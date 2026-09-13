@@ -335,16 +335,15 @@ mining, and Signal update proposals.
   both a narrative filing family and a structured financial family whenever both
   capabilities are available. It also derives a value-free comparison-concept
   inventory from concepts present across multiple selected cases. Each microbatch
-  receives that same neutral inventory and is directed to prefer exact records for
-  recurring concepts (including two periods when visible) over issuer-specific risk
-  boilerplate. When a case exposes two records for any inventory concept, a valid
-  E1 signature must include both exact records for the first such inventory concept;
-  unrelated narrative alone cannot make that case grounded. This obligation is
-  label-free and receives the ordinary bounded correction. If correction is
-  exhausted, the terminal catch removes that case's observations, records a
-  technical extraction gap, and leaves valid sibling signatures intact so the
-  controller may use the already-frozen same-group fallback. It never turns the
-  omission into evidence that the source fact is absent. The inventory contains
+  receives that same neutral inventory as optional comparison context, not a
+  research-priority ranking. User decision on 2026-09-13: E1 selects up to six
+  source-grounded observations by relevance to the fixed surge research target;
+  no recurring financial concept or source family owns mandatory slots. Selected
+  financial comparisons still require correct concept, unit and comparable
+  periods; the existing literal-only E2 view retains source-bound companion
+  records for a selected financial fact. Missing unselected concepts do not
+  trigger correction, quarantine or controller-inserted observations. Recovery
+  removes only invalid observations and preserves valid siblings. The inventory contains
   source-owned taxonomy/concept/`source_display_name`/unit and case-frequency
   only; it contains no values, identities, evaluation labels, returns, or candidate
   hypothesis. Generic filing
@@ -425,13 +424,19 @@ This does not require each Signal to predict surges independently or prove a
 causal mechanism; it prohibits substituting calculability or acquisition
 artifacts for research relevance. No candidate is forced when this basis is absent.
 
-E1 retains its complete first comparable concept pair and six-observation bound,
-but that pair is an evidence baseline, not a research-priority ranking. Remaining
-slots favor concrete changes, timing, catalysts, guidance, commitments and
-counterevidence present in current sources. A second financial pair is optional,
-not preferred over relevant business narrative. Never invent missing narrative
-or infer the hidden case class. This preserves period comparability while
-removing the instruction to prioritize generic financial repetition.
+E1's six-observation bound is unchanged. Concrete changes, timing, catalysts,
+guidance, commitments, early confirmation and counterevidence compete on research
+relevance; generic quality, boilerplate and inventory position do not establish
+priority. Financial records remain eligible when useful. No mechanical source
+mix is enforced, and terminal recovery never selects replacement observations.
+
+H1 must use prior Slow lessons to change the next measurement or retrieval plan,
+not merely repeat a previous portfolio. Retrieval intent must cover every input
+and denominator. Untested capacity-deferred work takes precedence over unchanged
+inconclusive attempts; a justified retry explains the changed measurement,
+source/input availability or strategy in its existing need-disposition rationale.
+Absent such a change, retain the unresolved dependency without pretending a new
+test has been designed. This does not waive evidence, label or output gates.
 
 Temporal validation is H1-scoped and part of the aggregate correction frontier,
 alongside need-ledger and explicit post-cutoff violations. Historical stock

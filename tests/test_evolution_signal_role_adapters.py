@@ -621,228 +621,55 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001", "case-003"})
         self.assertIn("does not establish absent", step.value[2].evidence_gaps[0])
 
-    def test_e1_requires_first_available_recurring_structured_pair(self) -> None:
+    def test_e1_does_not_displace_business_observation_for_recurring_pair(self) -> None:
         first = '{"end":"2025-06-30","val":120}'
         second = '{"end":"2024-06-30","val":100}'
-        narrative = "Management discussed quarterly operations."
-        invalid = {
-            "signatures": [
-                {
-                    "case_ref": "case-001",
-                    "observations": [
-                        {
-                            "summary": "Management discussed operations.",
-                            "document_ref": "document-01",
-                            "exact_span": narrative,
-                        }
-                    ],
-                    "evidence_gaps": [],
-                }
-            ]
-        }
-        valid = json.loads(json.dumps(invalid))
-        valid["signatures"][0]["observations"] = [
-            {
-                "summary": "The current-period operating income record is visible.",
-                "document_ref": "document-02",
-                "exact_span": first,
-            },
-            {
-                "summary": "The prior-period operating income record is visible.",
-                "document_ref": "document-02",
-                "exact_span": second,
-            },
-            {
-                "summary": "Management discussed quarterly operations.",
-                "document_ref": "document-01",
-                "exact_span": narrative,
-            },
-        ]
-        caller = ScriptedRoleCaller([invalid, valid])
-
+        narrative = "The shareholder agreed to a ten-year share transfer lock-up."
+        response = {"signatures": [{"case_ref": "case-001", "observations": [{
+            "summary": "The agreement restricts share transfers.",
+            "document_ref": "document-01", "exact_span": narrative,
+        }], "evidence_gaps": []}]}
+        caller = ScriptedRoleCaller([response])
         step = LLMSignalMiningModel(caller).extract_exploration(
             self._recurring_pair_payload(narrative, first, second)
         )
+        self.assertEqual(step.usage.llm_calls, 1)
+        self.assertEqual(step.value[0].to_dict(), response["signatures"][0])
+        self.assertEqual(step.metadata["quarantined_observations"], {})
 
-        self.assertEqual(step.usage.llm_calls, 2)
-        self.assertEqual(
-            [item.exact_span for item in step.value[0].observations],
-            [first, second, narrative],
-        )
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("both visible records", feedback["validation_error"])
-
-    def test_e1_reserves_capacity_for_visible_narrative_evidence(self) -> None:
+    def test_e1_selected_financial_fact_keeps_source_bound_companion_for_e2(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import _literal_only_signature_view
         first = '{"end":"2025-06-30","val":120}'
         second = '{"end":"2024-06-30","val":100}'
-        third = '{"end":"2025-06-30","val":80}'
-        narrative = "Management reaffirmed revenue guidance for the fiscal year."
-        invalid = {
-            "signatures": [
-                {
-                    "case_ref": "case-001",
-                    "observations": [
-                        {
-                            "summary": "Current-period operating income.",
-                            "document_ref": "document-02",
-                            "exact_span": first,
-                        },
-                        {
-                            "summary": "Prior-period operating income.",
-                            "document_ref": "document-02",
-                            "exact_span": second,
-                        },
-                        {
-                            "summary": "A third structured metric.",
-                            "document_ref": "document-02",
-                            "exact_span": third,
-                        },
-                    ],
-                    "evidence_gaps": [],
-                }
-            ]
-        }
-        corrected = json.loads(json.dumps(invalid))
-        corrected["signatures"][0]["observations"] = [
-            *invalid["signatures"][0]["observations"][:2],
-            {
-                "summary": "Revenue guidance was reaffirmed.",
-                "document_ref": "document-01",
-                "exact_span": narrative,
-            },
-        ]
-        payload = self._recurring_pair_payload(narrative, first, second)
-        payload["cases"][0]["evidence"][1]["structured_context"]["concepts"].append(
-            {
-                "taxonomy": "us-gaap",
-                "concept": "NetIncomeLoss",
-                "label": "Net income",
-                "unit": "USD",
-                "records": [
-                    {"start": 100, "end": 100 + len(third), "exact_span": third}
-                ],
-            }
-        )
-        caller = ScriptedRoleCaller([invalid, corrected])
-
-        step = LLMSignalMiningModel(caller).extract_exploration(payload)
-
-        self.assertEqual(step.usage.llm_calls, 2)
-        self.assertEqual(len(step.value[0].observations), 3)
-        self.assertEqual(step.value[0].observations[-1].exact_span, narrative)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("at least one grounded narrative", feedback["validation_error"])
-
-    def test_e1_preserves_second_comparison_pair_with_narrative(self) -> None:
-        from stock_opportunity_agent.research.evolution_signal_roles import (
-            _e1_recovery_source_mix,
-            _e1_required_comparison_pair,
-        )
-
-        spans = [json.dumps({"end": f"{year}-06-30", "val": value})
-                 for year, value in ((2025, 120), (2024, 100), (2025, 80), (2024, 60))]
-        spans[3] = json.dumps({
-            "end": "2024-06-30", "val": 60,
-            "source_note": "Original financial-statement record. " * 8,
-        })
-        narrative = "Management reaffirmed revenue guidance for the fiscal year."
-        payload = self._recurring_pair_payload(narrative, *spans[:2])
-        packet = payload["cases"][0]
-        packet["evidence"][1]["structured_context"]["concepts"].append({
-            "taxonomy": "us-gaap", "concept": "NetIncomeLoss",
-            "label": "Net income", "unit": "USD",
-            "records": [{"start": 100 + index * 100,
-                         "end": 100 + index * 100 + len(span), "exact_span": span}
-                        for index, span in enumerate(spans[2:])],
-        })
-        observations = [
-            {"summary": "Source-owned record.", "document_ref": "document-02",
-             "exact_span": span}
-            for span in spans
-        ] + [{"summary": "Source-owned guidance.", "document_ref": "document-01",
-              "exact_span": narrative}]
-        caller = ScriptedRoleCaller([{
-            "signatures": [{"case_ref": "case-001", "observations": observations,
-                            "evidence_gaps": []}],
-        }])
+        payload = self._recurring_pair_payload("Management reaffirmed guidance.", first, second)
+        response = {"signatures": [{"case_ref": "case-001", "observations": [{
+            "summary": "A selected source financial record.",
+            "document_ref": "document-02", "exact_span": first,
+        }], "evidence_gaps": []}]}
+        caller = ScriptedRoleCaller([response])
         step = LLMSignalMiningModel(caller).extract_exploration(payload)
         self.assertEqual(step.usage.llm_calls, 1)
-        self.assertEqual(len(step.value[0].observations), 5)
-        recovered = _e1_recovery_source_mix(
-            packet, _e1_required_comparison_pair(packet, payload["comparison_concepts"]),
-            step.value[0].observations[2:4],
-        )
-        self.assertEqual([item.exact_span for item in recovered], [*spans, narrative])
-        from stock_opportunity_agent.research.signal_evolution import (
-            SignalMiningSignature,
-            _literal_only_signature_view,
-        )
+        self.assertEqual(len(step.value[0].observations), 1)
+        view = _literal_only_signature_view(step.value[0], payload["cases"][0])
+        self.assertEqual([o["exact_span"] for o in view["observations"]], [first, second])
+        self.assertTrue(all("OperatingIncomeLoss" in o["summary"] for o in view["observations"]))
+        self.assertTrue(all("unit=USD" in o["summary"] for o in view["observations"]))
 
-        for retained in (step.value[0].observations, recovered):
-            view = _literal_only_signature_view(
-                SignalMiningSignature(case_ref="case-001", observations=retained),
-                packet,
-            )
-            self.assertEqual(
-                [item["exact_span"] for item in view["observations"]],
-                [*spans, narrative],
-            )
-
-    def test_e1_pair_exhaustion_uses_literal_source_mix_for_affected_case(self) -> None:
+    def test_e1_invalid_quote_recovery_does_not_insert_unselected_financial_facts(self) -> None:
         first = '{"end":"2025-06-30","val":120}'
         second = '{"end":"2024-06-30","val":100}'
-        narrative = "Management discussed quarterly operations."
-        sibling_literal = "Management reaffirmed revenue guidance."
-        invalid = {
-            "signatures": [
-                {
-                    "case_ref": "case-001",
-                    "observations": [
-                        {
-                            "summary": "Management discussed operations.",
-                            "document_ref": "document-01",
-                            "exact_span": narrative,
-                        }
-                    ],
-                    "evidence_gaps": [],
-                },
-                {
-                    "case_ref": "case-002",
-                    "observations": [
-                        {
-                            "summary": "Guidance was reaffirmed.",
-                            "document_ref": "document-01",
-                            "exact_span": sibling_literal,
-                        }
-                    ],
-                    "evidence_gaps": [],
-                },
-            ]
-        }
-        payload = self._recurring_pair_payload(narrative, first, second)
-        payload["cases"].append(
-            {
-                "case_ref": "case-002",
-                "evidence": [
-                    {
-                        "document_ref": "document-01",
-                        "content_excerpt": sibling_literal,
-                    }
-                ],
-            }
+        narrative = "Management reaffirmed revenue guidance."
+        valid = {"summary": "Guidance was reaffirmed.", "document_ref": "document-01", "exact_span": narrative}
+        response = {"signatures": [{"case_ref": "case-001", "observations": [
+            valid, {"summary": "Invented fact.", "document_ref": "document-02", "exact_span": "Not in the source."},
+        ], "evidence_gaps": []}]}
+        caller = ScriptedRoleCaller([response, response, response])
+        step = LLMSignalMiningModel(caller).extract_exploration(
+            self._recurring_pair_payload(narrative, first, second)
         )
-        caller = ScriptedRoleCaller([invalid, invalid, invalid])
-
-        step = LLMSignalMiningModel(caller).extract_exploration(payload)
-
-        self.assertEqual(step.usage.llm_calls, 2)
-        self.assertEqual(
-            [item.exact_span for item in step.value[0].observations],
-            [first, second, narrative],
-        )
-        self.assertIn("technical extraction limitation", step.value[0].evidence_gaps[0])
-        self.assertEqual(len(step.value[1].observations), 1)
-        self.assertEqual(set(step.metadata["quarantined_observations"]), {"case-001"})
+        self.assertEqual([o.to_dict() for o in step.value[0].observations], [valid])
+        self.assertIn("case-001", step.metadata["quarantined_observations"])
+        self.assertIn("technical extraction limitation", step.value[0].evidence_gaps[-1])
 
     @staticmethod
     def _recurring_pair_payload(

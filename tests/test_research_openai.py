@@ -3,6 +3,7 @@ from io import BytesIO
 from unittest import TestCase
 from unittest.mock import patch
 from urllib.error import HTTPError, URLError
+from ssl import SSLError
 
 from stock_opportunity_agent.config import PromptConfig
 from stock_opportunity_agent.llm import create, registered
@@ -173,6 +174,8 @@ class OpenAIChatClientTests(TestCase):
             ),
             URLError("temporary DNS failure"),
             TimeoutError("socket timed out"),
+            SSLError("record layer failure"),
+            ConnectionResetError("connection reset"),
         )
         for failure in temporary_failures:
             with self.subTest(failure=type(failure).__name__):
@@ -191,6 +194,25 @@ class OpenAIChatClientTests(TestCase):
 
                 self.assertEqual(result, {"ok": True})
                 self.assertEqual(urlopen.call_count, 2)
+
+    def test_urllib_transport_normalizes_tls_failure_during_response_read(self) -> None:
+        from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
+
+        class BrokenResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+            def read(self):
+                raise SSLError("record layer failure")
+
+        with patch("stock_opportunity_agent.llm.openai.request.urlopen", return_value=BrokenResponse()) as call:
+            with self.assertRaises(RetryableOpenAIClientError) as raised:
+                UrllibTransport(max_attempts=1).post_json("https://api.example.test/responses", {}, {})
+        self.assertIsInstance(raised.exception.__cause__, SSLError)
+        self.assertEqual(call.call_count, 1)
 
     def test_urllib_transport_does_not_retry_permanent_http_failure(self) -> None:
         failure = HTTPError(

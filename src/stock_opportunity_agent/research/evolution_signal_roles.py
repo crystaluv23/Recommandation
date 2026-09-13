@@ -1239,224 +1239,6 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         return AgentStep(value, usage, metadata={"request_refs": request_refs})
 
 
-def _e1_required_comparison_pair(
-    packet: Mapping[str, Any],
-    comparison_concepts: Iterable[Mapping[str, Any]],
-) -> tuple[str, tuple[tuple[str, str], ...]] | None:
-    """Return the first label-free recurring concept with two visible records."""
-
-    evidence = packet.get("evidence", ())
-    if not isinstance(evidence, (list, tuple)):
-        return None
-    for wanted in comparison_concepts:
-        if not isinstance(wanted, Mapping):
-            continue
-        wanted_key = tuple(
-            str(wanted.get(field, "")) for field in ("taxonomy", "concept", "unit")
-        )
-        if not wanted_key[1]:
-            continue
-        for item in evidence:
-            if not isinstance(item, Mapping):
-                continue
-            document_ref = item.get("document_ref")
-            structured = item.get("structured_context")
-            if not isinstance(document_ref, str) or not isinstance(
-                structured, Mapping
-            ):
-                continue
-            for concept in structured.get("concepts", ()):
-                if not isinstance(concept, Mapping):
-                    continue
-                concept_key = tuple(
-                    str(concept.get(field, ""))
-                    for field in ("taxonomy", "concept", "unit")
-                )
-                if concept_key != wanted_key:
-                    continue
-                spans = tuple(
-                    (document_ref, str(record["exact_span"]))
-                    for record in concept.get("records", ())
-                    if isinstance(record, Mapping)
-                    and isinstance(record.get("exact_span"), str)
-                    and record["exact_span"]
-                )
-                spans = tuple(dict.fromkeys(spans))
-                if len(spans) >= 2:
-                    return wanted_key[1], spans[:2]
-    return None
-
-
-def _e1_covers_comparison_pair(
-    observations: Iterable[SignalMiningObservation],
-    required: tuple[str, tuple[tuple[str, str], ...]] | None,
-) -> bool:
-    """Return whether observations cite both records in a required pair."""
-
-    if required is None:
-        return True
-    _concept, spans = required
-    values = tuple(observations)
-    return all(
-        any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for observation in values
-        )
-        for document_ref, exact_span in spans
-    )
-
-
-def _e1_evidence_mix(
-    packet: Mapping[str, Any],
-) -> tuple[frozenset[str], frozenset[tuple[str, str]]]:
-    """Return narrative refs and structured literals visible to one E1 case."""
-
-    narrative_refs: set[str] = set()
-    structured_literals: set[tuple[str, str]] = set()
-    evidence = packet.get("evidence", ())
-    if not isinstance(evidence, (list, tuple)):
-        return frozenset(), frozenset()
-    for item in evidence:
-        if not isinstance(item, Mapping):
-            continue
-        document_ref = item.get("document_ref")
-        if not isinstance(document_ref, str):
-            continue
-        excerpt = item.get("content_excerpt")
-        if isinstance(excerpt, str) and excerpt.strip():
-            narrative_refs.add(document_ref)
-        structured = item.get("structured_context")
-        if not isinstance(structured, Mapping):
-            continue
-        for concept in structured.get("concepts", ()):
-            if not isinstance(concept, Mapping):
-                continue
-            for record in concept.get("records", ()):
-                if not isinstance(record, Mapping):
-                    continue
-                exact_span = record.get("exact_span")
-                if isinstance(exact_span, str) and exact_span:
-                    structured_literals.add((document_ref, exact_span))
-    return frozenset(narrative_refs), frozenset(structured_literals)
-
-
-def _e1_observation_mix_issue(
-    observations: Iterable[SignalMiningObservation],
-    packet: Mapping[str, Any],
-    required_pair: tuple[str, tuple[tuple[str, str], ...]] | None,
-) -> str | None:
-    """Enforce bounded structured/narrative diversity without inventing facts."""
-
-    if required_pair is None:
-        return None
-    narrative_refs, structured_literals = _e1_evidence_mix(packet)
-    if not narrative_refs:
-        return None
-    values = tuple(observations)
-    structured_count = sum(
-        any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for document_ref, exact_span in structured_literals
-        )
-        for observation in values
-    )
-    narrative_count = sum(
-        observation.document_ref in narrative_refs
-        and not any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for document_ref, exact_span in structured_literals
-        )
-        for observation in values
-    )
-    if structured_count > 4:
-        return (
-            "Signal Mining E1 may cite at most four structured records "
-            "when a non-empty narrative excerpt is visible"
-        )
-    if narrative_count < 1:
-        return (
-            "Signal Mining E1 must cite at least one grounded narrative observation "
-            "when a non-empty narrative excerpt is visible"
-        )
-    return None
-
-
-def _e1_recovery_source_mix(
-    packet: Mapping[str, Any],
-    required_pair: tuple[str, tuple[tuple[str, str], ...]] | None,
-    observations: Iterable[SignalMiningObservation],
-) -> tuple[SignalMiningObservation, ...]:
-    """Build a literal-only terminal mix after model correction is exhausted."""
-
-    if required_pair is None:
-        return tuple(observations)
-    concept, pair_literals = required_pair
-    narrative_refs, structured_literals = _e1_evidence_mix(packet)
-    recovered = [
-        SignalMiningObservation(
-            summary=f"Controller-retained source record for {concept} comparison.",
-            document_ref=document_ref,
-            exact_span=exact_span,
-        )
-        for document_ref, exact_span in pair_literals
-    ]
-    observations = tuple(observations)
-    additional_structured = [
-        observation for observation in observations
-        if any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for document_ref, exact_span in structured_literals
-        )
-        and not any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for document_ref, exact_span in pair_literals
-        )
-    ]
-    recovered.extend(additional_structured[:2])
-    existing_narrative = [
-        observation
-        for observation in observations
-        if observation.document_ref in narrative_refs
-        and not any(
-            observation.document_ref == document_ref
-            and observation.exact_span in exact_span
-            for document_ref, exact_span in structured_literals
-        )
-    ]
-    recovered.extend(existing_narrative[:6 - len(recovered)])
-    if not existing_narrative and narrative_refs:
-        evidence = packet.get("evidence", ())
-        if isinstance(evidence, (list, tuple)):
-            for item in evidence:
-                if not isinstance(item, Mapping):
-                    continue
-                document_ref = item.get("document_ref")
-                excerpt = item.get("content_excerpt")
-                if (
-                    isinstance(document_ref, str)
-                    and document_ref in narrative_refs
-                    and isinstance(excerpt, str)
-                    and excerpt.strip()
-                ):
-                    recovered.append(
-                        SignalMiningObservation(
-                            summary=(
-                                "Controller-retained bounded narrative source "
-                                "projection after extraction recovery."
-                            ),
-                            document_ref=document_ref,
-                            exact_span=excerpt,
-                        )
-                    )
-                    break
-    return tuple(recovered[:6])
-
-
 class LLMSignalMiningModel(SignalMiningModel):
     """Concrete five-role adapter for locally orchestrated Signal Mining."""
 
@@ -2838,6 +2620,15 @@ class LLMSignalMiningModel(SignalMiningModel):
                 identity_boundary="Signal Mining H1 v7 aggregate request",
             )
         system_prompt = (
+            "Use slow_method_memory and prior_slow_work to design the next attempt. "
+            "Address recorded failure causes through a changed measurement, complete "
+            "retrieval plan, or a supported change in source/input availability. "
+            "Retrieval intent must cover every measurement input and denominator, "
+            "including any required market series; naming an input only in "
+            "normalization does not retrieve it. Prioritize untested capacity-deferred "
+            "work before repeating an unchanged inconclusive attempt. Explain a "
+            "justified retry's change in the existing need-disposition rationale; "
+            "otherwise keep its dependency unresolved. "
             "Propose only reusable, point-in-time observable measurements. The "
             "runtime owns hypothesis identity, comparison groups, evidence window, "
             "case selection, and limits; copy proposal_ref and need_refs exactly. "
@@ -3286,22 +3077,6 @@ class LLMSignalMiningModel(SignalMiningModel):
             for item in packets
             if isinstance(item, Mapping) and "case_ref" in item
         }
-        raw_comparison_concepts = payload.get("comparison_concepts", ())
-        comparison_concepts = (
-            tuple(
-                item
-                for item in raw_comparison_concepts
-                if isinstance(item, Mapping)
-            )
-            if isinstance(raw_comparison_concepts, (list, tuple))
-            else ()
-        )
-        required_pairs = {
-            case_ref: _e1_required_comparison_pair(packet, comparison_concepts)
-            for case_ref, packet in packet_by_ref.items()
-        }
-        pair_quarantine_refs: set[str] = set()
-
         def parse(value: Mapping[str, Any]) -> tuple[SignalMiningSignature, ...]:
             if set(value) != {"signatures"} or not isinstance(
                 value.get("signatures"), list
@@ -3369,26 +3144,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                     validate_signal_mining_signatures(
                         (item,), (packet_by_ref[case_ref],)
                     )
-                    required_pair = required_pairs[case_ref]
-                    if (
-                        case_ref not in pair_quarantine_refs
-                        and not _e1_covers_comparison_pair(
-                            item.observations, required_pair
-                        )
-                    ):
-                        concept = required_pair[0] if required_pair else ""
-                        raise ValidationError(
-                            "Signal Mining E1 must cite both visible records for "
-                            "the first available recurring comparison concept: "
-                            + concept
-                        )
-                    mix_issue = _e1_observation_mix_issue(
-                        item.observations,
-                        packet_by_ref[case_ref],
-                        required_pair,
-                    )
-                    if case_ref not in pair_quarantine_refs and mix_issue:
-                        raise ValidationError(mix_issue)
                 except ValidationError as exc:
                     issues.append(
                         ValidationIssue(
@@ -3446,7 +3201,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                 if not isinstance(observations, list) or not isinstance(gaps, list):
                     return None
                 kept = []
-                kept_observations: list[SignalMiningObservation] = []
                 reasons = []
                 for offset, raw_observation in enumerate(observations):
                     try:
@@ -3462,47 +3216,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                         removed.append(f"signatures[{index}].observations[{offset}]")
                     else:
                         kept.append(raw_observation)
-                        kept_observations.append(observation)
-                required_pair = required_pairs[case_ref]
-                pair_missing = not _e1_covers_comparison_pair(
-                    kept_observations, required_pair
-                )
-                mix_issue = _e1_observation_mix_issue(
-                    kept_observations,
-                    packet_by_ref[case_ref],
-                    required_pair,
-                )
-                if pair_missing or mix_issue:
-                    pair_quarantine_refs.add(case_ref)
-                    concept = required_pair[0] if required_pair else ""
-                    if pair_missing:
-                        reasons.append(
-                            "Signal Mining E1 omitted one or both visible records for "
-                            "the first available recurring comparison concept: "
-                            + concept
-                        )
-                    if mix_issue:
-                        reasons.append(mix_issue)
-                    removed.extend(
-                        f"signatures[{index}].observations[{offset}]"
-                        for offset in range(len(kept))
-                    )
-                    if not kept:
-                        removed.append(f"signatures[{index}].observations")
-                    kept_observations = list(
-                        _e1_recovery_source_mix(
-                            packet_by_ref[case_ref],
-                            required_pair,
-                            kept_observations,
-                        )
-                    )
-                    kept = [item.to_dict() for item in kept_observations]
                 if reasons:
                     quarantined.setdefault(case_ref, []).extend(reasons)
                     gaps = [
                         *gaps,
-                        "Some extracted observations failed validation or did not "
-                        "preserve the required recurring comparison pair; this is a "
+                        "Some extracted observations failed validation; this is a "
                         "technical extraction limitation and does not establish "
                         "absent source data or conditions.",
                     ]
@@ -3520,22 +3238,18 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Describe only recurring, executable observations in the anonymous "
                 "point-in-time evidence. comparison_concepts is a runtime-derived, "
                 "label-free inventory of source-owned concepts visible across multiple "
-                "selected cases. Use a comparable pair as an evidence baseline, then "
-                "select concrete business changes, timing, catalysts, guidance, "
-                "commitments and counterevidence relevant to research_objective. "
-                "Stable generic quality or risk language alone has lower research "
-                "value than a source-grounded change. The inventory guides "
-                "comparability, not evidence, and must never be cited or invented when "
-                "the matching literal is absent. When a case exposes two records for "
-                "an inventory concept, its signature must cite both exact records for "
-                "the first such concept. If that case also supplies any non-empty "
-                "content_excerpt, cite at least one grounded narrative observation and "
-                "use at most four structured-context observations. A second complete "
-                "concept pair is optional, not preferred over relevant narrative; "
-                "reserve the remaining "
-                "slots within the six-observation total for distinct source-owned "
-                "narrative facts. "
-                "If no narrative literal is supplied, do not invent one. Ground every "
+                "selected cases. It is optional comparison context, not a priority "
+                "ranking and does not require any financial concept or source family "
+                "to occupy observation slots. Select up to six concrete business "
+                "changes, timing, catalysts, guidance, commitments, early confirmation "
+                "and counterevidence relevant to research_objective. Generic quality "
+                "or boilerplate alone has lower research value than a grounded change. "
+                "Financial facts remain eligible when relevant: preserve the exact "
+                "concept, unit and reporting period, and compare only supported "
+                "comparable periods. The literal-only downstream view retains supplied "
+                "companion records for a selected financial fact; do not fill slots "
+                "with unrelated metrics simply because they recur. Never invent "
+                "missing facts or infer hidden labels. Ground every "
                 "observation in its own supplied "
                 "literal; the literal is authoritative when a summary overstates it. "
                 "Labels are hidden; do not predict or infer them."

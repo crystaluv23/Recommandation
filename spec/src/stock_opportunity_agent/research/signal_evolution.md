@@ -265,28 +265,17 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   two visible records before overall case coverage, then uses the existing
   queryless Company Facts concept priority to break ties. Repeated documents
   for one case never increase coverage, and a later document can supply a pair
-  missing from an earlier document. This keeps the required comparison from
-  depending on taxonomy alphabetization or duplicate record counts. Queryless
-  filing windows rank distinct substantive terms rather than their repetition;
+  missing from an earlier document. The inventory supplies optional comparison
+  context rather than mandatory observation slots. User decision on 2026-09-13:
+  queryless E1 chooses up to six observations by relevance to the fixed surge
+  research target, with no forced financial pair or source mix. Selected financial
+  records retain source-owned concept, unit, periods and exact spans, including
+  the existing E2 companion-record projection. Unselected financial facts are
+  not extraction failures. Bounded recovery removes invalid observations only;
+  it does not replace valid business evidence with controller-chosen financial
+  records or narrative. Generic filing cover/legal boilerplate remains invalid.
+  Queryless filing windows rank distinct substantive terms rather than repetition;
   all registered filing aliases use the same source-family rule.
-  Queryless extraction requires one same-concept two-period pair when the
-  controller exposes one. When the same case also has a non-empty narrative
-  excerpt, E1 may use up to four structured observations, preferring a second
-  complete comparable pair, and must spend at least one remaining slot on a
-  grounded narrative observation within the unchanged six-observation total.
-  This deterministic source-mix rule prevents a bounded
-  signature from being filled entirely by already-catalogued XBRL primitives;
-  it does not require an observation when no narrative literal is available and
-  never invents one in final recovery. After bounded model correction is
-  exhausted, the terminal controller recovery may replace that case's failed
-  mix with the two exact source-owned records, up to two independently valid
-  additional structured observations, and one complete already-masked
-  bounded `content_excerpt` copied byte-for-byte from the supplied packet. The
-  recovery summary is explicitly a source projection, not a semantic claim;
-  E2 receives the literal-only view. This keeps the frozen cohort usable without
-  paraphrasing, clipping, or manufacturing a fact. Generic filing
-  cover/legal boilerplate is not a comparison-ready observation and is
-  quarantined like any other locally invalid E1 observation.
   Source-owned SEC Company Facts context retains each concept's original
   `label` as metric semantics; the transport guard distinguishes this exact path
   from retrospective outcome labels. A runtime budget exception during E1 is

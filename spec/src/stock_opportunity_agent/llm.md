@@ -62,6 +62,13 @@ The HTTP transport sends the same canonical bytes. Request hashing, cost
 estimation, audit replay, and network transmission therefore share one byte
 identity rather than merely equivalent JSON objects.
 
+Low-level connection and TLS errors, including errors while reading a response,
+are normalized at the transport boundary to the existing retryable client error
+after the bounded HTTP attempts. Invalid response encoding follows the same
+response-failure path. No TLS verification is disabled. Slow orchestration must
+receive these as provider/control-flow failures, not recover them as ordinary
+candidate or Update research failures and advance the committed cycle pointer.
+
 Provider usage persistence retains total input/output tokens plus optional
 provider-reported prompt-cache hit and miss tokens. It accepts either the direct
 Chat-compatible hit/miss fields or a Responses-compatible nested cached-input-token

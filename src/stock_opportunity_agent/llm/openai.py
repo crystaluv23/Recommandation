@@ -79,7 +79,13 @@ class UrllibTransport:
                         f"OpenAI API request timed out: {exc}"
                     ) from exc
                 self._backoff(attempt)
-            except (HTTPException, json.JSONDecodeError) as exc:
+            except OSError as exc:
+                if attempt >= self.max_attempts:
+                    raise RetryableOpenAIClientError(
+                        f"OpenAI API connection failed: {exc}"
+                    ) from exc
+                self._backoff(attempt)
+            except (HTTPException, json.JSONDecodeError, UnicodeDecodeError) as exc:
                 if attempt >= self.max_attempts:
                     raise RetryableOpenAIClientError(
                         f"OpenAI API response was incomplete or invalid: {exc}"

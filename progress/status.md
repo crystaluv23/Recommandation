@@ -1,10 +1,16 @@
 # Status
 
-V88 preparation: shared soft-Signal SEC evidence now retains complete source-bound
-fact records; market numeric evidence cites actual calculation anchors after raw
-series alignment checks. All 781 tests pass. Local replay of V87 four holdout
-inputs selects the correct latest CFO records and accepts their exact raw spans.
-Real model replay and a fresh frozen successor remain pending; V87 is unchanged.
+V88 completed Fast/Slow 0/1 with Mining 0, Update 0 and promotions 0. Isolated
+DeepSeek replay of V87 four financial executions succeeded with correct latest
+facts and exact citations. H1 still repeated prior incomplete retrieval plans;
+E1 forced financial slots displaced business facts. E2 honestly found no repeated
+contrast. Update did move to guidance_acceleration, but an unnormalized SSL read
+failure escaped provider handling and the failed stage was committed.
+V89 preparation removes forced E1 slots/recovery substitution per the user's
+explicit decision, requires H1 to act on prior failures and untested work, and
+normalizes low-level transport errors. All 781 tests pass; original E1 response
+replay retains valid observations (3/4 batches need no correction; one actual
+nonliteral quote is isolated). Fresh live successor remains to be run.
 
 V87 completed cycle 1 (Fast/Slow 0/1, exit 0): 1 executable Mining candidate,
 0 Updates and 0 promotions. Reflection/H1/E2 actual requests carry complete
