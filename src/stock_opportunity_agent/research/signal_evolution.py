@@ -62,6 +62,8 @@ from stock_opportunity_agent.research.evolution_core import (
     _listing_age_bucket,
     _market_cap_bucket,
     _mask_identity_values,
+    _opaque_slow_case_ref,
+    _project_slow_case_refs,
     _model_evidence_view,
     _normalize_semantics,
     _ordered_unique,
@@ -2317,6 +2319,21 @@ def _effectiveness_arm_diagnostic(
     }
 
 
+def signal_effectiveness_measurement_contract() -> dict[str, Any]:
+    """Explain runtime counters to retrospective Slow readers without new labels."""
+
+    return {
+        "schema_version": "signal-effectiveness-measurement-v1",
+        "available": "Non-UNAVAILABLE values after excluding technical execution failures; includes NEUTRAL.",
+        "decisive": "POSITIVE or NEGATIVE values only; NEUTRAL is available but not decisive.",
+        "directional_correct": "POSITIVE on a positive case or NEGATIVE on a control case.",
+        "directional_wrong": "Other decisive values; correct plus wrong equals decisive.",
+        "execution_failed": "Statuses other than SUCCESS and DOMAIN_UNAVAILABLE; domain unavailability is not a technical failure.",
+        "paired_population": "Both arms use the same frozen case pool. Their availability and decisive subsets may differ with their measurements or thresholds.",
+        "interpretation": "A decisive/available gap is expected for neutral results, not unexplained sample exclusion. Historical model rationales are claims, not definitions; qualify or challenge obsolete lessons using these rules and the cited measurements.",
+    }
+
+
 def _signal_effectiveness_counts(
     values: Iterable[tuple[SignalValue, bool, SignalExecutionStatus]],
 ) -> tuple[int, int, int, int, int]:
@@ -3737,7 +3754,7 @@ class SignalEvolutionEngine:
                         "" if prior_memory is None else _canonical_hash(prior_memory)
                     ),
                     "model": self._role_work_identity(self.mining_model),
-                    "protocol": "signal-mining-reflect-v3",
+                    "protocol": "signal-mining-reflect-v4",
                 }
             ),
             "model_view_manifest": {
@@ -3784,7 +3801,8 @@ class SignalEvolutionEngine:
                 try:
                     step = reflector(
                         {
-                            "reflection_contract_version": "signal-mining-reflect-v3",
+                            "reflection_contract_version": "signal-mining-reflect-v4",
+                            "measurement_contract": signal_effectiveness_measurement_contract(),
                             "episode_slots": episode_slots,
                             "lesson_slots": lesson_slots,
                             "feedback_units": [item["content"] for item in selected],
@@ -6412,7 +6430,7 @@ class SignalEvolutionEngine:
             capability_backlog
         )
         meta_view = _mask_identity_values(
-            list(self.meta_memory.model_view()),
+            _project_slow_case_refs(list(self.meta_memory.model_view())),
             self.slow_role_identity_guards,
             expand_aliases=False,
         )
@@ -6491,11 +6509,12 @@ class SignalEvolutionEngine:
             [*prior_deltas, dict(self._active_slow_memory)],
             budget_bytes=64_000,
         )
-        return {
+        return _project_slow_case_refs({
             **memory_view,
+            "measurement_contract": signal_effectiveness_measurement_contract(),
             "source_entries": [dict(item) for item in sources],
             "source_view_manifest": manifest,
-        }
+        })
 
     def _optional_slow_source_read(
         self,
@@ -6615,6 +6634,7 @@ class SignalEvolutionEngine:
                 masked_needs.append(raw_item)
                 continue
             case_ids: list[str] = []
+            sources = []
             for source in raw_item.get("sources", ()):
                 if not isinstance(source, Mapping):
                     continue
@@ -6622,13 +6642,19 @@ class SignalEvolutionEngine:
                 candidate = source_ref.split(":", 1)[1] if ":" in source_ref else ""
                 if candidate in self._discovery_cases_by_id:
                     case_ids.append(candidate)
+                sources.append({
+                    **dict(source),
+                    "source_ref": "source-" + _canonical_hash(source_ref)[:16],
+                    **({"source_case_ref": _opaque_slow_case_ref(candidate)}
+                       if candidate in self._discovery_cases_by_id else {}),
+                })
             cases = tuple(
                 self._discovery_cases_by_id[case_id]
                 for case_id in dict.fromkeys(case_ids)
             )
             aliases = _scoped_slow_identity_guard_inventory(cases)
             masked = _mask_identity_values(
-                dict(raw_item), aliases, expand_aliases=False
+                {**dict(raw_item), "sources": sources}, aliases, expand_aliases=False
             )
             _assert_identity_values_masked(
                 masked, aliases, expand_aliases=False
@@ -6704,9 +6730,13 @@ class SignalEvolutionEngine:
             item = dict(raw_item)
             item["sources"] = [
                 {
-                    "source_ref": "source-" + _canonical_hash(
+                    "source_ref": str(source["source_ref"])
+                    if re.fullmatch(r"source-[0-9a-f]{16}", str(source.get("source_ref", "")))
+                    else "source-" + _canonical_hash(
                         str(source.get("source_ref", ""))
                     )[:16],
+                    **({"source_case_ref": source["source_case_ref"]}
+                       if source.get("source_case_ref") else {}),
                     "source_round": source.get("source_round"),
                     "source_fingerprint": source.get("source_fingerprint"),
                     "original_need": source.get("original_need"),

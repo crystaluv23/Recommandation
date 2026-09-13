@@ -1,5 +1,19 @@
 # Signal and Dual-Loop Evolution
 
+Provider projections preserve source identity before anonymizing prose: hash each
+original backlog source ref before masking its row, and retain an opaque
+source-case ref when the case owner is known. Repeated origins map consistently;
+different origins must not collapse through a common masked placeholder. Typed
+retrospective case ids use the same deterministic opaque projection in Fast meta,
+reflection feedback and Slow source views. Local canonical evidence is unchanged.
+
+Expose the effectiveness counter contract from its owning implementation to
+reflection and all downstream Slow method views: available excludes UNAVAILABLE,
+decisive includes only POSITIVE/NEGATIVE, and neutral availability is not a
+technical failure. Execution failures exclude SUCCESS and DOMAIN_UNAVAILABLE.
+Paired comparison uses a shared frozen case pool; each arm retains its own
+decisive subset. Historical model rationales never override these definitions.
+
 When a Mining track fails locally, emit `signal_mining_track_failed` immediately
 with its track, failure stage, error type and reason, before continuing a safe
 sibling track. The terminal audit retains the same failure. A long-running E

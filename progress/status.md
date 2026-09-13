@@ -1,5 +1,31 @@
 # Status
 
+V81 genuinely transmitted the complete H1 request (323503 wire bytes, one Fast
+meta entry and all 30 reflection actions), so the independent reservation worked.
+It remains Fast/Slow 0/0 after controlled interruption: seven completed calls
+cost $0.10560228; attempt 8 was interrupted in progress with a $0.0132384
+reservation and no settled usage. Do not use V81 as committed history.
+
+The real H1 response deferred all 142 unresolved needs for portfolio capacity
+while selecting no hypotheses. Two older tests incorrectly accepted that same
+cross-field combination. Capacity deferral now requires the frozen portfolio to
+be full; legitimate empty results still require concrete non-capacity reasons.
+Prompt guidance distinguishes exact measurement overlap from broad factor-family
+overlap and permits source-grounded LLM factors beyond registered deterministic
+functions.
+
+Live H1 collapsed all 142 need-source rows to one anonymous source because the
+source identity was masked before hashing. Exact replay now retains 24 distinct
+source refs and matching opaque source-case refs, without changing local evidence.
+Typed retrospective case ids preserve pairing in meta, reflection and method
+views. Reflection v4 and downstream method views also receive the owning runtime
+counter definitions, including available NEUTRAL versus decisive POSITIVE/NEGATIVE
+and the shared paired case pool. This addresses repeated false lessons about
+unexplained decisive-subset exclusion; live semantic verification remains pending.
+All 771 tests pass. Next: freeze from the committed V77 prefix using this checkpoint
+and verify H1 reasoning, reflection interpretation, Mining/Update and promotion.
+The three-layer acceptance goal is still incomplete.
+
 V80 was stopped safely at Fast/Slow 0/0 after two completed DeepSeek calls and
 an exact-contract diagnostic resume with cached responses. It is not a committed
 history source. Restoring original Fast context exposed a second boundary: H1

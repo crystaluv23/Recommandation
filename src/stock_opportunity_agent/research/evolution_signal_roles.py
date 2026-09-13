@@ -49,7 +49,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     ROLE_OUTPUT_TOKEN_LIMITS,
     _LLM_SIGNAL_QUERY_STOP_WORDS,
 )
-from stock_opportunity_agent.research.evolution_core import _mask_identity_values
+from stock_opportunity_agent.research.evolution_core import _mask_identity_values, _project_slow_case_refs
 from stock_opportunity_agent.research.evolution_transport import (
     ExternalBudgetExhausted,
     JSONRoleCaller,
@@ -1484,7 +1484,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "h1_contract": "signal-mining-hypothesis-v7",
-            "reflection_contract": "signal-mining-reflect-v3",
+            "reflection_contract": "signal-mining-reflect-v4",
             "source_read_contract": "slow-source-read-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
@@ -1826,7 +1826,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             }
 
         provider_payload = _mask_identity_values(
-            deepcopy(dict(payload)), self.identity_guard_aliases, expand_aliases=False
+            _project_slow_case_refs(deepcopy(dict(payload))), self.identity_guard_aliases, expand_aliases=False
         )
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
@@ -1840,6 +1840,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "explain the measured gate outcome and limitations instead. "
                 "Preserve measurement populations and conditions when quoting "
                 "thresholds; availability and decisive-efficacy populations can differ. "
+                "Use the supplied measurement_contract to interpret counters. "
+                "NEUTRAL is available but not decisive; that gap is not unexplained "
+                "sample exclusion. Both arms use the same frozen case pool. "
+                "Challenge earlier lessons that contradict these definitions "
+                "instead of copying their now-resolved questions. Treat historical "
+                "model rationales as claims and check them against runtime evidence. "
                 "Never invent refs, infer causal Signal credit, or turn technical failure "
                 "into a research conclusion. Return JSON with exactly "
                 "episode_reflections and lesson_additions. Each episode has exactly "
@@ -2082,6 +2088,17 @@ class LLMSignalMiningModel(SignalMiningModel):
             ledger_issues: list[ValidationIssue] = []
             raw_disposition_refs: list[str] = []
             new_measurement_refs_from_ledger: set[str] = set()
+            if len(raw_items) < limit and any(
+                isinstance(row, Mapping) and row.get("disposition") == "deferred_measurement"
+                for row in raw_dispositions
+            ):
+                ledger_issues.append(ValidationIssue(
+                    code="h1_capacity_deferral_without_full_portfolio",
+                    message="Capacity deferral requires a full hypothesis portfolio. Fill the available slots with genuinely testable measurements or give a concrete non-capacity disposition; do not fabricate hypotheses or relabel measurable needs as intrinsically untestable.",
+                    paths=("conclusion", "hypotheses", "no_hypothesis", "need_dispositions"),
+                    path_policy="any",
+                    allowed_repairs=("replace",),
+                ))
             for index, raw_disposition in enumerate(raw_dispositions):
                 if not isinstance(raw_disposition, Mapping):
                     continue
@@ -2801,6 +2818,13 @@ class LLMSignalMiningModel(SignalMiningModel):
             "source capability to repair_dependency, and an intrinsically "
             "untestable factor to not_testable. A reusable measurable gap outside "
             "the frozen hypothesis_limit must be deferred_measurement, not "
+            "already_covered or not_testable. Capacity deferral is valid only "
+            "after filling the hypothesis_limit slots; an empty or underfilled "
+            "portfolio cannot defer demand for lack of capacity. Existing Signal "
+            "exclusion requires the same observable, normalization and applicability, "
+            "not merely a shared factor family. Registered deterministic functions "
+            "limit deterministic implementations only: new source-grounded LLM "
+            "measurements are also allowed. Such measurable gaps must not be "
             "already_covered or not_testable. An unmatched_signal_need is still "
             "unresolved and cannot be already_covered. update_existing requires "
             "each grouped need to carry the cited signal_ref or literally contain "

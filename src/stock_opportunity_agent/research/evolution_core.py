@@ -6344,6 +6344,32 @@ def _identity_alias_pattern(alias: str) -> str:
     return re.escape(alias)
 
 
+def _opaque_slow_case_ref(value: str) -> str:
+    """Preserve retrospective case equality without exposing case identity."""
+
+    return "anon-case-" + hashlib.sha256(value.encode("utf-8")).hexdigest()[:20]
+
+
+def _project_slow_case_refs(value: Any) -> Any:
+    """Pseudonymize typed retrospective case fields before masking prose."""
+
+    if isinstance(value, Mapping):
+        return {
+            key: (
+                _opaque_slow_case_ref(child)
+                if key == "case_id" and isinstance(child, str)
+                else [_opaque_slow_case_ref(item) for item in child]
+                if key == "case_ids" and isinstance(child, (list, tuple))
+                and all(isinstance(item, str) for item in child)
+                else _project_slow_case_refs(child)
+            )
+            for key, child in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [_project_slow_case_refs(child) for child in value]
+    return value
+
+
 def _mask_identity_values(
     value: Any, aliases: Iterable[str], *, expand_aliases: bool = True,
 ) -> Any:

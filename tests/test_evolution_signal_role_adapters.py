@@ -33,6 +33,7 @@ class SignalRoleAdapterTests(TestCase):
                     "feedback_ref": "update-target-001",
                     "artifact": {
                         "case_id": case_identity,
+                        "case_ids": [case_identity, "another-case", case_identity],
                         "company": "Target Corporation and Gain Therapeutics",
                         "reason": "The target had no paired effectiveness gain.",
                     },
@@ -47,6 +48,10 @@ class SignalRoleAdapterTests(TestCase):
         self.assertIn("[MASKED_COMPANY]", json.dumps(sent))
         self.assertEqual(caller.calls[0]["anonymous_aliases"], aliases)
         self.assertEqual(len(caller.calls), 1)
+        case_refs = sent["feedback_units"][0]["artifact"]["case_ids"]
+        self.assertEqual(case_refs[0], case_refs[2])
+        self.assertNotEqual(case_refs[0], case_refs[1])
+        self.assertEqual(sent["feedback_units"][0]["artifact"]["case_id"], case_refs[0])
         self.assertNotIn("Target Corporation", json.dumps(sent))
         self.assertNotIn("Gain Therapeutics", json.dumps(sent))
         self.assertEqual(sent["feedback_units"][0]["feedback_ref"], "update-target-001")
@@ -3780,9 +3785,9 @@ class SignalRoleAdapterTests(TestCase):
         corrected = json.loads(json.dumps(invalid))
         corrected["need_dispositions"][0] = {
             "need_refs": ["need-001"],
-            "disposition": "deferred_measurement",
+            "disposition": "repair_dependency",
             "signal_refs": [],
-            "rationale": ["The measurable client trend is outside this portfolio."],
+            "rationale": ["The client-count filing series is unavailable in the supplied news-only source catalog."],
         }
         caller = ScriptedRoleCaller([invalid, corrected])
 
@@ -3819,7 +3824,46 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertEqual(
             step.metadata["need_dispositions"][0]["disposition"],
-            "deferred_measurement",
+            "repair_dependency",
+        )
+
+    def test_h1_capacity_deferral_requires_a_full_portfolio(self) -> None:
+        full = {
+            "conclusion": "hypotheses", "no_hypothesis": None,
+            "hypotheses": [{
+                "proposal_ref": "h1-c0001-s01",
+                "measurement": {"observable": "Cash runway in months", "value_kind": "numeric", "normalization": "cash balance divided by monthly cash burn"},
+                "applicability": {"rule": "all_ready_issuers", "values": []},
+                "expected_direction": "higher_in_positive",
+                "retrieval_intent": {"source_types": ["company_facts"], "query": "cash balance operating cash burn"},
+                "falsifiers": [{"condition": "Cash runway is measured for fixed groups.", "expected_observation": "The groups overlap or reverse direction."}],
+                "need_refs": ["need-001"],
+            }],
+            "need_dispositions": [
+                {"need_refs": ["need-001"], "disposition": "new_measurement", "signal_refs": [], "rationale": ["Test cash runway as a distinct normalized measurement."]},
+                {"need_refs": ["need-002"], "disposition": "deferred_measurement", "signal_refs": [], "rationale": ["The separate operating margin measurement exceeds the one-slot portfolio."]},
+            ],
+        }
+        empty = json.loads(json.dumps(full))
+        empty["conclusion"] = "no_testable_hypothesis"
+        empty["hypotheses"] = []
+        empty["no_hypothesis"] = {"reason_code": "insufficient_retrieval_basis", "rationale": ["All demand is outside this portfolio."], "need_refs": ["need-001", "need-002"]}
+        empty["need_dispositions"][0]["disposition"] = "deferred_measurement"
+        caller = ScriptedRoleCaller([empty, full])
+        step = LLMSignalMiningModel(caller).propose_hypotheses({
+            "hypothesis_slots": ["h1-c0001-s01"],
+            "limits": {"hypothesis_limit": 1, "evidence_lookback_days": 365},
+            "available_raw_source_types": ["company_facts"],
+            "stable_signal_cards": [],
+            "capability_backlog": {"signal_need_items": [
+                {"need_ref": "runway", "kind": "unmatched_signal_need", "need": "Measure cash runway."},
+                {"need_ref": "margin", "kind": "unmatched_signal_need", "need": "Measure operating margin."},
+            ]},
+        })
+        self.assertEqual(len(step.value), 1)
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0]["issue_code"],
+            "h1_capacity_deferral_without_full_portfolio",
         )
 
     def test_h1_update_existing_requires_basis_for_every_grouped_need(self) -> None:
@@ -3850,9 +3894,9 @@ class SignalRoleAdapterTests(TestCase):
             },
             {
                 "need_refs": ["need-002"],
-                "disposition": "deferred_measurement",
+                "disposition": "repair_dependency",
                 "signal_refs": [],
-                "rationale": ["Client retention needs a separate measurement."],
+                "rationale": ["Client retention needs a client-count filing series absent from the news-only source catalog."],
             },
         ]
         caller = ScriptedRoleCaller([invalid, corrected])

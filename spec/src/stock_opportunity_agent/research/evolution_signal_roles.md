@@ -1,5 +1,21 @@
 # Evolution Signal Roles
 
+H1 capacity deferral is valid only when its hypothesis portfolio fills the frozen
+slot limit. An empty or underfilled portfolio cannot classify measurable demand
+as deferred for lack of slots. This cross-field invariant joins the existing
+complete correction frontier; valid measurement-level no-hypothesis results
+remain allowed. Existing Signal exclusion means the same observable,
+normalization and applicability, not merely the same broad factor family.
+Registered deterministic functions constrain deterministic implementations only;
+they do not exclude new source-grounded LLM measurements.
+
+Reflection v4 consumes runtime-owned effectiveness definitions alongside the
+unchanged committed evidence. Earlier model prose is a claim, not a metric
+definition. Correct or qualify lessons that confuse neutral results with missing
+cases; candidate/current are evaluated on the same frozen case pool but may have
+different decisive subsets. Retrospective case ids become stable opaque case
+refs before prose masking, so pairing survives without exposing issuer identity.
+
 ## V8 reflection and source-read roles
 
 `signal_mining_reflect` consumes complete, runtime-selected committed feedback
@@ -9,7 +25,7 @@ lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
 The committed feedback catalog remains immutable and identity-bearing for local
-audit, but the reflection v3 provider view is a deep identity-masked projection.
+audit, but the reflection v4 provider view is a deep identity-masked projection.
 It uses the same complete cycle identity inventory that guards the structured
 output, so a copied provider-visible literal cannot fail only because the input
 and output anonymity domains disagree.
@@ -71,7 +87,7 @@ the default bounded view as one complete-entry batch, and every unselected
 default item remains explicitly pending. An empty selection retains the default
 view. There is no second selection round. E1, SignalExecutor, and blind
 Predictor have no such access. Prompt, parser, work identity, persisted request,
-provider body, and wire bytes advance together; reflection uses its v3 identity-
+provider body, and wire bytes advance together; reflection uses its v4 identity-
 masked protocol while the remaining roles keep their declared versions.
 The transport appends every canonical request hash to an invocation trace. Role
 adapters attach the slice produced by that logical job to successful

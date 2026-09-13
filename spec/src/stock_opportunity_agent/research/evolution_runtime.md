@@ -1,5 +1,10 @@
 # Evolution Runtime Control Plane
 
+Slow retrospective projections replace typed case ids with stable opaque refs
+before prose anonymization. This preserves cross-artifact pairing; it does not
+alter candidate-case aliases or blind execution inputs. Source refs are hashed
+from their original identity, never from an already masked placeholder.
+
 H1 consumes cycle-wide Fast demand and Slow history, so its request reservation
 must not inherit the single-case `max_tokens` limit. `freeze-run` freezes a
 positive `h1_request_budget` (`--h1-request-budget`, default 512000), measured by

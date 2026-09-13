@@ -6,6 +6,8 @@ from stock_opportunity_agent.research.signal_evolution import (
     SlowLoopValidation,
     _exploration_comparison_concepts,
     _prioritize_reflection_feedback,
+    _signal_effectiveness_counts,
+    signal_effectiveness_measurement_contract,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
@@ -17,6 +19,18 @@ from stock_opportunity_agent.llm.openai import OpenAIClientError
 
 
 class SignalEvolutionTests(TestCase):
+    def test_effectiveness_contract_explains_available_neutral_results(self) -> None:
+        counts = _signal_effectiveness_counts((
+            (SignalValue.POSITIVE, True, SignalExecutionStatus.SUCCESS),
+            (SignalValue.NEUTRAL, False, SignalExecutionStatus.SUCCESS),
+            (SignalValue.UNAVAILABLE, False, SignalExecutionStatus.DOMAIN_UNAVAILABLE),
+        ))
+        self.assertEqual(counts, (2, 1, 1, 0, 0))
+        contract = signal_effectiveness_measurement_contract()
+        self.assertIn("NEUTRAL", contract["available"])
+        self.assertIn("NEUTRAL", contract["decisive"])
+        self.assertIn("same frozen case pool", contract["paired_population"])
+
     def test_imported_committed_slow_history_becomes_namespaced_feedback(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -1793,6 +1807,22 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("/private/path", rendered_backlog)
             self.assertIn("source-", rendered_backlog)
             self.assertEqual(memory.model_view(), original)
+
+            other = make_case("other_history_issuer", 1.1)
+            engine._discovery_cases_by_id[other.case_id] = other
+            source_rows = [
+                {"need_ref": f"need-{index}", "sources": [{"source_ref": f"plan-1:{item.case_id}"}]}
+                for index, item in enumerate((case, other, case))
+            ]
+            source_snapshot = json.dumps(source_rows)
+            projected = engine._mining_capability_backlog_view(
+                engine._mask_owned_backlog_identities({"signal_need_items": source_rows})
+            )["signal_need_items"]
+            sources = [row["sources"][0] for row in projected]
+            self.assertEqual(sources[0]["source_ref"], sources[2]["source_ref"])
+            self.assertNotEqual(sources[0]["source_ref"], sources[1]["source_ref"])
+            self.assertNotEqual(sources[0]["source_case_ref"], sources[1]["source_case_ref"])
+            self.assertEqual(json.dumps(source_rows), source_snapshot)
 
     def test_slow_start_recovers_backlog_after_post_commit_interruption(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
