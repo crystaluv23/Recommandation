@@ -317,6 +317,53 @@ class AlphaVantageNewsAdapter:
         )
 
 
+class FinnhubNewsAdapter:
+    """Materialize bounded historical Finnhub news as literal provider records."""
+
+    provider = "finnhub"
+    source_types = ("news", "company_news")
+    capabilities = ("news",)
+
+    def __init__(self, client: Any) -> None:
+        self.client = client
+
+    def acquire(
+        self, request: RawInfoRequest, *, company_id: str,
+        identity: Mapping[str, Any], as_of: datetime,
+    ) -> AcquisitionResult:
+        cursor = _event_cursor(self.client)
+        symbol = _identity_value(identity, "ticker", "symbol")
+        start = as_of - timedelta(days=request.lookback_days or 180)
+        raw = self.client.company_news(symbol, start.date(), as_of.date())
+        if not isinstance(raw, list):
+            raise AcquisitionFailure(DataGapReason.PROVIDER_ERROR, "Finnhub news response is not a list.")
+        documents: list[RawInfoDocument] = []
+        source_type = _first_supported(request.source_types, self.source_types)
+        for item in raw:
+            if not isinstance(item, Mapping):
+                continue
+            try:
+                published = datetime.fromtimestamp(float(item["datetime"]), timezone.utc)
+            except (KeyError, TypeError, ValueError, OverflowError, OSError):
+                continue
+            related = {value.strip().upper() for value in str(item.get("related", "")).split(",")}
+            if not start <= published <= as_of or symbol.upper() not in related:
+                continue
+            content = _canonical_json(dict(item))
+            documents.append(RawInfoDocument.create(
+                document_id=_document_id(self.provider, company_id, source_type, content),
+                company_id=company_id, source_type=source_type,
+                published_at=published, available_at=published, content=content,
+                metadata={"provider": self.provider, "symbol": symbol, "url": item.get("url"),
+                          "title": str(item.get("headline") or "")},
+            ))
+        documents.sort(key=lambda item: (item.available_at, item.document_id), reverse=True)
+        return AcquisitionResult(
+            documents=tuple(documents[:request.max_documents]),
+            events=_provider_events(self.client, cursor),
+        )
+
+
 class AlphaVantageTranscriptAdapter:
     """Materialize complete historical transcripts with report-date lineage."""
 

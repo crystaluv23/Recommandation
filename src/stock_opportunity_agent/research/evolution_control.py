@@ -17,6 +17,7 @@ from stock_opportunity_agent.config import load_config
 from stock_opportunity_agent.data.acquisition import (
     AlphaVantageNewsAdapter,
     AlphaVantageTranscriptAdapter,
+    FinnhubNewsAdapter,
     HistoricalPriceAdapter,
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
@@ -35,6 +36,7 @@ from stock_opportunity_agent.data.sources.alpha_vantage import (
     AlphaVantageClient,
     alpha_vantage_json_error,
 )
+from stock_opportunity_agent.data.sources.finnhub import FinnhubClient
 from stock_opportunity_agent.data.sources.catalog import DataCapability
 from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
 from stock_opportunity_agent.data.sources.massive import MassiveClient
@@ -2873,6 +2875,11 @@ def _build_evidence_resolver(
                 ("price_daily",),
                 f"{config.alpha_vantage_api_key_env_var} is not configured.",
             )
+        finnhub_key = env.get(config.finnhub_api_key_env_var)
+        if finnhub_key:
+            adapters.append(FinnhubNewsAdapter(FinnhubClient(
+                finnhub_key, transport=managed("finnhub", DataCapability.NEWS),
+            )))
         massive_key = env.get(config.massive_api_key_env_var)
         massive_price_adapter: Any
         if massive_key:
@@ -2917,6 +2924,7 @@ def _build_evidence_resolver(
                 SecCompanyFactsAdapter(None),
                 SecFilingAdapter(None),
                 AlphaVantageNewsAdapter(None),
+                FinnhubNewsAdapter(None),
                 AlphaVantageTranscriptAdapter(None),
                 HistoricalPriceAdapter("massive", lambda *_: ()),
             ]

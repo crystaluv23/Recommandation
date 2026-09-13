@@ -314,3 +314,13 @@ lineage. Also cover fiscal-quarter transcript mapping, provider-reported
 availability filtering, ordered multi-provider fallback, fallback budget
 accounting, and final aggregate failure after every authorized adapter has been
 attempted.
+
+
+Production news acquisition connects the existing catalog order Alpha Vantage
+then Finnhub. Finnhub uses the requested issuer and historical date window;
+materialization rejects invalid timestamps, out-of-window items and unrelated
+symbols, retains the provider's literal article record and URL, and never treats
+an empty response as negative company evidence. It uses the same managed cache,
+request ledger, authorization and per-cycle acquisition ceilings. A successful
+empty fallback remains provider_no_data under the existing ordered fallback
+semantics; the earlier provider quota event remains in the audit.

@@ -1,5 +1,13 @@
 # Status
 
+V85 paused before cycle commit on Alpha Vantage news quota (exit 75); its
+completed H1 has analyst revisions, liquidity runway and scheduled catalysts.
+Finnhub and Massive same-window probes both returned successful empty lists,
+not evidence. The existing catalogued Finnhub news fallback is now connected
+through managed resolver transport; title projection and strict historical
+window/issuer checks are covered by 80 passing focused tests. V85 stays intact;
+a fresh successor must use this code and the last committed V84 history.
+
 V85 preparation: generation now receives explicit existing directional and
 retrieval/fixture semantics; unavailable cannot hide technical fixture failure.
 H1 source-request checks respect falsifier field ownership, and narrative windows

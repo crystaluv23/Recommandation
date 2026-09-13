@@ -4,6 +4,7 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 from stock_opportunity_agent.data.acquisition import (
     AlphaVantageNewsAdapter,
     AlphaVantageTranscriptAdapter,
+    FinnhubNewsAdapter,
     HistoricalPriceAdapter,
 )
 from stock_opportunity_agent.data.sources.alpha_vantage import (
@@ -1126,6 +1127,22 @@ class RunControlTests(TestCase):
             price_providers,
             ["massive", "stooq", "alpha_vantage"],
         )
+
+    def test_runtime_connects_configured_finnhub_news_fallback(self) -> None:
+        contract = replace(make_contract(), data_acquisition=DataAcquisitionPolicy(
+            enabled=True, allowed_providers=("*",), allowed_capabilities=("news",),
+            allowed_source_types=("news",), max_requests_per_cycle=4, max_requests_per_run=4,
+        ))
+        with tempfile.TemporaryDirectory() as directory:
+            resolver = evolution_runtime_module._build_evidence_resolver(
+                Path(directory), RawInfoStore(), contract=contract,
+                allow_data_external=True,
+                environ={"ALPHA_VANTAGE_API_KEY": "alpha-test", "FINNHUB_API_KEY": "finnhub-test"},
+                cycle_id=1,
+            )
+            news = [adapter for adapter in resolver.adapters if "news" in adapter.source_types]
+            self.assertEqual([adapter.provider for adapter in news], ["alpha_vantage", "finnhub"])
+            self.assertIsInstance(news[1], FinnhubNewsAdapter)
 
     def test_runtime_exposes_authorized_transcript_adapter(self) -> None:
         contract = EvolutionRunContract(

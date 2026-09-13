@@ -9,6 +9,7 @@ from unittest import TestCase
 
 from stock_opportunity_agent.data.acquisition import (
     AlphaVantageTranscriptAdapter,
+    FinnhubNewsAdapter,
     HistoricalPriceAdapter,
     HistoricalUnavailableAdapter,
     SecCompanyFactsAdapter,
@@ -89,6 +90,38 @@ class FailingAdapter(FakeAdapter):
 
 
 class EvidenceResolverTests(TestCase):
+    def test_finnhub_news_fallback_preserves_window_identity_and_literal_content(self) -> None:
+        valid = {"datetime": (AS_OF - timedelta(days=1)).timestamp(),
+                 "related": "ABC", "headline": "ABC announces customer contract",
+                 "summary": "Signed agreement.", "url": "https://example.test/article"}
+        items = [valid,
+                 {**valid, "datetime": (AS_OF + timedelta(seconds=1)).timestamp()},
+                 {**valid, "datetime": (AS_OF - timedelta(days=40)).timestamp()},
+                 {**valid, "related": "OTHER"}, {**valid, "datetime": "bad"}]
+        calls = []
+        def news(*args):
+            calls.append(args)
+            return items
+        adapter = FinnhubNewsAdapter(SimpleNamespace(company_news=news))
+        resolver = EvidenceResolver(
+            RawInfoStore(), adapters=(FailingAdapter(DataGapReason.QUOTA_DEFERRED), adapter),
+            policy=DataAcquisitionPolicy(enabled=True, allowed_providers=("*",),
+                allowed_capabilities=("*",), allowed_source_types=("*",),
+                max_requests_per_cycle=4, max_requests_per_run=4),
+        )
+        result = resolver.resolve(
+            RawInfoRequest("news", "Find customer contract", ("news",), lookback_days=30),
+            company_id="issuer", identity={"ticker": "ABC"}, as_of=AS_OF,
+        )
+        self.assertEqual(result.status, "resolved")
+        documents = resolver.load_documents(result, as_of=AS_OF)
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(json.loads(documents[0].content), valid)
+        self.assertEqual(documents[0].metadata["title"], valid["headline"])
+        self.assertEqual(calls, [("ABC", (AS_OF - timedelta(days=30)).date(), AS_OF.date())])
+        self.assertTrue(any(event.details.get("reason") == "quota_deferred" for event in result.events))
+
+
     def test_retrieval_contract_preserves_required_sources_before_limit(self) -> None:
         filing = document(
             "filing",

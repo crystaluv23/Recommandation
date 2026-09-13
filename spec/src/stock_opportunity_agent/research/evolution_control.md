@@ -41,3 +41,10 @@ bounded Fast/Slow cycle entry point.
 - Readiness, external authorization, transmitted work, and committed state are
   represented separately.
 - This module composes lower layers and contains no role-specific parser.
+
+
+The production evidence resolver connects configured Finnhub news after Alpha
+Vantage, matching the existing news capability catalog. The fallback uses the
+same managed transport, cache, ledger and frozen authorization ceilings. A new
+code checkpoint requires a successor contract; an interrupted workspace is not
+retroactively run against changed adapter wiring.
