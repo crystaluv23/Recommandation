@@ -235,7 +235,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   the source-owned taxonomy, concept, label, and unit beside the literal span and
   deterministically adds the other supplied period for that concept when the
   selected span identifies exactly one record. This bounded companion is source
-  projection, not a model-authored observation.
+  projection, not a model-authored observation. Its literal may exceed 240
+  characters, just like a directly cited E1 record; the existing source-packet
+  budget and twelve-observation view ceiling bound it. Projection must not
+  discard a valid companion solely because of an obsolete per-literal maximum.
   The recurring inventory ranks distinct cases with
   two visible records before overall case coverage, then uses the existing
   queryless Company Facts concept priority to break ties. Repeated documents

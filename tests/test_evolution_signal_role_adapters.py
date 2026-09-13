@@ -726,6 +726,10 @@ class SignalRoleAdapterTests(TestCase):
 
         spans = [json.dumps({"end": f"{year}-06-30", "val": value})
                  for year, value in ((2025, 120), (2024, 100), (2025, 80), (2024, 60))]
+        spans[3] = json.dumps({
+            "end": "2024-06-30", "val": 60,
+            "source_note": "Original financial-statement record. " * 8,
+        })
         narrative = "Management reaffirmed revenue guidance for the fiscal year."
         payload = self._recurring_pair_payload(narrative, *spans[:2])
         packet = payload["cases"][0]
@@ -754,6 +758,20 @@ class SignalRoleAdapterTests(TestCase):
             step.value[0].observations[2:4],
         )
         self.assertEqual([item.exact_span for item in recovered], [*spans, narrative])
+        from stock_opportunity_agent.research.signal_evolution import (
+            SignalMiningSignature,
+            _literal_only_signature_view,
+        )
+
+        for retained in (step.value[0].observations, recovered):
+            view = _literal_only_signature_view(
+                SignalMiningSignature(case_ref="case-001", observations=retained),
+                packet,
+            )
+            self.assertEqual(
+                [item["exact_span"] for item in view["observations"]],
+                [*spans, narrative],
+            )
 
     def test_e1_pair_exhaustion_uses_literal_source_mix_for_affected_case(self) -> None:
         first = '{"end":"2025-06-30","val":120}'

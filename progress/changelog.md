@@ -1,5 +1,6 @@
 # Changelog
 
+- 2026-09-13: Proactively reconcile E1/E2 literal bounds: remove the stale 240-character companion-record maximum, reproduce its silent period loss, and cover second-comparison preservation through parsing/recovery and literal-only projection. V77's 127 records are all below that limit, so classify this as a latent linkage defect rather than its zero-Mining cause; external execution remains behind the recorded payload-approval boundary.
 - 2026-09-13: Freeze V78 from V77's committed prefix after all 765 tests and lint pass. Verify the exact reflection source-read Responses body/hash/length/message equivalence and absent imported transition journals; preserve zero attempts/cost and Fast/Slow 0/0 when automatic approval review rejects external launch pending payload-specific DeepSeek authorization.
 - 2026-09-13: Audit committed V77 (Fast 0 / Slow 1, three measured Update rejections, zero Mining) across evidence projection, E1 capacity, E2 comparison and terminal recovery. Replace repetitive filing-window term counts with distinct coverage using shared filing aliases, rank recurring concepts by distinct paired cases with existing semantic tie breaks, and retain a second structured comparison alongside required narrative within six observations; do not treat ranking-only replay or passing tests as Mining acceptance.
 

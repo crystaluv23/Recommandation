@@ -1,5 +1,17 @@
 # Status
 
+Post-V78 local boundary review found an obsolete 240-character ceiling in the
+E1-to-E2 companion-record projection, despite directly cited E1 literals already
+allowing longer source records. A failing regression reproduced silent loss of
+the other period; the repaired projection preserves it under the existing
+packet/view bounds. Integration coverage follows two financial pairs and a
+narrative literal through both role parsing and terminal recovery into E2, with
+no clipping or duplicate records. Exact V77 inspection found 127 structured
+records, maximum 161 characters, so this latent defect did not cause V77's zero
+Mining. External payload authorization is still pending; local verification
+does not establish live yield or complete the goal. All 766 tests and repository
+lint pass. V78 remains zero attempts / zero cost and Fast/Slow 0/0.
+
 V78 is frozen at contract `b85f64b6...e2798` on code checkpoint `e9293b8`,
 importing V77's committed prefix in `slow_only` mode (zero Fast rounds, at most
 two Slow cycles, 200 model attempts / $5 and 400 acquisition reservations).

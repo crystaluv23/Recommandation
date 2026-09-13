@@ -863,7 +863,7 @@ def _literal_only_signature_view(
             if (
                 companion_key in seen_literals
                 or observation.exact_span in companion
-                or not 8 <= len(companion) <= 240
+                or len(companion) < 8
                 or len(observations) >= 12
             ):
                 continue

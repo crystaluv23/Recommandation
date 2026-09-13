@@ -1501,6 +1501,37 @@ class SignalEvolutionTests(TestCase):
             view["observations"][1]["exact_span"],
         )
 
+    def test_exploration_literal_view_preserves_long_comparable_records(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            _literal_only_signature_view,
+        )
+
+        current = json.dumps({"end": "2025-06-30", "val": 120})
+        prior = json.dumps({
+            "end": "2024-06-30", "val": 100,
+            "source_note": "Original filing record with source-owned context. " * 8,
+        })
+        packet = {"evidence": [{
+            "document_ref": "document-01", "source_type": "company_facts",
+            "structured_context": {"concepts": [{
+                "taxonomy": "us-gaap", "concept": "OperatingIncomeLoss",
+                "label": "Operating income", "unit": "USD",
+                "records": [{"exact_span": span} for span in (current, prior)],
+            }]},
+        }]}
+        observations = tuple(SignalMiningObservation(
+            summary="Source record.", document_ref="document-01", exact_span=span,
+        ) for span in (current, prior))
+        self.assertGreater(len(prior), 240)
+        for selected in (observations[:1], observations):
+            view = _literal_only_signature_view(
+                SignalMiningSignature(case_ref="case-001", observations=selected), packet,
+            )
+            self.assertEqual(
+                [item["exact_span"] for item in view["observations"]],
+                [current, prior],
+            )
+
     def test_exploration_comparison_filter_drops_generic_6k_admin_phrases(self) -> None:
         from stock_opportunity_agent.research.signal_evolution import (
             _comparison_ready_exploration_signature,
