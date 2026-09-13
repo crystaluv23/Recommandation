@@ -1,5 +1,11 @@
 # Plan Evolution
 
+Backlog refresh in a slow-only workspace consumes the hash-verified Fast context
+seed in its v2 Slow-history manifest when the local Fast archive is empty. The
+zero local pointer must not erase imported unmet needs. Refresh remains derived
+and repeatable, including after Slow validation and restart; it never reads an
+unbound ancestor's mutable backlog file.
+
 ## V8 Slow cycle persistence
 
 `EvolutionWorkspace` owns immutable cycle files `slow_input.json`,

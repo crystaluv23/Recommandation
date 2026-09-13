@@ -10,6 +10,7 @@ from stock_opportunity_agent.data.sources.alpha_vantage import (
     alpha_vantage_json_error,
 )
 from stock_opportunity_agent.research.evolution_control import (
+    _load_slow_fast_context,
     apply_slow_history_manifest,
     build_slow_history_manifest,
 )
@@ -58,6 +59,15 @@ class RunControlTests(TestCase):
             registry.record_learning_events((imported, uncommitted))
             bootstrap_manifest = {
                 "schema_version": "slow-bootstrap-manifest-v2",
+                "source_kind": "committed_fast",
+                "meta_entries": [RoundMetaEntry(
+                    round_id=1, evidence_refs=("imported-plan",),
+                    missing_capabilities=("Preserve this unresolved Fast need.",),
+                ).to_dict()],
+                "capability_backlog_seed": {
+                    "open_count": 1, "items": [{"gap_ref": "imported-need"}],
+                    "signal_need_items": [],
+                },
                 "signal_learning_events": [imported.to_dict()],
             }
             bootstrap_hash = hashlib.sha256(
@@ -162,6 +172,51 @@ class RunControlTests(TestCase):
                 promoted_snapshot.registry_hash,
             )
             self.assertFalse((target / "signals" / ".transitions").exists())
+            context = envelope["manifest"]["fast_context"]
+            self.assertEqual(context["meta_entries"], bootstrap_manifest["meta_entries"])
+            self.assertEqual(
+                context["capability_backlog_seed"],
+                bootstrap_manifest["capability_backlog_seed"],
+            )
+            target_contract = replace(
+                source_contract, cycle_mode="slow_only",
+                slow_bootstrap_manifest_hash=None,
+                slow_history_manifest_hash=envelope["manifest_hash"],
+            )
+            target_contract.freeze(target / "run_contract.json")
+            target_workspace = EvolutionWorkspace(target)
+            for _ in range(2):
+                backlog_path = target_workspace.refresh_capability_backlog()
+                self.assertEqual(json.loads(backlog_path.read_text())["open_count"], 1)
+            self.assertEqual(target_workspace.last_completed_round, 0)
+            self.assertEqual(target_workspace.restore_meta().entries, ())
+
+            legacy = root / "legacy"
+            (legacy / "slow_history").mkdir(parents=True)
+            legacy_manifest = {
+                "schema_version": "slow-history-manifest-v1",
+                "source_workspace": str(target),
+                "source_contract_hash": target_contract.contract_hash,
+                "committed_slow_cycle": 1,
+            }
+            legacy_hash = hashlib.sha256(json.dumps(
+                legacy_manifest, ensure_ascii=False, sort_keys=True,
+                separators=(",", ":"),
+            ).encode()).hexdigest()
+            write_json(legacy / "slow_history" / "manifest.json", {
+                "manifest": legacy_manifest, "manifest_hash": legacy_hash,
+            })
+            legacy_contract = replace(
+                target_contract, slow_history_manifest_hash=legacy_hash,
+            )
+            # A v2 snapshot is self-contained even after its old source is absent.
+            (source / "run_contract.json").unlink()
+            self.assertEqual(_load_slow_fast_context(target, target_contract), context)
+            self.assertEqual(_load_slow_fast_context(legacy, legacy_contract), context)
+            envelope["manifest"]["fast_context"]["meta_entries"] = []
+            write_json(target / "slow_history" / "manifest.json", envelope)
+            with self.assertRaisesRegex(ValidationError, "manifest changed"):
+                _load_slow_fast_context(legacy, legacy_contract)
 
     def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

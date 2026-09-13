@@ -1682,6 +1682,17 @@ learning events transitively from the contract-bound bootstrap/history manifest;
 filtering solely by the zero local Fast pointer would silently erase Update
 profiles. The export still excludes any Registry event that is reachable from
 neither a committed local Fast pointer nor a verified import manifest.
+Slow-history manifest v2 also freezes a `fast_context` snapshot containing the
+original committed Fast meta entries, capability-backlog seed and origin contract
+identity. All later slow-only exports preserve that snapshot independently of
+their zero local Fast pointer. When upgrading a v1 history, resolve its exact
+contract-bound source chain until the committed Fast/bootstrap origin is found;
+reject missing, changed, cyclic or dataset/Locked-Test-incompatible links instead
+of treating the lost context as empty. A v2 snapshot is self-contained for this
+purpose and does not require traversing the old source chain again. Direct Fast
+origins derive context only from pointer-verified archive/meta entries. Runtime
+restores the snapshot into Slow's in-memory meta view and backlog rebuilding;
+it does not create target Fast checkpoints, import fitness, or invoke Fast roles.
 
 The stable operator launcher treats Python exit status `75` as the only
 automatically recoverable process outcome. For an invocation-specific window

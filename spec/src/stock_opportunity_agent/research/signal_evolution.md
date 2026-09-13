@@ -13,6 +13,9 @@ listed by the validated Slow-history manifest from its local imported copy. The
 source namespace is part of each feedback ref, and the source committed Slow
 cutoff is carried into `slow_input.json`; importing only the Registry while
 silently dropping committed search/validation outcomes is invalid.
+The imported Fast meta/backlog snapshot is a separate input from Slow method
+memory and Signal learning events. H1 must receive the original Fast reflection
+actions and unresolved needs even after multiple zero-Fast history imports.
 Legacy monolithic validation/result files are projected as complete H, E,
 Update, candidate and transition work units, each retaining the immutable source
 artifact hash and JSON locator. A file larger than the role budget is never

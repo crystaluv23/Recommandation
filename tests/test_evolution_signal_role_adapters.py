@@ -14,8 +14,8 @@ class SignalRoleAdapterTests(TestCase):
             "episode_reflections": [
                 {
                     "episode_ref": "episode-c0001-001",
-                    "source_refs": ["feedback-1"],
-                    "reflection": "The paired gate rejected the candidate.",
+                    "source_refs": ["update-target-001"],
+                    "reflection": "The target had no paired effectiveness gain.",
                     "unresolved_questions": [],
                 }
             ],
@@ -23,16 +23,18 @@ class SignalRoleAdapterTests(TestCase):
         }
         caller = ScriptedRoleCaller([output])
         model = LLMSignalMiningModel(caller)
-        model.set_identity_guard_aliases((case_identity,))
+        aliases = (case_identity, "Target Corporation", "Gain Therapeutics")
+        model.set_identity_guard_aliases(aliases)
         payload = {
             "episode_slots": ["episode-c0001-001"],
             "lesson_slots": ["lesson-c0001-001"],
             "feedback_units": [
                 {
-                    "feedback_ref": "feedback-1",
+                    "feedback_ref": "update-target-001",
                     "artifact": {
                         "case_id": case_identity,
-                        "reason": "No strict paired improvement.",
+                        "company": "Target Corporation and Gain Therapeutics",
+                        "reason": "The target had no paired effectiveness gain.",
                     },
                 }
             ],
@@ -43,7 +45,15 @@ class SignalRoleAdapterTests(TestCase):
         sent = caller.calls[0]["payload"]
         self.assertNotIn(case_identity, json.dumps(sent))
         self.assertIn("[MASKED_COMPANY]", json.dumps(sent))
-        self.assertEqual(caller.calls[0]["anonymous_aliases"], (case_identity,))
+        self.assertEqual(caller.calls[0]["anonymous_aliases"], aliases)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertNotIn("Target Corporation", json.dumps(sent))
+        self.assertNotIn("Gain Therapeutics", json.dumps(sent))
+        self.assertEqual(sent["feedback_units"][0]["feedback_ref"], "update-target-001")
+        self.assertEqual(
+            sent["feedback_units"][0]["artifact"]["reason"],
+            "The target had no paired effectiveness gain.",
+        )
         self.assertEqual(
             payload["feedback_units"][0]["artifact"]["case_id"], case_identity
         )

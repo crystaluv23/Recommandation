@@ -1,5 +1,23 @@
 # Status
 
+V79 received explicit payload-level DeepSeek authorization and completed four
+real calls before a controlled interruption at Fast/Slow 0/0. It is uncommitted
+diagnostic evidence, not an import source. Cross-version payload review found
+that V66 and later slow-only imports dropped the original Fast meta/backlog,
+while V65 retained them. The new v2 Slow history snapshot recovers Fast context
+through the hash-bound legacy chain, preserves it transitively, restores it only
+in memory, and seeds repeat backlog refresh without fabricating Fast checkpoints.
+Exact V77 source replay now projects one meta entry, all 30 reflection actions
+and 145 open needs; the local Fast pointer and persisted Fast meta remain zero.
+Reflection now uses the curated aggregate identity inventory without deriving
+ambiguous brands that corrupt protocol refs or metric words. Its prompt leaves
+aggregate recounting to runtime artifacts; semantic review remains required.
+All 766 tests pass, including transitive import, repeated backlog refresh,
+source-drift rejection and first-call identity/reference preservation. Next:
+freeze a successor from this checkpoint, execute authorized Slow and inspect
+actual H1, reflection, Mining/Update measurements and committed results. The
+three-layer acceptance goal remains incomplete.
+
 Post-V78 local boundary review found an obsolete 240-character ceiling in the
 E1-to-E2 companion-record projection, despite directly cited E1 literals already
 allowing longer source records. A failing regression reproduced silent loss of

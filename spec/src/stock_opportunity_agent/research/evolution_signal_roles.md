@@ -12,11 +12,21 @@ The committed feedback catalog remains immutable and identity-bearing for local
 audit, but the reflection v3 provider view is a deep identity-masked projection.
 It uses the same complete cycle identity inventory that guards the structured
 output, so a copied provider-visible literal cannot fail only because the input
-and output anonymity domains disagree. Opaque feedback refs, content hashes,
-stages, metrics, validation reasons, and causal ordering remain unchanged; only
+and output anonymity domains disagree.
+The aggregate inventory is already curated: the adapter must not expand formal
+issuer names back into ambiguous single-word brands. The same inventory governs
+the input projection and output guard, including when brand words overlap with
+protocol references or measurement vocabulary.
+Opaque feedback refs, content hashes, stages, metrics, validation reasons, and causal ordering remain unchanged; only
 issuer/case aliases are replaced. The masked projection is scanned before request
 reservation and transmission, while the unmodified local units continue to own
 reference resolution and processed/pending accounting.
+Reflection prose must preserve the source's measurement population and conditions.
+Aggregate counts and rates remain owned by the cited runtime artifact: the model
+must not recount case arrays or substitute its own numerator or denominator. It
+should explain the gate result and limitations with source refs; thresholds may
+be quoted only with their original measurement scope. Live semantic review must
+still check this, since structured reference validation alone cannot prove prose.
 The default reflection view is also bounded by a frozen output-aware unit limit:
 it takes at most twelve complete feedback units, with units from the immediately
 preceding committed cycle first and older pending units afterward. Within one cycle,

@@ -1375,6 +1375,21 @@ class EvolutionWorkspace:
                                 for item in raw_items
                                 if isinstance(item, Mapping)
                             )
+        history_path = self.root / "slow_history" / "manifest.json"
+        if history_path.exists() and not archive.records:
+            envelope = _read_json(history_path)
+            manifest = envelope.get("manifest", {})
+            if not isinstance(manifest, Mapping):
+                raise ValidationError("Slow history manifest is invalid")
+            if manifest.get("schema_version") == "slow-history-manifest-v2":
+                context = manifest.get("fast_context", {})
+                if (
+                    envelope.get("manifest_hash") != _canonical_hash(manifest)
+                    or not isinstance(context, Mapping)
+                    or not isinstance(context.get("capability_backlog_seed"), Mapping)
+                ):
+                    raise ValidationError("Slow history Fast backlog seed is invalid")
+                committed_fast_backlog = dict(context["capability_backlog_seed"])
         report = (
             dict(committed_fast_backlog)
             if committed_fast_backlog is not None and not archive.records

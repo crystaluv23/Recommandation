@@ -3392,7 +3392,7 @@ class SignalEvolutionEngine:
         envelope = _read_json(path)
         manifest = dict(envelope.get("manifest", {}))
         if (
-            manifest.get("schema_version") != "slow-history-manifest-v1"
+            manifest.get("schema_version") not in {"slow-history-manifest-v1", "slow-history-manifest-v2"}
             or envelope.get("manifest_hash") != _canonical_hash(manifest)
         ):
             raise ValidationError("imported Slow history manifest hash mismatch")

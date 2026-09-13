@@ -1826,7 +1826,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             }
 
         provider_payload = _mask_identity_values(
-            deepcopy(dict(payload)), self.identity_guard_aliases
+            deepcopy(dict(payload)), self.identity_guard_aliases, expand_aliases=False
         )
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
@@ -1835,7 +1835,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Reflect on complete committed Slow feedback units. Preserve their "
                 "specific measurement conditions, failure layers, counterevidence, "
                 "and unresolved questions. Append only; never rewrite prior memory, "
-                "invent refs, infer causal Signal credit, or turn technical failure "
+                "recount case arrays, or recompute aggregate counts/rates. Leave "
+                "numerators and denominators in the cited runtime artifact; "
+                "explain the measured gate outcome and limitations instead. "
+                "Preserve measurement populations and conditions when quoting "
+                "thresholds; availability and decisive-efficacy populations can differ. "
+                "Never invent refs, infer causal Signal credit, or turn technical failure "
                 "into a research conclusion. Return JSON with exactly "
                 "episode_reflections and lesson_additions. Each episode has exactly "
                 "episode_ref, source_refs, reflection, unresolved_questions. Each "

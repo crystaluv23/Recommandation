@@ -1410,7 +1410,7 @@ def _contract_bound_import_learning_events(
         manifest_path = source_root / "slow_history" / "manifest.json"
         expected_hash = contract.slow_history_manifest_hash
         event_field = "learning_events"
-        allowed_schemas = {"slow-history-manifest-v1"}
+        allowed_schemas = {"slow-history-manifest-v1", "slow-history-manifest-v2"}
     if manifest_path is None or expected_hash is None or event_field is None:
         return {}
     envelope = _read_json(manifest_path)
@@ -1438,6 +1438,104 @@ def _contract_bound_import_learning_events(
     except (KeyError, TypeError, ValueError) as exc:
         raise ValidationError("source imported learning event is invalid") from exc
     return imported
+
+
+def _validate_slow_fast_context(value: Any) -> Mapping[str, Any]:
+    """Validate a self-contained, source-bound Fast context snapshot."""
+
+    if (
+        not isinstance(value, Mapping)
+        or value.get("schema_version") != "slow-fast-context-v1"
+        or not re.fullmatch(r"[0-9a-f]{64}", str(value.get("origin_contract_hash", "")))
+        or not isinstance(value.get("meta_entries"), list)
+        or not isinstance(value.get("capability_backlog_seed"), Mapping)
+    ):
+        raise ValidationError("Slow history Fast context is invalid")
+    try:
+        entries = tuple(RoundMetaEntry.from_dict(dict(row)) for row in value["meta_entries"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValidationError("Slow history Fast meta entries are invalid") from exc
+    if len({entry.round_id for entry in entries}) != len(entries):
+        raise ValidationError("Slow history Fast meta rounds conflict")
+    return value
+
+
+def _load_slow_fast_context(
+    source_root: Path, contract: EvolutionRunContract, *, seen: frozenset[str] = frozenset(),
+) -> Mapping[str, Any]:
+    """Recover Fast input through verified legacy imports, then freeze it once."""
+
+    if contract.contract_hash in seen or contract.locked_test_accessed:
+        raise ValidationError("Slow history Fast context lineage is cyclic or incompatible")
+    seen = seen | {contract.contract_hash}
+    if contract.cycle_mode in {"slow_bootstrap", "slow_only"}:
+        relative = "slow_bootstrap" if contract.cycle_mode == "slow_bootstrap" else "slow_history"
+        expected_hash = (
+            contract.slow_bootstrap_manifest_hash
+            if relative == "slow_bootstrap" else contract.slow_history_manifest_hash
+        )
+        envelope = _read_json(source_root / relative / "manifest.json")
+        manifest = envelope.get("manifest")
+        if (
+            not isinstance(manifest, Mapping)
+            or envelope.get("manifest_hash") != expected_hash
+            or _canonical_hash(manifest) != expected_hash
+        ):
+            raise ValidationError("Slow history Fast context source manifest changed")
+        schema = manifest.get("schema_version")
+        if relative == "slow_history":
+            if schema == "slow-history-manifest-v2":
+                return _validate_slow_fast_context(manifest.get("fast_context"))
+            if schema != "slow-history-manifest-v1":
+                raise ValidationError("Slow history Fast context source schema is invalid")
+            ancestor_root = Path(str(manifest.get("source_workspace", "")))
+            ancestor = EvolutionRunContract.load_frozen(ancestor_root / "run_contract.json")
+            if (
+                ancestor.contract_hash != manifest.get("source_contract_hash")
+                or ancestor.dataset_manifest_hash != contract.dataset_manifest_hash
+                or int(manifest.get("committed_slow_cycle", 0)) < 1
+            ):
+                raise ValidationError("Slow history Fast context ancestor identity differs")
+            return _load_slow_fast_context(ancestor_root, ancestor, seen=seen)
+        if schema not in {"slow-bootstrap-manifest-v1", "slow-bootstrap-manifest-v2"}:
+            raise ValidationError("Slow history Fast bootstrap schema is invalid")
+        if schema == "slow-bootstrap-manifest-v2" and (
+            manifest.get("source_kind") != "committed_fast"
+            or not manifest.get("meta_entries")
+        ):
+            raise ValidationError("Slow history committed Fast context is missing")
+        return _validate_slow_fast_context({
+            "schema_version": "slow-fast-context-v1",
+            "origin_contract_hash": contract.contract_hash,
+            "origin_manifest_hash": expected_hash,
+            "meta_entries": manifest.get("meta_entries", []),
+            "capability_backlog_seed": manifest.get("capability_backlog_seed", {}),
+        })
+
+    workspace = EvolutionWorkspace(source_root)
+    archive = workspace.restore_archive(expected_run_contract_hash=contract.contract_hash)
+    meta = workspace.restore_meta()
+    trajectories = []
+    need_sources = []
+    for record in archive.records:
+        for trajectory in record.trajectories:
+            serialized = trajectory.to_dict()
+            trajectories.append(serialized)
+            need_sources.append({
+                "source_ref": f"{record.plan_id}:{trajectory.case_id}",
+                "source_round": record.round_id,
+                "source_fingerprint": _canonical_hash(serialized),
+                "trajectory": serialized,
+            })
+    return _validate_slow_fast_context({
+        "schema_version": "slow-fast-context-v1",
+        "origin_contract_hash": contract.contract_hash,
+        "origin_manifest_hash": None,
+        "meta_entries": [entry.to_dict() for entry in meta.entries],
+        "capability_backlog_seed": aggregate_capability_gaps(
+            trajectories, signal_need_items=extract_unresolved_signal_needs(need_sources),
+        ),
+    })
 
 
 def build_slow_history_manifest(
@@ -1566,7 +1664,8 @@ def build_slow_history_manifest(
                 }
             )
     manifest = {
-        "schema_version": "slow-history-manifest-v1",
+        "schema_version": "slow-history-manifest-v2",
+        "fast_context": dict(_load_slow_fast_context(source_root, source_contract)),
         "source_namespace": "source-" + source_contract.contract_hash[:16],
         "source_workspace": str(source_root),
         "source_contract_hash": source_contract.contract_hash,
@@ -1596,12 +1695,14 @@ def validate_slow_history_manifest(
     envelope = _read_json(Path(workspace) / "slow_history" / "manifest.json")
     manifest = dict(envelope.get("manifest", {}))
     if (
-        manifest.get("schema_version") != "slow-history-manifest-v1"
+        manifest.get("schema_version") not in {"slow-history-manifest-v1", "slow-history-manifest-v2"}
         or envelope.get("manifest_hash") != _canonical_hash(manifest)
         or envelope.get("manifest_hash") != contract.slow_history_manifest_hash
         or manifest.get("dataset_manifest_hash") != contract.dataset_manifest_hash
     ):
         raise ValidationError("Slow history manifest identity mismatch")
+    if manifest.get("schema_version") == "slow-history-manifest-v2":
+        _validate_slow_fast_context(manifest.get("fast_context"))
     source_root = Path(str(manifest.get("source_workspace", "")))
     for row in manifest.get("registry_definition_files", ()):
         source_path = source_root / "signals" / str(row["path"])
@@ -2282,6 +2383,11 @@ def _run_bounded_evolution_cycle_unlocked(
             workspace=workspace_root,
             contract=contract,
         )
+        if history_manifest.get("schema_version") == "slow-history-manifest-v2":
+            bootstrap_meta_entries = tuple(
+                RoundMetaEntry.from_dict(dict(row))
+                for row in history_manifest["fast_context"]["meta_entries"]
+            )
         if (
             snapshot.version != int(history_manifest["registry_version"])
             or snapshot.registry_hash != history_manifest["registry_hash"]
