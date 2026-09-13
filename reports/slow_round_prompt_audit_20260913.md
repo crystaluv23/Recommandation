@@ -139,3 +139,42 @@ V86 已在反思完成后 SIGINT 停止，exit 130，完成指针仍 0。
 JSON locator 和源文件 hash；大轨迹仍可查询，不截断，不改变字节和条数预算。
 本地重放 V84 原始 validation：61244 bytes、12 项含完整 E2 候选、两条 H3、
 三条 H1 及效果记录。此为输入可达性证明，尚非真实模型吸收或晋升证明。
+
+
+## V87 实际运行与验证反证
+
+合同 `d2dbf34fa6ea0aa15de6edb985881385330a7734a35b1617d09d5889a13bb1ad`，
+代码 8731315，已提交 Fast/Slow 0/1、exit 0。Mining 1、Update 0、晋升 0。
+实际反思请求 `34ecc94ddfbacd80ef6240e4f4c2d9bc59bdccbf5d58512a81cb08a4b29d094b`
+含完整 E2/H3/H1 决策；新增 Mining 反思约束进入 H1 请求
+`858c61ed518778ec4a0795d70bbce707e67cd61d67f43eb2d3156fc69b74fe35`。
+
+E2 请求 `5af023ec2cdc2a1716a51a1cc96bdaeee760a75ec7e93ea275257900eb29d1e4`
+提出 operating_cash_flow_deficit_state:v1：负 CFO→positive，正 CFO→negative，
+零→neutral，缺失→unavailable；移除错误 minimum_observations=1，四种实际
+LLM 样例均执行。隐藏验证记录为 available=3、correct=0、wrong=3、failed=1，
+所以未验证通过。不得把此计数直接解释成该测量完全不泛化：
+
+- cik_0001849056:20250731：原始最新 CFO 为 -12,243,000，2025 Q1，
+  2025-05-13 filed。请求前缀 39f4adc5822f 的可见片段没有该值；LLM 把
+  +6,064,000 判断为 CFO。完整原始事实证明 +6,064,000 属于
+  NetCashProvidedByUsedInInvestingActivities，同为 2025 Q1。片段在此记录后
+  才进入 NetCashProvidedByUsedInOperatingActivities，概念归属跨块丢失。
+- cik_0001530950:20250930：最新 CFO 为 +697,000,000，2024-10-01 至
+  2025-06-30，2025-08-08 filed。请求前缀 9bfe8c560ed5 中该值可见，
+  但 LLM 选择 FY2024 的 -677,500,000。不能简单归因于完全未传数据；
+  期间与概念上下文不足以让执行正确选择最新记录。
+- cik_0001674440:20250131：最新 CFO +2,726，2024-05-01 至 2024-10-31，
+  执行所选记录与完整源数据一致。
+- cik_0001117297:20250930：最新 CFO +55,083,000，2024-07-01 至
+  2025-03-31。执行选旧 FY2024 的 +12,039,000，并因引用触及内部投影边缘
+  被拒；错误码 signal_output_validation_exhausted。
+
+共同实现入口 `_shared_llm_signal_projection` 对财务 JSON 按字符分块和
+关键词排序，没有保留概念、单位和完整记录之间的结构。下一步修复此共同
+路径并在原失败输入上做隔离真实重放，再进行新冻结周期；不得改写 V87 的
+原始结果或手工晋升候选。
+
+三项 Update 都诚实 defer：最大回撤缺完整计算证据；现金储备、毛利率的
+可见调参方向与固定样例/已对齐案例冲突。最大回撤与动量共用的数值证据
+默认仅引用原文前 240 字符，无法提供相应峰谷或首末价格依据，需一并审查。

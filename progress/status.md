@@ -1,5 +1,18 @@
 # Status
 
+V87 completed cycle 1 (Fast/Slow 0/1, exit 0): 1 executable Mining candidate,
+0 Updates and 0 promotions. Reflection/H1/E2 actual requests carry complete
+Mining history and directional/retrieval contracts. The candidate
+operating_cash_flow_deficit_state:v1 passes four live fixtures but was rejected
+on holdout (available 3/4, correct 0, wrong 3, execution_failed 1). Raw-source
+audit proves this is not clean efficacy evidence: soft execution confused an
+investing-cash-flow record with operating cash flow in one case, chose an old
+annual value instead of a latest opposite-sign value in another, and failed
+citation validation at a chopped record edge in another. Fix structured
+financial projection with concept/unit/period/whole-record lineage; also repair
+market numeric evidence that currently cites only the first 240 characters.
+Preserve V87 results; do not manually rescore or promote. See prompt audit report.
+
 V86 was deliberately interrupted after reflection (exit 130, no cycle commit):
 actual history selection deferred entire 86 KB H and 70 KB E Mining tracks
 under the 64 KB reflection budget, hiding E2 candidate semantics. Local/imported
