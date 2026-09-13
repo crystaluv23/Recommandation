@@ -1396,6 +1396,14 @@ Update pipeline. Neither is a free-form tool loop: each model call has one
 bounded semantic job, and the controller owns sampling, label disclosure, Raw
 Info retrieval, candidate staging, testing, and validation.
 
+At cycle entry, reflection reads at most twelve whole committed feedback units and
+leaves every deferred unit pending. It orders cycles newest first. Within a cycle,
+it uses only artifact provenance and stage class—not the outcome direction—to place
+the terminal result, validation/effectiveness units, and role audits before
+redundant experiment/input projections. Thus a later action can see why a candidate
+failed a gate instead of receiving only the word `rejected`; the item limit, byte
+budget, append-only source identity, and typed replacement cap remain unchanged.
+
 Cold-start recovery may instead run one explicitly frozen `slow_bootstrap`
 single cycle with a zero Fast-round target. Freeze accepts one or more compatible
 rejected workspaces and creates an immutable bootstrap manifest. A source is

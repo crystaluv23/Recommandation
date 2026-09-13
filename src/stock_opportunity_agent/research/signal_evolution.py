@@ -519,6 +519,63 @@ def read_slow_sources(
     return tuple(included), manifest
 
 
+def _prioritize_reflection_feedback(
+    rows: Iterable[Mapping[str, Any]],
+) -> list[Mapping[str, Any]]:
+    """Order complete units by cycle then outcome-independent evidence value."""
+
+    values = list(rows)
+    subject_order: dict[str, int] = {}
+    for row in values:
+        subject = str(row.get("subject_ref", ""))
+        subject_order.setdefault(subject, len(subject_order))
+
+    def subject_rank(row: Mapping[str, Any]) -> tuple[int, int, int]:
+        subject = str(row.get("subject_ref", ""))
+        local = re.fullmatch(r"cycle-(\d+)", subject)
+        if local is not None:
+            return 0, -int(local.group(1)), subject_order[subject]
+        imported = re.search(r":cycle-(\d+)$", subject)
+        if imported is not None:
+            return 1, -int(imported.group(1)), subject_order[subject]
+        return 2, 0, subject_order[subject]
+
+    def stage_rank(row: Mapping[str, Any]) -> int:
+        ref = str(row.get("feedback_ref", ""))
+        ordered_markers = (
+            ":slow_loop_result:summary",
+            ":slow_loop_validation:summary",
+            ":slow_loop_validation:effect-",
+            ":slow_loop_validation:fixture-",
+            ":slow_loop_validation:mining-exploration",
+            ":slow_loop_validation:mining-hypothesis",
+            ":slow_loop_validation:update-target-",
+            ":slow_loop_validation:update-summary",
+            ":slow_memory:summary",
+            ":slow_memory:lesson-",
+            ":slow_memory:episode-",
+            ":slow_experiments:attempt-",
+            ":slow_input:feedback-",
+        )
+        return next(
+            (
+                index
+                for index, marker in enumerate(ordered_markers)
+                if marker in ref
+            ),
+            len(ordered_markers),
+        )
+
+    return sorted(
+        values,
+        key=lambda row: (
+            subject_rank(row),
+            stage_rank(row),
+            str(row.get("feedback_ref", "")),
+        ),
+    )
+
+
 def project_slow_method_memory(
     deltas: Iterable[Mapping[str, Any]],
     *,
@@ -3603,6 +3660,7 @@ class SignalEvolutionEngine:
                     if str(row["feedback_ref"]) not in recent_refs
                 ],
             ]
+        pending_rows = _prioritize_reflection_feedback(pending_rows)
         prior_memory = prior[-1]["slow_memory"] if prior else None
         known_lessons = {
             str(lesson.get("lesson_id"))

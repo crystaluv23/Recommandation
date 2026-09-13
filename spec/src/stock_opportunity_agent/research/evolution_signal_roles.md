@@ -10,8 +10,12 @@ distinct terminal states; invalid structured output is never converted to a
 research-empty result.
 The default reflection view is also bounded by a frozen output-aware unit limit:
 it takes at most twelve complete feedback units, with units from the immediately
-preceding committed cycle first and older pending units afterward. A typed source
-replacement cannot exceed the same limit. Units outside the view remain explicitly
+preceding committed cycle first and older pending units afterward. Within one cycle,
+an outcome-independent provenance/stage order places the terminal result,
+validation/effectiveness evidence, and role audits before redundant experiment or
+input projections. This prevents a rejected candidate's actual gate reasons from
+being hidden behind a bare outcome label. A typed source replacement cannot exceed
+the same limit. Units outside the view remain explicitly
 pending for a later cycle; they are never truncated, summarized locally, or marked
 processed. This keeps the maximum episode-slot obligation compatible with the
 reflection output ceiling while preserving append-only learning and fail-closed

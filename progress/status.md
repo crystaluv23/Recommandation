@@ -1,5 +1,33 @@
 # Status
 
+V73 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
+contract `0017202e...c6c25`. All 73 model attempts completed for
+`$0.28816927999999997`; the run reserved 149 acquisition units (315 lower-level
+requests), kept Locked Test sealed, and left Registry v1 unchanged. Reflection
+processed twelve of 537 units into twelve episodes/four lessons. All four E1
+microbatches completed without quarantine, and exact E2 wire inspection confirms
+the known dated month, bare press-release, and Exhibit-only 6-K administration is
+absent. E2 honestly compared 4+4 fixed cases and returned insufficient evidence.
+Update produced `cash_reserves:v2` and `financing_listing_action:v2`; real paired
+evaluation rejected both for no strict gain or measured regression. Mining,
+validation, and promotion remain zero, so the goal is still `unmet`.
+
+V73 is nevertheless not full information-flow acceptance evidence. Its entry
+reflection cap selected the imported cycle's first eleven experiment outcome units
+plus one nested input row before later validation/effectiveness units. The resulting
+H1 request falsely said the rejected updates had no recorded criteria, although the
+committed validation artifact contains exact rejection reasons and paired metrics.
+Reflection selection now orders complete units first by newest cycle and then by an
+outcome-independent provenance/stage priority: terminal result, validation summary,
+effectiveness/fixture evidence, and role audits precede redundant experiment/input
+projections. It never ranks by favorable or unfavorable content; whole-entry,
+64-KB/12-unit, pending, and typed-read limits remain intact. A zero-call replay over
+V73's exact frozen catalog includes the result, validation summary, both candidate
+effectiveness units, and relevant audits in 63,945 bytes. Four focused regressions,
+all 758 tests, and repository lint pass. V73 will not run cycle 2; a fresh successor
+must live-verify gate-reason reflection into H1/E/Update, nonzero Mining, and a
+validated/promoted Registry transition.
+
 V72 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
 contract `9f63d507...9a591`. All 61 model attempts completed for `$0.27598144`;
 the run reserved 169 acquisition units (340 lower-level data requests), kept

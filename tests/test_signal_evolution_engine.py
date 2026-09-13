@@ -5,6 +5,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     SIGNAL_UPDATE_MUTABLE_PATHS,
     SlowLoopValidation,
     _exploration_comparison_concepts,
+    _prioritize_reflection_feedback,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
@@ -199,6 +200,55 @@ class SignalEvolutionTests(TestCase):
             manifest["deferred"],
             [{"ref": "feedback-3", "reason": "item_limit"}],
         )
+
+    def test_reflection_prioritizes_terminal_evidence_within_each_cycle(self) -> None:
+        prefix = "slow-history:source-abc:1:"
+        rows = [
+            {
+                "feedback_ref": prefix + f"slow_experiments:attempt-{index:03d}",
+                "subject_ref": "source-abc:cycle-0001",
+            }
+            for index in range(1, 12)
+        ]
+        rows.extend(
+            [
+                {
+                    "feedback_ref": prefix + "slow_loop_validation:effect-candidate",
+                    "subject_ref": "source-abc:cycle-0001",
+                },
+                {
+                    "feedback_ref": prefix + "slow_loop_validation:summary",
+                    "subject_ref": "source-abc:cycle-0001",
+                },
+                {
+                    "feedback_ref": prefix + "slow_loop_result:summary",
+                    "subject_ref": "source-abc:cycle-0001",
+                },
+                {
+                    "feedback_ref": (
+                        "slow-history:source-abc:2:slow_loop_result:summary"
+                    ),
+                    "subject_ref": "source-abc:cycle-0002",
+                },
+            ]
+        )
+
+        prioritized = _prioritize_reflection_feedback(rows)
+        selected = [row["feedback_ref"] for row in prioritized[:12]]
+
+        self.assertEqual(
+            selected[0],
+            "slow-history:source-abc:2:slow_loop_result:summary",
+        )
+        self.assertEqual(
+            selected[1:4],
+            [
+                prefix + "slow_loop_result:summary",
+                prefix + "slow_loop_validation:summary",
+                prefix + "slow_loop_validation:effect-candidate",
+            ],
+        )
+        self.assertNotIn(prefix + "slow_experiments:attempt-011", selected)
 
     def test_signal_mining_production_defaults_bound_reflection_and_induction(self) -> None:
         config = SignalMiningConfig()
