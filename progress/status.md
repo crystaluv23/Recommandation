@@ -1,5 +1,21 @@
 # Status
 
+V78 is frozen at contract `b85f64b6...e2798` on code checkpoint `e9293b8`,
+importing V77's committed prefix in `slow_only` mode (zero Fast rounds, at most
+two Slow cycles, 200 model attempts / $5 and 400 acquisition reservations).
+The first source-read request `717075e1...39cf2` is scoped to reflection;
+its 332,400-byte Responses body has matching stored/recomputed hashes, byte
+length and normalized logical/wire messages. The provider input contains opaque
+source refs and hashes with no checked workspace paths. No transition journals
+were imported. Execution was rejected by automatic approval review before launch
+because it requires explicit payload-level authorization for project history,
+reflection/prompts and source evidence sent to `https://api.deepseek.com/responses`.
+The ledger has zero attempts / zero cost and authoritative Fast/Slow pointers
+remain 0/0. Do not bypass the rejection. Saving this audit advances HEAD, which
+the runtime checks exactly, so preserve V78 as zero-call evidence and freeze a
+successor from the final checkpoint after payload authorization. All 765 tests
+and lint passed before freezing.
+
 V77 committed Fast 0 / Slow 1 with 19 completed model attempts, `$0.1497454`,
 74 acquisition reservations and 123 lower-level data requests. All sixteen E1
 cases survived, E2 compared its frozen 4+4 group, and Update produced three
