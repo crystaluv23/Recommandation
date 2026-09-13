@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-13: Audit committed V77 (Fast 0 / Slow 1, three measured Update rejections, zero Mining) across evidence projection, E1 capacity, E2 comparison and terminal recovery. Replace repetitive filing-window term counts with distinct coverage using shared filing aliases, rank recurring concepts by distinct paired cases with existing semantic tie breaks, and retain a second structured comparison alongside required narrative within six observations; do not treat ranking-only replay or passing tests as Mining acceptance.
+
 - 2026-09-13: Reject uncommitted V76 at Fast 0 / Slow 0 after 21 completed calls and `$0.17405584000000002`: E1 correction exhaustion erased five cohort members before E2, then source `.transitions` journals collided with the successor's cycle-1 promotion identity. Recover E1 only from exact source-owned pair/excerpt projections and exclude workspace-local transition journals from Slow-history definitions.
 
 - 2026-09-13: Stop the first V76 freeze at zero calls when V75's promoted Registry v2 makes the current-version-only history scanner miss contract-bound v1 learning events. Enumerate every immutable Registry version and verify each event against its exact historical ref while retaining exact committed-current snapshot validation.

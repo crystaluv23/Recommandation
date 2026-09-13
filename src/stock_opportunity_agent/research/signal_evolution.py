@@ -49,6 +49,7 @@ from stock_opportunity_agent.research.evolution_core import (
     SlowLoopDataUnavailable,
     _compiled_identity_aliases,
     _MASKED_IDENTITY_VALUE,
+    _QUERYLESS_COMPANY_FACT_PRIORITY,
     _assert_identity_values_masked,
     _discovery_identity_terms,
     _emit_progress,
@@ -725,10 +726,9 @@ def _exploration_comparison_concepts(
     """Return frequent source-owned concepts without values or outcome labels."""
 
     inventory: dict[tuple[str, str, str, str], set[str]] = {}
-    record_counts: dict[tuple[str, str, str, str], int] = {}
+    comparable_cases: dict[tuple[str, str, str, str], set[str]] = {}
     for packet in packets:
         case_ref = str(packet.get("case_ref", ""))
-        seen: set[tuple[str, str, str, str]] = set()
         for evidence in packet.get("evidence", ()):
             if not isinstance(evidence, Mapping):
                 continue
@@ -742,19 +742,22 @@ def _exploration_comparison_concepts(
                     str(concept.get(field, ""))
                     for field in ("taxonomy", "concept", "label", "unit")
                 )
-                if not key[1] or key in seen:
+                if not key[1]:
                     continue
-                seen.add(key)
                 inventory.setdefault(key, set()).add(case_ref)
                 records = concept.get("records", ())
-                record_counts[key] = record_counts.get(key, 0) + (
-                    len(records) if isinstance(records, list) else 0
-                )
+                if isinstance(records, (list, tuple)) and len({
+                    str(record.get("exact_span"))
+                    for record in records
+                    if isinstance(record, Mapping) and record.get("exact_span")
+                }) >= 2:
+                    comparable_cases.setdefault(key, set()).add(case_ref)
     ranked = sorted(
         (key for key, refs in inventory.items() if len(refs) >= 2),
         key=lambda key: (
+            -len(comparable_cases.get(key, ())),
             -len(inventory[key]),
-            -record_counts.get(key, 0),
+            -_QUERYLESS_COMPANY_FACT_PRIORITY.get(key[1].casefold(), 0),
             key,
         ),
     )[:limit]

@@ -1349,9 +1349,9 @@ def _e1_observation_mix_issue(
         )
         for observation in values
     )
-    if structured_count > 2:
+    if structured_count > 4:
         return (
-            "Signal Mining E1 may cite at most the two required structured records "
+            "Signal Mining E1 may cite at most four structured records "
             "when a non-empty narrative excerpt is visible"
         )
     if narrative_count < 1:
@@ -1381,6 +1381,21 @@ def _e1_recovery_source_mix(
         )
         for document_ref, exact_span in pair_literals
     ]
+    observations = tuple(observations)
+    additional_structured = [
+        observation for observation in observations
+        if any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for document_ref, exact_span in structured_literals
+        )
+        and not any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for document_ref, exact_span in pair_literals
+        )
+    ]
+    recovered.extend(additional_structured[:2])
     existing_narrative = [
         observation
         for observation in observations
@@ -1391,8 +1406,8 @@ def _e1_recovery_source_mix(
             for document_ref, exact_span in structured_literals
         )
     ]
-    recovered.extend(existing_narrative[:4])
-    if len(recovered) == len(pair_literals) and narrative_refs:
+    recovered.extend(existing_narrative[:6 - len(recovered)])
+    if not existing_narrative and narrative_refs:
         evidence = packet.get("evidence", ())
         if isinstance(evidence, (list, tuple)):
             for item in evidence:
@@ -3451,8 +3466,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "an inventory concept, its signature must cite both exact records for "
                 "the first such concept. If that case also supplies any non-empty "
                 "content_excerpt, cite at least one grounded narrative observation and "
-                "use no more than those two structured-context observations; reserve "
-                "the remaining bounded slots for distinct source-owned narrative facts. "
+                "use at most four structured-context observations, preferring a "
+                "second complete comparable concept pair; reserve the remaining "
+                "slots within the six-observation total for distinct source-owned "
+                "narrative facts. "
                 "If no narrative literal is supplied, do not invent one. Ground every "
                 "observation in its own supplied "
                 "literal; the literal is authoritative when a summary overstates it. "

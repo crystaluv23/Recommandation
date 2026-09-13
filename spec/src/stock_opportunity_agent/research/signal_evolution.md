@@ -236,16 +236,26 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   deterministically adds the other supplied period for that concept when the
   selected span identifies exactly one record. This bounded companion is source
   projection, not a model-authored observation.
+  The recurring inventory ranks distinct cases with
+  two visible records before overall case coverage, then uses the existing
+  queryless Company Facts concept priority to break ties. Repeated documents
+  for one case never increase coverage, and a later document can supply a pair
+  missing from an earlier document. This keeps the required comparison from
+  depending on taxonomy alphabetization or duplicate record counts. Queryless
+  filing windows rank distinct substantive terms rather than their repetition;
+  all registered filing aliases use the same source-family rule.
   Queryless extraction requires one same-concept two-period pair when the
   controller exposes one. When the same case also has a non-empty narrative
-  excerpt, those two structured records exhaust the structured-observation
-  allowance and E1 must spend at least one remaining slot on a grounded
-  narrative observation. This deterministic source-mix rule prevents a bounded
+  excerpt, E1 may use up to four structured observations, preferring a second
+  complete comparable pair, and must spend at least one remaining slot on a
+  grounded narrative observation within the unchanged six-observation total.
+  This deterministic source-mix rule prevents a bounded
   signature from being filled entirely by already-catalogued XBRL primitives;
   it does not require an observation when no narrative literal is available and
   never invents one in final recovery. After bounded model correction is
   exhausted, the terminal controller recovery may replace that case's failed
-  mix with the two exact source-owned records and one complete already-masked
+  mix with the two exact source-owned records, up to two independently valid
+  additional structured observations, and one complete already-masked
   bounded `content_excerpt` copied byte-for-byte from the supplied packet. The
   recovery summary is explicitly a source projection, not a semantic claim;
   E2 receives the literal-only view. This keeps the frozen cohort usable without

@@ -716,7 +716,44 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(len(step.value[0].observations), 3)
         self.assertEqual(step.value[0].observations[-1].exact_span, narrative)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertIn("at most the two required structured", feedback["validation_error"])
+        self.assertIn("at least one grounded narrative", feedback["validation_error"])
+
+    def test_e1_preserves_second_comparison_pair_with_narrative(self) -> None:
+        from stock_opportunity_agent.research.evolution_signal_roles import (
+            _e1_recovery_source_mix,
+            _e1_required_comparison_pair,
+        )
+
+        spans = [json.dumps({"end": f"{year}-06-30", "val": value})
+                 for year, value in ((2025, 120), (2024, 100), (2025, 80), (2024, 60))]
+        narrative = "Management reaffirmed revenue guidance for the fiscal year."
+        payload = self._recurring_pair_payload(narrative, *spans[:2])
+        packet = payload["cases"][0]
+        packet["evidence"][1]["structured_context"]["concepts"].append({
+            "taxonomy": "us-gaap", "concept": "NetIncomeLoss",
+            "label": "Net income", "unit": "USD",
+            "records": [{"start": 100 + index * 100,
+                         "end": 100 + index * 100 + len(span), "exact_span": span}
+                        for index, span in enumerate(spans[2:])],
+        })
+        observations = [
+            {"summary": "Source-owned record.", "document_ref": "document-02",
+             "exact_span": span}
+            for span in spans
+        ] + [{"summary": "Source-owned guidance.", "document_ref": "document-01",
+              "exact_span": narrative}]
+        caller = ScriptedRoleCaller([{
+            "signatures": [{"case_ref": "case-001", "observations": observations,
+                            "evidence_gaps": []}],
+        }])
+        step = LLMSignalMiningModel(caller).extract_exploration(payload)
+        self.assertEqual(step.usage.llm_calls, 1)
+        self.assertEqual(len(step.value[0].observations), 5)
+        recovered = _e1_recovery_source_mix(
+            packet, _e1_required_comparison_pair(packet, payload["comparison_concepts"]),
+            step.value[0].observations[2:4],
+        )
+        self.assertEqual([item.exact_span for item in recovered], [*spans, narrative])
 
     def test_e1_pair_exhaustion_uses_literal_source_mix_for_affected_case(self) -> None:
         first = '{"end":"2025-06-30","val":120}'

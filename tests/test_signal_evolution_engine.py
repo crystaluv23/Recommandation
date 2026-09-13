@@ -1405,6 +1405,31 @@ class SignalEvolutionTests(TestCase):
         self.assertIn("Business operations revenue", excerpt)
         self.assertNotIn("Commission file number", excerpt)
 
+    def test_queryless_filing_repetition_cannot_displace_operating_evidence(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import _query_relevant_excerpt
+
+        risk = (
+            "Our business operations and results face business risk. "
+            "Business operations could suffer adverse results. "
+        ) * 30
+        facts = (
+            "Revenue increased 18 percent to $240 million from $203 million. "
+            "Gross profit reached $80 million and operating income was $25 million. "
+            "Research and development expense was $12 million. "
+        ) * 3
+        for source_type in ("10-k", "20-f", "40-f", "6-k", "8-k", "sec_filing"):
+            with self.subTest(source_type=source_type):
+                document = RawInfoDocument.create(
+                    document_id="window-repetition", company_id="issuer",
+                    source_type=source_type, published_at=NOW, available_at=NOW,
+                    content=risk + facts,
+                )
+                excerpt, _truncated = _query_relevant_excerpt(
+                    document, query=None, max_chars=400,
+                )
+                self.assertIn("Revenue increased", excerpt)
+                self.assertIn(excerpt, document.content)
+
     def test_exploration_literal_view_drops_model_authored_summary(self) -> None:
         from stock_opportunity_agent.research.signal_evolution import (
             _comparison_ready_exploration_signature,
@@ -2705,6 +2730,43 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(inventory[0]["source_display_name"], "Revenue")
         self.assertNotIn("source_label", inventory[0])
         self.assertFalse(any("value" in row for row in inventory))
+
+    def test_comparison_inventory_counts_distinct_paired_cases_and_semantic_ties(
+        self,
+    ) -> None:
+        def concept(name, spans):
+            return {
+                "taxonomy": "us-gaap", "concept": name, "label": name,
+                "unit": "USD", "records": [{"exact_span": span} for span in spans],
+            }
+
+        packets = []
+        for index in range(3):
+            packets.append({
+                "case_ref": f"case-{index}",
+                "evidence": [
+                    {"structured_context": {"concepts": [
+                        concept("EntityCommonStockSharesOutstanding", ["a", "b"]),
+                        concept("OperatingIncomeLoss", ["a"]),
+                    ]}},
+                    {"structured_context": {"concepts": [
+                        concept("OperatingIncomeLoss", ["a", "b"]),
+                    ]}},
+                ],
+            })
+        baseline = _exploration_comparison_concepts(packets)
+        self.assertEqual(baseline[0]["concept"], "OperatingIncomeLoss")
+        self.assertEqual(baseline[0]["case_count"], 3)
+        packets[0]["evidence"] *= 10
+        self.assertEqual(_exploration_comparison_concepts(packets), baseline)
+        for packet in packets:
+            packet["evidence"][1]["structured_context"]["concepts"][0]["records"] = [
+                {"exact_span": "a"}, {"exact_span": "a"},
+            ]
+        self.assertEqual(
+            _exploration_comparison_concepts(packets)[0]["concept"],
+            "EntityCommonStockSharesOutstanding",
+        )
 
     def test_h3_model_view_coverage_rejects_terms_hidden_outside_excerpt(self) -> None:
         case = replace(

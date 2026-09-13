@@ -6184,13 +6184,10 @@ def _query_relevant_excerpt(
         ]
         if query_terms else []
     )
-    if not query_terms and document.source_type.casefold() in {
-        "10-k",
-        "10-q",
-        "filing",
-        "filing_body",
-        "sec_filing",
-    }:
+    queryless_filing = (
+        not query_terms and _evidence_source_family(document.source_type) == "filing"
+    )
+    if queryless_filing:
         anchors = [
             match.start()
             for match in _QUERYLESS_FILING_SUBSTANTIVE.finditer(text_value)
@@ -6209,15 +6206,10 @@ def _query_relevant_excerpt(
 
     def score(start: int) -> tuple[int, int, int, int]:
         window = text_value[start : start + max_chars]
-        if not query_terms and document.source_type.casefold() in {
-            "10-k",
-            "10-q",
-            "filing",
-            "filing_body",
-            "sec_filing",
-        }:
+        if queryless_filing:
             return (
-                len(_QUERYLESS_FILING_SUBSTANTIVE.findall(window)),
+                len(set(term.casefold() for term in
+                        _QUERYLESS_FILING_SUBSTANTIVE.findall(window))),
                 -len(_QUERYLESS_FILING_BOILERPLATE.findall(window)),
                 len(re.findall(r"(?:\$|\b\d+(?:\.\d+)?%?\b)", window)),
                 -start,

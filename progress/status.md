@@ -1,5 +1,28 @@
 # Status
 
+V77 committed Fast 0 / Slow 1 with 19 completed model attempts, `$0.1497454`,
+74 acquisition reservations and 123 lower-level data requests. All sixteen E1
+cases survived, E2 compared its frozen 4+4 group, and Update produced three
+candidates with complete paired measurements; all three were rejected. Registry
+v2 stayed unchanged and Mining remained zero, so this is not goal acceptance.
+
+The post-run whole-chain audit reproduced a source-projection defect: repeated
+generic business/risk wording outranks actual operating figures in queryless
+filing windows. The recurring concept inventory also counted raw records rather
+than distinct comparable cases, while the prior two-structured-observation cap
+prevented E2 from receiving a second financial comparison. The repaired view
+ranks distinct substantive terms across the shared filing alias family, counts
+distinct paired cases with existing concept-priority tie breaks, and permits up
+to four structured observations plus required narrative within the existing
+six-slot budget. Terminal recovery preserves independently grounded additional
+records. Exact V77 inventory replay shows ranking alone does not change its
+dominant share-count pair; the second-comparison capacity is therefore necessary
+to test live rather than claiming the ordering fix solves mining yield.
+Local regressions cover repetition, foreign/current filing aliases, duplicate
+documents, late paired records, and second-pair preservation through role parsing
+and terminal recovery. All 765 tests and repository lint pass; a fresh V78
+successor remains pending for real Mining/Update and content acceptance.
+
 V76 remained uncommitted at authoritative Fast 0 / Slow 0 after 21 completed
 model attempts, `$0.17405584000000002`, 119 acquisition reservations, and 200
 lower-level requests. Reflection and H1 completed, E1's new source-mix rule

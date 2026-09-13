@@ -12,6 +12,10 @@ Fast/Slow engine dependency.
 
 ## Invariants
 
+- Queryless filing windows rank distinct substantive term coverage, not repeated
+  mentions of generic business/risk words. The existing filing source-family
+  catalog owns alias handling, including foreign and current-report forms.
+  Projection preserves literal text and point-in-time boundaries.
 - `AgentStep` may carry bounded, non-authoritative role metadata alongside its
   value and usage. Controllers persist only the metadata fields defined by the
   owning role contract; metadata never changes domain success or commit state.
