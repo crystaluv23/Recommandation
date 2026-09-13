@@ -105,6 +105,8 @@ _EXPLORATION_BOILERPLATE = re.compile(
     r"pursuant|quarterly\s+report\s+pursuant|large\s+accelerated\s+filer)\b|"
     r"^\s*(?:for\s+the\s+month\s+of\s+[a-z]+\s+\d{4}|on\s+[a-z]+\s+\d{1,2},\s+"
     r"\d{4},?\s+the\s+registrant\s+(?:issued|furnished)\s+a\s+press\s+release)"
+    r"(?:,?\s+a\s+copy\s+of\s+which\s+(?:is|was)\s+(?:attached|furnished)\s+"
+    r"(?:hereto\s+)?as\s+exhibit\s+\d+(?:\.\d+)?)?"
     r"\s*[.,]?\s*$",
     re.IGNORECASE,
 )

@@ -1444,6 +1444,10 @@ class SignalEvolutionTests(TestCase):
                         "For the month of July 2025",
                         "On July 7, 2025, the Registrant issued a press release.",
                         (
+                            "On March 26, 2025, the Registrant issued a press "
+                            "release, a copy of which is attached hereto as Exhibit 99.1"
+                        ),
+                        (
                             "On July 7, 2025, the Registrant issued a press release "
                             "announcing a merger agreement."
                         ),
@@ -1458,7 +1462,7 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(len(filtered.observations), 1)
         self.assertIn("merger agreement", filtered.observations[0].exact_span)
         self.assertEqual(len(reasons), 1)
-        self.assertIn("2 observation(s)", reasons[0])
+        self.assertIn("3 observation(s)", reasons[0])
 
     def test_exploration_literal_view_omits_ambiguous_structured_semantics(self) -> None:
         from stock_opportunity_agent.research.signal_evolution import (

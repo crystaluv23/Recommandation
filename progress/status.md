@@ -1,5 +1,31 @@
 # Status
 
+V72 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
+contract `9f63d507...9a591`. All 61 model attempts completed for `$0.27598144`;
+the run reserved 169 acquisition units (340 lower-level data requests), kept
+Locked Test sealed, and left Registry v1 unchanged. Reflection processed twelve
+of 499 units into twelve episodes/four lessons and preserved 487 pending. E1 ran
+all sixteen candidate cases: the first three microbatches satisfied the recurring
+pair requirement after one correction, while the fourth exhausted correction and
+the deterministic fallback removed one nonliteral observation without losing its
+valid siblings. E2 then compared a fixed 4+4 cohort. Update produced
+`max_drawdown_1y:v2` and `cash_reserves:v2`; both received real paired evaluation
+and were rejected for no strict gain. A third financing target remained invalid
+after bounded correction and was isolated. Update is nonzero, but Mining,
+validation, and promotion remain zero, so the goal is still `unmet`.
+
+V72 is not semantic acceptance evidence. Exact E2 inspection shows positive
+case-005 still contributed two generic 6-K statements that merely say a press
+release was issued and attached as Exhibit 99.1. E2 explicitly counted those
+press-release references in its no-pattern rationale. The existing filter covered
+the bare dated sentence but not the standard exhibit-attachment suffix. The same
+generic template family now covers that suffix while retaining literals that state
+a substantive event such as a merger. This is form-level, not issuer/case-specific,
+and still operates before labels are revealed. Three focused regressions, all 757
+tests, and repository lint pass. V72 will not run cycle 2; a fresh code-bound
+successor must live-verify clean E2 inputs and produce nonzero Mining plus a
+validated/promoted Registry transition before acceptance.
+
 V71 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
 contract `ca368445...e39aa`. It made 78 Slow attempts (77 completed, one failed)
 for `$0.29732332000000017`, reserved 141 acquisition work units, kept Locked Test

@@ -1623,8 +1623,10 @@ Exploration-driven cycles execute:
    quarantines only that case's observations as a technical extraction failure, so
    a frozen same-group fallback may be used without treating the omitted records as
    absent evidence. A packet with no supportable observation returns an empty
-   observation array plus at least
-   one evidence gap; the contract never forces a model to invent content; and
+   observation array plus at least one evidence gap; the contract never forces a
+   model to invent content. Dated filing-administration templates that only say a
+   press release was issued and attached as an exhibit are removed before label
+   reveal unless the literal itself states the substantive event;
 3. `E2 label-revealed discovery` contrasts those frozen signatures with their
    labels and may return supported candidates, refined patterns, or rejection.
 
