@@ -1661,6 +1661,13 @@ supervisor may start successive bounded cycles, but `Ctrl+C` stops at the
 current durable boundary without changing the frozen run contract, attempt
 ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
 recoverable in-progress Signal transition, never an untracked partial rollover.
+Slow-history export enumerates learning streams for every immutable Signal
+version present in the committed Registry tree, not only each Signal's current
+manifest version. Contract-bound imported events are compared against their exact
+historical `signal_ref`; an ordinary v1 event therefore remains verifiable and
+importable after v2 is promoted. The current Registry snapshot must still exactly
+match the committed cycle pointer, so this version-aware history rule cannot admit
+staged or uncommitted Registry state.
 For `slow_bootstrap`, the frozen Fast target is zero, the round pointer remains
 unchanged throughout, and the same Slow-validation/result order governs cycle
 completion. A `committed_fast` bootstrap must reconstruct and verify its

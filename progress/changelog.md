@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-13: Stop the first V76 freeze at zero calls when V75's promoted Registry v2 makes the current-version-only history scanner miss contract-bound v1 learning events. Enumerate every immutable Registry version and verify each event against its exact historical ref while retaining exact committed-current snapshot validation.
+
 - 2026-09-13: Commit V75 at Fast 0 / Slow 2 with 129 completed attempts, 207 acquisition reservations and `$0.6126526`; cross-cycle reflection and nonzero Update are correct, and `financing_listing_action:v2` is paired-validated/promoted into Registry v2, but Mining remains zero because E1 spends all six slots on old structured pairs. Reserve E1 capacity for grounded narrative literals, reject model-authored E2 group counts, and report the actual staged validation/promotion result before V76.
 
 - 2026-09-13: Kept committed Slow feedback exact locally while identity-masking the reflection v3 provider projection with the same frozen alias inventory enforced on output; V74 preserved all 575 units pending after exposing the former input/output contradiction, and the pointer-safe successor remains pending live acceptance.

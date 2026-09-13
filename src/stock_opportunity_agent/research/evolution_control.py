@@ -1498,8 +1498,24 @@ def build_slow_history_manifest(
             {"path": str(relative), "sha256": _sha256_file(path)}
         )
     registry_events: dict[str, SignalLearningEvent] = {}
-    for spec in snapshot.specs:
-        for event in registry.load_learning_events(spec.ref):
+    version_refs: list[str] = []
+    for spec_path in sorted((source_root / "signals").glob("*/*/versions/v*/spec.json")):
+        relative = spec_path.relative_to(source_root / "signals")
+        if (
+            len(relative.parts) != 5
+            or relative.parts[2] != "versions"
+            or re.fullmatch(r"v[1-9][0-9]*", relative.parts[3]) is None
+        ):
+            raise ValidationError("source Registry version path is invalid")
+        signal_ref = f"{relative.parts[1]}:{relative.parts[3]}"
+        spec = registry.load_spec(signal_ref)
+        if spec.category != relative.parts[0]:
+            raise ValidationError("source Registry version category differs from path")
+        version_refs.append(signal_ref)
+    if len(version_refs) != len(set(version_refs)):
+        raise ValidationError("source Registry contains duplicate Signal versions")
+    for signal_ref in version_refs:
+        for event in registry.load_learning_events(signal_ref):
             prior = registry_events.get(event.event_id)
             if prior is not None and prior.to_dict() != event.to_dict():
                 raise ValidationError("source Registry learning event id conflicts")
@@ -1521,8 +1537,8 @@ def build_slow_history_manifest(
     } | set(imported_events)
     learning_events = [
         event.to_dict()
-        for spec in snapshot.specs
-        for event in registry.load_learning_events(spec.ref)
+        for signal_ref in version_refs
+        for event in registry.load_learning_events(signal_ref)
         if event.event_id in committed_event_ids
     ]
     cycle_artifacts: list[dict[str, str]] = []

@@ -1,5 +1,15 @@
 # Status
 
+The first V76 freeze stopped locally with zero external calls because V75's first
+real promotion made its current Registry v2 while its contract-bound Fast learning
+events correctly remain attached to immutable v1 Signal refs. Slow-history export
+had enumerated only current manifest versions, so it could not find those v1 event
+files and falsely reported history drift. Export now enumerates and validates every
+immutable version directory, compares imported events against their exact historical
+refs, and still requires the current Registry snapshot to equal the committed cycle
+pointer. A promotion-shaped transitive-history regression passes; V76 must be
+refrozen from the new checkpoint.
+
 V75 committed two real `slow_only` cycles at authoritative Fast 0 / Slow 2
 under contract `5b0f0682...12a92`. All 129 model attempts completed for
 `$0.6126526`; the run reserved 207 acquisition units (361 lower-level requests),

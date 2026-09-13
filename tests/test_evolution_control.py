@@ -25,6 +25,7 @@ class RunControlTests(TestCase):
             registry = SignalRegistry(source / "signals")
             registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
             signal_ref = registry.freeze().specs[0].ref
+            initial_snapshot = registry.freeze()
 
             def event(event_id: str, *, round_id: int) -> SignalLearningEvent:
                 return SignalLearningEvent(
@@ -77,13 +78,21 @@ class RunControlTests(TestCase):
                 base_contract,
                 cycle_mode="slow_bootstrap",
                 slow_bootstrap_manifest_hash=bootstrap_hash,
-                initial_signal_registry_hash=registry.freeze().registry_hash,
+                initial_signal_registry_hash=initial_snapshot.registry_hash,
                 limits={
                     **base_contract.limits,
                     "plan_rounds_per_signal_cycle": 0,
                 },
             )
             source_contract.freeze(source / "run_contract.json")
+            stable = registry.load_spec(signal_ref)
+            registry.register_stable(
+                replace(stable, version=2),
+                skill=registry.load_skill(signal_ref),
+                tests=registry.load_tests(signal_ref),
+            )
+            registry.bump_version()
+            promoted_snapshot = registry.freeze()
             write_json(source / "state.json", {"last_completed_round": 0})
             write_json(
                 source / "cycle_state.json",
@@ -91,9 +100,9 @@ class RunControlTests(TestCase):
                     "schema_version": "dual-loop-cycle-state-v2",
                     "run_contract_hash": source_contract.contract_hash,
                     "initial_signal_registry_version": 1,
-                    "initial_signal_registry_hash": registry.freeze().registry_hash,
-                    "current_signal_registry_version": 1,
-                    "current_signal_registry_hash": registry.freeze().registry_hash,
+                    "initial_signal_registry_hash": initial_snapshot.registry_hash,
+                    "current_signal_registry_version": promoted_snapshot.version,
+                    "current_signal_registry_hash": promoted_snapshot.registry_hash,
                     "last_completed_cycle": 1,
                     "active_cycle": None,
                 },
@@ -135,6 +144,10 @@ class RunControlTests(TestCase):
                     ).load_learning_events(signal_ref)
                 ],
                 ["imported"],
+            )
+            self.assertEqual(
+                SignalRegistry(target / "signals").freeze().registry_hash,
+                promoted_snapshot.registry_hash,
             )
 
     def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
