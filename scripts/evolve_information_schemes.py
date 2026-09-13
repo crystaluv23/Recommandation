@@ -17,6 +17,7 @@ from stock_opportunity_agent.data.resolution import (
     DataAcquisitionPolicy,
     broad_research_data_policy_v1,
 )
+from stock_opportunity_agent.llm import get_model
 from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
@@ -848,6 +849,12 @@ def freeze_run(
                 "max_llm_calls": 40,
                 "max_tokens": DEFAULT_CASE_TOKEN_BUDGET,
                 "h1_request_budget": h1_request_budget,
+                "structured_reasoning_token_reserve": (
+                    32000
+                    if get_model(evolution_model, role="evolution").default_reasoning_effort
+                    not in {None, "none"}
+                    else 0
+                ),
                 "finalization_token_reserve": DEFAULT_FINALIZATION_TOKEN_RESERVE,
                 "basic_info_context_chars": 32_000,
                 "signal_batch_context_chars": 32_000,

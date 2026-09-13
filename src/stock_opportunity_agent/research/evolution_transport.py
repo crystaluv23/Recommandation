@@ -510,6 +510,14 @@ class StructuredRoleClient:
             contract.limits.get("max_structured_corrections", 1)
         )
 
+    def _output_limit(self, requested: int | None, *, binary: bool = False) -> int:
+        """Use the frozen reasoning headroom in both preview and execution."""
+
+        base = requested or self.registration.default_max_output_tokens
+        if binary or self.registration.default_reasoning_effort in {None, "none"}:
+            return base
+        return base + int(self.contract.limits.get("structured_reasoning_token_reserve", 0))
+
     def estimate_json_request_tokens(
         self,
         *,
@@ -530,9 +538,7 @@ class StructuredRoleClient:
         structured_system_prompt = (
             "Return exactly one JSON object and no non-JSON text. " + system_prompt
         )
-        output_limit = (
-            max_output_tokens or self.registration.default_max_output_tokens
-        )
+        output_limit = self._output_limit(max_output_tokens)
         messages = [
             ChatMessage("system", structured_system_prompt),
             ChatMessage(
@@ -718,7 +724,7 @@ class StructuredRoleClient:
             else "Return exactly one JSON object and no non-JSON text. "
             + system_prompt
         )
-        output_limit = max_output_tokens or self.registration.default_max_output_tokens
+        output_limit = self._output_limit(max_output_tokens, binary=binary_token_output)
         payload_text = json.dumps(
             payload,
             ensure_ascii=False,

@@ -541,3 +541,12 @@ shorter histories are identical suffixes. Conflicting same-endpoint prices fail
 validation; neither arbitrary document ordering nor merging incompatible adjusted
 series may select a result. Legacy metadata lacking an endpoint uses the document's
 availability date. Existing resolver PIT filtering and numeric checks still apply.
+
+## Executable function descriptions
+
+The registered deterministic callable owns its input, measurement and parameter
+description in its docstring. `deterministic_signal_function_contracts` projects
+those descriptions for the actual supplied registry, including overrides; it
+never substitutes a built-in description merely because the function name
+matches. Missing documentation is explicit. These descriptions do not change
+execution, thresholds, point-in-time checks, or candidate validation.

@@ -9,6 +9,8 @@ from unittest import TestCase
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
+    default_deterministic_signal_functions,
+    deterministic_signal_function_contracts,
     SignalExecutionType,
     SignalExecutor,
     SignalSpec,
@@ -21,6 +23,28 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_function_contracts_follow_actual_registry_overrides(self) -> None:
+        functions = default_deterministic_signal_functions()
+        contracts = deterministic_signal_function_contracts(functions)
+        self.assertEqual(set(contracts), set(functions))
+        self.assertTrue(all("No measurement description" not in row for row in contracts.values()))
+        self.assertIn("positive revenue", contracts["financial.operating_cash_flow_margin"])
+
+        def replacement(*args):
+            """Measure a custom observable with its own inputs."""
+
+        def undocumented(*args):
+            pass
+
+        supplied = {
+            "financial.operating_cash_flow_margin": replacement,
+            "custom.unknown": undocumented,
+        }
+        self.assertEqual(deterministic_signal_function_contracts(supplied), {
+            "financial.operating_cash_flow_margin": replacement.__doc__,
+            "custom.unknown": "No measurement description supplied.",
+        })
+
     def test_ifrs_namespace_and_revenue_aliases_preserve_pit_gross_margin(self) -> None:
         for alias in ("RevenueFromContractsWithCustomers", "RevenueFromSaleOfGoods"):
             with self.subTest(alias=alias):

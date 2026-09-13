@@ -1,5 +1,23 @@
 # Status
 
+V82 committed Fast/Slow 0/1 with zero valid Mining, Update and Promotion.
+The exact-wire audit found missing explicit target semantics, E1 financial
+comparability bias, weak E2 research relevance, and a stale Update tool-workflow
+prior. E2 confused evidence-period alignment with a company feature and chose
+the wrong deterministic formula. Source inventory also confirms no local news
+or transcript evidence in the 16 E1 case windows; this remains a data limitation.
+
+The successor now passes one canonical research objective through Slow roles,
+aligns and connects fixed priors, preserves E1 comparability without preferring
+a second financial pair over narrative, and supplies actual function semantics
+to H3/E2/Update. A separate research thinking alias has explicit frozen output
+headroom; Judge stays plain. Exact high-reasoning H1 output plus one correction
+parses into three hypotheses after fixing Predictor-regex misuse on historical
+windows and performance obligations. This is diagnostic evidence, not a live
+Signal result. See reports/slow_round_prompt_audit_20260913.md. All 773 tests
+passed before final target-flow assertions, which also pass (105 engine tests).
+Full three-layer live acceptance remains incomplete.
+
 V81 genuinely transmitted the complete H1 request (323503 wire bytes, one Fast
 meta entry and all 30 reflection actions), so the independent reservation worked.
 It remains Fast/Slow 0/0 after controlled interruption: seven completed calls

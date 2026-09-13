@@ -4779,23 +4779,27 @@ DEFAULT_EVOLUTION_PRIORS = EvolutionPriors(
         "datasets, metrics, priors, runtime guards, or the stable Signal Registry."
     ),
     mine_signal=(
-        "Follow this workflow exactly: sample issuer-distinct label-stratified "
-        "Discovery cases; inspect point-in-time Raw Info for positive cases and "
-        "matched controls; check Signal cards and exact stable specs for duplicates; "
-        "stage one complete evidence-traceable candidate with non-empty executable "
-        "fixtures; run its contract tests; then return only successfully staged and "
-        "tested candidate refs. Use only registered deterministic functions. If no "
-        "candidate passes, return an empty candidate_refs list."
+        "Develop reusable source-grounded measurements relevant to the supplied "
+        "fixed research objective. Follow the current stage's output contract. "
+        "Runtime owns case selection, stage-specific outcome visibility, evidence "
+        "acquisition, staging, fixture execution, holdout validation and promotion. "
+        "Do not claim to perform those runtime actions or invent candidate refs. "
+        "Distinguish evidence limitations from business features. Support a "
+        "candidate only with an observable contrast and a reason it could inform "
+        "the fixed target; preserve counterevidence and honest empty results. "
+        "Use an exact registered deterministic implementation or a grounded LLM "
+        "skill when allowed by the supplied candidate contract."
     ),
     update_signal=(
-        "Follow this workflow exactly: load one exact stable SignalSpec; inspect its "
-        "observed-policy statistics and structured committed failure cases; sample "
-        "label-stratified Discovery cases and inspect their point-in-time Raw Info; "
-        "clone exactly vNext while preserving signal_id, "
-        "category, execution type, and deterministic function; provide non-empty "
-        "executable fixtures; run its contract tests; then return only successfully "
-        "staged and tested candidate refs. Never invent a deterministic function. "
-        "If no candidate passes, return an empty candidate_refs list."
+        "Evaluate only the supplied exact stable Signal and its induction "
+        "evidence under the fixed research objective. Return no_change, defer, "
+        "or update according to the current role contract. An update contains "
+        "the complete vNext candidate while changing only permitted paths and "
+        "preserving frozen definition, execution identity and fixtures. "
+        "Explain the correctable defect separately from outcome association; "
+        "do not repair insufficient source evidence by guessing. Runtime owns "
+        "target selection, execution, holdout tests, staging and promotion. "
+        "Never claim those actions occurred or return invented staged refs."
     ),
 )
 

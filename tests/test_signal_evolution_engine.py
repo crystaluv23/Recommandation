@@ -8,6 +8,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     _prioritize_reflection_feedback,
     _signal_effectiveness_counts,
     signal_effectiveness_measurement_contract,
+    signal_research_objective,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
@@ -3071,6 +3072,9 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("CTRL", ranking_json)
             self.assertNotIn("ground_truth", ranking_json)
             self.assertNotIn('"label"', ranking_json)
+            for payload in mining_model.requests:
+                self.assertEqual(payload["research_objective"], signal_research_objective())
+                self.assertEqual(payload["fixed_prior"], engine.priors.mine_signal)
             comparisons = mining_model.requests[1]["comparisons"]
             contrast_cases = [
                 packet
@@ -4324,6 +4328,9 @@ class SignalEvolutionTests(TestCase):
             repeated = execute_update()
             self.assertEqual(repeated["audit"]["disposition"], "unchanged_work_suppressed")
             self.assertEqual(len(update_model.requests), 1)
+            self.assertEqual(
+                update_model.requests[0]["research_objective"], signal_research_objective()
+            )
 
             store.append(
                 RawInfoDocument.create(
@@ -4341,6 +4348,9 @@ class SignalEvolutionTests(TestCase):
                 "unchanged_work_suppressed",
             )
             self.assertEqual(len(update_model.requests), 1)
+            self.assertEqual(
+                update_model.requests[0]["research_objective"], signal_research_objective()
+            )
 
             update_model.model_name = "update-model-b"
             changed_model = execute_update()
@@ -4611,6 +4621,9 @@ class SignalEvolutionTests(TestCase):
 
             self.assertEqual(result.promoted, (updated.ref,))
             self.assertEqual(len(update_model.requests), 1)
+            self.assertEqual(
+                update_model.requests[0]["research_objective"], signal_research_objective()
+            )
             self.assertNotIn("example", update_model.requests[0]["candidate_contract"])
             template = update_model.requests[0]["candidate_contract"][
                 "vnext_template"
@@ -4633,6 +4646,20 @@ class SignalEvolutionTests(TestCase):
             self.assertIsNone(template["skill"])
             self.assertEqual(template["tests"], list(registry.load_tests(stable.ref)))
             self.assertNotIn("example", engine._mining_candidate_contract())
+            from stock_opportunity_agent.signal_library import (
+                deterministic_signal_function_contracts,
+            )
+            expected_functions = deterministic_signal_function_contracts(
+                engine.validator.deterministic_functions
+            )
+            self.assertEqual(
+                engine._mining_candidate_contract()["deterministic_function_contracts"],
+                expected_functions,
+            )
+            self.assertEqual(
+                update_model.requests[0]["candidate_contract"]["deterministic_function_contracts"],
+                expected_functions,
+            )
             request_json = json.dumps(update_model.requests[0])
             for case in cases:
                 self.assertNotIn(case.company_id, request_json)
@@ -5521,6 +5548,11 @@ class SignalEvolutionTests(TestCase):
             result = engine._run_signal_mining(cycle_id=3)
 
             e1_payload, e2_payload = mining_model.requests
+            for payload in (e1_payload, e2_payload):
+                self.assertEqual(payload["research_objective"], signal_research_objective())
+                self.assertEqual(payload["fixed_prior"], engine.priors.mine_signal)
+            from stock_opportunity_agent.research.evolution_transport import _scan_payload
+            _scan_payload(e1_payload, allow_outcomes=False, anonymous_aliases=())
             self.assertNotIn('"label"', json.dumps(e1_payload))
             self.assertEqual(
                 {item["label"] for item in e2_payload["signatures"]},

@@ -380,3 +380,23 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   sample basis is that validated binding, while holdout selection remains local
   and hidden. E1 audit gaps do not globally force `insufficient_evidence` after
   both fixed groups have enough surviving comparison-ready signatures.
+
+## Candidate implementation context
+
+H3 and E2 candidate contracts and the Update contract include descriptions of
+the actual registered deterministic callables from Signal Library. They explain
+measured quantities, required inputs and parameter behavior before construction.
+A function name is not proof that it implements a proposed observable. A new
+measurement without an exact deterministic implementation may use a grounded
+LLM skill; fixtures and all existing semantic and paired gates remain mandatory.
+
+## Shared research target through Slow roles
+
+Reflection, H1, E1, H3, E2 and Update receive one runtime-owned research objective
+projected from `FIXED_PREDICTOR_SEMANTICS`: target, baseline, future comparison
+and horizon. Global task semantics do not reveal any individual case outcome;
+E1 remains label-hidden. H1 input identity includes this objective. Research
+relevance means contributing evidence about expectation gaps, catalysts, changing
+fundamentals or early confirmation under that fixed target, rather than seeking
+generic quality metrics or treating source coverage as business differentiation.
+The goal is context, not a change to labels, sample selection or promotion gates.

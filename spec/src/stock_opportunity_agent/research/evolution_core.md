@@ -72,3 +72,13 @@ After ordinary target aliases are masked, a proper-name phrase explicitly descri
 as a division, subsidiary, brand, business, unit, or segment of the masked target is
 also masked in model-facing evidence. This relation-based rule covers target
 affiliates absent from Basic Info without suppressing unrelated third-party names.
+
+## Fixed Slow priors follow active role ownership
+
+Human-maintained fixed Mining/Update priors describe the structured runtime,
+not the retired model-owned tool workflow. Runtime owns sampling, stage-specific
+label visibility, staging, fixtures, holdouts and promotion. Mining roles propose
+measurements or decisions appropriate to their stage; Update returns one of
+no_change/defer/update for the supplied target. Models do not return invented
+staged refs. All Mining stage payloads carry the same fixed Mining prior. Changes
+to this code-owned prior require a freshly frozen priors hash and workspace.

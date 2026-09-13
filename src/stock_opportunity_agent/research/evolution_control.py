@@ -150,6 +150,13 @@ class EvolutionRunContract:
     schema_version: str = "evolution-run-contract-v8"
 
     def __post_init__(self) -> None:
+        reasoning_reserve = self.limits.get("structured_reasoning_token_reserve", 0)
+        if (
+            isinstance(reasoning_reserve, bool)
+            or not isinstance(reasoning_reserve, int)
+            or reasoning_reserve < 0
+        ):
+            raise ValidationError("structured reasoning token reserve must be a nonnegative integer")
         if not self.run_id.strip():
             raise ValidationError("evolution run_id is required")
         for name in (

@@ -60,7 +60,6 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _SIGNAL_BATCH_RESULT_OUTPUT,
     _UNTRUSTED_DATA_INSTRUCTION,
     _complete_parsed_role,
-    _fixed_semantics_match,
     _parse_role_output,
 )
 from stock_opportunity_agent.research.evolution_research_validation import (
@@ -283,9 +282,23 @@ _H1_GENERIC_TOPIC_TERMS = frozenset(
 )
 
 
+_MINING_RESEARCH_RELEVANCE = (
+    " Explain why the measured company or event difference could inform the fixed "
+    "surge-versus-control research target, using visible evidence and counterevidence. "
+    "Calculability or generic financial quality alone is not that explanation. "
+    "A Signal can contribute evidence without independently predicting a surge or "
+    "proving causality. Separate the underlying feature from acquisition and "
+    "extraction conditions: missing excerpts, unmatched reporting periods, query "
+    "coverage and parser success are not themselves a company-level discriminant. "
+    "Do not treat an unmeasured control as a negative feature observation. "
+    "When only evidence availability differs, retain the evidence limitation "
+    "rather than supporting a business Signal from that artifact. "
+)
+
+
 _H1_OUTCOME_TERM = (
     r"(?:earnings\s+surprise|revenue\s+growth|returns?|price|growth|"
-    r"performance|outcomes?|market\s+reaction|stock\s+movement)"
+    r"performance(?!\s+obligations?\b)|outcomes?|market\s+reaction|stock\s+movement)"
 )
 _H1_FUTURE_HORIZON = (
     r"(?:short[- ]term|within\s+\d+\s+(?:calendar\s+|trading\s+)?days?|"
@@ -302,6 +315,16 @@ _H1_ALTERNATE_TEST_OUTCOME = re.compile(
     r"(?:price|market|stock)\s+"
     r"(?:reaction|movement|change|increase|decrease|returns?|trend|momentum|"
     r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",
+    re.IGNORECASE,
+)
+
+
+_H1_FIXED_TARGET_REDEFINITION = re.compile(
+    r"\b(?:redefine|replace|change|adjust|set|use|adopt)\b.{0,50}"
+    r"\b(?:fixed\s+)?(?:predictor|prediction|surge|outcome|evaluation|test|label)"
+    r"[- ](?:threshold|cutoff|horizon|definition|semantics|labels?|target|groups?)\b|"
+    r"\bredefine\b.{0,40}\b(?:surge|horizon|label|judg)\w*|"
+    r"\bgenerate\s+(?:the\s+)?prediction\b",
     re.IGNORECASE,
 )
 
@@ -2716,7 +2739,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                         *falsifiers,
                     )
                     if any(
-                        _fixed_semantics_match(text) is not None
+                        _H1_FIXED_TARGET_REDEFINITION.search(text) is not None
                         or _H1_ALTERNATE_TEST_OUTCOME.search(text) is not None
                         for text in semantic_texts
                     ):
@@ -2854,6 +2877,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "case feasibility and evidence testing. Group equivalent need "
             "dispositions compactly."
             + _UNTRUSTED_DATA_INSTRUCTION
+            + _MINING_RESEARCH_RELEVANCE
             + _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT
         )
         estimator = getattr(self.caller, "estimate_json_request_tokens", None)
@@ -3226,6 +3250,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "inconclusive decision. For each decision, use only the evidence_packets "
                 "nested under that decision's own comparison; never count or describe "
                 "packets belonging to a sibling hypothesis."
+                + _MINING_RESEARCH_RELEVANCE
             ),
             temperature=0.0,
         )
@@ -3487,16 +3512,19 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Describe only recurring, executable observations in the anonymous "
                 "point-in-time evidence. comparison_concepts is a runtime-derived, "
                 "label-free inventory of source-owned concepts visible across multiple "
-                "selected cases; where its records are visible in a case, prioritize "
-                "them and prefer two periods of the same concept before unrelated "
-                "issuer-specific narrative or generic risk language. It is guidance for "
+                "selected cases. Use a comparable pair as an evidence baseline, then "
+                "select concrete business changes, timing, catalysts, guidance, "
+                "commitments and counterevidence relevant to research_objective. "
+                "Stable generic quality or risk language alone has lower research "
+                "value than a source-grounded change. The inventory guides "
                 "comparability, not evidence, and must never be cited or invented when "
                 "the matching literal is absent. When a case exposes two records for "
                 "an inventory concept, its signature must cite both exact records for "
                 "the first such concept. If that case also supplies any non-empty "
                 "content_excerpt, cite at least one grounded narrative observation and "
-                "use at most four structured-context observations, preferring a "
-                "second complete comparable concept pair; reserve the remaining "
+                "use at most four structured-context observations. A second complete "
+                "concept pair is optional, not preferred over relevant narrative; "
+                "reserve the remaining "
                 "slots within the six-observation total for distinct source-owned "
                 "narrative facts. "
                 "If no narrative literal is supplied, do not invent one. Ground every "
@@ -3547,6 +3575,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "difference. If the cases only support individual rejections or no "
                 "recurring pattern, return decisions=[] and the structured no_candidate "
                 "reason covering every supplied case_ref."
+                + _MINING_RESEARCH_RELEVANCE
             ),
             temperature=self.creative_temperature,
         )

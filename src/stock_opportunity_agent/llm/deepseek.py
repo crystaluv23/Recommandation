@@ -181,6 +181,20 @@ def model(
 
 
 @register_model(
+    "deepseek-v4-flash-thinking",
+    provider="deepseek",
+    model=DEFAULT_DEEPSEEK_MODEL,
+    roles=("evolution",),
+    api_key_env_var=DEFAULT_DEEPSEEK_API_KEY_ENV_VAR,
+    description="DeepSeek V4 Flash with high reasoning for structured research roles.",
+    proposal_profile="plain_json",
+    web_tools_allowed=False,
+    default_max_output_tokens=8000,
+    default_reasoning_effort="high",
+    default_input_cost_per_million_tokens=0.28,
+    default_output_cost_per_million_tokens=0.56,
+)
+@register_model(
     "deepseek-v4-flash",
     provider="deepseek",
     model=DEFAULT_DEEPSEEK_MODEL,

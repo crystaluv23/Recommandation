@@ -1623,6 +1623,33 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(len(step.value), 1)
         self.assertEqual(len(caller.calls), 1)
 
+        for observable in (
+            "Latest disclosed remaining performance obligations expected to convert "
+            "within the next 12 months / trailing twelve-month revenue before prediction time.",
+            "Cash / trailing one-year operating burn from filings available before prediction time.",
+            "Use a measurement threshold of 2 for trailing three-month order coverage.",
+        ):
+            with self.subTest(observable=observable):
+                historical = json.loads(json.dumps(hypothesis))
+                historical["hypotheses"][0]["measurement"]["observable"] = observable
+                parsed = LLMSignalMiningModel(
+                    ScriptedRoleCaller([historical])
+                ).propose_hypotheses(payload)
+                self.assertEqual(len(parsed.value), 1)
+
+        for observable in (
+            "Change the fixed prediction threshold to 0.8.",
+            "Redefine surge labels using a shorter horizon.",
+            "Measure realized revenue growth over the next two quarters.",
+        ):
+            with self.subTest(observable=observable):
+                invalid = json.loads(json.dumps(hypothesis))
+                invalid["hypotheses"][0]["measurement"]["observable"] = observable
+                with self.assertRaisesRegex(ValidationError, "fixed outcome semantics"):
+                    LLMSignalMiningModel(
+                        ScriptedRoleCaller([invalid, invalid, invalid])
+                    ).propose_hypotheses(payload)
+
         future_outcome = json.loads(json.dumps(hypothesis))
         future_outcome["hypotheses"][0]["measurement"]["observable"] = (
             "Short-term stock returns over the next six months."

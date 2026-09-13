@@ -2798,6 +2798,17 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
     }
 
 
+def deterministic_signal_function_contracts(
+    functions: Mapping[str, DeterministicSignalFunction],
+) -> dict[str, str]:
+    """Describe actual registered callables for candidate authors, including overrides."""
+
+    return {
+        name: " ".join((function.__doc__ or "No measurement description supplied.").split())
+        for name, function in sorted(functions.items())
+    }
+
+
 def _audit_deterministic_fixture(
     spec: SignalSpec,
     fixture: Mapping[str, Any],
@@ -2903,6 +2914,15 @@ def _revenue_growth_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires
+    SEC duration facts, matching units and comparable year-over-year periods; zero prior
+    revenue or missing/stale current facts yields unavailable. Numeric states use
+    positive_min (default 0) and negative_max (default positive_min): value >=
+    positive_min is positive, otherwise value <= negative_max is negative, otherwise
+    neutral. Thresholds do not change the measurement. max_period_age_days (default 550)
+    bounds current SEC period age; older comparative periods remain allowed.
+    """
+
     series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
     pair = _latest_yoy_pair(series)
     if pair is None or pair[1].value == 0:
@@ -2928,6 +2948,16 @@ def _revenue_acceleration_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure revenue acceleration as latest year-over-year revenue growth minus an earlier
+    comparable growth rate. Requires two supported revenue year-over-year pairs with
+    matching units and nonzero denominators; incomplete/stale current facts yield
+    unavailable. Numeric states use positive_min (default 0) and negative_max (default
+    positive_min): value >= positive_min is positive, otherwise value <= negative_max is
+    negative, otherwise neutral. Thresholds do not change the measurement.
+    max_period_age_days (default 550) bounds current SEC period age; older comparative
+    periods remain allowed.
+    """
+
     series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
     pairs = _yoy_pairs(series)
     if len(pairs) < 2:
@@ -2964,6 +2994,16 @@ def _gross_margin_change_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure gross-margin change: latest GrossProfit / revenue minus the previous
+    comparable-duration margin. GrossProfit and revenue must match start, end and units
+    within each period. Missing matched periods, zero revenue or stale current facts yield
+    unavailable. Numeric states use positive_min (default 0) and negative_max (default
+    positive_min): value >= positive_min is positive, otherwise value <= negative_max is
+    negative, otherwise neutral. Thresholds do not change the measurement.
+    max_period_age_days (default 550) bounds current SEC period age; older comparative
+    periods remain allowed.
+    """
+
     facts = _sec_facts(documents, as_of)
     revenues = _duration_series(facts, _REVENUE_TAGS)
     gross_profit = _duration_series(facts, ("GrossProfit",))
@@ -3007,6 +3047,16 @@ def _operating_cash_flow_margin_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure operating cash flow margin as operating cash flow / positive revenue for the
+    latest matching SEC duration period (same start, end and units). Requires both revenue
+    and operating-cash-flow facts. This does not measure operating-income alignment or
+    cash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use
+    positive_min (default 0) and negative_max (default positive_min): value >=
+    positive_min is positive, otherwise value <= negative_max is negative, otherwise
+    neutral. Thresholds do not change the measurement. max_period_age_days (default 550)
+    bounds current SEC period age; older comparative periods remain allowed.
+    """
+
     facts = _sec_facts(documents, as_of)
     revenues = _duration_series(facts, _REVENUE_TAGS)
     operating_cash_flows = _duration_series(facts, _OPERATING_CASH_FLOW_TAGS)
@@ -3049,6 +3099,16 @@ def _net_share_retirement_yoy_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure net share retirement as 1 - current / prior-year weighted-average shares over
+    comparable periods. Positive means net retirement and negative means dilution; this is
+    not a cash buyback amount. Missing comparable or stale current facts yield
+    unavailable. Numeric states use positive_min (default 0) and negative_max (default
+    positive_min): value >= positive_min is positive, otherwise value <= negative_max is
+    negative, otherwise neutral. Thresholds do not change the measurement.
+    max_period_age_days (default 550) bounds current SEC period age; older comparative
+    periods remain allowed.
+    """
+
     pair = _latest_share_yoy_pair(_share_duration_series(_sec_facts(documents, as_of)))
     if pair is None:
         return _unavailable_result(
@@ -3077,6 +3137,15 @@ def _cash_reserves_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure the latest SEC instant cash and equivalents balance, in its reported currency
+    units, without normalizing by burn, revenue or company size. Missing or stale current
+    cash facts yield unavailable. Numeric states use positive_min (default 0) and
+    negative_max (default positive_min): value >= positive_min is positive, otherwise
+    value <= negative_max is negative, otherwise neutral. Thresholds do not change the
+    measurement. max_period_age_days (default 550) bounds current SEC period age; older
+    comparative periods remain allowed.
+    """
+
     facts = [
         fact
         for fact in _sec_facts(documents, as_of)
@@ -3376,6 +3445,15 @@ def _max_drawdown_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure the minimum price / preceding running peak - 1 over all observations in the
+    latest supplied metadata.prices series. This function does not itself restrict dates
+    to one year; retrieval owns the point-in-time series window. Missing prices yield
+    unavailable; invalid or nonpositive prices fail validation. Numeric states use
+    positive_min (default 0) and negative_max (default positive_min): value >=
+    positive_min is positive, otherwise value <= negative_max is negative, otherwise
+    neutral. Thresholds do not change the measurement.
+    """
+
     found = _latest_metadata_value(documents, "prices")
     if found is None:
         return _unavailable_result(spec, "Raw Info did not contain a price series.")
@@ -3398,6 +3476,15 @@ def _price_momentum_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
+    """Measure last / first price - 1 over the final lookback_observations + 1 supplied
+    metadata.prices values (default lookback_observations=126, positive integer). Fewer
+    observations yield unavailable; prices must be finite positive numbers. Retrieval owns
+    dates and adjustment convention. Numeric states use positive_min (default 0) and
+    negative_max (default positive_min): value >= positive_min is positive, otherwise
+    value <= negative_max is negative, otherwise neutral. Thresholds do not change the
+    measurement.
+    """
+
     found = _latest_metadata_value(documents, "prices")
     if found is None:
         return _unavailable_result(spec, "Raw Info did not contain a price series.")
@@ -3437,7 +3524,12 @@ def _negative_word_count_signal(
     documents: tuple[RawInfoDocument, ...],
     as_of: datetime,
 ) -> SignalResult:
-    """Count configured literal negative terms across complete news documents."""
+    """Count case-insensitive literal substring occurrences across input documents.
+
+    terms defaults to decline, loss, risk, delay, investigation, default.
+    Count >= negative_count_min (default 1) is negative; otherwise neutral.
+    This measures lexical frequency, not semantic sentiment or event severity.
+    """
 
     raw_terms = spec.parameters.get(
         "terms",

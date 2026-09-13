@@ -389,3 +389,34 @@ mining, and Signal update proposals.
 - Legacy H1 and v1 Update records remain parseable only at explicit
   compatibility boundaries. New Slow execution requests H1 v7, reflection v2,
   and Update v2.
+
+## H1 temporal semantics
+
+H1 defines measurements, not Predictor policy. Its semantic guard must not reuse
+the Plan/Predictor prose blacklist: historical denominators, trailing one-year or
+twelve-month windows, and measurement thresholds are legitimate Signal concepts.
+H1 rejects explicit replacement of fixed evaluation targets/labels and future
+realized test outcomes. A currently disclosed obligation or expectation is not
+a later realized outcome; remaining performance obligations retain their ordinary
+accounting meaning. Evidence acquisition, source cutoffs and hidden holdouts
+continue to enforce point-in-time feasibility downstream. Phrase guards detect
+obvious violations; they do not prove semantic correctness of model prose.
+
+## Research relevance before candidate construction
+
+H1, H3 and E2 distinguish a company/event measurement from pipeline quality.
+Available excerpts, extraction success and period alignment are evidence
+conditions, not by themselves business features distinguishing the fixed surge
+labels. Supported candidate rationale must explain why the measured difference
+could inform the fixed research target and address visible counterevidence.
+This does not require each Signal to predict surges independently or prove a
+causal mechanism; it prohibits substituting calculability or acquisition
+artifacts for research relevance. No candidate is forced when this basis is absent.
+
+E1 retains its complete first comparable concept pair and six-observation bound,
+but that pair is an evidence baseline, not a research-priority ranking. Remaining
+slots favor concrete changes, timing, catalysts, guidance, commitments and
+counterevidence present in current sources. A second financial pair is optional,
+not preferred over relevant business narrative. Never invent missing narrative
+or infer the hidden case class. This preserves period comparability while
+removing the instruction to prioritize generic financial repetition.

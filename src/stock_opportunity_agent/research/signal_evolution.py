@@ -32,6 +32,7 @@ from stock_opportunity_agent.signal_library import (
     SignalSpec,
     SignalValue,
     default_deterministic_signal_functions,
+    deterministic_signal_function_contracts,
     signal_result_model_view,
 )
 
@@ -80,11 +81,35 @@ from stock_opportunity_agent.research.evolution_core import (
     _usage_to_dict,
     _validate_id,
 )
+from stock_opportunity_agent.research.evolution_settings import FIXED_PREDICTOR_SEMANTICS
 from stock_opportunity_agent.research.plan_evolution import (
     EvolutionWorkspace,
     PlanEvolutionEngine,
     PlanRoundResult,
 )
+
+
+def signal_research_objective() -> dict[str, Any]:
+    """Expose fixed task semantics without individual case identities or outcomes."""
+
+    return {
+        "fixed_prediction_semantics": {
+            key: FIXED_PREDICTOR_SEMANTICS[key]
+            for key in ("target", "baseline", "future", "horizon")
+        },
+        "purpose": (
+            "Find reusable point-in-time evidence that helps distinguish the fixed "
+            "surge target from controls through expectation gaps, catalysts, changing "
+            "fundamentals or early confirmation. Generic company quality alone does "
+            "not establish relevance. Measurements contribute research evidence; "
+            "they need not independently predict a surge."
+        ),
+        "boundary": (
+            "This is the shared task definition, not a case outcome. Use only "
+            "information available by each prediction time. Acquisition quality "
+            "and missing observations must remain separate from business features."
+        ),
+    }
 
 
 SIGNAL_UPDATE_MUTABLE_PATHS = (
@@ -3802,6 +3827,7 @@ class SignalEvolutionEngine:
                     step = reflector(
                         {
                             "reflection_contract_version": "signal-mining-reflect-v4",
+                            "research_objective": signal_research_objective(),
                             "measurement_contract": signal_effectiveness_measurement_contract(),
                             "episode_slots": episode_slots,
                             "lesson_slots": lesson_slots,
@@ -4762,6 +4788,7 @@ class SignalEvolutionEngine:
 
         payload = {
             "update_contract_version": "signal-update-decision-v2",
+            "research_objective": signal_research_objective(),
             "fixed_prior": self.priors.update_signal,
             "target": {
                 "signal_ref": signal_ref,
@@ -4774,6 +4801,9 @@ class SignalEvolutionEngine:
             "slow_method_memory": self._slow_method_view("Update"),
             "candidate_contract": {
                 "arguments_schema": self._candidate_arguments_schema(clone=True),
+                "deterministic_function_contracts": deterministic_signal_function_contracts(
+                    self.validator.deterministic_functions
+                ),
                 "changed_paths_allowed": list(SIGNAL_UPDATE_MUTABLE_PATHS),
                 "changed_paths_excluded": [
                     "spec.version",
@@ -5255,6 +5285,8 @@ class SignalEvolutionEngine:
                 "h2_applicability_contract": applicability_contract,
                 "capability_backlog": context["capability_backlog"],
                 "meta_info": context["meta_info"],
+                "research_objective": context["research_objective"],
+                "fixed_prior": context["fixed_prior"],
                 "reflection_action_audit": context["reflection_action_audit"],
                 "stable_signal_cards": context["stable_signal_cards"],
                 **(
@@ -5683,6 +5715,8 @@ class SignalEvolutionEngine:
             return self._mining_output(audit=audit, refined=refined)
         h3_payload = {
                 "track": "hypothesis",
+                "fixed_prior": self.priors.mine_signal,
+                "research_objective": signal_research_objective(),
                 "comparisons": contrast_packets,
                 "candidate_contract": self._mining_candidate_contract(),
                 "slow_method_memory": self._slow_method_view("H3"),
@@ -5933,6 +5967,8 @@ class SignalEvolutionEngine:
                 extraction_step = self.mining_model.extract_exploration(
                     {
                         "track": "exploration",
+                        "fixed_prior": self.priors.mine_signal,
+                        "research_objective": signal_research_objective(),
                         "microbatch_ref": f"e1-batch-{start // config.exploration_microbatch_size + 1:03d}",
                         "cases": batch_packets,
                         "comparison_concepts": comparison_concepts,
@@ -6117,6 +6153,8 @@ class SignalEvolutionEngine:
         ]
         e2_payload = {
                 "track": "exploration",
+                "fixed_prior": self.priors.mine_signal,
+                "research_objective": signal_research_objective(),
                 "signatures": revealed,
                 "decision_slots": decision_slots,
                 "candidate_contract": self._mining_candidate_contract(),
@@ -6436,7 +6474,9 @@ class SignalEvolutionEngine:
         )
         return {
             "cycle_id": cycle_id,
+            "fixed_prior": self.priors.mine_signal,
             "meta_info": meta_view,
+            "research_objective": signal_research_objective(),
             "meta_context_audit": {
                 "content_hash": _canonical_hash(meta_view),
                 "round_ids": [int(item["round_id"]) for item in meta_view],
@@ -7397,9 +7437,16 @@ class SignalEvolutionEngine:
     def _mining_candidate_contract(self) -> dict[str, Any]:
         return {
             "arguments_schema": self._candidate_arguments_schema(clone=False),
+            "deterministic_function_contracts": deterministic_signal_function_contracts(
+                self.validator.deterministic_functions
+            ),
             "constraints": [
                 "new signal_id only; existing stable identities belong to Update",
                 "non-empty point-in-time fixtures required",
+                "choose a deterministic function only when its documented measurement "
+                "matches the definition; parameters do not replace its formula",
+                "a different measurement requires a source-grounded LLM skill "
+                "when no registered deterministic function implements it",
                 "candidate text and fixtures must not contain Discovery identities or labels",
             ],
         }

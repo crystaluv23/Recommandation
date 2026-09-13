@@ -110,6 +110,10 @@ class DeepSeekResponsesClientTests(TestCase):
         self.assertEqual(registration.default_input_cost_per_million_tokens, 0.28)
         self.assertEqual(registration.default_output_cost_per_million_tokens, 0.56)
         self.assertEqual(registration.default_reasoning_effort, "none")
+        research = get_model("deepseek-v4-flash-thinking", role="evolution")
+        self.assertEqual(research.default_reasoning_effort, "high")
+        self.assertEqual(research.roles, ("evolution",))
+        self.assertEqual(research.model, registration.model)
 
     def test_missing_api_key_fails_without_network(self) -> None:
         with self.assertRaisesRegex(DeepSeekClientError, "DEEPSEEK_API_KEY"):

@@ -99,3 +99,9 @@ target and there is no multi-target prompt.
 Cover multi-tool trajectories, structured output validation, unknown-tool
 rejection, bounded invalid-argument repair, malformed-turn rejection, bounded
 output-schema repair, and maximum-step exhaustion.
+
+## Separate research reasoning profile
+
+`deepseek-v4-flash-thinking` is an evolution-only alias for the same DeepSeek
+model, with reasoning effort high. The existing plain alias retains effort none
+and its judge eligibility. Selecting the thinking alias does not change Judge.

@@ -18,6 +18,41 @@ from stock_opportunity_agent.signal_library import SignalLearningEvent
 
 
 class RunControlTests(TestCase):
+    def test_reasoning_headroom_is_frozen_and_shared_by_preview_and_wire(self) -> None:
+        original = make_contract()
+        contract = replace(original, limits={
+            **original.limits, "structured_reasoning_token_reserve": 32000,
+        })
+        self.assertNotEqual(contract.contract_hash, original.contract_hash)
+        for invalid in (-1, True, 1.5):
+            with self.assertRaisesRegex(ValidationError, "reasoning token reserve"):
+                replace(original, limits={
+                    **original.limits, "structured_reasoning_token_reserve": invalid,
+                })
+        for alias, expected in (
+            ("deepseek-v4-flash-thinking", 40000),
+            ("deepseek-v4-flash", 8000),
+        ):
+            with self.subTest(alias=alias), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                client = StructuredRoleClient(
+                    registration=get_model(alias), contract=contract, workspace=root,
+                    ledger=ExternalAttemptLedger(root / "attempts.json", max_attempts=1, max_total_cost=1),
+                    allow_external=False, environ={},
+                )
+                kwargs = dict(system_prompt="Return JSON.", payload={"fact": "anonymous"},
+                              allow_outcomes=False, max_output_tokens=8000)
+                reservation = client.estimate_json_request_tokens(**kwargs)
+                with self.assertRaises(ExternalRequestPending) as pending:
+                    client.complete_json(stage="signal_mining_hypotheses", **kwargs)
+                request = json.loads(pending.exception.request_path.read_text())["request"]
+                self.assertEqual(request["max_output_tokens"], expected)
+                body = json.loads(request["wire_request"]["body_utf8"])
+                self.assertEqual(body["max_output_tokens"], expected)
+                self.assertEqual(reservation, request["wire_request"]["body_bytes"] + expected)
+                self.assertEqual(client._output_limit(4, binary=True), 4)
+                self.assertEqual(client.ledger.summary["attempt_count"], 0)
+
     def test_h1_request_budget_is_independent_and_contract_bound(self) -> None:
         original = make_contract()
         expanded = replace(original, limits={**original.limits, "h1_request_budget": 512000})
