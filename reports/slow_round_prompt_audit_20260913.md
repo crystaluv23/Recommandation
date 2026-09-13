@@ -88,3 +88,40 @@ held-out 效果和跨环节反馈。不能用非零 JSON 输出或本地测试�
 同一类规则误拦。现把检测限定为明确的未来结果窗口/固定目标替换，并将
 时间语义与需求路由一并纳入首轮纠错清单。83 项 adapter 测试通过，含历史
 价格测量、真实未来结果拒绝及多问题一次纠错；必须使用新冻结工作区。
+
+
+## V84 真实验证结果与下一轮边界
+
+V84 使用 5264747，合同
+`527f209533c00b8aca76013958bd71676d8b34fdb78c83ed469576fff4b720ce`，
+已提交 Fast/Slow 0/1，标准 CLI 正常退出。最终有效 Mining 0、Update 候选 3、
+验证通过与晋升 0。`cash_reserves:v2`、`max_drawdown_1y:v2` 因方向性效果变差
+被拒；`gross_margin_change:v2` 因候选可用数 2/4 暂缓。
+
+实际 wire 已包含统一目标、fixed prior、high reasoning 与输出预留；H1 收到
+30 条 Fast actions、24 个独立来源及本轮 reflection 的 NEUTRAL coverage lesson。
+这证明信息到达，不证明模型正确利用：reflection 仍出现把 available=4/4
+描述成候选 available 更少的错误。
+
+继续发现的链路问题：
+
+- H1 初次三轮输出被 post-cutoff 正则误拦，命中均在 falsifier 中描述
+  “若资料只能在预测后获得则假设不可测”的条件，并非请求未来资料。
+  隔离关闭此单项规则，原响应可通过其余解析；生产未绕过该检查。
+  应按 measurement/retrieval/falsifier 字段职责审查，不能继续堆短语例外。
+- 一次 SSL EOF 后标准 CLI 恢复；资料类型增加 historical_price 改变了 H1
+  输入，因此重新生成有依据。最终 H1 三个假设中现金 runway、订单/backlog
+  进入 H3，但可见证据不足，诚实返回 inconclusive。现金类关键词排序仍会
+  让现金流杂项占据现金余额和必要相邻期间的位置，需要组件级覆盖审查。
+- E2 请求 `70f6ddaa48a4fc2264a4a523aea2a7671e2f1161604080f3a57dd4f9fbc520aa`
+  提出 `operating_cash_flow_state:v1`，暂存后样例失败，不计有效 Mining。
+  本地重放确认 `minimum_observations=1` 触发 observations=0/1；其财务事实
+  是单个对象，而 resolver 该计数识别明确结构化序列。LLM skill 尚未执行。
+  候选字段 schema 没有解释该执行前提；不可通过放宽覆盖门槛强行验收。
+- 同一候选把负经营现金流与正样本关联，却把负现金流输出成 negative。
+  当前效果评估将 positive 对正样本、negative 对控制样本计为正确。
+  数值正负与 Signal 方向的合同没有在生成端明确区分。此为语义风险，
+  不是本次样例拒绝的直接原因；不能手工反转候选或更改门槛冒充自进化。
+
+因此本轮仍不满足三层验收。下一轮应共同处理字段语义、校验字段职责及
+证据组件选择，再冻结新工作区；不得覆盖 V84 或把非零暂存当作成功。

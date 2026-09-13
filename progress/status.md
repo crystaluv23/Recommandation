@@ -1,5 +1,14 @@
 # Status
 
+V84 (5264747) completed Fast/Slow 0/1 with 0 valid Mining, 3 Update
+candidates, and 0 validated/promoted Signals. Two Updates regressed; one is
+provisional for availability 2/4. The E2 candidate failed fixture retrieval
+coverage before LLM execution (minimum_observations on a standalone financial
+fact). Actual target/prior/reflection wiring is verified, but candidate polarity,
+H1 falsifier false positives, evidence component selection, and reflection prose
+remain unresolved. See reports/slow_round_prompt_audit_20260913.md. Preserve V84
+and freeze a successor only after coherent contract repairs and verification.
+
 V83 was frozen at 2837334 but never executed externally. Pre-launch review
 found the remaining H1 alternate-outcome regex also rejected historical market
 confirmation language. Restrict it to explicit forward outcome horizons and
