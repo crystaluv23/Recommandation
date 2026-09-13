@@ -5029,6 +5029,11 @@ class SignalEvolutionEngine:
             raise
         except Exception as exc:
             hypothesis_failure = exc
+            _emit_progress(
+                self.on_progress, "signal_mining_track_failed", cycle_id=cycle_id,
+                track="hypothesis", failure_stage=getattr(exc, "stage", "hypothesis"),
+                error_type=type(exc).__name__, reason=str(exc),
+            )
             hypothesis_result = self._mining_output(
                 audit={
                     "schema_version": "signal-mining-audit-v1",
@@ -5054,6 +5059,11 @@ class SignalEvolutionEngine:
         except (EvolutionControlFlow, OpenAIClientError):
             raise
         except Exception as exc:
+            _emit_progress(
+                self.on_progress, "signal_mining_track_failed", cycle_id=cycle_id,
+                track="exploration", failure_stage=getattr(exc, "stage", "exploration"),
+                error_type=type(exc).__name__, reason=str(exc),
+            )
             exploration_result = self._mining_output(
                 audit={
                     "schema_version": "signal-mining-audit-v1",

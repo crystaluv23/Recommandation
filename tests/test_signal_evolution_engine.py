@@ -3440,7 +3440,13 @@ class SignalEvolutionTests(TestCase):
                 ),
             )
 
+            engine._active_sampling_manifest = {}
+            events = []
+            engine.on_progress = events.append
             result = engine._run_signal_mining(cycle_id=1)
+            failure_events = [row for row in events if row["event_type"] == "signal_mining_track_failed"]
+            self.assertEqual(len(failure_events), 1)
+            self.assertEqual(failure_events[0]["track"], "hypothesis")
 
             self.assertEqual(
                 result["audit"]["status"],

@@ -1,5 +1,29 @@
 # Status
 
+V80 was stopped safely at Fast/Slow 0/0 after two completed DeepSeek calls and
+an exact-contract diagnostic resume with cached responses. It is not a committed
+history source. Restoring original Fast context exposed a second boundary: H1
+borrowed the 256000 single-case reservation, while an offline reconstructed H1
+view already needs at least 313821 bytes plus reserved output accounting before
+all runtime wrappers. Freeze now gives H1 its own configurable, contract-bound
+reservation (default 512000); global attempts/cost and semantic gates remain.
+Mining track failures are emitted immediately before a sibling continues.
+
+Live stack sampling also exposed repeated whole-oracle parsing during every
+append. The 7151-document / 4.2 GB oracle now reuses parsed files only while
+complete local file revision metadata is unchanged; new/changed files still
+undergo full validation and cross-path replay checks. Measured initial load is
+15.73 seconds and unchanged refresh 0.21 seconds. Exact-literal identity scan
+uses an equivalent substring precheck and invocation-local string cache; actual
+26937-alias H1 replay scans in 3.84 seconds. Full context projection is 47.68
+seconds versus 69.45 previously. Identity inventory and evidence are unchanged.
+All 769 tests pass, including same-size/mtime-restored tamper detection, scanner
+cache boundaries, independent H1 budget identity and immediate H-track failure.
+Reflection still contains a known semantic contradiction in V80 (calling 4 vs 4
+a difference); prompt guidance alone did not prove correctness. Next live run
+must verify restored H1 transmission, meaningful Mining/Update, and reflection
+logic. The three-layer acceptance goal remains incomplete.
+
 V79 received explicit payload-level DeepSeek authorization and completed four
 real calls before a controlled interruption at Fast/Slow 0/0. It is uncommitted
 diagnostic evidence, not an import source. Cross-version payload review found

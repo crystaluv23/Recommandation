@@ -4,6 +4,29 @@ from tests.scheme_evolution_test_support import *  # noqa: F403
 
 
 class RawInfoStoreTests(TestCase):
+    def test_refresh_reuses_unchanged_files_but_detects_same_size_rewrite(self) -> None:
+        import os
+        from unittest.mock import patch
+
+        with tempfile.TemporaryDirectory() as directory:
+            store = RawInfoStore(directory)
+            document = RawInfoDocument.create(
+                document_id="cached_doc", company_id="issuer_1",
+                source_type="filing", published_at=NOW, available_at=NOW,
+                content="Original filing.", metadata={"accession": "0001"},
+            )
+            store.append(document)
+            store.refresh()
+            with patch.object(Path, "read_text", side_effect=AssertionError("reparsed")):
+                self.assertEqual(store.refresh(), 0)
+                self.assertFalse(store.append(document))
+            path = Path(directory) / "filing" / "issuer_1" / "cached_doc.json"
+            stat = path.stat()
+            path.write_text(path.read_text().replace('"0001"', '"0002"'))
+            os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+            with self.assertRaisesRegex(ValidationError, "different content or provenance"):
+                store.refresh()
+
     def test_append_only_store_filters_by_available_at_and_reloads(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             store = RawInfoStore(directory)

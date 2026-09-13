@@ -18,6 +18,14 @@ from stock_opportunity_agent.signal_library import SignalLearningEvent
 
 
 class RunControlTests(TestCase):
+    def test_h1_request_budget_is_independent_and_contract_bound(self) -> None:
+        original = make_contract()
+        expanded = replace(original, limits={**original.limits, "h1_request_budget": 512000})
+        self.assertEqual(expanded.limits["max_tokens"], original.limits["max_tokens"])
+        self.assertNotEqual(expanded.contract_hash, original.contract_hash)
+        with self.assertRaisesRegex(ValidationError, "H1 request budget"):
+            replace(original, limits={**original.limits, "h1_request_budget": 0})
+
     def test_slow_history_preserves_imported_learning_events(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

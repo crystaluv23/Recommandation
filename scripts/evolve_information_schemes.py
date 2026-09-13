@@ -265,6 +265,10 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--max-external-attempts", type=int, default=2500)
     freeze.add_argument("--max-total-cost", type=float, default=100.0)
     freeze.add_argument(
+        "--h1-request-budget", type=int, default=512_000,
+        help="H1 canonical request bytes plus output-token reservation",
+    )
+    freeze.add_argument(
         "--data-external",
         action="store_true",
         help="authorize bounded source-data API acquisition in this frozen run",
@@ -679,6 +683,7 @@ def freeze_run(
     parent_selection_seed: int,
     max_external_attempts: int,
     max_total_cost: float,
+    h1_request_budget: int = 512_000,
     slow_bootstrap_sources: tuple[Path, ...] = (),
     cycle_mode: str | None = None,
     slow_history_from: Path | None = None,
@@ -691,6 +696,8 @@ def freeze_run(
     max_data_requests_per_cycle: int = 0,
     max_data_requests_per_run: int = 0,
 ) -> dict[str, object]:
+    if h1_request_budget < 1:
+        raise ValueError("H1 request budget must be positive")
     _load_local_env(PROJECT_ROOT / ".env.local")
     oracle = RawInfoOracle.load_or_create(raw_info_root)
     raw_info_store = RawInfoStore(raw_info_root)
@@ -840,6 +847,7 @@ def freeze_run(
                 "max_llm_signals_per_round": 2,
                 "max_llm_calls": 40,
                 "max_tokens": DEFAULT_CASE_TOKEN_BUDGET,
+                "h1_request_budget": h1_request_budget,
                 "finalization_token_reserve": DEFAULT_FINALIZATION_TOKEN_RESERVE,
                 "basic_info_context_chars": 32_000,
                 "signal_batch_context_chars": 32_000,
@@ -1668,6 +1676,7 @@ def main() -> int:
                 parent_selection_seed=args.parent_selection_seed,
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
+                h1_request_budget=args.h1_request_budget,
                 slow_bootstrap_sources=tuple(args.slow_bootstrap_from),
                 cycle_mode=args.cycle_mode,
                 slow_history_from=args.slow_history_from,

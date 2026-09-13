@@ -1,5 +1,19 @@
 # Evolution Runtime Control Plane
 
+H1 consumes cycle-wide Fast demand and Slow history, so its request reservation
+must not inherit the single-case `max_tokens` limit. `freeze-run` freezes a
+positive `h1_request_budget` (`--h1-request-budget`, default 512000), measured by
+the existing conservative canonical wire bytes plus output-token reservation.
+Global attempts/cost limits still apply; this does not alter output limits,
+history selection, anonymity or point-in-time boundaries. Older contracts without
+the field retain their original case-limit reservation for reproducibility.
+Identity projection may memoize repeated identical strings within one invocation.
+The exact-literal transport scanner may first require its alias substring before
+running the existing boundary regex, and memoize that result locally. Outcome-key
+checks and diagnostic paths remain per occurrence; punctuation-aware source masking
+retains its original matching rules. These are equivalent-computation optimizations,
+not reductions in the cycle identity inventory or evidence coverage.
+
 ## V8 Slow execution additions
 
 Only `evolution-run-contract-v8` may create new Slow self-evolution workspaces.

@@ -6355,13 +6355,17 @@ def _mask_identity_values(
             result = url_matcher.sub(_IDENTITY_MASK_SENTINEL, result)
         return result
 
+    @lru_cache(maxsize=4096)
+    def mask_text(item: str) -> str:
+        result = item
+        for _alias, prose_matcher, _url_matcher in matchers:
+            result = prose_matcher.sub(_IDENTITY_MASK_SENTINEL, result)
+        result = _URL_VALUE.sub(mask_url, result)
+        return result.replace(_IDENTITY_MASK_SENTINEL, _MASKED_IDENTITY_VALUE)
+
     def mask(item: Any) -> Any:
         if isinstance(item, str):
-            result = item
-            for _alias, prose_matcher, _url_matcher in matchers:
-                result = prose_matcher.sub(_IDENTITY_MASK_SENTINEL, result)
-            result = _URL_VALUE.sub(mask_url, result)
-            return result.replace(_IDENTITY_MASK_SENTINEL, _MASKED_IDENTITY_VALUE)
+            return mask_text(item)
         if isinstance(item, list):
             return [mask(child) for child in item]
         if isinstance(item, tuple):

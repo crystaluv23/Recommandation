@@ -4,6 +4,19 @@ from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
 class IdentityBoundaryPerformanceTests(TestCase):
+    def test_scan_cache_keeps_occurrence_paths_and_inventory_boundaries(self) -> None:
+        scan = evolution_runtime_module._scan_payload
+        payload = {"first": "ordinary reflection", "nested": ["ordinary reflection"]}
+        scan(payload, allow_outcomes=False, anonymous_aliases=("Example Holdings",))
+        with self.assertRaisesRegex(ValidationError, "payload.first"):
+            scan(payload, allow_outcomes=False, anonymous_aliases=("ordinary reflection",))
+        with self.assertRaisesRegex(ValidationError, "outcome field"):
+            scan({"first": "same", "is_surge": "same"}, allow_outcomes=False, anonymous_aliases=())
+        for alias, text in (("AB", "ticker: AB"), ("KGC", "KGC reported"),
+                            ("Straße Holdings", "STRASSE HOLDINGS reported")):
+            with self.subTest(alias=alias), self.assertRaisesRegex(ValidationError, "identity alias"):
+                scan({"value": text}, allow_outcomes=True, anonymous_aliases=(alias,))
+
     def test_identity_scan_compiles_aliases_once_per_payload_traversal(self) -> None:
         aliases = tuple(f"Example Holdings {index}" for index in range(80))
         real_compile = re.compile

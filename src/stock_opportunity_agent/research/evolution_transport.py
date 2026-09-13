@@ -10,6 +10,7 @@ import re
 import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Protocol
 from stock_opportunity_agent.artifacts import (
@@ -1147,7 +1148,7 @@ def _scan_payload(
             reverse=True,
         )
     )
-    alias_matchers: list[tuple[bool, re.Pattern[str]]] = []
+    alias_matchers: list[tuple[bool, str, re.Pattern[str]]] = []
     for alias in aliases:
         ticker_like = alias.isalnum() and alias.isupper() and len(alias) <= 5
         if ticker_like and len(alias) <= 2:
@@ -1162,7 +1163,16 @@ def _scan_payload(
                 rf"{re.escape(alias if ticker_like else alias.casefold())}"
                 rf"(?![A-Za-z0-9])"
             )
-        alias_matchers.append((ticker_like, re.compile(pattern)))
+        alias_matchers.append((ticker_like, alias if ticker_like else alias.casefold(), re.compile(pattern)))
+
+    @lru_cache(maxsize=4096)
+    def contains_identity(item: str) -> bool:
+        casefolded = item.casefold()
+        for ticker_like, literal, matcher in alias_matchers:
+            text = item if ticker_like else casefolded
+            if literal in text and matcher.search(text):
+                return True
+        return False
 
     def visit(item: Any, path: str) -> None:
         if isinstance(item, Mapping):
@@ -1181,14 +1191,10 @@ def _scan_payload(
                 visit(nested, f"{path}[{index}]")
             return
         if isinstance(item, str):
-            casefolded: str | None = None
-            for ticker_like, matcher in alias_matchers:
-                if not ticker_like and casefolded is None:
-                    casefolded = item.casefold()
-                if matcher.search(item if ticker_like else casefolded or ""):
-                    raise ValidationError(
-                        f"identity alias leaked into {identity_boundary}: {path}"
-                    )
+            if contains_identity(item):
+                raise ValidationError(
+                    f"identity alias leaked into {identity_boundary}: {path}"
+                )
 
     visit(value, "payload")
 

@@ -205,6 +205,7 @@ class RawInfoStore:
     ) -> None:
         self.root = Path(root) if root is not None else None
         self._documents: dict[str, RawInfoDocument] = {}
+        self._validated_files: dict[Path, tuple[int, ...]] = {}
         if self.root is not None:
             self.root.mkdir(parents=True, exist_ok=True)
             self.refresh()
@@ -327,9 +328,14 @@ class RawInfoStore:
         for path in sorted(self.root.rglob("*.json")):
             if path == self.root / _ORACLE_METADATA_NAME:
                 continue
+            before = self._file_revision(path)
+            if self._validated_files.get(path) == before:
+                continue
             document = RawInfoDocument.from_dict(
                 json.loads(path.read_text(encoding="utf-8"))
             )
+            if self._file_revision(path) != before:
+                raise ValidationError("raw info file changed during refresh")
             if path != self._path_for(document):
                 raise ValidationError(
                     f"raw info document is stored outside its canonical path: {path}"
@@ -337,10 +343,19 @@ class RawInfoStore:
             existing = self._documents.get(document.document_id)
             if existing is not None:
                 self._resolve_replay(existing, document)
+                self._validated_files[path] = before
                 continue
             self._documents[document.document_id] = document
+            self._validated_files[path] = before
             added += 1
         return added
+
+    @staticmethod
+    def _file_revision(path: Path) -> tuple[int, ...]:
+        """Identify unchanged local immutable files, including same-size rewrites."""
+
+        stat = path.stat()
+        return (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
 
     @property
     def inventory_hash(self) -> str:

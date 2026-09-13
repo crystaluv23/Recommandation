@@ -1,5 +1,10 @@
 # Signal and Dual-Loop Evolution
 
+When a Mining track fails locally, emit `signal_mining_track_failed` immediately
+with its track, failure stage, error type and reason, before continuing a safe
+sibling track. The terminal audit retains the same failure. A long-running E
+track must not hide an earlier H1 input-budget or validation failure until commit.
+
 ## V8 Slow Round self-evolution contract
 
 The engine freezes `slow_input.json`, then appends or reuses one

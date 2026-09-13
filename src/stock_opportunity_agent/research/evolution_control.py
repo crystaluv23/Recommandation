@@ -202,6 +202,8 @@ class EvolutionRunContract:
             {str(role): dict(metadata) for role, metadata in self.models.items()},
         )
         object.__setattr__(self, "limits", dict(self.limits))
+        if "h1_request_budget" in self.limits and int(self.limits["h1_request_budget"]) < 1:
+            raise ValidationError("H1 request budget must be positive")
         if self.schema_version not in {
             "evolution-run-contract-v1",
             "evolution-run-contract-v2",
@@ -2584,7 +2586,9 @@ def _run_bounded_evolution_cycle_unlocked(
         creative_temperature=float(limits["plan_proposal_temperature"]),
         h1_max_output_tokens=int(limits["role_output_tokens"]["h1"]),
     )
-    mining_model.set_request_token_budget(int(limits["max_tokens"]))
+    mining_model.set_request_token_budget(
+        int(limits.get("h1_request_budget", limits["max_tokens"]))
+    )
     signal_engine = SignalEvolutionEngine(
         registry=registry,
         raw_info_store=raw_info_store,

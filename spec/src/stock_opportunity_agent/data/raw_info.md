@@ -26,6 +26,12 @@ The store exposes append, exact load, filtered search, an immutable in-memory
 snapshot, and explicit `refresh()` for file-backed instances. A file-backed
 instance is a snapshot until refreshed; refresh adds newly committed documents
 and fails closed if disk state conflicts with a document already observed.
+Refresh may reuse an already parsed canonical file only while its device, inode,
+size, nanosecond modification time and nanosecond change time are unchanged.
+New or changed files are read and fully validated; a file changing during that
+read fails closed. This cache is local to one store instance and never substitutes
+for the append lock or cross-path document-id conflict checks. It prevents each
+single-document append from reparsing the complete historical oracle.
 Search may filter by
 company, source type, publication lookback, and prediction time, but every result must
 satisfy:
