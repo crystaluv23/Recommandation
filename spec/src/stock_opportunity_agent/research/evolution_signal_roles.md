@@ -8,6 +8,15 @@ preassigns episode/lesson refs and validates complete source coverage and the
 lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
+The committed feedback catalog remains immutable and identity-bearing for local
+audit, but the reflection v3 provider view is a deep identity-masked projection.
+It uses the same complete cycle identity inventory that guards the structured
+output, so a copied provider-visible literal cannot fail only because the input
+and output anonymity domains disagree. Opaque feedback refs, content hashes,
+stages, metrics, validation reasons, and causal ordering remain unchanged; only
+issuer/case aliases are replaced. The masked projection is scanned before request
+reservation and transmission, while the unmodified local units continue to own
+reference resolution and processed/pending accounting.
 The default reflection view is also bounded by a frozen output-aware unit limit:
 it takes at most twelve complete feedback units, with units from the immediately
 preceding committed cycle first and older pending units afterward. Within one cycle,
@@ -52,7 +61,8 @@ the default bounded view as one complete-entry batch, and every unselected
 default item remains explicitly pending. An empty selection retains the default
 view. There is no second selection round. E1, SignalExecutor, and blind
 Predictor have no such access. Prompt, parser, work identity, persisted request,
-provider body, and wire bytes advance together to their v8 protocol versions.
+provider body, and wire bytes advance together; reflection uses its v3 identity-
+masked protocol while the remaining roles keep their declared versions.
 The transport appends every canonical request hash to an invocation trace. Role
 adapters attach the slice produced by that logical job to successful
 `AgentStep.metadata`; exhausted structured recovery attaches the same slice to

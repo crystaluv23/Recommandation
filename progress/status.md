@@ -1,5 +1,32 @@
 # Status
 
+V74 was safely interrupted at authoritative Fast 0 / Slow 0 after its entry
+reflection exposed a contradictory anonymity boundary. The corrected feedback
+ordering worked: its selected provider payload began with the V73 terminal result,
+validation summary, both candidate-effectiveness records, role audits, and lessons.
+Those effectiveness records still contained real `case_id`/CIK values, however,
+while the reflection adapter rejected the same cycle-wide aliases in structured
+output. DeepSeek consequently copied two supplied CIK values into otherwise useful
+reflections and exhausted both bounded corrections. The failed memory delta
+processed zero of 575 feedback units and retained all 575 pending. Independent
+siblings continued through an evidence-based E2 `no_measurable_pattern` conclusion
+and three Update targets; once the reflection failure made semantic acceptance
+impossible, the old-code run was interrupted pointer-safely after 63 attempts
+(61 completed, two failed), `$0.23902228`, 130 acquisition reservations, and 232
+lower-level requests. It remains resumable but must not be resumed or imported as
+committed history.
+
+Reflection v3 now keeps the committed local catalog immutable while deep-masking
+the provider projection with the exact same frozen alias inventory used by output
+validation. Opaque refs, hashes, metrics, gate reasons, ordering, and local
+processed/pending ownership remain unchanged. This removes the impossible
+copy-evidence-versus-leak-validation choice without weakening fail-closed output
+checks or adding case-specific exceptions. The protocol/work identity was bumped
+to prevent stale response reuse. Four focused reflection regressions, all 759
+tests, and repository lint pass. A fresh V75 must live-verify the masked request,
+successful reflection and downstream action, nonzero Mining and Update, and a
+validated/promoted Registry transition.
+
 V73 committed one real `slow_only` cycle at authoritative Fast 0 / Slow 1 under
 contract `0017202e...c6c25`. All 73 model attempts completed for
 `$0.28816927999999997`; the run reserved 149 acquisition units (315 lower-level

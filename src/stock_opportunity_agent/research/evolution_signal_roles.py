@@ -49,6 +49,7 @@ from stock_opportunity_agent.research.evolution_settings import (
     ROLE_OUTPUT_TOKEN_LIMITS,
     _LLM_SIGNAL_QUERY_STOP_WORDS,
 )
+from stock_opportunity_agent.research.evolution_core import _mask_identity_values
 from stock_opportunity_agent.research.evolution_transport import (
     ExternalBudgetExhausted,
     JSONRoleCaller,
@@ -1325,7 +1326,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "h1_contract": "signal-mining-hypothesis-v7",
-            "reflection_contract": "signal-mining-reflect-v2",
+            "reflection_contract": "signal-mining-reflect-v3",
             "source_read_contract": "slow-source-read-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
@@ -1666,6 +1667,9 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "context_only_paths": (f"episode_reflections[{target_index}]",),
             }
 
+        provider_payload = _mask_identity_values(
+            deepcopy(dict(payload)), self.identity_guard_aliases
+        )
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
             stage="signal_mining_reflect",
@@ -1687,10 +1691,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "never emit more episodes than supplied episode slots."
                 + _UNTRUSTED_DATA_INSTRUCTION
             ),
-            payload=payload,
+            payload=provider_payload,
             parser=parse,
             allow_outcomes=True,
-            anonymous_aliases=(),
+            anonymous_aliases=self.identity_guard_aliases,
             temperature=0.0,
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=5_000,

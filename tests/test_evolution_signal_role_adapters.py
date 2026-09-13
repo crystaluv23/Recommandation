@@ -8,6 +8,47 @@ from stock_opportunity_agent.research import (
 
 
 class SignalRoleAdapterTests(TestCase):
+    def test_reflection_masks_provider_view_without_mutating_feedback(self) -> None:
+        case_identity = "cik_0001077183:20250331"
+        output = {
+            "episode_reflections": [
+                {
+                    "episode_ref": "episode-c0001-001",
+                    "source_refs": ["feedback-1"],
+                    "reflection": "The paired gate rejected the candidate.",
+                    "unresolved_questions": [],
+                }
+            ],
+            "lesson_additions": [],
+        }
+        caller = ScriptedRoleCaller([output])
+        model = LLMSignalMiningModel(caller)
+        model.set_identity_guard_aliases((case_identity,))
+        payload = {
+            "episode_slots": ["episode-c0001-001"],
+            "lesson_slots": ["lesson-c0001-001"],
+            "feedback_units": [
+                {
+                    "feedback_ref": "feedback-1",
+                    "artifact": {
+                        "case_id": case_identity,
+                        "reason": "No strict paired improvement.",
+                    },
+                }
+            ],
+        }
+
+        step = model.reflect_feedback(payload)
+
+        sent = caller.calls[0]["payload"]
+        self.assertNotIn(case_identity, json.dumps(sent))
+        self.assertIn("[MASKED_COMPANY]", json.dumps(sent))
+        self.assertEqual(caller.calls[0]["anonymous_aliases"], (case_identity,))
+        self.assertEqual(
+            payload["feedback_units"][0]["artifact"]["case_id"], case_identity
+        )
+        self.assertEqual(step.value, output)
+
     def test_mining_typed_source_read_accepts_only_supplied_opaque_refs(self) -> None:
         caller = ScriptedRoleCaller(
             [{"read_source_refs": ["feedback-2"]}]

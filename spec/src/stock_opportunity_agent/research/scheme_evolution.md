@@ -1403,6 +1403,13 @@ the terminal result, validation/effectiveness units, and role audits before
 redundant experiment/input projections. Thus a later action can see why a candidate
 failed a gate instead of receiving only the word `rejected`; the item limit, byte
 budget, append-only source identity, and typed replacement cap remain unchanged.
+The committed catalog stays exact for local audit and ref ownership. Immediately
+before the reflection request is reserved, runtime deep-masks its selected provider
+projection with the same frozen cycle-wide alias inventory used to reject output
+identity. Feedback refs, hashes, stage provenance, metrics, validation reasons, and
+ordering are preserved. This boundary prevents an identity-bearing historical unit
+from making the model choose between copying its supplied evidence and violating
+the output contract; masking never edits or consumes the underlying feedback unit.
 
 Cold-start recovery may instead run one explicitly frozen `slow_bootstrap`
 single cycle with a zero Fast-round target. Freeze accepts one or more compatible
@@ -1772,9 +1779,10 @@ reusable Signal text must not name a sampled issuer.
 
 Every aggregate Slow role now uses one identical anonymity domain on both sides
 of its contract: all aliases rejected from output are masked from every input
-projection before transmission. A model can therefore copy an allowed masked
-literal without being rejected by a different alias inventory during output
-validation. Exploration cases are sorted by a cycle-bound hash of their hidden
+projection before transmission, including outcome-aware reflection feedback.
+A model can therefore copy an allowed masked literal without being rejected by a
+different alias inventory during output validation. Exploration cases are sorted
+by a cycle-bound hash of their hidden
 case identity before sequential opaque refs are assigned. E1 presentation then
 follows that outcome-independent order; positive/control membership remains only
 in the local selection map and cannot be inferred from ref ranges or request

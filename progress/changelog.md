@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-13: Kept committed Slow feedback exact locally while identity-masking the reflection v3 provider projection with the same frozen alias inventory enforced on output; V74 preserved all 575 units pending after exposing the former input/output contradiction, and the pointer-safe successor remains pending live acceptance.
+
 - 2026-09-10: Include the visible Fast meta-memory in Slow H1 work identity so new reflections invalidate prior empty-work suppression; retain unchanged-input reuse and test the actual renewed model handoff. V13 remains pre-transmission preparation; V14 is the successor acceptance run.
 
 - 2026-09-10: Continue V12 MVP repair: preserve ordinary Controller correction siblings, recover only runtime-issued typed need transitions with full revalidation, and distinguish future-period guidance from future realized facts. Paid failure replays pass; V13 live acceptance follows the frozen code checkpoint.
