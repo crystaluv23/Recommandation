@@ -637,6 +637,11 @@ class SignalRoleAdapterTests(TestCase):
                 "document_ref": "document-02",
                 "exact_span": second,
             },
+            {
+                "summary": "Management discussed quarterly operations.",
+                "document_ref": "document-01",
+                "exact_span": narrative,
+            },
         ]
         caller = ScriptedRoleCaller([invalid, valid])
 
@@ -647,10 +652,71 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(step.usage.llm_calls, 2)
         self.assertEqual(
             [item.exact_span for item in step.value[0].observations],
-            [first, second],
+            [first, second, narrative],
         )
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertIn("both visible records", feedback["validation_error"])
+
+    def test_e1_reserves_capacity_for_visible_narrative_evidence(self) -> None:
+        first = '{"end":"2025-06-30","val":120}'
+        second = '{"end":"2024-06-30","val":100}'
+        third = '{"end":"2025-06-30","val":80}'
+        narrative = "Management reaffirmed revenue guidance for the fiscal year."
+        invalid = {
+            "signatures": [
+                {
+                    "case_ref": "case-001",
+                    "observations": [
+                        {
+                            "summary": "Current-period operating income.",
+                            "document_ref": "document-02",
+                            "exact_span": first,
+                        },
+                        {
+                            "summary": "Prior-period operating income.",
+                            "document_ref": "document-02",
+                            "exact_span": second,
+                        },
+                        {
+                            "summary": "A third structured metric.",
+                            "document_ref": "document-02",
+                            "exact_span": third,
+                        },
+                    ],
+                    "evidence_gaps": [],
+                }
+            ]
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["signatures"][0]["observations"] = [
+            *invalid["signatures"][0]["observations"][:2],
+            {
+                "summary": "Revenue guidance was reaffirmed.",
+                "document_ref": "document-01",
+                "exact_span": narrative,
+            },
+        ]
+        payload = self._recurring_pair_payload(narrative, first, second)
+        payload["cases"][0]["evidence"][1]["structured_context"]["concepts"].append(
+            {
+                "taxonomy": "us-gaap",
+                "concept": "NetIncomeLoss",
+                "label": "Net income",
+                "unit": "USD",
+                "records": [
+                    {"start": 100, "end": 100 + len(third), "exact_span": third}
+                ],
+            }
+        )
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).extract_exploration(payload)
+
+        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(len(step.value[0].observations), 3)
+        self.assertEqual(step.value[0].observations[-1].exact_span, narrative)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("at most the two required structured", feedback["validation_error"])
 
     def test_e1_pair_exhaustion_quarantines_only_the_affected_case(self) -> None:
         first = '{"end":"2025-06-30","val":120}'
@@ -3903,6 +3969,39 @@ class SignalRoleAdapterTests(TestCase):
             "e2_no_candidate_label_inventory_mismatch",
         )
 
+    def test_exploration_e2_rejects_model_authored_group_counts(self) -> None:
+        invalid = {
+            "decisions": [],
+            "no_candidate": {
+                "reason_code": "no_measurable_pattern",
+                "rationale": [
+                    "Three control cases and four positive cases show no pattern."
+                ],
+                "considered_case_refs": ["case-001", "case-002"],
+            },
+        }
+        corrected = json.loads(json.dumps(invalid))
+        corrected["no_candidate"]["rationale"] = [
+            "The supplied literal signatures show no recurring measurable contrast."
+        ]
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        step = LLMSignalMiningModel(caller).discover_exploration(
+            {
+                "signatures": [
+                    {"case_ref": "case-001", "label": "positive"},
+                    {"case_ref": "case-002", "label": "control"},
+                ]
+            }
+        )
+
+        self.assertEqual(step.value, ())
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            feedback["obligations"][0]["issue_code"],
+            "e2_no_candidate_group_count_restatement",
+        )
+
     def test_exploration_e2_rejects_free_text_case_label_reassignment(self) -> None:
         invalid = {
             "decisions": [],
@@ -4149,8 +4248,8 @@ class SignalRoleAdapterTests(TestCase):
                         "reason_code": "no_measurable_pattern",
                         "rationale": [
                             (
-                                "Natural-disaster spans in one control case have "
-                                "no counterpart in either positive case."
+                                "Natural-disaster spans in a control case have "
+                                "no counterpart in the positive cases."
                             ),
                             (
                                 "That topic is absent from the positive cases and "

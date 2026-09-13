@@ -1,5 +1,38 @@
 # Status
 
+V75 committed two real `slow_only` cycles at authoritative Fast 0 / Slow 2
+under contract `5b0f0682...12a92`. All 129 model attempts completed for
+`$0.6126526`; the run reserved 207 acquisition units (361 lower-level requests),
+kept Locked Test sealed, and advanced Registry v1 to v2. Cycle 1 reflection
+processed 12/575 units into 12 episodes/one lesson. Cycle 2 processed 12/573
+available units into 12 episodes/four lessons; its selected input begins with the
+committed cycle-1 terminal result, validation, both effectiveness records, H1
+audit, Update summary, and lessons. This proves the rejection/effectiveness
+feedback crossed the commit boundary into the next reflection and downstream H1.
+
+Update was nonzero in both cycles. Cycle 1 produced and correctly rejected
+`max_drawdown_1y:v2` and `cash_reserves:v2`. Cycle 2 produced two candidates;
+`max_drawdown_1y:v2` regressed, while `financing_listing_action:v2` improved
+availability without worsening the measured 2/3 directional quality, passed the
+paired gate, and was promoted. The final persisted result binds Registry v1→v2
+and hash `3626e59e...606ec0`. Mining nevertheless remained zero in both cycles,
+so the new-Signal goal is still `unmet` and V75 is not final acceptance.
+
+Exact E1 inspection identifies a general search-allocation defect: although each
+packet carried structured and narrative evidence, the six observation slots were
+filled by three already-catalogued XBRL pairs because the prompt globally
+prioritized recurring concepts. E2 consequently saw only old primitives and its
+no-candidate rationale also restated an incorrect model-authored group count.
+E1 now requires the first two-record comparable pair but, whenever narrative text
+is visible, caps structured observations at those two and requires at least one
+literal narrative observation. Bounded correction enforces the mix; final
+recovery can only remove excess structured observations and record a technical
+gap, never invent source content. E2 may no longer restate aggregate group counts,
+whose exact refs remain runtime-owned. The staged Slow progress event now carries
+the actual validated/promoted fields instead of rendering fabricated empty
+results. The Slow-focused regression suite passes; full-suite/lint and a fresh
+V76 live successor remain pending.
+
 V74 was safely interrupted at authoritative Fast 0 / Slow 0 after its entry
 reflection exposed a contradictory anonymity boundary. The corrected feedback
 ordering worked: its selected provider payload began with the V73 terminal result,

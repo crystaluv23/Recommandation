@@ -2500,6 +2500,10 @@ def _run_bounded_evolution_cycle_unlocked(
         {
             "event_type": "slow_loop_result_staged",
             "slow_result_path": str(slow_result_path),
+            "validated_candidates": dict(
+                result.signal_evolution.validated_candidates
+            ),
+            "promoted": list(result.signal_evolution.promoted),
         }
     )
     current_snapshot = registry.freeze()

@@ -538,7 +538,15 @@ _SIGNAL_MINING_EXPLORATION_DECISIONS_OUTPUT = (
     "paraphrase, combine, or extend source gaps. Generic evidence-insufficiency "
     "conclusions that name no particular absent input need no gap citation. "
     "Do not restate any case_ref together with positive or control in rationale; "
-    "the runtime owns and records exact case-to-label mappings separately."
+    "do not state aggregate positive/control case counts in rationale; the runtime "
+    "owns and records exact case-to-label mappings and counts separately."
+)
+
+
+_E2_AGGREGATE_GROUP_COUNT = re.compile(
+    r"\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+"
+    r"(?:positive|control)\s+cases?\b",
+    re.IGNORECASE,
 )
 
 
@@ -1275,6 +1283,83 @@ def _e1_covers_comparison_pair(
         )
         for document_ref, exact_span in spans
     )
+
+
+def _e1_evidence_mix(
+    packet: Mapping[str, Any],
+) -> tuple[frozenset[str], frozenset[tuple[str, str]]]:
+    """Return narrative refs and structured literals visible to one E1 case."""
+
+    narrative_refs: set[str] = set()
+    structured_literals: set[tuple[str, str]] = set()
+    evidence = packet.get("evidence", ())
+    if not isinstance(evidence, (list, tuple)):
+        return frozenset(), frozenset()
+    for item in evidence:
+        if not isinstance(item, Mapping):
+            continue
+        document_ref = item.get("document_ref")
+        if not isinstance(document_ref, str):
+            continue
+        excerpt = item.get("content_excerpt")
+        if isinstance(excerpt, str) and excerpt.strip():
+            narrative_refs.add(document_ref)
+        structured = item.get("structured_context")
+        if not isinstance(structured, Mapping):
+            continue
+        for concept in structured.get("concepts", ()):
+            if not isinstance(concept, Mapping):
+                continue
+            for record in concept.get("records", ()):
+                if not isinstance(record, Mapping):
+                    continue
+                exact_span = record.get("exact_span")
+                if isinstance(exact_span, str) and exact_span:
+                    structured_literals.add((document_ref, exact_span))
+    return frozenset(narrative_refs), frozenset(structured_literals)
+
+
+def _e1_observation_mix_issue(
+    observations: Iterable[SignalMiningObservation],
+    packet: Mapping[str, Any],
+    required_pair: tuple[str, tuple[tuple[str, str], ...]] | None,
+) -> str | None:
+    """Enforce bounded structured/narrative diversity without inventing facts."""
+
+    if required_pair is None:
+        return None
+    narrative_refs, structured_literals = _e1_evidence_mix(packet)
+    if not narrative_refs:
+        return None
+    values = tuple(observations)
+    structured_count = sum(
+        any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for document_ref, exact_span in structured_literals
+        )
+        for observation in values
+    )
+    narrative_count = sum(
+        observation.document_ref in narrative_refs
+        and not any(
+            observation.document_ref == document_ref
+            and observation.exact_span in exact_span
+            for document_ref, exact_span in structured_literals
+        )
+        for observation in values
+    )
+    if structured_count > 2:
+        return (
+            "Signal Mining E1 may cite at most the two required structured records "
+            "when a non-empty narrative excerpt is visible"
+        )
+    if narrative_count < 1:
+        return (
+            "Signal Mining E1 must cite at least one grounded narrative observation "
+            "when a non-empty narrative excerpt is visible"
+        )
+    return None
 
 
 class LLMSignalMiningModel(SignalMiningModel):
@@ -3162,6 +3247,13 @@ class LLMSignalMiningModel(SignalMiningModel):
                             "the first available recurring comparison concept: "
                             + concept
                         )
+                    mix_issue = _e1_observation_mix_issue(
+                        item.observations,
+                        packet_by_ref[case_ref],
+                        required_pair,
+                    )
+                    if case_ref not in pair_quarantine_refs and mix_issue:
+                        raise ValidationError(mix_issue)
                 except ValidationError as exc:
                     issues.append(
                         ValidationIssue(
@@ -3254,6 +3346,39 @@ class LLMSignalMiningModel(SignalMiningModel):
                     if not kept:
                         removed.append(f"signatures[{index}].observations")
                     kept = []
+                    kept_observations = []
+                mix_issue = _e1_observation_mix_issue(
+                    kept_observations,
+                    packet_by_ref[case_ref],
+                    required_pair,
+                )
+                if mix_issue:
+                    _narrative_refs, structured_literals = _e1_evidence_mix(
+                        packet_by_ref[case_ref]
+                    )
+                    pair_literals = set(required_pair[1]) if required_pair else set()
+                    mixed_kept = []
+                    for offset, (raw_observation, observation) in enumerate(
+                        zip(kept, kept_observations)
+                    ):
+                        structured = any(
+                            observation.document_ref == document_ref
+                            and observation.exact_span in exact_span
+                            for document_ref, exact_span in structured_literals
+                        )
+                        required = any(
+                            observation.document_ref == document_ref
+                            and observation.exact_span in exact_span
+                            for document_ref, exact_span in pair_literals
+                        )
+                        if not structured or required:
+                            mixed_kept.append(raw_observation)
+                        else:
+                            removed.append(
+                                f"signatures[{index}].observations[{offset}]"
+                            )
+                    kept = mixed_kept
+                    reasons.append(mix_issue)
                 if reasons:
                     quarantined.setdefault(case_ref, []).extend(reasons)
                     gaps = [
@@ -3283,7 +3408,12 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "comparability, not evidence, and must never be cited or invented when "
                 "the matching literal is absent. When a case exposes two records for "
                 "an inventory concept, its signature must cite both exact records for "
-                "the first such concept. Ground every observation in its own supplied "
+                "the first such concept. If that case also supplies any non-empty "
+                "content_excerpt, cite at least one grounded narrative observation and "
+                "use no more than those two structured-context observations; reserve "
+                "the remaining bounded slots for distinct source-owned narrative facts. "
+                "If no narrative literal is supplied, do not invent one. Ground every "
+                "observation in its own supplied "
                 "literal; the literal is authoritative when a summary overstates it. "
                 "Labels are hidden; do not predict or infer them."
                 + _SIGNAL_MINING_SIGNATURES_OUTPUT
@@ -3734,6 +3864,25 @@ class LLMSignalMiningModel(SignalMiningModel):
                                         "not restate case-to-label mappings in free "
                                         "text. Keep comparison claims generic; runtime "
                                         "records the exact groups separately."
+                                    ),
+                                    paths=("no_candidate.rationale",),
+                                    allowed_repairs=("replace", "remove"),
+                                )
+                            ]
+                        )
+                    if any(
+                        _E2_AGGREGATE_GROUP_COUNT.search(item)
+                        for item in rationale
+                    ):
+                        raise StructuredValidationError(
+                            [
+                                ValidationIssue(
+                                    code="e2_no_candidate_group_count_restatement",
+                                    message=(
+                                        "Exploration E2 no_candidate rationale must "
+                                        "not restate aggregate positive/control case "
+                                        "counts; the runtime records exact group refs "
+                                        "and counts separately."
                                     ),
                                     paths=("no_candidate.rationale",),
                                     allowed_repairs=("replace", "remove"),

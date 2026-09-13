@@ -1634,6 +1634,9 @@ timestamps, exact-span mapping and citation eligibility remain mandatory.
 
 The runtime emits structured, secret-free progress events before and after
 request, cache, Plan, case, scoring, round-commit, and Slow-loop boundaries.
+The staged and completed Slow result events both carry the same validated-candidate
+mapping and promoted-ref list from the actual result; a renderer must not turn
+missing summary fields into fabricated empty results.
 `slow_bootstrap` has no Fast boundary and therefore emits no
 `fast_loop_started` event; its `slow_loop_started` rendering contains no empty
 candidate-validation fields because those values do not exist until completion.

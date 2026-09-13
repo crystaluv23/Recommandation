@@ -165,6 +165,23 @@ class EvolutionCliTests(TestCase):
         self.assertNotIn("validated=", stream.getvalue())
         self.assertNotIn("promoted=", stream.getvalue())
 
+    def test_slow_result_staged_progress_renders_actual_candidate_result(self) -> None:
+        stream = io.StringIO()
+
+        CLI._print_progress(
+            {
+                "event_type": "slow_loop_result_staged",
+                "cycle_id": 2,
+                "validated_candidates": {"signal_a:v2": True},
+                "promoted": ["signal_a:v2"],
+            },
+            stream=stream,
+        )
+
+        output = stream.getvalue()
+        self.assertIn("validated={'signal_a:v2': True}", output)
+        self.assertIn("promoted=['signal_a:v2']", output)
+
     def test_ctrl_c_result_is_durable_and_parser_supports_continuous_mode(self) -> None:
         args = CLI.build_parser().parse_args(
             [

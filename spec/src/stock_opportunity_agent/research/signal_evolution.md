@@ -236,8 +236,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   deterministically adds the other supplied period for that concept when the
   selected span identifies exactly one record. This bounded companion is source
   projection, not a model-authored observation.
-  Queryless extraction prefers a same-concept two-period pair before unrelated
-  one-period structured facts. Generic filing
+  Queryless extraction requires one same-concept two-period pair when the
+  controller exposes one. When the same case also has a non-empty narrative
+  excerpt, those two structured records exhaust the structured-observation
+  allowance and E1 must spend at least one remaining slot on a grounded
+  narrative observation. This deterministic source-mix rule prevents a bounded
+  signature from being filled entirely by already-catalogued XBRL primitives;
+  it does not require an observation when no narrative literal is available and
+  never invents one in final recovery. Generic filing
   cover/legal boilerplate is not a comparison-ready observation and is
   quarantined like any other locally invalid E1 observation.
   Source-owned SEC Company Facts context retains each concept's original
@@ -261,6 +267,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   start at a complete record boundary.
   This changes evidence projection only: it does not define a Signal or use
   labels. Query-directed H2/H3 ranking retains its query-coverage semantics.
+  E2 rationale never restates aggregate positive/control group counts in free
+  text. The controller persists the exact group refs and counts separately, so
+  forbidding this redundant model-authored statistic prevents a plausible but
+  incorrect count from surviving structured validation.
 - Update evidence packets separate label-free source observations from the
   locally computed outcome relation. Model diagnostics must cite a supplied
   document ref and literal span for every fact before an update draft can be
