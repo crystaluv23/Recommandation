@@ -1,5 +1,13 @@
 # Status
 
+V83 was frozen at 2837334 but never executed externally. Pre-launch review
+found the remaining H1 alternate-outcome regex also rejected historical market
+confirmation language. Restrict it to explicit forward outcome horizons and
+collect temporal violations with the whole need-ledger correction frontier.
+All 83 adapter tests pass, including mixed routing/temporal correction and
+historical-price acceptance with future-outcome rejection. Freeze a fresh
+successor from this checkpoint; do not execute the stale V83 contract.
+
 V82 committed Fast/Slow 0/1 with zero valid Mining, Update and Promotion.
 The exact-wire audit found missing explicit target semantics, E1 financial
 comparability bias, weak E2 research relevance, and a stale Update tool-workflow

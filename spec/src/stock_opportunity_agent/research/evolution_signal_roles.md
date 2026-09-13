@@ -420,3 +420,11 @@ counterevidence present in current sources. A second financial pair is optional,
 not preferred over relevant business narrative. Never invent missing narrative
 or infer the hidden case class. This preserves period comparability while
 removing the instruction to prioritize generic financial repetition.
+
+Temporal validation is H1-scoped and part of the aggregate correction frontier,
+alongside need-ledger and explicit post-cutoff violations. Historical stock
+returns, price changes, short-term measurements and event-study terminology
+alone do not redefine the fixed test target. Alternate-outcome detection requires
+an explicitly forward horizon paired with an outcome measure, or an explicit
+fixed-target replacement. This avoids serial correction discovery and preserves
+legitimate point-in-time early-market-confirmation measurements.

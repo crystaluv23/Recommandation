@@ -1628,6 +1628,8 @@ class SignalRoleAdapterTests(TestCase):
             "within the next 12 months / trailing twelve-month revenue before prediction time.",
             "Cash / trailing one-year operating burn from filings available before prediction time.",
             "Use a measurement threshold of 2 for trailing three-month order coverage.",
+            "Trailing one-year stock returns and price movement before prediction time.",
+            "Short-term market reaction within 30 days before the prediction time.",
         ):
             with self.subTest(observable=observable):
                 historical = json.loads(json.dumps(hypothesis))
@@ -1649,6 +1651,22 @@ class SignalRoleAdapterTests(TestCase):
                     LLMSignalMiningModel(
                         ScriptedRoleCaller([invalid, invalid, invalid])
                     ).propose_hypotheses(payload)
+
+        combined = json.loads(json.dumps(hypothesis))
+        combined["hypotheses"][0]["measurement"]["observable"] = (
+            "Change the fixed prediction threshold to 0.8."
+        )
+        combined["need_dispositions"][0]["disposition"] = "update_existing"
+        combined["need_dispositions"][0]["signal_refs"] = ["unknown:v1"]
+        combined_caller = ScriptedRoleCaller([combined, hypothesis])
+        self.assertEqual(len(LLMSignalMiningModel(combined_caller).propose_hypotheses(payload).value), 1)
+        codes = {
+            issue["issue_code"] for issue in combined_caller.calls[1]["payload"][
+                "validation_feedback"
+            ]["obligations"]
+        }
+        self.assertIn("h1_fixed_target_redefinition", codes)
+        self.assertGreater(len(codes), 1)
 
         future_outcome = json.loads(json.dumps(hypothesis))
         future_outcome["hypotheses"][0]["measurement"]["observable"] = (

@@ -301,20 +301,15 @@ _H1_OUTCOME_TERM = (
     r"performance(?!\s+obligations?\b)|outcomes?|market\s+reaction|stock\s+movement)"
 )
 _H1_FUTURE_HORIZON = (
-    r"(?:short[- ]term|within\s+\d+\s+(?:calendar\s+|trading\s+)?days?|"
-    r"(?:over|during|in)\s+the\s+next\s+"
+    r"(?:(?:over|during|in)\s+the\s+next\s+"
     r"(?:(?:one|two|three|four|five|six|\d+)\s+)?"
     r"(?:quarters?|months?|years?|trading\s+days?)|"
     r"(?:next|subsequent|following)\b.{0,30}\b"
     r"(?:quarter(?:ly)?|quarters?|months?|years?|trading\s+days?))"
 )
 _H1_ALTERNATE_TEST_OUTCOME = re.compile(
-    rf"\b(?:event\s+stud(?:y|ies)|"
-    rf"{_H1_FUTURE_HORIZON}.{{0,80}}\b{_H1_OUTCOME_TERM}|"
-    rf"{_H1_OUTCOME_TERM}.{{0,80}}\b{_H1_FUTURE_HORIZON}|"
-    r"(?:price|market|stock)\s+"
-    r"(?:reaction|movement|change|increase|decrease|returns?|trend|momentum|"
-    r"performance)|(?:stocks?\s+)?(?:outperform|underperform)\w*)\b",
+    rf"\b(?:{_H1_FUTURE_HORIZON}.{{0,80}}\b{_H1_OUTCOME_TERM}|"
+    rf"{_H1_OUTCOME_TERM}.{{0,80}}\b{_H1_FUTURE_HORIZON})\b",
     re.IGNORECASE,
 )
 
@@ -2455,6 +2450,26 @@ class LLMSignalMiningModel(SignalMiningModel):
                         ),
                     ]
                     if any(
+                        _H1_FIXED_TARGET_REDEFINITION.search(item)
+                        or _H1_ALTERNATE_TEST_OUTCOME.search(item)
+                        for item in semantic_values
+                    ):
+                        proposal_ref = str(raw_item.get("proposal_ref", ""))
+                        ledger_issues.append(
+                            ValidationIssue(
+                                code="h1_fixed_target_redefinition",
+                                message=(
+                                    f"hypotheses[{index}]: measurement, retrieval, "
+                                    "and falsifiers must remain point-in-time and "
+                                    "cannot redefine fixed outcome semantics"
+                                ),
+                                paths=(f"hypotheses[{index}]",),
+                                item_id=proposal_ref if proposal_ref in allowed_slots else None,
+                                item_id_field="proposal_ref",
+                                allowed_repairs=("replace", "remove"),
+                            )
+                        )
+                    if any(
                         _H1_POST_CUTOFF_SOURCE.search(item)
                         for item in semantic_values
                     ):
@@ -2732,20 +2747,6 @@ class LLMSignalMiningModel(SignalMiningModel):
                     if len(falsifiers) != len(raw_falsifiers):
                         raise ValidationError(
                             "each falsifier requires condition and expected_observation"
-                        )
-                    semantic_texts = (
-                        *normalized_measurement.values(),
-                        query,
-                        *falsifiers,
-                    )
-                    if any(
-                        _H1_FIXED_TARGET_REDEFINITION.search(text) is not None
-                        or _H1_ALTERNATE_TEST_OUTCOME.search(text) is not None
-                        for text in semantic_texts
-                    ):
-                        raise ValidationError(
-                            "measurement, retrieval, and falsifiers must remain "
-                            "point-in-time and cannot redefine fixed outcome semantics"
                         )
                     need_refs = validate_need_refs(
                         raw.get("need_refs"), path=f"{item_path}.need_refs"
