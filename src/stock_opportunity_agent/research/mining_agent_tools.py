@@ -27,6 +27,7 @@ from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
     _company_facts_context,
     _evidence_source_family,
+    _query_relevant_excerpt,
 )
 
 _FACT_PROJECTION_CHARS = 12_000
@@ -368,7 +369,15 @@ def fetch_case_evidence(
             if projected:
                 facts.extend(projected)
                 continue
-        excerpt = document.content[:_NARRATIVE_EXCERPT_CHARS]
+        family = _evidence_source_family(document.source_type)
+        if family not in {"filing", "transcript", "news"}:
+            # Structured families that project no facts (price series, raw
+            # provider envelopes) stay fetched documents with ledger
+            # coverage; they are never laundered into narrative events.
+            continue
+        excerpt, _clipped = _query_relevant_excerpt(
+            document, query=query, max_chars=_NARRATIVE_EXCERPT_CHARS
+        )
         tokens = set(re.findall(r"[a-z0-9]+", excerpt.casefold()))
         matched_terms.update(term for term in terms if term in tokens)
         events.append(

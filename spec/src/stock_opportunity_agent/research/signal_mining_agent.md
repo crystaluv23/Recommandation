@@ -31,7 +31,13 @@ gate passes; this module spec governs the new path only.
   combinations. Graph extent therefore equals requested extent and inherits
   the frozen budgets.
 - Narrative evidence enters as bounded event views with exact spans and
-  source lineage; it never synthesizes numeric facts.
+  source lineage; it never synthesizes numeric facts. Narrative events
+  project only from the narrative source families (`filing`, `transcript`,
+  `news`): structured families that project no facts — price series, raw
+  provider envelopes — remain fetched documents with ledger coverage and are
+  never laundered into narrative events. Event excerpts reuse the production
+  visible-text projection with its substantive anchors, so SEC SGML/HTML
+  boilerplate never occupies an event slot.
 
 ### Tool surface
 
@@ -88,6 +94,12 @@ gate passes; this module spec governs the new path only.
   catalog, because changing an existing Signal belongs to the unchanged
   Update path. The runtime rejects catalog-duplicating observables at
   proposal time.
+- Candidate evidence is semantically grounded, not merely present: every
+  known concept named by the observable or normalization must be backed by
+  at least one cited fact of that concept, and `compare_groups` results
+  carry the fact_ref behind each value so the model can cite the evidence
+  its measurement actually consumes. Ledger-existence alone never proves
+  grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 

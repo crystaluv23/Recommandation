@@ -77,6 +77,56 @@ def _facts_document(company_id: str, index: int) -> RawInfoDocument:
 
 
 class MiningAgentToolsTests(unittest.TestCase):
+    def test_price_series_and_envelopes_never_become_narrative_events(self) -> None:
+        case = make_case("tools_narrative", 4.0)
+        price_document = RawInfoDocument.create(
+            document_id="tools-price-1",
+            company_id=case.company_id,
+            source_type="historical_price",
+            published_at=NOW,
+            available_at=NOW,
+            content=json.dumps(
+                [
+                    {
+                        "adjusted_close": 21.65,
+                        "as_of_date": "2024-09-12",
+                        "close": 21.65,
+                    }
+                ]
+            ),
+        )
+        filing_document = RawInfoDocument.create(
+            document_id="tools-filing-1",
+            company_id=case.company_id,
+            source_type="6-k",
+            published_at=NOW,
+            available_at=NOW,
+            content=(
+                "<DOCUMENT><TYPE>6-K <TEXT><html><body>Shipped the first "
+                "commercial units under the new offtake agreement with the "
+                "regional utility.</body></html></TEXT></DOCUMENT>"
+            ),
+        )
+        store = RawInfoStore(
+            documents=(price_document, filing_document, _facts_document(case.company_id, 2))
+        )
+
+        result = fetch_case_evidence(
+            store,
+            case,
+            source_families=("market", "filing", "financial"),
+            query=None,
+            max_documents=3,
+        )
+
+        excerpts = [event.excerpt for event in result.narrative_events]
+        self.assertEqual(len(result.narrative_events), 1)
+        self.assertNotIn("adjusted_close", excerpts[0])
+        self.assertNotIn("<DOCUMENT>", excerpts[0])
+        self.assertIn("offtake agreement", excerpts[0])
+        document_ids = {document.document_id for document in result.documents}
+        self.assertIn("tools-price-1", document_ids)
+
     def test_project_case_facts_binds_concept_unit_period_value_and_span(self) -> None:
         case = make_case("tools_a", 4.0)
         store = RawInfoStore(documents=(_facts_document(case.company_id, 1),))
