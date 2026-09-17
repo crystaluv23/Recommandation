@@ -461,3 +461,15 @@ n≈152——单周期永远到不了，区分度只能来自跨周期累计（p
    committed + 导入历史全部周期的 dev∪check case id，抽样前剔除——修复
    实测缺陷（V92 cycle 2 的 check 含 1 个 V91 已暴露 case；每周期 permute
    重划分本已存在但重抽≠安全，check 必须单向只用未暴露 case）。
+
+**修订补记（同日，用户澄清后重设计）**：用户澄清 permute 语义——每轮 slow
+round 是全新开始，完全重新 permute 并划分挖掘/测试集，上轮 check case 本轮
+可以进挖掘集。重分析确认该模型正确且优于全局单向排除：(1) 候选评估的诚实
+性由周内 dev/check 不相交保证（候选只从当轮 dev 生成、spec 提案即冻结，
+后续轮次不会重新拟合）；(2) 唯一需要的跨轮保护是按候选的——候选 C 永不
+评估于其提案轮 dev 集（`generation_case_ids` 随首个评估记录固化并跨记录
+透传）∪ 其已评估过的 case（防止 pooled 二项统计伪重复）；(3) 全局单向
+排除会单向耗尽正例池（~70 周期）且与"每轮全新开始"语义冲突。已回退全局
+排除 wiring，把排除下沉到 effectiveness gate 的 `excluded_case_ids`
+（主循环与居留者复访均接入）；经 reflection 掩码文本的残余标签扩散为
+已接受残余风险，由 provisional 淘汰规则兜底。826 测试 + lint 通过。

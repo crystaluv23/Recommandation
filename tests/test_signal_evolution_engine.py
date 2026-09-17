@@ -195,9 +195,9 @@ class SignalEvolutionTests(TestCase):
             & {groups[item] for item in first["check_case_ids"]}
         )
 
-    def test_slow_sampling_excludes_previously_exposed_cases(self) -> None:
+    def test_slow_sampling_rotates_cohorts_across_cycles(self) -> None:
         cases = tuple(
-            make_case(f"slow_exposed_{index}", 2.5 if index % 2 else 1.2)
+            make_case(f"slow_rotate_{index}", 2.5 if index % 2 else 1.2)
             for index in range(1, 25)
         )
 
@@ -208,31 +208,25 @@ class SignalEvolutionTests(TestCase):
             dev_limit=6,
             check_limit=4,
         )
-        exposed = {*first["dev_case_ids"], *first["check_case_ids"]}
         second = build_slow_sampling_manifest(
             cases,
             cycle_id=2,
             base_seed="fixture-contract",
             dev_limit=6,
             check_limit=4,
-            previously_exposed=sorted(exposed),
         )
 
-        self.assertEqual(set(second["previously_exposed"]), exposed)
-        self.assertFalse(
-            set(second["dev_case_ids"]) & exposed
-            or set(second["check_case_ids"]) & exposed
-        )
-        with self.assertRaisesRegex(ValidationError, "exposure ledger"):
-            build_slow_sampling_manifest(
-                cases[:4],
-                cycle_id=3,
-                base_seed="fixture-contract",
-                dev_limit=6,
-                check_limit=4,
-                previously_exposed=sorted(
-                    case.case_id for case in cases[:4]
-                ),
+        # Each cycle is a fresh permutation of the same population: roles may
+        # repeat across cycles (evaluation hygiene is enforced per candidate
+        # at the effectiveness gate), while within a cycle dev and check stay
+        # issuer-disjoint.
+        self.assertNotEqual(first["dev_case_ids"], second["dev_case_ids"])
+        self.assertNotEqual(first["check_case_ids"], second["check_case_ids"])
+        for manifest in (first, second):
+            groups = manifest["issuer_groups"]
+            self.assertFalse(
+                {groups[item] for item in manifest["dev_case_ids"]}
+                & {groups[item] for item in manifest["check_case_ids"]}
             )
 
     def test_pooled_provisional_decision_zones(self) -> None:
@@ -272,6 +266,75 @@ class SignalEvolutionTests(TestCase):
             [record(0, 0, 0)] * 5
         )
         self.assertEqual(starved["action"], "eliminate")
+
+    def test_candidate_evaluation_exclusions_pool_generation_and_prior_cases(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals", candidate_root=root / "cand")
+            registry.install_catalog(SEED_CATALOG)
+            current = registry.latest_spec("revenue_growth_yoy")
+            spec = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "signal_id": "exclusion_measurement",
+                    "version": 1,
+                    "description": "Exclusion cohort fixture.",
+                }
+            )
+            ref = registry.stage_candidate(spec, origin="test")
+            candidate_hash = registry.candidate_hash(ref)
+            identity_fields = (
+                "baseline_hash",
+                "cohort_hash",
+                "source_manifest_hash",
+                "projection_hash",
+                "validator_hash",
+                "model_hash",
+                "sampling_hash",
+            )
+
+            def evaluate_once(case_ids, generation, seed):
+                identity = {
+                    field: hashlib.sha256(
+                        f"{field}-{seed}".encode("utf-8")
+                    ).hexdigest()
+                    for field in identity_fields
+                }
+                return registry.record_candidate_validation(
+                    ref,
+                    candidate_hash=candidate_hash,
+                    evaluation_identity=identity,
+                    accepted=False,
+                    reasons=("fixture",),
+                    effectiveness={
+                        "disposition": "provisional",
+                        "case_ids": list(case_ids),
+                        "generation_case_ids": list(generation),
+                    },
+                )
+
+            evaluate_once(["check_a", "check_b"], ["dev_1", "dev_2"], 1)
+            evaluate_once(["check_c"], ["dev_1", "dev_2"], 2)
+
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("exclusion_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            excluded = engine._candidate_evaluation_exclusions(ref)
+
+            self.assertEqual(
+                excluded,
+                ("check_a", "check_b", "check_c", "dev_1", "dev_2"),
+            )
 
     def test_slow_source_read_keeps_whole_entries_and_enforces_scope(self) -> None:
         catalog = {
@@ -678,7 +741,7 @@ class SignalEvolutionTests(TestCase):
                 raw_info_store=RawInfoStore(),
                 discovery_cases=tuple(
                     make_case(f"slow_only_{index}", 2.5 if index % 2 else 1.2)
-                    for index in range(1, 97)
+                    for index in range(1, 13)
                 ),
                 meta_memory=PlanMetaMemory(),
                 workspace=workspace,
@@ -738,22 +801,17 @@ class SignalEvolutionTests(TestCase):
             first_manifest = workspace.load_slow_input(1)[
                 "sampling_manifest"
             ]
-            first_exposed = {
-                *first_manifest["dev_case_ids"],
-                *first_manifest["check_case_ids"],
-            }
-            self.assertTrue(first_exposed)
-            self.assertEqual(
-                set(second_input["sampling_manifest"]["previously_exposed"]),
-                first_exposed,
+            second_manifest = second_input["sampling_manifest"]
+            # Fresh per-cycle permutation: cohorts rotate, and evaluation
+            # hygiene is per candidate (proposal-cycle dev cohort plus own
+            # prior evaluation cases), not a global one-way pool.
+            self.assertNotEqual(
+                first_manifest["dev_case_ids"],
+                second_manifest["dev_case_ids"],
             )
-            self.assertFalse(
-                set(second_input["sampling_manifest"]["dev_case_ids"])
-                & first_exposed
-            )
-            self.assertFalse(
-                set(second_input["sampling_manifest"]["check_case_ids"])
-                & first_exposed
+            self.assertNotEqual(
+                first_manifest["check_case_ids"],
+                second_manifest["check_case_ids"],
             )
             second_memory = workspace.load_slow_memory(2)
             prior_cycle_refs = {

@@ -152,13 +152,17 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   and reveals the frozen positive/control labels only in E2. Fast demand augments
   this search but never gates it. A grounded `no_measurable_pattern` result is a
   semantic mining outcome, distinct from skipped work or technical failure.
-  Slow sampling remains owned by the Discovery split and is one-way: the
-  sampler receives the exposure ledger of every committed local and imported
-  cycle's dev/check case ids, records it in `previously_exposed`, and never
-  resamples an exposed case, so check cohorts stay untouched by reflection or
-  meta-memory lineage. Sampling still freezes per cycle from a seed that
-  includes the cycle id, rotating the dev/check draw inside the unexposed
-  population. A separate identity-only
+  Slow sampling remains owned by the Discovery split and permutes the whole
+  population afresh each cycle from a seed that includes the cycle id: a case
+  may serve a mining role in one cycle and an evaluation role in any other,
+  and within each cycle dev and check stay issuer-disjoint and label-balanced.
+  Evaluation hygiene is enforced per candidate at the effectiveness gate: a
+  candidate is never evaluated on its proposal cycle's dev cohort (recorded as
+  its immutable `generation_case_ids`) or on any case it was already evaluated
+  on, so pooled paired evidence counts each case at most once and never scores
+  a case the frozen spec was authored against. Residual cross-cycle label
+  diffusion through masked reflection text is accepted and bounded by the
+  provisional elimination rule. A separate identity-only
   inventory covers all approved non-Locked-Test development splits so a Fast
   backlog row originating from an Anchor case can still resolve its source owner
   and receive scoped brand masking. This inventory exposes neither outcomes nor

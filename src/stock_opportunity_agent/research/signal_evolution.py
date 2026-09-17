@@ -226,29 +226,23 @@ def build_slow_sampling_manifest(
     base_seed: str,
     dev_limit: int,
     check_limit: int,
-    previously_exposed: Iterable[str] = (),
 ) -> dict[str, Any]:
     """Freeze an outcome-independent ordering and issuer-disjoint dev/check split.
 
-    Labels are used only for the explicitly disclosed binary stratification; they
-    never affect the stable ordering within a class or allow case replacement.
-    ``previously_exposed`` case ids (any prior dev or check role, local or
-    imported) are removed from the population before the draw, so evaluation
-    cohorts are one-way: a case that ever entered a mining or evaluation role
-    is never sampled again, keeping holdout evidence untouched by lineage.
+    Each cycle permutes the whole population afresh: any case may serve a
+    mining or evaluation role in any later cycle. Evaluation honesty is
+    enforced per candidate at the effectiveness gate, which excludes the
+    proposal cycle's dev cohort and the candidate's own previously evaluated
+    cases. Labels are used only for the explicitly disclosed binary
+    stratification; they never affect the stable ordering within a class or
+    allow case replacement.
     """
 
     if cycle_id < 1 or not base_seed.strip() or dev_limit < 1 or check_limit < 1:
         raise ValidationError("Slow sampling inputs are invalid")
-    exposed = {str(item) for item in previously_exposed}
-    population = tuple(
-        case for case in cases if case.case_id not in exposed
-    )
+    population = tuple(cases)
     if not population:
-        raise ValidationError(
-            "Slow sampling requires unexposed Discovery cases; the exposure "
-            f"ledger excluded all {len(exposed)} known ids"
-        )
+        raise ValidationError("Slow sampling requires Discovery cases")
     seed = _canonical_hash(
         {
             "schema_version": "slow-sampling-seed-v1",
@@ -327,7 +321,7 @@ def build_slow_sampling_manifest(
         "issuer_groups": {
             case.case_id: issuer_ref[case.company_id] for case in selected
         },
-        "previously_exposed": sorted(exposed),
+        "previously_exposed": [],
         "exclusions": [],
     }
 
@@ -3458,7 +3452,6 @@ class SignalEvolutionEngine:
                 2 * self.mining_config.induction_cases_per_class,
             ),
             check_limit=self.effectiveness_evaluator.case_limit,
-            previously_exposed=sorted(self._slow_sampling_exposed_case_ids()),
         )
         value = validate_slow_input(
             {
@@ -3585,49 +3578,6 @@ class SignalEvolutionEngine:
         ):
             raise ValidationError("imported Slow history manifest hash mismatch")
         return manifest
-
-    def _slow_sampling_exposed_case_ids(self) -> set[str]:
-        """Union of dev/check case ids of every committed local or imported cycle.
-
-        The exposure ledger is the holdout boundary: a case that ever served a
-        mining or evaluation role in this lineage is never sampled again, so a
-        check cohort cannot reuse a case whose labels or evidence may already
-        live in reflection or meta-memory.
-        """
-
-        exposed: set[str] = set()
-        for item in self.workspace.committed_slow_artifacts():
-            manifest = item["slow_input"].get("sampling_manifest", {})
-            if isinstance(manifest, Mapping):
-                for key in ("dev_case_ids", "check_case_ids"):
-                    exposed.update(
-                        str(case_id) for case_id in manifest.get(key, ())
-                    )
-        history = self._imported_slow_history_manifest()
-        if history is not None:
-            namespace = str(history.get("source_namespace", ""))
-            for item in history.get("cycle_artifacts", ()):
-                if not isinstance(item, Mapping):
-                    continue
-                relative = Path(str(item.get("path", "")))
-                if relative.name != "slow_input.json":
-                    continue
-                path = self.workspace.root / "slow_history" / namespace / relative
-                if (
-                    not path.is_file()
-                    or hashlib.sha256(path.read_bytes()).hexdigest()
-                    != str(item.get("sha256", ""))
-                ):
-                    raise ValidationError(
-                        "imported Slow sampling exposure copy hash mismatch"
-                    )
-                manifest = _read_json(path).get("sampling_manifest", {})
-                if isinstance(manifest, Mapping):
-                    for key in ("dev_case_ids", "check_case_ids"):
-                        exposed.update(
-                            str(case_id) for case_id in manifest.get(key, ())
-                        )
-        return exposed
 
     def _imported_slow_history_cutoff(self) -> int:
         """Return the immutable source Slow pointer represented by history."""
@@ -4465,7 +4415,14 @@ class SignalEvolutionEngine:
                 spec,
                 candidate_hash=candidate_hash,
                 preferred_case_ids=validation_case_ids.get(signal_ref, ()),
-                excluded_case_ids=induction_case_ids.get(signal_ref, ()),
+                excluded_case_ids=tuple(
+                    _ordered_unique(
+                        [
+                            *induction_case_ids.get(signal_ref, ()),
+                            *self._candidate_evaluation_exclusions(signal_ref),
+                        ]
+                    )
+                ),
                 induction_supported=signal_ref in induction_case_ids,
                 strict_preferred=self._active_sampling_manifest is not None,
             )
@@ -4529,11 +4486,23 @@ class SignalEvolutionEngine:
                         spec,
                         skill=skill,
                         preferred_case_ids=validation_case_ids.get(signal_ref, ()),
-                        excluded_case_ids=induction_case_ids.get(signal_ref, ()),
+                        excluded_case_ids=tuple(
+                            _ordered_unique(
+                                [
+                                    *induction_case_ids.get(signal_ref, ()),
+                                    *self._candidate_evaluation_exclusions(
+                                        signal_ref
+                                    ),
+                                ]
+                            )
+                        ),
                         induction_supported=signal_ref in induction_case_ids,
                         strict_preferred=self._active_sampling_manifest is not None,
                     )
                     effectiveness = paired.to_dict()
+                    effectiveness = self._attach_generation_case_ids(
+                        signal_ref, effectiveness
+                    )
                     reasons = paired.reasons
                     accepted = paired.accepted
                 else:
@@ -4680,6 +4649,66 @@ class SignalEvolutionEngine:
             ),
         )
 
+    def _candidate_evaluation_exclusions(self, signal_ref: str) -> tuple[str, ...]:
+        """Cases a candidate must never be (re-)evaluated on.
+
+        Per-candidate holdout hygiene: the proposal cycle's dev cohort (whose
+        labels the generator saw — recorded as ``generation_case_ids`` on the
+        candidate's first evaluation) plus every case this exact candidate was
+        already evaluated on, so pooled paired evidence counts each case at
+        most once and never scores a case the frozen spec was authored
+        against.
+        """
+
+        excluded: set[str] = set()
+        records = self.registry.list_candidate_evaluations(signal_ref)
+        for record in records:
+            effectiveness = record.get("effectiveness", {})
+            excluded.update(
+                str(case_id) for case_id in effectiveness.get("case_ids", ())
+            )
+        for record in records:
+            generation = record.get("effectiveness", {}).get("generation_case_ids")
+            if isinstance(generation, list):
+                excluded.update(str(case_id) for case_id in generation)
+                break
+        return tuple(sorted(excluded))
+
+    def _current_generation_case_ids(self) -> tuple[str, ...]:
+        """The proposal-cycle dev cohort for candidates staged this cycle."""
+
+        return tuple(
+            case.case_id for case in self._manifest_cases("dev_case_ids")
+        )
+
+    def _attach_generation_case_ids(
+        self, signal_ref: str, effectiveness: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Carry the candidate's original proposal-cycle dev cohort forward.
+
+        A re-proposed or revisited candidate inherits the generation context
+        of its first evaluation; only a genuinely first evaluation records
+        the current cycle's dev cohort.
+        """
+
+        prior_generation = next(
+            (
+                record.get("effectiveness", {}).get("generation_case_ids")
+                for record in self.registry.list_candidate_evaluations(signal_ref)
+                if isinstance(
+                    record.get("effectiveness", {}).get("generation_case_ids"),
+                    list,
+                )
+            ),
+            None,
+        )
+        effectiveness["generation_case_ids"] = (
+            list(prior_generation)
+            if isinstance(prior_generation, list)
+            else list(self._current_generation_case_ids())
+        )
+        return effectiveness
+
     def _provisional_resident_refs(self) -> tuple[str, ...]:
         """New-signal candidates whose latest stored evaluation is provisional.
 
@@ -4801,23 +4830,25 @@ class SignalEvolutionEngine:
             spec, skill = self.registry.load_candidate(ref)
             candidate_hash = self.registry.candidate_hash(ref)
             preferred = tuple(case.case_id for case in check_cases)
+            excluded = self._candidate_evaluation_exclusions(ref)
             paired = self.effectiveness_evaluator.evaluate(
                 spec,
                 skill=skill,
                 preferred_case_ids=preferred,
-                excluded_case_ids=(),
+                excluded_case_ids=excluded,
                 induction_supported=True,
                 strict_preferred=bool(check_cases),
             )
             effectiveness = self._apply_pooled_provisional_decision(
                 ref, paired.to_dict(), is_new_signal=True
             )
+            effectiveness = self._attach_generation_case_ids(ref, effectiveness)
             accepted = effectiveness.get("disposition") == "promoted"
             evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
                 spec,
                 candidate_hash=candidate_hash,
                 preferred_case_ids=preferred,
-                excluded_case_ids=(),
+                excluded_case_ids=excluded,
                 induction_supported=True,
                 strict_preferred=bool(check_cases),
             )
