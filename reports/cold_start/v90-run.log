@@ -1,0 +1,719 @@
+Resuming contract hash: 3eb83e5064fb37f0f84fe81ab407807eea011593406887c143f2023b0c0f74fe
+[04:54:04] [cycle 1] 开始 cycle：Fast 已完成 0/0，阶段 slow_loop
+[04:54:24] [cycle 1] slow_loop_started
+[04:54:27] [cycle 1] request_ready · stage=slow_source_read · model=deepseek-v4-flash-thinking
+[04:54:27] [cycle 1] external_call_started · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[04:54:35] [cycle 1] external_call_completed · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[04:54:54] [cycle 1] request_ready · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking
+[04:54:54] [cycle 1] external_call_started · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[04:55:50] [cycle 1] external_call_completed · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[04:56:45] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-032",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 1 in 5s using the same frozen contract.
+[04:56:54] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[04:57:13] [cycle 1] slow_loop_started
+[04:58:58] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[04:58:58] [cycle 1] external_call_started · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=3
+[05:01:08] [cycle 1] external_call_completed · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=3
+[05:01:13] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:01:13] [cycle 1] external_call_started · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=4
+[05:01:56] [cycle 1] external_call_completed · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=4
+[05:02:32] [cycle 1] request_ready · stage=signal_mining_contrast · model=deepseek-v4-flash-thinking
+[05:02:32] [cycle 1] external_call_started · stage=signal_mining_contrast · model=deepseek-v4-flash-thinking · attempt=5
+[05:02:53] [cycle 1] external_call_completed · stage=signal_mining_contrast · model=deepseek-v4-flash-thinking · attempt=5
+[05:07:16] [cycle 1] request_ready · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking
+[05:07:16] [cycle 1] external_call_started · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=6
+[05:08:31] [cycle 1] external_call_completed · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=6
+[05:08:32] [cycle 1] request_ready · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking
+[05:08:32] [cycle 1] external_call_started · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=7
+[05:09:46] [cycle 1] external_call_completed · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=7
+[05:09:47] [cycle 1] request_ready · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking
+[05:09:47] [cycle 1] external_call_started · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=8
+[05:10:52] [cycle 1] external_call_completed · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=8
+[05:10:53] [cycle 1] request_ready · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking
+[05:10:53] [cycle 1] external_call_started · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=9
+[05:12:10] [cycle 1] external_call_completed · stage=signal_mining_exploration_extract · model=deepseek-v4-flash-thinking · attempt=9
+[05:12:11] [cycle 1] request_ready · stage=signal_mining_exploration_extract_correction · model=deepseek-v4-flash-thinking
+[05:12:11] [cycle 1] external_call_started · stage=signal_mining_exploration_extract_correction · model=deepseek-v4-flash-thinking · attempt=10
+[05:12:28] [cycle 1] external_call_completed · stage=signal_mining_exploration_extract_correction · model=deepseek-v4-flash-thinking · attempt=10
+[05:12:29] [cycle 1] request_ready · stage=signal_mining_exploration_discover · model=deepseek-v4-flash-thinking
+[05:12:29] [cycle 1] external_call_started · stage=signal_mining_exploration_discover · model=deepseek-v4-flash-thinking · attempt=11
+[05:12:54] [cycle 1] external_call_completed · stage=signal_mining_exploration_discover · model=deepseek-v4-flash-thinking · attempt=11
+[05:12:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:12:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=12
+[05:12:58] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=12
+[05:12:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:12:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=13
+[05:13:02] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=13
+[05:13:03] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:03] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=14
+[05:13:05] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=14
+[05:13:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=15
+[05:13:09] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=15
+[05:13:09] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:09] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=16
+[05:13:12] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=16
+[05:13:12] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:12] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=17
+[05:13:15] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=17
+[05:13:15] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[05:13:15] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=18
+[05:13:19] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=18
+[05:13:19] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:19] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=19
+[05:13:22] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=19
+[05:13:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=20
+[05:13:26] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=20
+[05:13:27] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:27] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=21
+[05:13:30] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=21
+[05:13:31] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:31] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=22
+[05:13:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=22
+[05:13:34] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=23
+[05:13:37] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=23
+[05:13:38] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:38] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=24
+[05:13:41] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=24
+[05:13:41] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:41] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=25
+[05:13:45] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=25
+[05:13:45] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:45] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=26
+[05:13:49] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=26
+[05:13:49] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[05:13:49] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=27
+[05:13:52] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=27
+[05:13:52] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:52] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=28
+[05:13:55] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=28
+[05:13:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:13:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=29
+[05:14:00] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=29
+[05:14:00] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:00] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=30
+[05:14:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=30
+[05:14:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=31
+[05:14:09] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=31
+[05:14:10] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:10] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=32
+[05:14:13] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=32
+[05:14:14] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:14] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=33
+[05:14:19] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=33
+[05:14:19] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:19] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=34
+[05:14:22] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=34
+[05:14:36] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:36] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=35
+[05:14:39] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=35
+[05:14:39] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:39] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=36
+[05:14:42] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=36
+[05:14:46] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:46] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=37
+[05:14:49] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=37
+[05:14:49] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:49] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=38
+[05:14:52] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=38
+[05:14:52] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:52] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=39
+[05:14:55] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=39
+[05:14:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=40
+[05:14:59] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=40
+[05:14:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:14:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=41
+[05:15:02] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=41
+[05:15:03] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:15:03] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=42
+[05:15:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=42
+[05:15:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:15:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=43
+[05:15:08] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=43
+[05:15:09] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:15:09] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=44
+[05:15:11] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=44
+[05:15:22] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:15:22] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=45
+[05:15:26] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=45
+[05:15:36] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[05:15:36] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=46
+[05:16:40] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=46
+[05:16:41] [cycle 1] request_ready · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking
+[05:16:41] [cycle 1] external_call_started · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking · attempt=47
+[05:17:29] [cycle 1] external_call_completed · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking · attempt=47
+[05:17:31] [cycle 1] request_ready · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking
+[05:17:31] [cycle 1] external_call_started · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking · attempt=48
+[05:18:17] [cycle 1] external_call_completed · stage=signal_update_decision_correction · model=deepseek-v4-flash-thinking · attempt=48
+[05:18:18] [cycle 1] structured_correction_projection_applied
+[05:18:18] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:18:18] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=49
+[05:18:23] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=49
+[05:18:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:18:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=50
+[05:18:27] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=50
+[05:18:27] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[05:18:27] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=51
+[05:18:30] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=51
+[05:18:31] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:18:31] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=52
+[05:18:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=52
+[05:18:34] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[05:18:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=53
+[05:20:04] [cycle 1] external_call_failed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=53
+[05:20:04] retryable_external_error
+{
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "error_type": "RetryableOpenAIClientError",
+  "locked_test_accessed": false,
+  "message": "OpenAI API request failed: _ssl.c:993: The handshake operation timed out",
+  "resume": "rerun the same command with the same frozen contract",
+  "status": "retryable_external_error",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 2 in 10s using the same frozen contract.
+[05:20:17] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:20:36] [cycle 1] slow_loop_started
+[05:22:25] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:22:25] [cycle 1] external_call_started · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=54
+[05:23:15] [cycle 1] external_call_failed · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=54
+[05:23:15] retryable_external_error
+{
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "error_type": "RetryableOpenAIClientError",
+  "locked_test_accessed": false,
+  "message": "OpenAI API connection failed: [SSL] record layer failure (_ssl.c:2580)",
+  "resume": "rerun the same command with the same frozen contract",
+  "status": "retryable_external_error",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 3 in 20s using the same frozen contract.
+[05:23:38] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:23:56] [cycle 1] slow_loop_started
+[05:25:43] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:25:43] [cycle 1] external_call_started · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=55
+[05:27:59] [cycle 1] external_call_completed · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking · attempt=55
+[05:28:06] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:28:06] [cycle 1] external_call_started · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=56
+[05:28:44] [cycle 1] external_call_completed · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=56
+[05:28:49] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:28:49] [cycle 1] external_call_started · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=57
+[05:29:18] [cycle 1] external_call_completed · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking · attempt=57
+[05:29:24] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 4 in 40s using the same frozen contract.
+[05:30:08] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:30:27] [cycle 1] slow_loop_started
+[05:32:14] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:32:14] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:32:19] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:32:19] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:32:24] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:32:24] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:32:29] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 5 in 60s using the same frozen contract.
+[05:33:33] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:33:52] [cycle 1] slow_loop_started
+[05:35:44] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:35:44] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:35:49] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:35:49] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:35:54] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:35:54] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:35:58] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 6 in 60s using the same frozen contract.
+[05:37:02] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:37:21] [cycle 1] slow_loop_started
+[05:39:04] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:39:04] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:39:09] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:39:09] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:39:14] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:39:14] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:39:18] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 7 in 60s using the same frozen contract.
+[05:40:21] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:40:40] [cycle 1] slow_loop_started
+[05:42:23] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:42:23] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:42:28] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:42:28] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:42:33] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:42:33] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:42:37] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 8 in 60s using the same frozen contract.
+[05:43:40] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:43:58] [cycle 1] slow_loop_started
+[05:45:43] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:45:43] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:45:48] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:45:48] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:45:52] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:45:52] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:45:57] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 9 in 60s using the same frozen contract.
+[05:47:00] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:47:18] [cycle 1] slow_loop_started
+[05:49:02] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:49:02] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:49:07] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:49:07] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:49:12] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:49:12] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:49:16] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 10 in 60s using the same frozen contract.
+[05:50:20] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:50:38] [cycle 1] slow_loop_started
+[05:52:24] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:52:24] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:52:29] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:52:29] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:52:34] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:52:34] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:52:38] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 11 in 60s using the same frozen contract.
+[05:53:42] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:54:00] [cycle 1] slow_loop_started
+[05:55:44] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:55:44] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:55:49] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:55:49] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:55:53] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:55:53] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:55:58] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 12 in 60s using the same frozen contract.
+[05:57:01] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[05:57:20] [cycle 1] slow_loop_started
+[05:59:05] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:59:05] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[05:59:10] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:59:10] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:59:15] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:59:15] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[05:59:19] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 13 in 60s using the same frozen contract.
+[06:00:23] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:00:41] [cycle 1] slow_loop_started
+[06:02:32] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:02:32] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:02:37] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:02:37] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:02:42] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:02:42] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:02:47] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 14 in 60s using the same frozen contract.
+[06:03:51] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:04:11] [cycle 1] slow_loop_started
+[06:06:01] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:06:01] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:06:06] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:06:06] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:06:11] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:06:11] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:06:16] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 15 in 60s using the same frozen contract.
+[06:07:20] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:07:40] [cycle 1] slow_loop_started
+[06:09:31] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:09:31] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:09:36] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:09:36] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:09:41] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:09:41] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:09:46] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 16 in 60s using the same frozen contract.
+[06:10:50] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:11:10] [cycle 1] slow_loop_started
+[06:13:01] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:13:01] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:13:06] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:13:06] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:13:12] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:13:12] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:13:16] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 17 in 60s using the same frozen contract.
+[06:14:21] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:14:40] [cycle 1] slow_loop_started
+[06:16:31] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:16:31] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:16:36] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:16:36] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:16:41] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:16:41] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:16:46] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 18 in 60s using the same frozen contract.
+[06:17:50] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:18:09] [cycle 1] slow_loop_started
+[06:20:03] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:20:03] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:20:08] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:20:08] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:20:13] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:20:13] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:20:18] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 19 in 60s using the same frozen contract.
+[06:21:23] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:21:42] [cycle 1] slow_loop_started
+[06:23:33] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:23:33] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:23:38] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:23:38] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:23:43] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:23:43] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:23:47] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 20 in 60s using the same frozen contract.
+[06:24:52] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:25:11] [cycle 1] slow_loop_started
+[06:27:02] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:27:02] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:27:07] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:27:07] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:27:13] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:27:13] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:27:17] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 21 in 60s using the same frozen contract.
+[06:28:22] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:28:41] [cycle 1] slow_loop_started
+[06:30:30] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:30:31] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:30:36] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:30:36] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:30:42] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:30:42] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:30:47] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 22 in 60s using the same frozen contract.
+[06:31:52] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:32:11] [cycle 1] slow_loop_started
+[06:34:00] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:34:00] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:34:05] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:34:05] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:34:10] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:34:10] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:34:15] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 23 in 60s using the same frozen contract.
+[06:35:19] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[06:35:39] [cycle 1] slow_loop_started
+[06:37:32] [cycle 1] request_ready · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:37:32] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses · model=deepseek-v4-flash-thinking
+[06:37:37] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:37:37] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:37:43] [cycle 1] request_ready · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:37:43] [cycle 1] request_cache_hit · stage=signal_mining_hypotheses_correction · model=deepseek-v4-flash-thinking
+[06:37:47] cycle_paused · committed round=0 · committed cycle=0
+{
+  "case_ref": "case-005",
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 261,
+  "dashboard_skipped_run_count": 0,
+  "last_completed_cycle": 0,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "provider_reason": "provider_error",
+  "resume": "rerun the same command with the same frozen contract",
+  "retryable": true,
+  "status": "slow_loop_data_unavailable",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90"
+}
+Temporary transport failure; auto-resume 24 in 60s using the same frozen contract.

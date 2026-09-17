@@ -257,3 +257,35 @@ H1 将 observable 约束到窗口内可测量的证据族，或先扩展分析�
 本轮代码修复：外部调用失败的异常消息此前只保留类名（本次 9/13 H1 暂停
 无法从工件诊断的直接原因），现在 ledger 与 external_call_failed 事件都持久
 化截断到 500 字符的 error_message；新增回归测试，全套 782 测试通过。
+
+
+## V90 执行结果（2026-09-17，Phase 0b of v2.1）
+
+V90（合约 3eb83e50...74fe，代码 10e57d5，slow-history 导入 V89 的两个已提交
+周期与 Registry v2）冻结并执行授权 live run；在 Alpha Vantage 数据配额上
+安全暂停：57 次尝试、$0.4964、authoritative 指针 0/0、零周期提交。
+完整日志 reports/cold_start/v90-run.log。
+
+已确认的 Phase 0b 核心证据（来自缓存的 H1 请求/响应）：
+
+- `measurable_evidence_manifest` 完整进入 H1 wire payload；
+- H1 三个假设为 cash_runway_months_from_operating_burn、
+  quantified_project_development_bridge_specificity、
+  operating_income_growth_minus_revenue_growth——全部锚定结构化来源
+  （company_facts/financials/10-k/10-q），检索意图均为清单内证据族；
+  不再有 V88/V89 的分析师目标价、backlog/RPO 等窗口外 observable。
+  "告知可测证据族 → 假设锚定结构化概念" 的因果链在 live 上成立，
+  该 manifest 同时是新挖矿控制器 Seed A 的输入件。
+
+暂停原因（非设计失败）：case-005 证据获取阶段 Alpha Vantage 返回
+Information 信封（per_minute_limit 与 alpha_vantage_information_error，
+后者措辞不在既有 quota 标记表内），归类 provider_error →
+slow_loop_data_unavailable，wrapper 24 次自动恢复未清（约 1.5 小时，
+判断为当日配额/端点限制）。LLM 侧仅 2 次 SSL 瞬断且均按可重试暂停恢复，
+新增的 error_message 持久化首次在 live 中提供了可诊断的失败明细。
+
+处置：停止 wrapper；V90 保持不可变诊断工作区（57 次尝试与全部缓存响应
+可回放）。注意其合约绑定代码 10e57d5——在 HEAD 前进后 V90 不可再 resume，
+如需完成两周期验收应在配额窗口重开时从 V89 重新冻结 V91。
+下一个已知缺口：alpha_vantage_information_error 的信封原文未入账本
+（只存分类后的 reason），quota 标记表需要一次泛化复核。

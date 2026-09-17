@@ -640,10 +640,19 @@ PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies
 bash scripts/lint_repo.sh
 ```
 
-Phase 0b 冻结（注意：冻结要求 git 干净——src/scripts/configs 无未提交变更）：
+Phase 0b 冻结（v2.1 勘误：wrapper 不暴露 v8 历史导入，须直接调 CLI 并用
+`--slow-history-from`；`--slow-bootstrap-from` 是被拒绝/已提交 Fast 种子路径，
+对 slow_only 源会报 "no authoritative seed boundary"。init 会安装种子目录，
+slow-history 导入前必须清掉 `signals/` 才能绑定源工作区的精确 Registry。
+冻结要求 git 干净——src/scripts/configs 无未提交变更）：
 
 ```sh
-bash scripts/run_information_plan_evolution.sh new \
+PY=/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+$PY scripts/evolve_information_schemes.py init \
+  --workspace runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90 \
+  --raw-info-root runs/cold_start/data/global-raw-info-oracle-v1
+rm -rf runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90/signals
+PYTHONPATH=src $PY scripts/evolve_information_schemes.py freeze-run \
   --workspace runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v90 \
   --raw-info-root runs/cold_start/data/global-raw-info-oracle-v1 \
   --approved-dataset runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/dataset_manifest.approved.json \
@@ -651,7 +660,8 @@ bash scripts/run_information_plan_evolution.sh new \
   --judge-model deepseek-v4-flash \
   --evolution-model deepseek-v4-flash-thinking \
   --max-external-attempts 200 --max-total-cost 5 \
-  --slow-bootstrap-from runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v89 \
+  --slow-history-from runs/cold_start/evolution/information-evolution-slow-self-evolution-20260913-v89 \
+  --max-slow-cycles 2 \
   --data-external \
   --max-data-requests-per-cycle 200 --max-data-requests-per-run 400 \
   --data-provider '*' --data-capability '*' --data-source-type '*'
@@ -672,6 +682,10 @@ bash scripts/run_information_plan_evolution.sh resume \
 语义提示：
 
 - 退出码 75 = 可重试传输暂停，wrapper 在 retry window 内自动恢复；非 75 停机排查；
+- 已知配额风险（2026-09-17 V90 实测）：Alpha Vantage 每分钟/当日配额会在
+  证据获取阶段触发 slow_loop_data_unavailable 暂停，`alpha_vantage_information_error`
+  的信封原文未入账本且措辞不在既有 quota 标记表内——重开 run 前先确认 AV
+  配额窗口，并考虑先泛化 quota 标记/原文留痕；
 - 模型别名与 V89 合约一致：judge=`deepseek-v4-flash`，
   evolution=`deepseek-v4-flash-thinking`；
 - 审计入口：`experiments/cycles/cycle-*/slow_loop_result.json`（计数）、

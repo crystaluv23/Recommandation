@@ -1,5 +1,20 @@
 # Status
 
+2026-09-17 v2.1 执行推进：Phase 0 规格已提交（signal_mining_agent.md 新建，
+H/E 标注为受门控的 legacy/对照路径，architecture.md 增加受门控替换段）。
+Phase 0b 的 V90（合约 3eb83e50...74fe）live 验证完成核心问题后停在 Alpha
+Vantage 配额：H1 wire 内含 measurable_evidence_manifest，三个假设全部锚定
+结构化来源（现金跑道/项目桥特异性/营业利润-营收增长差），不再出现窗口外
+observable——manifest 因果链在 live 上成立。57 次尝试/$0.4964、指针 0/0、
+零提交；AV Information 信封配额致 case-005 证据获取暂停，24 次自动恢复未
+清后按计划停止，V90 为不可变诊断工作区（代码绑定 10e57d5，HEAD 前进后
+不可 resume，重开需从 V89 重冻结 V91）。Phase 1 最小 Evidence Graph 工具
+已实现（mining_agent_tools.py：Fact/Relation 惰性投影、同概念记录对、
+冻结规则 compute_statistic、同案例跨文档共现、带 omitted-coverage 的
+fetch；6 项新测试，全套 790 测试与 lint 通过）。下一步 Phase 2 受控
+controller。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
+quota 标记表需复核。
+
 2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：
 以共享 PIT Evidence Graph（惰性构造、Relation 基数有界）为基座，用受控的
 LabelAwareMiningController 合并 hypothesis validation（终局附带 need-disposition
