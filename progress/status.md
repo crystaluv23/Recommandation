@@ -28,7 +28,14 @@ V90 manifest 锚定后 0.25–0.46，最佳假设 +0.20），四项不变量（�
 逐字回溯、PIT、账本 append-only、视图零身份泄漏）在真实别名下全部
 通过；报告见 reports/cold_start/mining-replay-*.json 与 prompt 审计
 Phase 3 节。同时修复 Alpha Vantage 信封原文（脱敏截断）随 reason
-持久化。全套 803 测试与 lint 通过。下一步 Phase 4 受控候选闭环。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
+持久化。Phase 4 受控候选闭环已完成：mining_closure.py 以八类固定场景
+（单事实/多期间/分子分母/跨文档/叙事事件/证据不足/技术失败/no-pattern）
+在合成 issuer 不相交 dev/check cohort 上零调用驱动控制器，四个场景
+（单事实、比率、跨文档、叙事事件）完成 discovery→candidate→fixture→
+holdout 模拟→晋升决定的完整闭环并 promote，多期间场景的 check 集故意
+与 dev 模式矛盾后诚实 reject（绝对底线：最低可用数 + 方向正确严格
+大于错误）；控制器视图补充 known_event_refs。全套 811 测试与 lint 通过。
+下一步 Phase 5 live shadow cycle。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
 quota 标记表需复核。
 
 2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：

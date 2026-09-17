@@ -219,6 +219,7 @@ class LabelAwareMiningController:
         self._corrections = 0
         self._model_calls = 0
         self._facts: dict[str, EvidenceFact] = {}
+        self._events: dict[str, Any] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
         self._last_read_span: str | None = None
@@ -283,6 +284,7 @@ class LabelAwareMiningController:
             "signal_catalog": [dict(card) for card in self.signal_catalog],
             "case_refs": [ref for ref, _case in self.case_pairs],
             "known_fact_refs": sorted(self._facts),
+            "known_event_refs": sorted(self._events),
             "known_relation_refs": sorted(self._relations),
             "label_map": dict(self._label_map),
         }
@@ -402,6 +404,7 @@ class LabelAwareMiningController:
             for fact in result.facts:
                 self._facts[fact.fact_ref] = fact
             for event in result.narrative_events:
+                self._events[event.event_ref] = event
                 self._documents[event.event_ref] = result
             for document in result.documents:
                 self._documents[f"document-{document.document_id}"] = result

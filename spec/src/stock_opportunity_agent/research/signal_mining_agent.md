@@ -146,6 +146,16 @@ gate passes; this module spec governs the new path only.
 - Module output: candidate Signal proposals with complete evidence grounding
   that feed the existing candidate-validation pipeline unchanged, plus the
   cycle's mining ledger and terminal dispositions.
+- The controlled closure harness (`mining_closure.py`) provides eight fixed
+  scenario fixtures — single fact, multi-period, ratio, cross-document,
+  narrative event, insufficient evidence, technical failure, and no-pattern
+  with coverage — over synthetic issuer-disjoint dev/check cohorts, and
+  drives at least one candidate through the complete local loop
+  discovery -> candidate -> fixture -> holdout simulation -> promotion
+  decision with zero model calls, proving the candidate path is structurally
+  reachable before any live shadow cycle. Its promotion decision keeps the
+  absolute floor (minimum availability and strictly positive directional
+  evidence) and never lowers it for yield.
 - Legacy H/E code remains callable as the read-only contrast path; the
   production switch is a separate gated change that also archives the legacy
   specs per repository removal discipline.
