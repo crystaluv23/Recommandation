@@ -225,3 +225,35 @@ V88 四份 E1 初始响应本地回放：三批一次接受，第四批仅隔离
 观察；不再因未选财务科目而制造纠正或替换业务证据。相关 93 测试及全套
 781 测试通过（/tmp/slow-v89-focused-tests.log、/tmp/slow-v89-full-tests.log）。
 新提示词是否改善真实候选方向、以及正式 Mining/Update 有效结果，仍待新冻结周期。
+
+
+## V89 执行结果（2026-09-16 授权重放）
+
+V89（合约 d38aa3b7...ab4bda，代码 400e352）从 2026-09-13 的 H1 暂停点恢复，
+两个 slow cycle 全部提交，进程退出码 0；共 166 次 DeepSeek 尝试、$1.1365、
+200 次数据请求。完整运行日志 reports/cold_start/v89-resume-run.log。
+
+三层验收结果：
+
+1. 无报错跑通：达成。全部 stage 完成；一次 9/13 的 H1 OpenAIClientError 为
+   瞬时错误（本次同请求重传成功），一次 exploration discover 可重试暂停由
+   wrapper 自动恢复；无阶段失败、无错误提交。
+2. 信息链路：达成。cycle-2 reflection 实际消费 cycle-1 的 result/validation/
+   effectiveness/mining decision 单元（slow:1:* 12 条 -> 12 episodes/4 lessons）；
+   H1 在新指令下输出显式 retrieval_plan（如 backlog/RPO 检索意图与来源类型），
+   假设排序相对 cycle-1 改变；Update 目标在 cycle-2 出现新 customer_concentration:v2。
+   证据面实际扩展：financial_statements 36、price_daily 59、news 2、transcripts 1。
+3. 非零结果：部分达成。Update 两轮各 3 个候选并全部真实配对评估
+   （cycle1: cash_reserves/guidance_acceleration/max_drawdown_1y；cycle2 含
+   customer_concentration），均被诚实处决性/fixture 门槛拒绝；Mining 仍为 0。
+
+Mining 归零的本轮定性（E2 contrast 逐案陈述）：E1 窗口是 8-K/10-Q 定性披露，
+而 H1 假设要求量化分子/分母（分析师目标价或指引隐含价、季度经营现金流出、
+六个月内可转化 backlog/RPO 值），E2 诚实地判 inconclusive 而非编造。这是
+假设-证据匹配错位与 PIT 窗口数据可得性问题，不是管线故障；下一步杠杆在
+H1 将 observable 约束到窗口内可测量的证据族，或先扩展分析师预期/新闻证据
+覆盖，而不是继续修补提示词。
+
+本轮代码修复：外部调用失败的异常消息此前只保留类名（本次 9/13 H1 暂停
+无法从工件诊断的直接原因），现在 ledger 与 external_call_failed 事件都持久
+化截断到 500 字符的 error_message；新增回归测试，全套 782 测试通过。

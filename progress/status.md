@@ -1,5 +1,23 @@
 # Status
 
+V89 executed both authorized slow cycles to clean commit (exit 0): 166 attempts,
+`$1.1365`, one transient H1 provider error auto-recovered and one retryable
+exploration pause auto-resumed; no stage failures. Cross-cycle information flow
+is verified live: cycle-2 reflection consumed cycle-1 result/validation/
+effectiveness/mining-decision units, H1 emitted explicit retrieval plans with
+reordered hypotheses, and Update added a new customer_concentration:v2 target.
+Update is nonzero both cycles (3+3 candidates, all honestly rejected by paired
+gates). Mining remains zero for a now-clear reason: E2's per-case contrast shows
+the PIT evidence windows are qualitative 8-K/10-Q disclosures while H1
+hypotheses demand quantified numerators/denominators (analyst targets, backlog
+values, runway outflows); E2 honestly returns inconclusive. Next lever is
+constraining H1 observables to evidence actually available in-window or
+extending analyst-expectations/news coverage before induction, not more prompt
+patches. External-call failure messages are now persisted (ledger + trajectory,
+500-char cap) so transient-versus-permanent failures are diagnosable from
+artifacts; 782 tests pass. See the V89 section of
+`reports/slow_round_prompt_audit_20260913.md`.
+
 V88 completed Fast/Slow 0/1 with Mining 0, Update 0 and promotions 0. Isolated
 DeepSeek replay of V87 four financial executions succeeded with correct latest
 facts and exact citations. H1 still repeated prior incomplete retrieval plans;

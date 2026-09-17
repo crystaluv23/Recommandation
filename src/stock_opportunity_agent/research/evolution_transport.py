@@ -263,6 +263,7 @@ class ExternalAttemptLedger:
         actual_cost: float,
         response_hash: str | None = None,
         error_type: str | None = None,
+        error_message: str | None = None,
     ) -> None:
         if status not in {"completed", "failed"} or actual_cost < 0:
             raise ValidationError("invalid attempt completion")
@@ -281,6 +282,8 @@ class ExternalAttemptLedger:
             attempt["response_hash"] = response_hash
         if error_type is not None:
             attempt["error_type"] = error_type
+        if error_message is not None:
+            attempt["error_message"] = error_message[:500]
         data["attempts"] = attempts
         _atomic_write_json(self.path, data)
 
@@ -981,6 +984,7 @@ class StructuredRoleClient:
                     actual_cost=actual_cost,
                     response_hash=response_hash,
                     error_type=type(exc).__name__,
+                    error_message=str(exc),
                 )
                 _emit_runtime_progress(
                     self.on_progress,
@@ -1052,22 +1056,24 @@ class StructuredRoleClient:
         except StructuredOutputInvalid:
             raise
         except Exception as exc:
-            self.ledger.finalize(
-                attempt_id,
-                status="failed",
-                actual_cost=0.0,
-                error_type=type(exc).__name__,
-            )
-            _emit_runtime_progress(
-                self.on_progress,
-                "external_call_failed",
-                stage=stage,
-                model_alias=self.registration.alias,
-                request_hash=request_hash,
-                attempt_id=attempt_id,
-                error_type=type(exc).__name__,
-            )
-            raise
+                self.ledger.finalize(
+                    attempt_id,
+                    status="failed",
+                    actual_cost=0.0,
+                    error_type=type(exc).__name__,
+                    error_message=str(exc),
+                )
+                _emit_runtime_progress(
+                    self.on_progress,
+                    "external_call_failed",
+                    stage=stage,
+                    model_alias=self.registration.alias,
+                    request_hash=request_hash,
+                    attempt_id=attempt_id,
+                    error_type=type(exc).__name__,
+                    error_message=str(exc)[:500],
+                )
+                raise
 
 
 class JSONRoleCaller(Protocol):

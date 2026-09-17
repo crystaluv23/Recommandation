@@ -1294,6 +1294,23 @@ class RunControlTests(TestCase):
             with self.assertRaisesRegex(ExternalBudgetExhausted, "attempt ceiling"):
                 ledger.reserve(SHA_C, reserved_cost=0.01)
 
+    def test_attempt_ledger_failure_message_is_persisted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "attempts.json"
+            ledger = ExternalAttemptLedger(path, max_attempts=2, max_total_cost=0.5)
+            attempt_id = ledger.reserve(SHA_A, reserved_cost=0.2)
+            ledger.finalize(
+                attempt_id,
+                status="failed",
+                actual_cost=0.0,
+                error_type="OpenAIClientError",
+                error_message="OpenAI API returned HTTP 400: " + "x" * 900,
+            )
+            stored = json.loads(path.read_text(encoding="utf-8"))["attempts"][0]
+            self.assertEqual(stored["error_type"], "OpenAIClientError")
+            self.assertEqual(len(stored["error_message"]), 500)
+            self.assertTrue(stored["error_message"].startswith("OpenAI API returned HTTP 400"))
+
     def test_structured_client_preflight_scans_and_never_calls_network(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
