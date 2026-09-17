@@ -1,0 +1,160 @@
+{
+  "reports": [
+    {
+      "schema_version": "mining-arrival-replay-v1",
+      "workspace": "information-evolution-slow-self-evolution-20260917-v90",
+      "cohort_case_count": 32,
+      "concept_catalog_size": 124,
+      "hypotheses": [
+        {
+          "hypothesis_id": "h1-c0001-s01",
+          "observable": "cash_burn_ratio_from_latest_structured_financials",
+          "source_types": [
+            "sec_company_facts",
+            "company_facts",
+            "financials",
+            "financial_statements"
+          ],
+          "family_inputs": [
+            {
+              "family": "company_facts",
+              "cases_with_documents": 10,
+              "coverage": 0.3125
+            },
+            {
+              "family": "financial_statements",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financials",
+              "cases_with_documents": 8,
+              "coverage": 0.25
+            },
+            {
+              "family": "sec_company_facts",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            }
+          ],
+          "concept_inputs": [
+            {
+              "concept": "CashAndCashEquivalentsAtCarryingValue",
+              "cases_with_latest": 15,
+              "cases_with_comparable_pair": 15,
+              "pair_coverage": 0.4688
+            },
+            {
+              "concept": "NetCashProvidedByUsedInOperatingActivities",
+              "cases_with_latest": 15,
+              "cases_with_comparable_pair": 15,
+              "pair_coverage": 0.4688
+            }
+          ],
+          "input_count": 6,
+          "mean_input_coverage": 0.25
+        },
+        {
+          "hypothesis_id": "h1-c0001-s02",
+          "observable": "quantified_order_backlog_specificity",
+          "source_types": [
+            "10-k",
+            "10-q",
+            "filing",
+            "filing_body"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 27,
+              "coverage": 0.8438
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 32,
+              "coverage": 1.0
+            },
+            {
+              "family": "filing_body",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 4,
+          "mean_input_coverage": 0.4609
+        },
+        {
+          "hypothesis_id": "h1-c0001-s03",
+          "observable": "quantified_project_development_bridge_specificity",
+          "source_types": [
+            "10-k",
+            "10-q",
+            "20-f",
+            "40-f",
+            "6-k",
+            "filing",
+            "filing_body"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 27,
+              "coverage": 0.8438
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "20-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "40-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "6-k",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 32,
+              "coverage": 1.0
+            },
+            {
+              "family": "filing_body",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 7,
+          "mean_input_coverage": 0.2634
+        }
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "workspace": "information-evolution-slow-self-evolution-20260917-v90",
+      "evidence_traceability_failures": [],
+      "pit_failures": [],
+      "ledger_append_only": true,
+      "identity_masking_failures": [],
+      "all_passed": true,
+      "terminal_kind": "evidence_unavailable",
+      "ledger_entries": 2
+    }
+  ]
+}

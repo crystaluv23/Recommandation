@@ -21,8 +21,14 @@ mining ledger（input/output 哈希、coverage、omitted coverage）、Seed A
 Seed B runtime-owned label map（模型自撰 label 字段直接拒绝）、候选证据
 必须 ⊆ 账本且至少一次 fetch 后才能提出、no_pattern 必须引用账本内
 explored families。7 项 fixture-caller 测试驱动完整
-seed→action→tool→ledger→terminal→validation 链；全套 797 测试与 lint
-通过。下一步 Phase 3 零调用历史回放（信息到达率对比）。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
+seed→action→tool→ledger→terminal→validation 链。Phase 3 零调用历史回放
+已完成：mining_replay.py + scripts/run_mining_replay.py 在 V87/V89/V90
+冻结历史上确定性测量信息到达率（V87 0.21–0.43、V89 0.22–0.26、
+V90 manifest 锚定后 0.25–0.46，最佳假设 +0.20），四项不变量（证据
+逐字回溯、PIT、账本 append-only、视图零身份泄漏）在真实别名下全部
+通过；报告见 reports/cold_start/mining-replay-*.json 与 prompt 审计
+Phase 3 节。同时修复 Alpha Vantage 信封原文（脱敏截断）随 reason
+持久化。全套 803 测试与 lint 通过。下一步 Phase 4 受控候选闭环。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
 quota 标记表需复核。
 
 2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：

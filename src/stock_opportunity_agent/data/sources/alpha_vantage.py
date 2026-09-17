@@ -244,9 +244,11 @@ class AlphaVantageClient:
         data = self.transport.get_json(f"{self.base_url}?{query}", {})
         problem = alpha_vantage_json_error(data)
         if problem is not None:
+            detail = self._redact_secret(_alpha_vantage_error_excerpt(data))
+            message = f"{problem}: {detail}" if detail else problem
             if problem.startswith(QUOTA_DEFERRED_ERROR_PREFIX):
-                raise DataQuotaDeferred("alpha_vantage", None, problem)
-            raise DataSourceError(problem)
+                raise DataQuotaDeferred("alpha_vantage", None, message)
+            raise DataSourceError(message)
         return data
 
     def _news_sentiment_query(
@@ -292,6 +294,18 @@ class AlphaVantageClient:
 
     def _redact_secret(self, value: object) -> str:
         return str(value).replace(self.api_key, "<redacted>")
+
+
+def _alpha_vantage_error_excerpt(body: Any) -> str:
+    """Return one bounded, whitespace-collapsed provider envelope excerpt."""
+
+    if not isinstance(body, Mapping):
+        return ""
+    for key in ("Information", "Note", "Error Message"):
+        value = body.get(key)
+        if isinstance(value, str) and value.strip():
+            return " ".join(value.split())[:200]
+    return ""
 
 
 def alpha_vantage_json_error(body: Any) -> str | None:

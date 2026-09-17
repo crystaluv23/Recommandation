@@ -289,3 +289,38 @@ slow_loop_data_unavailable，wrapper 24 次自动恢复未清（约 1.5 小时�
 如需完成两周期验收应在配额窗口重开时从 V89 重新冻结 V91。
 下一个已知缺口：alpha_vantage_information_error 的信封原文未入账本
 （只存分类后的 reason），quota 标记表需要一次泛化复核。
+
+
+## Phase 3 零调用历史回放（2026-09-17，v2.1）
+
+新增 mining_replay.py 与 scripts/run_mining_replay.py：从冻结工作区的
+trajectory/cache 按时间序取最终 H1 假设，在本地 4.9GB oracle 上零调用
+确定性重放，按操作化定义测量信息到达率——每个假设的声明输入 =
+retrieval_intent 的来源族 + 测量文本点名的结构化概念；族输入按"窗口内
+存在该族文档的 cohort 案例比例"计，概念输入按"存在 latest+comparable
+记录对的比例"计；头条指标为全部输入覆盖率均值。报告存
+reports/cold_start/mining-replay-2026-09-17.json（V87/V89）与
+mining-replay-v90-2026-09-17.json（V90）。
+
+实测（cohort=32，概念目录 124–158 个可投影结构化概念）：
+
+- V87 cycle1：0.2135 / 0.4271 / 0.2135（最高为现金跑道假设——正是当轮
+  唯一产出可执行候选的方向）；
+- V89 cycle2：0.2211 / 0.2585 / 0.2370；
+- V90（manifest 锚定后）：0.25 / 0.4609 / 0.2634——最佳假设到达率较
+  V89 同位提升 0.26→0.46，且三个假设全部锚定结构化来源。
+
+结论：到达率指标把"假设要求窗口外输入"与"证据基底缺内容"分开了——
+目录显示 158 个概念可投影，而旧假设的声明输入仅约四分之一可到达；
+manifest 修复方向正确但不足以单独达标，Seed A 的"工具执行后确认证据
+readiness"准入（Phase 2 已实现）是必要的第二道门。
+
+回放不变量核验（每工作区，真实别名/真实文档）：证据逐字可回溯到
+content_hash 文档、PIT 成立、账本 action_id 连续 append-only、模型视图
+零身份泄漏（32 案例公司名/别名扫描）——全部通过；回放控制器终端
+evidence_unavailable、零越界工具调用。
+
+顺带修复一个已记录泛化缺口：Alpha Vantage Information/Note/Error 信封
+原文（脱敏、折叠空白、截断 200 字符）现随分类 reason 一起持久化
+（alpha_vantage.py `_alpha_vantage_error_excerpt`），下次配额事件可
+直接核对 quota 标记表；新增/更新 3 项测试，全套 803 测试与 lint 通过。

@@ -385,9 +385,10 @@ class AlphaVantageClientTests(TestCase):
         transport = FakeJsonTransport({response_url: {"Information": "test-key rate limit reached"}})
         client = AlphaVantageClient("test-key", transport=transport)
 
-        with self.assertRaises(DataSourceError) as ctx:
+        with self.assertRaises(DataQuotaDeferred) as ctx:
             client.company_overview("IBM")
-        self.assertEqual(ctx.exception.reason, "quota_deferred:alpha_vantage_request_limit")
+        self.assertIn("quota_deferred:alpha_vantage_request_limit: ", str(ctx.exception))
+        self.assertIn("rate limit reached", str(ctx.exception))
         self.assertNotIn("test-key", str(ctx.exception))
 
     def test_alpha_vantage_error_detector_preserves_valid_empty_payloads(self) -> None:
@@ -400,6 +401,31 @@ class AlphaVantageClientTests(TestCase):
             alpha_vantage_json_error({"Information": "endpoint is unavailable"}),
             "alpha_vantage_information_error",
         )
+
+    def test_alpha_vantage_information_error_keeps_envelope_excerpt(self) -> None:
+        base = "https://www.alphavantage.co/query"
+        response_url = base + "?function=OVERVIEW&symbol=IBM&apikey=test-key"
+        transport = FakeJsonTransport(
+            {
+                response_url: {
+                    "Information": (
+                        "  This   endpoint requires a premium   subscription "
+                        "plan. Visit https://www.alphavantage.co/premium/ "
+                    )
+                }
+            }
+        )
+        client = AlphaVantageClient("test-key", transport=transport)
+
+        with self.assertRaises(DataSourceError) as ctx:
+            client.company_overview("IBM")
+
+        self.assertTrue(
+            str(ctx.exception).startswith("alpha_vantage_information_error: ")
+        )
+        self.assertIn("requires a premium", str(ctx.exception))
+        self.assertNotIn("  ", str(ctx.exception))
+        self.assertNotIn("test-key", str(ctx.exception))
 
     def test_raw_endpoint_helpers_use_expected_alpha_vantage_functions(self) -> None:
         base = "https://www.alphavantage.co/query"

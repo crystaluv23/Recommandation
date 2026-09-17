@@ -63,6 +63,7 @@ class EvidenceFact:
     exact_span: str
     content_hash: str
     available_at: str
+    source_display_name: str = ""
 
 
 @dataclass(frozen=True)
@@ -162,6 +163,7 @@ def _facts_from_document(
                     exact_span=span,
                     content_hash=document.content_hash,
                     available_at=document.available_at.isoformat(),
+                    source_display_name=str(concept.get("label", "")),
                 )
             )
     return tuple(facts)
@@ -179,6 +181,20 @@ def project_case_facts(
         if "fact" not in source_type and "financial" not in source_type:
             continue
         facts.extend(_facts_from_document(document, case_ref=ref))
+    return tuple(facts)
+
+
+def project_facts_from_documents(
+    documents: Iterable[RawInfoDocument], *, case_ref: str
+) -> tuple[EvidenceFact, ...]:
+    """Project structured facts from already-selected point-in-time documents."""
+
+    facts: list[EvidenceFact] = []
+    for document in documents:
+        source_type = document.source_type.casefold()
+        if "fact" not in source_type and "financial" not in source_type:
+            continue
+        facts.extend(_facts_from_document(document, case_ref=case_ref))
     return tuple(facts)
 
 

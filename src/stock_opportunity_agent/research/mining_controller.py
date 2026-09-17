@@ -19,7 +19,10 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research.evolution_core import EvolutionCase
+from stock_opportunity_agent.research.evolution_core import (
+    EvolutionCase,
+    _mask_identity_values,
+)
 from stock_opportunity_agent.research.mining_agent_tools import (
     EvidenceFact,
     EvidenceRelation,
@@ -193,6 +196,7 @@ class LabelAwareMiningController:
         heavy_action_limit: int = 12,
         light_action_limit: int = 4,
         validation_sink: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None,
+        identity_aliases: Sequence[str] = (),
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -207,6 +211,7 @@ class LabelAwareMiningController:
         self.heavy_action_limit = heavy_action_limit
         self.light_action_limit = light_action_limit
         self.validation_sink = validation_sink
+        self.identity_aliases = tuple(identity_aliases)
         self.ledger = MiningLedger(cycle_id=cycle_id, seed_id=f"seed-{seed}")
         self._state = "ready"
         self._heavy_used = 0
@@ -216,6 +221,7 @@ class LabelAwareMiningController:
         self._facts: dict[str, EvidenceFact] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
+        self._last_read_span: str | None = None
         self._label_map: dict[str, str] = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
             for ref, case in self.case_pairs
@@ -280,6 +286,8 @@ class LabelAwareMiningController:
             "known_relation_refs": sorted(self._relations),
             "label_map": dict(self._label_map),
         }
+        if self._last_read_span is not None:
+            view["last_read_span"] = self._last_read_span
         if self.seed == "hypothesis":
             view["backlog_needs"] = [dict(row) for row in self.backlog_needs]
         return view
@@ -491,10 +499,18 @@ class LabelAwareMiningController:
                         start + len(fact.exact_span) + _READ_SPAN_CONTEXT_CHARS,
                     )
                     context = document.content[left:right]
+        masked = _mask_identity_values(
+            context, self.identity_aliases, expand_aliases=False
+        )
+        self._last_read_span = masked
         self._append(
             "read_span",
             raw,
-            payload={"fact_ref": fact_ref, "context_chars": len(context)},
+            payload={
+                "fact_ref": fact_ref,
+                "context_chars": len(masked),
+                "masked": masked,
+            },
             evidence_refs=(fact_ref,),
         )
         self._heavy_used += 1

@@ -1,0 +1,434 @@
+{
+  "reports": [
+    {
+      "schema_version": "mining-arrival-replay-v1",
+      "workspace": "information-evolution-slow-self-evolution-20260913-v89",
+      "cohort_case_count": 32,
+      "concept_catalog_size": 158,
+      "hypotheses": [
+        {
+          "hypothesis_id": "h1-c0002-s01",
+          "observable": "share_of_disclosed_order_backlog_value_convertible_within_six_months",
+          "source_types": [
+            "10-k",
+            "10-q",
+            "20-f",
+            "40-f",
+            "6-k",
+            "filing",
+            "filing_body",
+            "financial_statements",
+            "company_facts",
+            "company_news",
+            "news",
+            "financials"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 25,
+              "coverage": 0.7812
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            },
+            {
+              "family": "20-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "40-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "6-k",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "company_facts",
+              "cases_with_documents": 10,
+              "coverage": 0.3125
+            },
+            {
+              "family": "company_news",
+              "cases_with_documents": 3,
+              "coverage": 0.0938
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 32,
+              "coverage": 1.0
+            },
+            {
+              "family": "filing_body",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financial_statements",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financials",
+              "cases_with_documents": 17,
+              "coverage": 0.5312
+            },
+            {
+              "family": "news",
+              "cases_with_documents": 3,
+              "coverage": 0.0938
+            }
+          ],
+          "concept_inputs": [
+            {
+              "concept": "Revenue",
+              "cases_with_latest": 1,
+              "cases_with_comparable_pair": 1,
+              "pair_coverage": 0.0312
+            }
+          ],
+          "input_count": 13,
+          "mean_input_coverage": 0.2211
+        },
+        {
+          "hypothesis_id": "h1-c0002-s02",
+          "observable": "disclosed_cash_runway_at_least_six_months",
+          "source_types": [
+            "10-k",
+            "10-q",
+            "20-f",
+            "40-f",
+            "6-k",
+            "filing",
+            "filing_body",
+            "financial_statements",
+            "company_facts",
+            "financials"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 25,
+              "coverage": 0.7812
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            },
+            {
+              "family": "20-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "40-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "6-k",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "company_facts",
+              "cases_with_documents": 10,
+              "coverage": 0.3125
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 32,
+              "coverage": 1.0
+            },
+            {
+              "family": "filing_body",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financial_statements",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financials",
+              "cases_with_documents": 17,
+              "coverage": 0.5312
+            }
+          ],
+          "concept_inputs": [
+            {
+              "concept": "ShortTermInvestments",
+              "cases_with_latest": 7,
+              "cases_with_comparable_pair": 6,
+              "pair_coverage": 0.1875
+            }
+          ],
+          "input_count": 11,
+          "mean_input_coverage": 0.2585
+        },
+        {
+          "hypothesis_id": "h1-c0002-s03",
+          "observable": "quantified_project_development_bridge_specificity",
+          "source_types": [
+            "10-k",
+            "10-q",
+            "20-f",
+            "40-f",
+            "6-k",
+            "filing",
+            "filing_body",
+            "financial_statements",
+            "company_facts",
+            "company_news",
+            "news",
+            "financials"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 25,
+              "coverage": 0.7812
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            },
+            {
+              "family": "20-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "40-f",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "6-k",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "company_facts",
+              "cases_with_documents": 10,
+              "coverage": 0.3125
+            },
+            {
+              "family": "company_news",
+              "cases_with_documents": 3,
+              "coverage": 0.0938
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 32,
+              "coverage": 1.0
+            },
+            {
+              "family": "filing_body",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financial_statements",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "financials",
+              "cases_with_documents": 17,
+              "coverage": 0.5312
+            },
+            {
+              "family": "news",
+              "cases_with_documents": 3,
+              "coverage": 0.0938
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 12,
+          "mean_input_coverage": 0.237
+        }
+      ]
+    },
+    {
+      "schema_version": "mining-arrival-replay-v1",
+      "workspace": "information-evolution-slow-self-evolution-20260913-v87",
+      "cohort_case_count": 32,
+      "concept_catalog_size": 152,
+      "hypotheses": [
+        {
+          "hypothesis_id": "h1-c0001-s01",
+          "observable": "quantified_forward_upside_bridge_to_2x",
+          "source_types": [
+            "company_news",
+            "news",
+            "earnings_call",
+            "earnings_transcript",
+            "8-k",
+            "filing"
+          ],
+          "family_inputs": [
+            {
+              "family": "8-k",
+              "cases_with_documents": 8,
+              "coverage": 0.25
+            },
+            {
+              "family": "company_news",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            },
+            {
+              "family": "earnings_call",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "earnings_transcript",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 31,
+              "coverage": 0.9688
+            },
+            {
+              "family": "news",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 6,
+          "mean_input_coverage": 0.2135
+        },
+        {
+          "hypothesis_id": "h1-c0001-s02",
+          "observable": "months_of_cash_runway",
+          "source_types": [
+            "financials",
+            "filing",
+            "10-q",
+            "10-k",
+            "earnings_call",
+            "earnings_transcript"
+          ],
+          "family_inputs": [
+            {
+              "family": "10-k",
+              "cases_with_documents": 30,
+              "coverage": 0.9375
+            },
+            {
+              "family": "10-q",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "earnings_call",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "earnings_transcript",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 31,
+              "coverage": 0.9688
+            },
+            {
+              "family": "financials",
+              "cases_with_documents": 21,
+              "coverage": 0.6562
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 6,
+          "mean_input_coverage": 0.4271
+        },
+        {
+          "hypothesis_id": "h1-c0001-s03",
+          "observable": "share_of_disclosed_order_backlog_value_convertible_within_six_months",
+          "source_types": [
+            "filing",
+            "8-k",
+            "earnings_call",
+            "earnings_transcript",
+            "company_news",
+            "news"
+          ],
+          "family_inputs": [
+            {
+              "family": "8-k",
+              "cases_with_documents": 8,
+              "coverage": 0.25
+            },
+            {
+              "family": "company_news",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            },
+            {
+              "family": "earnings_call",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "earnings_transcript",
+              "cases_with_documents": 0,
+              "coverage": 0.0
+            },
+            {
+              "family": "filing",
+              "cases_with_documents": 31,
+              "coverage": 0.9688
+            },
+            {
+              "family": "news",
+              "cases_with_documents": 1,
+              "coverage": 0.0312
+            }
+          ],
+          "concept_inputs": [],
+          "input_count": 6,
+          "mean_input_coverage": 0.2135
+        }
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "workspace": "information-evolution-slow-self-evolution-20260913-v89",
+      "evidence_traceability_failures": [],
+      "pit_failures": [],
+      "ledger_append_only": true,
+      "identity_masking_failures": [],
+      "all_passed": true,
+      "terminal_kind": "evidence_unavailable",
+      "ledger_entries": 2
+    },
+    {
+      "workspace": "information-evolution-slow-self-evolution-20260913-v87",
+      "evidence_traceability_failures": [],
+      "pit_failures": [],
+      "ledger_append_only": true,
+      "identity_masking_failures": [],
+      "all_passed": true,
+      "terminal_kind": "evidence_unavailable",
+      "ledger_entries": 2
+    }
+  ]
+}
