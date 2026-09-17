@@ -1,5 +1,16 @@
 # Status
 
+2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：
+以共享 PIT Evidence Graph（惰性构造、Relation 基数有界）为基座，用受控的
+LabelAwareMiningController 合并 hypothesis validation（终局附带 need-disposition
+ledger）与 open-ended label-aware discovery（标签仅经 runtime-owned 结构化
+label map 呈现），H2/E1/E2 不再作为生产挖掘硬链路；保留 Update、fixture、
+issuer-disjoint holdout、paired effectiveness 和 promotion 门。候选非零拆分为
+硬验收（管线正确 + 受控闭环结构可达）与程序目标（live 非零，Phase 7 前不下
+结论）；先完成 spec、可选的 V90 manifest legacy 验证、零调用回放和受控候选
+闭环，再进行 live shadow。详见
+`reports/slow-round-mining-agent-action-plan-2026-09-17-v2.1.md`。
+
 V89 executed both authorized slow cycles to clean commit (exit 0): 166 attempts,
 `$1.1365`, one transient H1 provider error auto-recovered and one retryable
 exploration pause auto-resumed; no stage failures. Cross-cycle information flow
