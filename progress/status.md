@@ -11,8 +11,18 @@ observable——manifest 因果链在 live 上成立。57 次尝试/$0.4964、�
 不可 resume，重开需从 V89 重冻结 V91）。Phase 1 最小 Evidence Graph 工具
 已实现（mining_agent_tools.py：Fact/Relation 惰性投影、同概念记录对、
 冻结规则 compute_statistic、同案例跨文档共现、带 omitted-coverage 的
-fetch；6 项新测试，全套 790 测试与 lint 通过）。下一步 Phase 2 受控
-controller。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
+fetch；6 项新测试）。Phase 2 受控 controller 已实现并按验收标准通过：
+mining_controller.py 提供固定 action enum、单调状态机
+（ready→exploring→evidence_ready→candidate_proposed→locally_validated→terminal
+与四类非领域终态）、双维度预算（重动作 12/轻动作 4，耗尽→deferred_budget）、
+有界结构化纠正（2 次后 technical_failure）、runtime 拥有的 append-only
+mining ledger（input/output 哈希、coverage、omitted coverage）、Seed A
+终局 need-disposition ledger（全覆盖/处置枚举/signal_refs 基数校验）、
+Seed B runtime-owned label map（模型自撰 label 字段直接拒绝）、候选证据
+必须 ⊆ 账本且至少一次 fetch 后才能提出、no_pattern 必须引用账本内
+explored families。7 项 fixture-caller 测试驱动完整
+seed→action→tool→ledger→terminal→validation 链；全套 797 测试与 lint
+通过。下一步 Phase 3 零调用历史回放（信息到达率对比）。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
 quota 标记表需复核。
 
 2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：
