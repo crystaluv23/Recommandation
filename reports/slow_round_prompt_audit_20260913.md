@@ -555,3 +555,19 @@ input 本身是前序行的累积超集**——导入 2 个周期就把共享基
 遗留：V94 已冻结 input 内部烘焙的 V92 双份（不可变），目录保持 ~6k 行、
 选择层有界化后可运行；未来某次重冻结时可用内容哈希再压实。
 V95 保持不可变诊断工作区（0 提交周期）。
+
+## 物化纠正回环（2026-09-17，V96 证据驱动）
+
+V96（e1f25ec8/79020b7）两周期 clean exit：cycle 1 提交 1 个控制器候选
+（operating_cash_flow_change_to_cash:v1）、cycle 2 提交 2 个
+（financial_quarterly_cash_burn:v1、working_capital_ratio:v1）——slugify
+生效、双 seed 均终态 candidate、候选全部进入候选区；但三者均死于契约
+校验（物化 spec 自相矛盾：测量 XBRL 概念却声明 sec_filing 源类型、
+fixtures 不满足自声明的两期覆盖）。修复：
+- 物化载荷附带 cited_evidence 摘录（concept/unit/period/逐字 span，
+  ≤12 条）——spec/raw_retrieval/fixtures 必须从真实证据出发；
+- 物化加 ≤2 次纠正回环：staging 前先过完整契约校验器（fixtures 真实
+  执行），拒绝理由全文回喂重试， exhausting 后诚实失败入 failures；
+- 候选携带 seed 溯源，induction ids 空回退为全 dev 集。
+回归测试覆盖：坏载荷→形状错→语义重复→参数区分→PIT fixture as_of→
+staged 全链。V97 为最终入库运行。

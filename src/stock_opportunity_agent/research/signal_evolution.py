@@ -9,7 +9,7 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime
 from math import comb
 from pathlib import Path
-from typing import Any, Callable, Iterable, Mapping, Protocol
+from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence
 from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
 )
@@ -5817,15 +5817,17 @@ class SignalEvolutionEngine:
         model = MiningAgentRoleModel(caller)
 
         candidates: list[dict[str, Any]] = []
+        cited: dict[str, dict[str, Any]] = {}
 
-        def controller_sink(candidate: Mapping[str, Any]) -> Mapping[str, Any]:
-            candidates.append(dict(candidate))
-            return {"status": "validated"}
         seed_reports: list[dict[str, Any]] = []
         failures: dict[str, tuple[str, ...]] = {}
         need_disposition_counts: dict[str, int] = {}
         fetched_case_refs: dict[str, tuple[str, ...]] = {}
         for seed in ("hypothesis", "discovery"):
+            def seed_sink(candidate: Mapping[str, Any], _seed=seed) -> Mapping[str, Any]:
+                candidates.append((_seed, dict(candidate)))
+                return {"status": "validated"}
+
             try:
                 controller = LabelAwareMiningController(
                     store=self.raw_info_store,
@@ -5837,7 +5839,7 @@ class SignalEvolutionEngine:
                     cycle_id=cycle_id,
                     backlog_needs=backlog_needs if seed == "hypothesis" else (),
                     identity_aliases=self.slow_role_identity_guards,
-                    validation_sink=controller_sink,
+                    validation_sink=seed_sink,
                 )
                 result = controller.run()
             except (EvolutionControlFlow, OpenAIClientError):
@@ -5865,6 +5867,11 @@ class SignalEvolutionEngine:
                 )
             )
             fetched_case_refs[seed] = fetched
+            evidence_by_ref: dict[str, Any] = {
+                **getattr(controller, "_facts", {}),
+                **getattr(controller, "_events", {}),
+            }
+            cited[seed] = evidence_by_ref
             seed_reports.append(
                 {
                     "seed": seed,
@@ -5886,16 +5893,30 @@ class SignalEvolutionEngine:
             validation_by_class[bool(case.ground_truth.is_surge)].append(
                 case.case_id
             )
-        for candidate in candidates:
+        for candidate_seed, candidate in candidates:
+            evidence = {}
+            for seed_cited in cited.values():
+                evidence.update(
+                    {
+                        ref: item
+                        for ref, item in seed_cited.items()
+                        if ref in set(candidate.get("evidence_refs", ()))
+                    }
+                )
             staged = self._materialize_controller_candidate(
-                candidate, caller=caller, failures=failures
+                candidate,
+                caller=caller,
+                failures=failures,
+                evidence=evidence,
+                seed=candidate_seed,
             )
             if staged is None:
                 continue
-            signal_ref, seed = staged
+            signal_ref, staged_seed = staged
             candidate_refs.append(signal_ref)
-            induction_case_ids[signal_ref] = fetched_case_refs.get(
-                seed, tuple(opaque.values())
+            induction_case_ids[signal_ref] = (
+                fetched_case_refs.get(staged_seed)
+                or tuple(opaque.values())
             )
             validation_case_ids[signal_ref] = tuple(
                 [
@@ -5948,12 +5969,46 @@ class SignalEvolutionEngine:
         slug = re.sub(r"_+", "_", slug).strip("_")[:64].strip("_")
         return slug or "controller_mined_signal"
 
+    @staticmethod
+    def _controller_evidence_excerpts(
+        candidate: Mapping[str, Any],
+        evidence: Mapping[str, Any],
+    ) -> list[dict[str, Any]]:
+        """Render the candidate's cited controller evidence for materialization.
+
+        The spans, concepts, periods, and source families of the cited facts
+        and events are exactly what a faithful spec, retrieval contract, and
+        verbatim fixtures must be built from, so the model authors them
+        against real evidence instead of inventing a contradictory retrieval
+        contract.
+        """
+
+        wanted = {str(ref) for ref in candidate.get("evidence_refs", ())}
+        excerpts: list[dict[str, Any]] = []
+        for ref, item in evidence.items():
+            if str(ref) not in wanted or len(excerpts) >= 12:
+                continue
+            row = {"ref": str(ref)}
+            for key in ("concept", "unit", "value", "exact_span", "excerpt"):
+                value = getattr(item, key, None)
+                if value is not None:
+                    row[key] = str(value)[:600]
+            period = getattr(item, "period", None)
+            if isinstance(period, Mapping):
+                row["period"] = dict(period)
+            if "exact_span" not in row and "excerpt" not in row:
+                continue
+            excerpts.append(row)
+        return excerpts
+
     def _materialize_controller_candidate(
         self,
         candidate: Mapping[str, Any],
         *,
         caller: Any,
         failures: dict[str, tuple[str, ...]],
+        evidence: Mapping[str, Any],
+        seed: str,
     ) -> tuple[str, str] | None:
         """Convert one controller candidate into a staged executable Signal.
 
@@ -5962,6 +6017,35 @@ class SignalEvolutionEngine:
         mining path uses, after which the unchanged contract validator and
         paired gates judge it.
         """
+
+        corrections = 0
+        last_issues: list[str] = []
+        while True:
+            parsed, issues = self._materialize_once(
+                candidate,
+                caller=caller,
+                evidence=evidence,
+                last_issues=last_issues,
+                seed=seed,
+            )
+            if parsed is not None and not issues:
+                return parsed
+            last_issues = issues or ["materialization call failed"]
+            corrections += 1
+            if corrections > 2:
+                failures["slow_loop:mining_materialize"] = tuple(last_issues)
+                return None
+
+    def _materialize_once(
+        self,
+        candidate: Mapping[str, Any],
+        *,
+        caller: Any,
+        evidence: Mapping[str, Any],
+        last_issues: Sequence[str],
+        seed: str,
+    ) -> tuple[tuple[str, str] | None, list[str]]:
+        """One materialization attempt: model call, validate, stage."""
 
         try:
             parsed, _usage = caller.complete_json(
@@ -5981,6 +6065,10 @@ class SignalEvolutionEngine:
                 payload={
                     "candidate": dict(candidate),
                     "candidate_contract": self._mining_candidate_contract(),
+                    "cited_evidence": self._controller_evidence_excerpts(
+                        candidate, evidence
+                    ),
+                    "last_issues": list(last_issues),
                 },
                 allow_outcomes=True,
                 max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["proposer"],
@@ -5998,37 +6086,45 @@ class SignalEvolutionEngine:
             "skill",
             "tests",
         }:
-            failures["slow_loop:mining_materialize"] = (
-                "materialization requires exactly spec, skill, and tests",
-            )
-            return None
+            return None, ["materialization requires exactly spec, skill, and tests"]
         if not isinstance(parsed["spec"], Mapping):
-            failures["slow_loop:mining_materialize"] = (
-                "materialized spec must be an object",
-            )
-            return None
-        spec = dict(parsed["spec"])
-        spec["signal_id"] = self._controller_signal_id_slug(candidate, spec)
+            return None, ["materialized spec must be an object"]
+        if not isinstance(parsed["tests"], list) or not parsed["tests"]:
+            return None, ["materialized tests must be a non-empty array"]
+        spec_dict = dict(parsed["spec"])
+        spec_dict["signal_id"] = self._controller_signal_id_slug(
+            candidate, spec_dict
+        )
+        skill = (
+            str(parsed["skill"]) if parsed["skill"] is not None else None
+        )
+        try:
+            spec = candidate_signal_spec_from_dict(spec_dict)
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
+            return None, [f"spec parse failed: {type(exc).__name__}: {exc}"]
+        checked = self.validator.validate(
+            spec, skill=skill, tests=parsed["tests"]
+        )
+        if not checked.accepted:
+            return None, [
+                f"contract validation rejected the materialized candidate: "
+                + "; ".join(str(reason) for reason in checked.reasons)
+            ]
         try:
             signal_ref = self._stage_from_tool(
-                spec=spec,
-                skill=(
-                    str(parsed["skill"])
-                    if parsed["skill"] is not None
-                    else None
-                ),
-                tests=parsed["tests"] if isinstance(parsed["tests"], list) else (),
+                spec=spec.to_dict(),
+                skill=skill,
+                tests=parsed["tests"],
                 origin="mining:controller",
                 collected=[],
             )
         except (EvolutionControlFlow, OpenAIClientError):
             raise
         except Exception as exc:
-            failures["slow_loop:mining_materialize"] = (
-                f"{type(exc).__name__}: {exc}",
-            )
-            return None
-        return signal_ref, "hypothesis"
+            return None, [f"staging failed: {type(exc).__name__}: {exc}"]
+        return (signal_ref, seed), []
 
     def _run_signal_mining_legacy(self, *, cycle_id: int) -> dict[str, Any]:
         """Preserve read-only v7 cadence outside an active v8 frozen input."""

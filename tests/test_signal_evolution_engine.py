@@ -801,32 +801,38 @@ class SignalEvolutionTests(TestCase):
             def complete_json(self, *, stage, **_kwargs):
                 self.stages.append(stage)
                 if stage == "mining_candidate_materialize":
-                    stable = registry.latest_spec("financing_listing_action")
+                    payload = dict(_kwargs["payload"])
+                    if not payload.get("last_issues"):
+                        return ({"spec": {}}, AgentUsage(llm_calls=1))
+                    stable = registry.latest_spec("revenue_growth_yoy")
                     spec = {
                         **stable.to_dict(),
                         "signal_id": "Fixture Controller Runway!!",
                         "version": 1,
-                        "description": (
-                            "Latest point-in-time cash runway from the "
-                            "controller fixture."
-                        ),
                     }
+                    spec["definition"]["description"] = (
+                        "Measure the latest point-in-time year-over-year "
+                        "revenue growth from cited spans with a stricter "
+                        "positive threshold."
+                    )
+                    spec["parameters"]["positive_min"] = 0.15
+                    growth = sec_company_facts_content(
+                        ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                        ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                    )
                     return (
                         {
                             "spec": spec,
-                            "skill": (
-                                "Judge point-in-time cash runway from the "
-                                "cited spans; abstain without a literal cash "
-                                "figure."
-                            ),
+                            "skill": None,
                             "tests": [
                                 {
-                                    "name": "runway_positive",
-                                    "expected": "POSITIVE",
+                                    "name": "growth_positive",
+                                    "expected": "positive",
+                                    "as_of": "2025-02-01T00:00:00+00:00",
                                     "documents": [
                                         {
                                             "source_type": "financials",
-                                            "content": '"val": 125.0',
+                                            "content": growth,
                                         }
                                     ],
                                 }
@@ -961,7 +967,7 @@ class SignalEvolutionTests(TestCase):
             )
             spec, skill = registry.load_candidate(staged_ref)
             self.assertEqual(spec.signal_id, "fixture_controller_runway")
-            self.assertTrue(skill)
+            self.assertIsNone(skill)
 
             no_caller_engine_output = SignalEvolutionEngine(
                 registry=registry,
