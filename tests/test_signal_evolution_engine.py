@@ -804,7 +804,7 @@ class SignalEvolutionTests(TestCase):
                     stable = registry.latest_spec("financing_listing_action")
                     spec = {
                         **stable.to_dict(),
-                        "signal_id": "controller_fixture_runway",
+                        "signal_id": "Fixture Controller Runway!!",
                         "version": 1,
                         "description": (
                             "Latest point-in-time cash runway from the "
@@ -949,7 +949,10 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(terminals["discovery"], "evidence_unavailable")
             self.assertTrue(output["candidate_refs"])
             staged_ref = output["candidate_refs"][0]
-            self.assertTrue(staged_ref.startswith("controller_fixture_runway"))
+            self.assertTrue(
+                staged_ref.startswith("fixture_controller_runway"),
+                staged_ref,
+            )
             self.assertTrue(
                 output["induction_case_ids"][staged_ref]
             )
@@ -957,7 +960,7 @@ class SignalEvolutionTests(TestCase):
                 output["validation_case_ids"][staged_ref]
             )
             spec, skill = registry.load_candidate(staged_ref)
-            self.assertEqual(spec.signal_id, "controller_fixture_runway")
+            self.assertEqual(spec.signal_id, "fixture_controller_runway")
             self.assertTrue(skill)
 
             no_caller_engine_output = SignalEvolutionEngine(

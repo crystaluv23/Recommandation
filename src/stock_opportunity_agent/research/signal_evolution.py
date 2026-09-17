@@ -5911,6 +5911,27 @@ class SignalEvolutionEngine:
             failures=failures,
         )
 
+    @staticmethod
+    def _controller_signal_id_slug(candidate: Mapping[str, Any], spec: Any) -> str:
+        """Normalize a materialized signal_id into the registry's safe form.
+
+        Model-authored ids routinely carry casing, spaces, or formula
+        punctuation; the runtime owns identifier safety, so the id is
+        deterministically slugged (falling back to the candidate observable)
+        instead of losing a grounded candidate to a naming technicality.
+        """
+
+        raw = ""
+        if isinstance(spec, Mapping):
+            raw = str(spec.get("signal_id") or "")
+        if not raw.strip():
+            measurement = candidate.get("measurement")
+            if isinstance(measurement, Mapping):
+                raw = str(measurement.get("observable") or "")
+        slug = re.sub(r"[^a-z0-9]+", "_", raw.casefold())
+        slug = re.sub(r"_+", "_", slug).strip("_")[:64].strip("_")
+        return slug or "controller_mined_signal"
+
     def _materialize_controller_candidate(
         self,
         candidate: Mapping[str, Any],
@@ -5933,7 +5954,8 @@ class SignalEvolutionEngine:
                     "Return exactly one JSON object. Convert the grounded "
                     "mining-controller candidate into a storable Signal "
                     "candidate following the supplied candidate contract: a "
-                    "new signal_id, a definition faithful to the "
+                    "new signal_id in lowercase snake_case ([a-z0-9_] only; "
+                    "the runtime normalizes it), a definition faithful to the "
                     "measurement, point-in-time fixtures whose documents "
                     "embed the supplied verbatim evidence spans, and either "
                     "a registered deterministic function that matches the "
@@ -5964,9 +5986,16 @@ class SignalEvolutionEngine:
                 "materialization requires exactly spec, skill, and tests",
             )
             return None
+        if not isinstance(parsed["spec"], Mapping):
+            failures["slow_loop:mining_materialize"] = (
+                "materialized spec must be an object",
+            )
+            return None
+        spec = dict(parsed["spec"])
+        spec["signal_id"] = self._controller_signal_id_slug(candidate, spec)
         try:
             signal_ref = self._stage_from_tool(
-                spec=parsed["spec"],
+                spec=spec,
                 skill=(
                     str(parsed["skill"])
                     if parsed["skill"] is not None
