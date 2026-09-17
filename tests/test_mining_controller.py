@@ -245,6 +245,7 @@ class MiningControllerTests(unittest.TestCase):
                 bad_candidate,
                 bad_candidate,
                 bad_candidate,
+                bad_candidate,
             ]
         )
         controller = _controller(store, cases, model, seed="discovery")
@@ -257,7 +258,7 @@ class MiningControllerTests(unittest.TestCase):
             any("outside the ledger" in note for note in notes), notes
         )
         self.assertEqual(
-            sum(1 for note in notes if "outside the ledger" in note), 3
+            sum(1 for note in notes if "outside the ledger" in note), 4
         )
 
     def test_seed_b_labels_arrive_only_via_runtime_owned_map(self) -> None:

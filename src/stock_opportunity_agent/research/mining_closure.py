@@ -572,6 +572,7 @@ def _scenario_technical_failure() -> Scenario:
             _candidate_action("broken", "n", forced_evidence_refs=["fact-missing"]),
             _candidate_action("broken", "n", forced_evidence_refs=["fact-missing"]),
             _candidate_action("broken", "n", forced_evidence_refs=["fact-missing"]),
+            _candidate_action("broken", "n", forced_evidence_refs=["fact-missing"]),
         ),
         manifest=_manifest_for(["CashAndCashEquivalentsAtCarryingValue"]),
         signal_catalog=(),
