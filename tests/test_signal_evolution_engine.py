@@ -727,6 +727,71 @@ class SignalEvolutionTests(TestCase):
                 available_source_refs=("feedback-1",),
             )
 
+    def test_update_target_selection_rotates_recently_worked_signals(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+
+            def install_profile(signal_ref: str, misleading: int) -> None:
+                spec = registry.latest_spec(
+                    signal_ref.rsplit(":v", 1)[0]
+                )
+                profile_dir = (
+                    registry._manifest_for(spec.signal_id).parent
+                    / "versions"
+                    / f"v{spec.version}"
+                    / "learning"
+                )
+                profile_dir.mkdir(parents=True, exist_ok=True)
+                (profile_dir / "profile.json").write_text(
+                    json.dumps(
+                        {
+                            "schema_version": "signal-learning-profile-v1",
+                            "signal_ref": spec.ref,
+                            "unique_observations": 20,
+                            "directional": {"wrong": 3, "unavailable": 0},
+                            "reflection_attribution": {
+                                "misleading": misleading
+                            },
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+            install_profile("cash_reserves:v1", 2)
+            install_profile("max_drawdown_1y:v1", 2)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=(make_case("rotation_case", 4.0),),
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+
+            fresh = engine._select_signal_update_targets(
+                suggested_refs=("cash_reserves:v1",),
+                recent_worked={"cash_reserves": 0},
+            )
+            self.assertEqual(fresh[0]["signal_ref"], "cash_reserves:v1")
+
+            rotated = engine._select_signal_update_targets(
+                suggested_refs=("cash_reserves:v1",),
+                recent_worked={"cash_reserves": 2},
+            )
+            self.assertEqual(rotated[0]["signal_ref"], "max_drawdown_1y:v1")
+            self.assertEqual(
+                next(
+                    item
+                    for item in rotated
+                    if item["signal_ref"] == "cash_reserves:v1"
+                )["worked_recent_cycles"],
+                2,
+            )
+
     def test_two_slow_only_cycles_feed_committed_first_cycle_to_reflection(self) -> None:
         class ReflectingMiningModel(EmptyMiningModel):
             def __init__(self) -> None:

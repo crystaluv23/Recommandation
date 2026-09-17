@@ -5464,15 +5464,41 @@ class SignalEvolutionEngine:
             audit=audit,
         )
 
+    def _recent_update_target_refs(self, *, cycles: int = 2) -> dict[str, int]:
+        """Count staged update targets per signal over the last committed cycles.
+
+        A signal whose vNext was already staged recently keeps accruing
+        evaluation observations, so it stays at the top of the problem
+        ranking forever; this count is the rotation input that gives other
+        equally problematic signals a turn.
+        """
+
+        counts: dict[str, int] = {}
+        for item in self.workspace.committed_slow_artifacts()[-cycles:]:
+            for attempt in item["slow_experiments"].get("attempts", ()):
+                if not isinstance(attempt, Mapping):
+                    continue
+                parent = attempt.get("parent_signal_ref")
+                if attempt.get("stage") == "Update" and parent:
+                    base = str(parent).rsplit(":v", 1)[0]
+                    counts[base] = counts.get(base, 0) + 1
+        return counts
+
     def _select_signal_update_targets(
         self,
         *,
         limit: int = _SIGNAL_UPDATE_TARGET_LIMIT,
         suggested_refs: Iterable[str] = (),
+        recent_worked: Mapping[str, int] | None = None,
     ) -> tuple[dict[str, Any], ...]:
         if limit < 1:
             raise ValidationError("Signal Update target limit must be positive")
         suggested = set(str(item) for item in suggested_refs)
+        worked = (
+            dict(recent_worked)
+            if recent_worked is not None
+            else self._recent_update_target_refs()
+        )
         targets: list[tuple[int, str, dict[str, Any]]] = []
         for card in self.registry.list_signal_cards():
             profile = dict(card.learned_profile)
@@ -5498,6 +5524,10 @@ class SignalEvolutionEngine:
                 score = 100 + unavailable_with_inputs
             else:
                 continue
+            recent = int(worked.get(card.ref.rsplit(":v", 1)[0], 0))
+            if card.ref in suggested:
+                score += 1000
+            score -= 600 * recent
             target = {
                 "signal_ref": card.ref,
                 "problem_type": problem_type,
@@ -5508,11 +5538,12 @@ class SignalEvolutionEngine:
                     "unavailable": unavailable,
                     "unavailable_with_inputs": unavailable_with_inputs,
                 },
+                "worked_recent_cycles": recent,
                 "recurring_contexts": list(
                     profile.get("recurring_contexts", ())
                 )[:3],
             }
-            targets.append((score + (1000 if card.ref in suggested else 0), card.ref, target))
+            targets.append((score, card.ref, target))
         ranked = sorted(targets, key=lambda item: (-item[0], item[1]))
         return tuple(item[2] for item in ranked[:limit])
 

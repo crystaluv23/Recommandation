@@ -1579,6 +1579,39 @@ class EvidenceResolverTests(TestCase):
         for span in resolution.context_spans:
             self.assertEqual(span.exact_text, raw.content[span.start : span.end])
 
+    def test_refetch_replays_idempotently_for_identical_content(self) -> None:
+        first = document("provider_refetch_doc", "identical payload")
+        later = RawInfoDocument.create(
+            document_id="provider_refetch_doc",
+            company_id="issuer_1",
+            source_type="news",
+            published_at=AS_OF,
+            available_at=AS_OF,
+            content="identical payload",
+            metadata={"provider": "fake_news", "retrieved": "later"},
+        )
+        self.assertNotEqual(first, later)
+
+        store = RawInfoStore(documents=(first,))
+        # Same id and byte-identical content with fresh retrieval provenance
+        # replays idempotently: the stored copy stays canonical instead of
+        # surfacing as a provider failure.
+        self.assertFalse(store.append(later))
+        self.assertEqual(store.load("provider_refetch_doc"), first)
+
+        conflicting = RawInfoDocument.create(
+            document_id="provider_refetch_doc",
+            company_id="issuer_1",
+            source_type="news",
+            published_at=AS_OF,
+            available_at=AS_OF,
+            content="different payload entirely",
+        )
+        with self.assertRaisesRegex(
+            Exception, "already exists with different content"
+        ):
+            store.append(conflicting)
+
     def test_local_hit_skips_api_and_miss_appends_for_same_and_later_execution(self) -> None:
         cached = document("cached_news", "cached company news")
         adapter = FakeAdapter(AcquisitionResult((document("fetched_news", "risk delay"),)))

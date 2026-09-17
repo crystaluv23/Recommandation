@@ -226,7 +226,9 @@ class RawInfoStore:
             self.refresh()
             existing = self._documents.get(document.document_id)
             if existing is not None:
-                return self._resolve_replay(existing, document)
+                return self._resolve_replay(
+                    existing, document, idempotent_refetch=True
+                )
 
             path = self._path_for(document)
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -245,7 +247,9 @@ class RawInfoStore:
                     persisted = RawInfoDocument.from_dict(
                         json.loads(path.read_text(encoding="utf-8"))
                     )
-                    replay = self._resolve_replay(persisted, document)
+                    replay = self._resolve_replay(
+                        persisted, document, idempotent_refetch=True
+                    )
                     self._documents[document.document_id] = persisted
                     return replay
             finally:
@@ -378,7 +382,9 @@ class RawInfoStore:
     def _append_in_memory(self, document: RawInfoDocument) -> bool:
         existing = self._documents.get(document.document_id)
         if existing is not None:
-            return self._resolve_replay(existing, document)
+            return self._resolve_replay(
+                existing, document, idempotent_refetch=True
+            )
         self._documents[document.document_id] = document
         return True
 
@@ -386,8 +392,22 @@ class RawInfoStore:
     def _resolve_replay(
         existing: RawInfoDocument,
         incoming: RawInfoDocument,
+        *,
+        idempotent_refetch: bool = False,
     ) -> bool:
         if existing == incoming:
+            return False
+        if (
+            idempotent_refetch
+            and existing.document_id == incoming.document_id
+            and existing.company_id == incoming.company_id
+            and existing.content == incoming.content
+        ):
+            # An appended refetch whose id-embedded content digest matches
+            # replays idempotently even though retrieval provenance
+            # (timestamps, metadata) moved: the stored copy stays canonical
+            # and nothing in the append-only record is rewritten. Refresh
+            # keeps full strictness so on-disk tampering still fails closed.
             return False
         raise ValidationError(
             "raw info document_id already exists with different content or "

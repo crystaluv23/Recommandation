@@ -495,3 +495,45 @@ binary_f1；准确率把 FP/FN 对称对待并给廉价的 TN 记全功），但
 回归：怯懦信号（注入 deterministic 函数在正例上 NEUTRAL、控制股上
 NEGATIVE，证据逐字引用）→ provisional + "positive-label check cases
 unflagged"；pooled 各区含 recall 变体。827 测试 + lint 通过。
+
+## 信号选择坍缩审计（2026-09-17，用户关注项）
+
+量化证据（V89×2 + V91×1 + V92×2 共 5 个已提交周期）：14 个稳定信号中仅 4
+个曾被选为 Update 目标——guidance_acceleration ×4、max_drawdown_1y ×3、
+cash_reserves ×1、customer_concentration ×1；10 个信号从未被碰。
+
+根因分层：
+1. **呈现不是问题**：E2/H-track 的 stable_signal_cards 携带完整 learned
+   profile（directional/attribution/recurring_contexts/selection_events），
+   信号间差异化充分；llm_signal_batch_execute 按给定 refs 执行、无选择权。
+2. **坍缩在确定性预选**：`_select_signal_update_targets` 只把"有问题"的
+   信号（misleading≥2 / wrong≥2 / unavailable 型）排进每周期 3 个名额——
+   12/14 信号其实合格，但 (a) 无轮换：反复失败的信号问题计数只增不减、
+   永远霸榜；(b) vNext 被评估又产生新观测→自增强；(c) H1 建议 +1000
+   跳队（guidance_acceleration 连续 4 周期被建议）；(d) 同分按 ref 字符
+   序稳定 → 前 2-3 名跨周期固定。
+3. 修复（已实现、待 V93 完成后提交，V94+ 生效）：目标排序加入近期轮换
+   惩罚（近 2 个已提交周期内每被作为目标一次 -600，足以穿透 +1000 建议
+   加权的重复垄断），并在目标审计中记录 worked_recent_cycles。
+4. Fast 轮 Predictor 的信号路由是另一个 LLM 消费端，slow_only 模式下未
+   运行，待 Fast 恢复时单独审计。
+
+## V93 诊断：oracle 重放冲突被洗成 provider_error（2026-09-17）
+
+V93（合约 86170046，代码 9ac19c8）cycle 1 在 H1 后确定性死循环暂停
+（slow_loop_data_unavailable/provider_error/case-001，13+ 次自动恢复无效）。
+逐层复现定位：传输层 curl 正常、adapter 单独成功、resolver 层 5/5 失败；
+最终抓到真实异常——`RawInfoStore.append` 对
+`sec_edgar:...:sec_company_facts_raw_response:<digest>` 抛
+"document_id already exists with different content or provenance"。
+链条：首次 companyfacts 抓取成功并入 oracle（raw 信封 published_at=检索时刻）
+→ 传输暂停恢复后重抓同一 payload（内容字节级相同、digest 相同→同 id，但检索
+时刻不同→provenance 不同）→ append 冲突的 ValidationError 被 resolver 的
+兜底 except 分类为 provider_error → 引擎按可重试暂停 → 无限循环。
+（该兜底分类 laundering 是次级问题，本次未改：修复后此路径不再触发。）
+
+修复：`_resolve_replay` 增加 `idempotent_refetch` 语义——append 路径下
+同 id + 同 company + 字节级相同内容 → 幂等返回 False（既有副本保持权威，
+append-only 记录不重写）；refresh 路径保持全严格（磁盘篡改检测回归不变）。
+同 id 不同内容仍然 fail-closed。原失败请求修复后 resolved。828 测试 + lint。
+V93 保持不可变诊断工作区（0 提交周期）；后续以 V94 重冻结执行。
