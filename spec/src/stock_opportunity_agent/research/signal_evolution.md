@@ -100,11 +100,17 @@ while `request_refs` preserves the complete call chain. Pipeline summaries
 cannot substitute for these work-granular attempts.
 
 One frozen sampling manifest supplies issuer-disjoint dev/check identities to
-H, E, Update, and effectiveness evaluation. Missing evidence does not substitute
-another case. Candidate authoring and semantic review finish before candidate
-hash and shared check corpus freeze. Validation adds definition-to-
-implementation consistency, independent supporting/counter/unavailable
-fixtures, and semantic duplicate checks without weakening existing gates.
+H, E, Update, and effectiveness evaluation. The default check cohort holds 16
+cases (`validation_cases_per_class` 8, effectiveness `case_limit` 16): a
+one-shot majority gate at n=16 separates a 60%-accurate signal from noise
+about as well as any affordable single cycle can (0.72 vs 0.40 pass rate),
+and the remaining discrimination comes from pooled accumulation across
+cycles, not from ever-larger per-cycle cohorts. Missing evidence does not
+substitute another case. Candidate authoring and semantic review finish
+before candidate hash and shared check corpus freeze. Validation adds
+definition-to-implementation consistency, independent
+supporting/counter/unavailable fixtures, and semantic duplicate checks
+without weakening existing gates.
 
 `SlowLoopValidation` and `SlowLoopResult` bind the input, memory, experiment,
 and sampling hashes. A result separately reports new candidate, validated new,
@@ -119,13 +125,26 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 
 ## Invariants
 
-- Signal candidates validate before promotion. Paired effectiveness applies the
-  same absolute directional-quality floor to new Signals and updates. Once a
-  candidate has enough decisive observations, it cannot be promoted when its
-  directionally correct count is less than or equal to its wrong count. An update
-  must satisfy this floor before relative availability/correct/wrong improvements
-  are considered; reducing errors only by abstaining does not turn a still-wrong
-  candidate into an effective Registry version.
+- Signal candidates validate before promotion. Paired effectiveness applies
+  tiered admission to new Signals and the same absolute directional-quality
+  floor to updates. A new Signal that passes every correctness, availability
+  (>= `minimum_cases`), and decisiveness floor but only ties on direction
+  (correct <= wrong) at the check cohort's small n is not disproved: it becomes
+  a `provisional` resident. Updates keep the hard floor — an incumbent exists,
+  so a version that does not beat it stays rejected, and reducing errors only
+  by abstaining does not turn a still-wrong candidate into an effective
+  Registry version.
+- Provisional residents accumulate pooled paired evidence: each cycle the
+  runtime re-evaluates surviving residents on that cycle's fresh check cohort
+  and applies the three-zone rule over their pooled records — promote when
+  pooled decisive evidence reaches the promotion significance (decisive >= 12
+  and one-sided binomial tail <= 0.10), eliminate when the accumulation
+  horizon (5 records) passed with pooled evidence at or below chance (correct
+  < wrong or decisive < 4), otherwise continue. At most 2 provisional
+  residents may be pending at once; a directional tie arriving with the cap
+  occupied is rejected with an explicit reason instead of admitting a third
+  resident. Basic correctness stays hard at every tier: PIT, contract
+  fixtures, availability, and decisiveness are never waived.
 - Every Slow cycle runs bounded Signal Mining independently of whether the
   committed Fast boundary contains a new Signal need. H1 may use identity-masked,
   outcome-aware Fast meta-memory to propose error-driven measurements; the
@@ -133,7 +152,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   and reveals the frozen positive/control labels only in E2. Fast demand augments
   this search but never gates it. A grounded `no_measurable_pattern` result is a
   semantic mining outcome, distinct from skipped work or technical failure.
-  Slow sampling remains owned by the Discovery split. A separate identity-only
+  Slow sampling remains owned by the Discovery split and is one-way: the
+  sampler receives the exposure ledger of every committed local and imported
+  cycle's dev/check case ids, records it in `previously_exposed`, and never
+  resamples an exposed case, so check cohorts stay untouched by reflection or
+  meta-memory lineage. Sampling still freezes per cycle from a seed that
+  includes the cycle id, rotating the dev/check draw inside the unexposed
+  population. A separate identity-only
   inventory covers all approved non-Locked-Test development splits so a Fast
   backlog row originating from an Anchor case can still resolve its source owner
   and receive scoped brand masking. This inventory exposes neither outcomes nor

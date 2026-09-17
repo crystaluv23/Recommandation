@@ -195,6 +195,84 @@ class SignalEvolutionTests(TestCase):
             & {groups[item] for item in first["check_case_ids"]}
         )
 
+    def test_slow_sampling_excludes_previously_exposed_cases(self) -> None:
+        cases = tuple(
+            make_case(f"slow_exposed_{index}", 2.5 if index % 2 else 1.2)
+            for index in range(1, 25)
+        )
+
+        first = build_slow_sampling_manifest(
+            cases,
+            cycle_id=1,
+            base_seed="fixture-contract",
+            dev_limit=6,
+            check_limit=4,
+        )
+        exposed = {*first["dev_case_ids"], *first["check_case_ids"]}
+        second = build_slow_sampling_manifest(
+            cases,
+            cycle_id=2,
+            base_seed="fixture-contract",
+            dev_limit=6,
+            check_limit=4,
+            previously_exposed=sorted(exposed),
+        )
+
+        self.assertEqual(set(second["previously_exposed"]), exposed)
+        self.assertFalse(
+            set(second["dev_case_ids"]) & exposed
+            or set(second["check_case_ids"]) & exposed
+        )
+        with self.assertRaisesRegex(ValidationError, "exposure ledger"):
+            build_slow_sampling_manifest(
+                cases[:4],
+                cycle_id=3,
+                base_seed="fixture-contract",
+                dev_limit=6,
+                check_limit=4,
+                previously_exposed=sorted(
+                    case.case_id for case in cases[:4]
+                ),
+            )
+
+    def test_pooled_provisional_decision_zones(self) -> None:
+        from stock_opportunity_agent.research.signal_evolution import (
+            pooled_provisional_decision,
+        )
+
+        def record(decisive, correct, wrong):
+            return {
+                "candidate_decisive": decisive,
+                "candidate_correct": correct,
+                "candidate_wrong": wrong,
+            }
+
+        promote = pooled_provisional_decision(
+            [record(4, 3, 1), record(4, 4, 0), record(5, 5, 0)]
+        )
+        self.assertEqual(promote["action"], "promote")
+
+        tie_keep = pooled_provisional_decision(
+            [record(4, 2, 2), record(4, 3, 1)]
+        )
+        self.assertEqual(tie_keep["action"], "continue")
+
+        eliminate = pooled_provisional_decision(
+            [
+                record(4, 2, 2),
+                record(4, 2, 2),
+                record(4, 1, 3),
+                record(4, 1, 3),
+                record(4, 2, 2),
+            ]
+        )
+        self.assertEqual(eliminate["action"], "eliminate")
+
+        starved = pooled_provisional_decision(
+            [record(0, 0, 0)] * 5
+        )
+        self.assertEqual(starved["action"], "eliminate")
+
     def test_slow_source_read_keeps_whole_entries_and_enforces_scope(self) -> None:
         catalog = {
             "feedback-1": {
@@ -308,7 +386,7 @@ class SignalEvolutionTests(TestCase):
 
         self.assertEqual(config.reflection_feedback_limit, 12)
         self.assertEqual(config.induction_cases_per_class, 4)
-        self.assertEqual(config.validation_cases_per_class, 2)
+        self.assertEqual(config.validation_cases_per_class, 8)
 
     def test_slow_method_memory_is_bounded_by_complete_recent_entries(self) -> None:
         deltas = [
@@ -600,7 +678,7 @@ class SignalEvolutionTests(TestCase):
                 raw_info_store=RawInfoStore(),
                 discovery_cases=tuple(
                     make_case(f"slow_only_{index}", 2.5 if index % 2 else 1.2)
-                    for index in range(1, 13)
+                    for index in range(1, 97)
                 ),
                 meta_memory=PlanMetaMemory(),
                 workspace=workspace,
@@ -656,6 +734,26 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(
                 second_input["source_cutoff"],
                 {"committed_fast_round": 0, "committed_slow_cycle": 1},
+            )
+            first_manifest = workspace.load_slow_input(1)[
+                "sampling_manifest"
+            ]
+            first_exposed = {
+                *first_manifest["dev_case_ids"],
+                *first_manifest["check_case_ids"],
+            }
+            self.assertTrue(first_exposed)
+            self.assertEqual(
+                set(second_input["sampling_manifest"]["previously_exposed"]),
+                first_exposed,
+            )
+            self.assertFalse(
+                set(second_input["sampling_manifest"]["dev_case_ids"])
+                & first_exposed
+            )
+            self.assertFalse(
+                set(second_input["sampling_manifest"]["check_case_ids"])
+                & first_exposed
             )
             second_memory = workspace.load_slow_memory(2)
             prior_cycle_refs = {
@@ -5037,6 +5135,57 @@ class SignalEvolutionTests(TestCase):
                     skill=None,
                     tests=(candidate_growth_fixture(),),
                 ).accepted
+            )
+
+    def test_paired_effectiveness_tiers_a_directional_tie_into_provisional(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                *(make_case(f"tier_positive_{index}", 4.0) for index in range(2)),
+                *(make_case(f"tier_control_{index}", 1.1) for index in range(2)),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"tier_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "signal_id": "novel_tier_measurement",
+                    "version": 1,
+                    "description": "Novel growth framing for tier testing.",
+                }
+            )
+
+            result = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                llm_runner=None,
+            ).evaluate(candidate, skill=None)
+
+            self.assertFalse(result.accepted)
+            self.assertEqual(result.disposition, "provisional")
+            self.assertIn(
+                "lacks positive directional evidence",
+                " ".join(result.reasons),
             )
 
     def test_paired_effectiveness_rejects_an_identical_update(self) -> None:

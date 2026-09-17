@@ -437,3 +437,27 @@ cycle 2 初次启动因周期间 HEAD 前进被 code-revision 检查拒绝，从
 clean exit）；信息链路 ✓（reflection wire 级消费前序结果，digest 驱动
 模型行为改变）；挖掘/更新非零 ✓（影子每轮 candidate + 生产两周期
 Mining/Update 均非零，拒绝均显式合理）。
+
+## 晋升门协议修订：分级准入 + 扩大 check 队列 + 暴露账本（2026-09-17，用户决策）
+
+用户评估配对门后决策（三层）并已实施（825 测试 + lint 通过，spec 同步）：
+
+**统计依据**（精确二项）：单周期多数门 n=16 时噪声通过率 0.40、55% 信号
+0.56、60% 信号 0.72；一次性认证（α=0.05/功效 0.8）55% 需 n≈616、60% 需
+n≈152——单周期永远到不了，区分度只能来自跨周期累计（pooled 48：噪声
+0.44 / 55% 0.71 / 60% 0.90；pooled 80：0.46 / 0.79 / 0.96）。
+
+1. **分级准入（A）**：新信号方向平局（通过全部正确性/可用性/decisiveness
+   门后 correct≤wrong）不再终审拒绝，改为 provisional 居留者；每周期
+   runtime 在当期全新 check 队列复评居留者并对其 pooled 记录应用三区制：
+   转正（decisive≥12 且单侧二项 p≤0.10）/淘汰（累计 5 期后 pooled
+   correct<wrong 或 decisive<4）/继续跟踪；并存居留者上限 2（满员时新
+   平局显式拒绝）。更新类候选保持硬门（在位者存在，不胜出即拒）。
+2. **check 队列扩容（B）**：validation_cases_per_class 2→8、effectiveness
+   case_limit 8→16（dev:check=32:16=2:1）；生产 population 8755
+   （565 surge/2096 issuer）按每周期 8 正例耗 check 可支撑 ~70 周期。
+   后继冻结建议 data caps 200→400/cycle、400→800/run（V92 实测 ~238/周期）。
+3. **暴露账本（C）**：`previously_exposed` 由硬编码空表改为汇集本地
+   committed + 导入历史全部周期的 dev∪check case id，抽样前剔除——修复
+   实测缺陷（V92 cycle 2 的 check 含 1 个 V91 已暴露 case；每周期 permute
+   重划分本已存在但重抽≠安全，check 必须单向只用未暴露 case）。

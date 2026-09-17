@@ -1,5 +1,19 @@
 # Status
 
+2026-09-17（傍晚）晋升门协议修订（用户决策）：分级准入 + check 扩容 + 暴露
+账本。统计依据：单周期多数门 n=16 时噪声通过率 0.40 / 60% 信号 0.72，
+一次性认证 55% 需 n≈616——区分度只能来自跨周期累计。实施（825 测试 +
+lint 通过，spec 同步 signal_evolution/signal_mining_agent）：(A) 新信号
+方向平局→provisional 居留者，每周期在当期全新 check 复评并按 pooled
+三区制裁决（转正 decisive≥12 且二项 p≤0.10 / 累计 5 期仍≤随机则淘汰 /
+继续），居留上限 2，更新类保持硬门；(B) validation_cases_per_class 2→8、
+effectiveness case_limit 8→16（dev:check=2:1；后继冻结建议 data caps
+400/cycle、800/run）；(C) 修复 `previously_exposed` 硬编码空表——现汇集
+本地+导入历史全部周期 dev∪check 并在抽样前剔除（实测 V92 c2 check 曾含
+1 个 V91 已暴露 case；每周期 permute 本已存在但 check 必须单向未暴露）。
+修订依据与计算存 prompt 审计报告"晋升门协议修订"节。行为变化自下一个
+冻结的工作区（V93+）生效；V91/V92 及其合约不可变。
+
 2026-09-17（下午）新 slow round 影子语义审计 + 六项泛化修复 + V92 两周期生产
 完成。对 shadow6（Seed A）与 shadow7（Seed B 首次 discovery live）逐请求审计
 发现六个泛化缺陷并全部修复（450e05e→347379c→d35bdd9，spec 同步，821 测试

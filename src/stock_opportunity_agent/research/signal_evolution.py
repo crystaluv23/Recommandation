@@ -7,6 +7,7 @@ import json
 import re
 from dataclasses import dataclass, field, replace
 from datetime import datetime
+from math import comb
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 from stock_opportunity_agent.artifacts import (
@@ -225,18 +226,29 @@ def build_slow_sampling_manifest(
     base_seed: str,
     dev_limit: int,
     check_limit: int,
+    previously_exposed: Iterable[str] = (),
 ) -> dict[str, Any]:
     """Freeze an outcome-independent ordering and issuer-disjoint dev/check split.
 
     Labels are used only for the explicitly disclosed binary stratification; they
     never affect the stable ordering within a class or allow case replacement.
+    ``previously_exposed`` case ids (any prior dev or check role, local or
+    imported) are removed from the population before the draw, so evaluation
+    cohorts are one-way: a case that ever entered a mining or evaluation role
+    is never sampled again, keeping holdout evidence untouched by lineage.
     """
 
     if cycle_id < 1 or not base_seed.strip() or dev_limit < 1 or check_limit < 1:
         raise ValidationError("Slow sampling inputs are invalid")
-    population = tuple(cases)
+    exposed = {str(item) for item in previously_exposed}
+    population = tuple(
+        case for case in cases if case.case_id not in exposed
+    )
     if not population:
-        raise ValidationError("Slow sampling requires Discovery cases")
+        raise ValidationError(
+            "Slow sampling requires unexposed Discovery cases; the exposure "
+            f"ledger excluded all {len(exposed)} known ids"
+        )
     seed = _canonical_hash(
         {
             "schema_version": "slow-sampling-seed-v1",
@@ -315,7 +327,7 @@ def build_slow_sampling_manifest(
         "issuer_groups": {
             case.case_id: issuer_ref[case.company_id] for case in selected
         },
-        "previously_exposed": [],
+        "previously_exposed": sorted(exposed),
         "exclusions": [],
     }
 
@@ -1242,7 +1254,7 @@ class SignalMiningConfig:
     h2_min_ready_issuers: int = 16
     h2_min_ready_per_class: int = 4
     induction_cases_per_class: int = 4
-    validation_cases_per_class: int = 2
+    validation_cases_per_class: int = 8
     exploration_interval: int = 3
     evidence_documents_per_case: int = 4
     evidence_lookback_days: int = 365
@@ -1951,6 +1963,71 @@ class SignalCandidateEffectiveness:
         }
 
 
+_PROVISIONAL_RESIDENT_LIMIT = 2
+_PROVISIONAL_ACCUMULATION_HORIZON = 5
+_POOLED_PROMOTION_DECISIVE_MINIMUM = 12
+_POOLED_PROMOTION_SIGNIFICANCE = 0.10
+
+
+def _binomial_tail_at_least(count: int, trials: int) -> float:
+    """One-sided chance of at least ``count`` successes in fair ``trials``."""
+
+    if trials <= 0 or count <= 0:
+        return 1.0 if count <= 0 else 0.0
+    return sum(comb(trials, i) for i in range(count, trials + 1)) / 2**trials
+
+
+def pooled_provisional_decision(
+    records: Iterable[Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Apply the pooled three-zone rule to one provisional resident.
+
+    ``records`` are the resident's per-cycle paired-effectiveness records (its
+    current cycle included). Zones: promote when pooled decisive evidence
+    reaches the promotion significance; eliminate when the accumulation
+    horizon passed with pooled evidence at or below chance; otherwise
+    continue as a provisional resident.
+    """
+
+    rows = [dict(row) for row in records]
+    decisive = sum(int(row.get("candidate_decisive", 0)) for row in rows)
+    correct = sum(int(row.get("candidate_correct", 0)) for row in rows)
+    wrong = sum(int(row.get("candidate_wrong", 0)) for row in rows)
+    cycles = len(rows)
+    counts = {
+        "cycles": cycles,
+        "decisive": decisive,
+        "correct": correct,
+        "wrong": wrong,
+    }
+    if (
+        decisive >= _POOLED_PROMOTION_DECISIVE_MINIMUM
+        and _binomial_tail_at_least(correct, decisive)
+        <= _POOLED_PROMOTION_SIGNIFICANCE
+    ):
+        return {
+            "action": "promote",
+            "reason": (
+                f"pooled paired evidence reached promotion significance: "
+                f"{correct}/{decisive} decisive correct over {cycles} cycles"
+            ),
+            "counts": counts,
+        }
+    if cycles >= _PROVISIONAL_ACCUMULATION_HORIZON and (
+        correct < wrong or decisive < 4
+    ):
+        return {
+            "action": "eliminate",
+            "reason": (
+                f"pooled paired evidence stayed at or below chance over "
+                f"{cycles} cycles: {correct} correct vs {wrong} wrong "
+                f"({decisive} decisive)"
+            ),
+            "counts": counts,
+        }
+    return {"action": "continue", "reason": "accumulating", "counts": counts}
+
+
 class SignalCandidateEffectivenessEvaluator:
     """Compare candidate and stable Signal behavior on one frozen sample."""
 
@@ -2145,7 +2222,17 @@ class SignalCandidateEffectivenessEvaluator:
                     "candidate shows no strict paired effectiveness gain"
                 )
         if rejection_reasons:
-            disposition = "rejected"
+            if current is None and rejection_reasons == [
+                "candidate lacks positive directional evidence over controls"
+            ]:
+                # A new signal that passed every correctness, availability, and
+                # decisiveness floor but tied on direction at the check
+                # cohort's small n is not disproved: it becomes a provisional
+                # resident and accumulates paired evidence on later fresh
+                # check cohorts under the pooled three-zone rule.
+                disposition = "provisional"
+            else:
+                disposition = "rejected"
             reasons = rejection_reasons + insufficient_reasons
         elif insufficient_reasons:
             disposition = "provisional" if induction_supported else "rejected"
@@ -2980,7 +3067,7 @@ class SignalEvolutionEngine:
         on_progress: ProgressCallback | None = None,
         priors: EvolutionPriors = DEFAULT_EVOLUTION_PRIORS,
         deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None,
-        effectiveness_case_limit: int = 8,
+        effectiveness_case_limit: int = 16,
         effectiveness_minimum_cases: int = 4,
         mining_config: SignalMiningConfig = SignalMiningConfig(),
         min_new_signals_per_cycle: int = 1,
@@ -3371,6 +3458,7 @@ class SignalEvolutionEngine:
                 2 * self.mining_config.induction_cases_per_class,
             ),
             check_limit=self.effectiveness_evaluator.case_limit,
+            previously_exposed=sorted(self._slow_sampling_exposed_case_ids()),
         )
         value = validate_slow_input(
             {
@@ -3497,6 +3585,49 @@ class SignalEvolutionEngine:
         ):
             raise ValidationError("imported Slow history manifest hash mismatch")
         return manifest
+
+    def _slow_sampling_exposed_case_ids(self) -> set[str]:
+        """Union of dev/check case ids of every committed local or imported cycle.
+
+        The exposure ledger is the holdout boundary: a case that ever served a
+        mining or evaluation role in this lineage is never sampled again, so a
+        check cohort cannot reuse a case whose labels or evidence may already
+        live in reflection or meta-memory.
+        """
+
+        exposed: set[str] = set()
+        for item in self.workspace.committed_slow_artifacts():
+            manifest = item["slow_input"].get("sampling_manifest", {})
+            if isinstance(manifest, Mapping):
+                for key in ("dev_case_ids", "check_case_ids"):
+                    exposed.update(
+                        str(case_id) for case_id in manifest.get(key, ())
+                    )
+        history = self._imported_slow_history_manifest()
+        if history is not None:
+            namespace = str(history.get("source_namespace", ""))
+            for item in history.get("cycle_artifacts", ()):
+                if not isinstance(item, Mapping):
+                    continue
+                relative = Path(str(item.get("path", "")))
+                if relative.name != "slow_input.json":
+                    continue
+                path = self.workspace.root / "slow_history" / namespace / relative
+                if (
+                    not path.is_file()
+                    or hashlib.sha256(path.read_bytes()).hexdigest()
+                    != str(item.get("sha256", ""))
+                ):
+                    raise ValidationError(
+                        "imported Slow sampling exposure copy hash mismatch"
+                    )
+                manifest = _read_json(path).get("sampling_manifest", {})
+                if isinstance(manifest, Mapping):
+                    for key in ("dev_case_ids", "check_case_ids"):
+                        exposed.update(
+                            str(case_id) for case_id in manifest.get(key, ())
+                        )
+        return exposed
 
     def _imported_slow_history_cutoff(self) -> int:
         """Return the immutable source Slow pointer represented by history."""
@@ -4423,6 +4554,24 @@ class SignalEvolutionEngine:
                     candidate_hash=candidate_hash,
                     executed_tests=checked.executed_tests,
                 )
+            if (
+                stable_ref is None
+                and effectiveness.get("disposition") == "provisional"
+            ):
+                effectiveness = self._apply_pooled_provisional_decision(
+                    signal_ref, effectiveness, is_new_signal=True
+                )
+                if effectiveness.get("disposition") == "promoted":
+                    validation = SignalCandidateValidation(
+                        signal_ref=signal_ref,
+                        accepted=True,
+                        reasons=tuple(
+                            str(item)
+                            for item in effectiveness.get("reasons", ())
+                        ),
+                        candidate_hash=candidate_hash,
+                        executed_tests=validation.executed_tests,
+                    )
             semantic = _normalize_semantics(spec.description)
             prior_ref = semantic_seen.get(semantic)
             if validation.accepted and prior_ref is not None:
@@ -4469,6 +4618,14 @@ class SignalEvolutionEngine:
                 )
                 if validation.accepted:
                     accepted_evaluations[signal_ref] = recorded_key
+        self._revisit_provisional_residents(
+            proposed_refs=set(all_refs),
+            validations=validations,
+            effectiveness_by_ref=effectiveness_by_ref,
+            accepted_hashes=accepted_hashes,
+            accepted_evaluations=accepted_evaluations,
+            agent_audits=agent_audits,
+        )
         rejected = dict(agent_failures)
         provisional = {
             signal_ref: tuple(
@@ -4522,6 +4679,183 @@ class SignalEvolutionEngine:
                 for ref in updated
             ),
         )
+
+    def _provisional_resident_refs(self) -> tuple[str, ...]:
+        """New-signal candidates whose latest stored evaluation is provisional.
+
+        A resident is any candidate that a committed cycle recorded as
+        provisional, whose signal base is not yet stable, and whose latest
+        immutable evaluation still says provisional (promotions and pooled
+        eliminations overwrite that pointer, so they drop out naturally).
+        """
+
+        refs: list[str] = []
+        for item in self.workspace.committed_slow_artifacts():
+            for attempt in item["slow_experiments"].get("attempts", ()):
+                if not isinstance(attempt, Mapping):
+                    continue
+                if attempt.get("outcome") == "provisional" and attempt.get(
+                    "candidate_ref"
+                ):
+                    refs.append(str(attempt["candidate_ref"]))
+        residents: list[str] = []
+        for ref in dict.fromkeys(refs):
+            try:
+                spec, _skill = self.registry.load_candidate(ref)
+            except ValidationError:
+                continue
+            try:
+                self.registry.latest_spec(spec.signal_id)
+                continue
+            except ValidationError:
+                pass
+            latest = self.registry.load_candidate_validation(ref)
+            if latest is None:
+                continue
+            if latest.get("effectiveness", {}).get("disposition") == "provisional":
+                residents.append(ref)
+        return tuple(residents)
+
+    def _apply_pooled_provisional_decision(
+        self,
+        signal_ref: str,
+        effectiveness: Mapping[str, Any],
+        *,
+        is_new_signal: bool,
+    ) -> dict[str, Any]:
+        """Resolve one provisional new-signal outcome through pooled evidence.
+
+        The resident limit is enforced before pooling: with the cap occupied,
+        a fresh directional tie is rejected with an explicit reason instead of
+        admitting a third resident.
+        """
+
+        payload = dict(effectiveness)
+        if not is_new_signal or payload.get("disposition") != "provisional":
+            return payload
+        other_residents = [
+            ref for ref in self._provisional_resident_refs() if ref != signal_ref
+        ]
+        if len(other_residents) >= _PROVISIONAL_RESIDENT_LIMIT:
+            return {
+                **payload,
+                "disposition": "rejected",
+                "reasons": [
+                    *list(payload.get("reasons", ())),
+                    "provisional resident limit "
+                    f"({_PROVISIONAL_RESIDENT_LIMIT}) reached; re-propose after "
+                    "a resident resolves",
+                ],
+            }
+        prior_rows = [
+            dict(record.get("effectiveness", {}))
+            for record in self.registry.list_candidate_evaluations(signal_ref)
+            if record.get("effectiveness", {}).get("disposition") == "provisional"
+        ]
+        decision = pooled_provisional_decision([*prior_rows, payload])
+        payload["pooled"] = decision["counts"]
+        if decision["action"] == "promote":
+            return {
+                **payload,
+                "disposition": "promoted",
+                "accepted": True,
+                "reasons": [
+                    *list(payload.get("reasons", ())),
+                    decision["reason"],
+                ],
+            }
+        if decision["action"] == "eliminate":
+            return {
+                **payload,
+                "disposition": "rejected",
+                "reasons": [
+                    *list(payload.get("reasons", ())),
+                    decision["reason"],
+                ],
+            }
+        return payload
+
+    def _revisit_provisional_residents(
+        self,
+        *,
+        proposed_refs: set[str],
+        validations: dict[str, Any],
+        effectiveness_by_ref: dict[str, Mapping[str, Any]],
+        accepted_hashes: dict[str, str],
+        accepted_evaluations: dict[str, str],
+        agent_audits: dict[str, Any],
+    ) -> None:
+        """Re-evaluate surviving residents on this cycle's fresh check cohort."""
+
+        pending = [
+            ref for ref in self._provisional_resident_refs() if ref not in proposed_refs
+        ]
+        audit: dict[str, Any] = {
+            "schema_version": "provisional-revisit-audit-v1",
+            "residents": list(pending),
+            "evaluated": [],
+            "skipped": pending[_PROVISIONAL_RESIDENT_LIMIT:],
+        }
+        check_cases = self._manifest_cases("check_case_ids")
+        for ref in pending[:_PROVISIONAL_RESIDENT_LIMIT]:
+            spec, skill = self.registry.load_candidate(ref)
+            candidate_hash = self.registry.candidate_hash(ref)
+            preferred = tuple(case.case_id for case in check_cases)
+            paired = self.effectiveness_evaluator.evaluate(
+                spec,
+                skill=skill,
+                preferred_case_ids=preferred,
+                excluded_case_ids=(),
+                induction_supported=True,
+                strict_preferred=bool(check_cases),
+            )
+            effectiveness = self._apply_pooled_provisional_decision(
+                ref, paired.to_dict(), is_new_signal=True
+            )
+            accepted = effectiveness.get("disposition") == "promoted"
+            evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
+                spec,
+                candidate_hash=candidate_hash,
+                preferred_case_ids=preferred,
+                excluded_case_ids=(),
+                induction_supported=True,
+                strict_preferred=bool(check_cases),
+            )
+            recorded_key = self.registry.record_candidate_validation(
+                ref,
+                candidate_hash=candidate_hash,
+                evaluation_identity=evaluation_identity,
+                accepted=accepted,
+                reasons=tuple(
+                    str(item) for item in effectiveness.get("reasons", ())
+                ),
+                contract_validation={
+                    "accepted": accepted,
+                    "reasons": [
+                        "provisional resident re-evaluated on the fresh check cohort"
+                    ],
+                    "executed_tests": 0,
+                },
+                effectiveness=effectiveness,
+            )
+            validations[ref] = SignalCandidateValidation(
+                signal_ref=ref,
+                accepted=accepted,
+                reasons=tuple(str(item) for item in effectiveness.get("reasons", ())),
+                candidate_hash=candidate_hash,
+            )
+            effectiveness_by_ref[ref] = effectiveness
+            if accepted:
+                accepted_hashes[ref] = candidate_hash
+                accepted_evaluations[ref] = recorded_key
+            audit["evaluated"].append(
+                {
+                    "signal_ref": ref,
+                    "disposition": effectiveness.get("disposition"),
+                    "pooled": effectiveness.get("pooled"),
+                }
+            )
+        agent_audits["provisional_revisit"] = audit
 
     def _run_signal_update(
         self,

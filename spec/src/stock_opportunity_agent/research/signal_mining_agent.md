@@ -181,9 +181,12 @@ gate passes; this module spec governs the new path only.
   drives at least one candidate through the complete local loop
   discovery -> candidate -> fixture -> holdout simulation -> promotion
   decision with zero model calls, proving the candidate path is structurally
-  reachable before any live shadow cycle. Its promotion decision keeps the
-  absolute floor (minimum availability and strictly positive directional
-  evidence) and never lowers it for yield.
+  reachable before any live shadow cycle. Its promotion decision keeps a
+  strict absolute floor (minimum availability and strictly positive
+  directional evidence) as the controlled fixture; the production paired
+  gate additionally applies tiered admission for new Signals (directional
+  ties become provisional residents under the pooled three-zone rule owned
+  by `signal_evolution.md`).
 - Legacy H/E code remains callable as the read-only contrast path; the
   production switch is a separate gated change that also archives the legacy
   specs per repository removal discipline.
