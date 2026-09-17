@@ -373,3 +373,51 @@ shadow 脚本传输重试与独立台账目录。
 诚实终态。按方案 Phase 6 纪律（"不要在 shadow 只有一轮时删除旧路径"），
 生产切换仍需至少一轮额外 shadow 周期后执行；本轮记录为切换验收的
 第一份完整证据。
+
+## Phase 5 追加：影子轨语义审计与两轮泛化修复（2026-09-17 下午）
+
+对 shadow6（Seed A）与 shadow7（Seed B，首次 discovery live）逐请求审计
+prompt/view/response/账本，发现六个泛化缺陷并全部修复（代码
+450e05e→347379c→d35bdd9，spec 同步，全套 821 测试 + lint 通过）：
+
+1. **视图无工具结果反馈**：视图只含不透明 ref 列表，模型看不到 fetch 是否
+   生效——Seed A 连发 12 次宽泛 fetch（17 调用/$0.349），Seed B 连发 10 次。
+   修复：视图新增 runtime 拥有的 `evidence_digest`（族/概念×正反例覆盖）与
+   `last_action_result`。效果：Seed A 3–4 次调用即终态 candidate
+   （$0.04–0.10），且模型明确以 digest 决定"不再重复 fetch/只补未覆盖族"。
+2. **预算耗尽死亡螺旋**：heavy 预算耗尽后模型的重动作请求被当作模型违约
+   消耗纠正额度，Seed B 三次后 technical_failure。修复：预算耗尽是
+   runtime 状态条件——保留一次切换机会后确定性终态 `deferred_budget`
+   （方案 §8 可接受零结果），不再伪装成技术失败。
+3. **候选与 catalog 重复未拦**：Seed A 候选 observable 直接写成既有
+   `cash_reserves:v1`。修复：propose 拒绝复用稳定 catalog 任何 Signal
+   基名（改既有 Signal 属 Update 路径）。
+4. **处置纠正文案反向**：`new_measurement` 误带 signal_refs 时报
+   "cites no signal"，语义相反，把 142 条处置压成全量 not_testable。
+   修复：文案陈述真实规则（仅 update_existing 引用一个 signal）。
+   效果：r3 处置分化为 8 行 5 类（含 4 条 update_existing 带引用）。
+5. **证据引用语义不接地**：两个 seed 的候选引用都是账本合法但与测量无关
+   的 fact（期权/估值/库存 vs 净负债权益；零 R&D vs R&D 强度），模型在
+   rationale 中明说"需要 concept→fact_ref 映射但视图不提供"。修复：
+   compare_groups 结果附带每个值背后的 fact_ref；propose 校验
+   normalization 点名的已知概念必须各有一条同概念引用。效果：r3 两候选
+   引用 100% 匹配测量概念（现金跑道=现金+经营现金流 latest 多 case；
+   流动比率 YoY=AssetsCurrent/LiabilitiesCurrent 的 latest+prior 配对）。
+6. **raw info 层叙事投影缺陷**：historical_price JSON 行情与供应商信封被
+   投影成"叙事事件"，filing 事件 excerpt 是 SEC SGML/HTML 样板头。
+   修复：叙事事件仅从 filing/transcript/news 族投影（族映射仍是唯一
+   权威），excerpt 复用生产可见文本投影与实质内容锚点。
+
+r2/r3 影子（shadow10–13）四轮全部终态 candidate、四项不变量通过，成本
+$0.023–0.104/轮。candidates：net_debt_to_equity（r2，后被#5 修复暴露引用
+缺陷）、company_news 合同/订单事件计数（r2）、
+liquidity_runway_from_operating_burn（r3）、current_ratio_yoy_change（r3）。
+
+**账本结算缺陷（生产阻断根因）**：`ExternalAttemptLedger.reserve` 的
+committed cost 永久按 reserved 而非 settled 累计——V91 cycle 2 因 SSL 重放
+在 reserved $4.94 vs actual $1.36 时 fail-closed 且不可恢复。修复：finalized
+按 actual_cost、in-flight 按全量预留（保守性保留）。V92 从 V91 提交前缀
+重新冻结（合约 0f5bc8e6...a961be，代码 450e05e）执行两周期；其 cycle 1
+reflection 的 wire 载荷经核验确实包含 V91 提交的
+operating_cash_flow_sign:v1、guidance_acceleration:v2 与 slow_loop_result
+（跨工作区反思→行为信息流成立；V91 内部 c1→c2 的消费此前已验证）。
