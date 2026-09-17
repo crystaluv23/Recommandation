@@ -591,11 +591,20 @@ class LabelAwareMiningController:
             not isinstance(measurement, Mapping)
             or set(measurement) != {"observable", "value_kind", "normalization"}
             or any(not str(measurement[k]).strip() for k in measurement)
-            or measurement["value_kind"]
-            not in {"boolean", "ordinal", "numeric", "categorical"}
         ):
             raise InvalidMiningAction(
-                "candidate measurement requires observable, value_kind, normalization"
+                "candidate measurement requires exactly observable, value_kind, "
+                "and normalization"
+            )
+        if measurement["value_kind"] not in {
+            "boolean",
+            "ordinal",
+            "numeric",
+            "categorical",
+        }:
+            raise InvalidMiningAction(
+                "candidate measurement value_kind must be exactly one of "
+                "boolean, ordinal, numeric, categorical (a ratio is numeric)"
             )
         falsifiers = candidate.get("falsifiers")
         if (
