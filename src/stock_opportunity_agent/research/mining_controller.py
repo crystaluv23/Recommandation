@@ -456,6 +456,18 @@ class LabelAwareMiningController:
             omitted.update(
                 {"excluded_document_ids": list(result.excluded_by_limits)}
             )
+        self._heavy_used += 1
+        self._advance("evidence_ready")
+        new_relations = {
+            relation.relation_ref: relation
+            for relation in (
+                *build_same_concept_relations(list(self._facts.values())),
+                *build_case_co_occurrence_relations(
+                    list(self._facts.values()), limit=64
+                ),
+            )
+        }
+        self._relations.update(new_relations)
         self._append(
             "fetch_evidence",
             raw,
@@ -463,25 +475,15 @@ class LabelAwareMiningController:
                 "fact_refs": sorted(
                     fact.fact_ref for fact in self._facts.values()
                 ),
+                "relation_refs": sorted(new_relations),
             },
             case_refs=tuple(str(ref) for ref in case_refs),
-            evidence_refs=tuple(evidence_refs),
+            evidence_refs=tuple(
+                [*evidence_refs, *sorted(new_relations)]
+            ),
             source_types=tuple(sorted(source_types)),
             coverage=coverage,
             omitted_coverage=omitted,
-        )
-        self._heavy_used += 1
-        self._advance("evidence_ready")
-        self._relations.update(
-            {r.relation_ref: r for r in build_same_concept_relations(list(self._facts.values()))}
-        )
-        self._relations.update(
-            {
-                r.relation_ref: r
-                for r in build_case_co_occurrence_relations(
-                    list(self._facts.values()), limit=64
-                )
-            }
         )
         return ()
 
