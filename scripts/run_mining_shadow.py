@@ -174,7 +174,20 @@ def main() -> None:
         light_action_limit=args.light_action_limit,
         validation_sink=sink,
     )
-    result = controller.run()
+    import time
+
+    from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
+
+    result = None
+    for transport_attempt in range(6):
+        try:
+            result = controller.run()
+            break
+        except RetryableOpenAIClientError:
+            if transport_attempt == 5:
+                raise
+            time.sleep(10 * (transport_attempt + 1))
+    assert result is not None
 
     aliases = sorted(
         {
