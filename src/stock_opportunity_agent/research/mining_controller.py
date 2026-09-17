@@ -223,6 +223,7 @@ class LabelAwareMiningController:
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
         self._last_read_span: str | None = None
+        self._last_invalid: Mapping[str, Any] | None = None
         self._label_map: dict[str, str] = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
             for ref, case in self.case_pairs
@@ -246,8 +247,10 @@ class LabelAwareMiningController:
                     action, raw
                 )
                 self._corrections = 0
+                self._last_invalid = None
             except (InvalidMiningAction, ValidationError) as exc:
                 self._record_invalid(action, raw, str(exc))
+                self._last_invalid = {"action": action, "issue": str(exc)}
                 self._corrections += 1
                 if self._corrections > _MAX_STRUCTURED_CORRECTIONS:
                     terminal_kind = "technical_failure"
@@ -290,6 +293,8 @@ class LabelAwareMiningController:
         }
         if self._last_read_span is not None:
             view["last_read_span"] = self._last_read_span
+        if self._last_invalid is not None:
+            view["last_invalid_action"] = dict(self._last_invalid)
         if self.seed == "hypothesis":
             view["backlog_needs"] = [dict(row) for row in self.backlog_needs]
         return view
