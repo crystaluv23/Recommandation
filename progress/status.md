@@ -1,5 +1,35 @@
 # Status
 
+2026-09-17（夜）**V98 首次达成新信号挖掘入库**：cash_to_current_
+liabilities_ratio:v1 由生产 LabelAwareMiningController（Seed A）挖掘、
+物化（检索族约束）、契约校验通过，16 个全新 check 上 TP=5/FP=0/TN=6/FN=3
+（precision 100%、recall 62.5%、11 对 2 错）双底线通过立即晋升，Registry
+v2→v3，signal_goal_status 首次 met（48 attempts/$0.55）。四代生产运行
+（V94 控制器切换观察、V96 物化 slug 修复、V97 分级准入/居留/复访全链
+live、V98 入库）+ V93/V95 两个不可变诊断工作区（重放幂等、传递导入
+去重两个阻断根因修复）。V98 cycle 2 因周期内晋升后的历史链校验边界
+暂停（下一修复项；周期 1 权威完整）。旧 H/E 生产路径的角色模型兼容、
+只读回放保留；归档待后续。Fast 轮 Predictor 信号路由审计为后续独立项。
+
+2026-09-17（晚）Phase 6 生产切换 + 三次运行诊断与修复 + V96 执行中。控制器
+已按能力分发接入生产挖掘入口（bcd8c2d：v8 清单+JSON caller → Seed A/B +
+物化调用 → 不变的契约校验/分级配对门；H/E 保留 role-tracks 供只读回放），
+V94 完成两周期 clean exit：控制器双 seed 大多终态 candidate、Update 轮换
+生效（3 个新面孔目标，模型诚实 no_change），但两周期候选均死于物化
+signal_id 非法——运行时 slugify 修复（619a17d）。V95 诊断传递性导入平方
+膨胀（feedback rows 跨代 ≈2×：1,399→12,092，首个请求 1.18M tokens 超限）：
+修复为仅从最新周期 input 投影 feedback 行（超集去重 12,092→6,075）+
+source-read 选择目录有界化（最近 1024 条+省略计数，79020b7）。信号选择
+坍缩审计入报告：5 周期仅 4/14 信号被选（预选无轮换+H1 建议跳队自增强），
+呈现本身充分（cards 带完整 learned profile），修复为近期轮换惩罚
+（-600/次，穿透 +1000 建议）。V96 入册 3 个控制器新候选（均死于契约校验→物化纠正回环修复 da0103f）；
+V97 全链 live 验证分级准入：4 个新候选入册、2 名 provisional 居留者、
+复访+居留上限显式拒绝均按设计运转；入库最后缺口=物化检索契约与真实
+check 语料不匹配（availability 0/4），修复 f9ddf8c（检索族相交校验），
+V98 验证中。V93/V95 为不可变诊断工作区。行动方案 v2.1
+已附执行收尾记录（Phase 6 完成、Phase 7 部分前置、晋升协议修订取代
+§0.3）。
+
 2026-09-17（傍晚，第三次修订）配对门两道底线（用户决策）：有效性记录新增
 TP/FP/FN/TN 混淆矩阵（按正类键控、仅计 available）；新增正类 recall 底线
 （TP/(TP+FN)≥0.5，治"只在易对的控制股出手刷准确率"的怯懦画像——旧门下

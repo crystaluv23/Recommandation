@@ -571,3 +571,41 @@ fixtures 不满足自声明的两期覆盖）。修复：
 - 候选携带 seed 溯源，induction ids 空回退为全 dev 集。
 回归测试覆盖：坏载荷→形状错→语义重复→参数区分→PIT fixture as_of→
 staged 全链。V97 为最终入库运行。
+
+## V97 结果：分级准入机制全链 live 验证（2026-09-17）
+
+V97（57e14ada/da0103f，从 V96 导入）两周期 clean exit，136 attempts/$1.02。
+cycle 1：控制器双 seed 各出 1 候选（cash_runway_months:v1、
+point_in_time_current_ratio:v1），**首次通过契约校验进入配对门**并按分级
+准入成为 provisional 居留者（check 执行 availability 0/4 → 不足类理由，
+不再终审拒绝）；Update=1（cash_reserves:v2 诚实拒绝 1 对 7 错）。
+cycle 2：又 2 个新候选（cash_runway_quarterly_burn:v1、
+reports_current_assets_and_liabilities:v1）入册并到达配对门——因居留上限
+（2）被显式拒绝（"provisional resident limit (2) reached"）；**居留者复访
+首次 live 运行**：两名居留者在当期全新 check 队列上复评并应用 pooled 三区
+制（继续跟踪）。V96/V97 合计 5 个控制器新信号候选入册、2 名居留者持续
+累计。入库（promotion）仍未达成——最后缺口定性：物化的 raw_retrieval
+覆盖要求在真实 check 语料上 unresolved（docs 命中 10 但不满足声明覆盖）
+→ domain_unavailable → availability 0。已落修复：物化校验
+raw_retrieval.source_types 必须与引用证据的文档族相交（f9ddf8c，经纠正
+回环执行）；V98 验证中。
+
+## V98：首个控制器挖掘信号晋升入库，signal_goal_status=met（2026-09-17）
+
+V98（01b1d998/f9ddf8c，从 V97 导入）cycle 1 提交：**cash_to_current_
+liabilities_ratio:v1 由生产 LabelAwareMiningController（Seed A，3 次调用）
+挖掘、物化（检索族相交约束生效）、通过完整契约校验（fixtures 真实执行），
+在 16 个全新 check case 上以 TP=5/FP=0/TN=6/FN=3（precision 100%、
+recall 62.5%、方向 11 对 2 错）同时通过方向与正类 recall 两道底线，
+立即晋升**——Registry v2→v3，signal_goal_status 首次 "met"（项目史上
+首次新信号挖掘入库，且经由新架构全链：控制器→物化→契约校验→分级配对门
+→原子晋升）。Update=1（gross_margin_change:v2 诚实拒绝 1 对 3 错）。
+48 attempts/$0.55。cycle 2 启动触发"slow_only Registry differs from
+frozen committed history"校验失败（周期内晋升后的历史链一致性边界，
+V75 时代处理过导入侧同类问题；本周期结果权威完整，列为下一修复项）。
+
+**用户三层目标终态**：1) 跑通——V94/V96/V97/V98 四次生产运行 clean
+exit，prompt/view/response 内容与 reflection 信息流（跨工作区+周内）
+逐轮 wire 级验证；2) 挖掘+入库——达成（V98 晋升，V96/V97 另有 5 个
+候选入册、2 名 provisional 居留者示范累计机制）；3) 选择坍缩——审计
++轮换修复 live 生效。行动方案 v2.1 执行完毕（收尾记录见该文档末节）。

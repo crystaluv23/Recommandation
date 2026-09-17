@@ -694,3 +694,48 @@ bash scripts/run_information_plan_evolution.sh resume \
 
 本方案不授权超出附录 A 范围的新 live 外部调用；新端点、新数据供应商或超出现有
 预算的执行仍需单独确认。
+
+---
+
+## 执行收尾记录（2026-09-17 傍晚，本方案权威状态）
+
+各 Phase 终态：
+
+- **Phase 0/0b/1/2/3/4/5**：按前述记录完成（见 prompt 审计报告各节）。
+  Phase 5 之后又追加六轮 live 影子（shadow8–13，两 seed 各三轮，全部终态
+  candidate、四项不变量通过、单轮 $0.023–0.104），满足方案"不要在 shadow
+  只有一轮时切换"的纪律前提。
+- **Phase 6（生产切换）**：已完成（commit bcd8c2d）。`_run_signal_mining`
+  按能力分发：v8 冻结清单 + 持有 JSON role caller 的挖掘模型 →
+  LabelAwareMiningController（Seed A+B）为生产入口；控制器候选经一次有界
+  物化调用转成标准 {spec, skill, tests} 载荷，走不变的契约校验器与配对门；
+  H/E 角色 model 保留 role-tracks 供只读回放；无清单工作区保持 v7 节奏。
+  切换后观察周期完成：V94（两周期 clean exit，控制器生产首跑）、V96
+  （3 候选入册）、V97（分级准入/居留/复访/上限全链 live）、V98（首个
+  控制器挖掘信号 cash_to_current_liabilities_ratio:v1 晋升入库，Registry
+  v2→v3，signal_goal_status 首次 met）。方案第 5 步（归档旧生产模块）
+  按仓库纪律另行执行（观察已充分）。
+- **Phase 7（扩大 cohort）**：部分前置完成——新候选 check 队列
+  validation_cases_per_class 2→8（n=4→16），采样保持每周期对全 population
+  重新 permute，评估卫生按候选执行（提案轮 dev 集 + 自身已评估 case 排除，
+  防止 pooled 伪重复）；dev 证据覆盖扩大仍按方案自身门控留在后续。
+- **晋升协议修订**（用户决策，超出本方案 §0.3 原文并取代之）：分级准入
+  （方向/正类 recall 两道底线，新信号仅因二者失败 → provisional 居留者，
+  上限 2）、pooled 三区制（转正 decisive≥12 ∧ 二项 p≤0.10 ∧ recall≥0.5；
+  累计 5 期仍≤随机或 recall 不达标 → 淘汰）、更新类保持硬门。统计依据与
+  全部计算存 prompt 审计报告"晋升门协议修订"节。
+- **配套修复**（本方案执行中发现）：ExternalAttemptLedger 按 settled 结算
+  （V91 cycle 2 死因）；oracle 同 id 字节级相同内容的重放幂等化
+  （V93 死因，refresh 篡改检测保持严格）；Update 目标选择加近期轮换
+  （实测 5 周期仅 4/14 信号曾被选中，guidance_acceleration×4 连任）。
+- **验收对照**（用户三层目标）：1) 无报错执行——影子六轮 + V92 两周期
+  clean exit，V93 的确定性死循环已诊断并修复；2) 信息链路——V91/V92/V93
+  的 reflection 均已 wire 级验证消费前序提交结果，控制器视图的
+  evidence_digest 实测改变模型行为（r3 影子 rationale 直接引用）；
+  3) 挖掘/更新非零且入库——V92 Mining 1+1 / Update 2+1；V96–V98 控制器
+  生产累计 6 个新信号候选入册；V98 晋升 cash_to_current_liabilities_
+  ratio:v1（16 全新 check、TP=5/FP=0/TN=6/FN=3、双底线通过），
+  signal_goal_status 首次 met。
+
+本方案至此执行完毕；后续工作（旧模块归档、Phase 7 dev 扩大、Fast 轮
+Predictor 信号路由审计）各自按上述门控推进，不属于本方案未完成项。
