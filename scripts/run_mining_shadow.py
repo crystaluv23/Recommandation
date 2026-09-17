@@ -62,6 +62,7 @@ def main() -> None:
     parser.add_argument("--raw-info-root", type=Path, required=True)
     parser.add_argument("--approved-dataset", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--shadow-workspace", type=Path, default=None)
     parser.add_argument("--seed", choices=("hypothesis", "discovery"), default="hypothesis")
     parser.add_argument("--heavy-action-limit", type=int, default=12)
     parser.add_argument("--light-action-limit", type=int, default=4)
@@ -126,7 +127,11 @@ def main() -> None:
         if isinstance(card, dict)
     ]
 
-    shadow_root = workspace_root.parent / (workspace_root.name + "-shadow")
+    shadow_root = (
+        args.shadow_workspace.resolve()
+        if args.shadow_workspace is not None
+        else workspace_root.parent / (workspace_root.name + "-shadow")
+    )
     shadow_root.mkdir(parents=True, exist_ok=True)
     shutil.copy2(
         workspace_root / "run_contract.json", shadow_root / "run_contract.json"
