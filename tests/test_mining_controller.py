@@ -419,5 +419,215 @@ class MiningControllerTests(unittest.TestCase):
         self.assertIn("control", compare_entry.coverage["groups"])
 
 
+    def test_candidate_duplicating_catalog_signal_is_rejected(self) -> None:
+        cases, store = _fixture_store()
+
+        def duplicate_proposal(view):
+            known = sorted(view["known_fact_refs"])
+            return {
+                "action": "propose_candidate",
+                "rationale": ["Existing signal restated."],
+                "candidate": {
+                    "measurement": {
+                        "observable": "cash_reserves:v2",
+                        "value_kind": "numeric",
+                        "normalization": "latest USD cash balance",
+                    },
+                    "falsifiers": [
+                        {"condition": "c", "expected_observation": "o"}
+                    ],
+                    "evidence_refs": known[:1],
+                },
+            }
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                duplicate_proposal,
+                duplicate_proposal,
+                duplicate_proposal,
+                duplicate_proposal,
+            ]
+        )
+        controller = _controller(store, cases, model, seed="discovery")
+
+        result = controller.run()
+
+        self.assertEqual(result.terminal_kind, "technical_failure")
+        notes = [e.note for e in result.ledger if e.note]
+        self.assertTrue(
+            any("Update path" in note for note in notes), notes
+        )
+
+    def test_fetch_digest_and_last_action_result_reach_next_view(self) -> None:
+        cases, store = _fixture_store()
+        seen = {}
+
+        def after_fetch(view):
+            seen.update(view)
+            return {"action": "record_deferred", "rationale": ["Stop."]}
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001", "case-002"],
+                    "source_families": ["financial"],
+                    "max_documents": 2,
+                },
+                after_fetch,
+            ]
+        )
+        controller = _controller(store, cases, model, seed="discovery")
+
+        controller.run()
+
+        digest = seen["evidence_digest"]
+        self.assertEqual(digest["fetches"], 1)
+        self.assertGreater(digest["fact_count"], 0)
+        coverage = digest["concept_case_coverage"][
+            "CashAndCashEquivalentsAtCarryingValue"
+        ]
+        self.assertEqual(coverage["positive_cases"], 1)
+        self.assertEqual(coverage["control_cases"], 1)
+        self.assertEqual(seen["last_action_result"]["action"], "fetch_evidence")
+        self.assertGreater(seen["last_action_result"]["new_facts"], 0)
+
+    def test_non_update_disposition_signal_ref_error_names_the_rule(self) -> None:
+        cases, store = _fixture_store()
+
+        def propose(view):
+            known = sorted(view["known_fact_refs"])
+            return {
+                "action": "propose_candidate",
+                "rationale": ["Candidate."],
+                "candidate": {
+                    "measurement": {
+                        "observable": "cash_level",
+                        "value_kind": "numeric",
+                        "normalization": "n",
+                    },
+                    "falsifiers": [
+                        {"condition": "c", "expected_observation": "o"}
+                    ],
+                    "evidence_refs": known[:1],
+                },
+                "need_dispositions": [
+                    {
+                        "need_refs": ["need-001"],
+                        "disposition": "new_measurement",
+                        "signal_refs": ["cash_reserves:v1"],
+                        "rationale": ["Mistakenly cites a signal."],
+                    }
+                ],
+            }
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                propose,
+                propose,
+                propose,
+                propose,
+            ]
+        )
+        controller = _controller(
+            store,
+            cases,
+            model,
+            seed="hypothesis",
+            backlog_needs=[{"need_ref": "need-001", "need": "cash"}],
+        )
+
+        result = controller.run()
+
+        notes = [e.note for e in result.ledger if e.note]
+        self.assertTrue(
+            any("must cite no signal_refs" in note for note in notes), notes
+        )
+
+
+    def test_repeated_heavy_action_after_exhaustion_ends_deferred(self) -> None:
+        cases, store = _fixture_store()
+        exhausted_fetch = {
+            "action": "fetch_evidence",
+            "rationale": ["Still fetching."],
+            "case_refs": ["case-001"],
+            "source_families": ["financial"],
+            "max_documents": 1,
+        }
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                exhausted_fetch,
+                exhausted_fetch,
+                exhausted_fetch,
+            ]
+        )
+        controller = _controller(
+            store, cases, model, seed="discovery", heavy_action_limit=1
+        )
+
+        result = controller.run()
+
+        self.assertEqual(result.terminal_kind, "deferred_budget")
+        notes = [e.note for e in result.ledger if e.note]
+        self.assertTrue(
+            any("inadmissible heavy action" in note for note in notes), notes
+        )
+
+    def test_one_chance_to_switch_after_exhaustion_is_preserved(self) -> None:
+        cases, store = _fixture_store()
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Inadmissible."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                {
+                    "action": "record_no_pattern",
+                    "rationale": ["Honest stop with coverage."],
+                    "coverage": {"explored_families": ["company_facts"]},
+                },
+            ]
+        )
+        controller = _controller(
+            store, cases, model, seed="discovery", heavy_action_limit=1
+        )
+
+        result = controller.run()
+
+        self.assertEqual(result.terminal_kind, "no_pattern_with_coverage")
+
+
 if __name__ == "__main__":
     unittest.main()

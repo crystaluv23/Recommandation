@@ -91,6 +91,16 @@ class InvalidMiningAction(ValidationError):
     """One model action violated the closed contract; correction is bounded."""
 
 
+class BudgetInadmissibleAction(InvalidMiningAction):
+    """A heavy action requested after the heavy budget was exhausted.
+
+    Budget exhaustion is a runtime-owned state, not a model contract fault:
+    repeated inadmissible heavy actions end in a deterministic
+    ``deferred_budget`` terminal with a resumable ledger instead of burning
+    the structured-correction quota as a technical failure.
+    """
+
+
 @dataclass(frozen=True)
 class LedgerEntry:
     """One runtime-owned mining-ledger row."""
@@ -231,6 +241,7 @@ class LabelAwareMiningController:
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
         self._last_read_span: str | None = None
+        self._last_action_result: Mapping[str, Any] | None = None
         self._last_invalid: Mapping[str, Any] | None = None
         self._label_map: dict[str, str] = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
@@ -243,6 +254,7 @@ class LabelAwareMiningController:
         terminal_kind = "technical_failure"
         candidates: list[Mapping[str, Any]] = []
         need_dispositions: tuple[Mapping[str, Any], ...] = ()
+        budget_inadmissible_streak = 0
         while self._state != "terminal":
             view = self._model_view()
             action = ""
@@ -256,9 +268,25 @@ class LabelAwareMiningController:
                 )
                 self._corrections = 0
                 self._last_invalid = None
+                budget_inadmissible_streak = 0
+            except BudgetInadmissibleAction as exc:
+                self._record_invalid(action, raw, str(exc))
+                self._last_invalid = {"action": action, "issue": str(exc)}
+                budget_inadmissible_streak += 1
+                if budget_inadmissible_streak >= 2:
+                    self._mark_terminal(
+                        "deferred_budget",
+                        raw,
+                        note=(
+                            "heavy budget exhausted; model repeated an "
+                            "inadmissible heavy action"
+                        ),
+                    )
+                    terminal_kind = "deferred_budget"
             except (InvalidMiningAction, ValidationError) as exc:
                 self._record_invalid(action, raw, str(exc))
                 self._last_invalid = {"action": action, "issue": str(exc)}
+                budget_inadmissible_streak = 0
                 self._corrections += 1
                 if self._corrections > _MAX_STRUCTURED_CORRECTIONS:
                     terminal_kind = "technical_failure"
@@ -299,7 +327,10 @@ class LabelAwareMiningController:
             "known_event_refs": sorted(self._events),
             "known_relation_refs": sorted(self._relations),
             "label_map": dict(self._label_map),
+            "evidence_digest": self._evidence_digest(),
         }
+        if self._last_action_result is not None:
+            view["last_action_result"] = dict(self._last_action_result)
         if self._last_read_span is not None:
             view["last_read_span"] = self._last_read_span
         if self._last_invalid is not None:
@@ -307,6 +338,42 @@ class LabelAwareMiningController:
         if self.seed == "hypothesis":
             view["backlog_needs"] = [dict(row) for row in self.backlog_needs]
         return view
+
+    def _evidence_digest(self) -> dict[str, Any]:
+        """Runtime-owned summary of what fetches have already collected."""
+
+        concept_cases: dict[str, dict[str, set[str]]] = {}
+        for fact in self._facts.values():
+            groups = concept_cases.setdefault(
+                fact.concept, {"positive": set(), "control": set()}
+            )
+            label = self._label_map.get(fact.case_ref, "control")
+            groups[label if label in groups else "control"].add(fact.case_ref)
+        concepts = {
+            concept: {
+                "positive_cases": len(groups["positive"]),
+                "control_cases": len(groups["control"]),
+            }
+            for concept, groups in concept_cases.items()
+        }
+        label_counts = {"positive": 0, "control": 0}
+        for label in self._label_map.values():
+            label_counts[label] = label_counts.get(label, 0) + 1
+        return {
+            "fetches": self.ledger.fetch_count(),
+            "families_fetched": list(self.ledger.explored_families()),
+            "fact_count": len(self._facts),
+            "event_count": len(self._events),
+            "relation_count": len(self._relations),
+            "cases_with_facts": sorted({fact.case_ref for fact in self._facts.values()}),
+            "concept_case_coverage": dict(
+                sorted(
+                    concepts.items(),
+                    key=lambda item: (-item[1]["positive_cases"], item[0]),
+                )
+            ),
+            "label_counts": label_counts,
+        }
 
     # ------------------------------------------------------------------
     # Contract validation
@@ -332,7 +399,7 @@ class LabelAwareMiningController:
                 "rationale must be a non-empty array of short strings"
             )
         if action in HEAVY_ACTIONS and self._heavy_used >= self.heavy_action_limit:
-            raise InvalidMiningAction("heavy action budget exhausted")
+            raise BudgetInadmissibleAction("heavy action budget exhausted")
 
     def _require_state_at_least(self, minimum: str, action: str) -> None:
         if _STATE_ORDER[self._state] < _STATE_ORDER[minimum]:
@@ -350,6 +417,7 @@ class LabelAwareMiningController:
             payload = (
                 self.manifest if action == "inspect_manifest" else self._catalog_view()
             )
+            self._last_action_result = {"action": action, "inspected": sorted(payload)}
             self._append(
                 action,
                 raw,
@@ -468,6 +536,20 @@ class LabelAwareMiningController:
             )
         }
         self._relations.update(new_relations)
+        self._last_action_result = {
+            "action": "fetch_evidence",
+            "cases_requested": len(case_refs),
+            "families": sorted(source_types),
+            "new_facts": len(evidence_refs)
+            - sum(1 for ref in evidence_refs if ref.startswith("relation-")),
+            "total_facts": len(self._facts),
+            "total_events": len(self._events),
+            "new_relations": len(new_relations),
+            "total_relations": len(self._relations),
+            "excluded_document_ids": len(
+                omitted.get("excluded_document_ids", ())
+            ),
+        }
         self._append(
             "fetch_evidence",
             raw,
@@ -501,6 +583,13 @@ class LabelAwareMiningController:
             facts=tuple(self._facts.values()),
         )
         self._relations[relation.relation_ref] = relation
+        self._last_action_result = {
+            "action": "compute_statistic",
+            "rule": rule,
+            "relation_ref": relation.relation_ref,
+            "value": relation.value,
+            "fact_refs": list(relation.fact_refs),
+        }
         self._append(
             "compute_statistic",
             raw,
@@ -556,6 +645,10 @@ class LabelAwareMiningController:
         if not isinstance(concepts, list) or not concepts:
             raise InvalidMiningAction("compare_groups requires non-empty concepts")
         summary = self._group_summary(tuple(str(item) for item in concepts))
+        self._last_action_result = {
+            "action": "compare_groups",
+            "groups": summary,
+        }
         self._append(
             "compare_groups",
             raw,
@@ -629,6 +722,19 @@ class LabelAwareMiningController:
             raise InvalidMiningAction(
                 "candidate measurement value_kind must be exactly one of "
                 "boolean, ordinal, numeric, categorical (a ratio is numeric)"
+            )
+        observable = str(measurement["observable"])
+        catalog_names = {
+            str(card.get("signal_ref", "")).split(":")[0]
+            for card in self.signal_catalog
+            if str(card.get("signal_ref", "")).strip()
+        }
+        proposed_base = observable.split(":")[0].strip()
+        if proposed_base and proposed_base in catalog_names:
+            raise InvalidMiningAction(
+                "candidate observable duplicates the existing Signal "
+                f"{proposed_base}; changing an existing Signal belongs to the "
+                "Update path, so propose a genuinely new measurement instead"
             )
         falsifiers = candidate.get("falsifiers")
         if (
@@ -731,7 +837,8 @@ class LabelAwareMiningController:
                     continue
             elif signal_refs:
                 row_issues.append(
-                    f"row[{index}] {disposition} cites no signal"
+                    f"row[{index}] {disposition} must cite no signal_refs; "
+                    "only update_existing cites exactly one existing signal"
                 )
                 continue
             duplicates = sorted(

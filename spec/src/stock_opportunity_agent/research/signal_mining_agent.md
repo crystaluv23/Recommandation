@@ -72,6 +72,22 @@ gate passes; this module spec governs the new path only.
   initially 4, so enumeration is not starved by evidence work. All actions
   remain under the existing attempt/cost and token ceilings. Numbers are
   finalized from offline replay; the model can never adjust them.
+- A heavy action requested after the heavy budget is exhausted is a
+  runtime-owned state inadmissibility, not a model contract fault. The model
+  receives one bounded chance to switch to an admissible action (including
+  `record_no_pattern` with ledger-backed coverage); a repeated inadmissible
+  heavy action ends the seed deterministically as `deferred_budget` with a
+  resumable ledger, never as a technical failure.
+- Every model view carries runtime-owned progress surfaces so the model can
+  observe its own tool results: an `evidence_digest` (fetch count, families,
+  fact/event/relation counts, per-concept positive/control case coverage) and
+  the `last_action_result` of the previous executed action. A view that hides
+  what fetches already collected invites redundant sweeps and is a defect.
+- A candidate's measurement observable must be a genuinely new measurement:
+  it may not reuse or version the base name of any Signal in the stable
+  catalog, because changing an existing Signal belongs to the unchanged
+  Update path. The runtime rejects catalog-duplicating observables at
+  proposal time.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 

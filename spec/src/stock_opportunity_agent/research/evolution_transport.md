@@ -10,6 +10,10 @@ ledgers, exact-response caching, and the structured model-client boundary.
 - Every external request is persisted before transmission.
 - Cache reuse requires the exact canonical request hash.
 - Attempt, token, and cost ceilings fail closed before network I/O.
+- The attempt ledger admits a new request against settled cost: finalized
+  attempts count their `actual_cost`, while in-flight attempts hold their
+  full reservation until they finalize. Transient retries therefore never
+  permanently consume ceiling headroom the run did not actually spend.
 - Persisted artifacts never contain provider credentials.
 
 ## Frozen reasoning output reservation

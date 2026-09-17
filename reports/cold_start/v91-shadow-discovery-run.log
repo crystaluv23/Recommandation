@@ -1,0 +1,2 @@
+shadow: terminal=technical_failure candidates=0 calls=17 cost=0.1490 invariants=True
+wrote reports/cold_start/v91-shadow-discovery.json

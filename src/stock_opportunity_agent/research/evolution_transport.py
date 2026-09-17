@@ -193,7 +193,12 @@ class ExactResponseCache:
 
 
 class ExternalAttemptLedger:
-    """Durable fail-closed reservation of attempts and conservative cost."""
+    """Durable fail-closed reservation of attempts and conservative cost.
+
+    Finalized attempts count their settled ``actual_cost``; in-flight attempts
+    hold their full reservation until they finalize, so transient retries never
+    permanently consume ceiling headroom the run did not actually spend.
+    """
 
     def __init__(
         self,
@@ -235,7 +240,14 @@ class ExternalAttemptLedger:
                 "external_attempt_ceiling_exhausted",
                 "external attempt ceiling exhausted",
             )
-        committed_cost = sum(float(item.get("reserved_cost", 0.0)) for item in attempts)
+        committed_cost = sum(
+            (
+                float(item.get("actual_cost", 0.0))
+                if item.get("status") in {"completed", "failed"}
+                else float(item.get("reserved_cost", 0.0))
+            )
+            for item in attempts
+        )
         if committed_cost + reserved_cost > self.max_total_cost + 1e-12:
             raise ExternalBudgetExhausted(
                 "external_cost_ceiling_exhausted",

@@ -1311,6 +1311,24 @@ class RunControlTests(TestCase):
             self.assertEqual(len(stored["error_message"]), 500)
             self.assertTrue(stored["error_message"].startswith("OpenAI API returned HTTP 400"))
 
+    def test_settled_attempts_release_reservation_headroom(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "attempts.json"
+            ledger = ExternalAttemptLedger(path, max_attempts=10, max_total_cost=0.5)
+            for index in range(3):
+                attempt_id = ledger.reserve(SHA_A, reserved_cost=0.2)
+                ledger.finalize(
+                    attempt_id,
+                    status="failed" if index < 2 else "completed",
+                    actual_cost=0.0 if index < 2 else 0.04,
+                )
+            # Retries that settled below their reservation must not permanently
+            # consume ceiling headroom; a fresh reservation still fits.
+            ledger.reserve(SHA_B, reserved_cost=0.4)
+            # One genuinely in-flight attempt holds its full reservation.
+            with self.assertRaisesRegex(ExternalBudgetExhausted, "cost ceiling"):
+                ledger.reserve(SHA_C, reserved_cost=0.1)
+
     def test_structured_client_preflight_scans_and_never_calls_network(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
