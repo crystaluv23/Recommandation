@@ -85,6 +85,7 @@ _STATE_ORDER = {
 }
 _MAX_STRUCTURED_CORRECTIONS = 3
 _READ_SPAN_CONTEXT_CHARS = 200
+_CONCEPT_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9]{5,}")
 
 
 class InvalidMiningAction(ValidationError):
@@ -683,10 +684,21 @@ class LabelAwareMiningController:
                     "available_cases": sorted(
                         {fact.case_ref for fact in concept_facts}
                     ),
-                    "latest_values": {
-                        fact.case_ref: fact.value
+                    "latest": {
+                        fact.case_ref: {
+                            "value": fact.value,
+                            "fact_ref": fact.fact_ref,
+                        }
                         for fact in concept_facts
                         if fact.record_selection == "latest"
+                    },
+                    "comparable_prior": {
+                        fact.case_ref: {
+                            "value": fact.value,
+                            "fact_ref": fact.fact_ref,
+                        }
+                        for fact in concept_facts
+                        if fact.record_selection == "comparable_prior"
                     },
                 }
             rows[group] = {"case_count": len(group_refs), "concepts": by_concept}
@@ -756,6 +768,30 @@ class LabelAwareMiningController:
             raise InvalidMiningAction(
                 "candidate cites evidence outside the ledger: "
                 + ", ".join(unknown)
+            )
+        cited_fact_concepts = {
+            fact.concept
+            for fact in self._facts.values()
+            if fact.fact_ref in set(str(ref) for ref in evidence_refs)
+        }
+        text = " ".join(
+            (str(measurement["observable"]), str(measurement["normalization"]))
+        )
+        named_concepts = sorted(
+            {
+                token
+                for token in _CONCEPT_TOKEN_RE.findall(text)
+                if token in {fact.concept for fact in self._facts.values()}
+            }
+        )
+        unsupported = [
+            concept for concept in named_concepts
+            if concept not in cited_fact_concepts
+        ]
+        if unsupported:
+            raise InvalidMiningAction(
+                "measurement names concepts the cited evidence does not "
+                "cover: " + ", ".join(unsupported)
             )
         need_dispositions: tuple[Mapping[str, Any], ...] = ()
         if self.seed == "hypothesis":

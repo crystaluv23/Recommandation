@@ -629,5 +629,92 @@ class MiningControllerTests(unittest.TestCase):
         self.assertEqual(result.terminal_kind, "no_pattern_with_coverage")
 
 
+    def test_candidate_evidence_must_cover_named_concepts(self) -> None:
+        cases, store = _fixture_store()
+
+        def propose(view):
+            relations = sorted(view["known_relation_refs"])
+            return {
+                "action": "propose_candidate",
+                "rationale": ["Cite unrelated refs."],
+                "candidate": {
+                    "measurement": {
+                        # Names a known concept but cites only relations.
+                        "observable": "cash_runway",
+                        "value_kind": "numeric",
+                        "normalization": "CashAndCashEquivalentsAtCarryingValue "
+                        "divided by monthly burn",
+                    },
+                    "falsifiers": [
+                        {"condition": "c", "expected_observation": "o"}
+                    ],
+                    "evidence_refs": relations[:1],
+                },
+            }
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["financial"],
+                    "max_documents": 1,
+                },
+                propose,
+                propose,
+                propose,
+                propose,
+            ]
+        )
+        controller = _controller(store, cases, model, seed="discovery")
+
+        result = controller.run()
+
+        notes = [e.note for e in result.ledger if e.note]
+        self.assertTrue(
+            any("cited evidence does not cover" in note for note in notes),
+            notes,
+        )
+
+    def test_compare_groups_result_names_fact_refs(self) -> None:
+        cases, store = _fixture_store()
+        seen = {}
+
+        def compare(view):
+            seen.update(view)
+            return {"action": "record_deferred", "rationale": ["Stop."]}
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch."],
+                    "case_refs": ["case-001", "case-002"],
+                    "source_families": ["financial"],
+                    "max_documents": 2,
+                },
+                {
+                    "action": "compare_groups",
+                    "rationale": ["Contrast cash levels."],
+                    "concepts": ["CashAndCashEquivalentsAtCarryingValue"],
+                },
+                compare,
+            ]
+        )
+        controller = _controller(store, cases, model, seed="discovery")
+
+        controller.run()
+
+        groups = seen["last_action_result"]["groups"]
+        for group in ("positive", "control"):
+            concept = groups[group]["concepts"][
+                "CashAndCashEquivalentsAtCarryingValue"
+            ]
+            for record in (*concept["latest"].values(), *concept["comparable_prior"].values()):
+                self.assertTrue(record["fact_ref"].startswith("fact-"))
+                self.assertIn("value", record)
+
+
 if __name__ == "__main__":
     unittest.main()

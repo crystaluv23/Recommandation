@@ -1,0 +1,2 @@
+shadow: terminal=candidate candidates=1 calls=9 cost=0.0525 invariants=True
+wrote reports/cold_start/v92-shadow-discovery.json
