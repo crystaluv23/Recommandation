@@ -324,3 +324,52 @@ evidence_unavailable、零越界工具调用。
 原文（脱敏、折叠空白、截断 200 字符）现随分类 reason 一起持久化
 （alpha_vantage.py `_alpha_vantage_error_excerpt`），下次配额事件可
 直接核对 quota 标记表；新增/更新 3 项测试，全套 803 测试与 lint 通过。
+
+
+## Phase 5 live shadow cycle（2026-09-17，v2.1）
+
+V91（合约 b1de1de4...9dadb，代码 5c70b79，slow-history 导入 V89）完成一个
+已提交生产周期 + 一次成功的 live 控制器影子运行。生产 134 次尝试/$1.3611
+（上限 200/$5，fail-closed 未越限），cycle 2 在重复 SSL 重放推高预留后于
+配对门阶段安全暂停（保留可恢复，恢复需 /tmp/v91-frozen worktree 的 5c70b79）。
+
+**生产轨 cycle 1（旧 H/E 链路 + manifest）**：Mining=1
+（operating_cash_flow_sign:v1，V87 以来首个新挖掘候选），Update=1
+（guidance_acceleration:v2，因可用 2/4、decisive 0/2 保持 provisional）。
+挖掘候选被配对门诚实拒绝（无正向方向证据、可用 2/4 低于配对最小值）。
+用户三层目标的第 3 层（挖掘、更新均非零）首次在生产环境达成。
+
+**影子轨（LabelAwareMiningController + Evidence Graph，seed A）**：
+17 次模型调用/$0.3491/重动作 13/16，终态 candidate——1 个候选
+（measurement 完整、引用全部落在账本内）、142 条 need-dispositions
+全部合规。四项不变量通过：证据逐字回溯、PIT、账本 append-only、
+真实公司名/ticker 的视图零泄漏；标签仅经 runtime-owned label_map。
+
+八项切换条件核验：
+1. 证据接地率：控制器强制候选引用 ⊆ 账本；fetch 记录 1000+ 带
+   content_hash 的 ref；逐字包含校验全过 —— ✓
+2. 零标签/身份泄漏：17 个视图 × 真实别名扫描零命中 —— ✓
+3. no-pattern 覆盖可审计：合同强制引用账本内 explored families
+   （早期诊断运行的 deferred_budget/evidence_unavailable 终态留有完整
+   覆盖记录）—— ✓
+4. 失败分类正确：影子账本中 invalid 动作全部记为技术问题；生产挖掘
+   拒绝理由显式（方向+可用性）—— ✓
+5. 受控候选过 fixture：Phase 4 四个 promote 场景 —— ✓
+6. holdout/配对门生效：生产 operating_cash_flow_sign:v1 与
+   guidance_acceleration:v2 均被门评估并按理由处置 —— ✓
+7. 成本/步数不越限：生产 134/200、$1.3611/$5，超额前 fail-closed 暂停；
+   影子自有台账 17 调用/$0.3491 —— ✓
+8. Update/既有信号执行无回归：Update 非零且配对评估完整，
+   llm_signal_batch_execute 全部完成 —— ✓
+
+影子调试过程中修复的泛化缺陷（均有测试）：value_kind 拒绝消息精确化
+（ratio→numeric 指引）、纠正反馈进视图（last_invalid_action）、
+fetch 族词汇表 runtime 计算并强制（available_source_families，防自造
+族名空转）、fetch 构建的 relation refs 入账本（视图/账本一致性）、
+need-dispositions 聚合纠正前沿（一次报全部问题）、纠正额度 2→3、
+shadow 脚本传输重试与独立台账目录。
+
+结论：八项条件全部满足，影子轨与生产轨在同一冻结输入上各自完成
+诚实终态。按方案 Phase 6 纪律（"不要在 shadow 只有一轮时删除旧路径"），
+生产切换仍需至少一轮额外 shadow 周期后执行；本轮记录为切换验收的
+第一份完整证据。

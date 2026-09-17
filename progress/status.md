@@ -38,6 +38,16 @@ holdout 模拟→晋升决定的完整闭环并 promote，多期间场景的 che
 下一步 Phase 5 live shadow cycle。已知泛化缺口：alpha_vantage Information 信封原文未入账本、
 quota 标记表需复核。
 
+2026-09-17 Phase 5 完成：V91 生产 cycle 1 提交 Mining=1（operating_cash_flow_sign:v1，
+配对门诚实拒绝）、Update=1（guidance_acceleration:v2 provisional）——用户三层
+目标的第 3 层（挖掘/更新均非零）首次在生产达成；影子轨（控制器+Evidence
+Graph）17 调用/$0.35 终态 candidate、142 条 need-dispositions 合规、四项
+不变量通过，八项切换条件全部满足（见 prompt 审计 Phase 5 节）。生产
+cycle 2 因 SSL 重放推高预留于配对门阶段 fail-closed 暂停（恢复需
+/tmp/v91-frozen worktree 的 5c70b79）。按 Phase 6 纪律切换需再加一轮
+shadow。影子调试修复七个泛化缺陷（族词汇表强制、relation 入账本、
+聚合纠正前沿等），全套测试与 lint 通过。
+
 2026-09-17 形成 Slow Mining 重构行动方案 v2，并经评审修补为 v2.1（当前权威）：
 以共享 PIT Evidence Graph（惰性构造、Relation 基数有界）为基座，用受控的
 LabelAwareMiningController 合并 hypothesis validation（终局附带 need-disposition

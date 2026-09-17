@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/scripts/run_mining_shadow.py", line 246, in <module>
+    main()
+  File "/Users/l/Project/Recommandation/scripts/run_mining_shadow.py", line 175, in main
+    {
+TypeError: unsupported operand type(s) for +: 'set' and 'list'
