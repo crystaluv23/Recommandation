@@ -256,6 +256,17 @@ source resolver. Confirmation remains a separately reserved, issuer-disjoint
 offline evaluation boundary and never participates in candidate authoring or
 promotion.
 
+The Slow mining middle is being replaced under a gated plan: a controlled
+label-aware mining controller over one shared, lazy, point-in-time Evidence
+Graph is specified in `signal_mining_agent.md` and becomes the production path
+only after zero-call replay, a controlled candidate closed loop, and one live
+shadow cycle accept on identical frozen inputs. Until then H1/H2/H3 and E1/E2
+remain authoritative and act as the read-only contrast baseline. Both paths
+deliver candidates into the same fixture, holdout, paired-effectiveness, and
+atomic-promotion gates; neither path may weaken them for yield. The
+controller's runtime-owned mining ledger is additional reflection feedback
+and never alters frozen samples or historical validation results.
+
 The authoritative Slow dependency chain is `slow_input -> slow_memory ->
 slow_experiments -> SlowLoopValidation -> Registry transition -> SlowLoopResult
 -> cycle pointer`. The first three artifacts are immutable and hash-linked.

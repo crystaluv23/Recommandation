@@ -428,3 +428,20 @@ item ceilings, independent of candidate outcome. Oversized units remain pending;
 never truncate a candidate or claim an unread track was processed. Empty-decision
 stages expose their complete terminal stage record as well, so honest no-candidate
 or technical-failure conclusions remain readable under the same policy.
+
+## Mining controller replacement path (gated)
+
+The production H1/H2/H3 and E1/E2 mining chain is scheduled for replacement by
+the `LabelAwareMiningController` over the shared lazy PIT Evidence Graph
+specified in `signal_mining_agent.md`. Until the shadow-acceptance gate in the
+owning action plan passes, the H/E chain remains the authoritative production
+path and the controller is built and validated beside it: spec-first, then a
+minimal Evidence Graph implementation, then the fixed-state controller, then
+zero-call historical replay and a controlled candidate closed loop, then one
+live shadow cycle on identical frozen inputs. Cutover changes the production
+mining entry only after that gate, keeps H/E readable for history parsing and
+replay, and archives the legacy specs under repository removal discipline.
+Candidate validation, holdout, paired effectiveness, and promotion gates are
+identical for both paths and are never weakened for yield. The controller's
+mining ledger is a new feedback unit type whose reflection consumption follows
+the existing append-only memory rules.
