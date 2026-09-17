@@ -150,6 +150,20 @@ mining, and Signal update proposals.
   the model supplies a structured measurement, canonical applicability,
   expected direction, retrieval intent, and falsifiers. Semantic validity must
   not depend on lexical overlap between an identifier, prose, and a query.
+- The runtime supplies H1 a value-free `measurable_evidence_manifest`
+  computed from the selected cohort's point-in-time documents: recurring
+  structured financial concepts (taxonomy, concept, unit, and the count of
+  cohort cases holding a latest-plus-comparable record pair), pre-cutoff
+  daily price series case coverage, and narrative source families with
+  per-family case counts. The manifest contains no record values, issuer
+  identities, or outcome labels, joins the H1 payload and its input
+  fingerprint, and is masked with the same Slow identity guards as the rest of
+  the H1 context. Each hypothesis measurement must be computable within the
+  cohort windows from these manifest families; a required input with no
+  manifest family (for example an analyst price target when no such source
+  exists in-window) is routed `repair_dependency` or `not_testable` with that
+  explicit availability reason instead of becoming a hypothesis whose
+  H3/E2 comparison can only be unmatched context.
 - Every supplied backlog need ref appears exactly once in a bounded H1
   disposition: new measurement, update existing, repair dependency, already
   covered, not testable, or (for projected reflection actions only) Fast Plan

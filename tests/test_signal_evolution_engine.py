@@ -3485,6 +3485,116 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(len(mining_model.requests), 3)
 
+    def test_h1_payload_receives_value_free_measurable_evidence_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"h1m_{index}", 4.0 if index < 2 else 1.1)
+                for index in range(4)
+            )
+            facts_content = json.dumps(
+                {
+                    "facts": {
+                        "us-gaap": {
+                            "CashAndCashEquivalentsAtCarryingValue": {
+                                "label": (
+                                    "Cash and Cash Equivalents at Carrying Value"
+                                ),
+                                "units": {
+                                    "USD": [
+                                        {
+                                            "end": "2020-12-31",
+                                            "val": 1000,
+                                            "filed": "2021-02-01",
+                                        },
+                                        {
+                                            "end": "2019-12-31",
+                                            "val": 800,
+                                            "filed": "2020-02-01",
+                                        },
+                                    ]
+                                },
+                            }
+                        }
+                    }
+                }
+            )
+            documents = []
+            for index, case in enumerate(cases):
+                documents.extend(
+                    (
+                        RawInfoDocument.create(
+                            document_id=f"h1m-facts-{index}",
+                            company_id=case.company_id,
+                            source_type="company_facts",
+                            published_at=NOW,
+                            available_at=NOW,
+                            content=facts_content,
+                        ),
+                        RawInfoDocument.create(
+                            document_id=f"h1m-price-{index}",
+                            company_id=case.company_id,
+                            source_type="price_daily",
+                            published_at=NOW,
+                            available_at=NOW,
+                            content="adjusted close prices",
+                        ),
+                        RawInfoDocument.create(
+                            document_id=f"h1m-8k-{index}",
+                            company_id=case.company_id,
+                            source_type="8-k",
+                            published_at=NOW,
+                            available_at=NOW,
+                            content=(
+                                f"{case.basic_info['company_name']} announced "
+                                "a material agreement."
+                            ),
+                        ),
+                    )
+                )
+            mining_model = ScriptedMiningModel()
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=tuple(documents)),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining_model,
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                mining_config=fixture_mining_config(4),
+            )
+
+            engine._run_hypothesis_mining(cycle_id=1)
+
+            manifest = mining_model.requests[0]["measurable_evidence_manifest"]
+            self.assertEqual(
+                manifest["schema_version"],
+                "h1-measurable-evidence-manifest-v1",
+            )
+            self.assertEqual(manifest["cohort_case_count"], 4)
+            cash_rows = [
+                row
+                for row in manifest["structured_financial_concepts"]
+                if row["concept"] == "CashAndCashEquivalentsAtCarryingValue"
+            ]
+            self.assertEqual(len(cash_rows), 1)
+            self.assertEqual(cash_rows[0]["case_count"], 4)
+            self.assertEqual(cash_rows[0]["cases_with_comparable_records"], 4)
+            self.assertEqual(cash_rows[0]["unit"], "USD")
+            self.assertTrue(cash_rows[0]["source_display_name"])
+            self.assertEqual(manifest["pre_cutoff_price_series_cases"], 4)
+            self.assertIn(
+                {"source_type": "8-k", "case_count": 4},
+                manifest["narrative_source_families"],
+            )
+            serialized = json.dumps(manifest)
+            self.assertNotIn("1000", serialized)
+            self.assertNotIn("800", serialized)
+            self.assertNotIn('"val"', serialized)
+
     def test_production_mining_falls_back_after_h1_correction_exhaustion(
         self,
     ) -> None:

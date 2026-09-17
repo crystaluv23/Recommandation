@@ -887,6 +887,73 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(result.metadata["reason_code"], "insufficient_retrieval_basis")
         self.assertEqual(caller.stages, ["signal_mining_hypotheses"])
 
+    def test_signal_h1_prompt_anchors_measurements_to_evidence_manifest(self) -> None:
+        response = {
+            "conclusion": "no_testable_hypothesis",
+            "hypotheses": [],
+            "no_hypothesis": {
+                "reason_code": "insufficient_retrieval_basis",
+                "rationale": ["No manifest family supplies the requested input."],
+                "need_refs": ["need-001"],
+            },
+            "need_dispositions": [
+                {
+                    "need_refs": ["need-001"],
+                    "disposition": "repair_dependency",
+                    "signal_refs": [],
+                    "rationale": [
+                        "Analyst price targets have no in-window source family."
+                    ],
+                }
+            ],
+        }
+        caller = ScriptedRoleCaller([response])
+        manifest = {
+            "schema_version": "h1-measurable-evidence-manifest-v1",
+            "cohort_case_count": 4,
+            "structured_financial_concepts": [
+                {
+                    "taxonomy": "us-gaap",
+                    "concept": "Revenues",
+                    "source_display_name": "Revenues",
+                    "unit": "USD",
+                    "case_count": 4,
+                    "cases_with_comparable_records": 3,
+                }
+            ],
+            "pre_cutoff_price_series_cases": 4,
+            "narrative_source_families": [
+                {"source_type": "8-k", "case_count": 4}
+            ],
+            "coverage_note": "value-free coverage",
+        }
+
+        LLMSignalMiningModel(caller).propose_hypotheses(
+            {
+                "h1_contract_version": "signal-mining-hypothesis-v3",
+                "hypothesis_slots": ["h1-c0001-s01"],
+                "limits": {
+                    "hypothesis_limit": 1,
+                    "evidence_lookback_days": 365,
+                },
+                "available_raw_source_types": ["news"],
+                "measurable_evidence_manifest": manifest,
+                "capability_backlog": {
+                    "signal_need_items": [
+                        {"need_ref": "need-001", "need": "Estimate changes"}
+                    ]
+                },
+            }
+        )
+
+        system_prompt = str(caller.calls[0]["system_prompt"])
+        self.assertIn("measurable_evidence_manifest", system_prompt)
+        self.assertIn("latest-plus-comparable record pairs", system_prompt)
+        payload = caller.calls[0]["payload"]
+        self.assertEqual(
+            payload["measurable_evidence_manifest"], manifest
+        )
+
     def test_signal_h1_v3_covers_ordinary_and_fast_need_refs(self) -> None:
         need_refs = ["target_filing_events", "signal:price_momentum_126d:v1"]
         response = {

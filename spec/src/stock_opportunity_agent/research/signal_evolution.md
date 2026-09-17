@@ -186,8 +186,13 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   identity creates new work. H1 fingerprints the exact masked `meta_info` view
   it receives so new reflection cannot be suppressed by an older empty result.
   The fingerprint also includes the exact relevant point-in-time Raw Info
-  identities, masked backlog, stable Registry, role protocol, and model work
-  identity, while excluding cycle and proposal ids. A technical H1 failure is
+  identities, masked backlog, stable Registry, role protocol, model work
+  identity, and the cycle's `measurable_evidence_manifest`, while excluding
+  cycle and proposal ids. The manifest is rebuilt from the selected cohort's
+  pre-cutoff documents each hypothesis track run: recurring Company Facts
+  concepts are enumerated through the shared SEC structured selector with a
+  bounded projection budget, price-series and narrative families are counted
+  by case, and no record values, identities, or labels are exposed. A technical H1 failure is
   never semantic exhaustion and remains eligible after recovery under the
   existing attempt and cost ceilings. H1's complete runtime need set is the union
   of Fast `signal_need_items[*].need_ref` values, ordinary capability-backlog

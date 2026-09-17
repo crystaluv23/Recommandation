@@ -52,6 +52,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _MASKED_IDENTITY_VALUE,
     _QUERYLESS_COMPANY_FACT_PRIORITY,
     _assert_identity_values_masked,
+    _company_facts_context,
     _discovery_identity_terms,
     _emit_progress,
     _exploration_case_pairs,
@@ -198,6 +199,8 @@ _EXPLORATION_FILING_SOURCE_TYPES = (
     "filing_body",
     "sec_filing",
 )
+_H1_MANIFEST_CONCEPT_LIMIT = 24
+_H1_MANIFEST_PROJECTION_CHARS = 12_000
 
 
 _SLOW_FEEDBACK_KINDS = {
@@ -5352,6 +5355,11 @@ class SignalEvolutionEngine:
         case_pairs = tuple((ref, case) for ref, case, _brief in selected_ready)
         briefs_by_ref = {ref: brief for ref, _case, brief in selected_ready}
         context = self._mining_context(cycle_id=cycle_id)
+        measurable_evidence_manifest = _mask_identity_values(
+            self._h1_measurable_evidence_manifest(case_pairs),
+            self.slow_role_identity_guards,
+            expand_aliases=False,
+        )
         prior_terminal_work = self._prior_terminal_hypothesis_work()
         hypothesis_work: list[dict[str, Any]] = []
         applicability_contract = self._h2_applicability_contract(
@@ -5367,6 +5375,7 @@ class SignalEvolutionEngine:
             "fixed_comparison": "fixed_discovery_positive_vs_control",
             "limits": config.to_dict(),
             "h2_applicability_contract": applicability_contract,
+            "measurable_evidence_manifest": measurable_evidence_manifest,
             **context,
         }
         h1_input_fingerprint = _canonical_hash(
@@ -5392,6 +5401,7 @@ class SignalEvolutionEngine:
                 "available_raw_source_types": context[
                     "available_raw_source_types"
                 ],
+                "measurable_evidence_manifest": measurable_evidence_manifest,
                 "registered_deterministic_functions": context[
                     "registered_deterministic_functions"
                 ],
@@ -7036,6 +7046,104 @@ class SignalEvolutionEngine:
             if excerpt:
                 profile["business_description"] = excerpt
         return documents, profile
+
+    def _h1_measurable_evidence_manifest(
+        self, case_pairs: Iterable[tuple[str, EvolutionCase]]
+    ) -> dict[str, Any]:
+        """Project value-free measurable evidence families for the H1 cohort.
+
+        Enumerates recurring structured financial concepts, price-series
+        coverage, and narrative source families from the selected cohort's
+        point-in-time documents without exposing record values, issuer
+        identities, or outcome labels.
+        """
+
+        concept_cases: dict[tuple[str, str, str, str], set[str]] = {}
+        comparable_cases: dict[tuple[str, str, str, str], set[str]] = {}
+        price_cases: set[str] = set()
+        narrative_cases: dict[str, set[str]] = {}
+        cohort = [(str(ref), case) for ref, case in case_pairs]
+        all_documents = self.raw_info_store.documents
+        for case_ref, case in cohort:
+            for document in all_documents:
+                if (
+                    document.company_id != case.company_id
+                    or document.available_at > case.prediction_time
+                ):
+                    continue
+                source_type = document.source_type.casefold()
+                if source_type in {
+                    "market_data",
+                    "historical_price",
+                    "price_daily",
+                    "prices",
+                }:
+                    price_cases.add(case_ref)
+                    continue
+                if "fact" in source_type or "financial" in source_type:
+                    context = _company_facts_context(
+                        document,
+                        max_content_chars=_H1_MANIFEST_PROJECTION_CHARS,
+                        query=None,
+                    )
+                    if context is not None:
+                        for concept in context["concepts"]:
+                            key = (
+                                str(concept["taxonomy"]),
+                                str(concept["concept"]),
+                                str(concept.get("label", "")),
+                                str(concept["unit"]),
+                            )
+                            if not key[1]:
+                                continue
+                            concept_cases.setdefault(key, set()).add(case_ref)
+                            if len(concept.get("records", ())) >= 2:
+                                comparable_cases.setdefault(key, set()).add(
+                                    case_ref
+                                )
+                        continue
+                narrative_cases.setdefault(document.source_type, set()).add(
+                    case_ref
+                )
+        ranked = sorted(
+            (key for key, refs in concept_cases.items() if len(refs) >= 2),
+            key=lambda key: (
+                -len(comparable_cases.get(key, ())),
+                -len(concept_cases[key]),
+                -_QUERYLESS_COMPANY_FACT_PRIORITY.get(key[1].casefold(), 0),
+                key,
+            ),
+        )[:_H1_MANIFEST_CONCEPT_LIMIT]
+        return {
+            "schema_version": "h1-measurable-evidence-manifest-v1",
+            "cohort_case_count": len(cohort),
+            "structured_financial_concepts": [
+                {
+                    "taxonomy": key[0],
+                    "concept": key[1],
+                    "source_display_name": key[2],
+                    "unit": key[3],
+                    "case_count": len(concept_cases[key]),
+                    "cases_with_comparable_records": len(
+                        comparable_cases.get(key, ())
+                    ),
+                }
+                for key in ranked
+            ],
+            "pre_cutoff_price_series_cases": len(price_cases),
+            "narrative_source_families": [
+                {"source_type": source_type, "case_count": len(refs)}
+                for source_type, refs in sorted(
+                    narrative_cases.items(),
+                    key=lambda item: (-len(item[1]), item[0]),
+                )[:10]
+            ],
+            "coverage_note": (
+                "Runtime-owned, value-free coverage of this cohort's "
+                "point-in-time documents. A measurement input outside these "
+                "families has no in-window source in this cohort."
+            ),
+        }
 
     @staticmethod
     def _mining_profile_ready(profile: Mapping[str, Any]) -> bool:
