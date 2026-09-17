@@ -83,7 +83,7 @@ _STATE_ORDER = {
     "locally_validated": 4,
     "terminal": 5,
 }
-_MAX_STRUCTURED_CORRECTIONS = 2
+_MAX_STRUCTURED_CORRECTIONS = 3
 _READ_SPAN_CONTEXT_CHARS = 200
 
 
@@ -695,45 +695,60 @@ class LabelAwareMiningController:
         }
         seen: set[str] = set()
         clean: list[Mapping[str, Any]] = []
-        for row in rows:
+        row_issues: list[str] = []
+        for index, row in enumerate(rows):
             if not isinstance(row, Mapping) or set(row) != {
                 "need_refs",
                 "disposition",
                 "signal_refs",
                 "rationale",
             }:
-                raise InvalidMiningAction(
-                    "need_dispositions rows require need_refs, disposition, "
+                row_issues.append(
+                    f"row[{index}] requires exactly need_refs, disposition, "
                     "signal_refs, rationale"
                 )
+                continue
             refs = row["need_refs"]
             if not isinstance(refs, list) or not refs:
-                raise InvalidMiningAction("need_dispositions need_refs required")
+                row_issues.append(f"row[{index}] need_refs must be non-empty")
+                continue
             disposition = row["disposition"]
             if disposition not in ALLOWED_DISPOSITIONS:
-                raise InvalidMiningAction(
-                    f"unknown disposition: {disposition}"
+                row_issues.append(
+                    f"row[{index}] disposition must be one of "
+                    + ", ".join(sorted(ALLOWED_DISPOSITIONS))
                 )
+                continue
             signal_refs = row["signal_refs"]
             if not isinstance(signal_refs, list):
-                raise InvalidMiningAction("signal_refs must be an array")
+                row_issues.append(f"row[{index}] signal_refs must be an array")
+                continue
             if disposition in {"update_existing", "already_covered"}:
                 if len(signal_refs) != 1:
-                    raise InvalidMiningAction(
-                        f"{disposition} cites exactly one stable signal"
+                    row_issues.append(
+                        f"row[{index}] {disposition} cites exactly one signal"
                     )
+                    continue
             elif signal_refs:
-                raise InvalidMiningAction(
-                    f"{disposition} cites no signal"
+                row_issues.append(
+                    f"row[{index}] {disposition} cites no signal"
                 )
+                continue
+            duplicates = sorted(
+                {str(ref) for ref in refs if str(ref) in seen}
+            )
+            if duplicates:
+                row_issues.append(
+                    f"row[{index}] repeats needs: " + ", ".join(duplicates)
+                )
+                continue
             for ref in refs:
-                ref = str(ref)
-                if ref in seen:
-                    raise InvalidMiningAction(
-                        f"need {ref} is dispositioned more than once"
-                    )
-                seen.add(ref)
+                seen.add(str(ref))
             clean.append(dict(row))
+        if row_issues:
+            raise InvalidMiningAction(
+                "need_dispositions issues: " + "; ".join(row_issues)
+            )
         missing = sorted(known_refs - seen)
         if missing:
             raise InvalidMiningAction(
