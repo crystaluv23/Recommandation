@@ -1,5 +1,33 @@
 # Status
 
+2026-09-17（下午）新 slow round 影子语义审计 + 六项泛化修复 + V92 两周期生产
+完成。对 shadow6（Seed A）与 shadow7（Seed B 首次 discovery live）逐请求审计
+发现六个泛化缺陷并全部修复（450e05e→347379c→d35bdd9，spec 同步，821 测试
++ lint 通过）：视图无工具结果反馈（模型连发 10–12 次宽泛 fetch，新增
+evidence_digest/last_action_result 后 3–4 次调用即终态 candidate）；heavy
+预算耗尽被当模型违约致 technical_failure（改为保留一次切换机会后确定性
+deferred_budget）；候选 observable 直接复用 catalog 基名（propose 拒绝）；
+处置纠正文案反向把 142 条处置压成全量 not_testable（r3 已分化为 8 行 5 类）；
+候选证据引用账本合法但与测量概念无关（compare 附带 fact_ref + 点名概念
+必须被同概念引用覆盖；r3 两候选引用 100% 匹配测量概念）；raw info 层把
+historical_price JSON/供应商信封投影成叙事事件且 filing excerpt 是 SGML
+样板（叙事事件仅从 filing/transcript/news 族投影并复用生产可见文本锚点）。
+r2/r3 影子四轮全部终态 candidate、四项不变量通过（$0.023–0.104/轮）。
+生产阻断根因为 ExternalAttemptLedger 按 reserved 而非 settled 累计（V91
+cycle 2 在 reserved $4.94 vs actual $1.36 时 fail-closed 不可恢复）；修复为
+finalized 按 actual、in-flight 按全量预留。V92（合约 0f5bc8e6...a961be，
+代码 450e05e，slow-history 导入 V91 提交前缀）两周期全部提交：cycle 1
+Mining=1（operating_income_sign:v1）+ Update=2，cycle 2 Mining=1
+（operating_loss_presence:v1）+ Update=1；配对门显式诚实拒绝（可用性
+1/4 低于配对最小值；方向 2 正 2 误无正向证据）；153 attempts/$1.27，
+中途传输瞬断按同合约自动恢复且恢复命中响应缓存。cycle 2 因周期间 HEAD
+前进被 code-revision 检查拒绝后，从 /tmp/v92-frozen worktree（450e05e）
+补跑完成——后续会话若在周期间提交代码，需用同法或重冻结后继。信息流动
+wire 级验证：V91 c1→c2、V92 c1（消费 V91 提交的挖掘/更新/验证单元）、
+V92 c1→c2 反思均真实包含前序结果。Phase 6 切换条件中的影子轮数要求
+（"不只一轮 shadow"）现已满足（shadow8–13 共六轮 + 生产 V92 两周期），
+生产切换仍待用户按方案 Phase 6 纪律确认。
+
 2026-09-17 v2.1 执行推进：Phase 0 规格已提交（signal_mining_agent.md 新建，
 H/E 标注为受门控的 legacy/对照路径，architecture.md 增加受门控替换段）。
 Phase 0b 的 V90（合约 3eb83e50...74fe）live 验证完成核心问题后停在 Alpha

@@ -421,3 +421,19 @@ committed cost 永久按 reserved 而非 settled 累计——V91 cycle 2 因 SSL
 reflection 的 wire 载荷经核验确实包含 V91 提交的
 operating_cash_flow_sign:v1、guidance_acceleration:v2 与 slow_loop_result
 （跨工作区反思→行为信息流成立；V91 内部 c1→c2 的消费此前已验证）。
+
+**V92 生产结果（补记）**：两周期全部提交，153 attempts/$1.2732（上限
+200/$5，151 completed/2 failed 均自动恢复）。cycle 1：Mining=1
+（operating_income_sign:v1）+ Update=2（guidance_acceleration:v2、
+max_drawdown_1y:v2）；cycle 2：Mining=1（operating_loss_presence:v1，
+新方向）+ Update=1。配对门拒绝理由显式：guidance_acceleration:v2 保持
+provisional（available 1/4 低于配对最小值、decisive 0/2）；
+operating_loss_presence:v1 拒绝（4/4 可用但方向 2 正 2 误、无正向证据）。
+cycle 2 中途传输瞬断按同合约自动恢复且 request_cache_hit 证明已完成动作
+未重复计费——结算修复在同一失败模式下（V91 cycle 2 死因）live 验证通过。
+cycle 2 初次启动因周期间 HEAD 前进被 code-revision 检查拒绝，从
+/tmp/v92-frozen worktree（450e05e）补跑；该 worktree 保留为 V92 的恢复
+锚点。用户三层"跑通"验收：无报错执行 ✓（两 seed 影子 + 生产两周期均
+clean exit）；信息链路 ✓（reflection wire 级消费前序结果，digest 驱动
+模型行为改变）；挖掘/更新非零 ✓（影子每轮 candidate + 生产两周期
+Mining/Update 均非零，拒绝均显式合理）。
