@@ -3698,6 +3698,20 @@ class SignalEvolutionEngine:
             raise ValidationError("imported Slow history namespace is missing")
         rows: list[dict[str, Any]] = []
         source_manifest: list[dict[str, Any]] = []
+        # Each committed cycle's slow_input already contains every prior
+        # cycle's imported feedback rows, so projecting every cycle's input
+        # multiplies the catalog quadratically across successor generations.
+        # Feedback rows come only from the newest committed input (a strict
+        # superset); older inputs remain hash-verified for their manifests.
+        latest_input_cycle = max(
+            (
+                int(item.get("cycle_id", 0))
+                for item in history.get("cycle_artifacts", ())
+                if isinstance(item, Mapping)
+                and Path(str(item.get("path", ""))).name == "slow_input.json"
+            ),
+            default=0,
+        )
         for item in history.get("cycle_artifacts", ()):
             if not isinstance(item, Mapping):
                 raise ValidationError("imported Slow artifact row must be an object")
@@ -3722,6 +3736,8 @@ class SignalEvolutionEngine:
                 raise ValidationError("imported Slow artifact copy hash mismatch")
             raw = _read_json(path)
             cycle_id = int(item.get("cycle_id", 0))
+            if filename == "slow_input.json" and cycle_id != latest_input_cycle:
+                continue
             for suffix, kind, locator, unit in self._imported_artifact_units(
                 filename, raw
             ):
@@ -7461,7 +7477,8 @@ class SignalEvolutionEngine:
         if not deferred or not callable(selector):
             return selected, {**dict(manifest), "required_refs": list(required)}
         available = []
-        for ref in manifest.get("requested_refs", ()):
+        requested = tuple(str(ref) for ref in manifest.get("requested_refs", ()))
+        for ref in requested[-1024:]:
             raw = source_catalog.get(str(ref))
             if raw is None:
                 continue
@@ -7472,11 +7489,13 @@ class SignalEvolutionEngine:
                     "currently_included": str(ref) in manifest.get("included_refs", ()),
                 }
             )
+        omitted_sources = max(0, len(requested) - len(available))
         step = selector(
             {
                 "source_read_contract_version": "slow-source-read-v1",
                 "role_scope": role_scope,
                 "available_sources": available,
+                "omitted_available_sources": omitted_sources,
                 "current_view": {
                     "included_refs": list(manifest.get("included_refs", ())),
                     "deferred_refs": list(deferred),

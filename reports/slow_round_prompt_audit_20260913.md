@@ -537,3 +537,21 @@ V93（合约 86170046，代码 9ac19c8）cycle 1 在 H1 后确定性死循环暂
 append-only 记录不重写）；refresh 路径保持全严格（磁盘篡改检测回归不变）。
 同 id 不同内容仍然 fail-closed。原失败请求修复后 resolved。828 测试 + lint。
 V93 保持不可变诊断工作区（0 提交周期）；后续以 V94 重冻结执行。
+
+## V95 诊断：传递性导入平方膨胀（2026-09-17）
+
+V95（从 V94 导入）第一个请求即超 DeepSeek 上下文（1.18M tokens）：source-read
+选择目录携带 12,092 个 ref（3MB wire）。计数链证据：feedback_rows 按代倍增
+（V89 1,399 → V91 2,909 → V92 2,954 → V94 6,017 → V95 12,092，每代 ≈2×）。
+根因：**导入把每个已提交周期的 slow_input.feedback_rows 全量拼接，而每周期的
+input 本身是前序行的累积超集**——导入 2 个周期就把共享基底数两遍，跨代平方
+膨胀；这些行主要是 Fast 轨遗留的 candidate_result/search_result 单元。
+两层修复：
+1. `_imported_slow_feedback` 只从**最新**已提交周期的 slow_input 投影
+   feedback 行（严格超集，无信息损失；旧 input 文件仍哈希校验、供采样
+   清单等用途）——V95 目录 12,092→6,075 行；
+2. source-read 选择目录有界化：`available_sources` 截取最近 1024 条并以
+   `omitted_available_sources` 显式披露省略数（无界目录本身即缺陷）。
+遗留：V94 已冻结 input 内部烘焙的 V92 双份（不可变），目录保持 ~6k 行、
+选择层有界化后可运行；未来某次重冻结时可用内容哈希再压实。
+V95 保持不可变诊断工作区（0 提交周期）。
