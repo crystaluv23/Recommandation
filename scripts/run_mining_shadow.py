@@ -177,11 +177,11 @@ def main() -> None:
             for case in dev_cases
             if case.basic_info.get("company_name")
         }
-        + [
+        | {
             str(case.basic_info.get("ticker", ""))
             for case in dev_cases
             if case.basic_info.get("ticker")
-        ]
+        }
     )
     masking_failures = []
     for index, view in enumerate(model.views):
