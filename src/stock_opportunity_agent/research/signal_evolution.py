@@ -5949,6 +5949,21 @@ class SignalEvolutionEngine:
         )
 
     @staticmethod
+    def _evidence_document_source_type(document_ref: str) -> str:
+        """Recover the source type from an evidence document ref.
+
+        Controller evidence refs are ``document-<provider>:<company>:<type>:<hash>``;
+        the embedded type is the retrieval family the measurement was actually
+        grounded in.
+        """
+
+        document_id = document_ref[len("document-"):] if document_ref.startswith(
+            "document-"
+        ) else document_ref
+        parts = document_id.split(":")
+        return parts[2] if len(parts) >= 4 else ""
+
+    @staticmethod
     def _controller_signal_id_slug(candidate: Mapping[str, Any], spec: Any) -> str:
         """Normalize a materialized signal_id into the registry's safe form.
 
@@ -6068,6 +6083,14 @@ class SignalEvolutionEngine:
                     "cited_evidence": self._controller_evidence_excerpts(
                         candidate, evidence
                     ),
+                    "retrieval_guidance": {
+                        "rule": (
+                            "raw_retrieval.source_types must be the source "
+                            "families of the cited evidence, and coverage "
+                            "minima must not exceed what the cited evidence "
+                            "itself demonstrates"
+                        ),
+                    },
                     "last_issues": list(last_issues),
                 },
                 allow_outcomes=True,
@@ -6104,6 +6127,30 @@ class SignalEvolutionEngine:
             raise
         except Exception as exc:
             return None, [f"spec parse failed: {type(exc).__name__}: {exc}"]
+        retrieval_families = {
+            str(item)
+            for item in dict(spec_dict.get("raw_retrieval", {}) or {}).get(
+                "source_types", ()
+            )
+        }
+        evidence_families = {
+            family
+            for family in (
+                self._evidence_document_source_type(
+                    str(getattr(item, "document_ref", ""))
+                )
+                for item in evidence.values()
+            )
+            if family
+        }
+        if retrieval_families and evidence_families and not (
+            retrieval_families & evidence_families
+        ):
+            return None, [
+                "raw_retrieval.source_types do not include any cited-evidence "
+                "source family; retrieve from the families the measurement "
+                f"actually cites (evidence families: {sorted(evidence_families)})"
+            ]
         checked = self.validator.validate(
             spec, skill=skill, tests=parsed["tests"]
         )
