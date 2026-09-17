@@ -1920,6 +1920,8 @@ class SignalCandidateEffectiveness:
     current_correct: int = 0
     current_wrong: int = 0
     current_execution_failed: int = 0
+    candidate_confusion: Mapping[str, int] = field(default_factory=dict)
+    current_confusion: Mapping[str, int] = field(default_factory=dict)
     case_diagnostics: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
@@ -1953,6 +1955,8 @@ class SignalCandidateEffectiveness:
                 "directional_wrong": self.current_wrong,
                 "execution_failed": self.current_execution_failed,
             },
+            "candidate_confusion": dict(self.candidate_confusion),
+            "current_confusion": dict(self.current_confusion),
             "case_diagnostics": [dict(item) for item in self.case_diagnostics],
         }
 
@@ -1961,6 +1965,50 @@ _PROVISIONAL_RESIDENT_LIMIT = 2
 _PROVISIONAL_ACCUMULATION_HORIZON = 5
 _POOLED_PROMOTION_DECISIVE_MINIMUM = 12
 _POOLED_PROMOTION_SIGNIFICANCE = 0.10
+_RECALL_FLOOR = 0.5
+_DIRECTIONAL_FLOOR_REASON = (
+    "candidate lacks positive directional evidence over controls"
+)
+_RECALL_FLOOR_REASON = (
+    "candidate leaves over half of the positive-label check cases unflagged"
+)
+
+
+def _confusion_counts(
+    values: Iterable[tuple[SignalValue, bool, SignalExecutionStatus]],
+) -> dict[str, int]:
+    """Confusion matrix over available cases, keyed by the surge class.
+
+    A POSITIVE call on a surge case is TP, on a control case FP; an available
+    surge case without a POSITIVE call (NEGATIVE or NEUTRAL) is FN, an
+    available control case without one is TN. Unavailable executions stay
+    outside the matrix — the availability floor already governs them.
+    """
+
+    tp = fp = fn = tn = 0
+    for value, is_surge, execution_status in values:
+        if execution_status not in {
+            SignalExecutionStatus.SUCCESS,
+            SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+        } or value is SignalValue.UNAVAILABLE:
+            continue
+        if value is SignalValue.POSITIVE:
+            if is_surge:
+                tp += 1
+            else:
+                fp += 1
+        elif is_surge:
+            fn += 1
+        else:
+            tn += 1
+    return {"tp": tp, "fp": fp, "fn": fn, "tn": tn}
+
+
+def _positive_recall(confusion: Mapping[str, int]) -> float | None:
+    denominator = int(confusion.get("tp", 0)) + int(confusion.get("fn", 0))
+    if denominator <= 0:
+        return None
+    return int(confusion.get("tp", 0)) / denominator
 
 
 def _binomial_tail_at_least(count: int, trials: int) -> float:
@@ -1978,44 +2026,69 @@ def pooled_provisional_decision(
 
     ``records`` are the resident's per-cycle paired-effectiveness records (its
     current cycle included). Zones: promote when pooled decisive evidence
-    reaches the promotion significance; eliminate when the accumulation
-    horizon passed with pooled evidence at or below chance; otherwise
-    continue as a provisional resident.
+    reaches the promotion significance and the pooled positive recall meets
+    the recall floor; eliminate when the accumulation horizon passed with
+    pooled evidence at or below chance, starved, or never covering the
+    positive class; otherwise continue as a provisional resident.
     """
 
     rows = [dict(row) for row in records]
     decisive = sum(int(row.get("candidate_decisive", 0)) for row in rows)
     correct = sum(int(row.get("candidate_correct", 0)) for row in rows)
     wrong = sum(int(row.get("candidate_wrong", 0)) for row in rows)
+    tp = sum(
+        int(row.get("candidate_confusion", {}).get("tp", 0))
+        for row in rows
+        if isinstance(row.get("candidate_confusion"), Mapping)
+    )
+    fn = sum(
+        int(row.get("candidate_confusion", {}).get("fn", 0))
+        for row in rows
+        if isinstance(row.get("candidate_confusion"), Mapping)
+    )
     cycles = len(rows)
     counts = {
         "cycles": cycles,
         "decisive": decisive,
         "correct": correct,
         "wrong": wrong,
+        "tp": tp,
+        "fn": fn,
     }
+    recall = tp / (tp + fn) if tp + fn > 0 else None
     if (
         decisive >= _POOLED_PROMOTION_DECISIVE_MINIMUM
         and _binomial_tail_at_least(correct, decisive)
         <= _POOLED_PROMOTION_SIGNIFICANCE
+        and recall is not None
+        and recall >= _RECALL_FLOOR
     ):
         return {
             "action": "promote",
             "reason": (
                 f"pooled paired evidence reached promotion significance: "
-                f"{correct}/{decisive} decisive correct over {cycles} cycles"
+                f"{correct}/{decisive} decisive correct over {cycles} cycles "
+                f"with positive recall {recall:.0%}"
             ),
             "counts": counts,
         }
     if cycles >= _PROVISIONAL_ACCUMULATION_HORIZON and (
-        correct < wrong or decisive < 4
+        correct < wrong
+        or decisive < 4
+        or (recall is not None and recall < _RECALL_FLOOR)
     ):
         return {
             "action": "eliminate",
             "reason": (
                 f"pooled paired evidence stayed at or below chance over "
                 f"{cycles} cycles: {correct} correct vs {wrong} wrong "
-                f"({decisive} decisive)"
+                f"({decisive} decisive"
+                + (
+                    f", positive recall {recall:.0%}"
+                    if recall is not None
+                    else ""
+                )
+                + ")"
             ),
             "counts": counts,
         }
@@ -2177,6 +2250,8 @@ class SignalCandidateEffectivenessEvaluator:
 
         candidate_counts = _signal_effectiveness_counts(candidate_values)
         current_counts = _signal_effectiveness_counts(current_values)
+        candidate_confusion = _confusion_counts(candidate_values)
+        current_confusion = _confusion_counts(current_values)
         insufficient_reasons: list[str] = []
         if candidate_counts[0] < self.minimum_cases:
             insufficient_reasons.append(
@@ -2194,9 +2269,10 @@ class SignalCandidateEffectivenessEvaluator:
             candidate_counts[1] >= decisive_floor
             and candidate_counts[2] <= candidate_counts[3]
         ):
-            rejection_reasons.append(
-                "candidate lacks positive directional evidence over controls"
-            )
+            rejection_reasons.append(_DIRECTIONAL_FLOOR_REASON)
+        candidate_recall = _positive_recall(candidate_confusion)
+        if candidate_recall is not None and candidate_recall < _RECALL_FLOOR:
+            rejection_reasons.append(_RECALL_FLOOR_REASON)
         if current is not None:
             labels = (
                 (0, "availability"),
@@ -2216,14 +2292,16 @@ class SignalCandidateEffectivenessEvaluator:
                     "candidate shows no strict paired effectiveness gain"
                 )
         if rejection_reasons:
-            if current is None and rejection_reasons == [
-                "candidate lacks positive directional evidence over controls"
-            ]:
+            if current is None and set(rejection_reasons) <= {
+                _DIRECTIONAL_FLOOR_REASON,
+                _RECALL_FLOOR_REASON,
+            }:
                 # A new signal that passed every correctness, availability, and
-                # decisiveness floor but tied on direction at the check
-                # cohort's small n is not disproved: it becomes a provisional
-                # resident and accumulates paired evidence on later fresh
-                # check cohorts under the pooled three-zone rule.
+                # decisiveness floor but failed only the directional or recall
+                # floor at the check cohort's small n is not disproved: it
+                # becomes a provisional resident and accumulates paired
+                # evidence on later fresh check cohorts under the pooled
+                # three-zone rule.
                 disposition = "provisional"
             else:
                 disposition = "rejected"
@@ -2251,6 +2329,8 @@ class SignalCandidateEffectivenessEvaluator:
             current_correct=current_counts[2],
             current_wrong=current_counts[3],
             current_execution_failed=current_counts[4],
+            candidate_confusion=candidate_confusion,
+            current_confusion=current_confusion,
             case_diagnostics=tuple(case_diagnostics),
         )
 
@@ -2493,6 +2573,17 @@ def signal_effectiveness_measurement_contract() -> dict[str, Any]:
         "directional_correct": "POSITIVE on a positive case or NEGATIVE on a control case.",
         "directional_wrong": "Other decisive values; correct plus wrong equals decisive.",
         "execution_failed": "Statuses other than SUCCESS and DOMAIN_UNAVAILABLE; domain unavailability is not a technical failure.",
+        "candidate_confusion": (
+            "TP/FP/FN/TN over available cases keyed by the positive label: a "
+            "POSITIVE call is TP on a positive case and FP on a control; an "
+            "available case without a POSITIVE call is FN on a positive case "
+            "and TN on a control."
+        ),
+        "positive_recall": (
+            "TP divided by (TP plus FN). The paired gate requires at least "
+            "half of the positive-label check cases to receive a POSITIVE "
+            "call, so abstaining on positives cannot farm accuracy."
+        ),
         "paired_population": "Both arms use the same frozen case pool. Their availability and decisive subsets may differ with their measurements or thresholds.",
         "interpretation": "A decisive/available gap is expected for neutral results, not unexplained sample exclusion. Historical model rationales are claims, not definitions; qualify or challenge obsolete lessons using these rules and the cited measurements.",
     }

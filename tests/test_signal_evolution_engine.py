@@ -234,17 +234,34 @@ class SignalEvolutionTests(TestCase):
             pooled_provisional_decision,
         )
 
-        def record(decisive, correct, wrong):
+        def record(decisive, correct, wrong, tp=None, fn=None):
+            confusion = {}
+            if tp is not None and fn is not None:
+                confusion = {"tp": tp, "fn": fn}
             return {
                 "candidate_decisive": decisive,
                 "candidate_correct": correct,
                 "candidate_wrong": wrong,
+                "candidate_confusion": confusion,
             }
 
         promote = pooled_provisional_decision(
-            [record(4, 3, 1), record(4, 4, 0), record(5, 5, 0)]
+            [
+                record(4, 3, 1, tp=2, fn=0),
+                record(4, 4, 0, tp=2, fn=0),
+                record(5, 5, 0, tp=2, fn=0),
+            ]
         )
         self.assertEqual(promote["action"], "promote")
+
+        recall_starved = pooled_provisional_decision(
+            [
+                record(4, 3, 1, tp=1, fn=3),
+                record(4, 4, 0, tp=1, fn=3),
+                record(5, 5, 0, tp=2, fn=2),
+            ]
+        )
+        self.assertEqual(recall_starved["action"], "continue")
 
         tie_keep = pooled_provisional_decision(
             [record(4, 2, 2), record(4, 3, 1)]
@@ -261,6 +278,17 @@ class SignalEvolutionTests(TestCase):
             ]
         )
         self.assertEqual(eliminate["action"], "eliminate")
+
+        recall_eliminate = pooled_provisional_decision(
+            [
+                record(4, 4, 0, tp=1, fn=3),
+                record(4, 4, 0, tp=1, fn=3),
+                record(4, 4, 0, tp=1, fn=3),
+                record(4, 4, 0, tp=1, fn=3),
+                record(4, 4, 0, tp=1, fn=3),
+            ]
+        )
+        self.assertEqual(recall_eliminate["action"], "eliminate")
 
         starved = pooled_provisional_decision(
             [record(0, 0, 0)] * 5
@@ -5245,6 +5273,105 @@ class SignalEvolutionTests(TestCase):
                 "lacks positive directional evidence",
                 " ".join(result.reasons),
             )
+
+    def test_paired_effectiveness_blocks_a_cowardly_new_signal(self) -> None:
+        def coward_signal(spec, documents, as_of):
+            document = documents[0]
+            payload = json.loads(document.content)
+            records = payload["facts"]["us-gaap"][
+                "RevenueFromContractWithCustomerExcludingAssessedTax"
+            ]["units"]["USD"]
+            latest = max(records, key=lambda row: row["end"])
+            declined = float(latest["val"]) < float(
+                next(
+                    row["val"]
+                    for row in records
+                    if row["end"] < latest["end"]
+                )
+            )
+            span = document.content
+            evidence = (
+                SignalEvidence(
+                    document_id=document.document_id,
+                    exact_span=span,
+                    timestamp=document.available_at,
+                ),
+            )
+            if declined:
+                return SignalResult(
+                    signal_id=spec.signal_id,
+                    version=spec.version,
+                    value=SignalValue.NEGATIVE,
+                    confidence=0.5,
+                    interpretation="Revenue decline supports a negative call.",
+                    supporting_evidence=evidence,
+                )
+            return SignalResult(
+                signal_id=spec.signal_id,
+                version=spec.version,
+                value=SignalValue.NEUTRAL,
+                confidence=0.5,
+                interpretation="Growth profile does not justify a call.",
+                supporting_evidence=evidence,
+            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                *(make_case(f"coward_positive_{index}", 4.0) for index in range(2)),
+                *(make_case(f"coward_control_{index}", 1.1) for index in range(2)),
+            )
+            documents = []
+            for index, case in enumerate(cases):
+                surge = case.ground_truth.is_surge
+                documents.append(
+                    RawInfoDocument.create(
+                        document_id=f"coward_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                50.0 if not surge else 125.0,
+                                "2025-01-10",
+                            ),
+                        ),
+                    )
+                )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "signal_id": "cowardly_measurement",
+                    "version": 1,
+                    "description": "Fires only where decline makes it safe.",
+                }
+            )
+
+            result = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=RawInfoStore(documents=tuple(documents)),
+                discovery_cases=cases,
+                llm_runner=None,
+                deterministic_functions={
+                    current.function: coward_signal,
+                },
+            ).evaluate(candidate, skill=None)
+
+            self.assertFalse(result.accepted)
+            self.assertEqual(result.disposition, "provisional")
+            self.assertIn(
+                "positive-label check cases unflagged",
+                " ".join(result.reasons),
+            )
+            self.assertEqual(result.candidate_confusion["tp"], 0)
+            self.assertEqual(result.candidate_confusion["fn"], 2)
 
     def test_paired_effectiveness_rejects_an_identical_update(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

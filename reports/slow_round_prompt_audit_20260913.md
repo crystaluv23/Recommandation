@@ -473,3 +473,25 @@ round 是全新开始，完全重新 permute 并划分挖掘/测试集，上轮 
 排除 wiring，把排除下沉到 effectiveness gate 的 `excluded_case_ids`
 （主循环与居留者复访均接入）；经 reflection 掩码文本的残余标签扩散为
 已接受残余风险，由 provisional 淘汰规则兜底。826 测试 + lint 通过。
+
+## 配对门第二道底线：正类 recall（2026-09-17，用户决策"两道底线"）
+
+用户问 correct>wrong 是否应换 F1。分析结论：F1 方向正确（下游主指标本就是
+binary_f1；准确率把 FP/FN 对称对待并给廉价的 TN 记全功），但完整 F1 门有
+出手率漂移的基线校准问题，且不解决小样本功效。已证实当前门的真实弱点是
+奖励怯懦：8+8 cohort 上只在 1 个正例 + 7 个控制股出手且全对的信号 decisive
+8 / correct 8 / wrong 0 → 旧门直接晋升，但 recall=1/8。实施"两道底线"：
+
+- 有效性记录新增 candidate/current_confusion（TP/FP/FN/TN，按正类键控、
+  仅计 available case，POSITIVE 调用在正例=TP/控制=FP，available 未给
+  POSITIVE 调用=正例 FN/控制 TN）；
+- 新增正类 recall 底线（TP/(TP+FN) ≥ 0.5）："别漏抓"，与方向底线
+  （"别乱报"）并列；新信号仅因这两道方向性底线失败 → provisional 分级，
+  更新类两道都保持硬门；
+- pooled 三区制同步：转正需二项显著性 ∧ pooled recall ≥ 底线；累计满
+  5 期 recall 仍低于底线（TN-farming）或处于随机水平 → 淘汰；
+- measurement contract 增加 confusion/recall 定义供模型视图使用。
+
+回归：怯懦信号（注入 deterministic 函数在正例上 NEUTRAL、控制股上
+NEGATIVE，证据逐字引用）→ provisional + "positive-label check cases
+unflagged"；pooled 各区含 recall 变体。827 测试 + lint 通过。

@@ -1,5 +1,13 @@
 # Status
 
+2026-09-17（傍晚，第三次修订）配对门两道底线（用户决策）：有效性记录新增
+TP/FP/FN/TN 混淆矩阵（按正类键控、仅计 available）；新增正类 recall 底线
+（TP/(TP+FN)≥0.5，治"只在易对的控制股出手刷准确率"的怯懦画像——旧门下
+该画像 decisive/correct 全满分可直接晋升）；与方向底线（correct>wrong）
+并列，新信号仅因二者失败→provisional，更新类均硬门；pooled 三区制转正
+需显著性∧recall 达标、满 5 期 recall 仍低（TN-farming）则淘汰。F1 完整门
+因出手率漂移基线暂不采用（分析存审计报告）。827 测试+lint 通过。
+
 2026-09-17（傍晚，第二次修订）采样/评估卫生改为按候选模型（用户澄清
 permute 语义后的重设计）：每周期对全 population 完全重新 permute 并划分
 dev/check（case 角色跨轮自由轮换——上轮 check 本轮可进挖掘集；周内仍
