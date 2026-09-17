@@ -21,6 +21,7 @@ from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
+    _evidence_source_family,
     _mask_identity_values,
 )
 from stock_opportunity_agent.research.mining_agent_tools import (
@@ -212,6 +213,13 @@ class LabelAwareMiningController:
         self.light_action_limit = light_action_limit
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
+        available: set[str] = set()
+        cohort_companies = {case.company_id for _ref, case in self.case_pairs}
+        for document in store.documents:
+            if document.company_id in cohort_companies:
+                available.add(document.source_type)
+                available.add(_evidence_source_family(document.source_type))
+        self.available_source_families = tuple(sorted(available))
         self.ledger = MiningLedger(cycle_id=cycle_id, seed_id=f"seed-{seed}")
         self._state = "ready"
         self._heavy_used = 0
@@ -283,6 +291,7 @@ class LabelAwareMiningController:
                 "light_remaining": self.light_action_limit - self._light_used,
             },
             "actions": list(ACTIONS),
+            "available_source_families": list(self.available_source_families),
             "measurable_evidence_manifest": self.manifest,
             "signal_catalog": [dict(card) for card in self.signal_catalog],
             "case_refs": [ref for ref, _case in self.case_pairs],
@@ -387,6 +396,19 @@ class LabelAwareMiningController:
         ):
             raise InvalidMiningAction(
                 "fetch_evidence requires non-empty known case_refs and source_families"
+            )
+        unknown_families = sorted(
+            {
+                str(family)
+                for family in families
+                if str(family) not in self.available_source_families
+            }
+        )
+        if unknown_families:
+            raise InvalidMiningAction(
+                "fetch_evidence source_families must come from "
+                "available_source_families in the view; unknown: "
+                + ", ".join(unknown_families)
             )
         max_documents = raw.get("max_documents", 3)
         if not isinstance(max_documents, int) or max_documents < 1:
