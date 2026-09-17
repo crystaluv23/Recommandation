@@ -792,6 +792,188 @@ class SignalEvolutionTests(TestCase):
                 2,
             )
 
+    def test_controller_mining_dispatch_stages_materialized_candidate(self) -> None:
+        class FakeControllerCaller:
+            def __init__(self) -> None:
+                self.stages: list[str] = []
+                self.request_hash_trace: list[str] = []
+
+            def complete_json(self, *, stage, **_kwargs):
+                self.stages.append(stage)
+                if stage == "mining_candidate_materialize":
+                    stable = registry.latest_spec("financing_listing_action")
+                    spec = {
+                        **stable.to_dict(),
+                        "signal_id": "controller_fixture_runway",
+                        "version": 1,
+                        "description": (
+                            "Latest point-in-time cash runway from the "
+                            "controller fixture."
+                        ),
+                    }
+                    return (
+                        {
+                            "spec": spec,
+                            "skill": (
+                                "Judge point-in-time cash runway from the "
+                                "cited spans; abstain without a literal cash "
+                                "figure."
+                            ),
+                            "tests": [
+                                {
+                                    "name": "runway_positive",
+                                    "expected": "POSITIVE",
+                                    "documents": [
+                                        {
+                                            "source_type": "financials",
+                                            "content": '"val": 125.0',
+                                        }
+                                    ],
+                                }
+                            ],
+                        },
+                        AgentUsage(llm_calls=1),
+                    )
+                view = dict(_kwargs["payload"])
+                if view.get("seed") == "discovery":
+                    return (
+                        {"action": "record_deferred", "rationale": ["Stop."]},
+                        AgentUsage(llm_calls=1),
+                    )
+                if not view.get("known_fact_refs"):
+                    families = view.get("available_source_families") or [
+                        "financial"
+                    ]
+                    return (
+                        {
+                            "action": "fetch_evidence",
+                            "rationale": ["Sweep the cohort."],
+                            "case_refs": view["case_refs"][:2],
+                            "source_families": families[:1],
+                            "max_documents": 2,
+                        },
+                        AgentUsage(llm_calls=1),
+                    )
+                known = sorted(view.get("known_fact_refs", ()))
+                cash = [ref for ref in known if ref] or known[:1]
+                needs = view.get("backlog_needs") or []
+                return (
+                    {
+                        "action": "propose_candidate",
+                        "rationale": ["Grounded cash measurement."],
+                        "candidate": {
+                            "measurement": {
+                                "observable": "controller_fixture_runway",
+                                "value_kind": "numeric",
+                                "normalization": (
+                                    "CashAndCashEquivalentsAtCarryingValue "
+                                    "divided by monthly burn"
+                                ),
+                            },
+                            "falsifiers": [
+                                {
+                                    "condition": "Runway does not separate groups.",
+                                    "expected_observation": "No contrast.",
+                                }
+                            ],
+                            "evidence_refs": cash[:1],
+                        },
+                        "need_dispositions": [
+                            {
+                                "need_refs": [row["need_ref"]],
+                                "disposition": "new_measurement",
+                                "signal_refs": [],
+                                "rationale": ["Covered by the new measurement."],
+                            }
+                            for row in needs
+                        ],
+                    },
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                *(make_case(f"ctl_pos_{index}", 4.0) for index in range(2)),
+                *(make_case(f"ctl_ctl_{index}", 1.1) for index in range(2)),
+            )
+            documents = tuple(
+                RawInfoDocument.create(
+                    document_id=f"ctl_facts_{index}",
+                    company_id=case.company_id,
+                    source_type="financials",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=sec_company_facts_content(
+                        ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                        ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                    ),
+                )
+                for index, case in enumerate(cases)
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=documents),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            manifest = build_slow_sampling_manifest(
+                cases,
+                cycle_id=1,
+                base_seed="controller-dispatch",
+                dev_limit=4,
+                check_limit=4,
+            )
+            engine._active_sampling_manifest = manifest
+
+            caller_backed = EmptyMiningModel()
+            caller_backed.caller = FakeControllerCaller()
+            engine.mining_model = caller_backed
+
+            output = engine._run_signal_mining(cycle_id=1)
+
+            audit = output["audit"]
+            self.assertEqual(audit["track"], "controller")
+            self.assertEqual(audit["status"], "completed")
+            terminals = {
+                row["seed"]: row.get("terminal_kind")
+                for row in audit["seeds"]
+            }
+            self.assertEqual(terminals["hypothesis"], "candidate")
+            self.assertEqual(terminals["discovery"], "evidence_unavailable")
+            self.assertTrue(output["candidate_refs"])
+            staged_ref = output["candidate_refs"][0]
+            self.assertTrue(staged_ref.startswith("controller_fixture_runway"))
+            self.assertTrue(
+                output["induction_case_ids"][staged_ref]
+            )
+            self.assertTrue(
+                output["validation_case_ids"][staged_ref]
+            )
+            spec, skill = registry.load_candidate(staged_ref)
+            self.assertEqual(spec.signal_id, "controller_fixture_runway")
+            self.assertTrue(skill)
+
+            no_caller_engine_output = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=documents),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace2"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            no_caller_engine_output._active_sampling_manifest = manifest
+            role_output = no_caller_engine_output._run_signal_mining(cycle_id=1)
+            self.assertNotEqual(role_output["audit"].get("track"), "controller")
+
     def test_two_slow_only_cycles_feed_committed_first_cycle_to_reflection(self) -> None:
         class ReflectingMiningModel(EmptyMiningModel):
             def __init__(self) -> None:

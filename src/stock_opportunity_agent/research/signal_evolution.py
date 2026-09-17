@@ -83,7 +83,16 @@ from stock_opportunity_agent.research.evolution_core import (
     _usage_to_dict,
     _validate_id,
 )
-from stock_opportunity_agent.research.evolution_settings import FIXED_PREDICTOR_SEMANTICS
+from stock_opportunity_agent.research.evolution_settings import (
+    FIXED_PREDICTOR_SEMANTICS,
+    ROLE_OUTPUT_TOKEN_LIMITS,
+)
+from stock_opportunity_agent.research.mining_controller import (
+    LabelAwareMiningController,
+)
+from stock_opportunity_agent.research.mining_role_model import (
+    MiningAgentRoleModel,
+)
 from stock_opportunity_agent.research.plan_evolution import (
     EvolutionWorkspace,
     PlanEvolutionEngine,
@@ -5646,12 +5655,34 @@ class SignalEvolutionEngine:
         }
 
     def _run_signal_mining(self, *, cycle_id: int) -> dict[str, Any]:
-        """Run bounded H and independent E tracks every cycle."""
+        """Run the production mining entry for this cycle.
+
+        Dispatch is capability-based: with a frozen v8 sampling manifest and a
+        mining model exposing a JSON role caller, the LabelAwareMining
+        controller is the production path (Phase 6 cutover). H/E role-protocol
+        models keep their tracks for read-only history replay, and workspaces
+        without an active manifest keep the v7 cadence.
+        """
 
         if cycle_id < 1:
             raise ValidationError("Signal Mining cycle id must be positive")
+        caller = getattr(self.mining_model, "caller", None)
+        controller_ready = callable(getattr(caller, "complete_json", None))
+        if self._active_sampling_manifest is not None and controller_ready:
+            return self._run_controller_mining(cycle_id=cycle_id)
         if self._active_sampling_manifest is None:
             return self._run_signal_mining_legacy(cycle_id=cycle_id)
+        return self._run_signal_mining_role_tracks(cycle_id=cycle_id)
+
+    def _run_signal_mining_role_tracks(self, *, cycle_id: int) -> dict[str, Any]:
+        """Run bounded H and independent E role tracks for H/E-style models.
+
+        Kept for mining models built on the H/E role protocol (no JSON role
+        caller); production LLM models dispatch to the controller instead.
+        """
+
+        if cycle_id < 1:
+            raise ValidationError("Signal Mining cycle id must be positive")
         hypothesis_failure: Exception | None = None
         try:
             hypothesis_result = self._run_hypothesis_mining(cycle_id=cycle_id)
@@ -5722,6 +5753,237 @@ class SignalEvolutionEngine:
                     hypothesis_failure
                 )
         return _merge_mining_fallback(hypothesis_result, exploration_result)
+
+    def _run_controller_mining(self, *, cycle_id: int) -> dict[str, Any]:
+        """Drive Seed A and Seed B through the label-aware controller."""
+
+        caller = getattr(self.mining_model, "caller", None)
+        if not callable(getattr(caller, "complete_json", None)):
+            audit = {
+                "schema_version": "signal-mining-audit-v1",
+                "cycle_id": cycle_id,
+                "track": "controller",
+                "status": "unavailable",
+                "reason": "controller caller is not configured",
+                "candidate_refs": [],
+                "refined_hypotheses": {},
+            }
+            return self._mining_output(audit=audit, refined={})
+
+        dev_cases = self._manifest_cases("dev_case_ids")
+        check_cases = self._manifest_cases("check_case_ids")
+        opaque = {
+            case.case_id: f"case-{index:03d}"
+            for index, case in enumerate(dev_cases, start=1)
+        }
+        case_pairs = [(opaque[case.case_id], case) for case in dev_cases]
+        context = self._mining_context(cycle_id=cycle_id)
+        evidence_manifest = _mask_identity_values(
+            self._h1_measurable_evidence_manifest(case_pairs),
+            self.slow_role_identity_guards,
+            expand_aliases=False,
+        )
+        backlog_needs = tuple(
+            dict(row)
+            for row in dict(context.get("capability_backlog", {})).get(
+                "signal_need_items", ()
+            )
+            if isinstance(row, Mapping) and row.get("need_ref")
+        )
+        catalog = tuple(
+            {
+                "signal_ref": str(card.get("signal_ref", "")),
+                "description": str(card.get("description", "")),
+            }
+            for card in context.get("stable_signal_cards", ())
+            if isinstance(card, Mapping)
+        )
+        model = MiningAgentRoleModel(caller)
+
+        candidates: list[dict[str, Any]] = []
+
+        def controller_sink(candidate: Mapping[str, Any]) -> Mapping[str, Any]:
+            candidates.append(dict(candidate))
+            return {"status": "validated"}
+        seed_reports: list[dict[str, Any]] = []
+        failures: dict[str, tuple[str, ...]] = {}
+        need_disposition_counts: dict[str, int] = {}
+        fetched_case_refs: dict[str, tuple[str, ...]] = {}
+        for seed in ("hypothesis", "discovery"):
+            try:
+                controller = LabelAwareMiningController(
+                    store=self.raw_info_store,
+                    model=model,
+                    case_pairs=case_pairs,
+                    measurable_evidence_manifest=evidence_manifest,
+                    signal_catalog=catalog,
+                    seed=seed,
+                    cycle_id=cycle_id,
+                    backlog_needs=backlog_needs if seed == "hypothesis" else (),
+                    identity_aliases=self.slow_role_identity_guards,
+                    validation_sink=controller_sink,
+                )
+                result = controller.run()
+            except (EvolutionControlFlow, OpenAIClientError):
+                raise
+            except Exception as exc:
+                failures[f"slow_loop:mining_controller:{seed}"] = (
+                    f"{type(exc).__name__}: {exc}",
+                )
+                seed_reports.append(
+                    {"seed": seed, "status": "failed", "error": str(exc)}
+                )
+                continue
+            for row in result.need_dispositions:
+                key = str(row.get("disposition", ""))
+                need_disposition_counts[key] = (
+                    need_disposition_counts.get(key, 0) + 1
+                )
+            fetched = tuple(
+                sorted(
+                    {
+                        ref
+                        for entry in result.ledger
+                        for ref in entry.case_refs
+                    }
+                )
+            )
+            fetched_case_refs[seed] = fetched
+            seed_reports.append(
+                {
+                    "seed": seed,
+                    "status": "completed",
+                    "terminal_kind": result.terminal_kind,
+                    "model_calls": result.model_calls,
+                    "ledger_actions": len(result.ledger),
+                    "explored_families": list(controller.ledger.explored_families()),
+                    "fetched_case_refs": list(fetched),
+                    "need_dispositions": len(result.need_dispositions),
+                }
+            )
+
+        candidate_refs: list[str] = []
+        induction_case_ids: dict[str, tuple[str, ...]] = {}
+        validation_case_ids: dict[str, tuple[str, ...]] = {}
+        validation_by_class: dict[bool, list[str]] = {True: [], False: []}
+        for case in check_cases:
+            validation_by_class[bool(case.ground_truth.is_surge)].append(
+                case.case_id
+            )
+        for candidate in candidates:
+            staged = self._materialize_controller_candidate(
+                candidate, caller=caller, failures=failures
+            )
+            if staged is None:
+                continue
+            signal_ref, seed = staged
+            candidate_refs.append(signal_ref)
+            induction_case_ids[signal_ref] = fetched_case_refs.get(
+                seed, tuple(opaque.values())
+            )
+            validation_case_ids[signal_ref] = tuple(
+                [
+                    *validation_by_class[True][
+                        : self.mining_config.validation_cases_per_class
+                    ],
+                    *validation_by_class[False][
+                        : self.mining_config.validation_cases_per_class
+                    ],
+                ]
+            )
+        audit = {
+            "schema_version": "signal-mining-audit-v1",
+            "cycle_id": cycle_id,
+            "track": "controller",
+            "status": "completed",
+            "limits": self.mining_config.to_dict(),
+            "seeds": seed_reports,
+            "need_disposition_counts": need_disposition_counts,
+            "candidate_refs": list(candidate_refs),
+            "refined_hypotheses": {},
+        }
+        return self._mining_output(
+            audit=audit,
+            refined={},
+            candidate_refs=candidate_refs,
+            induction_case_ids=induction_case_ids,
+            validation_case_ids=validation_case_ids,
+            failures=failures,
+        )
+
+    def _materialize_controller_candidate(
+        self,
+        candidate: Mapping[str, Any],
+        *,
+        caller: Any,
+        failures: dict[str, tuple[str, ...]],
+    ) -> tuple[str, str] | None:
+        """Convert one controller candidate into a staged executable Signal.
+
+        The controller grounds the measurement; one bounded model call renders
+        it into the same staging payload ({spec, skill, tests}) the legacy
+        mining path uses, after which the unchanged contract validator and
+        paired gates judge it.
+        """
+
+        try:
+            parsed, _usage = caller.complete_json(
+                stage="mining_candidate_materialize",
+                system_prompt=(
+                    "Return exactly one JSON object. Convert the grounded "
+                    "mining-controller candidate into a storable Signal "
+                    "candidate following the supplied candidate contract: a "
+                    "new signal_id, a definition faithful to the "
+                    "measurement, point-in-time fixtures whose documents "
+                    "embed the supplied verbatim evidence spans, and either "
+                    "a registered deterministic function that matches the "
+                    "measurement or a source-grounded LLM skill. Output "
+                    "exactly {spec, skill, tests}."
+                ),
+                payload={
+                    "candidate": dict(candidate),
+                    "candidate_contract": self._mining_candidate_contract(),
+                },
+                allow_outcomes=True,
+                max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["proposer"],
+                temperature=0.2,
+            )
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
+            failures["slow_loop:mining_materialize"] = (
+                f"{type(exc).__name__}: {exc}",
+            )
+            return None
+        if not isinstance(parsed, Mapping) or set(parsed) != {
+            "spec",
+            "skill",
+            "tests",
+        }:
+            failures["slow_loop:mining_materialize"] = (
+                "materialization requires exactly spec, skill, and tests",
+            )
+            return None
+        try:
+            signal_ref = self._stage_from_tool(
+                spec=parsed["spec"],
+                skill=(
+                    str(parsed["skill"])
+                    if parsed["skill"] is not None
+                    else None
+                ),
+                tests=parsed["tests"] if isinstance(parsed["tests"], list) else (),
+                origin="mining:controller",
+                collected=[],
+            )
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
+            failures["slow_loop:mining_materialize"] = (
+                f"{type(exc).__name__}: {exc}",
+            )
+            return None
+        return signal_ref, "hypothesis"
 
     def _run_signal_mining_legacy(self, *, cycle_id: int) -> dict[str, Any]:
         """Preserve read-only v7 cadence outside an active v8 frozen input."""

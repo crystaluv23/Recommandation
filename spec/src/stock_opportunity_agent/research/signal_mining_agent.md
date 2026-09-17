@@ -3,10 +3,16 @@
 ## Purpose
 
 Define the controlled, label-aware Signal-mining controller and its shared PIT
-Evidence Graph that replace the production H1/H2/H3 and E1/E2 chain after the
-shadow-acceptance gate defined in the owning action plan. H1/H2/H3/E1/E2 remain
-the authoritative production path and a read-only contrast baseline until that
-gate passes; this module spec governs the new path only.
+Evidence Graph that replace the production H1/H2/H3 and E1/E2 mining chain.
+The shadow-acceptance gate defined in the owning action plan passed on
+2026-09-17 (six additional live shadow rounds, all terminal candidate with
+invariants clean, plus two committed production cycles): the production
+mining entry is now the controller, dispatched whenever a frozen v8 sampling
+manifest is active and the mining model exposes a JSON role caller. The
+legacy H/E chain remains callable for read-only history replay and for
+H/E role-protocol mining models; archiving the legacy production path
+follows the repository removal discipline after the post-cutover
+observation cycle.
 
 ## Invariants
 

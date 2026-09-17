@@ -152,6 +152,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   occupied is rejected with an explicit reason instead of admitting a third
   resident. Basic correctness stays hard at every tier: PIT, contract
   fixtures, availability, and decisiveness are never waived.
+- The production mining entry is capability-dispatched: with a frozen v8
+  sampling manifest and a mining model exposing a JSON role caller, the
+  LabelAwareMiningController (Seeds A and B) mines and its grounded
+  candidates are materialized into the standard {spec, skill, tests} staging
+  payload by one bounded model call, after which the unchanged contract
+  validator and paired gates judge them. H/E role-protocol models keep their
+  tracks for read-only replay, and manifest-free workspaces keep the v7
+  cadence.
 - Every Slow cycle runs bounded Signal Mining independently of whether the
   committed Fast boundary contains a new Signal need. H1 may use identity-masked,
   outcome-aware Fast meta-memory to propose error-driven measurements; the
