@@ -6165,6 +6165,17 @@ class SignalEvolutionEngine:
                 value = getattr(item, key, None)
                 if value is not None and str(value).strip():
                     row[key] = str(value)[:600]
+            document_source_type = (
+                SignalEvolutionEngine._evidence_document_source_type(
+                    str(getattr(item, "document_ref", ""))
+                )
+            )
+            if document_source_type:
+                # Structured-fact rows carry no source_family attribute, so
+                # the retrieval vocabulary is derived from the cited
+                # document itself; the model can then align
+                # raw_retrieval.source_types on the first attempt.
+                row.setdefault("document_source_type", document_source_type)
             period = getattr(item, "period", None)
             if isinstance(period, Mapping):
                 row["period"] = dict(period)
