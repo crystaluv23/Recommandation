@@ -105,7 +105,13 @@ observation cycle.
 - The mining audit reports the modality metrics: eligible narrative seed
   count, exploration completions, typed unavailability, narrative reads,
   candidates, materializations, and validations, so reflection can consume
-  real modality footprints across cycles.
+  real modality footprints across cycles. The audit also names the staged
+  narrative candidates (`narrative_candidate_refs`), and each cross-cycle
+  modality footprint entry carries the prior cycle's staged candidates'
+  real check-cohort outcomes (signal ref, disposition, availability,
+  decisive, and tp/fn/fp/tn) — a semantic family whose fires never overlap
+  the positive class is a demonstrated predicate-label mismatch the next
+  proposal must not repeat.
 
 ### Narrative candidate predicate (action plan v2, Phase 3)
 

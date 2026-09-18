@@ -4159,6 +4159,61 @@ def _bounded_projection_interior_candidate(
     return candidates[0]
 
 
+def _same_projection_interior_candidate(
+    projection: _SignalProjectionLineage,
+    *,
+    nearest_edge: str,
+    eligible_lineage: Mapping[str, _SignalProjectionLineage],
+    maximum_characters: int = 800,
+) -> str | None:
+    """One complete interior sentence of the cited projection itself.
+
+    When no overlapping projection can complete a clause truncated at a
+    projection edge, any complete sentence strictly inside the cited
+    projection is still a compliant citation. The sentence nearest the
+    touched edge is the most likely to carry the semantics of the rejected
+    longer quote; uniqueness across every visible projection keeps the
+    mapping back to raw offsets deterministic.
+    """
+
+    text_value = projection.projection_text
+    sentence_end = re.compile(r'[.!?](?:["\')\]]*)(?=\s|$)')
+    lower = 0
+    if projection.normalized_start > 0:
+        first_end = sentence_end.search(text_value)
+        if first_end is None:
+            return None
+        lower = first_end.end()
+        while lower < len(text_value) and text_value[lower].isspace():
+            lower += 1
+    end_is_internal = projection.normalized_end < projection.normalized_source_length
+    interiors: list[str] = []
+    sentence_start = lower
+    for match in sentence_end.finditer(text_value, lower):
+        if end_is_internal and match.end() == len(text_value):
+            break
+        raw_candidate = text_value[sentence_start:match.end()]
+        candidate = raw_candidate.strip()
+        if candidate:
+            interiors.append(candidate)
+        sentence_start = match.end()
+        while sentence_start < len(text_value) and text_value[sentence_start].isspace():
+            sentence_start += 1
+    ordered = interiors[::-1] if nearest_edge == "end" else interiors
+    for candidate in ordered:
+        if len(candidate) > maximum_characters:
+            continue
+        if (
+            sum(
+                visible.projection_text.count(candidate)
+                for visible in eligible_lineage.values()
+            )
+            == 1
+        ):
+            return candidate
+    return None
+
+
 def _map_projected_signal_evidence(
     value: Mapping[str, Any],
     lineage: Mapping[str, _SignalProjectionLineage],
@@ -4307,6 +4362,24 @@ def _map_projected_signal_evidence(
                         == 1
                     ):
                         interior_candidates[candidate_id] = interior
+                if not interior_candidates:
+                    # No overlapping projection can complete the clause. A
+                    # strictly interior sentence of the cited projection is
+                    # always a compliant repair, so offer the complete
+                    # interior sentence nearest the touched edge instead of
+                    # leaving the model a vacuous choice that ends in an
+                    # availability-losing abstention.
+                    interior = _same_projection_interior_candidate(
+                        projection,
+                        nearest_edge=(
+                            "end"
+                            if "end" in touched_edges
+                            else "start"
+                        ),
+                        eligible_lineage=eligible_lineage,
+                    )
+                    if interior is not None:
+                        interior_candidates[resolved_projection_id] = interior
                 raise ValidationError(
                     f"Signal {group} evidence[{index}] on projection "
                     f"{resolved_projection_id!r} touches internal projection "
@@ -4314,8 +4387,10 @@ def _map_projected_signal_evidence(
                     f"{overlapping_projection_ids}; "
                     "overlapping_projection_interior_candidates="
                     f"{json.dumps(interior_candidates, ensure_ascii=False)}. Copy "
-                    "one listed byte-exact candidate, another complete literal from "
-                    "an overlapping projection, or return unavailable"
+                    "one listed byte-exact candidate, another complete literal "
+                    "from an overlapping projection, or shorten the citation to "
+                    "a complete clause strictly inside the cited projection; "
+                    "return unavailable only when no compliant literal exists"
                 )
             overlaps = _slice_projection_offset_runs(
                 projection.raw_offset_runs,

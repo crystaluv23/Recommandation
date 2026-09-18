@@ -1776,7 +1776,13 @@ class ReflectionRoleAdapterTests(TestCase):
         candidate_marker = "overlapping_projection_interior_candidates="
         candidate_payload = error.split(candidate_marker, 1)[1].split(". Copy", 1)[0]
         candidates = json.loads(candidate_payload)
-        self.assertEqual(candidates, {})
+        # The overlapping projection's anchored sentence is non-unique, but a
+        # complete interior sentence of the cited projection itself is always
+        # a compliant repair, so it is offered instead of an empty choice.
+        self.assertEqual(
+            candidates,
+            {"projection_truncated": "Turning to our guidance."},
+        )
         self.assertNotIn("Management reaffirmed", candidate_payload)
 
     def test_v103_signal_edge_candidate_is_anchored_to_rejected_boundary(self) -> None:
@@ -1840,6 +1846,56 @@ class ReflectionRoleAdapterTests(TestCase):
         candidates = json.loads(candidate_payload)
         self.assertEqual(candidates, {"overlap": guidance})
         self.assertNotIn("Unrelated operations", candidates["overlap"])
+
+    def test_edge_repair_offers_same_projection_interior_when_no_overlap(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        sentence = "The company received no qualifying customer orders."
+        content = (
+            "Earlier complete sentence. " + sentence + " Trailing text follows."
+        )
+        truncated = content[: len("Earlier complete sentence. ") + len(sentence)]
+        document = RawInfoDocument.create(
+            document_id="filing-chunk",
+            company_id="issuer-1",
+            source_type="sec_filing",
+            published_at=timestamp,
+            available_at=timestamp,
+            content=content,
+        )
+        result = {
+            "evidence": {
+                "counter": [
+                    {"projection_id": "truncated", "exact_text": truncated}
+                ],
+                "supporting": [],
+            }
+        }
+        lineage = {
+            "truncated": evolution_runtime_module._SignalProjectionLineage(
+                document=document,
+                projection_text=truncated,
+                raw_offset_runs=((0, len(truncated), 0, len(truncated)),),
+                normalized_start=0,
+                normalized_end=len(truncated),
+                normalized_source_length=len(content),
+            )
+        }
+
+        with self.assertRaisesRegex(
+            ValidationError, "touches internal projection edge"
+        ) as context:
+            evolution_runtime_module._map_projected_signal_evidence(result, lineage)
+
+        error = str(context.exception)
+        self.assertIn("edge=['end']", error)
+        self.assertIn("overlapping_projection_ids=[]", error)
+        marker = "overlapping_projection_interior_candidates="
+        candidate_payload = error.split(marker, 1)[1].split(". Copy", 1)[0]
+        candidates = json.loads(candidate_payload)
+        # The informative sentence itself ends at the internal edge, so the
+        # compliant repair is the last complete interior sentence.
+        self.assertEqual(candidates, {"truncated": "Earlier complete sentence."})
+        self.assertIn("shorten the citation", error)
 
     def test_v103_signal_raw_mapping_is_exact_quote_not_projection_window(self) -> None:
         timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)

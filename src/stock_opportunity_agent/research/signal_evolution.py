@@ -5936,6 +5936,7 @@ class SignalEvolutionEngine:
             )
 
         candidate_refs: list[str] = []
+        narrative_candidate_refs: list[str] = []
         induction_case_ids: dict[str, tuple[str, ...]] = {}
         validation_case_ids: dict[str, tuple[str, ...]] = {}
         validation_by_class: dict[bool, list[str]] = {True: [], False: []}
@@ -5969,6 +5970,7 @@ class SignalEvolutionEngine:
             is_narrative = self._is_narrative_candidate(candidate)
             if is_narrative:
                 narrative_materialized += 1
+                narrative_candidate_refs.append(signal_ref)
             induction_case_ids[signal_ref] = (
                 fetched_case_refs.get(staged_seed)
                 or tuple(opaque.values())
@@ -6033,6 +6035,7 @@ class SignalEvolutionEngine:
             "modality_metrics": modality_metrics,
             "need_disposition_counts": need_disposition_counts,
             "candidate_refs": list(candidate_refs),
+            "narrative_candidate_refs": list(narrative_candidate_refs),
             "refined_hypotheses": {},
         }
         return self._mining_output(
@@ -7748,19 +7751,45 @@ class SignalEvolutionEngine:
         prior_modality_footprints: list[dict[str, Any]] = []
         for path in [item for item in committed_paths if item.is_file()][-3:]:
             payload = _read_json(path)
-            audits = dict(payload.get("validation", {})).get("agent_audits", {})
+            validation = dict(payload.get("validation", {}))
+            audits = dict(validation.get("agent_audits", {}))
             metrics = dict(audits.get("mining_pipeline", {})).get(
                 "modality_metrics", {}
             )
             if isinstance(metrics, Mapping) and metrics:
-                prior_modality_footprints.append(
-                    {
-                        "cycle_id": int(
-                            payload.get("validation", {}).get("cycle_id", 0)
-                        ),
-                        **dict(metrics),
-                    }
-                )
+                footprint: dict[str, Any] = {
+                    "cycle_id": int(validation.get("cycle_id", 0)),
+                    **dict(metrics),
+                }
+                outcomes: list[dict[str, Any]] = []
+                for signal_ref, record in dict(
+                    validation.get("candidate_effectiveness", {})
+                ).items():
+                    if not isinstance(record, Mapping) or len(outcomes) >= 4:
+                        continue
+                    counts = dict(record.get("candidate", {}) or {})
+                    confusion = dict(
+                        record.get("candidate_confusion", {}) or {}
+                    )
+                    outcomes.append(
+                        {
+                            "signal_ref": str(signal_ref),
+                            "disposition": str(record.get("disposition", "")),
+                            "available": counts.get("available", 0),
+                            "decisive": counts.get("decisive", 0),
+                            "tp": confusion.get("tp", 0),
+                            "fn": confusion.get("fn", 0),
+                            "fp": confusion.get("fp", 0),
+                            "tn": confusion.get("tn", 0),
+                        }
+                    )
+                if outcomes:
+                    # Prior candidates' real check-cohort outcomes: a
+                    # predicate whose fires never overlap the positive
+                    # class (tp near zero, fn high) is a semantic mismatch
+                    # the next proposal must not repeat.
+                    footprint["staged_candidate_outcomes"] = outcomes
+                prior_modality_footprints.append(footprint)
         return {
             "cycle_id": cycle_id,
             "fixed_prior": self.priors.mine_signal,

@@ -150,6 +150,12 @@ passes and are archived with this spec at cutover.
   Initial validation isolates omitted, cross-Signal, edge, and shape failures;
   its sole correction contains only failed Signals, their eligible evidence,
   and their feedback, while accepted siblings are retained without re-execution.
+  Edge-violation feedback always leaves the model a compliant repair: when no
+  overlapping projection can complete the truncated clause, the cited
+  projection's nearest complete interior sentence is offered as a byte-exact
+  candidate and the instruction names shortening the citation to an interior
+  clause, so an edge violation never reduces to a vacuous choice whose only
+  outcome is an availability-losing abstention.
   A semantically unavailable result may consume that same single correction only
   when a declared comparison need or a truncated projection makes one bounded
   local re-projection meaningful. Exact request estimation and the original hard
