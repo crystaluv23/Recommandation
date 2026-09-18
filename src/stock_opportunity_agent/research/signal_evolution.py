@@ -1207,6 +1207,19 @@ class SignalCandidateValidator:
                     metadata=dict(raw_document.get("metadata", {})),
                 )
             )
+        if not any(document.available_at <= as_of for document in documents):
+            # A closed fixture corpus with zero point-in-time visible
+            # documents is unavailable by construction: no signal can cite
+            # evidence from an empty corpus, and fixture corpora never
+            # acquire, so resolving or executing would misreport this
+            # legitimate abstention as a technical adapter failure.
+            if expected is SignalValue.UNAVAILABLE:
+                return
+            raise ValidationError(
+                "fixture expects "
+                f"{expected.value} but provides no point-in-time visible "
+                "documents"
+            )
         snapshot_payload = {
             "spec": spec.to_dict(),
             "skill": (skill or "").rstrip(),

@@ -609,3 +609,22 @@ exit，prompt/view/response 内容与 reflection 信息流（跨工作区+周内
 逐轮 wire 级验证；2) 挖掘+入库——达成（V98 晋升，V96/V97 另有 5 个
 候选入册、2 名 provisional 居留者示范累计机制）；3) 选择坍缩——审计
 +轮换修复 live 生效。行动方案 v2.1 执行完毕（收尾记录见该文档末节）。
+
+## Seed B 物化失败的定责与修复：零可见 fixture 语料被误判 adapter_missing（2026-09-17）
+
+用户质询"问题是否在我们的代码"。核对 V98 attempts #17/#18/#22 后定责：
+**主要是代码缺陷，模型的 fixture 设计反而是对的**。Seed B 的 fixture 4
+（unavailable_before_available_at，as_of 早于文档 available_at）测试的
+正是 PIT 边界的"证据尚未可见必须弃权"，期望值 unavailable；但 fixture
+执行经 store-only resolver 解析，PIT 过滤后零可见文档 → 无 adapter 可试
+→ ADAPTER_MISSING → permanent_failed → 被记为"技术执行失败"回喂——
+模型据此误改 source_types（sec_filing）→ 再撞检索族校验 → 纠正耗尽、
+候选丢失。对照 Seed A（其 unavailable fixtures 全部文档可见、测的是缺
+概念轴）恰好绕开该缺陷。这是本会话第三例"边界语义误分类"模式
+（V93 重放冲突→provider_error；本例零可见语料→adapter_missing）。
+
+修复：`_execute_fixture` 在执行前判定——封闭合成语料零可见文档时，
+expected=unavailable 直接通过（空语料上任何信号都只能弃权，无需执行
+或获取）；expected 为其他值则给出明确错误"fixture 提供零可见文档"。
+生产解析语义不变（配置了 adapter 却无人服务的请求仍报 adapter_missing）。
+回归覆盖两分支；全套测试 + lint 通过。

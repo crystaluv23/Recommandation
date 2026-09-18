@@ -983,6 +983,72 @@ class SignalEvolutionTests(TestCase):
             role_output = no_caller_engine_output._run_signal_mining(cycle_id=1)
             self.assertNotEqual(role_output["audit"].get("track"), "controller")
 
+    def test_fixture_with_no_visible_documents_is_unavailable_by_construction(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            from stock_opportunity_agent.research.signal_evolution import (
+                SignalCandidateValidator,
+            )
+
+            validator = SignalCandidateValidator(registry, llm_runner=None)
+            stable = registry.latest_spec("revenue_growth_yoy")
+            spec = SignalSpec(
+                **{
+                    **stable.__dict__,
+                    "signal_id": "fixture_visibility_measurement",
+                    "version": 1,
+                    "description": (
+                        "Measure point-in-time revenue growth scaled to the "
+                        "fixture visibility corpus."
+                    ),
+                    "parameters": {**stable.parameters, "positive_min": 0.15},
+                }
+            )
+            future_doc = {
+                "source_type": "financials",
+                "published_at": "2025-06-01T00:00:00+00:00",
+                "available_at": "2025-06-01T00:00:00+00:00",
+                "content": '"val": 125.0',
+            }
+            abstain = validator.validate(
+                spec,
+                skill=None,
+                tests=[
+                    {
+                        "name": "unavailable_before_evidence",
+                        "expected": "unavailable",
+                        "as_of": "2025-01-01T00:00:00+00:00",
+                        "documents": [future_doc],
+                    }
+                ],
+            )
+            self.assertTrue(abstain.accepted, abstain.reasons)
+
+            premature = validator.validate(
+                spec,
+                skill=None,
+                tests=[
+                    {
+                        "name": "expects_value_without_evidence",
+                        "expected": "positive",
+                        "as_of": "2025-01-01T00:00:00+00:00",
+                        "documents": [future_doc],
+                    }
+                ],
+            )
+            self.assertFalse(premature.accepted)
+            self.assertTrue(
+                any(
+                    "no point-in-time visible documents" in str(reason)
+                    for reason in premature.reasons
+                ),
+                premature.reasons,
+            )
+
     def test_two_slow_only_cycles_feed_committed_first_cycle_to_reflection(self) -> None:
         class ReflectingMiningModel(EmptyMiningModel):
             def __init__(self) -> None:
