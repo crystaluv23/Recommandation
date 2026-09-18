@@ -472,6 +472,13 @@ def _narrative_title(document: RawInfoDocument) -> str:
             ).strip()
             if headline:
                 return headline[:_NARRATIVE_TITLE_CHARS]
+    form = str(document.metadata.get("form", "")).strip()
+    if form:
+        period = str(
+            document.metadata.get("period_end", "")
+            or document.available_at.date().isoformat()
+        ).strip()
+        return f"{form} {period}"[:_NARRATIVE_TITLE_CHARS].strip()
     visible, _clipped = _query_relevant_excerpt(
         document, query=None, max_chars=_NARRATIVE_TITLE_CHARS * 2
     )
@@ -572,7 +579,7 @@ _ATTRIBUTE_PATTERN = re.compile(
     re.IGNORECASE,
 )
 _ATTRIBUTE_NAME = "order_confirmation_disclosed"
-_MIN_ATTRIBUTE_SUPPORT = 6
+_MIN_ATTRIBUTE_SUPPORT = 2
 
 
 @dataclass(frozen=True)

@@ -478,9 +478,17 @@ class LabelAwareMiningController:
             family_counts[event.source_family] = (
                 family_counts.get(event.source_family, 0) + 1
             )
+        # Real news headlines carry the semantic signal; filing metadata
+        # titles (form + period) only orient. News first, filings fill.
+        news_events = [
+            event for event in events if event.source_family == "news"
+        ]
+        other_events = [
+            event for event in events if event.source_family != "news"
+        ]
         sample_titles: list[str] = []
         seen_titles: set[str] = set()
-        for event in sorted(events, key=lambda item: item.available_at):
+        for event in [*news_events, *other_events]:
             title = event.title.strip()
             if not title or title in seen_titles:
                 continue
@@ -492,7 +500,7 @@ class LabelAwareMiningController:
                     )
                 )
             )
-            if len(sample_titles) >= 6:
+            if len(sample_titles) >= 8:
                 break
         return {
             "event_count": len(events),
