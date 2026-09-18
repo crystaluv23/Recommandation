@@ -34,6 +34,7 @@ from stock_opportunity_agent.research.mining_agent_tools import (
     fetch_case_evidence,
     narrative_catalog,
     project_attributes,
+    strip_document_artifacts,
 )
 
 ACTIONS = (
@@ -875,8 +876,12 @@ class LabelAwareMiningController:
                 "read_span window is empty; adjust offset/length within the "
                 "document bounds"
             )
-        masked = _mask_identity_values(
-            window, self.identity_aliases, expand_aliases=False
+        masked = strip_document_artifacts(
+            str(
+                _mask_identity_values(
+                    window, self.identity_aliases, expand_aliases=False
+                )
+            )
         )
         entry: dict[str, Any] = {
             "target": target_key,

@@ -430,6 +430,21 @@ def fetch_case_evidence(
 
 
 _NARRATIVE_TITLE_CHARS = 120
+_DOCUMENT_FILENAME_TOKEN = re.compile(
+    r"(?<![A-Za-z0-9])[A-Za-z][A-Za-z0-9]{1,11}-\d{6,12}(?![A-Za-z0-9])"
+)
+
+
+def strip_document_artifacts(text: str) -> str:
+    """Remove document-internal filename tokens from narrative projections.
+
+    SEC submissions embed their own document names (e.g. ``cenx-20240325``)
+    and namespace prefixes in body text; these carry issuer tickers in
+    lowercase forms the case-sensitive alias mask does not replace. Titles
+    and read windows pass through this strip before entering any model view.
+    """
+
+    return _DOCUMENT_FILENAME_TOKEN.sub("<doc>", text)
 
 
 def _narrative_title(document: RawInfoDocument) -> str:
@@ -458,10 +473,11 @@ def _narrative_title(document: RawInfoDocument) -> str:
             if headline:
                 return headline[:_NARRATIVE_TITLE_CHARS]
     visible, _clipped = _query_relevant_excerpt(
-        document, query=None, max_chars=_NARRATIVE_TITLE_CHARS
+        document, query=None, max_chars=_NARRATIVE_TITLE_CHARS * 2
     )
-    visible = " ".join(visible.split())
-    return visible[:_NARRATIVE_TITLE_CHARS]
+    visible = strip_document_artifacts(" ".join(visible.split()))
+    first_sentence = re.split(r"(?<=[.!?])\s", visible, maxsplit=1)[0]
+    return (first_sentence or visible)[:_NARRATIVE_TITLE_CHARS]
 
 
 def _verbatim_window(content: str, excerpt: str, radius: int = 80) -> str:
