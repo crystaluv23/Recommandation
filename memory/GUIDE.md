@@ -24,6 +24,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Changing structured role correction, explicit empty results, or exact provider request auditing | [`experiences/structured-role-boundary-exactness.md`](experiences/structured-role-boundary-exactness.md) | 25 | Keep domain empty distinct from invalid output and make prompt, parser, persisted body, provider builder, and HTTP bytes one contract. |
 | Changing H1 need ledgers, existing-Signal coverage, or bounded portfolio accounting | [`experiences/h1-unresolved-need-dispositions.md`](experiences/h1-unresolved-need-dispositions.md) | 3 | An unresolved need cannot become covered by citation alone; preserve measurable overflow explicitly and validate grouped updates per need. |
 | Auditing a real evolution run's exact prompts, contexts, privacy boundaries, or token use | [`experiences/live-evolution-context-audit.md`](experiences/live-evolution-context-audit.md) | 30 | Join exact requests to attempts, pointers, fitness gates, invocation authorization, and snapshots; zero calls do not prove sampling stayed neutral. |
+| Adding an evidence modality, candidate contract, or correction loop that spans controller, materialization, retrieval, and executor layers | [`experiences/llm-pipeline-layer-vocabulary-alignment.md`](experiences/llm-pipeline-layer-vocabulary-alignment.md) | 1 | Share one vocabulary at every validating boundary, mask model-facing inputs, feed back the judge's interpretation, and classify empty 200 responses retryable. |
 
 ## Experience Index
 
@@ -44,6 +45,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 - [`experiences/signal-learning-profile-cycle-freeze.md`](experiences/signal-learning-profile-cycle-freeze.md): version-bound Signal learning must preserve Plan-specific reasons, deduplicate case/input efficacy, and freeze dynamic profiles at the Fast-cycle start for restart equivalence.
 - [`experiences/structured-role-boundary-exactness.md`](experiences/structured-role-boundary-exactness.md): only schema-valid empty results mean no-match; production role request preview, approval, hashing, and HTTP transport must share exact canonical bytes.
 - [`experiences/h1-unresolved-need-dispositions.md`](experiences/h1-unresolved-need-dispositions.md): H1 needs an explicit measurable-overflow state and per-need coverage basis so bounded portfolios do not erase unresolved demand.
+- [`experiences/llm-pipeline-layer-vocabulary-alignment.md`](experiences/llm-pipeline-layer-vocabulary-alignment.md): every layer touching one concept must share the authoritative vocabulary, model-facing inputs are masked at the boundary, correction feedback carries the judge's interpretation, and empty 200 responses are retryable transport anomalies.
 
 ## Consultation Protocol
 
