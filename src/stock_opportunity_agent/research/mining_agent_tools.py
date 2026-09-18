@@ -457,7 +457,10 @@ def _narrative_title(document: RawInfoDocument) -> str:
             ).strip()
             if headline:
                 return headline[:_NARRATIVE_TITLE_CHARS]
-    visible = " ".join(document.content.split())
+    visible, _clipped = _query_relevant_excerpt(
+        document, query=None, max_chars=_NARRATIVE_TITLE_CHARS
+    )
+    visible = " ".join(visible.split())
     return visible[:_NARRATIVE_TITLE_CHARS]
 
 
