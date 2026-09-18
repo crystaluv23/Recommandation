@@ -737,3 +737,112 @@ fetch 子集内低于 min_support=6，词表为空——诚实为空但意味着
 metadata/news JSON 的真实标题字段（news 事件有，filing 没有——
 filing 或需 item 标题启发式），属性投影的 min_support 需按 seed 内
 文档数缩放或改全局派生。
+
+## V100–V105：叙事因子入库冲刺——五个代码级阻塞的定位与修复（2026-09-18/19）
+
+用户目标：测试 slow round 直到非结构化（叙事）因子真实入库；LLM 已有
+动力提出叙事因子，修掉过程中代码导致的挖掘阻塞。逐工作区迭代（每轮
+一个单周期 immutable 工作区，绕开 V98 已知的周期内晋升→下周期历史链
+校验边界），每个阻塞先在生产运行中暴露、再以泛化方式修复：
+
+**V100（84a58fca/c2adf1c，29 attempts 后崩溃）**：首次生产运行即由
+hypothesis seed 提出**叙事候选**（订单/合同确认谓词，14 个 event 引用
+——narr4 shadow 的可提案性在生产复现）。两个代码级阻塞暴露并修复：
+
+1. **空响应致命退出**（ee6b877）：reasoning-heavy 物化调用返回 200 但
+   output 无 message chunk（推理耗尽预算），`_extract_output_text` 抛
+   不可重试 `OpenAIClientError` → 整周期崩溃且 wrapper 不重试（只认
+   exit 75）。修复：无 message 输出归类 `RetryableOpenAIClientError`
+   （进入有界传输重试 + 运行级自动续跑）；显式 refusal 保持不可重试
+   并透传拒答文本。V102/V104 两次 SSL/空响应瞬断被该机制自动恢复，
+   运行继续而非死亡。
+2. **检索族词汇不一致**（ee6b877）：谓词/目录说归一化族（news/filing/
+   transcript），物化校验却用裸集合交集比对原始 source_type
+   （company_news/sec_filing），而执行侧检索匹配本是族感知
+   （`_SOURCE_TYPE_FAMILIES`）。模型按契约写族名即被拒、烧掉纠正预算。
+   修复：物化检索校验与 fixture 预检统一复用执行侧
+   `source_types_compatible` 族等价；guidance/纠错文案写明两套词汇可
+   互换。
+
+**V101（370fd0f4/ee6b877，clean exit）**：真实模态指标首次进入生产
+审计——`narrative_candidate_count=1`（此前 read/candidate/materializ
+ation/validation 四项硬编码恒 0、eligible 与 explored 同表达式，
+`prior_modality_footprints` 一直在向反思谎报"叙事零产出"；c2adf1c
+修复为 ControllerResult 携带真实覆盖/计数、按候选谓词统计、物化/验证
+计数来自真实入册循环）。叙事候选通过检索校验、编写出完整八类 fixture，
+但死在判断边界 fixture（expected neutral, received unavailable）——
+纠正预算 3 次内未收敛。修复（35110e5）：fixture 失败反馈携带执行器
+interpretation 原文；物化提示要求技能分类法逐 fixture 类赋 canonical
+值（仅有意向/lookalike/低于阈值且文档充分=neutral 而非 unavailable）；
+谓词候选（契约上必须物化为 LLM 技能、fixture 全是 LLM 判断）纠正上
+限放宽到 4，失败按候选 signal_id 分键（不再被兄弟候选覆盖）。
+
+**V102（5a07821e/35110e5，clean exit）**：narrative_candidate_count=2
+（双 seed 均提出叙事候选——V101 足迹进入反思生效）。执行器 interpretation
+暴露最后一个代码侧收敛阻塞：批执行器把"无满足肯定语义条件的 span"读作
+"证据不足"，把 neutral 结论坍缩成 unavailable（系统提示"Return
+unavailable when visible text is insufficient"、纠错 required_action
+同样措辞；而运行时 `validate_signal_result` 本就接受 counter 证据）。
+修复（86b65b8）：批执行器提示、纠错 required_action、运行时证据校验
+错误三处统一为真实契约——neutral/negative 是可用结论、引用已检查的
+非合格 span 作为 counter 证据；unavailable 仅保留给根本无法施用技能
+的文本。另一叙事候选死于身份泄漏（fixture 含 ticker "FORM"）——
+身份门诚实工作，纠正反馈可解。
+
+**V103（533b5b8b/86b65b8，clean exit）**：本轮模型提结构化候选
+（无常设配额，跨周期方差：1/2/0/0）。结构化候选再次死于检索词错配
+——根因：结构化 fact 的证据摘录不含来源类型，模型只能猜。修复
+（a4428b0）：所有证据摘录行携带被引文档的 source type，首轮即可对齐
+检索词表。
+
+**V104（100cb2ee/a4428b0，clean exit，**Registry v3→v4**）**：
+`cash_burn_rate_elevated:v1` 由控制器挖掘→物化（首轮通过）→契约校验
+→16 check 配对门→**晋升入库**。检索词修复让结构化物化一次通过，
+管线端到端健康恢复（同时 1 provisional 居留者、2 个诚实拒绝）。
+叙事候选本轮 0——两处已修复的收敛阻塞（neutral 语义、检索词）尚待
+下一颗叙事候选实际穿过。
+
+五个修复全部泛化（无 corner-case 硬编码）：错误分类按异常性质、族
+等价复用执行侧既有语义、预算按执行类型（谓词⇒LLM 技能）分档、反馈
+按运行时已有字段（interpretation/source type）透传。V105 起继续迭代
+直到叙事候选穿过物化→验证→晋升全链。
+
+**V105（4016465f/a4428b0，clean exit，叙事首穿验证管线）**：
+`commercial/order_confirmation_disclosed:v1` 由 hypothesis seed 提出（谓词：
+filing 披露订单/合同确认），**一次通过物化**（8 类 fixture 全过——35110e5
+的 interpretation 反馈+分类法规则生效），契约校验 8/8 executed，16 个全新
+check 上 available=9/decisive=1/tp=0/fn=4/fp=1/tn=4——方向与 recall 底线
+诚实失败，按分级协议成为 **provisional 居留者**（非拒绝）。同轮
+`narrative_materialization_count=1`、`narrative_validation_count=1` 首次
+非零——真实指标全链生效。
+
+**V106（eeba6356/86b65b8，clean exit）**：narrative_candidate_count=2、
+narrative_read_count=1（首次真实事件读取）。复提的叙事候选死于身份泄漏
+（ticker DFIN）——定位根因：物化输入的 cited_evidence 携带**逐字** span
+（账本回放需要），而叙事原文天然嵌公司名/代码，提示词又要求 fixture 嵌入
+verbatim span，模型照抄即泄漏。V105 幸存只因其 filing span 恰无别名。
+修复（84c7d04）：证据摘录进入物化 payload 前统一走 slow-role 身份掩码 +
+validator 禁用词并集 + strip_document_artifacts；账本保留 verbatim 供
+回放，接地与可审计性不变。
+
+**V107（b4af94d7/84c7d04，clean exit）**：掩码修复立验——
+`narrative_event/order_confirmation_disclosure:v1` **首轮物化通过**、
+进标准验证、再入 provisional（同样 recall 诚实失败）。
+
+**V108（9c0b2476/84c7d04，clean exit，Registry v4→v5）**：
+narrative_candidate_count=2、materialization=2、validation=2——**两颗
+叙事候选全部一次穿过物化+验证**并成为 provisional 居留者（居留上限 2）。
+同轮结构化更新 gross_margin_change:v2 晋升入库。管线端到端健康。
+
+**结论（本轮目标审计）**：六个代码级阻塞全部定位、泛化修复并在生产
+逐轮验证（c2adf1c 指标真实化、ee6b877 空响应可重试+检索族等价、
+35110e5 物化收敛三件套、86b65b8 neutral 反证语义、a4428b0 摘录带源类型、
+84c7d04 证据掩码）。叙事因子现已**稳定真实进入分级体系**：9 轮生产中
+7 轮提出叙事候选（V100/V101/V102/V105/V106/V107/V108 共 10 颗），修复落地后
+V105/V107/V108 的 4 颗全部一次穿过物化+契约校验+标准验证、
+2 名 provisional 居留者按 pooled 三区规则累积证据。**晋升（严格入库）**
+尚未发生：当前订单确认类谓词在 check 队列 recall≈0（tp=0），属研究质量
+问题而非代码阻塞；按 spec §9"Promotion 不因 modality 放宽 promotion 门"，
+此事交给 pooled 累积（decisive≥12 且 binomial p≤0.10 且 recall≥50% 晋升；
+5 周期低于随机淘汰）与反思驱动的更好谓词搜索。运行成本 V100–V108 合计
+755 次真实调用 / $4.59。

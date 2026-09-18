@@ -1,0 +1,2 @@
+shadow: terminal=technical_failure candidates=0 calls=7 cost=0.1221 invariants=False
+wrote reports/cold_start/narrfix-shadow-hypothesis.json

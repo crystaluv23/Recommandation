@@ -1,0 +1,525 @@
+Resuming contract hash: 100cb2ee7b5decb5e988c982cc1b4559fef3451b53ee3ac1f55719d5e91be2ff
+[18:40:07] [cycle 1] 开始 cycle：Fast 已完成 0/0，阶段 slow_loop
+[18:40:21] [cycle 1] slow_loop_started
+[18:40:27] [cycle 1] request_ready · stage=slow_source_read · model=deepseek-v4-flash-thinking
+[18:40:27] [cycle 1] external_call_started · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[18:40:34] [cycle 1] external_call_completed · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[18:40:44] [cycle 1] request_ready · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking
+[18:40:44] [cycle 1] external_call_started · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[18:41:32] [cycle 1] external_call_completed · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[18:42:08] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:42:08] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[18:42:15] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[18:42:52] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:42:52] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[18:43:09] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[18:43:39] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:43:39] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[18:43:48] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[18:44:18] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:44:18] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[18:45:37] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[18:45:37] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:45:37] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[18:45:48] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[18:46:25] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:46:25] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[18:46:32] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[18:47:02] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:47:02] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[18:47:28] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[18:47:58] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:47:58] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=10
+[18:48:24] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=10
+[18:48:53] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:48:53] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=11
+[18:49:28] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=11
+[18:49:57] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:49:57] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=12
+[18:50:09] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=12
+[18:50:39] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:50:39] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=13
+[18:51:06] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=13
+[18:51:35] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:51:35] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=14
+[18:52:24] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=14
+[18:52:53] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:52:53] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=15
+[18:53:35] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=15
+[18:53:35] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:53:35] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=16
+[18:54:45] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=16
+[18:54:47] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:47] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=17
+[18:54:50] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=17
+[18:54:50] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:50] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=18
+[18:54:52] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=18
+[18:54:52] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:52] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=19
+[18:54:55] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=19
+[18:54:55] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:55] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=20
+[18:54:57] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=20
+[18:54:57] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:57] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=21
+[18:54:59] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=21
+[18:54:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:54:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=22
+[18:55:01] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=22
+[18:55:01] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:55:01] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=23
+[18:55:03] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=23
+[18:55:03] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:55:03] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=24
+[18:55:04] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=24
+[18:55:04] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:55:04] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=25
+[18:55:07] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=25
+[18:55:07] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:55:07] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=26
+[18:55:53] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=26
+[18:55:53] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:55:53] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=27
+[18:56:53] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=27
+[18:56:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:56:54] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=28
+[18:56:56] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=28
+[18:56:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:56:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=29
+[18:56:58] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=29
+[18:56:58] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:56:58] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=30
+[18:57:00] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=30
+[18:57:00] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:00] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=31
+[18:57:02] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=31
+[18:57:02] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:02] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=32
+[18:57:05] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=32
+[18:57:05] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[18:57:05] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=33
+[18:57:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=33
+[18:57:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=34
+[18:57:08] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=34
+[18:57:08] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:08] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=35
+[18:57:10] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=35
+[18:57:10] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:10] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=36
+[18:57:12] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=36
+[18:57:12] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:12] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=37
+[18:57:14] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=37
+[18:57:14] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:57:14] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=38
+[18:57:17] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=38
+[18:57:17] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:57:17] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=39
+[18:58:19] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=39
+[18:58:19] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:19] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=40
+[18:58:21] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=40
+[18:58:21] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:21] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=41
+[18:58:23] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=41
+[18:58:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=42
+[18:58:25] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=42
+[18:58:25] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[18:58:25] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=43
+[18:58:27] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=43
+[18:58:27] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:27] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=44
+[18:58:30] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=44
+[18:58:30] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[18:58:30] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=45
+[18:58:32] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=45
+[18:58:32] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:32] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=46
+[18:58:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=46
+[18:58:34] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=47
+[18:58:36] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=47
+[18:58:36] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[18:58:36] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=48
+[18:58:38] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=48
+[18:58:39] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:39] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=49
+[18:58:41] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=49
+[18:58:41] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[18:58:41] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=50
+[18:58:43] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=50
+[18:58:43] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[18:58:43] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=51
+[18:58:44] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=51
+[18:59:46] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[18:59:46] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=52
+[19:00:58] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=52
+[19:02:29] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:02:29] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=53
+[19:03:52] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=53
+[19:04:34] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:04:34] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=54
+[19:05:32] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=54
+[19:05:55] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:05:55] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=55
+[19:05:57] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=55
+[19:05:57] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:05:57] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=56
+[19:05:59] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=56
+[19:05:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:05:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=57
+[19:06:01] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=57
+[19:06:01] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:01] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=58
+[19:06:04] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=58
+[19:06:04] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:04] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=59
+[19:06:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=59
+[19:06:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=60
+[19:06:08] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=60
+[19:06:08] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:08] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=61
+[19:06:10] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=61
+[19:06:10] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:10] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=62
+[19:06:12] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=62
+[19:06:12] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:12] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=63
+[19:06:14] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=63
+[19:06:16] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:16] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=64
+[19:06:19] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=64
+[19:06:20] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:20] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=65
+[19:06:23] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=65
+[19:06:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=66
+[19:06:27] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=66
+[19:06:27] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:27] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=67
+[19:06:30] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=67
+[19:06:30] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:30] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=68
+[19:06:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=68
+[19:06:34] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=69
+[19:06:37] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=69
+[19:06:37] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:37] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=70
+[19:06:40] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=70
+[19:06:41] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:41] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=71
+[19:06:44] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=71
+[19:06:45] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:45] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=72
+[19:06:48] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=72
+[19:06:49] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:49] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=73
+[19:06:52] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=73
+[19:06:52] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:52] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=74
+[19:06:55] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=74
+[19:06:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=75
+[19:06:59] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=75
+[19:06:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:06:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=76
+[19:07:03] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=76
+[19:07:03] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:07:03] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=77
+[19:07:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=77
+[19:07:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:07:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=78
+[19:07:07] [cycle 1] external_call_failed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=78
+[19:07:07] retryable_external_error
+{
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 275,
+  "dashboard_skipped_run_count": 0,
+  "error_type": "RetryableOpenAIClientError",
+  "locked_test_accessed": false,
+  "message": "OpenAI API connection failed: [SSL] record layer failure (_ssl.c:2580)",
+  "resume": "rerun the same command with the same frozen contract",
+  "status": "retryable_external_error",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v104"
+}
+Temporary transport failure; auto-resume 1 in 5s using the same frozen contract.
+[19:07:14] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[19:07:29] [cycle 1] slow_loop_started
+[19:08:06] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:08:06] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=79
+[19:08:11] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=79
+[19:08:48] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:08:48] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=80
+[19:09:04] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=80
+[19:09:32] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:09:32] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=81
+[19:11:07] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=81
+[19:11:07] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:11:07] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=82
+[19:11:17] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=82
+[19:11:17] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:11:17] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=83
+[19:11:21] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=83
+[19:11:21] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:11:21] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=84
+[19:11:29] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=84
+[19:12:08] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:12:08] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=85
+[19:12:17] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=85
+[19:12:47] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:12:47] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=86
+[19:13:16] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=86
+[19:13:46] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:13:46] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=87
+[19:13:53] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=87
+[19:14:23] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:14:23] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=88
+[19:14:41] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=88
+[19:15:17] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:15:17] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=89
+[19:15:27] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=89
+[19:15:57] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:15:57] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=90
+[19:16:08] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=90
+[19:16:39] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[19:16:39] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=91
+[19:17:08] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=91
+[19:17:08] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[19:17:08] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=92
+[19:18:09] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=92
+[19:18:09] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[19:18:09] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=93
+[19:19:07] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=93
+[19:19:09] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[19:19:09] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=94
+[19:20:29] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=94
+[19:20:30] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:30] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=95
+[19:20:32] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=95
+[19:20:32] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:32] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=96
+[19:20:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=96
+[19:20:34] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:20:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=97
+[19:20:36] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=97
+[19:20:36] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:36] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=98
+[19:20:39] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=98
+[19:20:39] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:39] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=99
+[19:20:41] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=99
+[19:20:41] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:41] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=100
+[19:20:43] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=100
+[19:20:43] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:43] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=101
+[19:20:45] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=101
+[19:20:45] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:20:45] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=102
+[19:20:47] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=102
+[19:20:47] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:47] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=103
+[19:20:49] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=103
+[19:20:49] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:20:49] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=104
+[19:20:51] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=104
+[19:20:51] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[19:20:51] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=105
+[19:21:45] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=105
+[19:21:46] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[19:21:46] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=106
+[19:23:08] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=106
+[19:23:09] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:09] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=107
+[19:23:11] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=107
+[19:23:11] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:11] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=108
+[19:23:14] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=108
+[19:23:14] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:14] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=109
+[19:23:16] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=109
+[19:23:16] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:16] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=110
+[19:23:19] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=110
+[19:23:19] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:19] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=111
+[19:23:21] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=111
+[19:23:21] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:21] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=112
+[19:23:23] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=112
+[19:23:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=113
+[19:23:25] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=113
+[19:23:25] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:25] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=114
+[19:23:27] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=114
+[19:23:27] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:27] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=115
+[19:23:29] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=115
+[19:23:29] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:29] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=116
+[19:23:31] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=116
+[19:23:31] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:31] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=117
+[19:23:34] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=117
+[19:23:34] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:23:34] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=118
+[19:23:36] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=118
+[19:23:36] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:23:36] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=119
+[19:23:38] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=119
+[19:24:15] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:24:15] [cycle 1] request_cache_hit · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:25:07] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:25:07] [cycle 1] request_cache_hit · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:25:50] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:25:50] [cycle 1] request_cache_hit · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:54] [cycle 1] request_cache_hit · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:56] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:56] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=120
+[19:25:59] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=120
+[19:25:59] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:25:59] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=121
+[19:26:02] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=121
+[19:26:02] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:02] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=122
+[19:26:05] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=122
+[19:26:05] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:05] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=123
+[19:26:09] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=123
+[19:26:09] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:09] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=124
+[19:26:12] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=124
+[19:26:12] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:12] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=125
+[19:26:15] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=125
+[19:26:16] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:16] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=126
+[19:26:19] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=126
+[19:26:19] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:19] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=127
+[19:26:22] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=127
+[19:26:23] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:23] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=128
+[19:26:26] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=128
+[19:26:26] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:26] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=129
+[19:26:30] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=129
+[19:26:30] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:30] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=130
+[19:26:33] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=130
+[19:26:33] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:33] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=131
+[19:26:36] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=131
+[19:26:37] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:37] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=132
+[19:26:40] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=132
+[19:26:40] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:40] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=133
+[19:26:44] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=133
+[19:26:44] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:44] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=134
+[19:26:47] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=134
+[19:26:51] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:51] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=135
+[19:26:54] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=135
+[19:26:54] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:26:54] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=136
+[19:26:57] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=136
+[19:26:57] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:26:57] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=137
+[19:27:00] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=137
+[19:27:00] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:00] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=138
+[19:27:02] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=138
+[19:27:02] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:27:02] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=139
+[19:27:04] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=139
+[19:27:04] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:04] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=140
+[19:27:06] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=140
+[19:27:06] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:27:06] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=141
+[19:27:09] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=141
+[19:27:09] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:09] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=142
+[19:27:11] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=142
+[19:27:11] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:27:11] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=143
+[19:27:13] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=143
+[19:27:13] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:13] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=144
+[19:27:16] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=144
+[19:27:16] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:27:16] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=145
+[19:27:18] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=145
+[19:27:18] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:18] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=146
+[19:27:20] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=146
+[19:27:20] [cycle 1] request_ready · stage=llm_signal_batch_execute · model=deepseek-v4-flash
+[19:27:20] [cycle 1] external_call_started · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=147
+[19:27:22] [cycle 1] external_call_completed · stage=llm_signal_batch_execute · model=deepseek-v4-flash · attempt=147
+[19:27:22] [cycle 1] request_ready · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash
+[19:27:22] [cycle 1] external_call_started · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=148
+[19:27:25] [cycle 1] external_call_completed · stage=llm_signal_batch_execute_correction · model=deepseek-v4-flash · attempt=148
+[19:30:30] [cycle 1] slow_loop_completed · validated={'cash_burn_rate_elevated:v1': '73ee01c5e52da7ca595027a87da469ddd7ef0abb416a72302e4011d34ebc40c3'} · promoted=['cash_burn_rate_elevated:v1']
+[19:30:33] [cycle 1] slow_loop_result_staged · validated={'cash_burn_rate_elevated:v1': '73ee01c5e52da7ca595027a87da469ddd7ef0abb416a72302e4011d34ebc40c3'} · promoted=['cash_burn_rate_elevated:v1']
+[19:30:33] [cycle 1] cycle_committed · committed round=0 · committed cycle=1
+{
+  "active_cycle": null,
+  "committed_plan_count": 0,
+  "completed_cycles_this_invocation": [
+    1
+  ],
+  "current_top_k": [],
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 275,
+  "dashboard_skipped_run_count": 0,
+  "historical_seed_pool": {
+    "contract_bound": true,
+    "manifest_hash": "b55a6a99e956d079e3d1ac2ebb75f8b2b1ab24d233d5b71603c422d0265fb2f4",
+    "seed_count": 1,
+    "seed_ids": [
+      "historical_seed_9fc1f49ae6428255531c740be92de4996e6d06cb1b05bf45af60edb1c4f1e74d"
+    ],
+    "source_run_ids": [
+      "information-evolution-mvp-20260911-v21-repair-acceptance"
+    ]
+  },
+  "interruption_count": 0,
+  "last_completed_cycle": 1,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "meta_entries": 0,
+  "registry_version": 4,
+  "stable_signal_count": 16,
+  "status": "loop_limit_reached",
+  "supervisor_status": "completed_requested_cycles",
+  "trajectory_event_count": 478,
+  "trajectory_path": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v104/experiments/trajectory.jsonl",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v104"
+}

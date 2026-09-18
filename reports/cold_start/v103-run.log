@@ -1,0 +1,115 @@
+Resuming contract hash: 533b5b8bb185744b536648dcba56153c9e00daacac6d452367c9de936999c61a
+[18:11:48] [cycle 1] 开始 cycle：Fast 已完成 0/0，阶段 slow_loop
+[18:12:02] [cycle 1] slow_loop_started
+[18:12:07] [cycle 1] request_ready · stage=slow_source_read · model=deepseek-v4-flash-thinking
+[18:12:07] [cycle 1] external_call_started · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[18:12:14] [cycle 1] external_call_completed · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[18:12:26] [cycle 1] request_ready · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking
+[18:12:26] [cycle 1] external_call_started · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[18:13:45] [cycle 1] external_call_completed · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[18:14:23] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:14:23] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[18:14:33] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[18:14:45] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:14:45] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[18:14:55] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[18:15:03] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:15:03] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[18:15:35] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[18:15:43] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:15:43] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[18:16:04] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[18:16:04] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:16:04] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[18:16:10] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[18:16:20] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:16:20] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[18:16:45] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[18:16:52] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:16:52] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[18:17:08] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[18:17:20] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:17:20] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=10
+[18:17:35] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=10
+[18:17:43] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:17:43] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=11
+[18:18:31] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=11
+[18:18:41] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:18:41] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=12
+[18:19:02] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=12
+[18:19:10] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:19:10] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=13
+[18:19:28] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=13
+[18:19:36] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:19:36] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=14
+[18:19:45] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=14
+[18:19:53] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:19:53] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=15
+[18:20:04] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=15
+[18:20:12] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:20:12] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=16
+[18:20:16] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=16
+[18:20:24] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:20:24] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=17
+[18:20:58] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=17
+[18:21:05] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:21:05] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=18
+[18:21:28] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=18
+[18:21:36] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[18:21:36] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=19
+[18:22:02] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=19
+[18:22:02] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:22:02] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=20
+[18:23:11] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=20
+[18:23:11] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:23:11] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=21
+[18:24:21] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=21
+[18:24:21] [cycle 1] request_ready · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking
+[18:24:21] [cycle 1] external_call_started · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=22
+[18:25:21] [cycle 1] external_call_completed · stage=mining_candidate_materialize · model=deepseek-v4-flash-thinking · attempt=22
+[18:26:21] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[18:26:21] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=23
+[18:27:20] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=23
+[18:28:39] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[18:28:39] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=24
+[18:29:07] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=24
+[18:29:54] [cycle 1] request_ready · stage=signal_update_decision · model=deepseek-v4-flash-thinking
+[18:29:54] [cycle 1] external_call_started · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=25
+[18:31:36] [cycle 1] external_call_completed · stage=signal_update_decision · model=deepseek-v4-flash-thinking · attempt=25
+[18:32:21] [cycle 1] slow_loop_completed · validated={} · promoted=[]
+[18:32:25] [cycle 1] slow_loop_result_staged · validated={} · promoted=[]
+[18:32:25] [cycle 1] cycle_committed · committed round=0 · committed cycle=1
+{
+  "active_cycle": null,
+  "committed_plan_count": 0,
+  "completed_cycles_this_invocation": [
+    1
+  ],
+  "current_top_k": [],
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 274,
+  "dashboard_skipped_run_count": 0,
+  "historical_seed_pool": {
+    "contract_bound": true,
+    "manifest_hash": "1779c331f3a48bff15b8bb329db1adade5cc1f38b77c6e2d33e9d5cbb2541b3d",
+    "seed_count": 1,
+    "seed_ids": [
+      "historical_seed_9fc1f49ae6428255531c740be92de4996e6d06cb1b05bf45af60edb1c4f1e74d"
+    ],
+    "source_run_ids": [
+      "information-evolution-mvp-20260911-v21-repair-acceptance"
+    ]
+  },
+  "interruption_count": 0,
+  "last_completed_cycle": 1,
+  "last_completed_round": 0,
+  "locked_test_accessed": false,
+  "meta_entries": 0,
+  "registry_version": 3,
+  "stable_signal_count": 15,
+  "status": "loop_limit_reached",
+  "supervisor_status": "completed_requested_cycles",
+  "trajectory_event_count": 80,
+  "trajectory_path": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v103/experiments/trajectory.jsonl",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v103"
+}

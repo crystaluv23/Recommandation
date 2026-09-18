@@ -1,0 +1,2 @@
+shadow: terminal=candidate candidates=1 calls=11 cost=0.1148 invariants=True
+wrote reports/cold_start/narr4-shadow-discovery.json

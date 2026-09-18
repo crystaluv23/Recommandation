@@ -1,0 +1,2 @@
+shadow: terminal=candidate candidates=1 calls=4 cost=0.1094 invariants=True
+wrote reports/cold_start/narrfix3-shadow-hypothesis.json

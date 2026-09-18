@@ -1,5 +1,30 @@
 # Status
 
+2026-09-19（凌晨）V100–V108 叙事因子入库冲刺完成：9 轮生产 slow round
+（755 真实调用/$4.59，全部单周期 immutable 工作区迭代）定位并泛化修复
+**六个代码级阻塞**：(1) 生产 modality_metrics 四项硬编码恒 0 且 eligible/
+explored 同表达式——跨周期反思一直被谎报"叙事零产出"（c2adf1c，
+ControllerResult 携带真实覆盖/读取计数，物化/验证计数来自真实入册循环）；
+(2) 200-空响应（reasoning 耗尽无 message chunk）抛不可重试错误直接杀死
+整周期——归类 Retryable 进入既有传输重试+自动续跑，refusal 保持不可
+重试（ee6b877，V102/V104/V106 三次瞬断被自动恢复）；(3) 检索族词汇
+不一致：谓词/目录说归一化族而物化校验用裸 source_type 交集——统一复用
+执行侧 source_types_compatible 族等价，fixture 预检同步（ee6b877）；
+(4) 物化收敛：fixture 失败反馈携带执行器 interpretation 原文、技能分类
+法逐 fixture 类赋 canonical 值、谓词候选纠正上限按执行类型分档、失败按
+候选分键（35110e5）；(5) 执行器把"无满足肯定条件 span"读作证据不足将
+neutral 坍缩为 unavailable——三处提示/校验统一为 neutral/negative 引
+用已检查非合格 span 作反证（86b65b8）；(6) 物化输入证据摘录携带逐字
+span 导致身份泄漏（FORM/DFIN）——进入 payload 前统一身份掩码+工件
+剥离，账本保留 verbatim 供回放（84c7d04），另 a4428b0 结构化摘录补
+文档源类型。效果：7/9 轮提出叙事候选（共 10 颗），修复后 V105/V107/
+V108 的 4 颗全部一次穿过物化+契约校验+标准验证并成为 provisional
+居留者（pooled 三区规则累积）；V104/V108 另有结构化晋升
+（cash_burn_rate_elevated:v1、gross_margin_change:v2，Registry v3→v5）。
+**严格晋升（入库）未达**：订单确认类谓词 recall≈0 属研究质量而非代码
+阻塞，按 spec 不为模态放宽 promotion 门，交给 pooled 累积与反思搜索。
+审计详见 reports/slow_round_prompt_audit_20260913.md 末两节。
+
 2026-09-18（深夜）V99 后续修复与三轮 shadow 迭代完成：四处"最后一公里"
 修复（digest narrative_summary、fetch 目录提示+标题样本、属性词表接入
 生产、prior_modality_footprints 跨周期压力）+ 两轮身份泄漏修复（标题
