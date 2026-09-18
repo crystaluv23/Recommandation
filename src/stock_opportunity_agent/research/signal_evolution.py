@@ -91,6 +91,7 @@ from stock_opportunity_agent.research.evolution_settings import (
 )
 from stock_opportunity_agent.research.mining_agent_tools import (
     derive_attribute_vocabulary,
+    strip_document_artifacts,
 )
 from stock_opportunity_agent.research.mining_controller import (
     LabelAwareMiningController,
@@ -6184,6 +6185,40 @@ class SignalEvolutionEngine:
             excerpts.append(row)
         return excerpts
 
+    def _masked_controller_evidence_excerpts(
+        self,
+        candidate: Mapping[str, Any],
+        evidence: Mapping[str, Any],
+    ) -> list[dict[str, Any]]:
+        """Identity-mask the evidence rows handed to the materializing model.
+
+        Verbatim spans are replay evidence for the controller ledger, but the
+        materializing model must never receive — and copy into fixtures — a
+        discovery-cohort identity embedded in raw narrative or filing text.
+        Rows are masked with the slow-role guards plus the validator's
+        forbidden terms and stripped of document artifacts, the same
+        discipline every other model-facing view already applies.
+        """
+
+        excerpts = self._controller_evidence_excerpts(candidate, evidence)
+        aliases = tuple(self.slow_role_identity_guards) + tuple(
+            self.validator.forbidden_identity_terms
+        )
+
+        def strip_artifacts(value: Any) -> Any:
+            if isinstance(value, str):
+                return strip_document_artifacts(value)
+            if isinstance(value, list):
+                return [strip_artifacts(item) for item in value]
+            if isinstance(value, Mapping):
+                return {key: strip_artifacts(item) for key, item in value.items()}
+            return value
+
+        masked = _mask_identity_values(
+            excerpts, aliases, expand_aliases=False
+        )
+        return strip_artifacts(masked)
+
     def _materialize_controller_candidate(
         self,
         candidate: Mapping[str, Any],
@@ -6248,7 +6283,8 @@ class SignalEvolutionEngine:
                     "new signal_id in lowercase snake_case ([a-z0-9_] only; "
                     "the runtime normalizes it), a definition faithful to the "
                     "measurement, point-in-time fixtures whose documents "
-                    "embed the supplied verbatim evidence spans, and either "
+                    "embed the supplied identity-masked evidence spans "
+                    "verbatim, and either "
                     "a registered deterministic function that matches the "
                     "measurement or a source-grounded LLM skill. For a "
                     "narrative predicate candidate, author an LLM skill that "
@@ -6273,7 +6309,7 @@ class SignalEvolutionEngine:
                 payload={
                     "candidate": dict(candidate),
                     "candidate_contract": self._mining_candidate_contract(),
-                    "cited_evidence": self._controller_evidence_excerpts(
+                    "cited_evidence": self._masked_controller_evidence_excerpts(
                         candidate, evidence
                     ),
                     "retrieval_guidance": {

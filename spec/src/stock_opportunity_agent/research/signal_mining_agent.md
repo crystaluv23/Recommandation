@@ -214,7 +214,12 @@ observation cycle.
   feedback carries the executor's interpretation verbatim so the author
   can resolve taxonomy disagreements precisely, and materialization
   failures are recorded per candidate signal id (never overwritten by a
-  sibling candidate). Ledger-existence alone never proves grounding.
+  sibling candidate). Evidence rows handed to materialization are
+  identity-masked with the slow-role guards plus the validator's forbidden
+  terms and stripped of document artifacts before the model sees them: the
+  verbatim span stays authoritative in the controller ledger for replay,
+  but a model can never copy a discovery-cohort identity out of a span it
+  was never shown. Ledger-existence alone never proves grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 
