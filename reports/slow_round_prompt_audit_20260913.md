@@ -707,3 +707,33 @@ attempts/$1.42）：cycle 1 提交 1 个新候选（operating_profitability_marg
 义务机制在生产中被真实履行、叙事证据被真实取回并可见、模型推理中
 显式考虑了叙事模态；未达成"叙事因子入库"层——提案分布仍偏结构化，
 已定位的两个下一杠杆（读取深度与反思消费 modality 足迹）记录在案。
+
+## V99 后续修复与第三轮 shadow（2026-09-18 深夜）
+
+四处"最后一公里"修复落地（1ea3142）：digest 增 `narrative_summary`
+（每族计数+≤6 条掩码标题样本+目录指引）；fetch 的 `last_action_result`
+增 `narrative_evidence`（事件数+3 条掩码标题+"inspect_catalog 现已列出
+带标题文档"提示，关闭目录时机断裂）；`_run_controller_mining` 零调用
+派生属性词表并传入控制器（`attribute_case_coverage` 首次进入生产视图；
+V99 cohort 离线验证 12 处订单确认支持）；mining context 提取近三周期
+`modality_metrics` 并以 `prior_modality_footprints` 进入控制器视图（
+"上轮零叙事提案"成为跨周期可见压力）。
+
+**两轮泄漏修复**（shadow 实测暴露）：标题回退分支取原始文档头导致
+XML 命名空间 `xmlns:teva=` 泄漏（ee38241——改用可见文本投影）；SEC
+文书内嵌自身文件名 `cenx-20240325` 的小写 ticker 逃过大小写敏感掩码
+（cfde400——`strip_document_artifacts` 通用剥离文件名型 token，标题取
+工件剥离后首句，叙事读取窗口同样过剥离）。
+
+**第三轮 shadow（narrfix5/6）**：两 seed 终态 candidate、不变量全过
+（$0.109/$0.061）。决策视图审计：`narrative_summary`（events=120，
+filing 110/news 10）与 fetch 标题样本真实出现在每个决策视图；模型
+rationale 显式引用目录与模态。**仍无叙事提案**——且标题质量暴露新
+短板：filing 事件的"标题"是可见文本首句（多为财务句子如"offset by
+lower cash flow..."而非新闻标题），对发现叙事主题的信息量有限；
+`attribute_case_coverage` 未出现（shadow 的 12 支持度在每 seed 的
+fetch 子集内低于 min_support=6，词表为空——诚实为空但意味着投影在
+单 fetch 场景几乎不出现）。下一个杠杆明确：标题应优先取
+metadata/news JSON 的真实标题字段（news 事件有，filing 没有——
+filing 或需 item 标题启发式），属性投影的 min_support 需按 seed 内
+文档数缩放或改全局派生。

@@ -1,5 +1,15 @@
 # Status
 
+2026-09-18（深夜）V99 后续修复与三轮 shadow 迭代完成：四处"最后一公里"
+修复（digest narrative_summary、fetch 目录提示+标题样本、属性词表接入
+生产、prior_modality_footprints 跨周期压力）+ 两轮身份泄漏修复（标题
+回退改可见文本投影；strip_document_artifacts 剥离 SEC 文件名 token）。
+第三轮 shadow 不变量全过，narrative_summary 与标题样本真实进入每个
+决策视图、模型 rationale 显式引用；仍无叙事提案——新定位短板：filing
+"标题"为可见文本首句（财务句子，信息量低）、属性投影在单 fetch 子集
+内低于 min_support 几乎不出现（需真实标题优先 + min_support 按 seed
+文档数缩放）。全部测试/lint 通过，checkpoint 1ea3142→ee38241→cfde400。
+
 2026-09-18（晚）V99 叙事接口生产首验完成：两周期 clean exit（134
 attempts/$1.42），探索义务 100% 履行（modality_metrics 入 audit：两周期
 eligible 全 explored、零静默跳过），10 个步骤 rationale 显式考虑叙事模态、
