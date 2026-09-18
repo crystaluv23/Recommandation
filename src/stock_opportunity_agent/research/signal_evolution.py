@@ -5916,6 +5916,14 @@ class SignalEvolutionEngine:
                     "explored_families": list(controller.ledger.explored_families()),
                     "fetched_case_refs": list(fetched),
                     "need_dispositions": len(result.need_dispositions),
+                    "modality_coverage": dict(result.modality_coverage),
+                    "narrative_reads": result.narrative_reads,
+                    "candidate_count": len(result.candidates),
+                    "narrative_candidate_count": sum(
+                        1
+                        for candidate in result.candidates
+                        if self._is_narrative_candidate(candidate)
+                    ),
                 }
             )
 
@@ -5927,6 +5935,8 @@ class SignalEvolutionEngine:
             validation_by_class[bool(case.ground_truth.is_surge)].append(
                 case.case_id
             )
+        narrative_materialized = 0
+        narrative_validated = 0
         for candidate_seed, candidate in candidates:
             evidence = {}
             for seed_cited in cited.values():
@@ -5948,6 +5958,9 @@ class SignalEvolutionEngine:
                 continue
             signal_ref, staged_seed = staged
             candidate_refs.append(signal_ref)
+            is_narrative = self._is_narrative_candidate(candidate)
+            if is_narrative:
+                narrative_materialized += 1
             induction_case_ids[signal_ref] = (
                 fetched_case_refs.get(staged_seed)
                 or tuple(opaque.values())
@@ -5962,49 +5975,46 @@ class SignalEvolutionEngine:
                     ],
                 ]
             )
+            if is_narrative:
+                narrative_validated += 1
         modality_metrics = {
             "eligible_narrative_seed_count": sum(
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and any(
-                    family in {"filing", "transcript", "news"}
-                    for family in report.get("explored_families", ())
-                )
+                and report.get("status") == "completed"
+                and dict(report.get("modality_coverage", {}))
+                .get("narrative", {})
+                .get("available")
             ),
             "narrative_exploration_completed": sum(
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and any(
-                    family in {"filing", "transcript", "news"}
-                    for family in report.get("explored_families", ())
-                )
+                and self._seed_satisfied_narrative_obligation(report)
             ),
             "narrative_unavailable_count": sum(
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and not any(
-                    family in {"filing", "transcript", "news"}
-                    for family in report.get("explored_families", ())
-                )
+                and report.get("status") == "completed"
+                and not dict(report.get("modality_coverage", {}))
+                .get("narrative", {})
+                .get("available")
             ),
-            "narrative_read_count": 0,
-            "narrative_candidate_count": 0,
-            "narrative_materialization_count": 0,
-            "narrative_validation_count": 0,
+            "narrative_read_count": sum(
+                int(report.get("narrative_reads", 0) or 0)
+                for report in seed_reports
+                if isinstance(report, Mapping)
+            ),
+            "narrative_candidate_count": sum(
+                int(report.get("narrative_candidate_count", 0) or 0)
+                for report in seed_reports
+                if isinstance(report, Mapping)
+            ),
+            "narrative_materialization_count": narrative_materialized,
+            "narrative_validation_count": narrative_validated,
         }
-        for report in seed_reports:
-            if not isinstance(report, Mapping):
-                continue
-            if report.get("status") == "completed" and any(
-                family in {"filing", "transcript", "news"}
-                for family in report.get("explored_families", ())
-            ):
-                modality_metrics["narrative_candidate_count"] += len(
-                    report.get("candidate_refs", ())
-                )
         audit = {
             "schema_version": "signal-mining-audit-v1",
             "cycle_id": cycle_id,
@@ -6061,6 +6071,48 @@ class SignalEvolutionEngine:
         slug = re.sub(r"[^a-z0-9]+", "_", raw.casefold())
         slug = re.sub(r"_+", "_", slug).strip("_")[:64].strip("_")
         return slug or "controller_mined_signal"
+
+    @staticmethod
+    def _is_narrative_candidate(candidate: Mapping[str, Any]) -> bool:
+        """A candidate whose measurement carries a narrative predicate.
+
+        The controller only admits predicates with modality "narrative"
+        (Phase 3 contract), so a validated predicate marks the candidate
+        as narrative-mined for audit and cross-cycle modality footprints.
+        """
+
+        measurement = candidate.get("measurement")
+        if not isinstance(measurement, Mapping):
+            return False
+        predicate = measurement.get("predicate")
+        return isinstance(predicate, Mapping) and (
+            str(predicate.get("modality", "narrative")) == "narrative"
+        )
+
+    @staticmethod
+    def _seed_satisfied_narrative_obligation(report: Mapping[str, Any]) -> bool:
+        """Whether one eligible seed met the narrative exploration duty.
+
+        Exploration satisfies the obligation directly; control-plane
+        terminals (deferred_budget, evidence_unavailable, correction
+        exhaustion) are exempt by spec. The metric counts only seeds
+        whose narrative evidence was actually available.
+        """
+
+        narrative = dict(report.get("modality_coverage", {})).get(
+            "narrative", {}
+        )
+        if not isinstance(narrative, Mapping) or not narrative.get(
+            "available"
+        ):
+            return False
+        if narrative.get("explored"):
+            return True
+        return str(report.get("terminal_kind", "")) in {
+            "deferred_budget",
+            "evidence_unavailable",
+            "technical_failure",
+        }
 
     @staticmethod
     def _controller_evidence_excerpts(

@@ -843,6 +843,10 @@ class NarrativeInterfaceTests(unittest.TestCase):
         self.assertTrue(controller._narrative_explored)
         reads = [e for e in result.ledger if e.action == "read_span"]
         self.assertEqual(len(reads), 1)
+        self.assertEqual(result.narrative_reads, 1)
+        narrative = dict(result.modality_coverage).get("narrative", {})
+        self.assertTrue(narrative.get("available"))
+        self.assertTrue(narrative.get("explored"))
         # The ledger row stores the verbatim window hash for replay;
         # recompute it from the cited document to prove traceability.
         import hashlib

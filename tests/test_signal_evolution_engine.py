@@ -983,6 +983,215 @@ class SignalEvolutionTests(TestCase):
             role_output = no_caller_engine_output._run_signal_mining(cycle_id=1)
             self.assertNotEqual(role_output["audit"].get("track"), "controller")
 
+    def test_controller_mining_audit_reports_true_modality_metrics(self) -> None:
+        class FakeNarrativeCaller:
+            def complete_json(self, *, stage, **_kwargs):
+                if stage == "mining_candidate_materialize":
+                    payload = dict(_kwargs["payload"])
+                    if not payload.get("last_issues"):
+                        return ({"spec": {}}, AgentUsage(llm_calls=1))
+                    stable = registry.latest_spec("revenue_growth_yoy")
+                    spec = {
+                        **stable.to_dict(),
+                        "signal_id": "fixture_narrative_order",
+                        "version": 1,
+                    }
+                    spec["definition"]["description"] = (
+                        "Measure the latest point-in-time year-over-year "
+                        "revenue growth from cited spans with a stricter "
+                        "positive threshold."
+                    )
+                    spec["parameters"]["positive_min"] = 0.15
+                    growth = sec_company_facts_content(
+                        ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                        ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                    )
+                    return (
+                        {
+                            "spec": spec,
+                            "skill": None,
+                            "tests": [
+                                {
+                                    "name": "growth_positive",
+                                    "expected": "positive",
+                                    "as_of": "2025-02-01T00:00:00+00:00",
+                                    "documents": [
+                                        {
+                                            "source_type": "financials",
+                                            "content": growth,
+                                        }
+                                    ],
+                                }
+                            ],
+                        },
+                        AgentUsage(llm_calls=1),
+                    )
+                view = dict(_kwargs["payload"])
+                if view.get("seed") == "discovery":
+                    return (
+                        {"action": "record_deferred", "rationale": ["Stop."]},
+                        AgentUsage(llm_calls=1),
+                    )
+                if not view.get("known_event_refs"):
+                    return (
+                        {
+                            "action": "fetch_evidence",
+                            "rationale": ["Fetch news."],
+                            "case_refs": view["case_refs"][:2],
+                            "source_families": ["news"],
+                            "max_documents": 2,
+                        },
+                        AgentUsage(llm_calls=1),
+                    )
+                if dict(view.get("last_action_result", {})).get(
+                    "action"
+                ) != "read_span":
+                    event_ref = sorted(view.get("known_event_refs", ()))[0]
+                    return (
+                        {
+                            "action": "read_span",
+                            "rationale": ["Read the event text."],
+                            "event_ref": event_ref,
+                        },
+                        AgentUsage(llm_calls=1),
+                    )
+                needs = view.get("backlog_needs") or []
+                return (
+                    {
+                        "action": "propose_candidate",
+                        "rationale": ["Narrative headline contrast."],
+                        "candidate": {
+                            "measurement": {
+                                "observable": (
+                                    "controller_fixture_order_confirmed"
+                                ),
+                                "value_kind": "boolean",
+                                "normalization": (
+                                    "presence per case over the "
+                                    "point-in-time narrative window"
+                                ),
+                                "predicate": {
+                                    "modality": "narrative",
+                                    "source_families": ["news"],
+                                    "lookback_days": 180,
+                                    "semantic_condition": (
+                                        "news confirms a definitive purchase "
+                                        "agreement"
+                                    ),
+                                },
+                            },
+                            "falsifiers": [
+                                {
+                                    "condition": (
+                                        "Positives carry no confirming order "
+                                        "news in the window."
+                                    ),
+                                    "expected_observation": (
+                                        "Presence rate does not separate "
+                                        "groups."
+                                    ),
+                                }
+                            ],
+                            "evidence_refs": [
+                                sorted(view.get("known_event_refs", ()))[0]
+                            ],
+                        },
+                        "need_dispositions": [
+                            {
+                                "need_refs": [row["need_ref"]],
+                                "disposition": "new_measurement",
+                                "signal_refs": [],
+                                "rationale": ["Covered by the new measure."],
+                            }
+                            for row in needs
+                        ],
+                    },
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                *(make_case(f"narr_pos_{index}", 4.0) for index in range(2)),
+                *(make_case(f"narr_ctl_{index}", 1.1) for index in range(2)),
+            )
+            documents = []
+            for index, case in enumerate(cases):
+                documents.append(
+                    RawInfoDocument.create(
+                        document_id=f"narr_news_{index}",
+                        company_id=case.company_id,
+                        source_type="company_news",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=json.dumps(
+                            {
+                                "title": (
+                                    f"Masked Corp secures purchase order "
+                                    f"{index}"
+                                ),
+                                "summary": (
+                                    "Masked Corp announced a definitive "
+                                    "purchase agreement valued at "
+                                    "approximately $120 million."
+                                ),
+                            }
+                        ),
+                    )
+                )
+                documents.append(
+                    RawInfoDocument.create(
+                        document_id=f"narr_facts_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
+                    )
+                )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(documents=tuple(documents)),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            manifest = build_slow_sampling_manifest(
+                cases,
+                cycle_id=1,
+                base_seed="controller-narrative",
+                dev_limit=4,
+                check_limit=4,
+            )
+            engine._active_sampling_manifest = manifest
+
+            caller_backed = EmptyMiningModel()
+            caller_backed.caller = FakeNarrativeCaller()
+            engine.mining_model = caller_backed
+
+            output = engine._run_signal_mining(cycle_id=1)
+
+            audit = output["audit"]
+            self.assertEqual(audit["track"], "controller")
+            self.assertEqual(audit["status"], "completed")
+            metrics = audit["modality_metrics"]
+            self.assertEqual(metrics["eligible_narrative_seed_count"], 2)
+            self.assertEqual(metrics["narrative_exploration_completed"], 2)
+            self.assertEqual(metrics["narrative_unavailable_count"], 0)
+            self.assertEqual(metrics["narrative_read_count"], 1)
+            self.assertEqual(metrics["narrative_candidate_count"], 1)
+            self.assertEqual(metrics["narrative_materialization_count"], 1)
+            self.assertEqual(metrics["narrative_validation_count"], 1)
+            self.assertTrue(output["candidate_refs"])
+
     def test_fixture_with_no_visible_documents_is_unavailable_by_construction(
         self,
     ) -> None:

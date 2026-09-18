@@ -163,6 +163,8 @@ class ControllerResult:
     ledger: tuple[LedgerEntry, ...]
     need_dispositions: tuple[Mapping[str, Any], ...]
     model_calls: int
+    narrative_reads: int = 0
+    modality_coverage: Mapping[str, Any] = field(default_factory=dict)
 
 
 class MiningLedger:
@@ -267,6 +269,7 @@ class LabelAwareMiningController:
         self._last_read_span: str | None = None
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
+        self._narrative_reads = 0
         self._last_invalid: Mapping[str, Any] | None = None
         self._label_map: dict[str, str] = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
@@ -324,6 +327,8 @@ class LabelAwareMiningController:
             ledger=self.ledger.entries,
             need_dispositions=need_dispositions,
             model_calls=self._model_calls,
+            narrative_reads=self._narrative_reads,
+            modality_coverage=self._modality_coverage(),
         )
 
     # ------------------------------------------------------------------
@@ -918,6 +923,7 @@ class LabelAwareMiningController:
             _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
         ):
             self._narrative_explored = True
+        self._narrative_reads += 1
         self._browse_used += 1
         return "running", [], ()
 
