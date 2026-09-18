@@ -32,6 +32,8 @@ from stock_opportunity_agent.research.mining_agent_tools import (
     build_same_concept_relations,
     compute_statistic,
     fetch_case_evidence,
+    narrative_catalog,
+    project_attributes,
 )
 
 ACTIONS = (
@@ -85,7 +87,18 @@ _STATE_ORDER = {
 }
 _MAX_STRUCTURED_CORRECTIONS = 3
 _READ_SPAN_CONTEXT_CHARS = 200
+_DEFAULT_BROWSE_LIMIT = 24
+_NARRATIVE_FAMILIES = frozenset({"filing", "transcript", "news"})
+_READ_BYTE_LIMIT = 4000
 _CONCEPT_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9]{5,}")
+
+
+def _ledger_text_hash(text: str) -> str:
+    """Hash one verbatim window so replay can re-derive it from documents."""
+
+    import hashlib
+
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 class InvalidMiningAction(ValidationError):
@@ -207,6 +220,8 @@ class LabelAwareMiningController:
         backlog_needs: Sequence[Mapping[str, Any]] = (),
         heavy_action_limit: int = 12,
         light_action_limit: int = 4,
+        browse_limit: int = _DEFAULT_BROWSE_LIMIT,
+        attribute_vocabulary: Mapping[str, Any] | None = None,
         validation_sink: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None,
         identity_aliases: Sequence[str] = (),
     ) -> None:
@@ -222,6 +237,9 @@ class LabelAwareMiningController:
         self.backlog_needs = tuple(backlog_needs)
         self.heavy_action_limit = heavy_action_limit
         self.light_action_limit = light_action_limit
+        self.browse_limit = browse_limit
+        self.attribute_vocabulary = dict(attribute_vocabulary or {})
+        self._browse_used = 0
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
         available: set[str] = set()
@@ -243,6 +261,7 @@ class LabelAwareMiningController:
         self._documents: dict[str, Any] = {}
         self._last_read_span: str | None = None
         self._last_action_result: Mapping[str, Any] | None = None
+        self._narrative_explored = False
         self._last_invalid: Mapping[str, Any] | None = None
         self._label_map: dict[str, str] = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
@@ -318,6 +337,7 @@ class LabelAwareMiningController:
             "budget": {
                 "heavy_remaining": self.heavy_action_limit - self._heavy_used,
                 "light_remaining": self.light_action_limit - self._light_used,
+                "browse_remaining": self.browse_limit - self._browse_used,
             },
             "actions": list(ACTIONS),
             "available_source_families": list(self.available_source_families),
@@ -329,6 +349,7 @@ class LabelAwareMiningController:
             "known_relation_refs": sorted(self._relations),
             "label_map": dict(self._label_map),
             "evidence_digest": self._evidence_digest(),
+            "modality_coverage": self._modality_coverage(),
         }
         if self._last_action_result is not None:
             view["last_action_result"] = dict(self._last_action_result)
@@ -360,6 +381,51 @@ class LabelAwareMiningController:
         label_counts = {"positive": 0, "control": 0}
         for label in self._label_map.values():
             label_counts[label] = label_counts.get(label, 0) + 1
+        attribute_index: dict[str, Any] = {}
+        if self.attribute_vocabulary:
+            documents = [
+                document
+                for result in self._documents.values()
+                for document in result.documents
+            ]
+            projected = project_attributes(
+                documents,
+                self._events.values(),
+                vocabulary=self.attribute_vocabulary,
+            )
+            for name, rows in projected.items():
+                by_case: dict[str, dict[str, set[str]]] = {}
+                for row in rows:
+                    case_ref = str(row.get("case_ref", ""))
+                    if not case_ref:
+                        continue
+                    groups = by_case.setdefault(
+                        case_ref, {"positive": set(), "control": set()}
+                    )
+                    label = self._label_map.get(case_ref, "control")
+                    groups[label if label in groups else "control"].add(case_ref)
+                positive_cases = {
+                    case for case, g in by_case.items() if g["positive"]
+                }
+                control_cases = {
+                    case for case, g in by_case.items() if g["control"]
+                }
+                amounts = [
+                    row.get("amount_usd")
+                    for row in rows
+                    if row.get("amount_usd") is not None
+                ]
+                attribute_index[name] = {
+                    "positive_cases": len(positive_cases),
+                    "control_cases": len(control_cases),
+                    "hits": len(rows),
+                    "amount_usd_median": (
+                        sorted(amounts)[len(amounts) // 2] if amounts else None
+                    ),
+                    "discovery_only": True,
+                    "note": "index only; never sole evidence; a miss never "
+                    "asserts absence",
+                }
         return {
             "fetches": self.ledger.fetch_count(),
             "families_fetched": list(self.ledger.explored_families()),
@@ -374,7 +440,60 @@ class LabelAwareMiningController:
                 )
             ),
             "label_counts": label_counts,
+            **(
+                {"attribute_case_coverage": attribute_index}
+                if attribute_index
+                else {}
+            ),
         }
+
+    def _modality_coverage(self) -> dict[str, Any]:
+        """Runtime-computed structured/narrative exploration coverage."""
+
+        narrative_available = bool(
+            set(self.available_source_families) & _NARRATIVE_FAMILIES
+        )
+        structured_explored = any(
+            family not in _NARRATIVE_FAMILIES
+            for family in self.ledger.explored_families()
+        )
+        narrative_status = "not_available"
+        if narrative_available:
+            if self._narrative_explored:
+                narrative_status = "explored"
+            else:
+                narrative_status = "required"
+        return {
+            "structured": {
+                "available": True,
+                "explored": structured_explored,
+            },
+            "narrative": {
+                "available": narrative_available,
+                "explored": self._narrative_explored,
+                "status": narrative_status,
+            },
+        }
+
+    def _require_modality_obligation(self, action: str) -> None:
+        """Domain terminals are inadmissible while narrative is unexplored.
+
+        The obligation binds exploration opportunity, never candidate
+        outcomes: control-plane terminals (record_deferred and its outcomes)
+        remain admissible, and the correction names every legitimate path.
+        """
+
+        coverage = self._modality_coverage()
+        narrative = coverage["narrative"]
+        if narrative["available"] and not narrative["explored"]:
+            raise InvalidMiningAction(
+                f"{action} is inadmissible while narrative evidence is "
+                "available but unexplored: fetch a narrative family "
+                "(filing/transcript/news), read an event/document via "
+                "read_span, inspect the evidence catalog "
+                "(inspect_catalog with scope=evidence), or take a "
+                "control-plane terminal (record_deferred)"
+            )
 
     # ------------------------------------------------------------------
     # Contract validation
@@ -415,10 +534,23 @@ class LabelAwareMiningController:
     ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         if action in ("inspect_manifest", "inspect_catalog"):
             self._light_used += 1
-            payload = (
-                self.manifest if action == "inspect_manifest" else self._catalog_view()
-            )
-            self._last_action_result = {"action": action, "inspected": sorted(payload)}
+            if action == "inspect_manifest":
+                payload = self.manifest
+            else:
+                scope = str(raw.get("scope", "signals"))
+                if scope not in {"signals", "evidence"}:
+                    raise InvalidMiningAction(
+                        "inspect_catalog scope must be signals or evidence"
+                    )
+                if scope == "evidence":
+                    payload = {"families": self._evidence_catalog_view()}
+                    self._narrative_explored = True
+                else:
+                    payload = self._catalog_view()
+            self._last_action_result = {
+                "action": action,
+                "inspected": sorted(payload),
+            }
             self._append(
                 action,
                 raw,
@@ -526,6 +658,12 @@ class LabelAwareMiningController:
                 {"excluded_document_ids": list(result.excluded_by_limits)}
             )
         self._heavy_used += 1
+        if any(
+            _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
+            for result in results
+            for document in result.documents
+        ):
+            self._narrative_explored = True
         self._advance("evidence_ready")
         new_relations = {
             relation.relation_ref: relation
@@ -604,6 +742,101 @@ class LabelAwareMiningController:
         self, raw: Mapping[str, Any]
     ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         self._require_state_at_least("evidence_ready", "read_span")
+        targets = [key for key in ("fact_ref", "event_ref", "document_ref") if raw.get(key)]
+        if len(targets) != 1:
+            raise InvalidMiningAction(
+                "read_span requires exactly one of fact_ref, event_ref, or "
+                "document_ref"
+            )
+        if targets[0] == "fact_ref":
+            return self._read_fact_span(raw)
+        return self._read_narrative_span(raw, targets[0])
+
+    def _read_narrative_span(
+        self, raw: Mapping[str, Any], target_key: str
+    ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
+        """Read a bounded verbatim window of one event or document.
+
+        Budget dimension is the target class: event/document reads charge the
+        browse budget (never heavy), the window is masked for the model while
+        the ledger keeps the verbatim slice for replay, and event_ref identity
+        stays stable across paginated reads.
+        """
+
+        if self._browse_used >= self.browse_limit:
+            raise BudgetInadmissibleAction("browse budget exhausted")
+        target_ref = str(raw.get(target_key, ""))
+        offset = raw.get("offset", 0)
+        length = raw.get("length", 1200)
+        if not isinstance(offset, int) or offset < 0:
+            raise InvalidMiningAction("read_span offset must be a non-negative int")
+        if not isinstance(length, int) or length < 1 or length > _READ_BYTE_LIMIT:
+            raise InvalidMiningAction(
+                f"read_span length must be between 1 and {_READ_BYTE_LIMIT}"
+            )
+        document_ref = target_ref
+        event = None
+        if target_key == "event_ref":
+            event = self._events.get(target_ref)
+            if event is None:
+                raise InvalidMiningAction(
+                    "read_span requires a known event_ref"
+                )
+            document_ref = event.document_ref
+        document = self._document_by_ref(document_ref)
+        if document is None:
+            raise InvalidMiningAction(
+                "read_span requires a fetched document_ref"
+            )
+        window = document.content[offset : offset + length]
+        if not window:
+            raise InvalidMiningAction(
+                "read_span window is empty; adjust offset/length within the "
+                "document bounds"
+            )
+        masked = _mask_identity_values(
+            window, self.identity_aliases, expand_aliases=False
+        )
+        entry: dict[str, Any] = {
+            "target": target_key,
+            "ref": target_ref,
+            "document_ref": document_ref,
+            "offset": offset,
+            "length": length,
+            "masked": masked,
+            "verbatim_hash": _ledger_text_hash(window),
+        }
+        if event is not None:
+            entry["title"] = event.title
+            entry["source_family"] = event.source_family
+            entry["available_at"] = event.available_at
+            self._last_read_span = masked
+        self._last_action_result = {"action": "read_span", **dict(entry)}
+        self._append(
+            "read_span",
+            raw,
+            payload=entry,
+            evidence_refs=(
+                (target_ref,) if target_key == "event_ref" else (document_ref,)
+            ),
+        )
+        if (
+            _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
+        ):
+            self._narrative_explored = True
+        self._browse_used += 1
+        return "running", [], ()
+
+    def _document_by_ref(self, document_ref: str):
+        for result in self._documents.values():
+            for document in result.documents:
+                if f"document-{document.document_id}" == document_ref:
+                    return document
+        return None
+
+    def _read_fact_span(
+        self, raw: Mapping[str, Any]
+    ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         fact_ref = str(raw.get("fact_ref", ""))
         fact = self._facts.get(fact_ref)
         if fact is None:
@@ -708,6 +941,7 @@ class LabelAwareMiningController:
         self, raw: Mapping[str, Any]
     ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         self._require_state_at_least("evidence_ready", "propose_candidate")
+        self._require_modality_obligation("propose_candidate")
         if self.ledger.fetch_count() < 1:
             raise InvalidMiningAction(
                 "a candidate requires at least one completed evidence fetch"
@@ -716,14 +950,24 @@ class LabelAwareMiningController:
         if not isinstance(candidate, Mapping):
             raise InvalidMiningAction("candidate must be an object")
         measurement = candidate.get("measurement")
+        allowed_keys = {"observable", "value_kind", "normalization"}
         if (
             not isinstance(measurement, Mapping)
-            or set(measurement) != {"observable", "value_kind", "normalization"}
-            or any(not str(measurement[k]).strip() for k in measurement)
+            or not allowed_keys <= set(measurement)
+            or not set(measurement) <= allowed_keys | {"predicate"}
+            or any(
+                not str(measurement[k]).strip() for k in measurement
+                if k != "predicate"
+            )
         ):
             raise InvalidMiningAction(
-                "candidate measurement requires exactly observable, value_kind, "
-                "and normalization"
+                "candidate measurement requires exactly observable, "
+                "value_kind, and normalization (plus an optional predicate)"
+            )
+        predicate = measurement.get("predicate")
+        if predicate is not None and not isinstance(predicate, Mapping):
+            raise InvalidMiningAction(
+                "measurement predicate must be an object"
             )
         if measurement["value_kind"] not in {
             "boolean",
@@ -769,10 +1013,13 @@ class LabelAwareMiningController:
                 "candidate cites evidence outside the ledger: "
                 + ", ".join(unknown)
             )
+        cited_set = set(str(ref) for ref in evidence_refs)
+        if predicate is not None:
+            self._validate_narrative_predicate(predicate, cited_set)
         cited_fact_concepts = {
             fact.concept
             for fact in self._facts.values()
-            if fact.fact_ref in set(str(ref) for ref in evidence_refs)
+            if fact.fact_ref in cited_set
         }
         text = " ".join(
             (str(measurement["observable"]), str(measurement["normalization"]))
@@ -821,6 +1068,76 @@ class LabelAwareMiningController:
         self._state = "terminal"
         terminal_kind = "candidate" if status == "validated" else "rejected"
         return terminal_kind, [dict(candidate)], need_dispositions
+
+    def _validate_narrative_predicate(
+        self, predicate: Mapping[str, Any], cited_refs: set[str]
+    ) -> None:
+        """Mechanical grounding checks for a narrative measurement predicate.
+
+        Existence, family intersection, and raw-narrative citation are
+        runtime-checkable here; semantic satisfaction is judged only
+        downstream by fixtures, holdout, and the paired gates.
+        """
+
+        required = {"modality", "source_families", "semantic_condition"}
+        if not required <= set(predicate):
+            raise InvalidMiningAction(
+                "predicate requires modality, source_families, and "
+                "semantic_condition"
+            )
+        if str(predicate["modality"]) != "narrative":
+            raise InvalidMiningAction(
+                "predicate modality must be narrative"
+            )
+        families = predicate.get("source_families")
+        if not isinstance(families, list) or not families:
+            raise InvalidMiningAction(
+                "predicate source_families must be a non-empty array"
+            )
+        predicate_families = {
+            str(family) for family in families
+        }
+        cited_events = [
+            self._events[ref] for ref in cited_refs if ref in self._events
+        ]
+        cited_document_families = set()
+        for ref in cited_refs:
+            if ref.startswith("document-"):
+                document = self._document_by_ref(ref)
+                if document is not None:
+                    family = _evidence_source_family(document.source_type)
+                    if family in _NARRATIVE_FAMILIES:
+                        cited_document_families.add(family)
+        if not cited_events and not cited_document_families:
+            raise InvalidMiningAction(
+                "a narrative predicate requires at least one cited raw "
+                "narrative ref (event or document read)"
+            )
+        event_families = {
+            event.source_family for event in cited_events
+        } | cited_document_families
+        if not predicate_families & event_families:
+            raise InvalidMiningAction(
+                "predicate source_families do not intersect the cited "
+                f"narrative evidence families ({sorted(event_families)})"
+            )
+        threshold = predicate.get("threshold")
+        if threshold is not None and (
+            not isinstance(threshold, Mapping)
+            or not {"field", "operator", "value"} <= set(threshold)
+            or str(threshold.get("operator", "")) not in {">=", ">", "<=", "<", "=="}
+        ):
+            raise InvalidMiningAction(
+                "predicate threshold requires field, operator "
+                "(>=, >, <=, <, ==), and value"
+            )
+        lookback = predicate.get("lookback_days")
+        if lookback is not None and (
+            not isinstance(lookback, int) or lookback < 1
+        ):
+            raise InvalidMiningAction(
+                "predicate lookback_days must be a positive integer"
+            )
 
     def _validate_need_dispositions(
         self, raw: Mapping[str, Any]
@@ -910,6 +1227,7 @@ class LabelAwareMiningController:
             raise InvalidMiningAction(
                 "no_pattern requires at least one completed evidence fetch"
             )
+        self._require_modality_obligation("record_no_pattern")
         coverage = raw.get("coverage")
         if not isinstance(coverage, Mapping):
             raise InvalidMiningAction("record_no_pattern requires coverage")
@@ -1002,6 +1320,19 @@ class LabelAwareMiningController:
     def _advance(self, target: str) -> None:
         if _STATE_ORDER[target] > _STATE_ORDER[self._state]:
             self._state = target
+
+    def _evidence_catalog_view(self) -> list[dict[str, Any]]:
+        """Discovery-only directory over the fetched narrative evidence."""
+
+        documents = [
+            document
+            for result in self._documents.values()
+            for document in result.documents
+        ]
+        return narrative_catalog(
+            documents,
+            self._events.values(),
+        )
 
     def _catalog_view(self) -> dict[str, Any]:
         return {

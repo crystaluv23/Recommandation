@@ -1,0 +1,1029 @@
+{
+  "observations_by_case": {
+    "control-accelerator-1": [
+      {
+        "category": "fundamental_inflection",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = -0.04"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.operating_margin_ttm",
+            "source_url": null,
+            "summary": "financial.operating_margin_ttm = 0.08"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.07"
+          }
+        ],
+        "explanation": "growth score=0.05; revenue=0.07, earnings=-0.04, margin=0.08",
+        "feature_values": {
+          "financial.earnings_growth_yoy": -0.04,
+          "financial.operating_margin_ttm": 0.08,
+          "financial.revenue_growth_yoy": 0.07
+        },
+        "logic": "Weighted score from revenue growth, earnings growth, and operating margin.",
+        "name": "Fundamental revenue acceleration",
+        "observed": false,
+        "score": 0.05,
+        "signal_id": "sig-fundamental-revenue-acceleration"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.return_120d",
+            "source_url": null,
+            "summary": "price.return_120d = -0.03"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.return_20d",
+            "source_url": null,
+            "summary": "price.return_20d = 0.01"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.return_60d",
+            "source_url": null,
+            "summary": "price.return_60d = 0.04"
+          }
+        ],
+        "explanation": "trend score=0.01; 20d=0.01, 60d=0.04, 120d=-0.03",
+        "feature_values": {
+          "price.return_120d": -0.03,
+          "price.return_20d": 0.01,
+          "price.return_60d": 0.04
+        },
+        "logic": "Weighted 20-day, 60-day, and 120-day point-in-time returns.",
+        "name": "Market early confirmation",
+        "observed": false,
+        "score": 0.0057,
+        "signal_id": "sig-market-early-confirmation"
+      },
+      {
+        "category": "analyst_disagreement",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:analyst.target_price",
+            "source_url": null,
+            "summary": "analyst.target_price = 55.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = -0.04"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.07"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.latest_close",
+            "source_url": null,
+            "summary": "price.latest_close = 52.0"
+          }
+        ],
+        "explanation": "expectation-gap score=0.05; target upside=0.06",
+        "feature_values": {
+          "analyst.target_price": 55.0,
+          "financial.earnings_growth_yoy": -0.04,
+          "financial.revenue_growth_yoy": 0.07,
+          "price.latest_close": 52.0
+        },
+        "logic": "Target-price upside combined with at least one non-deteriorating growth feature.",
+        "name": "Analyst expectation gap",
+        "observed": false,
+        "score": 0.0479,
+        "signal_id": "sig-analyst-expectation-gap"
+      },
+      {
+        "category": "catalyst_density",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": true,
+            "kind": "inference",
+            "published_date": null,
+            "source_id": null,
+            "source_url": null,
+            "summary": "Catalyst density measured with missing or packet-level inputs: catalyst score=0.00; catalysts=none"
+          }
+        ],
+        "explanation": "catalyst score=0.00; catalysts=none",
+        "feature_values": {
+          "packet.catalyst_count_180d": 0
+        },
+        "logic": "Count known catalysts expected within 180 days of the packet date.",
+        "name": "Catalyst density",
+        "observed": false,
+        "score": 0.0,
+        "signal_id": "sig-catalyst-density"
+      },
+      {
+        "category": "valuation_room",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.07"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:valuation.pe_ratio",
+            "source_url": null,
+            "summary": "valuation.pe_ratio = 38.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:valuation.price_to_sales_ttm",
+            "source_url": null,
+            "summary": "valuation.price_to_sales_ttm = 8.8"
+          }
+        ],
+        "explanation": "valuation-room score=0.11; growth=0.07, pe=38.00, ps=8.80",
+        "feature_values": {
+          "financial.revenue_growth_yoy": 0.07,
+          "valuation.pe_ratio": 38.0,
+          "valuation.price_to_sales_ttm": 8.8
+        },
+        "logic": "Revenue growth score combined with the better of P/E room and price-to-sales room.",
+        "name": "Valuation room with growth",
+        "observed": false,
+        "score": 0.105,
+        "signal_id": "sig-valuation-room-with-growth"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.average_daily_dollar_volume_20d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_20d = 85000000.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIC1:price.average_daily_dollar_volume_60d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_60d = 83000000.0"
+          }
+        ],
+        "explanation": "liquidity-expansion score=0.00; expansion=0.02",
+        "feature_values": {
+          "price.average_daily_dollar_volume_20d": 85000000.0,
+          "price.average_daily_dollar_volume_60d": 83000000.0
+        },
+        "logic": "20-day dollar volume expansion relative to 60-day dollar volume.",
+        "name": "Liquidity expansion",
+        "observed": false,
+        "score": 0.0,
+        "signal_id": "sig-liquidity-expansion"
+      }
+    ],
+    "failure-power-1": [
+      {
+        "category": "fundamental_inflection",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = -0.12"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.operating_margin_ttm",
+            "source_url": null,
+            "summary": "financial.operating_margin_ttm = 0.05"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.04"
+          }
+        ],
+        "explanation": "growth score=0.01; revenue=0.04, earnings=-0.12, margin=0.05",
+        "feature_values": {
+          "financial.earnings_growth_yoy": -0.12,
+          "financial.operating_margin_ttm": 0.05,
+          "financial.revenue_growth_yoy": 0.04
+        },
+        "logic": "Weighted score from revenue growth, earnings growth, and operating margin.",
+        "name": "Fundamental revenue acceleration",
+        "observed": false,
+        "score": 0.0125,
+        "signal_id": "sig-fundamental-revenue-acceleration"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.return_120d",
+            "source_url": null,
+            "summary": "price.return_120d = -0.08"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.return_20d",
+            "source_url": null,
+            "summary": "price.return_20d = -0.02"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.return_60d",
+            "source_url": null,
+            "summary": "price.return_60d = 0.03"
+          }
+        ],
+        "explanation": "trend score=0.00; 20d=-0.02, 60d=0.03, 120d=-0.08",
+        "feature_values": {
+          "price.return_120d": -0.08,
+          "price.return_20d": -0.02,
+          "price.return_60d": 0.03
+        },
+        "logic": "Weighted 20-day, 60-day, and 120-day point-in-time returns.",
+        "name": "Market early confirmation",
+        "observed": false,
+        "score": 0.0,
+        "signal_id": "sig-market-early-confirmation"
+      },
+      {
+        "category": "analyst_disagreement",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:analyst.target_price",
+            "source_url": null,
+            "summary": "analyst.target_price = 31.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = -0.12"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.04"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.latest_close",
+            "source_url": null,
+            "summary": "price.latest_close = 29.0"
+          }
+        ],
+        "explanation": "expectation-gap score=0.04; target upside=0.07",
+        "feature_values": {
+          "analyst.target_price": 31.0,
+          "financial.earnings_growth_yoy": -0.12,
+          "financial.revenue_growth_yoy": 0.04,
+          "price.latest_close": 29.0
+        },
+        "logic": "Target-price upside combined with at least one non-deteriorating growth feature.",
+        "name": "Analyst expectation gap",
+        "observed": false,
+        "score": 0.0443,
+        "signal_id": "sig-analyst-expectation-gap"
+      },
+      {
+        "category": "catalyst_density",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": true,
+            "kind": "inference",
+            "published_date": null,
+            "source_id": null,
+            "source_url": null,
+            "summary": "Catalyst density measured with missing or packet-level inputs: catalyst score=0.50; catalysts=Industry conference"
+          }
+        ],
+        "explanation": "catalyst score=0.50; catalysts=Industry conference",
+        "feature_values": {
+          "packet.catalyst_count_180d": 1
+        },
+        "logic": "Count known catalysts expected within 180 days of the packet date.",
+        "name": "Catalyst density",
+        "observed": true,
+        "score": 0.5,
+        "signal_id": "sig-catalyst-density"
+      },
+      {
+        "category": "valuation_room",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.04"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:valuation.pe_ratio",
+            "source_url": null,
+            "summary": "valuation.pe_ratio = 44.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:valuation.price_to_sales_ttm",
+            "source_url": null,
+            "summary": "valuation.price_to_sales_ttm = 4.9"
+          }
+        ],
+        "explanation": "valuation-room score=0.29; growth=0.04, pe=44.00, ps=4.90",
+        "feature_values": {
+          "financial.revenue_growth_yoy": 0.04,
+          "valuation.pe_ratio": 44.0,
+          "valuation.price_to_sales_ttm": 4.9
+        },
+        "logic": "Revenue growth score combined with the better of P/E room and price-to-sales room.",
+        "name": "Valuation room with growth",
+        "observed": false,
+        "score": 0.2869,
+        "signal_id": "sig-valuation-room-with-growth"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.average_daily_dollar_volume_20d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_20d = 41000000.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWF1:price.average_daily_dollar_volume_60d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_60d = 45000000.0"
+          }
+        ],
+        "explanation": "liquidity-expansion score=0.00; expansion=-0.09",
+        "feature_values": {
+          "price.average_daily_dollar_volume_20d": 41000000.0,
+          "price.average_daily_dollar_volume_60d": 45000000.0
+        },
+        "logic": "20-day dollar volume expansion relative to 60-day dollar volume.",
+        "name": "Liquidity expansion",
+        "observed": false,
+        "score": 0.0,
+        "signal_id": "sig-liquidity-expansion"
+      }
+    ],
+    "winner-accelerator-1": [
+      {
+        "category": "fundamental_inflection",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = 0.78"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.operating_margin_ttm",
+            "source_url": null,
+            "summary": "financial.operating_margin_ttm = 0.24"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.42"
+          }
+        ],
+        "explanation": "growth score=1.00; revenue=0.42, earnings=0.78, margin=0.24",
+        "feature_values": {
+          "financial.earnings_growth_yoy": 0.78,
+          "financial.operating_margin_ttm": 0.24,
+          "financial.revenue_growth_yoy": 0.42
+        },
+        "logic": "Weighted score from revenue growth, earnings growth, and operating margin.",
+        "name": "Fundamental revenue acceleration",
+        "observed": true,
+        "score": 1.0,
+        "signal_id": "sig-fundamental-revenue-acceleration"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.return_120d",
+            "source_url": null,
+            "summary": "price.return_120d = 0.28"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.return_20d",
+            "source_url": null,
+            "summary": "price.return_20d = 0.12"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.return_60d",
+            "source_url": null,
+            "summary": "price.return_60d = 0.31"
+          }
+        ],
+        "explanation": "trend score=0.75; 20d=0.12, 60d=0.31, 120d=0.28",
+        "feature_values": {
+          "price.return_120d": 0.28,
+          "price.return_20d": 0.12,
+          "price.return_60d": 0.31
+        },
+        "logic": "Weighted 20-day, 60-day, and 120-day point-in-time returns.",
+        "name": "Market early confirmation",
+        "observed": true,
+        "score": 0.7476,
+        "signal_id": "sig-market-early-confirmation"
+      },
+      {
+        "category": "analyst_disagreement",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:analyst.target_price",
+            "source_url": null,
+            "summary": "analyst.target_price = 66.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = 0.78"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.42"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.latest_close",
+            "source_url": null,
+            "summary": "price.latest_close = 48.0"
+          }
+        ],
+        "explanation": "expectation-gap score=1.00; target upside=0.38",
+        "feature_values": {
+          "analyst.target_price": 66.0,
+          "financial.earnings_growth_yoy": 0.78,
+          "financial.revenue_growth_yoy": 0.42,
+          "price.latest_close": 48.0
+        },
+        "logic": "Target-price upside combined with at least one non-deteriorating growth feature.",
+        "name": "Analyst expectation gap",
+        "observed": true,
+        "score": 1.0,
+        "signal_id": "sig-analyst-expectation-gap"
+      },
+      {
+        "category": "catalyst_density",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": true,
+            "kind": "inference",
+            "published_date": null,
+            "source_id": null,
+            "source_url": null,
+            "summary": "Catalyst density measured with missing or packet-level inputs: catalyst score=1.00; catalysts=Capacity expansion update, Major customer product cycle"
+          }
+        ],
+        "explanation": "catalyst score=1.00; catalysts=Capacity expansion update, Major customer product cycle",
+        "feature_values": {
+          "packet.catalyst_count_180d": 2
+        },
+        "logic": "Count known catalysts expected within 180 days of the packet date.",
+        "name": "Catalyst density",
+        "observed": true,
+        "score": 1.0,
+        "signal_id": "sig-catalyst-density"
+      },
+      {
+        "category": "valuation_room",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.42"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:valuation.pe_ratio",
+            "source_url": null,
+            "summary": "valuation.pe_ratio = 27.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:valuation.price_to_sales_ttm",
+            "source_url": null,
+            "summary": "valuation.price_to_sales_ttm = 6.4"
+          }
+        ],
+        "explanation": "valuation-room score=0.82; growth=0.42, pe=27.00, ps=6.40",
+        "feature_values": {
+          "financial.revenue_growth_yoy": 0.42,
+          "valuation.pe_ratio": 27.0,
+          "valuation.price_to_sales_ttm": 6.4
+        },
+        "logic": "Revenue growth score combined with the better of P/E room and price-to-sales room.",
+        "name": "Valuation room with growth",
+        "observed": true,
+        "score": 0.82,
+        "signal_id": "sig-valuation-room-with-growth"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.average_daily_dollar_volume_20d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_20d = 180000000.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:AIX1:price.average_daily_dollar_volume_60d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_60d = 112000000.0"
+          }
+        ],
+        "explanation": "liquidity-expansion score=1.00; expansion=0.61",
+        "feature_values": {
+          "price.average_daily_dollar_volume_20d": 180000000.0,
+          "price.average_daily_dollar_volume_60d": 112000000.0
+        },
+        "logic": "20-day dollar volume expansion relative to 60-day dollar volume.",
+        "name": "Liquidity expansion",
+        "observed": true,
+        "score": 1.0,
+        "signal_id": "sig-liquidity-expansion"
+      }
+    ],
+    "winner-power-1": [
+      {
+        "category": "fundamental_inflection",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = 0.55"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.operating_margin_ttm",
+            "source_url": null,
+            "summary": "financial.operating_margin_ttm = 0.18"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.33"
+          }
+        ],
+        "explanation": "growth score=0.94; revenue=0.33, earnings=0.55, margin=0.18",
+        "feature_values": {
+          "financial.earnings_growth_yoy": 0.55,
+          "financial.operating_margin_ttm": 0.18,
+          "financial.revenue_growth_yoy": 0.33
+        },
+        "logic": "Weighted score from revenue growth, earnings growth, and operating margin.",
+        "name": "Fundamental revenue acceleration",
+        "observed": true,
+        "score": 0.938,
+        "signal_id": "sig-fundamental-revenue-acceleration"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.return_120d",
+            "source_url": null,
+            "summary": "price.return_120d = 0.18"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.return_20d",
+            "source_url": null,
+            "summary": "price.return_20d = 0.09"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.return_60d",
+            "source_url": null,
+            "summary": "price.return_60d = 0.22"
+          }
+        ],
+        "explanation": "trend score=0.48; 20d=0.09, 60d=0.22, 120d=0.18",
+        "feature_values": {
+          "price.return_120d": 0.18,
+          "price.return_20d": 0.09,
+          "price.return_60d": 0.22
+        },
+        "logic": "Weighted 20-day, 60-day, and 120-day point-in-time returns.",
+        "name": "Market early confirmation",
+        "observed": false,
+        "score": 0.479,
+        "signal_id": "sig-market-early-confirmation"
+      },
+      {
+        "category": "analyst_disagreement",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:analyst.target_price",
+            "source_url": null,
+            "summary": "analyst.target_price = 48.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.earnings_growth_yoy",
+            "source_url": null,
+            "summary": "financial.earnings_growth_yoy = 0.55"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.33"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.latest_close",
+            "source_url": null,
+            "summary": "price.latest_close = 36.0"
+          }
+        ],
+        "explanation": "expectation-gap score=0.96; target upside=0.33",
+        "feature_values": {
+          "analyst.target_price": 48.0,
+          "financial.earnings_growth_yoy": 0.55,
+          "financial.revenue_growth_yoy": 0.33,
+          "price.latest_close": 36.0
+        },
+        "logic": "Target-price upside combined with at least one non-deteriorating growth feature.",
+        "name": "Analyst expectation gap",
+        "observed": true,
+        "score": 0.9611,
+        "signal_id": "sig-analyst-expectation-gap"
+      },
+      {
+        "category": "catalyst_density",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": true,
+            "kind": "inference",
+            "published_date": null,
+            "source_id": null,
+            "source_url": null,
+            "summary": "Catalyst density measured with missing or packet-level inputs: catalyst score=0.50; catalysts=Backlog disclosure"
+          }
+        ],
+        "explanation": "catalyst score=0.50; catalysts=Backlog disclosure",
+        "feature_values": {
+          "packet.catalyst_count_180d": 1
+        },
+        "logic": "Count known catalysts expected within 180 days of the packet date.",
+        "name": "Catalyst density",
+        "observed": true,
+        "score": 0.5,
+        "signal_id": "sig-catalyst-density"
+      },
+      {
+        "category": "valuation_room",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "financial",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:financial.revenue_growth_yoy",
+            "source_url": null,
+            "summary": "financial.revenue_growth_yoy = 0.33"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:valuation.pe_ratio",
+            "source_url": null,
+            "summary": "valuation.pe_ratio = 24.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "valuation",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:valuation.price_to_sales_ttm",
+            "source_url": null,
+            "summary": "valuation.price_to_sales_ttm = 3.1"
+          }
+        ],
+        "explanation": "valuation-room score=0.90; growth=0.33, pe=24.00, ps=3.10",
+        "feature_values": {
+          "financial.revenue_growth_yoy": 0.33,
+          "valuation.pe_ratio": 24.0,
+          "valuation.price_to_sales_ttm": 3.1
+        },
+        "logic": "Revenue growth score combined with the better of P/E room and price-to-sales room.",
+        "name": "Valuation room with growth",
+        "observed": true,
+        "score": 0.8974,
+        "signal_id": "sig-valuation-room-with-growth"
+      },
+      {
+        "category": "market_early_confirmation",
+        "evidence": [
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.average_daily_dollar_volume_20d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_20d = 92000000.0"
+          },
+          {
+            "as_of_date": "2026-05-03",
+            "data_quality": "confirmed",
+            "inference": false,
+            "kind": "price_volume",
+            "published_date": "2026-05-03",
+            "source_id": "seed:PWR1:price.average_daily_dollar_volume_60d",
+            "source_url": null,
+            "summary": "price.average_daily_dollar_volume_60d = 70000000.0"
+          }
+        ],
+        "explanation": "liquidity-expansion score=0.66; expansion=0.31",
+        "feature_values": {
+          "price.average_daily_dollar_volume_20d": 92000000.0,
+          "price.average_daily_dollar_volume_60d": 70000000.0
+        },
+        "logic": "20-day dollar volume expansion relative to 60-day dollar volume.",
+        "name": "Liquidity expansion",
+        "observed": true,
+        "score": 0.6607,
+        "signal_id": "sig-liquidity-expansion"
+      }
+    ]
+  },
+  "run_id": "cold-start-seed-2026-05-03"
+}

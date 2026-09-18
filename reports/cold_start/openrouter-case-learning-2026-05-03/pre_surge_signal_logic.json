@@ -1,0 +1,247 @@
+{
+  "assumption": "Initial cold start consumes versioned outcome labels and supplied matched groups; automatic matched-control construction is deferred.",
+  "created_at": "2026-05-03T00:00:00+00:00",
+  "run_id": "cold-start-seed-2026-05-03",
+  "signal_version": "signals-v0.1",
+  "signals": [
+    {
+      "category": "fundamental_inflection",
+      "counterexamples": [],
+      "description": "Revenue and earnings growth are strong enough to suggest expectations may lag reality.",
+      "false_positive_patterns": [
+        "One-time rebound from a depressed base",
+        "Growth without operating leverage"
+      ],
+      "hindsight_risk_notes": [
+        "Do not use later quarters to label the inflection as obvious."
+      ],
+      "logic": "Fire when revenue growth, earnings growth, and operating margin together show an inflection, with revenue growth weighted most heavily.",
+      "name": "Fundamental revenue acceleration",
+      "positive_examples": [
+        "winner-accelerator-1",
+        "winner-power-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-fundamental-revenue-acceleration",
+      "source_feature_names": [
+        "financial.revenue_growth_yoy",
+        "financial.earnings_growth_yoy",
+        "financial.operating_margin_ttm"
+      ],
+      "statistics": {
+        "average_score_lift": 0.9377,
+        "non_winner_average_score": 0.0312,
+        "non_winner_count": 2,
+        "non_winner_hits": 0,
+        "non_winner_prevalence": 0.0,
+        "prevalence_lift": 1.0,
+        "signal_id": "sig-fundamental-revenue-acceleration",
+        "winner_average_score": 0.969,
+        "winner_count": 2,
+        "winner_hits": 2,
+        "winner_prevalence": 1.0
+      },
+      "version": "signals-v0.1"
+    },
+    {
+      "category": "market_early_confirmation",
+      "counterexamples": [],
+      "description": "Price trend is already improving before the later outcome window.",
+      "false_positive_patterns": [
+        "Short-term rebound inside a long downtrend",
+        "Momentum caused by already-known news"
+      ],
+      "hindsight_risk_notes": [
+        "The rule must be measured before the outcome window starts."
+      ],
+      "logic": "Fire when 20-day and 60-day returns are positive enough to show early confirmation without requiring the later surge.",
+      "name": "Market early confirmation",
+      "positive_examples": [
+        "winner-accelerator-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-market-early-confirmation",
+      "source_feature_names": [
+        "price.return_20d",
+        "price.return_60d",
+        "price.return_120d"
+      ],
+      "statistics": {
+        "average_score_lift": 0.6104,
+        "non_winner_average_score": 0.0029,
+        "non_winner_count": 2,
+        "non_winner_hits": 0,
+        "non_winner_prevalence": 0.0,
+        "prevalence_lift": 0.5,
+        "signal_id": "sig-market-early-confirmation",
+        "winner_average_score": 0.6133,
+        "winner_count": 2,
+        "winner_hits": 1,
+        "winner_prevalence": 0.5
+      },
+      "version": "signals-v0.1"
+    },
+    {
+      "category": "analyst_disagreement",
+      "counterexamples": [],
+      "description": "Sell-side target price implies upside while structured fundamentals are not deteriorating.",
+      "false_positive_patterns": [
+        "Stale target prices after a business slowdown",
+        "Targets clustered above price after broad market drawdowns"
+      ],
+      "hindsight_risk_notes": [
+        "Target prices must be available as of the packet date."
+      ],
+      "logic": "Fire when target-price upside is positive and at least one growth feature is supportive.",
+      "name": "Analyst expectation gap",
+      "positive_examples": [
+        "winner-accelerator-1",
+        "winner-power-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-analyst-expectation-gap",
+      "source_feature_names": [
+        "analyst.target_price",
+        "price.latest_close",
+        "financial.revenue_growth_yoy",
+        "financial.earnings_growth_yoy"
+      ],
+      "statistics": {
+        "average_score_lift": 0.9345,
+        "non_winner_average_score": 0.0461,
+        "non_winner_count": 2,
+        "non_winner_hits": 0,
+        "non_winner_prevalence": 0.0,
+        "prevalence_lift": 1.0,
+        "signal_id": "sig-analyst-expectation-gap",
+        "winner_average_score": 0.9806,
+        "winner_count": 2,
+        "winner_hits": 2,
+        "winner_prevalence": 1.0
+      },
+      "version": "signals-v0.1"
+    },
+    {
+      "category": "catalyst_density",
+      "counterexamples": [
+        "failure-power-1"
+      ],
+      "description": "Multiple known catalysts are scheduled near the as-of date.",
+      "false_positive_patterns": [
+        "Catalyst calendar is crowded but low materiality",
+        "Expected catalysts already fully priced"
+      ],
+      "hindsight_risk_notes": [
+        "Only catalysts known as of the packet date may count."
+      ],
+      "logic": "Fire when the packet contains at least one near-term catalyst and score higher for two or more.",
+      "name": "Catalyst density",
+      "positive_examples": [
+        "winner-accelerator-1",
+        "winner-power-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-catalyst-density",
+      "source_feature_names": [
+        "packet.catalyst_count_180d"
+      ],
+      "statistics": {
+        "average_score_lift": 0.5,
+        "non_winner_average_score": 0.25,
+        "non_winner_count": 2,
+        "non_winner_hits": 1,
+        "non_winner_prevalence": 0.5,
+        "prevalence_lift": 0.5,
+        "signal_id": "sig-catalyst-density",
+        "winner_average_score": 0.75,
+        "winner_count": 2,
+        "winner_hits": 2,
+        "winner_prevalence": 1.0
+      },
+      "version": "signals-v0.1"
+    },
+    {
+      "category": "valuation_room",
+      "counterexamples": [],
+      "description": "Growth is visible while common valuation ratios are not extreme.",
+      "false_positive_patterns": [
+        "Low multiple because the market correctly expects growth to fade",
+        "Cyclical peak earnings make valuation look deceptively cheap"
+      ],
+      "hindsight_risk_notes": [
+        "Do not use post-surge valuation to decide there was room before the surge."
+      ],
+      "logic": "Fire when revenue growth is positive and P/E or price-to-sales leaves room for multiple expansion instead of already discounting perfection.",
+      "name": "Valuation room with growth",
+      "positive_examples": [
+        "winner-accelerator-1",
+        "winner-power-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-valuation-room-with-growth",
+      "source_feature_names": [
+        "financial.revenue_growth_yoy",
+        "valuation.pe_ratio",
+        "valuation.price_to_sales_ttm"
+      ],
+      "statistics": {
+        "average_score_lift": 0.6628,
+        "non_winner_average_score": 0.1959,
+        "non_winner_count": 2,
+        "non_winner_hits": 0,
+        "non_winner_prevalence": 0.0,
+        "prevalence_lift": 1.0,
+        "signal_id": "sig-valuation-room-with-growth",
+        "winner_average_score": 0.8587,
+        "winner_count": 2,
+        "winner_hits": 2,
+        "winner_prevalence": 1.0
+      },
+      "version": "signals-v0.1"
+    },
+    {
+      "category": "market_early_confirmation",
+      "counterexamples": [],
+      "description": "Recent dollar volume is expanding relative to the medium-term baseline.",
+      "false_positive_patterns": [
+        "Temporary volume burst from non-repeatable news",
+        "Liquidity expands after most repricing has already happened"
+      ],
+      "hindsight_risk_notes": [
+        "Measure volume expansion before the outcome window."
+      ],
+      "logic": "Fire when 20-day average dollar volume is meaningfully above the 60-day baseline.",
+      "name": "Liquidity expansion",
+      "positive_examples": [
+        "winner-accelerator-1",
+        "winner-power-1"
+      ],
+      "promoted": true,
+      "promotion_reason": "promoted: passed prevalence, lift, and control-evidence gates",
+      "signal_id": "sig-liquidity-expansion",
+      "source_feature_names": [
+        "price.average_daily_dollar_volume_20d",
+        "price.average_daily_dollar_volume_60d"
+      ],
+      "statistics": {
+        "average_score_lift": 0.8303,
+        "non_winner_average_score": 0.0,
+        "non_winner_count": 2,
+        "non_winner_hits": 0,
+        "non_winner_prevalence": 0.0,
+        "prevalence_lift": 1.0,
+        "signal_id": "sig-liquidity-expansion",
+        "winner_average_score": 0.8303,
+        "winner_count": 2,
+        "winner_hits": 2,
+        "winner_prevalence": 1.0
+      },
+      "version": "signals-v0.1"
+    }
+  ]
+}

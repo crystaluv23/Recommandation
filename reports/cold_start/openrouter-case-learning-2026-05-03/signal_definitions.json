@@ -1,0 +1,161 @@
+{
+  "run_id": "cold-start-seed-2026-05-03",
+  "signal_definitions": [
+    {
+      "applicable_sectors": [
+        "Power Equipment",
+        "Semiconductors"
+      ],
+      "description": "Revenue and earnings growth are strong enough to suggest expectations may lag reality. Logic: Fire when revenue growth, earnings growth, and operating margin together show an inflection, with revenue growth weighted most heavily.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 1.00, non-winner prevalence 0.00, average score lift 0.94."
+        }
+      ],
+      "false_positive_patterns": [
+        "One-time rebound from a depressed base",
+        "Growth without operating leverage"
+      ],
+      "name": "Fundamental revenue acceleration",
+      "signal_id": "sig-fundamental-revenue-acceleration",
+      "version": "signals-v0.1"
+    },
+    {
+      "applicable_sectors": [
+        "Semiconductors"
+      ],
+      "description": "Price trend is already improving before the later outcome window. Logic: Fire when 20-day and 60-day returns are positive enough to show early confirmation without requiring the later surge.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 0.50, non-winner prevalence 0.00, average score lift 0.61."
+        }
+      ],
+      "false_positive_patterns": [
+        "Short-term rebound inside a long downtrend",
+        "Momentum caused by already-known news"
+      ],
+      "name": "Market early confirmation",
+      "signal_id": "sig-market-early-confirmation",
+      "version": "signals-v0.1"
+    },
+    {
+      "applicable_sectors": [
+        "Power Equipment",
+        "Semiconductors"
+      ],
+      "description": "Sell-side target price implies upside while structured fundamentals are not deteriorating. Logic: Fire when target-price upside is positive and at least one growth feature is supportive.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 1.00, non-winner prevalence 0.00, average score lift 0.93."
+        }
+      ],
+      "false_positive_patterns": [
+        "Stale target prices after a business slowdown",
+        "Targets clustered above price after broad market drawdowns"
+      ],
+      "name": "Analyst expectation gap",
+      "signal_id": "sig-analyst-expectation-gap",
+      "version": "signals-v0.1"
+    },
+    {
+      "applicable_sectors": [
+        "Power Equipment",
+        "Semiconductors"
+      ],
+      "description": "Multiple known catalysts are scheduled near the as-of date. Logic: Fire when the packet contains at least one near-term catalyst and score higher for two or more.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 1.00, non-winner prevalence 0.50, average score lift 0.50."
+        }
+      ],
+      "false_positive_patterns": [
+        "Catalyst calendar is crowded but low materiality",
+        "Expected catalysts already fully priced",
+        "Observed in non-winner cases: failure-power-1"
+      ],
+      "name": "Catalyst density",
+      "signal_id": "sig-catalyst-density",
+      "version": "signals-v0.1"
+    },
+    {
+      "applicable_sectors": [
+        "Power Equipment",
+        "Semiconductors"
+      ],
+      "description": "Growth is visible while common valuation ratios are not extreme. Logic: Fire when revenue growth is positive and P/E or price-to-sales leaves room for multiple expansion instead of already discounting perfection.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 1.00, non-winner prevalence 0.00, average score lift 0.66."
+        }
+      ],
+      "false_positive_patterns": [
+        "Low multiple because the market correctly expects growth to fade",
+        "Cyclical peak earnings make valuation look deceptively cheap"
+      ],
+      "name": "Valuation room with growth",
+      "signal_id": "sig-valuation-room-with-growth",
+      "version": "signals-v0.1"
+    },
+    {
+      "applicable_sectors": [
+        "Power Equipment",
+        "Semiconductors"
+      ],
+      "description": "Recent dollar volume is expanding relative to the medium-term baseline. Logic: Fire when 20-day average dollar volume is meaningfully above the 60-day baseline.",
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start case comparison: winner prevalence 1.00, non-winner prevalence 0.00, average score lift 0.83."
+        }
+      ],
+      "false_positive_patterns": [
+        "Temporary volume burst from non-repeatable news",
+        "Liquidity expands after most repricing has already happened"
+      ],
+      "name": "Liquidity expansion",
+      "signal_id": "sig-liquidity-expansion",
+      "version": "signals-v0.1"
+    }
+  ]
+}

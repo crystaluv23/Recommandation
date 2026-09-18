@@ -81,7 +81,16 @@ class EvidenceRelation:
 
 @dataclass(frozen=True)
 class NarrativeEvent:
-    """One bounded narrative excerpt with immutable source lineage."""
+    """One bounded narrative excerpt with immutable source lineage.
+
+    ``title`` is a deterministic masked label (document metadata or masked
+    headline); ``excerpt`` is a masked visible-text summary that is
+    discovery-only and can never be candidate evidence on its own;
+    ``exact_span`` is the verbatim raw-content window the excerpt anchors to,
+    held inside the runtime and traceable to the content-hash-verified
+    document. ``source_family`` is the normalized family (never the raw
+    source_type) and ``event_ref`` identity is stable across paginated reads.
+    """
 
     event_ref: str
     case_ref: str
@@ -89,6 +98,10 @@ class NarrativeEvent:
     excerpt: str
     content_hash: str
     available_at: str
+    title: str = ""
+    source_family: str = ""
+    published_at: str = ""
+    exact_span: str = ""
 
 
 @dataclass(frozen=True)
@@ -380,6 +393,7 @@ def fetch_case_evidence(
         )
         tokens = set(re.findall(r"[a-z0-9]+", excerpt.casefold()))
         matched_terms.update(term for term in terms if term in tokens)
+        exact_span = _verbatim_window(document.content, excerpt)
         events.append(
             NarrativeEvent(
                 event_ref="event-" + _opaque_ref(
@@ -390,6 +404,10 @@ def fetch_case_evidence(
                 excerpt=excerpt,
                 content_hash=document.content_hash,
                 available_at=document.available_at.isoformat(),
+                title=_narrative_title(document),
+                source_family=_evidence_source_family(document.source_type),
+                published_at=document.published_at.isoformat(),
+                exact_span=exact_span,
             )
         )
     return FetchResult(
@@ -409,3 +427,267 @@ def fetch_case_evidence(
         },
         unread_same_source=bool(excluded),
     )
+
+
+_NARRATIVE_TITLE_CHARS = 120
+
+
+def _narrative_title(document: RawInfoDocument) -> str:
+    """Deterministic masked title label for one narrative document.
+
+    Filing bodies derive from form metadata; JSON news payloads expose their
+    headline field; anything else falls back to the first visible words of
+    the projection text. All paths are identity-masked by the caller's view
+    projection; the label itself never invents content.
+    """
+
+    metadata_title = str(document.metadata.get("title", "")).strip()
+    if metadata_title:
+        return metadata_title[:_NARRATIVE_TITLE_CHARS]
+    if document.content.lstrip().startswith("{"):
+        try:
+            payload = json.loads(document.content)
+        except json.JSONDecodeError:
+            payload = None
+        if isinstance(payload, dict):
+            headline = str(
+                payload.get("title")
+                or payload.get("headline")
+                or ""
+            ).strip()
+            if headline:
+                return headline[:_NARRATIVE_TITLE_CHARS]
+    visible = " ".join(document.content.split())
+    return visible[:_NARRATIVE_TITLE_CHARS]
+
+
+def _verbatim_window(content: str, excerpt: str, radius: int = 80) -> str:
+    """Return a verbatim raw-content window anchored to an excerpt.
+
+    The excerpt itself is normalized visible text and may not be a literal
+    substring; the verbatim window keeps ledger traceability by locating the
+    excerpt's leading tokens inside the raw content and slicing around them,
+    falling back to the raw head when no anchor is found.
+    """
+
+    anchor_tokens = [token for token in excerpt.split() if token][:6]
+    if anchor_tokens:
+        anchor = " ".join(anchor_tokens)
+        start = content.find(anchor[: max(8, len(anchor) // 2)])
+        if start >= 0:
+            left = max(0, start - radius)
+            right = min(len(content), start + len(anchor) + radius)
+            return content[left:right]
+    return content[: 2 * radius]
+
+
+def narrative_catalog(
+    documents: Iterable[RawInfoDocument],
+    events: Iterable[NarrativeEvent],
+    *,
+    max_per_family: int = 8,
+) -> list[dict[str, object]]:
+    """Build the discovery-only fetched-evidence directory.
+
+    Organizes already-fetched narrative evidence as
+    family -> time window -> document refs with masked titles and bounded
+    summaries. Every row is discovery_only: it steers search but can never be
+  cited as candidate evidence.
+    """
+
+    windows: dict[str, dict[str, dict[str, object]]] = {}
+    event_by_document: dict[str, NarrativeEvent] = {
+        event.document_ref: event for event in events
+    }
+    for document in documents:
+        family = _evidence_source_family(document.source_type)
+        if family not in {"filing", "transcript", "news"}:
+            continue
+        window = f"{document.available_at.year}Q{(document.available_at.month - 1) // 3 + 1}"
+        bucket = windows.setdefault(family, {}).setdefault(window, {})
+        event = event_by_document.get(f"document-{document.document_id}")
+        if event is not None:
+            bucket[event.event_ref] = {
+                "event_ref": event.event_ref,
+                "document_ref": event.document_ref,
+                "title": event.title,
+                "available_at": event.available_at,
+                "discovery_only": True,
+            }
+        elif len(bucket) < max_per_family:
+            bucket[f"document-{document.document_id}"] = {
+                "event_ref": None,
+                "document_ref": f"document-{document.document_id}",
+                "title": _narrative_title(document),
+                "available_at": document.available_at.isoformat(),
+                "discovery_only": True,
+            }
+    catalog: list[dict[str, object]] = []
+    for family in sorted(windows):
+        family_rows = []
+        for window in sorted(windows[family], reverse=True):
+            entries = list(windows[family][window].values())
+            family_rows.append(
+                {"window": window, "entries": entries[:max_per_family]}
+            )
+        catalog.append({"family": family, "windows": family_rows})
+    return catalog
+
+
+# ---------------------------------------------------------------------------
+# Optional attribute projection (action plan v2, Phase 4)
+#
+# An index layer only: it may aggregate, rank, and feed reflection, but it
+# can never be the sole evidence for a narrative candidate and can never
+# interpret a projection miss as the event's absence. The vocabulary is
+# derived zero-call from the corpus (see derive_attribute_vocabulary); low
+# support removes a pattern from the INDEX, never from the raw read path.
+
+
+_ATTRIBUTE_VERB = r"(?:announced?|received?|awarded?|confirmed|entered|signed|secured|delivered|won|granted)"
+_ATTRIBUTE_OBJECT = r"(?:purchase order|purchase agreement|supply agreement|commercial agreement|order|orders|contract|contracts|agreement|commitment|offtake(?: agreement)?|backlog(?: order)?)"
+_MONEY = r"(?:US\$|USD\s?|\$)\s?([0-9][0-9,\.]*(?:\s?(?:million|billion|m|bn|k))?)"
+
+_ATTRIBUTE_PATTERN = re.compile(
+    rf"{_ATTRIBUTE_VERB}\s+(?:a\s+|an\s+|the\s+|its\s+)?(?:definitive\s+|binding\s+|multi-?year\s+|large\s+)?{_ATTRIBUTE_OBJECT}",
+    re.IGNORECASE,
+)
+_ATTRIBUTE_NAME = "order_confirmation_disclosed"
+_MIN_ATTRIBUTE_SUPPORT = 6
+
+
+@dataclass(frozen=True)
+class AttributeEvent:
+    """One projected attribute hit with verbatim lineage (index-only)."""
+
+    attribute_ref: str
+    name: str
+    case_ref: str
+    document_ref: str
+    exact_span: str
+    content_hash: str
+    available_at: str
+    amount_usd: float | None = None
+
+
+def _money_to_usd(raw: str) -> float | None:
+    """Normalize a matched money literal to USD when unambiguous."""
+
+    text = raw.replace(",", "").replace("USD", "").replace("$", "").strip()
+    multiplier = 1.0
+    low = text.lower()
+    if low.endswith("billion") or low.endswith("bn"):
+        multiplier, text = 1e9, low.rsplit(" ", 1)[0]
+    elif low.endswith("million") or low.endswith("m"):
+        multiplier, text = 1e6, low.rsplit(" ", 1)[0]
+    elif low.endswith("k"):
+        multiplier, text = 1e3, low.rsplit(" ", 1)[0]
+    try:
+        return float(text) * multiplier
+    except ValueError:
+        return None
+
+
+def derive_attribute_vocabulary(
+    documents: Iterable[RawInfoDocument],
+    *,
+    case_refs_by_company: Mapping[str, str] | None = None,
+    min_support: int = _MIN_ATTRIBUTE_SUPPORT,
+) -> dict[str, object]:
+    """Zero-call corpus derivation of the attribute index vocabulary.
+
+    Deterministic pattern mining over narrative documents; the returned
+    artifact (name, pattern digest, support, corpus hash) is frozen into the
+    run contract by the caller. Derivation only gates the INDEX: patterns
+    below support stay discoverable through the raw read path regardless.
+    """
+
+    corpus = list(documents)
+    pattern_hits = 0
+    for document in corpus:
+        if _ATTRIBUTE_PATTERN.search(document.content):
+            pattern_hits += 1
+    vocabulary = {
+        "schema_version": "attribute-vocabulary-v1",
+        "attributes": (
+            [
+                {
+                    "name": _ATTRIBUTE_NAME,
+                    "pattern_sha256": hashlib.sha256(
+                        _ATTRIBUTE_PATTERN.pattern.encode("utf-8")
+                    ).hexdigest(),
+                    "support": pattern_hits,
+                }
+            ]
+            if pattern_hits >= min_support
+            else []
+        ),
+        "min_support": min_support,
+        "corpus_sha256": hashlib.sha256(
+            "".join(
+                sorted(document.content_hash for document in corpus)
+            ).encode("utf-8")
+        ).hexdigest(),
+    }
+    return vocabulary
+
+
+def project_attributes(
+    documents: Iterable[RawInfoDocument],
+    events: Iterable[NarrativeEvent],
+    *,
+    vocabulary: Mapping[str, object],
+) -> dict[str, list[dict[str, object]]]:
+    """Project attribute index rows for fetched narrative evidence.
+
+    Outcomes are typed per case: projected_positive / projected_counter /
+    projected_unresolved / projection_unavailable. A miss never asserts the
+    event's absence, and the projection is never the sole evidence path.
+    """
+
+    rows: dict[str, list[dict[str, object]]] = {}
+    attributes = list(vocabulary.get("attributes", ()) or ())
+    if not attributes:
+        return rows
+    wanted_names = {str(entry.get("name")) for entry in attributes}
+    if _ATTRIBUTE_NAME not in wanted_names:
+        return rows
+    event_by_document = {event.document_ref: event for event in events}
+    narrative_documents = [
+        document
+        for document in documents
+        if _evidence_source_family(document.source_type)
+        in {"filing", "transcript", "news"}
+    ]
+    for document in narrative_documents:
+        event = event_by_document.get(f"document-{document.document_id}")
+        case_ref = event.case_ref if event is not None else ""
+        for match in _ATTRIBUTE_PATTERN.finditer(document.content):
+            money = re.search(_MONEY, document.content[match.end():match.end() + 160])
+            amount = _money_to_usd(money.group(1)) if money else None
+            start = match.start()
+            rows.setdefault(_ATTRIBUTE_NAME, []).append(
+                {
+                    "attribute_ref": "attr-"
+                    + _opaque_ref(
+                        document.document_id,
+                        document.content_hash,
+                        start,
+                    ),
+                    "name": _ATTRIBUTE_NAME,
+                    "case_ref": case_ref,
+                    "document_ref": f"document-{document.document_id}",
+                    "exact_span": document.content[
+                        start : start + 200
+                    ],
+                    "content_hash": document.content_hash,
+                    "available_at": document.available_at.isoformat(),
+                    "amount_usd": amount,
+                    "state": (
+                        "projected_unresolved"
+                        if amount is None
+                        else "projected_positive"
+                    ),
+                }
+            )
+    return rows

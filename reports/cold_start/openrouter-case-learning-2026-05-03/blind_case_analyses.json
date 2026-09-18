@@ -1,0 +1,112 @@
+{
+  "blind_case_analyses": [
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "winner-accelerator-1",
+      "catalyst_watch": [
+        "Capacity expansion update expected on 2026-06-17; this could clarify whether current demand growth is supported by additional supply and execution capability.",
+        "Major customer product cycle expected on 2026-07-17; this could validate or challenge the revenue-growth trajectory implied by the current semiconductor accelerator exposure."
+      ],
+      "confidence": 0.78,
+      "contrary_evidence": [
+        "The stock had already appreciated meaningfully before the as-of date, with returns of 12% over 20 days, 31% over 60 days, and 28% over 120 days, suggesting some optimism may already be priced in.",
+        "Valuation was not obviously cheap at 27.0x P/E and 6.4x trailing sales, leaving the setup sensitive to any disappointment in growth, margins, capacity expansion, or customer-cycle news.",
+        "The company is in semiconductors/accelerators, an area that can be cyclical and highly dependent on customer product timing and capacity execution."
+      ],
+      "expectation_gap": "As of 2026-05-03, the setup showed a positive gap between strong operating momentum and still-material implied upside: revenue growth was 42% year over year, earnings growth was 78% year over year, operating margin was 24%, and the analyst target price of 66 implied about 37.5% upside from the latest close of 48. The market had already started to recognize the story through strong 20-day and 60-day returns, but upcoming capacity and customer-cycle catalysts could still provide confirmation if fundamentals continued to support the growth narrative.",
+      "packet_id": "winner-accelerator-1:packet",
+      "pre_surge_signals": [
+        "Strong fundamental acceleration: revenue growth of 42% year over year and earnings growth of 78% year over year.",
+        "Healthy profitability for a high-growth semiconductor company, with trailing operating margin of 24%.",
+        "Positive price momentum before the catalyst window, including 12% return over 20 days and 31% return over 60 days.",
+        "Rising liquidity and market attention, with 20-day average daily dollar volume of $180 million versus 60-day average daily dollar volume of $112 million.",
+        "Analyst target price of 66 versus latest close of 48, implying approximately 37.5% potential upside as of the packet date.",
+        "Relevant forward catalysts were already identifiable: capacity expansion update expected in mid-June 2026 and major customer product cycle expected in mid-July 2026.",
+        "Mid-cap scale at approximately $12 billion market capitalization, large enough for institutional participation while still potentially responsive to growth re-rating."
+      ],
+      "raw_text": "{\n  \"catalyst_watch\": [\n    \"Capacity expansion update expected on 2026-06-17; this could clarify whether current demand growth is supported by additional supply and execution capability.\",\n    \"Major customer product cycle expected on 2026-07-17; this could validate or challenge the revenue-growth trajectory implied by the current semiconductor accelerator exposure.\"\n  ],\n  \"confidence\": 0.78,\n  \"contrary_evidence\": [\n    \"The stock had already appreciated meaningfully before the as-of date, with returns of 12% over 20 days, 31% over 60 days, and 28% over 120 days, suggesting some optimism may already be priced in.\",\n    \"Valuation was not obviously cheap at 27.0x P/E and 6.4x trailing sales, leaving the setup sensitive to any disappointment in growth, margins, capacity expansion, or customer-cycle news.\",\n    \"The company is in semiconductors/accelerators, an area that can be cyclical and highly dependent on customer product timing and capacity execution.\"\n  ],\n  \"expectation_gap\": \"As of 2026-05-03, the setup showed a positive gap between strong operating momentum and still-material implied upside: revenue growth was 42% year over year, earnings growth was 78% year over year, operating margin was 24%, and the analyst target price of 66 implied about 37.5% upside from the latest close of 48. The market had already started to recognize the story through strong 20-day and 60-day returns, but upcoming capacity and customer-cycle catalysts could still provide confirmation if fundamentals continued to support the growth narrative.\",\n  \"pre_surge_signals\": [\n    \"Strong fundamental acceleration: revenue growth of 42% year over year and earnings growth of 78% year over year.\",\n    \"Healthy profitability for a high-growth semiconductor company, with trailing operating margin of 24%.\",\n    \"Positive price momentum before the catalyst window, including 12% return over 20 days and 31% return over 60 days.\",\n    \"Rising liquidity and market attention, with 20-day average daily dollar volume of $180 million versus 60-day average daily dollar volume of $112 million.\",\n    \"Analyst target price of 66 versus latest close of 48, implying approximately 37.5% potential upside as of the packet date.\",\n    \"Relevant forward catalysts were already identifiable: capacity expansion update expected in mid-June 2026 and major customer product cycle expected in mid-July 2026.\",\n    \"Mid-cap scale at approximately $12 billion market capitalization, large enough for institutional participation while still potentially responsive to growth re-rating.\"\n  ]\n}"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "winner-power-1",
+      "catalyst_watch": [
+        "Expected backlog disclosure on 2026-06-17 was already known as of 2026-05-03 and could clarify demand visibility in the Power Equipment / Electrical Equipment business.",
+        "Watch whether the backlog disclosure supports the already strong reported growth profile: 33% YoY revenue growth and 55% YoY earnings growth.",
+        "Because no actual backlog figure is included in the packet, the catalyst is directional rather than quantified as of the as-of date."
+      ],
+      "confidence": 0.73,
+      "contrary_evidence": [
+        "The stock had already appreciated 22% over 60 days and 18% over 120 days, so some optimism may have been priced in before the catalyst window.",
+        "Valuation was not obviously distressed at 24x P/E and 3.1x trailing sales.",
+        "The backlog disclosure was expected, not yet actual, and the packet provides no backlog size, growth rate, book-to-bill, or margin mix.",
+        "Target-price upside is analyst-derived and may not represent a guaranteed or consensus outcome."
+      ],
+      "expectation_gap": "As of 2026-05-03, the shares closed at 36.0 while the analyst target price was 48.0, implying roughly 33% upside. This gap existed alongside strong fundamentals\u201433% revenue growth, 55% earnings growth, and an 18% TTM operating margin\u2014plus an upcoming backlog disclosure that could validate demand strength. The key gap was whether the market was underestimating durability of growth and backlog visibility despite recent positive price momentum.",
+      "packet_id": "winner-power-1:packet",
+      "pre_surge_signals": [
+        "Strong top-line growth: revenue growth YoY was 33%.",
+        "Strong earnings acceleration: earnings growth YoY was 55%, exceeding revenue growth and suggesting operating leverage or margin improvement.",
+        "Healthy profitability: operating margin TTM was 18%.",
+        "Positive price momentum before the catalyst: 20-day return was 9%, 60-day return was 22%, and 120-day return was 18%.",
+        "Rising liquidity/attention: 20-day average daily dollar volume was $92 million versus 60-day average daily dollar volume of $70 million.",
+        "Analyst target price of 48.0 versus latest close of 36.0 indicated approximately 33% implied upside.",
+        "Upcoming backlog disclosure was a defined near-term catalyst expected on 2026-06-17."
+      ],
+      "raw_text": "{\n  \"catalyst_watch\": [\n    \"Expected backlog disclosure on 2026-06-17 was already known as of 2026-05-03 and could clarify demand visibility in the Power Equipment / Electrical Equipment business.\",\n    \"Watch whether the backlog disclosure supports the already strong reported growth profile: 33% YoY revenue growth and 55% YoY earnings growth.\",\n    \"Because no actual backlog figure is included in the packet, the catalyst is directional rather than quantified as of the as-of date.\"\n  ],\n  \"confidence\": 0.73,\n  \"contrary_evidence\": [\n    \"The stock had already appreciated 22% over 60 days and 18% over 120 days, so some optimism may have been priced in before the catalyst window.\",\n    \"Valuation was not obviously distressed at 24x P/E and 3.1x trailing sales.\",\n    \"The backlog disclosure was expected, not yet actual, and the packet provides no backlog size, growth rate, book-to-bill, or margin mix.\",\n    \"Target-price upside is analyst-derived and may not represent a guaranteed or consensus outcome.\"\n  ],\n  \"expectation_gap\": \"As of 2026-05-03, the shares closed at 36.0 while the analyst target price was 48.0, implying roughly 33% upside. This gap existed alongside strong fundamentals\u201433% revenue growth, 55% earnings growth, and an 18% TTM operating margin\u2014plus an upcoming backlog disclosure that could validate demand strength. The key gap was whether the market was underestimating durability of growth and backlog visibility despite recent positive price momentum.\",\n  \"pre_surge_signals\": [\n    \"Strong top-line growth: revenue growth YoY was 33%.\",\n    \"Strong earnings acceleration: earnings growth YoY was 55%, exceeding revenue growth and suggesting operating leverage or margin improvement.\",\n    \"Healthy profitability: operating margin TTM was 18%.\",\n    \"Positive price momentum before the catalyst: 20-day return was 9%, 60-day return was 22%, and 120-day return was 18%.\",\n    \"Rising liquidity/attention: 20-day average daily dollar volume was $92 million versus 60-day average daily dollar volume of $70 million.\",\n    \"Analyst target price of 48.0 versus latest close of 36.0 indicated approximately 33% implied upside.\",\n    \"Upcoming backlog disclosure was a defined near-term catalyst expected on 2026-06-17.\"\n  ]\n}"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "control-accelerator-1",
+      "catalyst_watch": [
+        "No explicit dated catalysts were supplied in the as-of packet.",
+        "Monitor for semiconductor processor demand updates, earnings revisions, margin inflection, and analyst target changes, but none are confirmed in the supplied data."
+      ],
+      "confidence": 0.32,
+      "contrary_evidence": [
+        "Earnings growth was negative at -4% year over year despite revenue growth of 7%.",
+        "Trailing operating margin was only 8%, indicating limited profitability relative to the valuation.",
+        "Valuation was elevated at 38.0x P/E and 8.8x trailing sales.",
+        "Analyst target price of 55 versus latest close of 52 implied only about 5.8% upside.",
+        "120-day price return was -3%, suggesting the stock had not shown sustained medium-term momentum."
+      ],
+      "expectation_gap": "The setup shows a modest positive gap at best: revenue was still growing and 20-day/60-day returns were slightly positive, but earnings contraction, low operating margin, and a high valuation limited the evidence for a strong mispricing. Analyst expectations appeared near the current price, with only modest implied upside to the target.",
+      "packet_id": "control-accelerator-1:packet",
+      "pre_surge_signals": [
+        "Latest close was 52.0 versus analyst target price of 55.0, implying approximately 5.8% target-price upside.",
+        "Short-term price momentum was positive, with 20-day return of 1% and 60-day return of 4%.",
+        "Revenue growth was positive at 7% year over year.",
+        "Trading liquidity was substantial, with 20-day average daily dollar volume of $85 million and 60-day average daily dollar volume of $83 million.",
+        "The company was a $12 billion semiconductor processor business, giving it scale and institutional tradability."
+      ],
+      "raw_text": "{\n  \"catalyst_watch\": [\n    \"No explicit dated catalysts were supplied in the as-of packet.\",\n    \"Monitor for semiconductor processor demand updates, earnings revisions, margin inflection, and analyst target changes, but none are confirmed in the supplied data.\"\n  ],\n  \"confidence\": 0.32,\n  \"contrary_evidence\": [\n    \"Earnings growth was negative at -4% year over year despite revenue growth of 7%.\",\n    \"Trailing operating margin was only 8%, indicating limited profitability relative to the valuation.\",\n    \"Valuation was elevated at 38.0x P/E and 8.8x trailing sales.\",\n    \"Analyst target price of 55 versus latest close of 52 implied only about 5.8% upside.\",\n    \"120-day price return was -3%, suggesting the stock had not shown sustained medium-term momentum.\"\n  ],\n  \"expectation_gap\": \"The setup shows a modest positive gap at best: revenue was still growing and 20-day/60-day returns were slightly positive, but earnings contraction, low operating margin, and a high valuation limited the evidence for a strong mispricing. Analyst expectations appeared near the current price, with only modest implied upside to the target.\",\n  \"pre_surge_signals\": [\n    \"Latest close was 52.0 versus analyst target price of 55.0, implying approximately 5.8% target-price upside.\",\n    \"Short-term price momentum was positive, with 20-day return of 1% and 60-day return of 4%.\",\n    \"Revenue growth was positive at 7% year over year.\",\n    \"Trading liquidity was substantial, with 20-day average daily dollar volume of $85 million and 60-day average daily dollar volume of $83 million.\",\n    \"The company was a $12 billion semiconductor processor business, giving it scale and institutional tradability.\"\n  ]\n}"
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "case_id": "failure-power-1",
+      "catalyst_watch": [
+        "Industry conference expected on 2026-06-17; it was known as of 2026-05-03 and could provide a scheduled venue for management commentary, product updates, or sector narrative reinforcement.",
+        "No confirmed company-specific announcement, earnings date, contract award, or guidance update is included in the packet."
+      ],
+      "confidence": 0.42,
+      "contrary_evidence": [
+        "Earnings growth YoY is negative at -12%, indicating deteriorating profitability.",
+        "Operating margin TTM is low at 5%, leaving limited margin of safety if growth disappoints.",
+        "Revenue growth YoY is modest at 4%, not clearly supportive of a high-growth valuation.",
+        "Valuation appears demanding with P/E of 44.0 and price-to-sales TTM of 4.9.",
+        "Recent price action is mixed to weak: 20-day return is -2% and 120-day return is -8%, despite a 60-day return of +3%.",
+        "Analyst target price of 31.0 versus latest close of 29.0 implies only about 6.9% upside, suggesting limited visible expectation gap from consensus target."
+      ],
+      "expectation_gap": "The packet shows a mixed setup. The company is in Power Equipment / Electrical Equipment with adequate liquidity and a scheduled industry conference, but the financial profile is not strong: low margin, negative earnings growth, and only modest revenue growth. Valuation is elevated relative to the reported growth metrics, while analyst target upside is modest. Any upside expectation gap would likely depend on investors underappreciating potential sector or conference-related developments, but the supplied evidence does not confirm a specific fundamental catalyst.",
+      "packet_id": "failure-power-1:packet",
+      "pre_surge_signals": [
+        "Average daily dollar volume is substantial at about $41 million over 20 days and $45 million over 60 days, supporting institutional tradability.",
+        "The stock has stabilized somewhat over the intermediate term, with a +3% 60-day return despite a -8% 120-day return.",
+        "Latest close of 29.0 is below the analyst target price of 31.0, leaving modest implied upside.",
+        "A known industry conference on 2026-06-17 creates a defined near-term event to monitor.",
+        "Sector classification as Power Equipment could be relevant if investors are focused on power infrastructure or electrical equipment themes as of the packet date."
+      ],
+      "raw_text": "{\n  \"catalyst_watch\": [\n    \"Industry conference expected on 2026-06-17; it was known as of 2026-05-03 and could provide a scheduled venue for management commentary, product updates, or sector narrative reinforcement.\",\n    \"No confirmed company-specific announcement, earnings date, contract award, or guidance update is included in the packet.\"\n  ],\n  \"confidence\": 0.42,\n  \"contrary_evidence\": [\n    \"Earnings growth YoY is negative at -12%, indicating deteriorating profitability.\",\n    \"Operating margin TTM is low at 5%, leaving limited margin of safety if growth disappoints.\",\n    \"Revenue growth YoY is modest at 4%, not clearly supportive of a high-growth valuation.\",\n    \"Valuation appears demanding with P/E of 44.0 and price-to-sales TTM of 4.9.\",\n    \"Recent price action is mixed to weak: 20-day return is -2% and 120-day return is -8%, despite a 60-day return of +3%.\",\n    \"Analyst target price of 31.0 versus latest close of 29.0 implies only about 6.9% upside, suggesting limited visible expectation gap from consensus target.\"\n  ],\n  \"expectation_gap\": \"The packet shows a mixed setup. The company is in Power Equipment / Electrical Equipment with adequate liquidity and a scheduled industry conference, but the financial profile is not strong: low margin, negative earnings growth, and only modest revenue growth. Valuation is elevated relative to the reported growth metrics, while analyst target upside is modest. Any upside expectation gap would likely depend on investors underappreciating potential sector or conference-related developments, but the supplied evidence does not confirm a specific fundamental catalyst.\",\n  \"pre_surge_signals\": [\n    \"Average daily dollar volume is substantial at about $41 million over 20 days and $45 million over 60 days, supporting institutional tradability.\",\n    \"The stock has stabilized somewhat over the intermediate term, with a +3% 60-day return despite a -8% 120-day return.\",\n    \"Latest close of 29.0 is below the analyst target price of 31.0, leaving modest implied upside.\",\n    \"A known industry conference on 2026-06-17 creates a defined near-term event to monitor.\",\n    \"Sector classification as Power Equipment could be relevant if investors are focused on power infrastructure or electrical equipment themes as of the packet date.\"\n  ]\n}"
+    }
+  ],
+  "run_id": "cold-start-seed-2026-05-03"
+}

@@ -5941,6 +5941,49 @@ class SignalEvolutionEngine:
                     ],
                 ]
             )
+        modality_metrics = {
+            "eligible_narrative_seed_count": sum(
+                1
+                for report in seed_reports
+                if isinstance(report, Mapping)
+                and any(
+                    family in {"filing", "transcript", "news"}
+                    for family in report.get("explored_families", ())
+                )
+            ),
+            "narrative_exploration_completed": sum(
+                1
+                for report in seed_reports
+                if isinstance(report, Mapping)
+                and any(
+                    family in {"filing", "transcript", "news"}
+                    for family in report.get("explored_families", ())
+                )
+            ),
+            "narrative_unavailable_count": sum(
+                1
+                for report in seed_reports
+                if isinstance(report, Mapping)
+                and not any(
+                    family in {"filing", "transcript", "news"}
+                    for family in report.get("explored_families", ())
+                )
+            ),
+            "narrative_read_count": 0,
+            "narrative_candidate_count": 0,
+            "narrative_materialization_count": 0,
+            "narrative_validation_count": 0,
+        }
+        for report in seed_reports:
+            if not isinstance(report, Mapping):
+                continue
+            if report.get("status") == "completed" and any(
+                family in {"filing", "transcript", "news"}
+                for family in report.get("explored_families", ())
+            ):
+                modality_metrics["narrative_candidate_count"] += len(
+                    report.get("candidate_refs", ())
+                )
         audit = {
             "schema_version": "signal-mining-audit-v1",
             "cycle_id": cycle_id,
@@ -5948,6 +5991,7 @@ class SignalEvolutionEngine:
             "status": "completed",
             "limits": self.mining_config.to_dict(),
             "seeds": seed_reports,
+            "modality_metrics": modality_metrics,
             "need_disposition_counts": need_disposition_counts,
             "candidate_refs": list(candidate_refs),
             "refined_hypotheses": {},
@@ -6013,13 +6057,33 @@ class SignalEvolutionEngine:
 
         wanted = {str(ref) for ref in candidate.get("evidence_refs", ())}
         excerpts: list[dict[str, Any]] = []
+        measurement = candidate.get("measurement")
+        predicate = (
+            measurement.get("predicate")
+            if isinstance(measurement, Mapping)
+            else None
+        )
+        if isinstance(predicate, Mapping):
+            excerpts.append(
+                {"predicate": dict(predicate), "kind": "narrative_predicate"}
+            )
         for ref, item in evidence.items():
             if str(ref) not in wanted or len(excerpts) >= 12:
                 continue
             row = {"ref": str(ref)}
-            for key in ("concept", "unit", "value", "exact_span", "excerpt"):
+            for key in (
+                "concept",
+                "unit",
+                "value",
+                "exact_span",
+                "excerpt",
+                "title",
+                "source_family",
+                "published_at",
+                "available_at",
+            ):
                 value = getattr(item, key, None)
-                if value is not None:
+                if value is not None and str(value).strip():
                     row[key] = str(value)[:600]
             period = getattr(item, "period", None)
             if isinstance(period, Mapping):
@@ -6087,8 +6151,16 @@ class SignalEvolutionEngine:
                     "measurement, point-in-time fixtures whose documents "
                     "embed the supplied verbatim evidence spans, and either "
                     "a registered deterministic function that matches the "
-                    "measurement or a source-grounded LLM skill. Output "
-                    "exactly {spec, skill, tests}."
+                    "measurement or a source-grounded LLM skill. For a "
+                    "narrative predicate candidate, author an LLM skill that "
+                    "judges the semantic condition over the narrative family "
+                    "inside the lookback window, cites verbatim supporting "
+                    "and counter spans, and returns unavailable when "
+                    "evidence is insufficient; fixtures must cover confirmed "
+                    "events, mere proposals or memoranda, cancellations, "
+                    "below-threshold amounts, paraphrases, lookalikes, "
+                    "post-cutoff documents, and evidence-insufficient "
+                    "cases. Output exactly {spec, skill, tests}."
                 ),
                 payload={
                     "candidate": dict(candidate),

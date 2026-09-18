@@ -1,0 +1,207 @@
+{
+  "run_id": "cold-start-seed-2026-05-03",
+  "theme_maps": [
+    {
+      "as_of_date": "2026-05-03",
+      "candidate_symbols": [
+        "AIC1",
+        "AIX1"
+      ],
+      "crowdedness_flags": [
+        "market_confirmation_started",
+        "valuation_stretch"
+      ],
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start theme map for ai-accelerator-cycle: 2 case(s), 2 segment(s), 2 candidate symbol(s)."
+        }
+      ],
+      "leading_indicators": [
+        "Capacity expansion update",
+        "Major customer product cycle",
+        "analyst target-price revision gap",
+        "dollar-volume expansion",
+        "growth-adjusted valuation room",
+        "near-term catalyst calendar",
+        "relative strength and price momentum",
+        "revenue and earnings acceleration"
+      ],
+      "name": "Ai Accelerator Cycle",
+      "risks": [
+        "Segment lacks a matched neutral control in the cold-start sample.",
+        "Valuation may already discount a large part of the theme."
+      ],
+      "segments": [
+        {
+          "candidate_symbols": [
+            "AIX1"
+          ],
+          "crowdedness_flags": [
+            "market_confirmation_started"
+          ],
+          "evidence": [
+            {
+              "as_of_date": "2026-05-03",
+              "data_quality": "confirmed",
+              "inference": true,
+              "kind": "inference",
+              "published_date": null,
+              "source_id": null,
+              "source_url": null,
+              "summary": "Cold-start segment Accelerators: stage 5, timing_score=0.80, transmission_score=0.65, candidates=AIX1."
+            }
+          ],
+          "leading_indicators": [
+            "Capacity expansion update",
+            "Major customer product cycle",
+            "analyst target-price revision gap",
+            "dollar-volume expansion",
+            "growth-adjusted valuation room",
+            "near-term catalyst calendar",
+            "relative strength and price momentum",
+            "revenue and earnings acceleration"
+          ],
+          "risks": [
+            "Segment lacks a matched neutral control in the cold-start sample."
+          ],
+          "segment_name": "Accelerators",
+          "timing_score": 0.7996,
+          "transmission_score": 0.65,
+          "transmission_stage": 5
+        },
+        {
+          "candidate_symbols": [
+            "AIC1"
+          ],
+          "crowdedness_flags": [
+            "valuation_stretch"
+          ],
+          "evidence": [
+            {
+              "as_of_date": "2026-05-03",
+              "data_quality": "confirmed",
+              "inference": true,
+              "kind": "inference",
+              "published_date": null,
+              "source_id": null,
+              "source_url": null,
+              "summary": "Cold-start segment Processors: stage 7, timing_score=0.00, transmission_score=0.25, candidates=AIC1."
+            }
+          ],
+          "leading_indicators": [],
+          "risks": [
+            "Valuation may already discount a large part of the theme."
+          ],
+          "segment_name": "Processors",
+          "timing_score": 0.0,
+          "transmission_score": 0.25,
+          "transmission_stage": 7
+        }
+      ],
+      "stage_scale_version": "theme-stage-v0.1",
+      "theme_id": "ai-accelerator-cycle",
+      "validation_state": {
+        "analyst_evidence": true,
+        "data_evidence": true,
+        "market_evidence": true,
+        "text_evidence": true
+      }
+    },
+    {
+      "as_of_date": "2026-05-03",
+      "candidate_symbols": [
+        "PWF1",
+        "PWR1"
+      ],
+      "crowdedness_flags": [
+        "valuation_stretch"
+      ],
+      "evidence": [
+        {
+          "as_of_date": "2026-05-03",
+          "data_quality": "confirmed",
+          "inference": true,
+          "kind": "inference",
+          "published_date": null,
+          "source_id": null,
+          "source_url": null,
+          "summary": "Cold-start theme map for power-grid-cycle: 2 case(s), 1 segment(s), 2 candidate symbol(s)."
+        }
+      ],
+      "leading_indicators": [
+        "Backlog disclosure",
+        "Industry conference",
+        "analyst target-price revision gap",
+        "dollar-volume expansion",
+        "growth-adjusted valuation room",
+        "near-term catalyst calendar",
+        "revenue and earnings acceleration"
+      ],
+      "name": "Power Grid Cycle",
+      "risks": [
+        "Catalyst density appeared in a non-winner case.",
+        "Segment includes a cold-start failure case.",
+        "Segment lacks a matched neutral control in the cold-start sample.",
+        "Valuation may already discount a large part of the theme."
+      ],
+      "segments": [
+        {
+          "candidate_symbols": [
+            "PWF1",
+            "PWR1"
+          ],
+          "crowdedness_flags": [
+            "valuation_stretch"
+          ],
+          "evidence": [
+            {
+              "as_of_date": "2026-05-03",
+              "data_quality": "confirmed",
+              "inference": true,
+              "kind": "inference",
+              "published_date": null,
+              "source_id": null,
+              "source_url": null,
+              "summary": "Cold-start segment Electrical Equipment: stage 7, timing_score=0.67, transmission_score=0.90, candidates=PWF1, PWR1."
+            }
+          ],
+          "leading_indicators": [
+            "Backlog disclosure",
+            "Industry conference",
+            "analyst target-price revision gap",
+            "dollar-volume expansion",
+            "growth-adjusted valuation room",
+            "near-term catalyst calendar",
+            "revenue and earnings acceleration"
+          ],
+          "risks": [
+            "Catalyst density appeared in a non-winner case.",
+            "Segment includes a cold-start failure case.",
+            "Segment lacks a matched neutral control in the cold-start sample.",
+            "Valuation may already discount a large part of the theme."
+          ],
+          "segment_name": "Electrical Equipment",
+          "timing_score": 0.67,
+          "transmission_score": 0.9,
+          "transmission_stage": 7
+        }
+      ],
+      "stage_scale_version": "theme-stage-v0.1",
+      "theme_id": "power-grid-cycle",
+      "validation_state": {
+        "analyst_evidence": true,
+        "data_evidence": true,
+        "market_evidence": false,
+        "text_evidence": true
+      }
+    }
+  ],
+  "warnings": []
+}

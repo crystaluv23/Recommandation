@@ -50,10 +50,10 @@ observation cycle.
 - Exactly three runtime-owned tools exist in the first version:
   `fetch_evidence`, `compute_statistic`, and `read_span`. General search,
   arbitrary code execution, arbitrary file reads, and candidate mutation are
-  not tools and must not be added without a spec change.
-- Every tool call is executed by the runtime, enforces point-in-time and
-  identity masking on outputs, charges the shared attempt/cost ledger, and
-  appends one mining-ledger entry whose input and output hashes are recorded.
+  not tools and must not be added without a spec change. Every tool call is
+  executed by the runtime, enforces point-in-time and identity masking on
+  outputs, charges the shared attempt/cost ledger, and appends one
+  mining-ledger entry whose input and output hashes are recorded.
 - `fetch_evidence` returns, together with its bounded results, the requested
   source family, query, window and case refs, the selected documents/facts/
   relations, the documents or concepts excluded by limits, query coverage,
@@ -61,6 +61,94 @@ observation cycle.
   PIT verdicts. A bounded view never proves absence: insufficient coverage
   may support only `evidence_unavailable`, never a domain claim that a fact
   does not exist.
+- Narrative read access (action plan v2, Phase 1): raw narrative text is the
+  authoritative narrative evidence. `NarrativeSpan` carries `event_ref`,
+  `case_ref`, `document_ref`, `source_family` (normalized family, not raw
+  source_type), `title` (deterministic, masked), `excerpt` (masked visible-text
+  summary, discovery-only), `exact_span` (verbatim raw-content window, held
+  unmasked inside the runtime-owned ledger), `content_hash`, `available_at`,
+  and `published_at`. `event_ref` identity is stable across paginated reads so
+  ledger replay keys never break.
+- `read_span` accepts exactly one of `fact_ref`, `event_ref`, or
+  `document_ref`; narrative/document reads take bounded `offset`/`length` and
+  return masked windows of the verbatim source text. Budget dimension is
+  determined by target class: fact reads charge the heavy budget, event and
+  document reads charge the separate browse budget. The browse budget
+  (initial ceiling 24 steps with per-step byte caps on catalog, summary, and
+  body) is a shadow-phase ceiling, frozen into the run contract only after
+  p50/p95 wire-token calibration; it never competes with the heavy budget.
+- `inspect_catalog` gains an optional `scope`: `signals` (stable Signal
+  catalog, the existing behavior) or `evidence` (the fetched-evidence
+  directory organized as family -> time window -> document refs with masked
+  titles and bounded summaries). Catalog and summary output is
+  `discovery_only`: it may steer search but can never be cited as candidate
+  evidence; only raw spans (facts, events, documents read through
+  `read_span`, or relations) are evidence-usable.
+- No-match never equals negative: a read or query without a match yields
+  unavailable or coverage insufficiency, never a domain claim.
+
+### Modality exploration obligation (action plan v2, Phase 2)
+
+- The controller view and ledger carry runtime-computed `modality_coverage`
+  for the structured and narrative modalities: `{available, explored,
+  status}`, where availability derives from the available narrative source
+  families and exploration from actual ledger narrative reads/catalog/fetches.
+- While narrative evidence is available and unexplored, domain terminal
+  actions (`propose_candidate`, `record_no_pattern`) are inadmissible; the
+  bounded correction names the options (fetch a narrative family, read an
+  event/document, inspect the evidence catalog, or take a control-plane
+  terminal). Control-plane terminals (`record_deferred` and its
+  `deferred_budget`/`evidence_unavailable` outcomes, correction-exhaustion
+  `technical_failure`) always satisfy the obligation — the obligation binds
+  exploration opportunity, never candidate outcomes. No quota forces a
+  narrative candidate, and none may be added.
+- The mining audit reports the modality metrics: eligible narrative seed
+  count, exploration completions, typed unavailability, narrative reads,
+  candidates, materializations, and validations, so reflection can consume
+  real modality footprints across cycles.
+
+### Narrative candidate predicate (action plan v2, Phase 3)
+
+- A narrative candidate's `measurement` may carry a `predicate` object:
+  `{modality: "narrative", source_families, lookback_days,
+  semantic_condition, threshold: {field, operator, value}}`. The runtime
+  checks mechanically: the predicate's families intersect the families of the
+  cited narrative evidence; the cited evidence includes at least one raw
+  narrative ref (event or document); every cited ref resolves in the ledger;
+  amount/date/window claims ride on verbatim spans, not on summaries.
+  Semantic satisfaction is judged only downstream by fixtures, holdout, and
+  the paired gates — the predicate never bypasses them.
+
+### Evidence priority and the optional attribute projection (action plan v2, Phase 4)
+
+- Raw narrative spans outrank every projection: an AttributeProjection may
+  index, aggregate, rank, and feed reflection, but may never be the only
+  evidence for a narrative candidate and may never interpret a projection
+  miss as the event's absence. Low-frequency events stay discoverable through
+  the raw path regardless of any projection threshold.
+- The projection layer is optional and contract-bound: its vocabulary,
+  ordering, rules, and input corpus hash are frozen artifacts (a zero-call
+  corpus derivation over the dev cohort); projection outcomes are typed
+  `projected_positive`, `projected_counter`, `projected_unresolved`, or
+  `projection_unavailable`, and a disagreement between a projection and a raw
+  span keeps the raw evidence and disables the projection, never the
+  candidate. A new projection kind is an explicit spec/contract extension.
+- Known interim property (until the projection lands): narrative proposals
+  ground in qualitative raw reading with no cheap cross-group contrast
+  instrument before the paired gate; the gate remains the arbiter, and
+  first-round low narrative proposal counts must not be read as failure.
+
+### Migration boundary (action plan v2)
+
+- The narrative interface, modality obligation, predicate contract, browse
+  budget, and any projection hash require a new run contract and successor
+  workspace. V98 and earlier workspaces stay read-only; their contracts and
+  history chains never gain the new fields. Rollback means freezing a fresh
+  successor from the same committed history with the narrative modality
+  disabled in its contract configuration — there is no runtime feature flag.
+- Case briefs (masked per-company introductions) are explicitly deferred:
+  recorded here so the deferral is not silent, to be designed into a later
+  contract version.
 
 ### Controller discipline
 
@@ -104,8 +192,17 @@ observation cycle.
   known concept named by the observable or normalization must be backed by
   at least one cited fact of that concept, and `compare_groups` results
   carry the fact_ref behind each value so the model can cite the evidence
-  its measurement actually consumes. Ledger-existence alone never proves
-  grounding.
+  its measurement actually consumes. A narrative measurement may instead
+  carry a structured `predicate` (modality, source families, lookback,
+  semantic condition, threshold); its runtime grounding check requires
+  cited raw narrative refs whose families intersect the predicate's
+  families, and amount/date/window claims ride on verbatim spans rather
+  than summaries. Materialization receives the predicate together with the
+  cited narrative spans (family, as-of time, verbatim span, content hash)
+  and the explicit unavailable conditions; the generated Signal must
+  express the narrative family, lookback window, retrieval intent, semantic
+  judgment, supporting and counter evidence, and evidence-insufficient
+  unavailability. Ledger-existence alone never proves grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 

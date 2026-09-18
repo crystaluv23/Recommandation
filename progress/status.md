@@ -1,5 +1,24 @@
 # Status
 
+2026-09-18（下午）叙事因子挖掘行动方案 v2 的离线阶段（Phase 0–5 + Phase 6
+离线半）已实施：Phase 0 spec 契约（NarrativeSpan、read 语义与 browse 预算
+维度、discovery_only 边界、模态探索义务、叙事谓词、投影仅索引、迁移边界、
+case briefs 显式延后）；Phase 1 叙事证据可读（NarrativeEvent 增
+title/source_family/published_at/exact_span；read_span 支持
+fact|event|document 三目标 + offset/length + browse 预算（fact→heavy、
+event/document→browse），账本存 verbatim 窗口哈希；inspect_catalog 增
+scope=evidence 目录）；Phase 2 模态义务（modality_coverage 进视图、
+domain 终态在叙事可用未探索时不可入、control-plane 终态豁免、
+modality_metrics 七计数入 mining audit）；Phase 3 叙事谓词契约
+（measurement.predicate + 族相交/原始叙事引用/阈值算子机检）；
+Phase 4 属性投影最小索引层（零调用语料派生词表、确定性投影、
+discovery_only 标注、"miss≠不存在"）；Phase 5 物化输入扩展（谓词+叙事
+摘录+八类叙事 fixture 提示）与离线八类 fixture 测试。全套 841 测试 +
+lint 通过；V98 语料零调用 replay：40/40 叙事事件 content-hash 可回溯、
+目录 discovery_only、投影仅索引。Phase 7（shadow，真实 DeepSeek）与
+Phase 8（生产观察）按用户指示留待后续。审计记录见
+reports/slow_round_prompt_audit_20260913.md。
+
 2026-09-18：已整理叙事/非结构化因子挖掘行动方案 v2，定位为 V98 之后的新
 contract/workspace 设计。方案要求先更新 spec/contract，再打通原始 narrative
 读取和模态探索机会义务；AttributeProjection 仅作为可选索引层，尚未实施，

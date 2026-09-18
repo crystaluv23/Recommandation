@@ -628,3 +628,45 @@ expected=unavailable 直接通过（空语料上任何信号都只能弃权，�
 或获取）；expected 为其他值则给出明确错误"fixture 提供零可见文档"。
 生产解析语义不变（配置了 adapter 却无人服务的请求仍报 adapter_missing）。
 回归覆盖两分支；全套测试 + lint 通过。
+
+## 叙事因子方案 v2 离线实施（2026-09-18，Phase 0–6 离线半）
+
+按 `reports/narrative-factor-mining-action-plan-2026-09-18.md` 执行，
+不含 Phase 7（shadow，真实 DeepSeek）与 Phase 8（生产观察）：
+
+- **Phase 0**：signal_mining_agent.md 增四节契约（叙事读取/模态义务/
+  叙事谓词/证据优先级与可选投影/迁移边界）；signal_mining_agent 的
+  grounding 段扩谓词语义；六条审阅意见全部折入（browse 预算维度按目标
+  类别、过渡期对比空窗写明、回滚=重冻结禁用模态的 successor、
+  discovery_only 与 LLM 判据分离、分页 ref 稳定、case briefs 显式延后）。
+- **Phase 1**：NarrativeEvent 增 title（确定性：元数据/JSON 标题/可见
+  文本头）、source_family（归一化族）、published_at、exact_span
+  （verbatim 窗口锚定摘要）；read_span 三目标（fact|event|document，
+  精确一个）+ offset/length 有界分页；预算按目标类别（fact→heavy，
+  event/document→browse，初始上限 24、字节上限 4000，shadow 校准后才
+  冻结）；账本存 verbatim_hash 供重放；inspect_catalog 增
+  scope=evidence（family→window→doc 目录，全部 discovery_only）。
+- **Phase 2**：modality_coverage 进视图（available/explored/status，
+  可用性来自 available_source_families∩叙事族，探索来自实际取回的叙事
+  文档/读取/目录）；domain 终态（propose/no_pattern）在叙事可用未探索
+  时不可入（纠正消息列全合法路径）；record_deferred 等 control-plane
+  终态豁免——义务约束探索机会而非候选结果；modality_metrics 七计数
+  入 mining audit。
+- **Phase 3**：measurement.predicate（modality/source_families/
+  lookback_days/semantic_condition/threshold）；机检：族与引用叙事证据
+  相交、至少一条原始叙事引用（event 或 document 读取）、阈值算子枚举；
+  语义判定留给 fixture/holdout/配对门。
+- **Phase 4**：零调用语料派生（确定性模式挖掘，词表+corpus hash 成
+  冻结工件）；project_attributes 投影（discovery_only、"miss≠不存在"，
+  低支持度只移出索引不移出 raw 路径）；digest 增 attribute_case_coverage。
+- **Phase 5**：物化输入含谓词与叙事摘录（title/family/published_at/
+  available_at/exact_span）；提示词要求叙事技能表达族/窗口/检索意图/
+  支持与反对 span/证据不足 unavailable，fixture 覆盖八类；离线八类
+  fixture 测试（确认订单/仅意向/取消/低于阈值/改写/形似/超期/不足）。
+- **Phase 6 离线半**：841 测试 + lint；V98 语料零调用 replay——
+  40/40 叙事事件 content-hash 可回溯、目录 discovery_only、投影仅索引、
+  派生词表为空时诚实为空（raw 路径不受影响）。
+
+回归覆盖：NarrativeInterfaceTests（6 项：事件字段/事件读取+browse 预算/
+义务阻断/deferred 豁免/谓词相交与拒绝/投影索引）+
+NarrativeFixtureFamilyTests（4 项八类内容）。
