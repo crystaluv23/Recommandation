@@ -64,6 +64,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _json_string_array,
     _listing_age_bucket,
     _market_cap_bucket,
+    _evidence_source_family,
     _mask_identity_values,
     _opaque_slow_case_ref,
     _project_slow_case_refs,
@@ -86,6 +87,9 @@ from stock_opportunity_agent.research.evolution_core import (
 from stock_opportunity_agent.research.evolution_settings import (
     FIXED_PREDICTOR_SEMANTICS,
     ROLE_OUTPUT_TOKEN_LIMITS,
+)
+from stock_opportunity_agent.research.mining_agent_tools import (
+    derive_attribute_vocabulary,
 )
 from stock_opportunity_agent.research.mining_controller import (
     LabelAwareMiningController,
@@ -5829,6 +5833,19 @@ class SignalEvolutionEngine:
         )
         model = MiningAgentRoleModel(caller)
 
+        narrative_documents = [
+            document
+            for case in dev_cases
+            for document in self.raw_info_store.documents
+            if document.company_id == case.company_id
+            and document.available_at <= case.prediction_time
+            and _evidence_source_family(document.source_type)
+            in {"filing", "transcript", "news"}
+        ]
+        attribute_vocabulary = derive_attribute_vocabulary(
+            narrative_documents
+        )
+
         candidates: list[dict[str, Any]] = []
         cited: dict[str, dict[str, Any]] = {}
 
@@ -5852,6 +5869,10 @@ class SignalEvolutionEngine:
                     cycle_id=cycle_id,
                     backlog_needs=backlog_needs if seed == "hypothesis" else (),
                     identity_aliases=self.slow_role_identity_guards,
+                    attribute_vocabulary=attribute_vocabulary,
+                    prior_modality_footprints=tuple(
+                        context.get("prior_modality_footprints", ())
+                    ),
                     validation_sink=seed_sink,
                 )
                 result = controller.run()
@@ -7596,11 +7617,32 @@ class SignalEvolutionEngine:
             self.slow_role_identity_guards,
             expand_aliases=False,
         )
+        prior_modality_footprints: list[dict[str, Any]] = []
+        for path in [item for item in committed_paths if item.is_file()][-3:]:
+            payload = _read_json(path)
+            audits = dict(payload.get("validation", {})).get("agent_audits", {})
+            metrics = dict(audits.get("mining_pipeline", {})).get(
+                "modality_metrics", {}
+            )
+            if isinstance(metrics, Mapping) and metrics:
+                prior_modality_footprints.append(
+                    {
+                        "cycle_id": int(
+                            payload.get("validation", {}).get("cycle_id", 0)
+                        ),
+                        **dict(metrics),
+                    }
+                )
         return {
             "cycle_id": cycle_id,
             "fixed_prior": self.priors.mine_signal,
             "meta_info": meta_view,
             "research_objective": signal_research_objective(),
+            "prior_modality_footprints": _mask_identity_values(
+                prior_modality_footprints,
+                self.slow_role_identity_guards,
+                expand_aliases=False,
+            ),
             "meta_context_audit": {
                 "content_hash": _canonical_hash(meta_view),
                 "round_ids": [int(item["round_id"]) for item in meta_view],

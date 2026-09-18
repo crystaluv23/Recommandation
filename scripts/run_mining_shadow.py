@@ -162,6 +162,29 @@ def main() -> None:
 
     inner = MiningAgentRoleModel(caller)
     model = _ViewRecordingModel(inner)
+    narrative_documents = [
+        document
+        for case in dev_cases
+        for document in store.documents
+        if document.company_id == case.company_id
+        and document.available_at <= case.prediction_time
+        and document.source_type
+        in {
+            "company_news",
+            "6-k",
+            "8-k",
+            "10-k",
+            "10-q",
+            "filing",
+            "sec_filing",
+            "earnings_call",
+            "transcript",
+        }
+    ]
+    from stock_opportunity_agent.research.mining_agent_tools import (
+        derive_attribute_vocabulary,
+    )
+
     controller = LabelAwareMiningController(
         store=store,
         model=model,
@@ -172,6 +195,7 @@ def main() -> None:
         backlog_needs=backlog_needs if args.seed == "hypothesis" else (),
         heavy_action_limit=args.heavy_action_limit,
         light_action_limit=args.light_action_limit,
+        attribute_vocabulary=derive_attribute_vocabulary(narrative_documents),
         validation_sink=sink,
     )
     import time

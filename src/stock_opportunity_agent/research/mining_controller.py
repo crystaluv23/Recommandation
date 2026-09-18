@@ -222,6 +222,7 @@ class LabelAwareMiningController:
         light_action_limit: int = 4,
         browse_limit: int = _DEFAULT_BROWSE_LIMIT,
         attribute_vocabulary: Mapping[str, Any] | None = None,
+        prior_modality_footprints: Sequence[Mapping[str, Any]] = (),
         validation_sink: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None,
         identity_aliases: Sequence[str] = (),
     ) -> None:
@@ -239,6 +240,9 @@ class LabelAwareMiningController:
         self.light_action_limit = light_action_limit
         self.browse_limit = browse_limit
         self.attribute_vocabulary = dict(attribute_vocabulary or {})
+        self.prior_modality_footprints = tuple(
+            dict(row) for row in prior_modality_footprints
+        )
         self._browse_used = 0
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
@@ -350,6 +354,9 @@ class LabelAwareMiningController:
             "label_map": dict(self._label_map),
             "evidence_digest": self._evidence_digest(),
             "modality_coverage": self._modality_coverage(),
+            "prior_modality_footprints": [
+                dict(row) for row in self.prior_modality_footprints
+            ],
         }
         if self._last_action_result is not None:
             view["last_action_result"] = dict(self._last_action_result)
@@ -381,6 +388,7 @@ class LabelAwareMiningController:
         label_counts = {"positive": 0, "control": 0}
         for label in self._label_map.values():
             label_counts[label] = label_counts.get(label, 0) + 1
+        narrative_summary = self._narrative_summary()
         attribute_index: dict[str, Any] = {}
         if self.attribute_vocabulary:
             documents = [
@@ -440,11 +448,58 @@ class LabelAwareMiningController:
                 )
             ),
             "label_counts": label_counts,
+            **({"narrative_summary": narrative_summary} if narrative_summary else {}),
             **(
                 {"attribute_case_coverage": attribute_index}
                 if attribute_index
                 else {}
             ),
+        }
+
+    def _narrative_summary(self) -> dict[str, Any]:
+        """Semantic surface for fetched narrative evidence.
+
+        Raw event refs are opaque; without titles and per-family counts the
+        decision view collapses back to the concept matrix even after a
+        narrative-including fetch (V99 post-mortem). Titles are masked with
+        the same identity inventory used everywhere else.
+        """
+
+        events = [
+            event
+            for event in self._events.values()
+            if event.source_family in _NARRATIVE_FAMILIES
+        ]
+        if not events:
+            return {}
+        family_counts: dict[str, int] = {}
+        for event in events:
+            family_counts[event.source_family] = (
+                family_counts.get(event.source_family, 0) + 1
+            )
+        sample_titles: list[str] = []
+        seen_titles: set[str] = set()
+        for event in sorted(events, key=lambda item: item.available_at):
+            title = event.title.strip()
+            if not title or title in seen_titles:
+                continue
+            seen_titles.add(title)
+            sample_titles.append(
+                str(
+                    _mask_identity_values(
+                        title, self.identity_aliases, expand_aliases=False
+                    )
+                )
+            )
+            if len(sample_titles) >= 6:
+                break
+        return {
+            "event_count": len(events),
+            "family_counts": dict(sorted(family_counts.items())),
+            "sample_titles": sample_titles,
+            "note": "inspect_catalog with scope=evidence lists every titled "
+            "document by family and window; read_span on event_ref reads "
+            "the verbatim text",
         }
 
     def _modality_coverage(self) -> dict[str, Any]:
@@ -675,6 +730,22 @@ class LabelAwareMiningController:
             )
         }
         self._relations.update(new_relations)
+        narrative_events = [
+            event
+            for event in self._events.values()
+            if event.source_family in _NARRATIVE_FAMILIES
+        ]
+        sample_titles: list[str] = []
+        for event in sorted(narrative_events, key=lambda item: item.available_at):
+            title = str(
+                _mask_identity_values(
+                    event.title.strip(), self.identity_aliases, expand_aliases=False
+                )
+            )
+            if title and title not in sample_titles:
+                sample_titles.append(title)
+            if len(sample_titles) >= 3:
+                break
         self._last_action_result = {
             "action": "fetch_evidence",
             "cases_requested": len(case_refs),
@@ -688,6 +759,16 @@ class LabelAwareMiningController:
             "excluded_document_ids": len(
                 omitted.get("excluded_document_ids", ())
             ),
+            "narrative_evidence": {
+                "events": len(narrative_events),
+                "sample_titles": sample_titles,
+                "catalog_note": (
+                    "the evidence catalog now lists every titled document "
+                    "by family and window (inspect_catalog scope=evidence)"
+                ),
+            }
+            if narrative_events
+            else None,
         }
         self._append(
             "fetch_evidence",

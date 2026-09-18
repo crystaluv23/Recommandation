@@ -1047,5 +1047,130 @@ class NarrativeInterfaceTests(unittest.TestCase):
         self.assertGreaterEqual(row["hits"], 2)
 
 
+class NarrativeSurfaceFixTests(unittest.TestCase):
+    """Post-V99 fixes: semantic narrative surface reaches the decision view."""
+
+    def _fixture(self):
+        cases = [make_case("nfix_pos", 4.0), make_case("nfix_ctl", 1.1)]
+        documents = []
+        for index, case in enumerate(cases):
+            documents.append(
+                RawInfoDocument.create(
+                    document_id=f"nfix_news_{index}",
+                    company_id=case.company_id,
+                    source_type="company_news",
+                    published_at=NOW,
+                    available_at=NOW,
+                    content=json.dumps(
+                        {
+                            "title": "Masked Corp wins $120 million order",
+                            "summary": (
+                                "Masked Corp announced a definitive purchase "
+                                "agreement valued at approximately $120 million."
+                            ),
+                        }
+                    ),
+                )
+            )
+        return cases, RawInfoStore(documents=tuple(documents))
+
+    def _controller(self, model, cases, store, **kwargs):
+        return LabelAwareMiningController(
+            store=store,
+            model=model,
+            case_pairs=[
+                (f"case-{index:03d}", case)
+                for index, case in enumerate(cases, 1)
+            ],
+            measurable_evidence_manifest=_manifest(),
+            signal_catalog=[],
+            **kwargs,
+        )
+
+    def test_digest_carries_masked_titles_and_family_counts(self):
+        cases, store = self._fixture()
+        seen = {}
+
+        def after_fetch(view):
+            seen.update(view)
+            return {"action": "record_deferred", "rationale": ["Stop."]}
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch news."],
+                    "case_refs": ["case-001", "case-002"],
+                    "source_families": ["news"],
+                    "max_documents": 4,
+                },
+                after_fetch,
+            ]
+        )
+        controller = self._controller(model, cases, store, seed="discovery")
+        controller.run()
+
+        summary = seen["evidence_digest"]["narrative_summary"]
+        self.assertEqual(summary["event_count"], 2)
+        self.assertEqual(summary["family_counts"], {"news": 2})
+        self.assertTrue(summary["sample_titles"])
+        self.assertIn("catalog", summary["note"])
+
+    def test_fetch_result_announces_titled_catalog(self):
+        cases, store = self._fixture()
+        seen = {}
+
+        def after_fetch(view):
+            seen.update(view)
+            return {"action": "record_deferred", "rationale": ["Stop."]}
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Fetch news."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["news"],
+                    "max_documents": 2,
+                },
+                after_fetch,
+            ]
+        )
+        controller = self._controller(model, cases, store, seed="discovery")
+        controller.run()
+
+        result = seen["last_action_result"]
+        narrative = result["narrative_evidence"]
+        self.assertEqual(narrative["events"], 1)
+        self.assertTrue(narrative["sample_titles"])
+        self.assertIn("inspect_catalog", narrative["catalog_note"])
+
+    def test_prior_modality_footprints_reach_the_view(self):
+        cases, store = self._fixture()
+        seen = {}
+
+        def first(view):
+            seen.update(view)
+            return {"action": "record_deferred", "rationale": ["Stop."]}
+
+        model = ScriptedMiningDecisionModel([first])
+        footprints = [
+            {
+                "cycle_id": 1,
+                "eligible_narrative_seed_count": 2,
+                "narrative_candidate_count": 0,
+                "narrative_read_count": 0,
+            }
+        ]
+        controller = self._controller(
+            model, cases, store, seed="discovery",
+            prior_modality_footprints=footprints,
+        )
+        controller.run()
+        self.assertEqual(
+            seen["prior_modality_footprints"], footprints
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
