@@ -202,7 +202,12 @@ observation cycle.
   and the explicit unavailable conditions; the generated Signal must
   express the narrative family, lookback window, retrieval intent, semantic
   judgment, supporting and counter evidence, and evidence-insufficient
-  unavailability. Ledger-existence alone never proves grounding.
+  unavailability. Retrieval-family validation uses the executor's
+  source-family equivalence: a family name such as `news`, `filing`, or
+  `transcript` is interchangeable with its concrete source types
+  (`company_news`, `sec_filing`, `earnings_call`), so a predicate that
+  names normalized families is never rejected merely for citing concrete
+  document types. Ledger-existence alone never proves grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 

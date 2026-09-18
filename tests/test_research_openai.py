@@ -284,5 +284,44 @@ class OpenAIChatClientTests(TestCase):
                 }
             ),
         )
-        with self.assertRaisesRegex(OpenAIClientError, "no output_text"):
+        with self.assertRaisesRegex(OpenAIClientError, "refused"):
             refusing.complete([ChatMessage("user", "Return JSON.")])
+
+        truncated = OpenAIChatClient(
+            "gpt-5.4-mini",
+            "test-key",
+            transport=FakeTransport(
+                {
+                    "id": "response_reasoning_only",
+                    "model": "gpt-5.4-mini",
+                    "output": [
+                        {
+                            "type": "reasoning",
+                            "content": [
+                                {"type": "reasoning_text", "text": "thinking"}
+                            ],
+                        }
+                    ],
+                }
+            ),
+        )
+        from stock_opportunity_agent.llm.openai import (
+            RetryableOpenAIClientError,
+        )
+
+        with self.assertRaisesRegex(
+            RetryableOpenAIClientError, "no output_text"
+        ):
+            truncated.complete([ChatMessage("user", "Return JSON.")])
+
+        missing_output = OpenAIChatClient(
+            "gpt-5.4-mini",
+            "test-key",
+            transport=FakeTransport(
+                {"id": "response_no_output", "model": "gpt-5.4-mini"}
+            ),
+        )
+        with self.assertRaisesRegex(
+            RetryableOpenAIClientError, "missing output list"
+        ):
+            missing_output.complete([ChatMessage("user", "Return JSON.")])

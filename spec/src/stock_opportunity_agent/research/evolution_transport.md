@@ -15,6 +15,10 @@ ledgers, exact-response caching, and the structured model-client boundary.
   full reservation until they finalize. Transient retries therefore never
   permanently consume ceiling headroom the run did not actually spend.
 - Persisted artifacts never contain provider credentials.
+- A provider 200 response that carries no message output text (for example a
+  reasoning-heavy completion truncated before any message chunk) is a transient
+  provider anomaly: it is classified retryable and never a permanent domain
+  verdict. An explicit provider refusal is not retryable.
 
 ## Frozen reasoning output reservation
 

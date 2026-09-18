@@ -342,8 +342,15 @@ def registered_gpt41_model(settings: ModelClientSettings) -> OpenAIChatClient:
 def _extract_output_text(raw: Mapping[str, Any]) -> str:
     output = raw.get("output")
     if not isinstance(output, list):
-        raise OpenAIClientError("OpenAI response missing output list")
+        # A 200 response without an output list is a provider anomaly with
+        # the same transient character as an incomplete HTTP body: classify
+        # it retryable so the bounded transport retries and the run-level
+        # auto-resume handle it instead of killing the cycle outright.
+        raise RetryableOpenAIClientError(
+            "OpenAI response missing output list"
+        )
     chunks: list[str] = []
+    refusal: str | None = None
     for item in output:
         if not isinstance(item, Mapping) or item.get("type") != "message":
             continue
@@ -351,12 +358,27 @@ def _extract_output_text(raw: Mapping[str, Any]) -> str:
         if not isinstance(content, list):
             continue
         for part in content:
-            if isinstance(part, Mapping) and part.get("type") == "output_text":
+            if not isinstance(part, Mapping):
+                continue
+            if part.get("type") == "output_text":
                 text = part.get("text")
                 if isinstance(text, str):
                     chunks.append(text)
+            elif (
+                part.get("type") == "refusal"
+                and isinstance(part.get("refusal"), str)
+            ):
+                refusal = str(part["refusal"])
+    if refusal is not None:
+        # A refusal is the provider's deterministic answer, not a transport
+        # anomaly: surface it so correction logic can react to the content.
+        raise OpenAIClientError(f"OpenAI response refused: {refusal}")
     if not chunks:
-        raise OpenAIClientError("OpenAI response contained no output_text")
+        # Most often a reasoning-heavy completion truncated before any
+        # message chunk was emitted; a fresh attempt usually lands one.
+        raise RetryableOpenAIClientError(
+            "OpenAI response contained no output_text"
+        )
     return "".join(chunks)
 
 

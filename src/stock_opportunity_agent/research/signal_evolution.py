@@ -18,6 +18,7 @@ from stock_opportunity_agent.data.resolution import (
     EvidenceResolver,
     RawInfoRequest,
     RawInfoResolution,
+    source_types_compatible,
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import OpenAIClientError
@@ -1193,7 +1194,7 @@ class SignalCandidateValidator:
                 str(raw_document.get("available_at", published_at.isoformat()))
             )
             source_type = str(raw_document["source_type"])
-            if source_type not in spec.source_types:
+            if not source_types_compatible((source_type,), spec.source_types):
                 raise ValidationError("fixture source_type is outside candidate retrieval")
             documents.append(
                 RawInfoDocument.create(
@@ -6243,10 +6244,13 @@ class SignalEvolutionEngine:
                     ),
                     "retrieval_guidance": {
                         "rule": (
-                            "raw_retrieval.source_types must be the source "
-                            "families of the cited evidence, and coverage "
-                            "minima must not exceed what the cited evidence "
-                            "itself demonstrates"
+                            "raw_retrieval.source_types must cover the "
+                            "source types of the cited evidence (a family "
+                            "name like news, filing, or transcript is "
+                            "interchangeable with its concrete types like "
+                            "company_news, sec_filing, earnings_call), and "
+                            "coverage minima must not exceed what the cited "
+                            "evidence itself demonstrates"
                         ),
                     },
                     "last_issues": list(last_issues),
@@ -6302,12 +6306,15 @@ class SignalEvolutionEngine:
             if family
         }
         if retrieval_families and evidence_families and not (
-            retrieval_families & evidence_families
+            source_types_compatible(retrieval_families, evidence_families)
         ):
             return None, [
                 "raw_retrieval.source_types do not include any cited-evidence "
-                "source family; retrieve from the families the measurement "
-                f"actually cites (evidence families: {sorted(evidence_families)})"
+                "source family; retrieve from the source types or families "
+                "the measurement actually cites (cited evidence source "
+                f"types: {sorted(evidence_families)}; equivalent families "
+                "such as news/company_news, filing/10-k/8-k, or "
+                "transcript/earnings_call are interchangeable)"
             ]
         checked = self.validator.validate(
             spec, skill=skill, tests=parsed["tests"]

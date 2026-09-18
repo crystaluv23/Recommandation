@@ -453,7 +453,9 @@ Retrieval coverage is checked before execution. `minimum_observations` counts
 explicit structured series, not arbitrary scalar financial facts; period counts
 and period spans do not guarantee the concepts or comparable durations required
 by the measurement. Candidate fixtures must satisfy their own retrieval contract
-and use supported source types/formats. Failed fixture diagnostics preserve
+and use supported source types/formats; a fixture document whose source type is
+family-equivalent to a declared retrieval source (for example `company_news`
+under `news`) satisfies the contract. Failed fixture diagnostics preserve
 resolution status and missing coverage or execution error, so an unavailable
 result cannot conceal whether the skill actually ran. Technical execution
 failure never passes a fixture merely because expected is unavailable.

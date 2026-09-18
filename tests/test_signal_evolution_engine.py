@@ -1002,6 +1002,12 @@ class SignalEvolutionTests(TestCase):
                         "positive threshold."
                     )
                     spec["parameters"]["positive_min"] = 0.15
+                    # The retrieval declares the evidence family while the
+                    # cited documents carry the concrete source type; the
+                    # two vocabularies must stay interchangeable.
+                    raw_retrieval = dict(spec.get("raw_retrieval") or {})
+                    raw_retrieval["source_types"] = ["news"]
+                    spec["raw_retrieval"] = raw_retrieval
                     growth = sec_company_facts_content(
                         ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                         ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
@@ -1017,7 +1023,7 @@ class SignalEvolutionTests(TestCase):
                                     "as_of": "2025-02-01T00:00:00+00:00",
                                     "documents": [
                                         {
-                                            "source_type": "financials",
+                                            "source_type": "company_news",
                                             "content": growth,
                                         }
                                     ],
@@ -1121,7 +1127,10 @@ class SignalEvolutionTests(TestCase):
             for index, case in enumerate(cases):
                 documents.append(
                     RawInfoDocument.create(
-                        document_id=f"narr_news_{index}",
+                        document_id=(
+                            f"test_provider:cik_0000000123:company_news:"
+                            f"narr_{index}"
+                        ),
                         company_id=case.company_id,
                         source_type="company_news",
                         published_at=NOW,
@@ -1143,7 +1152,10 @@ class SignalEvolutionTests(TestCase):
                 )
                 documents.append(
                     RawInfoDocument.create(
-                        document_id=f"narr_facts_{index}",
+                        document_id=(
+                            f"test_provider:cik_0000000123:financials:"
+                            f"facts_{index}"
+                        ),
                         company_id=case.company_id,
                         source_type="financials",
                         published_at=NOW,
