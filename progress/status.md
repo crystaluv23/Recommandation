@@ -1,5 +1,11 @@
 # Status
 
+2026-09-18：已整理叙事/非结构化因子挖掘行动方案 v2，定位为 V98 之后的新
+contract/workspace 设计。方案要求先更新 spec/contract，再打通原始 narrative
+读取和模态探索机会义务；AttributeProjection 仅作为可选索引层，尚未实施，
+也未发起新的 live 外部调用。详见
+`reports/narrative-factor-mining-action-plan-2026-09-18.md`。
+
 2026-09-17（夜）**V98 首次达成新信号挖掘入库**：cash_to_current_
 liabilities_ratio:v1 由生产 LabelAwareMiningController（Seed A）挖掘、
 物化（检索族约束）、契约校验通过，16 个全新 check 上 TP=5/FP=0/TN=6/FN=3
