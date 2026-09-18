@@ -207,7 +207,14 @@ observation cycle.
   `transcript` is interchangeable with its concrete source types
   (`company_news`, `sec_filing`, `earnings_call`), so a predicate that
   names normalized families is never rejected merely for citing concrete
-  document types. Ledger-existence alone never proves grounding.
+  document types. Materialization correction stays bounded per candidate:
+  a narrative predicate candidate must materialize as an LLM skill whose
+  fixtures are themselves LLM judgments, so its correction loop carries a
+  wider bound than deterministic-function candidates, fixture failure
+  feedback carries the executor's interpretation verbatim so the author
+  can resolve taxonomy disagreements precisely, and materialization
+  failures are recorded per candidate signal id (never overwritten by a
+  sibling candidate). Ledger-existence alone never proves grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
 

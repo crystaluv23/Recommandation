@@ -1257,9 +1257,15 @@ class SignalCandidateValidator:
         if result.value is not expected:
             resolution = batch.resolutions[0]
             detail = resolution.gap.message if resolution.gap is not None else "no data gap"
+            interpretation = str(result.interpretation).strip()
+            judge_note = (
+                f"; executor interpretation: {interpretation[:400]}"
+                if interpretation
+                else ""
+            )
             raise ValidationError(
                 f"expected {expected.value}, received {result.value.value}; "
-                f"resolution={resolution.status}; {detail}"
+                f"resolution={resolution.status}; {detail}{judge_note}"
             )
 
 
@@ -6181,10 +6187,18 @@ class SignalEvolutionEngine:
         The controller grounds the measurement; one bounded model call renders
         it into the same staging payload ({spec, skill, tests}) the legacy
         mining path uses, after which the unchanged contract validator and
-        paired gates judge it.
+        paired gates judge it. A narrative predicate candidate must materialize
+        as an LLM skill, so every fixture is itself an LLM judgment; its
+        correction loop gets the wider bound because expected-value and
+        executor-taxonomy disagreements converge over more rounds than
+        deterministic-function fixtures.
         """
 
         corrections = 0
+        max_corrections = 4 if self._is_narrative_candidate(candidate) else 2
+        failure_key = "slow_loop:mining_materialize:" + (
+            self._controller_signal_id_slug(candidate, {})
+        )
         last_issues: list[str] = []
         while True:
             parsed, issues = self._materialize_once(
@@ -6198,8 +6212,8 @@ class SignalEvolutionEngine:
                 return parsed
             last_issues = issues or ["materialization call failed"]
             corrections += 1
-            if corrections > 2:
-                failures["slow_loop:mining_materialize"] = tuple(last_issues)
+            if corrections > max_corrections:
+                failures[failure_key] = tuple(last_issues)
                 return None
 
     def _materialize_once(
@@ -6234,7 +6248,16 @@ class SignalEvolutionEngine:
                     "events, mere proposals or memoranda, cancellations, "
                     "below-threshold amounts, paraphrases, lookalikes, "
                     "post-cutoff documents, and evidence-insufficient "
-                    "cases. Output exactly {spec, skill, tests}."
+                    "cases. The skill's classification rules must name each "
+                    "fixture class and assign it the same expected value the "
+                    "fixture asserts: confirmed qualifying events are "
+                    "positive; explicit cancellations or denials of a "
+                    "qualifying event are negative; adequate documents that "
+                    "contain only proposals, memoranda, non-binding intent, "
+                    "lookalikes, or below-threshold mentions are neutral, "
+                    "not unavailable; unavailable is reserved for empty or "
+                    "post-cutoff-only corpora and genuinely insufficient "
+                    "text. Output exactly {spec, skill, tests}."
                 ),
                 payload={
                     "candidate": dict(candidate),
@@ -6262,10 +6285,9 @@ class SignalEvolutionEngine:
         except (EvolutionControlFlow, OpenAIClientError):
             raise
         except Exception as exc:
-            failures["slow_loop:mining_materialize"] = (
-                f"{type(exc).__name__}: {exc}",
-            )
-            return None
+            return None, [
+                f"materialization call failed: {type(exc).__name__}: {exc}"
+            ]
         if not isinstance(parsed, Mapping) or set(parsed) != {
             "spec",
             "skill",
