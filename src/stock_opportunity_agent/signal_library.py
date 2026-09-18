@@ -2732,7 +2732,9 @@ def validate_signal_result(
     if spec.evidence_policy.require_source and not evidence:
         raise ValidationError(
             f"available signal result ({result.value.value}) requires source evidence; "
-            "return unavailable with empty evidence when no literal citation supports it"
+            "cite the examined non-qualifying spans as counter evidence for "
+            "neutral or negative conclusions, or return unavailable with empty "
+            "evidence when the visible text cannot support applying the skill"
         )
     documents_by_id = {document.document_id: document for document in documents}
     for group, group_evidence in evidence_groups:

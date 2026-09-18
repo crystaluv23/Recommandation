@@ -132,6 +132,12 @@ passes and are archived with this spec at cutover.
   deterministic ordering, exact raw-span lineage and per-Signal citation scope
   remain unchanged. A bounded view cannot prove absent data; unavailable results
   must remain distinct from technical failures and negative domain observations.
+  Neutral and negative conclusions are available results: the executor cites the
+  examined non-qualifying spans as counter evidence instead of abstaining, and
+  the batch prompt, correction actions, and runtime evidence-validation errors
+  all state that unavailable is reserved for text that cannot support applying
+  the skill at all — never for the mere absence of a span satisfying a positive
+  semantic condition.
 - Supported SEC Company Facts use the shared structured fact selector rather
   than character windows: each complete literal record retains its source
   taxonomy, concept, label and unit, with latest / comparable-prior selection
