@@ -1,5 +1,15 @@
 # Status
 
+2026-09-18（晚）V99 叙事接口生产首验完成：两周期 clean exit（134
+attempts/$1.42），探索义务 100% 履行（modality_metrics 入 audit：两周期
+eligible 全 explored、零静默跳过），10 个步骤 rationale 显式考虑叙事模态、
+4 次 fetch 全部纳入叙事族、discovery-only 证据目录被两 seed 主动使用；
+cycle 1 新候选 operating_profitability_margin:v1 成为 provisional 居留者
+（配对门两底线诚实失败）、cycle 2 复访运行。未竟：叙事候选提案为零
+（read_count=0、无 predicate——模型 fetch 后未深读事件正文），反思未
+消费 modality 足迹；两个下一杠杆已定位（浏览深度激励 + 反思输入扩展）。
+Shadow 轨同步验证义务 wire 级生效。审计详见 prompt 审计报告 V99 节。
+
 2026-09-18（下午）叙事因子挖掘行动方案 v2 的离线阶段（Phase 0–5 + Phase 6
 离线半）已实施：Phase 0 spec 契约（NarrativeSpan、read 语义与 browse 预算
 维度、discovery_only 边界、模态探索义务、叙事谓词、投影仅索引、迁移边界、

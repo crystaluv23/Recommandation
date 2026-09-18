@@ -670,3 +670,40 @@ expected=unavailable 直接通过（空语料上任何信号都只能弃权，�
 回归覆盖：NarrativeInterfaceTests（6 项：事件字段/事件读取+browse 预算/
 义务阻断/deferred 豁免/谓词相交与拒绝/投影索引）+
 NarrativeFixtureFamilyTests（4 项八类内容）。
+
+## V99：叙事接口生产首验（2026-09-18，Phase 7 shadow + Phase 8 观察）
+
+**Shadow 两 seed**（v98-shadow-narr1/narr2，$0.072/$0.025，不变量通过）：
+义务与信息流 wire 级验证——首视图 `modality_coverage.narrative={available:
+true, explored:false, status:required}`；模型 rationale 原文引用义务
+（"Narrative modality is available but unexplored; include filing, 10-K,
+10-Q, and news families to satisfy narrative exploration"）；fetch 主动纳入
+叙事族后视图状态转移到 `explored:true`；120 个带 title/family 的叙事事件
+进入 `known_event_refs` 对模型可见。两 seed 均终态 candidate（结构化测量）。
+
+**生产 V99**（81aa39f3/2b2a28b，从 V98 导入，两周期 clean exit，134
+attempts/$1.42）：cycle 1 提交 1 个新候选（operating_profitability_margin
+:v1，配对门两底线失败→provisional 居留者）；cycle 2 居留者复访运行
+（pooled 继续）；Update=1（guidance_acceleration:v2 契约 fixture 诚实
+拒绝）。
+
+**叙事迹象审计（用户第 2 项目标的核心证据）**：
+- `modality_metrics` 两周期进入 mining audit：cycle 1
+  {eligible:1, explored:1, unavailable:1}、cycle 2 {eligible:2, explored:2}
+  ——探索义务 100% 履行，零静默跳过；
+- 10 个控制器步骤的 rationale 明确提及叙事模态/新闻/filing 族；4 次
+  fetch 全部主动纳入叙事族（含 8-k/news/earnings_call/transcript）；
+  两 seed 均先 `inspect_catalog` 查看证据目录（discovery-only 目录被
+  主动使用——"Need the discovery-only family/window/document directory
+  to plan broad evidence fetches"）；
+- 短板同样如实：`narrative_read_count=0`（模型在 fetch 满足义务后未
+  深入读取事件正文），三份提案全部为结构化测量（无 predicate、全 fact
+  引用）；cycle-2 reflection 未提及叙事足迹（反思对 modality 指标的
+  消费是下一杠杆——义务保证了数据流，反思尚未利用它改变搜索策略）。
+
+**结论**：跑通正确性（第 1 项目标）完全达成——prompt/视图/response 内容
+逐项符合契约、义务状态转移/证据目录/事件可见性/复访/居留/配对门/反思
+输入等链路全部真实运转。叙事机会与迹象（第 2 项目标）达成"明确迹象"层：
+义务机制在生产中被真实履行、叙事证据被真实取回并可见、模型推理中
+显式考虑了叙事模态；未达成"叙事因子入库"层——提案分布仍偏结构化，
+已定位的两个下一杠杆（读取深度与反思消费 modality 足迹）记录在案。
