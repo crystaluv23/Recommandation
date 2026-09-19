@@ -239,9 +239,13 @@ class SignalEvolutionTests(TestCase):
             if tp is not None and fn is not None:
                 confusion = {"tp": tp, "fn": fn}
             return {
-                "candidate_decisive": decisive,
-                "candidate_correct": correct,
-                "candidate_wrong": wrong,
+                # Production effectiveness records serialize the counts
+                # under the nested candidate mapping, not flat keys.
+                "candidate": {
+                    "decisive": decisive,
+                    "directional_correct": correct,
+                    "directional_wrong": wrong,
+                },
                 "candidate_confusion": confusion,
             }
 
@@ -253,6 +257,22 @@ class SignalEvolutionTests(TestCase):
             ]
         )
         self.assertEqual(promote["action"], "promote")
+        self.assertEqual(
+            promote["counts"],
+            {"cycles": 3, "decisive": 13, "correct": 12, "wrong": 1, "tp": 6, "fn": 0},
+        )
+
+        legacy_flat = pooled_provisional_decision(
+            [
+                {
+                    "candidate_decisive": 4,
+                    "candidate_directional_correct": 4,
+                    "candidate_directional_wrong": 0,
+                    "candidate_confusion": {"tp": 2, "fn": 0},
+                }
+            ]
+        )
+        self.assertEqual(legacy_flat["counts"]["decisive"], 4)
 
         recall_starved = pooled_provisional_decision(
             [

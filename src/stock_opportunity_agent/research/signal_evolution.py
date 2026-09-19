@@ -2053,6 +2053,21 @@ def _binomial_tail_at_least(count: int, trials: int) -> float:
     return sum(comb(trials, i) for i in range(count, trials + 1)) / 2**trials
 
 
+def _pooled_candidate_count(row: Mapping[str, Any], key: str) -> int:
+    """Read one candidate count from either record shape.
+
+    Effectiveness records serialize candidate counts under the nested
+    ``candidate`` mapping (``decisive``, ``directional_correct``,
+    ``directional_wrong``); a legacy flat ``candidate_*`` key is honored as
+    a fallback so old rows never silently pool as zeros.
+    """
+
+    candidate = row.get("candidate")
+    if isinstance(candidate, Mapping):
+        return int(candidate.get(key, 0) or 0)
+    return int(row.get(f"candidate_{key}", 0) or 0)
+
+
 def pooled_provisional_decision(
     records: Iterable[Mapping[str, Any]],
 ) -> dict[str, Any]:
@@ -2067,9 +2082,13 @@ def pooled_provisional_decision(
     """
 
     rows = [dict(row) for row in records]
-    decisive = sum(int(row.get("candidate_decisive", 0)) for row in rows)
-    correct = sum(int(row.get("candidate_correct", 0)) for row in rows)
-    wrong = sum(int(row.get("candidate_wrong", 0)) for row in rows)
+    decisive = sum(_pooled_candidate_count(row, "decisive") for row in rows)
+    correct = sum(
+        _pooled_candidate_count(row, "directional_correct") for row in rows
+    )
+    wrong = sum(
+        _pooled_candidate_count(row, "directional_wrong") for row in rows
+    )
     tp = sum(
         int(row.get("candidate_confusion", {}).get("tp", 0))
         for row in rows
