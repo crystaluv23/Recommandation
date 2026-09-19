@@ -1,0 +1,158 @@
+[
+  {
+    "attempt_id": 7,
+    "stage": "signal_retrieval_cards",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": [
+      "What did Kinross disclose by 2025-09-30 about the operational and financial impact of the April 2025 Tasiast mill fire, including any revised production guidance or repair timeline?",
+      "What forward guidance did Kinross provide by 2025-09-30 for 2025 and 2026 gold equivalent production, all-in sustaining cost, and capital expenditure?",
+      "What did Kinross disclose by 2025-09-30 about its realized gold price, revenue, and margin trends in its most recent quarterly results?",
+      "What did Kinross disclose by 2025-09-30 about its reserve and resource estimates and any life-of-mine plan updates?",
+      "What did Kinross disclose by 2025-09-30 about its cash balance, total liquidity, debt maturity profile, and free cash flow generation?",
+      "What analyst consensus price targets and earnings estimates for Kinross were published by 2025-09-30?"
+    ],
+    "selection_intents": null,
+    "payload_keys": [
+      "available_signal_cards",
+      "evaluation_context",
+      "information_needs",
+      "learned_profile_default",
+      "previous_context_tags",
+      "previous_signal_results",
+      "research_context",
+      "selection_caps",
+      "validation_feedback"
+    ]
+  },
+  {
+    "attempt_id": 11,
+    "stage": "research_controller_reflect",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": null,
+    "selection_intents": null,
+    "payload_keys": [
+      "evaluation_context",
+      "executed_selection_intents",
+      "need_transition_contract",
+      "reflection_runtime",
+      "reflection_skill",
+      "research_state",
+      "research_state_capacity",
+      "signal_batch",
+      "signal_evidence_ref_catalog",
+      "validation_feedback"
+    ]
+  },
+  {
+    "attempt_id": 12,
+    "stage": "signal_retrieval_cards",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": [
+      "What did Kinross disclose by 2025-09-30 about the operational and financial impact of the April 2025 Tasiast mill fire, including any revised production guidance or repair timeline?",
+      "What forward guidance did Kinross provide by 2025-09-30 for 2025 and 2026 gold equivalent production, all-in sustaining cost, and capital expenditure?",
+      "What did Kinross disclose by 2025-09-30 about its realized gold price, revenue, and margin trends in its most recent quarterly results?",
+      "What did Kinross disclose by 2025-09-30 about its reserve and resource estimates and any life-of-mine plan updates?",
+      "Total liquidity, debt maturity profile, and free cash flow generation remain unresolved.",
+      "What analyst consensus price targets and earnings estimates for Kinross were published by 2025-09-30?"
+    ],
+    "selection_intents": null,
+    "payload_keys": [
+      "available_signal_cards",
+      "evaluation_context",
+      "information_needs",
+      "learned_profile_default",
+      "previous_context_tags",
+      "previous_signal_results",
+      "research_context",
+      "selection_caps",
+      "validation_feedback"
+    ]
+  },
+  {
+    "attempt_id": 15,
+    "stage": "research_controller_reflect",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": null,
+    "selection_intents": null,
+    "payload_keys": [
+      "evaluation_context",
+      "executed_selection_intents",
+      "need_transition_contract",
+      "reflection_runtime",
+      "reflection_skill",
+      "research_state",
+      "research_state_capacity",
+      "signal_batch",
+      "signal_evidence_ref_catalog",
+      "validation_feedback"
+    ]
+  },
+  {
+    "attempt_id": 16,
+    "stage": "signal_retrieval_cards",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": [
+      "What did Kinross disclose by 2025-09-30 about the operational and financial impact of the April 2025 Tasiast mill fire, including any revised production guidance or repair timeline?",
+      "What forward guidance did Kinross provide by 2025-09-30 for 2025 and 2026 gold equivalent production, all-in sustaining cost, and capital expenditure?",
+      "What did Kinross disclose by 2025-09-30 about its realized gold price, revenue, and margin trends in its most recent quarterly results?",
+      "What did Kinross disclose by 2025-09-30 about its reserve and resource estimates and any life-of-mine plan updates?",
+      "Total liquidity, debt maturity profile, and free cash flow generation remain unresolved.",
+      "What analyst consensus price targets and earnings estimates for Kinross were published by 2025-09-30?"
+    ],
+    "selection_intents": null,
+    "payload_keys": [
+      "available_signal_cards",
+      "evaluation_context",
+      "information_needs",
+      "learned_profile_default",
+      "previous_context_tags",
+      "previous_signal_results",
+      "research_context",
+      "selection_caps",
+      "validation_feedback"
+    ]
+  },
+  {
+    "attempt_id": 18,
+    "stage": "research_controller_reflect",
+    "evaluation_context": {
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "information_needs": null,
+    "selection_intents": null,
+    "payload_keys": [
+      "evaluation_context",
+      "executed_selection_intents",
+      "need_transition_contract",
+      "reflection_runtime",
+      "reflection_skill",
+      "research_state",
+      "research_state_capacity",
+      "signal_batch",
+      "signal_evidence_ref_catalog",
+      "validation_feedback"
+    ]
+  }
+]

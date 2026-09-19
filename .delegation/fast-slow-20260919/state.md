@@ -96,3 +96,15 @@ exec24820/launcherPID56589, APItransport, nohard/idledeadline. Singlewriter,no p
 
 ## Round23 locally accepted; V124 freeze next
 NormalAPIturn.completed941.5s exit0,64focused/936full/lintPASS. Independent originalV123registry7/8replayPASS(all4refs), actualexecute_information_plan2casecontextresetPASS. Removeddraftfakecutoffs; actualpredictiontimeinjected viaoptionalsetter. Coreowningspecsynced. Noactivewriter/production. CommitthenV124cap1964/$16.68847748. Goalstillincomplete.
+
+## V124 running
+Codea70c048, contract021e4ee2a3524073ab461becced0462d82693097497e78b8cf66f76b916e22ea. exec67589/PID60316 started2026-09-19T23:07:29UTC; v124logs/process. Cap1964/$16.68847748. Frozencontractonlyexpectedrevision/time/budget/run/inventory/seedmanifestdiff; seedinneronlyscan_summary. NoactiveZCodewriter. Keep source/HEADfixedwhilelive. Jointgoal incomplete.
+
+## V124 correctness stop; round24 prepared
+V124owned60316 exited130,NOTtimeout.18attempts/.08033564actual+.01202936reservewithheld;remaining1946/$16.59611247. c01Kinrossinit3/4/5 rejectedvalidbeforepredictionguidance andprojectedboundedproductionsemantics. c02reachedreflect. Rawwire/budgetunderv124. Round24boundedgrammarfix+exactinitialize replay. Noactiveproduction/writer.
+
+## Round24 running
+exec59575/launcherPID60693 APItransport/nohardoridledeadline. Onewriter,no production. HEADa70c048. Brief/report/statusunderround24.
+
+## Round24 locally accepted; V125 next
+NormalAPIturn.completed547s,71focused/943full/lintPASS. Independentactualcontroller3/4/5replay3calls preservesraw3sixneeds exceptneed3 correctedfromraw5;8evidence. Alloriginaldecodedpayloadsexactlyequal;reportcompactionclaimfalseJSONescaping. Noactivewriter/production. CommitthenfreezeV125 cap1946/$16.59611247.

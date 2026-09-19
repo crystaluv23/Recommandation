@@ -1,0 +1,5 @@
+# Independent round24 acceptance
+Normal APIturn.completed547s exit0.71focused/943full/lintPASS. Minimal9line temporalvocabulary/preposition change reviewed with explicit/symbolic cutoff andfutureactual negatives. Original raw3unboundedneed3 stillrejected; finalraw5boundedprojected accepted.
+Independent actualLLMResearchController.initialize replay uses exactoriginalpayload (assertedequality), original3/4/5outputs, originalskill/basicinfo/evaluation.3callsPASS; final6needs equalraw3 list exceptneed3 exactlyraw5correctedneed; originallegal2026need1 andallothers preserved;8evidencerefs. Numericchecksremainactive.
+Executorreportcorrection: compacted-text claim is wrong, as inround20. Eachdecoded originalrequestpayload3/4/5 equals auditpayload in full, cachedoutputsalsoequal. RawJSONsubstring counts1/16 measureescaping, notcompaction. Report'sfirstreplayfailedonlybadindex assertions, nowfixed; independentcontroller confirmsactualbehavior.
+Localaccepted; productionjointgoalstillpending. Noactivewriter/production; checkpointthenV125withcumulativebudget1946/$16.59611247.

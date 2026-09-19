@@ -1,5 +1,19 @@
 # Status
 
+2026-09-20（round-24）**等价有界预测语言修复：V124 c01 两处时间词法误拒**：
+`_EXPLICIT_AS_OF_BOUND`/`_SYMBOLIC_AS_OF_BOUND` 增加等价且更严格的 before/prior to
+介词（符号与显式日期两形态）；显式截止仍须不晚于 prediction（晚于预测的
+before/prior-to 不授界），after/since 开放窗照拒。`_FUTURE_EXPECTATION_OR_SCHEDULE`
+增加 anticipated/projected/projections? 有界期望词，`_INHERITABLE_EXPECTATION_CONTEXT`
+同步加名词 projections?；realized results/actuals/how-much 仍压过 projected 措辞，
+无界 projection 照拒。spec 同步两条不变量；新增 7 条正/反回归。round-24/replay.py
+以原 wire/basic_info/skill/context 复放 V124 c01 attempts 3/4/5：raw3 仅剩 need[3]
+无界 projection 时间拒（need[1] 2026 指引误拒消失），raw4 对 need[1] 删 2026 的改写
+按未标记漂移被投影丢弃，raw5 有界 projected reserve 需求进入最终态；最终 6 needs/
+8 beliefs/8 证据行，need[1] 含 2026 逐字保留，未标记兄弟逐字保留，数值类 issue 独立
+执行。943 测试（936+7）+ lint + replay 全过（仅本地验证；按本轮 brief 不 commit、
+无生产调用；生产待 Codex 独立评审后 commit）。
+
 2026-09-20（round-23）**为 H1 路由注入真实预测日期，完成 V123 residual 修复**：
 删除不可靠的 dateless 年份推断 `_residual_refs_beyond_symbolic_bound`（date.min 与
 父句年份两种代理都在 2025-09-30 误拒合法 2024 历史 actuals）及其错误测试/spec 表述，

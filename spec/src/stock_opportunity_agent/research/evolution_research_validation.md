@@ -17,12 +17,19 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   is grammatical-number agnostic. Its bounded expectation-or-schedule
   vocabulary matches the explicit plural of each countable noun it already
   covers (dates, schedules, timelines, milestones, forecasts, targets,
-  goals, releases, reports, openings, construction plans) exactly as it
-  matches the singular, with whole-word boundaries and no stemming or
-  broader substring matching. Nothing else about the allowance widens: an
-  explicit as-of bound at or before the prediction date is still required,
-  and realized results, actuals, or other post-cutoff contents are still
-  rejected.
+  goals, releases, reports, openings, construction plans, projections)
+  exactly as it matches the singular, and its clear adjectival equivalents
+  (expected, anticipated, projected) share one allowance. All matching uses
+  whole-word boundaries with no stemming or broader substring matching. The
+  as-of bound itself accepts the equivalent stricter prior-to and before
+  spellings beside by/as of/through, both symbolic ("before/prior to the
+  prediction time") and with an explicit date. Nothing else about the
+  allowance widens: an explicit as-of bound at or before the prediction date
+  is still required (a before/prior-to cutoff after the prediction date
+  grants nothing), open-ended after/since windows still reject, and realized
+  results, actuals, or other post-cutoff contents are still rejected —
+  projected wording never converts realized-future results into admissible
+  evidence.
 - A partial-answer residual must retain the temporal scope of the need it
   narrows. When a persisted routing residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of
@@ -31,7 +38,8 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   bounded allowance also requires expectation/schedule framing, so the shared
   rule inherits the parent's noun-form expectation/schedule marker (guidance,
   outlook, forecasts, targets, goals, schedules, timelines, milestones, dates,
-  timing, releases, reports, openings, commentary, construction plans —
+  timing, releases, reports, openings, commentary, construction plans,
+  projections —
   matched with the same case-insensitive handling as the temporal guard's
   expectation vocabulary) as
   explicit parent-owned framing whenever restoring the cutoff clause alone is

@@ -1,0 +1,8 @@
+{
+  "attempts": 18,
+  "actual_cost": "0.0803356400000000093",
+  "conservative_unsettled_reserves": "0.012029360000000001",
+  "remaining_attempts": 1946,
+  "conservative_remaining_cost_budget": "16.5961124799999999897",
+  "stop_reason": "bounded projected production false temporal rejection, not timeout"
+}

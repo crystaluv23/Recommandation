@@ -3092,3 +3092,118 @@ class TemporalSchedulePluralVocabularyTests(TestCase):
             "of 2025-03-31 for the period through 2025-09-30?"
         )
         self.assertEqual(self._refs(negative), ["2025-09-30"])
+
+
+class PriorBoundAndProjectedExpectationTests(TestCase):
+    """Round-24: equivalent bounded forecast language (V124 Kinross)."""
+
+    PREDICTION = date(2025, 9, 30)
+
+    def _refs(self, text: str) -> list:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _future_source_date_refs,
+        )
+
+        return _future_source_date_refs(
+            text, self.PREDICTION, field_name="next_information_needs"
+        )
+
+    def test_v124_raw3_need1_before_prediction_time_guidance_passes(self):
+        need = (
+            "What forward guidance for full-year 2025 and 2026 production, "
+            "cost of sales, and capital expenditures did Kinross provide in "
+            "its Q2 2025 earnings call or subsequent filings available "
+            "before the prediction time, and did it revise prior guidance?"
+        )
+        self.assertEqual(self._refs(need), [])
+        self.assertEqual(
+            self._refs(need.replace("before", "prior to")), []
+        )
+
+    def test_symbolic_and_explicit_before_bounds_pass(self):
+        symbolic = (
+            "What cost and capital expenditure guidance for 2026 had "
+            "Kinross disclosed prior to the prediction time?"
+        )
+        self.assertEqual(self._refs(symbolic), [])
+        explicit_prior_to = (
+            "What capital expenditure guidance did Kinross provide prior "
+            "to September 30, 2025 for its 2026 production plans?"
+        )
+        self.assertEqual(self._refs(explicit_prior_to), [])
+        explicit_before = (
+            "Which disclosed production targets and delivery schedules "
+            "for 2026 were available before September 30, 2025?"
+        )
+        self.assertEqual(self._refs(explicit_before), [])
+
+    def test_v124_raw5_need3_projected_reserve_support_passes(self):
+        need = (
+            "What proven and probable reserve and measured and indicated "
+            "resource quantities, by asset, had Kinross disclosed as of "
+            "the prediction time to support its projected annual "
+            "attributable gold equivalent production of 2.0 million oz "
+            "between 2025 and 2027?"
+        )
+        self.assertEqual(self._refs(need), [])
+        self.assertEqual(self._refs(need.replace("projected", "expected")), [])
+        self.assertEqual(self._refs(need.replace("projected", "anticipated")), [])
+        self.assertEqual(
+            self._refs(
+                "What proven and probable reserves support the disclosed "
+                "projections for 2027 production as of the prediction time?"
+            ),
+            [],
+        )
+
+    def test_before_or_prior_to_cutoff_after_prediction_still_rejects(self):
+        late_before = (
+            "What forward guidance for 2026 production did Kinross "
+            "provide before December 31, 2025?"
+        )
+        self.assertTrue(self._refs(late_before))
+        late_prior_to = (
+            "What 2026 production guidance did Kinross provide prior to "
+            "March 2026?"
+        )
+        self.assertTrue(self._refs(late_prior_to))
+
+    def test_open_ended_after_window_still_rejects(self):
+        need = "What production updates will Kinross publish after March 2026?"
+        self.assertTrue(self._refs(need))
+
+    def test_projected_realized_results_and_unbounded_projections_reject(self):
+        realized = (
+            "What projected 2027 results had Kinross reported as of the "
+            "prediction time?"
+        )
+        self.assertEqual(self._refs(realized), ["2027"])
+        actuals = (
+            "What projected actuals for 2026 were available before the "
+            "prediction time?"
+        )
+        self.assertEqual(self._refs(actuals), ["2026"])
+        unbounded = (
+            "What is management's projection for 2027 attributable "
+            "production?"
+        )
+        self.assertEqual(self._refs(unbounded), ["2027"])
+
+    def test_before_bound_parent_lends_clause_and_guidance_framing(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+        )
+
+        parent = (
+            "What forward production and capital expenditure guidance did "
+            "Kinross provide before the prediction time for 2026?"
+        )
+        residual = (
+            "Specific disclosed production and capital expenditure figures "
+            "for 2026 are not fully covered."
+        )
+        restored = _bounded_residual_need(residual, parent, self.PREDICTION)
+        self.assertIsNotNone(restored)
+        self.assertIn("before the prediction time", restored)
+        self.assertIn("guidance", restored)
+        self.assertEqual(self._refs(restored), [])

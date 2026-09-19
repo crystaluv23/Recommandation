@@ -1,0 +1,33 @@
+{
+  "contract_hash": "021e4ee2a3524073ab461becced0462d82693097497e78b8cf66f76b916e22ea",
+  "differences": {
+    "code_revision": {
+      "old": "068ec235c3d9b68481f6dd266543d0a37c811735",
+      "new": "a70c04839289387acda8e81a806fbc3d269d6d78"
+    },
+    "created_at": {
+      "old": "2026-09-19T22:09:11.496854+00:00",
+      "new": "2026-09-19T23:06:28.959304+00:00"
+    },
+    "max_external_attempts": {
+      "old": 2008,
+      "new": 1964
+    },
+    "max_total_cost": {
+      "old": 16.85127201,
+      "new": 16.68847748
+    },
+    "raw_info_inventory_hash": {
+      "old": "67af2bf44c55da348eda301ae5ea2b1ad29c0a8b044086d7730d6b81ce83edbd",
+      "new": "63207f5224517a6ed23fc8e7c9e1ebac10705bf21e1df683f40ea651dcbdd8c8"
+    },
+    "run_id": {
+      "old": "information-evolution-dual-self-evolution-20260920-v123",
+      "new": "information-evolution-dual-self-evolution-20260920-v124"
+    },
+    "seed_pool_manifest_hash": {
+      "old": "b80564005eefcf9a85e3f2ca4cded54f0f57dcde80e709e46a0f36c1d3729266",
+      "new": "e05352dd15a5fbe1556a8f605b691d97c633ec2abe93b925db084fc2f8e0e6a8"
+    }
+  }
+}

@@ -676,7 +676,7 @@ _FUTURE_SOURCE_CONTENT_INTENT = re.compile(
 
 
 _EXPLICIT_AS_OF_BOUND = re.compile(
-    r"\b(?:by|as\s+of|through)\s+"
+    r"\b(?:by|as\s+of|through|before|prior\s+to)\s+"
     r"(?P<date>(?:(?P<month>January|February|March|April|May|June|July|"
     r"August|September|October|November|December|Jan\.?|Feb\.?|Mar\.?|"
     r"Apr\.?|Jun\.?|Jul\.?|Aug\.?|Sep\.?|Sept\.?|Oct\.?|Nov\.?|Dec\.?)\s+"
@@ -687,7 +687,7 @@ _EXPLICIT_AS_OF_BOUND = re.compile(
 
 
 _SYMBOLIC_AS_OF_BOUND = re.compile(
-    r"\b(?:by|as\s+of|through)\s+(?:the\s+)?"
+    r"\b(?:by|as\s+of|through|before|prior\s+to)\s+(?:the\s+)?"
     r"(?:prediction|cutoff|as[- ]of)\s+(?:date|time)\b",
     re.IGNORECASE,
 )
@@ -736,7 +736,8 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 
 
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
-    r"\b(?:timing|dates?|schedules?|timelines?|milestones?|expected|planned|"
+    r"\b(?:timing|dates?|schedules?|timelines?|milestones?|expected|anticipated|"
+    r"projected|projections?|planned|"
     r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|"
     r"targets?|goals?|openings?|could|might|would|commentary|"
     r"construction\s+plans?)\b",
@@ -1110,7 +1111,7 @@ def _need_as_of_bound_clause(
 _INHERITABLE_EXPECTATION_CONTEXT = re.compile(
     r"\b(?:guidance|outlook|forecasts?|targets?|goals?|schedules?|timelines?"
     r"|milestones?|dates?|timing|releases?|reports?|openings?|commentary"
-    r"|construction\s+plans?)\b",
+    r"|construction\s+plans?|projections?)\b",
     re.IGNORECASE,
 )
 
