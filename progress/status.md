@@ -1,5 +1,47 @@
 # Status
 
+2026-09-20（round-16）**列表路径统一“按成员、按操作”权限 + V119 原始全量复放**：
+round-15 独立评审的原序纯删除反例（replace-only `rows[0]`，纠正返回原序去掉该
+成员、兄弟全保留）在 RAW drift 检查层即被放行——三处并行且不一致的成员检查
+（raw drift 内联算法、`_authorized_membership_edit` 快速路径、reconciler 缺省）
+都把整成员（covered）槽位隐式当作可删除，且 `len(old)+covered+budget` 基数
+上界隐式允许拆分/追加。修复：`_authorized_membership_edit` 成为唯一共享检查
+（raw drift 与投影共同调用）——整成员路径仅授权“以恰好一行替换该成员”，删除
+另需该槽显式移除授权（`authorized_member_removals`、整成员路径 + remove
+repairs、或 compaction 的 `required_compaction_remove_paths`，后者已接入
+`_complete_parsed_role`，合法 compaction 驱逐不受影响）；超出替换的行需显式
+有界 add 授权；仅有移除授权而无整成员路径的成员可保留或消失但内容不可变；
+空/缺失 allowance 映射保守为零删除（reconciler 缺省同步收紧）。运行时评估
+输入守卫的 issue 转为类型化（渲染文本不变、`allowed_repairs=("remove",)`），
+其明示要求的删除由此携带显式授权而非依赖旧的 covered 默认。规格先行同步
+evolution_output_validation.md。新增生产回归：纯删除/拆分/无授权追加三负例，
+显式删除与有界追加正例（既有 mixed-drift 恢复反例保留；一个直连投影正例改为
+显式声明移除授权）。round-16/replay.py 以生产 reflect/initialize 角色完整重建
+原始工件：c02 raw202 恰好因真实 signal 数值缺陷（supporting_evidence[8] 缺
+"2025"）被拒且零 need-transition 误报，raw203 通过完整 parser/scoped correction
+且重复 catalyst need 逐字保留（旧运行因误报多打一轮 204 仍被拒）；c01
+initialize177→178→179 返回安全状态——179 整列表漂移被投影丢弃，仅显式删除
+2/4 加一条 fallback 关联断言被移除，无发明内容，无关字段逐字保留。899 测试 +
+lint + replay exit 0（仅本地验证，无生产调用、按本轮 brief 不提交 commit）。
+
+2026-09-20（round-15）**V119 重复 need 误报纠正为出现级校验 + 列表回收安全收口**：
+round-14 独立评审依据真实载荷更正诊断——V119 request202 的
+research_state.next_information_needs[2] 与 [3] 字节相同，仅 [2] 被靶向；
+response202 正确地把 [2] 换成精确残余并保留未靶向的 [3]，原校验用全局文本
+成员判断（need in current / .index）把保留的未靶向重复误判为靶向失败。
+修复（机制级，非索引重映射）：`_targeted_answer_need_transition_errors` 改为
+出现/多重性感知——每个未靶向出现必须逐字保留、每个靶向出现须产出有界残余
+（partial）或被移除（full）、selection 绑定 target_need_indices 全部下标、
+一个返回出现不得满足两个先前出现；诊断 returned_path 由算法给出盈余出现
+位置，不再全局 .index()（保留副本不再被指为目标）。确定性 need 回退每次
+指令只转换一个出现（remove_exact_target 不再删除全部同文副本）。
+配套 B 项安全收口：member_removal_allowances 提供但缺根键 ⇒ 该集合无任何
+移除授权（原 .get→None→covered 全可删的反例已封堵）；锚点间授权槽数多于
+返回行数的短 run 属歧义映射，直接拒绝（原 zip 猜首槽）；c01 Newmont
+actual179 授权删除 2/4、恢复 valid5 与 6/7 顺序的行为保持。round-14 错误
+期望的重复先行测试改写为断言 V119 原样转换接受，另用互异先行 need 测试
+移位索引诊断。规格先行同步两个模块 spec；复放见 round-15/replay.py。
+
 2026-09-20（round-13）**关闭运行时锚点守卫两个已证实漏洞：裸 with 与首现枚举**：
 round-12 独立评审给出两条具体反例（`Please provide me with the baseline date
 and price.` 与 `Using the supplied baseline price, what is the baseline

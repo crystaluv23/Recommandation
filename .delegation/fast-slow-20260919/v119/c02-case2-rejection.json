@@ -1,0 +1,1773 @@
+[
+  {
+    "attempt": 202,
+    "hash": "73c0807a437e3fb809adb7a4f1f09cb282efc417f0ee57f2689d3df7c79e8378",
+    "payload": {
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2026-01-31",
+        "prediction_time": "2025-07-31T00:00:00+00:00"
+      },
+      "executed_selection_intents": [
+        {
+          "answer_scope": "partial",
+          "reason_code": "answer_need",
+          "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+          "selection_reason": "Directly covers the refinancing-event facet of the scheduled-catalyst need by judging financing, restructuring, or listing actions that change runway, dilution, or tradability.",
+          "signal_ref": "financing_listing_action:v2",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Tests whether Wynn's cash runway implies near-term financing dependence, which bears on the refinancing-event facet of the catalyst need.",
+          "signal_ref": "liquidity_runway_months:v1",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures latest year-over-year revenue growth, providing the prior-year comparison baseline needed to evaluate Wynn's latest reported quarter figures.",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "need_transition_contract": {
+        "legacy_unindexed_answer_signal_refs": [],
+        "need_rules": [
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [
+              "revenue_growth_yoy:v1"
+            ],
+            "need": "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+            "need_index": 0,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+            "need_index": 1,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [
+              {
+                "answer_scope": "partial",
+                "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+                "signal_ref": "financing_listing_action:v2"
+              }
+            ],
+            "available_answer_signal_refs": [
+              "financing_listing_action:v2"
+            ],
+            "context_only_signal_refs": [
+              "liquidity_runway_months:v1"
+            ],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 2,
+            "required_transition": "if evidence from this available partial answer is adopted, replace_with_exact_residual_need; otherwise preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 3,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+            "need_index": 4,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?",
+            "need_index": 5,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          }
+        ]
+      },
+      "reflection_runtime": {
+        "must_finalize": false,
+        "termination_trigger": null
+      },
+      "reflection_skill": "Reflect over the collected evidence batch with a bridge-first falsifier order: first test whether a quantified, time-stamped forward bridge to the 2x threshold exists, including explicit analyst targets, guidance figures, or modeled price paths; if that bridge is absent or far below the threshold, treat positive narrative, backward-looking momentum, and one-day price moves as insufficient. Second, reconcile the supplied mean adjusted close baseline with the most recent observed price path and flag any internally inconsistent starting-point assumption. Third, test for stale or non-recurring catalysts, post-event operational updates, and unresolved event-filing substance. Only then weigh supporting evidence. Track support, contradiction, resolved questions, concentration risk, and the smallest next set of information needs. Decide only whether evidence collection should continue or finalize; do not decide which price direction, market trend, or outcome is likely.",
+      "research_state": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+        ],
+        "next_information_needs": [
+          "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+          "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+          "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [
+          "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+          "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+          "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+          "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+          "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+          "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+        ],
+        "supporting_evidence": [
+          {
+            "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+            "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+            "kind": "basic_info",
+            "projection_id": "projection_871c72405c4293d221c12c08"
+          },
+          {
+            "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+            "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+            "kind": "basic_info",
+            "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+          },
+          {
+            "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+            "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+            "kind": "basic_info",
+            "projection_id": "projection_0de9be766e14220c0ed7bf14"
+          },
+          {
+            "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+            "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+            "kind": "basic_info",
+            "projection_id": "projection_8145490ae13024532f70603d"
+          },
+          {
+            "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+            "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+            "kind": "basic_info",
+            "projection_id": "projection_56a98199f6b8093057e647d8"
+          },
+          {
+            "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+            "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+            "kind": "basic_info",
+            "projection_id": "projection_e781791c422e6557ca97ee39"
+          },
+          {
+            "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+            "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+            "kind": "basic_info",
+            "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+          },
+          {
+            "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+            "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+            "kind": "basic_info",
+            "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+          }
+        ]
+      },
+      "research_state_capacity": {
+        "advisory": true,
+        "canonical_json_bytes": {
+          "current_count": 12152,
+          "effective_maximum_count": 12152,
+          "new_item_capacity": 0
+        },
+        "combined": {
+          "current_count": 29,
+          "effective_maximum_count": 29,
+          "new_item_capacity": 0
+        },
+        "fields": {
+          "contradictions": {
+            "current_count": 0,
+            "effective_maximum_count": 4,
+            "new_item_capacity": 4
+          },
+          "current_beliefs": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          },
+          "hypotheses": {
+            "current_count": 1,
+            "effective_maximum_count": 3,
+            "new_item_capacity": 2
+          },
+          "next_information_needs": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "open_questions": {
+            "current_count": 0,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 6
+          },
+          "resolved_questions": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "supporting_evidence": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          }
+        }
+      },
+      "signal_batch": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "On June 12, 2025, Wynn Resorts, Limited (the \"Company\") announced that Wynn Resorts Finance, LLC (\"WRF\"), an indirect wholly owned subsidiary of the Company, and certain of its subsidiaries entered into an amendment (the \"Credit Agreement Amendment\") to the credit agreement dated as of September 20, 2019, as amended by Amendment No. 1, dated as of April 10, 2020, Amendment No. 2, dated as of November 27, 2020, Amendment No. 3 dated as of May 17, 2023 and Amendment No. 4, dated as of September 16, 2024 (as further amended, restated, amended and restated, replaced, supplemented, or otherwise modified prior to giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Existing Credit Agreement\" and, after giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Credit Agreement\"), among Deutsche Bank AG New York Branch, as administrative agent and collateral agent, and the lenders party thereto."
+              },
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "The Credit Agreement Amendment amends the Existing Credit Agreement to, among other things: (i) extend the final maturity date with respect to all or a portion of the Extended Term A Facility Loans (as defined in the Credit Agreement) to June 12, 2030; (ii) extend the termination date with respect to all or a portion of the existing Extended Revolving Commitments (as defined in the Credit Agreement) and the maturity date with respect to the corresponding Extended Revolving Loans (as defined in the Credit Agreement) to June 12, 2030 and (ii) obtain $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030."
+              },
+              {
+                "available_at": "2025-02-06T21:44:44+00:00",
+                "evidence_index": 2,
+                "model_evidence_text": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC, a wholly-owned direct subsidiary of Island 3 (\"Wynn Al Marjan Island,\" or, the “Borrower”), entered into a facility agreement (the “Facility Agreement”) with a syndicate of lenders which provides the Borrower with a $2.4 billion (or equivalent in local currency) delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island (the “Term Loan Facility”)."
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Completed financing and credit actions are present: a June 12, 2025 Credit Agreement Amendment extended term loan and revolver maturities to 2030 and added $500 million of incremental extended revolving commitments, and a February 5, 2025 $2.4 billion delayed draw secured term loan facility was entered into for the Wynn Al Marjan Island development. These are binding/completed actions that improve maturity profile and add committed liquidity, though the new facility also increases leverage and the guarantee creates contingent obligations. Net point-in-time effect is neutral-to-supportive of runway/tradability rather than a dilution or distress event."
+          },
+          "signal_id": "financing_listing_action",
+          "signal_ref": "financing_listing_action:v2",
+          "state": {
+            "confidence": 0.72,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "version": 2
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}"
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Latest point-in-time cash is $2,070,086,000 (CashAndCashEquivalentsAtCarryingValue, 2025-03-31) and latest quarterly NetCashProvidedByUsedInOperatingActivities is $133,774,000 for the three months ended 2025-03-31. Monthly average operating cash flow is about $44.59 million, giving an implied runway of roughly 46 months, well above the 12-month negative threshold. This indicates no near-term financing dependence from the specified operating-cash-flow runway measure."
+          },
+          "signal_id": "liquidity_runway_months",
+          "signal_ref": "liquidity_runway_months:v1",
+          "state": {
+            "confidence": 0.8,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1
+              }
+            ]
+          },
+          "exact_claim_if_adopted": "revenue_growth_yoy=-0.0872356",
+          "signal_id": "revenue_growth_yoy",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_evidence_ref_catalog": [
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "financing_listing_action:v2",
+          "supporting_evidence_indices": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "liquidity_runway_months:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "revenue_growth_yoy:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        }
+      ],
+      "validation_feedback": null
+    },
+    "output": {
+      "contradictions": [],
+      "current_beliefs": [
+        "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+        "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+        "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+        "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+        "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+        "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+        "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+        "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+      ],
+      "next_information_needs": [
+        "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+        "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+        "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+        "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+        "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+        "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+        "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+        "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+        "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+        "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+        "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+          "kind": "basic_info",
+          "projection_id": "projection_871c72405c4293d221c12c08"
+        },
+        {
+          "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+          "kind": "basic_info",
+          "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+        },
+        {
+          "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+          "kind": "basic_info",
+          "projection_id": "projection_0de9be766e14220c0ed7bf14"
+        },
+        {
+          "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+          "kind": "basic_info",
+          "projection_id": "projection_8145490ae13024532f70603d"
+        },
+        {
+          "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+          "kind": "basic_info",
+          "projection_id": "projection_56a98199f6b8093057e647d8"
+        },
+        {
+          "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+          "kind": "basic_info",
+          "projection_id": "projection_e781791c422e6557ca97ee39"
+        },
+        {
+          "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+          "kind": "basic_info",
+          "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+        },
+        {
+          "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+          "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+          "kind": "basic_info",
+          "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+        },
+        {
+          "claim": "On June 12, 2025, Wynn Resorts Finance, LLC entered into a Credit Agreement Amendment extending the final maturity of Extended Term A Facility Loans and the termination date of Extended Revolving Commitments to June 12, 2030, and obtained $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030.",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC entered into a facility agreement with a syndicate of lenders providing a $2.4 billion delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island.",
+          "evidence_group": "supporting",
+          "evidence_index": 2,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "revenue_growth_yoy=-0.0872356",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "revenue_growth_yoy:v1"
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 203,
+    "hash": "ac778ab78efb32efdeff71c07cf6419db8d5495101c59b0ca9c29eb37744c701",
+    "payload": {
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2026-01-31",
+        "prediction_time": "2025-07-31T00:00:00+00:00"
+      },
+      "executed_selection_intents": [
+        {
+          "answer_scope": "partial",
+          "reason_code": "answer_need",
+          "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+          "selection_reason": "Directly covers the refinancing-event facet of the scheduled-catalyst need by judging financing, restructuring, or listing actions that change runway, dilution, or tradability.",
+          "signal_ref": "financing_listing_action:v2",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Tests whether Wynn's cash runway implies near-term financing dependence, which bears on the refinancing-event facet of the catalyst need.",
+          "signal_ref": "liquidity_runway_months:v1",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures latest year-over-year revenue growth, providing the prior-year comparison baseline needed to evaluate Wynn's latest reported quarter figures.",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "need_transition_contract": {
+        "legacy_unindexed_answer_signal_refs": [],
+        "need_rules": [
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [
+              "revenue_growth_yoy:v1"
+            ],
+            "need": "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+            "need_index": 0,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+            "need_index": 1,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [
+              {
+                "answer_scope": "partial",
+                "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+                "signal_ref": "financing_listing_action:v2"
+              }
+            ],
+            "available_answer_signal_refs": [
+              "financing_listing_action:v2"
+            ],
+            "context_only_signal_refs": [
+              "liquidity_runway_months:v1"
+            ],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 2,
+            "required_transition": "if evidence from this available partial answer is adopted, replace_with_exact_residual_need; otherwise preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 3,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+            "need_index": 4,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?",
+            "need_index": 5,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          }
+        ]
+      },
+      "reflection_runtime": {
+        "must_finalize": false,
+        "termination_trigger": null
+      },
+      "reflection_skill": "Reflect over the collected evidence batch with a bridge-first falsifier order: first test whether a quantified, time-stamped forward bridge to the 2x threshold exists, including explicit analyst targets, guidance figures, or modeled price paths; if that bridge is absent or far below the threshold, treat positive narrative, backward-looking momentum, and one-day price moves as insufficient. Second, reconcile the supplied mean adjusted close baseline with the most recent observed price path and flag any internally inconsistent starting-point assumption. Third, test for stale or non-recurring catalysts, post-event operational updates, and unresolved event-filing substance. Only then weigh supporting evidence. Track support, contradiction, resolved questions, concentration risk, and the smallest next set of information needs. Decide only whether evidence collection should continue or finalize; do not decide which price direction, market trend, or outcome is likely.",
+      "research_state": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+        ],
+        "next_information_needs": [
+          "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+          "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+          "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [
+          "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+          "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+          "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+          "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+          "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+          "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+        ],
+        "supporting_evidence": [
+          {
+            "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+            "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+            "kind": "basic_info",
+            "projection_id": "projection_871c72405c4293d221c12c08"
+          },
+          {
+            "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+            "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+            "kind": "basic_info",
+            "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+          },
+          {
+            "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+            "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+            "kind": "basic_info",
+            "projection_id": "projection_0de9be766e14220c0ed7bf14"
+          },
+          {
+            "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+            "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+            "kind": "basic_info",
+            "projection_id": "projection_8145490ae13024532f70603d"
+          },
+          {
+            "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+            "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+            "kind": "basic_info",
+            "projection_id": "projection_56a98199f6b8093057e647d8"
+          },
+          {
+            "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+            "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+            "kind": "basic_info",
+            "projection_id": "projection_e781791c422e6557ca97ee39"
+          },
+          {
+            "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+            "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+            "kind": "basic_info",
+            "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+          },
+          {
+            "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+            "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+            "kind": "basic_info",
+            "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+          }
+        ]
+      },
+      "research_state_capacity": {
+        "advisory": true,
+        "canonical_json_bytes": {
+          "current_count": 12152,
+          "effective_maximum_count": 12152,
+          "new_item_capacity": 0
+        },
+        "combined": {
+          "current_count": 29,
+          "effective_maximum_count": 29,
+          "new_item_capacity": 0
+        },
+        "fields": {
+          "contradictions": {
+            "current_count": 0,
+            "effective_maximum_count": 4,
+            "new_item_capacity": 4
+          },
+          "current_beliefs": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          },
+          "hypotheses": {
+            "current_count": 1,
+            "effective_maximum_count": 3,
+            "new_item_capacity": 2
+          },
+          "next_information_needs": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "open_questions": {
+            "current_count": 0,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 6
+          },
+          "resolved_questions": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "supporting_evidence": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          }
+        }
+      },
+      "signal_batch": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "On June 12, 2025, Wynn Resorts, Limited (the \"Company\") announced that Wynn Resorts Finance, LLC (\"WRF\"), an indirect wholly owned subsidiary of the Company, and certain of its subsidiaries entered into an amendment (the \"Credit Agreement Amendment\") to the credit agreement dated as of September 20, 2019, as amended by Amendment No. 1, dated as of April 10, 2020, Amendment No. 2, dated as of November 27, 2020, Amendment No. 3 dated as of May 17, 2023 and Amendment No. 4, dated as of September 16, 2024 (as further amended, restated, amended and restated, replaced, supplemented, or otherwise modified prior to giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Existing Credit Agreement\" and, after giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Credit Agreement\"), among Deutsche Bank AG New York Branch, as administrative agent and collateral agent, and the lenders party thereto."
+              },
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "The Credit Agreement Amendment amends the Existing Credit Agreement to, among other things: (i) extend the final maturity date with respect to all or a portion of the Extended Term A Facility Loans (as defined in the Credit Agreement) to June 12, 2030; (ii) extend the termination date with respect to all or a portion of the existing Extended Revolving Commitments (as defined in the Credit Agreement) and the maturity date with respect to the corresponding Extended Revolving Loans (as defined in the Credit Agreement) to June 12, 2030 and (ii) obtain $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030."
+              },
+              {
+                "available_at": "2025-02-06T21:44:44+00:00",
+                "evidence_index": 2,
+                "model_evidence_text": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC, a wholly-owned direct subsidiary of Island 3 (\"Wynn Al Marjan Island,\" or, the “Borrower”), entered into a facility agreement (the “Facility Agreement”) with a syndicate of lenders which provides the Borrower with a $2.4 billion (or equivalent in local currency) delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island (the “Term Loan Facility”)."
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Completed financing and credit actions are present: a June 12, 2025 Credit Agreement Amendment extended term loan and revolver maturities to 2030 and added $500 million of incremental extended revolving commitments, and a February 5, 2025 $2.4 billion delayed draw secured term loan facility was entered into for the Wynn Al Marjan Island development. These are binding/completed actions that improve maturity profile and add committed liquidity, though the new facility also increases leverage and the guarantee creates contingent obligations. Net point-in-time effect is neutral-to-supportive of runway/tradability rather than a dilution or distress event."
+          },
+          "signal_id": "financing_listing_action",
+          "signal_ref": "financing_listing_action:v2",
+          "state": {
+            "confidence": 0.72,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "version": 2
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}"
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Latest point-in-time cash is $2,070,086,000 (CashAndCashEquivalentsAtCarryingValue, 2025-03-31) and latest quarterly NetCashProvidedByUsedInOperatingActivities is $133,774,000 for the three months ended 2025-03-31. Monthly average operating cash flow is about $44.59 million, giving an implied runway of roughly 46 months, well above the 12-month negative threshold. This indicates no near-term financing dependence from the specified operating-cash-flow runway measure."
+          },
+          "signal_id": "liquidity_runway_months",
+          "signal_ref": "liquidity_runway_months:v1",
+          "state": {
+            "confidence": 0.8,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1
+              }
+            ]
+          },
+          "exact_claim_if_adopted": "revenue_growth_yoy=-0.0872356",
+          "signal_id": "revenue_growth_yoy",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_evidence_ref_catalog": [
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "financing_listing_action:v2",
+          "supporting_evidence_indices": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "liquidity_runway_months:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "revenue_growth_yoy:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        }
+      ],
+      "validation_feedback": {
+        "alternative_change_groups": [],
+        "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope. Complete every quantity_literal_checks row using the exact authored numeric tokens and same-claim literals.",
+        "invalid_output": {
+          "contradictions": [],
+          "current_beliefs": [
+            "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+            "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+            "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+            "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+            "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+            "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+            "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+            "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+          ],
+          "decision": "continue",
+          "hypotheses": [
+            "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+          ],
+          "next_information_needs": [
+            "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+            "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+            "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+            "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+            "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+          ],
+          "open_questions": [],
+          "resolved_questions": [
+            "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+            "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+            "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+            "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+            "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+            "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+          ],
+          "supporting_evidence": [
+            {
+              "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+              "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+              "kind": "basic_info",
+              "projection_id": "projection_871c72405c4293d221c12c08"
+            },
+            {
+              "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+              "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+              "kind": "basic_info",
+              "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+            },
+            {
+              "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+              "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+              "kind": "basic_info",
+              "projection_id": "projection_0de9be766e14220c0ed7bf14"
+            },
+            {
+              "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+              "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+              "kind": "basic_info",
+              "projection_id": "projection_8145490ae13024532f70603d"
+            },
+            {
+              "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+              "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+              "kind": "basic_info",
+              "projection_id": "projection_56a98199f6b8093057e647d8"
+            },
+            {
+              "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+              "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+              "kind": "basic_info",
+              "projection_id": "projection_e781791c422e6557ca97ee39"
+            },
+            {
+              "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+              "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+              "kind": "basic_info",
+              "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+            },
+            {
+              "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+              "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+              "kind": "basic_info",
+              "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+            },
+            {
+              "claim": "On June 12, 2025, Wynn Resorts Finance, LLC entered into a Credit Agreement Amendment extending the final maturity of Extended Term A Facility Loans and the termination date of Extended Revolving Commitments to June 12, 2030, and obtained $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030.",
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "kind": "signal",
+              "signal_ref": "financing_listing_action:v2"
+            },
+            {
+              "claim": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC entered into a facility agreement with a syndicate of lenders providing a $2.4 billion delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island.",
+              "evidence_group": "supporting",
+              "evidence_index": 2,
+              "kind": "signal",
+              "signal_ref": "financing_listing_action:v2"
+            },
+            {
+              "claim": "revenue_growth_yoy=-0.0872356",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "revenue_growth_yoy:v1"
+            }
+          ]
+        },
+        "obligation_count": 2,
+        "obligations": [
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "supporting_evidence[8] claim contains numeric quantities absent from all referenced Signal evidence items with the same claim, missing_quantity_groups=[\"2025\"], missing_quantity_literals=[\"2025\"], same_claim_evidence_paths=[\"supporting_evidence[8].claim\"]. Change or remove every listed evidence claim together. Copy the exact canonical numeric form from a deterministic Signal interpretation, cite every required Signal evidence item with the same claim, or narrow the claim. Do not round or convert the supplied values",
+            "issue_code": "claim_quantity_not_supported",
+            "missing_quantity_groups": [
+              "2025"
+            ],
+            "missing_quantity_literals": [
+              "2025"
+            ],
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "supporting_evidence[8].claim"
+            ],
+            "obligation_index": 1,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "same_claim_evidence_paths": [
+              "supporting_evidence[8].claim"
+            ],
+            "severity": "error",
+            "source_refs": [
+              "financing_listing_action:v2"
+            ]
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[2]', 'value': \"What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?\", 'signal_refs': ['financing_listing_action:v2'], 'issue': 'partial-answer target remained byte-for-byte', 'required_action': 'replace_with_exact_residual', 'required_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\", 'required_residual_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\"}. Preserve every untargeted prior need exactly",
+            "issue_code": "research_need_transition_invalid",
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "next_information_needs[3]"
+            ],
+            "obligation_index": 2,
+            "permitted_dependency_paths": [],
+            "prior_need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "required_action": "replace_with_exact_residual",
+            "required_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+            "retryability": "correctable",
+            "returned_need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "severity": "error",
+            "source_refs": [],
+            "write_scope_complete": true
+          }
+        ],
+        "permitted_dependency_path_count": 0,
+        "permitted_dependency_paths": [],
+        "quantity_literal_check_count": 1,
+        "quantity_literal_checks": [
+          {
+            "affected_paths": [
+              "supporting_evidence[8].claim"
+            ],
+            "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+            "missing_quantity_literals": [
+              "2025"
+            ],
+            "missing_quantity_mentions": [
+              {
+                "affected_path": "supporting_evidence[8].claim",
+                "authored_literal": "2025",
+                "authored_span": [
+                  12,
+                  16
+                ],
+                "context_span": [
+                  0,
+                  64
+                ],
+                "normalized_group": "2025",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "On June 12, 2025, Wynn Resorts Finance, LLC entered into a Credi"
+              }
+            ],
+            "same_claim_evidence_paths": [
+              "supporting_evidence[8].claim"
+            ]
+          }
+        ],
+        "required_change_path_count": 2,
+        "required_change_paths": [
+          "supporting_evidence[8].claim",
+          "next_information_needs[3]"
+        ],
+        "validation_contract": "structured-validation-v1",
+        "validation_error": "supporting_evidence[8] claim contains numeric quantities absent from all referenced Signal evidence items with the same claim, missing_quantity_groups=[\"2025\"], missing_quantity_literals=[\"2025\"], same_claim_evidence_paths=[\"supporting_evidence[8].claim\"]. Change or remove every listed evidence claim together. Copy the exact canonical numeric form from a deterministic Signal interpretation, cite every required Signal evidence item with the same claim, or narrow the claim. Do not round or convert the supplied values; research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[2]', 'value': \"What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?\", 'signal_refs': ['financing_listing_action:v2'], 'issue': 'partial-answer target remained byte-for-byte', 'required_action': 'replace_with_exact_residual', 'required_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\", 'required_residual_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\"}. Preserve every untargeted prior need exactly"
+      }
+    },
+    "output": {
+      "contradictions": [],
+      "current_beliefs": [
+        "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+        "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+        "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+        "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+        "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+        "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+        "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+        "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+      ],
+      "next_information_needs": [
+        "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+        "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+        "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+        "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+        "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+        "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+        "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+        "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+        "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+        "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+        "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+          "kind": "basic_info",
+          "projection_id": "projection_871c72405c4293d221c12c08"
+        },
+        {
+          "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+          "kind": "basic_info",
+          "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+        },
+        {
+          "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+          "kind": "basic_info",
+          "projection_id": "projection_0de9be766e14220c0ed7bf14"
+        },
+        {
+          "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+          "kind": "basic_info",
+          "projection_id": "projection_8145490ae13024532f70603d"
+        },
+        {
+          "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+          "kind": "basic_info",
+          "projection_id": "projection_56a98199f6b8093057e647d8"
+        },
+        {
+          "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+          "kind": "basic_info",
+          "projection_id": "projection_e781791c422e6557ca97ee39"
+        },
+        {
+          "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+          "kind": "basic_info",
+          "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+        },
+        {
+          "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+          "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+          "kind": "basic_info",
+          "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+        },
+        {
+          "claim": "Wynn Resorts Finance, LLC entered into a Credit Agreement Amendment extending the final maturity of Extended Term A Facility Loans and the termination date of Extended Revolving Commitments to June 12, 2030, and obtained $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030.",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "Wynn Al Marjan Island FZ-LLC entered into a facility agreement with a syndicate of lenders providing a $2.4 billion delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island.",
+          "evidence_group": "supporting",
+          "evidence_index": 2,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "revenue_growth_yoy=-0.0872356",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "revenue_growth_yoy:v1"
+        }
+      ]
+    }
+  },
+  {
+    "attempt": 204,
+    "hash": "a855384bf347626dfb532edd2f5388f65092c7fba89e36a1bf1aa8583bb85e3a",
+    "payload": {
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2026-01-31",
+        "prediction_time": "2025-07-31T00:00:00+00:00"
+      },
+      "executed_selection_intents": [
+        {
+          "answer_scope": "partial",
+          "reason_code": "answer_need",
+          "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+          "selection_reason": "Directly covers the refinancing-event facet of the scheduled-catalyst need by judging financing, restructuring, or listing actions that change runway, dilution, or tradability.",
+          "signal_ref": "financing_listing_action:v2",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Tests whether Wynn's cash runway implies near-term financing dependence, which bears on the refinancing-event facet of the catalyst need.",
+          "signal_ref": "liquidity_runway_months:v1",
+          "target_need_indices": [
+            2
+          ]
+        },
+        {
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures latest year-over-year revenue growth, providing the prior-year comparison baseline needed to evaluate Wynn's latest reported quarter figures.",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "need_transition_contract": {
+        "legacy_unindexed_answer_signal_refs": [],
+        "need_rules": [
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [
+              "revenue_growth_yoy:v1"
+            ],
+            "need": "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+            "need_index": 0,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+            "need_index": 1,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [
+              {
+                "answer_scope": "partial",
+                "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+                "signal_ref": "financing_listing_action:v2"
+              }
+            ],
+            "available_answer_signal_refs": [
+              "financing_listing_action:v2"
+            ],
+            "context_only_signal_refs": [
+              "liquidity_runway_months:v1"
+            ],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 2,
+            "required_transition": "if evidence from this available partial answer is adopted, replace_with_exact_residual_need; otherwise preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "need_index": 3,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+            "need_index": 4,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          },
+          {
+            "available_answer_actions": [],
+            "available_answer_signal_refs": [],
+            "context_only_signal_refs": [],
+            "need": "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?",
+            "need_index": 5,
+            "required_transition": "preserve_exactly",
+            "unavailable_answer_signal_refs": []
+          }
+        ]
+      },
+      "reflection_runtime": {
+        "must_finalize": false,
+        "termination_trigger": null
+      },
+      "reflection_skill": "Reflect over the collected evidence batch with a bridge-first falsifier order: first test whether a quantified, time-stamped forward bridge to the 2x threshold exists, including explicit analyst targets, guidance figures, or modeled price paths; if that bridge is absent or far below the threshold, treat positive narrative, backward-looking momentum, and one-day price moves as insufficient. Second, reconcile the supplied mean adjusted close baseline with the most recent observed price path and flag any internally inconsistent starting-point assumption. Third, test for stale or non-recurring catalysts, post-event operational updates, and unresolved event-filing substance. Only then weigh supporting evidence. Track support, contradiction, resolved questions, concentration risk, and the smallest next set of information needs. Decide only whether evidence collection should continue or finalize; do not decide which price direction, market trend, or outcome is likely.",
+      "research_state": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+        ],
+        "next_information_needs": [
+          "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+          "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+          "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+          "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [
+          "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+          "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+          "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+          "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+          "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+          "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+        ],
+        "supporting_evidence": [
+          {
+            "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+            "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+            "kind": "basic_info",
+            "projection_id": "projection_871c72405c4293d221c12c08"
+          },
+          {
+            "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+            "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+            "kind": "basic_info",
+            "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+          },
+          {
+            "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+            "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+            "kind": "basic_info",
+            "projection_id": "projection_0de9be766e14220c0ed7bf14"
+          },
+          {
+            "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+            "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+            "kind": "basic_info",
+            "projection_id": "projection_8145490ae13024532f70603d"
+          },
+          {
+            "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+            "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+            "kind": "basic_info",
+            "projection_id": "projection_56a98199f6b8093057e647d8"
+          },
+          {
+            "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+            "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+            "kind": "basic_info",
+            "projection_id": "projection_e781791c422e6557ca97ee39"
+          },
+          {
+            "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+            "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+            "kind": "basic_info",
+            "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+          },
+          {
+            "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+            "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+            "kind": "basic_info",
+            "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+          }
+        ]
+      },
+      "research_state_capacity": {
+        "advisory": true,
+        "canonical_json_bytes": {
+          "current_count": 12152,
+          "effective_maximum_count": 12152,
+          "new_item_capacity": 0
+        },
+        "combined": {
+          "current_count": 29,
+          "effective_maximum_count": 29,
+          "new_item_capacity": 0
+        },
+        "fields": {
+          "contradictions": {
+            "current_count": 0,
+            "effective_maximum_count": 4,
+            "new_item_capacity": 4
+          },
+          "current_beliefs": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          },
+          "hypotheses": {
+            "current_count": 1,
+            "effective_maximum_count": 3,
+            "new_item_capacity": 2
+          },
+          "next_information_needs": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "open_questions": {
+            "current_count": 0,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 6
+          },
+          "resolved_questions": {
+            "current_count": 6,
+            "effective_maximum_count": 6,
+            "new_item_capacity": 0
+          },
+          "supporting_evidence": {
+            "current_count": 8,
+            "effective_maximum_count": 8,
+            "new_item_capacity": 0
+          }
+        }
+      },
+      "signal_batch": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "On June 12, 2025, Wynn Resorts, Limited (the \"Company\") announced that Wynn Resorts Finance, LLC (\"WRF\"), an indirect wholly owned subsidiary of the Company, and certain of its subsidiaries entered into an amendment (the \"Credit Agreement Amendment\") to the credit agreement dated as of September 20, 2019, as amended by Amendment No. 1, dated as of April 10, 2020, Amendment No. 2, dated as of November 27, 2020, Amendment No. 3 dated as of May 17, 2023 and Amendment No. 4, dated as of September 16, 2024 (as further amended, restated, amended and restated, replaced, supplemented, or otherwise modified prior to giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Existing Credit Agreement\" and, after giving effect to the amendments contemplated by the Credit Agreement Amendment, the \"Credit Agreement\"), among Deutsche Bank AG New York Branch, as administrative agent and collateral agent, and the lenders party thereto."
+              },
+              {
+                "available_at": "2025-06-12T21:08:52+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "The Credit Agreement Amendment amends the Existing Credit Agreement to, among other things: (i) extend the final maturity date with respect to all or a portion of the Extended Term A Facility Loans (as defined in the Credit Agreement) to June 12, 2030; (ii) extend the termination date with respect to all or a portion of the existing Extended Revolving Commitments (as defined in the Credit Agreement) and the maturity date with respect to the corresponding Extended Revolving Loans (as defined in the Credit Agreement) to June 12, 2030 and (ii) obtain $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030."
+              },
+              {
+                "available_at": "2025-02-06T21:44:44+00:00",
+                "evidence_index": 2,
+                "model_evidence_text": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC, a wholly-owned direct subsidiary of Island 3 (\"Wynn Al Marjan Island,\" or, the “Borrower”), entered into a facility agreement (the “Facility Agreement”) with a syndicate of lenders which provides the Borrower with a $2.4 billion (or equivalent in local currency) delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island (the “Term Loan Facility”)."
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Completed financing and credit actions are present: a June 12, 2025 Credit Agreement Amendment extended term loan and revolver maturities to 2030 and added $500 million of incremental extended revolving commitments, and a February 5, 2025 $2.4 billion delayed draw secured term loan facility was entered into for the Wynn Al Marjan Island development. These are binding/completed actions that improve maturity profile and add committed liquidity, though the new facility also increases leverage and the guarantee creates contingent obligations. Net point-in-time effect is neutral-to-supportive of runway/tradability rather than a dilution or distress event."
+          },
+          "signal_id": "financing_listing_action",
+          "signal_ref": "financing_listing_action:v2",
+          "state": {
+            "confidence": 0.72,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "version": 2
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}"
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1,
+                "model_evidence_text": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}"
+              }
+            ]
+          },
+          "interpretation": {
+            "summary": "Latest point-in-time cash is $2,070,086,000 (CashAndCashEquivalentsAtCarryingValue, 2025-03-31) and latest quarterly NetCashProvidedByUsedInOperatingActivities is $133,774,000 for the three months ended 2025-03-31. Monthly average operating cash flow is about $44.59 million, giving an implied runway of roughly 46 months, well above the 12-month negative threshold. This indicates no near-term financing dependence from the specified operating-cash-flow runway measure."
+          },
+          "signal_id": "liquidity_runway_months",
+          "signal_ref": "liquidity_runway_months:v1",
+          "state": {
+            "confidence": 0.8,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 0
+              },
+              {
+                "available_at": "2025-05-06T00:00:00+00:00",
+                "evidence_index": 1
+              }
+            ]
+          },
+          "exact_claim_if_adopted": "revenue_growth_yoy=-0.0872356",
+          "signal_id": "revenue_growth_yoy",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_evidence_ref_catalog": [
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "financing_listing_action:v2",
+          "supporting_evidence_indices": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "liquidity_runway_months:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        },
+        {
+          "counter_evidence_indices": [],
+          "signal_ref": "revenue_growth_yoy:v1",
+          "supporting_evidence_indices": [
+            0,
+            1
+          ]
+        }
+      ],
+      "validation_feedback": {
+        "alternative_change_groups": [],
+        "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope.",
+        "invalid_output": {
+          "contradictions": [],
+          "current_beliefs": [
+            "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+            "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+            "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+            "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+            "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+            "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+            "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+            "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+          ],
+          "decision": "continue",
+          "hypotheses": [
+            "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+          ],
+          "next_information_needs": [
+            "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+            "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+            "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+            "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+            "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+          ],
+          "open_questions": [],
+          "resolved_questions": [
+            "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+            "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+            "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+            "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+            "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+            "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+          ],
+          "supporting_evidence": [
+            {
+              "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+              "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+              "kind": "basic_info",
+              "projection_id": "projection_871c72405c4293d221c12c08"
+            },
+            {
+              "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+              "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+              "kind": "basic_info",
+              "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+            },
+            {
+              "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+              "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+              "kind": "basic_info",
+              "projection_id": "projection_0de9be766e14220c0ed7bf14"
+            },
+            {
+              "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+              "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+              "kind": "basic_info",
+              "projection_id": "projection_8145490ae13024532f70603d"
+            },
+            {
+              "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+              "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+              "kind": "basic_info",
+              "projection_id": "projection_56a98199f6b8093057e647d8"
+            },
+            {
+              "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+              "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+              "kind": "basic_info",
+              "projection_id": "projection_e781791c422e6557ca97ee39"
+            },
+            {
+              "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+              "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+              "kind": "basic_info",
+              "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+            },
+            {
+              "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+              "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+              "kind": "basic_info",
+              "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+            },
+            {
+              "claim": "Wynn Resorts Finance, LLC entered into a Credit Agreement Amendment extending the final maturity of Extended Term A Facility Loans and the termination date of Extended Revolving Commitments to June 12, 2030, and obtained $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030.",
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "kind": "signal",
+              "signal_ref": "financing_listing_action:v2"
+            },
+            {
+              "claim": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC entered into a facility agreement with a syndicate of lenders providing a $2.4 billion delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island.",
+              "evidence_group": "supporting",
+              "evidence_index": 2,
+              "kind": "signal",
+              "signal_ref": "financing_listing_action:v2"
+            },
+            {
+              "claim": "revenue_growth_yoy=-0.0872356",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "revenue_growth_yoy:v1"
+            }
+          ]
+        },
+        "obligation_count": 1,
+        "obligations": [
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[2]', 'value': \"What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?\", 'signal_refs': ['financing_listing_action:v2'], 'issue': 'partial-answer target remained byte-for-byte', 'required_action': 'replace_with_exact_residual', 'required_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\", 'required_residual_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\"}. Preserve every untargeted prior need exactly",
+            "issue_code": "research_need_transition_invalid",
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "next_information_needs[3]"
+            ],
+            "obligation_index": 1,
+            "permitted_dependency_paths": [],
+            "prior_need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "required_action": "replace_with_exact_residual",
+            "required_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+            "retryability": "correctable",
+            "returned_need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+            "severity": "error",
+            "source_refs": [],
+            "write_scope_complete": true
+          }
+        ],
+        "permitted_dependency_path_count": 0,
+        "permitted_dependency_paths": [],
+        "required_change_path_count": 1,
+        "required_change_paths": [
+          "next_information_needs[3]"
+        ],
+        "validation_contract": "structured-validation-v1",
+        "validation_error": "research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[2]', 'value': \"What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?\", 'signal_refs': ['financing_listing_action:v2'], 'issue': 'partial-answer target remained byte-for-byte', 'required_action': 'replace_with_exact_residual', 'required_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\", 'required_residual_need': \"Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.\"}. Preserve every untargeted prior need exactly"
+      }
+    },
+    "output": {
+      "contradictions": [],
+      "current_beliefs": [
+        "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+        "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+        "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+        "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+        "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+        "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+        "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+        "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "Wynn's commercialization trajectory and expectation gap are not sufficient to support a six-month adjusted-share-price doubling from the baseline, because the latest observed adjusted close of 109.53 on 2025-07-30 is far below the required 2x level and the supplied evidence lacks a quantified forward bridge to close that gap."
+      ],
+      "next_information_needs": [
+        "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+        "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+        "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+        "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+        "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+        "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The target company is Wynn Resorts, Limited, CIK 0001174922, trading on Nasdaq under the symbol WYNN.",
+        "The most recent observed adjusted close in the supplied market data is 109.53 on 2025-07-30.",
+        "The supplied market data covers 2025-06-16 through 2025-07-30 and shows a rise from 88.6 on 2025-06-16 to 109.53 on 2025-07-30.",
+        "Morgan Stanley raised its Wynn price target from $95 to $101 and maintained an Overweight rating.",
+        "Tilman Fertitta increased his Wynn stake through 16,500 direct shares and 1.68 million shares acquired by Hospitality Headquarters via a share option transaction.",
+        "Wynn's Q1 2025 earnings call referenced near-record results and a significant property opening less than two years away."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "Wynn's most recent supplied adjusted close is 109.53 on 2025-07-30, with a high of 111.0 and low of 108.6.",
+          "exact_text": "{\"adjusted_close\":109.53,\"as_of_date\":\"2025-07-30\",\"close\":109.53,\"high\":111.0,\"low\":108.6,\"open\":109.53, \"volume\":1438987}",
+          "kind": "basic_info",
+          "projection_id": "projection_871c72405c4293d221c12c08"
+        },
+        {
+          "claim": "Wynn's adjusted close rose from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 on volume of 5,341,240 shares.",
+          "exact_text": "{\"adjusted_close\":93.67,\"as_of_date\":\"2025-06-30\",\"close\":93.67,\"high\":94.67,\"low\":92.75,\"open\":94.56, \"volume\":1730862},{\"adjusted_close\":101.96,\"as_of_date\":\"2025-07-01\",\"close\":101.96,\"high\":102.48,\"low\":96.86,\"open\":96.86, \"volume\":5341240}",
+          "kind": "basic_info",
+          "projection_id": "projection_fe14cbdf988c58ad2adb4edc"
+        },
+        {
+          "claim": "Wynn's adjusted close was 88.6 on 2025-06-16 and 94.68 on 2025-06-27, showing an upward move in the first half of the supplied window.",
+          "exact_text": "{\"adjusted_close\":88.6,\"as_of_date\":\"2025-06-16\",\"close\":88.6,\"high\":89.1,\"low\":85.96,\"open\":86.0, \"volume\":2522704},{\"adjusted_close\":87.28,\"as_of_date\":\"2025-06-17\",\"close\":87.28,\"high\":88.33,\"low\":86.775,\"open\":88.185, \"volume\":1325126},{\"adjusted_close\":86.91,\"as_of_date\":\"2025-06-18\",\"close\":86.91,\"high\":88.25,\"low\":86.53,\"open\":86.89, \"volume\":1256957},{\"adjusted_close\":88.49,\"as_of_date\":\"2025-06-20\",\"close\":88.49,\"high\":88.85,\"low\":87.11,\"open\":87.9, \"volume\":2841661},{\"adjusted_close\":89.7,\"as_of_date\":\"2025-06-23\",\"close\":89.7,\"high\":89.95,\"low\":87.3629,\"open\":88.61, \"volume\":1862282},{\"adjusted_close\":90.97,\"as_of_date\":\"2025-06-24\",\"close\":90.97,\"high\":91.48,\"low\":89.8512,\"open\":90.69, \"volume\":1765921},{\"adjusted_close\":91.91,\"as_of_date\":\"2025-06-25\",\"close\":91.91,\"high\":92.91,\"low\":90.97,\"open\":91.01, \"volume\":1774402},{\"adjusted_close\":92.64,\"as_of_date\":\"2025-06-26\",\"close\":92.64,\"high\":93.65,\"low\":91.5214,\"open\":92.86, \"volume\":1605876},{\"adjusted_close\":94.68,\"as_of_date\":\"2025-06-27\",\"close\":94.68,\"high\":94.73,\"low\":92.435,\"open\":92.67, \"volume\":2640932}",
+          "kind": "basic_info",
+          "projection_id": "projection_0de9be766e14220c0ed7bf14"
+        },
+        {
+          "claim": "Morgan Stanley increased its Wynn price target from $95 to $101, maintained an Overweight rating, and the article cites an average analyst price target of $105.97 and a GuruFocus fair value of $119.58.",
+          "exact_text": "Wynn Resorts (WYNN) Sees Price Target Boost from Morgan Stanley Morgan Stanley has increased its price target for Wynn Resorts (WYNN) from $95 to $101, maintaining an Overweight rating, due to stronger-than-expected Q1 results and upward estimate revisions for the Gaming & Lodging sector. Analysts forecast an average price target of $105.97 for WYNN, indicating a potential 16.79% upside, while GuruFocus estimates a fair value of $119.58, suggesting a 31.8% upside. The company reported strong Q1 performance in Las Vegas, Boston, and Macau, with significant operating revenues and adjusted property EBITDAR, although it faces challenges like deferred CapEx projects and competitive markets.",
+          "kind": "basic_info",
+          "projection_id": "projection_8145490ae13024532f70603d"
+        },
+        {
+          "claim": "Tilman Fertitta, already the largest shareholder, purchased 16,500 shares directly and Hospitality Headquarters acquired an additional 1.68 million shares through a share option transaction.",
+          "exact_text": "Wynn Resorts Stock Rises as Billionaire Investor Tilman Fertitta Increases Stake Wynn Resorts shares rose after billionaire Tilman Fertitta, already the largest shareholder, further increased his stake in the company. Fertitta purchased 16,500 shares directly, and his company, Hospitality Headquarters, acquired an additional 1.68 million shares through a share option transaction. This move solidifies Fertitta's significant investment in the hotel and casino operator, adding to his diverse portfolio that includes Golden Nugget casinos and the NBA's Houston Rockets.",
+          "kind": "basic_info",
+          "projection_id": "projection_56a98199f6b8093057e647d8"
+        },
+        {
+          "claim": "Wynn's earnings call referenced near-record results and a significant property opening less than two years away.",
+          "exact_text": "This anniversary was a tribute to the dedication, passion, and hard work that so many have demonstrated over the years to build the strength of our business today, a business that is delivering near record results with a significant property opening now less than two years away.",
+          "kind": "basic_info",
+          "projection_id": "projection_e781791c422e6557ca97ee39"
+        },
+        {
+          "claim": "Wynn's 8-K is a current report cover page identifying Wynn Resorts, Limited, Nevada, Commission File Number 000-50028, and common stock trading on Nasdaq under WYNN.",
+          "exact_text": "wynn-20250612 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of Report (Date of earliest event reported): June 12, 2025 WYNN RESORTS, LIMITED (Exact name of registrant as specified in its charter) Nevada 000-50028 46-0484987 (State or other jurisdiction of incorporation) (Commission File Number) (I.R.S. Employer Identification No.) 3131 Las Vegas Boulevard South Las Vegas, Nevada 89109 (Address of principal executive offices) (Zip Code) ( 702 ) 770-7555 (Registrant’s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common stock, par value $0.01 WYNN Nasdaq Global Select Market",
+          "kind": "basic_info",
+          "projection_id": "projection_043b3b636dd81bc40c2a32f5"
+        },
+        {
+          "claim": "The supplied SEC company facts projection for Wynn Resorts contains historical Entity Common Stock Shares Outstanding values from 2010 through 2012, including 123,508,349 shares as of 2010-08-02 and 100,522,136 shares as of 2012-07-31.",
+          "exact_text": "{\"cik\":1174922,\"entityName\":\"WYNN RESORTS, LIMITED\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-10-181746\",\"end\":\"2010-08-02\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":123508349},{\"accn\":\"0001193125-10-250627\",\"end\":\"2010-11-01\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":123946173},{\"accn\":\"0001193125-11-050547\",\"end\":\"2011-02-15\",\"filed\":\"2011-03-01\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2010,\"val\":124620408},{\"accn\":\"0001193125-11-132526\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":124757759},{\"accn\":\"0001193125-11-216378\",\"end\":\"2011-08-01\",\"filed\":\"2011-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":124948570},{\"accn\":\"0001193125-11-304221\",\"end\":\"2011-11-01\",\"filed\":\"2011-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2011Q3I\",\"fy\":2011,\"val\":124957158},{\"accn\":\"0001193125-12-089377\",\"end\":\"2012-02-23\",\"filed\":\"2012-02-29\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2011,\"val\":100527776},{\"accn\":\"0001193125-12-225309\",\"end\":\"2012-04-30\",\"filed\":\"2012-05-10\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2012Q1I\",\"fy\":2012,\"val\":100512724},{\"accn\":\"0001193125-12-347659\",\"end\":\"2012-07-31\",\"filed\":\"2012-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2012Q2I\",\"fy\":2012,\"val\":100522136},{\"accn\":\"0001193125-12-463380\",\"end\":\"2012-10-31\",\"filed\":\"2012-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2012Q3I\",\"fy\":2012",
+          "kind": "basic_info",
+          "projection_id": "projection_d958434387bf07f4ec2cbc0a"
+        },
+        {
+          "claim": "Wynn Resorts Finance, LLC entered into a Credit Agreement Amendment extending the final maturity of Extended Term A Facility Loans and the termination date of Extended Revolving Commitments to June 12, 2030, and obtained $500 million in incremental extended revolving commitments with a stated maturity date of June 12, 2030.",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "On February 5, 2025, Wynn Al Marjan Island FZ-LLC entered into a facility agreement with a syndicate of lenders providing a $2.4 billion delayed draw secured term loan facility to finance the development of Wynn Al Marjan Island.",
+          "evidence_group": "supporting",
+          "evidence_index": 2,
+          "kind": "signal",
+          "signal_ref": "financing_listing_action:v2"
+        },
+        {
+          "claim": "revenue_growth_yoy=-0.0872356",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "revenue_growth_yoy:v1"
+        }
+      ]
+    }
+  }
+]

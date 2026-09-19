@@ -1181,3 +1181,577 @@ class ScopedCorrectionProjectionTests(TestCase):
                 enforce_scoped_correction=True, exact_compaction_scope=True,
                 stable_correction_prefix=True,
             )
+
+    def test_v119_duplicate_need_transition_accepts_targeted_occurrence(self) -> None:
+        from types import SimpleNamespace
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _targeted_answer_need_transition_errors,
+        )
+
+        residual = (
+            "Property openings, licensing decisions, and regulatory milestones "
+            "disclosed by 2025-07-31 that could materially change Wynn's "
+            "earnings trajectory."
+        )
+        catalyst = (
+            "What scheduled catalysts, property openings, licensing decisions, "
+            "refinancing events, or regulatory milestones were disclosed by "
+            "2025-07-31 that could materially change Wynn's earnings trajectory "
+            "within the six-month horizon?"
+        )
+        prior = SimpleNamespace(next_information_needs=[
+            "Latest quarterly figures?", "Forward guidance?", catalyst, catalyst,
+            "10-Q debt contingencies?", "Analyst revisions?",
+        ])
+        returned = SimpleNamespace(next_information_needs=[
+            "Latest quarterly figures?", "Forward guidance?", residual, catalyst,
+            "10-Q debt contingencies?", "Analyst revisions?",
+        ])
+        selection = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[2],
+            answer_scope="partial",
+            residual_need=residual,
+        )
+        errors = _targeted_answer_need_transition_errors(
+            prior,
+            returned,
+            (selection,),
+            {"financing_listing_action:v2"},
+            {"financing_listing_action:v2"},
+            evaluation_context={"prediction_time": "2025-07-31T00:00:00+00:00"},
+        )
+        # The targeted occurrence at prior index 2 became the exact residual
+        # while the untargeted duplicate at prior index 3 is preserved
+        # byte-for-byte: this raw V119 transition is correct, not invalid.
+        self.assertEqual(errors, [])
+
+    def test_need_transition_feedback_targets_returned_path_not_prior_index(self) -> None:
+        from types import SimpleNamespace
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _need_transition_validation_issue,
+            _targeted_answer_need_transition_errors,
+        )
+
+        residual = (
+            "Property openings and regulatory milestones disclosed by "
+            "2025-07-31 that could materially change Wynn's earnings "
+            "trajectory."
+        )
+        catalyst = (
+            "What scheduled catalysts, property openings, licensing "
+            "decisions, refinancing events, or regulatory milestones were "
+            "disclosed by 2025-07-31 that could materially change Wynn's "
+            "earnings trajectory within the six-month horizon?"
+        )
+        prior = SimpleNamespace(next_information_needs=[
+            "Latest quarterly figures?", catalyst, "Forward guidance?",
+        ])
+        returned = SimpleNamespace(next_information_needs=[
+            "Latest quarterly figures?", "Forward guidance?", catalyst,
+        ])
+        selection = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[1],
+            answer_scope="partial",
+            residual_need=residual,
+        )
+        errors = _targeted_answer_need_transition_errors(
+            prior,
+            returned,
+            (selection,),
+            {"financing_listing_action:v2"},
+            {"financing_listing_action:v2"},
+            evaluation_context={"prediction_time": "2025-07-31T00:00:00+00:00"},
+        )
+        self.assertEqual(len(errors), 1)
+        error = errors[0]
+        self.assertEqual(error["returned_path"], "next_information_needs[2]")
+        self.assertEqual(error["prior_state_path"], "next_information_needs[1]")
+        self.assertNotIn("path", error)
+        issue = _need_transition_validation_issue(error, returned)
+        self.assertEqual(issue.paths, ("next_information_needs[2]",))
+        self.assertIn("'returned_path': 'next_information_needs[2]'", issue.message)
+        self.assertNotIn("'path':", issue.message)
+        self.assertTrue(issue.repair_context["write_scope_complete"])
+        self.assertEqual(
+            issue.repair_context["returned_path"], "next_information_needs[2]"
+        )
+
+    def test_need_transition_multiplicity_preserves_occurrence_counts(self) -> None:
+        from types import SimpleNamespace
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _targeted_answer_need_transition_errors,
+        )
+
+        context = {"prediction_time": "2025-07-31T00:00:00+00:00"}
+
+        def transition(prior_needs, returned_needs, selection):
+            return _targeted_answer_need_transition_errors(
+                SimpleNamespace(next_information_needs=prior_needs),
+                SimpleNamespace(next_information_needs=returned_needs),
+                (selection,),
+                {"financing_listing_action:v2"},
+                {"financing_listing_action:v2"},
+                evaluation_context=context,
+            )
+
+        adopted = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[9],
+            answer_scope="full",
+            residual_need="",
+        )
+        # One returned occurrence cannot satisfy two preserved duplicates.
+        errors = transition(["Catalyst?", "Catalyst?"], ["Catalyst?"], adopted)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["required_action"], "restore_exactly")
+
+        targeted_full = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[1],
+            answer_scope="full",
+            residual_need="",
+        )
+        # A retained untargeted duplicate is not the target: removing only
+        # the targeted occurrence is accepted.
+        self.assertEqual(
+            transition(["Catalyst?", "Catalyst?"], ["Catalyst?"], targeted_full),
+            [],
+        )
+        # But retaining both occurrences leaves surplus targeted content.
+        errors = transition(["Catalyst?", "Catalyst?"], ["Catalyst?", "Catalyst?"], targeted_full)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["required_action"], "remove_exact_target")
+        self.assertEqual(errors[0]["returned_path"], "next_information_needs[1]")
+
+        first = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[0],
+            answer_scope="partial",
+            residual_need="First residual by 2025-07-31.",
+        )
+        prior = ["First need?", "Keep.", "Second need?", "Keep too."]
+        self.assertEqual(
+            transition(
+                prior,
+                ["First residual by 2025-07-31.", "Keep.",
+                 "Second need?", "Keep too."],
+                first,
+            ),
+            [],
+        )
+        errors = transition(prior, prior, first)
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["prior_state_path"], "next_information_needs[0]")
+        # Multiple targeted residuals each carry their own obligation.
+        shared = SimpleNamespace(
+            reason_code="answer_need",
+            signal_ref="financing_listing_action:v2",
+            target_need_indices=[0, 2],
+            answer_scope="partial",
+            residual_need="Shared residual by 2025-07-31.",
+        )
+        errors = transition(prior, prior, shared)
+        self.assertEqual(len(errors), 2)
+        self.assertTrue(
+            all(
+                error["required_action"] == "replace_with_exact_residual"
+                for error in errors
+            )
+        )
+
+    def test_authorized_returned_need_repair_projects_with_unrelated_preserved(self) -> None:
+        needs = [
+            "Latest quarterly figures?", "Forward guidance?", residual := (
+                "Property openings and regulatory milestones by 2025-07-31."
+            ), "Catalyst duplicate need.", "10-Q debt contingencies?",
+            "Analyst revisions?",
+        ]
+        removal = evolution_runtime_module._project_scoped_correction(
+            {
+                "next_information_needs": list(needs),
+                "hypotheses": ["Hypothesis."],
+                "decision": "continue",
+            },
+            {
+                "next_information_needs": [
+                    needs[0], needs[1], residual, needs[4], needs[5],
+                ],
+                "hypotheses": ["Hypothesis."],
+                "decision": "continue",
+            },
+            ["next_information_needs[3]"],
+            # A whole-member path alone authorizes replacement, not deletion:
+            # the need-transition validator's removal allowance must be
+            # stated explicitly for a direct projection call.
+            member_removal_allowances={"next_information_needs": {3}},
+        )
+        self.assertEqual(
+            removal[0]["next_information_needs"],
+            [needs[0], needs[1], residual, needs[4], needs[5]],
+        )
+        self.assertEqual(removal[0]["hypotheses"], ["Hypothesis."])
+        self.assertEqual(removal[0]["decision"], "continue")
+        replacement = evolution_runtime_module._project_scoped_correction(
+            {
+                "next_information_needs": list(needs),
+                "hypotheses": ["Hypothesis."],
+                "decision": "continue",
+            },
+            {
+                "next_information_needs": [
+                    needs[0], needs[1], residual, residual, needs[4], needs[5],
+                ],
+                "hypotheses": ["Hypothesis."],
+                "decision": "continue",
+            },
+            ["next_information_needs[3]"],
+        )
+        self.assertEqual(
+            replacement[0]["next_information_needs"],
+            [needs[0], needs[1], residual, residual, needs[4], needs[5]],
+        )
+        self.assertEqual(replacement[0]["hypotheses"], ["Hypothesis."])
+
+    def test_content_anchored_reconciliation_restores_unmentioned_beliefs(self) -> None:
+        beliefs = [f"Belief {index}." for index in range(8)]
+        corrected = [beliefs[0], beliefs[1], beliefs[3], beliefs[7], beliefs[6]]
+        projected = evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": list(beliefs), "decision": "continue"},
+            {"current_beliefs": list(corrected), "decision": "continue"},
+            ["current_beliefs[2]", "current_beliefs[4]"],
+            member_removal_allowances={"current_beliefs": {2, 4}},
+        )
+        self.assertEqual(
+            projected[0]["current_beliefs"],
+            [beliefs[0], beliefs[1], beliefs[3], beliefs[5], beliefs[6], beliefs[7]],
+        )
+        self.assertEqual(projected[0]["decision"], "continue")
+
+        replaced = evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": list(beliefs), "decision": "continue"},
+            {
+                "current_beliefs": [
+                    beliefs[0], beliefs[1], "Replacement belief.",
+                    beliefs[3], beliefs[7], beliefs[6],
+                ],
+                "decision": "continue",
+            },
+            ["current_beliefs[2]", "current_beliefs[4]"],
+            member_removal_allowances={"current_beliefs": {2, 4}},
+        )
+        self.assertEqual(
+            replaced[0]["current_beliefs"],
+            [
+                beliefs[0], beliefs[1], "Replacement belief.", beliefs[3],
+                beliefs[5], beliefs[6], beliefs[7],
+            ],
+        )
+
+    def test_content_anchored_reconciliation_fails_closed(self) -> None:
+        # Duplicate content cannot anchor a unique mapping once the ordered
+        # membership check has already rejected the edit.
+        self.assertIsNone(evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": ["Dup.", "Invalid 42.", "Dup.", "Tail."]},
+            {"current_beliefs": ["Tail.", "Dup.", "Dup."]},
+            ["current_beliefs[1]"],
+        ))
+        # An insertion beyond the add budget has no authorized slot.
+        self.assertIsNone(evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": ["Keep.", "Invalid 42.", "Sibling."]},
+            {
+                "current_beliefs": [
+                    "Sibling.", "Keep.", "Replacement.", "Extra.",
+                ],
+            },
+            ["current_beliefs[1]"],
+        ))
+        # A vanished authorized member without removal authority is rejected.
+        self.assertIsNone(evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": ["Keep.", "Invalid 42.", "Sibling."]},
+            {"current_beliefs": ["Sibling.", "Keep."]},
+            ["current_beliefs[1]"],
+            member_removal_allowances={"current_beliefs": set()},
+        ))
+        # An unauthorized deletion is undone, never accepted: the missing
+        # sibling returns byte-for-byte while the authorized slot may carry
+        # the model's replacement.
+        projected = evolution_runtime_module._project_scoped_correction(
+            {"current_beliefs": ["Keep.", "Invalid 42.", "Sibling."]},
+            {"current_beliefs": ["Keep.", "Rewritten."]},
+            ["current_beliefs[1]"],
+        )
+        self.assertEqual(
+            projected[0]["current_beliefs"], ["Keep.", "Rewritten.", "Sibling."]
+        )
+
+    def test_drifted_whole_member_correction_reconciles_to_authorized_slots(self) -> None:
+        invalid = {
+            "current_beliefs": [
+                "Belief zero.", "Belief one.",
+                "Unsupported numeric belief 5.9 ounces.", "Belief three.",
+                "Unsupported belief 500 meters.", "Belief five.",
+                "Belief six.", "Belief seven.",
+            ],
+            "decision": "continue",
+        }
+        corrected = {
+            "current_beliefs": [
+                "Belief zero.", "Belief one.", "Belief three.",
+                "Belief seven.", "Belief six.",
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        def parse(value):
+            if any(
+                "Unsupported" in belief for belief in value["current_beliefs"]
+            ):
+                raise StructuredValidationError([ValidationIssue(
+                    code="assertion_without_support",
+                    message="quantitative beliefs must copy evidence claims",
+                    paths=("current_beliefs[2]", "current_beliefs[4]"),
+                    allowed_repairs=("replace", "remove"),
+                )])
+            return value
+
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller, stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.", payload={},
+            parser=parse, allow_outcomes=False, enforce_scoped_correction=True,
+            exact_compaction_scope=True, stable_correction_prefix=True,
+        )
+        self.assertEqual(value["current_beliefs"], [
+            "Belief zero.", "Belief one.", "Belief three.", "Belief five.",
+            "Belief six.", "Belief seven.",
+        ])
+        self.assertEqual(value["decision"], "continue")
+        self.assertEqual(usage.llm_calls, 2)
+
+    def test_need_fallback_transitions_exactly_one_duplicate_occurrence(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_need_transition_fallback,
+        )
+
+        original = {"next_information_needs": ["Catalyst?", "Catalyst?", "Sibling?"]}
+        remove = StructuredValidationError([ValidationIssue(
+            code="research_need_transition_invalid", message="target retained",
+            paths=("next_information_needs[1]",),
+            repair_context={"prior_need": "Catalyst?",
+                            "required_action": "remove_exact_target"},
+        )])
+        value, _ = _research_need_transition_fallback(original, remove)
+        self.assertEqual(value["next_information_needs"], ["Catalyst?", "Sibling?"])
+        replace = StructuredValidationError([ValidationIssue(
+            code="research_need_transition_invalid", message="target retained",
+            paths=("next_information_needs[0]",),
+            repair_context={"prior_need": "Catalyst?",
+                            "required_action": "replace_with_exact_residual",
+                            "required_need": "Residual by 2025-07-31."},
+        )])
+        value, _ = _research_need_transition_fallback(
+            {"next_information_needs": ["Catalyst?", "Catalyst?"]}, replace
+        )
+        self.assertEqual(
+            value["next_information_needs"],
+            ["Residual by 2025-07-31.", "Catalyst?"],
+        )
+
+    def test_scoped_correction_guard_blocks_unauthorized_member_deletion(self) -> None:
+        # A provided-but-empty allowance mapping authorizes no whole-member
+        # removal at all, so the demonstrated unsafe projection is gone.
+        self.assertIsNone(evolution_runtime_module._project_scoped_correction(
+            {"rows": ["invalid", "keep1", "keep2"]},
+            {"rows": ["keep2"]},
+            ["rows[0]"],
+            member_removal_allowances={},
+        ))
+        # Two authorized slots between anchors plus one novel replacement is
+        # ambiguous: the first-slot guess must be rejected.
+        self.assertIsNone(evolution_runtime_module._project_scoped_correction(
+            {"rows": ["anchor a.", "invalid one.", "invalid two.", "anchor d."]},
+            {"rows": ["anchor a.", "Replacement."]},
+            ["rows[1]", "rows[2]"],
+            member_removal_allowances={"rows": {1, 2}},
+        ))
+
+        invalid = {"rows": ["invalid", "keep1", "keep2"], "decision": "continue"}
+        dropped = {"rows": ["keep2"], "decision": "continue"}
+        caller = ScriptedRoleCaller([invalid, dropped])
+
+        def parse(value):
+            if "invalid" in value["rows"]:
+                raise StructuredValidationError([ValidationIssue(
+                    code="row_invalid", message="rows[0] is invalid",
+                    paths=("rows[0]",), allowed_repairs=("replace",),
+                )])
+            return value
+
+        # replace-only authority: dropping rows[0] entirely must be blocked
+        # by the scope guard, not silently accepted as a list rewrite.
+        with self.assertRaises(CandidateExecutionRejected):
+            evolution_runtime_module._complete_parsed_role(
+                caller, stage="research_controller_reflect",
+                system_prompt="Return the fixed contract.", payload={},
+                parser=parse, allow_outcomes=False,
+                enforce_scoped_correction=True, exact_compaction_scope=True,
+                stable_correction_prefix=True,
+            )
+        replaced = {"rows": ["replaced", "keep1", "keep2"], "decision": "continue"}
+        caller = ScriptedRoleCaller([invalid, replaced])
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller, stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.", payload={},
+            parser=parse, allow_outcomes=False,
+            enforce_scoped_correction=True, exact_compaction_scope=True,
+            stable_correction_prefix=True,
+        )
+        self.assertEqual(value, replaced)
+        self.assertEqual(usage.llm_calls, 2)
+
+    def test_replace_only_member_path_never_deletes_or_splits(self) -> None:
+        # The independent counterexample: original-order pure deletion kept
+        # every sibling in place, so only the raw drift checker's operation
+        # authority can block it. Replace-only authority must also reject
+        # splitting one member into several rows and unauthorized additions.
+        invalid = {"rows": ["invalid", "keep1", "keep2"], "decision": "continue"}
+
+        def parse(value):
+            if "invalid" in value["rows"]:
+                raise StructuredValidationError([ValidationIssue(
+                    code="row_invalid", message="rows[0] is invalid",
+                    paths=("rows[0]",), allowed_repairs=("replace",),
+                )])
+            return value
+
+        for label, corrected in (
+            (
+                "pure deletion with all siblings preserved",
+                {"rows": ["keep1", "keep2"], "decision": "continue"},
+            ),
+            (
+                "splitting one member into several rows",
+                {
+                    "rows": ["first half", "second half", "keep1", "keep2"],
+                    "decision": "continue",
+                },
+            ),
+            (
+                "addition without add authority",
+                {
+                    "rows": ["replaced", "extra", "keep1", "keep2"],
+                    "decision": "continue",
+                },
+            ),
+        ):
+            with self.subTest(membership_change=label):
+                caller = ScriptedRoleCaller([invalid, corrected])
+                with self.assertRaises(CandidateExecutionRejected):
+                    evolution_runtime_module._complete_parsed_role(
+                        caller, stage="research_controller_reflect",
+                        system_prompt="Return the fixed contract.", payload={},
+                        parser=parse, allow_outcomes=False,
+                        enforce_scoped_correction=True,
+                        exact_compaction_scope=True,
+                        stable_correction_prefix=True,
+                    )
+                self.assertEqual(len(caller.calls), 2)
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertEqual(feedback["required_change_paths"], ["rows[0]"])
+                self.assertEqual(
+                    feedback["obligations"][0]["allowed_repairs"], ["replace"]
+                )
+
+        with self.subTest(membership_change="authorized replacement accepted"):
+            replaced = {
+                "rows": ["replaced", "keep1", "keep2"],
+                "decision": "continue",
+            }
+            caller = ScriptedRoleCaller([invalid, replaced])
+            value, usage = evolution_runtime_module._complete_parsed_role(
+                caller, stage="research_controller_reflect",
+                system_prompt="Return the fixed contract.", payload={},
+                parser=parse, allow_outcomes=False,
+                enforce_scoped_correction=True, exact_compaction_scope=True,
+                stable_correction_prefix=True,
+            )
+            self.assertEqual(value, replaced)
+            self.assertEqual(usage.llm_calls, 2)
+
+    def test_explicit_member_removal_and_bounded_add_stay_authorized(self) -> None:
+        invalid = {"rows": ["invalid", "keep1", "keep2"], "decision": "continue"}
+
+        def removal_parse(value):
+            if "invalid" in value["rows"]:
+                raise StructuredValidationError([ValidationIssue(
+                    code="row_invalid", message="rows[0] is invalid",
+                    paths=("rows[0]",), allowed_repairs=("replace", "remove"),
+                )])
+            return value
+
+        removed = {"rows": ["keep1", "keep2"], "decision": "continue"}
+        caller = ScriptedRoleCaller([invalid, removed])
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller, stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.", payload={},
+            parser=removal_parse, allow_outcomes=False,
+            enforce_scoped_correction=True, exact_compaction_scope=True,
+            stable_correction_prefix=True,
+        )
+        self.assertEqual(value, removed)
+        self.assertEqual(usage.llm_calls, 2)
+
+        def add_parse(value):
+            if "invalid" in value["rows"]:
+                raise StructuredValidationError([ValidationIssue(
+                    code="row_invalid", message="rows[0] is invalid",
+                    paths=("rows[0]",),
+                    allowed_repairs=("replace", "remove", "add"),
+                    repair_context={
+                        "missing_quantity_literals": ["42", "7"],
+                        "same_claim_evidence_paths": ["rows[0]"],
+                    },
+                )])
+            return value
+
+        bounded_add = {
+            "rows": ["replaced", "extra 42", "extra 7", "keep1", "keep2"],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, bounded_add])
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller, stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.", payload={},
+            parser=add_parse, allow_outcomes=False,
+            enforce_scoped_correction=True, exact_compaction_scope=True,
+            stable_correction_prefix=True,
+        )
+        self.assertEqual(value, bounded_add)
+        self.assertEqual(usage.llm_calls, 2)
+
+        beyond_budget = {
+            "rows": [
+                "replaced", "extra 42", "extra 7", "one extra too many",
+                "keep1", "keep2",
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, beyond_budget])
+        with self.assertRaises(CandidateExecutionRejected):
+            evolution_runtime_module._complete_parsed_role(
+                caller, stage="research_controller_reflect",
+                system_prompt="Return the fixed contract.", payload={},
+                parser=add_parse, allow_outcomes=False,
+                enforce_scoped_correction=True, exact_compaction_scope=True,
+                stable_correction_prefix=True,
+            )

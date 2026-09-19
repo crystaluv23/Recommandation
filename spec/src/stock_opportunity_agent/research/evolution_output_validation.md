@@ -50,16 +50,46 @@ never inferred from the existence of an indexed leaf path or from whole-object
 validity: it requires specific validator metadata — the owning issue's
 `authorized_member_removals` repair context naming the exact member paths —
 or an obligation that itself names the whole member `root[i]` while its
-allowed_repairs permit `remove`. A leaf `remove` repair never becomes parent
+allowed_repairs permit `remove`. A supplied member-removal allowance mapping
+without an entry for a collection root authorizes no removal in that
+collection at all: a missing or empty allowance root is fail-closed, never
+a default under which every covered slot becomes removable. A leaf `remove`
+repair never becomes parent
 removal without such an explicit whole-member target. Only an exact member
-path `root[i]` authorizes whole-member replacement or a bounded split of that
-member. An unmentioned member must survive.
+path `root[i]` authorizes whole-member replacement, and it authorizes
+replacing that one member with exactly one returned row: deleting that
+member additionally requires the slot's own explicit removal allowance, and
+returning several rows where that one member stood — splitting it — is an
+addition that requires an explicit bounded add budget. A compaction
+obligation's `required_compaction_remove_paths` are exactly such explicit
+per-member removal allowances. An unmentioned member must survive.
 Surviving members must stay in order — unchanged except for their own
 authorized leaf edits, where an authorized node permits its complete subtree
 (an authorized same-length list-valued leaf replacement survives beside a
-neighboring authorized member removal) — additions stay bounded by the
-authorized member slots plus the prior collection size, and projection
-applies the same rule when copying. An append or insertion of new members is
+neighboring authorized member removal) — additions stay bounded by an
+explicit add budget, never by member-slot count or the prior collection
+size, and projection applies the same rule when copying. The raw drift
+check, the projection membership fast path, and the content-anchored
+reconciler enforce this one per-member operation-authority rule through a
+single shared membership check, so a raw corrected object and any projected
+correction obey identical operation permissions: every authorized
+whole-member slot that lacks its own removal allowance must still be
+represented by exactly one returned row, and every row beyond those
+replacements needs add authority.
+When a correction both repairs its authorized whole-member slots and drifts
+the rest of the list (unauthorized removals or reordering), the corrected
+list itself is never accepted; projection may instead reconcile
+content-anchored against the failed output: each unauthorized failed member
+that equals exactly one corrected row anchors it, unmentioned or reordered
+members are restored from the failed output in original order, an unmatched
+corrected row is taken as a replacement only when it attributes to exactly
+one authorized slot whose position between anchors is unambiguous — a run
+of returned rows shorter than the authorized slots between anchors is an
+ambiguous partial mapping and is rejected, never assigned to the first slot
+by assumption — and a
+vanished authorized member still requires removal authority. Duplicate
+content, an unattributable replacement, or an insertion beyond an explicit
+add budget is ambiguous and fails closed with no projection. An append or insertion of new members is
 authorized only explicitly: an obligation whose allowed_repairs permits `add`
 grants a bounded append budget on the collection its paths name (one new
 member per named missing literal, at least one); no leaf path implies that

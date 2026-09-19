@@ -226,7 +226,7 @@ class PartialResidualTemporalScopeTests(TestCase):
             ),
             [
                 {
-                    "path": "next_information_needs[0]",
+                    "prior_state_path": "next_information_needs[0]",
                     "value": V117_PRIOR_NEED,
                     "signal_refs": [legacy.signal_ref],
                     "issue": (
@@ -1532,7 +1532,7 @@ class ReflectionRoleAdapterTests(TestCase):
             errors,
             [
                 {
-                    "path": "next_information_needs[0]",
+                    "prior_state_path": "next_information_needs[0]",
                     "value": original_need,
                     "issue": "untargeted need changed or was removed",
                     "required_action": "restore_exactly",

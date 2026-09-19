@@ -1,0 +1,117 @@
+{
+  "attempt": 202,
+  "prior_duplicate_indices": [
+    2,
+    3
+  ],
+  "old_text_count": 2,
+  "returned_old_text_count": 1,
+  "returned_needs": [
+    "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+    "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+    "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+    "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+    "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+    "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?"
+  ],
+  "executed_selection_intents": [
+    {
+      "answer_scope": "partial",
+      "reason_code": "answer_need",
+      "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+      "selection_reason": "Directly covers the refinancing-event facet of the scheduled-catalyst need by judging financing, restructuring, or listing actions that change runway, dilution, or tradability.",
+      "signal_ref": "financing_listing_action:v2",
+      "target_need_indices": [
+        2
+      ]
+    },
+    {
+      "reason_code": "assess_applicability",
+      "selection_reason": "Tests whether Wynn's cash runway implies near-term financing dependence, which bears on the refinancing-event facet of the catalyst need.",
+      "signal_ref": "liquidity_runway_months:v1",
+      "target_need_indices": [
+        2
+      ]
+    },
+    {
+      "reason_code": "assess_applicability",
+      "selection_reason": "Measures latest year-over-year revenue growth, providing the prior-year comparison baseline needed to evaluate Wynn's latest reported quarter figures.",
+      "signal_ref": "revenue_growth_yoy:v1",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "need_transition_contract": {
+    "legacy_unindexed_answer_signal_refs": [],
+    "need_rules": [
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [
+          "revenue_growth_yoy:v1"
+        ],
+        "need": "What specific revenue, adjusted property EBITDAR, margin, and cash-flow figures did Wynn disclose in its latest reported quarter, and how do those compare with the prior-year period?",
+        "need_index": 0,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What forward guidance, if any, did Wynn management provide for the next two to three quarters, including expected property-level performance, capital expenditure, and any Macau or Las Vegas demand commentary?",
+        "need_index": 1,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [
+          {
+            "answer_scope": "partial",
+            "residual_need": "Property openings, licensing decisions, and regulatory milestones disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory.",
+            "signal_ref": "financing_listing_action:v2"
+          }
+        ],
+        "available_answer_signal_refs": [
+          "financing_listing_action:v2"
+        ],
+        "context_only_signal_refs": [
+          "liquidity_runway_months:v1"
+        ],
+        "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+        "need_index": 2,
+        "required_transition": "if evidence from this available partial answer is adopted, replace_with_exact_residual_need; otherwise preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What scheduled catalysts, property openings, licensing decisions, refinancing events, or regulatory milestones were disclosed by 2025-07-31 that could materially change Wynn's earnings trajectory within the six-month horizon?",
+        "need_index": 3,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What did Wynn's latest 10-Q or 10-K disclose about segment-level operating trends, debt maturities, share repurchases, and any material legal or regulatory contingencies?",
+        "need_index": 4,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What analyst estimate revisions, consensus revenue and EBITDA forecasts, and price-target changes for Wynn were published between 2025-05-30 and 2025-07-31?",
+        "need_index": 5,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      }
+    ]
+  },
+  "finding": "Need transition is valid for one targeted occurrence and one preserved untargeted identical occurrence; global text membership falsely rejects."
+}

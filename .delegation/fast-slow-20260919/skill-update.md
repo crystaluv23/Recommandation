@@ -32,3 +32,5 @@ Final skill-format revalidation after event-order repair: quick_validate.py retu
 Codex omitted exact permitted commands from round11 brief; agent attempted variants denied by scope hook and reported all shell unavailable. Launcher now automatically includes exact allow-command strings in dispatched prompt, preventing this omission. Existing scope policy unchanged;10offline tests passed. No restart of active round11.
 
 Latest launcher SHA256: efeecc17a9bfb53c77c32e1dfdb1f4522298c51174c651d870ff6600e7d1da18. Skill validator passed after exact-command handoff patch.
+
+Progress metadata now includes whitelisted last_tool_name (Read/Write/Edit/Bash/Glob/Grep or other), to distinguish investigation from edits/commands without storing arguments/content. Dedicated privacy probes passed; existing offline suite rerun. Active process not restarted.

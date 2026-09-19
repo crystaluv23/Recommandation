@@ -1,0 +1,2 @@
+# Partially useful, not fully accepted
+Normal runtime completion1146.3seconds.32focused/897fulltests/lint pass. Need duplicate-occurrence diagnosis corrected and replay shows transition errors disappear. But independent full controller pure-delete replace-only probe remains accepted (raw guard and membership shortcut authority omission); plus full Signal numeric-context replay left incomplete. Round16 assigned bounded follow-up. No production initiated.

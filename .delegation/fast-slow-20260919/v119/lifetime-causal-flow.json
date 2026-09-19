@@ -1,0 +1,292 @@
+{
+  "trajectory": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json",
+  "rounds": [
+    {
+      "round": 1,
+      "needs": [
+        "What specific 2025 revenue, adjusted EBITDA, and free cash flow guidance figures did Life Time management disclose by 2025-03-31, and what assumptions underlie those figures?",
+        "What is Life Time's current net debt leverage ratio and cash position as of the most recent disclosure available by 2025-03-31, and how do sale-leaseback proceeds affect reported leverage?",
+        "What new location opening schedule and membership growth targets has Life Time disclosed by 2025-03-31 for the remainder of 2025?",
+        "What did Life Time disclose by 2025-03-31 about the use of proceeds or capital allocation plans following the secondary offering and any related option exercise by the CEO?",
+        "What customer concentration, cancellation rights, or membership attrition disclosures has Life Time provided in its most recent annual or interim report available by 2025-03-31?",
+        "What analyst or third-party estimates available by 2025-03-31 quantify Life Time's expected adjusted share price or valuation multiple over the next six months?"
+      ],
+      "selections": [
+        {
+          "answer_scope": "full",
+          "applicability_hypothesis": "Fresh management guidance on 2025 revenue, adjusted EBITDA, and free cash flow may be disclosed and assessable.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "catalyst_window"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": null,
+          "selection_reason": "Directly covers the explicit 2025 guidance facet, including figures and underlying assumptions.",
+          "signal_ref": "guidance_acceleration:v1",
+          "target_need_indices": [
+            0
+          ]
+        },
+        {
+          "answer_scope": "partial",
+          "applicability_hypothesis": "Latest point-in-time cash and equivalents balance is available for leverage assessment.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": "Net debt leverage ratio and the effect of sale-leaseback proceeds on reported leverage remain unresolved.",
+          "selection_reason": "Directly covers the cash position facet of the leverage and liquidity need.",
+          "signal_ref": "cash_reserves:v1",
+          "target_need_indices": [
+            1
+          ]
+        },
+        {
+          "applicability_hypothesis": "Financing and listing actions may materially change dilution, runway, or capital allocation.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "catalyst_window"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "combine_evidence",
+          "selection_reason": "Contextual evidence on the secondary offering and CEO option exercise that may inform capital allocation and dilution.",
+          "signal_ref": "financing_listing_action:v2",
+          "target_need_indices": [
+            3
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ref": "guidance_acceleration:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 0.85,
+            "value": "positive"
+          },
+          "summary": "Management explicitly raised both revenue and adjusted EBITDA guidance for 2025 versus the guidance preannounced in mid-January, and reiterated the raise shortly after, indicating a material upward change in level and conviction versus prior guidance."
+        },
+        {
+          "ref": "cash_reserves:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 1.0,
+            "value": "neutral"
+          },
+          "summary": "cash_reserves=1.0879e+07"
+        },
+        {
+          "ref": "financing_listing_action:v2",
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[1] exact_text does not map uniquely: supplied_projection_id='projection_5d28e8a6bff9fa1745857490', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. Copy one case- and punctuation-exact literal from an eligible projection or return unavailable",
+            "status": "validation_failed"
+          },
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[1] exact_text does not map uniquely: supplied_projection_id='projection_5d28e8a6bff9fa1745857490', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. Copy one case- and punctuation-exact literal from an eligible projection or return unavailable"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "needs": [
+        "Net debt leverage ratio and the effect of sale-leaseback proceeds on reported leverage remain unresolved.",
+        "What new location opening schedule and membership growth targets has Life Time disclosed by 2025-03-31 for the remainder of 2025?",
+        "What did Life Time disclose by 2025-03-31 about the use of proceeds or capital allocation plans following the secondary offering and any related option exercise by the CEO?",
+        "What customer concentration, cancellation rights, or membership attrition disclosures has Life Time provided in its most recent annual or interim report available by 2025-03-31?",
+        "What analyst or third-party estimates available by 2025-03-31 quantify Life Time's expected adjusted share price or valuation multiple over the next six months?",
+        "What free cash flow guidance or assumptions did Life Time management disclose by 2025-03-31 to support the raised 2025 revenue and adjusted EBITDA guidance?"
+      ],
+      "selections": [
+        {
+          "answer_scope": "partial",
+          "applicability_hypothesis": "Life Time's annual or interim report may disclose membership attrition relevant to the need.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": "Cancellation rights and customer concentration disclosures remain unresolved; only membership attrition is covered.",
+          "selection_reason": "Directly addresses the requested membership attrition facet in the need.",
+          "signal_ref": "customer_concentration:v1",
+          "target_need_indices": [
+            3
+          ]
+        },
+        {
+          "applicability_hypothesis": "If liquidity runway is short, sale-leaseback proceeds may be critical to funding expansion and could affect leverage.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "assess_applicability",
+          "selection_reason": "Assesses whether sale-leaseback proceeds and expansion affect near-term liquidity and financing dependence.",
+          "signal_ref": "liquidity_runway_months:v1",
+          "target_need_indices": [
+            0
+          ]
+        },
+        {
+          "applicability_hypothesis": "Operating cash flow margin may inform whether management's free cash flow guidance is supported by underlying cash generation.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures operating cash flow margin, relevant to free cash flow guidance and assumptions for 2025.",
+          "signal_ref": "operating_cash_flow_margin:v1",
+          "target_need_indices": [
+            5
+          ]
+        },
+        {
+          "applicability_hypothesis": "Historical revenue growth may indicate whether the raised 2025 guidance and membership growth targets are achievable.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures year-over-year revenue growth, relevant to the raised 2025 revenue guidance and membership growth targets.",
+          "signal_ref": "revenue_growth_yoy:v1",
+          "target_need_indices": [
+            1
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ref": "customer_concentration:v1",
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal counter evidence[1] on projection 'projection_4c812f7f6b4e106d22a5e000' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_4c812f7f6b4e106d22a5e000\": \"AND SUBSIDIARIES NOTES TO UNAUDITED CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (Table amounts in thousands except per share data) 4.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "summary": "Signal execution failed strict validation or execution: Signal counter evidence[1] on projection 'projection_4c812f7f6b4e106d22a5e000' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_4c812f7f6b4e106d22a5e000\": \"AND SUBSIDIARIES NOTES TO UNAUDITED CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (Table amounts in thousands except per share data) 4.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        },
+        {
+          "ref": "liquidity_runway_months:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 0.85,
+            "value": "positive"
+          },
+          "summary": "Using the latest point-in-time facts for the same entity and period (FY2024): CashAndCashEquivalentsAtCarryingValue = $10,879,000 and NetCashProvidedByUsedInOperatingActivities = $575,117,000 over 12 months. Monthly average operating cash flow = $47,926,416.67; liquidity runway = 10,879,000 / 47,926,416.67 ≈ 0.23 months, which is at or below the 6-month positive threshold. This indicates near-term financing dependence under the skill's measurement, so the qualifying low-runway condition is present."
+        },
+        {
+          "ref": "operating_cash_flow_margin:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "summary": "operating_cash_flow_margin=0.219427"
+        },
+        {
+          "ref": "revenue_growth_yoy:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 1.0,
+            "value": "neutral"
+          },
+          "summary": "revenue_growth_yoy=0.182443"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "needs": [
+        "Net debt leverage ratio and the effect of sale-leaseback proceeds on reported leverage remain unresolved.",
+        "What new location opening schedule and membership growth targets has Life Time disclosed by 2025-03-31 for the remainder of 2025?",
+        "What did Life Time disclose by 2025-03-31 about the use of proceeds or capital allocation plans following the secondary offering and any related option exercise by the CEO?",
+        "What customer concentration, cancellation rights, or membership attrition disclosures has Life Time provided in its most recent annual or interim report available by 2025-03-31?",
+        "What analyst or third-party estimates available by 2025-03-31 quantify Life Time's expected adjusted share price or valuation multiple over the next six months?",
+        "What free cash flow guidance or assumptions did Life Time management disclose by 2025-03-31 to support the raised 2025 revenue and adjusted EBITDA guidance?"
+      ],
+      "selections": [
+        {
+          "applicability_hypothesis": "If operating cash outflow is high relative to cash, the elevated burn condition would be present and relevant to liquidity risk.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive",
+            "catalyst_window"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "assess_applicability",
+          "selection_reason": "Tests whether rapid cash consumption explains the near-term financing dependence implied by the low liquidity runway.",
+          "signal_ref": "cash_burn_rate_elevated:v1",
+          "target_need_indices": []
+        },
+        {
+          "applicability_hypothesis": "A low cash-to-current-liabilities ratio would indicate weak short-term liquidity and support the financing-dependence concern.",
+          "context_tags": [
+            "consumer",
+            "mid_cap",
+            "capital_intensive",
+            "catalyst_window"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "assess_applicability",
+          "selection_reason": "Measures short-term liquidity against current liabilities, directly relevant to the unresolved net debt leverage and sale-leaseback proceeds question.",
+          "signal_ref": "cash_to_current_liabilities_ratio:v1",
+          "target_need_indices": []
+        }
+      ],
+      "results": [
+        {
+          "ref": "cash_burn_rate_elevated:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 0.9,
+            "value": "negative"
+          },
+          "summary": "Latest operating cash flow for FY2024 is +575,117,000 USD (positive), so the burn rate is zero and no elevated cash burn is present. The cash balance of 10,879,000 USD is not consumed by operations; the company generated operating cash. This contradicts an elevated burn classification."
+        },
+        {
+          "ref": "cash_to_current_liabilities_ratio:v1",
+          "execution": {
+            "status": "success"
+          },
+          "state": {
+            "confidence": 0.9,
+            "value": "negative"
+          },
+          "summary": "Latest CashAndCashEquivalentsAtCarryingValue is 10,879,000 USD and latest LiabilitiesCurrent is 520,103,000 USD, both as of 2024-12-31. The ratio is approximately 0.0209, which is below the negative_max threshold of 1.0, indicating weak short-term liquidity."
+        }
+      ]
+    }
+  ]
+}

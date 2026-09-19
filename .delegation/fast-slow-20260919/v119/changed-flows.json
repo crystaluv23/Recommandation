@@ -1,0 +1,255 @@
+{
+  "attempts": 122,
+  "changed_flows": [
+    {
+      "reflect_attempt": 44,
+      "reflect_hash": "403dd3858098621b6f8ef710e2feb0311e5f83b8ce7d7c2b712255d001be33f7",
+      "next_routing_hash": "e1a3e38f43cffd1cf924dd9a05545da1e59bfb1c56d47c9ccc1524741fdc8091",
+      "previous": [
+        "What capital cost, in-service date, and shipper commitment status has Enbridge disclosed for the Flanagan South expansion phase and the Southern Illinois Connector as of 2025-09-30?",
+        "What is the disclosed capital cost, in-service date, and shipper commitment status for the Flanagan South expansion phase and the Southern Illinois Connector as of 2025-09-30?",
+        "What are Enbridge's disclosed debt maturity profile, credit facility capacity, and interest-rate exposure as of 2025-09-30 that could constrain or enable a re-rating?",
+        "What customer concentration, take-or-pay, or minimum volume commitment terms has Enbridge disclosed for its Liquids Pipelines and Gas Transmission segments as of 2025-09-30?",
+        "What tariff, trade-policy, or regulatory proceedings involving Enbridge were disclosed as pending or unresolved as of 2025-09-30?",
+        "What share buyback, dividend growth, or equity issuance actions has Enbridge disclosed or authorized as of 2025-09-30 that could affect the adjusted share price path?"
+      ],
+      "reflected": [
+        "What capital cost, in-service date, and shipper commitment status has Enbridge disclosed for the Flanagan South expansion phase and the Southern Illinois Connector as of 2025-09-30?",
+        "What is the disclosed capital cost, in-service date, and shipper commitment status for the Flanagan South expansion phase and the Southern Illinois Connector as of 2025-09-30?",
+        "Interest-rate exposure specifics and any credit facility capacity figures not covered by financing action disclosures.",
+        "What customer concentration, take-or-pay, or minimum volume commitment terms has Enbridge disclosed for its Liquids Pipelines and Gas Transmission segments as of 2025-09-30?",
+        "What tariff, trade-policy, or regulatory proceedings involving Enbridge were disclosed as pending or unresolved as of 2025-09-30?",
+        "What share buyback, dividend growth, or equity issuance actions has Enbridge disclosed or authorized as of 2025-09-30 that could affect the adjusted share price path?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Enbridge's oversubscribed Flanagan South open season and Southern Illinois Connector exploration may include disclosed shipper commitments or binding awards meeting the materiality threshold.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Capital cost and in-service date for the Flanagan South expansion phase and Southern Illinois Connector remain unresolved.",
+            "selection_reason": "Directly addresses shipper commitment status for Flanagan South expansion and Southern Illinois Connector by detecting disclosed binding orders, offtake, or capacity commitments with named counterparties and stated volumes.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Management may have provided updated guidance on Flanagan South or Southern Illinois Connector capital cost and in-service timing that strengthens the growth outlook.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether fresh management guidance on project timing or capital plans strengthens the growth path, relevant to in-service dates and capital cost expectations for the expansions.",
+            "signal_ref": "guidance_acceleration:v1",
+            "target_need_indices": [
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 71,
+      "reflect_hash": "523d307b70e207894d4c892e4808ca669d2e59501de4d055ced07e7ff9b4cc5a",
+      "next_routing_hash": "85abb5a10d840e0c2920348a2ff426c46a3a8baa795ca571ff8e3f4e5e8b9127",
+      "previous": [
+        "What specific 2025 revenue, adjusted EBITDA, and free cash flow guidance figures did Life Time management disclose by 2025-03-31, and what assumptions underlie those figures?",
+        "What is Life Time's current net debt leverage ratio and cash position as of the most recent disclosure available by 2025-03-31, and how do sale-leaseback proceeds affect reported leverage?",
+        "What new location opening schedule and membership growth targets has Life Time disclosed by 2025-03-31 for the remainder of 2025?",
+        "What did Life Time disclose by 2025-03-31 about the use of proceeds or capital allocation plans following the secondary offering and any related option exercise by the CEO?",
+        "What customer concentration, cancellation rights, or membership attrition disclosures has Life Time provided in its most recent annual or interim report available by 2025-03-31?",
+        "What analyst or third-party estimates available by 2025-03-31 quantify Life Time's expected adjusted share price or valuation multiple over the next six months?"
+      ],
+      "reflected": [
+        "Net debt leverage ratio and the effect of sale-leaseback proceeds on reported leverage remain unresolved.",
+        "What new location opening schedule and membership growth targets has Life Time disclosed by 2025-03-31 for the remainder of 2025?",
+        "What did Life Time disclose by 2025-03-31 about the use of proceeds or capital allocation plans following the secondary offering and any related option exercise by the CEO?",
+        "What customer concentration, cancellation rights, or membership attrition disclosures has Life Time provided in its most recent annual or interim report available by 2025-03-31?",
+        "What analyst or third-party estimates available by 2025-03-31 quantify Life Time's expected adjusted share price or valuation multiple over the next six months?",
+        "What free cash flow guidance or assumptions did Life Time management disclose by 2025-03-31 to support the raised 2025 revenue and adjusted EBITDA guidance?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Life Time's annual or interim report may disclose customer concentration, cancellation rights, or membership attrition relevant to the need.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Cancellation rights and membership attrition disclosures remain unresolved; only customer concentration is covered.",
+            "selection_reason": "Directly addresses customer concentration, cancellation rights, and membership attrition disclosures requested in the need.",
+            "signal_ref": "customer_concentration:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If liquidity runway is short, sale-leaseback proceeds may be critical to funding expansion and could affect leverage.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Assesses whether sale-leaseback proceeds and expansion affect near-term liquidity and financing dependence.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Operating cash flow margin may inform whether management's free cash flow guidance is supported by underlying cash generation.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures operating cash flow margin, relevant to free cash flow guidance and assumptions for 2025.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              5
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Historical revenue growth may indicate whether the raised 2025 guidance and membership growth targets are achievable.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures year-over-year revenue growth, relevant to the raised 2025 revenue guidance and membership growth targets.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 89,
+      "reflect_hash": "0b6600730e09a88392507a5077378db11a7eddded58cdf9fd221a1a44b776388",
+      "next_routing_hash": "12efed5eeee40127490d457b71e24341aed47fbebb9a40c9bdbb13b05082784b",
+      "previous": [
+        "What did Bumble disclose by 2025-09-30 about Q3 2025 quarter-to-date user trends, paying-user counts, and any change in the trajectory of the reported Q2 2025 8.7% user decline?",
+        "What forward revenue, adjusted EBITDA, and free-cash-flow guidance figures had Bumble issued by 2025-09-30 for the remainder of 2025, and how did those figures compare with prior guidance?",
+        "What specific cost-savings, restructuring, or monetization initiatives had Bumble announced by 2025-09-30, and were any quantified with expected dollar or margin impact?",
+        "What did Bumble disclose by 2025-09-30 about the status of remediation of the material weakness in internal control over financial reporting related to foreign currency translation?",
+        "What did Bumble disclose by 2025-09-30 about share repurchases, insider transactions, or other capital-return actions following the reported Blackstone sale of 16,663,274 shares for $104.4 million on August 13, 2025?",
+        "What did Bumble disclose by 2025-09-30 about competitive dynamics, pricing changes, or product roadmap items that could affect user retention and monetization over the next six months?"
+      ],
+      "reflected": [
+        "What did Bumble disclose by 2025-09-30 about Q3 2025 quarter-to-date user trends, paying-user counts, and any change in the trajectory of the reported Q2 2025 8.7% user decline?",
+        "What specific cost-savings, restructuring, or monetization initiatives had Bumble announced by 2025-09-30, and were any quantified with expected dollar or margin impact?",
+        "What did Bumble disclose by 2025-09-30 about the status of remediation of the material weakness in internal control over financial reporting related to foreign currency translation?",
+        "What did Bumble disclose by 2025-09-30 about share repurchases, insider transactions, or other capital-return actions following the reported Blackstone sale of 16,663,274 shares for $104.4 million on August 13, 2025?",
+        "What did Bumble disclose by 2025-09-30 about competitive dynamics, pricing changes, or product roadmap items that could affect user retention and monetization over the next six months?",
+        "What prior Q2 2025 revenue and adjusted EBITDA guidance figures had Bumble issued before June 25, 2025, so the updated $244 million to $249 million revenue and $88 million to $93 million adjusted EBITDA outlook can be compared with the prior guidance?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Bumble's latest reported cash and equivalents balance will quantify available liquidity as of the prediction date.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Share repurchases, insider transactions, and other capital-return actions following the Blackstone sale are not covered by the cash balance alone.",
+            "selection_reason": "Directly measures the latest point-in-time cash and equivalents balance, which is the explicit liquidity facet needed to assess Bumble's capital position after the Blackstone sale.",
+            "signal_ref": "cash_reserves:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If Bumble's runway is short, the capital-return and financing backdrop is weaker; if long, the liquidity overhang is less acute.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Estimates months of liquidity runway from cash divided by operating cash burn, useful for judging whether Bumble faces near-term financing pressure after the large holder sale.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Elevated cash burn would increase dependence on external financing and reduce capacity for buybacks or other capital returns.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Bumble's operating cash outflow is elevated relative to cash, which bears on the sustainability of capital returns and financing needs.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A credible commercialization or product roadmap shift could affect user retention and monetization trajectory.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Evaluates whether Bumble has moved a product or technology toward sellable, repeatable commercialization, relevant to competitive dynamics and retention over the next six months.",
+            "signal_ref": "commercialization_status:v1",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

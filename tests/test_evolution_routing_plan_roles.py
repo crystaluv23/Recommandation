@@ -2306,7 +2306,7 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertFalse(prediction.value.is_surge)
         self.assertEqual(prediction.usage.llm_calls, 1)
 
-    def test_v89_blind_predictor_rejects_unrelated_correction_drift(self) -> None:
+    def test_v89_blind_predictor_discards_unrelated_correction_drift(self) -> None:
         invalid = {
             "candidate_judgment": "unlikely",
             "magnitude": None,
@@ -2328,20 +2328,37 @@ class RoutingAndPlanRoleTests(TestCase):
         }
         caller = ScriptedRoleCaller([invalid, drifted])
 
-        with self.assertRaisesRegex(
-            CandidateExecutionRejected,
-            "correction changed unrelated valid content",
-        ):
-            LLMBlindPredictor(caller).predict(
-                {
-                    "prediction_baseline": {
-                        "status": "available",
-                        "mean_adjusted_close": 23.982,
-                        "trading_dates": ["2025-09-29"],
-                    },
-                    "final_research_state": {},
-                }
-            )
+        prediction = LLMBlindPredictor(caller).predict(
+            {
+                "prediction_baseline": {
+                    "status": "available",
+                    "mean_adjusted_close": 23.982,
+                    "trading_dates": ["2025-09-29"],
+                },
+                "final_research_state": {},
+            }
+        )
+        # The drifted correction never lands: only the authorized
+        # key_reasons slot takes the model's repair, the unauthorized
+        # sibling removal is restored, and every unrelated drifted field
+        # keeps its original validated value.
+        self.assertEqual(prediction.usage.llm_calls, 2)
+        self.assertEqual(prediction.value.candidate_judgment, "unlikely")
+        self.assertIsNone(prediction.value.magnitude)
+        # BlindPrediction stores canonical tuple collections; the reconciled
+        # content keeps the model's authorized repair plus the restored
+        # unauthorized sibling in original order.
+        self.assertEqual(
+            prediction.value.key_reasons,
+            (
+                "Strong momentum may support a re-rating.",
+                "Management reaffirmed guidance without an upward revision.",
+            ),
+        )
+        self.assertEqual(
+            prediction.value.uncertainties,
+            ("Commodity prices may change the outlook.",),
+        )
 
         self.assertEqual(
             caller.stages,

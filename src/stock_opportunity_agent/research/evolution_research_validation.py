@@ -953,10 +953,10 @@ def _raw_future_information_issues(
 def _raw_research_evaluation_boundary_issues(
     value: Mapping[str, Any],
     evaluation_context: Mapping[str, Any] | None = None,
-) -> list[str]:
+) -> list[str | ValidationIssue]:
     """Reject research state that requests runtime-owned or future facts."""
 
-    issues: list[str] = []
+    issues: list[str | ValidationIssue] = []
     prediction_date: date | None = None
     if isinstance(evaluation_context, Mapping):
         raw_prediction_time = evaluation_context.get("prediction_time")
@@ -990,10 +990,18 @@ def _raw_research_evaluation_boundary_issues(
                 continue
             path = f"{field_name}[{index}]"
             issues.append(
-                "research_controller_initialize asked for a runtime-owned "
-                "evaluation input rather than issuer evidence, "
-                f"invalid_field={path!r}, {path}={item!r}. Remove this item; do "
-                "not answer, source, or rewrite the fixed baseline/definition"
+                ValidationIssue(
+                    code="runtime_evaluation_input_requested",
+                    message=(
+                        "research_controller_initialize asked for a runtime-owned "
+                        "evaluation input rather than issuer evidence, "
+                        f"invalid_field={path!r}, {path}={item!r}. Remove this "
+                        "item; do not answer, source, or rewrite the fixed "
+                        "baseline/definition"
+                    ),
+                    paths=(path,),
+                    allowed_repairs=("remove",),
+                )
             )
     if not isinstance(evaluation_context, Mapping):
         return issues
@@ -2334,28 +2342,9 @@ def _validate_research_state_refs(
         )
     if phase == "reflect" and adopted_new_signal_evidence:
         for error in targeted_answer_need_errors:
-            structured_issues.append(ValidationIssue(
-                code="research_need_transition_invalid",
-                message=(
-                    "research_controller_reflect violated the supplied need transition "
-                    f"contract: {error}. Preserve every untargeted prior need exactly"
-                ),
-                paths=(
-                    f"next_information_needs[{state.next_information_needs.index(error['value'])}]"
-                    if error["value"] in state.next_information_needs else str(error["path"]),
-                ),
-                allowed_repairs=("replace", "remove", "add"),
-                repair_context={
-                    "write_scope_complete": (
-                        error["required_action"] == "replace_with_exact_residual"
-                        and error["value"] in state.next_information_needs
-                    ),
-                    "prior_need": error["value"],
-                    "required_action": error["required_action"],
-                    "required_need": error.get("required_need"),
-                    "returned_need": error.get("returned_need", error["value"]),
-                },
-            ))
+            structured_issues.append(
+                _need_transition_validation_issue(error, state)
+            )
     if (
         phase == "reflect"
         and previous_state is not None
@@ -2690,6 +2679,45 @@ def _shared_distinctive_phrase(
     return None
 
 
+def _need_transition_validation_issue(
+    error: Mapping[str, Any],
+    state: ResearchState,
+) -> ValidationIssue:
+    """Build the need-transition issue with returned-path-first coordinates.
+
+    The returned invalid row — not the prior-state slot that sourced the
+    transition rule — is the correction target whenever the offending
+    occurrence still exists in the returned state, so every user-visible
+    coordinate names the returned index first and the prior index stays
+    explicitly labeled. The occurrence-aware transition validator supplies
+    that returned_path; global text membership is never used here because a
+    retained untargeted duplicate must not be mistaken for the target row.
+    """
+
+    returned_path = error.get("returned_path")
+    return ValidationIssue(
+        code="research_need_transition_invalid",
+        message=(
+            "research_controller_reflect violated the supplied need transition "
+            f"contract: {error}. Preserve every untargeted prior need exactly"
+        ),
+        paths=(returned_path or str(error["prior_state_path"]),),
+        allowed_repairs=("replace", "remove", "add"),
+        repair_context={
+            "write_scope_complete": (
+                error["required_action"] == "replace_with_exact_residual"
+                and returned_path is not None
+            ),
+            "returned_path": returned_path,
+            "prior_state_path": str(error["prior_state_path"]),
+            "prior_need": error["value"],
+            "required_action": error["required_action"],
+            "required_need": error.get("required_need"),
+            "returned_need": error.get("returned_need", error["value"]),
+        },
+    )
+
+
 def _targeted_answer_need_transition_errors(
     previous: ResearchState | None,
     current: ResearchState,
@@ -2699,7 +2727,17 @@ def _targeted_answer_need_transition_errors(
     *,
     evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
-    """Bind adopted answer evidence to its preselected need path."""
+    """Bind adopted answer evidence to its preselected need occurrence.
+
+    Validation is occurrence- and multiplicity-aware: every untargeted prior
+    occurrence must be preserved byte-for-byte, each targeted occurrence must
+    carry its bounded residual (partial answer) or be removed (full answer),
+    a retained untargeted duplicate never satisfies a targeted occurrence's
+    obligation, and one returned occurrence never satisfies two prior
+    occurrences. Matching is by exact-text counts, never by global text
+    membership, so deduplicating prior needs or deleting unselected copies
+    cannot satisfy the guard.
+    """
 
     if previous is None:
         return []
@@ -2723,22 +2761,16 @@ def _targeted_answer_need_transition_errors(
             or not selection.target_need_indices
         ):
             continue
-        target_selections.setdefault(selection.target_need_indices[0], []).append(
-            selection
-        )
-    errors: list[dict[str, Any]] = []
-    for index, need in enumerate(previous.next_information_needs):
+        # A selection binds every named target occurrence, matching the
+        # per-index rules the transition contract already publishes.
+        for target_index in selection.target_need_indices:
+            target_selections.setdefault(target_index, []).append(selection)
+    prior_needs = previous.next_information_needs
+    current_needs = list(current.next_information_needs)
+    obligations: list[dict[str, Any]] = []
+    for index, need in enumerate(prior_needs):
         if index not in target_selections:
-            if need not in current.next_information_needs:
-                errors.append(
-                    {
-                        "path": f"next_information_needs[{index}]",
-                        "value": need,
-                        "issue": "untargeted need changed or was removed",
-                        "required_action": "restore_exactly",
-                        "required_need": need,
-                    }
-                )
+            obligations.append({"kind": "preserve", "need": need})
             continue
         targeted = target_selections[index]
         signal_refs = [item.signal_ref for item in targeted]
@@ -2748,64 +2780,139 @@ def _targeted_answer_need_transition_errors(
                 scoped.residual_need, need, prediction_date,
             )
             if required_residual is None:
-                if need not in current.next_information_needs:
-                    errors.append(
-                        {
-                            "path": f"next_information_needs[{index}]",
-                            "value": need,
-                            "signal_refs": signal_refs,
-                            "issue": (
-                                "partial-answer residual is unrepresentable at "
-                                "the prediction-time boundary and cannot "
-                                "authorize removing the unresolved need"
-                            ),
-                            "required_action": "restore_exactly",
-                            "required_need": need,
-                        }
-                    )
-                continue
-            if need in current.next_information_needs:
-                errors.append(
+                # An unrepresentable residual cannot authorize removing the
+                # unresolved need, so this occurrence must stay preserved.
+                obligations.append(
                     {
-                        "path": f"next_information_needs[{index}]",
-                        "value": need,
+                        "kind": "preserve",
+                        "need": need,
                         "signal_refs": signal_refs,
-                        "issue": "partial-answer target remained byte-for-byte",
-                        "required_action": "replace_with_exact_residual",
-                        "required_need": required_residual,
-                        "required_residual_need": required_residual,
+                        "unrepresentable": True,
                     }
                 )
-            elif required_residual not in current.next_information_needs:
+            else:
+                obligations.append(
+                    {
+                        "kind": "replace",
+                        "need": need,
+                        "residual": required_residual,
+                        "signal_refs": signal_refs,
+                    }
+                )
+            continue
+        obligations.append(
+            {"kind": "remove", "need": need, "signal_refs": signal_refs}
+        )
+    required_counts: dict[str, int] = {}
+    for obligation in obligations:
+        if obligation["kind"] == "remove":
+            # A removed targeted occurrence requires no returned text.
+            continue
+        required_text = (
+            obligation["residual"]
+            if obligation["kind"] == "replace"
+            else obligation["need"]
+        )
+        required_counts[required_text] = required_counts.get(required_text, 0) + 1
+    positions: dict[str, list[int]] = {}
+    for index, item in enumerate(current_needs):
+        positions.setdefault(item, []).append(index)
+    shortfall = {
+        text: required - len(positions.get(text, ()))
+        for text, required in required_counts.items()
+        if len(positions.get(text, ())) < required
+    }
+    surplus_positions = {
+        text: positions[text][required_counts.get(text, 0):]
+        for text in positions
+        if len(positions[text]) > required_counts.get(text, 0)
+    }
+    errors: list[dict[str, Any]] = []
+    for index, obligation in enumerate(obligations):
+        if obligation["kind"] != "preserve":
+            continue
+        need = obligation["need"]
+        if shortfall.get(need, 0) <= 0:
+            continue
+        shortfall[need] -= 1
+        error = {
+            "prior_state_path": f"next_information_needs[{index}]",
+            "value": need,
+            "issue": "untargeted need changed or was removed",
+            "required_action": "restore_exactly",
+            "required_need": need,
+        }
+        if obligation.get("unrepresentable"):
+            error.update(
+                {
+                    "signal_refs": obligation["signal_refs"],
+                    "issue": (
+                        "partial-answer residual is unrepresentable at "
+                        "the prediction-time boundary and cannot "
+                        "authorize removing the unresolved need"
+                    ),
+                }
+            )
+        errors.append(error)
+    for index, obligation in enumerate(obligations):
+        if obligation["kind"] == "preserve":
+            continue
+        need = obligation["need"]
+        prior_state_path = f"next_information_needs[{index}]"
+        signal_refs = obligation["signal_refs"]
+        surplus = surplus_positions.get(need, [])
+        if surplus:
+            errors.append(
+                {
+                    "returned_path": f"next_information_needs[{surplus[0]}]",
+                    "prior_state_path": prior_state_path,
+                    "value": need,
+                    "signal_refs": signal_refs,
+                    "issue": (
+                        "partial-answer target remained byte-for-byte"
+                        if obligation["kind"] == "replace"
+                        else "targeted need remained byte-for-byte"
+                    ),
+                    "required_action": (
+                        "replace_with_exact_residual"
+                        if obligation["kind"] == "replace"
+                        else "remove_exact_target"
+                    ),
+                    **(
+                        {
+                            "required_need": obligation["residual"],
+                            "required_residual_need": obligation["residual"],
+                        }
+                        if obligation["kind"] == "replace"
+                        else {}
+                    ),
+                }
+            )
+            del surplus[0]
+            continue
+        if obligation["kind"] == "replace":
+            residual = obligation["residual"]
+            if shortfall.get(residual, 0) > 0:
+                shortfall[residual] -= 1
                 errors.append(
                     {
-                        "path": f"next_information_needs[{index}]",
+                        "prior_state_path": prior_state_path,
                         "value": need,
                         "signal_refs": signal_refs,
                         "issue": "partial-answer target omitted its exact residual",
                         "required_action": "replace_with_exact_residual",
-                        "required_need": required_residual,
-                        "required_residual_need": required_residual,
+                        "required_need": residual,
+                        "required_residual_need": residual,
                     }
                 )
-            continue
-        if need in current.next_information_needs:
-            errors.append(
-                {
-                    "path": f"next_information_needs[{index}]",
-                    "value": need,
-                    "signal_refs": signal_refs,
-                    "issue": "targeted need remained byte-for-byte",
-                    "required_action": "remove_exact_target",
-                }
-            )
             continue
         prior_tokens = _normalized_need_tokens(need)
         cosmetic = next(
             (
                 candidate
-                for candidate in current.next_information_needs
-                if prior_tokens
+                for candidate in current_needs
+                if candidate != need
+                and prior_tokens
                 and len(
                     prior_tokens & _normalized_need_tokens(candidate)
                 )
@@ -2817,7 +2924,11 @@ def _targeted_answer_need_transition_errors(
         if cosmetic is not None:
             errors.append(
                 {
-                    "path": f"next_information_needs[{index}]",
+                    "returned_path": (
+                        "next_information_needs["
+                        f"{current_needs.index(cosmetic)}]"
+                    ),
+                    "prior_state_path": prior_state_path,
                     "value": need,
                     "signal_refs": signal_refs,
                     "issue": "targeted need changed only cosmetically",

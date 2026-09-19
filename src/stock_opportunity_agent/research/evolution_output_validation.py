@@ -2152,19 +2152,21 @@ def _authorized_membership_edit(
     allowed: tuple[str, ...],
     *,
     append_budget: int = 0,
+    removal_authority: Iterable[int] | None = None,
 ) -> bool:
-    """Whether a list membership edit stays inside validator-authorized slots.
+    """Whether a list membership edit stays inside per-member operation authority.
 
-    A bare list-root drift is legitimate only when an obligation path names a
-    whole indexed member of that collection: the exact member path root[i]
-    authorizes replacing or splitting that member, while a leaf path such as
+    An exact whole-member path root[i] authorizes replacing that one member
+    with exactly one new row — never deleting it or splitting it into
+    several; deletion additionally requires that slot's explicit removal
+    allowance, and rows beyond the authorized replacements require a
+    positive append_budget from an allowed "add" repair. A leaf path such as
     root[i].field never grants member-level authority over siblings or
-    membership. A positive append_budget exists only when an obligation's
-    allowed_repairs explicitly permits adding members to this collection.
-    Every unauthorized member must survive in order — unchanged except for
-    its own authorized leaf edits — and the edit volume stays bounded by the
-    authorized slots plus that budget. List type, unchanged length, or
-    passing revalidation alone never authorizes the edit.
+    membership. Every unauthorized member must survive in order — unchanged
+    except for its own authorized leaf edits — while a removal-authorized
+    member without whole-member authority may survive or vanish but never
+    change content. List type, unchanged length, or passing revalidation
+    alone never authorizes the edit.
     """
 
     if not root:
@@ -2174,25 +2176,143 @@ def _authorized_membership_edit(
         for path in allowed
         if (match := re.fullmatch(re.escape(root) + r"\[(\d+)\]", path))
     }
-    if not covered and append_budget <= 0:
+    removal_slots = {int(index) for index in (removal_authority or ())}
+    if not covered and not removal_slots and append_budget <= 0:
         return False
-    protected_indices = [
-        index for index in range(len(old_items)) if index not in covered
-    ]
+    matchable = [index for index in range(len(old_items)) if index not in covered]
+    optional = set(matchable) & removal_slots
     cursor = 0
+    matched = 0
     for item in new_items:
-        if cursor < len(protected_indices) and _authorized_equivalent(
-            old_items[protected_indices[cursor]],
+        while cursor < len(matchable) and matchable[cursor] in optional and not _authorized_equivalent(
+            old_items[matchable[cursor]],
             item,
-            f"{root}[{protected_indices[cursor]}]",
+            f"{root}[{matchable[cursor]}]",
             allowed,
         ):
             cursor += 1
-    return (
-        cursor == len(protected_indices)
-        and len(new_items)
-        <= len(old_items) + len(covered) + max(0, append_budget)
+        if cursor < len(matchable) and _authorized_equivalent(
+            old_items[matchable[cursor]],
+            item,
+            f"{root}[{matchable[cursor]}]",
+            allowed,
+        ):
+            cursor += 1
+            matched += 1
+    if any(index not in optional for index in matchable[cursor:]):
+        return False
+    # Unmatched rows decompose into one replacement per authorized slot that
+    # was not explicitly removed, plus at most the bounded additions:
+    # replace-only authority never deletes a member or splits it in two.
+    unmatched = len(new_items) - matched
+    return len(covered - removal_slots) <= unmatched <= len(covered) + max(
+        0, append_budget
     )
+
+
+def _reconcile_authorized_member_list(
+    root: str,
+    old_items: list[Any],
+    new_items: list[Any],
+    allowed: tuple[str, ...],
+    *,
+    append_budget: int = 0,
+    removal_authority: Iterable[int] | None = None,
+) -> list[Any] | None:
+    """Rebuild a drifted corrected list from failed content plus authorized slots.
+
+    Consulted only after `_authorized_membership_edit` rejects the edit, so a
+    shape mismatch never silently accepts the corrected list. Each
+    unauthorized failed member that equals exactly one corrected row anchors
+    it; unmentioned or reordered members are restored from the failed output
+    in original order, an unmatched corrected row counts as a replacement
+    only when it attributes to exactly one authorized whole-member slot whose
+    position between anchors is unambiguous, and a vanished authorized member
+    still requires removal authority. Duplicate content, an unattributable
+    replacement, or an insertion beyond the add budget is ambiguous and
+    fails closed.
+    """
+
+    covered = {
+        int(match.group(1))
+        for path in allowed
+        if (match := re.fullmatch(re.escape(root) + r"\[(\d+)\]", path))
+    }
+    if not covered:
+        return None
+    # A missing or empty allowance mapping authorizes no removal at all:
+    # every vanished covered slot below fails closed.
+    removable = {
+        int(index)
+        for index in (removal_authority or ())
+        if int(index) in covered
+    }
+    anchors: dict[int, int] = {}
+    for old_index, item in enumerate(old_items):
+        if old_index in covered:
+            continue
+        occurrences = [
+            new_index
+            for new_index, candidate in enumerate(new_items)
+            if candidate == item
+        ]
+        if len(occurrences) > 1:
+            return None
+        if not occurrences:
+            continue
+        if occurrences[0] in anchors:
+            return None
+        anchors[occurrences[0]] = old_index
+    replacements: dict[int, Any] = {}
+    vanished: set[int] = set(covered)
+    appended: list[Any] = []
+    runs: list[list[int]] = []
+    current_run: list[int] = []
+    for new_index in range(len(new_items)):
+        if new_index in anchors:
+            if current_run:
+                runs.append(current_run)
+                current_run = []
+        else:
+            current_run.append(new_index)
+    if current_run:
+        runs.append(current_run)
+    for run_index, run in enumerate(runs):
+        previous_old = anchors[run[0] - 1] if run[0] - 1 in anchors else -1
+        next_old = (
+            anchors[run[-1] + 1]
+            if run[-1] + 1 in anchors
+            else len(old_items)
+        )
+        slots = sorted(
+            index for index in covered if previous_old < index < next_old
+        )
+        extra = len(run) - len(slots)
+        if extra > 0:
+            if run_index != len(runs) - 1 or extra > append_budget:
+                return None
+            appended.extend(new_items[index] for index in run[len(slots):])
+            run = run[: len(slots)]
+        if len(run) != len(slots):
+            # A short run between anchors cannot prove which authorized
+            # slot each returned row replaces; only a complete mapping (or
+            # a fully vanished slot set, handled via `vanished`) is
+            # unambiguous, so a guessed first-slot assignment is rejected.
+            return None
+        for slot, new_index in zip(slots, run):
+            replacements[slot] = new_index
+            vanished.discard(slot)
+    if vanished - removable:
+        return None
+    reconciled: list[Any] = []
+    for old_index, item in enumerate(old_items):
+        if old_index in covered:
+            if old_index in replacements:
+                reconciled.append(deepcopy(new_items[replacements[old_index]]))
+            continue
+        reconciled.append(deepcopy(item))
+    reconciled.extend(deepcopy(item) for item in appended)
+    return reconciled
 
 
 def _scoped_correction_drift_paths(
@@ -2248,28 +2368,17 @@ def _scoped_correction_drift_paths(
                 for index, (old_item, new_item) in enumerate(zip(old, new)):
                     visit(old_item, new_item, f"{path}[{index}]")
                 return
-            allowed_indices = {
-                int(match.group(1))
-                for item in paths
-                if (match := re.fullmatch(rf"{re.escape(path)}\[(\d+)\]", item))
-            }
-            removable = allowances.get(path, set())
-            protected_indices = [
-                index
-                for index in range(len(old))
-                if index not in allowed_indices and index not in removable
-            ]
-            cursor = 0
-            for item in new:
-                if cursor < len(protected_indices) and _authorized_equivalent(
-                    old[protected_indices[cursor]],
-                    item,
-                    f"{path}[{protected_indices[cursor]}]",
-                    allowed,
-                ):
-                    cursor += 1
-            if cursor != len(protected_indices) or len(new) > (
-                len(old) + len(allowed_indices) + budgets.get(path, 0)
+            # The raw corrected object obeys the same per-member operation
+            # authority as any projection: a replace-only authorized slot
+            # must still be replaced, deletions need explicit removal
+            # allowances, and extra rows need add budget.
+            if not _authorized_membership_edit(
+                path,
+                old,
+                new,
+                allowed,
+                append_budget=budgets.get(path, 0),
+                removal_authority=allowances.get(path),
             ):
                 drift.append(path)
             return
@@ -2288,13 +2397,17 @@ def _project_scoped_correction(
     stable_item_paths: Mapping[str, Mapping[str, Any]] | None = None,
     removal_paths: Iterable[str] = (),
     append_budgets: Mapping[str, int] | None = None,
+    member_removal_allowances: Mapping[str, Iterable[int]] | None = None,
 ) -> tuple[dict[str, Any], tuple[str, ...]] | None:
     """Copy authorized correction values and exact removals onto the failed object.
 
     Copies stay limited to explicitly authorized paths; removal_paths name
     whole members a structured compaction issue requires the correction to
     evict, applied deterministically after copies so protected members keep
-    their original indices.
+    their original indices. When a whole-member list edit fails the ordered
+    membership check, a content-anchored reconciliation may still apply the
+    authorized slots and restore every unmentioned member from the failed
+    object instead of accepting the corrected list.
     """
 
     paths = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
@@ -2302,6 +2415,7 @@ def _project_scoped_correction(
     if not paths and not removals:
         return None
     budgets = dict(append_budgets or {})
+    reconciled_lists: set[str] = set()
     bare_roots = {
         path
         for path in paths
@@ -2318,6 +2432,11 @@ def _project_scoped_correction(
     stable_items = dict(stable_item_paths or {})
     projected = deepcopy(dict(failed_output))
     for path in paths:
+        if any(
+            path == done or path.startswith(done + "[")
+            for done in reconciled_lists
+        ):
+            continue
         if re.fullmatch(r"[A-Za-z_]+(?:\[\d+\]|\.[A-Za-z_]+)*", path) is None:
             return None
         tokens = re.findall(r"[A-Za-z_]+|\[\d+\]", path)
@@ -2349,20 +2468,38 @@ def _project_scoped_correction(
                         if token >= len(target) or token >= len(source):
                             return None
                         target_token = source_token = token
-                    elif (
-                        not final
-                        or not _authorized_membership_edit(
-                            current_path.rsplit("[", 1)[0],
+                    elif not final:
+                        return None
+                    else:
+                        list_path = current_path.rsplit("[", 1)[0]
+                        # A provided-or-absent allowance mapping without this
+                        # root authorizes no removal at all; the shared
+                        # membership check and the reconciler below enforce
+                        # the same per-member operation authority.
+                        list_removal_authority = (
+                            member_removal_allowances or {}
+                        ).get(list_path, ())
+                        if not _authorized_membership_edit(
+                            list_path,
                             target,
                             source,
                             paths,
-                            append_budget=budgets.get(
-                                current_path.rsplit("[", 1)[0], 0
-                            ),
-                        )
-                    ):
-                        return None
-                    else:
+                            append_budget=budgets.get(list_path, 0),
+                            removal_authority=list_removal_authority,
+                        ):
+                            reconciled = _reconcile_authorized_member_list(
+                                list_path,
+                                target,
+                                source,
+                                paths,
+                                append_budget=budgets.get(list_path, 0),
+                                removal_authority=list_removal_authority,
+                            )
+                            if reconciled is None:
+                                return None
+                            reconciled_lists.add(list_path)
+                            target[:] = reconciled
+                            break
                         target[:] = deepcopy(source)
                         break
                 else:
@@ -2453,7 +2590,12 @@ def _research_need_transition_fallback(
                 needs.append(required)
         elif action in {"remove_exact_target", "remove_or_genuinely_narrow"}:
             returned = context.get("returned_need", prior)
-            needs = [item for item in needs if item not in (prior, returned)]
+            # Transition exactly one occurrence so an untargeted duplicate
+            # of the same text survives its own preserve obligation.
+            for drop in (returned, prior):
+                if drop in needs:
+                    needs.remove(drop)
+                    break
         else:
             return None
     if needs == original:
@@ -3010,13 +3152,19 @@ def _complete_parsed_role(
                     # Whole-member deletion authority is never inferred from an
                     # indexed leaf path or whole-object validity: it requires
                     # the owning validator's explicit member-removal metadata,
-                    # or an obligation that names the whole member and allows
-                    # "remove" as a repair.
+                    # an obligation that names the whole member and allows
+                    # "remove" as a repair, or a compaction obligation's exact
+                    # required removal paths.
                     explicit_member_removals = obligation.get(
                         "authorized_member_removals", ()
                     )
                     if isinstance(explicit_member_removals, list):
                         authorize_member_removals(explicit_member_removals)
+                    required_compaction_removals = obligation.get(
+                        "required_compaction_remove_paths", ()
+                    )
+                    if isinstance(required_compaction_removals, list):
+                        authorize_member_removals(required_compaction_removals)
                     if "remove" in obligation.get("allowed_repairs", ()):
                         authorize_member_removals(
                             (
@@ -3079,6 +3227,7 @@ def _complete_parsed_role(
                         must_change_paths,
                         stable_item_paths=stable_item_paths,
                         append_budgets=append_budgets,
+                        member_removal_allowances=removal_allowances,
                     )
                     if not lenient_ordinary_scope:
                         if projection is None:
@@ -3148,6 +3297,7 @@ def _complete_parsed_role(
                                     stable_item_paths=stable_item_paths,
                                     removal_paths=extended_removals,
                                     append_budgets=append_budgets,
+                                    member_removal_allowances=removal_allowances,
                                 )
                                 continue
                             _emit_runtime_progress(

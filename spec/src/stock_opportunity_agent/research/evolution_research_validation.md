@@ -35,6 +35,27 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   linked-assertion dependency (same exact claim text) or an actual compaction
   obligation with exact removal scope — so a valid unrelated belief survives
   a need correction byte-for-byte.
+- Need-transition feedback coordinates are unambiguous. Every user-visible
+  correction instruction, validation error, and repair context targets the
+  actual returned invalid path: when a partial-answer target survives at a
+  shifted returned index (for example a residual inserted before a retained
+  duplicate), the returned index is the correction target. A prior-state
+  coordinate is kept only as explicitly labeled provenance
+  (`prior_state_path`), never as an unlabeled `path`, so prose, typed
+  paths, and metadata cannot disagree about which returned row must change.
+- Need-transition validation is occurrence- and multiplicity-aware, never
+  global text membership. Identical prior needs at different indices are
+  distinct occurrences: every untargeted occurrence must be preserved
+  byte-for-byte (a retained untargeted duplicate is never mistaken for the
+  target), each targeted occurrence must carry its bounded residual
+  (partial answer) or be removed (full answer), a selection binds every
+  index it lists in `target_need_indices`, and one returned occurrence
+  never satisfies two prior occurrences. Satisfying the guard by
+  deduplicating prior needs or deleting unselected duplicate copies is
+  invalid; the transition-contract construction already publishes one rule
+  per prior index, and the deterministic need fallback likewise transitions
+  exactly one occurrence per runtime-issued instruction so an untargeted
+  duplicate survives its own preserve obligation.
 - A runtime-owned evaluation input (the baseline, its date or price, the
   current or prediction-time price, the outcome definition) is rejected
   unless its anchor mention is clearly identified as reference use. Mention

@@ -10,15 +10,17 @@
   "cycle_mode": "fast_then_slow",
   "plan_rounds": 1,
   "candidates_per_round": 2,
-  "state": "V118_rejected_round0_cycle0; next_repair_required",
+  "state": "V119_rejected_round0_cycle0; round14 repair pending",
   "budget_accounting": {
     "prior_workspace": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117",
     "prior_attempts": 262,
     "prior_actual_cost": "0.7901894000000000732",
-    "remaining_attempts": 2661,
-    "remaining_cost": "18.9518485599999999058",
+    "remaining_attempts": 2457,
+    "remaining_cost": "18.2996845999999998490",
     "note": "Conservative cumulative cap across V117 and successors; ZCode coding-plan usage separate and unknown.",
     "v118_attempts": 77,
-    "v118_actual_cost": "0.2579620400000000210"
+    "v118_actual_cost": "0.2579620400000000210",
+    "v119_attempts": 204,
+    "v119_actual_cost": "0.6521639600000000568"
   }
 }

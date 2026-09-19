@@ -1,0 +1,17 @@
+{
+  "code_revision": "c0a5bc2d18899e0bb293dcab460ed7996e7018f1",
+  "contract_hash": "55def70ce36ed461cd572d56e8a9480d73170eb5ab0ab35107f966df61654b7f",
+  "changed_fields": [
+    "code_revision",
+    "created_at",
+    "max_external_attempts",
+    "max_total_cost",
+    "raw_info_inventory_hash",
+    "run_id",
+    "seed_pool_manifest_hash"
+  ],
+  "seed_changed_fields": [
+    "scan_summary"
+  ],
+  "same_inputs_verified": true
+}

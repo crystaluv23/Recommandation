@@ -1,0 +1,18 @@
+[
+  {
+    "trajectory": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v119/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+    "case": "cik_0000895728:20250930",
+    "round_index": 2,
+    "new_needs": [
+      [
+        2,
+        "Interest-rate exposure specifics and any credit facility capacity figures not covered by financing action disclosures."
+      ]
+    ],
+    "targeted_selections": [],
+    "executed_refs": [
+      null,
+      null
+    ]
+  }
+]

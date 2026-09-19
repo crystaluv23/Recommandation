@@ -1,0 +1,138 @@
+{
+  "source_request_hash": "05e3960d88786cf2efe80adc45d1e57929bf1e4e30a3a2e6713cbcb110227b99",
+  "calls": 3,
+  "baseline": {
+    "contradictions": [],
+    "current_beliefs": [
+      "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30, which is above the late-June trough but below the 2025-07-25 spike close of 65.75.",
+      "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million as part of a divestiture program aiming for $3 billion in after-tax cash proceeds.",
+      "The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces, per the divestiture monetization news.",
+      "The earnings call disclosed that two fall of ground incidents occurred at the Red Chris operation in British Columbia, blocking access to the underground work area, and operations at Red Chris have been suspended.",
+      "The earnings call disclosed that three business partner employees were working underground more than 500 meters beyond the affected zone and were asked to relocate to a designated refuge chamber.",
+      "The earnings call disclosed that the second fall of ground also impacted the underground communication system, and all appropriate emergency response protocols were immediately activated.",
+      "The filing disclosed that receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, with an additional $40 in cash consideration potentially paid in two installments of $20 at the one- and two-year anniversary of the closing date.",
+      "The filing disclosed that the closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "If Newmont's Red Chris suspension is resolved without material production loss and the divestiture program delivers the targeted $3 billion in after-tax cash proceeds within the six-month horizon, then adjusted share price could re-rate toward the 2x threshold as balance-sheet strength and production guidance credibility improve.",
+      "If the Red Chris incident escalates into a prolonged suspension or additional operational disruptions that force downward revision of the 5.9 million ounce 2025 gold production target, then adjusted share price could remain below the 2x threshold as execution risk and guidance credibility deteriorate.",
+      "If gold prices remain supportive and Newmont converts divestiture proceeds into debt reduction or shareholder returns within the six-month horizon, then the market may re-rate the equity toward the 2x threshold as capital allocation confidence improves."
+    ],
+    "next_information_needs": [
+      "What did Newmont disclose by 2025-07-31 about the expected duration of the Red Chris suspension and any impact on 2025 production guidance or costs?",
+      "What specific divestiture transactions remain pending as of 2025-07-31, and what are the disclosed expected closing dates and regulatory conditions for each?",
+      "What was Newmont's reported free cash flow and net debt position as of the most recent quarter disclosed by 2025-07-31?",
+      "What gold price assumptions and all-in sustaining cost guidance did Newmont disclose by 2025-07-31 for the remainder of 2025?",
+      "What did Newmont disclose by 2025-07-31 about any share repurchase program, dividend changes, or other capital return actions planned for the six-month horizon?",
+      "What operational updates did Newmont disclose by 2025-07-31 regarding the Musselwhite, \u00c9l\u00e9onore, and CC&V divestiture closings and any revised proceeds expectations?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [
+      "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30.",
+      "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million.",
+      "The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces.",
+      "Two fall of ground incidents occurred at the Red Chris operation in British Columbia, and operations at Red Chris have been suspended.",
+      "Receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction.",
+      "The closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30, which is above the late-June trough but below the 2025-07-25 spike close of 65.75.",
+        "exact_text": "{\"adjusted_close\":65.75,\"as_of_date\":\"2025-07-25\",\"close\":65.75,\"high\":66.57,\"low\":63.36,\"open\":63.88, \"volume\":30913530},{\"adjusted_close\":63.66,\"as_of_date\":\"2025-07-28\",\"close\":63.66,\"high\":65.05,\"low\":62.66,\"open\":64.82, \"volume\":11877357},{\"adjusted_close\":63.99,\"as_of_date\":\"2025-07-29\",\"close\":63.99,\"high\":64.15,\"low\":63.321,\"open\":63.83, \"volume\":8035229},{\"adjusted_close\":62.31,\"as_of_date\":\"2025-07-30\",\"close\":62.31,\"high\":63.56,\"low\":61.9,\"open\":63.24, \"volume\":10392859}",
+        "kind": "basic_info",
+        "projection_id": "projection_703ee58ea603641d57a51fb1"
+      },
+      {
+        "claim": "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million as part of a divestiture program aiming for $3 billion in after-tax cash proceeds.",
+        "exact_text": "Newmont Declares Monetization of Equity Received Through Divestitures Newmont Corporation has announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million. This move is part of Newmont's strategy to divest non-core assets and reinforce its balance sheet, aiming for $3 billion in after-tax cash proceeds from its 2025 divestiture program. The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces.",
+        "kind": "basic_info",
+        "projection_id": "projection_773a72516197b4c7f393959f"
+      },
+      {
+        "claim": "The earnings call disclosed that two fall of ground incidents occurred at the Red Chris operation in British Columbia, blocking access to the underground work area, and operations at Red Chris have been suspended.",
+        "exact_text": "As we reported yesterday, on Tuesday this week, two fall of ground incidents occurred at our Red Chris operation in British Columbia, blocking access to the underground work area of our nonproducing project at these sites. At the time of the initial incident, we had three business partner employees working underground, more than 500 meters beyond the affected zone. We asked them to relocate to a designated refuge chamber and confirmed that they have safely arrived in the chamber before the second fall of ground blocked the access way. This second fall of ground also impacted our underground communication system. All appropriate emergency response protocols were immediately activated and operations at Red Chris have been suspended while we're responding to the incident.",
+        "kind": "basic_info",
+        "projection_id": "projection_4d8e5a2eff7a3aac5b4af711"
+      },
+      {
+        "claim": "The filing disclosed that receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, with an additional $40 in cash consideration potentially paid in two installments of $20 at the one- and two-year anniversary of the closing date.",
+        "exact_text": "re-closing reorganization and key regulatory approvals, including the Canadian Competition Act. Similarly, receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, and an additional $40 in cash consideration may be paid in two installments of $20 at the one- and two-year anniversary of the closing date, subject to certain hurdle gold price of $2,900/oz and $3,000/oz, respectively.",
+        "kind": "basic_info",
+        "projection_id": "projection_c737a0d8366e15ed1bb80d6e"
+      },
+      {
+        "claim": "The filing disclosed that the closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States.",
+        "exact_text": "The closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States. Similarly, receipt of $100 in cash consideration for the CC&V sale transaction is subject to closing of the transaction, and an additional $175 in cash consideration may be paid in two equal installments upon certain regulatory approvals and finalization of remediation plans.",
+        "kind": "basic_info",
+        "projection_id": "projection_c737a0d8366e15ed1bb80d6e"
+      }
+    ]
+  },
+  "final": {
+    "hypotheses": [
+      "If Newmont's Red Chris suspension is resolved without material production loss and the divestiture program delivers the targeted $3 billion in after-tax cash proceeds within the six-month horizon, then adjusted share price could re-rate toward the 2x threshold as balance-sheet strength and production guidance credibility improve.",
+      "If the Red Chris incident escalates into a prolonged suspension or additional operational disruptions that force downward revision of the 5.9 million ounce 2025 gold production target, then adjusted share price could remain below the 2x threshold as execution risk and guidance credibility deteriorate.",
+      "If gold prices remain supportive and Newmont converts divestiture proceeds into debt reduction or shareholder returns within the six-month horizon, then the market may re-rate the equity toward the 2x threshold as capital allocation confidence improves."
+    ],
+    "current_beliefs": [
+      "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30, which is above the late-June trough but below the 2025-07-25 spike close of 65.75.",
+      "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million as part of a divestiture program aiming for $3 billion in after-tax cash proceeds.",
+      "The earnings call disclosed that two fall of ground incidents occurred at the Red Chris operation in British Columbia, blocking access to the underground work area, and operations at Red Chris have been suspended.",
+      "The earnings call disclosed that the second fall of ground also impacted the underground communication system, and all appropriate emergency response protocols were immediately activated.",
+      "The filing disclosed that receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, with an additional $40 in cash consideration potentially paid in two installments of $20 at the one- and two-year anniversary of the closing date.",
+      "The filing disclosed that the closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States."
+    ],
+    "supporting_evidence": [
+      {
+        "kind": "basic_info",
+        "claim": "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30, which is above the late-June trough but below the 2025-07-25 spike close of 65.75.",
+        "projection_id": "projection_703ee58ea603641d57a51fb1",
+        "exact_text": "{\"adjusted_close\":65.75,\"as_of_date\":\"2025-07-25\",\"close\":65.75,\"high\":66.57,\"low\":63.36,\"open\":63.88, \"volume\":30913530},{\"adjusted_close\":63.66,\"as_of_date\":\"2025-07-28\",\"close\":63.66,\"high\":65.05,\"low\":62.66,\"open\":64.82, \"volume\":11877357},{\"adjusted_close\":63.99,\"as_of_date\":\"2025-07-29\",\"close\":63.99,\"high\":64.15,\"low\":63.321,\"open\":63.83, \"volume\":8035229},{\"adjusted_close\":62.31,\"as_of_date\":\"2025-07-30\",\"close\":62.31,\"high\":63.56,\"low\":61.9,\"open\":63.24, \"volume\":10392859}"
+      },
+      {
+        "kind": "basic_info",
+        "claim": "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million as part of a divestiture program aiming for $3 billion in after-tax cash proceeds.",
+        "projection_id": "projection_773a72516197b4c7f393959f",
+        "exact_text": "Newmont Declares Monetization of Equity Received Through Divestitures Newmont Corporation has announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million. This move is part of Newmont's strategy to divest non-core assets and reinforce its balance sheet, aiming for $3 billion in after-tax cash proceeds from its 2025 divestiture program. The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The earnings call disclosed that two fall of ground incidents occurred at the Red Chris operation in British Columbia, blocking access to the underground work area, and operations at Red Chris have been suspended.",
+        "projection_id": "projection_4d8e5a2eff7a3aac5b4af711",
+        "exact_text": "As we reported yesterday, on Tuesday this week, two fall of ground incidents occurred at our Red Chris operation in British Columbia, blocking access to the underground work area of our nonproducing project at these sites. At the time of the initial incident, we had three business partner employees working underground, more than 500 meters beyond the affected zone. We asked them to relocate to a designated refuge chamber and confirmed that they have safely arrived in the chamber before the second fall of ground blocked the access way. This second fall of ground also impacted our underground communication system. All appropriate emergency response protocols were immediately activated and operations at Red Chris have been suspended while we're responding to the incident."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The filing disclosed that receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, with an additional $40 in cash consideration potentially paid in two installments of $20 at the one- and two-year anniversary of the closing date.",
+        "projection_id": "projection_c737a0d8366e15ed1bb80d6e",
+        "exact_text": "re-closing reorganization and key regulatory approvals, including the Canadian Competition Act. Similarly, receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction, and an additional $40 in cash consideration may be paid in two installments of $20 at the one- and two-year anniversary of the closing date, subject to certain hurdle gold price of $2,900/oz and $3,000/oz, respectively."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The filing disclosed that the closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States.",
+        "projection_id": "projection_c737a0d8366e15ed1bb80d6e",
+        "exact_text": "The closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States. Similarly, receipt of $100 in cash consideration for the CC&V sale transaction is subject to closing of the transaction, and an additional $175 in cash consideration may be paid in two equal installments upon certain regulatory approvals and finalization of remediation plans."
+      }
+    ],
+    "contradictions": [],
+    "resolved_questions": [
+      "The most recent observed adjusted close in the supplied market series is 62.31 on 2025-07-30.",
+      "Newmont announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million.",
+      "The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces.",
+      "Two fall of ground incidents occurred at the Red Chris operation in British Columbia, and operations at Red Chris have been suspended.",
+      "Receipt of $810 in cash consideration for the Musselwhite sale transaction is subject to closing of the transaction.",
+      "The closing of the CC&V sale remains subject to no material adverse change and no transaction-related litigation, the completion of the pre-closing reorganization, and regulatory approvals, including the Hart-Scott-Rodino Act review in the United States."
+    ],
+    "open_questions": [],
+    "next_information_needs": [
+      "What did Newmont disclose by 2025-07-31 about the expected duration of the Red Chris suspension and any impact on 2025 production guidance or costs?",
+      "What specific divestiture transactions remain pending as of 2025-07-31, and what are the disclosed expected closing dates and regulatory conditions for each?",
+      "What was Newmont's reported free cash flow and net debt position as of the most recent quarter disclosed by 2025-07-31?",
+      "What gold price assumptions and all-in sustaining cost guidance did Newmont disclose by 2025-07-31 for the remainder of 2025?",
+      "What did Newmont disclose by 2025-07-31 about any share repurchase program, dividend changes, or other capital return actions planned for the six-month horizon?",
+      "What operational updates did Newmont disclose by 2025-07-31 regarding the Musselwhite, \u00c9l\u00e9onore, and CC&V divestiture closings and any revised proceeds expectations?"
+    ],
+    "decision": "continue"
+  }
+}
