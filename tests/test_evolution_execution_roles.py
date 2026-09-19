@@ -170,7 +170,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "What fiscal 2027 outlook was published?",
         ]}
         _restore_inherited_need_cutoffs(value, previous, context)
-        self.assertEqual(value["next_information_needs"][0], prior)
+        restored_residual = value["next_information_needs"][0]
+        self.assertEqual(
+            restored_residual,
+            "Fiscal 2026 revenue-growth outlook remains unresolved, by 2025-05-30.",
+        )
+        self.assertNotEqual(restored_residual, prior)
         self.assertEqual(len(_raw_future_information_issues(value, context)), 2)
         self.assertEqual(previous.next_information_needs, (prior,))
 

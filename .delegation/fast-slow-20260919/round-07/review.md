@@ -1,0 +1,2 @@
+# Independent acceptance: rejected
+869 full tests and lint pass; original unrelated list-root loophole closed. However two production-entry-point counterexamples in additional-review.md remain: leaf authorization escalates with list cardinality change; structured revalidation discards narrow compaction-removal metadata and copies broad root. Blanket current_beliefs dependency lacks case-specific justification. Round08 addresses the shared scope-resolution mechanism. No code frozen/no live successor calls. Round07 normal turn.completed after1441.9seconds, no timeout.

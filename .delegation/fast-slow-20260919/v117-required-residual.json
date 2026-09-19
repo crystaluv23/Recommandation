@@ -1,0 +1,23 @@
+{
+  "allowed_repairs": [
+    "replace",
+    "remove",
+    "add"
+  ],
+  "instruction": "research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[0]', 'value': 'What forward guidance or production outlook had Kinross Gold disclosed by 2025-09-30 regarding gold equivalent production and cost per ounce for the remainder of 2025 and 2026?', 'signal_refs': ['guidance_acceleration:v1'], 'issue': 'partial-answer target omitted its exact residual', 'required_action': 'replace_with_exact_residual', 'required_need': 'Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.', 'required_residual_need': 'Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.'}. Preserve every untargeted prior need exactly",
+  "issue_code": "research_need_transition_invalid",
+  "must_change_any_of_paths": [],
+  "must_change_paths": [
+    "next_information_needs[0]"
+  ],
+  "obligation_index": 3,
+  "permitted_dependency_paths": [],
+  "prior_need": "What forward guidance or production outlook had Kinross Gold disclosed by 2025-09-30 regarding gold equivalent production and cost per ounce for the remainder of 2025 and 2026?",
+  "required_action": "replace_with_exact_residual",
+  "required_need": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.",
+  "retryability": "correctable",
+  "returned_need": "What forward guidance or production outlook had Kinross Gold disclosed by 2025-09-30 regarding gold equivalent production and cost per ounce for the remainder of 2025 and 2026?",
+  "severity": "error",
+  "source_refs": [],
+  "write_scope_complete": false
+}

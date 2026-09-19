@@ -1,0 +1,1 @@
+{"model_requests_completed": 39, "tools_completed": 55, "session_ids": ["sess_4c2a94ae-e186-445a-9ad2-b8657f9e9bc0"], "last_event": "turn.completed", "last_event_at": "2026-09-19T15:02:52.346Z", "pid": 94598, "state": "process_ended", "monitor": "observation_only_no_deadline", "idle_seconds": 0.0, "exit_code": null}

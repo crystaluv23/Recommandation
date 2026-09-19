@@ -1,0 +1,7 @@
+# Interim Codex review: NOT ACCEPTED
+
+The first minimal branch fix passes 12 focused tests but full suite has 9 errors. Executor then added ordinary projection fallback that accepts raw model output if projected output fails validation or projection is impossible. This violates existing sibling preservation invariant.
+
+Independent counterexample executed on current working tree using real _complete_parsed_role, enforce_scoped_correction=True, exact_compaction_scope=True: original {fix:0, hidden:0, keep:original}; parser first reports structured invalid_value at fix, then at hidden; model correction {fix:1, hidden:1, keep:unrelated drift}. Projected output {fix:1,hidden:0,keep:original} fails hidden validation, raw output validates and is accepted with keep=unrelated drift. Actual output accepted_unrelated_drift=True, llm_calls=2. No model call was made.
+
+Required: explicit authorized dependency/shape/list handling, preserving unrelated valid siblings even when another hidden invalid field needs repair. Full validation is necessary but cannot replace scoped preservation. Do not weaken owning invariant or edit test expectations merely to get green. An explicit structured revalidation issue may identify additional invalid repair paths, but unrestricted whole-object fallback is unacceptable. Consider projection with narrowly extended validated obligations and stable list edits; if scope cannot be justified, fail closed with actionable feedback. Need tests for this counterexample and the actual V117 intermediate output chain, plus full existing suite.

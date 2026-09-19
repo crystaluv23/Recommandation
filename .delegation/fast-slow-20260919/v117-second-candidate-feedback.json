@@ -1,0 +1,89 @@
+{
+  "attempt_id": 262,
+  "request_hash": "5afa621169378cbf2c4c3dc33903295e341bc7a892189d6f0527ee9a8978d791",
+  "obligations": [
+    {
+      "allowed_repairs": [
+        "replace",
+        "remove",
+        "add"
+      ],
+      "instruction": "supporting_evidence[15] claim contains numeric quantities absent from all referenced Signal evidence items with the same claim, missing_quantity_groups=[\"211.6\"], missing_quantity_literals=[\"211.6\"], same_claim_evidence_paths=[\"supporting_evidence[15].claim\"]. Change or remove every listed evidence claim together. Copy the exact canonical numeric form from a deterministic Signal interpretation, cite every required Signal evidence item with the same claim, or narrow the claim. Do not round or convert the supplied values",
+      "issue_code": "claim_quantity_not_supported",
+      "missing_quantity_groups": [
+        "211.6"
+      ],
+      "missing_quantity_literals": [
+        "211.6"
+      ],
+      "must_change_any_of_paths": [],
+      "must_change_paths": [
+        "supporting_evidence[15].claim"
+      ],
+      "obligation_index": 1,
+      "permitted_dependency_paths": [],
+      "retryability": "correctable",
+      "same_claim_evidence_paths": [
+        "supporting_evidence[15].claim"
+      ],
+      "severity": "error",
+      "source_refs": [
+        "liquidity_runway_months:v1"
+      ]
+    },
+    {
+      "allowed_repairs": [
+        "replace",
+        "remove",
+        "add"
+      ],
+      "instruction": "supporting_evidence[16] claim contains numeric quantities absent from all referenced Signal evidence items with the same claim, missing_quantity_groups=[\"1|1000000\",\"1000\"], missing_quantity_literals=[\"1M\",\"1,000\"], same_claim_evidence_paths=[\"supporting_evidence[16].claim\"]. Change or remove every listed evidence claim together. Copy the exact canonical numeric form from a deterministic Signal interpretation, cite every required Signal evidence item with the same claim, or narrow the claim. Do not round or convert the supplied values",
+      "issue_code": "claim_quantity_not_supported",
+      "missing_quantity_groups": [
+        "1|1000000",
+        "1000"
+      ],
+      "missing_quantity_literals": [
+        "1M",
+        "1,000"
+      ],
+      "must_change_any_of_paths": [],
+      "must_change_paths": [
+        "supporting_evidence[16].claim"
+      ],
+      "obligation_index": 2,
+      "permitted_dependency_paths": [],
+      "retryability": "correctable",
+      "same_claim_evidence_paths": [
+        "supporting_evidence[16].claim"
+      ],
+      "severity": "error",
+      "source_refs": [
+        "order_confirmation_disclosed:v1"
+      ]
+    },
+    {
+      "allowed_repairs": [
+        "replace",
+        "remove",
+        "add"
+      ],
+      "instruction": "research_controller_reflect violated the supplied need transition contract: {'path': 'next_information_needs[1]', 'value': 'What gross margin, operating expense, and cash flow details did Sandisk report for Q4 2025 and guide for Q1 2026 by 2025-09-30?', 'signal_refs': ['gross_margin_change:v2'], 'issue': 'partial-answer target omitted its exact residual', 'required_action': 'replace_with_exact_residual', 'required_need': 'Operating expense and cash flow details for Q4 2025 and Q1 2026 guidance remain uncovered.', 'required_residual_need': 'Operating expense and cash flow details for Q4 2025 and Q1 2026 guidance remain uncovered.'}. Preserve every untargeted prior need exactly",
+      "issue_code": "research_need_transition_invalid",
+      "must_change_any_of_paths": [],
+      "must_change_paths": [
+        "next_information_needs[1]"
+      ],
+      "obligation_index": 3,
+      "permitted_dependency_paths": [],
+      "prior_need": "What gross margin, operating expense, and cash flow details did Sandisk report for Q4 2025 and guide for Q1 2026 by 2025-09-30?",
+      "required_action": "replace_with_exact_residual",
+      "required_need": "Operating expense and cash flow details for Q4 2025 and Q1 2026 guidance remain uncovered.",
+      "retryability": "correctable",
+      "returned_need": "What gross margin, operating expense, and cash flow details did Sandisk report for Q4 2025 and guide for Q1 2026 by 2025-09-30?",
+      "severity": "error",
+      "source_refs": [],
+      "write_scope_complete": false
+    }
+  ]
+}

@@ -1941,6 +1941,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                             ),
                             paths=(f"need_dispositions[{index}].need_refs",),
                             source_refs=tuple(unknown),
+                            allowed_repairs=("replace", "remove"),
+                            repair_context={
+                                "authorized_member_removals": [disposition_path],
+                            },
                         )
                     )
                 if len(set(string_refs)) != len(string_refs):

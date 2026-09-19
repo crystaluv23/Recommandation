@@ -1,0 +1,13 @@
+{
+  "authorized_paths": [
+    "supporting_evidence[4].claim",
+    "current_beliefs[4]",
+    "supporting_evidence[5].claim",
+    "current_beliefs[5]",
+    "next_information_needs[0]"
+  ],
+  "projection_available": true,
+  "corrected_need_preserved": false,
+  "scope": "Helper replay only; not full production parser or live acceptance",
+  "finding": "Actual request 12 explicitly authorizes next_information_needs[0] and requires exact residual containing unbounded 2026. Scope protection alone cannot repair V117; contradictory temporal and residual contracts."
+}

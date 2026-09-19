@@ -1,0 +1,66 @@
+{
+  "workspace": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117",
+  "last_completed_round": 0,
+  "last_completed_cycle": 0,
+  "verified_attempts": [
+    {
+      "attempt_id": 10,
+      "request_hash": "3c82d96f326ac985b9ad9828b5c89d35cd8fcf04b1398b1f44fefec4f85bad4e",
+      "need_0": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.",
+      "feedback_invalid_need_0": null,
+      "obligations": []
+    },
+    {
+      "attempt_id": 11,
+      "request_hash": "a233d60e5c3f848c0768530b12e617c3bbe2ed20225b5a72ab19332524f5370c",
+      "need_0": "What cost per ounce guidance had Kinross Gold disclosed by 2025-09-30 for the remainder of 2025?",
+      "feedback_invalid_need_0": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.",
+      "obligations": [
+        {
+          "issue_code": "future_information_unavailable",
+          "must_change_paths": [
+            "next_information_needs[0]"
+          ],
+          "permitted_dependency_paths": []
+        }
+      ]
+    },
+    {
+      "attempt_id": 12,
+      "request_hash": "2eeea750a98665dc83a437e21b6bcbc401525fe0f706c5b98ad0a74b8418fff5",
+      "need_0": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.",
+      "feedback_invalid_need_0": "What cost per ounce guidance had Kinross Gold disclosed by 2025-09-30 for the remainder of 2025?",
+      "obligations": [
+        {
+          "issue_code": "claim_quantity_not_supported",
+          "must_change_paths": [
+            "supporting_evidence[4].claim"
+          ],
+          "permitted_dependency_paths": [
+            "current_beliefs[4]"
+          ]
+        },
+        {
+          "issue_code": "claim_quantity_not_supported",
+          "must_change_paths": [
+            "supporting_evidence[5].claim"
+          ],
+          "permitted_dependency_paths": [
+            "current_beliefs[5]"
+          ]
+        },
+        {
+          "issue_code": "research_need_transition_invalid",
+          "must_change_paths": [
+            "next_information_needs[0]"
+          ],
+          "permitted_dependency_paths": []
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "attempt12_echoes_attempt11_need": true,
+    "attempt12_reverts_to_attempt10_need": true
+  }
+}

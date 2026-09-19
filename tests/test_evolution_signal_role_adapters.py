@@ -3615,6 +3615,13 @@ class SignalRoleAdapterTests(TestCase):
             feedback["required_change_paths"],
             ["need_dispositions[0].need_refs", "no_hypothesis"],
         )
+        self.assertEqual(
+            feedback["obligations"][0]["authorized_member_removals"],
+            ["need_dispositions[0]"],
+        )
+        self.assertEqual(
+            feedback["obligations"][0]["allowed_repairs"], ["replace", "remove"]
+        )
         self.assertEqual(step.metadata["need_dispositions"], [])
 
     def test_h1_fast_plan_action_cannot_divert_ordinary_need(self) -> None:

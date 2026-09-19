@@ -2035,7 +2035,13 @@ def _authorized_correction_paths(
             if not isinstance(path, str) or not path:
                 continue
             if re.fullmatch(r"[A-Za-z_]+", path):
-                authorized.append(path)
+                # A compaction issue's container-root path grants no member
+                # authority once exact removal paths enumerate that root.
+                if not any(
+                    required.startswith(path + "[")
+                    for required in required_paths
+                ):
+                    authorized.append(path)
                 continue
             if any(
                 path == required
@@ -2086,18 +2092,127 @@ def _authorized_correction_paths(
     return list(dict.fromkeys(authorized))
 
 
+def _authorized_equivalent(
+    old: Any,
+    new: Any,
+    path: str,
+    allowed: tuple[str, ...],
+) -> bool:
+    """Whether old and new differ only at explicitly allowed descendant paths.
+
+    A surviving list member whose own fields carry authorized leaf edits is
+    preserved content, not drift: comparison recurses into mappings and
+    same-shape lists and accepts a scalar change only when its exact path is
+    authorized. A node whose own exact path is authorized permits its complete
+    subtree without further recursion, so an authorized same-length list-valued
+    leaf replacement survives beside a neighboring authorized member removal.
+    """
+
+    if old == new:
+        return True
+    if path in allowed:
+        return True
+    descendants = tuple(
+        item
+        for item in allowed
+        if item == path or item.startswith(path + ".") or item.startswith(path + "[")
+    )
+    if not descendants:
+        return False
+    if isinstance(old, Mapping) and isinstance(new, Mapping):
+        for key in sorted(set(old) ^ set(new), key=str):
+            if f"{path}.{key}" not in descendants:
+                return False
+        return all(
+            _authorized_equivalent(
+                old[key],
+                new[key],
+                f"{path}.{key}",
+                allowed,
+            )
+            for key in sorted(set(old) & set(new), key=str)
+        )
+    if isinstance(old, list) and isinstance(new, list) and len(old) == len(new):
+        return all(
+            _authorized_equivalent(
+                old[index],
+                new[index],
+                f"{path}[{index}]",
+                allowed,
+            )
+            for index in range(len(old))
+        )
+    return path in descendants
+
+
+def _authorized_membership_edit(
+    root: str,
+    old_items: list[Any],
+    new_items: list[Any],
+    allowed: tuple[str, ...],
+    *,
+    append_budget: int = 0,
+) -> bool:
+    """Whether a list membership edit stays inside validator-authorized slots.
+
+    A bare list-root drift is legitimate only when an obligation path names a
+    whole indexed member of that collection: the exact member path root[i]
+    authorizes replacing or splitting that member, while a leaf path such as
+    root[i].field never grants member-level authority over siblings or
+    membership. A positive append_budget exists only when an obligation's
+    allowed_repairs explicitly permits adding members to this collection.
+    Every unauthorized member must survive in order — unchanged except for
+    its own authorized leaf edits — and the edit volume stays bounded by the
+    authorized slots plus that budget. List type, unchanged length, or
+    passing revalidation alone never authorizes the edit.
+    """
+
+    if not root:
+        return False
+    covered = {
+        int(match.group(1))
+        for path in allowed
+        if (match := re.fullmatch(re.escape(root) + r"\[(\d+)\]", path))
+    }
+    if not covered and append_budget <= 0:
+        return False
+    protected_indices = [
+        index for index in range(len(old_items)) if index not in covered
+    ]
+    cursor = 0
+    for item in new_items:
+        if cursor < len(protected_indices) and _authorized_equivalent(
+            old_items[protected_indices[cursor]],
+            item,
+            f"{root}[{protected_indices[cursor]}]",
+            allowed,
+        ):
+            cursor += 1
+    return (
+        cursor == len(protected_indices)
+        and len(new_items)
+        <= len(old_items) + len(covered) + max(0, append_budget)
+    )
+
+
 def _scoped_correction_drift_paths(
     failed_output: Mapping[str, Any],
     corrected_output: Mapping[str, Any],
     must_change_paths: Iterable[str],
     *,
-    preserve_descendant_list_shape: bool = False,
+    append_budgets: Mapping[str, int] | None = None,
+    removal_allowances: Mapping[str, Iterable[int]] | None = None,
 ) -> list[str]:
     """Find correction changes outside explicitly diagnosed structured paths."""
 
     allowed = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
     if not allowed:
         return []
+    budgets = dict(append_budgets or {})
+    allowances = {
+        root: set(indices)
+        for root, indices in (removal_allowances or {}).items()
+    }
     drift: list[str] = []
 
     def relevant(path: str) -> tuple[str, ...]:
@@ -2136,27 +2251,25 @@ def _scoped_correction_drift_paths(
             allowed_indices = {
                 int(match.group(1))
                 for item in paths
-                if (
-                    match := re.match(
-                        rf"^{re.escape(path)}\[(\d+)\]"
-                        + (
-                            r"$"
-                            if preserve_descendant_list_shape
-                            else r"(?:\.|$)"
-                        ),
-                        item,
-                    )
-                )
+                if (match := re.fullmatch(rf"{re.escape(path)}\[(\d+)\]", item))
             }
-            protected = [
-                item for index, item in enumerate(old) if index not in allowed_indices
+            removable = allowances.get(path, set())
+            protected_indices = [
+                index
+                for index in range(len(old))
+                if index not in allowed_indices and index not in removable
             ]
             cursor = 0
             for item in new:
-                if cursor < len(protected) and item == protected[cursor]:
+                if cursor < len(protected_indices) and _authorized_equivalent(
+                    old[protected_indices[cursor]],
+                    item,
+                    f"{path}[{protected_indices[cursor]}]",
+                    allowed,
+                ):
                     cursor += 1
-            if cursor != len(protected) or len(new) > (
-                len(protected) + len(allowed_indices)
+            if cursor != len(protected_indices) or len(new) > (
+                len(old) + len(allowed_indices) + budgets.get(path, 0)
             ):
                 drift.append(path)
             return
@@ -2173,12 +2286,35 @@ def _project_scoped_correction(
     must_change_paths: Iterable[str],
     *,
     stable_item_paths: Mapping[str, Mapping[str, Any]] | None = None,
+    removal_paths: Iterable[str] = (),
+    append_budgets: Mapping[str, int] | None = None,
 ) -> tuple[dict[str, Any], tuple[str, ...]] | None:
-    """Copy only unambiguous authorized correction values onto the failed object."""
+    """Copy authorized correction values and exact removals onto the failed object.
+
+    Copies stay limited to explicitly authorized paths; removal_paths name
+    whole members a structured compaction issue requires the correction to
+    evict, applied deterministically after copies so protected members keep
+    their original indices.
+    """
 
     paths = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
-    if not paths:
+    removals = tuple(dict.fromkeys(str(path) for path in removal_paths if path))
+    if not paths and not removals:
         return None
+    budgets = dict(append_budgets or {})
+    bare_roots = {
+        path
+        for path in paths
+        if re.fullmatch(r"[A-Za-z_]+(?:\.[A-Za-z_]+)*", path)
+    }
+    if bare_roots:
+        paths = tuple(
+            path
+            for path in paths
+            if path in bare_roots
+            or re.match(r"[A-Za-z_]+(?:\.[A-Za-z_]+)*", path).group(0)
+            not in bare_roots
+        )
     stable_items = dict(stable_item_paths or {})
     projected = deepcopy(dict(failed_output))
     for path in paths:
@@ -2209,13 +2345,26 @@ def _project_scoped_correction(
                     return None
                 stable_item = stable_items.get(current_path)
                 if stable_item is None:
-                    if (
-                        len(target) != len(source)
-                        or token >= len(target)
-                        or token >= len(source)
+                    if len(target) == len(source):
+                        if token >= len(target) or token >= len(source):
+                            return None
+                        target_token = source_token = token
+                    elif (
+                        not final
+                        or not _authorized_membership_edit(
+                            current_path.rsplit("[", 1)[0],
+                            target,
+                            source,
+                            paths,
+                            append_budget=budgets.get(
+                                current_path.rsplit("[", 1)[0], 0
+                            ),
+                        )
                     ):
                         return None
-                    target_token = source_token = token
+                    else:
+                        target[:] = deepcopy(source)
+                        break
                 else:
                     item_id = stable_item.get("item_id")
                     item_id_field = stable_item.get("item_id_field")
@@ -2258,7 +2407,21 @@ def _project_scoped_correction(
             else:
                 target = target[target_token]
                 source = source[source_token]
-    return projected, paths
+    removals_by_field: dict[str, set[int]] = {}
+    for path in removals:
+        match = re.fullmatch(r"([A-Za-z_]+)\[(\d+)\]", path)
+        if match is None:
+            return None
+        field_name = match.group(1)
+        items = projected.get(field_name)
+        if not isinstance(items, list) or int(match.group(2)) >= len(items):
+            return None
+        removals_by_field.setdefault(field_name, set()).add(int(match.group(2)))
+    for field_name, indices in removals_by_field.items():
+        items = projected[field_name]
+        for index in sorted(indices, reverse=True):
+            del items[index]
+    return projected, tuple(dict.fromkeys((*paths, *removals)))
 
 
 def _research_need_transition_fallback(
@@ -2581,6 +2744,53 @@ def _routing_context_only_fallback(
     }
 
 
+def _structured_revalidation_paths(
+    failure: ValidationError,
+    projected_output: Mapping[str, Any],
+) -> tuple[list[str], list[str]]:
+    """Name revalidation copy paths and exact compaction removal paths.
+
+    A discovered compaction issue never grants its container-root path: when
+    its repair metadata names exact removal paths, those removals are the
+    complete extension scope for that issue; without that metadata the issue
+    contributes no extension scope at all. Ordinary structured issues still
+    contribute only paths grounded in the projected object.
+    """
+
+    if not isinstance(failure, StructuredValidationError):
+        return [], []
+    paths: list[str] = []
+    removals: list[str] = []
+    for issue in failure.issues:
+        context = issue.repair_context
+        minimum = context.get("minimum_removed_items")
+        if isinstance(minimum, int) and not isinstance(minimum, bool):
+            required_removals = context.get("required_compaction_remove_paths")
+            if isinstance(required_removals, list):
+                removals.extend(
+                    path
+                    for path in required_removals
+                    if isinstance(path, str) and path
+                )
+            continue
+        paths.extend(issue.paths)
+        paths.extend(issue.dependent_paths)
+    return (
+        _validated_obligation_paths(
+            paths,
+            projected_output,
+            allow_missing_leaf=True,
+        ),
+        _validated_obligation_paths(
+            removals,
+            projected_output,
+        ),
+    )
+
+
+_SCOPED_PROJECTION_EXTENSION_ROUNDS = 6
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     *,
@@ -2732,6 +2942,7 @@ def _complete_parsed_role(
                 continue
         projected_paths: tuple[str, ...] = ()
         discarded_drift_paths: tuple[str, ...] = ()
+        projected_value: Mapping[str, Any] | None = None
         try:
             if (
                 attempt
@@ -2745,14 +2956,75 @@ def _complete_parsed_role(
                     type(obligation.get("minimum_removed_items")) is int
                     for obligation in obligations["obligations"]
                 )
-                if exact_compaction_scope and (
-                    has_compaction_obligations
-                    or not (
+                compaction_scoped = (
+                    exact_compaction_scope and has_compaction_obligations
+                )
+                lenient_ordinary_scope = (
+                    exact_compaction_scope
+                    and not has_compaction_obligations
+                    and not (
                         isinstance(failure, StructuredValidationError)
-                        and all(issue.repair_context.get("write_scope_complete") is True
-                                for issue in failure.issues)
+                        and all(
+                            issue.repair_context.get("write_scope_complete") is True
+                            for issue in failure.issues
+                        )
                     )
-                ):
+                )
+                append_budgets: dict[str, int] = {}
+                for obligation in obligations["obligations"]:
+                    if "add" not in obligation.get("allowed_repairs", ()):
+                        continue
+                    authorized_adds = max(
+                        1,
+                        len(obligation.get("missing_quantity_literals") or ()),
+                    )
+                    for obligation_path in (
+                        *obligation["must_change_paths"],
+                        *obligation.get("must_change_any_of_paths", ()),
+                    ):
+                        if not isinstance(obligation_path, str) or not obligation_path:
+                            continue
+                        root = obligation_path.split("[", 1)[0]
+                        if re.fullmatch(r"[A-Za-z_]+(?:\.[A-Za-z_]+)*", root) is None:
+                            continue
+                        append_budgets[root] = (
+                            append_budgets.get(root, 0) + authorized_adds
+                        )
+                removal_allowances: dict[str, set[int]] = {}
+
+                def authorize_member_removals(candidate_paths: Any) -> None:
+                    for obligation_path in candidate_paths:
+                        if not isinstance(obligation_path, str):
+                            continue
+                        member_match = re.fullmatch(
+                            r"([A-Za-z_]+(?:\.[A-Za-z_]+)*)\[(\d+)\]",
+                            obligation_path,
+                        )
+                        if member_match is None:
+                            continue
+                        removal_allowances.setdefault(
+                            member_match.group(1), set()
+                        ).add(int(member_match.group(2)))
+
+                for obligation in obligations["obligations"]:
+                    # Whole-member deletion authority is never inferred from an
+                    # indexed leaf path or whole-object validity: it requires
+                    # the owning validator's explicit member-removal metadata,
+                    # or an obligation that names the whole member and allows
+                    # "remove" as a repair.
+                    explicit_member_removals = obligation.get(
+                        "authorized_member_removals", ()
+                    )
+                    if isinstance(explicit_member_removals, list):
+                        authorize_member_removals(explicit_member_removals)
+                    if "remove" in obligation.get("allowed_repairs", ()):
+                        authorize_member_removals(
+                            (
+                                *obligation["must_change_paths"],
+                                *obligation.get("must_change_any_of_paths", ()),
+                            )
+                        )
+                if compaction_scoped:
                     must_change_paths = _authorized_correction_paths(
                         obligations,
                         failed_output,
@@ -2797,6 +3069,8 @@ def _complete_parsed_role(
                     failed_output,
                     value,
                     must_change_paths,
+                    append_budgets=append_budgets,
+                    removal_allowances=removal_allowances,
                 )
                 if drift_paths:
                     projection = _project_scoped_correction(
@@ -2804,21 +3078,100 @@ def _complete_parsed_role(
                         value,
                         must_change_paths,
                         stable_item_paths=stable_item_paths,
+                        append_budgets=append_budgets,
                     )
-                    if projection is None:
+                    if not lenient_ordinary_scope:
+                        if projection is None:
+                            scope_failure = ValidationError(
+                                "correction changed unrelated valid content outside "
+                                f"must_change_paths={must_change_paths}, "
+                                f"unrelated_changed_paths={drift_paths}. Preserve every "
+                                "unrelated field and list item byte-for-byte"
+                            )
+                            if attempt == max_corrections:
+                                failure = scope_failure
+                            # Keep the original invalid object and obligations on
+                            # retry; drift diagnostics must not authorize those
+                            # drifted paths.
+                            continue
+                        value, projected_paths = projection
+                        discarded_drift_paths = tuple(drift_paths)
+                    else:
+                        # Compaction-mode ordinary issues may not enumerate every
+                        # linked path a valid repair must edit. Extend the copied
+                        # paths only with paths named by structured revalidation
+                        # issues raised against the projected object itself —
+                        # honoring exact compaction removal metadata rather than
+                        # any container-root path — and never accept the model's
+                        # drifted complete object.
+                        extended_paths = list(must_change_paths)
+                        extended_removals: list[str] = []
+                        for _extension_round in range(
+                            _SCOPED_PROJECTION_EXTENSION_ROUNDS
+                        ):
+                            if projection is None:
+                                break
+                            projected_value, projected_paths = projection
+                            try:
+                                projected_parsed = _parse_role_output(
+                                    request_stage,
+                                    projected_value,
+                                    parser,
+                                )
+                            except ValidationError as projected_exc:
+                                extension, removal_extension = (
+                                    _structured_revalidation_paths(
+                                        projected_exc,
+                                        projected_value,
+                                    )
+                                )
+                                new_paths = [
+                                    path
+                                    for path in extension
+                                    if path not in extended_paths
+                                ]
+                                new_removals = [
+                                    path
+                                    for path in removal_extension
+                                    if path not in extended_removals
+                                ]
+                                if not new_paths and not new_removals:
+                                    break
+                                extended_paths.extend(new_paths)
+                                extended_removals.extend(new_removals)
+                                projection = _project_scoped_correction(
+                                    failed_output,
+                                    value,
+                                    extended_paths,
+                                    stable_item_paths=stable_item_paths,
+                                    removal_paths=extended_removals,
+                                    append_budgets=append_budgets,
+                                )
+                                continue
+                            _emit_runtime_progress(
+                                getattr(caller, "on_progress", None),
+                                "structured_correction_projection_applied",
+                                stage=stage,
+                                request_stage=request_stage,
+                                correction_count=completed_corrections,
+                                copied_paths=list(projected_paths),
+                                discarded_paths=list(drift_paths),
+                            )
+                            return projected_parsed, usage
                         scope_failure = ValidationError(
                             "correction changed unrelated valid content outside "
                             f"must_change_paths={must_change_paths}, "
-                            f"unrelated_changed_paths={drift_paths}. Preserve every "
-                            "unrelated field and list item byte-for-byte"
+                            f"unrelated_changed_paths={drift_paths}, and no "
+                            "structured revalidation issue justified extending the "
+                            "projected repair to the corrected object. Preserve "
+                            "every unrelated field and list item byte-for-byte"
                         )
                         if attempt == max_corrections:
                             failure = scope_failure
-                        # Keep the original invalid object and obligations on retry;
-                        # drift diagnostics must not authorize those drifted paths.
+                        # Keep the original invalid object and obligations on
+                        # retry; drift diagnostics must not authorize those
+                        # drifted paths.
                         continue
-                    value, projected_paths = projection
-                    discarded_drift_paths = tuple(drift_paths)
             parsed_value = _parse_role_output(request_stage, value, parser)
             if discarded_drift_paths:
                 _emit_runtime_progress(
@@ -2832,7 +3185,11 @@ def _complete_parsed_role(
                 )
             return parsed_value, usage
         except ValidationError as exc:
-            failed_output = value if echo_invalid_output_on_correction else {}
+            failed_output = (
+                (projected_value if projected_value is not None else value)
+                if echo_invalid_output_on_correction
+                else {}
+            )
             failure = exc
         except (KeyError, TypeError, ValueError) as exc:
             keys = ", ".join(sorted(str(key) for key in value))

@@ -81,11 +81,14 @@ from stock_opportunity_agent.research.evolution_output_validation import (
 )
 from stock_opportunity_agent.research.evolution_research_validation import (
     _coordinated_residual_facet_terms,
+    _future_source_date_refs,
+    _need_as_of_bound_clause,
     _normalize_information_plan_output,
     _normalize_research_state_output,
     _normalized_need_content_tokens,
     _reflection_need_transition_contract,
     _reflection_selection_intents,
+    _reject_unrepresentable_partial_selections,
     _research_state_capacity,
     _routing_residual_facet_candidates,
     _shared_distinctive_phrase,
@@ -221,6 +224,11 @@ class LLMResearchController:
             if self.evaluation_context is not None
             else None
         )
+        _reject_unrepresentable_partial_selections(
+            selections,
+            state.next_information_needs,
+            evaluation_context,
+        )
         if must_finalize and batch.results and all(
             result.value is SignalValue.UNAVAILABLE
             or result.coverage is SignalCoverage.UNAVAILABLE
@@ -294,12 +302,15 @@ class LLMResearchController:
                 "signal_batch": _signal_batch_model_view(batch),
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
                 "executed_selection_intents": _reflection_selection_intents(
-                    selections
+                    selections,
+                    information_needs=state.next_information_needs,
+                    evaluation_context=evaluation_context,
                 ),
                 "need_transition_contract": _reflection_need_transition_contract(
                     state,
                     selections,
                     batch,
+                    evaluation_context=evaluation_context,
                 ),
                 "research_state_capacity": _research_state_capacity(state),
                 "reflection_runtime": {
@@ -323,6 +334,7 @@ class LLMResearchController:
                 batch=batch,
                 selections=selections,
                 must_finalize=must_finalize,
+                evaluation_context=evaluation_context,
             ),
             allow_outcomes=False,
             max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["controller"],
@@ -968,6 +980,32 @@ class LLMSignalRetrievalAgent:
                                     f"{path}.residual_need must be grounded in the "
                                     "targeted information need rather than copy or "
                                     "invent a different need"
+                                )
+                            target_bound = _need_as_of_bound_clause(target_need)
+                            if target_bound is not None and (
+                                _future_source_date_refs(
+                                    residual_need,
+                                    target_bound[1],
+                                    field_name="next_information_needs",
+                                )
+                            ):
+                                validation_errors.bind(
+                                    (f"{path}.residual_need",),
+                                    item_id=signal_ref,
+                                    repair_context={
+                                        "target_need_cutoff_clause": target_bound[0],
+                                    },
+                                )
+                                validation_errors.append(
+                                    f"{path}.residual_need dropped the targeted "
+                                    "need's temporal scope: it requests calendar "
+                                    "scope beyond the target's as-of cutoff "
+                                    f"clause {target_bound[0]!r}. Restate the same "
+                                    "unresolved facets while retaining that exact "
+                                    "cutoff clause, or narrow to facets that stay "
+                                    "inside it. Runtime will not persist an "
+                                    "unbounded residual that the prediction-time "
+                                    "boundary must later reject"
                                 )
                             if cosmetic_residual:
                                 cosmetic_paths = [f"{path}.residual_need"]
@@ -1749,7 +1787,6 @@ class LLMInformationPlanProposer:
                             failed_value,
                             value,
                             must_change_paths,
-                            preserve_descendant_list_shape=True,
                         )
                         if drift_paths:
                             raise ValidationError(

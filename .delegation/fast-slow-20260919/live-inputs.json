@@ -1,0 +1,22 @@
+{
+  "approved_dataset": "runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/dataset_manifest.approved.json",
+  "verified_dataset_sha256": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+  "raw_info_root": "runs/cold_start/data/global-raw-info-oracle-v1",
+  "verified_oracle_id": "raw-info-8421e3b2510c4c119a14bd78a16e0823",
+  "slow_history_from": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v115",
+  "verified_source_last_completed_cycle": 1,
+  "judge_model": "deepseek-v4-flash",
+  "evolution_model": "deepseek-v4-flash-thinking",
+  "cycle_mode": "fast_then_slow",
+  "plan_rounds": 1,
+  "candidates_per_round": 2,
+  "state": "inputs_verified_not_frozen_not_executed",
+  "budget_accounting": {
+    "prior_workspace": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260919-v117",
+    "prior_attempts": 262,
+    "prior_actual_cost": "0.7901894000000000732",
+    "remaining_attempts": 2738,
+    "remaining_cost": "19.2098105999999999268",
+    "note": "Conservative cumulative cap across V117 and successors; ZCode coding-plan usage separate and unknown."
+  }
+}

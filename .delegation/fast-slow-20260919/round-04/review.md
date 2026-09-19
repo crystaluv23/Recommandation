@@ -1,0 +1,1 @@
+Interrupted (exit 130) because independent raw-artifact review proved V117 feedback explicitly demands the temporally invalid residual. No new source changes or report from round 04. Not a timeout. Continue at round 05 with producer/consumer contradiction as primary root cause; retain round 03 counterexample as separate unaccepted regression.

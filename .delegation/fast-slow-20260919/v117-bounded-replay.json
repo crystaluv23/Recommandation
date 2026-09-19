@@ -1,0 +1,18 @@
+[
+  {
+    "attempt": 12,
+    "request_hash": "2eeea750a98665dc83a437e21b6bcbc401525fe0f706c5b98ad0a74b8418fff5",
+    "parent": "What forward guidance or production outlook had Kinross Gold disclosed by 2025-09-30 regarding gold equivalent production and cost per ounce for the remainder of 2025 and 2026?",
+    "original_residual": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card.",
+    "bounded_residual": "Cost per ounce guidance for the remainder of 2025 and 2026 is not covered by this card, by 2025-09-30.",
+    "remaining_temporal_errors": []
+  },
+  {
+    "attempt": 262,
+    "request_hash": "5afa621169378cbf2c4c3dc33903295e341bc7a892189d6f0527ee9a8978d791",
+    "parent": "What gross margin, operating expense, and cash flow details did Sandisk report for Q4 2025 and guide for Q1 2026 by 2025-09-30?",
+    "original_residual": "Operating expense and cash flow details for Q4 2025 and Q1 2026 guidance remain uncovered.",
+    "bounded_residual": "Operating expense and cash flow details for Q4 2025 and Q1 2026 guidance remain uncovered, by 2025-09-30.",
+    "remaining_temporal_errors": []
+  }
+]

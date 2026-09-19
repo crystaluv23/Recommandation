@@ -1,6 +1,314 @@
 """Research reflection, evidence mapping, and terminal role tests."""
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
+from stock_opportunity_agent.research.evolution_research_validation import (
+    _reflection_need_transition_contract,
+    _targeted_answer_need_transition_errors,
+)
+
+
+V117_PRIOR_NEED = (
+    "What forward guidance or production outlook had Kinross Gold disclosed "
+    "by 2025-09-30 regarding gold equivalent production and cost per ounce "
+    "for the remainder of 2025 and 2026?"
+)
+V117_RAW_RESIDUAL = (
+    "Cost per ounce guidance for the remainder of 2025 and 2026 is not "
+    "covered by this card."
+)
+V117_BOUNDED_RESIDUAL = (
+    "Cost per ounce guidance for the remainder of 2025 and 2026 is not "
+    "covered by this card, by 2025-09-30."
+)
+
+
+class PartialResidualTemporalScopeTests(TestCase):
+    def _v117_reflect_inputs(self):
+        previous = ResearchState(
+            hypotheses=("Cost guidance may compress margins.",),
+            next_information_needs=(V117_PRIOR_NEED,),
+        )
+        selection = SignalSelectionDecision(
+            signal_ref="guidance_acceleration:v1",
+            reason_code="answer_need",
+            selection_reason="The card covers the disclosed production outlook.",
+            applicability_hypothesis="Guidance disclosures apply to this need.",
+            expected_role="primary",
+            context_tags=("general",),
+            target_need_indices=(0,),
+            answer_scope="partial",
+            residual_need=V117_RAW_RESIDUAL,
+        )
+        result = SignalResult(
+            signal_id="guidance_acceleration",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=0.7,
+            interpretation="guidance_acceleration=positive",
+            coverage=SignalCoverage.SUFFICIENT,
+            supporting_evidence=(
+                SignalEvidence(
+                    document_id="kinross-guidance-document",
+                    exact_span="Kinross guided 2025 production toward the upper end.",
+                    timestamp=datetime(2025, 9, 1, tzinfo=timezone.utc),
+                ),
+            ),
+        )
+        return previous, selection, SignalBatchResult(
+            results=(result,), signal_calls=1,
+        )
+
+    def _adopting_output(self, need):
+        return {
+            "hypotheses": ["Cost guidance may compress margins."],
+            "current_beliefs": [],
+            "supporting_evidence": [
+                {
+                    "kind": "signal",
+                    "claim": "Kinross guided 2025 production toward the upper end.",
+                    "signal_ref": "guidance_acceleration:v1",
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+
+    def test_partial_residual_contract_is_satisfiable_and_survives_both_guards(self) -> None:
+        previous, selection, batch = self._v117_reflect_inputs()
+        caller = ScriptedRoleCaller(
+            [self._adopting_output(V117_RAW_RESIDUAL),
+             self._adopting_output(V117_BOUNDED_RESIDUAL)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
+        controller.set_reflection_runtime_context(
+            selections=(selection,), must_finalize=False, termination_trigger=None,
+        )
+
+        reflected = controller.reflect(default_information_plan(), previous, batch)
+
+        self.assertEqual(
+            reflected.value.next_information_needs, (V117_BOUNDED_RESIDUAL,)
+        )
+        self.assertEqual(len(caller.calls), 2)
+        contract = caller.calls[0]["payload"]["need_transition_contract"]
+        action = contract["need_rules"][0]["available_answer_actions"][0]
+        self.assertEqual(action["residual_need"], V117_BOUNDED_RESIDUAL)
+        self.assertEqual(
+            contract["need_rules"][0]["required_transition"],
+            "if evidence from this available partial answer is adopted, "
+            "replace_with_exact_residual_need; otherwise preserve_exactly",
+        )
+        intents = caller.calls[0]["payload"]["executed_selection_intents"]
+        self.assertEqual(intents[0]["residual_need"], V117_BOUNDED_RESIDUAL)
+        feedback = validation_error(caller.calls[1])
+        self.assertIn("beyond prediction_time", feedback)
+        self.assertIn(V117_RAW_RESIDUAL, feedback)
+
+    def test_exact_residual_from_contract_is_accepted_without_correction(self) -> None:
+        previous, selection, batch = self._v117_reflect_inputs()
+        caller = ScriptedRoleCaller([self._adopting_output(V117_BOUNDED_RESIDUAL)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
+        controller.set_reflection_runtime_context(
+            selections=(selection,), must_finalize=False, termination_trigger=None,
+        )
+
+        reflected = controller.reflect(default_information_plan(), previous, batch)
+
+        self.assertEqual(
+            reflected.value.next_information_needs, (V117_BOUNDED_RESIDUAL,)
+        )
+        self.assertEqual(len(caller.calls), 1)
+
+    def _partial_selection(self, residual_need):
+        return {
+            "selections": [
+                {
+                    "signal_ref": "guidance_acceleration:v1",
+                    "reason_code": "answer_need",
+                    "selection_reason": "The card covers the disclosed outlook.",
+                    "applicability_hypothesis": "Guidance disclosures apply.",
+                    "expected_role": "primary",
+                    "context_tags": ["general"],
+                    "target_need_indices": [0],
+                    "answer_scope": "partial",
+                    "residual_need": residual_need,
+                }
+            ]
+        }
+
+    def test_unrepresentable_residual_cannot_remove_need_and_finalize(self) -> None:
+        previous, selection, batch = self._v117_reflect_inputs()
+        legacy = replace(
+            selection,
+            residual_need="What were the realized revenue results for Q1 2026?",
+        )
+        output = self._adopting_output("placeholder")
+        output["next_information_needs"] = []
+        output["decision"] = "finalize"
+        caller = ScriptedRoleCaller([output, output])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
+        controller.set_reflection_runtime_context(
+            selections=(legacy,), must_finalize=False, termination_trigger=None,
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            controller.reflect(default_information_plan(), previous, batch)
+
+        failure = str(context.exception)
+        self.assertIn("cannot be represented within the prediction-time", failure)
+        self.assertIn("Q1 2026", failure)
+        self.assertEqual(len(caller.calls), 0)
+
+    def test_unrepresentable_residual_cannot_hide_removal_behind_continue(self) -> None:
+        previous, selection, batch = self._v117_reflect_inputs()
+        legacy = replace(
+            selection,
+            residual_need="What were the realized revenue results for Q1 2026?",
+        )
+        output = self._adopting_output(
+            "What competitive threats were disclosed by 2025-09-30?"
+        )
+        caller = ScriptedRoleCaller([output, output])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(datetime(2025, 9, 30, tzinfo=timezone.utc))
+        controller.set_reflection_runtime_context(
+            selections=(legacy,), must_finalize=False, termination_trigger=None,
+        )
+
+        with self.assertRaises(ValidationError):
+            controller.reflect(default_information_plan(), previous, batch)
+        self.assertEqual(len(caller.calls), 0)
+
+    def test_contract_builder_fails_closed_for_unrepresentable_residual(self) -> None:
+        previous, selection, batch = self._v117_reflect_inputs()
+        legacy = replace(
+            selection,
+            residual_need="What were the realized revenue results for Q1 2026?",
+        )
+        context = {"prediction_time": "2025-09-30T00:00:00+00:00"}
+
+        with self.assertRaises(ValidationError) as raised:
+            _reflection_need_transition_contract(
+                previous, (legacy,), batch, evaluation_context=context,
+            )
+
+        self.assertIn(
+            "will not delete the unresolved demand", str(raised.exception)
+        )
+
+    def test_unrepresentable_residual_requires_exact_restoration_not_deletion(self) -> None:
+        previous, selection, _batch = self._v117_reflect_inputs()
+        legacy = replace(
+            selection,
+            residual_need="What were the realized revenue results for Q1 2026?",
+        )
+        context = {"prediction_time": "2025-09-30T00:00:00+00:00"}
+        adopted = {legacy.signal_ref}
+        removed = ResearchState(
+            hypotheses=previous.hypotheses,
+            next_information_needs=(
+                "What competitive threats were disclosed by 2025-09-30?",
+            ),
+        )
+
+        self.assertEqual(
+            _targeted_answer_need_transition_errors(
+                previous, removed, (legacy,), adopted, adopted,
+                evaluation_context=context,
+            ),
+            [
+                {
+                    "path": "next_information_needs[0]",
+                    "value": V117_PRIOR_NEED,
+                    "signal_refs": [legacy.signal_ref],
+                    "issue": (
+                        "partial-answer residual is unrepresentable at the "
+                        "prediction-time boundary and cannot authorize "
+                        "removing the unresolved need"
+                    ),
+                    "required_action": "restore_exactly",
+                    "required_need": V117_PRIOR_NEED,
+                }
+            ],
+        )
+
+        retained = ResearchState(
+            hypotheses=previous.hypotheses,
+            next_information_needs=(V117_PRIOR_NEED,),
+        )
+        self.assertEqual(
+            _targeted_answer_need_transition_errors(
+                previous, retained, (legacy,), adopted, adopted,
+                evaluation_context=context,
+            ),
+            [],
+        )
+
+    def test_corrected_routing_selection_flows_into_next_routing_prompt(self) -> None:
+        corrected_residual = (
+            "What cost per ounce guidance had Kinross Gold disclosed by "
+            "2025-09-30 for the remainder of 2025 and 2026?"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            snapshot = registry.freeze()
+            routing_caller = ScriptedRoleCaller(
+                [self._partial_selection(V117_RAW_RESIDUAL),
+                 self._partial_selection(corrected_residual)]
+            )
+            routed = LLMSignalRetrievalAgent(routing_caller).select(
+                (V117_PRIOR_NEED,), snapshot, {},
+            )
+            self.assertEqual(routed.value[0].answer_scope, "partial")
+            self.assertEqual(routed.value[0].residual_need, corrected_residual)
+
+            previous, _selection, batch = self._v117_reflect_inputs()
+            reflect_caller = ScriptedRoleCaller(
+                [self._adopting_output(corrected_residual)]
+            )
+            controller = LLMResearchController(reflect_caller)
+            controller.set_evaluation_context(
+                datetime(2025, 9, 30, tzinfo=timezone.utc)
+            )
+            controller.set_reflection_runtime_context(
+                selections=routed.value,
+                must_finalize=False,
+                termination_trigger=None,
+            )
+            reflected = controller.reflect(
+                default_information_plan(), previous, batch,
+            )
+            self.assertEqual(
+                reflected.value.next_information_needs, (corrected_residual,)
+            )
+            contract = reflect_caller.calls[0]["payload"][
+                "need_transition_contract"
+            ]
+            action = contract["need_rules"][0]["available_answer_actions"][0]
+            self.assertEqual(action["residual_need"], corrected_residual)
+            self.assertIn(
+                "replace_with_exact_residual_need",
+                contract["need_rules"][0]["required_transition"],
+            )
+
+            next_caller = ScriptedRoleCaller([{"selections": []}])
+            LLMSignalRetrievalAgent(next_caller).select(
+                reflected.value.next_information_needs, snapshot, {},
+            )
+            self.assertEqual(len(next_caller.calls), 1)
+            self.assertEqual(
+                next_caller.calls[0]["payload"]["information_needs"],
+                [corrected_residual],
+            )
 
 
 class ReflectionRoleAdapterTests(TestCase):
@@ -2684,3 +2992,62 @@ class ReflectionRoleAdapterTests(TestCase):
         rendered = json.dumps(reflection.to_dict())
         self.assertNotIn("Acme", rendered)
         self.assertIn("MASKED_COMPANY", rendered)
+
+
+class NeedCorrectionBeliefScopeTests(TestCase):
+    def test_need_transition_correction_preserves_unrelated_beliefs(self) -> None:
+        invalid = {
+            "next_information_needs": ["What 2026 capacity will cost?"],
+            "current_beliefs": ["Margins expanded sequentially."],
+            "decision": "continue",
+        }
+        corrected = {
+            "next_information_needs": ["Capacity cost remains unresolved."],
+            "current_beliefs": ["Rewritten unauthorized belief."],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+
+        def parse(value):
+            if value["next_information_needs"][0] == "What 2026 capacity will cost?":
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="research_need_transition_invalid",
+                            message=(
+                                "research_controller_reflect violated the supplied "
+                                "need transition contract"
+                            ),
+                            paths=("next_information_needs[0]",),
+                            allowed_repairs=("replace", "remove", "add"),
+                            repair_context={
+                                "write_scope_complete": True,
+                                "prior_need": "What 2026 capacity will cost?",
+                                "required_action": "replace_with_exact_residual",
+                                "required_need": "Capacity cost remains unresolved.",
+                                "returned_need": "What 2026 capacity will cost?",
+                            },
+                        )
+                    ]
+                )
+            if value["current_beliefs"] != ["Margins expanded sequentially."]:
+                raise ValidationError(
+                    "a need correction grants no authority over current_beliefs"
+                )
+            return value
+
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller, stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.", payload={}, parser=parse,
+            allow_outcomes=False, enforce_scoped_correction=True,
+            exact_compaction_scope=True, stable_correction_prefix=True,
+        )
+        self.assertEqual(
+            value,
+            {
+                "next_information_needs": ["Capacity cost remains unresolved."],
+                "current_beliefs": ["Margins expanded sequentially."],
+                "decision": "continue",
+            },
+        )
+        self.assertEqual(usage.llm_calls, 2)

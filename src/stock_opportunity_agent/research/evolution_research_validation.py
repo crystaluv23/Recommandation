@@ -328,7 +328,7 @@ def _matching_answer_excerpt(
 def _raw_initialize_need_issues(
     value: Mapping[str, Any],
     basic_info: Mapping[str, Any],
-) -> list[str]:
+) -> list[str | ValidationIssue]:
     """Find only high-confidence already-answered H_init needs."""
 
     raw_needs = value.get("next_information_needs")
@@ -404,16 +404,23 @@ def _raw_initialize_need_issues(
                     continue
                 excerpt = _matching_answer_excerpt(projection_text, matched)
                 issues.append(
-                    "research_controller_initialize returned an information need "
-                    "already answered by visible Basic Info, "
-                    f"invalid_field='next_information_needs[{need_index}]', "
-                    f"next_information_needs[{need_index}]={need!r}, "
-                    f"matching_projection_id={projection_id!r}, "
-                    f"matched_terms={sorted(matched)}, "
-                    f"need_term_coverage={coverage:.6f}, "
-                    f"shared_phrase={' '.join(shared_bigrams[0])!r}, "
-                    f"visible_excerpt={excerpt!r}. Remove this answered need or "
-                    "replace it with only genuinely unresolved facets"
+                    ValidationIssue(
+                        code="visible_answer_need_retained",
+                        message=(
+                            "research_controller_initialize returned an information "
+                            "need already answered by visible Basic Info, "
+                            f"invalid_field='next_information_needs[{need_index}]', "
+                            f"next_information_needs[{need_index}]={need!r}, "
+                            f"matching_projection_id={projection_id!r}, "
+                            f"matched_terms={sorted(matched)}, "
+                            f"need_term_coverage={coverage:.6f}, "
+                            f"shared_phrase={' '.join(shared_bigrams[0])!r}, "
+                            f"visible_excerpt={excerpt!r}. Remove this answered need "
+                            "or replace it with only genuinely unresolved facets"
+                        ),
+                        paths=(f"next_information_needs[{need_index}]",),
+                        allowed_repairs=("replace", "remove"),
+                    )
                 )
                 break
 
@@ -886,7 +893,7 @@ def _raw_research_state_compaction_issues(
     initialize: bool = False,
     basic_info: Mapping[str, Any] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
-) -> list[str]:
+) -> list[str | ValidationIssue]:
     """Validate research questions independently of advisory summary targets."""
 
     issues: list[str] = []
@@ -902,19 +909,144 @@ def _raw_research_state_compaction_issues(
     return issues
 
 
+def _prediction_date_from_context(
+    evaluation_context: Mapping[str, Any] | None,
+) -> date | None:
+    """Return the runtime-owned blind cutoff date when supplied."""
+
+    if not isinstance(evaluation_context, Mapping):
+        return None
+    try:
+        return datetime.fromisoformat(
+            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
+        ).date()
+    except ValueError:
+        return None
+
+
+def _need_as_of_bound_clause(
+    need: str,
+    prediction_date: date | None = None,
+) -> tuple[str, date] | None:
+    """Return one explicit as-of clause bounding an information need.
+
+    Without a prediction date the earliest explicit bound wins, so routing can
+    anchor a residual to the tightest scope its target need declares. With a
+    prediction date the latest bound at or before that date wins, so a restored
+    residual keeps the widest legitimate inherited scope.
+    """
+
+    best: tuple[str, date] | None = None
+    for match in _EXPLICIT_AS_OF_BOUND.finditer(need):
+        referenced = _calendar_match_date(match, month_end=True)
+        if referenced is None:
+            continue
+        if prediction_date is not None and referenced > prediction_date:
+            continue
+        if best is None or (
+            referenced < best[1] if prediction_date is None else referenced >= best[1]
+        ):
+            best = (match.group(0), referenced)
+    return best
+
+
+def _bounded_residual_need(
+    residual_need: str | None,
+    prior_need: str,
+    prediction_date: date | None,
+) -> str | None:
+    """Return the exact residual representation the temporal guard accepts.
+
+    A literal residual that already respects the prediction-time boundary is
+    returned unchanged. A residual that dropped the parent need's cutoff is
+    returned with the inherited as-of clause restored. Returns None only when
+    no bounded restatement of the literal residual exists, in which case
+    callers must not demand the literal as an exact replacement.
+    """
+
+    if not isinstance(residual_need, str) or not residual_need.strip():
+        return None
+    if prediction_date is None:
+        return residual_need
+    if not _future_source_date_refs(
+        residual_need, prediction_date, field_name="next_information_needs"
+    ):
+        return residual_need
+    bound = _need_as_of_bound_clause(prior_need, prediction_date)
+    clause = bound[0] if bound is not None else None
+    if clause is None:
+        symbolic = _SYMBOLIC_AS_OF_BOUND.search(prior_need)
+        clause = symbolic.group(0) if symbolic is not None else None
+    if clause is None:
+        return None
+    stripped = residual_need.rstrip()
+    if not stripped:
+        return None
+    terminator = stripped[-1] if stripped[-1] in ".?!" else ""
+    base = stripped[:-1] if terminator else stripped
+    restored = f"{base}, {clause}{terminator or '.'}"
+    if _future_source_date_refs(
+        restored, prediction_date, field_name="next_information_needs"
+    ):
+        return None
+    return restored
+
+
+def _reject_unrepresentable_partial_selections(
+    selections: tuple[SignalSelectionDecision, ...],
+    information_needs: tuple[str, ...],
+    evaluation_context: Mapping[str, Any] | None,
+) -> None:
+    """Fail closed on a legacy partial residual no bounded prompt can carry.
+
+    A partial-answer residual that requests realized facts beyond the runtime
+    prediction boundary cannot appear in a reflection prompt without either
+    demanding a literal the temporal guard must reject or licensing deletion of
+    unresolved demand. Reject such routing state before any prompt exists.
+    Without a runtime evaluation context there is no boundary to enforce, so
+    the check is a no-op there.
+    """
+
+    prediction_date = _prediction_date_from_context(evaluation_context)
+    if prediction_date is None:
+        return
+    for selection in selections:
+        if (
+            selection.reason_code != "answer_need"
+            or selection.answer_scope != "partial"
+            or len(selection.target_need_indices) != 1
+            or not 0 <= selection.target_need_indices[0] < len(information_needs)
+        ):
+            continue
+        target_need = information_needs[selection.target_need_indices[0]]
+        if (
+            _bounded_residual_need(
+                selection.residual_need, target_need, prediction_date,
+            )
+            is None
+        ):
+            raise ValidationError(
+                "reflection received a legacy partial-answer selection whose "
+                f"residual_need={selection.residual_need!r} for signal_ref="
+                f"{selection.signal_ref!r} cannot be represented within the "
+                f"prediction-time boundary {prediction_date.isoformat()} of "
+                f"targeted need {target_need!r}. Reject or re-run routing so "
+                "the residual requests only facts available by "
+                "prediction_time; runtime will not delete the unresolved "
+                "demand or fabricate a cutoff for realized future facts"
+            )
+
+
 def _restore_inherited_need_cutoffs(
     value: dict[str, Any], previous_state: ResearchState | None,
     evaluation_context: Mapping[str, Any] | None,
 ) -> None:
-    """Restore one exact prior need when a literal residual dropped its cutoff."""
+    """Bound one literal residual that dropped its inherited cutoff."""
 
     if previous_state is None or not isinstance(evaluation_context, Mapping):
         return
-    try:
-        cutoff = datetime.fromisoformat(
-            str(evaluation_context.get("prediction_time")).replace("Z", "+00:00")
-        ).date()
-    except ValueError:
+    cutoff = _prediction_date_from_context(evaluation_context)
+    if cutoff is None:
         return
 
     def words(text: str) -> str:
@@ -946,7 +1078,10 @@ def _restore_inherited_need_cutoffs(
                 and words(topic).strip() and words(topic) in words(need)
             ]
             if len(matches) == 1:
-                restored[index] = matches[0]
+                bounded = _bounded_residual_need(item, matches[0], cutoff)
+                restored[index] = (
+                    bounded if bounded is not None else matches[0]
+                )
         value[field] = restored
 
 
@@ -976,9 +1111,19 @@ def _normalize_research_state_output(
         basic_info=basic_info,
         evaluation_context=evaluation_context,
     )
+    structured_preissues = [
+        item for item in issues if isinstance(item, ValidationIssue)
+    ]
+    issues = [item for item in issues if not isinstance(item, ValidationIssue)]
     if not isinstance(evidence, list):
-        if issues:
-            raise ValidationError("; ".join(issues))
+        if structured_preissues and not issues:
+            raise StructuredValidationError(structured_preissues)
+        if issues or structured_preissues:
+            raise ValidationError(
+                "; ".join(
+                    [*issues, *(item.message for item in structured_preissues)]
+                )
+            )
         return normalized
     basic_fields = {"kind", "claim", "projection_id", "exact_text"}
     signal_fields = {
@@ -1049,8 +1194,10 @@ def _normalize_research_state_output(
         )
     issues.extend(_raw_research_evidence_claim_length_issues(normalized))
     if issues:
-        raise ValidationError("; ".join(issues))
-    typed_issues = []
+        raise ValidationError(
+            "; ".join([*issues, *(item.message for item in structured_preissues)])
+        )
+    typed_issues = list(structured_preissues)
     typed_issues.extend(_raw_basic_claim_quantity_issues(normalized))
     typed_issues.extend(_raw_quantitative_assertion_link_issues(normalized))
     if typed_issues:
@@ -1379,9 +1526,13 @@ def _signal_result_has_adoptable_evidence(result: SignalResult) -> bool:
 
 def _reflection_selection_intents(
     selections: tuple[SignalSelectionDecision, ...],
+    *,
+    information_needs: tuple[str, ...] = (),
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Project persisted routing decisions into the fields reflection still needs."""
 
+    prediction_date = _prediction_date_from_context(evaluation_context)
     rows: list[dict[str, Any]] = []
     for item in selections:
         row = {
@@ -1392,7 +1543,24 @@ def _reflection_selection_intents(
         }
         if item.answer_scope is not None:
             row["answer_scope"] = item.answer_scope
-            row["residual_need"] = item.residual_need
+            if item.answer_scope == "partial":
+                prior_need = (
+                    information_needs[item.target_need_indices[0]]
+                    if len(item.target_need_indices) == 1
+                    and 0 <= item.target_need_indices[0] < len(information_needs)
+                    else ""
+                )
+                bounded = (
+                    _bounded_residual_need(
+                        item.residual_need, prior_need, prediction_date,
+                    )
+                    if prior_need
+                    else item.residual_need
+                )
+                if bounded is not None:
+                    row["residual_need"] = bounded
+            else:
+                row["residual_need"] = item.residual_need
         rows.append(row)
     return rows
 
@@ -1401,9 +1569,15 @@ def _reflection_need_transition_contract(
     state: ResearchState,
     selections: tuple[SignalSelectionDecision, ...],
     batch: SignalBatchResult,
+    *,
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Bind each prior need to deterministic routing and result-availability facts."""
 
+    prediction_date = _prediction_date_from_context(evaluation_context)
+    _reject_unrepresentable_partial_selections(
+        selections, state.next_information_needs, evaluation_context,
+    )
     results = {result.ref: result for result in batch.results}
     rules: list[dict[str, Any]] = []
     for index, need in enumerate(state.next_information_needs):
@@ -1428,13 +1602,19 @@ def _reflection_need_transition_contract(
             if selection.signal_ref not in destination:
                 destination.append(selection.signal_ref)
             if adoptable:
-                available_answer_actions.append(
-                    {
-                        "signal_ref": selection.signal_ref,
-                        "answer_scope": selection.answer_scope,
-                        "residual_need": selection.residual_need,
-                    }
-                )
+                action = {
+                    "signal_ref": selection.signal_ref,
+                    "answer_scope": selection.answer_scope,
+                }
+                if selection.answer_scope == "partial":
+                    bounded = _bounded_residual_need(
+                        selection.residual_need, need, prediction_date,
+                    )
+                    if bounded is not None:
+                        action["residual_need"] = bounded
+                else:
+                    action["residual_need"] = selection.residual_need
+                available_answer_actions.append(action)
         if not available_answer_actions:
             required_transition = "preserve_exactly"
         elif available_answer_actions[0]["answer_scope"] == "full":
@@ -1442,6 +1622,13 @@ def _reflection_need_transition_contract(
                 "if evidence from this available full answer is adopted, "
                 "remove_exact_need; otherwise preserve_exactly"
             )
+        elif (
+            available_answer_actions[0]["answer_scope"] == "partial"
+            and not isinstance(
+                available_answer_actions[0].get("residual_need"), str
+            )
+        ):
+            required_transition = "preserve_exactly"
         elif available_answer_actions[0]["answer_scope"] == "partial":
             required_transition = (
                 "if evidence from this available partial answer is adopted, "
@@ -1687,6 +1874,7 @@ def _validate_research_state_refs(
     batch: SignalBatchResult | None = None,
     selections: tuple[SignalSelectionDecision, ...] = (),
     must_finalize: bool = False,
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> ResearchState:
     """Enforce the v6 visible-evidence transition contract locally."""
 
@@ -1898,11 +2086,18 @@ def _validate_research_state_refs(
             continue
         need_index = state.next_information_needs.index(item)
         path = f"open_questions[{index}]"
-        validation_errors.append(
-            f"{path} duplicates one next information need byte-for-byte, "
-            f"matching_next_need_index={need_index}, invalid_field={path!r}. "
-            "Remove the duplicate open question; next_information_needs owns "
-            "the actionable retrieval item"
+        structured_issues.append(
+            ValidationIssue(
+                code="open_question_duplicates_need",
+                message=(
+                    f"{path} duplicates one next information need byte-for-byte, "
+                    f"matching_next_need_index={need_index}, invalid_field={path!r}. "
+                    "Remove the duplicate open question; next_information_needs owns "
+                    "the actionable retrieval item"
+                ),
+                paths=(path,),
+                allowed_repairs=("remove",),
+            )
         )
     adopted_new_signal_evidence = any(
         item.kind == "signal"
@@ -1932,6 +2127,7 @@ def _validate_research_state_refs(
         selections,
         adopted_new_signal_refs,
         available_current_signal_refs,
+        evaluation_context=evaluation_context,
     )
     cosmetic_needs = _cosmetically_retained_information_needs(
         previous_state.next_information_needs if previous_state else (),
@@ -2027,12 +2223,32 @@ def _validate_research_state_refs(
                 "need"
             )
         if stale_resolved_needs:
-            validation_errors.append(
-                "research_controller_reflect newly resolved a question but retained "
-                "an exact matching next_information_need: "
-                f"{stale_resolved_needs}. Remove or narrow the answered need, or remove "
-                "the unsupported resolved question"
-            )
+            for stale_need in [
+                need
+                for resolved_question in state.resolved_questions
+                if previous_state is None
+                or resolved_question not in previous_state.resolved_questions
+                for need in state.next_information_needs
+                if _shared_resolved_need_phrase(need, resolved_question) is not None
+            ]:
+                structured_issues.append(
+                    ValidationIssue(
+                        code="stale_resolved_need_retained",
+                        message=(
+                            "research_controller_reflect newly resolved a question "
+                            "but retained an exact matching next_information_need: "
+                            f"{[stale_need]}. Remove or narrow the answered need, or "
+                            "remove the unsupported resolved question"
+                        ),
+                        paths=(
+                            (
+                                "next_information_needs["
+                                f"{state.next_information_needs.index(stale_need)}]"
+                            ),
+                        ),
+                        allowed_repairs=("replace", "remove"),
+                    )
+                )
         legacy_answer_need_refs = {
             item.signal_ref
             for item in selections
@@ -2332,6 +2548,8 @@ def _targeted_answer_need_transition_errors(
     selections: tuple[SignalSelectionDecision, ...],
     adopted_signal_refs: set[str],
     available_signal_refs: set[str],
+    *,
+    evaluation_context: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Bind adopted answer evidence to its preselected need path."""
 
@@ -2347,6 +2565,7 @@ def _targeted_answer_need_transition_errors(
         for selection in selections
     ):
         return []
+    prediction_date = _prediction_date_from_context(evaluation_context)
     target_selections: dict[int, list[SignalSelectionDecision]] = {}
     for selection in selections:
         if (
@@ -2377,6 +2596,26 @@ def _targeted_answer_need_transition_errors(
         signal_refs = [item.signal_ref for item in targeted]
         scoped = targeted[0] if len(targeted) == 1 else None
         if scoped is not None and scoped.answer_scope == "partial":
+            required_residual = _bounded_residual_need(
+                scoped.residual_need, need, prediction_date,
+            )
+            if required_residual is None:
+                if need not in current.next_information_needs:
+                    errors.append(
+                        {
+                            "path": f"next_information_needs[{index}]",
+                            "value": need,
+                            "signal_refs": signal_refs,
+                            "issue": (
+                                "partial-answer residual is unrepresentable at "
+                                "the prediction-time boundary and cannot "
+                                "authorize removing the unresolved need"
+                            ),
+                            "required_action": "restore_exactly",
+                            "required_need": need,
+                        }
+                    )
+                continue
             if need in current.next_information_needs:
                 errors.append(
                     {
@@ -2385,11 +2624,11 @@ def _targeted_answer_need_transition_errors(
                         "signal_refs": signal_refs,
                         "issue": "partial-answer target remained byte-for-byte",
                         "required_action": "replace_with_exact_residual",
-                        "required_need": scoped.residual_need,
-                        "required_residual_need": scoped.residual_need,
+                        "required_need": required_residual,
+                        "required_residual_need": required_residual,
                     }
                 )
-            elif scoped.residual_need not in current.next_information_needs:
+            elif required_residual not in current.next_information_needs:
                 errors.append(
                     {
                         "path": f"next_information_needs[{index}]",
@@ -2397,8 +2636,8 @@ def _targeted_answer_need_transition_errors(
                         "signal_refs": signal_refs,
                         "issue": "partial-answer target omitted its exact residual",
                         "required_action": "replace_with_exact_residual",
-                        "required_need": scoped.residual_need,
-                        "required_residual_need": scoped.residual_need,
+                        "required_need": required_residual,
+                        "required_residual_need": required_residual,
                     }
                 )
             continue

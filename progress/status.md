@@ -1,5 +1,110 @@
 # Status
 
+2026-09-20（round-09）**成员删除权限改为验证器显式元数据签发 + 比较器精确路径短路**：
+round-08 附加验收用独立生产复放证明：removal_allowances 构建器把任何带下标的
+叶子义务路径无条件升级为父行删除授权——反例：issue 仅授权 `rows[0].fix`
+（allowed_repairs=("replace",)），纠错纯删除 rows[0] 后整个对象被接受，replace
+叶子权限被升级成父行删除。修复（删除通用推断，而非叠加例外）：整成员删除权限
+只能来自 (a) 所属验证器 issue 的 repair_context `authorized_member_removals`
+显式点名精确成员路径，或 (b) 义务自身以整成员路径 `root[i]` 命名且
+allowed_repairs 含 remove；叶子路径与整对象有效性永不授予父行删除。合法 H1
+仅历史未知别名台账行删除改由其 h1_unknown_need_refs 验证器显式签发该元数据
+（诊断路径 ["need_dispositions[0].need_refs","no_hypothesis"] 原样保留），
+纠错对象仍须通过完整 H1 解析；不做 H1 全局豁免。另修 `_authorized_equivalent`
+精确路径处理：节点自身路径被显式授权时先放行其整个子树再递归——此前同长
+list 值叶子（root[i].tags）在邻行被授权删除时因递归进未列出的 tags[0] 而被
+误拒。负例解析器只拒绝无效 fix（不再镜像 scope 保全），"否则有效仍被拒/被
+丢弃"成为守卫真实性的证据：纯删除、替换+新增被拒（生产 reflect 旗标，2 调
+用后 CandidateExecutionRejected），同长兄弟改写被投影丢弃并逐字节保留原值；
+整成员 remove 义务与 authorized_member_removals 元数据正例通过；组合正例
+（rows[0].tags 同长替换 + rows[1] 显式删除 + rows[0].keep 保留）通过。
+round-08 成果（A 叶子扩步拒绝、B compaction 精确删除、无 blanket 信念权限、
+有界追加、routing 组合链）全部保留。spec 先行更新（signal_roles H1 段 +
+output_validation 权限段）。875 测试+lint 通过（仅本地验证，无生产调用、按
+本轮 brief 不提交 commit；真实 Fast+Slow 复跑待办）。
+
+2026-09-20（round-08）**全路径扩步保持字段/成员粒度 + 移除信念 blanket 依赖**：
+round-07 独立验收否决两个越权反例：(A) issue 仅授权叶子 `rows[0].fix` 时，
+变长成员检查把叶子算作授权槽位，纠错得以改写兄弟字段并插入任意记录；
+(B) 投影复检发现 research_state_item_over_limit 时，`_structured_revalidation_
+paths` 把容器根 `rows` 平铺成整表复制授权，无视 repair_context 的精确删除
+元数据（rows[1]），rows[0] 漂移被接受。修复机制（非补字符串）：只有精确
+成员路径 `root[i]` 授予整成员替换/受限拆分；叶子路径永不改写兄弟字段或
+插入记录；被义务点名的成员可删除（对齐纠错契约"或在不允许省略时删除"），
+未点名成员必须按原序幸存（允许其自身授权叶子编辑，新增 `_authorized_
+equivalent` 递归等价）；插入/追加仅由验证器显式 allowed_repairs 含 add 的
+义务按缺失字面量数授予有界预算；复检扩展只应用 compaction issue 的精确
+删除路径（容器根不授权、无元数据则 fail closed，投影新增确定性整成员删除）；
+压缩首轮 scope 中精确删除路径已枚举的容器根路径不再授予成员级权限。
+移除 visible_answer_need_retained 与 research_need_transition_invalid 上
+无条件 dependent_paths=("current_beliefs",)——信念改动须由真实同 claim
+链接断言或真实压缩义务授权；新增生产路径负例（need 纠错期间无关有效信念
+逐字节不变）。删除漂移 visit 内不可达的 `_authorized_membership_edit` 分支
+与因此冗余的 `preserve_descendant_list_shape` 旗标。反例 A（插入+删除两
+变体）、B、有界追加正/负例回归；873 测试+lint 通过（仅本地验证，无生产
+调用、按本轮 brief 不提交 commit；真实 Fast+Slow 复跑待办）。
+
+2026-09-20（round-07）**消除列表形态的越权逃逸（整对象 stand-in 删除）**：
+round-06 附加验收确认了独立反例：issue 只授权 `fix` 时，纠错把无关列表
+`keep` 从 ["original"] 改写为 ["drift","extra"] 也被整体接受——
+`_lenient_list_membership_edits_only` 对任何裸列表根漂移放行整对象，且
+"仅限变更长度"的声明不成立（无授权路径到达时同长改写同样以裸根形态出现）。
+修复：删除该整对象回退与死变量 `projected_failure`；模型完整对象不再替代
+投影——未获路径授权的集合一律 fail closed；成员变更仅当义务路径授权该集合
+的具体下标槽位、未授权成员按原序逐字节幸存、新增量受（原长度+授权槽位）
+约束时才被接受，漂移检测与投影执行同一规则（投影同时跳过被整根复制涵盖的
+下标子路径）。合法跨字段修复改为验证器签发的结构化依赖：initialize 可见
+答案 issue 增加 dependent_paths=('current_beliefs',)，research_need_
+transition_invalid 声明信念聚合依赖，stale-resolved 与 open-question 重复
+检查由 prose 转为携带精确路径的结构化 issue。新增列表反例回归（变长+同长）
+与标量反例并列；原"删除旁漂移拒绝"测试改为断言投影保留无关需求。spec 先行
+更新。869 测试+lint 通过（仅本地验证，无生产调用、按本轮 brief 不提交
+commit；真实 Fast+Slow 复跑待办）。
+
+2026-09-19（round-06）**拒绝不可表示的 partial 残差（fail-closed）+ 组合链回归**：
+round-05 独立验收否决了"不可有界表示的残差降级为 remove-or-narrow"——真实
+反例（残差改为 "What were the realized revenue results for Q1 2026?"，评估
+截止 2025-09-30）下一次 reflect 调用即可删除未答需求并 finalize，或用无关
+continue 需求掩盖删除。修复：共享准入校验 `_reject_unrepresentable_partial_
+selections`——运行时评估边界存在且 partial 残差无法有界表示时，reflect 在
+构造任何提示前同步拒绝（ValidationError，零模型调用）；契约构造器同样
+fail closed，不再向 available_answer_actions 塞入不安全字面残差、不再输出
+remove-or-narrow 降级指令；`_targeted_answer_need_transition_errors` 改为
+删除必须 restore_exactly、原样保留合规，且不为已实现未来事实伪造截止子句。
+新增组合式生产路径测试（真实 select→reflect→下一轮 select，断言下一轮实际
+传输的 routing prompt 精确消费已接受的有界更窄残差）与两条验收反例；V117
+有界修复与 round-03/05 漂移防护不变。867 测试+lint 通过。本地验证，真实
+Fast+Slow 复跑待办。
+
+2026-09-19（round-05）**修复 V117 真实矛盾残差契约 + 收紧 round-03 整对象回退**：
+原始证据（v117-required-residual.json，请求 12 义务原文）证明路由自身产出并
+授权了一个越界残差（"…remainder of 2025 and 2026…" 无 as-of 截止子句），
+下游 transition 守卫强制要求该字面量而时间守卫必然拒绝它——模型陷入矛盾
+指令环，非单纯 sibling 保全问题。修复：新增共享规则 `_bounded_residual_need`
+（残差丢失父需求截止子句时原样恢复继承子句，产出有界且真正更窄的必需表示；
+不可修复时降级为 remove-or-narrow 而非强求不可用字面量）；路由 select 校验
+拒绝日历范围超出目标需求显式 as-of 界的 partial 残差（以父需求自身界为锚，
+生产者接受的残差必被消费侧守卫接受）；契约/intents/transition 校验/
+`_restore_inherited_need_cutoffs` 一致使用同一规则，恢复目标由"整条父需求"
+改为"残差+截止子句"。round-03 整对象回退删除：lenient 模式下投影仅可经
+投影对象自身的结构化复检 issue 扩展复制路径，整对象仅在"全部漂移都是列表
+成员增删且全量复检通过"时可替代投影，标量/嵌套/同长条目漂移一律 fail
+closed。回归测试覆盖真实矛盾链（生产 role/validator 路径）、生产者拒绝+纠正、
+漂移反例与 prose-only fail-closed；862 测试+lint 通过。详见
+reports/fast-slow-joint-correctness-20260919.md；本地验证，真实 Fast+Slow
+复跑待办。
+
+2026-09-19（午后）**round-03 修复 H_reflect 普通纠错漂移失控（V117 Fast 死亡根因）**：
+`exact_compaction_scope=True` 且失败无真实压缩义务、issue 又未声明
+`write_scope_complete` 时，`_authorized_correction_paths` 恒返回空授权，未点名
+字段漂移完全不设防——纠错可整段重写并悄悄回退仅存在于最新被拒输出中的修复
+（V117 c01 attempt 10→12 链）。现该场景改走义务路径并集做漂移检测+投影
+（基线=最新无效输出）：投影结果须整体复检通过才采纳，否则复检模型完整对象
+（合法联动编辑不再被误杀）；真实压缩义务的 closed scope 与
+write_scope_complete/普通控制器的严格 scope-failure 行为保持不变。spec 补写
+基线与回退语义；回归测试经真实 `_complete_parsed_role`（两连纠错反悔链、
+permitted_dependency_paths 放行、压缩/列表删除保留）；856 测试+lint 通过。
+
 2026-09-19（午）**残留清单清零（a6dd393）**：四项记录在案的 slow-round
 残留全部修复并验证（850 测试+lint）：(1) 晋升后周期续跑——resume 改为
 接受"已提交周期 input→output 链末端"解释的 live Registry（V114 真实盘

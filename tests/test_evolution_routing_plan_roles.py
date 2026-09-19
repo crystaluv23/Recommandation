@@ -10,6 +10,80 @@ from stock_opportunity_agent.research.evolution_research_validation import (
 )
 
 
+class RoutingPartialResidualTemporalScopeTests(TestCase):
+    def _partial_selection(self, residual_need):
+        return {
+            "selections": [
+                {
+                    "signal_ref": "guidance_acceleration:v1",
+                    "reason_code": "answer_need",
+                    "selection_reason": "The card covers the disclosed outlook.",
+                    "applicability_hypothesis": "Guidance disclosures apply.",
+                    "expected_role": "primary",
+                    "context_tags": ["general"],
+                    "target_need_indices": [0],
+                    "answer_scope": "partial",
+                    "residual_need": residual_need,
+                }
+            ]
+        }
+
+    def test_partial_residual_dropping_target_cutoff_is_rejected_and_repaired(self) -> None:
+        prior_need = (
+            "What forward guidance or production outlook had Kinross Gold "
+            "disclosed by 2025-09-30 regarding gold equivalent production "
+            "and cost per ounce for the remainder of 2025 and 2026?"
+        )
+        raw_residual = (
+            "Cost per ounce guidance for the remainder of 2025 and 2026 is "
+            "not covered by this card."
+        )
+        corrected_residual = (
+            "What cost per ounce guidance had Kinross Gold disclosed by "
+            "2025-09-30 for the remainder of 2025 and 2026?"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [self._partial_selection(raw_residual),
+                 self._partial_selection(corrected_residual)]
+            )
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (prior_need,), registry.freeze(), {},
+            )
+            self.assertEqual(
+                selection.value[0].residual_need, corrected_residual,
+            )
+            self.assertEqual(len(caller.calls), 2)
+            feedback = validation_error(caller.calls[1])
+            self.assertIn("temporal scope", feedback)
+            self.assertIn("by 2025-09-30", feedback)
+
+    def test_accepted_bounded_residual_is_consumable_as_next_routing_target(self) -> None:
+        accepted_need = (
+            "Cost per ounce guidance for the remainder of 2025 and 2026 is "
+            "not covered by this card, by 2025-09-30."
+        )
+        retained_scope_residual = (
+            "What cost per ounce guidance for 2026 had Kinross Gold "
+            "disclosed by 2025-09-30?"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs" / "signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [self._partial_selection(retained_scope_residual)]
+            )
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (accepted_need,), registry.freeze(), {},
+            )
+            self.assertEqual(
+                selection.value[0].residual_need, retained_scope_residual,
+            )
+            self.assertEqual(len(caller.calls), 1)
+
+
 class RoutingAndPlanRoleTests(TestCase):
     def test_routing_context_fallback_uses_typed_issues_not_diagnostic_words(self):
         row = signal_selection("guidance_acceleration:v1")["selections"][0]

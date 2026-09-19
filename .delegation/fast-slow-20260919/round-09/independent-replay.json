@@ -1,0 +1,20 @@
+[
+  {
+    "case": "pure_parent_deletion",
+    "outcome": "rejected_as_required"
+  },
+  {
+    "case": "leaf_to_member_expansion",
+    "outcome": "rejected_as_required"
+  },
+  {
+    "case": "secondary_compaction_preservation",
+    "outcome": "accepted_exact_protected_value",
+    "value": {
+      "fix": 1,
+      "rows": [
+        "original"
+      ]
+    }
+  }
+]

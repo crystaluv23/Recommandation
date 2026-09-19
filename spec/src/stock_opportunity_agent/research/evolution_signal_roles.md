@@ -260,6 +260,16 @@ passes and are archived with this spec at cutover.
   refs in `no_hypothesis.need_refs`; when the same out-of-scope history locators
   contaminated disposition rows and the terminal reason, correction may remove
   them from both places without violating scoped-repair preservation.
+  A disposition row whose `need_refs` contain aliases unknown to the actual
+  runtime need set is the only H1 case where deleting the whole parent row is
+  an authorized repair: the owning `h1_unknown_need_refs` validator keeps the
+  leaf-path diagnostic and additionally attaches explicit
+  `authorized_member_removals` repair metadata naming exactly that diagnosed
+  row, so the shared scoped-correction guard grants whole-member deletion from
+  validator metadata rather than from the existence of an indexed leaf path.
+  No other H1 leaf obligation, and no whole-object validity, authorizes
+  parent-row deletion; the corrected object still passes the complete H1
+  parser.
 - A row whose source kind is `unmatched_signal_need` cannot use
   `already_covered`: that would erase an explicitly unresolved Fast demand
   without creating either a Signal measurement or an action. Such a row may use

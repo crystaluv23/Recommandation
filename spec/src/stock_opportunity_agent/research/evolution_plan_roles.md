@@ -10,7 +10,11 @@ Signal retrieval, blind prediction, and Plan reflection.
 - Adapters translate model output into core protocols; they do not own engine
   state or commit pointers.
 - Prediction-time roles never receive labels or target identity.
-- Correction and fallback behavior delegates to the shared validators.
+- Correction and fallback behavior delegates to the shared validators. Plan
+  proposal corrections are checked with the same field/member granularity as
+  controller corrections: a leaf path such as `B.requests[i].description`
+  authorizes only that field, never sibling fields, whole-request
+  replacement, or inserting another request.
 - After bounded correction, typed answer-ownership failures may retain the same
   selected Signal as context only, with full revalidation and unresolved needs.
   This removes an unverified routing claim without inventing research evidence.
@@ -29,3 +33,16 @@ Signal retrieval, blind prediction, and Plan reflection.
   original, vertical, and horizontal layers, and submits it under one exact
   request-token preflight. It does not sample representative cases; transport
   budget refusal remains a control-plane pause rather than a proposal failure.
+- A `partial` answer's residual need must retain the targeted information
+  need's temporal scope. Selection validation rejects a residual that requests
+  calendar scope beyond the targeted need's explicit as-of cutoff clause, using
+  the targeted need's own bound as the reference, so the persisted residual is
+  exactly representable downstream without violating the prediction-time
+  boundary.
+- Reflection validates persisted legacy selections against the actual runtime
+  prediction boundary before building the H_reflect prompt. A partial answer
+  whose residual need cannot be represented within that boundary is rejected
+  fail-closed without a model call; the unresolved demand is never silently
+  deleted, finalized away, or handed an impossible prompt. Without a runtime
+  evaluation context there is no boundary to enforce, so legacy no-scope
+  behavior is unchanged.
