@@ -1,0 +1,572 @@
+{
+  "attempts": 122,
+  "changed_flows": [
+    {
+      "reflect_attempt": 50,
+      "reflect_hash": "7bec4345adbb1195995b375ced96058b6f6483538c3358646b988941792be20e",
+      "next_routing_hash": "6440450902a2495f7f879eb798c13e8b4111c8a4c0e983c2bf1a214e2279880a",
+      "previous": [
+        "What specific financial guidance figures, including revenue, EBITDA, or distributable cash flow, has Enbridge provided for the full year 2025 and 2026 as of 2025-09-30?",
+        "What analyst price targets and consensus estimates for Enbridge were published between 2025-06-30 and 2025-09-30?",
+        "What is the quantified incremental capacity and expected EBITDA contribution from the Flanagan South expansion and other quick-to-market projects announced as of 2025-09-30?",
+        "What is Enbridge's current backlog or contracted revenue pipeline, and what portion is expected to convert to revenue within the next six months?",
+        "What legal, regulatory, or operational disruptions affecting Enbridge's Mainline, Gulf Coast, or renewable power segments were disclosed between 2025-06-30 and 2025-09-30?",
+        "What dilution or financing actions, including share issuances or debt offerings, has Enbridge undertaken or announced between 2025-06-30 and 2025-09-30?"
+      ],
+      "reflected": [
+        "What specific financial guidance figures, including revenue, EBITDA, or distributable cash flow, has Enbridge provided for the full year 2025 and 2026 as of 2025-09-30?",
+        "What analyst price targets and consensus estimates for Enbridge were published between 2025-06-30 and 2025-09-30?",
+        "What is the quantified incremental capacity and expected EBITDA contribution from the Flanagan South expansion and other quick-to-market projects announced as of 2025-09-30?",
+        "What is Enbridge's current backlog or contracted revenue pipeline, and what portion is expected to convert to revenue within the next six months?",
+        "What legal, regulatory, or operational disruptions affecting Enbridge's Mainline, Gulf Coast, or renewable power segments were disclosed between 2025-06-30 and 2025-09-30?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Enbridge's reported revenue growth can be compared against its full-year 2025 and 2026 guidance ranges to assess whether guidance is supported by current performance.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "recurring_revenue",
+              "capital_intensive"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "EBITDA and distributable cash flow guidance figures for full year 2025 and 2026 remain unresolved.",
+            "selection_reason": "Directly measures latest point-in-time year-over-year revenue growth, the core of the requested 2025/2026 revenue guidance figures.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Operating cash flow margin provides a basis to evaluate whether Enbridge's distributable cash flow guidance is achievable from current operations.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "recurring_revenue",
+              "capital_intensive"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Explicit EBITDA and distributable cash flow guidance figures for full year 2025 and 2026 remain unresolved.",
+            "selection_reason": "Measures operating cash flow as a share of revenue, directly relevant to distributable cash flow guidance for 2025 and 2026.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If Enbridge disclosed binding awards or offtake agreements with stated value or volume, this would quantify incremental capacity and EBITDA contribution.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "project_driven"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether disclosed orders or contracts quantify incremental capacity and EBITDA contribution from Flanagan South and quick-to-market projects.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If Enbridge's contracted revenue pipeline is concentrated in one customer or program, the portion converting within six months may be less reliable.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "recurring_revenue",
+              "customer_concentrated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Enbridge's backlog or contracted revenue pipeline depends excessively on one customer or program, affecting conversion expectations.",
+            "signal_ref": "customer_concentration:v1",
+            "target_need_indices": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 76,
+      "reflect_hash": "0422484c785ec297712d1098fcb518a81cb86199f4cd56ca1180da0797c41d44",
+      "next_routing_hash": "f5f036cc500dae968630fb332b6009f70a051f148c42574adc8ea400e13826d5",
+      "previous": [
+        "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+        "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+        "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?",
+        "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+        "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+        "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?"
+      ],
+      "reflected": [
+        "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+        "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+        "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+        "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+        "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+        "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?"
+      ],
+      "exact_next_input_match": false,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Life Time's reported revenue growth can be computed from point-in-time financials to test whether membership and center expansion is translating into top-line momentum.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Quantified 2025 membership dues, center opening counts, and revenue per center membership guidance or targets remain unresolved.",
+            "selection_reason": "Directly measures year-over-year revenue growth, addressing the revenue trajectory facet of the membership/center/revenue-per-membership need.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Fresh management guidance on 2025 membership pricing, center openings, or revenue per center membership would indicate whether the growth path is strengthening versus prior guidance.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Specific quantified 2025 membership dues, center opening counts, and revenue per center membership targets remain unresolved.",
+            "selection_reason": "Covers the guidance/outlook facet of the 2025 membership dues, center openings, and revenue per center membership trajectory need.",
+            "signal_ref": "guidance_acceleration:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If operating cash outflow relative to cash is high, it would bear on free cash flow and leverage concerns affecting equity value.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Life Time's cash consumption is elevated, relevant to the debt, interest expense, free cash flow, and leverage need.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": [
+              6
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Operating cash flow as a share of revenue indicates Life Time's ability to generate cash to service debt and reduce leverage.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Debt levels, interest expense, and net debt leverage ratio disclosures remain unresolved.",
+            "selection_reason": "Directly measures operating cash flow margin, addressing the free cash flow facet of the debt, interest expense, and leverage need.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              6
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 81,
+      "reflect_hash": "d077a5c6f7ffbbe75db68f79e47254f8e6c3264dd7adc695ad52ba06dfbcf685",
+      "next_routing_hash": "659e0d0968e66afa10b71bbbaa8572b560ee711a114dd75cf8adebce9b83f1c2",
+      "previous": [
+        "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+        "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+        "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+        "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+        "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+        "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?",
+        "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?"
+      ],
+      "reflected": [
+        "Quantified 2025 membership dues, center opening counts, and revenue per center membership targets remain unresolved.",
+        "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+        "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+        "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+        "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+        "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?",
+        "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If current liabilities are large relative to cash, near-term refinancing or liquidity pressure could affect equity value over six months.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Directly measures short-term liquidity versus current liabilities, relevant to the unresolved interest expense and net debt leverage facet.",
+            "signal_ref": "cash_to_current_liabilities_ratio:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If gross margin is compressing, it may signal weaker pricing power or rising costs affecting existing center economics.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Gross margin change can indicate operating leverage or cost pressure relevant to member retention and demand trends in the existing center base.",
+            "signal_ref": "gross_margin_change:v2",
+            "target_need_indices": [
+              4
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If net share retirement is negative due to the secondary offering, dilution or overhang could pressure equity value.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures share count changes, relevant to the secondary offering share overhang and lock-up terms facet.",
+            "signal_ref": "net_share_retirement_yoy:v1",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If revenue growth is accelerating, it may support the hypothesis that operating momentum can continue without a new capital raise.",
+            "context_tags": [
+              "mid_cap",
+              "consumer",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Revenue acceleration can test whether membership and center ramp trends support the disclosed growth trajectory.",
+            "signal_ref": "revenue_acceleration:v1",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 93,
+      "reflect_hash": "ccbe3fe4803d29ed9a07501ca76b022b384baedbdd2376ab1d2486b01737adc4",
+      "next_routing_hash": "abc4ba9723db9e26c4c99fbfd1127c339d44700dad260c081d1d22eb71c813a1",
+      "previous": [
+        "What specific forward financial guidance, including revenue and adjusted EBITDA ranges, did Bumble management provide for the second half of 2025 and full year 2025 in disclosures available by 2025-09-30?",
+        "What analyst price targets and rating changes for BMBL were published between 2025-08-07 and 2025-09-30, and what price levels do they imply?",
+        "What were Bumble's paying user counts and average revenue per paying user for Q2 2025 as reported in the 10-Q filed 2025-08-07?",
+        "What is the expected timing, scope, and cost of the global workforce reduction and restructuring plan disclosed by Bumble, and what savings are projected?",
+        "What did Bumble disclose about the status of the CEO transition and any strategic review or capital allocation changes as of 2025-09-30?",
+        "What legal or regulatory proceedings, including the securities fraud investigation, were disclosed in Bumble's filings available by 2025-09-30?"
+      ],
+      "reflected": [
+        "Specific revenue and adjusted EBITDA ranges for H2 2025 and full year 2025 are not guaranteed by this signal alone.",
+        "What analyst price targets and rating changes for BMBL were published between 2025-08-07 and 2025-09-30, and what price levels do they imply?",
+        "What were Bumble's paying user counts and average revenue per paying user for Q2 2025 as reported in the 10-Q filed 2025-08-07?",
+        "What is the expected timing, scope, and cost of the global workforce reduction and restructuring plan disclosed by Bumble, and what savings are projected?",
+        "What did Bumble disclose about the status of the CEO transition and any strategic review or capital allocation changes as of 2025-09-30?",
+        "What legal or regulatory proceedings, including the securities fraud investigation, were disclosed in Bumble's filings available by 2025-09-30?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Bumble's reported revenue growth trend can inform whether the H2 2025 and FY2025 revenue ranges are supported.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Adjusted EBITDA ranges for H2 2025 and full year 2025 are not covered by this signal.",
+            "selection_reason": "Directly measures latest point-in-time year-over-year revenue growth, addressing the revenue facet of the H2/FY2025 range need.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Operating cash flow margin can indicate whether Bumble's adjusted EBITDA trajectory supports the disclosed H2 2025 and FY2025 ranges.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "answer_need",
+            "residual_need": "Adjusted EBITDA ranges for H2 2025 and full year 2025 are not directly covered by this signal.",
+            "selection_reason": "Measures operating cash flow as a share of revenue, providing a profitability proxy relevant to the adjusted EBITDA facet of the H2/FY2025 range need.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A short liquidity runway would heighten the importance of restructuring savings and capital allocation changes.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Assesses near-term financing dependence via liquidity runway, relevant to the restructuring cost and savings need.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Elevated cash burn would make the restructuring plan's cost and savings projections more material to near-term viability.",
+            "context_tags": [
+              "mid_cap",
+              "high_volatility",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Evaluates cash burn rate, which contextualizes the urgency and scope of the restructuring plan and projected savings.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 109,
+      "reflect_hash": "9e00fed5b11760c92a06c24b970c7c97cefc0ea22a45c2b1c3bb17f829abf648",
+      "next_routing_hash": "adb461d949b483ecd7493595f619ba96790f242a8e4e0733489d16f91ef1d586",
+      "previous": [
+        "What specific fiscal 2025 revenue and adjusted EBITDA guidance figures, and any fiscal 2026 revenue growth targets, did Stitch Fix disclose in its most recent earnings release or call available by 2025-05-30?",
+        "What active client counts, net revenue per active client, and order frequency metrics did Stitch Fix report for the most recent quarter available by 2025-05-30, and how do they compare with prior-year periods?",
+        "What analyst price targets, consensus revenue estimates, or modeled price paths for Stitch Fix were published and available by 2025-05-30?",
+        "What cash burn rate, free cash flow, and liquidity position did Stitch Fix report in its most recent financial statements available by 2025-05-30?",
+        "What forward commitments, backlog, or production/resource plans did Stitch Fix management disclose by 2025-05-30 that could quantify a path to the 2x threshold?",
+        "What known operational disruptions, legal overhangs, dilution risk, or post-event updates affecting Stitch Fix were disclosed by 2025-05-30?"
+      ],
+      "reflected": [
+        "What active client counts, net revenue per active client, and order frequency metrics did Stitch Fix report for the most recent quarter available by 2025-05-30, and how do they compare with prior-year periods?",
+        "What analyst price targets, consensus revenue estimates, or modeled price paths for Stitch Fix were published and available by 2025-05-30?",
+        "What cash burn rate, free cash flow, and liquidity position did Stitch Fix report in its most recent financial statements available by 2025-05-30?",
+        "What forward commitments, backlog, or production/resource plans did Stitch Fix management disclose by 2025-05-30 that could quantify a path to the 2x threshold?",
+        "What known operational disruptions, legal overhangs, dilution risk, or post-event updates affecting Stitch Fix were disclosed by 2025-05-30?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Stitch Fix's latest reported cash and equivalents balance is available and quantifies its liquidity position.",
+            "context_tags": [
+              "consumer",
+              "mid_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Cash burn rate and free cash flow for the most recent period remain unresolved.",
+            "selection_reason": "Directly reads the latest point-in-time cash and equivalents balance, covering the liquidity position facet of the cash burn/liquidity need.",
+            "signal_ref": "cash_reserves:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Stitch Fix's cash and operating cash flow inputs yield a measurable liquidity runway in months.",
+            "context_tags": [
+              "consumer",
+              "mid_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Free cash flow figure for the most recent period remains unresolved.",
+            "selection_reason": "Computes estimated liquidity runway from cash divided by monthly operating cash burn, directly addressing the cash burn and liquidity facets.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Stitch Fix's latest reported operating cash flow and revenue produce a measurable operating cash flow margin.",
+            "context_tags": [
+              "consumer",
+              "mid_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Cash burn rate and free cash flow for the most recent period remain unresolved.",
+            "selection_reason": "Measures operating cash flow as a share of revenue for the latest reported duration, addressing the cash flow facet of the liquidity need.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Stitch Fix may have disclosed financing or dilution-related actions that bear on its liquidity and dilution risk.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether financing, dilution, or listing actions disclosed by 2025-05-30 affect Stitch Fix's dilution risk and liquidity position.",
+            "signal_ref": "financing_listing_action:v2",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 114,
+      "reflect_hash": "dccc7813abd2ed7449b511b0868e9230798e85252e1c918e67fbe9e5aff4aef1",
+      "next_routing_hash": "9ebb415a594a26c5536b955f06cf6283b7ee0ff17251d81cc98297c91c407352",
+      "previous": [
+        "What active client counts, net revenue per active client, and order frequency metrics did Stitch Fix report for the most recent quarter available by 2025-05-30, and how do they compare with prior-year periods?",
+        "What analyst price targets, consensus revenue estimates, or modeled price paths for Stitch Fix were published and available by 2025-05-30?",
+        "What cash burn rate, free cash flow, and liquidity position did Stitch Fix report in its most recent financial statements available by 2025-05-30?",
+        "What forward commitments, backlog, or production/resource plans did Stitch Fix management disclose by 2025-05-30 that could quantify a path to the 2x threshold?",
+        "What known operational disruptions, legal overhangs, dilution risk, or post-event updates affecting Stitch Fix were disclosed by 2025-05-30?"
+      ],
+      "reflected": [
+        "What active client counts, net revenue per active client, and order frequency metrics did Stitch Fix report for the most recent quarter available by 2025-05-30, and how do they compare with prior-year periods?",
+        "What analyst price targets, consensus revenue estimates, or modeled price paths for Stitch Fix were published and available by 2025-05-30?",
+        "Cash burn rate and free cash flow for the most recent period remain unresolved.",
+        "What forward commitments, backlog, or production/resource plans did Stitch Fix management disclose by 2025-05-30 that could quantify a path to the 2x threshold?",
+        "What known operational disruptions, legal overhangs, dilution risk, or post-event updates affecting Stitch Fix were disclosed by 2025-05-30?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Stitch Fix's latest reported YoY revenue growth quantifies the revenue contraction or stabilization central to the active-client and revenue comparison need.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Active client counts, net revenue per active client, and order frequency metrics for the most recent quarter versus prior-year periods remain unresolved.",
+            "selection_reason": "Directly measures year-over-year revenue growth, the core comparison requested for Stitch Fix's most recent quarter versus prior-year periods.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If Stitch Fix revenue is concentrated in a small set of clients or programs, the active-client decline may disproportionately threaten the growth path.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "customer_concentrated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Stitch Fix's growth thesis depends excessively on one customer or program, relevant to the active-client and revenue trajectory.",
+            "signal_ref": "customer_concentration:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A disclosed order, contract, or offtake with stated value or volume would provide evidence of forward commitments supporting the path to the 2x threshold.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests for disclosed new customer orders, contracts, or binding awards that could quantify forward commitments or backlog.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If Stitch Fix's AI personalization technology is commercially sellable and repeatable, it could support the revenue growth path toward the 2x threshold.",
+            "context_tags": [
+              "consumer",
+              "mid_cap",
+              "software"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Stitch Fix's AI-driven personalization technology has become sellable and repeatable, relevant to the growth thesis.",
+            "signal_ref": "commercialization_status:v1",
+            "target_need_indices": [
+              3
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

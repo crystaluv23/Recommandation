@@ -2808,3 +2808,88 @@ class TemporalQuantityAggregatedFeedbackTests(TestCase):
                 stable_correction_prefix=True,
                 final_validation_fallback=_research_state_evidence_grounding_fallback,
             )
+
+
+class TemporalSchedulePluralVocabularyTests(TestCase):
+    """Plural bounded schedule nouns keep the as-of allowance (V122 MP Materials)."""
+
+    def _refs(self, text: str) -> list:
+        from datetime import date
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _future_source_date_refs,
+        )
+
+        return _future_source_date_refs(
+            text,
+            date(2025, 3, 31),
+            field_name="next_information_needs",
+        )
+
+    def test_v122_case12_plural_milestones_need_is_not_future_information(self) -> None:
+        need = (
+            "What specific magnet-production milestones, volumes, or customer "
+            "commitments did MP Materials disclose by 2025-03-31 for the "
+            "period through 2025-09-30?"
+        )
+        self.assertEqual(self._refs(need), [])
+        self.assertEqual(self._refs(need.replace("milestones", "milestone")), [])
+
+    def test_plural_schedule_vocab_variants_share_the_singular_allowance(self) -> None:
+        nouns = (
+            "milestone",
+            "milestones",
+            "timeline",
+            "timelines",
+            "schedule",
+            "schedules",
+            "forecast",
+            "forecasts",
+            "target",
+            "targets",
+            "goal",
+            "goals",
+            "date",
+            "dates",
+        )
+        for noun in nouns:
+            with self.subTest(noun=noun):
+                need = (
+                    f"What specific production {noun} did the company disclose "
+                    "by 2025-03-31 for the period through 2025-09-30?"
+                )
+                self.assertEqual(self._refs(need), [])
+
+    def test_realized_results_and_actuals_still_reject_in_plural(self) -> None:
+        for noun in ("results", "actuals"):
+            with self.subTest(noun=noun):
+                need = (
+                    f"What {noun} did the company report by 2025-03-31 for the "
+                    "period through 2025-09-30?"
+                )
+                self.assertEqual(self._refs(need), ["2025-09-30"])
+
+    def test_missing_or_late_asof_bound_still_rejects_plural_schedules(self) -> None:
+        unbounded = (
+            "What specific milestones will the company disclose through "
+            "2025-09-30?"
+        )
+        self.assertEqual(self._refs(unbounded), ["2025-09-30"])
+        late_bound = (
+            "What specific milestones did the company disclose by 2025-06-30 "
+            "for the period through 2025-09-30?"
+        )
+        self.assertEqual(self._refs(late_bound), ["2025-06-30", "2025-09-30"])
+
+    def test_mixed_past_asof_future_forecast_pairs(self) -> None:
+        positive = (
+            "Which disclosed capacity targets and delivery schedules had the "
+            "company committed to as of 2025-03-31 for the quarters ending "
+            "through 2025-09-30?"
+        )
+        self.assertEqual(self._refs(positive), [])
+        negative = (
+            "Which realized volumes and actuals had the company achieved as "
+            "of 2025-03-31 for the period through 2025-09-30?"
+        )
+        self.assertEqual(self._refs(negative), ["2025-09-30"])

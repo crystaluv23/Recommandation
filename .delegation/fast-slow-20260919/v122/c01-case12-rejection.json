@@ -1,0 +1,1713 @@
+[
+  {
+    "attempt_id": 207,
+    "hash": "deb126cd2f0dfe28e54ea4dab3da74c3d5d9ec7d128439a35533d2ad3efb97e9",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload": {
+      "candidate_judgment_feedback": {
+        "assessment": "correct_positive_conservative",
+        "binary_correct": true,
+        "candidate_judgment": "possible",
+        "predicted_binary_label": "surge",
+        "reflection_guidance": "The possible judgment was binary-correct but conservative relative to the realized surge; inspect whether source-backed positive evidence was underweighted. The realized outcome alone does not prove that likely was the calibrated ex-ante category.",
+        "true_binary_label": "surge"
+      },
+      "compact_context": {
+        "basic_info_source_index": [
+          {
+            "available_projection_count": 4,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_884df6910878324fe848a251",
+              "projection_47c02bc61bba06daaf44bdad",
+              "projection_8223a35975c2cf844fc20b6d",
+              "projection_703ee58ea603641d57a51fb1"
+            ],
+            "projection_status": "complete",
+            "request_id": "market_backbone",
+            "source_types": [
+              "market_data"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 4
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_754cf8ec8a376d08ffbeed9d"
+            ],
+            "projection_status": "complete",
+            "request_id": "recent_annual_interim_report",
+            "source_types": [
+              "filing"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 4,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_31f8e61de61c195318360e1c",
+              "projection_83b56262475d3a3674974c0d",
+              "projection_9b770ba795da14ce797567c1",
+              "projection_a9648b87176a8688f42243d5"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_disclosed_financial_statements",
+            "source_types": [
+              "financial_statements"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 4
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_5e1550ccf955503b8faf537d"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_scoped_competitive_news",
+            "source_types": [
+              "company_news"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_773a72516197b4c7f393959f"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_news_catalysts",
+            "source_types": [
+              "news"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_754cf8ec8a376d08ffbeed9d"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_event_disclosures",
+            "source_types": [
+              "filing"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_4d8e5a2eff7a3aac5b4af711"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_management_commentary",
+            "source_types": [
+              "earnings_call",
+              "earnings_transcript",
+              "transcript"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "omitted_projection_count": 0,
+            "projection_ids": [
+              "projection_31f8e61de61c195318360e1c"
+            ],
+            "projection_status": "complete",
+            "request_id": "target_facts_snapshot",
+            "source_types": [
+              "sec_company_facts",
+              "company_facts"
+            ],
+            "status": "resolved",
+            "visible_projection_count": 1
+          }
+        ],
+        "cited_signal_evidence": [
+          {
+            "evidence": {
+              "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_transcript:407f311833386ededdacf8da",
+              "exact_span": "Building on the strong production performance from our core managed operations in the first half of the year, we remain firmly on track to meet the full year guidance ranges we issued in February.",
+              "timestamp": "2025-07-25T00:00:00+00:00"
+            },
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "signal_ref": "guidance_acceleration:v1"
+          },
+          {
+            "evidence": {
+              "document_id": "sec_edgar:[MASKED_COMPANY]:financials:e29f812f4564ce5b82c8bb45",
+              "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":1118000000}",
+              "timestamp": "2025-07-24T00:00:00+00:00"
+            },
+            "evidence_group": "supporting",
+            "evidence_index": 0,
+            "signal_ref": "net_share_retirement_yoy:v1"
+          }
+        ],
+        "context_contract": {
+          "budget_enforcement": "exact_wire_remaining_case_tokens",
+          "presentation_target_exceeded": false,
+          "target_chars": 24000
+        },
+        "data_gaps": [],
+        "final_research_state": {
+          "contradictions": [],
+          "current_beliefs": [
+            "The 2025-07-25 session printed the highest adjusted close in the visible window at 65.75 with volume of 30913530, roughly double the typical daily volume, indicating a discrete repricing event rather than gradual drift.",
+            "[MASKED_COMPANY] announced sale of Greatland Resources and Discovery Silver shares for approximately $470 million as part of a divestiture program targeting $3 billion in after-tax cash proceeds, with gold production of 5.9 million ounces on track.",
+            "Two fall of ground incidents at the Red Chris operation suspended operations and trapped three business partner employees underground, an unresolved operational disruption that could weigh on production and sentiment.",
+            "Shareholders faced a 16% loss over the past three years against 28% EPS growth, and the upcoming Annual General Meeting on April 30th was set to address CEO pay concerns.",
+            "The 2025-07-15 session showed a sharp intraday reversal with a high of 60.63 and a low of 55.37 on volume of 28756835, evidence of elevated two-way volatility around mid-July.",
+            "No visible projection quantifies a forward price path, analyst target, or guidance figure that bridges the current price to a doubling within the six-month horizon.",
+            "Building on the strong production performance from our core managed operations in the first half of the year, we remain firmly on track to meet the full year guidance ranges we issued in February.",
+            "net_share_retirement_yoy=0.0303556"
+          ],
+          "decision": "finalize",
+          "hypotheses": [
+            "If [MASKED_COMPANY]'s divestiture proceeds and 5.9 million ounce gold production target are confirmed as on track in pre-horizon disclosures, then the balance-sheet reinforcement narrative should support a higher price path, but not by itself a doubling within six months.",
+            "If the Red Chris fall of ground incidents remain unresolved with suspended operations through the next disclosure, then production risk and negative sentiment should cap upside and make the doubling threshold harder to reach.",
+            "If the 2025-07-25 volume spike reflects a durable fundamental repricing rather than a one-day event, then subsequent sessions should hold above the pre-spike range near 61, which would be consistent with a strengthening but still insufficient trend toward the threshold."
+          ],
+          "next_information_needs": [
+            "What did [MASKED_COMPANY] disclose by 2025-07-31 about the status of the Red Chris fall of ground incidents, including whether operations remained suspended and whether any production guidance was revised?",
+            "What specific 2025 divestiture program targets and after-tax cash proceeds figures had [MASKED_COMPANY] disclosed by 2025-07-31, and what portion of the $3 billion target was already achieved?",
+            "What analyst price targets or consensus estimates for [MASKED_COMPANY] were published before 2025-07-31, and what price path did they imply over the following six months?",
+            "What did [MASKED_COMPANY] disclose by 2025-07-31 about its capital allocation priorities, including dividends, buybacks, or debt reduction, that could affect share count and per-share value?",
+            "What legal, regulatory, or permitting overhangs affecting [MASKED_COMPANY]'s operations were disclosed by 2025-07-31 that could constrain production or add costs within the horizon?"
+          ],
+          "open_questions": [],
+          "resolved_questions": [
+            "[MASKED_COMPANY]'s adjusted close on 2025-06-16 was 58.12, establishing the visible starting point for the price series.",
+            "[MASKED_COMPANY]'s adjusted close on 2025-07-30 was 62.31, the latest visible price in the supplied market data.",
+            "The highest adjusted close in the visible window was 65.75 on 2025-07-25, accompanied by volume of 30913530.",
+            "[MASKED_COMPANY] announced the sale of Greatland Resources and Discovery Silver shares for approximately $470 million as part of a divestiture program.",
+            "[MASKED_COMPANY] stated it is on track to meet 2025 targets including gold production of 5.9 million ounces.",
+            "Two fall of ground incidents at Red Chris suspended operations and trapped three business partner employees underground."
+          ],
+          "supporting_evidence": [
+            {
+              "claim": "[MASKED_COMPANY]'s adjusted close on 2025-07-30 was 62.31, the latest visible price in the supplied market data.",
+              "exact_text": "{\"adjusted_close\":65.75,\"as_of_date\":\"2025-07-25\",\"close\":65.75,\"high\":66.57,\"low\":63.36,\"open\":63.88, \"volume\":30913530},{\"adjusted_close\":63.66,\"as_of_date\":\"2025-07-28\",\"close\":63.66,\"high\":65.05,\"low\":62.66,\"open\":64.82, \"volume\":11877357},{\"adjusted_close\":63.99,\"as_of_date\":\"2025-07-29\",\"close\":63.99,\"high\":64.15,\"low\":63.321,\"open\":63.83, \"volume\":8035229},{\"adjusted_close\":62.31,\"as_of_date\":\"2025-07-30\",\"close\":62.31,\"high\":63.56,\"low\":61.9,\"open\":63.24, \"volume\":10392859}",
+              "kind": "basic_info",
+              "projection_id": "projection_703ee58ea603641d57a51fb1"
+            },
+            {
+              "claim": "The 2025-07-25 session printed the highest adjusted close in the visible window at 65.75 with volume of 30913530, roughly double the typical daily volume, indicating a discrete repricing event rather than gradual drift.",
+              "exact_text": "{\"adjusted_close\":65.75,\"as_of_date\":\"2025-07-25\",\"close\":65.75,\"high\":66.57,\"low\":63.36,\"open\":63.88, \"volume\":30913530},{\"adjusted_close\":63.66,\"as_of_date\":\"2025-07-28\",\"close\":63.66,\"high\":65.05,\"low\":62.66,\"open\":64.82, \"volume\":11877357},{\"adjusted_close\":63.99,\"as_of_date\":\"2025-07-29\",\"close\":63.99,\"high\":64.15,\"low\":63.321,\"open\":63.83, \"volume\":8035229},{\"adjusted_close\":62.31,\"as_of_date\":\"2025-07-30\",\"close\":62.31,\"high\":63.56,\"low\":61.9,\"open\":63.24, \"volume\":10392859}",
+              "kind": "basic_info",
+              "projection_id": "projection_703ee58ea603641d57a51fb1"
+            },
+            {
+              "claim": "[MASKED_COMPANY] announced sale of Greatland Resources and Discovery Silver shares for approximately $470 million as part of a divestiture program targeting $3 billion in after-tax cash proceeds, with gold production of 5.9 million ounces on track.",
+              "exact_text": "[MASKED_COMPANY] Declares Monetization of Equity Received Through Divestitures [MASKED_COMPANY] Corporation has announced the sale of its shares in Greatland Resources Limited and Discovery Silver Corp. for approximately $470 million. This move is part of [MASKED_COMPANY]'s strategy to divest non-core assets and reinforce its balance sheet, aiming for $3 billion in after-tax cash proceeds from its 2025 divestiture program. The company is on track to meet its 2025 targets, including gold production of 5.9 million ounces.",
+              "kind": "basic_info",
+              "projection_id": "projection_773a72516197b4c7f393959f"
+            },
+            {
+              "claim": "Two fall of ground incidents at the Red Chris operation suspended operations and trapped three business partner employees underground, an unresolved operational disruption that could weigh on production and sentiment.",
+              "exact_text": "As we reported yesterday, on Tuesday this week, two fall of ground incidents occurred at our Red Chris operation in British Columbia, blocking access to the underground work area of our nonproducing project at these sites. At the time of the initial incident, we had three business partner employees working underground, more than 500 meters beyond the affected zone. We asked them to relocate to a designated refuge chamber and confirmed that they have safely arrived in the chamber before the second fall of ground blocked the access way. This second fall of ground also impacted our underground communication system. All appropriate emergency response protocols were immediately activated and operations at Red Chris have been suspended while we're responding to the incident.",
+              "kind": "basic_info",
+              "projection_id": "projection_4d8e5a2eff7a3aac5b4af711"
+            },
+            {
+              "claim": "Shareholders faced a 16% loss over the past three years against 28% EPS growth, and the upcoming Annual General Meeting on April 30th was set to address CEO pay concerns.",
+              "exact_text": "Here's Why Shareholders May Want To Be Cautious With Increasing [MASKED_COMPANY] Corporation's (NYSE:[MASKED_COMPANY]) CEO Pay Packet [MASKED_COMPANY] Corporation's shareholders might be wary of increasing CEO Tom Palmer's pay, despite his total compensation being similar to the industry average. The company experienced a 16% shareholder loss over the past three years, contrasting with a 28% EPS growth. Shareholders will have an opportunity to address these concerns and CEO remuneration at the upcoming Annual General Meeting on April 30th.",
+              "kind": "basic_info",
+              "projection_id": "projection_5e1550ccf955503b8faf537d"
+            },
+            {
+              "claim": "The 2025-07-15 session showed a sharp intraday reversal with a high of 60.63 and a low of 55.37 on volume of 28756835, evidence of elevated two-way volatility around mid-July.",
+              "exact_text": "{\"adjusted_close\":60.82,\"as_of_date\":\"2025-07-14\",\"close\":60.82,\"high\":61.17,\"low\":60.01,\"open\":60.01, \"volume\":9513867},{\"adjusted_close\":57.35,\"as_of_date\":\"2025-07-15\",\"close\":57.35,\"high\":60.63,\"low\":55.37,\"open\":60.56, \"volume\":28756835},{\"adjusted_close\":58.45,\"as_of_date\":\"2025-07-16\",\"close\":58.45,\"high\":58.84,\"low\":57.3025,\"open\":58.09, \"volume\":16646519},{\"adjusted_close\":57.99,\"as_of_date\":\"2025-07-17\",\"close\":57.99,\"high\":58.08,\"low\":56.73,\"open\":57.51, \"volume\":13669938},{\"adjusted_close\":58.19,\"as_of_date\":\"2025-07-18\",\"close\":58.19,\"high\":58.655,\"low\":57.86,\"open\":57.86, \"volume\":13519867},{\"adjusted_close\":59.86,\"as_of_date\":\"2025-07-21\",\"close\":59.86,\"high\":60.665,\"low\":58.97,\"open\":59.0, \"volume\":11233096},{\"adjusted_close\":61.7,\"as_of_date\":\"2025-07-22\",\"close\":61.7,\"high\":61.865,\"low\":60.41,\"open\":60.44, \"volume\":9369249},{\"adjusted_close\":61.42,\"as_of_date\":\"2025-07-23\",\"close\":61.42,\"high\":62.5599,\"low\":60.93,\"open\":61.4, \"volume\":13305052},{\"adjusted_close\":61.51,\"as_of_date\":\"2025-07-24\",\"close\":61.51,\"high\":61.775,\"low\":59.96,\"open\":60.68, \"volume\":13179584}",
+              "kind": "basic_info",
+              "projection_id": "projection_8223a35975c2cf844fc20b6d"
+            },
+            {
+              "claim": "Building on the strong production performance from our core managed operations in the first half of the year, we remain firmly on track to meet the full year guidance ranges we issued in February.",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v1"
+            },
+            {
+              "claim": "net_share_retirement_yoy=0.0303556",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "net_share_retirement_yoy:v1"
+            }
+          ]
+        },
+        "prediction_baseline": {
+          "mean_adjusted_close": 63.444,
+          "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+          "status": "available",
+          "trading_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ]
+        },
+        "signal_results": [
+          {
+            "interpretation": {
+              "summary": "Completed debt-related actions are visible: partial redemption of certain senior notes and extinguishment of the 2023 [MASKED_COMPANY] Senior Note in 2024, plus an unfunded revolving loan facility commitment with no borrowings outstanding. These are completed/binding financing and debt-restructuring actions that modestly reduce debt and preserve liquidity, but the visible spans do not quantify runway, dilution, or tradability effects, so the point-in-time read is neutral."
+            },
+            "signal_ref": "financing_listing_action:v2",
+            "state": {
+              "confidence": 0.55,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "Current guidance commentary reaffirms the full-year guidance ranges issued in February and states results are in line with previous indications. This is a reaffirmation rather than a material upward change in level, timing, or conviction, so the comparison to explicit prior guidance is neutral."
+            },
+            "signal_ref": "guidance_acceleration:v1",
+            "state": {
+              "confidence": 0.6,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "cash_reserves=6.185e+09"
+            },
+            "signal_ref": "cash_reserves:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "The visible corpus contains only historical offtake and supply arrangements, including the Lundin Gold offtake agreement that was sold and settled in 2024, and no new customer order, contract, offtake agreement, or binding award with a named counterparty and stated or implied value, volume, or delivery schedule within the lookback window."
+            },
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "state": {
+              "confidence": 0.6,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "Latest point-in-time cash of $6,185M and operating cash flow of $4,415M for the six months ended June 30, 2025 imply a monthly operating cash flow of about $736M and a liquidity runway of roughly 8.4 months, which is above the 6-month positive threshold and below the 12-month negative threshold, so the result is neutral."
+            },
+            "signal_ref": "liquidity_runway_months:v1",
+            "state": {
+              "confidence": 0.7,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.0303556"
+            },
+            "signal_ref": "net_share_retirement_yoy:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "revenue_growth_yoy=0.225757"
+            },
+            "signal_ref": "revenue_growth_yoy:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "operating_cash_flow_margin=0.42752"
+            },
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "Latest point-in-time facts show positive operating cash flow of $4,415,000,000 for the six months ended 2025-06-30 against cash and cash equivalents of $6,185,000,000 at 2025-06-30. Because operating cash flow is positive, the burn rate is zero and well below the 0.10 threshold, so the elevated cash burn condition is not met."
+            },
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "state": {
+              "confidence": 0.9,
+              "value": "negative"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "negative_word_count=15"
+            },
+            "signal_ref": "negative_word_count:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "negative"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "max_drawdown_1y=-0.369461"
+            },
+            "signal_ref": "max_drawdown_1y:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "price_momentum_126d=0.506892"
+            },
+            "signal_ref": "price_momentum_126d:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "Latest CashAndCashEquivalentsAtCarryingValue is 6,185,000,000 USD (period end 2025-06-30) and latest LiabilitiesCurrent is 4,670,000,000 USD (period end 2025-06-30), giving a ratio of approximately 1.32, which is at or above the positive_min threshold of 1.0, indicating stronger short-term liquidity."
+            },
+            "signal_ref": "cash_to_current_liabilities_ratio:v1",
+            "state": {
+              "confidence": 0.9,
+              "value": "positive"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "interpretation": {
+              "summary": "revenue_acceleration=-0.0195826"
+            },
+            "signal_ref": "revenue_acceleration:v1",
+            "state": {
+              "confidence": 1.0,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "sufficient"
+            }
+          }
+        ]
+      },
+      "framework_prediction_correct": true,
+      "original_prediction": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": true,
+        "key_reasons": [
+          "The 2025-07-25 session printed the highest adjusted close in the visible window at 65.75 on roughly double typical volume, indicating a discrete repricing event that could be an early market confirmation of a strengthening trend.",
+          "Source-backed operating momentum is positive: revenue growth yoy of 22.6%, operating cash flow margin of 42.8%, cash reserves of $6.185B, and a 126-day price momentum of 50.7% support a credible candidate for further repricing.",
+          "The divestiture program targeting $3B in after-tax cash proceeds, with $470M already announced from Greatland Resources and Discovery Silver share sales, plus reaffirmed full-year guidance and 5.9Moz gold production on track, provide a fundamental catalyst that could reinforce the balance sheet and support a higher price path."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "No visible projection quantifies a forward price path, analyst target, or guidance figure that bridges the current baseline of 63.444 to a doubling within six months.",
+          "The Red Chris fall of ground incidents suspended operations and remain unresolved, posing production and sentiment risk that could cap upside.",
+          "The 2025-07-25 volume spike may be a one-day event rather than a durable repricing; subsequent sessions have already pulled back to 62.31, below the spike close.",
+          "Shareholders faced a 16% loss over three years despite 28% EPS growth, and CEO pay concerns at the April 30 AGM indicate governance overhang.",
+          "The six-month 2x threshold requires a move to roughly 126.9 from the 63.444 baseline, a large repricing not directly supported by any supplied forward estimate."
+        ]
+      },
+      "revealed_ground_truth": {
+        "is_surge": true,
+        "magnitude": "2-3x",
+        "realized_max_multiple": 2.0177998156447665
+      }
+    },
+    "output": {
+      "decision_drivers": [
+        "The saved judgment correctly identified the 2025-07-25 session as a discrete repricing event: adjusted close of 65.75 on volume of 30,913,530, roughly double typical daily volume, which supported the surge call.",
+        "Source-backed operating momentum was cited and worked: revenue growth yoy of 22.6%, operating cash flow margin of 42.8%, cash reserves of $6.185B, and 126-day price momentum of 50.7%.",
+        "The divestiture program targeting $3B in after-tax cash proceeds, with $470M already announced from Greatland Resources and Discovery Silver share sales, plus reaffirmed full-year guidance and 5.9Moz gold production on track, provided a fundamental catalyst consistent with the realized surge."
+      ],
+      "ignored_evidence": [],
+      "misleading_signals": [
+        "The Red Chris fall of ground incidents and unresolved operational suspension were treated as a potential cap on upside, but the realized surge still occurred, so this risk did not prevent the threshold from being reached.",
+        "The pullback from the 2025-07-25 spike close to 62.31 by 2025-07-30 was treated as evidence the spike might be a one-day event, but the realized outcome was still a surge."
+      ],
+      "missing_information": [
+        "No visible projection quantified a forward price path, analyst target, or guidance figure bridging the 63.444 baseline to the roughly 126.9 doubling threshold, which limited confidence and kept the judgment at possible rather than likely."
+      ],
+      "plan_issues": [
+        "The saved judgment was binary-correct but conservative: it assigned possible despite multiple sufficient positive signals and a discrete high-volume repricing event, underweighting the source-backed positive evidence relative to the realized surge."
+      ],
+      "prediction_outcome": {
+        "correct": true
+      },
+      "why_prediction_failed": []
+    }
+  },
+  {
+    "attempt_id": 208,
+    "hash": "17a65fc67bafe7f6613511cc2c28d1e6a8a1c02c3b8ac0e2e760a7e4fb390b46",
+    "stage": "research_controller_initialize",
+    "payload": {
+      "basic_info": {
+        "max_normalized_characters": 32000,
+        "requests": [
+          {
+            "available_projection_count": 4,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":23.72,\"as_of_date\":\"2025-02-14\",\"close\":23.72,\"high\":24.6899,\"low\":23.5146,\"open\":24.68, \"volume\":1741897},{\"adjusted_close\":23.45,\"as_of_date\":\"2025-02-18\",\"close\":23.45,\"high\":24.2583,\"low\":23.44,\"open\":23.82, \"volume\":2241466},{\"adjusted_close\":22.99,\"as_of_date\":\"2025-02-19\",\"close\":22.99,\"high\":23.51,\"low\":22.595,\"open\":23.25, \"volume\":2746899},{\"adjusted_close\":23.18,\"as_of_date\":\"2025-02-20\",\"close\":23.18,\"high\":23.38,\"low\":22.6,\"open\":22.98, \"volume\":1919333},{\"adjusted_close\":24.3,\"as_of_date\":\"2025-02-21\",\"close\":24.3,\"high\":24.7,\"low\":23.48,\"open\":24.57, \"volume\":4661664},{\"adjusted_close\":24.27,\"as_of_date\":\"2025-02-24\",\"close\":24.27,\"high\":24.84,\"low\":23.5404,\"open\":24.44, \"volume\":3105937},{\"adjusted_close\":23.56,\"as_of_date\":\"2025-02-25\",\"close\":23.56,\"high\":24.23,\"low\":22.82,\"open\":24.19, \"volume\":3075875},{\"adjusted_close\":23.77,\"as_of_date\":\"2025-02-26\",\"close\":23.77,\"high\":25.35,\"low\":23.77,\"open\":24.11, \"volume\":3117675},{\"adjusted_close\":23.46,\"as_of_date\":\"2025-02-27\",\"close\":23.46,\"high\":24.5,\"low\":23.3,\"open\":23.87, \"volume\":2036675}",
+                "projection_id": "projection_22b090437ac58275c627eef4"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":24.01,\"as_of_date\":\"2025-02-28\",\"close\":24.01,\"high\":24.1,\"low\":22.82,\"open\":23.11, \"volume\":2579125},{\"adjusted_close\":22.53,\"as_of_date\":\"2025-03-03\",\"close\":22.53,\"high\":24.63,\"low\":22.25,\"open\":24.14, \"volume\":4165665},{\"adjusted_close\":22.45,\"as_of_date\":\"2025-03-04\",\"close\":22.45,\"high\":23.145,\"low\":21.2,\"open\":22.17, \"volume\":3456875},{\"adjusted_close\":25.66,\"as_of_date\":\"2025-03-05\",\"close\":25.66,\"high\":25.66,\"low\":23.59,\"open\":24.04, \"volume\":5011887},{\"adjusted_close\":24.4,\"as_of_date\":\"2025-03-06\",\"close\":24.4,\"high\":25.77,\"low\":24.01,\"open\":25.07, \"volume\":3515516},{\"adjusted_close\":24.98,\"as_of_date\":\"2025-03-07\",\"close\":24.98,\"high\":25.16,\"low\":23.6,\"open\":24.01, \"volume\":2400876},{\"adjusted_close\":24.42,\"as_of_date\":\"2025-03-10\",\"close\":24.42,\"high\":25.65,\"low\":24.16,\"open\":24.7, \"volume\":3991974},{\"adjusted_close\":24.01,\"as_of_date\":\"2025-03-11\",\"close\":24.01,\"high\":25.55,\"low\":23.64,\"open\":24.1, \"volume\":3234277},{\"adjusted_close\":24.34,\"as_of_date\":\"2025-03-12\",\"close\":24.34,\"high\":24.73,\"low\":23.162,\"open\":24.53, \"volume\":2690963}",
+                "projection_id": "projection_5e109182cc6c7a7cb0657536"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+                "projection_id": "projection_5a88e138da780e04bd34645e"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":26.06,\"as_of_date\":\"2025-03-26\",\"close\":26.06,\"high\":27.0505,\"low\":25.71,\"open\":27.0, \"volume\":2244044},{\"adjusted_close\":26.17,\"as_of_date\":\"2025-03-27\",\"close\":26.17,\"high\":26.58,\"low\":25.26,\"open\":25.49, \"volume\":2147587},{\"adjusted_close\":25.97,\"as_of_date\":\"2025-03-28\",\"close\":25.97,\"high\":26.49,\"low\":25.65,\"open\":25.8, \"volume\":3139313}",
+                "projection_id": "projection_537d80da353f18bd3b1cb13c"
+              }
+            ],
+            "request": {
+              "description": "Retrieve the target company's own daily price and volume series over the last 45 days to establish the point-in-time market state and recent trend for the target company_id.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 4
+          },
+          {
+            "available_projection_count": 2,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "mp-20241231 FALSE 0001801368 2024 FY MP Materials Corp. / DE http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent P5D P5D P5D P10D 0.0225861 0.0459939 0.0643915 P1Y P5Y http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization iso4217:USD xbrli:shares iso4217:USD xbrli:shares mp:segment xbrli:pure utr:acre mp:renewalOption utr:D 0001801368 2024-01-01 2024-12-31 0001801368 2024-06-30 0001801368 2025-02-20 0001801368 2024-12-31 0001801368 2023-12-31 0001801368 2023-01-01 2023-12-31 0001801368 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2021-12-31 0001801368 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiv",
+                "projection_id": "projection_ddfa9c8ec5b12cd1004e57e1"
+              },
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "68 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2021-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2021-12-31 0001801368 2021-12-31 0001801368 us-gaap:CommonStockMember 2022-01-01 2022-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2022-01-01 2022-12-31 0001801368 us-gaap:RetainedEarningsMember 2022-01-01 2022-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2022-12-31 0001801368 us-gaap:CommonStockMember 2022-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2022-12-31 0001801368 us-gaap:RetainedEarningsMember 2022-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2022-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2022-12-31 0001801368 2022-12-31 0001801368 us-gaap:CommonStockMember 2023-01-01 2023-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2023-01-01 2023-12-31 0001801368 us-gaap:RetainedEarningsMember 2023-01-01 2023-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2023-01-01 2023-12-31 0001801368 us-gaap:PreferredStockMember 2023-12-31 0001801368 us-gaap:CommonStockMember 2023-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2023-12-31 0001801368 us-gaap:RetainedEarningsMember 2023-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2023-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2023-12-31 0001801368 us-gaap:CommonStockMember 2024-01-01 2024-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2024-01-01 2024-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2024-01-01 2024-12-31 0001801368 us-gaap:RetainedEarningsMember 2024-01-01 2024-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2024-01-01 2024-12-31 0001801368 us-gaap:PreferredStockMember 2024-12-31 0001801368 us-gaap:CommonStockMember 2024-12-3",
+                "projection_id": "projection_d4e4d8ddb46153baa83f0873"
+              }
+            ],
+            "request": {
+              "description": "Read the target company's latest applicable annual or interim operating report to capture business model, segment economics, risk factors, and management discussion as of the prediction time.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "recent_annual_interim_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 2
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T00:00:00+00:00",
+                "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+                "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+                "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+              }
+            ],
+            "request": {
+              "description": "Pull the target company's reported financial statements to assess revenue growth, margin structure, cash generation, and capital structure at the prediction time.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "target_disclosed_financial_statements",
+              "source_types": [
+                "financial_statements"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-08T03:33:13+00:00",
+                "document_id": "avnews_ac3fb5ea4468db7c91de8d02",
+                "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                "projection_id": "projection_6abf037b09bc391663e0282b"
+              }
+            ],
+            "request": {
+              "description": "Search target-company-scoped news mentioning competition, pricing, demand, or share shifts so competitive pressure is read only through the target issuer's own ecosystem, not as other issuers' actions.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "query": "competition pricing demand share target company",
+              "request_id": "target_scoped_competitive_news",
+              "source_types": [
+                "company_news"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-08T03:33:13+00:00",
+                "document_id": "avnews_ac3fb5ea4468db7c91de8d02",
+                "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                "projection_id": "projection_6abf037b09bc391663e0282b"
+              }
+            ],
+            "request": {
+              "description": "Collect recent third-party news coverage scoped to the target company on customers, financing, orders, regulation, and product changes that may shift expectations.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "query": "target company customer financing order regulation product",
+              "request_id": "target_news_catalysts",
+              "source_types": [
+                "news"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "mp-20241231 FALSE 0001801368 2024 FY MP Materials Corp. / DE http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent P5D P5D P5D P10D 0.0225861 0.0459939 0.0643915 P1Y P5Y http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization iso4217:USD xbrli:shares iso4217:USD xbrli:shares mp:segment xbrli:pure utr:acre mp:renewalOption utr:D 0001801368 2024-01-01 2024-12-31 0001801368 2024-06-30 0001801368 2025-02-20 0001801368 2024-12-31 0001801368 2023-12-31 0001801368 2023-01-01 2023-12-31 0001801368 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2021-12-31 0001801368 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiv",
+                "projection_id": "projection_ddfa9c8ec5b12cd1004e57e1"
+              }
+            ],
+            "request": {
+              "description": "Inspect the target company's recent material event disclosures filed under its applicable regime, including current reports or equivalent event filings, for corporate actions, guidance changes, or disclosures that could reset the market narrative.",
+              "lookback_days": 180,
+              "max_documents": 3,
+              "request_id": "target_event_disclosures",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-21T00:00:00+00:00",
+                "document_id": "alpha_vantage:cik_0001801368:earnings_transcript:85c65a10075fabf18e928745",
+                "exact_text": "{\"quarter\":\"2024Q4\",\"symbol\":\"MP\",\"transcript\":[{\"content\":\"Hello, and welcome to the MP Materials Fourth Quarter 2024 Earnings Call. We ask that you please hold all questions until the completion of the formal remarks, at which time, you'll be given instructions for the question-and-answer session. Also, as a reminder, this conference is being recorded. If you have any objections, please disconnect at this time. With that, I would like to turn the call over to Martin Sheehan, Head of Investor Relations. Mr. Sheehan, you may begin.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, operator, and good afternoon, everyone. Welcome to the MP Materials fourth quarter 2024 earnings conference call. With me today from MP Materials are Jim Litinsky, Founder, Chairman and Chief Executive Officer; Michael Rosenthal, Founder and Chief Operating Officer; and Ryan Corbett, Chief Financial Officer. As a reminder, today's discussion will contain forward-looking statements relating to future events and expectations that are subject to various assumptions and caveats. Factors that may cause the company's actual results to differ materially from these statements are included in today's presentation, earnings release, and in our SEC filings. In addition, we have included some non-GAAP financial measures in this presentation. Reconciliations to the most directly comparable GAAP financial measures can be found in today's earnings release and the appendix to today's slide presentation. Any reference in our discussion to EBITDA means adjusted EBITDA, and tons means metric tons. Finally, the earnings release and slide presentation are available on our website. With that, I'll turn the call over to Jim. Jim?\",\"sentiment\":\"0.0\",\"speaker\":\"Martin Sheehan\",\"title\":\"Head of Investor Relations\"},{\"content\":\"Thanks, Martin. Hello, everyone. Let's get started on Slide 4. MP had a terrific year of execution in 2024 across our Materials and Magnetics divisions. We se",
+                "projection_id": "projection_1dd62bce41a7d3b1b591bf93"
+              }
+            ],
+            "request": {
+              "description": "Review the target company's most recent earnings call or transcript for management framing of demand durability, competitive dynamics, and forward commitments.",
+              "lookback_days": 180,
+              "max_documents": 2,
+              "request_id": "target_management_commentary",
+              "source_types": [
+                "earnings_call",
+                "earnings_transcript",
+                "transcript"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T00:00:00+00:00",
+                "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+                "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+                "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+              }
+            ],
+            "request": {
+              "description": "Retrieve reported company facts for the target company_id to cross-check headline financial figures against filing-based statements before weighting evidence.",
+              "lookback_days": 730,
+              "max_documents": 1,
+              "request_id": "target_facts_snapshot",
+              "source_types": [
+                "sec_company_facts",
+                "company_facts"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          }
+        ]
+      },
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-09-30",
+        "prediction_time": "2025-03-31T00:00:00+00:00"
+      },
+      "initial_research_skill": "Form an initial hypothesis from retrieved basic evidence about whether the target company's commercialization trajectory and expectation gap are consistent with the fixed six-calendar-month adjusted-share-price 2x Predictor. Enumerate unresolved information needs and questions, including: whether the supplied mean adjusted close baseline is consistent with the most recent observed price path and whether the 2x threshold should be reconciled to the latest actionable starting point; whether catalysts are quantified to a forward path to the 2x threshold, including explicit analyst targets, guidance figures, backlog/RPO conversion, production/resource plans, burn rate, or modeled price paths; whether unavailable signals such as guidance acceleration, financing/listing action, price momentum, or customer concentration should be treated as constraints rather than neutral; whether known operational disruptions, legal overhangs, dilution, or post-event updates remain unresolved; and whether recent price and volume confirm or contradict the fundamental narrative. Do not calculate probabilities, classify the final Signal, alter the horizon, label, or four-way judgment, or generate a prediction.",
+      "validation_feedback": null
+    },
+    "output": {
+      "contradictions": [],
+      "current_beliefs": [
+        "The most recent observed adjusted close in the supplied market series is 25.97 on 2025-03-28, which is above the mid-February level near 23.72, indicating a modest upward drift over the visible window.",
+        "The visible market series shows a low adjusted close of 22.45 on 2025-03-04 and a high adjusted close of 26.93 on 2025-03-25, a range that is far short of a doubling from the visible baseline area.",
+        "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+        "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+        "The 2024Q4 earnings call transcript is available and contains management framing, but the visible excerpt only covers introductory remarks and does not yet quantify a forward path to a doubling.",
+        "The supplied financial-statement and company-facts projections are XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary, so fundamental momentum is not yet directly readable.",
+        "No visible evidence quantifies analyst targets, guidance figures, backlog or RPO conversion, production or resource plans, burn rate, or modeled price paths sufficient to bridge to a doubling.",
+        "Recent price and volume show elevated activity around mid-March 2025, with volume above 4.8 million shares on 2025-03-14, consistent with a narrative-driven move rather than a confirmed fundamental re-rating."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "If MP Materials discloses within the six-month horizon a quantified magnet-production ramp or customer contract that materially raises expected forward revenue, then the expectation gap could support a path toward a doubling of the adjusted share price.",
+        "If the visible market series remains range-bound between roughly 22 and 27 without a quantified catalyst, then the fundamental narrative is insufficient to support a doubling within the horizon.",
+        "If management commentary in the 2024Q4 earnings call quantifies a forward production or backlog path, then the current price path may under-reflect that catalyst and the doubling hypothesis gains support."
+      ],
+      "next_information_needs": [
+        "What specific magnet-production milestones, volumes, or customer commitments did MP Materials disclose by 2025-03-31 for the period through 2025-09-30?",
+        "What revenue, margin, or cash-flow guidance figures did MP Materials provide by 2025-03-31 for 2025, and how do they compare with the prior year?",
+        "What analyst price targets or consensus estimates for MP Materials were published by 2025-03-31, and what assumptions underpin them?",
+        "What backlog, RPO, or offtake commitments had MP Materials disclosed by 2025-03-31, and what conversion timeline was given?",
+        "What capital structure, cash burn, or financing actions had MP Materials disclosed by 2025-03-31 that could affect share count or liquidity?",
+        "What operational disruptions, legal overhangs, or regulatory developments affecting MP Materials were disclosed by 2025-03-31?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The target company is MP Materials Corp. / DE, CIK 0001801368.",
+        "The prediction time is 2025-03-31T00:00:00+00:00 and the horizon ends 2025-09-30.",
+        "The most recent visible adjusted close is 25.97 on 2025-03-28.",
+        "The visible market series spans 2025-02-14 through 2025-03-28.",
+        "MP Materials is pursuing rare-earth magnet production in Fort Worth.",
+        "A 2024Q4 earnings call transcript is available as of 2025-02-21."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "The most recent visible adjusted close is 25.97 on 2025-03-28, following a visible low adjusted close of 22.45 on 2025-03-04 and a visible high adjusted close of 26.93 on 2025-03-25.",
+          "exact_text": "{\"adjusted_close\":26.06,\"as_of_date\":\"2025-03-26\",\"close\":26.06,\"high\":27.0505,\"low\":25.71,\"open\":27.0, \"volume\":2244044},{\"adjusted_close\":26.17,\"as_of_date\":\"2025-03-27\",\"close\":26.17,\"high\":26.58,\"low\":25.26,\"open\":25.49, \"volume\":2147587},{\"adjusted_close\":25.97,\"as_of_date\":\"2025-03-28\",\"close\":25.97,\"high\":26.49,\"low\":25.65,\"open\":25.8, \"volume\":3139313}",
+          "kind": "basic_info",
+          "projection_id": "projection_537d80da353f18bd3b1cb13c"
+        },
+        {
+          "claim": "The visible market series includes an adjusted close of 22.45 on 2025-03-04 and an adjusted close of 26.93 on 2025-03-25.",
+          "exact_text": "{\"adjusted_close\":22.45,\"as_of_date\":\"2025-03-04\",\"close\":22.45,\"high\":23.145,\"low\":21.2,\"open\":22.17, \"volume\":3456875},{\"adjusted_close\":25.66,\"as_of_date\":\"2025-03-05\",\"close\":25.66,\"high\":25.66,\"low\":23.59,\"open\":24.04, \"volume\":5011887},{\"adjusted_close\":24.4,\"as_of_date\":\"2025-03-06\",\"close\":24.4,\"high\":25.77,\"low\":24.01,\"open\":25.07, \"volume\":3515516},{\"adjusted_close\":24.98,\"as_of_date\":\"2025-03-07\",\"close\":24.98,\"high\":25.16,\"low\":23.6,\"open\":24.01, \"volume\":2400876},{\"adjusted_close\":24.42,\"as_of_date\":\"2025-03-10\",\"close\":24.42,\"high\":25.65,\"low\":24.16,\"open\":24.7, \"volume\":3991974},{\"adjusted_close\":24.01,\"as_of_date\":\"2025-03-11\",\"close\":24.01,\"high\":25.55,\"low\":23.64,\"open\":24.1, \"volume\":3234277},{\"adjusted_close\":24.34,\"as_of_date\":\"2025-03-12\",\"close\":24.34,\"high\":24.73,\"low\":23.162,\"open\":24.53, \"volume\":2690963}",
+          "kind": "basic_info",
+          "projection_id": "projection_5e109182cc6c7a7cb0657536"
+        },
+        {
+          "claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+          "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+          "kind": "basic_info",
+          "projection_id": "projection_5a88e138da780e04bd34645e"
+        },
+        {
+          "claim": "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+          "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "kind": "basic_info",
+          "projection_id": "projection_6abf037b09bc391663e0282b"
+        },
+        {
+          "claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "kind": "basic_info",
+          "projection_id": "projection_6abf037b09bc391663e0282b"
+        },
+        {
+          "claim": "A 2024Q4 earnings call transcript is available as of 2025-02-21, with the visible excerpt covering introductory remarks.",
+          "exact_text": "{\"quarter\":\"2024Q4\",\"symbol\":\"MP\",\"transcript\":[{\"content\":\"Hello, and welcome to the MP Materials Fourth Quarter 2024 Earnings Call. We ask that you please hold all questions until the completion of the formal remarks, at which time, you'll be given instructions for the question-and-answer session. Also, as a reminder, this conference is being recorded. If you have any objections, please disconnect at this time. With that, I would like to turn the call over to Martin Sheehan, Head of Investor Relations. Mr. Sheehan, you may begin.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, operator, and good afternoon, everyone. Welcome to the MP Materials fourth quarter 2024 earnings conference call. With me today from MP Materials are Jim Litinsky, Founder, Chairman and Chief Executive Officer; Michael Rosenthal, Founder and Chief Operating Officer; and Ryan Corbett, Chief Financial Officer. As a reminder, today's discussion will contain forward-looking statements relating to future events and expectations that are subject to various assumptions and caveats. Factors that may cause the company's actual results to differ materially from these statements are included in today's presentation, earnings release, and in our SEC filings. In addition, we have included some non-GAAP financial measures in this presentation. Reconciliations to the most directly comparable GAAP financial measures can be found in today's earnings release and the appendix to today's slide presentation. Any reference in our discussion to EBITDA means adjusted EBITDA, and tons means metric tons. Finally, the earnings release and slide presentation are available on our website. With that, I'll turn the call over to Jim. Jim?\",\"sentiment\":\"0.0\",\"speaker\":\"Martin Sheehan\",\"title\":\"Head of Investor Relations\"},{\"content\":\"Thanks, Martin. Hello, everyone. Let's get started on Slide 4. MP had a terrific year of execution in 2024 across our Materials and Magnetics divisions. We se",
+          "kind": "basic_info",
+          "projection_id": "projection_1dd62bce41a7d3b1b591bf93"
+        },
+        {
+          "claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+          "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+          "kind": "basic_info",
+          "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+        },
+        {
+          "claim": "The visible market series shows elevated volume above 4.8 million shares on 2025-03-14.",
+          "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+          "kind": "basic_info",
+          "projection_id": "projection_5a88e138da780e04bd34645e"
+        }
+      ]
+    }
+  },
+  {
+    "attempt_id": 209,
+    "hash": "68090bb6c44e76c2d74a91aae56e92b95e096ab38593dfa018f9d400c299f189",
+    "stage": "research_controller_initialize_correction",
+    "payload": {
+      "basic_info": {
+        "max_normalized_characters": 32000,
+        "requests": [
+          {
+            "available_projection_count": 4,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":23.72,\"as_of_date\":\"2025-02-14\",\"close\":23.72,\"high\":24.6899,\"low\":23.5146,\"open\":24.68, \"volume\":1741897},{\"adjusted_close\":23.45,\"as_of_date\":\"2025-02-18\",\"close\":23.45,\"high\":24.2583,\"low\":23.44,\"open\":23.82, \"volume\":2241466},{\"adjusted_close\":22.99,\"as_of_date\":\"2025-02-19\",\"close\":22.99,\"high\":23.51,\"low\":22.595,\"open\":23.25, \"volume\":2746899},{\"adjusted_close\":23.18,\"as_of_date\":\"2025-02-20\",\"close\":23.18,\"high\":23.38,\"low\":22.6,\"open\":22.98, \"volume\":1919333},{\"adjusted_close\":24.3,\"as_of_date\":\"2025-02-21\",\"close\":24.3,\"high\":24.7,\"low\":23.48,\"open\":24.57, \"volume\":4661664},{\"adjusted_close\":24.27,\"as_of_date\":\"2025-02-24\",\"close\":24.27,\"high\":24.84,\"low\":23.5404,\"open\":24.44, \"volume\":3105937},{\"adjusted_close\":23.56,\"as_of_date\":\"2025-02-25\",\"close\":23.56,\"high\":24.23,\"low\":22.82,\"open\":24.19, \"volume\":3075875},{\"adjusted_close\":23.77,\"as_of_date\":\"2025-02-26\",\"close\":23.77,\"high\":25.35,\"low\":23.77,\"open\":24.11, \"volume\":3117675},{\"adjusted_close\":23.46,\"as_of_date\":\"2025-02-27\",\"close\":23.46,\"high\":24.5,\"low\":23.3,\"open\":23.87, \"volume\":2036675}",
+                "projection_id": "projection_22b090437ac58275c627eef4"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":24.01,\"as_of_date\":\"2025-02-28\",\"close\":24.01,\"high\":24.1,\"low\":22.82,\"open\":23.11, \"volume\":2579125},{\"adjusted_close\":22.53,\"as_of_date\":\"2025-03-03\",\"close\":22.53,\"high\":24.63,\"low\":22.25,\"open\":24.14, \"volume\":4165665},{\"adjusted_close\":22.45,\"as_of_date\":\"2025-03-04\",\"close\":22.45,\"high\":23.145,\"low\":21.2,\"open\":22.17, \"volume\":3456875},{\"adjusted_close\":25.66,\"as_of_date\":\"2025-03-05\",\"close\":25.66,\"high\":25.66,\"low\":23.59,\"open\":24.04, \"volume\":5011887},{\"adjusted_close\":24.4,\"as_of_date\":\"2025-03-06\",\"close\":24.4,\"high\":25.77,\"low\":24.01,\"open\":25.07, \"volume\":3515516},{\"adjusted_close\":24.98,\"as_of_date\":\"2025-03-07\",\"close\":24.98,\"high\":25.16,\"low\":23.6,\"open\":24.01, \"volume\":2400876},{\"adjusted_close\":24.42,\"as_of_date\":\"2025-03-10\",\"close\":24.42,\"high\":25.65,\"low\":24.16,\"open\":24.7, \"volume\":3991974},{\"adjusted_close\":24.01,\"as_of_date\":\"2025-03-11\",\"close\":24.01,\"high\":25.55,\"low\":23.64,\"open\":24.1, \"volume\":3234277},{\"adjusted_close\":24.34,\"as_of_date\":\"2025-03-12\",\"close\":24.34,\"high\":24.73,\"low\":23.162,\"open\":24.53, \"volume\":2690963}",
+                "projection_id": "projection_5e109182cc6c7a7cb0657536"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+                "projection_id": "projection_5a88e138da780e04bd34645e"
+              },
+              {
+                "available_at": "2025-03-29T00:00:00+00:00",
+                "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+                "exact_text": "{\"adjusted_close\":26.06,\"as_of_date\":\"2025-03-26\",\"close\":26.06,\"high\":27.0505,\"low\":25.71,\"open\":27.0, \"volume\":2244044},{\"adjusted_close\":26.17,\"as_of_date\":\"2025-03-27\",\"close\":26.17,\"high\":26.58,\"low\":25.26,\"open\":25.49, \"volume\":2147587},{\"adjusted_close\":25.97,\"as_of_date\":\"2025-03-28\",\"close\":25.97,\"high\":26.49,\"low\":25.65,\"open\":25.8, \"volume\":3139313}",
+                "projection_id": "projection_537d80da353f18bd3b1cb13c"
+              }
+            ],
+            "request": {
+              "description": "Retrieve the target company's own daily price and volume series over the last 45 days to establish the point-in-time market state and recent trend for the target company_id.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 4
+          },
+          {
+            "available_projection_count": 2,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "mp-20241231 FALSE 0001801368 2024 FY MP Materials Corp. / DE http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent P5D P5D P5D P10D 0.0225861 0.0459939 0.0643915 P1Y P5Y http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization iso4217:USD xbrli:shares iso4217:USD xbrli:shares mp:segment xbrli:pure utr:acre mp:renewalOption utr:D 0001801368 2024-01-01 2024-12-31 0001801368 2024-06-30 0001801368 2025-02-20 0001801368 2024-12-31 0001801368 2023-12-31 0001801368 2023-01-01 2023-12-31 0001801368 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2021-12-31 0001801368 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiv",
+                "projection_id": "projection_ddfa9c8ec5b12cd1004e57e1"
+              },
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "68 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2021-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2021-12-31 0001801368 2021-12-31 0001801368 us-gaap:CommonStockMember 2022-01-01 2022-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2022-01-01 2022-12-31 0001801368 us-gaap:RetainedEarningsMember 2022-01-01 2022-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2022-12-31 0001801368 us-gaap:CommonStockMember 2022-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2022-12-31 0001801368 us-gaap:RetainedEarningsMember 2022-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2022-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2022-12-31 0001801368 2022-12-31 0001801368 us-gaap:CommonStockMember 2023-01-01 2023-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2023-01-01 2023-12-31 0001801368 us-gaap:RetainedEarningsMember 2023-01-01 2023-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2023-01-01 2023-12-31 0001801368 us-gaap:PreferredStockMember 2023-12-31 0001801368 us-gaap:CommonStockMember 2023-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2023-12-31 0001801368 us-gaap:RetainedEarningsMember 2023-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2023-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2023-12-31 0001801368 us-gaap:CommonStockMember 2024-01-01 2024-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2024-01-01 2024-12-31 0001801368 us-gaap:TreasuryStockCommonMember 2024-01-01 2024-12-31 0001801368 us-gaap:RetainedEarningsMember 2024-01-01 2024-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2024-01-01 2024-12-31 0001801368 us-gaap:PreferredStockMember 2024-12-31 0001801368 us-gaap:CommonStockMember 2024-12-3",
+                "projection_id": "projection_d4e4d8ddb46153baa83f0873"
+              }
+            ],
+            "request": {
+              "description": "Read the target company's latest applicable annual or interim operating report to capture business model, segment economics, risk factors, and management discussion as of the prediction time.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "recent_annual_interim_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 2
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T00:00:00+00:00",
+                "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+                "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+                "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+              }
+            ],
+            "request": {
+              "description": "Pull the target company's reported financial statements to assess revenue growth, margin structure, cash generation, and capital structure at the prediction time.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "target_disclosed_financial_statements",
+              "source_types": [
+                "financial_statements"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-08T03:33:13+00:00",
+                "document_id": "avnews_ac3fb5ea4468db7c91de8d02",
+                "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                "projection_id": "projection_6abf037b09bc391663e0282b"
+              }
+            ],
+            "request": {
+              "description": "Search target-company-scoped news mentioning competition, pricing, demand, or share shifts so competitive pressure is read only through the target issuer's own ecosystem, not as other issuers' actions.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "query": "competition pricing demand share target company",
+              "request_id": "target_scoped_competitive_news",
+              "source_types": [
+                "company_news"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-03-08T03:33:13+00:00",
+                "document_id": "avnews_ac3fb5ea4468db7c91de8d02",
+                "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                "projection_id": "projection_6abf037b09bc391663e0282b"
+              }
+            ],
+            "request": {
+              "description": "Collect recent third-party news coverage scoped to the target company on customers, financing, orders, regulation, and product changes that may shift expectations.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "query": "target company customer financing order regulation product",
+              "request_id": "target_news_catalysts",
+              "source_types": [
+                "news"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T13:43:00+00:00",
+                "document_id": "sec:cik_0001801368:000180136825000009",
+                "exact_text": "mp-20241231 FALSE 0001801368 2024 FY MP Materials Corp. / DE http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent P5D P5D P5D P10D 0.0225861 0.0459939 0.0643915 P1Y P5Y http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherAssetsNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesCurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#OtherLiabilitiesNoncurrent http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#SellingGeneralAndAdministrativeExpense http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization http://fasb.org/us-gaap/2024#DepreciationDepletionAndAmortization iso4217:USD xbrli:shares iso4217:USD xbrli:shares mp:segment xbrli:pure utr:acre mp:renewalOption utr:D 0001801368 2024-01-01 2024-12-31 0001801368 2024-06-30 0001801368 2025-02-20 0001801368 2024-12-31 0001801368 2023-12-31 0001801368 2023-01-01 2023-12-31 0001801368 2022-01-01 2022-12-31 0001801368 us-gaap:PreferredStockMember 2021-12-31 0001801368 us-gaap:CommonStockMember 2021-12-31 0001801368 us-gaap:AdditionalPaidInCapitalMember 2021-12-31 0001801368 us-gaap:RetainedEarningsMember 2021-12-31 0001801368 us-gaap:AccumulatedOtherComprehensiv",
+                "projection_id": "projection_ddfa9c8ec5b12cd1004e57e1"
+              }
+            ],
+            "request": {
+              "description": "Inspect the target company's recent material event disclosures filed under its applicable regime, including current reports or equivalent event filings, for corporate actions, guidance changes, or disclosures that could reset the market narrative.",
+              "lookback_days": 180,
+              "max_documents": 3,
+              "request_id": "target_event_disclosures",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-21T00:00:00+00:00",
+                "document_id": "alpha_vantage:cik_0001801368:earnings_transcript:85c65a10075fabf18e928745",
+                "exact_text": "{\"quarter\":\"2024Q4\",\"symbol\":\"MP\",\"transcript\":[{\"content\":\"Hello, and welcome to the MP Materials Fourth Quarter 2024 Earnings Call. We ask that you please hold all questions until the completion of the formal remarks, at which time, you'll be given instructions for the question-and-answer session. Also, as a reminder, this conference is being recorded. If you have any objections, please disconnect at this time. With that, I would like to turn the call over to Martin Sheehan, Head of Investor Relations. Mr. Sheehan, you may begin.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, operator, and good afternoon, everyone. Welcome to the MP Materials fourth quarter 2024 earnings conference call. With me today from MP Materials are Jim Litinsky, Founder, Chairman and Chief Executive Officer; Michael Rosenthal, Founder and Chief Operating Officer; and Ryan Corbett, Chief Financial Officer. As a reminder, today's discussion will contain forward-looking statements relating to future events and expectations that are subject to various assumptions and caveats. Factors that may cause the company's actual results to differ materially from these statements are included in today's presentation, earnings release, and in our SEC filings. In addition, we have included some non-GAAP financial measures in this presentation. Reconciliations to the most directly comparable GAAP financial measures can be found in today's earnings release and the appendix to today's slide presentation. Any reference in our discussion to EBITDA means adjusted EBITDA, and tons means metric tons. Finally, the earnings release and slide presentation are available on our website. With that, I'll turn the call over to Jim. Jim?\",\"sentiment\":\"0.0\",\"speaker\":\"Martin Sheehan\",\"title\":\"Head of Investor Relations\"},{\"content\":\"Thanks, Martin. Hello, everyone. Let's get started on Slide 4. MP had a terrific year of execution in 2024 across our Materials and Magnetics divisions. We se",
+                "projection_id": "projection_1dd62bce41a7d3b1b591bf93"
+              }
+            ],
+            "request": {
+              "description": "Review the target company's most recent earnings call or transcript for management framing of demand durability, competitive dynamics, and forward commitments.",
+              "lookback_days": 180,
+              "max_documents": 2,
+              "request_id": "target_management_commentary",
+              "source_types": [
+                "earnings_call",
+                "earnings_transcript",
+                "transcript"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          },
+          {
+            "available_projection_count": 1,
+            "data_gap": null,
+            "omitted_projection_count": 0,
+            "projection_status": "complete",
+            "projections": [
+              {
+                "available_at": "2025-02-28T00:00:00+00:00",
+                "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+                "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+                "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+              }
+            ],
+            "request": {
+              "description": "Retrieve reported company facts for the target company_id to cross-check headline financial figures against filing-based statements before weighting evidence.",
+              "lookback_days": 730,
+              "max_documents": 1,
+              "request_id": "target_facts_snapshot",
+              "source_types": [
+                "sec_company_facts",
+                "company_facts"
+              ]
+            },
+            "status": "resolved",
+            "visible_projection_count": 1
+          }
+        ]
+      },
+      "evaluation_context": {
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-09-30",
+        "prediction_time": "2025-03-31T00:00:00+00:00"
+      },
+      "initial_research_skill": "Form an initial hypothesis from retrieved basic evidence about whether the target company's commercialization trajectory and expectation gap are consistent with the fixed six-calendar-month adjusted-share-price 2x Predictor. Enumerate unresolved information needs and questions, including: whether the supplied mean adjusted close baseline is consistent with the most recent observed price path and whether the 2x threshold should be reconciled to the latest actionable starting point; whether catalysts are quantified to a forward path to the 2x threshold, including explicit analyst targets, guidance figures, backlog/RPO conversion, production/resource plans, burn rate, or modeled price paths; whether unavailable signals such as guidance acceleration, financing/listing action, price momentum, or customer concentration should be treated as constraints rather than neutral; whether known operational disruptions, legal overhangs, dilution, or post-event updates remain unresolved; and whether recent price and volume confirm or contradict the fundamental narrative. Do not calculate probabilities, classify the final Signal, alter the horizon, label, or four-way judgment, or generate a prediction.",
+      "validation_feedback": {
+        "alternative_change_groups": [],
+        "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope. Complete every quantity_literal_checks row using the exact authored numeric tokens and same-claim literals.",
+        "invalid_output": {
+          "contradictions": [],
+          "current_beliefs": [
+            "The most recent observed adjusted close in the supplied market series is 25.97 on 2025-03-28, which is above the mid-February level near 23.72, indicating a modest upward drift over the visible window.",
+            "The visible market series shows a low adjusted close of 22.45 on 2025-03-04 and a high adjusted close of 26.93 on 2025-03-25, a range that is far short of a doubling from the visible baseline area.",
+            "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+            "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+            "The 2024Q4 earnings call transcript is available and contains management framing, but the visible excerpt only covers introductory remarks and does not yet quantify a forward path to a doubling.",
+            "The supplied financial-statement and company-facts projections are XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary, so fundamental momentum is not yet directly readable.",
+            "No visible evidence quantifies analyst targets, guidance figures, backlog or RPO conversion, production or resource plans, burn rate, or modeled price paths sufficient to bridge to a doubling.",
+            "Recent price and volume show elevated activity around mid-March 2025, with volume above 4.8 million shares on 2025-03-14, consistent with a narrative-driven move rather than a confirmed fundamental re-rating."
+          ],
+          "decision": "continue",
+          "hypotheses": [
+            "If MP Materials discloses within the six-month horizon a quantified magnet-production ramp or customer contract that materially raises expected forward revenue, then the expectation gap could support a path toward a doubling of the adjusted share price.",
+            "If the visible market series remains range-bound between roughly 22 and 27 without a quantified catalyst, then the fundamental narrative is insufficient to support a doubling within the horizon.",
+            "If management commentary in the 2024Q4 earnings call quantifies a forward production or backlog path, then the current price path may under-reflect that catalyst and the doubling hypothesis gains support."
+          ],
+          "next_information_needs": [
+            "What specific magnet-production milestones, volumes, or customer commitments did MP Materials disclose by 2025-03-31 for the period through 2025-09-30?",
+            "What revenue, margin, or cash-flow guidance figures did MP Materials provide by 2025-03-31 for 2025, and how do they compare with the prior year?",
+            "What analyst price targets or consensus estimates for MP Materials were published by 2025-03-31, and what assumptions underpin them?",
+            "What backlog, RPO, or offtake commitments had MP Materials disclosed by 2025-03-31, and what conversion timeline was given?",
+            "What capital structure, cash burn, or financing actions had MP Materials disclosed by 2025-03-31 that could affect share count or liquidity?",
+            "What operational disruptions, legal overhangs, or regulatory developments affecting MP Materials were disclosed by 2025-03-31?"
+          ],
+          "open_questions": [],
+          "resolved_questions": [
+            "The target company is MP Materials Corp. / DE, CIK 0001801368.",
+            "The prediction time is 2025-03-31T00:00:00+00:00 and the horizon ends 2025-09-30.",
+            "The most recent visible adjusted close is 25.97 on 2025-03-28.",
+            "The visible market series spans 2025-02-14 through 2025-03-28.",
+            "MP Materials is pursuing rare-earth magnet production in Fort Worth.",
+            "A 2024Q4 earnings call transcript is available as of 2025-02-21."
+          ],
+          "supporting_evidence": [
+            {
+              "claim": "The most recent visible adjusted close is 25.97 on 2025-03-28, following a visible low adjusted close of 22.45 on 2025-03-04 and a visible high adjusted close of 26.93 on 2025-03-25.",
+              "exact_text": "{\"adjusted_close\":26.06,\"as_of_date\":\"2025-03-26\",\"close\":26.06,\"high\":27.0505,\"low\":25.71,\"open\":27.0, \"volume\":2244044},{\"adjusted_close\":26.17,\"as_of_date\":\"2025-03-27\",\"close\":26.17,\"high\":26.58,\"low\":25.26,\"open\":25.49, \"volume\":2147587},{\"adjusted_close\":25.97,\"as_of_date\":\"2025-03-28\",\"close\":25.97,\"high\":26.49,\"low\":25.65,\"open\":25.8, \"volume\":3139313}",
+              "kind": "basic_info",
+              "projection_id": "projection_537d80da353f18bd3b1cb13c"
+            },
+            {
+              "claim": "The visible market series includes an adjusted close of 22.45 on 2025-03-04 and an adjusted close of 26.93 on 2025-03-25.",
+              "exact_text": "{\"adjusted_close\":22.45,\"as_of_date\":\"2025-03-04\",\"close\":22.45,\"high\":23.145,\"low\":21.2,\"open\":22.17, \"volume\":3456875},{\"adjusted_close\":25.66,\"as_of_date\":\"2025-03-05\",\"close\":25.66,\"high\":25.66,\"low\":23.59,\"open\":24.04, \"volume\":5011887},{\"adjusted_close\":24.4,\"as_of_date\":\"2025-03-06\",\"close\":24.4,\"high\":25.77,\"low\":24.01,\"open\":25.07, \"volume\":3515516},{\"adjusted_close\":24.98,\"as_of_date\":\"2025-03-07\",\"close\":24.98,\"high\":25.16,\"low\":23.6,\"open\":24.01, \"volume\":2400876},{\"adjusted_close\":24.42,\"as_of_date\":\"2025-03-10\",\"close\":24.42,\"high\":25.65,\"low\":24.16,\"open\":24.7, \"volume\":3991974},{\"adjusted_close\":24.01,\"as_of_date\":\"2025-03-11\",\"close\":24.01,\"high\":25.55,\"low\":23.64,\"open\":24.1, \"volume\":3234277},{\"adjusted_close\":24.34,\"as_of_date\":\"2025-03-12\",\"close\":24.34,\"high\":24.73,\"low\":23.162,\"open\":24.53, \"volume\":2690963}",
+              "kind": "basic_info",
+              "projection_id": "projection_5e109182cc6c7a7cb0657536"
+            },
+            {
+              "claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+              "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+              "kind": "basic_info",
+              "projection_id": "projection_5a88e138da780e04bd34645e"
+            },
+            {
+              "claim": "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+              "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+              "kind": "basic_info",
+              "projection_id": "projection_6abf037b09bc391663e0282b"
+            },
+            {
+              "claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+              "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+              "kind": "basic_info",
+              "projection_id": "projection_6abf037b09bc391663e0282b"
+            },
+            {
+              "claim": "A 2024Q4 earnings call transcript is available as of 2025-02-21, with the visible excerpt covering introductory remarks.",
+              "exact_text": "{\"quarter\":\"2024Q4\",\"symbol\":\"MP\",\"transcript\":[{\"content\":\"Hello, and welcome to the MP Materials Fourth Quarter 2024 Earnings Call. We ask that you please hold all questions until the completion of the formal remarks, at which time, you'll be given instructions for the question-and-answer session. Also, as a reminder, this conference is being recorded. If you have any objections, please disconnect at this time. With that, I would like to turn the call over to Martin Sheehan, Head of Investor Relations. Mr. Sheehan, you may begin.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, operator, and good afternoon, everyone. Welcome to the MP Materials fourth quarter 2024 earnings conference call. With me today from MP Materials are Jim Litinsky, Founder, Chairman and Chief Executive Officer; Michael Rosenthal, Founder and Chief Operating Officer; and Ryan Corbett, Chief Financial Officer. As a reminder, today's discussion will contain forward-looking statements relating to future events and expectations that are subject to various assumptions and caveats. Factors that may cause the company's actual results to differ materially from these statements are included in today's presentation, earnings release, and in our SEC filings. In addition, we have included some non-GAAP financial measures in this presentation. Reconciliations to the most directly comparable GAAP financial measures can be found in today's earnings release and the appendix to today's slide presentation. Any reference in our discussion to EBITDA means adjusted EBITDA, and tons means metric tons. Finally, the earnings release and slide presentation are available on our website. With that, I'll turn the call over to Jim. Jim?\",\"sentiment\":\"0.0\",\"speaker\":\"Martin Sheehan\",\"title\":\"Head of Investor Relations\"},{\"content\":\"Thanks, Martin. Hello, everyone. Let's get started on Slide 4. MP had a terrific year of execution in 2024 across our Materials and Magnetics divisions. We se",
+              "kind": "basic_info",
+              "projection_id": "projection_1dd62bce41a7d3b1b591bf93"
+            },
+            {
+              "claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+              "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+              "kind": "basic_info",
+              "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+            },
+            {
+              "claim": "The visible market series shows elevated volume above 4.8 million shares on 2025-03-14.",
+              "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+              "kind": "basic_info",
+              "projection_id": "projection_5a88e138da780e04bd34645e"
+            }
+          ]
+        },
+        "obligation_count": 6,
+        "obligations": [
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove"
+            ],
+            "future_source_date_refs": [
+              "2025-09-30"
+            ],
+            "instruction": "research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What specific magnet-production milestones, volumes, or customer commitments did MP Materials disclose by 2025-03-31 for the period through 2025-09-30?', future_source_date_refs=[\"2025-09-30\"], prediction_time='2025-03-31'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not",
+            "issue_code": "future_information_unavailable",
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "next_information_needs[0]"
+            ],
+            "obligation_index": 1,
+            "permitted_dependency_paths": [],
+            "prediction_time": "2025-03-31",
+            "required_temporal_boundary": "available_by_prediction_time",
+            "retryability": "correctable",
+            "severity": "error",
+            "source_refs": []
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "supporting_evidence[0] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"22.45\",\"4\",\"26.93\",\"25\"], missing_quantity_literals=[\"22.45\",\"04\",\"26.93\",\"25\"], same_claim_evidence_paths=[\"supporting_evidence[0].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+            "issue_code": "claim_quantity_not_supported",
+            "missing_quantity_groups": [
+              "22.45",
+              "4",
+              "26.93",
+              "25"
+            ],
+            "missing_quantity_literals": [
+              "22.45",
+              "04",
+              "26.93",
+              "25"
+            ],
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "supporting_evidence[0].claim"
+            ],
+            "obligation_index": 2,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "same_claim_evidence_paths": [
+              "supporting_evidence[0].claim"
+            ],
+            "severity": "error",
+            "source_refs": []
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "supporting_evidence[1] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"26.93\",\"25\"], missing_quantity_literals=[\"26.93\",\"25\"], same_claim_evidence_paths=[\"supporting_evidence[1].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+            "issue_code": "claim_quantity_not_supported",
+            "missing_quantity_groups": [
+              "26.93",
+              "25"
+            ],
+            "missing_quantity_literals": [
+              "26.93",
+              "25"
+            ],
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "supporting_evidence[1].claim"
+            ],
+            "obligation_index": 3,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "same_claim_evidence_paths": [
+              "supporting_evidence[1].claim"
+            ],
+            "severity": "error",
+            "source_refs": []
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "supporting_evidence[5] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\",\"2\",\"21\"], missing_quantity_literals=[\"2025\",\"02\",\"21\"], same_claim_evidence_paths=[\"supporting_evidence[5].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+            "issue_code": "claim_quantity_not_supported",
+            "missing_quantity_groups": [
+              "2025",
+              "2",
+              "21"
+            ],
+            "missing_quantity_literals": [
+              "2025",
+              "02",
+              "21"
+            ],
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "supporting_evidence[5].claim"
+            ],
+            "obligation_index": 4,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "same_claim_evidence_paths": [
+              "supporting_evidence[5].claim"
+            ],
+            "severity": "error",
+            "source_refs": []
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove",
+              "add"
+            ],
+            "instruction": "supporting_evidence[7] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"4.8|4800000\"], missing_quantity_literals=[\"4.8 million\"], same_claim_evidence_paths=[\"supporting_evidence[7].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+            "issue_code": "claim_quantity_not_supported",
+            "missing_quantity_groups": [
+              "4.8|4800000"
+            ],
+            "missing_quantity_literals": [
+              "4.8 million"
+            ],
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "supporting_evidence[7].claim"
+            ],
+            "obligation_index": 5,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "same_claim_evidence_paths": [
+              "supporting_evidence[7].claim"
+            ],
+            "severity": "error",
+            "source_refs": []
+          },
+          {
+            "allowed_repairs": [
+              "replace",
+              "remove"
+            ],
+            "copy_candidates_by_path": {
+              "current_beliefs[0]": [
+                {
+                  "exact_claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+                  "source_path": "supporting_evidence[2].claim"
+                },
+                {
+                  "exact_claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+                  "source_path": "supporting_evidence[6].claim"
+                },
+                {
+                  "exact_claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                  "source_path": "supporting_evidence[4].claim"
+                }
+              ],
+              "current_beliefs[1]": [
+                {
+                  "exact_claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+                  "source_path": "supporting_evidence[2].claim"
+                },
+                {
+                  "exact_claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+                  "source_path": "supporting_evidence[6].claim"
+                },
+                {
+                  "exact_claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                  "source_path": "supporting_evidence[4].claim"
+                }
+              ],
+              "current_beliefs[4]": [
+                {
+                  "exact_claim": "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+                  "source_path": "supporting_evidence[3].claim"
+                },
+                {
+                  "exact_claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+                  "source_path": "supporting_evidence[6].claim"
+                },
+                {
+                  "exact_claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+                  "source_path": "supporting_evidence[4].claim"
+                }
+              ],
+              "current_beliefs[7]": [
+                {
+                  "exact_claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+                  "source_path": "supporting_evidence[6].claim"
+                },
+                {
+                  "exact_claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+                  "source_path": "supporting_evidence[2].claim"
+                },
+                {
+                  "exact_claim": "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+                  "source_path": "supporting_evidence[3].claim"
+                }
+              ]
+            },
+            "instruction": "quantitative ResearchState assertions must each copy one supporting_evidence claim byte-for-byte, invalid_fields=['current_beliefs[0]', 'current_beliefs[1]', 'current_beliefs[4]', 'current_beliefs[7]']. For every named path, replace it with one exact accepted claim, attach literals to that same exact claim, or remove unsupported numeric detail. Numbers from unrelated claims do not count",
+            "invalid_fields": [
+              "current_beliefs[0]",
+              "current_beliefs[1]",
+              "current_beliefs[4]",
+              "current_beliefs[7]"
+            ],
+            "issue_code": "assertion_without_support",
+            "must_change_any_of_paths": [],
+            "must_change_paths": [
+              "current_beliefs[0]",
+              "current_beliefs[1]",
+              "current_beliefs[4]",
+              "current_beliefs[7]"
+            ],
+            "obligation_index": 6,
+            "permitted_dependency_paths": [],
+            "retryability": "correctable",
+            "severity": "error",
+            "source_refs": []
+          }
+        ],
+        "permitted_dependency_path_count": 0,
+        "permitted_dependency_paths": [],
+        "quantity_literal_check_count": 4,
+        "quantity_literal_checks": [
+          {
+            "affected_paths": [
+              "supporting_evidence[0].claim"
+            ],
+            "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+            "missing_quantity_literals": [
+              "22.45",
+              "04",
+              "26.93",
+              "25"
+            ],
+            "missing_quantity_mentions": [
+              {
+                "affected_path": "supporting_evidence[0].claim",
+                "authored_literal": "22.45",
+                "authored_span": [
+                  105,
+                  110
+                ],
+                "context_span": [
+                  57,
+                  158
+                ],
+                "normalized_group": "22.45",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "3-28, following a visible low adjusted close of 22.45 on 2025-03-04 and a visible high adjusted close"
+              },
+              {
+                "affected_path": "supporting_evidence[0].claim",
+                "authored_literal": "04",
+                "authored_span": [
+                  122,
+                  124
+                ],
+                "context_span": [
+                  74,
+                  172
+                ],
+                "normalized_group": "4",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": " visible low adjusted close of 22.45 on 2025-03-04 and a visible high adjusted close of 26.93 on 2"
+              },
+              {
+                "affected_path": "supporting_evidence[0].claim",
+                "authored_literal": "26.93",
+                "authored_span": [
+                  162,
+                  167
+                ],
+                "context_span": [
+                  114,
+                  182
+                ],
+                "normalized_group": "26.93",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "2025-03-04 and a visible high adjusted close of 26.93 on 2025-03-25."
+              },
+              {
+                "affected_path": "supporting_evidence[0].claim",
+                "authored_literal": "25",
+                "authored_span": [
+                  179,
+                  181
+                ],
+                "context_span": [
+                  131,
+                  182
+                ],
+                "normalized_group": "25",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "visible high adjusted close of 26.93 on 2025-03-25."
+              }
+            ],
+            "same_claim_evidence_paths": [
+              "supporting_evidence[0].claim"
+            ]
+          },
+          {
+            "affected_paths": [
+              "supporting_evidence[1].claim"
+            ],
+            "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+            "missing_quantity_literals": [
+              "26.93",
+              "25"
+            ],
+            "missing_quantity_mentions": [
+              {
+                "affected_path": "supporting_evidence[1].claim",
+                "authored_literal": "26.93",
+                "authored_span": [
+                  101,
+                  106
+                ],
+                "context_span": [
+                  53,
+                  121
+                ],
+                "normalized_group": "26.93",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "of 22.45 on 2025-03-04 and an adjusted close of 26.93 on 2025-03-25."
+              },
+              {
+                "affected_path": "supporting_evidence[1].claim",
+                "authored_literal": "25",
+                "authored_span": [
+                  118,
+                  120
+                ],
+                "context_span": [
+                  70,
+                  121
+                ],
+                "normalized_group": "25",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "03-04 and an adjusted close of 26.93 on 2025-03-25."
+              }
+            ],
+            "same_claim_evidence_paths": [
+              "supporting_evidence[1].claim"
+            ]
+          },
+          {
+            "affected_paths": [
+              "supporting_evidence[5].claim"
+            ],
+            "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+            "missing_quantity_literals": [
+              "2025",
+              "02",
+              "21"
+            ],
+            "missing_quantity_mentions": [
+              {
+                "affected_path": "supporting_evidence[5].claim",
+                "authored_literal": "2025",
+                "authored_span": [
+                  53,
+                  57
+                ],
+                "context_span": [
+                  5,
+                  105
+                ],
+                "normalized_group": "2025",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "4Q4 earnings call transcript is available as of 2025-02-21, with the visible excerpt covering introd"
+              },
+              {
+                "affected_path": "supporting_evidence[5].claim",
+                "authored_literal": "02",
+                "authored_span": [
+                  58,
+                  60
+                ],
+                "context_span": [
+                  10,
+                  108
+                ],
+                "normalized_group": "2",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "arnings call transcript is available as of 2025-02-21, with the visible excerpt covering introduct"
+              },
+              {
+                "affected_path": "supporting_evidence[5].claim",
+                "authored_literal": "21",
+                "authored_span": [
+                  61,
+                  63
+                ],
+                "context_span": [
+                  13,
+                  111
+                ],
+                "normalized_group": "21",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "ings call transcript is available as of 2025-02-21, with the visible excerpt covering introductory"
+              }
+            ],
+            "same_claim_evidence_paths": [
+              "supporting_evidence[5].claim"
+            ]
+          },
+          {
+            "affected_paths": [
+              "supporting_evidence[7].claim"
+            ],
+            "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+            "missing_quantity_literals": [
+              "4.8 million"
+            ],
+            "missing_quantity_mentions": [
+              {
+                "affected_path": "supporting_evidence[7].claim",
+                "authored_literal": "4.8 million",
+                "authored_span": [
+                  54,
+                  65
+                ],
+                "context_span": [
+                  6,
+                  87
+                ],
+                "normalized_group": "4.8|4800000",
+                "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+                "verbatim_context": "sible market series shows elevated volume above 4.8 million shares on 2025-03-14."
+              }
+            ],
+            "same_claim_evidence_paths": [
+              "supporting_evidence[7].claim"
+            ]
+          }
+        ],
+        "required_change_path_count": 9,
+        "required_change_paths": [
+          "next_information_needs[0]",
+          "supporting_evidence[0].claim",
+          "supporting_evidence[1].claim",
+          "supporting_evidence[5].claim",
+          "supporting_evidence[7].claim",
+          "current_beliefs[0]",
+          "current_beliefs[1]",
+          "current_beliefs[4]",
+          "current_beliefs[7]"
+        ],
+        "validation_contract": "structured-validation-v1",
+        "validation_error": "research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What specific magnet-production milestones, volumes, or customer commitments did MP Materials disclose by 2025-03-31 for the period through 2025-09-30?', future_source_date_refs=[\"2025-09-30\"], prediction_time='2025-03-31'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; supporting_evidence[0] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"22.45\",\"4\",\"26.93\",\"25\"], missing_quantity_literals=[\"22.45\",\"04\",\"26.93\",\"25\"], same_claim_evidence_paths=[\"supporting_evidence[0].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; supporting_evidence[1] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"26.93\",\"25\"], missing_quantity_literals=[\"26.93\",\"25\"], same_claim_evidence_paths=[\"supporting_evidence[1].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; supporting_evidence[5] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\",\"2\",\"21\"], missing_quantity_literals=[\"2025\",\"02\",\"21\"], same_claim_evidence_paths=[\"supporting_evidence[5].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; supporting_evidence[7] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"4.8|4800000\"], missing_quantity_literals=[\"4.8 million\"], same_claim_evidence_paths=[\"supporting_evidence[7].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; quantitative ResearchState assertions must each copy one supporting_evidence claim byte-for-byte, invalid_fields=['current_beliefs[0]', 'current_beliefs[1]', 'current_beliefs[4]', 'current_beliefs[7]']. For every named path, replace it with one exact accepted claim, attach literals to that same exact claim, or remove unsupported numeric detail. Numbers from unrelated claims do not count"
+      }
+    },
+    "output": {
+      "contradictions": [],
+      "current_beliefs": [
+        "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+        "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+        "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+        "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+        "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+        "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+        "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+        "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "If MP Materials discloses within the six-month horizon a quantified magnet-production ramp or customer contract that materially raises expected forward revenue, then the expectation gap could support a path toward a doubling of the adjusted share price.",
+        "If the visible market series remains range-bound without a quantified catalyst, then the fundamental narrative is insufficient to support a doubling within the horizon.",
+        "If management commentary in the 2024Q4 earnings call quantifies a forward production or backlog path, then the current price path may under-reflect that catalyst and the doubling hypothesis gains support."
+      ],
+      "next_information_needs": [
+        "What specific magnet-production milestones, volumes, or customer commitments had MP Materials disclosed by 2025-03-31?",
+        "What revenue, margin, or cash-flow guidance figures did MP Materials provide by 2025-03-31 for 2025, and how do they compare with the prior year?",
+        "What analyst price targets or consensus estimates for MP Materials were published by 2025-03-31, and what assumptions underpin them?",
+        "What backlog, RPO, or offtake commitments had MP Materials disclosed by 2025-03-31, and what conversion timeline was given?",
+        "What capital structure, cash burn, or financing actions had MP Materials disclosed by 2025-03-31 that could affect share count or liquidity?",
+        "What operational disruptions, legal overhangs, or regulatory developments affecting MP Materials were disclosed by 2025-03-31?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "The target company is MP Materials Corp. / DE, CIK 0001801368.",
+        "The prediction time is 2025-03-31T00:00:00+00:00 and the horizon ends 2025-09-30.",
+        "The most recent visible adjusted close is 25.97 on 2025-03-28.",
+        "The visible market series spans 2025-02-14 through 2025-03-28.",
+        "MP Materials is pursuing rare-earth magnet production in Fort Worth.",
+        "A 2024Q4 earnings call transcript is available as of 2025-02-21."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+          "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+          "kind": "basic_info",
+          "projection_id": "projection_5a88e138da780e04bd34645e"
+        },
+        {
+          "claim": "The visible market series includes an adjusted close of 26.93 on 2025-03-25.",
+          "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+          "kind": "basic_info",
+          "projection_id": "projection_5a88e138da780e04bd34645e"
+        },
+        {
+          "claim": "MP Materials is described as set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry.",
+          "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "kind": "basic_info",
+          "projection_id": "projection_6abf037b09bc391663e0282b"
+        },
+        {
+          "claim": "The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "exact_text": "Curran: Fort Worth company first in U.S. on rare earth minerals MP Materials, a Fort Worth-based company, is set to become the first U.S. company in a generation to produce rare-earth magnets, directly challenging China's dominance in this critical industry. This initiative, driven by CEO James Litinsky, aims to rebuild a domestic rare-earth supply chain, lessening American reliance on China for strategically vital materials used in modern technologies and defense. The company's expansion into Fort Worth focuses on magnet production, addressing a significant national security and economic vulnerability.",
+          "kind": "basic_info",
+          "projection_id": "projection_6abf037b09bc391663e0282b"
+        },
+        {
+          "claim": "A 2024Q4 earnings call transcript is available, with the visible excerpt covering introductory remarks.",
+          "exact_text": "{\"quarter\":\"2024Q4\",\"symbol\":\"MP\",\"transcript\":[{\"content\":\"Hello, and welcome to the MP Materials Fourth Quarter 2024 Earnings Call. We ask that you please hold all questions until the completion of the formal remarks, at which time, you'll be given instructions for the question-and-answer session. Also, as a reminder, this conference is being recorded. If you have any objections, please disconnect at this time. With that, I would like to turn the call over to Martin Sheehan, Head of Investor Relations. Mr. Sheehan, you may begin.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, operator, and good afternoon, everyone. Welcome to the MP Materials fourth quarter 2024 earnings conference call. With me today from MP Materials are Jim Litinsky, Founder, Chairman and Chief Executive Officer; Michael Rosenthal, Founder and Chief Operating Officer; and Ryan Corbett, Chief Financial Officer. As a reminder, today's discussion will contain forward-looking statements relating to future events and expectations that are subject to various assumptions and caveats. Factors that may cause the company's actual results to differ materially from these statements are included in today's presentation, earnings release, and in our SEC filings. In addition, we have included some non-GAAP financial measures in this presentation. Reconciliations to the most directly comparable GAAP financial measures can be found in today's earnings release and the appendix to today's slide presentation. Any reference in our discussion to EBITDA means adjusted EBITDA, and tons means metric tons. Finally, the earnings release and slide presentation are available on our website. With that, I'll turn the call over to Jim. Jim?\",\"sentiment\":\"0.0\",\"speaker\":\"Martin Sheehan\",\"title\":\"Head of Investor Relations\"},{\"content\":\"Thanks, Martin. Hello, everyone. Let's get started on Slide 4. MP had a terrific year of execution in 2024 across our Materials and Magnetics divisions. We se",
+          "kind": "basic_info",
+          "projection_id": "projection_1dd62bce41a7d3b1b591bf93"
+        },
+        {
+          "claim": "The supplied financial-statement projection is XBRL-style metadata and share-count history rather than a clean revenue, margin, or cash-flow summary.",
+          "exact_text": "{\"cik\":1801368,\"entityName\":\"MP Materials Corp. / DE\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001801368-21-000011\",\"end\":\"2021-03-15\",\"filed\":\"2021-03-22\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2021Q1I\",\"fy\":2020,\"val\":170738350},{\"accn\":\"0001801368-21-000020\",\"end\":\"2021-05-01\",\"filed\":\"2021-05-13\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2021,\"val\":170745813},{\"accn\":\"0001801368-21-000036\",\"end\":\"2021-08-02\",\"filed\":\"2021-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2021Q2I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-21-000046\",\"end\":\"2021-11-01\",\"filed\":\"2021-11-10\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2021Q3I\",\"fy\":2021,\"val\":177747598},{\"accn\":\"0001801368-22-000010\",\"end\":\"2022-02-17\",\"filed\":\"2022-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2021,\"val\":177524993},{\"accn\":\"0001801368-22-000017\",\"end\":\"2022-04-29\",\"filed\":\"2022-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2022Q1I\",\"fy\":2022,\"val\":177526827},{\"accn\":\"0001801368-22-000030\",\"end\":\"2022-08-01\",\"filed\":\"2022-08-05\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2022Q2I\",\"fy\":2022,\"val\":177534132},{\"accn\":\"0001801368-22-000036\",\"end\":\"2022-11-01\",\"filed\":\"2022-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2022Q3I\",\"fy\":2022,\"val\":177543027},{\"accn\":\"0001801368-23-000009\",\"end\":\"2023-02-17\",\"filed\":\"2023-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2022,\"val\":177617795},{\"accn\":\"0001801368-23-000020\",\"end\":\"2023-05-01\",\"filed\":\"2023-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2023Q1I\",\"fy\":2023,\"val\":177620849},",
+          "kind": "basic_info",
+          "projection_id": "projection_9d9f9b1711a5fafeb11108e3"
+        },
+        {
+          "claim": "The visible market series shows elevated volume on 2025-03-14.",
+          "exact_text": "{\"adjusted_close\":24.38,\"as_of_date\":\"2025-03-13\",\"close\":24.38,\"high\":24.86,\"low\":24.165,\"open\":24.34, \"volume\":2075749},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-14\",\"close\":26.83,\"high\":26.95,\"low\":24.67,\"open\":25.0, \"volume\":4822422},{\"adjusted_close\":26.69,\"as_of_date\":\"2025-03-17\",\"close\":26.69,\"high\":27.05,\"low\":26.45,\"open\":26.57, \"volume\":3578770},{\"adjusted_close\":26.83,\"as_of_date\":\"2025-03-18\",\"close\":26.83,\"high\":27.0,\"low\":26.03,\"open\":26.54, \"volume\":4309508},{\"adjusted_close\":26.81,\"as_of_date\":\"2025-03-19\",\"close\":26.81,\"high\":27.2875,\"low\":26.33,\"open\":26.93, \"volume\":2693818},{\"adjusted_close\":26.25,\"as_of_date\":\"2025-03-20\",\"close\":26.25,\"high\":27.24,\"low\":26.102,\"open\":26.66, \"volume\":4207934},{\"adjusted_close\":25.9,\"as_of_date\":\"2025-03-21\",\"close\":25.9,\"high\":26.2,\"low\":24.96,\"open\":26.2, \"volume\":4614284},{\"adjusted_close\":26.46,\"as_of_date\":\"2025-03-24\",\"close\":26.46,\"high\":26.92,\"low\":26.06,\"open\":26.22, \"volume\":2635038},{\"adjusted_close\":26.93,\"as_of_date\":\"2025-03-25\",\"close\":26.93,\"high\":27.26,\"low\":26.56,\"open\":26.62, \"volume\":2933709}",
+          "kind": "basic_info",
+          "projection_id": "projection_5a88e138da780e04bd34645e"
+        }
+      ]
+    }
+  }
+]

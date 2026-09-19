@@ -455,3 +455,5 @@
 - Codex accepted round17–18 locally after original V120 replay and independent identity/permission boundary probes;910tests/lintPASS. V120 correctness-stop preserved; V121 real joint acceptance pending.
 
 - Codex independently accepted round19 locally: production controller replay preserves all non-need fields and original need ordering while restoring exact missing multiplicities;917tests/lintPASS. V121 rejected evidence preserved; V122 real joint acceptance pending.
+
+- Repair bounded future-schedule plural false rejection;922tests/lint and independent original208/209 controller replay pass. PreserveV122 failure/SSL-recovery evidence; prepareV123 livejointacceptance.

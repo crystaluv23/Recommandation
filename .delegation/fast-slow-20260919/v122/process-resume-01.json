@@ -1,0 +1,7 @@
+{
+  "pid": 50325,
+  "started_at": "2026-09-19T21:44:43.014499+00:00",
+  "contract_hash": "94469151ea82991ac44fae2ac7ebb405b21cdb84dc7a257e938dab698ca8eb49",
+  "reason": "resume after SSL UNEXPECTED_EOF, prior process ended75",
+  "log": "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/v122/cycle-resume-01.log"
+}

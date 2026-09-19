@@ -1,0 +1,8 @@
+{
+  "attempts": 228,
+  "actual_cost": "0.7090666800000000596",
+  "conservative_unsettled_reserves": "0.017553760000000001",
+  "remaining_attempts": 2008,
+  "conservative_remaining_cost_budget": "16.8512720199999999394",
+  "stop_reason": "confirmed bounded future schedule plural-keyword false rejection, not timeout"
+}

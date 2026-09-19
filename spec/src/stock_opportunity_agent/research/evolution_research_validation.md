@@ -13,6 +13,16 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
 - Temporal intent checks normalize underscore-separated words before matching
   cutoff clauses. Machine-style and prose spellings have the same meaning;
   this does not change persisted questions, source dates, or evidence validation.
+- The as-of-bounded allowance for disclosed future schedules and expectations
+  is grammatical-number agnostic. Its bounded expectation-or-schedule
+  vocabulary matches the explicit plural of each countable noun it already
+  covers (dates, schedules, timelines, milestones, forecasts, targets,
+  goals, releases, reports, openings, construction plans) exactly as it
+  matches the singular, with whole-word boundaries and no stemming or
+  broader substring matching. Nothing else about the allowance widens: an
+  explicit as-of bound at or before the prediction date is still required,
+  and realized results, actuals, or other post-cutoff contents are still
+  rejected.
 - A partial-answer residual must retain the temporal scope of the need it
   narrows. When a persisted routing residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of

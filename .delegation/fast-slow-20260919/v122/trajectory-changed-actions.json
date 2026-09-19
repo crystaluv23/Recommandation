@@ -1,0 +1,2104 @@
+[
+  {
+    "case": "cik_0000895728:20250930",
+    "source": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+    "round": 1,
+    "before": [
+      "What specific financial guidance figures, including revenue, EBITDA, or distributable cash flow, has Enbridge provided for the full year 2025 and 2026 as of 2025-09-30?",
+      "What analyst price targets and consensus estimates for Enbridge were published between 2025-06-30 and 2025-09-30?",
+      "What is the quantified incremental capacity and expected EBITDA contribution from the Flanagan South expansion and other quick-to-market projects announced as of 2025-09-30?",
+      "What is Enbridge's current backlog or contracted revenue pipeline, and what portion is expected to convert to revenue within the next six months?",
+      "What legal, regulatory, or operational disruptions affecting Enbridge's Mainline, Gulf Coast, or renewable power segments were disclosed between 2025-06-30 and 2025-09-30?",
+      "What dilution or financing actions, including share issuances or debt offerings, has Enbridge undertaken or announced between 2025-06-30 and 2025-09-30?"
+    ],
+    "after": [
+      "What specific financial guidance figures, including revenue, EBITDA, or distributable cash flow, has Enbridge provided for the full year 2025 and 2026 as of 2025-09-30?",
+      "What analyst price targets and consensus estimates for Enbridge were published between 2025-06-30 and 2025-09-30?",
+      "What is the quantified incremental capacity and expected EBITDA contribution from the Flanagan South expansion and other quick-to-market projects announced as of 2025-09-30?",
+      "What is Enbridge's current backlog or contracted revenue pipeline, and what portion is expected to convert to revenue within the next six months?",
+      "What legal, regulatory, or operational disruptions affecting Enbridge's Mainline, Gulf Coast, or renewable power segments were disclosed between 2025-06-30 and 2025-09-30?"
+    ],
+    "selections": [
+      {
+        "applicability_hypothesis": "Enbridge's reported revenue growth can be compared against its full-year 2025 guidance ranges to assess whether guidance is supported by current performance.",
+        "context_tags": [
+          "energy",
+          "large_cap",
+          "recurring_revenue",
+          "capital_intensive"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Measures latest point-in-time year-over-year revenue growth, useful context for assessing whether Enbridge's 2025 guidance is supported by current performance.",
+        "signal_ref": "revenue_growth_yoy:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "applicability_hypothesis": "Operating cash flow margin provides a basis to evaluate whether Enbridge's distributable cash flow guidance is achievable from current operations.",
+        "context_tags": [
+          "energy",
+          "large_cap",
+          "recurring_revenue",
+          "capital_intensive"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Measures operating cash flow as a share of revenue, useful context for evaluating the cash-generative capacity behind Enbridge's guidance.",
+        "signal_ref": "operating_cash_flow_margin:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "applicability_hypothesis": "If Enbridge disclosed binding awards or offtake agreements with stated value or volume, this would quantify incremental capacity and EBITDA contribution.",
+        "context_tags": [
+          "energy",
+          "large_cap",
+          "capital_intensive",
+          "project_driven"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Tests whether disclosed orders or contracts quantify incremental capacity and EBITDA contribution from Flanagan South and quick-to-market projects.",
+        "signal_ref": "order_confirmation_disclosed:v1",
+        "target_need_indices": [
+          2
+        ]
+      },
+      {
+        "applicability_hypothesis": "If Enbridge's contracted revenue pipeline is concentrated in one customer or program, the portion converting within six months may be less reliable.",
+        "context_tags": [
+          "energy",
+          "large_cap",
+          "recurring_revenue",
+          "customer_concentrated"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Tests whether Enbridge's backlog or contracted revenue pipeline depends excessively on one customer or program, affecting conversion expectations.",
+        "signal_ref": "customer_concentration:v1",
+        "target_need_indices": [
+          3
+        ]
+      }
+    ],
+    "batch": {
+      "document_fingerprints": {
+        "customer_concentration:v1": [
+          "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d:1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+          "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af:fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+          "sec:cik_0000895728:000089572825000006:05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+          "sec:cik_0000895728:000089572825000011:a9781bbc4daa6c67952213a29e8197bafcd17f4ab627eb81ba41bca62f074daa",
+          "sec:cik_0000895728:000089572825000012:7acdb6fc9183078391704bbd9505f4a65b96b1f730b4d230d8716a09118b65ea",
+          "sec:cik_0000895728:000095017025101101:4db2b4e15575de2c85b44ceda1213907614b78753f4be862b9b9897378c1abb8",
+          "sec:cik_0000895728:000095017025101102:739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+          "sec:cik_0000895728:000110465925061164:9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+          "sec:cik_0000895728:000119312525060242:7618871e1958848047eaa9f2cff5c8dbe8a50277f2b39cfc3d90f7ada534e4fc",
+          "sec:cik_0000895728:000119312525115979:e93a7909b88d7d47f743c97ec8d775ae177d06f52fb669dcedb17839efe95b55"
+        ],
+        "operating_cash_flow_margin:v1": [
+          "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+        ],
+        "order_confirmation_disclosed:v1": [
+          "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d:1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+          "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af:fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+          "avnews_106bd2a382f705a2aaeccee0:c38360a349f339295e484993268ab7191c4f45cd592abdc3540c5c8b4e4b115f",
+          "avnews_2b72638846fbad3c8fd88676:bff506ab34213f1bb3f161a0e45eebe1bb859d89535826a059dfe8b8a9c9550c",
+          "sec:cik_0000895728:000089572825000011:a9781bbc4daa6c67952213a29e8197bafcd17f4ab627eb81ba41bca62f074daa",
+          "sec:cik_0000895728:000089572825000012:7acdb6fc9183078391704bbd9505f4a65b96b1f730b4d230d8716a09118b65ea",
+          "sec:cik_0000895728:000095017025101101:4db2b4e15575de2c85b44ceda1213907614b78753f4be862b9b9897378c1abb8",
+          "sec:cik_0000895728:000095017025101102:739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+          "sec:cik_0000895728:000110465925061164:9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+          "sec:cik_0000895728:000119312525115979:e93a7909b88d7d47f743c97ec8d775ae177d06f52fb669dcedb17839efe95b55"
+        ],
+        "revenue_growth_yoy:v1": [
+          "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 102,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 5685,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-01T00:00:00+00:00",
+              "content_hash": "29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c",
+              "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+                ],
+                "phase": "initial",
+                "request_id": "signal:revenue_growth_yoy:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure the latest point-in-time year-over-year revenue growth.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "revenue sales",
+            "request_id": "signal:revenue_growth_yoy:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 102,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 5685,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-01T00:00:00+00:00",
+              "content_hash": "29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c",
+              "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e"
+                ],
+                "phase": "initial",
+                "request_id": "signal:operating_cash_flow_margin:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 1,
+            "query": "operating cash flow revenue",
+            "request_id": "signal:operating_cash_flow_margin:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 22,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 2,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 91,
+            "query_evaluated": true,
+            "query_matched_document_count": 15,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 10,
+            "selection_truncated": true,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-01T11:02:37+00:00",
+              "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+              "document_id": "sec:cik_0000895728:000095017025101102"
+            },
+            {
+              "available_at": "2025-05-09T11:01:51+00:00",
+              "content_hash": "7acdb6fc9183078391704bbd9505f4a65b96b1f730b4d230d8716a09118b65ea",
+              "document_id": "sec:cik_0000895728:000089572825000012"
+            },
+            {
+              "available_at": "2025-06-20T20:13:35+00:00",
+              "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+              "document_id": "sec:cik_0000895728:000110465925061164"
+            },
+            {
+              "available_at": "2025-08-01T11:00:41+00:00",
+              "content_hash": "4db2b4e15575de2c85b44ceda1213907614b78753f4be862b9b9897378c1abb8",
+              "document_id": "sec:cik_0000895728:000095017025101101"
+            },
+            {
+              "available_at": "2025-08-02T00:00:00+00:00",
+              "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+              "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d"
+            },
+            {
+              "available_at": "2025-05-08T20:16:08+00:00",
+              "content_hash": "e93a7909b88d7d47f743c97ec8d775ae177d06f52fb669dcedb17839efe95b55",
+              "document_id": "sec:cik_0000895728:000119312525115979"
+            },
+            {
+              "available_at": "2025-05-10T00:00:00+00:00",
+              "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+              "document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af"
+            },
+            {
+              "available_at": "2025-05-09T11:00:25+00:00",
+              "content_hash": "a9781bbc4daa6c67952213a29e8197bafcd17f4ab627eb81ba41bca62f074daa",
+              "document_id": "sec:cik_0000895728:000089572825000011"
+            },
+            {
+              "available_at": "2025-09-24T00:00:00+00:00",
+              "content_hash": "bff506ab34213f1bb3f161a0e45eebe1bb859d89535826a059dfe8b8a9c9550c",
+              "document_id": "avnews_2b72638846fbad3c8fd88676"
+            },
+            {
+              "available_at": "2025-06-23T15:11:00+00:00",
+              "content_hash": "c38360a349f339295e484993268ab7191c4f45cd592abdc3540c5c8b4e4b115f",
+              "document_id": "avnews_106bd2a382f705a2aaeccee0"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0000895728:000095017025101102",
+                  "sec:cik_0000895728:000089572825000012",
+                  "sec:cik_0000895728:000110465925061164",
+                  "sec:cik_0000895728:000095017025101101",
+                  "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                  "sec:cik_0000895728:000119312525115979",
+                  "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+                  "sec:cik_0000895728:000089572825000011",
+                  "avnews_2b72638846fbad3c8fd88676",
+                  "avnews_106bd2a382f705a2aaeccee0"
+                ],
+                "phase": "initial",
+                "request_id": "signal:order_confirmation_disclosed:v1",
+                "source_types": [
+                  "filing",
+                  "news",
+                  "transcript",
+                  "10-k",
+                  "10-q",
+                  "8-k",
+                  "company_news",
+                  "sec_filing",
+                  "earnings_call"
+                ]
+              },
+              "kind": "local_query"
+            },
+            {
+              "details": {
+                "filtered_document_ids": [
+                  "avnews_c89671dac53a118ab303c81b"
+                ],
+                "phase": "initial",
+                "reason": "missing_strong_issuer_match",
+                "request_id": "signal:order_confirmation_disclosed:v1"
+              },
+              "kind": "news_documents_filtered"
+            }
+          ],
+          "request": {
+            "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+            "lookback_days": 180,
+            "max_documents": 10,
+            "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+            "request_id": "signal:order_confirmation_disclosed:v1",
+            "source_types": [
+              "filing",
+              "news",
+              "transcript",
+              "10-k",
+              "10-q",
+              "8-k",
+              "company_news",
+              "sec_filing",
+              "earnings_call"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 12,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 2,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 91,
+            "query_evaluated": true,
+            "query_matched_document_count": 5,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 10,
+            "selection_truncated": true,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-14T12:10:59+00:00",
+              "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+              "document_id": "sec:cik_0000895728:000089572825000006"
+            },
+            {
+              "available_at": "2025-08-01T11:02:37+00:00",
+              "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+              "document_id": "sec:cik_0000895728:000095017025101102"
+            },
+            {
+              "available_at": "2025-05-09T11:01:51+00:00",
+              "content_hash": "7acdb6fc9183078391704bbd9505f4a65b96b1f730b4d230d8716a09118b65ea",
+              "document_id": "sec:cik_0000895728:000089572825000012"
+            },
+            {
+              "available_at": "2025-08-02T00:00:00+00:00",
+              "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+              "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d"
+            },
+            {
+              "available_at": "2025-05-10T00:00:00+00:00",
+              "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+              "document_id": "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af"
+            },
+            {
+              "available_at": "2025-08-01T11:00:41+00:00",
+              "content_hash": "4db2b4e15575de2c85b44ceda1213907614b78753f4be862b9b9897378c1abb8",
+              "document_id": "sec:cik_0000895728:000095017025101101"
+            },
+            {
+              "available_at": "2025-06-20T20:13:35+00:00",
+              "content_hash": "9d4de12e12d34744e4ac891324ba16a196b949cdc6f6802959369f8769827c0f",
+              "document_id": "sec:cik_0000895728:000110465925061164"
+            },
+            {
+              "available_at": "2025-05-09T11:00:25+00:00",
+              "content_hash": "a9781bbc4daa6c67952213a29e8197bafcd17f4ab627eb81ba41bca62f074daa",
+              "document_id": "sec:cik_0000895728:000089572825000011"
+            },
+            {
+              "available_at": "2025-05-08T20:16:08+00:00",
+              "content_hash": "e93a7909b88d7d47f743c97ec8d775ae177d06f52fb669dcedb17839efe95b55",
+              "document_id": "sec:cik_0000895728:000119312525115979"
+            },
+            {
+              "available_at": "2025-03-21T20:15:48+00:00",
+              "content_hash": "7618871e1958848047eaa9f2cff5c8dbe8a50277f2b39cfc3d90f7ada534e4fc",
+              "document_id": "sec:cik_0000895728:000119312525060242"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0000895728:000089572825000006",
+                  "sec:cik_0000895728:000095017025101102",
+                  "sec:cik_0000895728:000089572825000012",
+                  "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                  "alpha_vantage:cik_0000895728:earnings_call:fa7da0996dd0446fc96799af",
+                  "sec:cik_0000895728:000095017025101101",
+                  "sec:cik_0000895728:000110465925061164",
+                  "sec:cik_0000895728:000089572825000011",
+                  "sec:cik_0000895728:000119312525115979",
+                  "sec:cik_0000895728:000119312525060242"
+                ],
+                "phase": "initial",
+                "request_id": "signal:customer_concentration:v1",
+                "source_types": [
+                  "filing",
+                  "earnings_call",
+                  "customer_announcement"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+            "lookback_days": 1095,
+            "max_documents": 10,
+            "query": "customer concentration major customer revenue customer",
+            "request_id": "signal:customer_concentration:v1",
+            "source_types": [
+              "filing",
+              "earnings_call",
+              "customer_announcement"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+                "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":15332000000}",
+                "timestamp": "2025-08-01T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+                "exact_span": "{\"accn\":\"0000895728-24-000020\",\"end\":\"2024-06-30\",\"filed\":\"2024-08-02\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":12705000000}",
+                "timestamp": "2025-08-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=0.206769"
+          },
+          "signal_id": "revenue_growth_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+                "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":15332000000}",
+                "timestamp": "2025-08-01T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+                "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+                "timestamp": "2025-08-01T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=0.410318"
+          },
+          "signal_id": "operating_cash_flow_margin",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                "exact_span": "In July, we announced the Clear Fork Solar project near San Antonio, Texas, a 600-megawatt facility designed to support data center needs. All generation is sold under a long-term offtake agreement with Meta Platforms.",
+                "timestamp": "2025-08-02T00:00:00+00:00"
+              },
+              {
+                "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                "exact_span": "On the growth front, we sanctioned the $900 million Clear Fork project in Texas, located just outside San Antonio. The project is fully contracted under a long-term offtake agreement with Meta and will support its data center operations.",
+                "timestamp": "2025-08-02T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Enbridge disclosed a new binding offtake agreement with a named counterparty (Meta Platforms) for the Clear Fork Solar project, a 600-megawatt facility with a stated value of $900 million, satisfying the materiality threshold and naming both counterparty and delivery/volume details."
+          },
+          "signal_id": "order_confirmation_disclosed",
+          "state": {
+            "confidence": 0.9,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                "exact_span": "On the growth front, we sanctioned the $900 million Clear Fork project in Texas, located just outside San Antonio. The project is fully contracted under a long-term offtake agreement with Meta and will support its data center operations. Meta represents a new addition to our growing list of AI and data center-related customers.",
+                "timestamp": "2025-08-02T00:00:00+00:00"
+              },
+              {
+                "document_id": "alpha_vantage:cik_0000895728:earnings_call:1671fd0384ab41adb0c9f05d",
+                "exact_span": "Yes. From a credit perspective, other than you see this on the renewable side, the Googles and Metas and AT&Ts, obviously, they're super credits. That's why we're seeing 75% of opportunities with utilities, who are customers today and amazing credits too. They like to sign up for long-term 10-, 15-, 20-year contracts take-or-pay.",
+                "timestamp": "2025-08-02T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "The growth thesis shows some concentration in large technology/data-center counterparties (Meta, Google, AT&T) for renewable and pipeline contracts, but the company also reports a growing and diversified list of AI/data-center customers and 75% of opportunities with utility customers, indicating adoption is not materially dependent on a single customer with limited replication evidence."
+          },
+          "signal_id": "customer_concentration",
+          "state": {
+            "confidence": 0.6,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "version": 1
+        }
+      ],
+      "signal_calls": 4,
+      "skipped_unchanged_refs": [],
+      "usage": {
+        "cost": 0.0037662800000000003,
+        "llm_calls": 1,
+        "tokens": 12842
+      }
+    }
+  },
+  {
+    "case": "cik_0001869198:20250331",
+    "source": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json",
+    "round": 1,
+    "before": [
+      "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+      "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+      "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?",
+      "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+      "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+      "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?"
+    ],
+    "after": [
+      "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+      "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+      "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+      "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+      "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+      "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?",
+      "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?"
+    ],
+    "selections": [
+      {
+        "applicability_hypothesis": "Year-over-year revenue growth can be computed from point-in-time financials to gauge whether membership and center expansion is translating into top-line momentum.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Provides a top-line growth measure to combine with other evidence on membership and center expansion momentum.",
+        "signal_ref": "revenue_growth_yoy:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "answer_scope": "partial",
+        "applicability_hypothesis": "Fresh management guidance on the 2025 growth path would indicate whether the trajectory is strengthening versus prior guidance.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive",
+          "catalyst_window"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": "Quantified 2025 membership dues, center opening counts, and revenue per center membership targets remain unresolved.",
+        "selection_reason": "Directly covers the guidance and outlook facet of the 2025 trajectory need.",
+        "signal_ref": "guidance_acceleration:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "applicability_hypothesis": "If operating cash outflow relative to cash is high, it would bear on free cash flow and leverage concerns affecting equity value.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Tests whether Life Time's cash consumption is elevated, relevant to the debt, interest expense, free cash flow, and leverage need.",
+        "signal_ref": "cash_burn_rate_elevated:v1",
+        "target_need_indices": [
+          6
+        ]
+      },
+      {
+        "applicability_hypothesis": "Operating cash flow as a share of revenue indicates the company's ability to generate cash to service obligations.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Provides a cash generation measure to combine with other evidence on the company's ability to service obligations.",
+        "signal_ref": "operating_cash_flow_margin:v1",
+        "target_need_indices": [
+          6
+        ]
+      }
+    ],
+    "batch": {
+      "document_fingerprints": {
+        "cash_burn_rate_elevated:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ],
+        "guidance_acceleration:v1": [
+          "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83:aa8f522e8e241985b6e59a833348b1f4a8683457268f42f017ba269e6882e2cf",
+          "sec:cik_0001869198:000119312524237232:00bfaf579c97d14202dd51846fa606abdc35fed8c6b9705c4be483ec7f9a5918",
+          "sec:cik_0001869198:000119312525044111:25a2724ae591112473281296205253b76c8eb9e632b95d49712e4b6c110bdef2",
+          "sec:cik_0001869198:000186919824000046:6f21cd6a78535ccc53acaed50ebdc9a969310fb1d602787e71f9480917c5f479",
+          "sec:cik_0001869198:000186919824000049:d5a4703ccd797549630eb37b3c96abe521b89b595d3d5014484d54065aa0ac1d",
+          "sec:cik_0001869198:000186919824000052:6f55acd8fc3803833b03d821f8e0c54b2138f67fc209aa41f51971fff7b2a60f",
+          "sec:cik_0001869198:000186919824000055:9d3f18e5ba52c3a11e46ffeafdf256c7c87e77df8ab69ba89ab5a9c169fa651f",
+          "sec:cik_0001869198:000186919825000003:4dcae2f0cdb4e2ebaad01d1206cc5d87be548b7da2bfcf9569bf2fb56d26b7ed",
+          "sec:cik_0001869198:000186919825000008:e5b3ac9c77bbac4603afc9ce9c5b7804f20aa04cefa2ba7bc0486f23ddc389b5",
+          "sec:cik_0001869198:000186919825000009:ae91739bf5b31f2b5afeb935b66d5f4ef1807ca60a3811e66a2e5db16d0882fe"
+        ],
+        "operating_cash_flow_margin:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ],
+        "revenue_growth_yoy:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:revenue_growth_yoy:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure the latest point-in-time year-over-year revenue growth.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "revenue sales",
+            "request_id": "signal:revenue_growth_yoy:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:operating_cash_flow_margin:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 1,
+            "query": "operating cash flow revenue",
+            "request_id": "signal:operating_cash_flow_margin:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 11,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 1,
+            "observed_observation_count": 0,
+            "observed_period_span_days": null,
+            "query_evaluated": true,
+            "query_matched_document_count": 3,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 10,
+            "selection_truncated": true,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T11:58:44+00:00",
+              "content_hash": "ae91739bf5b31f2b5afeb935b66d5f4ef1807ca60a3811e66a2e5db16d0882fe",
+              "document_id": "sec:cik_0001869198:000186919825000009"
+            },
+            {
+              "available_at": "2024-10-28T20:20:31+00:00",
+              "content_hash": "6f55acd8fc3803833b03d821f8e0c54b2138f67fc209aa41f51971fff7b2a60f",
+              "document_id": "sec:cik_0001869198:000186919824000052"
+            },
+            {
+              "available_at": "2025-02-28T00:00:00+00:00",
+              "content_hash": "aa8f522e8e241985b6e59a833348b1f4a8683457268f42f017ba269e6882e2cf",
+              "document_id": "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83"
+            },
+            {
+              "available_at": "2025-03-03T21:09:21+00:00",
+              "content_hash": "25a2724ae591112473281296205253b76c8eb9e632b95d49712e4b6c110bdef2",
+              "document_id": "sec:cik_0001869198:000119312525044111"
+            },
+            {
+              "available_at": "2025-02-27T11:50:20+00:00",
+              "content_hash": "e5b3ac9c77bbac4603afc9ce9c5b7804f20aa04cefa2ba7bc0486f23ddc389b5",
+              "document_id": "sec:cik_0001869198:000186919825000008"
+            },
+            {
+              "available_at": "2025-01-16T11:47:10+00:00",
+              "content_hash": "4dcae2f0cdb4e2ebaad01d1206cc5d87be548b7da2bfcf9569bf2fb56d26b7ed",
+              "document_id": "sec:cik_0001869198:000186919825000003"
+            },
+            {
+              "available_at": "2024-11-06T22:16:14+00:00",
+              "content_hash": "9d3f18e5ba52c3a11e46ffeafdf256c7c87e77df8ab69ba89ab5a9c169fa651f",
+              "document_id": "sec:cik_0001869198:000186919824000055"
+            },
+            {
+              "available_at": "2024-10-24T10:48:14+00:00",
+              "content_hash": "d5a4703ccd797549630eb37b3c96abe521b89b595d3d5014484d54065aa0ac1d",
+              "document_id": "sec:cik_0001869198:000186919824000049"
+            },
+            {
+              "available_at": "2024-10-22T21:21:41+00:00",
+              "content_hash": "6f21cd6a78535ccc53acaed50ebdc9a969310fb1d602787e71f9480917c5f479",
+              "document_id": "sec:cik_0001869198:000186919824000046"
+            },
+            {
+              "available_at": "2024-10-15T12:10:37+00:00",
+              "content_hash": "00bfaf579c97d14202dd51846fa606abdc35fed8c6b9705c4be483ec7f9a5918",
+              "document_id": "sec:cik_0001869198:000119312524237232"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec:cik_0001869198:000186919825000009",
+                  "sec:cik_0001869198:000186919824000052",
+                  "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83",
+                  "sec:cik_0001869198:000119312525044111",
+                  "sec:cik_0001869198:000186919825000008",
+                  "sec:cik_0001869198:000186919825000003",
+                  "sec:cik_0001869198:000186919824000055",
+                  "sec:cik_0001869198:000186919824000049",
+                  "sec:cik_0001869198:000186919824000046",
+                  "sec:cik_0001869198:000119312524237232"
+                ],
+                "phase": "initial",
+                "request_id": "signal:guidance_acceleration:v1",
+                "source_types": [
+                  "earnings_call",
+                  "filing",
+                  "company_announcement"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+            "lookback_days": 730,
+            "max_documents": 10,
+            "query": "guidance outlook forecast raises lowers reaffirms",
+            "request_id": "signal:guidance_acceleration:v1",
+            "source_types": [
+              "earnings_call",
+              "filing",
+              "company_announcement"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:cash_burn_rate_elevated:v1",
+                "source_types": [
+                  "company_facts",
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Elevated cash burn rate: the ratio of absolute operating cash outflow to cash and cash equivalents is high, indicating rapid cash consumption. Positive when point-in-time evidence shows operating cash outflow is negative and the ratio meets or exceeds the threshold, or documents explicitly describe a high cash burn rate. Negative when evidence shows positive operating cash flow, no material cash consumption, or an explicit denial/cancellation of a high burn. Neutral for proposals, memoranda, non-binding intent, lookalikes, or below-threshold mentions. Unavailable when adequate point-in-time evidence is missing.",
+            "lookback_days": 550,
+            "max_documents": 10,
+            "query": "cash burn rate operating cash flow cash and cash equivalents NetCashProvidedByUsedInOperatingActivities CashAndCashEquivalentsAtCarryingValue",
+            "request_id": "signal:cash_burn_rate_elevated:v1",
+            "source_types": [
+              "company_facts",
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2620995000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-24-000008\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":2216593000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=0.182443"
+          },
+          "signal_id": "revenue_growth_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "alpha_vantage:cik_0001869198:earnings_call:aa8f522e8e241985b6e59a83",
+                "exact_span": "Based on the strength of what we have seen so far this year, we raised both our revenue and adjusted EBITDA guidance for 2025 from what we had preannounced in mid-January. Our revenue guidance is now $2.925 billion to $2.975 billion, and adjusted EBITDA guidance is now $780 million to $800 million.",
+                "timestamp": "2025-02-28T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Management explicitly raised both revenue and adjusted EBITDA guidance for 2025 relative to prior guidance preannounced in mid-January, indicating a material upward revision to the growth path."
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.85,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ],
+            "supporting": []
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Operating cash flow for FY2024 was positive at $575.1 million, so the cash burn rate is zero and well below the 0.10 threshold; no elevated cash burn is present."
+          },
+          "signal_id": "cash_burn_rate_elevated",
+          "state": {
+            "confidence": 0.9,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2620995000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=0.219427"
+          },
+          "signal_id": "operating_cash_flow_margin",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_calls": 4,
+      "skipped_unchanged_refs": [],
+      "usage": {
+        "cost": 0.00498708,
+        "llm_calls": 1,
+        "tokens": 17393
+      }
+    }
+  },
+  {
+    "case": "cik_0001869198:20250331",
+    "source": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json",
+    "round": 2,
+    "before": [
+      "What did Life Time disclose by 2025-03-31 about its 2025 membership dues, center openings, and revenue per center membership trajectory, including any quantified guidance or targets?",
+      "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+      "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+      "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+      "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+      "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?",
+      "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?"
+    ],
+    "after": [
+      "Quantified 2025 membership dues, center opening counts, and revenue per center membership targets remain unresolved.",
+      "What did Life Time disclose by 2025-03-31 about the expected use of proceeds, share overhang, or lock-up terms related to the secondary offering of 23,000,000 shares?",
+      "Interest expense and net debt leverage ratio disclosures are not directly covered by liquidity runway alone.",
+      "What did Life Time disclose by 2025-03-31 about new center construction costs, ramp timing, or capital expenditure plans for 2025?",
+      "What did Life Time disclose by 2025-03-31 about member retention, churn, or demand trends in its existing center base?",
+      "What did Life Time disclose by 2025-03-31 about any analyst targets, valuation frameworks, or market expectations for its common stock?",
+      "What did Life Time disclose by 2025-03-31 about debt levels, interest expense, free cash flow, or net debt leverage ratio that could affect equity value over the next six months?"
+    ],
+    "selections": [
+      {
+        "applicability_hypothesis": "If current liabilities are large relative to cash, near-term refinancing or liquidity pressure could affect equity value over six months.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Directly measures short-term liquidity versus current liabilities, relevant to the unresolved interest expense and net debt leverage facet.",
+        "signal_ref": "cash_to_current_liabilities_ratio:v1",
+        "target_need_indices": [
+          2
+        ]
+      },
+      {
+        "applicability_hypothesis": "If gross margin is compressing, it may signal weaker pricing power or rising costs affecting existing center economics.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Gross margin change can indicate operating leverage or cost pressure relevant to member retention and demand trends in the existing center base.",
+        "signal_ref": "gross_margin_change:v2",
+        "target_need_indices": [
+          4
+        ]
+      },
+      {
+        "applicability_hypothesis": "If net share retirement is negative due to the secondary offering, dilution or overhang could pressure equity value.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Measures share count changes, relevant to the secondary offering share overhang and lock-up terms facet.",
+        "signal_ref": "net_share_retirement_yoy:v1",
+        "target_need_indices": [
+          1
+        ]
+      },
+      {
+        "applicability_hypothesis": "If revenue growth is accelerating, it may support the hypothesis that operating momentum can continue without a new capital raise.",
+        "context_tags": [
+          "mid_cap",
+          "consumer",
+          "capital_intensive"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Revenue acceleration can test whether membership and center ramp trends support the disclosed growth trajectory.",
+        "signal_ref": "revenue_acceleration:v1",
+        "target_need_indices": [
+          4
+        ]
+      }
+    ],
+    "batch": {
+      "document_fingerprints": {
+        "cash_to_current_liabilities_ratio:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ],
+        "gross_margin_change:v2": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ],
+        "net_share_retirement_yoy:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ],
+        "revenue_acceleration:v1": [
+          "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:gross_margin_change:v2",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure the latest point-in-time change in gross margin.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "revenue gross profit",
+            "request_id": "signal:gross_margin_change:v2",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:net_share_retirement_yoy:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "weighted average shares shares outstanding",
+            "request_id": "signal:net_share_retirement_yoy:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:revenue_acceleration:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 3,
+            "minimum_period_span_days": 330,
+            "query": "revenue sales",
+            "request_id": "signal:revenue_acceleration:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 42,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2247,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-02-27T00:00:00+00:00",
+              "content_hash": "dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e",
+              "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9"
+                ],
+                "phase": "initial",
+                "request_id": "signal:cash_to_current_liabilities_ratio:v1",
+                "source_types": [
+                  "company_facts",
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure the ratio of latest CashAndCashEquivalentsAtCarryingValue to latest LiabilitiesCurrent for a company as of a point in time. Higher values indicate stronger short-term liquidity.",
+            "max_documents": 10,
+            "query": "CashAndCashEquivalentsAtCarryingValue LiabilitiesCurrent cash current liabilities liquidity ratio 10-Q 10-K 20-F SEC company facts USD",
+            "request_id": "signal:cash_to_current_liabilities_ratio:v1",
+            "source_types": [
+              "company_facts",
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":520103000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Latest CashAndCashEquivalentsAtCarryingValue is 10,879,000 USD (end 2024-12-31) and latest LiabilitiesCurrent is 520,103,000 USD (end 2024-12-31), giving a ratio of approximately 0.0209, which is at or below the negative_max threshold of 1.0, indicating weak short-term liquidity."
+          },
+          "signal_id": "cash_to_current_liabilities_ratio",
+          "state": {
+            "confidence": 0.9,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "status": "domain_unavailable"
+          },
+          "interpretation": {
+            "summary": "Comparable SEC gross-margin periods were unavailable."
+          },
+          "signal_id": "gross_margin_change",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":201640000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2023-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2023-01-01\",\"val\":195671000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=-0.0305053"
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2620995000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-24-000008\",\"end\":\"2023-12-31\",\"filed\":\"2024-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":2216593000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-24-000052\",\"end\":\"2024-09-30\",\"filed\":\"2024-10-28\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":1957712000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+                "exact_span": "{\"accn\":\"0001869198-23-000063\",\"end\":\"2023-09-30\",\"filed\":\"2023-10-31\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2023,\"start\":\"2023-01-01\",\"val\":1657759000}",
+                "timestamp": "2025-02-27T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "revenue_acceleration=0.00150421"
+          },
+          "signal_id": "revenue_acceleration",
+          "state": {
+            "confidence": 1.0,
+            "value": "neutral"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_calls": 4,
+      "skipped_unchanged_refs": [],
+      "usage": {
+        "cost": 0.00398188,
+        "llm_calls": 1,
+        "tokens": 13869
+      }
+    }
+  },
+  {
+    "case": "cik_0001830043:20250930",
+    "source": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+    "round": 1,
+    "before": [
+      "What specific forward financial guidance, including revenue and adjusted EBITDA ranges, did Bumble management provide for the second half of 2025 and full year 2025 in disclosures available by 2025-09-30?",
+      "What analyst price targets and rating changes for BMBL were published between 2025-08-07 and 2025-09-30, and what price levels do they imply?",
+      "What were Bumble's paying user counts and average revenue per paying user for Q2 2025 as reported in the 10-Q filed 2025-08-07?",
+      "What is the expected timing, scope, and cost of the global workforce reduction and restructuring plan disclosed by Bumble, and what savings are projected?",
+      "What did Bumble disclose about the status of the CEO transition and any strategic review or capital allocation changes as of 2025-09-30?",
+      "What legal or regulatory proceedings, including the securities fraud investigation, were disclosed in Bumble's filings available by 2025-09-30?"
+    ],
+    "after": [
+      "Specific revenue and adjusted EBITDA ranges for H2 2025 and full year 2025 are not guaranteed by this signal alone.",
+      "What analyst price targets and rating changes for BMBL were published between 2025-08-07 and 2025-09-30, and what price levels do they imply?",
+      "What were Bumble's paying user counts and average revenue per paying user for Q2 2025 as reported in the 10-Q filed 2025-08-07?",
+      "What is the expected timing, scope, and cost of the global workforce reduction and restructuring plan disclosed by Bumble, and what savings are projected?",
+      "What did Bumble disclose about the status of the CEO transition and any strategic review or capital allocation changes as of 2025-09-30?",
+      "What legal or regulatory proceedings, including the securities fraud investigation, were disclosed in Bumble's filings available by 2025-09-30?"
+    ],
+    "selections": [
+      {
+        "applicability_hypothesis": "Bumble's reported revenue growth trend can inform whether the H2 2025 and FY2025 revenue ranges are supported.",
+        "context_tags": [
+          "mid_cap",
+          "high_volatility",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Measures latest point-in-time year-over-year revenue growth, useful context for assessing whether Bumble's disclosed outlook ranges are supported.",
+        "signal_ref": "revenue_growth_yoy:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "applicability_hypothesis": "Operating cash flow margin can indicate whether Bumble's profitability trajectory supports the disclosed outlook ranges.",
+        "context_tags": [
+          "mid_cap",
+          "high_volatility",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "combine_evidence",
+        "selection_reason": "Measures operating cash flow as a share of revenue, providing a profitability proxy relevant to Bumble's outlook.",
+        "signal_ref": "operating_cash_flow_margin:v1",
+        "target_need_indices": [
+          0
+        ]
+      },
+      {
+        "applicability_hypothesis": "A short liquidity runway would heighten the importance of restructuring savings and capital allocation changes.",
+        "context_tags": [
+          "mid_cap",
+          "high_volatility",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Assesses near-term financing dependence via liquidity runway, relevant to the restructuring cost and savings need.",
+        "signal_ref": "liquidity_runway_months:v1",
+        "target_need_indices": [
+          3
+        ]
+      },
+      {
+        "applicability_hypothesis": "Elevated cash burn would make the restructuring plan's cost and savings projections more material to near-term viability.",
+        "context_tags": [
+          "mid_cap",
+          "high_volatility",
+          "catalyst_window"
+        ],
+        "expected_role": "coverage",
+        "reason_code": "assess_applicability",
+        "selection_reason": "Evaluates cash burn rate, which contextualizes the urgency and scope of the restructuring plan and projected savings.",
+        "signal_ref": "cash_burn_rate_elevated:v1",
+        "target_need_indices": [
+          3
+        ]
+      }
+    ],
+    "batch": {
+      "document_fingerprints": {
+        "cash_burn_rate_elevated:v1": [
+          "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+        ],
+        "liquidity_runway_months:v1": [
+          "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+        ],
+        "operating_cash_flow_margin:v1": [
+          "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+        ],
+        "revenue_growth_yoy:v1": [
+          "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 32,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2373,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T00:00:00+00:00",
+              "content_hash": "88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6",
+              "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+                ],
+                "phase": "initial",
+                "request_id": "signal:revenue_growth_yoy:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure the latest point-in-time year-over-year revenue growth.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "revenue sales",
+            "request_id": "signal:revenue_growth_yoy:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 32,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2373,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T00:00:00+00:00",
+              "content_hash": "88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6",
+              "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+                ],
+                "phase": "initial",
+                "request_id": "signal:operating_cash_flow_margin:v1",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 1,
+            "query": "operating cash flow revenue",
+            "request_id": "signal:operating_cash_flow_margin:v1",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 32,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2373,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T00:00:00+00:00",
+              "content_hash": "88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6",
+              "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+                ],
+                "phase": "initial",
+                "request_id": "signal:liquidity_runway_months:v1",
+                "source_types": [
+                  "financials",
+                  "company_facts"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Assess a company's estimated liquidity runway in months, computed as latest point-in-time CashAndCashEquivalentsAtCarryingValue divided by the absolute monthly-average NetCashProvidedByUsedInOperatingActivities over the reported period. A runway at or below 6 months is positive evidence of near-term financing dependence; a runway at or above 12 months or explicit denial/cancellation of a low-runway condition is negative; intermediate or non-qualifying narrative is neutral; insufficient point-in-time inputs are unavailable.",
+            "lookback_days": 365,
+            "max_documents": 10,
+            "query": "CashAndCashEquivalentsAtCarryingValue NetCashProvidedByUsedInOperatingActivities liquidity runway operating cash flow cash burn months",
+            "request_id": "signal:liquidity_runway_months:v1",
+            "source_types": [
+              "financials",
+              "company_facts"
+            ]
+          },
+          "status": "resolved"
+        },
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 1,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 32,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 2373,
+            "query_evaluated": true,
+            "query_matched_document_count": 1,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 1,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-08-07T00:00:00+00:00",
+              "content_hash": "88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6",
+              "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc"
+                ],
+                "phase": "initial",
+                "request_id": "signal:cash_burn_rate_elevated:v1",
+                "source_types": [
+                  "company_facts",
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "request": {
+            "description": "Elevated cash burn rate: the ratio of absolute operating cash outflow to cash and cash equivalents is high, indicating rapid cash consumption. Positive when point-in-time evidence shows operating cash outflow is negative and the ratio meets or exceeds the threshold, or documents explicitly describe a high cash burn rate. Negative when evidence shows positive operating cash flow, no material cash consumption, or an explicit denial/cancellation of a high burn. Neutral for proposals, memoranda, non-binding intent, lookalikes, or below-threshold mentions. Unavailable when adequate point-in-time evidence is missing.",
+            "lookback_days": 550,
+            "max_documents": 10,
+            "query": "cash burn rate operating cash flow cash and cash equivalents NetCashProvidedByUsedInOperatingActivities CashAndCashEquivalentsAtCarryingValue",
+            "request_id": "signal:cash_burn_rate_elevated:v1",
+            "source_types": [
+              "company_facts",
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":495330000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0000950170-24-093910\",\"end\":\"2024-06-30\",\"filed\":\"2024-08-08\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":536390000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "revenue_growth_yoy=-0.0765488"
+          },
+          "signal_id": "revenue_growth_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":495330000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":114481000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "operating_cash_flow_margin=0.231121"
+          },
+          "signal_id": "operating_cash_flow_margin",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":261739000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":114481000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Latest point-in-time cash and cash equivalents of $261,739,000 (2025-06-30) and operating cash flow of $114,481,000 for the six months ended 2025-06-30 imply a monthly operating cash inflow of about $19.08M, so the operating-cash-flow liquidity runway is effectively unbounded (no burn). This is above the 12-month negative threshold, indicating no near-term financing dependence from operating cash burn."
+          },
+          "signal_id": "liquidity_runway_months",
+          "state": {
+            "confidence": 0.85,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        },
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":114481000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              },
+              {
+                "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+                "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":261739000}",
+                "timestamp": "2025-08-07T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "Operating cash flow for the six months ended 2025-06-30 is positive at $114,481,000, so the cash burn rate is zero (no operating cash outflow). With cash and cash equivalents of $261,739,000, the ratio is 0, well below the 0.10 elevated-burn threshold, indicating no elevated cash burn."
+          },
+          "signal_id": "cash_burn_rate_elevated",
+          "state": {
+            "confidence": 0.85,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 1
+        }
+      ],
+      "signal_calls": 4,
+      "skipped_unchanged_refs": [],
+      "usage": {
+        "cost": 0.008009680000000002,
+        "llm_calls": 1,
+        "tokens": 27885
+      }
+    }
+  }
+]

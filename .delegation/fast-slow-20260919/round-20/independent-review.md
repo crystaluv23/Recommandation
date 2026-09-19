@@ -1,0 +1,4 @@
+# Independent acceptance
+NormalAPIturn.completed472.3seconds,57focused/922full/lintPASS. Source diff only intended plural noun variants with unchanged bounded-asof/realizedresult gates. Independent singular/plural/postcutoff/unbounded/actualresults probesPASS.
+Full LLMResearchController.initialize replay with parsed ORIGINAL208request and raw208/209/209(maxcorrections2) succeeds3calls; original6needs byte-preserved and4nonempty valid evidence. independent-replay.json recordsfinalstate. Both208/209 decoded originalpayloads EXACTLY EQUAL compactauditpayloads; executorreport's compaction explanation for rawJSON substring mismatch is incorrect/unsupported (JSONescaping comparison artifact). No syntheticinput used in independentreplay.
+Accepted locally forV123 liveverification, notjointgoalcompletion. Noactivewriter/production. Conservative remaining2008attempts/$16.85127201. Committhenfreeze.

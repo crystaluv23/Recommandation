@@ -60,3 +60,15 @@ V121 endednormalexit0 round_rejected/no_fitness_eligible_candidates.106completed
 
 ## Round19 accepted locally; V122 freeze next
 Normalturn.completed1157.4s,52focused/917full/lintPASS. Independent fullcontrollerBumble replay3calls: existingrawneeds exactorder +missingduplicate+Blackstoneonly; allotherfieldsunchanged. Modelviewbatchreconstructionlimitationexplicit. Raw106stillinvalid; noforcedacceptance. No activewriter/production. CommitthenfreshV122freeze cap2236/$17.57789246. Maingoal incomplete.
+
+## V122 running
+Code6ea4b57, contract94469151ea82991ac44fae2ac7ebb405b21cdb84dc7a257e938dab698ca8eb49. exec21331/PID49530 started2026-09-19T21:28:45UTC; log/process under v122. Frozencontractcompare onlyexpectedrevision/time/budget/run/inventory/seedmanifest; seedinneronlyscan_summary. Models/dataset/history/registry/semantics unchanged. Cap2236attempts/$17.57789246. NoZCodewriter. Keep source/HEAD fixed whilelive. Jointgoal incomplete.
+
+## V122 external recovery
+FirstownedprocessPID49530 endedexit75 at21:43:09UTC, RetryableOpenAIClientError SSL UNEXPECTED_EOF, notcandidatefailure/timecutoff. Verifieddead and codeHEADunchanged6ea4b57. Samefrozenargv resumed21:44:43UTC exec67225/PID50325, cycle-resume-01.log/process-resume-01.json. No duplicateexecutor, no newbudget/run. Completed6cases preserved, seventhpartial cached; continueaudit.
+
+## V122 correctness stop; round20 running
+V122 firstprocessSSLexit75 safelyresumed samecontract; c01completed11cases inclNewmont thenMPMaterialscase12initfailed. Confirmedfalsepositive: boundeddisclosedfuture `milestones` rejected whileidenticalsingular `milestone` accepted by_FUTURE_EXPECTATION_OR_SCHEDULE.209correctsneedbutreorders/reducesevidence8to7; no safecorrectionaccepted. Secondcandidatepartial. OwnedresumePID50325 SIGINT ended130; NOTtimeout. Total228attempts/$0.70906668 actual, $.01755376 unsettledreservations conservativelywithheld inclSSLfailure+interrupt. Remaining2008attempts/$16.85127201. Originalwirev122/c01-case12-rejection.json (208/209 relevant). Round20exec92525/PID50990 normalAPIdispatch, brief/report/statusunderround20. Oneexternalwriter,noproduction. HEAD6ea4b57. Mainjointgoal incomplete.
+
+## Round20 accepted locally; V123 freeze next
+NormalAPIturn.completed472.3s,57focused/922full/lintPASS. Independentfullcontroller208/209/209 replay3calls usingexactparsedoriginalpayloads passeswithoriginal6needs+4validevidence. Executorreportcompactionclaimcorrected: decodedpayloadsequal, rawJSONescapingcausedsubstringmismatch. Noactivewriter/production. CommitthenV123 cap2008/$16.85127201. Goalnotcomplete.

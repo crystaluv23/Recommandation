@@ -1,0 +1,16 @@
+[
+  "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "-u",
+  "scripts/evolve_information_schemes.py",
+  "run-cycle",
+  "--workspace",
+  "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v122",
+  "--raw-info-root",
+  "runs/cold_start/data/global-raw-info-oracle-v1",
+  "--approved-dataset",
+  "runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/dataset_manifest.approved.json",
+  "--external",
+  "--data-external",
+  "--acknowledge-contract-hash",
+  "94469151ea82991ac44fae2ac7ebb405b21cdb84dc7a257e938dab698ca8eb49"
+]
