@@ -1,0 +1,2 @@
+# Round22 independent rejection of symbolic year inference
+OwnedPID55867 interrupted650.7seconds exit130 after concrete probe, nottimeout. Draft preserved. `_residual_refs_beyond_symbolic_bound("What actual 2024 production and cost results were disclosed by the prediction time?", "Actual 2024 cost results are not fully covered.")` returns['Actual']. At actual2025-09-30 both historical requests are valid. Parent calendar years do not prove future scope. Need actualdate injection, not another lexical inference. Parent guard fix useful, retain it. No tests accepted yet.

@@ -1,0 +1,47 @@
+{
+  "dispatch": false,
+  "argv": [
+    "/usr/local/bin/node",
+    "/Applications/ZCode.app/Contents/Resources/glm/zcode.cjs",
+    "app-server",
+    "--cwd",
+    "/Users/l/Project/Recommandation"
+  ],
+  "log": "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/execution.log",
+  "hard_timeout_seconds": 0,
+  "idle_timeout_seconds": 0,
+  "status_path": "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/execution.log.status.json",
+  "model": "glm-5.3",
+  "base_url": "https://open.bigmodel.cn/api/anthropic",
+  "key_source": "designated-file",
+  "isolated_home": "/private/tmp/zcode-fast-slow-20260919-r21",
+  "allowed_writes": [
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+    "/Users/l/Project/Recommandation/tests/test_evolution_execution_roles.py",
+    "/Users/l/Project/Recommandation/tests/test_evolution_reflection_roles.py",
+    "/Users/l/Project/Recommandation/progress/status.md",
+    "/Users/l/Project/Recommandation/progress/changelog.md",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/report.md",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/focused.log",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/full-tests.log",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/lint.log",
+    "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/replay.py",
+    "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/round-21/replay.log",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_output_validation.md",
+    "/Users/l/Project/Recommandation/tests/test_evolution_output_validation.py",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md"
+  ],
+  "allowed_commands": [
+    "PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tests -p test_evolution_output_validation.py -v > .delegation/fast-slow-20260919/round-21/focused.log 2>&1",
+    "PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tests -v > .delegation/fast-slow-20260919/round-21/full-tests.log 2>&1",
+    "sh scripts/lint_repo.sh > .delegation/fast-slow-20260919/round-21/lint.log 2>&1",
+    "git status --short",
+    "git diff --check",
+    "PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 .delegation/fast-slow-20260919/round-21/replay.py > .delegation/fast-slow-20260919/round-21/replay.log 2>&1"
+  ],
+  "turn_budget_enforcement": "prompt-only"
+}

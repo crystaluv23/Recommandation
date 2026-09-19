@@ -1,0 +1,2 @@
+# V124 prepared only
+Do not freeze/start until round21 is independently accepted and code committed. Same dataset, models, cohort, V115 Slow history/registry and fast_then_slow semantics. Cumulative remaining cap1964 attempts/$16.68847748; preserve unsettled reserves from prior interrupted runs. Validate frozen contract/seed differences before live execution. No elapsed-time deadline; stop on confirmed correctness defect or actual budget/terminal state. Acceptance requires persisted Fast+Slow completed pointers and causal prompt/context/response audit.

@@ -1,5 +1,27 @@
 # Status
 
+2026-09-20（round-23）**为 H1 路由注入真实预测日期，完成 V123 residual 修复**：
+删除不可靠的 dateless 年份推断 `_residual_refs_beyond_symbolic_bound`（date.min 与
+父句年份两种代理都在 2025-09-30 误拒合法 2024 历史 actuals）及其错误测试/spec 表述，
+保留 round-22 父句守卫（无效显式/符号父句不借出任何许可）。`LLMSignalRetrievalAgent`
+新增与 controller 兼容的可选 `set_evaluation_context`（时区校验、UTC 归一、逐 case
+重置），routing payload 暴露 evaluation_context；evolution_core 经既有 optional-setter
+helper 注入真实逐 case prediction_time。路由 partial-residual 生产者检查对显式与符号
+父句统一用真实日期走共享 `_bounded_residual_need`：可表示字面量被接受并由消费端
+（selection intents + need-transition contract）一次性归一，真正不可表示的 residual
+（已实现未来事实、无效父句、无界父句）在 Signal 执行前获得含实际边界+继承截止子句+
+框架标记的可执行 H1 纠正；无日期路由仅保留可靠的显式截止检查，绝不捏造日期/年份/
+当天。`_INHERITABLE_EXPECTATION_CONTEXT` 与时间守卫同大小写处理（大写 Guidance 已
+测试）。重写错误的 dateless 符号测试为 7 条真实日期测试（上下文 payload+可表示接受+
+intents/contract/下一轮路由一致性、已实现未来纠正、2024 历史 actuals 接受、大写标记、
+逐 case 重置、naive 日期拒绝、无关 residual grounding-fallback 对齐）。
+round-23/replay.py 用真实日期复放 V123 原始 attempts 7/8 wire：路由仅经原非时间纠正
+即接受，共享有界表示（"..., by the prediction time, within the parent need's
+guidance."）贯通 pre-reflection 准入（V123 原失败点）、intents、need-transition
+contract 与下一轮路由；路由后产物均标注为合成续接（原始 raw reflection 不存在）。
+936 测试 + lint + replay 全过（仅本地验证；按本轮 brief 不 commit、无生产调用；
+replay registry 无 financing_listing_action:v2 故该 wire 选择被纠正掉——已注明局限）。
+
 2026-09-20（round-19）**V121 Bumble 需多重性复原 + Kinross 时间/数量聚合反馈 + 漂移不吞语义失败**：
 V121 两处拒绝根因修复（spec 先行，两份 owning spec 同步）。（A）Bumble raw102 保留重复
 need 的一份并漏掉 need5，纠正 103 恢复 need5 但仍缺一份重复且重排序——

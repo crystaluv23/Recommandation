@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import replace
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import _add_months
@@ -80,12 +80,16 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _validation_obligations,
 )
 from stock_opportunity_agent.research.evolution_research_validation import (
+    _INHERITABLE_EXPECTATION_CONTEXT,
+    _SYMBOLIC_AS_OF_BOUND,
+    _bounded_residual_need,
     _coordinated_residual_facet_terms,
     _future_source_date_refs,
     _need_as_of_bound_clause,
     _normalize_information_plan_output,
     _normalize_research_state_output,
     _normalized_need_content_tokens,
+    _prediction_date_from_context,
     _reflection_need_transition_contract,
     _reflection_selection_intents,
     _reject_unrepresentable_partial_selections,
@@ -473,9 +477,25 @@ class LLMSignalRetrievalAgent:
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.request_token_budget: int | None = None
+        self.evaluation_context: dict[str, str] | None = None
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
+
+    def set_evaluation_context(self, prediction_time: datetime) -> None:
+        """Set the runtime-owned point-in-time horizon for the next selection."""
+
+        if (
+            prediction_time.tzinfo is None
+            or prediction_time.utcoffset() is None
+        ):
+            raise ValidationError("prediction_time must be timezone-aware")
+        normalized = prediction_time.astimezone(timezone.utc)
+        self.evaluation_context = {
+            "prediction_time": normalized.isoformat(),
+            "horizon": "six_calendar_months",
+            "horizon_end": _add_months(normalized.date(), 6).isoformat(),
+        }
 
     def select(
         self,
@@ -598,6 +618,10 @@ class LLMSignalRetrievalAgent:
             "learned_profile_default": "no committed observations",
             "selection_caps": {"signals": 4, "llm_signals": 2},
         }
+        if self.evaluation_context is not None:
+            selection_payload["evaluation_context"] = dict(
+                self.evaluation_context
+            )
         explicit_empty_match_details = _explicit_signal_need_match_details(
             information_needs,
             available_specs,
@@ -982,28 +1006,122 @@ class LLMSignalRetrievalAgent:
                                     "invent a different need"
                                 )
                             target_bound = _need_as_of_bound_clause(target_need)
-                            if target_bound is not None and (
-                                _future_source_date_refs(
-                                    residual_need,
-                                    target_bound[1],
-                                    field_name="next_information_needs",
+                            routing_prediction_date = (
+                                _prediction_date_from_context(
+                                    self.evaluation_context
                                 )
-                            ):
+                            )
+                            if routing_prediction_date is not None:
+                                unrepresentable_residual = (
+                                    _bounded_residual_need(
+                                        residual_need,
+                                        target_need,
+                                        routing_prediction_date,
+                                    )
+                                    is None
+                                )
+                                repair_bound = _need_as_of_bound_clause(
+                                    target_need,
+                                    routing_prediction_date,
+                                )
+                            else:
+                                unrepresentable_residual = (
+                                    target_bound is not None
+                                    and bool(
+                                        _future_source_date_refs(
+                                            residual_need,
+                                            target_bound[1],
+                                            field_name=(
+                                                "next_information_needs"
+                                            ),
+                                        )
+                                    )
+                                )
+                                repair_bound = target_bound
+                            if unrepresentable_residual:
+                                inherited_cutoff = (
+                                    repair_bound[0]
+                                    if repair_bound is not None
+                                    else None
+                                )
+                                if inherited_cutoff is None:
+                                    symbolic_bound = (
+                                        _SYMBOLIC_AS_OF_BOUND.search(target_need)
+                                    )
+                                    inherited_cutoff = (
+                                        symbolic_bound.group(0)
+                                        if symbolic_bound is not None
+                                        else None
+                                    )
+                                inherited_expectation = (
+                                    _INHERITABLE_EXPECTATION_CONTEXT.search(
+                                        target_need
+                                    )
+                                )
+                                repair_context = {
+                                    "target_need_cutoff_clause": inherited_cutoff,
+                                }
+                                if routing_prediction_date is not None:
+                                    repair_context["prediction_time"] = (
+                                        routing_prediction_date.isoformat()
+                                    )
+                                if inherited_expectation is not None:
+                                    repair_context[
+                                        "target_need_expectation_marker"
+                                    ] = inherited_expectation.group(0)
+                                scope_phrase = (
+                                    "the actual prediction-time boundary "
+                                    + routing_prediction_date.isoformat()
+                                    if routing_prediction_date is not None
+                                    else (
+                                        "the target's as-of cutoff clause "
+                                        + repr(inherited_cutoff)
+                                    )
+                                )
+                                if (
+                                    routing_prediction_date is not None
+                                    and inherited_cutoff is not None
+                                ):
+                                    scope_phrase += (
+                                        " (the target's cutoff clause is "
+                                        + repr(inherited_cutoff)
+                                        + ")"
+                                    )
+                                restate_phrase = (
+                                    "Restate the same unresolved facets while "
+                                    "retaining that exact cutoff clause and "
+                                    "the target's forward expectation or "
+                                    "schedule framing"
+                                    + (
+                                        " (for example its "
+                                        + repr(
+                                            inherited_expectation.group(0)
+                                        )
+                                        + " wording)"
+                                        if inherited_expectation is not None
+                                        else ""
+                                    )
+                                    + ", or narrow to facets that stay inside it"
+                                    if inherited_cutoff is not None
+                                    else (
+                                        "The target need declares no cutoff "
+                                        "clause this residual can inherit, so "
+                                        "narrow the residual to facets that "
+                                        "already stay inside the target's own "
+                                        "scope"
+                                    )
+                                )
                                 validation_errors.bind(
                                     (f"{path}.residual_need",),
                                     item_id=signal_ref,
-                                    repair_context={
-                                        "target_need_cutoff_clause": target_bound[0],
-                                    },
+                                    repair_context=repair_context,
                                 )
                                 validation_errors.append(
                                     f"{path}.residual_need dropped the targeted "
                                     "need's temporal scope: it requests calendar "
-                                    "scope beyond the target's as-of cutoff "
-                                    f"clause {target_bound[0]!r}. Restate the same "
-                                    "unresolved facets while retaining that exact "
-                                    "cutoff clause, or narrow to facets that stay "
-                                    "inside it. Runtime will not persist an "
+                                    "scope beyond " + scope_phrase + ". "
+                                    + restate_phrase
+                                    + ". Runtime will not persist an "
                                     "unbounded residual that the prediction-time "
                                     "boundary must later reject"
                                 )
@@ -1366,6 +1484,15 @@ class LLMSignalRetrievalAgent:
                 "energy, materials, consumer, financials, real_estate, "
                 "communications, small_cap, mid_cap, large_cap, high_volatility, "
                 "or catalyst_window."
+                + (
+                    " evaluation_context is control data, not evidence: its "
+                    "prediction_time is the actual runtime cutoff. Keep a "
+                    "partial residual_need inside that boundary by requesting "
+                    "only facts already available by prediction_time, never "
+                    "later actuals, results, or updates."
+                    if self.evaluation_context is not None
+                    else ""
+                )
                 + _UNTRUSTED_DATA_INSTRUCTION
             ),
             payload=selection_payload,

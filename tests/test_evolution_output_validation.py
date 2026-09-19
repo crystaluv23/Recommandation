@@ -3,6 +3,205 @@
 from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
+class SymbolicCutoffResidualInheritanceTests(TestCase):
+    """Round-21: bounded forward-guidance parents lend clause and framing."""
+
+    PARENT = (
+        "What forward production, cost, and capital expenditure guidance did "
+        "Kinross provide by the prediction time for the remainder of 2025 "
+        "and 2026?"
+    )
+    RESIDUAL = (
+        "Specific disclosed production, cost, and capital expenditure "
+        "figures for the remainder of 2025 and 2026 are not fully covered."
+    )
+    PREDICTION_DATE = date(2025, 9, 30)
+
+    def test_symbolic_cutoff_residual_inherits_clause_and_guidance_framing(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+            _future_source_date_refs,
+        )
+
+        restored = _bounded_residual_need(
+            self.RESIDUAL, self.PARENT, self.PREDICTION_DATE
+        )
+        self.assertIsNotNone(restored)
+        self.assertIn("by the prediction time", restored)
+        self.assertIn("guidance", restored)
+        self.assertIn(
+            "figures for the remainder of 2025 and 2026 are not fully covered",
+            restored,
+        )
+        self.assertEqual(
+            _future_source_date_refs(
+                restored, self.PREDICTION_DATE, field_name="next_information_needs"
+            ),
+            [],
+        )
+
+    def test_explicit_cutoff_parent_restores_the_same_representation(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+            _future_source_date_refs,
+        )
+
+        parent = self.PARENT.replace(
+            "by the prediction time", "by September 30, 2025"
+        )
+        restored = _bounded_residual_need(
+            self.RESIDUAL, parent, self.PREDICTION_DATE
+        )
+        self.assertIsNotNone(restored)
+        self.assertIn("by September 30, 2025", restored)
+        self.assertIn("guidance", restored)
+        self.assertEqual(
+            _future_source_date_refs(
+                restored, self.PREDICTION_DATE, field_name="next_information_needs"
+            ),
+            [],
+        )
+
+    def test_realized_parent_lends_no_inherited_permission(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+            _future_source_date_refs,
+        )
+
+        residual = (
+            "Specific disclosed production figures for 2026 are not "
+            "fully covered."
+        )
+        invalid_explicit_parent = (
+            "What actual 2026 production results versus guidance were "
+            "available by 2025-09-30?"
+        )
+        self.assertEqual(
+            _future_source_date_refs(
+                invalid_explicit_parent,
+                self.PREDICTION_DATE,
+                field_name="next_information_needs",
+            ),
+            ["2026"],
+        )
+        self.assertIsNone(
+            _bounded_residual_need(
+                residual, invalid_explicit_parent, self.PREDICTION_DATE
+            )
+        )
+        invalid_symbolic_parent = (
+            "What actual 2026 production results versus guidance were "
+            "available by the prediction time?"
+        )
+        self.assertEqual(
+            _future_source_date_refs(
+                invalid_symbolic_parent,
+                self.PREDICTION_DATE,
+                field_name="next_information_needs",
+            ),
+            ["2026"],
+        )
+        self.assertIsNone(
+            _bounded_residual_need(
+                residual, invalid_symbolic_parent, self.PREDICTION_DATE
+            )
+        )
+
+    def test_ordinary_historical_residual_passes_the_real_date_guard(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+            _future_source_date_refs,
+        )
+
+        historical = (
+            "Specific disclosed production figures for 2024 are not "
+            "fully covered."
+        )
+        self.assertEqual(
+            _future_source_date_refs(
+                historical,
+                self.PREDICTION_DATE,
+                field_name="next_information_needs",
+            ),
+            [],
+        )
+        self.assertEqual(
+            _bounded_residual_need(
+                historical, self.PARENT, self.PREDICTION_DATE
+            ),
+            historical,
+        )
+
+    def test_realized_future_residual_is_never_turned_into_a_forecast(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+        )
+
+        realized = (
+            "Actual production results and realized cost figures for 2026 "
+            "are not fully covered."
+        )
+        self.assertIsNone(
+            _bounded_residual_need(realized, self.PARENT, self.PREDICTION_DATE)
+        )
+
+    def test_unbounded_parent_lends_no_cutoff_or_framing(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+        )
+
+        unbounded = (
+            "What production, cost, and capital expenditure figures will "
+            "Kinross report for 2026?"
+        )
+        self.assertIsNone(
+            _bounded_residual_need(self.RESIDUAL, unbounded, self.PREDICTION_DATE)
+        )
+        clause_only_parent = (
+            "What did Kinross disclose by the prediction time for 2026?"
+        )
+        self.assertIsNone(
+            _bounded_residual_need(
+                "Specific disclosed production figures for 2026 are not "
+                "fully covered.",
+                clause_only_parent,
+                self.PREDICTION_DATE,
+            )
+        )
+
+    def test_pre_reflection_admission_accepts_the_kinross_selection(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _reject_unrepresentable_partial_selections,
+        )
+
+        selection = SignalSelectionDecision(
+            signal_ref="guidance_acceleration:v1",
+            reason_code="answer_need",
+            selection_reason=(
+                "Directly addresses forward production, cost, and capex "
+                "guidance for 2025-2026."
+            ),
+            applicability_hypothesis=(
+                "Kinross management guidance may have strengthened."
+            ),
+            expected_role="primary",
+            context_tags=("general",),
+            target_need_indices=(1,),
+            answer_scope="partial",
+            residual_need=self.RESIDUAL,
+        )
+        needs = (
+            "What specific operating or financial catalysts did Kinross "
+            "management disclose by the prediction time?",
+            self.PARENT,
+        )
+        _reject_unrepresentable_partial_selections(
+            (selection,),
+            needs,
+            {"prediction_time": "2025-09-30T00:00:00+00:00"},
+        )
+
+
 class ReflectBasicLiteralIdentityTests(TestCase):
     PRIOR_STATE = {
         "contradictions": [],

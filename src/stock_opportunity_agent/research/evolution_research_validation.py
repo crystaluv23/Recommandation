@@ -1107,6 +1107,14 @@ def _need_as_of_bound_clause(
     return best
 
 
+_INHERITABLE_EXPECTATION_CONTEXT = re.compile(
+    r"\b(?:guidance|outlook|forecasts?|targets?|goals?|schedules?|timelines?"
+    r"|milestones?|dates?|timing|releases?|reports?|openings?|commentary"
+    r"|construction\s+plans?)\b",
+    re.IGNORECASE,
+)
+
+
 def _bounded_residual_need(
     residual_need: str | None,
     prior_need: str,
@@ -1116,9 +1124,14 @@ def _bounded_residual_need(
 
     A literal residual that already respects the prediction-time boundary is
     returned unchanged. A residual that dropped the parent need's cutoff is
-    returned with the inherited as-of clause restored. Returns None only when
-    no bounded restatement of the literal residual exists, in which case
-    callers must not demand the literal as an exact replacement.
+    returned with the inherited as-of clause restored; when the parent need is
+    itself accepted by the same prediction-time guard (not merely a keyword
+    plus a cutoff clause), a clause-only restore that still flags additionally
+    inherits the parent's noun-form expectation/schedule marker as explicit
+    parent-owned framing, because the as-of bounded allowance requires both
+    the cutoff clause and that framing. Returns None only when no bounded
+    restatement of the literal residual exists, in which case callers must
+    not demand the literal as an exact replacement.
     """
 
     if not isinstance(residual_need, str) or not residual_need.strip():
@@ -1142,11 +1155,26 @@ def _bounded_residual_need(
     terminator = stripped[-1] if stripped[-1] in ".?!" else ""
     base = stripped[:-1] if terminator else stripped
     restored = f"{base}, {clause}{terminator or '.'}"
-    if _future_source_date_refs(
+    if not _future_source_date_refs(
         restored, prediction_date, field_name="next_information_needs"
     ):
+        return restored
+    if _future_source_date_refs(
+        prior_need, prediction_date, field_name="next_information_needs"
+    ):
         return None
-    return restored
+    expectation = _INHERITABLE_EXPECTATION_CONTEXT.search(prior_need)
+    if expectation is None:
+        return None
+    inherited = (
+        f"{base}, {clause}, within the parent need's "
+        f"{expectation.group(0)}{terminator or '.'}"
+    )
+    if _future_source_date_refs(
+        inherited, prediction_date, field_name="next_information_needs"
+    ):
+        return None
+    return inherited
 
 
 def _reject_unrepresentable_partial_selections(

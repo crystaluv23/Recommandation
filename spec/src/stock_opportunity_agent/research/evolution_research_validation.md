@@ -27,10 +27,21 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   narrows. When a persisted routing residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of
   clause onto the residual instead of retaining the already answered parent
-  need. Transition contracts, selection intents, need cutoff restoration, and
-  transition validation derive that representation through one shared rule so
-  the exact string H_reflect is told to write is always acceptable to both the
-  transition and temporal guards.
+  need. When the parent need is validated bounded forward guidance, the as-of
+  bounded allowance also requires expectation/schedule framing, so the shared
+  rule inherits the parent's noun-form expectation/schedule marker (guidance,
+  outlook, forecasts, targets, goals, schedules, timelines, milestones, dates,
+  timing, releases, reports, openings, commentary, construction plans —
+  matched with the same case-insensitive handling as the temporal guard's
+  expectation vocabulary) as
+  explicit parent-owned framing whenever restoring the cutoff clause alone is
+  not representable. Realized results, actuals, or how-much/how-many requests
+  never inherit that framing, and a parent without its own validated bound or
+  framing lends no permissions, so the rule still returns no representation
+  for them. Transition contracts, selection intents, need cutoff restoration,
+  and transition validation derive that representation through one shared rule
+  so the exact string H_reflect is told to write is always acceptable to both
+  the transition and temporal guards.
 - A legacy partial-answer residual that no bounded restatement can represent
   under the actual runtime prediction boundary (for example realized facts
   after the cutoff) is invalid routing state, not a removable obligation. The

@@ -1,0 +1,8 @@
+{
+  "attempts": 44,
+  "actual_cost": "0.1627945200000000153",
+  "conservative_unsettled_reserves": "0",
+  "remaining_attempts": 1964,
+  "conservative_remaining_cost_budget": "16.6884774899999999847",
+  "stop_reason": "valid parent forward-guidance cutoff semantics lost in partial residual, not timeout"
+}

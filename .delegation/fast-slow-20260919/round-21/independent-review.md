@@ -1,0 +1,4 @@
+# Independent rejection of round21 draft
+Owned launcher54835 interrupted intentionally exit130 after concrete boundary probes; no timeout. Source changes preserved; no production. No final test acceptance.
+1. `_bounded_residual_need("Specific disclosed production figures for 2026 are not fully covered.", "What actual 2026 production results versus guidance were available by 2025-09-30?", date(2025,9,30))` returns inherited guidance string although `_future_source_date_refs(parent, ...) == ["2026"]`. Invalid parent permission is laundered; report claimed validated parent but implementation never checks.
+2. For residual "Specific 2024 production figures are not fully covered.", future guard with actual2025-09-30 returns[], with date.min returns[2024]. New symbolic routing check thus falsely rejects ordinary historical facts and asks for forward framing. Unknown cutoff cannot be replaced by date.min. This is a correctness regression, not a conservative equivalent.

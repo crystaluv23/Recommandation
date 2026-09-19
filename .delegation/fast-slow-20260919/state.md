@@ -72,3 +72,27 @@ V122 firstprocessSSLexit75 safelyresumed samecontract; c01completed11cases inclN
 
 ## Round20 accepted locally; V123 freeze next
 NormalAPIturn.completed472.3s,57focused/922full/lintPASS. Independentfullcontroller208/209/209 replay3calls usingexactparsedoriginalpayloads passeswithoriginal6needs+4validevidence. Executorreportcompactionclaimcorrected: decodedpayloadsequal, rawJSONescapingcausedsubstringmismatch. Noactivewriter/production. CommitthenV123 cap2008/$16.85127201. Goalnotcomplete.
+
+## V123 running
+Code068ec23, contract272618008deefab41fbf11a0f39a029388c43bb08a41b720540f93a556c8809f. exec5670/PID54176 started2026-09-19T22:10:11UTC, logs/process under v123. Same models/dataset/cohort/history/registry/semantics, seedinner onlyscan_summary changed. Cap2008attempts/$16.85127201. NoZCodewriter; no source/HEADchangeswhilelive. Jointgoal incomplete.
+
+## V123 correctness stop; round21 prepared
+V123 ownedPID54176 endedSIGINT130, NOTtimeout.44 completedattempts/$0.16279452,no unresolvedreserve. c01Kinross bounded guidance parent loses semantic qualifier in residual, H1 accepts but pre-reflect rejects. Originalwire v123/c01-case1-rejection.json. Remaining1964/$16.68847748. Round21 prepared; no production/writer active. Goal incomplete.
+
+## Round21 running
+exec66026/launcherPID54835, API transport, hard/idle deadlines0. One ZCodewriter; no production. See round-21/brief.md and execution.log.status.json.
+
+## Round21 interrupted for proven draft regressions; round22 prepared
+Owned54835/exec66026 exit130. Not time limit. Independent review proves invalidparent framing laundering and historical date.min falsepositive. Draft preserved; round22 brief targets these two regressions then replay/fullchecks. No production.
+
+## Round22 running
+exec15679/launcherPID55867, API transport; deadlines0. Single writer, no production. Round21 draft uncommitted and preserved for refinement.
+
+## Round22 draft rejected; round23 prepared
+Round22owned55867 exit130 on proven historicalactual falsepositive in symbolic year inference. No elapsedcutoff. Nextactualpredictiondate viaexistingoptional contextsetter (core/roles specs updatedfirst), deleteunsoundinference. Draftpreserved,no production.
+
+## Round23 running
+exec24820/launcherPID56589, APItransport, nohard/idledeadline. Singlewriter,no production. Round21/22partialdraftpreserved.
+
+## Round23 locally accepted; V124 freeze next
+NormalAPIturn.completed941.5s exit0,64focused/936full/lintPASS. Independent originalV123registry7/8replayPASS(all4refs), actualexecute_information_plan2casecontextresetPASS. Removeddraftfakecutoffs; actualpredictiontimeinjected viaoptionalsetter. Coreowningspecsynced. Noactivewriter/production. CommitthenV124cap1964/$16.68847748. Goalstillincomplete.

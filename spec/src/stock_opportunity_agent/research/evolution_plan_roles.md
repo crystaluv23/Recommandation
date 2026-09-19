@@ -34,11 +34,26 @@ Signal retrieval, blind prediction, and Plan reflection.
   request-token preflight. It does not sample representative cases; transport
   budget refusal remains a control-plane pause rather than a proposal failure.
 - A `partial` answer's residual need must retain the targeted information
-  need's temporal scope. Selection validation rejects a residual that requests
-  calendar scope beyond the targeted need's explicit as-of cutoff clause, using
-  the targeted need's own bound as the reference, so the persisted residual is
-  exactly representable downstream without violating the prediction-time
-  boundary.
+  need's temporal scope. Production injects the actual runtime prediction
+  date into the Signal Retrieval Agent through the same optional
+  `set_evaluation_context` setter the controller uses, resets it per case so
+  reuse cannot carry an earlier cutoff, and exposes it in the routing payload
+  as control data. Explicit dated and symbolic prediction-time cutoffs are
+  validated alike against that actual date through the shared bounded-residual
+  representation: routing rejects a residual exactly when the reflection
+  temporal guard finds no bounded restatement (realized future facts, an
+  invalid parent, or an unbounded parent that lends no cutoff or framing),
+  and a representable literal is accepted while the consumer normalizes once
+  through the same shared rule, so producer and consumer never demand
+  contradictory exact strings. The producer correction names the actual
+  prediction boundary, the inherited cutoff clause, and the framing marker,
+  so a truly unrepresentable residual is repaired before any Signal executes
+  instead of failing only at the pre-reflection boundary. Called without a
+  runtime date, routing never fabricates a date, parent year, or present day:
+  it keeps only the sound dateless explicit-cutoff check, and a symbolic
+  cutoff alone triggers no dateless producer rejection. Historical residuals
+  that reference only years at or before the actual prediction date stay
+  accepted and are never reframed as forecasts.
 - Reflection validates persisted legacy selections against the actual runtime
   prediction boundary before building the H_reflect prompt. A partial answer
   whose residual need cannot be represented within that boundary is rejected

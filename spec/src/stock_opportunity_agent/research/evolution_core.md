@@ -37,6 +37,11 @@ Fast/Slow engine dependency.
   Shared masking/projection helpers accept an explicit strict-inventory mode
   for aggregate Slow roles, avoiding repeated brand derivation. A bounded cache
   reuses compiled patterns for identical inventory/mode pairs.
+- Each execution injects the actual timezone-aware prediction time into both
+  controller and Signal retrieval adapters that expose the optional
+  `set_evaluation_context` hook, before any role call. Reusing adapters across
+  cases replaces that context; adapters without the hook remain compatible.
+  Routing never substitutes a fabricated date or infers it from need wording.
 - Record serialization stays explicit and schema-compatible.
 - Scoring and fitness rules remain deterministic.
 - When an already executed, reflectable batch cannot fit an ordinary reflection

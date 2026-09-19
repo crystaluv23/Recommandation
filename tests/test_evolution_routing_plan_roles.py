@@ -7,6 +7,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
 )
 from stock_opportunity_agent.research.evolution_research_validation import (
     _reflection_need_transition_contract,
+    _reflection_selection_intents,
 )
 
 
@@ -82,6 +83,235 @@ class RoutingPartialResidualTemporalScopeTests(TestCase):
                 selection.value[0].residual_need, retained_scope_residual,
             )
             self.assertEqual(len(caller.calls), 1)
+
+
+class RoutingSymbolicCutoffTemporalScopeTests(TestCase):
+    """The actual prediction date drives routing residual representability."""
+
+    PARENT_NEED = (
+        "What forward production, cost, and capital expenditure guidance did "
+        "Kinross provide by the prediction time for the remainder of 2025 "
+        "and 2026?"
+    )
+    RAW_RESIDUAL = (
+        "Specific disclosed production, cost, and capital expenditure "
+        "figures for the remainder of 2025 and 2026 are not fully covered."
+    )
+    PREDICTION_TIME = datetime(2025, 9, 30, tzinfo=timezone.utc)
+
+    def _partial_selection(self, residual_need):
+        return {
+            "selections": [
+                {
+                    "signal_ref": "guidance_acceleration:v1",
+                    "reason_code": "answer_need",
+                    "selection_reason": (
+                        "The card addresses the management signal for this facet."
+                    ),
+                    "applicability_hypothesis": "Guidance disclosures apply.",
+                    "expected_role": "primary",
+                    "context_tags": ["general"],
+                    "target_need_indices": [0],
+                    "answer_scope": "partial",
+                    "residual_need": residual_need,
+                }
+            ]
+        }
+
+    def _select(self, caller, needs):
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            agent = LLMSignalRetrievalAgent(caller)
+            agent.set_evaluation_context(self.PREDICTION_TIME)
+            return agent.select(tuple(needs), registry.freeze(), {})
+
+    def test_representable_residual_accepted_with_actual_date_context(self):
+        caller = ScriptedRoleCaller(
+            [self._partial_selection(self.RAW_RESIDUAL)]
+        )
+        selection = self._select(caller, (self.PARENT_NEED,))
+        self.assertEqual(len(caller.calls), 1)
+        context = caller.calls[0]["payload"]["evaluation_context"]
+        self.assertEqual(
+            context,
+            {
+                "prediction_time": "2025-09-30T00:00:00+00:00",
+                "horizon": "six_calendar_months",
+                "horizon_end": "2026-03-30",
+            },
+        )
+        self.assertIn(
+            "actual runtime cutoff", caller.calls[0]["system_prompt"]
+        )
+        self.assertEqual(selection.value[0].residual_need, self.RAW_RESIDUAL)
+        intents = _reflection_selection_intents(
+            selection.value,
+            information_needs=(self.PARENT_NEED,),
+            evaluation_context=context,
+        )
+        bounded = intents[0]["residual_need"]
+        self.assertIn("by the prediction time", bounded)
+        self.assertIn("guidance", bounded)
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="guidance_acceleration",
+                    version=1,
+                    value=SignalValue.POSITIVE,
+                    confidence=0.9,
+                    interpretation="guidance materially strengthened",
+                    supporting_evidence=(
+                        SignalEvidence(
+                            document_id="synthetic-doc",
+                            exact_span="guidance strengthened",
+                            timestamp=self.PREDICTION_TIME,
+                        ),
+                    ),
+                ),
+            ),
+            signal_calls=1,
+        )
+        contract = _reflection_need_transition_contract(
+            ResearchState(next_information_needs=(self.PARENT_NEED,)),
+            selection.value,
+            batch,
+            evaluation_context=context,
+        )
+        rule = contract["need_rules"][0]
+        action = rule["available_answer_actions"][0]
+        self.assertEqual(action["residual_need"], bounded)
+        self.assertIn(
+            "replace_with_exact_residual_need", rule["required_transition"]
+        )
+        # The corrected bounded representation is consumable as the next
+        # routing target under the same actual date.
+        next_caller = ScriptedRoleCaller([{"selections": []}])
+        next_selection = self._select(next_caller, (bounded,))
+        self.assertEqual(next_selection.value, ())
+        self.assertEqual(len(next_caller.calls), 1)
+
+    def test_realized_future_residual_corrected_before_signal_execution(self):
+        realized = (
+            "Actual 2026 production and cost results for the remainder of "
+            "2025 and 2026 are not fully covered."
+        )
+        corrected = (
+            "Specific disclosed production and cost guidance figures for "
+            "the remainder of 2025 and 2026 are not fully covered, by the "
+            "prediction time."
+        )
+        caller = ScriptedRoleCaller(
+            [self._partial_selection(realized),
+             self._partial_selection(corrected)]
+        )
+        selection = self._select(caller, (self.PARENT_NEED,))
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(selection.value[0].residual_need, corrected)
+        feedback = validation_error(caller.calls[1])
+        self.assertIn("temporal scope", feedback)
+        self.assertIn("2025-09-30", feedback)
+        self.assertIn("by the prediction time", feedback)
+        self.assertIn("guidance", feedback)
+
+    def test_round22_historical_actuals_residual_accepted_with_actual_date(
+        self,
+    ):
+        parent = (
+            "What 2024 actual production and cost results and guidance "
+            "changes were disclosed by the prediction time?"
+        )
+        residual = "Actual 2024 cost results are not fully covered."
+        caller = ScriptedRoleCaller([self._partial_selection(residual)])
+        selection = self._select(caller, (parent,))
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(selection.value[0].residual_need, residual)
+
+    def test_capitalized_guidance_marker_lends_framing(self):
+        parent = self.PARENT_NEED.replace("guidance", "Guidance")
+        caller = ScriptedRoleCaller(
+            [self._partial_selection(self.RAW_RESIDUAL)]
+        )
+        selection = self._select(caller, (parent,))
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(selection.value[0].residual_need, self.RAW_RESIDUAL)
+
+    def test_evaluation_context_resets_between_cases(self):
+        realized = (
+            "Actual 2026 production and cost results for the remainder of "
+            "2025 and 2026 are not fully covered."
+        )
+        bounded = (
+            "Specific disclosed production and cost guidance figures for "
+            "the remainder of 2025 and 2026 are not fully covered, by the "
+            "prediction time."
+        )
+        caller = ScriptedRoleCaller(
+            [
+                self._partial_selection(realized),
+                self._partial_selection(bounded),
+                self._partial_selection(realized),
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            snapshot = registry.freeze()
+            agent = LLMSignalRetrievalAgent(caller)
+            agent.set_evaluation_context(self.PREDICTION_TIME)
+            first = agent.select((self.PARENT_NEED,), snapshot, {})
+            self.assertEqual(len(caller.calls), 2)
+            self.assertEqual(first.value[0].residual_need, bounded)
+            agent.set_evaluation_context(
+                datetime(2026, 9, 30, tzinfo=timezone.utc)
+            )
+            second = agent.select((self.PARENT_NEED,), snapshot, {})
+            self.assertEqual(len(caller.calls), 3)
+            self.assertEqual(second.value[0].residual_need, realized)
+            self.assertEqual(
+                caller.calls[2]["payload"]["evaluation_context"][
+                    "prediction_time"
+                ],
+                "2026-09-30T00:00:00+00:00",
+            )
+
+    def test_naive_prediction_time_is_rejected(self):
+        agent = LLMSignalRetrievalAgent(ScriptedRoleCaller([]))
+        with self.assertRaises(ValidationError):
+            agent.set_evaluation_context(datetime(2025, 9, 30))
+
+    def test_unrelated_residual_still_rejected_as_ungrounded(self) -> None:
+        unrelated = (
+            "Specific disclosed cryptocurrency mining figures for 2027 are "
+            "not fully covered."
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            caller = ScriptedRoleCaller(
+                [self._partial_selection(unrelated)] * 3
+            )
+            caller.max_structured_corrections = 2
+            events: list[dict[str, object]] = []
+            caller.on_progress = events.append
+            selection = LLMSignalRetrievalAgent(caller).select(
+                (self.PARENT_NEED,), registry.freeze(), {},
+            )
+        feedback = validation_error(caller.calls[1])
+        self.assertIn("grounded", feedback)
+        self.assertEqual(
+            selection.value[0].reason_code, "assess_applicability"
+        )
+        self.assertIsNone(selection.value[0].answer_scope)
+        self.assertIsNone(selection.value[0].residual_need)
+        self.assertEqual(
+            next(
+                item
+                for item in events
+                if item["event_type"] == "structured_validation_fallback_applied"
+            )["context_only_paths"],
+            ["selections[0]"],
+        )
 
 
 class RoutingAndPlanRoleTests(TestCase):

@@ -1,0 +1,16 @@
+{
+  "contract_hash": "272618008deefab41fbf11a0f39a029388c43bb08a41b720540f93a556c8809f",
+  "changed_contract_fields": [
+    "code_revision",
+    "created_at",
+    "max_external_attempts",
+    "max_total_cost",
+    "raw_info_inventory_hash",
+    "run_id",
+    "seed_pool_manifest_hash"
+  ],
+  "changed_seed_fields": [
+    "scan_summary"
+  ],
+  "revision": "068ec235c3d9b68481f6dd266543d0a37c811735"
+}
