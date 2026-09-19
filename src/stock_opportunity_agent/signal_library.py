@@ -1757,6 +1757,23 @@ class SignalRegistry:
             / spec.signal_id
             / f"v{spec.version}"
         )
+        sibling_category = next(
+            (
+                sibling.parent.name
+                for sibling in self.candidate_root.glob(f"*/{spec.signal_id}")
+                if sibling.parent.name not in (spec.category, ".rejected")
+            ),
+            None,
+        )
+        if sibling_category is not None:
+            # Candidate refs resolve by signal_id across categories, so one
+            # signal_id staged under two categories makes every later load
+            # ambiguous; reject at the write instead of corrupting the cycle.
+            raise ValidationError(
+                f"conflicting signal candidate: {spec.signal_id} is already "
+                f"staged under category {sibling_category}; choose a "
+                "distinct signal_id"
+            )
         if version_dir.exists():
             existing = SignalSpec.from_dict(_read_json(version_dir / "spec.json"))
             existing_skill_path = version_dir / "skill.md"

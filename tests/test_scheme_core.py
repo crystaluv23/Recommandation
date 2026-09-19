@@ -679,6 +679,51 @@ class SignalLibraryTests(TestCase):
                 rejected_hash,
             )
 
+    def test_stage_candidate_rejects_same_id_under_second_category(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            first = SignalSpec(
+                signal_id="order_confirmation_disclosed",
+                version=1,
+                category="narrative_event",
+                description="Narrative order-confirmation disclosure.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                function="financial.cash_reserves",
+                source_types=("filing",),
+            )
+            registry.stage_candidate(first, tests=(candidate_growth_fixture(),), origin="seed-a")
+            replay = registry.stage_candidate(
+                first, tests=(candidate_growth_fixture(),), origin="seed-a"
+            )
+            self.assertEqual(replay, first.ref)
+
+            colliding = SignalSpec(
+                **{
+                    **first.__dict__,
+                    "category": "commercial_activity",
+                    "description": "Same observable re-filed under a new category.",
+                }
+            )
+            with self.assertRaisesRegex(
+                ValidationError,
+                "already staged under category narrative_event",
+            ):
+                registry.stage_candidate(
+                    colliding,
+                    tests=(candidate_growth_fixture(),),
+                    origin="seed-b",
+                )
+            self.assertEqual(
+                len(
+                    list(
+                        registry.candidate_root.glob(
+                            "*/order_confirmation_disclosed"
+                        )
+                    )
+                ),
+                1,
+            )
+
     def test_candidate_keeps_multiple_immutable_evaluations_and_latest_pointer(
         self,
     ) -> None:

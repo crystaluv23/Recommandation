@@ -91,6 +91,11 @@ signals_candidates/<category>/<signal_id>/v<N>/
   validation.json    # pointer to the latest immutable evaluation
 ```
 
+A candidate `signal_id` is unique across categories: candidate refs resolve by
+`signal_id` and version alone, so staging the same `signal_id` under a second
+category is rejected at the write with a correction-actionable error (choose a
+distinct `signal_id`), never allowed to make later loads ambiguous.
+
 The source-controlled v1 seed catalog may be compact JSON, but workspace
 initialization must materialize this runtime structure. The seed catalog
 contains 16 auditable definitions across financial, market, customers,
