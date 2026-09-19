@@ -956,3 +956,35 @@ met。居留者复访名单首次同时含结构化+叙事两席（修复七生�
 9. ff25023(+2) pooled 累积跨工作区转移（committed 候选子树）
 10. eeaf8a4 pooled 计数读嵌套记录形状（**三区规则自落地即死的根因**）
 11. 3d52175 复访居留者枚举读 validation candidate_effectiveness
+
+## 残留清单清零（2026-09-19 continued，a6dd393）
+
+四项记录在案的残留全部修复并验证（850 测试+lint 全绿）：
+
+1. **晋升后周期续跑（V98 时代边界）**：resume 原先要求 live Registry 恒等于
+   导入清单版本——任何周期内晋升后下一周期必然启动失败。改为链式解释：
+   每个已提交周期记录精确 input/output Registry 身份，live 等于链末端
+   输出即放行，链解释不了的漂移仍 fail-closed。用 V114 真实盘上状态
+   （manifest v5/cycle1 in v5→out v6/live v6）直接验证：旧检查必败、
+   新检查通过；单测覆盖基线/链解释晋升/漂移/断链四分支。
+2. **静默挂死看门狗**：V113 曾单进程静默卡死 8 小时（两次日志事件之间，
+   无错误面）。run-loop 现对每周期施加墙钟上限（SIGALRM，默认 4h，
+   EVOLUTION_CYCLE_TIMEOUT_SECONDS 可调，非主线程/无 SIGALRM 自动退化为
+   no-op）；超时进入既有可重试通道（exit 75→wrapper 自动续跑→缓存重放），
+   已提交周期与原子写不受影响。
+3. **零文档语料的边界语义**：叙事族请求在"本地零合格文档+该类型无获取
+   适配器"时曾报 adapter_missing→PERMANENT_FAILED。该情形实为空 PIT 语料，
+   现报 no_matching_documents→信号诚实弃权（与 631454b/631854b 的 fixture
+   边界同族；available/decisive 统计口径不变，仅把技术失败重分类为弃权）。
+   另在批执行提示中明确 counter 引用应取投影内部完整句。V115 周期 1 叙事
+   cohort execution_failed=0（V114 同指标 1-3）。
+4. **slow-history 命名空间多跳传递**：继任工作区现把源工作区的既有导入
+   命名空间按字节校验逐级携带（V115 实测携带双命名空间），居留者枚举与
+   反思足迹保有多跳深度。
+
+**V115 生产验证**（4d328932，基线 Registry v6——叙事因子已在稳定目录）：
+周期 1 干净提交（新叙事候选 contract_backlog_or_customer_commitment_
+disclosed:v1 一次穿过物化+验证入 provisional，execution_failed=0），
+周期 2 正常启动并在中途触及 400 次尝试合约上限而暂停（冻结上限按设计
+工作，周期 1 权威完整）。code_revision 绑定导致的"修复即搁浅在跑工作区"
+为可复现性设计属性，未更改（通过冻结后继工作区迭代，本就是既定运维模式）。

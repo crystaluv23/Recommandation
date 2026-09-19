@@ -1,5 +1,19 @@
 # Status
 
+2026-09-19（午）**残留清单清零（a6dd393）**：四项记录在案的 slow-round
+残留全部修复并验证（850 测试+lint）：(1) 晋升后周期续跑——resume 改为
+接受"已提交周期 input→output 链末端"解释的 live Registry（V114 真实盘
+状态旧检查必败、新检查通过；单测覆盖四分支）；(2) 周期墙钟看门狗
+（SIGALRM 4h 默认，超时走 exit 75 自动续跑通道，治 V113 型静默挂死）；
+(3) 零文档+无适配器语料从 adapter_missing/PERMANENT_FAILED 改判
+no_matching_documents/诚实弃权（统计口径不变）+counter 引用内部句指引
+（V115 周期 1 叙事 cohort execution_failed=0）；(4) slow-history 命名空间
+按字节校验多跳传递（V115 实测双 ns）。V115 生产验证：基线 v6（叙事因子
+在稳定目录），周期 1 干净提交且新叙事候选一次入册，周期 2 正常启动、
+中途触及 400 尝试合约上限暂停（冻结上限按设计）。code_revision 绑定为
+可复现性设计属性，保持不变。详见审计报告"残留清单清零"节。
+
+
 2026-09-19（晨）**叙事因子晋升入库达成（V114 cycle 1）**：
 `order_confirmation_disclosed:v1`（LLM 技能叙事谓词，检索族 filing/news/
 transcript 等）在 16 个全新 check 上 tp=3/fn=2（recall 60%）、fp=0、
