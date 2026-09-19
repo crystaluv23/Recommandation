@@ -1674,6 +1674,23 @@ def build_slow_history_manifest(
                     "sha256": _sha256_file(path),
                 }
             )
+    # Provisional residents and their pooled evaluation history are workspace
+    # state, not stable Registry content: without carrying them, every
+    # successor workspace would restart pooled accumulation from zero.
+    candidate_files: list[dict[str, str]] = []
+    candidates_root = source_root / "signals_candidates"
+    candidate_paths: tuple[Path, ...] = (
+        sorted(candidates_root.rglob("*")) if candidates_root.is_dir() else ()
+    )
+    for path in candidate_paths:
+        if not path.is_file():
+            continue
+        relative = path.relative_to(source_root)
+        if ".rejected" in relative.parts:
+            continue
+        candidate_files.append(
+            {"path": str(relative), "sha256": _sha256_file(path)}
+        )
     manifest = {
         "schema_version": "slow-history-manifest-v2",
         "fast_context": dict(_load_slow_fast_context(source_root, source_contract)),
@@ -1688,6 +1705,7 @@ def build_slow_history_manifest(
         "registry_definition_files": definition_files,
         "learning_events": learning_events,
         "cycle_artifacts": cycle_artifacts,
+        "candidate_files": candidate_files,
     }
     envelope = {"manifest_hash": _canonical_hash(manifest), "manifest": manifest}
     _write_or_verify_json(
@@ -1723,6 +1741,10 @@ def validate_slow_history_manifest(
         source_path = source_root / str(row["path"])
         if not source_path.is_file() or _sha256_file(source_path) != row.get("sha256"):
             raise ValidationError("Slow history committed artifact changed")
+    for row in manifest.get("candidate_files", ()):
+        source_path = source_root / str(row["path"])
+        if not source_path.is_file() or _sha256_file(source_path) != row.get("sha256"):
+            raise ValidationError("Slow history candidate file changed")
     return manifest
 
 
@@ -1772,6 +1794,14 @@ def apply_slow_history_manifest(
         target_path.parent.mkdir(parents=True, exist_ok=True)
         if target_path.exists() and _sha256_file(target_path) != row["sha256"]:
             raise ValidationError("imported Slow history artifact conflicts")
+        if not target_path.exists():
+            shutil.copy2(source_path, target_path)
+    for row in manifest.get("candidate_files", ()):
+        source_path = source_root / str(row["path"])
+        target_path = target_root / str(row["path"])
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        if target_path.exists() and _sha256_file(target_path) != row["sha256"]:
+            raise ValidationError("imported Slow history candidate conflicts")
         if not target_path.exists():
             shutil.copy2(source_path, target_path)
 

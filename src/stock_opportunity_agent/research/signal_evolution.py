@@ -4868,6 +4868,7 @@ class SignalEvolutionEngine:
                     "candidate_ref"
                 ):
                     refs.append(str(attempt["candidate_ref"]))
+        refs.extend(self._imported_provisional_refs())
         residents: list[str] = []
         for ref in dict.fromkeys(refs):
             try:
@@ -4885,6 +4886,34 @@ class SignalEvolutionEngine:
             if latest.get("effectiveness", {}).get("disposition") == "provisional":
                 residents.append(ref)
         return tuple(residents)
+
+    def _imported_provisional_refs(self) -> list[str]:
+        """Provisional candidate refs recorded in imported source workspaces.
+
+        Workspace succession carries provisional residents and their pooled
+        evaluation history in signals_candidates; their original provisional
+        attempts live in the namespaced slow-history cycle artifacts, so
+        pooled accumulation continues across workspace boundaries instead of
+        restarting from zero in every successor.
+        """
+
+        refs: list[str] = []
+        history_root = self.workspace.root / "slow_history"
+        for path in sorted(
+            history_root.glob("*/experiments/cycles/*/slow_experiments.json")
+        ):
+            try:
+                payload = _read_json(path)
+            except (OSError, ValueError):
+                continue
+            for attempt in dict(payload).get("attempts", ()):
+                if not isinstance(attempt, Mapping):
+                    continue
+                if attempt.get("outcome") == "provisional" and attempt.get(
+                    "candidate_ref"
+                ):
+                    refs.append(str(attempt["candidate_ref"]))
+        return refs
 
     def _apply_pooled_provisional_decision(
         self,
@@ -7749,7 +7778,16 @@ class SignalEvolutionEngine:
             expand_aliases=False,
         )
         prior_modality_footprints: list[dict[str, Any]] = []
-        for path in [item for item in committed_paths if item.is_file()][-3:]:
+        footprint_paths = [
+            item
+            for item in committed_paths
+            if item.is_file()
+        ] + sorted(
+            (self.workspace.root / "slow_history").glob(
+                "*/experiments/cycles/*/slow_loop_validation.json"
+            )
+        )
+        for path in footprint_paths[-3:]:
             payload = _read_json(path)
             validation = dict(payload.get("validation", {}))
             audits = dict(validation.get("agent_audits", {}))

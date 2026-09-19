@@ -177,6 +177,27 @@ class RunControlTests(TestCase):
                 "slow_loop_result.json",
             ):
                 write_json(committed_root / name, {"artifact": name})
+            resident_dir = (
+                source
+                / "signals_candidates"
+                / "narrative_event"
+                / "order_confirmation_disclosed"
+                / "v1"
+            )
+            resident_dir.mkdir(parents=True)
+            write_json(resident_dir / "spec.json", {"signal_id": "x"})
+            write_json(resident_dir / "validation.json", {"status": "provisional"})
+            rejected_dir = (
+                source
+                / "signals_candidates"
+                / ".rejected"
+                / "narrative_event"
+                / "order_confirmation_disclosed"
+                / "v1"
+                / "deadbeef"
+            )
+            rejected_dir.mkdir(parents=True)
+            write_json(rejected_dir / "spec.json", {"signal_id": "old"})
 
             build_slow_history_manifest(
                 workspace=target,
@@ -198,9 +219,33 @@ class RunControlTests(TestCase):
                     for row in envelope["manifest"]["registry_definition_files"]
                 )
             )
+            candidate_paths = [
+                row["path"] for row in envelope["manifest"]["candidate_files"]
+            ]
+            self.assertIn(
+                "signals_candidates/narrative_event/"
+                "order_confirmation_disclosed/v1/spec.json",
+                candidate_paths,
+            )
+            self.assertFalse(
+                any(".rejected" in path for path in candidate_paths)
+            )
             apply_slow_history_manifest(
                 workspace=target,
                 manifest=envelope["manifest"],
+            )
+            self.assertTrue(
+                (
+                    target
+                    / "signals_candidates"
+                    / "narrative_event"
+                    / "order_confirmation_disclosed"
+                    / "v1"
+                    / "spec.json"
+                ).is_file()
+            )
+            self.assertFalse(
+                (target / "signals_candidates" / ".rejected").exists()
             )
             self.assertEqual(
                 [

@@ -10,7 +10,14 @@ invocation but cannot enlarge the contract total across resumes.
 
 History import preserves one source namespace and exact pointer-reachable
 Registry, usage, experiment, and memory hashes. It never imports staged or
-rejected work as completed history. The initial seed hash is checked once;
+rejected work as completed history. Provisional residents are the one
+exception to dropping staged work: the history manifest carries the source's
+`signals_candidates` tree (excluding the `.rejected` archive) so provisional
+residents and their pooled evaluation history survive workspace succession,
+and the successor enumerates provisional attempts from the namespaced
+imported cycle artifacts plus its own committed cycles — pooled three-zone
+accumulation therefore continues across workspace boundaries instead of
+resetting to zero in every successor. The initial seed hash is checked once;
 subsequent Registry continuity comes from committed cycle state so legitimate
 promotion does not conflict with the frozen seed.
 Learning-event continuity is transitive across execution modes. In addition to
