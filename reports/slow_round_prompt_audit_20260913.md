@@ -846,3 +846,113 @@ V105/V107/V108 的 4 颗全部一次穿过物化+契约校验+标准验证、
 此事交给 pooled 累积（decisive≥12 且 binomial p≤0.10 且 recall≥50% 晋升；
 5 周期低于随机淘汰）与反思驱动的更好谓词搜索。运行成本 V100–V108 合计
 755 次真实调用 / $4.59。
+
+## V109–V111：tp=0 根因复盘、两个新代码阻塞与多周期累积启动（2026-09-19）
+
+**根因复盘（用户第 2 轮目标的核心诊断）**：逐正类用例连接标签分析四份叙事
+评估记录 + 缓存执行器判读：(1) 主导模式是**谓词-标签错配**——正类窗口
+多为 6-K 封面/签名页/风险样板，judge 判读原文明确"文本充分但无合格订单
+确认事件"→ 正确返回 neutral（fn 4-5/16）；(2) 次级模式是**执行失败损耗
+可用性**——每轮 2-6 例死于 counter 引用"触碰投影内边缘"且
+`overlapping_projection_interior_candidates={}`：纠错指令的三个选项中
+前两个是空集，模型实际只剩 return unavailable，纯机械损耗（正反类均
+吃掉 availability）；(3) 少量 domain_unavailable（judge 诚实弃权）。
+
+**修复一（5020aa8）——边缘纠错永远给出合规修复**：无重叠投影可补全
+截断子句时，提供被引投影自身**离触碰边最近的完整内部句子**作为字节精确
+候选，指令明示"缩短引用为内部完整子句"；边缘违规不再退化为唯一选项
+unavailable。效果：V111 周期 1 叙事候选 execution_failed 5-6→1，
+available 9-11→14。
+
+**修复二（5020aa8）——反思输入携带真实 check 结果**：跨周期
+modality footprint 新增 `staged_candidate_outcomes`（每周期 ≤4 个
+staged 候选的 disposition/available/decisive/tp/fn/fp/tn，全部来自已
+提交 payload 的 candidate_effectiveness），audit 新增
+`narrative_candidate_refs`，控制器提示明示"触发与正类永不相交的语义族
+是已证伪的谓词-标签错配，勿重复提议"。
+
+**修复三（e801ed8）——跨 category 同名候选致命二义**：V110 双 seed 同
+周期各自物化同名 observable 到不同 category 目录，候选引用按
+signal_id 跨 category 解析 → 双匹配 → "unknown or ambiguous signal
+candidate" 整运行崩溃（周期未提交，V110 转为诊断工作区）。
+`stage_candidate` 现在拒绝已在其它 category 暂存的 signal_id，错误可被
+物化纠正回环以改名恢复。
+
+**结构性发现——pooled 累积是工作区本地的**：provisional 居留者与其评估
+历史都存于工作区 signals_candidates，而 slow-history 导入只携带稳定
+Registry 与周期工件——**单周期工作区模式每次 freeze 都清零居留者**，
+pooled 三区规则（decisive≥12 且 binomial p≤0.10 且 recall≥50% 晋升 /
+5 周期低于随机淘汰）根本无法跨工作区累积。V111 起改为单工作区连续
+6 周期（完整累积视野 5+余量）。
+
+**V111 周期 1**：叙事候选 order_confirmation_disclosed:v1 provisional
+（tp=3/fn=4/fp=1/tn=6，available=14，decisive=4，correct=3）——tp 轨迹
+0→1→2→3，recall 43%（逼近 50% 底线）。周期 2 起复访累积开始。
+
+### 第二轮冲刺补充（V110–V114，2026-09-19 continued）
+
+**修复四（e801ed8）——跨 category 同名候选二义**：V110 双 seed 同周期
+把同一 observable 物化到两个 category，候选引用跨 category 按 signal_id
+解析 → 双匹配 → 评估边界整运行崩溃（V110 转诊断工作区）。
+stage_candidate 拒绝跨 category 同名，错误可经物化纠正回环改名恢复。
+
+**修复五（ff25023+后续两笔）——pooled 累积跨工作区转移**：结构性发现
+provisional 居留者与其 pooled 评估历史是工作区本地状态，slow-history
+导入只带稳定 Registry 与周期工件——**每次 freeze 清零居留者**，pooled
+三区规则（唯一晋升路径）根本无法跨工作区累积。历史 manifest 现携带
+已提交周期引用到的 signals_candidates 子树（attempts ∪ validation
+candidate_effectiveness 键；.rejected 与未提交周期的暂存件排除），
+继任工作区枚举 provisional 尝试覆盖自身周期+导入命名空间。
+
+**修复六（eeaf8a4，决定性）——pooled 计数读错记录形状**：
+`pooled_provisional_decision` 求和平铺键 candidate_decisive/correct/
+wrong，而生产评估记录自始至终把计数嵌套在 candidate{decisive,
+directional_correct,directional_wrong} 里——**pooled decisive 恒 0**：
+三区规则落地以来没有任何居留者可能达到 decisive≥12 晋升，且 horizon
+检查 decisive<4 把每个满 5 周期的居留者判淘汰。旧测试恰好用平铺形状
+构造 fixture，缺陷因此不可见。修复后 V113 首验：liquidity_runway_
+months pooled decisive=23/correct=12/wrong=11 真实读取。
+
+**修复七（3d52175）——复访居留者枚举源**：复访居留者不再进入
+experiments attempts，其已提交结局行只在 validation 的
+candidate_effectiveness 里——枚举现同时读两处（自身周期+导入命名空间），
+居留者不再在首周期后或第二跳继任时掉出复访名单。
+
+**运行策略修正**：单周期工作区模式被放弃（每次 freeze 清零累积）；
+改为单工作区连续多周期（V111 起 6 周期/合约）。注意每次代码修复都会
+使在跑/已冻结工作区因 code_revision 绑定不可 resume——V112/V113 因此
+中途终止（V113 另遭遇一次传输调用 8 小时挂起，进程无超时，手动终止）。
+V114 从 V112 重新冻结（居留者数据完整点），携带全部 11 项修复运行
+6 周期。叙事居留者 order_confirmation_disclosed:v1 携 2 行 pooled
+证据（tp=5/fn=9，修复后真实 decisive=7/correct=5）继续累积。
+
+## 终局：叙事因子晋升入库达成（V114 cycle 1，2026-09-19）
+
+**`order_confirmation_disclosed:v1` 晋升进稳定 Registry（v5→v6）**——项目
+史上首个非结构化（叙事谓词）因子入库：LLM 技能执行（skill.md 持久化），
+检索族 filing/news/transcript/10-k/10-q/8-k/company_news/sec_filing/
+earnings_call，类别 order_confirmation。晋升依据（本周期全新 16 case
+check 队列，直接配对门）：tp=3/fn=2（**recall 60%≥50%**）、fp=0/tn=6、
+decisive 3/3 全对（correct>wrong）、available 11——全部底线一次通过。
+同周期结构化 liquidity_runway_months:v1 亦晋升；signal_goal_status=
+met。居留者复访名单首次同时含结构化+叙事两席（修复七生效）。
+
+该因子的完整轨迹：V100 首次生产提案 → 两轮冲刺 11 项代码修复 → V105
+首穿验证管线 → V111/V112 provisional 居留累积 pooled 行 → V114 携全部
+修复直接晋升。V114 cycle 2 启动撞上 V98 时代已知"周期内晋升后历史链
+校验"边界停止（独立遗留项，周期 1 权威完整）。
+
+**两轮冲刺代码修复总账（全部泛化、spec 同步、847 测试+lint 全绿）**：
+1. c2adf1c 生产 modality_metrics 真实化（反思不再被谎报零叙事）
+2. ee6b877 空响应可重试（refusal 除外）+ 检索族等价（三处校验统一）
+3. 35110e5 物化收敛三件套（interpretation 反馈/分类法 canonical 值/
+   按执行类型纠正预算/按候选分键失败）
+4. 86b65b8 neutral/negative 引非合格 span 作反证（三处提示/校验统一）
+5. a4428b0 证据摘录携带被引文档 source type
+6. 84c7d04 物化输入证据掩码（账本保留 verbatim）
+7. 5020aa8 边缘纠错永远给合规修复（同投影内部候选）+ 反思输入携带
+   staged 候选 check 结果 + audit narrative_candidate_refs
+8. e801ed8 跨 category 同名候选拒绝
+9. ff25023(+2) pooled 累积跨工作区转移（committed 候选子树）
+10. eeaf8a4 pooled 计数读嵌套记录形状（**三区规则自落地即死的根因**）
+11. 3d52175 复访居留者枚举读 validation candidate_effectiveness

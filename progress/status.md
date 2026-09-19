@@ -1,5 +1,25 @@
 # Status
 
+2026-09-19（晨）**叙事因子晋升入库达成（V114 cycle 1）**：
+`order_confirmation_disclosed:v1`（LLM 技能叙事谓词，检索族 filing/news/
+transcript 等）在 16 个全新 check 上 tp=3/fn=2（recall 60%）、fp=0、
+decisive 3/3 全对，直接配对门晋升进稳定 Registry（v5→v6），skill/
+spec 持久化，signal_goal_status=met——项目史上首个非结构化因子入库。
+第二轮冲刺（V109–V114）新增五项泛化修复：跨 category 同名候选二义
+拒绝（e801ed8）；pooled 累积跨工作区转移（ff25023——居留者与其评估
+历史此前每次 freeze 清零）；**pooled 计数读嵌套记录形状（eeaf8a4——
+三区规则自落地即结构性死亡：pooled decisive 恒 0，任何居留者永不可能
+达 12 晋升、满 5 周期必被误淘汰；旧测试恰用不存在的平铺键构造故不可
+见）**；复访居留者枚举读 validation candidate_effectiveness（3d52175
+——复访者不进 attempts，首周期后/第二跳继任即掉出名单）；边缘纠错
+永远给合规修复+反思输入携带 staged 候选 check 结果（5020aa8）。
+根因复盘：正类 tp≈0 主因是谓词-标签错配（正类窗口多为封面/样板文本，
+judge 判读原文确认"文本充分但无合格事件"），反思输入现已携带
+tp/fn/fp/tn 真实结果引导谓词设计。V114 cycle 2 撞 V98 已知"周期内
+晋升后历史链校验"边界停止（独立遗留项）。累计 14 个生产工作区、
+约 $9、1500+ 真实调用。审计详见 reports/slow_round_prompt_audit_
+20260913.md 末三节。
+
 2026-09-19（凌晨）V100–V108 叙事因子入库冲刺完成：9 轮生产 slow round
 （755 真实调用/$4.59，全部单周期 immutable 工作区迭代）定位并泛化修复
 **六个代码级阻塞**：(1) 生产 modality_metrics 四项硬编码恒 0 且 eligible/
