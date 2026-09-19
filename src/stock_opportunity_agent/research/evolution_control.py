@@ -1680,20 +1680,33 @@ def build_slow_history_manifest(
     # candidates referenced by committed cycle attempts are pointer-reachable;
     # staged work from an unfinished active cycle stays behind.
     committed_candidate_ids: set[str] = set()
+
+    def _note_candidate_ref(candidate_ref: str) -> None:
+        if ":" in candidate_ref:
+            committed_candidate_ids.add(candidate_ref.rsplit(":", 1)[0])
+
     for cycle_id in range(1, completed_slow + 1):
-        experiments_path = (
-            source_root
-            / "experiments"
-            / "cycles"
-            / f"cycle-{cycle_id:04d}"
-            / "slow_experiments.json"
+        cycle_root = (
+            source_root / "experiments" / "cycles" / f"cycle-{cycle_id:04d}"
         )
-        for attempt in dict(_read_json(experiments_path)).get("attempts", ()):
-            if not isinstance(attempt, Mapping):
-                continue
-            candidate_ref = str(attempt.get("candidate_ref") or "")
-            if ":" in candidate_ref:
-                committed_candidate_ids.add(candidate_ref.rsplit(":", 1)[0])
+        for attempt in dict(
+            _read_json(cycle_root / "slow_experiments.json")
+        ).get("attempts", ()):
+            if isinstance(attempt, Mapping):
+                _note_candidate_ref(str(attempt.get("candidate_ref") or ""))
+        # Revisited provisional residents never appear in the attempts list:
+        # their committed evaluations (the rows pooled continuation needs)
+        # live in the validation payload's candidate_effectiveness map.
+        validation = dict(
+            _read_json(cycle_root / "slow_loop_validation.json")
+        )
+        effectiveness = dict(
+            dict(validation.get("validation", {})).get(
+                "candidate_effectiveness", {}
+            )
+        )
+        for candidate_ref in effectiveness:
+            _note_candidate_ref(str(candidate_ref))
     candidate_files: list[dict[str, str]] = []
     candidates_root = source_root / "signals_candidates"
     candidate_paths: tuple[Path, ...] = (
