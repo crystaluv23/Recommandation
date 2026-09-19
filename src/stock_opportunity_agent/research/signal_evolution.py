@@ -4873,9 +4873,11 @@ class SignalEvolutionEngine:
         """New-signal candidates whose latest stored evaluation is provisional.
 
         A resident is any candidate that a committed cycle recorded as
-        provisional, whose signal base is not yet stable, and whose latest
-        immutable evaluation still says provisional (promotions and pooled
-        eliminations overwrite that pointer, so they drop out naturally).
+        provisional — as a new attempt or as a revisited resident whose
+        committed evaluation still says provisional — whose signal base is
+        not yet stable, and whose latest immutable evaluation still says
+        provisional (promotions and pooled eliminations overwrite that
+        pointer, so they drop out naturally).
         """
 
         refs: list[str] = []
@@ -4887,6 +4889,7 @@ class SignalEvolutionEngine:
                     "candidate_ref"
                 ):
                     refs.append(str(attempt["candidate_ref"]))
+            refs.extend(self._provisional_validation_refs(int(item["cycle_id"])))
         refs.extend(self._imported_provisional_refs())
         residents: list[str] = []
         for ref in dict.fromkeys(refs):
@@ -4905,6 +4908,36 @@ class SignalEvolutionEngine:
             if latest.get("effectiveness", {}).get("disposition") == "provisional":
                 residents.append(ref)
         return tuple(residents)
+
+    def _provisional_validation_refs(self, cycle_id: int) -> list[str]:
+        """Provisional refs in one committed cycle's validation payload.
+
+        Revisited residents never re-enter the experiments attempts list;
+        their committed outcome rows live in the cycle's
+        slow_loop_validation candidate_effectiveness map.
+        """
+
+        path = (
+            self.workspace.experiments_root
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_validation.json"
+        )
+        try:
+            payload = _read_json(path)
+        except (OSError, ValueError):
+            return []
+        effectiveness = dict(
+            dict(dict(payload).get("validation", {})).get(
+                "candidate_effectiveness", {}
+            )
+        )
+        return [
+            str(ref)
+            for ref, record in effectiveness.items()
+            if isinstance(record, Mapping)
+            and record.get("disposition") == "provisional"
+        ]
 
     def _imported_provisional_refs(self) -> list[str]:
         """Provisional candidate refs recorded in imported source workspaces.
@@ -4932,6 +4965,24 @@ class SignalEvolutionEngine:
                     "candidate_ref"
                 ):
                     refs.append(str(attempt["candidate_ref"]))
+        for path in sorted(
+            history_root.glob("*/experiments/cycles/*/slow_loop_validation.json")
+        ):
+            try:
+                payload = _read_json(path)
+            except (OSError, ValueError):
+                continue
+            effectiveness = dict(
+                dict(dict(payload).get("validation", {})).get(
+                    "candidate_effectiveness", {}
+                )
+            )
+            refs.extend(
+                str(ref)
+                for ref, record in effectiveness.items()
+                if isinstance(record, Mapping)
+                and record.get("disposition") == "provisional"
+            )
         return refs
 
     def _apply_pooled_provisional_decision(
