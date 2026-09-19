@@ -1,0 +1,9 @@
+{
+  "pid": 37235,
+  "started_at": "2026-09-19T20:01:41.449160+00:00",
+  "contract_hash": "d118ffd3c565ebfc84d4520f77f13921581e2b8aefef1a3cb601d6fb9a57f163",
+  "log": "/Users/l/Project/Recommandation/.delegation/fast-slow-20260919/v120/cycle.log",
+  "seed_diff": [
+    "scan_summary"
+  ]
+}

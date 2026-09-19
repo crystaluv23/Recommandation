@@ -1,0 +1,16 @@
+{
+  "attempts": 115,
+  "actual_cost": "0.3589286400000000344",
+  "last_attempt": {
+    "attempt_id": 115,
+    "request_hash": "58b209bb90154c540111a630044d57e0ce0a4529130cde5ef8fb8f0841a623d6",
+    "reserved_cost": 0.0138446,
+    "started_at": "2026-09-19T20:15:35.210193+00:00",
+    "status": "in_progress"
+  },
+  "remaining_attempts": 2342,
+  "remaining_actual_cost_budget": "17.9407559599999998146",
+  "note": "V120 interrupted on confirmed hidden validation defect, not elapsed timeout. Account any interrupted reserved request conservatively before successor.",
+  "unsettled_interrupted_reserve": "0.0138446",
+  "conservative_remaining_cost_budget": "17.9269113599999998146"
+}

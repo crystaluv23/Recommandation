@@ -1,0 +1,4 @@
+# V121 prepared only
+Requires accepted round17/18 repairs, independent boundary probes and original V120 replay, focused/full/lint, then source checkpoint. Preserve V117–V120 frozen evidence; V120 exit130 was an intentional correctness stop, not time limit. No production active while ZCode writes.
+
+Same fast_then_slow models/cohort/dataset/v6 registry/V115 history; max2342attempts/$17.92691135 conservatively deducts V120's115attempts, actual$.35892864 and unsettled interrupted reservation$.0138446 from cumulative remaining budget. No elapsed deadline. Freeze new workspace only after source accepted, compare full contracts/actualseed. One real joint cycle; inspect authoritative Fast/Slow pointers and causal prompt/context/action lineage. Do not mark complete for local tests or rejected Fast.

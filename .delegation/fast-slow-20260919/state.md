@@ -39,3 +39,15 @@ Round16 running exec96145/PID32028, brief/report/status under round16. Unify exp
 
 ## Round16 accepted locally; V120 ready to freeze
 Round16 normal API turn.completed1463.9seconds, no timeout.34focused/899full tests+lintPASS. Independent raw request177 replay preserves exactly baselinebeliefs0,1,3,5,6,7 (original request exists; overrides report reconstruction caveat). Production permissions negative/positive probes pass. Wynn202/203 parser replay is model-view-batch reconstruction; live successor required. No active external writer or production process. Commit accepted source then freezeV120 with2457attempts/$18.29968459. Main goal incomplete.
+
+## V120 live
+Code checkpointcacf8eb3b9549ea2152d302a7a2c27a3698ddf13; contractd118ffd3c565ebfc84d4520f77f13921581e2b8aefef1a3cb601d6fb9a57f163. PID37235/exec40867 started2026-09-19T20:01:41UTC. Fast proposal20:03:27UTC, now researching cases. Models/dataset/history/registry/actualseed unchanged; seedmanifest only scan_summary. No external writer; keep source andHEAD fixed until live run ends. Remaining run cap2457/$18.29968459. Pointers still0/0; acceptance pending.
+
+## V120 interrupted; round17 running
+V120 stopped ownedgroupSIGINT, exit130/interrupted_resumable on confirmed hidden Basic literal identity defect in LifeTime raw95. Numeric assertion error masks independent literal mutation throughout correction; final fallback exposes plain ValidationError too late. Firstcandidatefailedcase5; secondcandidatepartial. No timeout. Pointers0/0, noSlow. See v120/c01-case5-rejection.json andbudget.json. Round17 running exec5346/PID37971; brief/report/APIstatus inround17. One externalwriter; no production. Repair aggregate/actionable evidence feedback and exact-safe preservation then fresh live successor.
+
+## Round17 reported; round18 running
+Round17 normal API turn.completed1289.5s,41focused/906full/lintPASS. Independent review rejects literal-only fallback premature return and empty-prior-Basic feedback omission; require explicit remove guard in newfallbackbranches. Round18 running exec48094/PID41858, tiny boundary repair task underround18. No productionactive. Remaining2342attempts/$17.92691135 conservative inclV120 interruptedreserve$.0138446. V121 prepared only,NOTfrozen.
+
+## Round18 locally accepted; V121 freeze next
+Normal turn.completed457seconds,45focused/910full/lintPASS, original-wire+boundary replaysPASS. Independent exact-restoration/empty-prior/no-remove probesPASS; finaldiffreviewed. Round17–18 accepted locally; no activewriter/production. Commit beforeV121freeze. Goal incomplete.

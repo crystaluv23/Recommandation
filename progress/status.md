@@ -1,5 +1,47 @@
 # Status
 
+2026-09-20（round-18）**身份反馈边界收尾：仅复原型进度、无 prior Basic 映射的新 ref、移除授权**：
+round-17 通过独立评审后，Codex 指出两个具体边界遗漏与一处权限缺口，本轮仅修复这三点。
+（1）`_research_state_evidence_grounding_fallback` 中仅含 basic_literal_identity_mismatch
+的义务集（有 literal_restorations、无 removal_paths）被 `if not removal_paths: return None`
+整体拒绝——现允许仅复原型进度，复原前对索引越界与目标行类型（basic_info Mapping）做
+安全校验，结果仍经生产 parser 全量再验证后接受，混合复原+移除路径不变。
+（2）`_raw_basic_literal_identity_issues` 的 `if not prior_literals: return []` 在
+prior 非空但只有 signal 证据（证据生命周期后可能）时压制一切新 Basic ref——现对真正
+新 ref 照常输出 remove-only 类型化义务；previous_state=None（initialize）仍豁免。
+（3）两个 remove-only 身份码（basic_ref_not_in_prior_state / basic_literal_identity_ambiguous）
+的 fallback 分支原先运行在通用 `remove in allowed_repairs` 守卫之前——现显式要求 remove
+授权才驱逐行，replace-only/add-only 义务不移除；既有复原分支保持 replace-only。
+规格先行同步两份 owning spec。新增 4 条回归（先运行记录修复前失败：仅复原被拒、
+signal-only prior 返回 []、无 remove 授权仍驱逐）。round-18/replay.py 原样导入并重放
+round-17 原始 wire 复放（A/B1-B3 全过）并追加 R1-R3 fixture 检查。910 测试（906+4）
++ lint + replay exit 0（按本轮 brief 不 commit；batch 重建局限保持明示）。
+
+2026-09-20（round-17）**V120 LifeTime 反射链 Basic 字面身份缺陷：初始反馈聚合 + 确定性复原**：
+V120 c01 case5 raw95 把 prior 1718 字符的 8-K Basic 字面删改为 1704（纠正后进一步
+1697），该独立缺陷在 raw 校验层不可见，仅在断言类 structured issue 全部消化、预算
+耗尽、fallback 移除 unsupported 断言后才以深层 plain ValidationError（"reflect
+cannot introduce a new Basic Info ref"）暴露——纠正反馈从未提及，模型无从修复。
+修复（spec 先行，evolution_research_validation.md / evolution_output_validation.md）：
+新增 `_raw_basic_literal_identity_issues` 在 raw 聚合层与数量/断言 issue 同批输出——
+同 projection_id 在 prior 仅有唯一字面时发 replace-only 的
+basic_literal_identity_mismatch（repair_context 携带精确 prior 字面为复原候选），
+多义字面或 prior 不存在的 pid 只给 remove-only 行级义务（不授权发明或歧义替换）；
+深层 tagged-ref 守卫语义不变。确定性 fallback 新增两类分支：唯一锚定身份义务按
+prior_exact_text 逐字节复原（以 normalized_paths 上报），显式 remove 义务行按既有
+链接清理逻辑移除；其余无确定性修复的情形仍整体拒绝。断言类指令删除超出
+replace/remove 实际权限的 "split the assertion" 表述（一拆多属追加、需独立 add
+授权，round-16 已禁止隐式一拆多）。新增 7 条回归：双义务同批初始反馈、合规纠正经
+生产 parser 接受且未提及兄弟逐字保留、改 claim/全新 Basic ref/歧义 prior 替换
+fail-closed（拒绝或投影丢弃/确定性驱逐，绝不进入最终态）、signal 行不进入身份检查、
+fallback 复原+授权移除。round-17/replay.py 以原始 wire（requests/ 与 cache/responses/
+按 request_hash 关联 attempts.json）精确复放 raw95/96：初始反馈同时含
+assertion_without_support 与 basic_literal_identity_mismatch（1718 字面候选），
+原始 96→96 缓存重放链 3 次调用后 fallback 将字面复原为 1718 且仅做义务授权的移除；
+合规两步纠正链被完整接受（8 证据/7 beliefs、字面逐字节、其余字段与 output95 一致）。
+906 测试 + lint + replay exit 0（按本轮 brief 不 commit；主目标仍需独立验收后冻结
+新联跑）。
+
 2026-09-20（round-16）**列表路径统一“按成员、按操作”权限 + V119 原始全量复放**：
 round-15 独立评审的原序纯删除反例（replace-only `rows[0]`，纠正返回原序去掉该
 成员、兄弟全保留）在 RAW drift 检查层即被放行——三处并行且不一致的成员检查

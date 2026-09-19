@@ -2627,6 +2627,7 @@ def _research_state_evidence_grounding_fallback(
     removal_paths: list[str] = []
     linked_removal_paths: list[str] = []
     evidence_indices_to_remove: set[int] = set()
+    literal_restorations: list[tuple[int, str]] = []
     for obligation in obligations:
         if not isinstance(obligation, Mapping):
             return None
@@ -2639,8 +2640,46 @@ def _research_state_evidence_grounding_fallback(
             or not isinstance(must_change_paths, list)
             or not isinstance(dependent_paths, list)
             or not isinstance(allowed_repairs, list)
-            or "remove" not in allowed_repairs
         ):
+            return None
+        if issue_code == "basic_literal_identity_mismatch":
+            if (
+                allowed_repairs != ["replace"]
+                or len(must_change_paths) != 1
+                or not isinstance(must_change_paths[0], str)
+                or dependent_paths
+            ):
+                return None
+            literal_match = re.fullmatch(
+                r"supporting_evidence\[(\d+)\]\.exact_text",
+                must_change_paths[0],
+            )
+            prior_text = obligation.get("prior_exact_text")
+            if literal_match is None or not isinstance(prior_text, str):
+                return None
+            literal_restorations.append(
+                (int(literal_match.group(1)), prior_text)
+            )
+            continue
+        if issue_code in (
+            "basic_ref_not_in_prior_state",
+            "basic_literal_identity_ambiguous",
+        ):
+            if (
+                "remove" not in allowed_repairs
+                or len(must_change_paths) != 1
+                or not isinstance(must_change_paths[0], str)
+                or dependent_paths
+            ):
+                return None
+            row_match = re.fullmatch(
+                r"supporting_evidence\[(\d+)\]", must_change_paths[0]
+            )
+            if row_match is None:
+                return None
+            evidence_indices_to_remove.add(int(row_match.group(1)))
+            continue
+        if "remove" not in allowed_repairs:
             return None
         if issue_code == "claim_quantity_not_supported":
             if not must_change_paths:
@@ -2709,6 +2748,13 @@ def _research_state_evidence_grounding_fallback(
     evidence = failed_output.get("supporting_evidence")
     if not isinstance(evidence, list):
         return None
+    for evidence_index, _prior_text in literal_restorations:
+        if (
+            evidence_index >= len(evidence)
+            or not isinstance(evidence[evidence_index], Mapping)
+            or evidence[evidence_index].get("kind") != "basic_info"
+        ):
+            return None
     for evidence_index in sorted(evidence_indices_to_remove):
         if evidence_index >= len(evidence):
             return None
@@ -2737,7 +2783,7 @@ def _research_state_evidence_grounding_fallback(
 
     removal_paths.extend(linked_removal_paths)
     removal_paths = list(dict.fromkeys(removal_paths))
-    if not removal_paths:
+    if not removal_paths and not literal_restorations:
         return None
     removals_by_field: dict[str, set[int]] = {}
     for path in removal_paths:
@@ -2752,6 +2798,11 @@ def _research_state_evidence_grounding_fallback(
         removals_by_field.setdefault(field_name, set()).add(index)
 
     grounded = deepcopy(dict(failed_output))
+    for evidence_index, prior_text in literal_restorations:
+        item = grounded["supporting_evidence"][evidence_index]
+        if not isinstance(item, Mapping) or item.get("kind") != "basic_info":
+            return None
+        item["exact_text"] = prior_text
     for field_name, indices in removals_by_field.items():
         items = grounded.get(field_name)
         if not isinstance(items, list):
@@ -2764,6 +2815,10 @@ def _research_state_evidence_grounding_fallback(
     return grounded, {
         "source_substitution_paths": (),
         "removed_paths": tuple(removal_paths),
+        "normalized_paths": tuple(
+            f"supporting_evidence[{evidence_index}].exact_text"
+            for evidence_index, _prior_text in literal_restorations
+        ),
     }
 
 

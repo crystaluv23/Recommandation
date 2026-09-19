@@ -1,0 +1,41 @@
+{
+  "changed_fields": [
+    "code_revision",
+    "created_at",
+    "max_external_attempts",
+    "max_total_cost",
+    "raw_info_inventory_hash",
+    "run_id",
+    "seed_pool_manifest_hash"
+  ],
+  "values": {
+    "code_revision": {
+      "prior": "c0a5bc2d18899e0bb293dcab460ed7996e7018f1",
+      "new": "cacf8eb3b9549ea2152d302a7a2c27a3698ddf13"
+    },
+    "max_total_cost": {
+      "prior": 18.95184855,
+      "new": 18.29968459
+    },
+    "max_external_attempts": {
+      "prior": 2661,
+      "new": 2457
+    },
+    "created_at": {
+      "prior": "2026-09-19T18:27:06.211876+00:00",
+      "new": "2026-09-19T20:01:00.702132+00:00"
+    },
+    "seed_pool_manifest_hash": {
+      "prior": "f81b54e72a3d7b929f617a087dd5ebffadc7b292f0e248c91dc279ebd5814fe5",
+      "new": "05d248d0a456c75848323ff6cf0fac512312f73560bb8a68d16becc1fc28a27e"
+    },
+    "raw_info_inventory_hash": {
+      "prior": "d9f6d777f787edec11dd28ba2566d91f69f23e124604ed095490a54d674fdf3d",
+      "new": "47169aabfd6405ddec02889dacf43391d196d9d5031c431254168e365ac5a775"
+    },
+    "run_id": {
+      "prior": "information-evolution-dual-self-evolution-20260920-v119",
+      "new": "information-evolution-dual-self-evolution-20260920-v120"
+    }
+  }
+}

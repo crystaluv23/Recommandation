@@ -93,3 +93,27 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   requesting another still rejects. Genuine baseline/date/current-price/
   definition and scalar price-lookup rejection, and all point-in-time
   future-fact rejection, keep their semantics.
+- Reflect-phase raw validation is identity-aware for Basic Info evidence
+  before tagged-ref construction: every returned `basic_info` row must
+  reproduce byte-for-byte one prior-state Basic ref with the same
+  `projection_id`. A mutated literal is reported as a typed obligation
+  together with every other independently decidable raw issue (Basic
+  quantity groups, quantitative assertion links) in the same initial
+  correction feedback, so no independent defect stays hidden behind
+  another until the correction budget is gone and only a plain
+  construction error remains. When the prior state holds exactly one
+  distinct literal for that projection, the obligation is replace-only
+  and carries that exact prior literal as the restoration candidate;
+  when it holds several distinct literals, or the projection is absent
+  from the prior state — including a non-null prior state that carries no
+  Basic refs at all, as can exist after the evidence lifecycle — no
+  substitution is authorized and the only repair is removing that row —
+  invented or ambiguous evidence is never
+  accepted, and the deeper tagged-ref construction guard keeps its
+  unchanged fail-closed semantics as the final boundary. The initialize
+  phase (no previous state) stays outside this identity check.
+- Quantitative assertion obligations describe exactly their machine
+  authority: `replace` one assertion with one exact accepted claim or
+  `remove` the unsupported numeric detail. They never suggest splitting
+  one assertion into multiple rows; a one-to-many split is an append and
+  requires its own explicit bounded add authority.

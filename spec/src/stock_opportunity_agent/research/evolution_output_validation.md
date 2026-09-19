@@ -42,6 +42,24 @@ discovered projection is a stall defect. When no safe projection exists, the
 original invalid object and its original obligations are retained unchanged
 for the retry.
 
+When the correction budget is exhausted, the deterministic
+evidence-grounding fallback may restore the exact prior literal named by a
+uniquely anchored Basic literal identity obligation (replace-only authority
+plus an exact prior literal in its repair context) and may remove rows whose
+obligations carry explicit remove authority; restored literal paths are
+reported as normalized paths. A literal restoration alone is still
+progress: an obligation set with only identity restorations and no
+authorized removals is repaired, after safely validating the restoration
+index and the target row's type against the failed output. The remove-only
+identity codes (novel Basic ref, ambiguous prior literal) evict their named
+row only when their own obligation carries remove authority; a
+replace-only or add-only obligation of those codes removes nothing. Every
+fallback result is accepted only after revalidation through the production
+parser. It still declines every obligation without
+such a deterministic repair, so ambiguous literal substitution, invented
+Basic refs, and any unanchored edit fail closed instead of being silently
+accepted.
+
 Field and member granularity is preserved at every path-expansion step. A
 leaf path `root[i].field` authorizes only that field of its member; it never
 authorizes rewriting sibling fields, replacing the whole member, inserting

@@ -1356,6 +1356,7 @@ def _normalize_research_state_output(
     typed_issues = list(structured_preissues)
     typed_issues.extend(_raw_basic_claim_quantity_issues(normalized))
     typed_issues.extend(_raw_quantitative_assertion_link_issues(normalized))
+    typed_issues.extend(_raw_basic_literal_identity_issues(normalized, previous_state))
     if typed_issues:
         raise StructuredValidationError(typed_issues)
     normalized["supporting_evidence"] = normalized_evidence
@@ -1524,7 +1525,7 @@ def _raw_quantitative_assertion_link_issues(
                 "supporting_evidence claim byte-for-byte, invalid_fields="
                 f"{invalid_paths}. For every named path, "
                 "replace it with one exact accepted claim, attach literals to that "
-                "same exact claim, split the assertion, or remove unsupported "
+                "same exact claim, or remove unsupported "
                 "numeric detail. Numbers from unrelated claims do not count"
             ),
             paths=tuple(invalid_paths),
@@ -1532,6 +1533,97 @@ def _raw_quantitative_assertion_link_issues(
             repair_context={"invalid_fields": invalid_paths},
         )
     ]
+
+
+def _raw_basic_literal_identity_issues(
+    value: Mapping[str, Any],
+    previous_state: ResearchState | None,
+) -> list[ValidationIssue]:
+    """Surface Basic literal identity defects with the other raw issues.
+
+    The tagged-ref construction guard stays the final boundary; this raw
+    check makes a mutated or invented Basic literal correctable in the same
+    initial feedback as quantity and assertion defects instead of surfacing
+    as a plain construction error after the correction budget is gone.
+    """
+
+    if previous_state is None:
+        return []
+    prior_literals: dict[str, set[str]] = {}
+    for item in previous_state.supporting_evidence:
+        if isinstance(item, ResearchEvidenceRef) and item.kind == "basic_info":
+            prior_literals.setdefault(str(item.projection_id), set()).add(
+                str(item.exact_text)
+            )
+    evidence = value.get("supporting_evidence")
+    if not isinstance(evidence, list):
+        return []
+    issues: list[ValidationIssue] = []
+    for index, item in enumerate(evidence):
+        if not isinstance(item, Mapping) or item.get("kind") != "basic_info":
+            continue
+        projection_id = item.get("projection_id")
+        exact_text = item.get("exact_text")
+        if not all(isinstance(entry, str) for entry in (projection_id, exact_text)):
+            continue
+        literals = prior_literals.get(projection_id)
+        if literals is None:
+            issues.append(
+                ValidationIssue(
+                    code="basic_ref_not_in_prior_state",
+                    message=(
+                        f"supporting_evidence[{index}] cites Basic Info "
+                        f"projection {projection_id!r} that is absent from the "
+                        "prior research state; reflect cannot introduce a new "
+                        "Basic Info ref. Remove this evidence item; inventing or "
+                        "substituting another ref is not authorized"
+                    ),
+                    paths=(f"supporting_evidence[{index}]",),
+                    allowed_repairs=("remove",),
+                    repair_context={"projection_id": projection_id},
+                )
+            )
+            continue
+        if exact_text in literals:
+            continue
+        if len(literals) == 1:
+            prior_text = next(iter(literals))
+            issues.append(
+                ValidationIssue(
+                    code="basic_literal_identity_mismatch",
+                    message=(
+                        f"supporting_evidence[{index}].exact_text for projection "
+                        f"{projection_id!r} differs from the single prior exact "
+                        f"literal (returned {len(exact_text)} characters, prior "
+                        f"{len(prior_text)} characters). Restore the prior "
+                        "exact_text byte-for-byte; no other edit to this ref is "
+                        "authorized"
+                    ),
+                    paths=(f"supporting_evidence[{index}].exact_text",),
+                    allowed_repairs=("replace",),
+                    repair_context={
+                        "projection_id": projection_id,
+                        "prior_exact_text": prior_text,
+                    },
+                )
+            )
+        else:
+            issues.append(
+                ValidationIssue(
+                    code="basic_literal_identity_ambiguous",
+                    message=(
+                        f"supporting_evidence[{index}].exact_text for projection "
+                        f"{projection_id!r} matches none of the multiple distinct "
+                        "prior exact literals recorded for that projection; "
+                        "substitution would be ambiguous. Remove this evidence "
+                        "item"
+                    ),
+                    paths=(f"supporting_evidence[{index}]",),
+                    allowed_repairs=("remove",),
+                    repair_context={"projection_id": projection_id},
+                )
+            )
+    return issues
 
 
 def _basic_projection_texts(basic_info: Mapping[str, Any]) -> dict[str, str]:
@@ -2010,8 +2102,7 @@ def _validate_assertive_state_claim_links(
                 "quantitative ResearchState assertions must copy one accepted "
                 "supporting_evidence claim byte-for-byte, invalid_fields="
                 f"{invalid_paths}. Attach every literal "
-                "needed by that exact claim, split a composite assertion into "
-                "separately supported claims, or remove the unsupported numeric "
+                "needed by that exact claim, or remove the unsupported numeric "
                 "detail. Numbers from unrelated claims do not count"
             ),
             paths=tuple(invalid_paths),

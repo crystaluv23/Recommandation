@@ -3,6 +3,600 @@
 from tests.evolution_runtime_test_support import *  # noqa: F403
 
 
+class ReflectBasicLiteralIdentityTests(TestCase):
+    PRIOR_STATE = {
+        "contradictions": [],
+        "current_beliefs": [
+            "The filing identifies the registrant.",
+            "cash_reserves=42",
+        ],
+        "decision": "continue",
+        "hypotheses": ["One hypothesis."],
+        "next_information_needs": ["Need one?"],
+        "open_questions": [],
+        "resolved_questions": ["Resolved one."],
+        "supporting_evidence": [
+            {
+                "claim": "The filing identifies the registrant.",
+                "exact_text": "8-K body with 17 CFR 230.425 and 17 CFR 240.14a-12 markers",
+                "kind": "basic_info",
+                "projection_id": "projection_lit_a",
+            },
+            {
+                "claim": "cash_reserves=42",
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "kind": "signal",
+                "signal_ref": "cash_reserves:v1",
+            },
+        ],
+    }
+    EVALUATION_CONTEXT = {
+        "prediction_time": "2025-03-31T00:00:00+00:00",
+        "horizon": "six_calendar_months",
+        "horizon_end": "2025-09-30",
+    }
+
+    def _invalid_output(self) -> dict:
+        from copy import deepcopy
+
+        value = deepcopy(self.PRIOR_STATE)
+        value["current_beliefs"][1] = "revenue_growth_yoy=0.182443"
+        value["supporting_evidence"][0]["exact_text"] = (
+            "8-K body with 230.425 and 17 CFR 240.14a-12 markers"
+        )
+        return value
+
+    def _make_parser(self, prior: ResearchState):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _validate_research_state_refs,
+        )
+
+        def parse(value):
+            normalized = _normalize_research_state_output(
+                dict(value),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+            return _validate_research_state_refs(
+                ResearchState.from_dict(normalized),
+                phase="reflect",
+                previous_state=prior,
+            )
+
+        return parse
+
+    def _run_role(self, caller, prior: "ResearchState | None" = None):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        if prior is None:
+            prior = ResearchState.from_dict(self.PRIOR_STATE)
+        return evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=self._make_parser(prior),
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
+            stable_correction_prefix=True,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
+        )
+
+    def test_initial_feedback_carries_assertion_and_literal_identity(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+        )
+
+        prior = ResearchState.from_dict(self.PRIOR_STATE)
+        with self.assertRaises(StructuredValidationError) as raised:
+            _normalize_research_state_output(
+                dict(self._invalid_output()),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+        codes = {issue.code for issue in raised.exception.issues}
+        self.assertEqual(
+            codes,
+            {"assertion_without_support", "basic_literal_identity_mismatch"},
+        )
+        identity = next(
+            issue
+            for issue in raised.exception.issues
+            if issue.code == "basic_literal_identity_mismatch"
+        )
+        self.assertEqual(identity.paths, ("supporting_evidence[0].exact_text",))
+        self.assertEqual(identity.allowed_repairs, ("replace",))
+        self.assertEqual(
+            identity.repair_context["prior_exact_text"],
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+
+    def test_identity_correction_accepted_with_siblings_preserved(self) -> None:
+        from copy import deepcopy
+
+        invalid = self._invalid_output()
+        corrected = deepcopy(invalid)
+        corrected["supporting_evidence"][0]["exact_text"] = self.PRIOR_STATE[
+            "supporting_evidence"
+        ][0]["exact_text"]
+        corrected["current_beliefs"].pop(1)
+        caller = ScriptedRoleCaller([invalid, corrected])
+        value, _ = self._run_role(caller)
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        codes = sorted(
+            obligation["issue_code"] for obligation in feedback["obligations"]
+        )
+        self.assertEqual(
+            codes,
+            ["assertion_without_support", "basic_literal_identity_mismatch"],
+        )
+        self.assertEqual(
+            [str(item) for item in value.current_beliefs],
+            corrected["current_beliefs"],
+        )
+        self.assertEqual(
+            value.supporting_evidence[0].exact_text,
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+        self.assertEqual(value.supporting_evidence[1].claim, "cash_reserves=42")
+        self.assertEqual(
+            [str(item) for item in value.next_information_needs],
+            ["Need one?"],
+        )
+        self.assertEqual([str(item) for item in value.hypotheses], ["One hypothesis."])
+        self.assertEqual(
+            [str(item) for item in value.resolved_questions],
+            ["Resolved one."],
+        )
+
+    def test_claim_change_alongside_restored_literal_is_rejected(self) -> None:
+        from copy import deepcopy
+
+        invalid = self._invalid_output()
+        corrected = deepcopy(invalid)
+        corrected["supporting_evidence"][0]["exact_text"] = self.PRIOR_STATE[
+            "supporting_evidence"
+        ][0]["exact_text"]
+        corrected["supporting_evidence"][0]["claim"] = "Rewritten claim."
+        corrected["current_beliefs"].pop(1)
+        caller = ScriptedRoleCaller([invalid, corrected])
+        try:
+            value, _ = self._run_role(caller)
+        except CandidateExecutionRejected:
+            return
+        # When a safe projection accepts the authorized repairs, the unrelated
+        # claim rewrite must be discarded, never laundered into the final state.
+        first = value.supporting_evidence[0].to_dict()
+        self.assertEqual(first["claim"], "The filing identifies the registrant.")
+        self.assertEqual(
+            first["exact_text"],
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+        self.assertEqual(
+            [str(item) for item in value.current_beliefs],
+            ["The filing identifies the registrant."],
+        )
+
+    def test_truly_new_basic_ref_is_remove_only_and_never_accepted(self) -> None:
+        from copy import deepcopy
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_basic_literal_identity_issues,
+        )
+
+        prior = ResearchState.from_dict(self.PRIOR_STATE)
+        invented = deepcopy(self._invalid_output())
+        invented["supporting_evidence"][0] = {
+            "claim": "Invented basic claim.",
+            "exact_text": "invented literal",
+            "kind": "basic_info",
+            "projection_id": "projection_invented",
+        }
+        issues = _raw_basic_literal_identity_issues(invented, prior)
+        self.assertEqual(
+            [(issue.code, issue.paths, issue.allowed_repairs) for issue in issues],
+            [
+                (
+                    "basic_ref_not_in_prior_state",
+                    ("supporting_evidence[0]",),
+                    ("remove",),
+                )
+            ],
+        )
+        caller = ScriptedRoleCaller([invented, deepcopy(invented)])
+        try:
+            value, _ = self._run_role(caller)
+        except CandidateExecutionRejected:
+            return
+        # When the machinery accepts through projection plus deterministic
+        # fallback, the invented ref must never survive into the final state
+        # and no fabricated literal may remain.
+        final_rows = [
+            row.to_dict() if hasattr(row, "to_dict") else dict(row)
+            for row in value.supporting_evidence
+        ]
+        prior_literal = self.PRIOR_STATE["supporting_evidence"][0]["exact_text"]
+        self.assertTrue(
+            all(row.get("projection_id") != "projection_invented" for row in final_rows)
+        )
+        for row in final_rows:
+            if row.get("kind") == "basic_info":
+                self.assertEqual(row.get("exact_text"), prior_literal)
+        self.assertFalse(
+            any(
+                "revenue_growth_yoy" in str(item)
+                for item in value.current_beliefs
+            )
+        )
+
+    def test_ambiguous_prior_literal_permits_removal_not_substitution(self) -> None:
+        from copy import deepcopy
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _raw_basic_literal_identity_issues,
+        )
+
+        prior_dict = deepcopy(self.PRIOR_STATE)
+        prior_dict["supporting_evidence"].append(
+            {
+                "claim": "The filing identifies the registrant.",
+                "exact_text": "another distinct prior literal",
+                "kind": "basic_info",
+                "projection_id": "projection_lit_a",
+            }
+        )
+        prior = ResearchState.from_dict(prior_dict)
+        invalid = deepcopy(prior_dict)
+        invalid["supporting_evidence"][0]["exact_text"] = "a third mutated literal"
+        issues = _raw_basic_literal_identity_issues(invalid, prior)
+        self.assertEqual(
+            [(issue.code, issue.allowed_repairs) for issue in issues],
+            [("basic_literal_identity_ambiguous", ("remove",))],
+        )
+        with self.assertRaises(StructuredValidationError) as raised:
+            _normalize_research_state_output(
+                dict(invalid),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+        self.assertIn(
+            "basic_literal_identity_ambiguous",
+            {issue.code for issue in raised.exception.issues},
+        )
+        substituted = deepcopy(invalid)
+        substituted["supporting_evidence"][0]["exact_text"] = (
+            "another distinct prior literal"
+        )
+        prior_literals = {
+            row["exact_text"]
+            for row in prior_dict["supporting_evidence"]
+            if row.get("kind") == "basic_info"
+        }
+        for variant in (substituted, None):
+            if variant is None:
+                variant = deepcopy(invalid)
+                del variant["supporting_evidence"][0]
+            caller = ScriptedRoleCaller([invalid, variant])
+            try:
+                value, _ = self._run_role(caller, prior)
+            except CandidateExecutionRejected:
+                continue
+            # A substitution under remove-only authority is never laundered
+            # into new content: every surviving Basic literal stays a byte
+            # exact prior literal and the mutated one is gone.
+            final_literals = [
+                row.to_dict()["exact_text"]
+                for row in value.supporting_evidence
+                if row.to_dict().get("kind") == "basic_info"
+            ]
+            self.assertTrue(
+                all(literal in prior_literals for literal in final_literals)
+            )
+            self.assertNotIn("a third mutated literal", final_literals)
+
+    def test_signal_rows_are_outside_basic_identity_checks(self) -> None:
+        from copy import deepcopy
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_basic_literal_identity_issues,
+        )
+
+        prior = ResearchState.from_dict(self.PRIOR_STATE)
+        output = self._invalid_output()
+        output["supporting_evidence"][1]["claim"] = "Signal view text."
+        issues = _raw_basic_literal_identity_issues(output, prior)
+        self.assertEqual(
+            [(issue.code, issue.paths) for issue in issues],
+            [
+                (
+                    "basic_literal_identity_mismatch",
+                    ("supporting_evidence[0].exact_text",),
+                )
+            ],
+        )
+
+    def test_fallback_restores_prior_literal_and_removes_assertion(self) -> None:
+        from copy import deepcopy
+
+        invalid = self._invalid_output()
+        still_invalid = deepcopy(invalid)
+        still_invalid["supporting_evidence"][0]["exact_text"] = (
+            "8-K body with 230.425 and 240.14a-12 markers"
+        )
+        caller = ScriptedRoleCaller([invalid, still_invalid])
+        caller.max_structured_corrections = 1
+        events: list[dict] = []
+        caller.on_progress = events.append
+        value, _ = self._run_role(caller)
+        self.assertEqual(
+            value.supporting_evidence[0].exact_text,
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+        self.assertEqual(
+            [str(item) for item in value.current_beliefs],
+            ["The filing identifies the registrant."],
+        )
+        fallback_events = [
+            event
+            for event in events
+            if event["event_type"] == "structured_validation_fallback_applied"
+        ]
+        self.assertEqual(len(fallback_events), 1)
+        self.assertIn("current_beliefs[1]", fallback_events[0]["removed_paths"])
+        self.assertIn(
+            "supporting_evidence[0].exact_text",
+            fallback_events[0]["normalized_paths"],
+        )
+
+    def test_literal_only_identity_fallback_restores_without_removals(self) -> None:
+        from copy import deepcopy
+
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+        )
+
+        prior = ResearchState.from_dict(self.PRIOR_STATE)
+        invalid = deepcopy(self.PRIOR_STATE)
+        invalid["supporting_evidence"][0]["exact_text"] = (
+            "8-K body with 230.425 and 17 CFR 240.14a-12 markers"
+        )
+        with self.assertRaises(StructuredValidationError) as raised:
+            _normalize_research_state_output(
+                dict(invalid),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+        self.assertEqual(
+            {issue.code for issue in raised.exception.issues},
+            {"basic_literal_identity_mismatch"},
+        )
+        recovered = _research_state_evidence_grounding_fallback(
+            invalid, raised.exception
+        )
+        self.assertIsNotNone(recovered)
+        restored, actions = recovered
+        self.assertEqual(actions["removed_paths"], ())
+        self.assertEqual(
+            actions["normalized_paths"], ("supporting_evidence[0].exact_text",)
+        )
+        self.assertEqual(
+            restored["supporting_evidence"][0]["exact_text"],
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+        self.assertEqual(
+            restored["current_beliefs"], self.PRIOR_STATE["current_beliefs"]
+        )
+
+        # The production caller accepts the restoration only after full
+        # parser revalidation, with every untouched sibling preserved.
+        caller = ScriptedRoleCaller([invalid, deepcopy(invalid)])
+        caller.max_structured_corrections = 1
+        events: list[dict] = []
+        caller.on_progress = events.append
+        value, _ = self._run_role(caller)
+        self.assertEqual(
+            value.supporting_evidence[0].exact_text,
+            self.PRIOR_STATE["supporting_evidence"][0]["exact_text"],
+        )
+        self.assertEqual(value.supporting_evidence[1].claim, "cash_reserves=42")
+        self.assertEqual(
+            [str(item) for item in value.current_beliefs],
+            self.PRIOR_STATE["current_beliefs"],
+        )
+        self.assertEqual(
+            [str(item) for item in value.next_information_needs], ["Need one?"]
+        )
+        self.assertEqual(
+            [str(item) for item in value.hypotheses], ["One hypothesis."]
+        )
+        self.assertEqual(
+            [str(item) for item in value.resolved_questions], ["Resolved one."]
+        )
+        fallback_events = [
+            event
+            for event in events
+            if event["event_type"] == "structured_validation_fallback_applied"
+        ]
+        self.assertEqual(len(fallback_events), 1)
+        self.assertEqual(fallback_events[0]["removed_paths"], [])
+        self.assertEqual(
+            fallback_events[0]["normalized_paths"],
+            ["supporting_evidence[0].exact_text"],
+        )
+
+    def test_literal_restoration_validates_index_and_row_type(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        def failure_for(path: str) -> StructuredValidationError:
+            return StructuredValidationError(
+                [
+                    ValidationIssue(
+                        code="basic_literal_identity_mismatch",
+                        message="identity defect",
+                        paths=(path,),
+                        allowed_repairs=("replace",),
+                        repair_context={
+                            "projection_id": "projection_lit_a",
+                            "prior_exact_text": self.PRIOR_STATE[
+                                "supporting_evidence"
+                            ][0]["exact_text"],
+                        },
+                    )
+                ]
+            )
+
+        output = dict(self.PRIOR_STATE)
+        for path in (
+            "supporting_evidence[9].exact_text",
+            "supporting_evidence[1].exact_text",
+        ):
+            with self.subTest(path=path):
+                self.assertIsNone(
+                    _research_state_evidence_grounding_fallback(
+                        output, failure_for(path)
+                    )
+                )
+        self.assertEqual(output, self.PRIOR_STATE)
+
+    def test_remove_only_identity_codes_require_remove_authority(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        output = dict(self.PRIOR_STATE)
+        for code in (
+            "basic_ref_not_in_prior_state",
+            "basic_literal_identity_ambiguous",
+        ):
+            for repairs in (("replace",), ("add",)):
+                with self.subTest(code=code, repairs=repairs):
+                    self.assertIsNone(
+                        _research_state_evidence_grounding_fallback(
+                            output,
+                            StructuredValidationError(
+                                [
+                                    ValidationIssue(
+                                        code=code,
+                                        message="identity defect",
+                                        paths=("supporting_evidence[0]",),
+                                        allowed_repairs=repairs,
+                                        repair_context={
+                                            "projection_id": "projection_lit_a"
+                                        },
+                                    )
+                                ]
+                            ),
+                        )
+                    )
+            with self.subTest(code=code, repairs=("remove",)):
+                recovered = _research_state_evidence_grounding_fallback(
+                    output,
+                    StructuredValidationError(
+                        [
+                            ValidationIssue(
+                                code=code,
+                                message="identity defect",
+                                paths=("supporting_evidence[0]",),
+                                allowed_repairs=("remove",),
+                                repair_context={
+                                    "projection_id": "projection_lit_a"
+                                },
+                            )
+                        ]
+                    ),
+                )
+            self.assertIsNotNone(recovered)
+            restored, actions = recovered
+            self.assertEqual(
+                actions["removed_paths"],
+                ("supporting_evidence[0]", "current_beliefs[0]"),
+            )
+            self.assertEqual(actions["normalized_paths"], ())
+            self.assertEqual(restored["current_beliefs"], ["cash_reserves=42"])
+            self.assertEqual(
+                restored["supporting_evidence"][0]["signal_ref"],
+                "cash_reserves:v1",
+            )
+        self.assertEqual(output, self.PRIOR_STATE)
+
+    def test_novel_basic_ref_flagged_when_prior_has_only_signal_evidence(self) -> None:
+        from copy import deepcopy
+
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _raw_basic_literal_identity_issues,
+            _validate_research_state_refs,
+        )
+
+        signal_only = deepcopy(self.PRIOR_STATE)
+        signal_only["supporting_evidence"].pop(0)
+        prior = ResearchState.from_dict(signal_only)
+        output = deepcopy(self.PRIOR_STATE)
+        issues = _raw_basic_literal_identity_issues(output, prior)
+        self.assertEqual(
+            [(issue.code, issue.paths, issue.allowed_repairs) for issue in issues],
+            [
+                (
+                    "basic_ref_not_in_prior_state",
+                    ("supporting_evidence[0]",),
+                    ("remove",),
+                )
+            ],
+        )
+        # Initialize (no previous state) stays outside the identity check.
+        self.assertEqual(_raw_basic_literal_identity_issues(output, None), [])
+
+        # A combined numeric defect and the novel ref appear together in the
+        # same initial feedback instead of the numeric issue masking the ref.
+        combined = deepcopy(output)
+        combined["current_beliefs"][1] = "revenue_growth_yoy=0.182443"
+        with self.assertRaises(StructuredValidationError) as raised:
+            _normalize_research_state_output(
+                dict(combined),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+        self.assertEqual(
+            {issue.code for issue in raised.exception.issues},
+            {"assertion_without_support", "basic_ref_not_in_prior_state"},
+        )
+        # The deep tagged-ref guard still rejects a surviving novel ref.
+        with self.assertRaises(ValidationError) as guard:
+            _validate_research_state_refs(
+                ResearchState.from_dict(dict(combined)),
+                phase="reflect",
+                previous_state=prior,
+            )
+        self.assertIn(
+            "reflect cannot introduce a new Basic Info ref", str(guard.exception)
+        )
+
+        caller = ScriptedRoleCaller([combined, deepcopy(combined)])
+        try:
+            value, _ = self._run_role(caller, prior)
+        except CandidateExecutionRejected:
+            return
+        final_rows = [
+            row.to_dict() if hasattr(row, "to_dict") else dict(row)
+            for row in value.supporting_evidence
+        ]
+        self.assertTrue(
+            all(row.get("projection_id") != "projection_lit_a" for row in final_rows)
+        )
+
+
 class ScopedCorrectionProjectionTests(TestCase):
     def test_runtime_need_fallback_preserves_evidence_and_uses_exact_instructions(self) -> None:
         from stock_opportunity_agent.research.evolution_output_validation import (

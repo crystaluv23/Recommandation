@@ -1,0 +1,3 @@
+# Independent acceptance
+Round18 normal API turn.completed457seconds.45focused/910full tests+lintPASS. Round17 original-wire production replay plus newboundary replayPASS; compact signal-batch reconstruction limitation retained explicitly.
+Codex independently verifies literal-only fallback restores entire original fixture byte-for-byte, signal-only prior emits basic_ref_not_in_prior_state, and replace-only authority for both new row codes refuses removal. Reviewed final source diff and git diff --check. Accepted locally together with round17; not completed joint acceptance. No active external writer. Commit then freeze freshV121 with2342attempts/$17.92691135 conservative remaining budget.
