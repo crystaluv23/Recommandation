@@ -1676,7 +1676,24 @@ def build_slow_history_manifest(
             )
     # Provisional residents and their pooled evaluation history are workspace
     # state, not stable Registry content: without carrying them, every
-    # successor workspace would restart pooled accumulation from zero.
+    # successor workspace would restart pooled accumulation from zero. Only
+    # candidates referenced by committed cycle attempts are pointer-reachable;
+    # staged work from an unfinished active cycle stays behind.
+    committed_candidate_ids: set[str] = set()
+    for cycle_id in range(1, completed_slow + 1):
+        experiments_path = (
+            source_root
+            / "experiments"
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_experiments.json"
+        )
+        for attempt in dict(_read_json(experiments_path)).get("attempts", ()):
+            if not isinstance(attempt, Mapping):
+                continue
+            candidate_ref = str(attempt.get("candidate_ref") or "")
+            if ":" in candidate_ref:
+                committed_candidate_ids.add(candidate_ref.rsplit(":", 1)[0])
     candidate_files: list[dict[str, str]] = []
     candidates_root = source_root / "signals_candidates"
     candidate_paths: tuple[Path, ...] = (
@@ -1687,6 +1704,13 @@ def build_slow_history_manifest(
             continue
         relative = path.relative_to(source_root)
         if ".rejected" in relative.parts:
+            continue
+        parts = relative.parts
+        if (
+            len(parts) < 4
+            or parts[0] != "signals_candidates"
+            or parts[2] not in committed_candidate_ids
+        ):
             continue
         candidate_files.append(
             {"path": str(relative), "sha256": _sha256_file(path)}

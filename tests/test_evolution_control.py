@@ -198,6 +198,26 @@ class RunControlTests(TestCase):
             )
             rejected_dir.mkdir(parents=True)
             write_json(rejected_dir / "spec.json", {"signal_id": "old"})
+            uncommitted_dir = (
+                source
+                / "signals_candidates"
+                / "narrative_event"
+                / "mid_cycle_proposal"
+                / "v1"
+            )
+            uncommitted_dir.mkdir(parents=True)
+            write_json(uncommitted_dir / "spec.json", {"signal_id": "staged-only"})
+            write_json(
+                committed_root / "slow_experiments.json",
+                {
+                    "attempts": [
+                        {
+                            "candidate_ref": "order_confirmation_disclosed:v1",
+                            "outcome": "provisional",
+                        }
+                    ]
+                },
+            )
 
             build_slow_history_manifest(
                 workspace=target,
@@ -229,6 +249,9 @@ class RunControlTests(TestCase):
             )
             self.assertFalse(
                 any(".rejected" in path for path in candidate_paths)
+            )
+            self.assertFalse(
+                any("mid_cycle_proposal" in path for path in candidate_paths)
             )
             apply_slow_history_manifest(
                 workspace=target,
