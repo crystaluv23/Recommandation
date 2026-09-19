@@ -1025,6 +1025,34 @@ class RunControlTests(TestCase):
         )
         self.assertNotIn("seed_pool_manifest_hash", make_contract().to_dict())
 
+    def test_fast_then_slow_accepts_slow_history_and_rejects_bootstrap(self) -> None:
+        base = make_contract()
+        self.assertEqual(base.cycle_mode, "fast_then_slow")
+        dual_loop = EvolutionRunContract(
+            **{**base.__dict__, "slow_history_manifest_hash": SHA_A}
+        )
+        self.assertEqual(dual_loop.cycle_mode, "fast_then_slow")
+        self.assertEqual(dual_loop.slow_history_manifest_hash, SHA_A)
+        self.assertEqual(
+            dual_loop.limits["plan_rounds_per_signal_cycle"],
+            base.limits["plan_rounds_per_signal_cycle"],
+        )
+        with self.assertRaisesRegex(ValidationError, "no Slow bootstrap manifest"):
+            EvolutionRunContract(
+                **{**base.__dict__, "slow_bootstrap_manifest_hash": SHA_B}
+            )
+        with self.assertRaisesRegex(ValidationError, "positive Fast rounds"):
+            EvolutionRunContract(
+                **{
+                    **base.__dict__,
+                    "limits": {
+                        **base.limits,
+                        "plan_rounds_per_signal_cycle": 0,
+                    },
+                    "slow_history_manifest_hash": SHA_A,
+                }
+            )
+
     def test_malformed_paid_json_is_audited_costed_and_not_cached(self) -> None:
         class MalformedClient:
             def complete(self, _messages, **_kwargs):
@@ -2218,7 +2246,7 @@ class SlowOnlyRegistryChainTests(TestCase):
 
     def test_registry_chain_explains_committed_promotion(self) -> None:
         from stock_opportunity_agent.research.evolution_control import (
-            _slow_only_registry_matches_committed_history,
+            _registry_matches_committed_history,
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -2226,7 +2254,7 @@ class SlowOnlyRegistryChainTests(TestCase):
             empty.mkdir()
             # Baseline (no committed cycles) matches the manifest registry.
             self.assertTrue(
-                _slow_only_registry_matches_committed_history(
+                _registry_matches_committed_history(
                     snapshot_version=5,
                     snapshot_hash="h5",
                     history_registry_version=5,
@@ -2250,7 +2278,7 @@ class SlowOnlyRegistryChainTests(TestCase):
             )
             # A promotion committed by cycle 1 resumes on the next cycle.
             self.assertTrue(
-                _slow_only_registry_matches_committed_history(
+                _registry_matches_committed_history(
                     snapshot_version=6,
                     snapshot_hash="h6",
                     history_registry_version=5,
@@ -2260,7 +2288,7 @@ class SlowOnlyRegistryChainTests(TestCase):
             )
             # Unexplained drift beyond the committed chain still fails.
             self.assertFalse(
-                _slow_only_registry_matches_committed_history(
+                _registry_matches_committed_history(
                     snapshot_version=7,
                     snapshot_hash="h7",
                     history_registry_version=5,
@@ -2271,7 +2299,7 @@ class SlowOnlyRegistryChainTests(TestCase):
 
     def test_registry_chain_rejects_broken_or_gapped_cycles(self) -> None:
         from stock_opportunity_agent.research.evolution_control import (
-            _slow_only_registry_matches_committed_history,
+            _registry_matches_committed_history,
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -2290,7 +2318,7 @@ class SlowOnlyRegistryChainTests(TestCase):
                 last_completed=1,
             )
             self.assertFalse(
-                _slow_only_registry_matches_committed_history(
+                _registry_matches_committed_history(
                     snapshot_version=6,
                     snapshot_hash="h6",
                     history_registry_version=5,

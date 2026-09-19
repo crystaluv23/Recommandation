@@ -26,6 +26,161 @@ class EvolutionCliTests(TestCase):
     def test_freeze_uses_current_terminal_reserve_default(self) -> None:
         self.assertEqual(CLI.DEFAULT_FINALIZATION_TOKEN_RESERVE, 64_000)
 
+    def test_freeze_accepts_explicit_fast_then_slow_over_slow_history(self) -> None:
+        import subprocess
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            repo.mkdir()
+            subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+            (repo / "seed.txt").write_text("seed\n")
+            subprocess.run(["git", "add", "seed.txt"], cwd=repo, check=True)
+            subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    "user.email=tests@example.com",
+                    "-c",
+                    "user.name=tests",
+                    "commit",
+                    "-q",
+                    "-m",
+                    "init",
+                ],
+                cwd=repo,
+                check=True,
+            )
+            workspace = root / "workspace"
+            workspace.mkdir()
+            registry = CLI.SignalRegistry(workspace / "signals")
+            registry.install_catalog(
+                CLI.PROJECT_ROOT / "configs" / "signals_v1.json"
+            )
+            initial_hash = registry.freeze().registry_hash
+            source = root / "source"
+            source.mkdir()
+            history_hash = "a" * 64
+
+            def fake_history(*, workspace, source_workspace, dataset_manifest_hash):
+                path = Path(workspace) / "slow_history" / "manifest.json"
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(
+                    json.dumps({"manifest_hash": history_hash, "manifest": {}}),
+                    encoding="utf-8",
+                )
+                return history_hash
+
+            approved = root / "dataset.approved.json"
+            approved.write_text(
+                '{"approval_status":"human_approved","locked_test_sealed":true}\n'
+            )
+            oracle = SimpleNamespace(oracle_id="raw-info-fixture")
+            inventory = SimpleNamespace(
+                to_dict=lambda: {"schema_version": "inventory-v1"},
+                inventory_hash="inventory_hash",
+                compatible_case_count=1,
+                migration_ready=False,
+                blockers=(),
+            )
+
+            def invoke(**overrides):
+                kwargs = dict(
+                    workspace_path=workspace,
+                    raw_info_root=root / "raw-info",
+                    approved_dataset_path=approved,
+                    run_id="dual-loop-continuation-test",
+                    cases_path=root / "cases.json",
+                    documents_path=root / "documents.json",
+                    adjusted_prices_path=root / "prices.json",
+                    judge_model="deepseek-v4-flash",
+                    evolution_model="deepseek-v4-flash-thinking",
+                    plan_rounds=2,
+                    candidates_per_round=3,
+                    parent_selection_seed=42,
+                    max_external_attempts=10,
+                    max_total_cost=1.0,
+                    cycle_mode="fast_then_slow",
+                    slow_history_from=source,
+                    max_slow_cycles=4,
+                    min_new_signals_per_cycle=1,
+                )
+                kwargs.update(overrides)
+                return CLI.freeze_run(**kwargs)
+
+            with (
+                patch.object(CLI, "_load_local_env"),
+                patch.object(CLI, "PROJECT_ROOT", repo),
+                patch.object(
+                    CLI.RawInfoOracle, "load_or_create", return_value=oracle
+                ),
+                patch.object(
+                    CLI,
+                    "RawInfoStore",
+                    return_value=SimpleNamespace(inventory_hash="b" * 64),
+                ),
+                patch.object(
+                    CLI,
+                    "load_approved_development_dataset",
+                    return_value=SimpleNamespace(
+                        evolution_validation=(), anchor=()
+                    ),
+                ),
+                patch.object(CLI, "EvaluationDatasetManager"),
+                patch.object(
+                    CLI,
+                    "inventory_local_evolution_inputs",
+                    return_value=inventory,
+                ),
+                patch.object(
+                    CLI, "build_slow_history_manifest", side_effect=fake_history
+                ),
+                patch.object(CLI, "apply_slow_history_manifest"),
+                patch.object(
+                    CLI,
+                    "load_or_create_historical_plan_seed_pool",
+                    return_value=SimpleNamespace(
+                        manifest_hash="c" * 64, entries=()
+                    ),
+                ),
+                patch.object(
+                    CLI.HistoricalPlanSeedPool,
+                    "load_frozen",
+                    return_value=SimpleNamespace(
+                        manifest_hash="c" * 64, entries=()
+                    ),
+                ),
+            ):
+                result = invoke()
+                contract = json.loads(
+                    (workspace / "run_contract.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(result["cycle_mode"], "fast_then_slow")
+                self.assertEqual(
+                    contract["contract"]["cycle_mode"], "fast_then_slow"
+                )
+                self.assertEqual(
+                    contract["contract"]["limits"]["plan_rounds_per_signal_cycle"],
+                    2,
+                )
+                self.assertEqual(
+                    contract["contract"]["slow_history_manifest_hash"],
+                    history_hash,
+                )
+                self.assertEqual(
+                    contract["contract"]["initial_signal_registry_hash"],
+                    initial_hash,
+                )
+                with self.assertRaisesRegex(
+                    ValueError, "cycle mode conflicts"
+                ):
+                    invoke(cycle_mode="slow_only", slow_history_from=None)
+                with self.assertRaisesRegex(ValueError, "mutually exclusive"):
+                    invoke(
+                        cycle_mode="slow_bootstrap",
+                        slow_bootstrap_sources=(source,),
+                    )
+
     def test_preflight_validates_exact_approved_dataset_without_locked_test(
         self,
     ) -> None:

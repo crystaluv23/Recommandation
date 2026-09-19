@@ -8,6 +8,15 @@ finite `slow_only`. Slow-only fixes zero Fast rounds, positive cumulative
 manifest, and bounded role budgets. `--max-cycles` may reduce work in one CLI
 invocation but cannot enlarge the contract total across resumes.
 
+A v8 `fast_then_slow` contract may also freeze one committed-only source
+history manifest: this is dual-loop continuation, requested by passing an
+explicit `--cycle-mode fast_then_slow` together with `--slow-history-from`.
+Fast-round targets stay positive, and the import follows the identical
+succession rules below (namespaces, exact Registry, provisional residents,
+pooled evaluation, chain continuity on resume). `--slow-history-from` without
+an explicit mode still infers `slow_only`, and `slow_bootstrap` remains
+mutually exclusive with a history manifest.
+
 History import preserves namespaced pointer-reachable history: the immediate
 source contributes one namespace, and that source's own imported namespaces
 are carried forward unchanged so multi-hop successor chains keep the full

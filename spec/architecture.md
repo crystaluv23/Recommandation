@@ -243,7 +243,11 @@ source namespaces, exact Signal versions, source hashes, and source Fast/Slow
 cutoffs. The new workspace keeps its Fast pointer at zero. Its contract fixes a
 positive cumulative `max_slow_cycles`, a per-cycle minimum-new-Signal target,
 and bounded reflection, Mining, Update, semantic-review, attempt, token, and
-cost limits. Repeated CLI resumes cannot exceed those cumulative limits.
+cost limits. Repeated CLI resumes cannot exceed those cumulative limits. The
+same committed-only history manifest may also initialize a `fast_then_slow`
+successor (dual-loop continuation) under the identical import and continuity
+rules, with positive Fast-round targets; `slow_only` alone keeps the Fast
+pointer frozen at zero.
 
 Every Slow cycle freezes one neutral issuer-disjoint development/check sample
 before any outcome-aware author role runs. Selection is a stable hash ordering

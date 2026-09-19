@@ -255,12 +255,20 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument(
         "--cycle-mode",
         choices=("fast_then_slow", "slow_bootstrap", "slow_only"),
-        help="explicit v8 cycle mode; inferred from the selected history option",
+        help=(
+            "explicit v8 cycle mode; inferred from the selected history option. "
+            "An explicit fast_then_slow together with --slow-history-from "
+            "freezes dual-loop continuation over the imported committed history"
+        ),
     )
     freeze.add_argument(
         "--slow-history-from",
         type=Path,
-        help="one committed source workspace for finite slow_only execution",
+        help=(
+            "one committed source workspace for finite slow_only execution, "
+            "or for fast_then_slow dual-loop continuation with an explicit "
+            "--cycle-mode fast_then_slow"
+        ),
     )
     freeze.add_argument("--max-slow-cycles", type=int, default=1)
     freeze.add_argument("--min-new-signals-per-cycle", type=int, default=1)
@@ -724,7 +732,11 @@ def freeze_run(
         else "fast_then_slow"
     )
     resolved_cycle_mode = cycle_mode or inferred_mode
-    if resolved_cycle_mode != inferred_mode:
+    if resolved_cycle_mode != inferred_mode and not (
+        # Dual-loop continuation is the one legal override: explicit Fast
+        # rounds over an imported committed Slow history.
+        resolved_cycle_mode == "fast_then_slow" and inferred_mode == "slow_only"
+    ):
         raise ValueError("cycle mode conflicts with the selected Slow history option")
     effective_plan_rounds = (
         plan_rounds if resolved_cycle_mode == "fast_then_slow" else 0

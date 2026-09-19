@@ -326,10 +326,9 @@ class EvolutionRunContract:
                     if (
                         plan_rounds < 1
                         or self.slow_bootstrap_manifest_hash is not None
-                        or self.slow_history_manifest_hash is not None
                     ):
                         raise ValidationError(
-                            f"{schema_label} fast_then_slow requires positive Fast rounds and no Slow manifest"
+                            f"{schema_label} fast_then_slow requires positive Fast rounds and no Slow bootstrap manifest"
                         )
                 elif self.cycle_mode == "slow_bootstrap" and (
                     plan_rounds != 0
@@ -1785,7 +1784,7 @@ def validate_slow_history_manifest(
     return manifest
 
 
-def _slow_only_registry_matches_committed_history(
+def _registry_matches_committed_history(
     *,
     snapshot_version: int,
     snapshot_hash: str,
@@ -2527,7 +2526,9 @@ def _run_bounded_evolution_cycle_unlocked(
             bootstrap_manifest,
             registry=registry,
         )
-    elif contract.cycle_mode == "slow_only":
+    elif contract.slow_history_manifest_hash is not None:
+        # slow_only succession and fast_then_slow dual-loop continuation share
+        # the same committed-history validation and chain-continuity rules.
         history_manifest = validate_slow_history_manifest(
             workspace=workspace_root,
             contract=contract,
@@ -2537,7 +2538,7 @@ def _run_bounded_evolution_cycle_unlocked(
                 RoundMetaEntry.from_dict(dict(row))
                 for row in history_manifest["fast_context"]["meta_entries"]
             )
-        if not _slow_only_registry_matches_committed_history(
+        if not _registry_matches_committed_history(
             snapshot_version=snapshot.version,
             snapshot_hash=snapshot.registry_hash,
             history_registry_version=int(history_manifest["registry_version"]),
@@ -2545,7 +2546,7 @@ def _run_bounded_evolution_cycle_unlocked(
             workspace_root=workspace_root,
         ):
             raise ValidationError(
-                "slow_only Registry differs from frozen committed history"
+                "imported-history Registry differs from frozen committed history"
             )
     if _canonical_hash(_default_priors_dict()) != contract.priors_hash:
         raise ValidationError("fixed evolution priors differ from frozen run contract")
