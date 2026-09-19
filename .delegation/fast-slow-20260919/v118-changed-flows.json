@@ -1,0 +1,212 @@
+{
+  "attempts": 75,
+  "changed_flows": [
+    {
+      "reflect_attempt": 53,
+      "reflect_hash": "c257f592f3c09b6a3c72a50733d5baa8d03b06029830a53142150bd9fbd898da",
+      "next_routing_hash": "fca8cd792085059e54774e5d500bada3aef166f5fac67d229d9cab1d337fee41",
+      "previous": [
+        "What forward financial guidance, distributable cash flow per share outlook, or capital allocation commitments has Enbridge disclosed by prediction_time that could quantify a bridge to a doubling of the adjusted share price?",
+        "What analyst price targets, consensus estimates, or modeled price paths for Enbridge were published by prediction_time, and do any of them imply a doubling within six calendar months?",
+        "What specific financing actions, debt issuances, or equity issuances has Enbridge disclosed by prediction_time that could affect leverage, dilution, or the share price path?",
+        "What is the status as of prediction_time of the Flanagan South open season and the Mainline expansion final investment decision, including any disclosed capacity additions, capital costs, or in-service dates?",
+        "What operational updates, volume trends, or throughput disclosures has Enbridge provided by prediction_time for its liquids, gas transmission, and gas distribution segments?",
+        "What regulatory, permitting, or legal developments affecting Enbridge's pipeline projects were disclosed by prediction_time that could alter the timing or scope of growth catalysts?"
+      ],
+      "reflected": [
+        "Distributable cash flow per share outlook and capital allocation commitments quantifying a bridge to a doubling remain unresolved.",
+        "What analyst price targets, consensus estimates, or modeled price paths for Enbridge were published by prediction_time, and do any of them imply a doubling within six calendar months?",
+        "What specific financing actions, debt issuances, or equity issuances has Enbridge disclosed by prediction_time that could affect leverage, dilution, or the share price path?",
+        "What is the status as of prediction_time of the Flanagan South open season and the Mainline expansion final investment decision, including any disclosed capacity additions, capital costs, or in-service dates?",
+        "What operational updates, volume trends, or throughput disclosures has Enbridge provided by prediction_time for its liquids, gas transmission, and gas distribution segments?",
+        "What regulatory, permitting, or legal developments affecting Enbridge's pipeline projects were disclosed by prediction_time that could alter the timing or scope of growth catalysts?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "If the oversubscribed Flanagan South open season or Mainline expansion has converted into a disclosed binding order or contract with stated value or volume, this card will evidence it.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Final investment decision status, disclosed capacity additions, capital costs, and in-service dates for the Mainline expansion remain unresolved.",
+            "selection_reason": "Directly addresses the Flanagan South open season and Mainline expansion status by capturing disclosed customer orders, contracts, or binding awards with named counterparties and stated value or volume.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If the Mainline expansion or offshore gas buildout is a sellable, repeatable commercialization event rather than mature operations output, it could support a step-change growth narrative.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Enbridge's Mainline expansion or offshore gas growth constitutes a commercialization step-change, relevant to the doubling hypothesis but not directly answering a listed need.",
+            "signal_ref": "commercialization_status:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If operating cash outflow relative to cash reserves is high, the capital-intensive expansion may constrain the share price path rather than support a doubling.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "contradiction",
+            "reason_code": "test_contradiction",
+            "residual_need": null,
+            "selection_reason": "Tests whether Enbridge's capital-intensive expansion is accompanied by elevated cash burn, which would contradict a near-term doubling price path.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A higher cash-to-current-liabilities ratio would indicate stronger short-term liquidity to fund disclosed expansion commitments.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "combine_evidence",
+            "residual_need": null,
+            "selection_reason": "Provides short-term liquidity context for assessing whether financing actions and capital commitments can support the growth catalysts without dilution or leverage stress.",
+            "signal_ref": "cash_to_current_liabilities_ratio:v1",
+            "target_need_indices": []
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 57,
+      "reflect_hash": "9f5e75ce61a510090be6265b84a516ed40801b4b6734a9372bfb7eb0c20e7683",
+      "next_routing_hash": "6796269c1d9f34490261deca960306f841fc3e51e72ab4da1ea9ab12aa26729f",
+      "previous": [
+        "Distributable cash flow per share outlook and capital allocation commitments quantifying a bridge to a doubling remain unresolved.",
+        "What analyst price targets, consensus estimates, or modeled price paths for Enbridge were published by prediction_time, and do any of them imply a doubling within six calendar months?",
+        "What specific financing actions, debt issuances, or equity issuances has Enbridge disclosed by prediction_time that could affect leverage, dilution, or the share price path?",
+        "What is the status as of prediction_time of the Flanagan South open season and the Mainline expansion final investment decision, including any disclosed capacity additions, capital costs, or in-service dates?",
+        "What operational updates, volume trends, or throughput disclosures has Enbridge provided by prediction_time for its liquids, gas transmission, and gas distribution segments?",
+        "What regulatory, permitting, or legal developments affecting Enbridge's pipeline projects were disclosed by prediction_time that could alter the timing or scope of growth catalysts?"
+      ],
+      "reflected": [
+        "Distributable cash flow per share outlook and capital allocation commitments quantifying a bridge to a doubling remain unresolved.",
+        "What analyst price targets, consensus estimates, or modeled price paths for Enbridge were published by prediction_time, and do any of them imply a doubling within six calendar months?",
+        "What specific financing actions, debt issuances, or equity issuances has Enbridge disclosed by prediction_time that could affect leverage, dilution, or the share price path?",
+        "Final investment decision status, disclosed capacity additions, capital costs, and in-service dates for the Mainline expansion remain unresolved.",
+        "What operational updates, volume trends, or throughput disclosures has Enbridge provided by prediction_time for its liquids, gas transmission, and gas distribution segments?",
+        "What regulatory, permitting, or legal developments affecting Enbridge's pipeline projects were disclosed by prediction_time that could alter the timing or scope of growth catalysts?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Enbridge's Clear Fork project is fully contracted with Meta, a single named counterparty, so customer concentration risk may be elevated and relevant to the growth thesis.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Operational updates, volume trends, and throughput disclosures for liquids, gas transmission, and gas distribution segments remain unresolved.",
+            "selection_reason": "Directly addresses customer dependency by assessing whether growth thesis relies excessively on one customer or program, relevant to the Meta offtake and AI/data-center customer concentration.",
+            "signal_ref": "customer_concentration:v1",
+            "target_need_indices": [
+              4
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Enbridge's large operating cash flow and recent debt offering suggest cash burn may not be elevated, but point-in-time evidence is needed to confirm.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Evaluates whether Enbridge's operating cash outflow relative to cash reserves indicates elevated burn, relevant to financing and leverage risk.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Enbridge's cash position relative to current liabilities may indicate liquidity strength or weakness affecting its ability to fund growth without dilution.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures short-term liquidity by comparing cash to current liabilities, relevant to financing actions and leverage concerns.",
+            "signal_ref": "cash_to_current_liabilities_ratio:v1",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Enbridge's revenue growth trajectory may show acceleration or deceleration, informing the likelihood of a doubling catalyst.",
+            "context_tags": [
+              "energy",
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures whether revenue growth is accelerating, relevant to operational trends and growth catalyst assessment.",
+            "signal_ref": "revenue_acceleration:v1",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 70,
+      "reflect_hash": "caa508c3bed426d45a5b893d0a271afd86f4b4fcb165e14916501ab3f957febe",
+      "next_routing_hash": "91aa1d6c22105152d6ca3408de2585c8e253baaf0161cb2e6abd068878cc23c4",
+      "previous": [
+        "What forward guidance or outlook did Morgan Stanley management provide on the 2025Q2 earnings call regarding revenue, expenses, capital markets activity, or regulatory backdrop for the remainder of 2025?",
+        "What analyst consensus estimates or price targets for Morgan Stanley were published and available as of the prediction time, and what EPS and revenue figures did they imply at that time?",
+        "What specific material event or corporate action was disclosed in Morgan Stanley's July 16, 2025 Form 8-K beyond the cover page and boilerplate language?",
+        "What capital return plans, including dividends or share repurchases, has Morgan Stanley announced or disclosed as of the prediction time?",
+        "What regulatory or legislative developments affecting large U.S. bank holding companies were disclosed or pending as of the prediction time that could affect Morgan Stanley's business outlook?",
+        "What investment-banking backlog, pipeline, or deal-activity commentary did Morgan Stanley management provide as of the prediction time?"
+      ],
+      "reflected": [
+        "What analyst consensus estimates or price targets for Morgan Stanley were published and available as of the prediction time, and what EPS and revenue figures did they imply at that time?",
+        "What specific material event or corporate action was disclosed in Morgan Stanley's July 16, 2025 Form 8-K beyond the cover page and boilerplate language?",
+        "What capital return plans, including dividends or share repurchases, has Morgan Stanley announced or disclosed as of the prediction time?",
+        "What regulatory or legislative developments affecting large U.S. bank holding companies were disclosed or pending as of the prediction time that could affect Morgan Stanley's business outlook?",
+        "What investment-banking backlog, pipeline, or deal-activity commentary did Morgan Stanley management provide as of the prediction time?",
+        "What revenue, expense, or capital-markets outlook commentary did Morgan Stanley management provide on the 2025Q2 earnings call beyond the reaffirmed tax rate?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": []
+      }
+    }
+  ]
+}

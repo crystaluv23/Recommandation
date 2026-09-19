@@ -1,0 +1,2 @@
+# Rejected
+Normal runtime completion after891seconds, no timeout. Unexecuted tests plus semantic fail-open confirmed by independent-review.md: value-of/obtain/look-up queries bypass runtime-owned guard. Claimed passive/inverted limitation is a regression, not an accepted contract adjustment. Round12 assigned generic conservative repair and actual verification. Command blockage stems from Codex brief omission, not missing authorization; launcher now sends exact command allowlist automatically.

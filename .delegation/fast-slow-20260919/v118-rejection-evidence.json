@@ -1,0 +1,662 @@
+[
+  {
+    "attempt": 74,
+    "request_hash": "03371e1d35eab397ce98fe9bd76f5390da1a32543c35ab668ac5ec2b24e00d27",
+    "stage": "research_controller_initialize",
+    "payload_keys": [
+      "basic_info",
+      "evaluation_context",
+      "initial_research_skill",
+      "validation_feedback"
+    ],
+    "feedback": null,
+    "response_next_information_needs": [
+      "What did the company disclose by 2025-03-31 about its 2025 full-year revenue, adjusted EBITDA, membership, or center-opening guidance, and did any such guidance quantify a bridge to a doubling of the adjusted share price from the supplied baseline?",
+      "What did the company disclose by 2025-03-31 about the expected timing, size, and pricing of the announced secondary offering, and did any disclosure indicate additional share overhang or lock-up expirations within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about membership counts, join fees, monthly dues, or attrition trends for the most recent reported period, and did those metrics show acceleration or deceleration relative to prior periods?",
+      "What did the company disclose by 2025-03-31 about new-center openings, construction delays, or ramp performance for centers opened in 2024 and 2025, and did any disclosure change the expected contribution to revenue or EBITDA within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about its capital structure, net debt leverage ratio, interest expense, or free cash flow, and did any disclosure indicate financing constraints or liquidity pressure that could affect operations or share price within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about any scheduled earnings release date, investor day, or other catalyst within the six-month horizon, and did any disclosure indicate the expected timing of material operating updates?"
+    ],
+    "response_field_counts": {
+      "contradictions": 0,
+      "current_beliefs": 8,
+      "hypotheses": 3,
+      "next_information_needs": 6,
+      "open_questions": 0,
+      "resolved_questions": 6,
+      "supporting_evidence": 8
+    }
+  },
+  {
+    "attempt": 75,
+    "request_hash": "fea68b667b033c2de3319914aeb1898f6c5599d4dd5c1ac0e7bde9aa596b0676",
+    "stage": "research_controller_initialize_correction",
+    "payload_keys": [
+      "basic_info",
+      "evaluation_context",
+      "initial_research_skill",
+      "validation_feedback"
+    ],
+    "feedback": {
+      "completion_check": "Before returning, compare every required_change_paths value with invalid_output. Each rejected value must differ or be removed; preserve every value outside required_change_paths byte-for-byte.",
+      "invalid_output": {
+        "contradictions": [],
+        "current_beliefs": [
+          "The most recent observed adjusted close in the market series is 30.5 on 2025-03-28, which is below the 2025-02-14 adjusted close of 32.34 and below the 2025-02-19 adjusted close of 33.23.",
+          "The adjusted close path from 2025-02-14 to 2025-03-28 shows a decline from 32.34 to 30.5, with an intermediate low of 27.7 on 2025-03-10 and a rebound to 32.57 on 2025-03-25 before falling to 30.5 on 2025-03-28.",
+          "The company reported average revenue per center membership of $3,160 in 2024, up from $2,810 in 2023 and $2,528 in 2022, indicating positive pricing and engagement trends.",
+          "The company had 29 centers open for less than three years and 12 new centers under construction as of December 31, 2024, with significant growth capital expenditures already invested.",
+          "A secondary offering of 23,000,000 shares was announced, with affiliates of Leonard Green & Partners, TPG Inc., and Partners Group (USA) Inc. intending to sell 18,000,000 shares and the Founder, Chairman, and CEO selling five million shares to cover tax obligations from an option exercise.",
+          "The secondary offering proceeds go to the Selling Stockholders, not Life Time, so the company receives no new capital from the offering.",
+          "The company's new centers on average have taken three to four years to ramp to expected performance, which is a long-duration operating characteristic.",
+          "The company plans to expand MIORA health optimization and longevity services to additional locations in 2025 and beyond after launching a pilot location in 2024."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "If the company discloses within the six-month horizon a material acceleration in membership growth, pricing, or new-center ramp that raises forward revenue and EBITDA expectations, then the adjusted share price could move toward the 2x threshold from the supplied baseline.",
+          "If the company discloses within the six-month horizon no material positive operating update and the recent price path remains below the supplied baseline, then the 2x threshold is unlikely to be reached within the horizon.",
+          "If the company discloses within the six-month horizon a dilutive or overhang-increasing event such as additional secondary offerings or insider selling, then the adjusted share price could face downward pressure and the 2x threshold would be less likely."
+        ],
+        "next_information_needs": [
+          "What did the company disclose by 2025-03-31 about its 2025 full-year revenue, adjusted EBITDA, membership, or center-opening guidance, and did any such guidance quantify a bridge to a doubling of the adjusted share price from the supplied baseline?",
+          "What did the company disclose by 2025-03-31 about the expected timing, size, and pricing of the announced secondary offering, and did any disclosure indicate additional share overhang or lock-up expirations within the six-month horizon?",
+          "What did the company disclose by 2025-03-31 about membership counts, join fees, monthly dues, or attrition trends for the most recent reported period, and did those metrics show acceleration or deceleration relative to prior periods?",
+          "What did the company disclose by 2025-03-31 about new-center openings, construction delays, or ramp performance for centers opened in 2024 and 2025, and did any disclosure change the expected contribution to revenue or EBITDA within the six-month horizon?",
+          "What did the company disclose by 2025-03-31 about its capital structure, net debt leverage ratio, interest expense, or free cash flow, and did any disclosure indicate financing constraints or liquidity pressure that could affect operations or share price within the six-month horizon?",
+          "What did the company disclose by 2025-03-31 about any scheduled earnings release date, investor day, or other catalyst within the six-month horizon, and did any disclosure indicate the expected timing of material operating updates?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [
+          "The most recent observed adjusted close in the supplied market series is 30.5 on 2025-03-28, which is below the 2025-02-14 adjusted close of 32.34 and below the 2025-02-19 adjusted close of 33.23.",
+          "The adjusted close path from 2025-02-14 to 2025-03-28 shows a decline from 32.34 to 30.5, with an intermediate low of 27.7 on 2025-03-10 and a rebound to 32.57 on 2025-03-25 before falling to 30.5 on 2025-03-28.",
+          "The company reported average revenue per center membership of $3,160 in 2024, up from $2,810 in 2023 and $2,528 in 2022, indicating positive pricing and engagement trends.",
+          "The company had 29 centers open for less than three years and 12 new centers under construction as of December 31, 2024, with significant growth capital expenditures already invested.",
+          "A secondary offering of 23,000,000 shares was announced, with affiliates of Leonard Green & Partners, TPG Inc., and Partners Group (USA) Inc. intending to sell 18,000,000 shares and the Founder, Chairman, and CEO selling five million shares to cover tax obligations from an option exercise.",
+          "The secondary offering proceeds go to the Selling Stockholders, not Life Time, so the company receives no new capital from the offering."
+        ],
+        "supporting_evidence": [
+          {
+            "claim": "The most recent observed adjusted close in the market series is 30.5 on 2025-03-28, which is below the 2025-02-14 adjusted close of 32.34 and below the 2025-02-19 adjusted close of 33.23.",
+            "exact_text": "{\"adjusted_close\":30.5,\"as_of_date\":\"2025-03-28\",\"close\":30.5,\"high\":31.64,\"low\":29.88,\"open\":31.39, \"volume\":2166257}",
+            "kind": "basic_info",
+            "projection_id": "projection_d5ede01607a763f3390e1df1"
+          },
+          {
+            "claim": "The adjusted close path from 2025-02-14 to 2025-03-28 shows a decline from 32.34 to 30.5, with an intermediate low of 27.7 on 2025-03-10 and a rebound to 32.57 on 2025-03-25 before falling to 30.5 on 2025-03-28.",
+            "exact_text": "{\"adjusted_close\":32.34,\"as_of_date\":\"2025-02-14\",\"close\":32.34,\"high\":32.59,\"low\":32.17,\"open\":32.35, \"volume\":1109954}",
+            "kind": "basic_info",
+            "projection_id": "projection_5fc919a0080f6ca56b2a85aa"
+          },
+          {
+            "claim": "The adjusted close path from 2025-02-14 to 2025-03-28 shows a decline from 32.34 to 30.5, with an intermediate low of 27.7 on 2025-03-10 and a rebound to 32.57 on 2025-03-25 before falling to 30.5 on 2025-03-28.",
+            "exact_text": "{\"adjusted_close\":27.7,\"as_of_date\":\"2025-03-10\",\"close\":27.7,\"high\":29.05,\"low\":27.26,\"open\":28.75, \"volume\":2844920}",
+            "kind": "basic_info",
+            "projection_id": "projection_90c620d57813f86d28b8a36d"
+          },
+          {
+            "claim": "The adjusted close path from 2025-02-14 to 2025-03-28 shows a decline from 32.34 to 30.5, with an intermediate low of 27.7 on 2025-03-10 and a rebound to 32.57 on 2025-03-25 before falling to 30.5 on 2025-03-28.",
+            "exact_text": "{\"adjusted_close\":32.57,\"as_of_date\":\"2025-03-25\",\"close\":32.57,\"high\":32.7,\"low\":32.0701,\"open\":32.45, \"volume\":1818576}",
+            "kind": "basic_info",
+            "projection_id": "projection_15bfff67aac308e31057d517"
+          },
+          {
+            "claim": "The company reported average revenue per center membership of $3,160 in 2024, up from $2,810 in 2023 and $2,528 in 2022, indicating positive pricing and engagement trends.",
+            "exact_text": "We have grown our average revenue per center membership to $3,160 in 2024, up from $2,810 in 2023 and $2,528 in 2022.",
+            "kind": "basic_info",
+            "projection_id": "projection_f38a77799249144f12138860"
+          },
+          {
+            "claim": "The company had 29 centers open for less than three years and 12 new centers under construction as of December 31, 2024, with significant growth capital expenditures already invested.",
+            "exact_text": "As of December 31, 2024, we had 29 centers open for less than three years and 12 new centers under construction, with significant growth capital expenditures already invested into these",
+            "kind": "basic_info",
+            "projection_id": "projection_f38a77799249144f12138860"
+          },
+          {
+            "claim": "A secondary offering of 23,000,000 shares was announced, with affiliates of Leonard Green & Partners, TPG Inc., and Partners Group (USA) Inc. intending to sell 18,000,000 shares and the Founder, Chairman, and CEO selling five million shares to cover tax obligations from an option exercise.",
+            "exact_text": "Life Time Announces Commencement of Secondary Offering of 23,000,000 Shares of Common Stock Life Time Group Holdings, Inc. announced a secondary offering where affiliates of Leonard Green & Partners, TPG Inc., and Partners Group (USA) Inc. intend to sell 18,000,000 shares of the Company's common stock. The Company's Founder, Chairman, and CEO, Bahram Akradi, is also selling five million shares to cover tax obligations from an option exercise, increasing his overall share ownership significantly.",
+            "kind": "basic_info",
+            "projection_id": "projection_5a3cc6fc242638445575a6f6"
+          },
+          {
+            "claim": "The secondary offering proceeds go to the Selling Stockholders, not Life Time, so the company receives no new capital from the offering.",
+            "exact_text": "This offering's proceeds will go to the Selling Stockholders, not Life Time.",
+            "kind": "basic_info",
+            "projection_id": "projection_5a3cc6fc242638445575a6f6"
+          }
+        ]
+      },
+      "obligation_count": 2,
+      "obligations": [
+        {
+          "instruction": "research_controller_initialize asked for a runtime-owned evaluation input rather than issuer evidence, invalid_field='next_information_needs[0]', next_information_needs[0]='What did the company disclose by 2025-03-31 about its 2025 full-year revenue, adjusted EBITDA, membership, or center-opening guidance, and did any such guidance quantify a bridge to a doubling of the adjusted share price from the supplied baseline?'. Remove this item",
+          "must_change_paths": [
+            "next_information_needs[0]"
+          ],
+          "obligation_index": 1
+        },
+        {
+          "instruction": "do not answer, source, or rewrite the fixed baseline/definition",
+          "must_change_paths": [],
+          "obligation_index": 2
+        }
+      ],
+      "required_change_path_count": 1,
+      "required_change_paths": [
+        "next_information_needs[0]"
+      ],
+      "validation_error": "research_controller_initialize asked for a runtime-owned evaluation input rather than issuer evidence, invalid_field='next_information_needs[0]', next_information_needs[0]='What did the company disclose by 2025-03-31 about its 2025 full-year revenue, adjusted EBITDA, membership, or center-opening guidance, and did any such guidance quantify a bridge to a doubling of the adjusted share price from the supplied baseline?'. Remove this item; do not answer, source, or rewrite the fixed baseline/definition"
+    },
+    "response_next_information_needs": [
+      "What did the company disclose by 2025-03-31 about the expected timing, size, and pricing of the announced secondary offering, and did any disclosure indicate additional share overhang or lock-up expirations within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about membership counts, join fees, monthly dues, or attrition trends for the most recent reported period, and did those metrics show acceleration or deceleration relative to prior periods?",
+      "What did the company disclose by 2025-03-31 about new-center openings, construction delays, or ramp performance for centers opened in 2024 and 2025, and did any disclosure change the expected contribution to revenue or EBITDA within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about its capital structure, net debt leverage ratio, interest expense, or free cash flow, and did any disclosure indicate financing constraints or liquidity pressure that could affect operations or share price within the six-month horizon?",
+      "What did the company disclose by 2025-03-31 about any scheduled earnings release date, investor day, or other catalyst within the six-month horizon, and did any disclosure indicate the expected timing of material operating updates?",
+      "What did the company disclose by 2025-03-31 about its 2025 full-year revenue, adjusted EBITDA, membership, or center-opening guidance, and did any such guidance quantify a bridge to a doubling of the adjusted share price from the supplied baseline?"
+    ],
+    "response_field_counts": {
+      "contradictions": 0,
+      "current_beliefs": 8,
+      "hypotheses": 3,
+      "next_information_needs": 6,
+      "open_questions": 0,
+      "resolved_questions": 6,
+      "supporting_evidence": 8
+    }
+  },
+  {
+    "attempt": 76,
+    "request_hash": "3ef410c5c3e535c16d950bf1e83049a93f04821c2648fc664bd71e5b25d6a703",
+    "stage": "research_controller_initialize",
+    "payload_keys": [
+      "basic_info",
+      "evaluation_context",
+      "initial_research_skill",
+      "validation_feedback"
+    ],
+    "feedback": null,
+    "response_next_information_needs": [
+      "What did Kinross Gold disclose by the prediction time about its Q3 2025 production, cost of sales per ounce, and progress against full-year 2025 guidance, and did any disclosure revise the 2.0 million ounce annual attributable gold equivalent production outlook for 2025 to 2027?",
+      "What specific ownership change, issuer, or securities transaction is described in the Early Warning Report dated September 25, 2025 referenced in Kinross Gold's 6-K, and does it indicate a change in control, board, or strategic direction?",
+      "What did Kinross Gold disclose by the prediction time about its growth projects, including any feasibility, construction, or commissioning milestones scheduled within the six-month horizon, and their expected capital cost and production contribution?",
+      "What did Kinross Gold disclose by the prediction time about its realized gold price, hedging position, and sensitivity of revenue and cash flow to gold price changes for the remainder of 2025?",
+      "What did Kinross Gold disclose by the prediction time about its reserve and resource estimates, mine plan updates, or asset acquisitions and divestitures that could change the production outlook beyond the current guidance?",
+      "What did Kinross Gold disclose by the prediction time about its capital allocation plans, including dividends, share buybacks, and debt reduction, and how much liquidity remains available after planned expenditures?"
+    ],
+    "response_field_counts": {
+      "contradictions": 0,
+      "current_beliefs": 8,
+      "hypotheses": 3,
+      "next_information_needs": 6,
+      "open_questions": 0,
+      "resolved_questions": 6,
+      "supporting_evidence": 8
+    }
+  },
+  {
+    "attempt": 77,
+    "request_hash": "e7aa7d737b492a26fb4b0bef755e79dd55195f9a04aa85df5489cf5eb35e69f7",
+    "stage": "research_controller_initialize_correction",
+    "payload_keys": [
+      "basic_info",
+      "evaluation_context",
+      "initial_research_skill",
+      "validation_feedback"
+    ],
+    "feedback": {
+      "alternative_change_groups": [],
+      "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope. Complete every quantity_literal_checks row using the exact authored numeric tokens and same-claim literals.",
+      "invalid_output": {
+        "contradictions": [],
+        "current_beliefs": [
+          "Kinross Gold's most recent disclosed quarterly operating results show Q2 2025 production of 513,000 ounces at a cost of sales of $1,074 per ounce, with record operating margins and record free cash flow of almost $650 million in the quarter and a first half total of just over $1 billion.",
+          "The most recent observed adjusted close in the supplied market series is 24.37 on 2025-09-29, which is above the 19.38 adjusted close on 2025-08-18, indicating a rising recent price path into the prediction time.",
+          "Third-party analyst commentary dated 2025-09-24 reports UBS raised Kinross Gold's price target to $27 from $20 while maintaining a Buy rating, citing a strong financial position with $1.1 billion in cash and $2.8 billion in total liquidity.",
+          "The same analyst commentary reports the company projects annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+          "Kinross Gold's most recent 6-K filing available before the prediction time is an Early Warning Report dated September 25, 2025, furnished for the sole purpose of providing a copy of that report as filed on SEDAR+.",
+          "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+          "The supplied market series shows adjusted close rising from 19.38 on 2025-08-18 to 24.37 on 2025-09-29, a gain of roughly 26% over that window, with elevated volume on several sessions including 32,164,497 on 2025-09-02 and 29,879,277 on 2025-09-19.",
+          "The supplied earnings-call projection for 2025Q2 shows management confirming full-year guidance and describing an excellent first half positioning the company well to achieve full year guidance."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "If Kinross Gold's Q3 2025 production and cost performance disclosed before the horizon end sustains the Q2 2025 run-rate of 513,000 ounces at $1,074 per ounce cost of sales and gold prices remain supportive, then operating cash flow and earnings expectations could rise enough to support a further re-rating toward the 2x threshold.",
+          "If the Early Warning Report dated September 25, 2025 discloses a material change in a strategic holder's position or a corporate action, then the market narrative and ownership expectations could shift materially within the six-month horizon.",
+          "If the recent price advance from 19.38 on 2025-08-18 to 24.37 on 2025-09-29 continues at a similar pace without a fundamental catalyst, then the move is more likely momentum-driven and vulnerable to reversal rather than sufficient to bridge to the 2x threshold."
+        ],
+        "next_information_needs": [
+          "What did Kinross Gold disclose by the prediction time about its Q3 2025 production, cost of sales per ounce, and progress against full-year 2025 guidance, and did any disclosure revise the 2.0 million ounce annual attributable gold equivalent production outlook for 2025 to 2027?",
+          "What specific ownership change, issuer, or securities transaction is described in the Early Warning Report dated September 25, 2025 referenced in Kinross Gold's 6-K, and does it indicate a change in control, board, or strategic direction?",
+          "What did Kinross Gold disclose by the prediction time about its growth projects, including any feasibility, construction, or commissioning milestones scheduled within the six-month horizon, and their expected capital cost and production contribution?",
+          "What did Kinross Gold disclose by the prediction time about its realized gold price, hedging position, and sensitivity of revenue and cash flow to gold price changes for the remainder of 2025?",
+          "What did Kinross Gold disclose by the prediction time about its reserve and resource estimates, mine plan updates, or asset acquisitions and divestitures that could change the production outlook beyond the current guidance?",
+          "What did Kinross Gold disclose by the prediction time about its capital allocation plans, including dividends, share buybacks, and debt reduction, and how much liquidity remains available after planned expenditures?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [
+          "The supplied market series shows the most recent adjusted close before the prediction time is 24.37 on 2025-09-29, and the series begins at 19.38 on 2025-08-18, so the recent price path is rising into the prediction time.",
+          "The supplied earnings-call projection for 2025Q2 shows management confirming full-year guidance and reporting record operating margins and record free cash flow.",
+          "The supplied analyst commentary dated 2025-09-24 reports UBS raised its price target to $27 from $20 and maintained a Buy rating.",
+          "The supplied 6-K projection shows Kinross Gold furnished an Early Warning Report dated September 25, 2025 as its most recent filing event before the prediction time.",
+          "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31.",
+          "The supplied market series shows elevated trading volume on several sessions in September 2025, including 32,164,497 on 2025-09-02 and 29,879,277 on 2025-09-19."
+        ],
+        "supporting_evidence": [
+          {
+            "claim": "Kinross Gold's Q2 2025 earnings call reports production of 513,000 ounces at a cost of sales of $1,074 per ounce, record operating margins, and record free cash flow of almost $650 million in the quarter and a first half total of just over $1 billion.",
+            "exact_text": "Our production in the second quarter was on plan, delivering 513,000 ounces at a cost of sales of $1,074 per ounce. Our strong production and cost management, combined with the gold price, resulted in record operating margins. As a result, we also delivered record free cash flow in the second quarter of almost $650 million and a first half total of just over $1 billion.",
+            "kind": "basic_info",
+            "projection_id": "projection_21113038b3f46eedb508d711"
+          },
+          {
+            "claim": "The most recent adjusted close in the supplied market series is 24.37 on 2025-09-29.",
+            "exact_text": "{\"adjusted_close\":24.37,\"as_of_date\":\"2025-09-29\",\"close\":24.37,\"high\":24.875,\"low\":24.32,\"open\":24.68, \"volume\":26277033}",
+            "kind": "basic_info",
+            "projection_id": "projection_9cd3234bf54affbeb7b5f26a"
+          },
+          {
+            "claim": "The supplied market series shows an adjusted close of 19.38 on 2025-08-18.",
+            "exact_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43, \"volume\":16600371}",
+            "kind": "basic_info",
+            "projection_id": "projection_8b0ddd2e660ef461ec3f6dc6"
+          },
+          {
+            "claim": "Third-party analyst commentary dated 2025-09-24 reports UBS raised Kinross Gold's price target to $27 from $20 while maintaining a Buy rating, citing a strong financial position with $1.1 billion in cash and $2.8 billion in total liquidity.",
+            "exact_text": "UBS Boosts Kinross Gold’s (KGC) Price Target to $27, Maintains Buy UBS analyst Daniel Major recently increased Kinross Gold's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position. Kinross Gold boasts $1.1 billion in cash and $2.8 billion in total liquidity, which supports existing operations and new growth projects.",
+            "kind": "basic_info",
+            "projection_id": "projection_106a7c08bdff66aeb4147035"
+          },
+          {
+            "claim": "The same analyst commentary reports the company projects annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+            "exact_text": "The company projects an annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+            "kind": "basic_info",
+            "projection_id": "projection_106a7c08bdff66aeb4147035"
+          },
+          {
+            "claim": "Kinross Gold's 6-K filing available before the prediction time is furnished for the sole purpose of providing a copy of an Early Warning Report dated September 25, 2025 as filed on SEDAR+.",
+            "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Early Warning Report dated September 25, 2025",
+            "kind": "basic_info",
+            "projection_id": "projection_ea0a972133346e038b987fc2"
+          },
+          {
+            "claim": "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+            "exact_text": "{\"accn\":\"0001104659-25-028819\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":1229125606}",
+            "kind": "basic_info",
+            "projection_id": "projection_493120e38464967accc37b49"
+          },
+          {
+            "claim": "The supplied market series shows elevated trading volume on 2025-09-02 of 32,164,497 shares and on 2025-09-19 of 29,879,277 shares.",
+            "exact_text": "{\"adjusted_close\":21.46,\"as_of_date\":\"2025-09-02\",\"close\":21.46,\"high\":21.51,\"low\":20.83,\"open\":21.34, \"volume\":32164497}",
+            "kind": "basic_info",
+            "projection_id": "projection_5542114a0d37ba5267450a1c"
+          }
+        ]
+      },
+      "obligation_count": 4,
+      "obligations": [
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "instruction": "supporting_evidence[0] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\"], missing_quantity_literals=[\"2025\"], same_claim_evidence_paths=[\"supporting_evidence[0].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+          "issue_code": "claim_quantity_not_supported",
+          "missing_quantity_groups": [
+            "2025"
+          ],
+          "missing_quantity_literals": [
+            "2025"
+          ],
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "supporting_evidence[0].claim"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "same_claim_evidence_paths": [
+            "supporting_evidence[0].claim"
+          ],
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "instruction": "supporting_evidence[3] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\",\"9\",\"24\"], missing_quantity_literals=[\"2025\",\"09\",\"24\"], same_claim_evidence_paths=[\"supporting_evidence[3].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim. linked_assertions=['current_beliefs[2]'] must copy the corrected claim byte-for-byte",
+          "issue_code": "claim_quantity_not_supported",
+          "missing_quantity_groups": [
+            "2025",
+            "9",
+            "24"
+          ],
+          "missing_quantity_literals": [
+            "2025",
+            "09",
+            "24"
+          ],
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "supporting_evidence[3].claim"
+          ],
+          "obligation_index": 2,
+          "permitted_dependency_paths": [
+            "current_beliefs[2]"
+          ],
+          "retryability": "correctable",
+          "same_claim_evidence_paths": [
+            "supporting_evidence[3].claim"
+          ],
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "instruction": "supporting_evidence[7] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"19\",\"29879277\"], missing_quantity_literals=[\"19\",\"29,879,277\"], same_claim_evidence_paths=[\"supporting_evidence[7].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim",
+          "issue_code": "claim_quantity_not_supported",
+          "missing_quantity_groups": [
+            "19",
+            "29879277"
+          ],
+          "missing_quantity_literals": [
+            "19",
+            "29,879,277"
+          ],
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "supporting_evidence[7].claim"
+          ],
+          "obligation_index": 3,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "same_claim_evidence_paths": [
+            "supporting_evidence[7].claim"
+          ],
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove"
+          ],
+          "copy_candidates_by_path": {
+            "current_beliefs[0]": [
+              {
+                "exact_claim": "Kinross Gold's 6-K filing available before the prediction time is furnished for the sole purpose of providing a copy of an Early Warning Report dated September 25, 2025 as filed on SEDAR+.",
+                "source_path": "supporting_evidence[5].claim"
+              },
+              {
+                "exact_claim": "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+                "source_path": "supporting_evidence[6].claim"
+              },
+              {
+                "exact_claim": "The same analyst commentary reports the company projects annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+                "source_path": "supporting_evidence[4].claim"
+              }
+            ],
+            "current_beliefs[1]": [
+              {
+                "exact_claim": "The most recent adjusted close in the supplied market series is 24.37 on 2025-09-29.",
+                "source_path": "supporting_evidence[1].claim"
+              },
+              {
+                "exact_claim": "The supplied market series shows an adjusted close of 19.38 on 2025-08-18.",
+                "source_path": "supporting_evidence[2].claim"
+              },
+              {
+                "exact_claim": "The same analyst commentary reports the company projects annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+                "source_path": "supporting_evidence[4].claim"
+              }
+            ],
+            "current_beliefs[4]": [
+              {
+                "exact_claim": "Kinross Gold's 6-K filing available before the prediction time is furnished for the sole purpose of providing a copy of an Early Warning Report dated September 25, 2025 as filed on SEDAR+.",
+                "source_path": "supporting_evidence[5].claim"
+              },
+              {
+                "exact_claim": "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+                "source_path": "supporting_evidence[6].claim"
+              },
+              {
+                "exact_claim": "The most recent adjusted close in the supplied market series is 24.37 on 2025-09-29.",
+                "source_path": "supporting_evidence[1].claim"
+              }
+            ],
+            "current_beliefs[6]": [
+              {
+                "exact_claim": "The supplied market series shows an adjusted close of 19.38 on 2025-08-18.",
+                "source_path": "supporting_evidence[2].claim"
+              },
+              {
+                "exact_claim": "The most recent adjusted close in the supplied market series is 24.37 on 2025-09-29.",
+                "source_path": "supporting_evidence[1].claim"
+              },
+              {
+                "exact_claim": "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+                "source_path": "supporting_evidence[6].claim"
+              }
+            ],
+            "current_beliefs[7]": [
+              {
+                "exact_claim": "The supplied financial-statement projection shows Entity Common Stock Shares Outstanding of 1,229,125,606 shares for the period ended 2024-12-31, filed 2025-03-27 on Form 40-F.",
+                "source_path": "supporting_evidence[6].claim"
+              },
+              {
+                "exact_claim": "The supplied market series shows an adjusted close of 19.38 on 2025-08-18.",
+                "source_path": "supporting_evidence[2].claim"
+              },
+              {
+                "exact_claim": "The same analyst commentary reports the company projects annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+                "source_path": "supporting_evidence[4].claim"
+              }
+            ]
+          },
+          "instruction": "quantitative ResearchState assertions must each copy one supporting_evidence claim byte-for-byte, invalid_fields=['current_beliefs[0]', 'current_beliefs[1]', 'current_beliefs[4]', 'current_beliefs[6]', 'current_beliefs[7]']. For every named path, replace it with one exact accepted claim, attach literals to that same exact claim, split the assertion, or remove unsupported numeric detail. Numbers from unrelated claims do not count",
+          "invalid_fields": [
+            "current_beliefs[0]",
+            "current_beliefs[1]",
+            "current_beliefs[4]",
+            "current_beliefs[6]",
+            "current_beliefs[7]"
+          ],
+          "issue_code": "assertion_without_support",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "current_beliefs[0]",
+            "current_beliefs[1]",
+            "current_beliefs[4]",
+            "current_beliefs[6]",
+            "current_beliefs[7]"
+          ],
+          "obligation_index": 4,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "permitted_dependency_path_count": 1,
+      "permitted_dependency_paths": [
+        "current_beliefs[2]"
+      ],
+      "quantity_literal_check_count": 3,
+      "quantity_literal_checks": [
+        {
+          "affected_paths": [
+            "supporting_evidence[0].claim"
+          ],
+          "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+          "missing_quantity_literals": [
+            "2025"
+          ],
+          "missing_quantity_mentions": [
+            {
+              "affected_path": "supporting_evidence[0].claim",
+              "authored_literal": "2025",
+              "authored_span": [
+                18,
+                22
+              ],
+              "context_span": [
+                0,
+                70
+              ],
+              "normalized_group": "2025",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": "Kinross Gold's Q2 2025 earnings call reports production of 513,000 oun"
+            }
+          ],
+          "same_claim_evidence_paths": [
+            "supporting_evidence[0].claim"
+          ]
+        },
+        {
+          "affected_paths": [
+            "supporting_evidence[3].claim"
+          ],
+          "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+          "missing_quantity_literals": [
+            "2025",
+            "09",
+            "24"
+          ],
+          "missing_quantity_mentions": [
+            {
+              "affected_path": "supporting_evidence[3].claim",
+              "authored_literal": "2025",
+              "authored_span": [
+                37,
+                41
+              ],
+              "context_span": [
+                0,
+                89
+              ],
+              "normalized_group": "2025",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": "Third-party analyst commentary dated 2025-09-24 reports UBS raised Kinross Gold's price t"
+            },
+            {
+              "affected_path": "supporting_evidence[3].claim",
+              "authored_literal": "09",
+              "authored_span": [
+                42,
+                44
+              ],
+              "context_span": [
+                0,
+                92
+              ],
+              "normalized_group": "9",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": "Third-party analyst commentary dated 2025-09-24 reports UBS raised Kinross Gold's price targ"
+            },
+            {
+              "affected_path": "supporting_evidence[3].claim",
+              "authored_literal": "24",
+              "authored_span": [
+                45,
+                47
+              ],
+              "context_span": [
+                0,
+                95
+              ],
+              "normalized_group": "24",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": "Third-party analyst commentary dated 2025-09-24 reports UBS raised Kinross Gold's price target "
+            }
+          ],
+          "same_claim_evidence_paths": [
+            "supporting_evidence[3].claim"
+          ]
+        },
+        {
+          "affected_paths": [
+            "supporting_evidence[7].claim"
+          ],
+          "completion_rule": "Every named authored numeric token must be removed from all retained affected paths unless a same-claim evidence literal supports it. A substring inside another numeric token does not satisfy this rule.",
+          "missing_quantity_literals": [
+            "19",
+            "29,879,277"
+          ],
+          "missing_quantity_mentions": [
+            {
+              "affected_path": "supporting_evidence[7].claim",
+              "authored_literal": "19",
+              "authored_span": [
+                107,
+                109
+              ],
+              "context_span": [
+                59,
+                131
+              ],
+              "normalized_group": "19",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": " 2025-09-02 of 32,164,497 shares and on 2025-09-19 of 29,879,277 shares."
+            },
+            {
+              "affected_path": "supporting_evidence[7].claim",
+              "authored_literal": "29,879,277",
+              "authored_span": [
+                113,
+                123
+              ],
+              "context_span": [
+                65,
+                131
+              ],
+              "normalized_group": "29879277",
+              "token_boundary_rule": "authored_literal is one complete numeric token at authored_span; the same character sequence inside another numeric token neither supports nor removes this occurrence",
+              "verbatim_context": "09-02 of 32,164,497 shares and on 2025-09-19 of 29,879,277 shares."
+            }
+          ],
+          "same_claim_evidence_paths": [
+            "supporting_evidence[7].claim"
+          ]
+        }
+      ],
+      "required_change_path_count": 8,
+      "required_change_paths": [
+        "supporting_evidence[0].claim",
+        "supporting_evidence[3].claim",
+        "supporting_evidence[7].claim",
+        "current_beliefs[0]",
+        "current_beliefs[1]",
+        "current_beliefs[4]",
+        "current_beliefs[6]",
+        "current_beliefs[7]"
+      ],
+      "validation_contract": "structured-validation-v1",
+      "validation_error": "supporting_evidence[0] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\"], missing_quantity_literals=[\"2025\"], same_claim_evidence_paths=[\"supporting_evidence[0].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; supporting_evidence[3] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"2025\",\"9\",\"24\"], missing_quantity_literals=[\"2025\",\"09\",\"24\"], same_claim_evidence_paths=[\"supporting_evidence[3].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim. linked_assertions=['current_beliefs[2]'] must copy the corrected claim byte-for-byte; supporting_evidence[7] claim contains numeric quantities absent from all Basic exact_text refs with the same claim, missing_quantity_groups=[\"19\",\"29879277\"], missing_quantity_literals=[\"19\",\"29,879,277\"], same_claim_evidence_paths=[\"supporting_evidence[7].claim\"]. Change or remove every listed evidence claim together, and retained refs must share one identical corrected claim. Add one exact literal ref for every quantity, split the multi-span claim across refs with the same claim, or narrow the claim; quantitative ResearchState assertions must each copy one supporting_evidence claim byte-for-byte, invalid_fields=['current_beliefs[0]', 'current_beliefs[1]', 'current_beliefs[4]', 'current_beliefs[6]', 'current_beliefs[7]']. For every named path, replace it with one exact accepted claim, attach literals to that same exact claim, split the assertion, or remove unsupported numeric detail. Numbers from unrelated claims do not count"
+    },
+    "response_next_information_needs": [
+      "What did Kinross Gold disclose by the prediction time about its Q3 2025 production, cost of sales per ounce, and progress against full-year 2025 guidance, and did any disclosure revise the 2.0 million ounce annual attributable gold equivalent production outlook for 2025 to 2027?",
+      "What specific ownership change, issuer, or securities transaction is described in the Early Warning Report dated September 25, 2025 referenced in Kinross Gold's 6-K, and does it indicate a change in control, board, or strategic direction?",
+      "What did Kinross Gold disclose by the prediction time about its growth projects, including any feasibility, construction, or commissioning milestones scheduled within the six-month horizon, and their expected capital cost and production contribution?",
+      "What did Kinross Gold disclose by the prediction time about its realized gold price, hedging position, and sensitivity of revenue and cash flow to gold price changes for the remainder of 2025?",
+      "What did Kinross Gold disclose by the prediction time about its reserve and resource estimates, mine plan updates, or asset acquisitions and divestitures that could change the production outlook beyond the current guidance?",
+      "What did Kinross Gold disclose by the prediction time about its capital allocation plans, including dividends, share buybacks, and debt reduction, and how much liquidity remains available after planned expenditures?"
+    ],
+    "response_field_counts": {
+      "contradictions": 0,
+      "current_beliefs": 8,
+      "hypotheses": 3,
+      "next_information_needs": 6,
+      "open_questions": 0,
+      "resolved_questions": 6,
+      "supporting_evidence": 8
+    }
+  }
+]

@@ -137,6 +137,151 @@ class ScopedCorrectionProjectionTests(TestCase):
         self.assertEqual(invalid["rows"][0]["keep"], [1, 2])
         self.assertEqual(corrected["rows"][0]["keep"], [])
 
+    def test_projection_revalidation_failure_retains_projected_object_for_next_correction(self) -> None:
+        invalid = {
+            "next_information_needs": [
+                "Remove baseline bridge question.",
+                "Keep sibling need.",
+            ],
+            "current_beliefs": ["Belief with 42 dollars."],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": "Copied claim.",
+                    "projection_id": "p",
+                    "exact_text": "text",
+                }
+            ],
+            "open_questions": ["Unrelated open question."],
+            "decision": "continue",
+        }
+        corrected = {
+            # The model reordered the flagged need instead of removing it, so
+            # the sibling shift is unrelated drift the projection must drop.
+            "next_information_needs": [
+                "Keep sibling need.",
+                "Remove baseline bridge question.",
+            ],
+            "current_beliefs": ["Belief with 42 dollars."],
+            "supporting_evidence": invalid["supporting_evidence"],
+            "open_questions": ["Unrelated open question."],
+            "decision": "continue",
+        }
+
+        def parse(value):
+            needs = value["next_information_needs"]
+            if any("baseline" in need for need in needs):
+                raise ValidationError(
+                    "invalid_field='next_information_needs[0]', "
+                    f"next_information_needs[0]={needs[0]!r}. Remove this item"
+                )
+            if value["current_beliefs"][0] != value["supporting_evidence"][0]["claim"]:
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="assertion_without_support",
+                            message=(
+                                "quantitative ResearchState assertions must each "
+                                "copy one supporting_evidence claim byte-for-byte"
+                            ),
+                            paths=("current_beliefs[0]",),
+                            allowed_repairs=("replace", "remove"),
+                        )
+                    ]
+                )
+            return value
+
+        final = {
+            "next_information_needs": ["Keep sibling need.", "Keep sibling need."],
+            "current_beliefs": ["Copied claim."],
+            "supporting_evidence": invalid["supporting_evidence"],
+            "open_questions": ["Unrelated open question."],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid, corrected, final])
+        caller.max_structured_corrections = 2
+        value, _ = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="research_controller_initialize",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=parse,
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
+            stable_correction_prefix=True,
+        )
+        self.assertEqual(value["current_beliefs"], ["Copied claim."])
+        self.assertEqual(len(caller.calls), 3)
+        first = caller.calls[1]["payload"]["validation_feedback"]
+        second = caller.calls[2]["payload"]["validation_feedback"]
+        self.assertNotEqual(first, second)
+        # The retained invalid output is the safe projection: the flagged need
+        # was repaired, the drifted sibling rewrite was discarded, and every
+        # otherwise-valid unrelated scalar/list value survives byte-for-byte.
+        self.assertEqual(
+            second["invalid_output"],
+            {
+                "next_information_needs": [
+                    "Keep sibling need.",
+                    "Keep sibling need.",
+                ],
+                "current_beliefs": ["Belief with 42 dollars."],
+                "supporting_evidence": invalid["supporting_evidence"],
+                "open_questions": ["Unrelated open question."],
+                "decision": "continue",
+            },
+        )
+        self.assertEqual(second["obligations"][0]["issue_code"], "assertion_without_support")
+        self.assertEqual(
+            second["obligations"][0]["must_change_paths"], ["current_beliefs[0]"]
+        )
+
+    def test_no_projection_scope_rejection_keeps_original_feedback_unchanged(self) -> None:
+        invalid = {
+            "next_information_needs": [
+                "Remove baseline question.",
+                "Keep sibling.",
+                "Keep second sibling.",
+            ]
+        }
+        corrected = {
+            "next_information_needs": [
+                "Fixed unrelated rewrite.",
+                "Changed sibling.",
+            ]
+        }
+
+        def parse(value):
+            if "baseline" in value["next_information_needs"][0]:
+                raise ValidationError(
+                    "invalid_field='next_information_needs[0]' must change"
+                )
+            return value
+
+        caller = ScriptedRoleCaller([invalid, corrected, corrected])
+        caller.max_structured_corrections = 2
+        with self.assertRaises(CandidateExecutionRejected):
+            evolution_runtime_module._complete_parsed_role(
+                caller,
+                stage="research_controller_initialize",
+                system_prompt="Return the fixed contract.",
+                payload={},
+                parser=parse,
+                allow_outcomes=False,
+                enforce_scoped_correction=True,
+                exact_compaction_scope=True,
+                stable_correction_prefix=True,
+            )
+        self.assertEqual(len(caller.calls), 3)
+        first = caller.calls[1]["payload"]["validation_feedback"]
+        second = caller.calls[2]["payload"]["validation_feedback"]
+        self.assertEqual(first, second)
+        self.assertEqual(
+            caller.calls[2]["payload"]["validation_feedback"]["invalid_output"],
+            invalid,
+        )
+
     def test_projection_refuses_missing_paths_and_ambiguous_index_shifts(self) -> None:
         invalid = {"rows": [{"value": 0}, {"value": 1}]}
         for corrected, path in (

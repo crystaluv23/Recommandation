@@ -31,6 +31,17 @@ object never stands in for the projection: remaining drift of any kind —
 scalar, nested-leaf, indexed-item, or list membership, including same-length
 membership rewrites — fails closed with actionable feedback.
 
+When a safe projection exists but fails revalidation, the next correction
+attempt must carry that projected object as its invalid output together with
+the projected object's actual new validation diagnostics: safely repaired
+fields are preserved, unrelated drift stays discarded, and the follow-up
+correction request therefore differs from the previous correction request
+instead of replaying it byte-for-byte into a cached identical response.
+Retrying the original failed output and original obligations after a
+discovered projection is a stall defect. When no safe projection exists, the
+original invalid object and its original obligations are retained unchanged
+for the retry.
+
 Field and member granularity is preserved at every path-expansion step. A
 leaf path `root[i].field` authorizes only that field of its member; it never
 authorizes rewriting sibling fields, replacing the whole member, inserting

@@ -1,15 +1,15 @@
 # Joint-run acceptance checklist and evidence ledger
 
-## Local repair (accepted through round09;875tests/lint and independent replays pass)
+## Local repair (accepted through round13;888tests/lint and independent actual-wire feedback/semantic replays pass)
 
 - Raw V117 requests 12 and 262 explicitly demand temporally invalid partial residuals. See v117-required-residual.json and v117-second-candidate-feedback.json. Correct both producer and consumer semantics, not just untouched fields.
 - Production regression must cover bounded parent need -> narrower partial residual retaining cutoff -> exact H_reflect transition and temporal validation -> next routing input.
 - No whole-object escape that admits unrelated valid sibling drift. See round-03/review.md. Legitimate explicitly justified dependencies and list changes remain possible.
 - Focused/full tests and lint; source/spec/progress synchronized; accepted code checkpoint before freeze.
 
-## Real successor run (not frozen, no calls made yet)
+## Real successor runs (V118 executed and rejected; next successor pending)
 
-Use verified inputs in live-inputs.json and immutable new workspace. Keep V117 unchanged. Freeze exact code revision, approved dataset hash, v6 source Registry/history, models, case cohort, and bounded budget. Track cumulative production attempts/cost across successor repairs; never reset accounting by renaming workspaces.
+Use verified inputs in live-inputs.json and immutable new workspace. Keep V117 and V118 unchanged. Freeze exact code revision, approved dataset hash, v6 source Registry/history, models, case cohort, and bounded budget. Track cumulative production attempts/cost across successor repairs; never reset accounting by renaming workspaces.
 
 ## Logical joint acceptance
 

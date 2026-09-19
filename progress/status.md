@@ -1,5 +1,91 @@
 # Status
 
+2026-09-20（round-13）**关闭运行时锚点守卫两个已证实漏洞：裸 with 与首现枚举**：
+round-12 独立评审给出两条具体反例（`Please provide me with the baseline date
+and price.` 与 `Using the supplied baseline price, what is the baseline
+price?` 均错误返回 False）。机制诊断与修复（spec 先行，通用机制而非字串例外）：
+其一，`_RUNTIME_ANCHOR_REFERENCE_PREPOSITIONS` 含裸 "with"，而双宾请求
+（provide/supply me WITH …）里 with 引出的是被请求对象，不构成参照证据——
+将裸 with 移出封闭介词集（扫描随即撞上请求动词而 fail-closed），参照性 with
+仅由显式参照短语（compared with、with respect to）许可；逐一检查集内其余
+介词（from/against/versus/vs/using/above/below/beyond/near/than），均无
+引出直接宾语的歧义。其二，近邻模式为贪婪 `.{0,48}` 且提名只用 `search`
+取首个锚点词，一个匹配可吞掉跨从句的重复提及，使前段参照提及掩盖后段同锚点
+直接检索——提名改为对每个近邻 span 内的全部锚点词出现（finditer）穷举
+（scalar 价格名词回退同样处理），独立从句全部受检、无首现豁免。V118 真实
+request74 六条 needs、既有参照正例（from/relative to/measured from/outcome-of、
+contiguous compared with）、五条普通查询负例与全部 PIT 检查均保持不变。
+新增配对回归：provide-with 三负例 vs compared-with 正例；同锚点重复三负例
+（前参照后检索）vs 重复同锚点双参照正例。round-13/replay.py 复用 round-12
+复放框架并新增负/正例：修复前诊断运行 exit 1（恰好六条新负例误通过，证明
+漏洞在真实守卫上）；修复后全部通过。888 测试+lint 通过（仅本地验证，无生产
+调用、按本轮 brief 不提交 commit；残余限制见 round-13 报告，未宣称完整语义
+正确）。
+
+2026-09-20（round-12）**运行时锚点守卫改回默认拒绝：删除 round-11 fail-open 语义分类**：
+round-11 独立评审证明锚点分类器把陌生左侧治理词当作许可（"What is the value
+of the baseline price?"、"Please obtain…"、"Can we look up…" 全部返回 False），
+被动/倒装句（"The baseline price is what?"、"must be identified"）同样漏过。
+修复（通用机制，非动词表追加、非公司/字串例外）：分类默认失败关闭——锚点
+提及只有命中封闭参照结构才视为"既定参照使用"：向左跨名词短语填充词后先遇到
+参照介词/短语（from、relative to、compared with、above、using 等），或 "of"
+的头部为固定结局名词（"a doubling of the adjusted share price"）；其余一切
+（请求词、陌生治理词、倒装/被动改写、无治理词）一律拒绝。约 60 词的
+_RUNTIME_ANCHOR_REQUEST_OPERATORS 动词表整体删除：未知措辞不再是普遍许可，
+也不存在需不断追加的动词清单。current-price 触发改为在 "current/
+prediction-time" 词本身处分类，故 "move the adjusted share price above the
+current market level" 仍是参照使用而 "what is the current adjusted share
+price" 仍拒绝；逐锚点、逐配对关键词分类保持混合/重复从句仍拒绝真实检索。
+spec 先行更新 evolution_research_validation.md；tests 将 round-11 的
+outcome-terms 正例修正为保守拒绝（陌生治理词 fail-closed 的文档化），新增
+brief 五条普通直接负例与常见构造负例、多从句（参照+真实检索、不同锚点双参照）
+配对回归；round-12/replay.py 只读复放不可变 V118 工件：六条真实 request74
+needs 全部判非请求、生产解析器对该真实响应仅余真实数值证据错误（无
+runtime-owned 错误）、全部普通直接/真实/混合查询拒绝、参照式使用通过。
+886 测试+lint 通过（仅本地验证，无生产调用、按本轮 brief 不提交 commit；
+真实后继联跑未宣称完成）。
+
+2026-09-20（round-11）**V118 真实 request74 语义误报修复：区分"使用"运行时锚点与"检索"运行时输入**：
+c01（Life Time，case5）attempt74 的 next_information_needs[0] 是发行人指引问句，
+仅以 supplied baseline 作参照锚（"…quantify a bridge to a doubling of the
+adjusted share price from the supplied baseline?"），却被
+_RUNTIME_EVALUATION_BASELINE_INPUT 的近邻匹配判为 runtime-owned 查询。修复（通用
+意图区分，非字符串/公司例外）：四个近邻模式只负责提名候选锚点；新增逐锚点治理词
+分类（下划线归一后）：参照介词/短语（from、relative to、compared with、above 等
++ the supplied/fixed …）或嵌入其他内容词之下 → 视为问句"使用"的既定锚点；
+疑问词/系动词/查找动词直接管辖锚点（"What is the exact baseline date"）→ 仍判
+runtime-owned 拒绝。逐锚点、逐配对关键词分类使混合问句（引用一个锚点同时请求另一
+运行时事实）仍被拒绝，无 supplied/using 词表旁路；真实的
+baseline/date/current-price/definition/scalar 查询拒绝与全部 PIT 未来事实拒绝保持
+不变（含 v109 标量收盘价负例与既有 exact baseline date and price 负例）。spec 先行
+更新 evolution_research_validation.md；tests/test_evolution_execution_roles.py 新增
+七条配对回归（request74 六条逐字 needs 全通过、真实查询负例、混合负例、参照式
+current-price/outcome-terms/scalar-doubling 正例、参照锚不豁免未来事实拒绝）；
+round-11/replay.py 只读复放不可变 V118 工件断言真实问句不再产生 runtime-owned
+错误（其余真实数值证据错误可保留）。round-10 投影反馈修复原样保留。本轮 shell
+权限钩子拒绝一切命令：测试/lint/复放未能执行，仅以对守卫、提示词与既有测试的
+逐例推演验证；后继须先跑全套测试、lint 与 replay 再谈线上验收。
+
+2026-09-20（round-10）**V118 真实"投影复检失败→旧反馈重发"缓存死锁修复**：
+以不可变 V118 工件确定性复放两对真实 H_init 纠错对（c01 Life Time 74→75、
+c02 Kinross 76→77），定位 `_complete_parsed_role` 宽松投影分支：安全投影存在
+但复检暴露新的真实缺陷时，代码丢弃投影并保留原始 failed_output/义务重发，
+correction-2 请求与 correction-1 逐字节相同（反馈哈希 eff859a9…/dbf8515b…
+各自相等），精确响应缓存永远重放同一被拒响应直至 CandidateExecutionRejected。
+c01：模型把被点名的 runtime-owned 需求重排而非删除（兄弟漂移 1..5），投影
+移除违禁需求后复检暴露被首错掩盖的 claim-quantity/assertion 缺陷；c02：模型
+修好了 9 条授权路径中的 claim 却未同步链接断言，投影复检暴露
+assertion_without_support(current_beliefs[0])。修复：投影复检失败时保留该
+安全投影对象（无关漂移已丢弃）及其真实新类型化诊断作为下一次纠错的
+invalid_output/validation_error——新反馈哈希、指向新缺陷、同一两次纠错预算内
+收敛；无安全投影时仍原样保留原始对象/义务（基线不变，不洗白整对象漂移、
+不恢复整对象回退/blanket 信念权限/推断父删除）。spec 先行更新
+evolution_output_validation.md；新增两条聚焦回归（投影保留馈送 + 无投影基线
+不变）；round-10/replay.py 复现修复前同哈希死锁机制并验证修复后两对均在
+缓存响应场景（经投影保留+确定性回退）与脚本化有效纠错场景直接通过生产
+校验。877 测试+lint 通过（仅本地验证，无生产调用、按本轮 brief 不提交
+commit；真实后继运行是 Codex 下一步）。
+
 2026-09-20（round-09）**成员删除权限改为验证器显式元数据签发 + 比较器精确路径短路**：
 round-08 附加验收用独立生产复放证明：removal_allowances 构建器把任何带下标的
 叶子义务路径无条件升级为父行删除授权——反例：issue 仅授权 `rows[0].fix`

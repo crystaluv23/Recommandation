@@ -1,0 +1,7 @@
+{
+  "pid": 15902,
+  "started_at": "2026-09-19T17:14:23.039927+00:00",
+  "state": "exited",
+  "log": ".delegation/fast-slow-20260919/live-cycle.log",
+  "exit_code": 0
+}

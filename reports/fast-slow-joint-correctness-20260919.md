@@ -378,3 +378,15 @@ brief): 875 tests OK (873 + 2 new), focused file 21 OK,
 `scripts/lint_repo.sh` PASS, `git diff --check` clean. Logs:
 `.delegation/fast-slow-20260919/round-09/{focused,full-tests,lint}.log`.
 The real Fast+Slow joint rerun remains outstanding.
+
+## V118 real acceptance and round10 repair
+V118 (checkpoint63a2efb) actually executed:77attempts/$0.25796204, rejected both Fast candidates, round/cycle0/0, no Slow. Original temporal contradiction did not recur in observed cases. Three changed reflection needs were carried exactly into subsequent routing payloads; this proves state continuity, not yet downstream action on those changed indices. Actual wire evidence: `.delegation/fast-slow-20260919/v118-changed-flows.json`.
+
+Failures74/75 and76/77 exposed safe projection feedback stall: projected objects surfaced real new validation errors, but code discarded them and repeated original correction context, replaying identical cache requests. Round10 retains last safely projected invalid object and its actual diagnostics; unrelated drift remains discarded.877tests/lint passed; Codex reran actual-wire replay independently and confirmed feedback changed, both scripted repairs validated and unrelated values preserved. See round-10/report.md, review.md and independent-replay.log.
+
+Independent semantic review also found original V118 issuer-guidance question merely used supplied baseline, while guard proximity regex classified any price/baseline mention as retrieval. Round11 addresses this separately before next real run. No joint success claimed.
+
+## Runtime-input reference versus retrieval repair (rounds11–13)
+V118 original issuer-guidance question used supplied baseline; old proximity-only guard falsely demanded rewriting it. Round11 left-governor classifier was rejected for default-permission on unknown wording. Round12 conservative reference-only exceptions fixed those examples (886tests), but Codex found bare-with and repeated-anchor holes. Round13 removes bare-with exemption and enumerates all nominated occurrences, including repeated same-anchor mentions;888tests/lint and actual V118 replay passed. Codex independently checked both demonstrated failures, inverse clause order, legitimate compared-with and literal V118 question. Executor report's inherited `Retrieve the share price from the supplied baseline` bypass claim was independently disproved on final code (returns True/reject).
+
+Accepted locally; code does not purport to solve universal English intent. Unrecognized reference forms conservatively require correction. Actual joint successor still required, preserving failed V117/V118 and cumulative budgets.

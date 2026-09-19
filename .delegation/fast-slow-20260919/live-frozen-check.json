@@ -1,0 +1,19 @@
+{
+  "workspace": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v118",
+  "contract_hash": "ff58b654257e535b04c5be5e4a9fcc21b4911cf57fc0bfd91c9da69e0b2bce28",
+  "code_revision": "63a2efbd6aa145067780c472809bdc71fd171147",
+  "same_as_v117": [
+    "limits",
+    "dataset_manifest_hash",
+    "initial_signal_registry_hash",
+    "initial_signal_registry_version",
+    "slow_history_manifest_hash",
+    "predictor_semantics_hash",
+    "priors_hash",
+    "source_type_catalog_hash",
+    "seed_pool_entries"
+  ],
+  "seed_manifest_hash_difference": "scan_summary only:305to306 scanned,92to93compatible; actual seed entry byte-equivalent",
+  "raw_inventory": "freshly frozen current oracle inventory; includes accumulated source acquisitions",
+  "external_calls_at_freeze": 0
+}

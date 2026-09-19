@@ -3106,6 +3106,7 @@ def _complete_parsed_role(
                         # drifted complete object.
                         extended_paths = list(must_change_paths)
                         extended_removals: list[str] = []
+                        projected_failure: ValidationError | None = None
                         for _extension_round in range(
                             _SCOPED_PROJECTION_EXTENSION_ROUNDS
                         ):
@@ -3119,6 +3120,7 @@ def _complete_parsed_role(
                                     parser,
                                 )
                             except ValidationError as projected_exc:
+                                projected_failure = projected_exc
                                 extension, removal_extension = (
                                     _structured_revalidation_paths(
                                         projected_exc,
@@ -3158,6 +3160,30 @@ def _complete_parsed_role(
                                 discarded_paths=list(drift_paths),
                             )
                             return projected_parsed, usage
+                        if (
+                            projected_value is not None
+                            and projected_failure is not None
+                        ):
+                            # A safe projection repaired the diagnosed paths and
+                            # revalidation then surfaced a new real failure. Keep
+                            # the projected object (unrelated drift discarded)
+                            # plus its actual new diagnostics so the next
+                            # correction request differs from the previous one
+                            # and targets that new failure; replaying the
+                            # original feedback byte-for-byte would hit the
+                            # identical cached correction response forever.
+                            failed_output = projected_value
+                            failure = projected_failure
+                            _emit_runtime_progress(
+                                getattr(caller, "on_progress", None),
+                                "structured_correction_projection_retained",
+                                stage=stage,
+                                request_stage=request_stage,
+                                correction_count=completed_corrections,
+                                copied_paths=list(projected_paths),
+                                discarded_paths=list(drift_paths),
+                            )
+                            continue
                         scope_failure = ValidationError(
                             "correction changed unrelated valid content outside "
                             f"must_change_paths={must_change_paths}, "
@@ -3168,9 +3194,9 @@ def _complete_parsed_role(
                         )
                         if attempt == max_corrections:
                             failure = scope_failure
-                        # Keep the original invalid object and obligations on
-                        # retry; drift diagnostics must not authorize those
-                        # drifted paths.
+                        # No safe projection exists: keep the original invalid
+                        # object and obligations on retry; drift diagnostics
+                        # must not authorize those drifted paths.
                         continue
             parsed_value = _parse_role_output(request_stage, value, parser)
             if discarded_drift_paths:

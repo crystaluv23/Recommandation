@@ -476,6 +476,160 @@ _RUNTIME_EVALUATION_SCALAR_PRICE_LOOKUP = re.compile(
 )
 
 
+_RUNTIME_ANCHOR_BASELINE_WORD = re.compile(r"\bbaseline\b", re.IGNORECASE)
+
+
+_RUNTIME_ANCHOR_DATE_OR_PRICE_WORD = re.compile(
+    r"\b(?:date|price)\b", re.IGNORECASE
+)
+
+
+_RUNTIME_ANCHOR_PRICE_NOUN_WORD = re.compile(
+    r"\b(?:adjusted close(?: price)?|closing price|share price|stock price)\b",
+    re.IGNORECASE,
+)
+
+
+# Bare "with" is excluded: dative requests ("provide me with the baseline
+# date") use it to introduce the requested object, so it is ambiguous rather
+# than reference evidence. Reference "with" is licensed only as an explicit
+# phrase in _RUNTIME_ANCHOR_REFERENCE_PHRASES ("compared with",
+# "with respect to").
+_RUNTIME_ANCHOR_REFERENCE_PREPOSITIONS = frozenset(
+    "from against versus vs using above below beyond near than".split()
+)
+
+
+_RUNTIME_ANCHOR_REFERENCE_PHRASES = frozenset(
+    "relative_to compared_to compared_with measured_from offset_from "
+    "with_respect_to in_relation_to".split()
+)
+
+
+_RUNTIME_ANCHOR_CURRENT_WORD = re.compile(
+    r"\b(?:current|prediction[- ]time)\b", re.IGNORECASE
+)
+
+
+_RUNTIME_ANCHOR_OUTCOME_NOUNS = frozenset(
+    "2x double doubled doubles doubling reprice reprices repriced repricing".split()
+)
+
+
+_RUNTIME_ANCHOR_NP_INTERNAL_TOKENS = frozenset(
+    "a an the its their this that these those and or as at me us you it "
+    "exact current present latest fixed supplied given provided runtime "
+    "evaluation prediction time six month adjusted close closing share "
+    "stock date dates price prices baseline baselines company issuer "
+    "outcome doubling term terms definition s".split()
+)
+
+
+def _anchor_occurrence_reference_use(text: str, anchor_start: int) -> bool:
+    """Return whether one anchor mention is clearly used as a supplied reference.
+
+    Classification fails closed. Scanning left from the anchor over
+    noun-phrase-internal tokens, the first external word must belong to a
+    closed set of reference constructs: a reference preposition or phrase
+    ("from the supplied baseline", "compared with the supplied baseline"),
+    or "of" headed by a fixed-outcome noun ("a doubling of the adjusted
+    share price"). Bare "with" is not one of the prepositions: in a dative
+    request ("provide me with the baseline date") it introduces the
+    requested object, so the scan reaches the request verb and fails
+    closed. Request operators, unrecognized governors ("the value of the
+    baseline price", "obtain the baseline date"), inverted or passive
+    restatements ("The baseline price is what?"), and mentions with no
+    governor at all are not reference use, so unknown wording keeps the
+    rejection instead of granting permission.
+    """
+
+    left = text[:anchor_start].casefold()
+    for phrase in _RUNTIME_ANCHOR_REFERENCE_PHRASES:
+        left = left.replace(phrase.replace("_", " "), phrase)
+    words = re.findall(r"[a-z0-9_']+", left)
+    while words:
+        word = words.pop()
+        if word.endswith("'s"):
+            word = word[: -2]
+        if (
+            word in _RUNTIME_ANCHOR_REFERENCE_PREPOSITIONS
+            or word in _RUNTIME_ANCHOR_REFERENCE_PHRASES
+        ):
+            return True
+        if word == "of":
+            head = words[-1] if words else ""
+            if head.endswith("'s"):
+                head = head[: -2]
+            return head in _RUNTIME_ANCHOR_OUTCOME_NOUNS
+        if word not in _RUNTIME_ANCHOR_NP_INTERNAL_TOKENS:
+            return False
+    return False
+
+
+def _runtime_evaluation_input_requested(
+    item: str,
+    prediction_date_texts: set[str],
+) -> bool:
+    """Return whether one question fails the closed reference-use test.
+
+    The proximity patterns above nominate candidate anchors; every nominated
+    occurrence must then be clearly identified as anchor-as-reference use
+    (``_anchor_occurrence_reference_use``) or the question rejects. An
+    issuer-evidence question that uses a supplied anchor ("a doubling of
+    the adjusted share price from the supplied baseline") passes while a
+    direct baseline, date, current-price, definition, or scalar price
+    lookup — including unfamiliar request wording — still rejects.
+    Underscore-separated spellings are normalized before matching, like the
+    temporal checks. Nomination enumerates every anchor-word occurrence
+    inside each proximity span, not only the first: a greedy span can
+    cover repeated mentions across clauses, and an early reference mention
+    never hides a later direct lookup of the same anchor. For the
+    current-price trigger the classified anchor is the
+    "current"/"prediction-time" word itself, because the paired price
+    noun usually belongs to the fixed outcome phrase ("move the adjusted
+    share price above the current market level").
+    """
+
+    normalized = item.replace("_", " ")
+    anchor_positions: list[int] = []
+    for match in _RUNTIME_EVALUATION_BASELINE_INPUT.finditer(normalized):
+        for word_pattern in (
+            _RUNTIME_ANCHOR_BASELINE_WORD,
+            _RUNTIME_ANCHOR_DATE_OR_PRICE_WORD,
+        ):
+            for word in word_pattern.finditer(match.group(0)):
+                anchor_positions.append(match.start() + word.start())
+    scalar_enabled = prediction_date_texts and any(
+        text in normalized for text in prediction_date_texts
+    )
+    for pattern in (
+        _RUNTIME_EVALUATION_CURRENT_PRICE_INPUT,
+        _RUNTIME_EVALUATION_DEFINITION_INPUT,
+        _RUNTIME_EVALUATION_SCALAR_PRICE_LOOKUP if scalar_enabled else None,
+    ):
+        if pattern is None:
+            continue
+        for match in pattern.finditer(normalized):
+            if pattern is _RUNTIME_EVALUATION_DEFINITION_INPUT:
+                anchor_positions.append(match.start())
+                continue
+            if pattern is _RUNTIME_EVALUATION_CURRENT_PRICE_INPUT:
+                current_words = list(
+                    _RUNTIME_ANCHOR_CURRENT_WORD.finditer(match.group(0))
+                )
+                if current_words:
+                    anchor_positions.extend(
+                        match.start() + word.start() for word in current_words
+                    )
+                    continue
+            for noun in _RUNTIME_ANCHOR_PRICE_NOUN_WORD.finditer(match.group(0)):
+                anchor_positions.append(match.start() + noun.start())
+    return any(
+        not _anchor_occurrence_reference_use(normalized, position)
+        for position in anchor_positions
+    )
+
+
 _FUTURE_OPERATING_EVENT = re.compile(
     r"\b(?:commerciali[sz](?:e|ed|ation)|complet(?:e|ed|ion)|commenc(?:e|ed|ement)|"
     r"launch(?:ed|ing)?|open(?:ed|ing)?|operat(?:e|ed|ing|ion|ional)|"
@@ -828,15 +982,9 @@ def _raw_research_evaluation_boundary_issues(
         for index, item in enumerate(raw_items):
             if not isinstance(item, str):
                 continue
-            runtime_owned = bool(
-                _RUNTIME_EVALUATION_BASELINE_INPUT.search(item)
-                or _RUNTIME_EVALUATION_DEFINITION_INPUT.search(item)
-                or _RUNTIME_EVALUATION_CURRENT_PRICE_INPUT.search(item)
-                or (
-                    prediction_date_texts
-                    and _RUNTIME_EVALUATION_SCALAR_PRICE_LOOKUP.search(item)
-                    and any(text in item for text in prediction_date_texts)
-                )
+            runtime_owned = _runtime_evaluation_input_requested(
+                item,
+                prediction_date_texts,
             )
             if not runtime_owned:
                 continue

@@ -35,3 +35,40 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   linked-assertion dependency (same exact claim text) or an actual compaction
   obligation with exact removal scope — so a valid unrelated belief survives
   a need correction byte-for-byte.
+- A runtime-owned evaluation input (the baseline, its date or price, the
+  current or prediction-time price, the outcome definition) is rejected
+  unless its anchor mention is clearly identified as reference use. Mention
+  proximity only nominates candidate anchors; classification then fails
+  closed. After underscore normalization like the temporal checks, one
+  occurrence is reference use only when scanning left from the anchor across
+  noun-phrase fillers reaches a closed reference construct: a reference
+  preposition or reference phrase ("from / relative to / compared with /
+  above ... the supplied baseline"), or "of" headed by a fixed-outcome noun
+  ("a doubling of the adjusted share price"). Bare "with" is not a
+  reference preposition: in a dative request ("provide / supply me with
+  the baseline date") the "with" introduces the requested object, so the
+  scan fails closed on the request verb; reference "with" is licensed
+  only as an explicit reference phrase ("compared with", "with respect
+  to"). Nomination enumerates every anchor-word occurrence inside each
+  proximity span, not only the first: a proximity span may greedily
+  cover repeated mentions across clauses, and an early reference mention
+  never hides a later direct lookup of the same anchor ("Using the
+  supplied baseline price, what is the baseline price?" rejects).
+  Anything else fails closed: a
+  request operator governing the anchor ("What is the exact baseline date",
+  "Confirm the current share price"), an unrecognized governor ("the value
+  of the baseline price", "please obtain the baseline date", "look up the
+  baseline price"), an inverted or passive restatement with the operator on
+  the right ("The baseline price is what?", "The baseline date and price
+  must be identified"), or no governor at all. Unknown wording is never
+  permission, and there is no request-verb list to keep growing: an
+  issuer-evidence question anchors on a supplied input only through the
+  recognizable reference constructs above. For the current-price trigger
+  the classified anchor is the "current"/"prediction-time" word itself, so
+  "move the adjusted share price above the current market level" stays a
+  reference use while "what is the current adjusted share price" still
+  rejects. Classification is per anchor occurrence and per paired keyword,
+  so a mixed or repeated question that references one anchor while
+  requesting another still rejects. Genuine baseline/date/current-price/
+  definition and scalar price-lookup rejection, and all point-in-time
+  future-fact rejection, keep their semantics.

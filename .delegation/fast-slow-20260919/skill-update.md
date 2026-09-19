@@ -27,3 +27,8 @@ Revalidation: 9 offline tests passed again after duplicate/stale API-event handl
 2026-09-20 event-order repair: actual turn completion after prompt submission is accepted even if session/send acknowledgement arrives later; that late acknowledgement cannot overwrite terminal status. 10 offline tests passed, including this ordering regression. Running round08 retains its already-loaded adapter; no active process was stopped or replaced.
 
 Final skill-format revalidation after event-order repair: quick_validate.py returned Skill is valid. Round09 uses the updated adapter; no default execution/idle deadline.
+
+## Round11 handoff correction
+Codex omitted exact permitted commands from round11 brief; agent attempted variants denied by scope hook and reported all shell unavailable. Launcher now automatically includes exact allow-command strings in dispatched prompt, preventing this omission. Existing scope policy unchanged;10offline tests passed. No restart of active round11.
+
+Latest launcher SHA256: efeecc17a9bfb53c77c32e1dfdb1f4522298c51174c651d870ff6600e7d1da18. Skill validator passed after exact-command handoff patch.

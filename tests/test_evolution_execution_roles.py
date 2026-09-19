@@ -3238,6 +3238,649 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, (need,))
 
+    def test_v118_initialize_allows_issuer_guidance_using_supplied_baseline(
+        self,
+    ) -> None:
+        needs = [
+            (
+                "What did the company disclose by 2025-03-31 about its 2025 "
+                "full-year revenue, adjusted EBITDA, membership, or "
+                "center-opening guidance, and did any such guidance quantify "
+                "a bridge to a doubling of the adjusted share price from the "
+                "supplied baseline?"
+            ),
+            (
+                "What did the company disclose by 2025-03-31 about the "
+                "expected timing, size, and pricing of the announced "
+                "secondary offering, and did any disclosure indicate "
+                "additional share overhang or lock-up expirations within the "
+                "six-month horizon?"
+            ),
+            (
+                "What did the company disclose by 2025-03-31 about membership "
+                "counts, join fees, monthly dues, or attrition trends for the "
+                "most recent reported period, and did those metrics show "
+                "acceleration or deceleration relative to prior periods?"
+            ),
+            (
+                "What did the company disclose by 2025-03-31 about new-center "
+                "openings, construction delays, or ramp performance for "
+                "centers opened in 2024 and 2025, and did any disclosure "
+                "change the expected contribution to revenue or EBITDA within "
+                "the six-month horizon?"
+            ),
+            (
+                "What did the company disclose by 2025-03-31 about its capital "
+                "structure, net debt leverage ratio, interest expense, or "
+                "free cash flow, and did any disclosure indicate financing "
+                "constraints or liquidity pressure that could affect "
+                "operations or share price within the six-month horizon?"
+            ),
+            (
+                "What did the company disclose by 2025-03-31 about any "
+                "scheduled earnings release date, investor day, or other "
+                "catalyst within the six-month horizon, and did any "
+                "disclosure indicate the expected timing of material "
+                "operating updates?"
+            ),
+        ]
+        state = {
+            "hypotheses": ["Issuer guidance may change market expectations."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": needs,
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            tuple(needs),
+        )
+
+    def test_v118_baseline_anchor_still_rejects_genuine_runtime_lookups(
+        self,
+    ) -> None:
+        invalid_needs = (
+            "What is the baseline price for the six-month evaluation outcome?",
+            "Confirm the exact baseline date used by the runtime evaluation.",
+        )
+        corrected_need = (
+            "What financing or construction milestone had the issuer "
+            "disclosed by 2025-03-31?"
+        )
+
+        for invalid_need in invalid_needs:
+            with self.subTest(invalid_need=invalid_need):
+                def state(need: str) -> dict[str, Any]:
+                    return {
+                        "hypotheses": [
+                            "Issuer evidence may change expectations."
+                        ],
+                        "current_beliefs": [],
+                        "supporting_evidence": [],
+                        "contradictions": [],
+                        "resolved_questions": [],
+                        "open_questions": [],
+                        "next_information_needs": [need],
+                        "decision": "continue",
+                    }
+
+                caller = ScriptedRoleCaller(
+                    [state(invalid_need), state(corrected_need)]
+                )
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 3, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn(
+                    "runtime-owned evaluation input",
+                    feedback["validation_error"],
+                )
+                self.assertIn(
+                    "next_information_needs[0]",
+                    feedback["validation_error"],
+                )
+                self.assertEqual(
+                    feedback["required_change_paths"],
+                    ["next_information_needs[0]"],
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+    def test_v118_mixed_issuer_and_runtime_lookup_is_not_bypassed(
+        self,
+    ) -> None:
+        invalid_need = (
+            "What did the company disclose by 2025-03-31 about its 2025 "
+            "full-year revenue guidance, and what is the current adjusted "
+            "share price relative to the supplied baseline?"
+        )
+        corrected_need = (
+            "What 2025 full-year revenue guidance had the company disclosed "
+            "by 2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer guidance may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_need), state(corrected_need)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn(
+            "runtime-owned evaluation input",
+            feedback["validation_error"],
+        )
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["next_information_needs[0]"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (corrected_need,),
+        )
+
+    def test_v118_reference_only_current_price_mention_is_allowed(
+        self,
+    ) -> None:
+        need = (
+            "What did the company disclose by 2025-03-31 that could move the "
+            "adjusted share price above the current market level?"
+        )
+        state = {
+            "hypotheses": ["Issuer disclosures may change expectations."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
+    def test_v118_unrecognized_outcome_terms_governor_fails_closed(
+        self,
+    ) -> None:
+        invalid_need = (
+            "What did the company disclose by 2025-03-31 that bears on the "
+            "fixed six-month evaluation outcome's terms?"
+        )
+        corrected_need = (
+            "What operating updates had the company disclosed by 2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer disclosures may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_need), state(corrected_need)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn(
+            "runtime-owned evaluation input",
+            feedback["validation_error"],
+        )
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["next_information_needs[0]"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (corrected_need,),
+        )
+
+    def test_v118_reference_only_scalar_doubling_mention_is_allowed(
+        self,
+    ) -> None:
+        need = (
+            "What did the company disclose by 2025-03-31 about achieving an "
+            "exact doubling of the adjusted share price?"
+        )
+        state = {
+            "hypotheses": ["Issuer disclosures may change expectations."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [need],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+
+    def test_v118_reference_anchor_does_not_waive_future_fact_rejection(
+        self,
+    ) -> None:
+        invalid_need = (
+            "What guidance did the issuer provide relative to the baseline "
+            "price after 2025-06-30?"
+        )
+        corrected_need = (
+            "What guidance did the issuer provide relative to the baseline "
+            "price by 2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer guidance may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        caller = ScriptedRoleCaller(
+            [state(invalid_need), state(corrected_need)]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn(
+            "beyond prediction_time",
+            feedback["validation_error"],
+        )
+        self.assertEqual(
+            feedback["required_change_paths"],
+            ["next_information_needs[0]"],
+        )
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (corrected_need,),
+        )
+
+    def test_v118_ordinary_direct_anchor_queries_fail_closed(
+        self,
+    ) -> None:
+        invalid_needs = (
+            "What is the value of the baseline price?",
+            "Please obtain the baseline date and price.",
+            "Can we look up the baseline price?",
+            "The baseline price is what?",
+            "The baseline date and price must be identified.",
+            "Could you provide the current share price?",
+            "Please define the terms of the fixed six-month evaluation "
+            "outcome.",
+        )
+        corrected_need = (
+            "What operating evidence had the issuer disclosed by 2025-03-31?"
+        )
+
+        for invalid_need in invalid_needs:
+            with self.subTest(invalid_need=invalid_need):
+                def state(need: str) -> dict[str, Any]:
+                    return {
+                        "hypotheses": [
+                            "Issuer evidence may change expectations."
+                        ],
+                        "current_beliefs": [],
+                        "supporting_evidence": [],
+                        "contradictions": [],
+                        "resolved_questions": [],
+                        "open_questions": [],
+                        "next_information_needs": [need],
+                        "decision": "continue",
+                    }
+
+                caller = ScriptedRoleCaller(
+                    [state(invalid_need), state(corrected_need)]
+                )
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 3, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn(
+                    "runtime-owned evaluation input",
+                    feedback["validation_error"],
+                )
+                self.assertEqual(
+                    feedback["required_change_paths"],
+                    ["next_information_needs[0]"],
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+    def test_v118_multiple_clauses_reject_lookup_among_reference_anchors(
+        self,
+    ) -> None:
+        rejecting_needs = (
+            (
+                "What did the company disclose by 2025-03-31 about guidance "
+                "relative to the supplied baseline, and what is the "
+                "baseline date for the evaluation?"
+            ),
+            (
+                "Did any guidance disclosed by 2025-03-31 quantify an exact "
+                "doubling of the adjusted share price, and can we obtain "
+                "the current share price?"
+            ),
+        )
+        accepting_need = (
+            "What did the company disclose by 2025-03-31 that could move the "
+            "adjusted share price above the current market level, as "
+            "measured from the supplied baseline date?"
+        )
+        corrected_need = (
+            "What 2025 full-year guidance had the company disclosed by "
+            "2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer guidance may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        for invalid_need in rejecting_needs:
+            with self.subTest(invalid_need=invalid_need):
+                caller = ScriptedRoleCaller(
+                    [state(invalid_need), state(corrected_need)]
+                )
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 3, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn(
+                    "runtime-owned evaluation input",
+                    feedback["validation_error"],
+                )
+                self.assertEqual(
+                    feedback["required_change_paths"],
+                    ["next_information_needs[0]"],
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+        caller = ScriptedRoleCaller([state(accepting_need)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (accepting_need,),
+        )
+
+    def test_v118_bare_with_lookup_rejects_but_compared_with_reference_allows(
+        self,
+    ) -> None:
+        rejecting_needs = (
+            "Please provide me with the baseline date and price.",
+            "Please supply us with the current share price.",
+            "Please provide me with the definition of the six-month "
+            "evaluation outcome.",
+        )
+        accepting_need = (
+            "What did the company disclose by 2025-03-31 about guidance "
+            "momentum compared with the supplied baseline price?"
+        )
+        corrected_need = (
+            "What operating evidence had the issuer disclosed by 2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer evidence may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        for invalid_need in rejecting_needs:
+            with self.subTest(invalid_need=invalid_need):
+                caller = ScriptedRoleCaller(
+                    [state(invalid_need), state(corrected_need)]
+                )
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 3, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn(
+                    "runtime-owned evaluation input",
+                    feedback["validation_error"],
+                )
+                self.assertEqual(
+                    feedback["required_change_paths"],
+                    ["next_information_needs[0]"],
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+        caller = ScriptedRoleCaller([state(accepting_need)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (accepting_need,),
+        )
+
+    def test_v118_same_anchor_reference_does_not_hide_repeated_lookup(
+        self,
+    ) -> None:
+        rejecting_needs = (
+            "Using the supplied baseline price, what is the baseline price?",
+            "Using the supplied baseline date, what is the baseline date "
+            "and price?",
+            "Compared with the supplied baseline price, please provide the "
+            "baseline date.",
+        )
+        accepting_need = (
+            "What did the company disclose by 2025-03-31 about guidance "
+            "relative to the supplied baseline, as measured from the "
+            "supplied baseline date?"
+        )
+        corrected_need = (
+            "What 2025 full-year guidance had the company disclosed by "
+            "2025-03-31?"
+        )
+
+        def state(need: str) -> dict[str, Any]:
+            return {
+                "hypotheses": ["Issuer guidance may change expectations."],
+                "current_beliefs": [],
+                "supporting_evidence": [],
+                "contradictions": [],
+                "resolved_questions": [],
+                "open_questions": [],
+                "next_information_needs": [need],
+                "decision": "continue",
+            }
+
+        for invalid_need in rejecting_needs:
+            with self.subTest(invalid_need=invalid_need):
+                caller = ScriptedRoleCaller(
+                    [state(invalid_need), state(corrected_need)]
+                )
+                controller = LLMResearchController(caller)
+                controller.set_evaluation_context(
+                    datetime(2025, 3, 31, tzinfo=timezone.utc)
+                )
+
+                initialized = controller.initialize(
+                    default_information_plan(),
+                    {"requests": []},
+                )
+
+                feedback = caller.calls[1]["payload"]["validation_feedback"]
+                self.assertIn(
+                    "runtime-owned evaluation input",
+                    feedback["validation_error"],
+                )
+                self.assertEqual(
+                    feedback["required_change_paths"],
+                    ["next_information_needs[0]"],
+                )
+                self.assertEqual(
+                    initialized.value.next_information_needs,
+                    (corrected_need,),
+                )
+
+        caller = ScriptedRoleCaller([state(accepting_need)])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 3, 31, tzinfo=timezone.utc)
+        )
+
+        initialized = controller.initialize(
+            default_information_plan(),
+            {"requests": []},
+        )
+
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(
+            initialized.value.next_information_needs,
+            (accepting_need,),
+        )
+
     def test_v103_initialize_allows_as_of_future_schedule_question(self) -> None:
         need = (
             "What had the issuer disclosed by September 30, 2025 about the timing "
