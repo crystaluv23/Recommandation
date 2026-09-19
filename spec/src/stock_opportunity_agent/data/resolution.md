@@ -41,7 +41,13 @@ Supported DataGap reasons are `adapter_missing`, `missing_identifier`,
 `external_not_authorized`, `historical_data_unavailable`, `quota_deferred`,
 `provider_no_data`, `provider_error`, `materialization_failed`, and
 `no_matching_documents`. A non-empty local result that does not satisfy the
-request contract uses `required_coverage_incomplete`.
+request contract uses `required_coverage_incomplete`. A zero-document local
+hit for source types no acquisition adapter supports is an empty
+point-in-time corpus, not a configuration failure: it reports
+`no_matching_documents` so an existential Signal read abstains honestly
+(no documents is never a technical error), while `adapter_missing` stays
+reserved for requests whose declared contract local documents cannot
+satisfy and no route can fetch.
 
 ## Resolution Flow
 

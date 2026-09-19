@@ -270,6 +270,53 @@ class RunControlTests(TestCase):
             self.assertFalse(
                 (target / "signals_candidates" / ".rejected").exists()
             )
+            # Nested namespaces import transitively across successor hops.
+            nested = (
+                source
+                / "slow_history"
+                / "source-grandparent"
+                / "experiments"
+                / "cycles"
+                / "cycle-0001"
+                / "slow_experiments.json"
+            )
+            nested.parent.mkdir(parents=True)
+            write_json(
+                nested,
+                {
+                    "attempts": [
+                        {
+                            "candidate_ref": "older_resident:v1",
+                            "outcome": "provisional",
+                        }
+                    ]
+                },
+            )
+            build_slow_history_manifest(
+                workspace=target,
+                source_workspace=source,
+                dataset_manifest_hash=source_contract.dataset_manifest_hash,
+            )
+            envelope2 = json.loads(
+                (target / "slow_history" / "manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            apply_slow_history_manifest(
+                workspace=target,
+                manifest=envelope2["manifest"],
+            )
+            self.assertTrue(
+                (
+                    target
+                    / "slow_history"
+                    / "source-grandparent"
+                    / "experiments"
+                    / "cycles"
+                    / "cycle-0001"
+                    / "slow_experiments.json"
+                ).is_file()
+            )
             self.assertEqual(
                 [
                     item.event_id
@@ -2146,3 +2193,108 @@ class RunControlTests(TestCase):
             self.assertEqual(token, "")
             self.assertEqual(binary_usage.llm_calls, 0)
             self.assertIsNone(binary_scores)
+
+class SlowOnlyRegistryChainTests(TestCase):
+    def _workspace_with_cycle(
+        self, root, cycles, last_completed
+    ):
+        import json as _json
+
+        workspace = root
+        (workspace / "experiments" / "cycles").mkdir(parents=True, exist_ok=True)
+        for cycle_id, row in cycles.items():
+            cycle_root = (
+                workspace / "experiments" / "cycles" / f"cycle-{cycle_id:04d}"
+            )
+            cycle_root.mkdir(parents=True, exist_ok=True)
+            (cycle_root / "slow_loop_result.json").write_text(
+                _json.dumps({"result": row}), encoding="utf-8"
+            )
+        (workspace / "cycle_state.json").write_text(
+            _json.dumps({"last_completed_cycle": last_completed}),
+            encoding="utf-8",
+        )
+        return workspace
+
+    def test_registry_chain_explains_committed_promotion(self) -> None:
+        from stock_opportunity_agent.research.evolution_control import (
+            _slow_only_registry_matches_committed_history,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            empty = Path(directory) / "empty"
+            empty.mkdir()
+            # Baseline (no committed cycles) matches the manifest registry.
+            self.assertTrue(
+                _slow_only_registry_matches_committed_history(
+                    snapshot_version=5,
+                    snapshot_hash="h5",
+                    history_registry_version=5,
+                    history_registry_hash="h5",
+                    workspace_root=empty,
+                )
+            )
+            root = Path(directory) / "ws"
+            root.mkdir()
+            self._workspace_with_cycle(
+                root,
+                {
+                    1: {
+                        "input_registry_version": 5,
+                        "input_registry_hash": "h5",
+                        "output_registry_version": 6,
+                        "output_registry_hash": "h6",
+                    }
+                },
+                last_completed=1,
+            )
+            # A promotion committed by cycle 1 resumes on the next cycle.
+            self.assertTrue(
+                _slow_only_registry_matches_committed_history(
+                    snapshot_version=6,
+                    snapshot_hash="h6",
+                    history_registry_version=5,
+                    history_registry_hash="h5",
+                    workspace_root=root,
+                )
+            )
+            # Unexplained drift beyond the committed chain still fails.
+            self.assertFalse(
+                _slow_only_registry_matches_committed_history(
+                    snapshot_version=7,
+                    snapshot_hash="h7",
+                    history_registry_version=5,
+                    history_registry_hash="h5",
+                    workspace_root=root,
+                )
+            )
+
+    def test_registry_chain_rejects_broken_or_gapped_cycles(self) -> None:
+        from stock_opportunity_agent.research.evolution_control import (
+            _slow_only_registry_matches_committed_history,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "ws"
+            root.mkdir()
+            self._workspace_with_cycle(
+                root,
+                {
+                    1: {
+                        "input_registry_version": 4,
+                        "input_registry_hash": "h4",
+                        "output_registry_version": 6,
+                        "output_registry_hash": "h6",
+                    }
+                },
+                last_completed=1,
+            )
+            self.assertFalse(
+                _slow_only_registry_matches_committed_history(
+                    snapshot_version=6,
+                    snapshot_hash="h6",
+                    history_registry_version=5,
+                    history_registry_hash="h5",
+                    workspace_root=root,
+                )
+            )

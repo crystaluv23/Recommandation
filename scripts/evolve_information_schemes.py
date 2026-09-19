@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
 import os
+import signal
 import sys
 import tempfile
+import threading
 from datetime import date
 from pathlib import Path
 
@@ -1244,6 +1247,48 @@ def _no_candidate_limit_result(
     }
 
 
+class CycleWatchdogTimeout(RuntimeError):
+    """One slow cycle exceeded the wall-clock watchdog ceiling.
+
+    A silent stall (CPU-bound regex explosion, blocked I/O, or a wedged
+    transport) otherwise hangs the invocation forever with no error surface.
+    The watchdog converts it into the existing retryable channel: exit 75,
+    wrapper auto-resume, cycle restart from the committed boundary with
+    request-cache replay. Committed cycles and atomic writes are unaffected.
+    """
+
+
+_CYCLE_WATCHDOG_SECONDS = int(
+    os.environ.get("EVOLUTION_CYCLE_TIMEOUT_SECONDS", "14400")
+)
+
+
+@contextlib.contextmanager
+def _cycle_watchdog(seconds: int):
+    """Bound one cycle's wall time on POSIX; no-op elsewhere."""
+
+    if (
+        seconds <= 0
+        or not hasattr(signal, "SIGALRM")
+        or threading.current_thread() is not threading.main_thread()
+    ):
+        yield
+        return
+
+    def _fire(signum, frame):
+        raise CycleWatchdogTimeout(
+            f"cycle exceeded the {seconds}s wall-clock watchdog"
+        )
+
+    previous = signal.signal(signal.SIGALRM, _fire)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+        signal.signal(signal.SIGALRM, previous)
+
+
 def run_loop_command(
     *,
     workspace_path: Path,
@@ -1280,15 +1325,16 @@ def run_loop_command(
             on_progress=on_progress,
         )
     while max_cycles == 0 or len(completed) < max_cycles:
-        result = run_cycle_command(
-            workspace_path=workspace_path,
-            raw_info_root=raw_info_root,
-            approved_dataset_path=approved_dataset_path,
-            external=external,
-            data_external=data_external,
-            acknowledged_contract_hash=acknowledged_contract_hash,
-            on_progress=on_progress,
-        )
+        with _cycle_watchdog(_CYCLE_WATCHDOG_SECONDS):
+            result = run_cycle_command(
+                workspace_path=workspace_path,
+                raw_info_root=raw_info_root,
+                approved_dataset_path=approved_dataset_path,
+                external=external,
+                data_external=data_external,
+                acknowledged_contract_hash=acknowledged_contract_hash,
+                on_progress=on_progress,
+            )
         if result["status"] != "cycle_completed":
             return {
                 **result,
@@ -1762,6 +1808,16 @@ def main() -> int:
             exc,
             on_progress=progress,
         )
+        exit_code = 75
+    except CycleWatchdogTimeout as exc:
+        if args.command not in {"run-cycle", "run-loop"}:
+            raise
+        result = _retryable_external_error_result(
+            args.workspace,
+            exc,
+            on_progress=progress,
+        )
+        result["status"] = "cycle_watchdog_timeout"
         exit_code = 75
     except (ValidationError, ValueError) as exc:
         result = {

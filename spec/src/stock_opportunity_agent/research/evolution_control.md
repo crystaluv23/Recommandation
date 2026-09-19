@@ -8,9 +8,12 @@ finite `slow_only`. Slow-only fixes zero Fast rounds, positive cumulative
 manifest, and bounded role budgets. `--max-cycles` may reduce work in one CLI
 invocation but cannot enlarge the contract total across resumes.
 
-History import preserves one source namespace and exact pointer-reachable
-Registry, usage, experiment, and memory hashes. It never imports staged or
-rejected work as completed history. Provisional residents are the one
+History import preserves namespaced pointer-reachable history: the immediate
+source contributes one namespace, and that source's own imported namespaces
+are carried forward unchanged so multi-hop successor chains keep the full
+namespaced history that resident enumeration and reflection footprints read.
+Exact Registry, usage, experiment, and memory hashes are preserved. It never
+imports staged or rejected work as completed history. Provisional residents are the one
 exception to dropping staged work: the history manifest carries the source's
 `signals_candidates` tree (excluding the `.rejected` archive) so provisional
 residents and their pooled evaluation history survive workspace succession,
@@ -33,7 +36,15 @@ Registry still equals the version/hash recorded at the committed pointer, the
 active cycle id is strictly after that pointer, and every artifact required for
 each committed cycle exists. A post-transition/pre-pointer Registry mismatch or
 an incomplete committed cycle fails closed because the committed snapshot
-cannot then be reconstructed safely.
+cannot then be reconstructed safely. Within a running slow_only workspace the
+live Registry may advance past the imported history manifest: each committed
+cycle records its exact input and output Registry identity, and resume accepts
+a live Registry that equals the committed chain's last output (a promotion
+committed by an own cycle), still rejecting any drift the chain does not
+explain. Each CLI invocation also bounds every cycle's wall time with a
+watchdog: a silent stall (CPU-bound explosion or wedged I/O) becomes the
+retryable channel — exit 75, auto-resume, cycle restart from the committed
+boundary with request-cache replay — instead of an unbounded hang.
 
 ## Purpose
 

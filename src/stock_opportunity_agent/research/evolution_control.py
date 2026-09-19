@@ -1785,6 +1785,56 @@ def validate_slow_history_manifest(
     return manifest
 
 
+def _slow_only_registry_matches_committed_history(
+    *,
+    snapshot_version: int,
+    snapshot_hash: str,
+    history_registry_version: int,
+    history_registry_hash: str,
+    workspace_root: Path,
+) -> bool:
+    """Whether the live Registry is explained by the committed cycle chain.
+
+    The baseline is the imported history manifest. Each committed cycle must
+    record exactly the expected input Registry and a well-formed output, and
+    the live Registry must equal the last committed cycle's output. A
+    promotion committed by an own cycle therefore resumes; unexplained drift
+    (an uncommitted transition, a gap, or a rewritten cycle) still fails
+    closed exactly as before.
+    """
+
+    expected_version = history_registry_version
+    expected_hash = history_registry_hash
+    workspace = EvolutionWorkspace(workspace_root)
+    for cycle_id in range(1, workspace.last_completed_cycle + 1):
+        result_path = (
+            workspace_root
+            / "experiments"
+            / "cycles"
+            / f"cycle-{cycle_id:04d}"
+            / "slow_loop_result.json"
+        )
+        if not result_path.is_file():
+            return False
+        result = dict(_read_json(result_path).get("result", {}))
+        input_version = result.get("input_registry_version")
+        input_hash = str(result.get("input_registry_hash", ""))
+        output_version = result.get("output_registry_version")
+        output_hash = str(result.get("output_registry_hash", ""))
+        if (
+            input_version != expected_version
+            or input_hash != expected_hash
+            or not isinstance(output_version, int)
+            or not output_hash.strip()
+        ):
+            return False
+        expected_version = output_version
+        expected_hash = output_hash
+    return (
+        snapshot_version == expected_version and snapshot_hash == expected_hash
+    )
+
+
 def apply_slow_history_manifest(
     *,
     workspace: str | Path,
@@ -1841,6 +1891,27 @@ def apply_slow_history_manifest(
             raise ValidationError("imported Slow history candidate conflicts")
         if not target_path.exists():
             shutil.copy2(source_path, target_path)
+    # Carry the source's own imported namespaces forward so multi-hop
+    # successor chains keep the full namespaced history (resident
+    # enumeration and reflection footprints read every namespace). Namespaces
+    # are immutable once written: byte conflicts fail closed.
+    for namespace_dir in sorted(
+        path
+        for path in (source_root / "slow_history").glob("*")
+        if path.is_dir()
+    ):
+        for file_path in sorted(namespace_dir.rglob("*")):
+            if not file_path.is_file():
+                continue
+            target_path = target_root / file_path.relative_to(source_root)
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            if target_path.exists():
+                if target_path.read_bytes() != file_path.read_bytes():
+                    raise ValidationError(
+                        "imported Slow history namespace conflicts"
+                    )
+            else:
+                shutil.copy2(file_path, target_path)
 
 
 def build_slow_bootstrap_manifest(
@@ -2466,9 +2537,12 @@ def _run_bounded_evolution_cycle_unlocked(
                 RoundMetaEntry.from_dict(dict(row))
                 for row in history_manifest["fast_context"]["meta_entries"]
             )
-        if (
-            snapshot.version != int(history_manifest["registry_version"])
-            or snapshot.registry_hash != history_manifest["registry_hash"]
+        if not _slow_only_registry_matches_committed_history(
+            snapshot_version=snapshot.version,
+            snapshot_hash=snapshot.registry_hash,
+            history_registry_version=int(history_manifest["registry_version"]),
+            history_registry_hash=str(history_manifest["registry_hash"]),
+            workspace_root=workspace_root,
         ):
             raise ValidationError(
                 "slow_only Registry differs from frozen committed history"

@@ -1116,6 +1116,27 @@ class EvidenceResolver:
         if not coverage.contract_satisfied:
             matching_adapters = self._select_adapters(request)
             if not matching_adapters:
+                if coverage.eligible_document_count == 0:
+                    # Zero eligible point-in-time documents plus no
+                    # acquisition route for these source types is an empty
+                    # corpus, not a configuration failure: an existential
+                    # Signal read abstains honestly (no-match is never
+                    # negative, and no documents is never a technical error),
+                    # exactly like the closed fixture corpora boundary.
+                    return RawInfoResolution(
+                        request=request,
+                        status="unresolved",
+                        documents=(),
+                        events=tuple(events),
+                        coverage=coverage,
+                        gap=self._gap(
+                            request,
+                            DataGapReason.NO_MATCHING_DOCUMENTS,
+                            "No point-in-time documents matched the request "
+                            "and no acquisition adapter supports the "
+                            "requested source types.",
+                        ),
+                    )
                 gap = self._gap(
                     request,
                     DataGapReason.ADAPTER_MISSING,

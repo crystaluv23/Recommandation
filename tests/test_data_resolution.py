@@ -1773,7 +1773,38 @@ class EvidenceResolverTests(TestCase):
             identity={},
             as_of=AS_OF,
         )
-        self.assertEqual(unknown.gap.reason, DataGapReason.ADAPTER_MISSING)
+        # An empty corpus for adapterless source types is an honest empty
+        # read (the Signal abstains), never a configuration failure.
+        self.assertEqual(unknown.gap.reason, DataGapReason.NO_MATCHING_DOCUMENTS)
+
+        # Documents that exist but cannot satisfy declared coverage minima
+        # keep the coverage-incomplete gap (also an honest abstention for
+        # Signal execution, never a permanent technical failure).
+        minima_unmet = EvidenceResolver(
+            RawInfoStore(
+                documents=(
+                    document(
+                        "one_exotic",
+                        "Single item.",
+                        source_type="new_oracle",
+                    ),
+                )
+            )
+        ).resolve(
+            RawInfoRequest(
+                "strict",
+                "Read exotic source.",
+                ("new_oracle",),
+                minimum_observations=2,
+            ),
+            company_id="issuer_1",
+            identity={},
+            as_of=AS_OF,
+        )
+        self.assertEqual(
+            minima_unmet.gap.reason,
+            DataGapReason.REQUIRED_COVERAGE_INCOMPLETE,
+        )
 
         adapter = FakeAdapter()
         unauthorized = EvidenceResolver(RawInfoStore(), adapters=(adapter,)).resolve(

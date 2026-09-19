@@ -596,3 +596,22 @@ class EvolutionCliTests(TestCase):
                 workspace / "experiments" / "trajectory.jsonl"
             ).read_text(encoding="utf-8")
             self.assertIn("slow_loop_data_unavailable", events)
+
+class CycleWatchdogTests(TestCase):
+    def test_watchdog_fires_on_stall_and_stays_silent_when_disabled(self) -> None:
+        import time
+
+        cli = importlib.util.module_from_spec(SPEC)
+        SPEC.loader.exec_module(cli)
+
+        # A disabled watchdog never fires.
+        with cli._cycle_watchdog(0):
+            time.sleep(1.1)
+
+        # An armed watchdog converts a silent stall into the retryable
+        # channel used for auto-resume.
+        with self.assertRaises(cli.CycleWatchdogTimeout):
+            with cli._cycle_watchdog(1):
+                time.sleep(5)
+        # The alarm is cancelled on exit: a later long sleep does not fire.
+        time.sleep(1.2)
