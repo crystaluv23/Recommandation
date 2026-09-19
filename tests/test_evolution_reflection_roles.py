@@ -236,6 +236,7 @@ class PartialResidualTemporalScopeTests(TestCase):
                     ),
                     "required_action": "restore_exactly",
                     "required_need": V117_PRIOR_NEED,
+                    "required_need_occurrences": 1,
                 }
             ],
         )
@@ -1537,6 +1538,7 @@ class ReflectionRoleAdapterTests(TestCase):
                     "issue": "untargeted need changed or was removed",
                     "required_action": "restore_exactly",
                     "required_need": original_need,
+                    "required_need_occurrences": 1,
                 }
             ],
         )

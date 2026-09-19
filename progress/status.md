@@ -1,5 +1,24 @@
 # Status
 
+2026-09-20（round-19）**V121 Bumble 需多重性复原 + Kinross 时间/数量聚合反馈 + 漂移不吞语义失败**：
+V121 两处拒绝根因修复（spec 先行，两份 owning spec 同步）。（A）Bumble raw102 保留重复
+need 的一份并漏掉 need5，纠正 103 恢复 need5 但仍缺一份重复且重排序——
+`_targeted_answer_need_transition_errors` 的 restore/replace 义务现携带
+`required_need_occurrences`（按义务出现次数统计），`_research_need_transition_fallback`
+按计数追加复原（不删除、不去重、不重排既有返回行）；`replace_with_exact_residual`
+仅在义务实际指名的返回坐标原位改写，目标行缺失时追加精确 residual、绝不吞噬受保护
+重复。投影层对 restore_exactly 整成员路径不做坐标写入（prior 坐标不是返回写目标，
+绝不覆盖无关有效行、不因越界整体失败），复原交由成员权限门与确定性 fallback。
+（C）scoped correction 漂移拒绝在预算耗尽时不再用泛化漂移消息覆盖 Structured 语义
+失败：失败对象/语义失败配对保持，漂移诊断单独保留并在拒绝消息中并列报告（round-10
+投影进度保留不回归）。（B）`_normalize_research_state_output` 在 evidence 形状可判定时
+把 future-information 拒绝与 Basic 数量/断言链接/字面身份 issue 聚合为同一初始反馈
+（时间类在前、契约次序不变；不放宽任何接受语义）。新增 7 条聚焦回归（重复多重性
+复原、漂移纠正不换行、语义失败+漂移并列、缺 residual 追加不噬重复、聚合初始反馈、
+合规预算内全修、清空证据仍拒绝）；917 测试（910+7）+ lint + round-19/replay.py
+原始 wire 复放全过（Bumble 102/103 精确计数 2/1；Kinross 104 聚合反馈、合规 fixture
+两步全修、raw106 诚实判仍无效；按本轮 brief 不 commit）。
+
 2026-09-20（round-18）**身份反馈边界收尾：仅复原型进度、无 prior Basic 映射的新 ref、移除授权**：
 round-17 通过独立评审后，Codex 指出两个具体边界遗漏与一处权限缺口，本轮仅修复这三点。
 （1）`_research_state_evidence_grounding_fallback` 中仅含 basic_literal_identity_mismatch

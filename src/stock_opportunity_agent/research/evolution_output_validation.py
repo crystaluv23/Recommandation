@@ -2398,6 +2398,7 @@ def _project_scoped_correction(
     removal_paths: Iterable[str] = (),
     append_budgets: Mapping[str, int] | None = None,
     member_removal_allowances: Mapping[str, Iterable[int]] | None = None,
+    restore_member_values: Mapping[str, str] | None = None,
 ) -> tuple[dict[str, Any], tuple[str, ...]] | None:
     """Copy authorized correction values and exact removals onto the failed object.
 
@@ -2407,7 +2408,11 @@ def _project_scoped_correction(
     their original indices. When a whole-member list edit fails the ordered
     membership check, a content-anchored reconciliation may still apply the
     authorized slots and restore every unmentioned member from the failed
-    object instead of accepting the corrected list.
+    object instead of accepting the corrected list. A whole-member path in
+    restore_member_values is a prior-state coordinate for a missing
+    occurrence: it is copied only when that exact index of the corrected
+    object already holds the required text, never as a blind write target
+    over an unrelated returned row.
     """
 
     paths = tuple(dict.fromkeys(str(path) for path in must_change_paths if path))
@@ -2464,6 +2469,20 @@ def _project_scoped_correction(
                     return None
                 stable_item = stable_items.get(current_path)
                 if stable_item is None:
+                    required_restore = (restore_member_values or {}).get(
+                        current_path
+                    )
+                    if required_restore is not None and final:
+                        # A restore_exactly whole-member path is a prior-state
+                        # coordinate of a missing occurrence, not a returned
+                        # write target: never copy the corrected row at that
+                        # index over the failed object's row — which may be a
+                        # valid preserved sibling — and never fail the
+                        # projection only because the prior index exceeds the
+                        # returned list. Restoration is content-based and
+                        # stays with the membership gates and the
+                        # deterministic fallback.
+                        break
                     if len(target) == len(source):
                         if token >= len(target) or token >= len(source):
                             return None
@@ -2579,15 +2598,44 @@ def _research_need_transition_fallback(
         prior = context.get("prior_need")
         required = context.get("required_need")
         action = context.get("required_action")
+        raw_occurrences = context.get("required_need_occurrences")
+        occurrences = (
+            min(raw_occurrences, 64)
+            if isinstance(raw_occurrences, int)
+            and not isinstance(raw_occurrences, bool)
+            and raw_occurrences >= 1
+            else 1
+        )
         if not isinstance(prior, str) or not prior:
             return None
         if action in {"restore_exactly", "replace_with_exact_residual"}:
             if not isinstance(required, str) or not required:
                 return None
-            if action == "replace_with_exact_residual" and prior in needs:
-                needs[needs.index(prior)] = required
-            elif required not in needs:
-                needs.append(required)
+            returned_path = context.get("returned_path")
+            path_match = re.fullmatch(
+                r"next_information_needs\[(\d+)\]", str(returned_path or "")
+            )
+            returned_index = (
+                int(path_match.group(1)) if path_match is not None else None
+            )
+            if action == "replace_with_exact_residual" and returned_index is not None:
+                if (
+                    returned_index < len(needs)
+                    and needs[returned_index] == context.get("returned_need")
+                ):
+                    needs[returned_index] = required
+                elif needs.count(required) < occurrences:
+                    # The targeted occurrence is gone; append the exact
+                    # residual without consuming a preserved duplicate of
+                    # the prior text as the write target.
+                    needs.append(required)
+            else:
+                # Restore by issued occurrence count, never by bare text
+                # membership: a missing duplicate occurrence is a real
+                # shortfall. Existing returned rows are never removed,
+                # reordered, or deduplicated.
+                while needs.count(required) < occurrences:
+                    needs.append(required)
         elif action in {"remove_exact_target", "remove_or_genuinely_narrow"}:
             returned = context.get("returned_need", prior)
             # Transition exactly one occurrence so an untargeted duplicate
@@ -3020,6 +3068,7 @@ def _complete_parsed_role(
     failure: ValidationError | None = None
     budget_failure: RuntimeBudgetExceeded | None = None
     budget_failure_stage: str | None = None
+    scope_drift_diagnostic: str | None = None
     completed_corrections = 0
     max_corrections = getattr(caller, "max_structured_corrections", 1)
     if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
@@ -3268,6 +3317,26 @@ def _complete_parsed_role(
                                 "allowed_repairs", ()
                             ),
                         }
+                restore_member_values: dict[str, str] = {}
+                for obligation in obligations["obligations"]:
+                    if (
+                        obligation.get("issue_code")
+                        != "research_need_transition_invalid"
+                        or obligation.get("required_action") != "restore_exactly"
+                    ):
+                        continue
+                    required_need = obligation.get("required_need")
+                    if not isinstance(required_need, str):
+                        continue
+                    for obligation_path in obligation.get("must_change_paths", ()):
+                        if (
+                            isinstance(obligation_path, str)
+                            and re.fullmatch(
+                                r"[A-Za-z_]+\[\d+\]", obligation_path
+                            )
+                            is not None
+                        ):
+                            restore_member_values[obligation_path] = required_need
                 drift_paths = _scoped_correction_drift_paths(
                     failed_output,
                     value,
@@ -3283,6 +3352,7 @@ def _complete_parsed_role(
                         stable_item_paths=stable_item_paths,
                         append_budgets=append_budgets,
                         member_removal_allowances=removal_allowances,
+                        restore_member_values=restore_member_values,
                     )
                     if not lenient_ordinary_scope:
                         if projection is None:
@@ -3293,7 +3363,17 @@ def _complete_parsed_role(
                                 "unrelated field and list item byte-for-byte"
                             )
                             if attempt == max_corrections:
-                                failure = scope_failure
+                                if isinstance(
+                                    failure, StructuredValidationError
+                                ):
+                                    # Keep the exact failed-object/semantic
+                                    # failure pair so deterministic recovery
+                                    # and later feedback stay grounded; the
+                                    # drift diagnostic is retained separately
+                                    # and never replaces the obligations.
+                                    scope_drift_diagnostic = str(scope_failure)
+                                else:
+                                    failure = scope_failure
                             # Keep the original invalid object and obligations on
                             # retry; drift diagnostics must not authorize those
                             # drifted paths.
@@ -3353,6 +3433,7 @@ def _complete_parsed_role(
                                     removal_paths=extended_removals,
                                     append_budgets=append_budgets,
                                     member_removal_allowances=removal_allowances,
+                                    restore_member_values=restore_member_values,
                                 )
                                 continue
                             _emit_runtime_progress(
@@ -3398,7 +3479,14 @@ def _complete_parsed_role(
                             "every unrelated field and list item byte-for-byte"
                         )
                         if attempt == max_corrections:
-                            failure = scope_failure
+                            if isinstance(failure, StructuredValidationError):
+                                # Same pairing rule as the scope-rejection
+                                # branch: a projected-progress semantic
+                                # failure is never erased by the generic
+                                # drift message.
+                                scope_drift_diagnostic = str(scope_failure)
+                            else:
+                                failure = scope_failure
                         # No safe projection exists: keep the original invalid
                         # object and obligations on retry; drift diagnostics
                         # must not authorize those drifted paths.
@@ -3530,9 +3618,14 @@ def _complete_parsed_role(
         if max_corrections == 1
         else f"{max_corrections} corrections"
     )
+    rejection_message = f"{stage} failed validation after {correction_count}: {failure}"
+    if scope_drift_diagnostic is not None:
+        rejection_message += (
+            "; unrelated-correction drift rejected: " + scope_drift_diagnostic
+        )
     raise CandidateExecutionRejected(
         stage,
-        f"{stage} failed validation after {correction_count}: {failure}",
+        rejection_message,
         usage,
     )
 

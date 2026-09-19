@@ -608,6 +608,8 @@ class ScopedCorrectionProjectionTests(TestCase):
             code="research_need_transition_invalid", message="opaque wording",
             paths=("next_information_needs[0]",),
             repair_context={"prior_need": "Cash and funding?",
+                            "returned_path": "next_information_needs[0]",
+                            "returned_need": "Cash and funding?",
                             "required_action": "replace_with_exact_residual",
                             "required_need": "Funding remains unresolved."},
         ), ValidationIssue(
@@ -2150,6 +2152,8 @@ class ScopedCorrectionProjectionTests(TestCase):
             code="research_need_transition_invalid", message="target retained",
             paths=("next_information_needs[0]",),
             repair_context={"prior_need": "Catalyst?",
+                            "returned_path": "next_information_needs[0]",
+                            "returned_need": "Catalyst?",
                             "required_action": "replace_with_exact_residual",
                             "required_need": "Residual by 2025-07-31."},
         )])
@@ -2348,4 +2352,459 @@ class ScopedCorrectionProjectionTests(TestCase):
                 parser=add_parse, allow_outcomes=False,
                 enforce_scoped_correction=True, exact_compaction_scope=True,
                 stable_correction_prefix=True,
+            )
+
+
+class NeedTransitionDuplicateRestorationTests(TestCase):
+    """Occurrence-aware restoration of missing duplicate needs (V121 Bumble)."""
+
+    NEED_A = (
+        "What guidance did management disclose by 2025-09-30 for the "
+        "remainder of 2025?"
+    )
+    NEED_B = (
+        "What operational updates were disclosed by 2025-09-30 after the "
+        "restructuring?"
+    )
+    NEED_C = "What was the substance of the Q2 miss disclosed by 2025-09-30?"
+    NEED_D = (
+        "Do recent price patterns through 2025-09-29 confirm or contradict "
+        "the stabilization narrative?"
+    )
+    NEED_E = "What insider share sales were disclosed by 2025-09-30?"
+    NARROWED = "What prior guidance figures were disclosed before June 25, 2025?"
+    SIGNAL_CLAIM = "price_momentum_126d=0.465116"
+    EVALUATION_CONTEXT = {
+        "prediction_time": "2025-09-30T00:00:00+00:00",
+        "horizon": "six_calendar_months",
+        "horizon_end": "2026-03-30",
+    }
+
+    def _prior_state(self) -> dict:
+        return {
+            "contradictions": [],
+            "current_beliefs": ["The latest close is 6.3 on 2025-09-29."],
+            "decision": "continue",
+            "hypotheses": ["The share price will not double within six months."],
+            "next_information_needs": [
+                self.NEED_A,
+                self.NEED_A,
+                self.NEED_B,
+                self.NEED_C,
+                self.NEED_D,
+                self.NEED_E,
+            ],
+            "open_questions": [],
+            "resolved_questions": ["The market backbone returned daily closes."],
+            "supporting_evidence": [
+                {
+                    "claim": "The latest close is 6.3 on 2025-09-29.",
+                    "exact_text": "adjusted close 6.3 on 2025-09-29",
+                    "kind": "basic_info",
+                    "projection_id": "projection_need_a",
+                }
+            ],
+        }
+
+    def _batch(self) -> Any:
+        result = SimpleNamespace(
+            ref="price_momentum_126d:v1",
+            signal_id="price_momentum_126d",
+            version=1,
+            value=SignalValue.POSITIVE,
+            confidence=1.0,
+            coverage=SignalCoverage.SUFFICIENT,
+            interpretation=self.SIGNAL_CLAIM,
+            supporting_evidence=[
+                SimpleNamespace(exact_span="126-day window", timestamp=None)
+            ],
+            counter_evidence=[],
+        )
+        return SimpleNamespace(results=[result])
+
+    def _selections(self) -> tuple[SignalSelectionDecision, ...]:
+        return (
+            SignalSelectionDecision.from_dict(
+                {
+                    "signal_ref": "price_momentum_126d:v1",
+                    "reason_code": "test_contradiction",
+                    "selection_reason": (
+                        "Test whether recent price patterns contradict the "
+                        "narrative."
+                    ),
+                    "applicability_hypothesis": (
+                        "Price patterns test the stabilization narrative."
+                    ),
+                    "expected_role": "primary",
+                    "context_tags": ["general"],
+                    "target_need_indices": [4],
+                }
+            ),
+        )
+
+    def _invalid_output(self) -> dict:
+        from copy import deepcopy
+
+        value = deepcopy(self._prior_state())
+        value["next_information_needs"] = [
+            self.NEED_B,
+            self.NEED_C,
+            self.NEED_D,
+            self.NARROWED,
+            self.NEED_A,
+        ]
+        value["current_beliefs"] = [
+            "The latest close is 6.3 on 2025-09-29.",
+            self.SIGNAL_CLAIM,
+        ]
+        value["supporting_evidence"] = [
+            {
+                "claim": "The latest close is 6.3 on 2025-09-29.",
+                "exact_text": "adjusted close 6.3 on 2025-09-29",
+                "kind": "basic_info",
+                "projection_id": "projection_need_a",
+            },
+            {
+                "kind": "signal",
+                "claim": self.SIGNAL_CLAIM,
+                "signal_ref": "price_momentum_126d:v1",
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+            },
+        ]
+        return value
+
+    def _make_parser(self, prior: ResearchState) -> Any:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _validate_research_state_refs,
+        )
+
+        batch = self._batch()
+        selections = self._selections()
+
+        def parse(value):
+            normalized = _normalize_research_state_output(
+                dict(value),
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+            return _validate_research_state_refs(
+                ResearchState.from_dict(normalized),
+                phase="reflect",
+                previous_state=prior,
+                batch=batch,
+                selections=selections,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+
+        return parse
+
+    def _run_role(self, caller, prior: ResearchState, fallback=True):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        return evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=self._make_parser(prior),
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
+            stable_correction_prefix=True,
+            final_validation_fallback=(
+                _research_state_evidence_grounding_fallback if fallback else None
+            ),
+        )
+
+    def test_feedback_carries_occurrence_counts_and_restores_multiplicity(self) -> None:
+        from copy import deepcopy
+
+        invalid = self._invalid_output()
+        caller = ScriptedRoleCaller([invalid, deepcopy(invalid)])
+        value, _ = self._run_role(caller, ResearchState.from_dict(self._prior_state()))
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        restore = [
+            obligation
+            for obligation in feedback["obligations"]
+            if obligation["issue_code"] == "research_need_transition_invalid"
+        ]
+        self.assertEqual(
+            sorted(
+                obligation["prior_state_path"] for obligation in restore
+            ),
+            ["next_information_needs[0]", "next_information_needs[5]"],
+        )
+        by_path = {
+            obligation["prior_state_path"]: obligation for obligation in restore
+        }
+        self.assertEqual(by_path["next_information_needs[0]"]["required_action"], "restore_exactly")
+        self.assertEqual(
+            by_path["next_information_needs[0]"]["required_need_occurrences"], 2
+        )
+        self.assertEqual(
+            by_path["next_information_needs[5]"]["required_need_occurrences"], 1
+        )
+        needs = [str(need) for need in value.next_information_needs]
+        self.assertEqual(needs[:5], [self.NEED_B, self.NEED_C, self.NEED_D, self.NARROWED, self.NEED_A])
+        self.assertEqual(needs.count(self.NEED_A), 2)
+        self.assertEqual(needs.count(self.NEED_E), 1)
+        self.assertEqual(len(needs), 7)
+
+    def test_drifted_partial_correction_recovers_without_row_replacement(self) -> None:
+        # The correction restores the omitted need, reorders the list, and
+        # still collapses the duplicate: the scoped projection must not write
+        # the prior coordinate over a valid returned row, and the final state
+        # must hold both duplicate occurrences plus the restored need.
+        invalid = self._invalid_output()
+        corrected = {
+            **invalid,
+            "next_information_needs": [
+                self.NEED_A,
+                self.NEED_B,
+                self.NEED_E,
+                self.NEED_C,
+                self.NEED_D,
+                self.NARROWED,
+            ],
+        }
+        caller = ScriptedRoleCaller([invalid, corrected])
+        value, _ = self._run_role(caller, ResearchState.from_dict(self._prior_state()))
+        needs = [str(need) for need in value.next_information_needs]
+        self.assertEqual(needs.count(self.NEED_A), 2)
+        self.assertEqual(needs.count(self.NEED_E), 1)
+        self.assertEqual(needs.count(self.NEED_B), 1)
+        self.assertEqual(needs[:5], [self.NEED_B, self.NEED_C, self.NEED_D, self.NARROWED, self.NEED_A])
+
+    def test_unrelated_correction_drift_never_replaces_semantic_failure(self) -> None:
+        invalid = {
+            "rows": [
+                {"fix": 0, "keep": "original"},
+                {"fix": 2, "keep": "protected"},
+            ]
+        }
+        corrected = {"rows": [{"fix": 2, "keep": "protected"}]}
+
+        def parse(value):
+            if any(row["fix"] == 0 for row in value["rows"]):
+                raise StructuredValidationError(
+                    [
+                        ValidationIssue(
+                            code="invalid_value",
+                            message="rows[0].fix is invalid",
+                            paths=("rows[0].fix",),
+                            allowed_repairs=("replace",),
+                        )
+                    ]
+                )
+            return value
+
+        caller = ScriptedRoleCaller([invalid, corrected])
+        with self.assertRaises(CandidateExecutionRejected) as raised:
+            evolution_runtime_module._complete_parsed_role(
+                caller,
+                stage="research_controller_reflect",
+                system_prompt="Return the fixed contract.",
+                payload={},
+                parser=parse,
+                allow_outcomes=False,
+                enforce_scoped_correction=True,
+                exact_compaction_scope=True,
+                stable_correction_prefix=True,
+            )
+        message = str(raised.exception)
+        self.assertIn("rows[0].fix is invalid", message)
+        self.assertIn("unrelated-correction drift rejected", message)
+        self.assertIn("correction changed unrelated valid content", message)
+
+    def test_missing_residual_append_never_consumes_preserved_duplicate(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_need_transition_fallback,
+        )
+
+        original = {
+            "next_information_needs": [self.NEED_A, self.NEED_B],
+            "supporting_evidence": [],
+        }
+        fallback = _research_need_transition_fallback(
+            original,
+            StructuredValidationError(
+                [
+                    ValidationIssue(
+                        code="research_need_transition_invalid",
+                        message="target omitted its exact residual",
+                        paths=("next_information_needs[2]",),
+                        repair_context={
+                            "prior_need": self.NEED_A,
+                            "required_action": "replace_with_exact_residual",
+                            "required_need": self.NARROWED,
+                        },
+                    )
+                ]
+            ),
+        )
+        self.assertIsNotNone(fallback)
+        self.assertEqual(
+            fallback[0]["next_information_needs"],
+            [self.NEED_A, self.NEED_B, self.NARROWED],
+        )
+
+
+class TemporalQuantityAggregatedFeedbackTests(TestCase):
+    """Temporal plus numeric defects share one initial feedback (V121 Kinross)."""
+
+    EVALUATION_CONTEXT = {
+        "prediction_time": "2025-09-30T00:00:00+00:00",
+        "horizon": "six_calendar_months",
+        "horizon_end": "2026-03-30",
+    }
+    BASIC_INFO = {
+        "requests": [
+            {
+                "projections": [
+                    {
+                        "projection_id": "projection_rev",
+                        "exact_text": "Prior year: Revenue was $4 million.",
+                    }
+                ]
+            }
+        ]
+    }
+
+    def _value(self) -> dict:
+        return {
+            "contradictions": [],
+            "current_beliefs": ["Revenue was $42 million."],
+            "decision": "continue",
+            "hypotheses": ["Margins may improve within the horizon."],
+            "next_information_needs": [
+                "What results will the company report after September 2025 in its Q3 filing?",
+                "What guidance is visible by 2025-09-30?",
+            ],
+            "open_questions": [],
+            "resolved_questions": [],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": "Revenue was $42 million.",
+                    "projection_id": "projection_rev",
+                    "exact_text": "Revenue was $4 million.",
+                }
+            ],
+        }
+
+    def _compliant(self) -> dict:
+        from copy import deepcopy
+
+        value = deepcopy(self._value())
+        value["next_information_needs"] = ["What guidance is visible by 2025-09-30?"]
+        # The authorized in-scope repair narrows the claim (and its linked
+        # assertion, a permitted dependency); the grounded literal is kept.
+        value["supporting_evidence"][0]["claim"] = (
+            "Revenue grew in the most recent quarter."
+        )
+        value["current_beliefs"] = ["Revenue grew in the most recent quarter."]
+        return value
+
+    def _emptied(self) -> dict:
+        from copy import deepcopy
+
+        value = deepcopy(self._value())
+        value["next_information_needs"] = ["What guidance is visible by 2025-09-30?"]
+        value["supporting_evidence"] = []
+        return value
+
+    def _make_parser(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _validate_research_state_refs,
+        )
+
+        def parse(value):
+            normalized = _normalize_research_state_output(
+                dict(value),
+                initialize=True,
+                basic_info=self.BASIC_INFO,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+            return _validate_research_state_refs(
+                ResearchState.from_dict(normalized),
+                phase="initialize",
+                basic_info=self.BASIC_INFO,
+            )
+
+        return parse
+
+    def test_initial_feedback_aggregates_temporal_and_quantity_issues(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+        )
+
+        with self.assertRaises(StructuredValidationError) as raised:
+            _normalize_research_state_output(
+                dict(self._value()),
+                initialize=True,
+                basic_info=self.BASIC_INFO,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+        codes = [issue.code for issue in raised.exception.issues]
+        self.assertEqual(codes[0], "future_information_unavailable")
+        self.assertEqual(
+            set(codes),
+            {"future_information_unavailable", "claim_quantity_not_supported"},
+        )
+
+    def test_compliant_correction_fixes_all_issues_within_budget(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        caller = ScriptedRoleCaller([self._value(), self._compliant()])
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="research_controller_initialize",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=self._make_parser(),
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
+            stable_correction_prefix=True,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
+        )
+        self.assertEqual(
+            [str(need) for need in value.next_information_needs],
+            ["What guidance is visible by 2025-09-30?"],
+        )
+        self.assertEqual(usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(
+            sorted(
+                obligation["issue_code"]
+                for obligation in feedback["obligations"]
+            ),
+            ["claim_quantity_not_supported", "future_information_unavailable"],
+        )
+
+    def test_removing_all_evidence_stays_rejected(self) -> None:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        caller = ScriptedRoleCaller([self._value(), self._emptied()])
+        with self.assertRaises(CandidateExecutionRejected):
+            evolution_runtime_module._complete_parsed_role(
+                caller,
+                stage="research_controller_initialize",
+                system_prompt="Return the fixed contract.",
+                payload={},
+                parser=self._make_parser(),
+                allow_outcomes=False,
+                enforce_scoped_correction=True,
+                exact_compaction_scope=True,
+                stable_correction_prefix=True,
+                final_validation_fallback=_research_state_evidence_grounding_fallback,
             )

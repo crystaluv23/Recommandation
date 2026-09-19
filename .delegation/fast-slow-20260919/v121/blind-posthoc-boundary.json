@@ -1,0 +1,102 @@
+[
+  {
+    "attempt": 18,
+    "hash": "7ece4d40fbfe5dba2cae8ffb0fa5d12725b16ed857b81c978284129d93dfebaf",
+    "stage": "blind_predictor_predict",
+    "payload_keys": [
+      "final_context"
+    ]
+  },
+  {
+    "attempt": 19,
+    "hash": "426c01fbc105278c144c9d548f3ca8ed0234506aa235c5287716abadf06ea359",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload_keys": [
+      "candidate_judgment_feedback",
+      "compact_context",
+      "framework_prediction_correct",
+      "original_prediction",
+      "revealed_ground_truth"
+    ]
+  },
+  {
+    "attempt": 38,
+    "hash": "a2a3ecf931779bc41cfb1697520b7b97714ca461aca57ff1a8a8d4cd005348a4",
+    "stage": "blind_predictor_predict",
+    "payload_keys": [
+      "final_context"
+    ]
+  },
+  {
+    "attempt": 39,
+    "hash": "2a37f970bd69377c0a013a9d353746080003e06218f4ea7ded48b222e44d6736",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload_keys": [
+      "candidate_judgment_feedback",
+      "compact_context",
+      "framework_prediction_correct",
+      "original_prediction",
+      "revealed_ground_truth"
+    ]
+  },
+  {
+    "attempt": 57,
+    "hash": "be45ce3baa3f874445ff160474bad0d2b3cabfb849f64c6aae3dd21acd0d8b1e",
+    "stage": "blind_predictor_predict",
+    "payload_keys": [
+      "final_context"
+    ]
+  },
+  {
+    "attempt": 58,
+    "hash": "a51fafbdb36a38880a28984c3c265e221a965ff2c802e8c7b3413821dcac3778",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload_keys": [
+      "candidate_judgment_feedback",
+      "compact_context",
+      "framework_prediction_correct",
+      "original_prediction",
+      "revealed_ground_truth"
+    ]
+  },
+  {
+    "attempt": 77,
+    "hash": "8b9338b2dfe1aeeb3560e674513c5094c00502aaa346a297516499035c5576c1",
+    "stage": "blind_predictor_predict",
+    "payload_keys": [
+      "final_context"
+    ]
+  },
+  {
+    "attempt": 78,
+    "hash": "9be45872fd2f6f07e043bba95c95259a93cec6f0758501b55af7d44fef3763aa",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload_keys": [
+      "candidate_judgment_feedback",
+      "compact_context",
+      "framework_prediction_correct",
+      "original_prediction",
+      "revealed_ground_truth"
+    ]
+  },
+  {
+    "attempt": 95,
+    "hash": "53ef838feb3a41f0dd84f29b246f23eadad6c980b44669ed441e666d05b1e099",
+    "stage": "blind_predictor_predict",
+    "payload_keys": [
+      "final_context"
+    ]
+  },
+  {
+    "attempt": 96,
+    "hash": "79518d3540ddd814c8f5d31212abd98a648974097114c5f19b56412a4dc13676",
+    "stage": "blind_predictor_posthoc_reflect",
+    "payload_keys": [
+      "candidate_judgment_feedback",
+      "compact_context",
+      "framework_prediction_correct",
+      "original_prediction",
+      "revealed_ground_truth"
+    ]
+  }
+]

@@ -1258,6 +1258,23 @@ def _normalize_research_state_output(
         evaluation_context,
     )
     if future_information_issues:
+        # A temporal rejection still surfaces every other independently
+        # decidable raw issue when the evidence shape allows, so one
+        # correction round can carry all actionable obligations. The
+        # temporal issues stay first and nothing here accepts a future fact.
+        evidence_for_aggregation = normalized.get("supporting_evidence")
+        if isinstance(evidence_for_aggregation, list) and all(
+            isinstance(item, Mapping) for item in evidence_for_aggregation
+        ):
+            future_information_issues.extend(
+                _raw_basic_claim_quantity_issues(normalized)
+            )
+            future_information_issues.extend(
+                _raw_quantitative_assertion_link_issues(normalized)
+            )
+            future_information_issues.extend(
+                _raw_basic_literal_identity_issues(normalized, previous_state)
+            )
         raise StructuredValidationError(future_information_issues)
     evidence = normalized.get("supporting_evidence")
     issues = _raw_research_state_compaction_issues(
@@ -2804,6 +2821,7 @@ def _need_transition_validation_issue(
             "prior_need": error["value"],
             "required_action": error["required_action"],
             "required_need": error.get("required_need"),
+            "required_need_occurrences": error.get("required_need_occurrences"),
             "returned_need": error.get("returned_need", error["value"]),
         },
     )
@@ -2932,6 +2950,7 @@ def _targeted_answer_need_transition_errors(
             "issue": "untargeted need changed or was removed",
             "required_action": "restore_exactly",
             "required_need": need,
+            "required_need_occurrences": required_counts.get(need, 1),
         }
         if obligation.get("unrepresentable"):
             error.update(
@@ -2994,6 +3013,9 @@ def _targeted_answer_need_transition_errors(
                         "required_action": "replace_with_exact_residual",
                         "required_need": residual,
                         "required_residual_need": residual,
+                        "required_need_occurrences": required_counts.get(
+                            residual, 1
+                        ),
                     }
                 )
             continue

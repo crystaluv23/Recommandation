@@ -117,3 +117,22 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   `remove` the unsupported numeric detail. They never suggest splitting
   one assertion into multiple rows; a one-to-many split is an append and
   requires its own explicit bounded add authority.
+
+## Aggregated initial feedback and occurrence counts (round 19)
+
+`_normalize_research_state_output` aggregates independently decidable issue
+classes in the first feedback: a temporal (future-information) rejection is
+raised together with the Basic quantity, quantitative assertion-link, and
+Basic literal-identity issues computed from the same returned object
+whenever the evidence shape makes those checks decidable, with the temporal
+issues first so existing error ordering and contracts are preserved.
+Aggregation changes feedback only; it never accepts a future fact, never
+relaxes grounding or empty-state rules, and falls back to the temporal-only
+rejection when the returned evidence shape is not decidable.
+
+Occurrence-aware need-transition issues carry the exact runtime-issued
+occurrence count of their required text (`required_need_occurrences`) in
+their repair context, computed from the same per-obligation occurrence
+arithmetic that validates preservation, so downstream deterministic
+recovery can restore missing multiplicity without any whole-list rewrite
+authority.

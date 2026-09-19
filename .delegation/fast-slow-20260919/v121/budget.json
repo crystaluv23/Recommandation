@@ -1,0 +1,9 @@
+{
+  "attempts": 106,
+  "actual_cost": "0.3490188800000000253",
+  "remaining_attempts": 2236,
+  "conservative_remaining_cost_budget": "17.5778924699999999747",
+  "status": "round_rejected",
+  "last_completed_round": 0,
+  "last_completed_cycle": 0
+}

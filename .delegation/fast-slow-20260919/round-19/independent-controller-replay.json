@@ -1,0 +1,16 @@
+{
+  "calls": 3,
+  "exact_existing_order_preserved": true,
+  "exact_only_missing_occurrences_appended": true,
+  "all_other_fields_unchanged": true,
+  "final_needs": [
+    "What post-event operational updates, including user growth, paying user conversion, and restructuring execution metrics, were disclosed by 2025-09-30 following the Q2 2025 results and the announced global workforce reduction?",
+    "What was the substance of the Q2 2025 earnings miss and the 8.7% user decline, and what management actions or strategic shifts were disclosed by 2025-09-30 to address the user trend?",
+    "Do recent price and volume patterns, including the decline from 7.17 on 2025-09-18 to 6.3 on 2025-09-29, confirm or contradict the fundamental narrative of stabilization or recovery?",
+    "What prior Q2 2025 revenue and adjusted EBITDA guidance figures were disclosed before June 25, 2025, so the direction and magnitude of the updated outlook can be assessed?",
+    "What specific revenue, margin, and cash flow guidance or forward bridge did Bumble management disclose by 2025-09-30 for the remainder of 2025 and into 2026, and how does that bridge support or contradict a doubling of the adjusted share price within six months?",
+    "What specific revenue, margin, and cash flow guidance or forward bridge did Bumble management disclose by 2025-09-30 for the remainder of 2025 and into 2026, and how does that bridge support or contradict a doubling of the adjusted share price within six months?",
+    "What did Bumble disclose by 2025-09-30 about the Blackstone share sale, any other material insider transactions, or changes in capital structure that could affect the share price path toward the 2x threshold?"
+  ],
+  "limitation": "batch reconstructed from original model-view spans using round16 helper; original prior/skill/evaluation/selections/outputs used in full controller path"
+}

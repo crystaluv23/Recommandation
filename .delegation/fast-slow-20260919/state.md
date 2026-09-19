@@ -51,3 +51,12 @@ Round17 normal API turn.completed1289.5s,41focused/906full/lintPASS. Independent
 
 ## Round18 locally accepted; V121 freeze next
 Normal turn.completed457seconds,45focused/910full/lintPASS, original-wire+boundary replaysPASS. Independent exact-restoration/empty-prior/no-remove probesPASS; finaldiffreviewed. Round17–18 accepted locally; no activewriter/production. Commit beforeV121freeze. Goal incomplete.
+
+## V121 running
+Source checkpointcdf644e, contract28781029aa1eab1e0adf6adf69513f833752523e479d2015c724e7d6501aae2f. exec39275/PID44870 started2026-09-19T20:49:29UTC; logs andprocess under v121. Same contract semantics/models/cohort/history/registry; actualseed unchanged (scan_summaryonly). cap2342attempts/$17.92691135. No active ZCodewriter. Keep source/HEAD fixed duringrun. Main goal incomplete.
+
+## V121 rejected; round19 running
+V121 endednormalexit0 round_rejected/no_fitness_eligible_candidates.106completedattempts/$0.34901888; pointers0/0. c01LifeTimepassedthenBumblecase6needrestorationfailed: duplicatecountmissing + driftfailuremasksstructuredsemanticfallback. c02Kinrossinit temporalearlyraisehides8quantityissues untilfinalcorrection; unsupportedraw106cannotbeaccepted. Originalwirev121/rejections-wire.json. Round19 exec11994/PID45640 brief/report/APIstatusunderround19. Oneexternalwriter,noproduction. Remaining2236attempts/$17.57789246 conservative (retainV120unsettledreserve). SourceHEADcdf644e. Mainjointgoalstillincomplete.
+
+## Round19 accepted locally; V122 freeze next
+Normalturn.completed1157.4s,52focused/917full/lintPASS. Independent fullcontrollerBumble replay3calls: existingrawneeds exactorder +missingduplicate+Blackstoneonly; allotherfieldsunchanged. Modelviewbatchreconstructionlimitationexplicit. Raw106stillinvalid; noforcedacceptance. No activewriter/production. CommitthenfreshV122freeze cap2236/$17.57789246. Maingoal incomplete.

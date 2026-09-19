@@ -115,3 +115,31 @@ permission. A compaction obligation's exact removal paths fully enumerate the
 container they evict from, so the container-root issue path adds no
 member-level authority. Any projected correction is fully revalidated before
 acceptance.
+
+## Need-transition restoration and drift pairing (round 19)
+
+Occurrence-aware need-transition obligations carry the exact runtime-issued
+occurrence count (`required_need_occurrences`) of the text they require. The
+deterministic need-transition fallback restores by count, not by text
+membership: a `restore_exactly` obligation appends the exact required text
+until the returned list holds the issued number of occurrences, never
+removing, deduplicating, or reordering existing returned rows. A
+`replace_with_exact_residual` obligation rewrites one occurrence only at the
+returned coordinate it actually names; when the targeted occurrence is
+absent, the exact residual is appended and a preserved duplicate of the
+prior text is never consumed as the write target.
+
+A whole-member path named by a `restore_exactly` obligation is a prior-state
+coordinate, not a returned write target: its projection performs no
+coordinate copy at all, because the failed object's row at that index may be
+a valid preserved sibling and the prior index may exceed the returned list.
+Restoration is content based; a still-missing obligation is appended by the
+deterministic fallback, never inferred from an absent index.
+
+When a scoped correction is rejected as drift and no safe projection exists,
+the exact failed-object/semantic-failure pairing is preserved: a structured
+semantic failure is never overwritten by the generic drift message. The
+drift diagnostic is retained separately and reported alongside the semantic
+failure, so deterministic recovery and any subsequent feedback keep acting
+on the recoverable obligations while unpermitted drift is never accepted and
+the raw model response never becomes the accepted baseline.

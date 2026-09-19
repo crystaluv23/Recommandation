@@ -1,0 +1,373 @@
+{
+  "attempts": 72,
+  "changed_flows": [
+    {
+      "reflect_attempt": 10,
+      "reflect_hash": "0669e41fb0ff15332d9cfe79060bd1037a9fbb09c56dea658fea5576eeb1f0d5",
+      "next_routing_hash": "123788599fc9e99fc90795b7704d35f1aac1d3ceee4c014a7ec14045436ec2b4",
+      "previous": [
+        "What operational or financial guidance, production outlook, cost expectations, and free cash flow commitments had Kinross disclosed as of 2025-09-30 that could confirm or falsify the Q2 2025 momentum narrative?",
+        "What was the substance of the Early Warning Report dated September 25, 2025 filed on SEDAR+, including any change in Kinross's ownership position or intentions regarding the subject issuer?",
+        "What growth projects, reserve expansions, or acquisitions had Kinross disclosed or scheduled as of 2025-09-30 that could materially reset market expectations within the six-month horizon?",
+        "What gold price assumptions and realized gold price disclosures had Kinross provided as of 2025-09-30, and how did they frame revenue and margin expectations for the remainder of the year?",
+        "What analyst price targets, ratings, and institutional positioning on Kinross were publicly available as of 2025-09-30, and what evidence supported those views?",
+        "What was Kinross's share count and any disclosed share issuance or buyback activity as of 2025-09-30 that could affect the adjusted-share-price threshold calculation?"
+      ],
+      "reflected": [
+        "What operational or financial guidance, production outlook, cost expectations, and free cash flow commitments had Kinross disclosed as of 2025-09-30 that could confirm or falsify the Q2 2025 momentum narrative?",
+        "What was the substance of the Early Warning Report dated September 25, 2025 filed on SEDAR+, including any change in Kinross's ownership position or intentions regarding the subject issuer?",
+        "What growth projects, reserve expansions, or acquisitions had Kinross disclosed or scheduled as of 2025-09-30 that could materially reset market expectations within the six-month horizon?",
+        "What gold price assumptions and realized gold price disclosures had Kinross provided as of 2025-09-30, and how did they frame revenue and margin expectations for the remainder of the year?",
+        "What analyst price targets, ratings, and institutional positioning on Kinross were publicly available as of 2025-09-30, and what evidence supported those views?",
+        "The exact share count as of 2025-09-30 and any disclosed buyback activity remain unresolved."
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Kinross's record Q2 2025 free cash flow and operating margins should yield a strong operating cash flow margin for the latest reported duration.",
+            "context_tags": [
+              "large_cap",
+              "mature_operations",
+              "project_driven",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Operational or financial guidance, production outlook, and cost expectations disclosed as of 2025-09-30 remain unresolved.",
+            "selection_reason": "Directly measures operating cash flow as a share of revenue, addressing the free cash flow commitments facet of the guidance need.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "With $1.1 billion in cash and record operating cash flow, Kinross likely has a runway well above 12 months, supporting the momentum narrative.",
+            "context_tags": [
+              "large_cap",
+              "mature_operations",
+              "project_driven",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Kinross's cash position relative to operating cash flow indicates near-term financing dependence, relevant to the guidance and cash flow narrative.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Elevated gold prices and record operating margins suggest Kinross may show positive year-over-year revenue growth.",
+            "context_tags": [
+              "large_cap",
+              "mature_operations",
+              "project_driven",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures latest year-over-year revenue growth, which helps frame whether the Q2 2025 momentum narrative is supported by top-line performance.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Kinross may have disclosed offtake or sales agreements tied to its gold production that could act as a catalyst within the six-month horizon.",
+            "context_tags": [
+              "large_cap",
+              "mature_operations",
+              "project_driven",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Checks for disclosed customer orders, contracts, or binding awards that could serve as a material catalyst resetting market expectations.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": []
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 28,
+      "reflect_hash": "5ff03fb0f4d2278db35d90f171da23a1ef8ea4e45f47b3ef936ef379e7e36c03",
+      "next_routing_hash": "4a3e6079be4b4845e640b9384a636355a96a660b118c166f1332630b5acf302d",
+      "previous": [
+        "What specific event, exhibit, or disclosure was included in the June 12, 2025 Form 8-K filed by Wynn Resorts, and did it contain any material operating, financing, or corporate action information available by 2025-07-31?",
+        "What were Wynn Resorts' most recent reported quarterly revenue, adjusted property EBITDAR, margin, cash flow, and capital structure figures available by 2025-07-31, and how did they compare with prior periods?",
+        "What forward-looking commentary did Wynn Resorts management provide by 2025-07-31 regarding Macau, Las Vegas, and Boston demand, property openings, capital expenditure, and capital returns?",
+        "What analyst estimate revisions or price target changes for Wynn Resorts were published between 2025-06-01 and 2025-07-31, and what operating drivers did they cite?",
+        "What caused the 2025-07-01 adjusted price and volume spike from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 with volume of 5341240, and was there a corresponding public disclosure or news event?",
+        "What is the current share count, diluted share count, and any buyback or issuance activity for Wynn Resorts disclosed by 2025-07-31 that could affect per-share value?"
+      ],
+      "reflected": [
+        "What specific event, exhibit, or disclosure was included in the June 12, 2025 Form 8-K filed by Wynn Resorts, and did it contain any material operating, financing, or corporate action information available by 2025-07-31?",
+        "What were Wynn Resorts' most recent reported quarterly revenue, adjusted property EBITDAR, margin, cash flow, and capital structure figures available by 2025-07-31, and how did they compare with prior periods?",
+        "What forward-looking commentary did Wynn Resorts management provide by 2025-07-31 regarding Macau, Las Vegas, and Boston demand, property openings, capital expenditure, and capital returns?",
+        "What analyst estimate revisions or price target changes for Wynn Resorts were published between 2025-06-01 and 2025-07-31, and what operating drivers did they cite?",
+        "What caused the 2025-07-01 adjusted price and volume spike from 93.67 on 2025-06-30 to 101.96 on 2025-07-01 with volume of 5341240, and was there a corresponding public disclosure or news event?",
+        "Current and diluted share counts and specific buyback or issuance activity disclosed by 2025-07-31."
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Wynn Resorts has reported quarterly revenue figures available by 2025-07-31, enabling a YoY revenue growth measurement.",
+            "context_tags": [
+              "large_cap",
+              "filing_rich",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Adjusted property EBITDAR, margin, cash flow, and capital structure figures and prior-period comparisons remain unresolved.",
+            "selection_reason": "Directly measures latest point-in-time year-over-year revenue growth, covering the revenue comparison facet of the most recent quarterly figures need.",
+            "signal_ref": "revenue_growth_yoy:v1",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Wynn Resorts reports operating cash flow and revenue for the latest duration, allowing a cash flow margin computation.",
+            "context_tags": [
+              "large_cap",
+              "filing_rich",
+              "catalyst_window"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Adjusted property EBITDAR, margin, and capital structure figures and prior-period comparisons remain unresolved.",
+            "selection_reason": "Measures operating cash flow as a share of revenue for the latest reported duration, covering the cash flow facet of the most recent quarterly figures need.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Point-in-time cash and operating cash flow inputs are available for Wynn Resorts, enabling a runway estimate.",
+            "context_tags": [
+              "large_cap",
+              "filing_rich",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Assesses near-term financing dependence via liquidity runway, relevant to capital structure and cash flow facets of the quarterly figures need.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A named counterparty order or binding award with stated value or schedule may have been disclosed around the spike date.",
+            "context_tags": [
+              "large_cap",
+              "catalyst_window",
+              "filing_rich"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether a material customer order or contract disclosure explains the 2025-07-01 price and volume spike.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 44,
+      "reflect_hash": "1bbd95b6efabe7302765a04511f839ea639bfe0dbb9a58ecff63b5701bb83035",
+      "next_routing_hash": "deeab212018d2c32bcf803cf750c6ac9fca2464dff4e8e1914405d586fd06cb8",
+      "previous": [
+        "What did Enbridge disclose by 2025-09-30 about the expected timing, capital cost, and final investment decision status of the Mainline expansion first phase and the Southern Illinois Connector, and could any of those milestones fall within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about the Canyon Gathering System and Sparta Gas Pipeline, including expected in-service dates, contracted volumes, and capital commitments, and could any of those milestones fall within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about its 2025 and 2026 financial guidance, distributable cash flow per share, EBITDA growth, and capital allocation, and does any of that guidance imply a near-term earnings inflection?",
+        "What did Enbridge disclose by 2025-09-30 about its dividend policy, buyback authorization, or other capital-return actions that could materially change the share count or per-share economics within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about regulatory approvals, permitting, or legal challenges affecting its Gulf Coast, Mainline, or offshore natural gas projects that could delay or accelerate in-horizon milestones?",
+        "What did Enbridge disclose by 2025-09-30 about commodity price sensitivities, throughput volumes, or counterparty demand trends that could materially change revenue expectations within the six-month horizon?"
+      ],
+      "reflected": [
+        "Distributable cash flow per share, EBITDA growth, and capital allocation details remain unresolved.",
+        "What did Enbridge disclose by 2025-09-30 about the Canyon Gathering System and Sparta Gas Pipeline, including expected in-service dates, contracted volumes, and capital commitments, and could any of those milestones fall within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about its dividend policy, buyback authorization, or other capital-return actions that could materially change the share count or per-share economics within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about regulatory approvals, permitting, or legal challenges affecting its Gulf Coast, Mainline, or offshore natural gas projects that could delay or accelerate in-horizon milestones?",
+        "What did Enbridge disclose by 2025-09-30 about commodity price sensitivities, throughput volumes, or counterparty demand trends that could materially change revenue expectations within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about the expected timing, capital cost, and final investment decision status of the Mainline expansion first phase and the Southern Illinois Connector, and could any of those milestones fall within the six-month horizon?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Enbridge is capital intensive with ongoing project commitments; liquidity runway may be short enough to require external financing within the six-month horizon.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether Enbridge's cash position and operating cash flow imply near-term financing dependence relevant to capital allocation and per-share economics.",
+            "signal_ref": "liquidity_runway_months:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If operating cash outflow is high relative to cash, Enbridge may need financing that dilutes per-share economics within the horizon.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Evaluates whether Enbridge's operating cash outflow relative to cash reserves signals elevated burn that could pressure capital allocation or share count.",
+            "signal_ref": "cash_burn_rate_elevated:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "Operating cash flow margin indicates whether internally generated cash can fund distributions and capital commitments without dilution.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "EBITDA growth and capital allocation details remain unresolved.",
+            "selection_reason": "Directly measures operating cash flow margin, a core component of distributable cash flow per share and capital allocation capacity.",
+            "signal_ref": "operating_cash_flow_margin:v1",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Named counterparty orders or binding awards with stated value or volume would confirm commercial support for in-horizon project milestones.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Checks for disclosed customer orders or binding awards that could evidence contracted volumes for Canyon Gathering System, Sparta Gas Pipeline, or Mainline expansion.",
+            "signal_ref": "order_confirmation_disclosed:v1",
+            "target_need_indices": []
+          }
+        ]
+      }
+    },
+    {
+      "reflect_attempt": 52,
+      "reflect_hash": "11b09b1f490d4addcf9661210078914ce7dfe69f15c582403e82475bdc2c6c6b",
+      "next_routing_hash": "32d5d235016e4719cb406aa17644afd37debb82d298190aede68ad5a406d9db7",
+      "previous": [
+        "Distributable cash flow per share, EBITDA growth, and capital allocation details remain unresolved.",
+        "What did Enbridge disclose by 2025-09-30 about the Canyon Gathering System and Sparta Gas Pipeline, including expected in-service dates, contracted volumes, and capital commitments, and could any of those milestones fall within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about its dividend policy, buyback authorization, or other capital-return actions that could materially change the share count or per-share economics within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about regulatory approvals, permitting, or legal challenges affecting its Gulf Coast, Mainline, or offshore natural gas projects that could delay or accelerate in-horizon milestones?",
+        "What did Enbridge disclose by 2025-09-30 about commodity price sensitivities, throughput volumes, or counterparty demand trends that could materially change revenue expectations within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about the expected timing, capital cost, and final investment decision status of the Mainline expansion first phase and the Southern Illinois Connector, and could any of those milestones fall within the six-month horizon?"
+      ],
+      "reflected": [
+        "Distributable cash flow per share, EBITDA growth, and capital allocation details remain unresolved.",
+        "What did Enbridge disclose by 2025-09-30 about the Canyon Gathering System and Sparta Gas Pipeline, including expected in-service dates, contracted volumes, and capital commitments, and could any of those milestones fall within the six-month horizon?",
+        "Dividend policy and buyback authorization disclosures by 2025-09-30 remain unresolved.",
+        "What did Enbridge disclose by 2025-09-30 about regulatory approvals, permitting, or legal challenges affecting its Gulf Coast, Mainline, or offshore natural gas projects that could delay or accelerate in-horizon milestones?",
+        "What did Enbridge disclose by 2025-09-30 about commodity price sensitivities, throughput volumes, or counterparty demand trends that could materially change revenue expectations within the six-month horizon?",
+        "What did Enbridge disclose by 2025-09-30 about the expected timing, capital cost, and final investment decision status of the Mainline expansion first phase and the Southern Illinois Connector, and could any of those milestones fall within the six-month horizon?"
+      ],
+      "exact_next_input_match": true,
+      "next_selection": {
+        "selections": [
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If the six-month doubling thesis were building, the 126-day return would be strongly positive; a modest drift would contradict it.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "market_data_only",
+              "catalyst_window"
+            ],
+            "expected_role": "contradiction",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Measures 126-day total return, directly testing whether the six-month doubling thesis has any price momentum support.",
+            "signal_ref": "price_momentum_126d:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "A large historical drawdown would indicate volatility but not a doubling driver; a shallow drawdown suggests steady drift.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "market_data_only",
+              "high_volatility"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Quantifies downside path risk over the past year, relevant to whether a doubling move is plausible within six months.",
+            "signal_ref": "max_drawdown_1y:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "If revenue growth is decelerating or flat, the doubling thesis lacks a fundamental acceleration driver.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "recurring_revenue"
+            ],
+            "expected_role": "contradiction",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Tests whether revenue growth is accelerating, a fundamental precondition for a sharp re-rating within the horizon.",
+            "signal_ref": "revenue_acceleration:v1",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Stable or declining gross margin would undercut the case for a near-term earnings inflection.",
+            "context_tags": [
+              "energy",
+              "large_cap",
+              "capital_intensive",
+              "regulated"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Latest gross margin change indicates whether per-unit economics are improving enough to support an earnings inflection.",
+            "signal_ref": "gross_margin_change:v1",
+            "target_need_indices": []
+          }
+        ]
+      }
+    }
+  ]
+}
