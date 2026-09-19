@@ -1,0 +1,56 @@
+Resuming contract hash: 89e51f35d828b9fb217791bbab9e0c483c53480387c43de68be7d8a842d378cd
+[11:38:31] [cycle 1] 开始 cycle：Fast 已完成 0/0，阶段 slow_loop
+[11:39:07] [cycle 1] slow_loop_started
+[11:39:25] [cycle 1] request_ready · stage=slow_source_read · model=deepseek-v4-flash-thinking
+[11:39:25] [cycle 1] external_call_started · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[11:39:32] [cycle 1] external_call_completed · stage=slow_source_read · model=deepseek-v4-flash-thinking · attempt=1
+[11:39:50] [cycle 1] request_ready · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking
+[11:39:50] [cycle 1] external_call_started · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[11:40:43] [cycle 1] external_call_completed · stage=signal_mining_reflect · model=deepseek-v4-flash-thinking · attempt=2
+[11:41:57] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:41:57] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[11:42:06] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=3
+[11:42:47] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:42:47] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[11:42:52] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=4
+[11:43:25] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:43:25] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[11:43:47] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=5
+[11:44:23] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:44:23] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[11:44:30] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=6
+[11:45:03] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:45:03] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[11:45:30] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=7
+[11:46:03] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:46:03] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[11:47:56] [cycle 1] external_call_completed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=8
+[11:48:29] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:48:29] [cycle 1] external_call_started · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[11:50:27] [cycle 1] external_call_failed · stage=mining_controller_step · model=deepseek-v4-flash-thinking · attempt=9
+[11:50:27] retryable_external_error
+{
+  "dashboard": "/Users/l/Project/Recommandation/runs/cold_start/evolution/evolution_dashboard.html",
+  "dashboard_run_count": 287,
+  "dashboard_skipped_run_count": 0,
+  "error_type": "RetryableOpenAIClientError",
+  "locked_test_accessed": false,
+  "message": "OpenAI response contained no output_text",
+  "resume": "rerun the same command with the same frozen contract",
+  "status": "retryable_external_error",
+  "workspace": "runs/cold_start/evolution/information-evolution-slow-self-evolution-20260919-v116"
+}
+Temporary transport failure; auto-resume 1 in 5s using the same frozen contract.
+[11:50:38] [cycle 1] 恢复 cycle：Fast 已完成 0/0，阶段 slow_loop
+[11:51:16] [cycle 1] slow_loop_started
+[11:52:28] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:52:28] [cycle 1] request_cache_hit · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:53:09] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:53:09] [cycle 1] request_cache_hit · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:53:41] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:53:41] [cycle 1] request_cache_hit · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:54:18] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:54:18] [cycle 1] request_cache_hit · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:54:50] [cycle 1] request_ready · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+[11:54:50] [cycle 1] request_cache_hit · stage=mining_controller_step · model=deepseek-v4-flash-thinking
+scripts/run_information_plan_evolution.sh: line 185: 83983 Terminated: 15          PYTHONPATH="$PROJECT_ROOT/src${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON_BIN" "$CLI" "$@"

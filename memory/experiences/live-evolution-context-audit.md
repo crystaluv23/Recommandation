@@ -1739,3 +1739,19 @@ and exact caching turns the final correction into a zero-progress replay. Provid
 enums and cross-field ownership constraints must also appear literally in the
 first prompt; a validator-only contract converts preventable controller ambiguity
 into paid model failure.
+
+## Correction-round regression addendum (2026-09-19)
+
+A correction transport that names only the newest defects lets a model silently
+revert an earlier fixed field. In V117 (first live v8 fast_then_slow), H_reflect
+correction #1 produced a cutoff-bounded as-of need that the temporal guard
+accepts (verified by replaying `_future_source_date_refs` on the exact text),
+but introduced claim-quantity defects; correction #2 received only those three
+issues, rewrote the whole ResearchState, and restored the original
+future-dated need byte-for-byte. Full re-validation then failed closed with
+both corrections exhausted, killing both Fast candidates on the same wall.
+
+Preserve unnamed items byte-for-byte across corrections (H1's item-local rule)
+for every list-valued ResearchState field, or restate previously satisfied
+constraints as standing context in every later correction round. Test the fix
+by replaying the exact V117 attempt-10/11/12 chain, not by resampling.
