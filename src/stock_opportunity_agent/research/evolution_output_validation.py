@@ -3114,6 +3114,13 @@ def _complete_parsed_role(
     budget_failure: RuntimeBudgetExceeded | None = None
     budget_failure_stage: str | None = None
     scope_drift_diagnostic: str | None = None
+    # A no-projection drift retry keeps the original invalid object and
+    # obligations, which would rebuild a byte-identical correction request;
+    # the deterministic response cache would then replay the very drifted
+    # answer that was just rejected. Carry the drift diagnostic on that one
+    # retry so the request differs and the model gets a genuine second
+    # attempt without authorizing the drifted paths.
+    scope_drift_retry_note: str | None = None
     completed_corrections = 0
     max_corrections = getattr(caller, "max_structured_corrections", 1)
     if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
@@ -3151,16 +3158,23 @@ def _complete_parsed_role(
         )
         if stable_correction_prefix:
             request_payload["validation_feedback"] = None
+        retry_drift_note = scope_drift_retry_note
+        scope_drift_retry_note = None
+        retry_error_text = (
+            f"{failure}; {retry_drift_note}"
+            if attempt and retry_drift_note is not None
+            else None
+        )
         if attempt:
             if stable_correction_prefix:
                 request_payload["validation_feedback"] = {
                     "invalid_output": dict(failed_output or {}),
-                    "validation_error": str(failure),
+                    "validation_error": retry_error_text or str(failure),
                     **_validation_obligations(failure, failed_output),
                 }
             else:
                 request_payload["invalid_output"] = dict(failed_output or {})
-                request_payload["validation_error"] = str(failure)
+                request_payload["validation_error"] = retry_error_text or str(failure)
                 request_payload.update(
                     _validation_obligations(failure, failed_output)
                 )
@@ -3419,6 +3433,8 @@ def _complete_parsed_role(
                                     scope_drift_diagnostic = str(scope_failure)
                                 else:
                                     failure = scope_failure
+                            else:
+                                scope_drift_retry_note = str(scope_failure)
                             # Keep the original invalid object and obligations on
                             # retry; drift diagnostics must not authorize those
                             # drifted paths.
@@ -3532,6 +3548,8 @@ def _complete_parsed_role(
                                 scope_drift_diagnostic = str(scope_failure)
                             else:
                                 failure = scope_failure
+                        else:
+                            scope_drift_retry_note = str(scope_failure)
                         # No safe projection exists: keep the original invalid
                         # object and obligations on retry; drift diagnostics
                         # must not authorize those drifted paths.

@@ -1,5 +1,24 @@
 # Status
 
+2026-09-20（round-28）**drift 重试缓存重放死端修复（V127/V128 三例共同死因）**：V127
+恢复后以纯缓存重放续跑（已完成 case 全部免外部调用），c02 至 case 17 时死于
+correction 死端；V128（种子仍为 V126 获胜方案的变异）c01/c02 分别死于 case 4/case 3
+的 H_init correction 死端。三例 wire 证据收敛到同一机制：模型 correction 大改未授权
+路径（hypotheses、多个 needs、resolved_questions 等）→ `_project_scoped_correction`
+无安全投影 → 旧代码"保留原 invalid 对象与义务重试"重构出**字节级相同**的
+correction 请求 → 确定性响应缓存重放同一被拒答案 → "2 次 correction"预算中的第二次
+形同虚设 → `CandidateExecutionRejected`。守卫本身的定性经逐条核验均为真阳性
+（V127：改 need 未采纳对应 signal 证据、claim 引用 evidence_index 0 却声称 index 1
+的数值与派生比率；V128 c01：need 缺显式截断子句而同 case 其余 5 条均合规；
+budget_exhausted 为 token 边界设计行为）。泛化修复：no-projection drift 分支的重试
+请求在 `validation_error` 中附加 drift 诊断（未授权改动路径+保持原文指令），使重试
+请求与首次 correction 字节不同——模型获得真实的第二次机会，而义务与授权路径完全
+不变（反洗钱语义保持，重试仍漂移即拒）。新增回归测试断言重试差异化+义务不变，
+同步修订既有 byte-identity 断言；spec（evolution_output_validation.md）补记该
+stall-defect 修复。另确认种子池为动态发现（V126 提交后其获胜方案自动成为热启动
+种子）、committed-fast bootstrap 无生产 CLI 路径、SIGINT 阻塞调用中不被响应——
+均记录为后续项。951 tests/lint PASS。
+
 2026-09-20（round-27）**V126 post-commit 崩溃修复（stats.json 懒初始化）与 routing
 prompt 守卫教育**：V126 live run 首次跑通 c01 全部 24/24 case finalized 并持久提交
 round 1（`state.json.last_completed_round=1`），c02 因单 case `budget_exhausted` 被

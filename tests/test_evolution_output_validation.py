@@ -1071,7 +1071,17 @@ class ScopedCorrectionProjectionTests(TestCase):
         self.assertEqual(len(caller.calls), 3)
         first = caller.calls[1]["payload"]["validation_feedback"]
         second = caller.calls[2]["payload"]["validation_feedback"]
-        self.assertEqual(first, second)
+        # The original invalid object and obligations stay unchanged, but the
+        # retry's validation_error carries the drift diagnostic so the request
+        # is never a byte-identical replay that a deterministic response cache
+        # would answer with the just-rejected drifted output.
+        self.assertEqual(second["invalid_output"], first["invalid_output"])
+        self.assertEqual(
+            second["required_change_paths"], first["required_change_paths"]
+        )
+        self.assertEqual(second["obligations"], first["obligations"])
+        self.assertNotIn("unrelated valid content", first["validation_error"])
+        self.assertIn("unrelated valid content", second["validation_error"])
         self.assertEqual(
             caller.calls[2]["payload"]["validation_feedback"]["invalid_output"],
             invalid,
@@ -1221,6 +1231,45 @@ class ScopedCorrectionProjectionTests(TestCase):
                 self.assertEqual(feedback["invalid_output"]["keep"], "original")
                 self.assertEqual(len(feedback["invalid_output"]["rows"]), 2)
                 self.assertEqual(feedback["required_change_paths"], ["rows[0].value"])
+
+    def test_unprojectable_drift_retry_is_not_a_byte_identical_replay(self) -> None:
+        invalid = {"rows": [{"value": 0}, {"value": 2}], "keep": "original"}
+        drifted = {"rows": [{"value": 1}], "keep": "drifted"}
+        corrected = {"rows": [{"value": 1}, {"value": 2}], "keep": "original"}
+        caller = ScriptedRoleCaller([invalid, drifted, corrected])
+        caller.max_structured_corrections = 2
+
+        def parse(value):
+            if value["rows"][0]["value"] <= 0:
+                raise ValidationError("rows[0].value must be positive")
+            return value
+
+        value, usage = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="fixture",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=parse,
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            stable_correction_prefix=True,
+        )
+        self.assertEqual(value, corrected)
+        self.assertEqual(usage.llm_calls, 3)
+        first = caller.calls[1]["payload"]["validation_feedback"]
+        retry = caller.calls[2]["payload"]["validation_feedback"]
+        # The retry keeps the original invalid object and obligations, but its
+        # validation_error must carry the drift diagnostic: a byte-identical
+        # retry would deterministically replay the just-rejected drifted
+        # answer from the response cache and waste the correction budget.
+        self.assertNotIn("unrelated valid content", first["validation_error"])
+        self.assertIn("unrelated valid content", retry["validation_error"])
+        self.assertIn("unrelated_changed_paths", retry["validation_error"])
+        # Anti-laundering still holds: the drift note never widens the
+        # authorized repair scope.
+        self.assertEqual(retry["required_change_paths"], ["rows[0].value"])
+        self.assertEqual(retry["invalid_output"]["keep"], "original")
+        self.assertEqual(len(retry["invalid_output"]["rows"]), 2)
 
     def test_exact_compaction_scope_correction_cannot_undo_prior_need_repair(self) -> None:
         initial = {

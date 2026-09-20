@@ -40,7 +40,11 @@ instead of replaying it byte-for-byte into a cached identical response.
 Retrying the original failed output and original obligations after a
 discovered projection is a stall defect. When no safe projection exists, the
 original invalid object and its original obligations are retained unchanged
-for the retry.
+for the retry, and that one retry's `validation_error` additionally carries
+the drift diagnostic (unauthorized changed paths plus the preserve-unchanged
+instruction) so the retry request itself still differs from the first
+correction request; the drift note never widens the authorized repair scope,
+and the unchanged scope validator still rejects a drifted retry.
 
 When the correction budget is exhausted, the deterministic
 evidence-grounding fallback may restore the exact prior literal named by a
