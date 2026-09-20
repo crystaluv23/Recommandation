@@ -4,6 +4,13 @@
 
 **状态：待确认的实施提案，不是已生效规格，也不是已完成实现。** 本文只规划后续工作；不修改现行评分、选择、Signal 晋升规则，不恢复暂停运行，不授权新的模型或数据调用。
 
+> **2026-09-20 评审修订（已获用户批准执行）。** 评审核实第 2 节基线全部属实后，补充四项约束：
+> （1）P0 回归清单必须以 campaign 记录为源头文件，并点名两个至今未修复的开放缺陷；
+> （2）`candidate_judgment_feedback` 禁止原地扩展，magnitude 逐案反馈一律走旁路派生块；
+> （3）`prediction_outcome.correct` 保持现行混合语义不变，二元与幅度对错以新增确定性字段并列；
+> （4）P4 选择入口盘点显式包含 `evolution_benefit.py`，benefit 判定保持 Binary F1 门（F1 保护），magnitude 只作观察报告。
+> 批准范围：P0–P6 离线实施与测试；P7 实机运行仍需单独的模型、数据与预算授权。
+
 ## 1. 目标与成功定义
 
 让模型既改善“能否发现上涨机会”，也改善“上涨幅度档位判断”，同时保持 Fast／Slow 的数据边界、验证、恢复和提交机制正确。
@@ -71,6 +78,8 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 - [Predictor／critic／reflector／proposer 实现](../src/stock_opportunity_agent/research/evolution_plan_roles.py)
 - [Slow 有效性与晋升实现](../src/stock_opportunity_agent/research/signal_evolution.py)
 - [Slow 角色与 fast_plan_action 路由](../src/stock_opportunity_agent/research/evolution_signal_roles.py)
+- [Fast／Slow 联合正确性审计（P0 回归清单的源头文件）](fast-slow-joint-correctness-20260919.md)
+- [Campaign 状态与逐轮独立复核记录](../.delegation/fast-slow-20260919/state.md)
 
 ## 3. 先冻结不可退化的边界
 
@@ -112,7 +121,9 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 - 保存当前代码 revision、冻结契约、Registry、dataset snapshot、round／cycle 指针和相关工件哈希。
 - 对 V130 24 案只读重算二分类与幅度指标，逐项对齐 record、meta 和实际 critic request；建立上述错分矩阵。
 - 核对标签分母与 prediction_baseline 的实际生成链路；将“改基准”“从结果倒推更强信心”等反思标为待审核建议，不采纳为学习规则。
-- 将已有正确性故障列入回归清单：correction 漂移／缓存死端、未解决需求丢失、meta 导入轮号碰撞、stats 缺失、学习事件重复、pause／resume 和中断路径。逐项注明已修复、仅离线验证或仍未解决。
+- 将已有正确性故障列入回归清单：correction 漂移／缓存死端、未解决需求丢失、meta 导入轮号碰撞、stats 缺失、学习事件重复、pause／resume 和中断路径。逐项注明已修复、仅离线验证或仍未解决。**清单生成必须以 [`reports/fast-slow-joint-correctness-20260919.md`](fast-slow-joint-correctness-20260919.md) 与 [campaign state.md](../.delegation/fast-slow-20260919/state.md) 为源头逐轮摘录，不靠回忆。** 其中两个缺陷在当前 HEAD（af5966b）仍为**未修复**，必须以开放项身份进入矩阵：
+  1. **第三类缓存重放死端**：full-revert projection 加 identical revalidation 会重放完全相同的缓存请求（round28 记录明确标注 unfixed，需要通用 same-request guard）。P2／P3 恰好要在 correction 反馈结构附近加字段，这是最可能再次触发该死端的区域。
+  2. **SIGINT 中途吞信号**：V127 与 V130 两次暂停均复现 SIGINT 无效、被迫 SIGTERM 硬杀。任何未来需要中途暂停的实机运行都继承此风险。
 - 冻结当前测试命令和运行时路径；不把历史测试数量当作当前验证结果。
 
 **交付**：基线审计 JSON／Markdown、固定工件引用与哈希、回归矩阵。
@@ -125,6 +136,8 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 
 - 确认第 4 节研究决策；只将确认部分写入上层和模块规格。
 - 优先在现有反馈、指标、meta、proposal 审计记录中增加最少字段，不新建并行进化引擎。
+- **禁止原地扩展 `candidate_judgment_feedback`。** 该字段同时受三处严格校验约束：生产函数（`evolution_core.py` `candidate_judgment_feedback()`）、`ExecutionTrajectory.from_dict` 重载时的重新推导精确相等校验、`CaseReflectionEvidence.__post_init__` 的六字段集精确匹配。magnitude 逐案反馈一律作为**旁路派生块**（如同级 `magnitude_feedback` 键）由框架从已保存 prediction／truth 计算，使旧工件的重载路径保持字节兼容；旧记录缺该块时按"可从原始预测／标签只读派生"处理。
+- **`prediction_outcome.correct` 语义保持不变**：继续复制现行混合了 magnitude 的确定性 `framework_prediction_correct`（canonical 反思记录不动）；`binary_correct` 与 `magnitude_feedback` 作为并列的新增确定性诊断进入 payload，提示词必须说明三者的先后关系，避免反思模型收到互相矛盾的 correct 语义。
 - 定义字段生产者、消费者、是否允许看 outcome、持久化位置、版本和缺失语义。
 - 明确旧工件兼容：原始预测／标签完整时可只读派生新诊断，注明 derived 来源；只有旧自由文本时不得虚构结构化字段。legacy unknown 不等于零分，也不等于通过。
 - schema／prompt／selection policy 纳入冻结契约及缓存身份；候选 Plan 无权改指标权重、排序、标签和固定 prior。
@@ -137,6 +150,8 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 ### P2：实现确定性的 magnitude 反馈
 
 **逐案建议结构，最终字段名以 P1 为准**
+
+按评审修订，以下字段以同级 `magnitude_feedback` 派生块形式进入 post-hoc payload、critic 压缩轨迹与 meta 案例证据；**不写入** `candidate_judgment_feedback` 本体：
 
 ```json
 {
@@ -169,7 +184,7 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 
 **逐案**
 
-- 在现有 post-hoc 调用中传入确定性幅度反馈，明确先区分方向错误与档位错误。
+- 在现有 post-hoc 调用中传入确定性幅度反馈，明确先区分方向错误与档位错误。**`prediction_outcome.correct` 的复制规则保持指向现行混合确定性值**；`binary_correct` 与 `magnitude_feedback` 是并列诊断，提示词需说明幅度对错不改变复制结果。
 - 幅度归因须分清：已有证据解释不足、需要新增的预测时可获取信息、无法根据现有证据确定。允许“不知道”，不强制模型编造上涨原因。
 - 同时要求思考高估反例；真实收益只说明发生了什么，不能证明某个 Signal 当时必然应有更大权重。
 
@@ -195,7 +210,7 @@ V130 的 round 1 已提交；cycle 尚未提交，active phase 为 slow_loop。�
 **工作**
 
 - 在 P1 获确认后实现统一比较规则：eligibility → Binary F1 → magnitude macro-F1 → 稳定 ID；保留现有相似度去重和确定性随机探索。
-- 全仓盘点并标记所有选择入口：screening／promotion shortlist、champion、archive Top-K、父本选择、historical seed ranking、停止条件、dashboard／报告。不能只改一个 sort，让其他路径继续隐式只按 F1。
+- 全仓盘点并标记所有选择入口：screening／promotion shortlist、champion、archive Top-K、父本选择、historical seed ranking、停止条件、dashboard／报告、**`evolution_benefit.py` 的双臂比较（显式点名，实现者不得遗漏）**。不能只改一个 sort，让其他路径继续隐式只按 F1。benefit 判定保持 Binary F1 门作为 F1 保护，magnitude 差值只进入观察报告，不进入 gate。
 - 每个入口明确“应用新策略”或“保留现行语义”的原因；historical seed 的批准 tie-break、较弱 cohort 等规则不能被一个通用排序意外覆盖。
 - 不重写旧 Plan 分数，不因 Registry 变化自动重跑历史 Plan。已冻结 seed manifest 不变；新契约才使用批准后的新策略。
 - 若 legacy 记录缺次指标，不填零参与比较；优先从完整已存轨迹派生，否则明确无法比较并使用已冻结的兼容处理。
