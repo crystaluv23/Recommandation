@@ -1,5 +1,7 @@
 # Status
 
+2026-09-20：新增 [Fast／Slow magnitude 双目标进化行动计划](../reports/fast-slow-magnitude-evolution-action-plan-20260920.md)。只读核验 V130 round 1 已提交、cycle 0／active slow_loop；24 案 F1=0.8、magnitude accuracy=5/14、macro-F1≈0.17544，七案方向正确但幅度低估。计划涵盖确定性反馈、反思与 proposer 跨轮任务、待确认的 F1 主序／幅度次序、Slow 信息供给与纯幅度晋升限制、恢复回归和配对实机验收。当前为非规范性提案，尚未修改上层单一 F1 契约、运行代码或执行新调用；研究规则须确认后自上而下更新规格。此次文档 checkpoint 会改变 HEAD，恢复 V130 仍须使用其原契约匹配 revision。
+
 2026-09-20（round-29/30）**fast round 收尾：meta 单调性修复 + 摩擦优化（不弱化守卫）**：
 V129 完成整条 fast 链路（c02 全部 24/24 finalized、F1=0.733、round1 持久提交、
 stats 修复实机验证通过）后死于 `PlanMetaMemory.append`——导入 slow-history 的
