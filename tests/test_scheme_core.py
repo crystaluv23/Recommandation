@@ -1103,6 +1103,33 @@ class SignalLibraryTests(TestCase):
                 {"same-observation"},
             )
 
+    def test_definition_only_registry_records_observations_without_stats_artifact(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            registry = self._registry(directory)
+            for path in (Path(directory) / "signals").rglob("stats.json"):
+                path.unlink()
+            spec = registry.load_spec("revenue_growth_yoy:v1")
+            self.assertEqual(registry.load_stats(spec.signal_id).retrieved, 0)
+            result = SignalResult(
+                signal_id=spec.signal_id,
+                version=spec.version,
+                value=SignalValue.POSITIVE,
+                confidence=0.9,
+                interpretation="Revenue grew on comparable periods.",
+            )
+            self.assertTrue(
+                registry.record_observation(
+                    "definition-only-observation",
+                    result,
+                    is_surge=True,
+                )
+            )
+            persisted = registry.load_stats(spec.signal_id)
+            self.assertEqual(persisted.retrieved, 1)
+            self.assertEqual(persisted.states["positive"], {"total": 1, "surge": 1})
+
     def test_invalid_result_evidence_isolated_as_execution_failure(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             registry = self._registry(directory)

@@ -463,3 +463,5 @@
 - Codex independently accepted round19 locally: production controller replay preserves all non-need fields and original need ordering while restoring exact missing multiplicities;917tests/lintPASS. V121 rejected evidence preserved; V122 real joint acceptance pending.
 
 - Repair bounded future-schedule plural false rejection;922tests/lint and independent original208/209 controller replay pass. PreserveV122 failure/SSL-recovery evidence; prepareV123 livejointacceptance.
+
+- 2026-09-20 (round-27): V126 first live run to commit a round (c01 24/24 finalized, round 1 durable) then crashed post-commit on load_stats requiring stats.json absent from definition-file-only successor registries; fix load_stats to lazily start empty (matches register_stable), add definition-only-registry regression test, verify offline replay of V126's real archive (218 observations/205 events, idempotent), and educate the routing system prompt with the selection_reason/residual facet-separation rule that caused 34/34 first-attempt corrections; specs synced (signal_library.md lazy stats, scheme_evolution.md prompt decision); 950 tests/lint pass.

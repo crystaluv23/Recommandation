@@ -1538,7 +1538,13 @@ class SignalRegistry:
 
     def load_stats(self, signal_id: str) -> SignalStats:
         manifest_path = self._manifest_for(signal_id)
-        return SignalStats.from_dict(_read_json(manifest_path.parent / "stats.json"))
+        path = manifest_path.parent / "stats.json"
+        if not path.exists():
+            # A Registry materialized from definition files only (Slow-history
+            # import) has not observed anything in this workspace yet; stats
+            # start empty exactly as register_stable initializes them.
+            return SignalStats()
+        return SignalStats.from_dict(_read_json(path))
 
     def record_retrieval(self, signal_ref: str) -> None:
         spec = self.load_spec(signal_ref)

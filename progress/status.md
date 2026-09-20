@@ -1,5 +1,28 @@
 # Status
 
+2026-09-20（round-27）**V126 post-commit 崩溃修复（stats.json 懒初始化）与 routing
+prompt 守卫教育**：V126 live run 首次跑通 c01 全部 24/24 case finalized 并持久提交
+round 1（`state.json.last_completed_round=1`），c02 因单 case `budget_exhausted` 被
+设计内质量门拒绝；随后在 `round_commit_started` 之后的 `_record_signal_statistics`
+→`record_observation`→`load_stats` 以 `required JSON artifact is missing:
+signals/financial/cash_reserves/stats.json` 崩溃（exit validation_error）。根因是
+successor 工作区物化（`apply_slow_history_manifest`）按定义只复制 manifest/spec/
+tests/skill（有意排除 stats.json/learning/.transitions），而 `load_stats` 是该类读取
+中唯一严格读文件者——自 V117 以来没有任何 run 走到过 post-commit，属从未被执行的
+路径。泛化修复：`load_stats` 在 stats.json 缺失时返回空 `SignalStats`（与
+`register_stable`/`install_catalog` 初始化语义一致），任一物化/克隆路径产生的
+definition-files-only 注册表都能安全记录首条观测；`PlanEvolutionEngine.__init__`
+的归档幂等补录保证崩溃后恢复不丢 round 统计（离线用 V126 真实归档复现：218 观测/
+205 学习事件落盘，二次重放 0 新增）。spec（signal_library.md）补记 stats.json 为
+可变运行时聚合、缺失即空、不入身份哈希。附带修复（V126 实测 34/34 首答被拒的主因）：
+routing system prompt 此前对 `selection_reason` 只有长度约束，从不告知
+"只描述已答 facet、不得与 residual_need 共享特征短语/多个 residual-only 词"
+守卫规则，导致 signal_retrieval_cards 每次首答必违规、全部走一轮 correction；
+现按 spec 边界精确补入该一句规则（共享研究主题仍允许），scheme_evolution.md 同步
+修订 "normal routing prompts do not pay for it" 为"一阶规则入正常 prompt、诊断
+机制仍 correction-only"。回归测试新增 definition-only 注册表记录观测用例；
+950 tests / lint PASS。
+
 2026-09-20（round-26）**V125 Fast proposal 否定式归属说明误拒修复（局部否定感知）**：
 `_validate_proposed_request_scope` 原先对 B.requests 的 description/query 与
 H_init/H_reflect/H_analyse 技能字段做裸词形命中，把明确否定第一方归属的

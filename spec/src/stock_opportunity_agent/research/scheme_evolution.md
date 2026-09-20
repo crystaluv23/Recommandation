@@ -589,9 +589,12 @@ content terms, or two reordered non-temporal topic terms plus a shared temporal 
 between reason and residual remains a scope contradiction. Correction feedback names
 the reason path and carries only the conflicting normalized terms in
 `remove_terms_from_selection_reason`; correction must remove every listed term and
-name only the narrower answered facet, or remove the selection. This is
-correction-only diagnostic context: normal routing prompts do not pay for it, runtime
-does not author replacement prose, and the unchanged scope validator reruns.
+name only the narrower answered facet, or remove the selection. Normal routing
+prompts state the first-order rule itself (describe only the answered facet; shared
+topic allowed, distinctive multi-word phrases and residual-only term clusters are
+not), but the diagnostic machinery — term lists, facet candidates, exact paths —
+remains correction-only, runtime does not author replacement prose, and the
+unchanged scope validator reruns.
 When a returned residual is only a cosmetic copy of the complete target, runtime must
 not use that already-invalid residual to infer which topic belongs exclusively to the
 unanswered side. If the target has one unambiguous top-level coordinated clause that

@@ -91,6 +91,12 @@ signals_candidates/<category>/<signal_id>/v<N>/
   validation.json    # pointer to the latest immutable evaluation
 ```
 
+`stats.json` is a mutable runtime aggregate, not part of Registry identity
+hashes. Registration initializes it empty, and a Registry materialized from
+definition files only (Slow-history import) may lack it until the first
+observation; `load_stats` treats absence as empty observed state rather than
+corruption.
+
 A candidate `signal_id` is unique across categories: candidate refs resolve by
 `signal_id` and version alone, so staging the same `signal_id` under a second
 category is rejected at the write with a correction-actionable error (choose a
