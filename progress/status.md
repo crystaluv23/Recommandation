@@ -1,5 +1,22 @@
 # Status
 
+2026-09-20（round-29/30）**fast round 收尾：meta 单调性修复 + 摩擦优化（不弱化守卫）**：
+V129 完成整条 fast 链路（c02 全部 24/24 finalized、F1=0.733、round1 持久提交、
+stats 修复实机验证通过）后死于 `PlanMetaMemory.append`——导入 slow-history 的
+meta 条目（round_id=1）与本地首轮冲突；结构性缺陷：任何带导入历史的 successor
+首次提交必撞（V117 是唯一无导入的已提交 fast run）。round-29（20d7f73）：导入条目
+在两个构建点重定基到保留负数区间（仅内存、永不清真持久化、严格低于本地轮号），
+合并逻辑改为"导入前缀+本地条目"（empty-pointer 守卫仅属 slow_bootstrap）；
+RoundMetaEntry 允许保留负区间；在 V129 真实持久状态上离线验证（[-1,1] 构造、
+append 2 通过）。round-30（2e1b7c3）摩擦优化：V129 wire 分类显示 signal 数量义务
+39 例中 31 例为模型自算派生值（比率/月均/阈值）、8 例漏引、裸年份已有 prompt 规则；
+反事实排除 interpretation-grounding 方案（interpretation 中本无这些数字）后：
+H_reflect prompt 增加"claim 数字只可复制、禁止引用计算值"规则；漏引类 correction
+反馈新增 `quantity_location_hints`（指名同 signal 内包含该数字的 evidence item），
+接受语义零变化。953 tests/lint PASS。闭环状态：stats 修复已实机验证、drift 重试
+修复已实机触发、meta 修复已实现+单测+离线验证但未能实机走通——原地 re-freeze 不
+重写既有合约（code_revision 不变），而全新验证运行需 ~720 attempts（仅余 53）。
+
 2026-09-20（round-28）**drift 重试缓存重放死端修复（V127/V128 三例共同死因）**：V127
 恢复后以纯缓存重放续跑（已完成 case 全部免外部调用），c02 至 case 17 时死于
 correction 死端；V128（种子仍为 V126 获胜方案的变异）c01/c02 分别死于 case 4/case 3

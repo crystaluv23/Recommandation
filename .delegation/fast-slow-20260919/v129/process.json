@@ -1,0 +1,7 @@
+{
+  "pid": 81714,
+  "started_at": "2026-09-20T05:50:29Z",
+  "contract_hash": "38eb1318295d6efdda80619d102b8235b54076316d1fa4ad399f9a0c826d818e",
+  "code_revision": "eecc0b4",
+  "cap": {"attempts": 773, "cost": 12.89498174}
+}

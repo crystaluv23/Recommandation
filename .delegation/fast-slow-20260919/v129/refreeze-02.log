@@ -1,0 +1,80 @@
+{
+  "contract_hash": "38eb1318295d6efdda80619d102b8235b54076316d1fa4ad399f9a0c826d818e",
+  "cycle_mode": "fast_then_slow",
+  "data_acquisition": {
+    "allowed_capabilities": [
+      "*"
+    ],
+    "allowed_providers": [
+      "*"
+    ],
+    "allowed_source_types": [
+      "*"
+    ],
+    "enabled": true,
+    "max_requests_per_cycle": 1000,
+    "max_requests_per_run": 10000
+  },
+  "dataset_manifest_hash": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+  "external_calls": 0,
+  "historical_seed_pool": {
+    "manifest_hash": "404d6f15444262f103e3ab229cc6da2f84bc2065f66e717162ecfa6f2902fbf6",
+    "seed_count": 1,
+    "source_run_ids": [
+      "information-evolution-dual-self-evolution-20260920-v126"
+    ]
+  },
+  "initial_signal_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+  "locked_test_accessed": false,
+  "max_external_attempts": 773,
+  "max_slow_cycles": 6,
+  "max_total_cost": 12.89498174,
+  "min_new_signals_per_cycle": 1,
+  "models": {
+    "judge": {
+      "alias": "deepseek-v4-flash",
+      "api_key_available": true,
+      "api_key_env_var": "DEEPSEEK_API_KEY",
+      "default_input_cost_per_million_tokens": 0.28,
+      "default_max_output_tokens": 8000,
+      "default_output_cost_per_million_tokens": 0.56,
+      "default_reasoning_effort": "none",
+      "description": "Direct DeepSeek V4 Flash Responses API model for plain-JSON evolution and anonymous no-web judging.",
+      "model": "deepseek-v4-flash",
+      "proposal_profile": "plain_json",
+      "provider": "deepseek",
+      "provider_identity": "deepseek",
+      "provider_route": null,
+      "roles": [
+        "evolution",
+        "judge"
+      ],
+      "web_tools_allowed": false
+    },
+    "proposer": {
+      "alias": "deepseek-v4-flash-thinking",
+      "api_key_available": true,
+      "api_key_env_var": "DEEPSEEK_API_KEY",
+      "default_input_cost_per_million_tokens": 0.28,
+      "default_max_output_tokens": 8000,
+      "default_output_cost_per_million_tokens": 0.56,
+      "default_reasoning_effort": "high",
+      "description": "DeepSeek V4 Flash with high reasoning for structured research roles.",
+      "model": "deepseek-v4-flash",
+      "proposal_profile": "plain_json",
+      "provider": "deepseek",
+      "provider_identity": "deepseek",
+      "provider_route": null,
+      "roles": [
+        "evolution"
+      ],
+      "web_tools_allowed": false
+    }
+  },
+  "raw_info_inventory_hash": "82fda5d80124a45be84431e2d728dc1c5c26fb378f490ad6b98ad14894ffd54c",
+  "raw_info_oracle_id": "raw-info-8421e3b2510c4c119a14bd78a16e0823",
+  "run_contract": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v129/run_contract.json",
+  "run_id": "information-evolution-dual-self-evolution-20260920-v129",
+  "slow_bootstrap_manifest_hash": null,
+  "slow_history_manifest_hash": "bc51e2541c12158e2fba4ddd6e272870e3952283059b409a52aa5c3c14a7fe83"
+}

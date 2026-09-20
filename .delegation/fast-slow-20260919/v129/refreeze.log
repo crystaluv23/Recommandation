@@ -1,0 +1,7 @@
+{
+  "error_type": "ValueError",
+  "external_calls": 0,
+  "locked_test_accessed": false,
+  "message": "existing run contract conflicts with requested freeze scope",
+  "status": "validation_error"
+}
