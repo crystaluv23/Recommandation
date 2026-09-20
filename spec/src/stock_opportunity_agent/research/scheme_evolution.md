@@ -1091,9 +1091,14 @@ reflection evidence.
 
 Prediction Stage 1 metrics are precision, recall, and binary F1. Prediction
 Stage 2 metrics are magnitude accuracy and macro-F1 over true surge cases; a
-Stage-1 false negative counts as a missed magnitude prediction. Binary F1 is the
-only Plan-selection fitness. PR-AUC and weighted composite objectives are
-deferred.
+Stage-1 false negative counts as a missed magnitude prediction. Plan selection
+orders eligible candidates by Binary F1 first, magnitude macro-F1 second, and
+stable plan id last; the secondary ordering applies only at exactly equal
+Binary F1 and is compared as exact rationals of the confusion counts, never as
+floats. Legacy records that authentically lack the secondary metric never fill
+zero and skip the secondary comparison under the frozen compatibility rule
+(documented with the 2026-09-20 action plan; PR-AUC and weighted composite
+objectives remain deferred).
 
 ## Label-Revealed Reflection
 
@@ -1110,6 +1115,27 @@ This is usability feedback from the actual consumer of the Information Plan.
 It is stored separately from prediction-time uncertainty and cannot alter the
 already saved prediction. The framework, not the reflection model, computes the
 saved `prediction_outcome.correct` bit from the immutable prediction and truth.
+That bit keeps its historical conflated semantics — binary direction plus, for
+a true surge, the exact magnitude class — and remains the only value the
+reflection must copy verbatim.
+
+Alongside the four-way feedback the framework also derives a deterministic
+per-case `magnitude_feedback` block. It is a sibling payload field, never a
+member of `candidate_judgment_feedback` itself, so the legacy strict
+field-set and reload-equality validations stay byte-compatible. Fields:
+
+| field | producer rule |
+| --- | --- |
+| `magnitude_applicable` | true iff the true label is surge |
+| `predicted_magnitude` | saved prediction class, or null for a negative prediction |
+| `true_magnitude` | revealed truth class, or null for a true non-surge |
+| `magnitude_correct` | exact class equality, only defined over applicable cases |
+| `error_kind` | `correct` / `underestimate` / `overestimate` over ordinal class order; `missed_surge` for a false negative; `not_applicable` for a true non-surge (its error stays binary) |
+| `ordinal_distance` | class-index distance when both classes exist; otherwise null — never fabricated for a missed surge |
+
+All values are computed by the framework from already-persisted fields; the
+model may not rejudge them. A false negative keeps its full-set magnitude miss
+in the aggregate metrics but carries no fabricated predicted class here.
 
 The same label-reveal boundary also derives an immutable
 `candidate_judgment_feedback` object containing the saved four-way judgment,

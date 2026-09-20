@@ -720,7 +720,13 @@ After truth reveal, the framework computes `prediction_outcome.correct` from
 the immutable saved prediction and deterministic truth, including magnitude for
 a true positive case. The reflection role receives that fixed bit and may
 explain calibration or Plan failures, but model-authored disagreement cannot
-overwrite it.
+overwrite it. The post-hoc call additionally receives the derived
+`magnitude_feedback` block (sibling of the four-way record, never a member of
+it) with deterministic binary-versus-magnitude error separation; magnitude
+correctness changes neither the copied correctness bit nor any saved field,
+and the reflection must first classify an error as direction-versus-class
+before attributing causes.
+
 For a framework-correct case, the accepted post-hoc output must preserve at least one
 specific `decision_drivers` item explaining which supplied evidence or counter-evidence
 made the saved judgment work. An otherwise all-empty correct reflection receives the
@@ -734,8 +740,9 @@ explicit validation-failure fallback rather than a content-free reflection.
 
 The Plan critic must not receive complete saved trajectories. Its request uses
 one deterministic compact row per case containing only an opaque case index,
-stop state, prediction, ground truth, candidate-judgment feedback, post-hoc
-reflection, and compact Signal id/version/state/interpretation/status summaries
+stop state, prediction, ground truth, candidate-judgment feedback, the derived
+magnitude feedback block, post-hoc reflection, and compact Signal
+id/version/state/interpretation/status summaries
 with evidence counts. It excludes company/case identifiers, Basic Info, initial
 and final research context, literal evidence spans, prediction paths, and usage
 records. This preserves decision-calibration and Plan-failure evidence while

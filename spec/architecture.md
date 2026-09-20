@@ -359,9 +359,16 @@ positive judgment means that the anonymous evidence supports an opportunity
 candidate for the exact adjusted-share-price outcome; it does not require the
 model to estimate more than 50% event probability. Stage 2 is evaluated only
 for the positive ground-truth population and uses `2-3x`, `3-10x`, and `10x+`
-classes. Binary F1 remains the only Plan-selection fitness objective; precision,
-recall, magnitude accuracy, magnitude macro-F1, qualitative confidence, and the
-four-way judgment remain diagnostics and reflection evidence only.
+classes. Binary F1 remains the primary Plan-selection fitness objective;
+magnitude macro-F1 over the true-surge classes is the confirmed secondary
+ordering, applied only among eligible candidates whose Binary F1 is equal
+(compared as exact rationals of the confusion counts, never as floats), with
+the stable plan id as the final deterministic tie-break. Records that
+authentically lack the secondary metric never fill zero; the frozen
+compatibility rule is that such records skip the secondary comparison and keep
+their prior relative order. Precision, recall, magnitude accuracy, per-class
+magnitude diagnostics, qualitative confidence, and the four-way judgment remain
+diagnostics and reflection evidence only.
 
 The durable blind prediction preserves both the original four-way judgment and
 its deterministic binary projection. These two fields must agree; persistence
@@ -375,7 +382,12 @@ This outcome-aware record is supplied to Predictor self-reflection and the Plan
 critic, but it is never a score, ordinal penalty, probability-calibration claim,
 or Top-K input. In particular, one realized outcome cannot prove that `likely`
 was the calibrated ex-ante category; it can only identify what evidence the
-reflection should inspect.
+reflection should inspect. Alongside — never inside — that record, the
+framework derives a deterministic per-case `magnitude_feedback` block from the
+saved prediction and revealed truth (applicability, predicted and true class,
+correctness, error kind, ordinal distance). It is diagnostic reflection
+evidence with the same non-score status, and its field set is an additive
+contract: legacy artifacts without the block remain valid and loadable.
 
 After truth reveal, prediction correctness is computed by the framework from
 the immutable saved prediction and deterministic truth. A reflection model may

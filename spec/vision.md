@@ -38,7 +38,9 @@ that passes the fixed machine-validation contract is atomically promoted into
 the local stable Signal Library. The next Fast Loop samples new Plans from that
 newest library plus the historical high-F1 Plan Archive. Historical Plans keep
 their original blind-evaluation F1 and are not replayed merely because the
-Signal Library changed; new Plans must displace them by producing better F1.
+Signal Library changed; new Plans must displace them by producing better Binary
+F1, with prediction magnitude quality (macro-F1 over the true-surge classes) as
+the confirmed secondary ordering applied only when Binary F1 is equal.
 Signal version/hash is therefore execution provenance, never a fitness term.
 
 Cold start has one explicit recovery exception. When a Fast round is durably
