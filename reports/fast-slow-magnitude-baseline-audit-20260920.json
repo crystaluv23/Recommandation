@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-09-20T15:28:06.300623+00:00",
+  "purpose": "P0 read-only baseline audit for the fast/slow magnitude evolution action plan",
+  "code_revision": "bfb98fc627994db60814a9c252944a4f104b5148",
+  "baseline_code_revision": "af5966b",
+  "workspace": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130",
+  "pointers": {
+    "last_completed_round": 1,
+    "last_completed_cycle": 0,
+    "active_cycle": {
+      "cycle_id": 1,
+      "phase": "slow_loop",
+      "completed_plan_rounds": 1,
+      "target_plan_rounds": 1,
+      "input_signal_registry_version": 6,
+      "input_signal_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24"
+    }
+  },
+  "run_contract": {
+    "contract_hash": "b362f01ce4aa7f24971b9f962d26d12039aab51a7c42bf60227574e8efddd6b5"
+  },
+  "artifact_sha256": {
+    "plans/plan_r0001_c01/record.json": "6ec37ad53225d27e5c3ce93dc3e9729851d9f0f2bcbf890d8d14f76d662615cd",
+    "meta/round-0001.json": "4b5bc276724aa3262a5304dd54edcf2890bc32e2d4667ae1e41ed286b39f0008",
+    "state.json": "e257f93c32264b9567afa98f3ae0a577c5862da53828e5599e0c2a902de0e2ab",
+    "cycle_state.json": "af62db4411babaf38210417f2e5671d7fa34e7cc146ced56bb1b09337d3c8128",
+    "requests/6c582cd79203f0d8cdc7164e558064753bec9e0c06d4082733a30183ac07ba50.json": "59b104b6e29e72013f205ad940b35d9a3d3bfd17bb0522d314975ac15928fbd6",
+    "run_contract.json": "7e9f107542881dafc05c483961d6df85674c6a3244a16c0178456e791ae83089"
+  },
+  "recomputed": {
+    "binary": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "tp": 12,
+      "fp": 4,
+      "tn": 6,
+      "fn": 2
+    },
+    "magnitude": {
+      "surge_cases": 14,
+      "magnitude_correct": 5,
+      "magnitude_accuracy": 0.35714285714285715,
+      "macro_f1": 0.17543859649122806,
+      "per_class_f1": {
+        "2-3x": 0.5263157894736842,
+        "3-10x": 0.0,
+        "10x+": 0.0
+      },
+      "underestimate": 7,
+      "overestimate": 0,
+      "conditional_accuracy_on_tp": 0.4166666666666667,
+      "tp_denominator": 12,
+      "prediction_distribution": {
+        "2-3x": 12,
+        "None": 2
+      },
+      "truth_distribution": {
+        "2-3x": 7,
+        "3-10x": 5,
+        "10x+": 2
+      },
+      "confusion_matrix": {
+        "non_surge": {
+          "predicted_negative": 6,
+          "predicted_2-3x": 4,
+          "predicted_3-10x": 0,
+          "predicted_10x+": 0
+        },
+        "2-3x": {
+          "predicted_negative": 2,
+          "predicted_2-3x": 5,
+          "predicted_3-10x": 0,
+          "predicted_10x+": 0
+        },
+        "3-10x": {
+          "predicted_negative": 0,
+          "predicted_2-3x": 5,
+          "predicted_3-10x": 0,
+          "predicted_10x+": 0
+        },
+        "10x+": {
+          "predicted_negative": 0,
+          "predicted_2-3x": 2,
+          "predicted_3-10x": 0,
+          "predicted_10x+": 0
+        }
+      }
+    }
+  },
+  "alignment": {
+    "record_metrics": {
+      "binary_f1": true,
+      "magnitude_accuracy": true,
+      "magnitude_macro_f1": true,
+      "confusion": true
+    },
+    "meta_round0001_metrics": {
+      "binary_f1": true,
+      "magnitude_accuracy": true,
+      "magnitude_macro_f1": true
+    },
+    "critic_request": {
+      "binary_f1": true,
+      "magnitude_macro_f1": true,
+      "n_trajectories": true,
+      "feedback_fields": [
+        "assessment",
+        "binary_correct",
+        "candidate_judgment",
+        "predicted_binary_label",
+        "reflection_guidance",
+        "true_binary_label"
+      ]
+    }
+  },
+  "review_pending_reflections": [
+    {
+      "case_index": 8,
+      "matched": "baseline/price-reference language"
+    },
+    {
+      "case_index": 10,
+      "matched": "baseline/price-reference language"
+    },
+    {
+      "case_index": 11,
+      "matched": "baseline/price-reference language"
+    },
+    {
+      "case_index": 17,
+      "matched": "baseline/price-reference language"
+    },
+    {
+      "case_index": 19,
+      "matched": "baseline/price-reference language"
+    },
+    {
+      "case_index": 20,
+      "matched": "baseline/price-reference language"
+    }
+  ],
+  "notes": "All values recomputed from raw trajectories in record.json with independent code; alignment compares against stored metrics, committed meta, and the actual plan_critic wire payload. Source workspace untouched."
+}
