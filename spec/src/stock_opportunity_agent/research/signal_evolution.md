@@ -40,6 +40,22 @@ Update, candidate and transition work units, each retaining the immutable source
 artifact hash and JSON locator. A file larger than the role budget is never
 string-truncated or treated as one permanently unreadable feedback unit.
 
+Magnitude learning tasks from locally committed Fast rounds enter this same
+source view as `magnitude_feedback` units: one row per committed Plan whose
+meta reflection authentically carries `magnitude_diagnostics`, under a stable
+`magnitude:<plan_id>` ref, visible to every Slow source role, and labeled
+diagnostic-only (no promotion gate reads them). Legacy Plans without the
+diagnostics contribute no row — never a zero-valued substitute — and rebased
+imported-history entries (reserved negative round ids) are not locally
+committed feedback. H1 dispositions these units through the existing runtime
+action contract unchanged: magnitude judgment policy, evidence weighting, and
+class calibration are `fast_plan_action`; a need for a prediction-time
+measurable fact, normalization, or applicability condition routes to ordinary
+Mining/Update. The committed `slow_loop_result.json` carries an explicit
+`magnitude_contribution` block; under the first-version directional gates it
+must state `assessed: false` with the reason, and claiming an unmeasured
+magnitude gain in any report is invalid.
+
 The entry reflection is one bounded logical job over complete selected feedback
 units plus historical pending units. To prevent an old backlog from starving
 cross-cycle learning, complete unprocessed units owned by the immediately prior

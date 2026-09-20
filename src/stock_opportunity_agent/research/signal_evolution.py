@@ -224,6 +224,7 @@ _SLOW_FEEDBACK_KINDS = {
     "candidate_result",
     "search_result",
     "technical_failure",
+    "magnitude_feedback",
 }
 _SLOW_MEMORY_STATUSES = {
     "appended",
@@ -232,6 +233,72 @@ _SLOW_MEMORY_STATUSES = {
     "failed",
 }
 _SLOW_SOURCE_ROLES = {"reflection", "H1", "H3", "E2", "Update"}
+
+_UNASSESSED_MAGNITUDE_CONTRIBUTION: dict[str, Any] = {
+    "assessed": False,
+    "reason": (
+        "first-version promotion gates are directional only; magnitude-only "
+        "improvement is not separately evaluated"
+    ),
+}
+
+
+def magnitude_feedback_rows(
+    meta_entries: Iterable[Any],
+    *,
+    last_completed_round: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Project committed magnitude diagnostics into Slow feedback rows.
+
+    First-version Slow integration: magnitude learning tasks enter the
+    existing source view as diagnostic evidence with stable cross-stage refs.
+    Only locally committed rounds (``1 <= round_id <= last_completed_round``)
+    contribute; rebased imported-history entries keep reserved negative ids
+    and are proposer-view constructs, not locally committed feedback. Rows are
+    derived only from Plan reflections that authentically carry
+    ``magnitude_diagnostics`` — legacy entries without the block contribute no
+    row rather than a zero-valued substitute. These rows are reflection
+    evidence only; no promotion gate reads them.
+    """
+
+    rows: list[dict[str, Any]] = []
+    manifest: list[dict[str, Any]] = []
+    for entry in meta_entries:
+        round_id = getattr(entry, "round_id", 0)
+        if round_id < 1 or round_id > last_completed_round:
+            continue
+        for reflection in getattr(entry, "plan_reflections", ()):
+            diagnostics = getattr(reflection, "magnitude_diagnostics", None)
+            if diagnostics is None:
+                continue
+            event = {
+                "plan_id": reflection.plan_id,
+                "round_id": round_id,
+                "magnitude_diagnostics": dict(diagnostics),
+            }
+            feedback_ref = f"magnitude:{reflection.plan_id}"
+            rows.append(
+                {
+                    "feedback_ref": feedback_ref,
+                    "kind": "magnitude_feedback",
+                    "subject_ref": reflection.plan_id,
+                    "source_refs": [feedback_ref],
+                    "limitations": [
+                        "diagnostic reflection evidence; not a promotion gate"
+                    ],
+                    "event": event,
+                }
+            )
+            manifest.append(
+                {
+                    "ref": feedback_ref,
+                    "content_hash": _canonical_hash(event),
+                    "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                }
+            )
+    rows.sort(key=lambda item: item["feedback_ref"])
+    manifest.sort(key=lambda item: item["ref"])
+    return rows, manifest
 
 
 def build_slow_sampling_manifest(
@@ -2884,6 +2951,9 @@ class SlowLoopResult:
     updated_signal_count: int = 0
     min_new_signals_per_cycle: int = 1
     signal_goal_status: str = "unmet"
+    magnitude_contribution: Mapping[str, Any] = field(
+        default_factory=lambda: dict(_UNASSESSED_MAGNITUDE_CONTRIBUTION)
+    )
 
     @property
     def registry_version(self) -> int:
@@ -2931,6 +3001,7 @@ class SlowLoopResult:
             "updated_signal_count": self.updated_signal_count,
             "min_new_signals_per_cycle": self.min_new_signals_per_cycle,
             "signal_goal_status": self.signal_goal_status,
+            "magnitude_contribution": dict(self.magnitude_contribution),
         }
 
     @classmethod
@@ -3009,6 +3080,10 @@ class SlowLoopResult:
                 data.get("min_new_signals_per_cycle", 1)
             ),
             signal_goal_status=str(data.get("signal_goal_status", "unmet")),
+            magnitude_contribution=dict(
+                data.get("magnitude_contribution")
+                or _UNASSESSED_MAGNITUDE_CONTRIBUTION
+            ),
         )
 
 
@@ -3658,6 +3733,12 @@ class SignalEvolutionEngine:
                         "visible_to": sorted(_SLOW_SOURCE_ROLES),
                     }
                 )
+        magnitude_rows, magnitude_manifest = magnitude_feedback_rows(
+            self.meta_memory.entries,
+            last_completed_round=self.workspace.last_completed_round,
+        )
+        rows.extend(magnitude_rows)
+        manifest.extend(magnitude_manifest)
         for prior_cycle in range(1, self.workspace.last_completed_cycle + 1):
             for filename, kind in (
                 ("slow_loop_validation.json", "candidate_result"),
