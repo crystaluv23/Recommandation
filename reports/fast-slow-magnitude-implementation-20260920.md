@@ -14,7 +14,7 @@
 | P3 反思四层接入（post-hoc／critic／round／proposer） | 完成 | `b9a9def` |
 | P4 双目标选择排序 | 完成 | `ad9f572` |
 | P5 Slow 接入（第一阶段） | 完成（2026-09-20 追加）：`magnitude_feedback` 反馈单元进入既有 `_committed_slow_feedback` source view（`magnitude:<plan_id>` 稳定引用、全角色可见、诊断性标注、legacy 无诊断则零行、导入负轮号排除）；`fast_plan_action` 档位路由沿用既有代码；`SlowLoopResult` 新增 `magnitude_contribution`（第一版恒为 assessed:false 并给出原因） | 见本轮提交 |
-| P6 恢复与回归 | **部分完成**（全量单测＋lint＋V130 离线重放＋V130 legacy meta 零行验证；多轮故障注入与真实引擎跨轮验证未做） | — |
+| P6 恢复与回归 | **完成（离线矩阵）**：真实引擎 12 场景故障注入矩阵全绿（见 §4a）；全量 1006 测试＋lint；V130 离线重放与 legacy meta 零行验证 | `tests/test_p6_fault_injection_matrix.py` |
 | P7 实机试验 | **未实施**（需单独授权模型、数据与预算） | — |
 
 ## 2. P4 选择入口盘点（应用／保留及原因）
@@ -42,15 +42,36 @@
 
 ## 4. 验证证据
 
-- 新增测试 36 个（`tests/test_magnitude_feedback.py` 23＋`tests/test_magnitude_reflection_wiring.py` 4＋`tests/test_magnitude_slow_wiring.py` 9），覆盖五类 error_kind、边界倍数（2x／3x／10x）、V130 形状矩阵复现、TP=0 undefined、legacy 双层兼容、篡改拒绝、同分／反超／浮点噪声／稳定 ID 排序、slow source view 投影（legacy 零行、未提交轮与导入负轮排除、`validate_slow_input` 接受新 kind、引擎接线、`magnitude_contribution` 默认与往返）。
-- 全量套件：`PYTHONPATH=src:tests uv run --no-project --with pytest -m pytest tests/ -q` → **992 passed, 205 subtests**（P4 后 983＋P5 新增 9）。
+- 新增测试 50 个（`tests/test_magnitude_feedback.py` 23＋`tests/test_magnitude_reflection_wiring.py` 4＋`tests/test_magnitude_slow_wiring.py` 9＋`tests/test_p6_fault_injection_matrix.py` 14），覆盖五类 error_kind、边界倍数（2x／3x／10x）、V130 形状矩阵复现、TP=0 undefined、legacy 双层兼容、篡改拒绝、同分／反超／浮点噪声／稳定 ID 排序、slow source view 投影（legacy 零行、未提交轮与导入负轮排除、`validate_slow_input` 接受新 kind、引擎接线、`magnitude_contribution` 默认与往返）。
+- 全量套件：`PYTHONPATH=src:tests uv run --no-project --with pytest -m pytest tests/ -q` → **1006 passed, 205 subtests**（P5 后 992＋P6 矩阵 14）。
 - 仓库 lint：`scripts/lint_repo.sh` → **PASS**。
 - V130 离线重放（新代码、只读）：legacy `meta/round-0001.json` 加载成功且新字段为 None；由 `record.json` 重建 24 轨迹后 `score_predictions` 与存储指标逐位一致（F1／magnitude acc／macro／confusion）；`magnitude_diagnostics` 得 under=7／over=0／missed=2、supports {2-3x:7, 3-10x:5, 10x+:2}、条件准确率 5/12；逐案 error_kind 分布 {not_applicable:10, correct:5, missed_surge:2, underestimate:7} 与 P0 审计矩阵一致。旧二分类数值与 eligibility 未变。P5 后追加：V130 legacy meta 在 `magnitude_feedback_rows` 下产出 0 行（legacy 无诊断不替代、不崩溃）。
+
+## 4a. P6 故障注入矩阵结果（`tests/test_p6_fault_injection_matrix.py`，14 测试全绿）
+
+真实 `PlanEvolutionEngine`／`SignalEvolutionEngine`／Predictor 适配器 + 脚本化 LLM 角色；崩溃经一次性 monkeypatch 注入，随后按生产恢复序列（重建引擎→引擎构造重放已提交 stats→控制层 `stage_slow_result`＋`complete_cycle`）验证。未使用 V130 工件本体（矩阵用临时 workspace 同构复现其状态；V130 只读约束保持）。
+
+| # | 场景 | 注入方式 | 验证结果 |
+| --- | --- | --- | --- |
+| 1 | 逐案标签揭示 | 真实 `LLMBlindPredictor` 两段调用 | blind 请求 payload 无 truth／无 `magnitude_feedback`／无 `realized_max_multiple`；post-hoc 才出现 `magnitude_feedback`（FN 案例判 `missed_surge`） |
+| 2 | 单有效候选 | 1 候选轮 + 真实 `LLMRoundReflector`（ScriptedRoleCaller 空脚本） | Round LLM 零调用；meta 仍持久化 plan 级 diagnostics 与逐案 magnitude 块；第 2 轮 proposer 的 meta_info 携带它们 |
+| 3 | 不同快照 | 第 2 轮换池（内容变化→新 snapshot id） | critic 收到的父子比较全部 `same_evaluation_snapshot=false`，`metric_delta` 与 `magnitude_metric_delta` 均为 null（无非法配对差值、不重评历史） |
+| 4 | 导入历史+本地三轮 | `_rebased_history_meta_entries` 负前缀 + 三轮提交重启 | proposer 视图轮号 -1→(-1,1,2)→本地 [1,2,3]，无碰撞；每轮 meta 均含 magnitude diagnostics |
+| 5 | round commit 后崩溃 | `_record_signal_statistics` 提交后一次性 raise | 指针=1 保持；引擎两次重建 stats/learning 完全幂等（事件数不变、event_id 无重复）；第 2 轮正常提交，[1,2] meta 完整 |
+| 6 | Slow staged validation 中崩溃 | `stage_slow_validation` 一次性 raise | 无晋升（registry 版本不变）、cycle 指针 0；恢复后单次完成，slow_input 恰含 1 条 `magnitude:plan_mag_r1` 行，报告 `assessed:false` |
+| 7 | 晋升后、cycle commit 前 | run_cycle 完成转换后停在该中断态（引擎不推 cycle 指针的真实边界） | registry 已 v2、指针仍 0、staged validation 存在；提交前重跑幂等（无二次晋升、spec 版本稳定）；控制层 `stage_slow_result`+`complete_cycle` 后指针=1，版本不再跳 |
+| 8 | malformed reflection/proposal | 空 post-hoc 反思 + 篡改 magnitude 块 | 一次有界修正通过（两次 payload 均含 `magnitude_feedback`）；篡改 `ordinal_distance` 被 `CaseReflectionEvidence` fail-closed 拒绝 |
+| 9 | magnitude 缺字段/旧版本 | legacy 序列化记录（无 `magnitude_macro_f1`） | 同有理数 F1 时携带指标者排前，缺失者不填零、不算改善；全负样本 F1 分数=0（与 `score_predictions` 一致） |
+| 10 | 失败传播不伪装 | post-hoc 调用抛 `CandidateExecutionRejected`（传输不可用） | fallback 保留框架确定性 `correct` 值（FN+档位错→False），`plan_issues` 明示 `posthoc_reflection_validation_failed`，未伪装成内容反思 |
+| 11 | 空 Mining no-op cycle | `EmptyMiningModel` 完整 slow cycle | promoted=()、cycle 指针推进到 1、`magnitude_contribution.assessed=false`；round-1 meta（含 diagnostics）完整保留供下一轮学习 |
+| 12 | 有效晋升下一 Fast 可见 | 引擎 fast round1 → 晋升 slow cycle → fast round2 | round2 evaluator 实际收到的 registry refs 含 `discovery_growth_quality`；round1 `record.json` 字节不变（旧预测与 metrics 不重写） |
+
+矩阵外的补充说明：场景 5 的"引擎构造重放 stats"即 V126 崩溃点的生产恢复机制；场景 7/11/12 的 `stage_slow_result`＋`complete_cycle` 序列与 `evolution_control` 双循环层逐行一致。仍属 P7 范畴、未在本矩阵覆盖：真实付费模型的流程 smoke 与效果配对实验。
 
 ## 5. 未完成与后续
 
 1. **P5 第二阶段**：受控 Plan 消费观察实验（同 Plan、同快照、仅改变候选 Signal 可用性的双臂盲预测）未实施；`magnitude_contribution` 目前恒为未评估，待该实验产出证据。
-2. **P6 剩余**：真实引擎多轮故障注入矩阵（行动计划 §P6 表格的 12 个场景中，已覆盖确定性单测、角色序列化、V130 重放、V130 legacy meta 零行验证；崩溃恢复、导入历史三轮、Slow staged 崩溃等未跑）。
-3. **P7**：全部实机试验待单独授权（模型、数据范围、attempts／费用预算）；V130 仍暂停于 slow_loop，恢复须 checkout 匹配 revision（`af5966b`），本日 HEAD 已前移。
-4. 两个未修复缺陷仍然开放：第三类缓存重放死端、SIGINT 吞信号（见 P0 审计 §4 #11/#12）；本轮改动刻意避开了 correction 反馈结构本体。
-5. 第一版同分优先的实际强度（真实历史候选中会改变多少次选择）待有 ≥2 个已提交候选的 workspace 后统计——V130 仅 1 个已提交 Plan，无从统计。
+2. **P7**：全部实机试验待单独授权（模型、数据范围、attempts／费用预算）；V130 仍暂停于 slow_loop，恢复须 checkout 匹配 revision（`af5966b`），本日 HEAD 已前移。
+3. 两个未修复缺陷仍然开放：第三类缓存重放死端、SIGINT 吞信号（见 P0 审计 §4 #11/#12）；本轮改动刻意避开了 correction 反馈结构本体。
+4. 第一版同分优先的实际强度（真实历史候选中会改变多少次选择）待有 ≥2 个已提交候选的 workspace 后统计——V130 仅 1 个已提交 Plan，无从统计。
+5. P6 矩阵为离线脚本化角色验证；真实付费模型下的流程 smoke 属 P7。
