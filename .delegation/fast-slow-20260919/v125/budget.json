@@ -1,0 +1,8 @@
+{
+  "attempts": 19,
+  "actual_cost": "0.1021305600000000071",
+  "conservative_unsettled_reserves": "0.00992572",
+  "remaining_attempts": 1927,
+  "conservative_remaining_cost_budget": "16.4840561899999999929",
+  "stop_reason": "negated first-party ownership instruction falsely rejected, not timeout"
+}

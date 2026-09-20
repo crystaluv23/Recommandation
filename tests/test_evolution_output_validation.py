@@ -3207,3 +3207,178 @@ class PriorBoundAndProjectedExpectationTests(TestCase):
         self.assertIn("before the prediction time", restored)
         self.assertIn("guidance", restored)
         self.assertEqual(self._refs(restored), [])
+
+
+class OwnershipScopeLocalNegationTests(TestCase):
+    """Round-26: locally negated first-party ownership phrases (V125)."""
+
+    NEGATED_DESCRIPTION = (
+        "Collect recent third-party news coverage scoped to the target "
+        "company_id on customers, financing, orders, regulation, and product "
+        "changes that may shift expectations; treat these source types as "
+        "third-party reporting, not as the issuer's own disclosure."
+    )
+
+    def _plan(
+        self,
+        *,
+        description="Collect target-company-scoped third-party news.",
+        source_types=("company_news",),
+        query="",
+        h_init=None,
+        h_reflect=None,
+        h_analyse=None,
+    ):
+        base = default_information_plan()
+        proto = base.basic_info_policy.requests[0]
+        request = replace(
+            proto,
+            description=description,
+            source_types=tuple(source_types),
+            query=query or None,
+        )
+        return replace(
+            base,
+            basic_info_policy=replace(
+                base.basic_info_policy, requests=(request,)
+            ),
+            initial_research_skill=h_init or base.initial_research_skill,
+            reflection_skill=h_reflect or base.reflection_skill,
+            analysis_prompt=h_analyse or base.analysis_prompt,
+        )
+
+    def _validate(self, plan):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _validate_proposed_request_scope,
+        )
+
+        return _validate_proposed_request_scope(plan)
+
+    def test_v125_negated_news_descriptions_pass(self):
+        cases = (
+            ("actual1 wire text", self.NEGATED_DESCRIPTION),
+            (
+                "raw2 strengthened never",
+                self.NEGATED_DESCRIPTION.replace(
+                    "not as the issuer's own disclosure",
+                    "never as the issuer's own disclosure",
+                ),
+            ),
+            (
+                "confirmed minimal probe",
+                "Collect target-company-scoped third-party news; treat it "
+                "as third-party reporting, not as the issuer's own "
+                "disclosure.",
+            ),
+            (
+                "do-not-treat prohibition",
+                "Do not treat company_news as the target company's own "
+                "announcements for this request.",
+            ),
+            (
+                "must-not-description prohibition",
+                "Coverage must not be described as the issuer's own news.",
+            ),
+        )
+        for label, description in cases:
+            with self.subTest(form=label):
+                self._validate(self._plan(description=description))
+
+    def test_affirmative_ownership_with_news_source_still_rejected(self):
+        cases = (
+            (
+                "plain own disclosures",
+                "Collect the company's own disclosures on orders.",
+            ),
+            (
+                "unrelated negation in earlier clause",
+                "Do not use forward-looking filings; collect the issuer's "
+                "own disclosures available now.",
+            ),
+            (
+                "not only but also",
+                "Include not only third-party reporting but also the "
+                "company's own disclosures.",
+            ),
+            (
+                "negated then affirmative in one field",
+                "Treat the coverage as third-party reporting, not as the "
+                "issuer's own disclosure, and also collect the company's "
+                "own filings.",
+            ),
+        )
+        for label, description in cases:
+            with self.subTest(form=label):
+                with self.assertRaises(StructuredValidationError) as raised:
+                    self._validate(self._plan(description=description))
+                issue = raised.exception.issues[0]
+                self.assertEqual(issue.code, "source_ownership_not_guaranteed")
+                self.assertEqual(issue.paths, ("B.requests[0].description",))
+
+    def test_query_field_checked_per_occurrence(self):
+        flagged = self._plan(
+            description="Collect third-party news about financing.",
+            query="the issuer's own filings",
+        )
+        with self.assertRaises(StructuredValidationError) as raised:
+            self._validate(flagged)
+        self.assertEqual(
+            raised.exception.issues[0].paths, ("B.requests[0].query",)
+        )
+
+        self._validate(
+            self._plan(
+                description="Collect third-party news about financing.",
+                query=(
+                    "Coverage framed as third-party reporting, not as the "
+                    "issuer's own filings."
+                ),
+            )
+        )
+
+    def test_skill_ownership_guard_accepts_negation_rejects_affirmative(self):
+        negated = (
+            "Form hypotheses from news coverage and treat every news item "
+            "as third-party reporting, never as the company's own "
+            "disclosures; list unresolved information needs."
+        )
+        self._validate(self._plan(h_init=negated))
+
+        for field, text in (
+            (
+                "H_reflect",
+                "Update beliefs from evidence and rely on the issuer's own "
+                "filings; decide whether to continue or finalize next needs.",
+            ),
+            (
+                "H_analyse",
+                "Organize evidence from the company's own news and weigh "
+                "counter-evidence risks.",
+            ),
+        ):
+            with self.subTest(field=field):
+                with self.assertRaises(StructuredValidationError) as raised:
+                    self._validate(self._plan(**{field.lower(): text}))
+                self.assertEqual(raised.exception.issues[0].paths, (field,))
+
+    def test_cross_issuer_negated_scope_does_not_authorize(self):
+        plan = self._plan(
+            description=(
+                "Collect competitor financing actions from recent news; "
+                "treat the coverage as third-party reporting, not as the "
+                "target company's own disclosures."
+            )
+        )
+        with self.assertRaises(ValidationError) as raised:
+            self._validate(plan)
+        self.assertIn("cross-issuer", str(raised.exception))
+
+    def test_cross_issuer_affirmative_scope_still_authorizes(self):
+        self._validate(
+            self._plan(
+                description=(
+                    "Collect target-company-scoped news mentioning "
+                    "competitors and peer actions."
+                )
+            )
+        )

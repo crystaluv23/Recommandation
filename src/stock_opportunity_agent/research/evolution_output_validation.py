@@ -731,11 +731,52 @@ _TARGET_ISSUER_REQUEST_SCOPE = re.compile(
 
 
 _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE = re.compile(
-    r"\b(?:target[- ](?:company|issuer)(?:'s)?|"
+    r"\b(?:(?:target[- ](?:company|issuer)(?:'s)?|"
     r"(?:company|issuer)(?:'s)?)\s+own\s+"
-    r"(?:disclosures?|filings?|announcements?|news)\b",
+    r"(?:disclosures?|filings?|announcements?|news))\b",
     re.IGNORECASE,
 )
+
+_OWNERSHIP_SCOPE_NEGATION_PRECEDING = re.compile(
+    r"\b(?:not|never)\b(?!\s+(?:only|just|merely|simply)\b)"
+    r"(?:\s+\w+){0,4}?\s+as\b"
+    r"(?:\s+(?:the|this|these|those|such|it|them|that))?\s*$"
+    r"|\b(?:not|never)\b(?!\s+(?:only|just|merely|simply)\b)"
+    r"(?:\s+(?:the|this|these|those|such|it|them|that))?\s*$",
+    re.IGNORECASE,
+)
+
+_OWNERSHIP_SCOPE_NEGATION_WINDOW_CHARS = 72
+
+_OWNERSHIP_SCOPE_CLAUSE_SEPARATORS = ",;:.!?\n"
+
+
+def _scope_match_is_locally_negated(text_value: str, match: re.Match[str]) -> bool:
+    """Whether one scope-phrase occurrence is locally negated or prohibited.
+
+    Only a not/never cue inside the same clause and a bounded window counts,
+    and the cue must reach the phrase through an "as ..." connector (or a
+    bare determiner), so "not only ... but also", contrastive affirmative
+    phrasing, and negations in earlier clauses leave the occurrence
+    affirmative.
+    """
+
+    window = text_value[
+        max(0, match.start() - _OWNERSHIP_SCOPE_NEGATION_WINDOW_CHARS) : match.start()
+    ]
+    cut = max(window.rfind(sep) for sep in _OWNERSHIP_SCOPE_CLAUSE_SEPARATORS)
+    if cut >= 0:
+        window = window[cut + 1 :]
+    return _OWNERSHIP_SCOPE_NEGATION_PRECEDING.search(window.rstrip()) is not None
+
+
+def _has_affirmative_scope_match(pattern: re.Pattern[str], text_value: str) -> bool:
+    """Return whether text holds at least one non-negated scope-phrase match."""
+
+    return any(
+        not _scope_match_is_locally_negated(text_value, match)
+        for match in pattern.finditer(text_value)
+    )
 
 
 _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES = frozenset({"company_news", "news"})
@@ -770,7 +811,9 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
         ownership_fields = [
             field_name
             for field_name, text_value in fields.items()
-            if _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE.search(text_value)
+            if _has_affirmative_scope_match(
+                _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE, text_value
+            )
         ]
         if ownership_fields and (
             set(request.source_types) & _THIRD_PARTY_CAPABLE_NEWS_SOURCE_TYPES
@@ -798,8 +841,8 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
             for field_name, text_value in fields.items()
             if _CROSS_ISSUER_REQUEST_TERMS.search(text_value)
         ]
-        if not cross_issuer_fields or _TARGET_ISSUER_REQUEST_SCOPE.search(
-            " ".join(fields.values())
+        if not cross_issuer_fields or _has_affirmative_scope_match(
+            _TARGET_ISSUER_REQUEST_SCOPE, " ".join(fields.values())
         ):
             continue
         paths = [f"B.requests[{index}].{field}" for field in cross_issuer_fields]
@@ -824,7 +867,9 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
     unsupported_ownership_fields = [
         field_name
         for field_name, text_value in skill_fields.items()
-        if _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE.search(text_value)
+        if _has_affirmative_scope_match(
+            _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE, text_value
+        )
     ]
     if (
         unsupported_ownership_fields

@@ -108,3 +108,21 @@ exec59575/launcherPID60693 APItransport/nohardoridledeadline. Onewriter,no produ
 
 ## Round24 locally accepted; V125 next
 NormalAPIturn.completed547s,71focused/943full/lintPASS. Independentactualcontroller3/4/5replay3calls preservesraw3sixneeds exceptneed3 correctedfromraw5;8evidence. Alloriginaldecodedpayloadsexactlyequal;reportcompactionclaimfalseJSONescaping. Noactivewriter/production. CommitthenfreezeV125 cap1946/$16.59611247.
+
+## V125 running
+Codea116639,contract4afff1ef85ba911ce073bdf0b4488c28b39b7303eea8f7d405edfe5ae341bd64. exec17458/PID62808 started2026-09-19T23:25:40UTC. cap1946/$16.59611247; frozenonlyexpectedrevision/time/budget/run/inventory/seedmanifestdiff; seedinneronlyscan_summary. NoZCodewriter. KeepHEAD/sourcefixedwhilelive. Jointgoal incomplete.
+
+## V125 correctness stop; round25 prepared
+V125owned62808 exited130.19attempts/.10213056actual+.00992572reserved; remaining1927/$16.48405618. Threeproposalpairs falselyrejectedfornegatedfirstpartyownership("not/never as issuer own disclosure"). Confirmedguardprobe. Latercandidateenteredresearchbutno completedjoint. Rawproposalwire/budgetunderv125. Round25localnegation+mixedpositive/crossissuerboundary+actualproposalreplay. Noactiveproduction/writer.
+
+## Round25 running
+exec65640/launcherPID63257 APItransport; nohard/idledeadline. Singlewriter,no production. HEADa116639. Brief/report/statusunderround25.
+
+## Round25 stopped on delegation constraint; round26 prepared
+No projectcodechanges. ZCodeusedAgentExploreagainstbrief;ownednode63257stopped,oldlauncherBrokenPipeexit1leftstalerunningstatus (see stop-audit.json). LauncherupdatedAgent/TaskHookdeny+pipeclosedterminalstatus,13testsPASS. Round26sameownershiptaskdirectexecution. No activewriter/production.
+
+## Round26 running
+exec34380/ownednodePID63903; newlauncherAgent/Taskdenied,APItransport,nohard/idledeadline. Oneexternalwriter,no production. HEADa116639.
+
+## Round26 locally accepted; V126 next
+NormalAPIturn.completed1160.2s,77focused/949full/lintPASS. Independentactualproposerraw1/3/5allaccepted1calleach,originalparents/meta/slot/priorandfullproposal_contextexactmatch. Reportparentsabsentclaimfalse(nestedunderproposal_context). Skill13testsPASS. Noactivewriter/production. CommitthenV126cap1927/$16.48405618.

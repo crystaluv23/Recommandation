@@ -1,5 +1,32 @@
 # Status
 
+2026-09-20（round-26）**V125 Fast proposal 否定式归属说明误拒修复（局部否定感知）**：
+`_validate_proposed_request_scope` 原先对 B.requests 的 description/query 与
+H_init/H_reflect/H_analyse 技能字段做裸词形命中，把明确否定第一方归属的
+target-company-scoped third-party news 请求（"not as / never as the issuer's
+own disclosure"、"do not treat ... as"、"must not be described as"）误判为
+`source_ownership_not_guaranteed`，V125 三对 proposal/correction（attempts
+1/2、3/4、5/6）全烧在假拒绝上。现改为共享的 occurrence-aware 规则
+（`_scope_match_is_locally_negated`/`_has_affirmative_scope_match`）：仅当
+not/never cue 与短语同子句、在有界窗口内、且经 "as ..."（或裸限定词）连接时
+才豁免该次出现；not only/just/merely/simply 不作 cue；同字段混合否定+肯定、
+早子句无关否定、not only...but also 对比、任何肯定出现仍拒。相邻 cross-issuer
+授权同样改为肯定出现制——被否定的第一方短语不再给无界 competitor 请求假授权，
+肯定式 target-company-scoped news mentioning competitors 照常通过；
+first-party-capable source 豁免、market backbone、PIT、角色边界不变。另修复
+首跑发现的既有缺陷：工作区 `_FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE` 缺外层右括号
+（模块无法 import，re.error），按相邻 `_TARGET_ISSUER_REQUEST_SCOPE` 的平衡
+结构修复。spec 增补守卫不变量；新增 6 条聚焦回归。round-26/replay.py 载入
+v125 wire attempts 1-6，从 runs/cold_start/.../v125/requests/<hash>.json 找到
+原始请求，按解码对象验证 messages[-1].content 与审计 payload 等值，用原始
+available_source_types 复放 `_validate_proposed_request_scope` +
+`_validate_plan_for_proposer_context`：六次尝试全部通过 request scope 与完整
+proposer 上下文校验（无其他真实问题残留；change-focus 因 wire 无 parents 未
+复放、未驱动 LLMInformationPlanProposer 的 prompt/adapter 外壳——已注明局限）。
+949 测试（943+6）+ lint + replay 全过 exit 0（仅本地验证；按本轮 brief 不
+commit、无生产调用；生产待 Codex 独立评审）。V125 该三对假拒绝不可计为正常
+质量拒绝；Fast+Slow 主目标仍待完成。
+
 2026-09-20（round-24）**等价有界预测语言修复：V124 c01 两处时间词法误拒**：
 `_EXPLICIT_AS_OF_BOUND`/`_SYMBOLIC_AS_OF_BOUND` 增加等价且更严格的 before/prior to
 介词（符号与显式日期两形态）；显式截止仍须不晚于 prediction（晚于预测的

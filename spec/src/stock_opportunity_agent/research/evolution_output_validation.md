@@ -116,6 +116,25 @@ container they evict from, so the container-root issue path adds no
 member-level authority. Any projected correction is fully revalidated before
 acceptance.
 
+## Proposal request-scope ownership guard (round 26)
+
+The first-party ownership scope check is occurrence-aware: a B request
+description/query field (or an H_init/H_reflect/H_analyse skill field) is
+flagged only when at least one ownership-phrase occurrence is affirmative.
+An occurrence counts as locally negated only when a not/never cue sits in
+the same clause within a bounded window and reaches the phrase through an
+"as ..." connector (or a bare determiner); "not only ... but also",
+contrastive affirmative phrasing, negations in earlier clauses, and
+affirmative occurrences mixed with negated ones in the same field keep the
+field rejected. The cross-issuer authorization check uses the same
+affirmative-occurrence rule, so a locally negated target-issuer scope
+phrase never authorizes an otherwise unbounded competitor request.
+First-party-capable source carveouts, target-company-scoped news
+semantics, the market-backbone requirement, and PIT/role boundaries are
+unchanged. The shared rule is a generic lexical guard, not an NLP parser,
+and carries no company- or case-specific exception; phrasing it does not
+recognize as clearly local negation stays rejected.
+
 ## Need-transition restoration and drift pairing (round 19)
 
 Occurrence-aware need-transition obligations carry the exact runtime-issued

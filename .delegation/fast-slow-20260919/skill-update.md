@@ -34,3 +34,12 @@ Codex omitted exact permitted commands from round11 brief; agent attempted varia
 Latest launcher SHA256: efeecc17a9bfb53c77c32e1dfdb1f4522298c51174c651d870ff6600e7d1da18. Skill validator passed after exact-command handoff patch.
 
 Progress metadata now includes whitelisted last_tool_name (Read/Write/Edit/Bash/Glob/Grep or other), to distinguish investigation from edits/commands without storing arguments/content. Dedicated privacy probes passed; existing offline suite rerun. Active process not restarted.
+
+## Round25 actual internal delegation and API disconnect recovery
+ActualAgentExplorewaslaunched despitebriefno-subagents. ScopePreToolUse/PermissionRequestmatchernowincludesAgent|Task(defaultdeny); dispatcherexplicitlyprohibitsinternaldelegation andpreviewshowsdisabled. APIBrokenPipe/ConnectionReset cleanup persistsstopped; pollownedprocessbeforekillavoidsdeadgroupPermissionError.13offline testsPASS inclmatcherregistration/decision,actualfakeAPIclosedpipe,existingtimeouts/completion/privacy. Frontmatterunchanged;quick_validate retryunavailable incurrentpython(noPyYAML),notclaimedrerunpassed. Round25no projectcodechanges.
+{
+  "SKILL.md": "80d016b508749160579125937b5ab4230ad6c011799421cf56aa1f46c08e72a7",
+  "references/zcode.md": "f528515ac16acbbb01dcf7d13d2448fd3d1c83b5991e8bc600b8bcf093cb99b7",
+  "scripts/run_zcode.py": "577de7ff45f8313d59adcd08a3e3120a24c59ad8dcc6c22faceb3c0a41eb1418",
+  "scripts/test_run_zcode.py": "f6d6066604a60fdc619f99ea8acfe7a424f048c3973432fdb8c32405ffddd1d1"
+}

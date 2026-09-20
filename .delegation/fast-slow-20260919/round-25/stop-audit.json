@@ -1,0 +1,8 @@
+{
+  "owned_pid": 63257,
+  "exec_session": 65640,
+  "ended": true,
+  "wrapper_exit": 1,
+  "reason": "internal Agent delegation contrary to brief; owned node interrupted, old launcher BrokenPipe left stale running status",
+  "project_changes": false
+}
