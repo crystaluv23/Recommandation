@@ -2251,6 +2251,7 @@ class PlanEvolutionEngine:
                     "binary_f1": record.metrics.binary_f1,
                     "binary_precision": record.metrics.binary_precision,
                     "binary_recall": record.metrics.binary_recall,
+                    "magnitude_macro_f1": record.metrics.magnitude_macro_f1,
                 }
                 for record in record_tuple
             ],
@@ -2258,6 +2259,7 @@ class PlanEvolutionEngine:
                 {
                     "plan_id": record.plan_id,
                     "binary_f1": record.metrics.binary_f1,
+                    "magnitude_macro_f1": record.metrics.magnitude_macro_f1,
                 }
                 for record in current_top
             ],

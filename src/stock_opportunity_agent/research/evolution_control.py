@@ -73,6 +73,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SlowLoopResult,
     SignalEvolutionEngine,
     cosine_similarity,
+    binary_f1_fraction,
     default_information_plan,
     _mask_identity_values,
     _signal_learning_events_from_record,
@@ -925,7 +926,8 @@ def _seed_candidate_quality_key(
     candidate: HistoricalPlanSeed,
 ) -> tuple[Any, ...]:
     return (
-        -candidate.binary_f1,
+        -binary_f1_fraction(candidate.metrics_by_cohort["combined"]),
+        -candidate.metrics_by_cohort["combined"].magnitude_macro_f1,
         -candidate.minimum_cohort_f1,
         -len(candidate.random_case_ids),
         candidate.source_run_family_id,
@@ -1065,7 +1067,10 @@ def _select_historical_plan_seed_candidates(
                 (
                     -marginal_coverage,
                     similarity,
-                    -candidate.binary_f1,
+                    -binary_f1_fraction(
+                        candidate.metrics_by_cohort["combined"]
+                    ),
+                    -candidate.metrics_by_cohort["combined"].magnitude_macro_f1,
                     candidate.source_run_family_id,
                     candidate.plan_content_hash,
                 ),

@@ -382,5 +382,139 @@ class ParentComparisonMagnitudeDeltaTest(unittest.TestCase):
         self.assertIsNone(comparison["magnitude_metric_delta"])
 
 
+class DualObjectiveSelectionTest(unittest.TestCase):
+    """Confirmed ordering: rational Binary F1, then magnitude macro-F1, then id."""
+
+    @staticmethod
+    def _record(
+        plan_id,
+        *,
+        tp,
+        fp,
+        fn,
+        tn,
+        magnitude,
+        binary_f1=None,
+        embedding=(1.0, 0.0),
+    ):
+        base = default_information_plan()
+        plan = InformationPlan(
+            plan_id=plan_id,
+            parent_ids=(),
+            basic_info_policy=base.basic_info_policy,
+            initial_research_skill=f"{base.initial_research_skill} {plan_id}",
+            reflection_skill=base.reflection_skill,
+            analysis_prompt=base.analysis_prompt,
+        )
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall = tp / (tp + fn) if tp + fn else 0.0
+        stored_f1 = (
+            2 * precision * recall / (precision + recall)
+            if precision + recall
+            else 0.0
+        )
+        return PlanRecord(
+            plan=plan,
+            round_id=1,
+            embedding=embedding,
+            metrics=PlanMetrics(
+                binary_precision=precision,
+                binary_recall=recall,
+                binary_f1=binary_f1 if binary_f1 is not None else stored_f1,
+                magnitude_accuracy=0.0,
+                magnitude_macro_f1=magnitude,
+                true_positive=tp,
+                false_positive=fp,
+                true_negative=tn,
+                false_negative=fn,
+                sample_count=tp + fp + fn + tn,
+            ),
+            reflection=PlanReflection(),
+            signal_usage={},
+            trajectories=tuple(
+                make_trajectory(
+                    f"{plan_id}_case_{index:02d}",
+                    2.5,
+                    True,
+                    MagnitudeClass.TWO_TO_THREE,
+                )
+                for index in range(tp + fp + fn + tn)
+            ),
+            fitness=FitnessEligibility(
+                eligible=True,
+                reasons=(),
+                expected_case_count=tp + fp + fn + tn,
+                valid_case_count=tp + fp + fn + tn,
+                evidence_covered_count=tp + fp + fn + tn,
+                predicted_positive_count=tp + fp,
+                true_positive_count=tp,
+            ),
+        )
+
+    def test_equal_f1_prefers_better_magnitude(self):
+        low = self._record("plan_low", tp=6, fp=2, fn=1, tn=3, magnitude=0.1)
+        high = self._record("plan_high", tp=6, fp=2, fn=1, tn=3, magnitude=0.4)
+        archive = PlanArchive()
+        archive.add(low)
+        archive.add(high)
+        selection = archive.select_parents(top_k=1, random_k=0)
+        self.assertEqual(selection.top[0].plan_id, "plan_high")
+
+    def test_lower_f1_never_outranks_via_magnitude(self):
+        weak = self._record("plan_weak", tp=4, fp=3, fn=2, tn=3, magnitude=0.9)
+        strong = self._record("plan_strong", tp=8, fp=1, fn=1, tn=2, magnitude=0.05)
+        archive = PlanArchive()
+        archive.add(weak)
+        archive.add(strong)
+        selection = archive.select_parents(top_k=1, random_k=0)
+        self.assertEqual(selection.top[0].plan_id, "plan_strong")
+
+    def test_float_noise_does_not_break_exact_f1_tie(self):
+        noisy = self._record(
+            "plan_noisy",
+            tp=12,
+            fp=4,
+            fn=2,
+            tn=6,
+            magnitude=0.30,
+            binary_f1=0.7999999999999999,
+            embedding=(1.0, 0.0),
+        )
+        exact = self._record(
+            "plan_exact",
+            tp=12,
+            fp=4,
+            fn=2,
+            tn=6,
+            magnitude=0.20,
+            binary_f1=0.8,
+            embedding=(0.0, 1.0),
+        )
+        archive = PlanArchive()
+        archive.add(exact)
+        archive.add(noisy)
+        selection = archive.select_parents(top_k=2, random_k=0)
+        self.assertEqual(
+            tuple(record.plan_id for record in selection.top),
+            ("plan_noisy", "plan_exact"),
+        )
+
+    def test_identical_metrics_use_stable_plan_id(self):
+        first = self._record(
+            "plan_a", tp=6, fp=2, fn=1, tn=3, magnitude=0.2, embedding=(1.0, 0.0)
+        )
+        second = self._record(
+            "plan_b", tp=6, fp=2, fn=1, tn=3, magnitude=0.2, embedding=(0.0, 1.0)
+        )
+        archive = PlanArchive()
+        archive.add(second)
+        archive.add(first)
+        selection = archive.select_parents(top_k=2, random_k=0)
+        self.assertEqual(
+            tuple(record.plan_id for record in selection.top),
+            ("plan_a", "plan_b"),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

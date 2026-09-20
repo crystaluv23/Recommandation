@@ -6,6 +6,7 @@ import json
 import math
 from collections import Counter
 from datetime import datetime, timezone
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -77,6 +78,7 @@ def build_evolution_dashboard_bundle(
     return {
         "schema_version": DASHBOARD_SCHEMA,
         "primary_metric": "binary_f1",
+        "secondary_metric": "magnitude_macro_f1",
         "contains_final_test_metrics": False,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "runs": runs,
@@ -184,12 +186,9 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
             }
             for record in round_records
         ]
-        archive_best = max(
+        archive_best = min(
             committed_records,
-            key=lambda record: (
-                float(record["metrics"].get("binary_f1", 0.0)),
-                record["plan_id"],
-            ),
+            key=_dashboard_selection_key,
         )
         completed_at = datetime.fromtimestamp(
             checkpoint_path.stat().st_mtime,
@@ -209,6 +208,9 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
                     {
                         "plan_id": record["plan_id"],
                         "binary_f1": record["metrics"].get("binary_f1", 0.0),
+                        "magnitude_macro_f1": record["metrics"].get(
+                            "magnitude_macro_f1"
+                        ),
                         "anchor_binary_f1": dict(
                             record["metrics_by_cohort"].get("anchor", {})
                         ).get("binary_f1"),
@@ -252,6 +254,7 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
         "run_id": str(contract.get("run_id") or path.name),
         "workspace_name": path.name,
         "primary_metric": "binary_f1",
+        "secondary_metric": "magnitude_macro_f1",
         "contains_final_test_metrics": False,
         "last_completed_round": last_completed_round,
         "last_completed_cycle": int(cycle_state.get("last_completed_cycle", 0)),
@@ -337,6 +340,33 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def _dashboard_selection_key(record: Mapping[str, Any]) -> tuple[Any, ...]:
+    """Rank by rational Binary F1, then magnitude macro-F1, then plan id.
+
+    Serialized legacy metrics without ``magnitude_macro_f1`` never fill zero;
+    at an exact Binary F1 tie they rank below records that authentically
+    carry the secondary metric, mirroring the engine-side selection rule.
+    """
+
+    metrics = dict(record["metrics"])
+    confusion = dict(metrics.get("confusion", {}))
+    true_positive = int(confusion.get("true_positive", 0))
+    false_positive = int(confusion.get("false_positive", 0))
+    false_negative = int(confusion.get("false_negative", 0))
+    denominator = 2 * true_positive + false_positive + false_negative
+    fraction = (
+        Fraction(2 * true_positive, denominator) if denominator else Fraction(0)
+    )
+    if "magnitude_macro_f1" in metrics:
+        magnitude_rank: tuple[Any, ...] = (
+            0,
+            -float(metrics["magnitude_macro_f1"]),
+        )
+    else:
+        magnitude_rank = (1, 0.0)
+    return (-fraction, magnitude_rank, str(record["plan_id"]))
+
+
 def _select_quality_diverse(
     records: Iterable[Mapping[str, Any]],
     *,
@@ -345,10 +375,7 @@ def _select_quality_diverse(
 ) -> list[Mapping[str, Any]]:
     ranked = sorted(
         records,
-        key=lambda record: (
-            -float(dict(record["metrics"]).get("binary_f1", 0.0)),
-            str(record["plan_id"]),
-        ),
+        key=_dashboard_selection_key,
     )
     selected: list[Mapping[str, Any]] = []
     for record in ranked:

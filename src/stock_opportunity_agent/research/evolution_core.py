@@ -11,6 +11,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from enum import Enum
+from fractions import Fraction
 from functools import lru_cache
 from html.parser import HTMLParser
 from pathlib import Path
@@ -1447,6 +1448,23 @@ def _validated_magnitude_feedback_block(
     if not consistent:
         raise ValidationError("magnitude feedback internals are inconsistent")
     return dict(block)
+
+
+def binary_f1_fraction(metrics: PlanMetrics) -> Fraction:
+    """Exact rational Binary F1 from confusion counts for tie-safe ordering.
+
+    Floating storage of Binary F1 can render equal scores as 0.7999999999999999
+    versus 0.8; selection comparisons therefore use the confusion counts
+    directly. An all-negative sample (zero denominator) scores as zero,
+    matching ``score_predictions``.
+    """
+
+    denominator = (
+        2 * metrics.true_positive + metrics.false_positive + metrics.false_negative
+    )
+    if denominator == 0:
+        return Fraction(0)
+    return Fraction(2 * metrics.true_positive, denominator)
 
 
 def magnitude_diagnostics(
@@ -4821,7 +4839,11 @@ class PlanArchive:
                 for record in self._records.values()
                 if record.fitness is not None and record.fitness.eligible
             ),
-            key=lambda record: (-record.metrics.binary_f1, record.plan_id),
+            key=lambda record: (
+                -binary_f1_fraction(record.metrics),
+                -record.metrics.magnitude_macro_f1,
+                record.plan_id,
+            ),
         )
         selected: list[PlanRecord] = []
         for record in ranked:
