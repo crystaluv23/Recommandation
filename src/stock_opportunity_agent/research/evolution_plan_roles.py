@@ -33,6 +33,8 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RoundMetaEntry,
     SignalSelectionDecision,
     candidate_judgment_feedback,
+    magnitude_diagnostics,
+    magnitude_feedback,
     _mask_identity_values,
 )
 from stock_opportunity_agent.signal_library import (
@@ -1627,6 +1629,10 @@ class LLMBlindPredictor:
                 original_prediction,
                 ground_truth,
             )
+            magnitude_block = magnitude_feedback(
+                original_prediction,
+                ground_truth,
+            )
             compact_context = _compact_posthoc_context(original_context)
             reflection, usage = _complete_parsed_role(
                 self.caller,
@@ -1639,7 +1645,13 @@ class LLMBlindPredictor:
                     "Use candidate_judgment_feedback to distinguish binary errors, "
                     "conservative but binary-correct calls, and evidence-coverage "
                     "gaps; that feedback covers Stage 1 only, while framework "
-                    "correctness also checks magnitude for a true surge. Do not "
+                    "correctness also checks magnitude for a true surge. The "
+                    "magnitude_feedback block separates those error kinds "
+                    "deterministically: classify each miss first as a direction "
+                    "error (missed_surge or binary false positive) or a class "
+                    "error (underestimate or overestimate), then attribute "
+                    "causes. Magnitude diagnostics never change the copied "
+                    "correctness bit or any saved field. Do not "
                     "rewrite the saved four-way judgment or infer that "
                     "one realized outcome proves an ex-ante probability category. "
                     "When framework_prediction_correct is true, decision_drivers must "
@@ -1661,6 +1673,7 @@ class LLMBlindPredictor:
                     "revealed_ground_truth": ground_truth.to_dict(),
                     "framework_prediction_correct": framework_correct,
                     "candidate_judgment_feedback": judgment_feedback,
+                    "magnitude_feedback": magnitude_block,
                 },
                 parser=lambda value: _prediction_reflection_from_role(
                     value,
@@ -1819,7 +1832,16 @@ class LLMInformationPlanProposer:
             "vertical_plan_reflection adds cross-case and parent-child insight, "
             "and the top-level fields add horizontal cross-Plan insight. Use all "
             "layers without treating a later layer as a replacement for an earlier "
-            "one. Outcome-aware reflection may guide the new Plan, but never change "
+            "one. Per-case magnitude_feedback blocks and per-Plan "
+            "magnitude_diagnostics are deterministic evidence: treat recurring "
+            "magnitude-class failures (systematic underestimation, "
+            "overestimation, missed classes) like any other FIFO lesson — "
+            "address, defer, or reject them through actual changes in B, "
+            "H_init, H_reflect, or H_analyse, never by changing prediction "
+            "semantics, labels, or class definitions; a batch where every "
+            "candidate leaves an obvious recurring magnitude defect untouched "
+            "needs the change content itself to show why. Outcome-aware "
+            "reflection may guide the new Plan, but never change "
             "labels, metrics, or prediction semantics. Copying a selected parent's "
             "four evolvable fields verbatim is invalid. Apply the supplied "
             "proposal_context.proposal_constraints.required_change_focus through "
@@ -1983,6 +2005,13 @@ def _plan_critic_trajectory(
     ):
         if key in data:
             compact[key] = data[key]
+    prediction_object = getattr(item, "prediction", None)
+    truth_object = getattr(item, "ground_truth", None)
+    if prediction_object is not None and truth_object is not None:
+        compact["magnitude_feedback"] = magnitude_feedback(
+            prediction_object,
+            truth_object,
+        )
 
     compact_rounds: list[dict[str, Any]] = []
     for round_value in data.get("signal_rounds", ()):
@@ -2035,7 +2064,7 @@ def _round_reflection_record(record: PlanRecord) -> dict[str, Any]:
 
     evaluation = record.evaluation
     fitness = record.fitness
-    return {
+    value = {
         "plan_id": record.plan_id,
         "parent_ids": list(record.plan.parent_ids),
         "round_id": record.round_id,
@@ -2056,6 +2085,12 @@ def _round_reflection_record(record: PlanRecord) -> dict[str, Any]:
             },
         },
     }
+    record_trajectories = getattr(record, "trajectories", None)
+    if record_trajectories:
+        value["magnitude_diagnostics"] = magnitude_diagnostics(
+            record_trajectories
+        )
+    return value
 
 
 class LLMPlanCritic:
@@ -2086,6 +2121,14 @@ class LLMPlanCritic:
                     for index, item in enumerate(trajectories, start=1)
                 ],
             }
+            if trajectories and all(
+                getattr(item, "prediction", None) is not None
+                and getattr(item, "ground_truth", None) is not None
+                for item in trajectories
+            ):
+                payload["magnitude_diagnostics"] = magnitude_diagnostics(
+                    trajectories
+                )
             if self.anonymous_aliases:
                 payload = _mask_identity_values(payload, self.anonymous_aliases)
                 _scan_payload(
@@ -2099,13 +2142,23 @@ class LLMPlanCritic:
                 system_prompt=(
                     "Ground the reflection only in the supplied batch. Use the saved "
                     "predictions, revealed truths, deterministic candidate-judgment "
-                    "feedback, post-hoc reflections, and compact Signal results to "
-                    "identify successful and failed Plan patterns. Return only the "
-                    "vertical cross-case and parent-child layer: the runtime preserves "
-                    "every original post-hoc case reflection separately, so do not "
-                    "rewrite it or present this output as its replacement. Treat four-way "
-                    "feedback as diagnostic reflection evidence only; Combined "
-                    "Binary F1 remains the sole fitness and parent-selection score. "
+                    "feedback, magnitude feedback, post-hoc reflections, and compact "
+                    "Signal results to identify successful and failed Plan patterns. "
+                    "Return only the vertical cross-case and parent-child layer: the "
+                    "runtime preserves every original post-hoc case reflection "
+                    "separately, so do not rewrite it or present this output as its "
+                    "replacement. Separate binary-direction failures from "
+                    "magnitude-class failures: use the per-case magnitude_feedback "
+                    "error kinds and the magnitude_diagnostics matrix, supports, and "
+                    "conditional accuracy to state whether the Plan mislabels "
+                    "direction, underestimates class, overestimates class, or "
+                    "concentrates error in one support-poor class, and weigh that "
+                    "against the binary tradeoff before proposing changes. Treat "
+                    "four-way feedback and magnitude diagnostics as reflection "
+                    "evidence about what failed; Combined Binary F1 remains the "
+                    "primary fitness and parent-selection score, with magnitude "
+                    "macro-F1 as the confirmed secondary ordering applied only at "
+                    "exactly equal Combined Binary F1. "
                     "Use parent_comparisons to identify structural regressions or "
                     "improvements. A metric_delta is valid only when "
                     "same_evaluation_snapshot is true; otherwise compare Plan "
@@ -2187,12 +2240,17 @@ class LLMRoundReflector:
                     "supplied plan ids. Return only horizontal insight across the newly "
                     "sampled child Plans. The runtime separately preserves original case "
                     "reflections and exact vertical Plan reflections; do not rewrite or "
-                    "replace those layers. Use parent comparisons to identify structural "
-                    "regressions or improvements. A metric_delta is valid only when "
-                    "same_evaluation_snapshot is true; otherwise compare Plan "
-                    "structure without claiming a causal metric effect. Parent "
-                    "comparisons are reflection evidence only; Combined Binary F1 "
-                    "remains the sole fitness and parent-selection score."
+                    "replace those layers. Use the per-record magnitude_diagnostics to "
+                    "add horizontal insight about recurring magnitude-class failures "
+                    "(systematic underestimation, overestimation, or support-poor "
+                    "classes) alongside binary patterns. Use parent comparisons to "
+                    "identify structural regressions or improvements. A metric_delta "
+                    "is valid only when same_evaluation_snapshot is true; otherwise "
+                    "compare Plan structure without claiming a causal metric effect. "
+                    "Parent comparisons are reflection evidence only; Combined "
+                    "Binary F1 remains the primary fitness and parent-selection "
+                    "score, with magnitude macro-F1 as the confirmed secondary "
+                    "ordering applied only at exactly equal Combined Binary F1."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _ROUND_META_OUTPUT
                 ),
