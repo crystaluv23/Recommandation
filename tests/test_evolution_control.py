@@ -12,6 +12,7 @@ from stock_opportunity_agent.data.sources.alpha_vantage import (
 )
 from stock_opportunity_agent.research.evolution_control import (
     _load_slow_fast_context,
+    _rebased_history_meta_entries,
     apply_slow_history_manifest,
     build_slow_history_manifest,
 )
@@ -376,6 +377,26 @@ class RunControlTests(TestCase):
             write_json(target / "slow_history" / "manifest.json", envelope)
             with self.assertRaisesRegex(ValidationError, "manifest changed"):
                 _load_slow_fast_context(legacy, legacy_contract)
+
+    def test_imported_history_meta_prefix_never_collides_with_local_rounds(self) -> None:
+        imported = tuple(
+            RoundMetaEntry(
+                round_id=round_id,
+                evidence_refs=(f"imported-plan-{round_id}",),
+                missing_capabilities=(f"Imported need {round_id}.",),
+            )
+            for round_id in (1, 3)
+        )
+        rebased = _rebased_history_meta_entries(imported)
+        self.assertEqual([entry.round_id for entry in rebased], [-3, -1])
+        memory = evolution_runtime_module.PlanMetaMemory(
+            entries=(*rebased, RoundMetaEntry(round_id=1, evidence_refs=("p1",)))
+        )
+        memory.append(RoundMetaEntry(round_id=2, evidence_refs=("p2",)))
+        self.assertEqual(
+            [entry.round_id for entry in memory.entries], [-3, -1, 1, 2]
+        )
+        self.assertEqual(_rebased_history_meta_entries(()), ())
 
     def test_slow_history_import_uses_only_committed_source_pointer(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

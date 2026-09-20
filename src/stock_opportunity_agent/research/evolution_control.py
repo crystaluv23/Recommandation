@@ -7,7 +7,7 @@ import os
 import platform
 import re
 import shutil
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -2441,6 +2441,27 @@ def _validate_cycle_execution_request(
         )
 
 
+def _rebased_history_meta_entries(
+    entries: Iterable[RoundMetaEntry],
+) -> tuple[RoundMetaEntry, ...]:
+    """Move imported round reflections into a reserved negative round range.
+
+    A successor run imports committed Fast history while numbering its own
+    rounds from one; PlanMetaMemory requires strictly increasing round ids,
+    so unrebased imported entries would make the first local commit raise a
+    monotonicity violation. The rebased prefix keeps source order and stays
+    strictly below every local round id.
+    """
+
+    ordered = tuple(entries)
+    if not ordered:
+        return ()
+    offset = max(entry.round_id for entry in ordered) + 1
+    return tuple(
+        replace(entry, round_id=entry.round_id - offset) for entry in ordered
+    )
+
+
 def _run_bounded_evolution_cycle_unlocked(
     *,
     workspace_path: str | Path,
@@ -2522,9 +2543,11 @@ def _run_bounded_evolution_cycle_unlocked(
             contract=contract,
             signal_snapshot=snapshot,
         )
-        bootstrap_meta_entries = apply_slow_bootstrap_derivatives(
-            bootstrap_manifest,
-            registry=registry,
+        bootstrap_meta_entries = _rebased_history_meta_entries(
+            apply_slow_bootstrap_derivatives(
+                bootstrap_manifest,
+                registry=registry,
+            )
         )
     elif contract.slow_history_manifest_hash is not None:
         # slow_only succession and fast_then_slow dual-loop continuation share
@@ -2534,7 +2557,7 @@ def _run_bounded_evolution_cycle_unlocked(
             contract=contract,
         )
         if history_manifest.get("schema_version") == "slow-history-manifest-v2":
-            bootstrap_meta_entries = tuple(
+            bootstrap_meta_entries = _rebased_history_meta_entries(
                 RoundMetaEntry.from_dict(dict(row))
                 for row in history_manifest["fast_context"]["meta_entries"]
             )
@@ -2683,12 +2706,19 @@ def _run_bounded_evolution_cycle_unlocked(
         expected_run_contract_hash=contract.contract_hash
     )
     meta_memory = evolution_workspace.restore_meta()
-    if bootstrap_meta_entries:
+    if contract.cycle_mode == "slow_bootstrap":
         if evolution_workspace.last_completed_round != 0 or meta_memory.entries:
             raise ValidationError(
                 "committed Fast bootstrap target must keep an empty Fast pointer"
             )
         meta_memory = PlanMetaMemory(entries=bootstrap_meta_entries)
+    elif bootstrap_meta_entries:
+        # Imported-history reflections are rebased below the local round
+        # range, so they prefix the FIFO and never collide with locally
+        # committed rounds on first commit or on resume.
+        meta_memory = PlanMetaMemory(
+            entries=(*bootstrap_meta_entries, *meta_memory.entries)
+        )
     signal_runner = StructuredLLMSignalRunner(judge_caller)
     evaluator = RuntimePlanEvaluator(
         raw_info_store=raw_info_store,

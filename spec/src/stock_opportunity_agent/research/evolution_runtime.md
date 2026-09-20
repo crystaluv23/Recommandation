@@ -1712,6 +1712,12 @@ purpose and does not require traversing the old source chain again. Direct Fast
 origins derive context only from pointer-verified archive/meta entries. Runtime
 restores the snapshot into Slow's in-memory meta view and backlog rebuilding;
 it does not create target Fast checkpoints, import fitness, or invoke Fast roles.
+Imported snapshot meta entries are rebased into a reserved negative round-id
+range before joining the in-memory FIFO: the successor numbers its own rounds
+from one, so unrebased imported ids would violate the FIFO's strictly
+increasing round order on the first local commit or on resume. Rebased ids are
+in-memory only, never persisted to per-round meta artifacts, and keep their
+source order strictly below every local round id.
 
 The stable operator launcher treats Python exit status `75` as the only
 automatically recoverable process outcome. For an invocation-specific window

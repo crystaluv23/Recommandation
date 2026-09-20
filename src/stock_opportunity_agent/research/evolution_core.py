@@ -4575,8 +4575,14 @@ class RoundMetaEntry:
     evidence_refs: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
-        if self.round_id < 1:
-            raise ValidationError("meta entry round_id must be positive")
+        # Negative ids are the reserved in-memory range for imported
+        # committed-history reflections rebased below local numbering; they
+        # are never persisted to per-round meta artifacts.
+        if self.round_id == 0 or self.round_id < -1_000_000:
+            raise ValidationError(
+                "meta entry round_id must be a local positive round or a "
+                "reserved imported-history id"
+            )
         plan_reflections = tuple(self.plan_reflections)
         plan_ids = tuple(item.plan_id for item in plan_reflections)
         if len(set(plan_ids)) != len(plan_ids):
