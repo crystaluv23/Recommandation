@@ -441,6 +441,173 @@ class PlanArchiveAndWorkspaceTests(TestCase):
                 )
             )
 
+    def test_imported_history_prefix_survives_multi_round_commit_restart_cycles(
+        self,
+    ) -> None:
+        """Replay the successor control-layer construction across three rounds.
+
+        Mirrors the production sequence that crashed V129: an imported
+        slow-history meta prefix, a local round commit, process restarts that
+        rebuild meta memory from durable state, and further commits. The
+        rebased negative prefix must never collide with local round ids, the
+        proposer must see prior-round reflections each round, and definition-
+        only registry stats must initialize lazily on first observation.
+        """
+        from stock_opportunity_agent.research.evolution_control import (
+            _rebased_history_meta_entries,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry_root = root / "signals"
+            registry = SignalRegistry(registry_root)
+            registry.install_catalog(SEED_CATALOG)
+            for stats_path in registry_root.rglob("stats.json"):
+                stats_path.unlink()
+            workspace = EvolutionWorkspace(root / "workspace")
+            imported = RoundMetaEntry(
+                round_id=1,
+                evidence_refs=("imported-plan",),
+                missing_capabilities=("Imported unresolved Fast need.",),
+            )
+            proposers: list[CountingProposer] = []
+            plan_counter = [0]
+
+            class UniqueCountingProposer(CountingProposer):
+                def propose(
+                    self,
+                    *,
+                    round_id,
+                    candidate_index,
+                    candidate_count,
+                    proposal_attempt,
+                    forbidden_plan_ids,
+                    parents,
+                    meta_info,
+                    prior,
+                ):
+                    self.calls.append(
+                        {
+                            "round_id": round_id,
+                            "candidate_index": candidate_index,
+                            "candidate_count": candidate_count,
+                            "proposal_attempt": proposal_attempt,
+                            "forbidden_plan_ids": forbidden_plan_ids,
+                            "parents": tuple(
+                                plan.plan_id for plan in parents
+                            ),
+                            "meta_rounds": tuple(
+                                entry.round_id for entry in meta_info
+                            ),
+                            "prior": prior,
+                        }
+                    )
+                    plan_counter[0] += 1
+                    base = default_information_plan()
+                    return InformationPlan(
+                        plan_id=f"plan_child_{plan_counter[0]}",
+                        parent_ids=tuple(
+                            plan.plan_id for plan in parents
+                        ),
+                        basic_info_policy=base.basic_info_policy,
+                        initial_research_skill=(
+                            f"{base.initial_research_skill} Variant "
+                            f"{plan_counter[0]}."
+                        ),
+                        reflection_skill=base.reflection_skill,
+                        analysis_prompt=base.analysis_prompt,
+                    )
+
+            def build_engine() -> PlanEvolutionEngine:
+                local_meta = workspace.restore_meta()
+                imports = _rebased_history_meta_entries((imported,))
+                proposers.append(UniqueCountingProposer())
+                return PlanEvolutionEngine(
+                    archive=workspace.restore_archive(),
+                    meta_memory=PlanMetaMemory(
+                        entries=(*imports, *local_meta.entries)
+                    ),
+                    signal_registry=registry,
+                    evaluator=SyntheticPlanEvaluator(),
+                    proposer=proposers[-1],
+                    critic=SimpleCritic(),
+                    round_reflector=SimpleRoundReflector(),
+                    workspace=workspace,
+                    seed_plans=(default_information_plan(),),
+                    candidates_per_round=1,
+                )
+
+            events_after_rounds = []
+            for round_id in (1, 2, 3):
+                build_engine().run_round(
+                    round_id=round_id,
+                    validation_cases=make_evaluation_pool(),
+                    anchor_cases=make_anchor_pool(),
+                    signal_snapshot=registry.freeze(),
+                )
+                self.assertEqual(workspace.last_completed_round, round_id)
+                events_after_rounds.append(
+                    len(registry.load_learning_events("revenue_growth_yoy:v1"))
+                )
+
+            self.assertEqual(
+                [entry.round_id for entry in workspace.restore_meta().entries],
+                [1, 2, 3],
+            )
+            self.assertTrue(
+                (registry_root / "financial" / "revenue_growth_yoy" / "stats.json")
+                .exists()
+            )
+            self.assertEqual(
+                events_after_rounds[0] > 0,
+                True,
+            )
+            self.assertGreater(events_after_rounds[2], events_after_rounds[0])
+            self.assertEqual(
+                proposers[0].calls[0]["meta_rounds"], (-1,)
+            )
+            self.assertEqual(
+                proposers[1].calls[0]["meta_rounds"], (-1, 1)
+            )
+            self.assertEqual(
+                proposers[2].calls[0]["meta_rounds"], (-1, 1, 2)
+            )
+
+    def test_rebased_prefix_evicts_first_and_serializes_for_consumers(self) -> None:
+        """FIFO recency and model-view serialization for the rebased prefix."""
+        from stock_opportunity_agent.research.evolution_control import (
+            _rebased_history_meta_entries,
+        )
+
+        imported = tuple(
+            RoundMetaEntry(
+                round_id=round_id,
+                evidence_refs=(f"imported-plan-{round_id}",),
+                missing_capabilities=(f"Imported need {round_id}.",),
+            )
+            for round_id in (1, 2)
+        )
+        rebased = _rebased_history_meta_entries(imported)
+        self.assertEqual([entry.round_id for entry in rebased], [-2, -1])
+        memory = PlanMetaMemory(maxlen=3, entries=rebased)
+        for round_id in (1, 2, 3):
+            memory.append(
+                RoundMetaEntry(round_id=round_id, evidence_refs=(f"p{round_id}",))
+            )
+        self.assertEqual(
+            [entry.round_id for entry in memory.entries], [1, 2, 3]
+        )
+        # The proposer-context projection (evolution_plan_roles) consumes the
+        # combined list through the same model_view and must serialize the
+        # reserved negative ids without assertions.
+        combined = (*rebased, *memory.entries)
+        view = PlanMetaMemory(
+            maxlen=max(1, len(combined)), entries=combined
+        ).model_view()
+        self.assertEqual(
+            [row["round_id"] for row in view], [-2, -1, 1, 2, 3]
+        )
+
     def test_additive_round_meta_round_trips_and_reads_legacy_horizontal_only(
         self,
     ) -> None:

@@ -3340,6 +3340,73 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertIn("exactly duplicates", correction["validation_error"])
         self.assertEqual(correction["invalid_output"], duplicate)
 
+    def test_plan_proposer_accepts_rebased_imported_history_meta_prefix(self) -> None:
+        """The real proposer prompt path must serialize reserved negative ids."""
+        from stock_opportunity_agent.research.evolution_control import (
+            _rebased_history_meta_entries,
+        )
+
+        parent = default_information_plan()
+        valid = {
+            "B": {
+                "requests": [
+                    {
+                        "request_id": "target_disclosures_filings",
+                        "description": (
+                            "Target company's own filing disclosures about "
+                            "operations and financing."
+                        ),
+                        "source_types": ["filing"],
+                        "lookback_days": 180,
+                        "max_documents": 5,
+                    },
+                    {
+                        "request_id": "recent_market_backbone",
+                        "description": (
+                            "Read recent point-in-time price and volume."
+                        ),
+                        "source_types": ["market_data"],
+                        "lookback_days": 45,
+                        "max_documents": 1,
+                    },
+                ]
+            },
+            "H_init": parent.initial_research_skill,
+            "H_reflect": (
+                "Test the strongest disconfirming evidence, then continue for "
+                "the next need or finalize."
+            ),
+            "H_analyse": parent.analysis_prompt,
+        }
+        caller = ScriptedRoleCaller([valid])
+        imported = RoundMetaEntry(
+            round_id=1,
+            evidence_refs=("imported-plan",),
+            missing_capabilities=("Imported unresolved Fast need.",),
+        )
+        local = RoundMetaEntry(
+            round_id=1,
+            evidence_refs=("plan_r0001_c01",),
+            successful_patterns=("correct binary separation",),
+        )
+        rebased = _rebased_history_meta_entries((imported,))
+
+        plan = LLMInformationPlanProposer(caller).propose(
+            round_id=2,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(parent,),
+            meta_info=(*rebased, local),
+            prior="fixed H_P",
+        )
+        self.assertIsNotNone(plan)
+        meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"]
+        self.assertEqual(
+            [row["round_id"] for row in meta_payload], [-1, 1]
+        )
+
     def test_v111_plan_proposer_does780_relabels_news_as_issuer_owned(self) -> None:
         parent = default_information_plan()
         invalid = {

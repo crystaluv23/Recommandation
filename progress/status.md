@@ -14,8 +14,12 @@ append 2 通过）。round-30（2e1b7c3）摩擦优化：V129 wire 分类显示 
 H_reflect prompt 增加"claim 数字只可复制、禁止引用计算值"规则；漏引类 correction
 反馈新增 `quantity_location_hints`（指名同 signal 内包含该数字的 evidence item），
 接受语义零变化。953 tests/lint PASS。闭环状态：stats 修复已实机验证、drift 重试
-修复已实机触发、meta 修复已实现+单测+离线验证但未能实机走通——原地 re-freeze 不
-重写既有合约（code_revision 不变），而全新验证运行需 ~720 attempts（仅余 53）。
+修复已实机触发、meta 修复完成跨轮离线重放验证（真实 PlanEvolutionEngine 驱动
+3 轮提交-重启循环：重定基导入前缀 [-1] 与本地轮 1/2/3 无冲突、每轮 proposer
+可见全部前轮反思（-1 → (-1,1) → (-1,1,2)）、stats 懒初始化与学习事件跨轮累积、
+FIFO 淘汰先逐出导入前缀、真实 LLM proposer 的 proposal_context.meta_info 正确
+序列化保留负 id）；实机走通仍受预算限制（re-freeze 不重写合约，全新运行需
+~720 attempts，仅余 53）。
 
 2026-09-20（round-28）**drift 重试缓存重放死端修复（V127/V128 三例共同死因）**：V127
 恢复后以纯缓存重放续跑（已完成 case 全部免外部调用），c02 至 case 17 时死于
