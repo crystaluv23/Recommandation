@@ -1306,6 +1306,246 @@ def candidate_judgment_feedback(
     }
 
 
+_MAGNITUDE_CLASS_ORDER: tuple[MagnitudeClass, ...] = (
+    MagnitudeClass.TWO_TO_THREE,
+    MagnitudeClass.THREE_TO_TEN,
+    MagnitudeClass.TEN_PLUS,
+)
+
+_MAGNITUDE_DIAGNOSTICS_REQUIRED_KEYS = frozenset(
+    {
+        "confusion_matrix",
+        "per_class_support",
+        "prediction_distribution",
+        "truth_distribution",
+        "surge_case_count",
+        "magnitude_correct_count",
+        "underestimate_count",
+        "overestimate_count",
+        "missed_surge_count",
+        "conditional_accuracy_on_tp",
+        "tp_denominator",
+        "undefined_reason",
+    }
+)
+
+
+def magnitude_feedback(
+    prediction: BlindPrediction,
+    ground_truth: GroundTruth,
+) -> dict[str, Any]:
+    """Derive the deterministic per-case magnitude diagnostic block.
+
+    This is a sibling of ``candidate_judgment_feedback`` in consumer payloads,
+    never a member of it: the legacy six-field record and its strict
+    reload-equality validations stay byte-compatible. A false negative keeps
+    its full-set magnitude miss in the aggregate metrics but carries no
+    fabricated predicted class or ordinal distance here.
+    """
+
+    applicable = ground_truth.is_surge
+    predicted = prediction.magnitude
+    truth = ground_truth.magnitude
+    correct = applicable and predicted is truth
+    if not applicable:
+        error_kind = "not_applicable"
+    elif predicted is None:
+        error_kind = "missed_surge"
+    elif predicted is truth:
+        error_kind = "correct"
+    elif _MAGNITUDE_CLASS_ORDER.index(predicted) < _MAGNITUDE_CLASS_ORDER.index(
+        truth
+    ):
+        error_kind = "underestimate"
+    else:
+        error_kind = "overestimate"
+    ordinal_distance = None
+    if applicable and predicted is not None:
+        ordinal_distance = abs(
+            _MAGNITUDE_CLASS_ORDER.index(predicted)
+            - _MAGNITUDE_CLASS_ORDER.index(truth)
+        )
+    return {
+        "magnitude_applicable": applicable,
+        "predicted_magnitude": predicted.value if predicted else None,
+        "true_magnitude": truth.value if truth else None,
+        "magnitude_correct": correct,
+        "error_kind": error_kind,
+        "ordinal_distance": ordinal_distance,
+    }
+
+
+def _validated_magnitude_feedback_block(
+    block: Mapping[str, Any],
+    *,
+    predicted_is_surge: bool,
+    true_is_surge: bool,
+) -> dict[str, Any]:
+    """Validate a persisted magnitude block against its binary labels."""
+
+    expected_keys = {
+        "magnitude_applicable",
+        "predicted_magnitude",
+        "true_magnitude",
+        "magnitude_correct",
+        "error_kind",
+        "ordinal_distance",
+    }
+    if set(block) != expected_keys:
+        raise ValidationError("magnitude feedback fields are invalid")
+    if block["magnitude_applicable"] is not true_is_surge:
+        raise ValidationError("magnitude feedback applicability differs from truth")
+    predicted = block["predicted_magnitude"]
+    truth = block["true_magnitude"]
+    if true_is_surge:
+        if not isinstance(truth, str) or truth not in {
+            magnitude.value for magnitude in _MAGNITUDE_CLASS_ORDER
+        }:
+            raise ValidationError("magnitude feedback true class is invalid")
+    elif truth is not None:
+        raise ValidationError("magnitude feedback true class must be null")
+    if predicted_is_surge:
+        if not isinstance(predicted, str) or predicted not in {
+            magnitude.value for magnitude in _MAGNITUDE_CLASS_ORDER
+        }:
+            raise ValidationError("magnitude feedback predicted class is invalid")
+    elif predicted is not None:
+        raise ValidationError("magnitude feedback predicted class must be null")
+    if not isinstance(block["magnitude_correct"], bool):
+        raise ValidationError("magnitude feedback correctness must be boolean")
+    distance = block["ordinal_distance"]
+    if not true_is_surge:
+        consistent = (
+            block["error_kind"] == "not_applicable"
+            and block["magnitude_correct"] is False
+            and distance is None
+        )
+    elif predicted is None:
+        consistent = (
+            block["error_kind"] == "missed_surge"
+            and block["magnitude_correct"] is False
+            and distance is None
+        )
+    else:
+        predicted_index = _MAGNITUDE_CLASS_ORDER.index(MagnitudeClass(predicted))
+        truth_index = _MAGNITUDE_CLASS_ORDER.index(MagnitudeClass(truth))
+        if predicted_index == truth_index:
+            consistent = (
+                block["error_kind"] == "correct"
+                and block["magnitude_correct"] is True
+                and distance == 0
+            )
+        else:
+            expected_kind = (
+                "underestimate" if predicted_index < truth_index else "overestimate"
+            )
+            consistent = (
+                block["error_kind"] == expected_kind
+                and block["magnitude_correct"] is False
+                and distance == abs(predicted_index - truth_index)
+            )
+    if not consistent:
+        raise ValidationError("magnitude feedback internals are inconsistent")
+    return dict(block)
+
+
+def magnitude_diagnostics(
+    trajectories: Iterable[ExecutionTrajectory],
+) -> dict[str, Any]:
+    """Aggregate the full magnitude misclassification diagnostics for one batch.
+
+    Numeric definitions deliberately mirror ``score_predictions``: supports and
+    misses are counted over the complete true-surge population so a Stage-1
+    false negative still counts as a missed magnitude prediction. The
+    conditional accuracy over true positives is diagnostic only and is
+    ``None`` with an explicit reason when the denominator is zero.
+    """
+
+    rows = tuple(trajectories)
+    columns = ("predicted_negative",) + tuple(
+        f"predicted_{magnitude.value}" for magnitude in _MAGNITUDE_CLASS_ORDER
+    )
+    matrix: dict[str, dict[str, int]] = {}
+    truth_distribution: dict[str, int] = {}
+    prediction_distribution: dict[str, int] = {}
+    row_classes: tuple[str, ...] = ("non_surge",) + tuple(
+        magnitude.value for magnitude in _MAGNITUDE_CLASS_ORDER
+    )
+    for true_class in row_classes:
+        matrix[true_class] = {column: 0 for column in columns}
+        truth_distribution[true_class] = 0
+    for column in columns[1:]:
+        prediction_distribution[column] = 0
+    underestimate = 0
+    overestimate = 0
+    missed_surge = 0
+    for row in rows:
+        truth_class = (
+            row.ground_truth.magnitude.value
+            if row.ground_truth.is_surge
+            else "non_surge"
+        )
+        predicted_class = (
+            row.prediction.magnitude.value if row.prediction.magnitude else None
+        )
+        matrix[truth_class][
+            "predicted_negative" if predicted_class is None else f"predicted_{predicted_class}"
+        ] += 1
+        truth_distribution[truth_class] += 1
+        if predicted_class is not None:
+            prediction_distribution[f"predicted_{predicted_class}"] += 1
+        if not row.ground_truth.is_surge:
+            continue
+        if predicted_class is None:
+            missed_surge += 1
+        elif predicted_class != truth_class:
+            predicted_index = _MAGNITUDE_CLASS_ORDER.index(
+                MagnitudeClass(predicted_class)
+            )
+            truth_index = _MAGNITUDE_CLASS_ORDER.index(MagnitudeClass(truth_class))
+            if predicted_index < truth_index:
+                underestimate += 1
+            else:
+                overestimate += 1
+    surge_count = sum(
+        1 for row in rows if row.ground_truth.is_surge
+    )
+    magnitude_correct = sum(
+        1
+        for row in rows
+        if row.ground_truth.is_surge
+        and row.prediction.magnitude is row.ground_truth.magnitude
+    )
+    tp_count = sum(
+        1
+        for row in rows
+        if row.prediction.is_surge and row.ground_truth.is_surge
+    )
+    conditional_on_tp: float | None
+    undefined_reason: str | None = None
+    if tp_count == 0:
+        conditional_on_tp = None
+        undefined_reason = "no_true_positive_predictions"
+    else:
+        conditional_on_tp = magnitude_correct / tp_count
+    return {
+        "confusion_matrix": matrix,
+        "per_class_support": {
+            key: value for key, value in truth_distribution.items() if key != "non_surge"
+        },
+        "prediction_distribution": prediction_distribution,
+        "truth_distribution": truth_distribution,
+        "surge_case_count": surge_count,
+        "magnitude_correct_count": magnitude_correct,
+        "underestimate_count": underestimate,
+        "overestimate_count": overestimate,
+        "missed_surge_count": missed_surge,
+        "conditional_accuracy_on_tp": conditional_on_tp,
+        "tp_denominator": tp_count,
+        "undefined_reason": undefined_reason,
+    }
+
+
 @dataclass(frozen=True)
 class PredictionSelfReflection:
     """Post-hoc usability feedback produced only after label reveal."""
@@ -1694,6 +1934,7 @@ class CaseReflectionEvidence:
     termination_trigger: RuntimeStopReason | None
     candidate_judgment_feedback: Mapping[str, Any]
     self_reflection: PredictionSelfReflection
+    magnitude_feedback: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.case_index < 1:
@@ -1762,9 +2003,19 @@ class CaseReflectionEvidence:
                 "case reflection feedback is not the deterministic four-way record"
             )
         object.__setattr__(self, "candidate_judgment_feedback", feedback)
+        if self.magnitude_feedback is not None:
+            object.__setattr__(
+                self,
+                "magnitude_feedback",
+                _validated_magnitude_feedback_block(
+                    dict(self.magnitude_feedback),
+                    predicted_is_surge=predicted_is_surge,
+                    true_is_surge=true_is_surge,
+                ),
+            )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "case_index": self.case_index,
             "stop_reason": self.stop_reason.value,
             "termination_trigger": (
@@ -1775,6 +2026,9 @@ class CaseReflectionEvidence:
             ),
             "self_reflection": self.self_reflection.to_dict(),
         }
+        if self.magnitude_feedback is not None:
+            value["magnitude_feedback"] = dict(self.magnitude_feedback)
+        return value
 
     @classmethod
     def from_trajectory(
@@ -1794,6 +2048,10 @@ class CaseReflectionEvidence:
                 trajectory.ground_truth,
             ),
             self_reflection=trajectory.self_reflection,
+            magnitude_feedback=magnitude_feedback(
+                trajectory.prediction,
+                trajectory.ground_truth,
+            ),
         )
 
     @classmethod
@@ -1805,12 +2063,19 @@ class CaseReflectionEvidence:
             "candidate_judgment_feedback",
             "self_reflection",
         }
-        if set(data) != required:
+        if not set(data) <= required | {"magnitude_feedback"} or not required <= set(
+            data
+        ):
             raise ValidationError("case reflection evidence fields are invalid")
         feedback = data["candidate_judgment_feedback"]
         reflection = data["self_reflection"]
         if not isinstance(feedback, Mapping) or not isinstance(reflection, Mapping):
             raise ValidationError("case reflection evidence objects are invalid")
+        serialized_magnitude = data.get("magnitude_feedback")
+        if serialized_magnitude is not None and not isinstance(
+            serialized_magnitude, Mapping
+        ):
+            raise ValidationError("case reflection magnitude feedback is invalid")
         return cls(
             case_index=int(data["case_index"]),
             stop_reason=RuntimeStopReason(str(data["stop_reason"])),
@@ -1821,6 +2086,11 @@ class CaseReflectionEvidence:
             ),
             candidate_judgment_feedback=dict(feedback),
             self_reflection=PredictionSelfReflection.from_dict(dict(reflection)),
+            magnitude_feedback=(
+                dict(serialized_magnitude)
+                if serialized_magnitude is not None
+                else None
+            ),
         )
 
 
@@ -4092,6 +4362,7 @@ class PlanMetaReflection:
     original_case_reflections: tuple[CaseReflectionEvidence, ...]
     vertical_plan_reflection: PlanReflection
     parent_comparisons: tuple[Mapping[str, Any], ...] = ()
+    magnitude_diagnostics: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         cohorts = {
@@ -4142,13 +4413,22 @@ class PlanMetaReflection:
         object.__setattr__(self, "signal_usage", usage)
         object.__setattr__(self, "original_case_reflections", case_reflections)
         object.__setattr__(self, "parent_comparisons", comparisons)
+        if self.magnitude_diagnostics is not None:
+            diagnostics = dict(self.magnitude_diagnostics)
+            missing = _MAGNITUDE_DIAGNOSTICS_REQUIRED_KEYS - set(diagnostics)
+            if missing:
+                raise ValidationError(
+                    "Plan meta reflection magnitude diagnostics are invalid: "
+                    + ", ".join(sorted(missing))
+                )
+            object.__setattr__(self, "magnitude_diagnostics", diagnostics)
 
     @property
     def plan_id(self) -> str:
         return self.plan.plan_id
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "plan_id": self.plan_id,
             "plan": self.plan.to_dict(),
             "metrics": self.metrics.to_dict(),
@@ -4172,6 +4452,9 @@ class PlanMetaReflection:
                 dict(item) for item in self.parent_comparisons
             ],
         }
+        if self.magnitude_diagnostics is not None:
+            value["magnitude_diagnostics"] = dict(self.magnitude_diagnostics)
+        return value
 
     @classmethod
     def from_record(
@@ -4198,6 +4481,7 @@ class PlanMetaReflection:
             ),
             vertical_plan_reflection=record.reflection,
             parent_comparisons=parent_comparisons,
+            magnitude_diagnostics=magnitude_diagnostics(record.trajectories),
         )
 
     @classmethod
@@ -4213,7 +4497,9 @@ class PlanMetaReflection:
             "vertical_plan_reflection",
             "parent_comparisons",
         }
-        if set(data) != required:
+        if not set(data) <= required | {"magnitude_diagnostics"} or not required <= set(
+            data
+        ):
             raise ValidationError("PlanMetaReflection fields are invalid")
         for field_name in (
             "plan",
@@ -4282,6 +4568,11 @@ class PlanMetaReflection:
                 dict(data["vertical_plan_reflection"])
             ),
             parent_comparisons=tuple(dict(item) for item in raw_comparisons),
+            magnitude_diagnostics=(
+                dict(data["magnitude_diagnostics"])
+                if data.get("magnitude_diagnostics") is not None
+                else None
+            ),
         )
         if int(evaluation["n_cases"]) != len(result.original_case_reflections):
             raise ValidationError("PlanMetaReflection case count is inconsistent")
@@ -4386,6 +4677,7 @@ def build_parent_plan_comparison(
     same_snapshot = parent.evaluation_snapshot_ids == (child_snapshot_id,)
     parent_combined = parent.metrics_by_cohort.get("combined")
     metric_delta: dict[str, Any] | None = None
+    magnitude_metric_delta: dict[str, Any] | None = None
     if same_snapshot and parent_combined is not None:
         metric_delta = {
             "binary_f1": child_metrics.binary_f1 - parent_combined.binary_f1,
@@ -4410,6 +4702,15 @@ def build_parent_plan_comparison(
                 ),
             },
         }
+        magnitude_metric_delta = {
+            "magnitude_accuracy": (
+                child_metrics.magnitude_accuracy - parent_combined.magnitude_accuracy
+            ),
+            "magnitude_macro_f1": (
+                child_metrics.magnitude_macro_f1
+                - parent_combined.magnitude_macro_f1
+            ),
+        }
     return {
         **parent.to_dict(),
         "child_plan_id": child_plan.plan_id,
@@ -4422,6 +4723,7 @@ def build_parent_plan_comparison(
             "text_fields_changed": text_changes,
         },
         "metric_delta": metric_delta,
+        "magnitude_metric_delta": magnitude_metric_delta,
     }
 
 
