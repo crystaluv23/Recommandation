@@ -2064,9 +2064,30 @@ def _validate_basic_claim_quantities(
     return issues
 
 
+def _signal_quantity_location_hints(
+    missing: list[str],
+    cited_signal_refs: tuple[str, ...],
+    available: Mapping[str, list[tuple[str, int, str]]] | None,
+) -> dict[str, list[str]]:
+    """Name same-Signal evidence locations that contain a missing quantity."""
+
+    hints: dict[str, list[str]] = {}
+    for group in missing:
+        alternatives = set(group.split("|"))
+        locations: list[str] = []
+        for ref in cited_signal_refs:
+            for group_name, evidence_index, span in (available or {}).get(ref, ()):
+                if alternatives & _normalized_claim_quantities(span):
+                    locations.append(f"{group_name}[{evidence_index}]")
+        if locations:
+            hints[group] = locations
+    return hints
+
+
 def _validate_signal_claim_quantities(
     grouped: Mapping[str, list[tuple[int, str]]],
     state: ResearchState,
+    available: Mapping[str, list[tuple[str, int, str]]] | None = None,
 ) -> list[ValidationIssue]:
     """Require each new Signal claim's quantities in its cited evidence items."""
 
@@ -2085,6 +2106,26 @@ def _validate_signal_claim_quantities(
                 for item_index, _text in items
             ]
             linked = _linked_quantitative_assertion_paths(state, claim)
+            cited_signal_refs = tuple(
+                dict.fromkeys(
+                    str(ref.signal_ref)
+                    for ref in state.supporting_evidence
+                    if isinstance(ref, ResearchEvidenceRef)
+                    and ref.kind == "signal"
+                    and ref.claim == claim
+                )
+            )
+            location_hints = _signal_quantity_location_hints(
+                missing, cited_signal_refs, available
+            )
+            hint_instruction = (
+                " Missing quantities occur in same-Signal evidence "
+                f"locations {json.dumps(location_hints, separators=(',', ':'))}: "
+                "add the exact evidence ref tuple for one such location with "
+                "the same claim, or narrow the claim to the cited literals"
+                if location_hints
+                else ""
+            )
             issues.append(
                 ValidationIssue(
                     code="claim_quantity_not_supported",
@@ -2102,23 +2143,21 @@ def _validate_signal_claim_quantities(
                         "a deterministic Signal interpretation, cite every required "
                         "Signal evidence item with the same claim, or narrow the "
                         "claim. Do not round or convert the supplied values"
+                        + hint_instruction
                     ),
                     paths=tuple(dict.fromkeys(evidence_paths)),
                     allowed_repairs=("replace", "remove", "add"),
                     dependent_paths=tuple(linked),
-                    source_refs=tuple(
-                        dict.fromkeys(
-                            str(ref.signal_ref)
-                            for ref in state.supporting_evidence
-                            if isinstance(ref, ResearchEvidenceRef)
-                            and ref.kind == "signal"
-                            and ref.claim == claim
-                        )
-                    ),
+                    source_refs=cited_signal_refs,
                     repair_context={
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        **(
+                            {"quantity_location_hints": location_hints}
+                            if location_hints
+                            else {}
+                        ),
                     },
                 )
             )
@@ -2193,6 +2232,17 @@ def _validate_research_state_refs(
     projection_texts = _basic_projection_texts(basic_info or {})
     results = {item.ref: item for item in (batch.results if batch else ())}
     signal_claim_literals: dict[str, list[tuple[int, str]]] = {}
+    signal_available_spans: dict[str, list[tuple[str, int, str]]] = {
+        ref: [
+            (group_name, evidence_index, evidence.exact_span)
+            for group_name, evidence_items in (
+                ("supporting", result.supporting_evidence),
+                ("counter", result.counter_evidence),
+            )
+            for evidence_index, evidence in enumerate(evidence_items)
+        ]
+        for ref, result in results.items()
+    }
     structured_issues: list[ValidationIssue] = []
     for index, item in enumerate(refs):
         key = _research_evidence_key(item)
@@ -2360,7 +2410,9 @@ def _validate_research_state_refs(
         _validate_basic_claim_quantities(tuple(normalized_refs), state)
     )
     structured_issues.extend(
-        _validate_signal_claim_quantities(signal_claim_literals, state)
+        _validate_signal_claim_quantities(
+            signal_claim_literals, state, signal_available_spans
+        )
     )
     structured_issues.extend(
         _validate_assertive_state_claim_links(state, tuple(normalized_refs))

@@ -858,6 +858,58 @@ class ScopedCorrectionProjectionTests(TestCase):
                 ])
                 self.assertEqual(len(caller.calls), 2)
 
+    def test_signal_quantity_feedback_names_same_signal_evidence_locations(self) -> None:
+        from stock_opportunity_agent.research import (
+            evolution_research_validation,
+        )
+
+        claim = "Cash of $611.5 million against monthly outflow of $203.9 million."
+        state = evolution_runtime_module.ResearchState(
+            supporting_evidence=(
+                evolution_runtime_module.ResearchEvidenceRef(
+                    kind="signal",
+                    claim=claim,
+                    signal_ref="liquidity_runway_months:v1",
+                    evidence_group="supporting",
+                    evidence_index=0,
+                ),
+            ),
+            next_information_needs=("Need liquidity runway.",),
+        )
+        available = {
+            "liquidity_runway_months:v1": [
+                ("supporting", 0, '{"val":611500000}'),
+                ("supporting", 1, '{"val":2446400000}'),
+            ]
+        }
+        issues = evolution_research_validation._validate_signal_claim_quantities(
+            {claim: [(0, '{"val":611500000}')]}, state, available
+        )
+        self.assertEqual(len(issues), 1)
+        context = issues[0].repair_context
+        self.assertEqual(
+            context["missing_quantity_groups"], ["203.9|203900000"]
+        )
+        hints = evolution_research_validation._signal_quantity_location_hints(
+            ["203.9|203900000"], ("liquidity_runway_months:v1",), available
+        )
+        self.assertEqual(hints, {})
+        available_with_outflow = {
+            "liquidity_runway_months:v1": [
+                ("supporting", 0, '{"val":611500000}'),
+                ("supporting", 1, '{"val":203900000}'),
+            ]
+        }
+        issues = evolution_research_validation._validate_signal_claim_quantities(
+            {claim: [(0, '{"val":611500000}')]}, state, available_with_outflow
+        )
+        self.assertEqual(len(issues), 1)
+        self.assertIn("supporting[1]", issues[0].message)
+        self.assertEqual(
+            issues[0].repair_context["quantity_location_hints"],
+            {"203.9|203900000": ["supporting[1]"]},
+        )
+
     def test_research_state_fallback_uses_issue_code_not_message_text(self) -> None:
         invalid = {
             "hypotheses": ["A catalyst may matter."],

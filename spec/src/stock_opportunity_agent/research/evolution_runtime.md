@@ -1239,6 +1239,14 @@ For Basic refs, reflect may restate a claim while preserving the provenance tupl
 because the exact literal remains present in the ref and can be revalidated. For a
 new current-batch Signal ref, every numeric quantity in the claim must occur in the
 union of exact Signal evidence items referenced by refs carrying that same claim.
+The H_reflect prompt states this as a copy rule: claim numbers are copied from
+referenced evidence text, never computed — ratios, monthly averages, thresholds,
+and card-description parameters are derived values that must be narrowed out of
+the claim rather than quoted. When a missing quantity does occur in another
+uncited evidence item of the same cited Signal, the correction feedback names
+those exact locations (`quantity_location_hints`) so the model can add the
+missing ref tuple or narrow the claim in one round; quantities absent from
+every evidence item receive no location hint.
 For a deterministic Signal, the compact result row instead exposes the exact canonical
 numeric form once as `exact_claim_if_adopted`; the same value is not repeated in every
 evidence row. A cited deterministic result copies that field byte-for-byte into its
