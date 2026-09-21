@@ -1444,7 +1444,36 @@ class EvolutionWorkspace:
             / "attempts"
             / f"{attempt.plan.plan_id}.json"
         )
-        _write_or_verify_json(path, attempt.to_dict())
+        if path.exists():
+            try:
+                staged = _read_json(path)
+            except (OSError, ValueError):
+                staged = None
+            # A diagnostic-only attempt (failures recorded, no metrics) may
+            # be superseded by a later retry after restart: the per-case
+            # failure artifacts and trajectory checkpoints retain the full
+            # audit trail. An eligible attempt stays verify-only.
+            supersede = isinstance(staged, Mapping) and (
+                staged.get("metrics") is None or staged.get("failures")
+            )
+            if not supersede:
+                _write_or_verify_json(path, attempt.to_dict())
+            else:
+                superseded_dir = path.parent / "superseded"
+                superseded_dir.mkdir(parents=True, exist_ok=True)
+                index = 1
+                superseded_path = (
+                    superseded_dir / f"{path.stem}-{index:03d}.json"
+                )
+                while superseded_path.exists():
+                    index += 1
+                    superseded_path = (
+                        superseded_dir / f"{path.stem}-{index:03d}.json"
+                    )
+                path.replace(superseded_path)
+                _write_or_verify_json(path, attempt.to_dict())
+        else:
+            _write_or_verify_json(path, attempt.to_dict())
         self.refresh_capability_backlog(
             available_source_types=available_source_types
         )

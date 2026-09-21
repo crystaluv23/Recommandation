@@ -359,3 +359,88 @@ class InitializeCombinedConstraintTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StagedAttemptSupersessionTest(unittest.TestCase):
+    """A diagnostic staged attempt may be superseded after restart."""
+
+    def _workspace(self, root):
+        return EvolutionWorkspace(root / "workspace")
+
+    def _attempt(self, plan_id, expected, trajectories, failures):
+        from stock_opportunity_agent.research.plan_evolution import (
+            PlanEvaluationAttempt,
+        )
+
+        base = default_information_plan()
+        plan = InformationPlan(
+            plan_id=plan_id,
+            parent_ids=(),
+            basic_info_policy=base.basic_info_policy,
+            initial_research_skill=f"{base.initial_research_skill} {plan_id}",
+            reflection_skill=base.reflection_skill,
+            analysis_prompt=base.analysis_prompt,
+        )
+        return PlanEvaluationAttempt(
+            plan=plan,
+            expected_case_ids=tuple(expected),
+            trajectories=tuple(trajectories),
+            failures=tuple(failures),
+        )
+
+    def test_diagnostic_attempt_superseded_eligible_stays_frozen(self):
+        import tempfile
+
+        from stock_opportunity_agent.research.plan_evolution import (
+            CaseEvaluationFailure,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = self._workspace(root)
+            case = make_case("sup", 4.0)
+            good = make_trajectory(
+                case.company_id, 4.0, True, MagnitudeClass.THREE_TO_TEN
+            )
+            expected = (case.case_id,)
+            failure = CaseEvaluationFailure(
+                case_id=case.case_id,
+                stage="s",
+                error_type="CandidateExecutionRejected",
+                message="m",
+                artifact_ref="a",
+            )
+            # 1) diagnostic attempt (abstain row, failure) staged
+            abstain = good.__class__(
+                **{
+                    **good.__dict__,
+                    "prediction": BlindPrediction(
+                        is_surge=False,
+                        candidate_judgment=CandidateJudgment.INSUFFICIENT_INFORMATION,
+                        magnitude=None,
+                        confidence=ConfidenceLevel.LOW,
+                        key_reasons=("exclusion",),
+                        uncertainties=(),
+                        session_id=f"exclusion_{case.case_id}",
+                    ),
+                }
+            )
+            first = self._attempt(
+                "plan_r0001_c01", expected, (abstain,), [failure]
+            )
+            workspace.stage_evaluation_attempt(round_id=1, attempt=first)
+
+            # 2) retry with different content supersedes it
+            second = self._attempt("plan_r0001_c01", expected, (good,), ())
+            path = workspace.stage_evaluation_attempt(round_id=1, attempt=second)
+            self.assertTrue(
+                (path.parent / "superseded" / "plan_r0001_c01-001.json").exists()
+            )
+            staged = json.loads(path.read_text())
+            self.assertEqual(len(staged["failures"]), 0)
+
+            # 3) an eligible attempt is verify-only: differing content fails
+            with self.assertRaises(ValidationError):
+                workspace.stage_evaluation_attempt(
+                    round_id=1, attempt=first
+                )
