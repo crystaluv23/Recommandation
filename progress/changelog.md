@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-21: Revised the Signal magnitude/Fast concurrency plan after review: hard per-target data admission with only ge3 eligible for first-version consideration, separate Discovery/validation counts, mandatory signal_library target statistics and observation/evaluation deduplication, defect #11/#12 prerequisite gates, acquisition ledgers, ascending slot dispatch and a fixed bounded-thread design. Clarified preparation overlap and implementation acceptance; documentation only.
+
 - 2026-09-21: Added a combined action plan for target-aware magnitude Signal discovery/validation/promotion and bounded Fast Plan concurrency. Documented current implementation boundaries, separate rollout gates, shared-state ownership, atomic budget admission, in-flight request deduplication, cancellation/recovery, test matrices, live evaluation and rollback. Documentation only; no runtime, normative contract or external execution changes.
 
 - 2026-09-20: Added the detailed Fast/Slow magnitude evolution action plan, grounded in V130 committed records and actual critic inputs. Separated deterministic magnitude feedback, cross-round learning, proposed F1-primary/magnitude-secondary selection, unchanged Slow promotion gates and their pure-magnitude limitation, recovery regressions, and independently authorized paired live acceptance. Proposal only: no runtime or normative scoring changes and no external calls.

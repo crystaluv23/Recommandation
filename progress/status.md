@@ -1,5 +1,7 @@
 # Status
 
+2026-09-21（方案评审修订）：[Signal magnitude／Fast 并行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md) 已加入目标数据准入硬门（ge3 待门控，ge10／extremes 延后且不铺专属代码）、Discovery 与 validation 支持量区分、signal_library 及实际调用点的目标统计／去重改动面。缺陷 #11 必须先于 in-flight 去重验收，#12 必须先于并发度 2 验收；补齐采集 JSONL ledger、slot 升序、单进程有界线程及主线程取消协议。允许 A0 与 B0/B1 盘点交错推进。仅修订文档，数值研究门槛、规范性契约变更和实机授权仍按方案逐项确认。
+
 2026-09-21：新增 [Signal 幅度进化与 Fast Plan 并行执行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md)，基于 `9f85f46` 核查，承接已实现的幅度反馈／F1 同分幅度次序／Slow 诊断接线。方案分开规划幅度分层挖掘与目标适配晋升、Plan 级有界并发与预算／缓存／恢复协调，附 C0–C8 实施顺序、故障矩阵、实机效果判据及回滚。仅文档提案，未修改运行代码、现行规格或启动外部调用；研究和接口决策须确认后更新 owning specs，实机另行冻结授权预算。
 
 2026-09-20：新增 [Fast／Slow magnitude 双目标进化行动计划](../reports/fast-slow-magnitude-evolution-action-plan-20260920.md)。只读核验 V130 round 1 已提交、cycle 0／active slow_loop；24 案 F1=0.8、magnitude accuracy=5/14、macro-F1≈0.17544，七案方向正确但幅度低估。计划涵盖确定性反馈、反思与 proposer 跨轮任务、待确认的 F1 主序／幅度次序、Slow 信息供给与纯幅度晋升限制、恢复回归和配对实机验收。当前为非规范性提案，尚未修改上层单一 F1 契约、运行代码或执行新调用；研究规则须确认后自上而下更新规格。此次文档 checkpoint 会改变 HEAD，恢复 V130 仍须使用其原契约匹配 revision。
