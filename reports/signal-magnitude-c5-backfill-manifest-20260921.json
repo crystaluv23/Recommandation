@@ -1,0 +1,1459 @@
+{
+  "purpose": "ge3 one-time pre-prediction evidence backfill (user-approved path a-prime, 2026-09-21)",
+  "audit_scope_change_confirmed": "PIT gate re-scoped from full pool to the ge3 research population (true >=2x cases), per user decision",
+  "providers_plan": "SEC submissions/filings/company_facts first (free, no daily quota); alpha_vantage company_news quota-batched (25/day free tier) only for issuers still uncovered after SEC pass",
+  "proposed_caps": {
+    "max_provider_attempts": 500,
+    "max_total_cost_usd": 5.0,
+    "daily_av_news_calls": 25
+  },
+  "execution_pipeline": "scripts/backfill_historical_data.py preview -> plan -> run (existing tooling)",
+  "cases": [
+    {
+      "pool": "discovery",
+      "case_id": "cik_0000707549:20250731",
+      "company_id": "cik_0000707549",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0000909037:20250731",
+      "company_id": "cik_0000909037",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001030894:20250331",
+      "company_id": "cik_0001030894",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001030894:20250530",
+      "company_id": "cik_0001030894",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001320461:20250331",
+      "company_id": "cik_0001320461",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001622536:20250331",
+      "company_id": "cik_0001622536",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001649009:20250331",
+      "company_id": "cik_0001649009",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001654126:20250930",
+      "company_id": "cik_0001654126",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001682639:20250131",
+      "company_id": "cik_0001682639",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001709626:20250530",
+      "company_id": "cik_0001709626",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001756262:20250131",
+      "company_id": "cik_0001756262",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001796280:20250530",
+      "company_id": "cik_0001796280",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001844862:20250131",
+      "company_id": "cik_0001844862",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001844862:20250331",
+      "company_id": "cik_0001844862",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001844862:20250530",
+      "company_id": "cik_0001844862",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0001845840:20250530",
+      "company_id": "cik_0001845840",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "discovery",
+      "case_id": "cik_0002015845:20250331",
+      "company_id": "cik_0002015845",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000008063:20250131",
+      "company_id": "cik_0000008063",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000008063:20250731",
+      "company_id": "cik_0000008063",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000080420:20250530",
+      "company_id": "cik_0000080420",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000215466:20250331",
+      "company_id": "cik_0000215466",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000215466:20250530",
+      "company_id": "cik_0000215466",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000215466:20250731",
+      "company_id": "cik_0000215466",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000314203:20250530",
+      "company_id": "cik_0000314203",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000314203:20250731",
+      "company_id": "cik_0000314203",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000317788:20250131",
+      "company_id": "cik_0000317788",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000719413:20250331",
+      "company_id": "cik_0000719413",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000719413:20250530",
+      "company_id": "cik_0000719413",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000756894:20250530",
+      "company_id": "cik_0000756894",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000756894:20250731",
+      "company_id": "cik_0000756894",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000764065:20250530",
+      "company_id": "cik_0000764065",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000805928:20250530",
+      "company_id": "cik_0000805928",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000805928:20250731",
+      "company_id": "cik_0000805928",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000805928:20250930",
+      "company_id": "cik_0000805928",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000885639:20250530",
+      "company_id": "cik_0000885639",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000889900:20250930",
+      "company_id": "cik_0000889900",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000897723:20250530",
+      "company_id": "cik_0000897723",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000903651:20250530",
+      "company_id": "cik_0000903651",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000932695:20250331",
+      "company_id": "cik_0000932695",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0000932695:20250530",
+      "company_id": "cik_0000932695",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001023512:20250731",
+      "company_id": "cik_0001023512",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001035983:20250331",
+      "company_id": "cik_0001035983",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001035983:20250530",
+      "company_id": "cik_0001035983",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001047127:20250731",
+      "company_id": "cik_0001047127",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001049502:20250731",
+      "company_id": "cik_0001049502",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001049502:20250930",
+      "company_id": "cik_0001049502",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001173420:20250331",
+      "company_id": "cik_0001173420",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001173420:20250530",
+      "company_id": "cik_0001173420",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001173420:20250731",
+      "company_id": "cik_0001173420",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001180262:20250930",
+      "company_id": "cik_0001180262",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001227654:20250331",
+      "company_id": "cik_0001227654",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001277866:20250530",
+      "company_id": "cik_0001277866",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001277866:20250731",
+      "company_id": "cik_0001277866",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001285550:20250530",
+      "company_id": "cik_0001285550",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001285550:20250731",
+      "company_id": "cik_0001285550",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001309402:20250331",
+      "company_id": "cik_0001309402",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001325964:20250331",
+      "company_id": "cik_0001325964",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001325964:20250530",
+      "company_id": "cik_0001325964",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001325964:20250731",
+      "company_id": "cik_0001325964",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001326732:20250530",
+      "company_id": "cik_0001326732",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001347426:20250930",
+      "company_id": "cik_0001347426",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001364125:20250930",
+      "company_id": "cik_0001364125",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001369085:20250930",
+      "company_id": "cik_0001369085",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001374690:20250331",
+      "company_id": "cik_0001374690",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001374690:20250530",
+      "company_id": "cik_0001374690",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001398733:20250530",
+      "company_id": "cik_0001398733",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001401257:20250731",
+      "company_id": "cik_0001401257",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001401257:20250930",
+      "company_id": "cik_0001401257",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001425205:20250930",
+      "company_id": "cik_0001425205",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001440972:20250530",
+      "company_id": "cik_0001440972",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001440972:20250731",
+      "company_id": "cik_0001440972",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001440972:20250930",
+      "company_id": "cik_0001440972",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001464790:20250530",
+      "company_id": "cik_0001464790",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001472012:20250530",
+      "company_id": "cik_0001472012",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001472012:20250731",
+      "company_id": "cik_0001472012",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001472012:20250930",
+      "company_id": "cik_0001472012",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001478320:20250530",
+      "company_id": "cik_0001478320",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001509261:20250331",
+      "company_id": "cik_0001509261",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001509261:20250530",
+      "company_id": "cik_0001509261",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001510593:20250731",
+      "company_id": "cik_0001510593",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001512762:20250530",
+      "company_id": "cik_0001512762",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001512762:20250731",
+      "company_id": "cik_0001512762",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001517228:20250331",
+      "company_id": "cik_0001517228",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001517228:20250530",
+      "company_id": "cik_0001517228",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001517228:20250731",
+      "company_id": "cik_0001517228",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001527762:20250731",
+      "company_id": "cik_0001527762",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001527762:20250930",
+      "company_id": "cik_0001527762",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001528115:20250530",
+      "company_id": "cik_0001528115",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001528115:20250731",
+      "company_id": "cik_0001528115",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001528115:20250930",
+      "company_id": "cik_0001528115",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001530804:20250930",
+      "company_id": "cik_0001530804",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001549595:20250930",
+      "company_id": "cik_0001549595",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001573221:20250530",
+      "company_id": "cik_0001573221",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001573221:20250731",
+      "company_id": "cik_0001573221",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001583107:20250530",
+      "company_id": "cik_0001583107",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001584549:20250530",
+      "company_id": "cik_0001584549",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001584549:20250731",
+      "company_id": "cik_0001584549",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001590560:20250331",
+      "company_id": "cik_0001590560",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001590560:20250530",
+      "company_id": "cik_0001590560",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001597672:20250731",
+      "company_id": "cik_0001597672",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001600983:20250331",
+      "company_id": "cik_0001600983",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001623526:20250331",
+      "company_id": "cik_0001623526",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001623526:20250530",
+      "company_id": "cik_0001623526",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001623526:20250731",
+      "company_id": "cik_0001623526",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001630805:20250530",
+      "company_id": "cik_0001630805",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001649989:20250930",
+      "company_id": "cik_0001649989",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001657573:20250331",
+      "company_id": "cik_0001657573",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001657573:20250731",
+      "company_id": "cik_0001657573",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001661181:20250530",
+      "company_id": "cik_0001661181",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001662991:20250131",
+      "company_id": "cik_0001662991",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001662991:20250331",
+      "company_id": "cik_0001662991",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001671502:20250530",
+      "company_id": "cik_0001671502",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001671502:20250930",
+      "company_id": "cik_0001671502",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001674632:20250530",
+      "company_id": "cik_0001674632",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001674632:20250731",
+      "company_id": "cik_0001674632",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001701108:20250530",
+      "company_id": "cik_0001701108",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001707502:20250131",
+      "company_id": "cik_0001707502",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001707502:20250530",
+      "company_id": "cik_0001707502",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001720446:20250731",
+      "company_id": "cik_0001720446",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001725160:20250731",
+      "company_id": "cik_0001725160",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001725160:20250930",
+      "company_id": "cik_0001725160",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001728117:20250331",
+      "company_id": "cik_0001728117",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001728117:20250530",
+      "company_id": "cik_0001728117",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001737953:20250930",
+      "company_id": "cik_0001737953",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001738021:20250530",
+      "company_id": "cik_0001738021",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001738021:20250731",
+      "company_id": "cik_0001738021",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001751008:20250331",
+      "company_id": "cik_0001751008",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001753539:20250331",
+      "company_id": "cik_0001753539",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001753539:20250530",
+      "company_id": "cik_0001753539",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001756607:20250731",
+      "company_id": "cik_0001756607",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001780201:20250731",
+      "company_id": "cik_0001780201",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001786286:20250731",
+      "company_id": "cik_0001786286",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001805077:20250331",
+      "company_id": "cik_0001805077",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001805077:20250530",
+      "company_id": "cik_0001805077",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001805077:20250731",
+      "company_id": "cik_0001805077",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001809196:20250530",
+      "company_id": "cik_0001809196",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001812364:20250530",
+      "company_id": "cik_0001812364",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001812364:20250731",
+      "company_id": "cik_0001812364",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001812364:20250930",
+      "company_id": "cik_0001812364",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001815442:20250530",
+      "company_id": "cik_0001815442",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001815442:20250731",
+      "company_id": "cik_0001815442",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001818331:20250530",
+      "company_id": "cik_0001818331",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001819576:20250530",
+      "company_id": "cik_0001819576",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001819576:20250731",
+      "company_id": "cik_0001819576",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001825024:20250731",
+      "company_id": "cik_0001825024",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001831631:20250331",
+      "company_id": "cik_0001831631",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001831631:20250731",
+      "company_id": "cik_0001831631",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001831651:20250331",
+      "company_id": "cik_0001831651",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001831651:20250530",
+      "company_id": "cik_0001831651",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001843165:20250530",
+      "company_id": "cik_0001843165",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001847806:20250131",
+      "company_id": "cik_0001847806",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001856725:20250731",
+      "company_id": "cik_0001856725",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001857816:20250331",
+      "company_id": "cik_0001857816",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001888886:20250731",
+      "company_id": "cik_0001888886",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001888886:20250930",
+      "company_id": "cik_0001888886",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001897087:20250731",
+      "company_id": "cik_0001897087",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001898795:20250530",
+      "company_id": "cik_0001898795",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001927578:20250131",
+      "company_id": "cik_0001927578",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001930021:20250131",
+      "company_id": "cik_0001930021",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001930021:20250731",
+      "company_id": "cik_0001930021",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001944399:20250731",
+      "company_id": "cik_0001944399",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001961847:20250530",
+      "company_id": "cik_0001961847",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001961847:20250731",
+      "company_id": "cik_0001961847",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001963088:20250530",
+      "company_id": "cik_0001963088",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001975940:20250131",
+      "company_id": "cik_0001975940",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0001997859:20250331",
+      "company_id": "cik_0001997859",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002010499:20250530",
+      "company_id": "cik_0002010499",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002010499:20250731",
+      "company_id": "cik_0002010499",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002012593:20250331",
+      "company_id": "cik_0002012593",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002012593:20250530",
+      "company_id": "cik_0002012593",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002019505:20250331",
+      "company_id": "cik_0002019505",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002019505:20250731",
+      "company_id": "cik_0002019505",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002024656:20250731",
+      "company_id": "cik_0002024656",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002031688:20250731",
+      "company_id": "cik_0002031688",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002031688:20250930",
+      "company_id": "cik_0002031688",
+      "prediction_time": "2025-09-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002036042:20250331",
+      "company_id": "cik_0002036042",
+      "prediction_time": "2025-03-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002036042:20250530",
+      "company_id": "cik_0002036042",
+      "prediction_time": "2025-05-30",
+      "magnitude_class": "ge3_high",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002036042:20250731",
+      "company_id": "cik_0002036042",
+      "prediction_time": "2025-07-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": false
+    },
+    {
+      "pool": "evolution_validation",
+      "case_id": "cik_0002081043:20250131",
+      "company_id": "cik_0002081043",
+      "prediction_time": "2025-01-31",
+      "magnitude_class": "ge3_low",
+      "oracle_company_dir_present": true
+    }
+  ],
+  "case_count": 179,
+  "distinct_issuers": 115,
+  "summary": {
+    "discovery": {
+      "cases": 17,
+      "ge3_high": 4,
+      "ge3_low": 13
+    },
+    "evolution_validation": {
+      "cases": 162,
+      "ge3_high": 33,
+      "ge3_low": 129
+    }
+  }
+}

@@ -18,6 +18,11 @@
 - validation 池 875 发行人中绝大多数从未被任何运行触达——此前的"24 案全有 PIT news"是**快照级**结论，不能外推到全池（C0 记录中已标注此风险，本次审计证实）。
 - 离线优先约束下，缺失证据无法凭空补齐；补齐需要外部 provider 调用（属需另行授权的真实执行）。
 
+## 用户决策（2026-09-21，路径 a′）
+
+- **口径变更已确认**：PIT 覆盖准入项的审计口径从"全池"改为 **ge3 研究总体（真实 ≥2x 案例）**。按该口径现状：discovery 高/低组 99.4%／97.3%（达标），validation 高/低组 53.8%／29.2%（不达标）——短板明确收敛到 validation 池的 162 案 + discovery 的 17 案。
+- **一次性补齐已授权（原则）**：冻结补采清单见 [`signal-magnitude-c5-backfill-manifest-20260921.json`](signal-magnitude-c5-backfill-manifest-20260921.json)（179 案／115 发行人；SEC 免费源优先，AV 新闻按 25/天配额分批；建议上限 500 次调用／$5）。执行走既有 `scripts/backfill_historical_data.py` 的 preview→plan→run 管线（preview 离线先行）；完成后按研究总体口径重跑本审计。
+
 ## 按方案处置
 
 1. **ge3 专属 schema、投影、挖掘执行、晋升实现一律不启动**（A1：门未过不得实施；门失败记录 blocked/insufficient_support）。
