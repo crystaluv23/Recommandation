@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import concurrent.futures
 import fcntl
 import json
 import os
 import random
+import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -1640,6 +1642,14 @@ class PlanEvaluationResult:
     fitness: FitnessEligibility
 
 
+class EvaluationCancelled(ValidationError):
+    """Coordinator-level stop of candidate admission and dispatch."""
+
+    def __init__(self, round_id: int, message: str) -> None:
+        super().__init__(f"evaluation cancelled at round {round_id}: {message}")
+        self.round_id = round_id
+
+
 class PlanEvolutionEngine:
     """Bounded Information Plan Fast Loop under a frozen Signal Registry."""
 
@@ -1673,15 +1683,28 @@ class PlanEvolutionEngine:
         | None = None,
         run_contract_hash: str = "",
         on_progress: ProgressCallback | None = None,
+        evaluator_factory: Callable[[], "PlanEvaluator"] | None = None,
+        max_parallel_plans: int = 1,
+        cancel_event: threading.Event | None = None,
     ) -> None:
         if candidates_per_round < 1:
             raise ValidationError("candidates_per_round must be positive")
         if not seed_plans:
             raise ValidationError("plan evolution requires at least one seed Plan")
+        if max_parallel_plans < 1:
+            raise ValidationError("max_parallel_plans must be positive")
+        if max_parallel_plans > 1 and evaluator_factory is None:
+            raise ValidationError(
+                "parallel Plan evaluation requires an evaluator factory so "
+                "each worker owns its own mutable role instances"
+            )
         self.archive = archive
         self.meta_memory = meta_memory
         self.signal_registry = signal_registry
         self.evaluator = evaluator
+        self.evaluator_factory = evaluator_factory
+        self.max_parallel_plans = max_parallel_plans
+        self.cancel_event = cancel_event
         self.proposer = proposer
         self.critic = critic
         self.round_reflector = round_reflector
@@ -1998,35 +2021,49 @@ class PlanEvolutionEngine:
 
         attempts: list[PlanEvaluationAttempt] = []
         evaluation_results: list[PlanEvaluationResult] = []
+        evaluated: (
+            list[tuple[int, InformationPlan, PlanEvaluationAttempt, Path]] | None
+        ) = None
+        if self.evaluator_factory is not None:
+            evaluated = self._evaluate_candidates_bounded(
+                candidate_plans,
+                round_id=round_id,
+                round_cases=round_cases,
+                round_snapshot=round_snapshot,
+                signal_snapshot=signal_snapshot,
+            )
         for candidate_index, plan in enumerate(candidate_plans, start=1):
-            _emit_progress(
-                self.on_progress,
-                "candidate_evaluation_started",
-                round_id=round_id,
-                candidate_index=candidate_index,
-                candidate_count=len(candidate_plans),
-                plan_id=plan.plan_id,
-            )
-            raw_attempt = self.evaluator.evaluate(
-                plan,
-                round_cases,
-                signal_snapshot,
-            )
-            attempt = (
-                raw_attempt
-                if isinstance(raw_attempt, PlanEvaluationAttempt)
-                else PlanEvaluationAttempt(
-                    plan=plan,
-                    expected_case_ids=round_snapshot.case_ids,
-                    trajectories=tuple(raw_attempt),
+            if evaluated is not None:
+                _, plan, attempt, attempt_path = evaluated[candidate_index - 1]
+            else:
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_evaluation_started",
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    candidate_count=len(candidate_plans),
+                    plan_id=plan.plan_id,
                 )
-            )
+                raw_attempt = self.evaluator.evaluate(
+                    plan,
+                    round_cases,
+                    signal_snapshot,
+                )
+                attempt = (
+                    raw_attempt
+                    if isinstance(raw_attempt, PlanEvaluationAttempt)
+                    else PlanEvaluationAttempt(
+                        plan=plan,
+                        expected_case_ids=round_snapshot.case_ids,
+                        trajectories=tuple(raw_attempt),
+                    )
+                )
+                attempt_path = self.workspace.stage_evaluation_attempt(
+                    round_id=round_id,
+                    attempt=attempt,
+                    available_source_types=self.capability_source_types,
+                )
             attempts.append(attempt)
-            attempt_path = self.workspace.stage_evaluation_attempt(
-                round_id=round_id,
-                attempt=attempt,
-                available_source_types=self.capability_source_types,
-            )
             metrics = attempt.metrics
             fitness = attempt.fitness
             if metrics is None:
@@ -2275,6 +2312,97 @@ class PlanEvolutionEngine:
             records=record_tuple,
             meta_entry=meta_entry,
         )
+
+    def _evaluate_one_candidate(
+        self,
+        *,
+        candidate_index: int,
+        candidate_count: int,
+        plan: InformationPlan,
+        evaluator: "PlanEvaluator",
+        round_id: int,
+        round_cases: tuple[EvolutionCase, ...],
+        round_snapshot: Any,
+        signal_snapshot: Any,
+    ) -> tuple[int, InformationPlan, PlanEvaluationAttempt, Path]:
+        """Evaluate and stage one candidate on the caller's own evaluator."""
+
+        raw_attempt = evaluator.evaluate(plan, round_cases, signal_snapshot)
+        attempt = (
+            raw_attempt
+            if isinstance(raw_attempt, PlanEvaluationAttempt)
+            else PlanEvaluationAttempt(
+                plan=plan,
+                expected_case_ids=round_snapshot.case_ids,
+                trajectories=tuple(raw_attempt),
+            )
+        )
+        attempt_path = self.workspace.stage_evaluation_attempt(
+            round_id=round_id,
+            attempt=attempt,
+            available_source_types=self.capability_source_types,
+        )
+        return candidate_index, plan, attempt, attempt_path
+
+    def _evaluate_candidates_bounded(
+        self,
+        candidate_plans: tuple[InformationPlan, ...],
+        *,
+        round_id: int,
+        round_cases: tuple[EvolutionCase, ...],
+        round_snapshot: Any,
+        signal_snapshot: Any,
+    ) -> list[tuple[int, InformationPlan, PlanEvaluationAttempt, Path]]:
+        """Evaluate candidates with bounded workers in ascending slot order.
+
+        The coordinator (this thread, holding the workspace execution lock)
+        emits start events and dispatches tasks in candidate-slot order. Each
+        worker owns one candidate at a time and a fresh evaluator from the
+        factory, so no mutable role instance is shared. Workers keep case
+        order inside a candidate; staging stays per-plan. Results are
+        recombined in slot order, and commit-phase work remains on the
+        coordinator thread.
+        """
+
+        results: dict[
+            int, tuple[int, InformationPlan, PlanEvaluationAttempt, Path]
+        ] = {}
+        worker_count = max(1, min(self.max_parallel_plans, len(candidate_plans)))
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=worker_count,
+            thread_name_prefix="plan-eval",
+        ) as pool:
+            futures: dict[concurrent.futures.Future, int] = {}
+            for candidate_index, plan in enumerate(candidate_plans, start=1):
+                if self.cancel_event is not None and self.cancel_event.is_set():
+                    raise EvaluationCancelled(
+                        round_id,
+                        "stop requested before candidate admission",
+                    )
+                _emit_progress(
+                    self.on_progress,
+                    "candidate_evaluation_started",
+                    round_id=round_id,
+                    candidate_index=candidate_index,
+                    candidate_count=len(candidate_plans),
+                    plan_id=plan.plan_id,
+                )
+                future = pool.submit(
+                    self._evaluate_one_candidate,
+                    candidate_index=candidate_index,
+                    candidate_count=len(candidate_plans),
+                    plan=plan,
+                    evaluator=self.evaluator_factory(),
+                    round_id=round_id,
+                    round_cases=round_cases,
+                    round_snapshot=round_snapshot,
+                    signal_snapshot=signal_snapshot,
+                )
+                futures[future] = candidate_index
+            for future in concurrent.futures.as_completed(futures):
+                entry = future.result()
+                results[entry[0]] = entry
+        return [results[index] for index in range(1, len(candidate_plans) + 1)]
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:
         for trajectory in record.trajectories:
