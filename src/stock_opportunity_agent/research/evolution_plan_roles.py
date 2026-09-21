@@ -1010,7 +1010,11 @@ class LLMSignalRetrievalAgent:
                                 validation_errors.append(
                                     f"{path}.residual_need must be grounded in the "
                                     "targeted information need rather than copy or "
-                                    "invent a different need"
+                                    "invent a different need. The targeted need is: "
+                                    f"\"{target_need}\". Write the corrected "
+                                    "residual as one unresolved clause of that "
+                                    "exact need, kept inside its own as-of bound, "
+                                    "minus the facet this Signal answered"
                                 )
                             target_bound = _need_as_of_bound_clause(target_need)
                             routing_prediction_date = (
@@ -1423,10 +1427,14 @@ class LLMSignalRetrievalAgent:
                         f"version-owned direct-need phrase at {path}: "
                         f"{signal_ref} requires at least one exact "
                         "phrase in its one targeted information need from "
-                        f"{list(answer_need_phrases)}. Change reason_code to an "
-                        "accurate contextual code such as combine_evidence, or "
-                        "remove the selection. research_context and selector-authored "
-                        "prose cannot turn context into an answered need"
+                        f"{list(answer_need_phrases)}. Point "
+                        "target_need_indices at an information need that already "
+                        "contains one listed phrase byte-for-byte (the needs "
+                        "themselves are not editable in this output), or change "
+                        "reason_code to an accurate contextual code such as "
+                        "combine_evidence, or remove the selection. "
+                        "research_context and selector-authored prose cannot "
+                        "turn context into an answered need"
                     )
             if validation_errors:
                 raise StructuredValidationError(validation_errors.issues)

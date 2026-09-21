@@ -1447,6 +1447,33 @@ def _raw_research_evidence_claim_length_issues(
     return issues
 
 
+def _basic_quantity_elsewhere_hints(
+    missing_literals: list[str],
+    evidence_items: list[tuple[int, str, str]],
+) -> tuple[dict[str, list[str]], bool]:
+    """Point at other evidence items that contain a missing quantity literal.
+
+    Scans only the model's own output items (deterministic, no external
+    context). Returns the hint map and whether every missing literal was
+    located somewhere in the output at all.
+    """
+
+    hints: dict[str, list[str]] = {}
+    located: set[str] = set()
+    for literal in missing_literals:
+        locations: list[str] = []
+        normalized = _normalized_claim_quantities(literal)
+        for index, exact_text, claim_preview in evidence_items:
+            if normalized & _normalized_claim_quantities(exact_text):
+                locations.append(
+                    f"evidence_item[{index}] ({claim_preview[:60]}...)"
+                )
+                located.add(literal)
+        if locations:
+            hints[literal] = locations
+    return hints, len(missing_literals) > 0 and located == set(missing_literals)
+
+
 def _raw_basic_claim_quantity_issues(
     value: Mapping[str, Any],
 ) -> list[ValidationIssue]:
@@ -1487,6 +1514,33 @@ def _raw_basic_claim_quantity_issues(
             missing_literals = [
                 literal for _group, literal in missing_groups_with_literals
             ]
+            elsewhere_hints, all_located = _basic_quantity_elsewhere_hints(
+                missing_literals,
+                [
+                    (
+                        item_index,
+                        str(item.get("exact_text", "")),
+                        str(item.get("claim", "")),
+                    )
+                    for item_index, item in enumerate(evidence)
+                    if isinstance(item, Mapping)
+                ],
+            )
+            elsewhere_instruction = (
+                " The missing literals already appear in your own other "
+                "evidence items at "
+                + json.dumps(elsewhere_hints, separators=(",", ":"))
+                + ": cite those ref tuples under the same claim or split the "
+                "claim, copying the literal byte-for-byte without rounding or "
+                "conversion"
+                if elsewhere_hints
+                else (
+                    " The missing literals appear in NO supplied Basic "
+                    "exact_text: computing, estimating, or converting them is "
+                    "invalid - narrow the claim to the cited literals or "
+                    "remove the quantity"
+                )
+            )
             evidence_paths = [
                 f"supporting_evidence[{index}].claim" for index, _text in items
             ]
@@ -1520,6 +1574,7 @@ def _raw_basic_claim_quantity_issues(
                             if linked
                             else ""
                         )
+                        + elsewhere_instruction
                     ),
                     paths=tuple(dict.fromkeys(evidence_paths)),
                     allowed_repairs=("replace", "remove", "add"),
@@ -1528,6 +1583,11 @@ def _raw_basic_claim_quantity_issues(
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        **(
+                            {"quantity_elsewhere_hints": elsewhere_hints}
+                            if elsewhere_hints
+                            else {"quantity_elsewhere": "absent_from_all_basic_refs"}
+                        ),
                     },
                 )
             )
@@ -2040,6 +2100,28 @@ def _validate_basic_claim_quantities(
                 for item_index, _text in items
             ]
             linked = _linked_quantitative_assertion_paths(state, claim)
+            elsewhere_hints, _all_located = _basic_quantity_elsewhere_hints(
+                missing_literals,
+                [
+                    (item_index, str(ref.exact_text), str(ref.claim))
+                    for item_index, ref in enumerate(refs)
+                    if ref.kind == "basic_info"
+                ],
+            )
+            elsewhere_instruction = (
+                " The missing literals already appear in your other cited "
+                "Basic refs at "
+                + json.dumps(elsewhere_hints, separators=(",", ":"))
+                + ": add those ref tuples under the same claim, copying the "
+                "literal byte-for-byte without rounding or conversion"
+                if elsewhere_hints
+                else (
+                    " The missing literals appear in NO supplied Basic "
+                    "exact_text: computing, estimating, or converting them is "
+                    "invalid - narrow the claim to the cited literals or "
+                    "remove the quantity"
+                )
+            )
             issues.append(
                 ValidationIssue(
                     code="claim_quantity_not_supported",
@@ -2050,6 +2132,7 @@ def _validate_basic_claim_quantities(
                         "together. Add one exact literal ref for every quantity, "
                         "split the multi-span claim across refs with the same claim, "
                         "or narrow the claim"
+                        + elsewhere_instruction
                     ),
                     paths=tuple(evidence_paths),
                     allowed_repairs=("replace", "remove", "add"),
@@ -2058,6 +2141,13 @@ def _validate_basic_claim_quantities(
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        **(
+                            {"quantity_elsewhere_hints": elsewhere_hints}
+                            if elsewhere_hints
+                            else {
+                                "quantity_elsewhere": "absent_from_all_basic_refs"
+                            }
+                        ),
                     },
                 )
             )
