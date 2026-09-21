@@ -119,17 +119,22 @@ class CarryOverAttemptTest(unittest.TestCase):
         )
 
     def test_over_cap_stays_rejected_with_metrics_none(self):
-        cases = self._cases() + (make_case("carry_pos3", 6.0),)
+        cases = (
+            self._cases()
+            + (make_case("carry_x1", 6.0), make_case("carry_x2", 7.0))
+        )
         trajectories = self._trajectories_with_abstain(cases, abstain_index=0)
+        # Three distinct fresh failures (plus one replayed abstain) exceed
+        # the cumulative per-candidate cap.
         failures = tuple(
             CaseEvaluationFailure(
-                case_id=cases[0].case_id,
+                case_id=case.case_id,
                 stage="s",
                 error_type="CandidateExecutionRejected",
                 message="m",
                 artifact_ref="a",
             )
-            for _ in range(MAX_TECHNICAL_CASE_EXCLUSIONS + 1)
+            for case in cases[2:5]
         )
         attempt = _attempt(
             [case.case_id for case in cases], trajectories, failures
@@ -237,6 +242,104 @@ class EvaluatorCarryOverTest(unittest.TestCase):
             metrics = attempt.metrics
             self.assertIsNotNone(metrics)
             self.assertEqual(metrics.false_negative, 1)
+
+
+class CumulativeCapAcrossRestartTest(unittest.TestCase):
+    """The exclusion cap counts replayed abstains after a restart."""
+
+    def test_replayed_abstains_plus_fresh_failure_exceeds_cap(self):
+        import tempfile
+
+        from stock_opportunity_agent.research.plan_evolution import (
+            RuntimePlanEvaluator,
+        )
+
+        class StubPredictor:
+            def predict(self, final_context):
+                return AgentStep(
+                    BlindPrediction(
+                        is_surge=False,
+                        candidate_judgment=CandidateJudgment.UNLIKELY,
+                        magnitude=None,
+                        confidence=ConfidenceLevel.LOW,
+                        key_reasons=("stub",),
+                        uncertainties=(),
+                        session_id="s",
+                    ),
+                    AgentUsage(),
+                )
+
+            def reflect(self, ctx, prediction, truth):
+                return AgentStep(
+                    PredictionSelfReflection(correct=not truth.is_surge),
+                    AgentUsage(),
+                )
+
+        class ControlledController:
+            def __init__(self, fail_on):
+                self.fail_on = set(fail_on)
+                self.calls = 0
+
+            def initialize(self, plan, basic_info):
+                self.calls += 1
+                if self.calls in self.fail_on:
+                    raise CandidateExecutionRejected(
+                        "research_controller_initialize",
+                        "simulated rejection",
+                    )
+                return AgentStep(
+                    ResearchState(decision=ResearchDecision.FINALIZE),
+                    AgentUsage(),
+                )
+
+            def reflect(self, *args, **kwargs):
+                return AgentStep(
+                    ResearchState(decision=ResearchDecision.FINALIZE),
+                    AgentUsage(),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(make_case(f"c{i}", m) for i, m in enumerate((4.0, 1.2, 5.0, 1.1, 6.0)))
+
+            def build(fail_on):
+                return RuntimePlanEvaluator(
+                    raw_info_store=RawInfoStore(documents=()),
+                    controller=ControlledController(fail_on),
+                    signal_agent=None,
+                    predictor=StubPredictor(),
+                    prediction_root=root / "predictions",
+                )
+
+            first = build({1, 2}).evaluate(
+                default_information_plan(), cases, registry.freeze()
+            )
+            self.assertEqual(len(first.technical_exclusion_case_ids), 2)
+            self.assertIsNotNone(first.metrics)
+            checkpoint_files = list(
+                (root / "trajectories").glob("*/*.json")
+            )
+            self.assertTrue(checkpoint_files, "abstain checkpoints persisted")
+
+            # Simulate the crash point: only the two abstain checkpoints
+            # existed when the process died; later cases restart fresh.
+            for case in cases[2:]:
+                for path in (root / "trajectories").glob(
+                    f"*/{case.case_id}.json"
+                ):
+                    path.unlink()
+            restarted = build({1}).evaluate(
+                default_information_plan(), cases, registry.freeze()
+            )
+            # Two abstains replay from disk (the controller never re-runs
+            # them); a third fresh failure pushes the cumulative total to
+            # 3 > 2, so metrics stay None (rejection semantics preserved
+            # across restart).
+            self.assertEqual(len(restarted.failures), 1)
+            self.assertEqual(len(restarted.technical_exclusion_case_ids), 0)
+            self.assertIsNone(restarted.metrics)
 
 
 class InitializeCombinedConstraintTest(unittest.TestCase):

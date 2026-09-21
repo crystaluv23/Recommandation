@@ -90,6 +90,7 @@ from stock_opportunity_agent.research.evolution_core import (
     ConfidenceLevel,
     PredictionSelfReflection,
     RuntimeStopReason,
+    RuntimeUsage,
     ResearchDecision,
     ResearchState,
 )
@@ -449,9 +450,17 @@ class RuntimePlanEvaluator:
                     failure_path=str(failure_path),
                 )
                 failures.append(failure)
+                prior_abstains = sum(
+                    1
+                    for row in trajectories
+                    if str(row.prediction.session_id).startswith("exclusion_")
+                )
                 if (
                     isinstance(exc, CandidateExecutionRejected)
-                    and len(failures) <= MAX_TECHNICAL_CASE_EXCLUSIONS
+                    # Every earlier failure this attempt already has its
+                    # abstain row in trajectories, so the cumulative total is
+                    # prior abstains plus this one candidate exclusion.
+                    and prior_abstains < MAX_TECHNICAL_CASE_EXCLUSIONS
                 ):
                     # User-approved carry-over (2026-09-21): a model-side
                     # correction exhaustion on one case records the failure,
@@ -504,7 +513,7 @@ class RuntimePlanEvaluator:
                                 ),
                             ),
                             stop_reason=RuntimeStopReason.FINALIZED,
-                            usage=AgentUsage(),
+                            usage=RuntimeUsage(signal_rounds=0, signal_calls=0, model=AgentUsage()),
                         )
                     )
                     _write_or_verify_json(
@@ -517,6 +526,21 @@ class RuntimePlanEvaluator:
                             "prediction_time": case.prediction_time.isoformat(),
                             "final_context": {},
                             "prediction": abstain.to_dict(),
+                        },
+                    )
+                    abstain_row = trajectories[-1]
+                    _write_or_verify_json(
+                        self.trajectory_root
+                        / plan.plan_id
+                        / f"{case.case_id}.json",
+                        {
+                            "schema_version": (
+                                "execution-trajectory-checkpoint-v1"
+                            ),
+                            "input_hash": input_hash,
+                            "plan_id": plan.plan_id,
+                            "case_id": case.case_id,
+                            "trajectory": abstain_row.to_dict(),
                         },
                     )
                     _emit_progress(
@@ -1695,17 +1719,39 @@ class PlanEvaluationAttempt:
 
     @property
     def technical_exclusion_case_ids(self) -> tuple[str, ...]:
-        """Failed cases carried over as recorded abstain predictions."""
+        """Failed cases carried over as recorded abstain predictions.
 
-        return tuple(failure.case_id for failure in self.failures) if (
-            self.failures
-            and len(self.trajectories) == len(self.expected_case_ids)
-            and len(self.failures) <= MAX_TECHNICAL_CASE_EXCLUSIONS
-        ) else ()
+        Cumulative per candidate: replayed abstain rows (persisted across
+        restarts) merge with this attempt's fresh failures, so the cap
+        survives evaluation re-entry.
+        """
+
+        if len(self.trajectories) != len(self.expected_case_ids):
+            return ()
+        abstains = {
+            row.case_id
+            for row in self.trajectories
+            if str(row.prediction.session_id).startswith("exclusion_")
+        }
+        fresh = {failure.case_id for failure in self.failures}
+        total = abstains | fresh
+        if not total or len(total) > MAX_TECHNICAL_CASE_EXCLUSIONS:
+            return ()
+        return tuple(sorted(total))
 
     @property
     def metrics(self) -> PlanMetrics | None:
         if len(self.trajectories) != len(self.expected_case_ids):
+            return None
+        total_exclusions = len(
+            {
+                row.case_id
+                for row in self.trajectories
+                if str(row.prediction.session_id).startswith("exclusion_")
+            }
+            | {failure.case_id for failure in self.failures}
+        )
+        if total_exclusions > MAX_TECHNICAL_CASE_EXCLUSIONS:
             return None
         if self.failures and not self.technical_exclusion_case_ids:
             return None
