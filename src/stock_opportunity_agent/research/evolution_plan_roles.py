@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import re
 from dataclasses import replace
@@ -1877,6 +1878,13 @@ class LLMInformationPlanProposer:
         }
         failed_value: Mapping[str, Any] | None = None
         failure: ValidationError | None = None
+        # The proposal attempts share one correction chain so a byte-identical
+        # corrected request fails closed instead of replaying the cached
+        # rejected response through the exact-response cache.
+        with contextlib.ExitStack() as chain_stack:
+            chain = getattr(self.caller, "correction_chain", None)
+            if callable(chain):
+                chain_stack.enter_context(chain(stage="information_plan_propose"))
         for attempt in range(2):
             stage = (
                 "information_plan_propose"

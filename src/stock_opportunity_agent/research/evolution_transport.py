@@ -8,6 +8,8 @@ import math
 import os
 import re
 import subprocess
+import threading
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -22,6 +24,7 @@ from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import ChatMessage, PreparedJsonRequest
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
+    CandidateExecutionRejected,
     EvolutionControlFlow,
     ProgressCallback,
     RuntimeBudgetExceeded,
@@ -524,6 +527,37 @@ class StructuredRoleClient:
         self.max_structured_corrections = int(
             contract.limits.get("max_structured_corrections", 1)
         )
+        # Thread-local so bounded parallel workers never mix their chains.
+        self._chain_state = threading.local()
+
+    @contextmanager
+    def correction_chain(self, *, stage: str):
+        """Scope no-progress request rejection to one logical correction chain.
+
+        Stages ``X`` and ``X_correction`` belong to the same chain. Inside an
+        open chain, a request whose canonical hash was already issued by that
+        chain fails closed before cache lookup: the exact-response cache would
+        replay the previously rejected response, so the retry can make no
+        progress. Requests outside any chain — including supervisor re-runs of
+        an initial attempt after a transport failure, and the same request
+        issued by a different role, plan, or candidate — are unaffected and
+        keep the ordinary cache-hit semantics.
+        """
+
+        base_stage = str(stage).removesuffix("_correction")
+        stack = getattr(self._chain_state, "stack", None)
+        if stack is None:
+            stack = []
+            self._chain_state.stack = stack
+        entry = (base_stage, set())
+        stack.append(entry)
+        try:
+            yield
+        finally:
+            try:
+                stack.remove(entry)
+            except ValueError:
+                pass
 
     def _output_limit(self, requested: int | None, *, binary: bool = False) -> int:
         """Use the frozen reasoning headroom in both preview and execution."""
@@ -810,6 +844,26 @@ class StructuredRoleClient:
             }
         request_hash = _canonical_hash(request)
         self.request_hash_trace.append(request_hash)
+        chain_stack = getattr(self._chain_state, "stack", None)
+        if chain_stack:
+            chain_base, chain_hashes = chain_stack[-1]
+            if chain_base == stage.removesuffix("_correction"):
+                if request_hash in chain_hashes:
+                    _emit_runtime_progress(
+                        self.on_progress,
+                        "correction_no_progress_blocked",
+                        stage=stage,
+                        model_alias=self.registration.alias,
+                        request_hash=request_hash,
+                    )
+                    raise CandidateExecutionRejected(
+                        stage,
+                        "no-progress identical correction request "
+                        f"{request_hash}: the exact-response cache would "
+                        "replay the previously rejected response; change the "
+                        "output instead of re-sending it",
+                    )
+                chain_hashes.add(request_hash)
         request_path = self.requests_root / f"{request_hash}.json"
         _write_or_verify_json(
             request_path,

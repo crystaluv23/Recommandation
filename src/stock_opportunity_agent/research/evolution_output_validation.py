@@ -3083,6 +3083,26 @@ _SCOPED_PROJECTION_EXTENSION_ROUNDS = 6
 
 def _complete_parsed_role(
     caller: JSONRoleCaller,
+    /,
+    **kwargs: Any,
+) -> tuple[Any, AgentUsage]:
+    """Apply the caller's bounded semantic corrections around a structured role.
+
+    When the caller supports chain-scoped no-progress rejection, the whole
+    initial-plus-correction sequence runs inside one correction chain so a
+    byte-identical corrected request fails closed instead of replaying the
+    cached rejected response.
+    """
+
+    chain = getattr(caller, "correction_chain", None)
+    if callable(chain) and isinstance(kwargs.get("stage"), str):
+        with chain(stage=kwargs["stage"]):
+            return _complete_parsed_role_impl(caller, **kwargs)
+    return _complete_parsed_role_impl(caller, **kwargs)
+
+
+def _complete_parsed_role_impl(
+    caller: JSONRoleCaller,
     *,
     stage: str,
     system_prompt: str,
