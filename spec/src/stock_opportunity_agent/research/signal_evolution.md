@@ -549,5 +549,14 @@ whose recorded target identity hash matches the contract — a contract that
 changed after freezing fails closed. `signal_research_objective()` carries
 the label-free target descriptors into H1 and every objective consumer;
 `assert_payload_without_target_groups` is the scanner proving hypothesis and
-extraction payloads stay group-free. Target evaluations persist through the
+extraction payloads stay group-free. The target sampling manifest is
+class-balanced by construction (per contrast group, one case per issuer,
+seeded shuffle, dev/check each draw half their limit from every group) — a
+plain issuer-disjoint split is insufficient because the check side must hold
+both groups for paired validation. When a `SignalEvolutionEngine` runs with
+`research_target_reveal` plus `research_target_sampling`, comparison
+induction draws a class-balanced prefix from the target dev side, comparison
+packets carry positive/control labels from the frozen reveal only, and
+candidate paired validation uses the balanced target check ids; direction
+bookkeeping and the direction-only path are unchanged. Target evaluations persist through the
 SignalRegistry namespace described in `signal_library.md`.

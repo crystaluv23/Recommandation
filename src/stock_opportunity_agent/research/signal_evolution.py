@@ -3292,6 +3292,7 @@ class SignalEvolutionEngine:
         mining_config: SignalMiningConfig = SignalMiningConfig(),
         min_new_signals_per_cycle: int = 1,
         research_target_reveal: Mapping[str, Any] | None = None,
+        research_target_sampling: Mapping[str, Any] | None = None,
     ) -> None:
         if not discovery_cases:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
@@ -3302,6 +3303,7 @@ class SignalEvolutionEngine:
         self.discovery_cases = discovery_cases
         self.meta_memory = meta_memory
         self.research_target_reveal = research_target_reveal
+        self.research_target_sampling = research_target_sampling
         self.workspace = workspace
         self.on_progress = on_progress
         self.mining_model = mining_model
@@ -6164,7 +6166,8 @@ class SignalEvolutionEngine:
                 fetched_case_refs.get(staged_seed)
                 or tuple(opaque.values())
             )
-            validation_case_ids[signal_ref] = tuple(
+            target_validation = self._target_mode_validation_case_ids()
+            validation_case_ids[signal_ref] = target_validation or tuple(
                 [
                     *validation_by_class[True][
                         : self.mining_config.validation_cases_per_class
@@ -6962,17 +6965,47 @@ class SignalEvolutionEngine:
             )
             if target_groups is not None:
                 # Direction-sampled induction refs can miss a target class
-                # entirely; in target mode the ordered research population
-                # joins the candidate sequence and the existing per-class
-                # caps bound consumption (packets are cached per case).
-                population_refs = [
-                    ref
-                    for ref in case_by_ref
-                    if target_groups.get(str(case_by_ref[ref].case_id))
+                # entirely. In target mode the induction source becomes a
+                # class-balanced prefix of the research population (at most
+                # induction_cases_per_class per group), so attempted-case
+                # bookkeeping and the issuer-disjoint validation pool keep
+                # their direction-mode semantics.
+                per_class_limit = config.induction_cases_per_class
+                target_sampling = (
+                    self.research_target_sampling.get("sampling")
+                    if isinstance(self.research_target_sampling, Mapping)
+                    else None
+                )
+                ref_by_case_id = {
+                    case.case_id: ref for ref, case in case_by_ref.items()
+                }
+                dev_case_ids = (
+                    target_sampling.get("dev_case_ids", ())
+                    if isinstance(target_sampling, Mapping)
+                    else ()
+                )
+                dev_refs = [
+                    ref_by_case_id[str(case_id)]
+                    for case_id in dev_case_ids
+                    if str(case_id) in ref_by_case_id
                 ]
-                evidence_case_refs = list(evidence_case_refs) + [
-                    ref for ref in population_refs if ref not in evidence_case_refs
-                ]
+                balanced: list[str] = []
+                for wanted_group in ("ge3_high", "ge3_low"):
+                    taken = 0
+                    for source in (dev_refs, list(case_by_ref)):
+                        for ref in source:
+                            case = case_by_ref[ref]
+                            if (
+                                target_groups.get(str(case.case_id))
+                                == wanted_group
+                                and taken < per_class_limit
+                                and ref not in balanced
+                            ):
+                                balanced.append(ref)
+                                taken += 1
+                        if taken >= per_class_limit:
+                            break
+                evidence_case_refs = balanced or list(evidence_case_refs)
             comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
             for case_ref in evidence_case_refs:
                 case = case_by_ref[case_ref]
@@ -9128,6 +9161,38 @@ class SignalEvolutionEngine:
                 )
         return values
 
+    def _target_mode_validation_case_ids(self) -> tuple[str, ...] | None:
+        """Balanced target-check case ids when a target sampling is active."""
+
+        target_groups = (
+            self.research_target_reveal.get("groups")
+            if isinstance(self.research_target_reveal, Mapping)
+            else None
+        )
+        target_check_case_ids = (
+            self.research_target_sampling.get("sampling", {}).get(
+                "check_case_ids", ()
+            )
+            if isinstance(self.research_target_sampling, Mapping)
+            else ()
+        )
+        if not target_check_case_ids or not target_groups:
+            return None
+        balanced: list[str] = []
+        for wanted_group in ("ge3_high", "ge3_low"):
+            taken = 0
+            for case_id in target_check_case_ids:
+                case_id = str(case_id)
+                if (
+                    target_groups.get(case_id) == wanted_group
+                    and taken
+                    < self.mining_config.validation_cases_per_class
+                    and case_id not in balanced
+                ):
+                    balanced.append(case_id)
+                    taken += 1
+        return tuple(balanced)
+
     def _stage_mining_decisions(
         self,
         decisions: Iterable[SignalMiningDecision],
@@ -9193,11 +9258,24 @@ class SignalEvolutionEngine:
                     )
                     continue
                 selection = selection_by_id[decision.hypothesis_id]
-                induction_case_ids[signal_ref] = tuple(
-                    case_by_ref[case_ref].case_id
-                    for case_ref in selection["induction_refs"]
+                target_dev_ids = (
+                    self.research_target_sampling.get("sampling", {}).get(
+                        "dev_case_ids", ()
+                    )
+                    if isinstance(self.research_target_sampling, Mapping)
+                    else ()
                 )
-                validation_case_ids[signal_ref] = tuple(
+                if target_dev_ids:
+                    induction_case_ids[signal_ref] = tuple(
+                        str(case_id) for case_id in target_dev_ids
+                    )
+                else:
+                    induction_case_ids[signal_ref] = tuple(
+                        case_by_ref[case_ref].case_id
+                        for case_ref in selection["induction_refs"]
+                    )
+                target_validation = self._target_mode_validation_case_ids()
+                validation_case_ids[signal_ref] = target_validation or tuple(
                     case_by_ref[case_ref].case_id
                     for case_ref in selection["validation_refs"]
                 )

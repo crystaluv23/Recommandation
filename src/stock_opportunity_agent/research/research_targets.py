@@ -149,32 +149,68 @@ def build_target_sampling_manifest(
 ) -> dict[str, Any]:
     """Issuer-disjoint dev/check sampling inside one target population."""
 
-    from stock_opportunity_agent.research.signal_evolution import (
-        build_slow_sampling_manifest,
-    )
+    import random as _random
 
     if contract.target_id != MAGNITUDE_GE3_TARGET_ID:
         raise ValidationError("unsupported research target for sampling")
-    population = tuple(
-        case
-        for case in cases
-        if project_magnitude_ge3_group(
+    if dev_limit < 2 or check_limit < 2:
+        raise ValidationError(
+            "target sampling requires at least two cases per split"
+        )
+    # One case per issuer, grouped by contrast class: the split is
+    # class-balanced by construction (the target's groups are its research
+    # classes) and globally issuer-disjoint, so induction and paired
+    # validation each see both groups.
+    by_group: dict[str, list[Any]] = {"ge3_high": [], "ge3_low": []}
+    seen_companies: set[str] = set()
+    ordered = sorted(cases, key=lambda case: str(case.case_id))
+    generator = _random.Random(f"{base_seed}:{contract.target_id}:{cycle_id}")
+    generator.shuffle(ordered)
+    for case in ordered:
+        group = project_magnitude_ge3_group(
             float(case.ground_truth.realized_max_multiple)
         )
-        is not None
-    )
-    sampling = build_slow_sampling_manifest(
-        population,
-        cycle_id=cycle_id,
-        base_seed=f"{base_seed}:{contract.target_id}",
-        dev_limit=dev_limit,
-        check_limit=check_limit,
-    )
+        if group is None or case.company_id in seen_companies:
+            continue
+        seen_companies.add(case.company_id)
+        by_group[group].append(case)
+    per_side = {
+        group: max(1, limit // 2)
+        for group, limit in (
+            ("ge3_high", dev_limit + check_limit),
+            ("ge3_low", dev_limit + check_limit),
+        )
+    }
+    dev_ids: list[str] = []
+    check_ids: list[str] = []
+    for group in ("ge3_high", "ge3_low"):
+        dev_take = max(1, dev_limit // 2)
+        check_take = max(1, check_limit // 2)
+        group_cases = by_group[group]
+        dev_ids.extend(
+            case.case_id for case in group_cases[:dev_take]
+        )
+        check_ids.extend(
+            case.case_id
+            for case in group_cases[dev_take : dev_take + check_take]
+        )
+    del per_side
+    sampling = {
+        "schema_version": "slow-sampling-manifest-v1",
+        "seed": f"{base_seed}:{contract.target_id}",
+        "dev_case_ids": dev_ids,
+        "check_case_ids": check_ids,
+        "issuer_groups": {
+            case.case_id: case.company_id
+            for case in ordered
+            if case.case_id in set(dev_ids) | set(check_ids)
+        },
+    }
     return {
         "schema_version": "research-target-sampling-manifest-v1",
         "target_id": contract.target_id,
         "target_identity_hash": contract.identity_hash(),
-        "population_case_count": len(population),
+        "population_case_count": sum(len(v) for v in by_group.values()),
         "sampling": sampling,
     }
 
