@@ -1,0 +1,154 @@
+{
+  "discovery.json": {
+    "total_cases": 8755,
+    "by_class": {
+      "non_surge": {
+        "cases": 8190,
+        "distinct_issuers": 2068,
+        "month_clusters": {
+          "2025-01": 1677,
+          "2025-03": 1552,
+          "2025-05": 1527,
+          "2025-07": 1656,
+          "2025-09": 1778
+        },
+        "year_counts": {
+          "2025": 8190
+        }
+      },
+      "2-3x": {
+        "cases": 406,
+        "distinct_issuers": 270,
+        "month_clusters": {
+          "2025-01": 27,
+          "2025-03": 94,
+          "2025-05": 109,
+          "2025-07": 105,
+          "2025-09": 71
+        },
+        "year_counts": {
+          "2025": 406
+        }
+      },
+      "3-10x": {
+        "cases": 157,
+        "distinct_issuers": 101,
+        "month_clusters": {
+          "2025-01": 12,
+          "2025-03": 30,
+          "2025-05": 54,
+          "2025-07": 43,
+          "2025-09": 18
+        },
+        "year_counts": {
+          "2025": 157
+        }
+      },
+      "10x+": {
+        "cases": 2,
+        "distinct_issuers": 2,
+        "month_clusters": {
+          "2025-05": 2
+        },
+        "year_counts": {
+          "2025": 2
+        }
+      }
+    },
+    "ge3_projection": {
+      "ge3_high_ge3x": {
+        "cases": 159,
+        "distinct_issuers": 102
+      },
+      "ge3_low_2_to_3x": {
+        "cases": 406,
+        "distinct_issuers": 270
+      },
+      "overlap_issuers_both_groups": 62,
+      "surge_population": 565
+    }
+  },
+  "evolution_validation.json": {
+    "total_cases": 3623,
+    "by_class": {
+      "non_surge": {
+        "cases": 3387,
+        "distinct_issuers": 859,
+        "month_clusters": {
+          "2025-01": 702,
+          "2025-03": 649,
+          "2025-05": 630,
+          "2025-07": 670,
+          "2025-09": 736
+        },
+        "year_counts": {
+          "2025": 3387
+        }
+      },
+      "2-3x": {
+        "cases": 171,
+        "distinct_issuers": 109,
+        "month_clusters": {
+          "2025-01": 10,
+          "2025-03": 23,
+          "2025-05": 55,
+          "2025-07": 50,
+          "2025-09": 33
+        },
+        "year_counts": {
+          "2025": 171
+        }
+      },
+      "3-10x": {
+        "cases": 62,
+        "distinct_issuers": 43,
+        "month_clusters": {
+          "2025-01": 2,
+          "2025-03": 15,
+          "2025-05": 22,
+          "2025-07": 19,
+          "2025-09": 4
+        },
+        "year_counts": {
+          "2025": 62
+        }
+      },
+      "10x+": {
+        "cases": 3,
+        "distinct_issuers": 2,
+        "month_clusters": {
+          "2025-07": 2,
+          "2025-09": 1
+        },
+        "year_counts": {
+          "2025": 3
+        }
+      }
+    },
+    "ge3_projection": {
+      "ge3_high_ge3x": {
+        "cases": 65,
+        "distinct_issuers": 44
+      },
+      "ge3_low_2_to_3x": {
+        "cases": 171,
+        "distinct_issuers": 109
+      },
+      "overlap_issuers_both_groups": 22,
+      "surge_population": 236
+    }
+  },
+  "cross_split_issuer_overlap": {
+    "discovery_and_validation": 0,
+    "discovery_and_locked": 0,
+    "validation_and_locked": 0,
+    "locked_cases": 2181
+  },
+  "validation_ge3_high_month_clusters": {
+    "2025-01": 2,
+    "2025-03": 15,
+    "2025-05": 22,
+    "2025-07": 21,
+    "2025-09": 5
+  }
+}
