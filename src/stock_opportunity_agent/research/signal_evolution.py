@@ -3291,6 +3291,7 @@ class SignalEvolutionEngine:
         effectiveness_minimum_cases: int = 4,
         mining_config: SignalMiningConfig = SignalMiningConfig(),
         min_new_signals_per_cycle: int = 1,
+        research_target_reveal: Mapping[str, Any] | None = None,
     ) -> None:
         if not discovery_cases:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
@@ -3300,6 +3301,7 @@ class SignalEvolutionEngine:
         self.raw_info_store = raw_info_store
         self.discovery_cases = discovery_cases
         self.meta_memory = meta_memory
+        self.research_target_reveal = research_target_reveal
         self.workspace = workspace
         self.on_progress = on_progress
         self.mining_model = mining_model
@@ -6948,15 +6950,39 @@ class SignalEvolutionEngine:
             attempted_case_refs: list[str] = []
             attempted_packet_refs: list[str] = []
             packet_ref_by_case: dict[str, str] = {}
+            target_groups = (
+                self.research_target_reveal.get("groups")
+                if isinstance(self.research_target_reveal, Mapping)
+                else None
+            )
             evidence_case_refs = (
                 selection["induction_refs"]
                 if self._active_sampling_manifest is not None
                 else rankings[hypothesis.hypothesis_id]
             )
+            if target_groups is not None:
+                # Direction-sampled induction refs can miss a target class
+                # entirely; in target mode the ordered research population
+                # joins the candidate sequence and the existing per-class
+                # caps bound consumption (packets are cached per case).
+                population_refs = [
+                    ref
+                    for ref in case_by_ref
+                    if target_groups.get(str(case_by_ref[ref].case_id))
+                ]
+                evidence_case_refs = list(evidence_case_refs) + [
+                    ref for ref in population_refs if ref not in evidence_case_refs
+                ]
             comparator_by_class: dict[bool, list[str]] = {True: [], False: []}
             for case_ref in evidence_case_refs:
                 case = case_by_ref[case_ref]
-                case_class = bool(case.ground_truth.is_surge)
+                if target_groups is not None:
+                    target_group = target_groups.get(str(case.case_id))
+                    if target_group is None:
+                        continue
+                    case_class = target_group == "ge3_high"
+                else:
+                    case_class = bool(case.ground_truth.is_surge)
                 if (
                     len(usable_by_class[case_class])
                     >= config.induction_cases_per_class
@@ -6976,6 +7002,11 @@ class SignalEvolutionEngine:
                         query=hypothesis.query,
                         lookback_days=hypothesis.lookback_days,
                         reveal_label=True,
+                        label_override=(
+                            ("positive" if case_class else "control")
+                            if target_groups is not None
+                            else None
+                        ),
                     )
                     packet_ref = "packet_" + hashlib.sha256(
                         json.dumps(packet_key, sort_keys=True).encode("utf-8")
@@ -8943,6 +8974,7 @@ class SignalEvolutionEngine:
         query: str | None,
         lookback_days: int,
         reveal_label: bool,
+        label_override: str | None = None,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         selection: dict[str, Any] = {}
         available_source_types = set(source_types)
@@ -9032,9 +9064,16 @@ class SignalEvolutionEngine:
             ),
         }
         if reveal_label:
-            packet["label"] = (
-                "positive" if case.ground_truth.is_surge else "control"
-            )
+            if label_override is not None:
+                if label_override not in {"positive", "control"}:
+                    raise ValidationError(
+                        "comparison label override must be positive or control"
+                    )
+                packet["label"] = label_override
+            else:
+                packet["label"] = (
+                    "positive" if case.ground_truth.is_surge else "control"
+                )
         return packet, {
             "case_ref": case_ref,
             "status": (
