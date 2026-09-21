@@ -195,6 +195,80 @@ class ExactResponseCache:
         )
 
 
+class _TicketLock:
+    """Minimal FIFO ticket lock for fair ledger admission."""
+
+    def __init__(self) -> None:
+        self._guard = threading.Lock()
+        self._condition = threading.Condition(self._guard)
+        self._next_ticket = 0
+        self._serving = 0
+
+    def __enter__(self) -> "_TicketLock":
+        with self._condition:
+            ticket = self._next_ticket
+            self._next_ticket += 1
+            while ticket != self._serving:
+                self._condition.wait()
+            return self
+
+    def __exit__(self, *exc_info: object) -> None:
+        with self._condition:
+            self._serving += 1
+            self._condition.notify_all()
+
+
+class _InFlightEntry:
+    """One physical external call that concurrent waiters may share."""
+
+    def __init__(self) -> None:
+        self.done = threading.Event()
+        self.error: BaseException | None = None
+
+
+class InFlightRequestCoordinator:
+    """Leader/waiter sharing of identical concurrent external requests.
+
+    The leader executes the physical call; waiters block boundedly and then
+    read the shared cached response with zero usage, so one logical request
+    pays once. Leader failure wakes waiters to take over as a new leader;
+    waiting never hangs indefinitely.
+    """
+
+    def __init__(self, *, wait_timeout_seconds: float = 600.0) -> None:
+        self.wait_timeout_seconds = wait_timeout_seconds
+        self._guard = threading.Lock()
+        self._entries: dict[str, _InFlightEntry] = {}
+
+    def share(self, request_hash: str, execute, on_shared=None):
+        while True:
+            with self._guard:
+                entry = self._entries.get(request_hash)
+                if entry is None:
+                    entry = _InFlightEntry()
+                    self._entries[request_hash] = entry
+                    leader = True
+                else:
+                    leader = False
+            if leader:
+                try:
+                    return execute()
+                finally:
+                    entry.done.set()
+                    with self._guard:
+                        if self._entries.get(request_hash) is entry:
+                            del self._entries[request_hash]
+            if not entry.done.wait(timeout=self.wait_timeout_seconds):
+                raise ValidationError(
+                    "in-flight request wait exceeded its bound: " + request_hash
+                )
+            if entry.error is None and on_shared is not None:
+                shared = on_shared()
+                if shared is not None:
+                    return shared
+            # The leader failed or stored nothing: take over as a new leader.
+
+
 class ExternalAttemptLedger:
     """Durable fail-closed reservation of attempts and conservative cost.
 
@@ -215,6 +289,8 @@ class ExternalAttemptLedger:
         self.path = Path(path)
         self.max_attempts = max_attempts
         self.max_total_cost = max_total_cost
+        self._admission_lock = _TicketLock()
+        self._write_lock = threading.RLock()
         if not self.path.exists():
             _atomic_write_json(
                 self.path,
@@ -236,6 +312,14 @@ class ExternalAttemptLedger:
     def reserve(self, request_hash: str, *, reserved_cost: float) -> int:
         if reserved_cost <= 0:
             raise ValidationError("reserved request cost must be positive")
+        with self._admission_lock:
+            return self._reserve_locked(request_hash, reserved_cost=reserved_cost)
+
+    def _reserve_locked(self, request_hash: str, *, reserved_cost: float) -> int:
+        with self._write_lock:
+            return self._reserve_unlocked(request_hash, reserved_cost=reserved_cost)
+
+    def _reserve_unlocked(self, request_hash: str, *, reserved_cost: float) -> int:
         data = _read_json(self.path)
         attempts = list(data.get("attempts", ()))
         if len(attempts) >= self.max_attempts:
@@ -282,6 +366,26 @@ class ExternalAttemptLedger:
     ) -> None:
         if status not in {"completed", "failed"} or actual_cost < 0:
             raise ValidationError("invalid attempt completion")
+        with self._write_lock:
+            return self._finalize_locked(
+                attempt_id,
+                status=status,
+                actual_cost=actual_cost,
+                response_hash=response_hash,
+                error_type=error_type,
+                error_message=error_message,
+            )
+
+    def _finalize_locked(
+        self,
+        attempt_id: int,
+        *,
+        status: str,
+        actual_cost: float,
+        response_hash: str | None = None,
+        error_type: str | None = None,
+        error_message: str | None = None,
+    ) -> None:
         data = _read_json(self.path)
         attempts = list(data.get("attempts", ()))
         try:
@@ -529,6 +633,7 @@ class StructuredRoleClient:
         )
         # Thread-local so bounded parallel workers never mix their chains.
         self._chain_state = threading.local()
+        self._inflight = InFlightRequestCoordinator()
 
     @contextmanager
     def correction_chain(self, *, stage: str):
@@ -973,173 +1078,192 @@ class StructuredRoleClient:
             input_tokens=estimated_input_tokens,
             output_tokens=output_limit,
         )
-        attempt_id = self.ledger.reserve(request_hash, reserved_cost=reserved_cost)
-        _emit_runtime_progress(
-            self.on_progress,
-            "external_call_started",
-            stage=stage,
-            model_alias=self.registration.alias,
-            request_hash=request_hash,
-            attempt_id=attempt_id,
-            reserved_cost=reserved_cost,
-        )
-        try:
-            response = client.complete(messages, **kwargs)
-            usage_data = response.raw.get("usage", {})
-            input_tokens = int(
-                usage_data.get(
-                    "input_tokens",
-                    usage_data.get("prompt_tokens", estimated_input_tokens),
-                )
-            )
-            output_tokens = int(
-                usage_data.get(
-                    "output_tokens",
-                    usage_data.get("completion_tokens", 0),
-                )
-            )
-            actual_cost = _model_cost(
-                self.registration,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-            )
-            usage = AgentUsage(
-                llm_calls=1,
-                tokens=input_tokens + output_tokens,
-                cost=actual_cost,
-            )
-            provider_usage = _provider_usage_record(
-                usage_data,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-                cost=actual_cost,
-            )
-            structured_output_normalization: dict[str, str] | None = None
-            try:
-                if binary_token_output:
-                    if response.output_text not in (decision_tokens or ()):
-                        raise ValidationError(
-                            "provider must return exactly one canonical binary token"
-                        )
-                    parsed = {str(decision_field): response.output_text}
-                else:
-                    parsed, structured_output_normalization = (
-                        _parse_json_object_envelope(response.output_text)
+        def _execute_external_attempt():
+            # One physical call per identical concurrent request: the leader
+            # executes and caches; waiters share the cached response with
+            # zero usage so the ledger records the physical call once.
+                    attempt_id = self.ledger.reserve(request_hash, reserved_cost=reserved_cost)
+                    _emit_runtime_progress(
+                        self.on_progress,
+                        "external_call_started",
+                        stage=stage,
+                        model_alias=self.registration.alias,
+                        request_hash=request_hash,
+                        attempt_id=attempt_id,
+                        reserved_cost=reserved_cost,
                     )
-            except (json.JSONDecodeError, ValidationError) as exc:
-                failure_record = {
-                    "request_hash": request_hash,
-                    "attempt_id": attempt_id,
-                    "response_id": response.response_id,
-                    "model": response.model,
-                    "raw_output": response.output_text,
-                    "error_type": type(exc).__name__,
-                    "error": str(exc),
-                    "usage": provider_usage,
-                }
-                failure_path = (
-                    self.workspace
-                    / "failed_responses"
-                    / f"{attempt_id:06d}_{request_hash}.json"
-                )
-                _atomic_write_json(failure_path, failure_record)
-                response_hash = _canonical_hash(failure_record)
-                self.ledger.finalize(
-                    attempt_id,
-                    status="failed",
-                    actual_cost=actual_cost,
-                    response_hash=response_hash,
-                    error_type=type(exc).__name__,
-                    error_message=str(exc),
-                )
-                _emit_runtime_progress(
-                    self.on_progress,
-                    "external_call_failed",
-                    stage=stage,
-                    model_alias=self.registration.alias,
-                    request_hash=request_hash,
-                    attempt_id=attempt_id,
-                    error_type=type(exc).__name__,
-                    failure_path=str(failure_path),
-                )
-                raise StructuredOutputInvalid(
-                    f"provider returned invalid structured output: {exc}",
-                    response.output_text,
-                    usage,
-                    output_tokens=output_tokens,
-                    output_token_limit=output_limit,
-                ) from exc
-            scores = (
-                _extract_decision_token_scores(
-                    response.raw,
-                    parsed=parsed,
-                    decision_field=str(decision_field),
-                    decision_tokens=decision_tokens,
-                )
-                if supports_token_logprobs and decision_tokens is not None
-                else None
+                    try:
+                        response = client.complete(messages, **kwargs)
+                        usage_data = response.raw.get("usage", {})
+                        input_tokens = int(
+                            usage_data.get(
+                                "input_tokens",
+                                usage_data.get("prompt_tokens", estimated_input_tokens),
+                            )
+                        )
+                        output_tokens = int(
+                            usage_data.get(
+                                "output_tokens",
+                                usage_data.get("completion_tokens", 0),
+                            )
+                        )
+                        actual_cost = _model_cost(
+                            self.registration,
+                            input_tokens=input_tokens,
+                            output_tokens=output_tokens,
+                        )
+                        usage = AgentUsage(
+                            llm_calls=1,
+                            tokens=input_tokens + output_tokens,
+                            cost=actual_cost,
+                        )
+                        provider_usage = _provider_usage_record(
+                            usage_data,
+                            input_tokens=input_tokens,
+                            output_tokens=output_tokens,
+                            cost=actual_cost,
+                        )
+                        structured_output_normalization: dict[str, str] | None = None
+                        try:
+                            if binary_token_output:
+                                if response.output_text not in (decision_tokens or ()):
+                                    raise ValidationError(
+                                        "provider must return exactly one canonical binary token"
+                                    )
+                                parsed = {str(decision_field): response.output_text}
+                            else:
+                                parsed, structured_output_normalization = (
+                                    _parse_json_object_envelope(response.output_text)
+                                )
+                        except (json.JSONDecodeError, ValidationError) as exc:
+                            failure_record = {
+                                "request_hash": request_hash,
+                                "attempt_id": attempt_id,
+                                "response_id": response.response_id,
+                                "model": response.model,
+                                "raw_output": response.output_text,
+                                "error_type": type(exc).__name__,
+                                "error": str(exc),
+                                "usage": provider_usage,
+                            }
+                            failure_path = (
+                                self.workspace
+                                / "failed_responses"
+                                / f"{attempt_id:06d}_{request_hash}.json"
+                            )
+                            _atomic_write_json(failure_path, failure_record)
+                            response_hash = _canonical_hash(failure_record)
+                            self.ledger.finalize(
+                                attempt_id,
+                                status="failed",
+                                actual_cost=actual_cost,
+                                response_hash=response_hash,
+                                error_type=type(exc).__name__,
+                                error_message=str(exc),
+                            )
+                            _emit_runtime_progress(
+                                self.on_progress,
+                                "external_call_failed",
+                                stage=stage,
+                                model_alias=self.registration.alias,
+                                request_hash=request_hash,
+                                attempt_id=attempt_id,
+                                error_type=type(exc).__name__,
+                                failure_path=str(failure_path),
+                            )
+                            raise StructuredOutputInvalid(
+                                f"provider returned invalid structured output: {exc}",
+                                response.output_text,
+                                usage,
+                                output_tokens=output_tokens,
+                                output_token_limit=output_limit,
+                            ) from exc
+                        scores = (
+                            _extract_decision_token_scores(
+                                response.raw,
+                                parsed=parsed,
+                                decision_field=str(decision_field),
+                                decision_tokens=decision_tokens,
+                            )
+                            if supports_token_logprobs and decision_tokens is not None
+                            else None
+                        )
+                        response_record = {
+                            "response_id": response.response_id,
+                            "model": response.model,
+                            "json_output": parsed,
+                            "usage": provider_usage,
+                        }
+                        if structured_output_normalization is not None:
+                            response_record["structured_output_normalization"] = (
+                                structured_output_normalization
+                            )
+                        if decision_tokens is not None:
+                            response_record["decision_token_scores"] = (
+                                scores.to_dict() if scores is not None else None
+                            )
+                        self.cache.store(request_hash, response_record)
+                        response_hash = _canonical_hash(response_record)
+                        self.ledger.finalize(
+                            attempt_id,
+                            status="completed",
+                            actual_cost=actual_cost,
+                            response_hash=response_hash,
+                        )
+                        _emit_runtime_progress(
+                            self.on_progress,
+                            "external_call_completed",
+                            stage=stage,
+                            model_alias=self.registration.alias,
+                            request_hash=request_hash,
+                            attempt_id=attempt_id,
+                            input_tokens=input_tokens,
+                            output_tokens=output_tokens,
+                            prompt_cache_hit_tokens=provider_usage.get(
+                                "prompt_cache_hit_tokens"
+                            ),
+                            prompt_cache_miss_tokens=provider_usage.get(
+                                "prompt_cache_miss_tokens"
+                            ),
+                            actual_cost=actual_cost,
+                        )
+                        return parsed, usage, scores
+                    except StructuredOutputInvalid:
+                        raise
+                    except Exception as exc:
+                            self.ledger.finalize(
+                                attempt_id,
+                                status="failed",
+                                actual_cost=0.0,
+                                error_type=type(exc).__name__,
+                                error_message=str(exc),
+                            )
+                            _emit_runtime_progress(
+                                self.on_progress,
+                                "external_call_failed",
+                                stage=stage,
+                                model_alias=self.registration.alias,
+                                request_hash=request_hash,
+                                attempt_id=attempt_id,
+                                error_type=type(exc).__name__,
+                                error_message=str(exc)[:500],
+                            )
+                            raise
+        def _shared_cached_result():
+            cached = self.cache.load(request_hash)
+            if cached is None:
+                return None
+            return (
+                dict(cached["json_output"]),
+                AgentUsage(),
+                _decision_token_scores_from_cache(cached),
             )
-            response_record = {
-                "response_id": response.response_id,
-                "model": response.model,
-                "json_output": parsed,
-                "usage": provider_usage,
-            }
-            if structured_output_normalization is not None:
-                response_record["structured_output_normalization"] = (
-                    structured_output_normalization
-                )
-            if decision_tokens is not None:
-                response_record["decision_token_scores"] = (
-                    scores.to_dict() if scores is not None else None
-                )
-            self.cache.store(request_hash, response_record)
-            response_hash = _canonical_hash(response_record)
-            self.ledger.finalize(
-                attempt_id,
-                status="completed",
-                actual_cost=actual_cost,
-                response_hash=response_hash,
-            )
-            _emit_runtime_progress(
-                self.on_progress,
-                "external_call_completed",
-                stage=stage,
-                model_alias=self.registration.alias,
-                request_hash=request_hash,
-                attempt_id=attempt_id,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-                prompt_cache_hit_tokens=provider_usage.get(
-                    "prompt_cache_hit_tokens"
-                ),
-                prompt_cache_miss_tokens=provider_usage.get(
-                    "prompt_cache_miss_tokens"
-                ),
-                actual_cost=actual_cost,
-            )
-            return parsed, usage, scores
-        except StructuredOutputInvalid:
-            raise
-        except Exception as exc:
-                self.ledger.finalize(
-                    attempt_id,
-                    status="failed",
-                    actual_cost=0.0,
-                    error_type=type(exc).__name__,
-                    error_message=str(exc),
-                )
-                _emit_runtime_progress(
-                    self.on_progress,
-                    "external_call_failed",
-                    stage=stage,
-                    model_alias=self.registration.alias,
-                    request_hash=request_hash,
-                    attempt_id=attempt_id,
-                    error_type=type(exc).__name__,
-                    error_message=str(exc)[:500],
-                )
-                raise
+
+        return self._inflight.share(
+            request_hash,
+            _execute_external_attempt,
+            on_shared=_shared_cached_result,
+        )
 
 
 class JSONRoleCaller(Protocol):

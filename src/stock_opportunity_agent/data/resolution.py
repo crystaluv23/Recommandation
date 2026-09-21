@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import threading
 import os
 import re
 from dataclasses import dataclass
@@ -13,7 +14,10 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
-from stock_opportunity_agent.data.sources.state import DataQuotaDeferred
+from stock_opportunity_agent.data.sources.state import (
+    DataQuotaDeferred,
+    jsonl_append_lock,
+)
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -1013,6 +1017,9 @@ def broad_research_data_policy_v1() -> DataAcquisitionPolicy:
     )
 
 
+_COUNTER_LOCK = threading.Lock()
+
+
 @dataclass
 class DataAcquisitionBudget:
     """Mutable request counters shared by every resolver in one run/cycle."""
@@ -1036,27 +1043,38 @@ class DataAcquisitionBudget:
         )
 
     def reserve(self, request: RawInfoRequest, provider: str) -> None:
-        """Durably reserve one provider-level acquisition request."""
+        """Durably reserve one provider-level acquisition request.
 
-        self.cycle_requests += 1
-        self.run_requests += 1
-        if self.ledger_path is None:
-            return
-        self.ledger_path.parent.mkdir(parents=True, exist_ok=True)
-        with self.ledger_path.open("a", encoding="utf-8") as handle:
-            handle.write(
-                json.dumps(
-                    {
-                        "cycle_id": self.cycle_id,
-                        "request_id": request.request_id,
-                        "provider": provider,
-                    },
-                    sort_keys=True,
+        The counter update and the complete JSONL append share the path
+        append lock so bounded parallel workers never interleave half lines,
+        double-count, or lose settled status.
+        """
+
+        lock = (
+            jsonl_append_lock(self.ledger_path)
+            if self.ledger_path is not None
+            else _COUNTER_LOCK
+        )
+        with lock:
+            self.cycle_requests += 1
+            self.run_requests += 1
+            if self.ledger_path is None:
+                return
+            self.ledger_path.parent.mkdir(parents=True, exist_ok=True)
+            with self.ledger_path.open("a", encoding="utf-8") as handle:
+                handle.write(
+                    json.dumps(
+                        {
+                            "cycle_id": self.cycle_id,
+                            "request_id": request.request_id,
+                            "provider": provider,
+                        },
+                        sort_keys=True,
+                    )
+                    + "\n"
                 )
-                + "\n"
-            )
-            handle.flush()
-            os.fsync(handle.fileno())
+                handle.flush()
+                os.fsync(handle.fileno())
 
 
 class EvidenceResolver:

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import threading
 from dataclasses import dataclass
 from datetime import datetime, time, timedelta, timezone
 from enum import Enum
@@ -229,6 +230,22 @@ class RequestLedgerEntry:
         )
 
 
+_APPEND_LOCKS_GUARD = threading.Lock()
+_APPEND_LOCKS: dict[str, threading.Lock] = {}
+
+
+def jsonl_append_lock(path: Path) -> threading.Lock:
+    """Return the process-wide append lock for one JSONL ledger path."""
+
+    key = str(path.resolve())
+    with _APPEND_LOCKS_GUARD:
+        lock = _APPEND_LOCKS.get(key)
+        if lock is None:
+            lock = threading.Lock()
+            _APPEND_LOCKS[key] = lock
+        return lock
+
+
 class RequestLedger:
     """Append-only JSONL request ledger."""
 
@@ -236,13 +253,14 @@ class RequestLedger:
         self.path = Path(path)
 
     def append(self, entry: RequestLedgerEntry) -> None:
-        """Append one request event."""
+        """Append one complete request event under the path append lock."""
 
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(entry.to_dict(), sort_keys=True) + "\n")
-            handle.flush()
-            os.fsync(handle.fileno())
+        with jsonl_append_lock(self.path):
+            with self.path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(entry.to_dict(), sort_keys=True) + "\n")
+                handle.flush()
+                os.fsync(handle.fileno())
 
     def entries(self, *, source_key: str | None = None) -> list[RequestLedgerEntry]:
         """Return ledger entries, optionally filtered by source."""
