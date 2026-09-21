@@ -521,9 +521,17 @@ induction and validation pools, issuer and date isolation, prediction-time
 evidence coverage, and user-confirmed minimum support thresholds. A target
 whose gate is unconfirmed or failing gets no target-specific schema,
 projection, sampler, prompt, validation, or promotion code. As of 2026-09-21:
-`magnitude_ge10` and `magnitude_extremes` are blocked (insufficient support);
-`magnitude_ge3` passes the raw data checks but its numeric thresholds await
-user confirmation. Label-free extraction (H1 hypothesis, E1/H2 evidence) never
+`magnitude_ge10` and `magnitude_extremes` are blocked (insufficient issuer
+support); `magnitude_ge3` thresholds were user-confirmed, issuer and month
+criteria pass, but the required full-pool point-in-time evidence-coverage
+audit FAILED (discovery 49.32% / validation 4.86% against the confirmed 90%
+floor — see the C5 audit report), so ge3-specific implementation is blocked
+as `insufficient_pit_coverage` until an authorized evidence backfill or a
+re-confirmed population restriction changes the audit outcome. The frozen
+contract shape (fixed label projection at 3x over the true-≥2x population,
+target version and evaluation protocol in work/cache identity, group
+membership revealed only after evidence-pack freezing) is settled design and
+may be implemented only after the gate record passes. Label-free extraction (H1 hypothesis, E1/H2 evidence) never
 sees group membership; grouping reaches only E2/H3 after evidence packs are
 frozen. Promotion for magnitude targets remains an unapproved change: until a
 separately confirmed decision package, existing directional gates apply

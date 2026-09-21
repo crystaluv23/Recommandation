@@ -30,7 +30,7 @@
 | 发行人与日期隔离 | 跨 split 发行人重叠 **0**（discovery∩validation、discovery∩locked、validation∩locked 均为 0；locked 2,181 案未读内容仅用 id 集合核对重叠）；Slow 侧 dev/check 由既有 `build_slow_sampling_manifest` 强制发行人隔离 |
 | 预测时证据覆盖 | 快照级已验证（v13 round-1 24 案全部有 PIT news）；**全池逐案覆盖审计延后到 C5 挖掘前**执行，gate 记录保留该未闭环项 |
 | 已确认最低支持要求 | **已确认（2026-09-21 用户批准建议值）**：每数据集每分组 ≥30 独立发行人；≥3 个不同月份簇；dev/check 发行人隔离可行（既有机制）；C5 挖掘前完成全池逐案 PIT 证据覆盖审计（≥90%，失败计入） |
-| 结论 | **门槛通过（发行人 102/270、44/109 与 5 月份簇均达标；隔离机制既有）；PIT 全池覆盖审计作为 C5 挖掘前准入项保持开放**。ge3 专属实施解锁；ge10/extremes 维持 blocked |
+| 结论 | 发行人（102/270、44/109）与月份簇（5 簇）达标；**PIT 全池覆盖审计已于 2026-09-21 执行并失败（discovery 49.32%／validation 4.86% < 90%）**，见 [`signal-magnitude-c5-pit-coverage-audit-20260921.md`](signal-magnitude-c5-pit-coverage-audit-20260921.md)。ge3 实施回到 blocked（insufficient_pit_coverage），解锁路径（补采授权／缩总体重确认／维持 blocked）待用户选择；ge10/extremes 维持 blocked |
 
 **已确认门槛（2026-09-21 用户批准）**：每个数据集每分组 ≥30 独立发行人、≥3 个不同月份簇、dev/check 发行人隔离可行（既有机制）、全池逐案 PIT 证据覆盖 ≥90% 且失败计入（C5 挖掘前执行）。按此门槛 ge3 在两池均满足前两条；证据覆盖项待 C5 前审计。
 
