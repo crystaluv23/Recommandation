@@ -1306,6 +1306,80 @@ class SignalRegistryTransition:
     promoted: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class SignalTargetEvaluation:
+    """One target-scoped evaluation record referencing a physical observation.
+
+    Direction statistics (SignalStats, surge_rate, learning events) are
+    unchanged; these records live in their own namespace keyed by Signal
+    version x target x evaluation protocol. Several targets may reference the
+    same observation without re-counting the physical execution. A Signal with
+    no records for a target is unknown for it -- never zero-filled support.
+    """
+
+    evaluation_id: str
+    signal_ref: str
+    target_id: str
+    evaluation_protocol: str
+    observation_key: str
+    result: str
+    created_at: str
+
+    def __post_init__(self) -> None:
+        for name in (
+            "evaluation_id",
+            "signal_ref",
+            "target_id",
+            "evaluation_protocol",
+            "observation_key",
+            "result",
+            "created_at",
+        ):
+            if not str(getattr(self, name)).strip():
+                raise ValidationError(f"Signal target evaluation {name} is required")
+        if self.result not in {
+            "supported",
+            "contradicted",
+            "inconclusive",
+            "insufficient_evidence",
+        }:
+            raise ValidationError("Signal target evaluation result is invalid")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "evaluation_id": self.evaluation_id,
+            "signal_ref": self.signal_ref,
+            "target_id": self.target_id,
+            "evaluation_protocol": self.evaluation_protocol,
+            "observation_key": self.observation_key,
+            "result": self.result,
+            "created_at": self.created_at,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "SignalTargetEvaluation":
+        required = {
+            "evaluation_id",
+            "signal_ref",
+            "target_id",
+            "evaluation_protocol",
+            "observation_key",
+            "result",
+            "created_at",
+        }
+        if set(data) != required:
+            raise ValidationError("Signal target evaluation fields are invalid")
+        return cls(
+            evaluation_id=str(data["evaluation_id"]),
+            signal_ref=str(data["signal_ref"]),
+            target_id=str(data["target_id"]),
+            evaluation_protocol=str(data["evaluation_protocol"]),
+            observation_key=str(data["observation_key"]),
+            result=str(data["result"]),
+            created_at=str(data["created_at"]),
+        )
+
+
 class SignalRegistry:
     """File-backed progressive-disclosure Signal Registry."""
 
@@ -1613,6 +1687,92 @@ class SignalRegistry:
         if len({event.event_id for event in events}) != len(events):
             raise ValidationError("duplicate Signal learning event ids on disk")
         return tuple(events)
+
+    def record_target_evaluations(
+        self,
+        evaluations: Iterable[SignalTargetEvaluation],
+    ) -> int:
+        """Append target evaluations idempotently by exact evaluation id."""
+
+        existing = {
+            record.evaluation_id
+            for record in self._load_target_evaluation_rows()
+        }
+        appended = 0
+        for evaluation in evaluations:
+            if not isinstance(evaluation, SignalTargetEvaluation):
+                raise ValidationError("target evaluation must be a SignalTargetEvaluation")
+            if evaluation.evaluation_id in existing:
+                continue
+            existing.add(evaluation.evaluation_id)
+            appended += 1
+            self._target_evaluations_path().parent.mkdir(parents=True, exist_ok=True)
+            with self._target_evaluations_path().open("a", encoding="utf-8") as handle:
+                handle.write(
+                    json.dumps(evaluation.to_dict(), sort_keys=True) + "\n"
+                )
+        return appended
+
+    def load_target_evaluations(
+        self,
+        signal_ref: str,
+        *,
+        target_id: str | None = None,
+    ) -> tuple[SignalTargetEvaluation, ...]:
+        """Load committed target evaluations for one exact Signal version."""
+
+        self.load_spec(signal_ref)
+        records = []
+        for evaluation in self._load_target_evaluation_rows():
+            if evaluation.signal_ref != signal_ref:
+                continue
+            if target_id is not None and evaluation.target_id != target_id:
+                continue
+            records.append(evaluation)
+        return tuple(records)
+
+    def target_support(self, signal_ref: str, target_id: str) -> dict[str, Any] | None:
+        """Summarize target support; None means unknown, never zero support."""
+
+        records = self.load_target_evaluations(signal_ref, target_id=target_id)
+        if not records:
+            return None
+        counts: dict[str, int] = {}
+        for evaluation in records:
+            counts[evaluation.result] = counts.get(evaluation.result, 0) + 1
+        return {
+            "target_id": target_id,
+            "signal_ref": signal_ref,
+            "evaluation_count": len(records),
+            "results": dict(sorted(counts.items())),
+            "protocols": sorted(
+                {evaluation.evaluation_protocol for evaluation in records}
+            ),
+        }
+
+    def _target_evaluations_path(self) -> Path:
+        return self.root / "target_evaluations.jsonl"
+
+    def _load_target_evaluation_rows(self) -> tuple[SignalTargetEvaluation, ...]:
+        path = self._target_evaluations_path()
+        if not path.exists():
+            return ()
+        rows: list[SignalTargetEvaluation] = []
+        for line_number, line in enumerate(
+            path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if not line.strip():
+                continue
+            try:
+                rows.append(SignalTargetEvaluation.from_dict(json.loads(line)))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+                raise ValidationError(
+                    f"invalid Signal target evaluation at {path}:{line_number}"
+                ) from exc
+        if len({row.evaluation_id for row in rows}) != len(rows):
+            raise ValidationError("duplicate Signal target evaluation ids on disk")
+        return tuple(rows)
+
 
     def load_learning_profile(self, signal_ref: str) -> dict[str, Any]:
         """Load the rebuildable identity-free profile for one exact version."""

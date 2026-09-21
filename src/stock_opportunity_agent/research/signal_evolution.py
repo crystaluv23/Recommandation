@@ -38,6 +38,9 @@ from stock_opportunity_agent.signal_library import (
     signal_result_model_view,
 )
 
+from stock_opportunity_agent.research.research_targets import (
+    active_research_targets,
+)
 from stock_opportunity_agent.research.evolution_core import (
     AgentStep,
     CandidateExecutionRejected,
@@ -106,7 +109,7 @@ from stock_opportunity_agent.research.plan_evolution import (
 )
 
 
-def signal_research_objective() -> dict[str, Any]:
+def signal_research_objective() -> dict[str, Any]:  # noqa: PLR0911
     """Expose fixed task semantics without individual case identities or outcomes."""
 
     return {
@@ -126,6 +129,10 @@ def signal_research_objective() -> dict[str, Any]:
             "information available by each prediction time. Acquisition quality "
             "and missing observations must remain separate from business features."
         ),
+        "research_targets": [
+            contract.descriptor()
+            for contract in active_research_targets()
+        ],
     }
 
 

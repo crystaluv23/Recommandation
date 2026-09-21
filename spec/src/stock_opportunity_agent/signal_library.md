@@ -568,7 +568,7 @@ never substitutes a built-in description merely because the function name
 matches. Missing documentation is explicit. These descriptions do not change
 execution, thresholds, point-in-time checks, or candidate validation.
 
-## Multi-target evaluation statistics (gated, unimplemented)
+## Multi-target evaluation statistics (implemented for magnitude_ge3_v1)
 
 Approved design direction (2026-09-21 action plan, gated behind the magnitude
 data gate): Signal observation statistics remain direction-keyed and unchanged
@@ -583,6 +583,15 @@ evaluations may reference that same observation with their own evaluation
 identity and result. Observation deduplication and target-evaluation
 deduplication are separate idempotency rules, including across restarts.
 Records that predate a target are unknown for it — never zero-filled and never
-counted as support. No target-specific schema, sampler, prompt, or statistics
-code is implemented until that target's data-gate record passes; see
-`signal_evolution.md`.
+counted as support. The ge3 target passed its data gate on 2026-09-21 (user-confirmed thresholds
+plus the post-backfill PIT re-audit), so its implementation is active:
+`SignalTargetEvaluation` records (fields: evaluation_id, signal_ref,
+target_id, evaluation_protocol, observation_key, result in
+supported/contradicted/inconclusive/insufficient_evidence, created_at) are
+appended idempotently by exact evaluation_id to the registry-level
+`target_evaluations.jsonl`; `SignalRegistry.load_target_evaluations` filters
+by exact Signal version and optional target; `target_support` summarizes a
+target's records and returns None — unknown, never zero — when a Signal has
+none. Direction statistics and surge_rate are untouched, and recording
+evaluations never mutates SignalStats. Other targets remain unimplemented
+until their own gate records pass; see `signal_evolution.md`.

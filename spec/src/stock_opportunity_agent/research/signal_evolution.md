@@ -509,7 +509,7 @@ identical for both paths and are never weakened for yield. The controller's
 mining ledger is a new feedback unit type whose reflection consumption follows
 the existing append-only memory rules.
 
-## Magnitude research targets (data-gated)
+## Magnitude research targets (ge3 implemented; others data-gated)
 
 Magnitude-class research targets reuse the existing Mining chain with a frozen
 target contract: a fixed projection of the existing realized labels (for
@@ -536,3 +536,18 @@ sees group membership; grouping reaches only E2/H3 after evidence packs are
 frozen. Promotion for magnitude targets remains an unapproved change: until a
 separately confirmed decision package, existing directional gates apply
 unchanged and Slow reports keep `magnitude_contribution.assessed=false`.
+
+Implemented for magnitude_ge3_v1 (2026-09-21, after the gate passed):
+`research_targets.py` owns the frozen `ResearchTargetContract` (identity
+hash over target_id/population/rules/version/protocol), the realized-label
+projection (>=3x high, [2,3) low, below 2x excluded — false negatives
+included because the population is defined by true labels), hash-linked
+group manifests, target-scoped issuer-disjoint dev/check sampling seeded by
+`base_seed:target_id`, and the reveal boundary: per-case groups are released
+to comparison roles only against one exact frozen evidence-pack manifest
+whose recorded target identity hash matches the contract — a contract that
+changed after freezing fails closed. `signal_research_objective()` carries
+the label-free target descriptors into H1 and every objective consumer;
+`assert_payload_without_target_groups` is the scanner proving hypothesis and
+extraction payloads stay group-free. Target evaluations persist through the
+SignalRegistry namespace described in `signal_library.md`.
