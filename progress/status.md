@@ -1,5 +1,7 @@
 # Status
 
+2026-09-21：新增 [Signal 幅度进化与 Fast Plan 并行执行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md)，基于 `9f85f46` 核查，承接已实现的幅度反馈／F1 同分幅度次序／Slow 诊断接线。方案分开规划幅度分层挖掘与目标适配晋升、Plan 级有界并发与预算／缓存／恢复协调，附 C0–C8 实施顺序、故障矩阵、实机效果判据及回滚。仅文档提案，未修改运行代码、现行规格或启动外部调用；研究和接口决策须确认后更新 owning specs，实机另行冻结授权预算。
+
 2026-09-20：新增 [Fast／Slow magnitude 双目标进化行动计划](../reports/fast-slow-magnitude-evolution-action-plan-20260920.md)。只读核验 V130 round 1 已提交、cycle 0／active slow_loop；24 案 F1=0.8、magnitude accuracy=5/14、macro-F1≈0.17544，七案方向正确但幅度低估。计划涵盖确定性反馈、反思与 proposer 跨轮任务、待确认的 F1 主序／幅度次序、Slow 信息供给与纯幅度晋升限制、恢复回归和配对实机验收。当前为非规范性提案，尚未修改上层单一 F1 契约、运行代码或执行新调用；研究规则须确认后自上而下更新规格。此次文档 checkpoint 会改变 HEAD，恢复 V130 仍须使用其原契约匹配 revision。
 
 2026-09-20（round-29/30）**fast round 收尾：meta 单调性修复 + 摩擦优化（不弱化守卫）**：
