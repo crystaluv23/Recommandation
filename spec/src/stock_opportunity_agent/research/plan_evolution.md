@@ -37,6 +37,25 @@ on the Slow Signal engine.
 - A resumed Slow loop refreshes the backlog before creating a new frozen Slow
   validation. An already staged validation retains its exact original backlog.
 
+## Per-case technical-exclusion carry-over (user-approved 2026-09-21)
+
+A CandidateExecutionRejected case (bounded correction exhaustion, including
+the same-request guard) records its failure artifact, abstains as a real
+finalized negative prediction (`insufficient_information` with a persisted
+prediction ref), stays in the label-blind confusion matrix, and never blocks
+the candidate while at most `MAX_TECHNICAL_CASE_EXCLUSIONS` (2) cases are
+excluded in one evaluation. Abstain rows are exempt only from the
+source-evidence eligibility check — their absence of evidence reflects the
+recorded failure, not a research gap; completeness, finalization, and
+non-degenerate-fitness gates still apply unchanged. Above the cap, or for
+control-plane errors (budget, shared-data availability), the attempt remains
+a rejection exactly as before. `PlanEvaluationAttempt.technical_exclusion_case_ids`
+persists the auditable exclusion list; the fitness reasons stay clean (an
+exclusion never appears as a blocking reason). Corrected initialize output
+must satisfy every prior obligation simultaneously: horizon compliance and
+claim-quantity grounding are jointly required, and repairing one by
+reintroducing the other is not a correction.
+
 ## Bounded parallel candidate evaluation
 
 One coordinator (the engine, holding the workspace execution lock) may

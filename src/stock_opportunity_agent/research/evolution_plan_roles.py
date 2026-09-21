@@ -186,7 +186,14 @@ class LLMResearchController:
                 "nor absence. The downstream Predictor receives this compact "
                 "ResearchState rather than full Basic "
                 "projections, so retain the smallest material direct support or "
-                "counter-evidence without enumerating requests or sources."
+                "counter-evidence without enumerating requests or sources. "
+                "Corrections must satisfy every prior obligation simultaneously: a "
+                "hypothesis reframed to respect the six-month horizon whose "
+                "corrected claims then cite quantities absent from the exact_text "
+                "refs is still invalid, and so is the reverse - fixing the claims "
+                "by reintroducing an out-of-horizon condition. Re-read every "
+                "validation_feedback obligation and keep all previously satisfied "
+                "ones satisfied while repairing the named failure."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),

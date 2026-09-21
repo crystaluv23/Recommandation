@@ -3226,16 +3226,31 @@ def assess_fitness_eligibility(
     trajectories: Iterable[ExecutionTrajectory],
     *,
     expected_case_ids: Iterable[str],
+    technical_exclusion_case_ids: Iterable[str] = (),
 ) -> FitnessEligibility:
-    """Assess completeness, finalization, evidence, and non-degenerate fitness."""
+    """Assess completeness, finalization, evidence, and non-degenerate fitness.
+
+    ``technical_exclusion_case_ids`` marks recorded abstain rows (bounded
+    correction exhaustion): they must still be finalized predictions and still
+    count in the confusion matrix, but their lack of source evidence reflects
+    the recorded failure, not a research gap, and never blocks eligibility.
+    """
 
     rows = tuple(trajectories)
     expected = tuple(str(item) for item in expected_case_ids)
+    exclusions = frozenset(str(item) for item in technical_exclusion_case_ids)
     actual = tuple(row.case_id for row in rows)
     valid_rows = tuple(
         row for row in rows if _trajectory_is_fitness_finalized(row)
     )
-    evidence_covered = sum(_trajectory_has_source_evidence(row) for row in rows)
+    evidence_covered = sum(
+        _trajectory_has_source_evidence(row)
+        for row in rows
+        if row.case_id not in exclusions
+    )
+    evidence_required = sum(
+        1 for row in rows if row.case_id not in exclusions
+    )
     predicted_positive = sum(row.prediction.is_surge for row in rows)
     true_positive = sum(
         row.prediction.is_surge and row.ground_truth.is_surge for row in rows
@@ -3245,7 +3260,7 @@ def assess_fitness_eligibility(
         reasons.append("incomplete_case_set")
     if len(valid_rows) != len(rows):
         reasons.append("unfinalized_case")
-    if evidence_covered != len(rows):
+    if evidence_covered != evidence_required:
         reasons.append("missing_source_evidence")
     if predicted_positive == 0:
         reasons.append("no_positive_prediction")

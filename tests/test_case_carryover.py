@@ -1,0 +1,181 @@
+"""Per-case technical-exclusion carry-over (user-approved 2026-09-21).
+
+A CandidateExecutionRejected case records its failure, abstains as a real
+finalized negative prediction (insufficient_information), stays in the
+label-blind confusion matrix, and never blocks the candidate while at most
+MAX_TECHNICAL_CASE_EXCLUSIONS cases are excluded. Control-plane errors and
+cap overflow keep the previous rejection semantics.
+"""
+
+import tempfile
+import unittest
+from pathlib import Path
+
+from tests.scheme_evolution_test_support import *  # noqa: F403
+
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_core import (
+    CandidateExecutionRejected,
+    assess_fitness_eligibility,
+    score_predictions,
+)
+from stock_opportunity_agent.research.plan_evolution import (
+    MAX_TECHNICAL_CASE_EXCLUSIONS,
+    CaseEvaluationFailure,
+    PlanEvaluationAttempt,
+)
+
+
+def _attempt(expected, trajectories, failures):
+    return PlanEvaluationAttempt(
+        plan=default_information_plan(),
+        expected_case_ids=tuple(expected),
+        trajectories=tuple(trajectories),
+        failures=tuple(failures),
+    )
+
+
+def _abstain_trajectory(case):
+    """A finalized insufficient_information abstain with a persisted ref."""
+
+    from dataclasses import replace
+
+    base = make_trajectory(
+        case.company_id,
+        float(case.ground_truth.realized_max_multiple),
+        False,
+        None,
+        case_id=case.case_id,
+    )
+    prediction = BlindPrediction(
+        is_surge=False,
+        candidate_judgment=CandidateJudgment.INSUFFICIENT_INFORMATION,
+        magnitude=None,
+        confidence=ConfidenceLevel.LOW,
+        key_reasons=("Technical exclusion abstention.",),
+        uncertainties=(),
+        session_id=f"exclusion_{case.case_id}",
+    )
+    return replace(
+        base,
+        prediction=prediction,
+        prediction_ref=f"predictions/abstain_{case.case_id}.json",
+    )
+
+
+class CarryOverAttemptTest(unittest.TestCase):
+    def _cases(self):
+        return (
+            make_case("carry_pos", 4.0),
+            make_case("carry_neg", 1.2),
+            make_case("carry_pos2", 5.0),
+        )
+
+    def _trajectories_with_abstain(self, cases, abstain_index):
+        rows = []
+        for index, case in enumerate(cases):
+            if index == abstain_index:
+                rows.append(_abstain_trajectory(case))
+            else:
+                rows.append(
+                    make_trajectory(
+                        case.company_id,
+                        float(case.ground_truth.realized_max_multiple),
+                        case.ground_truth.is_surge,
+                        case.ground_truth.magnitude if case.ground_truth.is_surge else None,
+                        case_id=case.case_id,
+                    )
+                )
+        return tuple(rows)
+
+    def test_within_cap_exclusion_scores_and_stays_eligible(self):
+        cases = self._cases()
+        failing_case = cases[0]
+        trajectories = self._trajectories_with_abstain(cases, abstain_index=0)
+        failure = CaseEvaluationFailure(
+            case_id=failing_case.case_id,
+            stage="research_controller_initialize_correction",
+            error_type="CandidateExecutionRejected",
+            message="no-progress identical correction request",
+            artifact_ref="experiments/trajectories/x/failure.json",
+        )
+        attempt = _attempt(
+            [case.case_id for case in cases], trajectories, [failure]
+        )
+        self.assertEqual(
+            attempt.technical_exclusion_case_ids, (failing_case.case_id,)
+        )
+        metrics = attempt.metrics
+        self.assertIsNotNone(metrics)
+        # Abstain on a surge truth counts as FN; the other surge is 1 TP.
+        self.assertEqual(metrics.false_negative, 1)
+        self.assertEqual(metrics.true_positive, 1)
+        fitness = attempt.fitness
+        self.assertTrue(fitness.eligible, fitness.reasons)
+        serialized = attempt.to_dict()
+        self.assertEqual(
+            serialized["technical_exclusion_case_ids"],
+            [failing_case.case_id],
+        )
+
+    def test_over_cap_stays_rejected_with_metrics_none(self):
+        cases = self._cases() + (make_case("carry_pos3", 6.0),)
+        trajectories = self._trajectories_with_abstain(cases, abstain_index=0)
+        failures = tuple(
+            CaseEvaluationFailure(
+                case_id=cases[0].case_id,
+                stage="s",
+                error_type="CandidateExecutionRejected",
+                message="m",
+                artifact_ref="a",
+            )
+            for _ in range(MAX_TECHNICAL_CASE_EXCLUSIONS + 1)
+        )
+        attempt = _attempt(
+            [case.case_id for case in cases], trajectories, failures
+        )
+        self.assertEqual(attempt.technical_exclusion_case_ids, ())
+        self.assertIsNone(attempt.metrics)
+
+    def test_fitness_assessor_skips_source_evidence_only_for_exclusions(self):
+        cases = self._cases()
+        rows = self._trajectories_with_abstain(cases, abstain_index=0)
+        with_skip = assess_fitness_eligibility(
+            rows,
+            expected_case_ids=[case.case_id for case in cases],
+            technical_exclusion_case_ids=[cases[0].case_id],
+        )
+        self.assertTrue(with_skip.eligible, with_skip.reasons)
+        # The abstain row carries no source evidence; without the exclusion
+        # marker that gap must still block eligibility.
+        from dataclasses import replace as _replace
+
+        evidence_free = _replace(
+            rows[0],
+            basic_info={"requests": []},
+            signal_rounds=(),
+        )
+        blocked = assess_fitness_eligibility(
+            (evidence_free, *rows[1:]),
+            expected_case_ids=[case.case_id for case in cases],
+        )
+        self.assertIn("missing_source_evidence", blocked.reasons)
+
+
+class InitializeCombinedConstraintTest(unittest.TestCase):
+    def test_initialize_prompt_names_simultaneous_obligations(self):
+        import inspect
+
+        from stock_opportunity_agent.research.evolution_plan_roles import (
+            LLMResearchController,
+        )
+
+        source = inspect.getsource(LLMResearchController)
+        self.assertIn(
+            "satisfy every prior obligation simultaneously", source
+        )
+        self.assertIn("out-of-horizon condition", source)
+
+
+if __name__ == "__main__":
+    unittest.main()

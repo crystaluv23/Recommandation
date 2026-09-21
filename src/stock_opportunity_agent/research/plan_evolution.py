@@ -272,6 +272,7 @@ class RuntimePlanEvaluator:
             llm_runner=self.llm_signal_runner,
         )
         trajectories: list[ExecutionTrajectory] = []
+        failures: list[CaseEvaluationFailure] = []
 
         def stop_after_unfinalized(
             trajectory: ExecutionTrajectory,
@@ -292,6 +293,7 @@ class RuntimePlanEvaluator:
                 plan=plan,
                 expected_case_ids=expected_case_ids,
                 trajectories=tuple(trajectories),
+                failures=tuple(failures),
             )
 
         for case_index, case in enumerate(cases, start=1):
@@ -439,11 +441,89 @@ class RuntimePlanEvaluator:
                     error_type=type(exc).__name__,
                     failure_path=str(failure_path),
                 )
+                failures.append(failure)
+                if (
+                    isinstance(exc, CandidateExecutionRejected)
+                    and len(failures) <= MAX_TECHNICAL_CASE_EXCLUSIONS
+                ):
+                    # User-approved carry-over (2026-09-21): a model-side
+                    # correction exhaustion on one case records the failure,
+                    # abstains that case (insufficient_information = a real
+                    # finalized negative prediction, so the label-blind
+                    # confusion matrix still counts it), and continues the
+                    # remaining cases. Above the cap the attempt stays a
+                    # rejection exactly as before; control-plane errors
+                    # (budget, shared-data) still abort the attempt.
+                    abstain = BlindPrediction(
+                        is_surge=False,
+                        candidate_judgment=CandidateJudgment.INSUFFICIENT_INFORMATION,
+                        magnitude=None,
+                        confidence=ConfidenceLevel.LOW,
+                        key_reasons=(
+                            "Technical exclusion: bounded corrections exhausted "
+                            "before a compliant research state; abstaining is "
+                            "recorded as a negative prediction.",
+                        ),
+                        uncertainties=(),
+                        session_id=f"exclusion_{case.case_id}",
+                    )
+                    trajectories.append(
+                        ExecutionTrajectory(
+                            case_id=case.case_id,
+                            company_id=case.company_id,
+                            prediction_time=case.prediction_time,
+                            basic_info={"requests": []},
+                            basic_info_projection={},
+                            initial_state=ResearchState(
+                                decision=ResearchDecision.FINALIZE
+                            ),
+                            signal_rounds=(),
+                            final_state=ResearchState(
+                                decision=ResearchDecision.FINALIZE
+                            ),
+                            final_context={},
+                            prediction=abstain,
+                            prediction_ref=str(
+                                self.trajectory_root
+                                / plan.plan_id
+                                / f"{case.case_id}.abstain.json"
+                            ),
+                            ground_truth=case.ground_truth,
+                            self_reflection=PredictionSelfReflection(
+                                correct=not case.ground_truth.is_surge,
+                                plan_issues=(
+                                    "technical_case_exclusion: "
+                                    + str(exc)[:180],
+                                ),
+                            ),
+                            stop_reason=RuntimeStopReason.FINALIZED,
+                        )
+                    )
+                    _write_or_verify_json(
+                        self.trajectory_root
+                        / plan.plan_id
+                        / f"{case.case_id}.abstain.json",
+                        {
+                            "case_id": case.case_id,
+                            "company_id": case.company_id,
+                            "prediction_time": case.prediction_time.isoformat(),
+                            "final_context": {},
+                            "prediction": abstain.to_dict(),
+                        },
+                    )
+                    _emit_progress(
+                        self.on_progress,
+                        "case_technical_exclusion",
+                        plan_id=plan.plan_id,
+                        case_id=case.case_id,
+                        exclusion_count=len(failures),
+                    )
+                    continue
                 return PlanEvaluationAttempt(
                     plan=plan,
                     expected_case_ids=expected_case_ids,
                     trajectories=tuple(trajectories),
-                    failures=(failure,),
+                    failures=tuple(failures),
                 )
             _write_or_verify_json(
                 trajectory_path,
@@ -478,6 +558,7 @@ class RuntimePlanEvaluator:
             plan=plan,
             expected_case_ids=expected_case_ids,
             trajectories=tuple(trajectories),
+            failures=tuple(failures),
         )
 
 
@@ -1605,8 +1686,20 @@ class PlanEvaluationAttempt:
     failures: tuple[CaseEvaluationFailure, ...] = ()
 
     @property
+    def technical_exclusion_case_ids(self) -> tuple[str, ...]:
+        """Failed cases carried over as recorded abstain predictions."""
+
+        return tuple(failure.case_id for failure in self.failures) if (
+            self.failures
+            and len(self.trajectories) == len(self.expected_case_ids)
+            and len(self.failures) <= MAX_TECHNICAL_CASE_EXCLUSIONS
+        ) else ()
+
+    @property
     def metrics(self) -> PlanMetrics | None:
-        if self.failures or len(self.trajectories) != len(self.expected_case_ids):
+        if len(self.trajectories) != len(self.expected_case_ids):
+            return None
+        if self.failures and not self.technical_exclusion_case_ids:
             return None
         return score_predictions(self.trajectories)
 
@@ -1615,6 +1708,7 @@ class PlanEvaluationAttempt:
         return assess_fitness_eligibility(
             self.trajectories,
             expected_case_ids=self.expected_case_ids,
+            technical_exclusion_case_ids=self.technical_exclusion_case_ids,
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -1626,6 +1720,9 @@ class PlanEvaluationAttempt:
             "completed_case_ids": [item.case_id for item in self.trajectories],
             "trajectories": [item.to_dict() for item in self.trajectories],
             "failures": [item.to_dict() for item in self.failures],
+            "technical_exclusion_case_ids": list(
+                self.technical_exclusion_case_ids
+            ),
             "metrics": metrics.to_dict() if metrics is not None else None,
             "fitness": self.fitness.to_dict(),
         }
@@ -1640,6 +1737,9 @@ class PlanEvaluationResult:
     metrics: PlanMetrics
     metrics_by_cohort: Mapping[str, PlanMetrics]
     fitness: FitnessEligibility
+
+
+MAX_TECHNICAL_CASE_EXCLUSIONS = 2
 
 
 class EvaluationCancelled(ValidationError):
