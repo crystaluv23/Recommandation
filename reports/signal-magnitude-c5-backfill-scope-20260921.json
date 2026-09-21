@@ -1,0 +1,706 @@
+{
+  "schema_version": "expanded-case-acquisition-scope-v1",
+  "source_inventory_hash": "b1f19cc61759c0dd27f2ca964d1d9747729169f3b5ac06905155816f05829e6b",
+  "outcome_fields_included": false,
+  "split_ownership_included": false,
+  "company_count": 115,
+  "companies": [
+    {
+      "cik": "0000008063",
+      "company_id": "cik_0000008063",
+      "company_name": "Astronics Corp / ASTRONICS CORP",
+      "symbol": "ATRO"
+    },
+    {
+      "cik": "0000080420",
+      "company_id": "cik_0000080420",
+      "company_name": "Powell Industries Inc / POWELL INDUSTRIES INC",
+      "symbol": "POWL"
+    },
+    {
+      "cik": "0000215466",
+      "company_id": "cik_0000215466",
+      "company_name": "Coeur Mining Inc / Coeur Mining, Inc.",
+      "symbol": "CDE"
+    },
+    {
+      "cik": "0000314203",
+      "company_id": "cik_0000314203",
+      "company_name": "McEwen Mining Inc / McEwen Inc.",
+      "symbol": "MUX"
+    },
+    {
+      "cik": "0000317788",
+      "company_id": "cik_0000317788",
+      "company_name": "Digital Turbine Inc / Digital Turbine, Inc.",
+      "symbol": "APPS"
+    },
+    {
+      "cik": "0000707549",
+      "company_id": "cik_0000707549",
+      "company_name": "Lam Research Corp / LAM RESEARCH CORP",
+      "symbol": "LRCX"
+    },
+    {
+      "cik": "0000719413",
+      "company_id": "cik_0000719413",
+      "company_name": "Hecla Mining Company / HECLA MINING CO/DE/",
+      "symbol": "HL"
+    },
+    {
+      "cik": "0000756894",
+      "company_id": "cik_0000756894",
+      "company_name": "Barrick Gold Corp / BARRICK MINING CORP",
+      "symbol": "B"
+    },
+    {
+      "cik": "0000764065",
+      "company_id": "cik_0000764065",
+      "company_name": "Cleveland-Cliffs Inc / CLEVELAND-CLIFFS INC.",
+      "symbol": "CLF"
+    },
+    {
+      "cik": "0000805928",
+      "company_id": "cik_0000805928",
+      "company_name": "Axogen Inc / Axogen, Inc.",
+      "symbol": "AXGN"
+    },
+    {
+      "cik": "0000885639",
+      "company_id": "cik_0000885639",
+      "company_name": "Kohl`s Corp / KOHLS Corp",
+      "symbol": "KSS"
+    },
+    {
+      "cik": "0000889900",
+      "company_id": "cik_0000889900",
+      "company_name": "Patterson-UTI Energy Inc / PATTERSON UTI ENERGY INC",
+      "symbol": "PTEN"
+    },
+    {
+      "cik": "0000897723",
+      "company_id": "cik_0000897723",
+      "company_name": "Sanmina Corp / SANMINA CORP",
+      "symbol": "SANM"
+    },
+    {
+      "cik": "0000903651",
+      "company_id": "cik_0000903651",
+      "company_name": "Innodata Inc / INNODATA INC",
+      "symbol": "INOD"
+    },
+    {
+      "cik": "0000909037",
+      "company_id": "cik_0000909037",
+      "company_name": "Sociedad Quimica Y Minera de Chile S.A. / CHEMICAL & MINING CO OF CHILE INC",
+      "symbol": "SQM"
+    },
+    {
+      "cik": "0000932695",
+      "company_id": "cik_0000932695",
+      "company_name": "China Yuchai International / CHINA YUCHAI INTERNATIONAL LTD",
+      "symbol": "CYD"
+    },
+    {
+      "cik": "0001023512",
+      "company_id": "cik_0001023512",
+      "company_name": "DRDGold Ltd / DRDGOLD LTD",
+      "symbol": "DRD"
+    },
+    {
+      "cik": "0001030894",
+      "company_id": "cik_0001030894",
+      "company_name": "Celestica Inc / CELESTICA INC",
+      "symbol": "CLS"
+    },
+    {
+      "cik": "0001035983",
+      "company_id": "cik_0001035983",
+      "company_name": "Comfort Systems USA Inc / COMFORT SYSTEMS USA INC",
+      "symbol": "FIX"
+    },
+    {
+      "cik": "0001047127",
+      "company_id": "cik_0001047127",
+      "company_name": "AMKOR Technology Inc / AMKOR TECHNOLOGY, INC.",
+      "symbol": "AMKR"
+    },
+    {
+      "cik": "0001049502",
+      "company_id": "cik_0001049502",
+      "company_name": "MKS Instruments Inc / MKS INC",
+      "symbol": "MKSI"
+    },
+    {
+      "cik": "0001173420",
+      "company_id": "cik_0001173420",
+      "company_name": "Novagold Resources Inc / NOVAGOLD RESOURCES INC",
+      "symbol": "NG"
+    },
+    {
+      "cik": "0001180262",
+      "company_id": "cik_0001180262",
+      "company_name": "Herbalife Ltd / HERBALIFE LTD.",
+      "symbol": "HLF"
+    },
+    {
+      "cik": "0001227654",
+      "company_id": "cik_0001227654",
+      "company_name": "Compass Minerals International Inc / COMPASS MINERALS INTERNATIONAL INC",
+      "symbol": "CMP"
+    },
+    {
+      "cik": "0001277866",
+      "company_id": "cik_0001277866",
+      "company_name": "Endeavour Silver Corp / ENDEAVOUR SILVER CORP",
+      "symbol": "EXK"
+    },
+    {
+      "cik": "0001285550",
+      "company_id": "cik_0001285550",
+      "company_name": "ClearPoint Neuro Inc / ClearPoint Neuro, Inc.",
+      "symbol": "CLPT"
+    },
+    {
+      "cik": "0001309402",
+      "company_id": "cik_0001309402",
+      "company_name": "Green Plains Inc / Green Plains Inc.",
+      "symbol": "GPRE"
+    },
+    {
+      "cik": "0001320461",
+      "company_id": "cik_0001320461",
+      "company_name": "Cooper-Standard Holdings Inc / Cooper-Standard Holdings Inc.",
+      "symbol": "CPS"
+    },
+    {
+      "cik": "0001325964",
+      "company_id": "cik_0001325964",
+      "company_name": "Lightwave Logic Inc / Lightwave Logic, Inc.",
+      "symbol": "LWLG"
+    },
+    {
+      "cik": "0001326732",
+      "company_id": "cik_0001326732",
+      "company_name": "Xencor Inc",
+      "symbol": "XNCR"
+    },
+    {
+      "cik": "0001347426",
+      "company_id": "cik_0001347426",
+      "company_name": "Banco Macro S.A. / Macro Bank Inc.",
+      "symbol": "BMA"
+    },
+    {
+      "cik": "0001364125",
+      "company_id": "cik_0001364125",
+      "company_name": "Western Copper & Gold Corp",
+      "symbol": "WRN"
+    },
+    {
+      "cik": "0001369085",
+      "company_id": "cik_0001369085",
+      "company_name": "New Pacific Metals Corp - New / NEW PACIFIC METALS CORP",
+      "symbol": "NEWP"
+    },
+    {
+      "cik": "0001374690",
+      "company_id": "cik_0001374690",
+      "company_name": "Larimar Therapeutics Inc / Larimar Therapeutics, Inc.",
+      "symbol": "LRMR"
+    },
+    {
+      "cik": "0001398733",
+      "company_id": "cik_0001398733",
+      "company_name": "Aquestive Therapeutics Inc / Aquestive Therapeutics, Inc.",
+      "symbol": "AQST"
+    },
+    {
+      "cik": "0001401257",
+      "company_id": "cik_0001401257",
+      "company_name": "Forum Energy Technologies Inc / FORUM ENERGY TECHNOLOGIES, INC.",
+      "symbol": "FET"
+    },
+    {
+      "cik": "0001425205",
+      "company_id": "cik_0001425205",
+      "company_name": "Iovance Biotherapeutics Inc / IOVANCE BIOTHERAPEUTICS, INC.",
+      "symbol": "IOVA"
+    },
+    {
+      "cik": "0001440972",
+      "company_id": "cik_0001440972",
+      "company_name": "Lithium Argentina AG",
+      "symbol": "LAR"
+    },
+    {
+      "cik": "0001464790",
+      "company_id": "cik_0001464790",
+      "company_name": "B. Riley Financial Inc / BRC Group Holdings, Inc.",
+      "symbol": "RILY"
+    },
+    {
+      "cik": "0001472012",
+      "company_id": "cik_0001472012",
+      "company_name": "Immunome Inc / Immunome Inc.",
+      "symbol": "IMNM"
+    },
+    {
+      "cik": "0001478320",
+      "company_id": "cik_0001478320",
+      "company_name": "Adaptive Biotechnologies Corp",
+      "symbol": "ADPT"
+    },
+    {
+      "cik": "0001509261",
+      "company_id": "cik_0001509261",
+      "company_name": "Rezolute Inc / Rezolute, Inc.",
+      "symbol": "RZLT"
+    },
+    {
+      "cik": "0001510593",
+      "company_id": "cik_0001510593",
+      "company_name": "Xunlei Ltd",
+      "symbol": "XNET"
+    },
+    {
+      "cik": "0001512762",
+      "company_id": "cik_0001512762",
+      "company_name": "Coherus Biosciences Inc / Coherus Oncology, Inc.",
+      "symbol": "CHRS"
+    },
+    {
+      "cik": "0001517228",
+      "company_id": "cik_0001517228",
+      "company_name": "Gyroscope Therapeutics Holdings plc / Vistance Networks, Inc.",
+      "symbol": "VISN"
+    },
+    {
+      "cik": "0001527762",
+      "company_id": "cik_0001527762",
+      "company_name": "Chaince DigitalHoldings Inc / Chaince Digital Holdings Inc.",
+      "symbol": "CD"
+    },
+    {
+      "cik": "0001528115",
+      "company_id": "cik_0001528115",
+      "company_name": "Annexon Inc / Annexon, Inc.",
+      "symbol": "ANNX"
+    },
+    {
+      "cik": "0001530804",
+      "company_id": "cik_0001530804",
+      "company_name": "Tronox Holdings plc - Class A / Tronox Holdings plc",
+      "symbol": "TROX"
+    },
+    {
+      "cik": "0001549595",
+      "company_id": "cik_0001549595",
+      "company_name": "Nurix Therapeutics Inc / Nurix Therapeutics, Inc.",
+      "symbol": "NRIX"
+    },
+    {
+      "cik": "0001573221",
+      "company_id": "cik_0001573221",
+      "company_name": "Therealreal Inc / TheRealReal, Inc.",
+      "symbol": "REAL"
+    },
+    {
+      "cik": "0001583107",
+      "company_id": "cik_0001583107",
+      "company_name": "Theravance Biopharma Inc / Theravance Biopharma, Inc.",
+      "symbol": "TBPH"
+    },
+    {
+      "cik": "0001584549",
+      "company_id": "cik_0001584549",
+      "company_name": "Village Farms International Inc / Village Farms International, Inc.",
+      "symbol": "VFF"
+    },
+    {
+      "cik": "0001590560",
+      "company_id": "cik_0001590560",
+      "company_name": "uniQure N.V.",
+      "symbol": "QURE"
+    },
+    {
+      "cik": "0001597672",
+      "company_id": "cik_0001597672",
+      "company_name": "Rayonier Advanced Materials Inc / RAYONIER ADVANCED MATERIALS INC.",
+      "symbol": "RYAM"
+    },
+    {
+      "cik": "0001600983",
+      "company_id": "cik_0001600983",
+      "company_name": "Knightscope Inc - Class A / Knightscope, Inc.",
+      "symbol": "KSCP"
+    },
+    {
+      "cik": "0001622536",
+      "company_id": "cik_0001622536",
+      "company_name": "Talen Energy Corp New / Talen Energy Corp",
+      "symbol": "TLN"
+    },
+    {
+      "cik": "0001623526",
+      "company_id": "cik_0001623526",
+      "company_name": "Stoke Therapeutics Inc / Stoke Therapeutics, Inc.",
+      "symbol": "STOK"
+    },
+    {
+      "cik": "0001630805",
+      "company_id": "cik_0001630805",
+      "company_name": "Babcock & Wilcox Enterprises Inc / Babcock & Wilcox Enterprises, Inc.",
+      "symbol": "BW"
+    },
+    {
+      "cik": "0001649009",
+      "company_id": "cik_0001649009",
+      "company_name": "Siyata Mobile Inc / Core AI Holdings, Inc.",
+      "symbol": "CHAI"
+    },
+    {
+      "cik": "0001649989",
+      "company_id": "cik_0001649989",
+      "company_name": "Outlook Therapeutics Inc / Outlook Therapeutics, Inc.",
+      "symbol": "OTLK"
+    },
+    {
+      "cik": "0001654126",
+      "company_id": "cik_0001654126",
+      "company_name": "Zim Integrated Shipping Services Ltd / ZIM Integrated Shipping Services Ltd.",
+      "symbol": "ZIM"
+    },
+    {
+      "cik": "0001657573",
+      "company_id": "cik_0001657573",
+      "company_name": "Xometry Inc - Class A / Xometry, Inc.",
+      "symbol": "XMTR"
+    },
+    {
+      "cik": "0001661181",
+      "company_id": "cik_0001661181",
+      "company_name": "Organogenesis Holdings Inc - Class A / Organogenesis Holdings Inc.",
+      "symbol": "ORGO"
+    },
+    {
+      "cik": "0001662991",
+      "company_id": "cik_0001662991",
+      "company_name": "Sezzle Inc / Sezzle Inc.",
+      "symbol": "SEZL"
+    },
+    {
+      "cik": "0001671502",
+      "company_id": "cik_0001671502",
+      "company_name": "Quoin Pharmaceuticals Ltd / Quoin Pharmaceuticals, Ltd.",
+      "symbol": "QNRX"
+    },
+    {
+      "cik": "0001674632",
+      "company_id": "cik_0001674632",
+      "company_name": "Beta Bionics Inc / Beta Bionics, Inc.",
+      "symbol": "BBNX"
+    },
+    {
+      "cik": "0001682639",
+      "company_id": "cik_0001682639",
+      "company_name": "Eyenovia Inc / HYPERION DEFI, INC.",
+      "symbol": "HYPD"
+    },
+    {
+      "cik": "0001701108",
+      "company_id": "cik_0001701108",
+      "company_name": "Spero Therapeutics Inc / Spero Therapeutics, Inc.",
+      "symbol": "SPRO"
+    },
+    {
+      "cik": "0001707502",
+      "company_id": "cik_0001707502",
+      "company_name": "Solid Biosciences Inc / Solid Biosciences Inc.",
+      "symbol": "SLDB"
+    },
+    {
+      "cik": "0001709626",
+      "company_id": "cik_0001709626",
+      "company_name": "NuCana plc",
+      "symbol": "NCNA"
+    },
+    {
+      "cik": "0001720446",
+      "company_id": "cik_0001720446",
+      "company_name": "Zepp Health Corporation / Zepp Health Corp",
+      "symbol": "ZEPP"
+    },
+    {
+      "cik": "0001725160",
+      "company_id": "cik_0001725160",
+      "company_name": "Zentalis Pharmaceuticals Inc / Zentalis Pharmaceuticals, Inc.",
+      "symbol": "ZNTL"
+    },
+    {
+      "cik": "0001728117",
+      "company_id": "cik_0001728117",
+      "company_name": "Gossamer Bio Inc / Gossamer Bio, Inc.",
+      "symbol": "GOSS"
+    },
+    {
+      "cik": "0001737953",
+      "company_id": "cik_0001737953",
+      "company_name": "Replimune Group Inc / Replimune Group, Inc.",
+      "symbol": "REPL"
+    },
+    {
+      "cik": "0001738021",
+      "company_id": "cik_0001738021",
+      "company_name": "Compass Therapeutics Inc / Compass Therapeutics, Inc.",
+      "symbol": "CMPX"
+    },
+    {
+      "cik": "0001751008",
+      "company_id": "cik_0001751008",
+      "company_name": "Applovin Corp - Class A / AppLovin Corp",
+      "symbol": "APP"
+    },
+    {
+      "cik": "0001753539",
+      "company_id": "cik_0001753539",
+      "company_name": "BlackSky Technology Inc - Class A / BlackSky Technology Inc.",
+      "symbol": "BKSY"
+    },
+    {
+      "cik": "0001756262",
+      "company_id": "cik_0001756262",
+      "company_name": "Transmedics Group Inc / TransMedics Group, Inc.",
+      "symbol": "TMDX"
+    },
+    {
+      "cik": "0001756607",
+      "company_id": "cik_0001756607",
+      "company_name": "Equinox Gold Corp / Equinox Gold Corp.",
+      "symbol": "EQX"
+    },
+    {
+      "cik": "0001780201",
+      "company_id": "cik_0001780201",
+      "company_name": "Lulus Fashion Lounge Holdings Inc / Lulu's Fashion Lounge Holdings, Inc.",
+      "symbol": "LVLU"
+    },
+    {
+      "cik": "0001786286",
+      "company_id": "cik_0001786286",
+      "company_name": "Draganfly Inc / Draganfly Inc.",
+      "symbol": "DPRO"
+    },
+    {
+      "cik": "0001796280",
+      "company_id": "cik_0001796280",
+      "company_name": "ORIC Pharmaceuticals Inc / Oric Pharmaceuticals, Inc.",
+      "symbol": "ORIC"
+    },
+    {
+      "cik": "0001805077",
+      "company_id": "cik_0001805077",
+      "company_name": "Eos Energy Enterprises Inc - Class A / Eos Energy Enterprises, Inc.",
+      "symbol": "EOSE"
+    },
+    {
+      "cik": "0001809196",
+      "company_id": "cik_0001809196",
+      "company_name": "Immatics N.V / Immatics N.V.",
+      "symbol": "IMTX"
+    },
+    {
+      "cik": "0001812364",
+      "company_id": "cik_0001812364",
+      "company_name": "Relay Therapeutics Inc / Relay Therapeutics, Inc.",
+      "symbol": "RLAY"
+    },
+    {
+      "cik": "0001815442",
+      "company_id": "cik_0001815442",
+      "company_name": "Kymera Therapeutics Inc / Kymera Therapeutics, Inc.",
+      "symbol": "KYMR"
+    },
+    {
+      "cik": "0001818331",
+      "company_id": "cik_0001818331",
+      "company_name": "GeneDx Holdings Corp - Class A / GeneDx Holdings Corp.",
+      "symbol": "WGS"
+    },
+    {
+      "cik": "0001819576",
+      "company_id": "cik_0001819576",
+      "company_name": "Liquidia Corp",
+      "symbol": "LQDA"
+    },
+    {
+      "cik": "0001825024",
+      "company_id": "cik_0001825024",
+      "company_name": "Offerpad Solutions Inc - Class A / Offerpad Solutions Inc.",
+      "symbol": "OPAD"
+    },
+    {
+      "cik": "0001831631",
+      "company_id": "cik_0001831631",
+      "company_name": "LoanDepot Inc - Class A / loanDepot, Inc.",
+      "symbol": "LDI"
+    },
+    {
+      "cik": "0001831651",
+      "company_id": "cik_0001831651",
+      "company_name": "Shoals Technologies Group Inc - Class A / Shoals Technologies Group, Inc.",
+      "symbol": "SHLS"
+    },
+    {
+      "cik": "0001843165",
+      "company_id": "cik_0001843165",
+      "company_name": "LQR House Inc / LQR House Inc.",
+      "symbol": "YHC"
+    },
+    {
+      "cik": "0001844862",
+      "company_id": "cik_0001844862",
+      "company_name": "Solid Power Inc - Class A / Solid Power, Inc.",
+      "symbol": "SLDP"
+    },
+    {
+      "cik": "0001845840",
+      "company_id": "cik_0001845840",
+      "company_name": "Telesat Corp - Class A / Telesat Corp",
+      "symbol": "TSAT"
+    },
+    {
+      "cik": "0001847806",
+      "company_id": "cik_0001847806",
+      "company_name": "Genius Group Ltd",
+      "symbol": "GNS"
+    },
+    {
+      "cik": "0001856725",
+      "company_id": "cik_0001856725",
+      "company_name": "Rani Therapeutics Holdings Inc Class A / Rani Therapeutics Holdings, Inc.",
+      "symbol": "RANI"
+    },
+    {
+      "cik": "0001857816",
+      "company_id": "cik_0001857816",
+      "company_name": "GigaCloud Technology Inc - Class A / GigaCloud Technology Inc",
+      "symbol": "GCT"
+    },
+    {
+      "cik": "0001888886",
+      "company_id": "cik_0001888886",
+      "company_name": "Structure Therapeutics Inc / Structure Therapeutics Inc.",
+      "symbol": "GPCR"
+    },
+    {
+      "cik": "0001897087",
+      "company_id": "cik_0001897087",
+      "company_name": "Super X AI Technology Ltd / SuperX AI Technology Ltd",
+      "symbol": "SUPX"
+    },
+    {
+      "cik": "0001898795",
+      "company_id": "cik_0001898795",
+      "company_name": "LiveWire Group Inc / LiveWire Group, Inc.",
+      "symbol": "LVWR"
+    },
+    {
+      "cik": "0001927578",
+      "company_id": "cik_0001927578",
+      "company_name": "NetClass Technology Inc - Class A / NetClass Technology Inc",
+      "symbol": "NTCL"
+    },
+    {
+      "cik": "0001930021",
+      "company_id": "cik_0001930021",
+      "company_name": "New Horizon Aircraft Ltd / New Horizon Aircraft Ltd.",
+      "symbol": "HOVR"
+    },
+    {
+      "cik": "0001944399",
+      "company_id": "cik_0001944399",
+      "company_name": "Earlyworks Co Ltd / Perpetuals.com Ltd",
+      "symbol": "PDC"
+    },
+    {
+      "cik": "0001961847",
+      "company_id": "cik_0001961847",
+      "company_name": "Inno Holdings Inc / INNO HOLDINGS INC.",
+      "symbol": "INHD"
+    },
+    {
+      "cik": "0001963088",
+      "company_id": "cik_0001963088",
+      "company_name": "AtlasClear Holdings Inc / AtlasClear Holdings, Inc.",
+      "symbol": "ATCH"
+    },
+    {
+      "cik": "0001975940",
+      "company_id": "cik_0001975940",
+      "company_name": "Fly-E Group Inc / Fly-E Group, Inc.",
+      "symbol": "FLYE"
+    },
+    {
+      "cik": "0001997859",
+      "company_id": "cik_0001997859",
+      "company_name": "Webtoon Entertainment Inc / WEBTOON Entertainment Inc.",
+      "symbol": "WBTN"
+    },
+    {
+      "cik": "0002010499",
+      "company_id": "cik_0002010499",
+      "company_name": "Diginex Ltd",
+      "symbol": "DGNX"
+    },
+    {
+      "cik": "0002012593",
+      "company_id": "cik_0002012593",
+      "company_name": "Rapport Therapeutics Inc / Rapport Therapeutics, Inc.",
+      "symbol": "RAPP"
+    },
+    {
+      "cik": "0002015845",
+      "company_id": "cik_0002015845",
+      "company_name": "Everus Construction Group / Everus Construction Group, Inc.",
+      "symbol": "ECG"
+    },
+    {
+      "cik": "0002019505",
+      "company_id": "cik_0002019505",
+      "company_name": "Health In Tech Inc - Class A / Health In Tech, Inc.",
+      "symbol": "HIT"
+    },
+    {
+      "cik": "0002024656",
+      "company_id": "cik_0002024656",
+      "company_name": "Kandal M Venture Ltd - Class A / Kandal M Venture Ltd",
+      "symbol": "FMFC"
+    },
+    {
+      "cik": "0002031688",
+      "company_id": "cik_0002031688",
+      "company_name": "Rich Sparkle Holdings Ltd",
+      "symbol": "ANPA"
+    },
+    {
+      "cik": "0002036042",
+      "company_id": "cik_0002036042",
+      "company_name": "Sionna Therapeutics Inc / Sionna Therapeutics, Inc.",
+      "symbol": "SION"
+    },
+    {
+      "cik": "0002081043",
+      "company_id": "cik_0002081043",
+      "company_name": "ATAI Life Sciences N.V. / AtaiBeckley Inc.",
+      "symbol": "ATAI"
+    }
+  ],
+  "prediction_dates": [
+    "2025-01-31",
+    "2025-03-31",
+    "2025-05-30",
+    "2025-07-31",
+    "2025-09-30"
+  ]
+}

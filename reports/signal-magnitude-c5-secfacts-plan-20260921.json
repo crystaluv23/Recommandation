@@ -1,0 +1,1087 @@
+{
+  "items": [
+    {
+      "cik": "0000008063",
+      "company_id": "cik_0000008063",
+      "item_id": "secfacts_0000008063",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000008063.json",
+      "symbol": "ATRO"
+    },
+    {
+      "cik": "0000080420",
+      "company_id": "cik_0000080420",
+      "item_id": "secfacts_0000080420",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000080420.json",
+      "symbol": "POWL"
+    },
+    {
+      "cik": "0000215466",
+      "company_id": "cik_0000215466",
+      "item_id": "secfacts_0000215466",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000215466.json",
+      "symbol": "CDE"
+    },
+    {
+      "cik": "0000314203",
+      "company_id": "cik_0000314203",
+      "item_id": "secfacts_0000314203",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000314203.json",
+      "symbol": "MUX"
+    },
+    {
+      "cik": "0000317788",
+      "company_id": "cik_0000317788",
+      "item_id": "secfacts_0000317788",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000317788.json",
+      "symbol": "APPS"
+    },
+    {
+      "cik": "0000707549",
+      "company_id": "cik_0000707549",
+      "item_id": "secfacts_0000707549",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000707549.json",
+      "symbol": "LRCX"
+    },
+    {
+      "cik": "0000719413",
+      "company_id": "cik_0000719413",
+      "item_id": "secfacts_0000719413",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000719413.json",
+      "symbol": "HL"
+    },
+    {
+      "cik": "0000756894",
+      "company_id": "cik_0000756894",
+      "item_id": "secfacts_0000756894",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000756894.json",
+      "symbol": "B"
+    },
+    {
+      "cik": "0000764065",
+      "company_id": "cik_0000764065",
+      "item_id": "secfacts_0000764065",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000764065.json",
+      "symbol": "CLF"
+    },
+    {
+      "cik": "0000805928",
+      "company_id": "cik_0000805928",
+      "item_id": "secfacts_0000805928",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000805928.json",
+      "symbol": "AXGN"
+    },
+    {
+      "cik": "0000885639",
+      "company_id": "cik_0000885639",
+      "item_id": "secfacts_0000885639",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000885639.json",
+      "symbol": "KSS"
+    },
+    {
+      "cik": "0000889900",
+      "company_id": "cik_0000889900",
+      "item_id": "secfacts_0000889900",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000889900.json",
+      "symbol": "PTEN"
+    },
+    {
+      "cik": "0000897723",
+      "company_id": "cik_0000897723",
+      "item_id": "secfacts_0000897723",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000897723.json",
+      "symbol": "SANM"
+    },
+    {
+      "cik": "0000903651",
+      "company_id": "cik_0000903651",
+      "item_id": "secfacts_0000903651",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000903651.json",
+      "symbol": "INOD"
+    },
+    {
+      "cik": "0000909037",
+      "company_id": "cik_0000909037",
+      "item_id": "secfacts_0000909037",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000909037.json",
+      "symbol": "SQM"
+    },
+    {
+      "cik": "0000932695",
+      "company_id": "cik_0000932695",
+      "item_id": "secfacts_0000932695",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000932695.json",
+      "symbol": "CYD"
+    },
+    {
+      "cik": "0001023512",
+      "company_id": "cik_0001023512",
+      "item_id": "secfacts_0001023512",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001023512.json",
+      "symbol": "DRD"
+    },
+    {
+      "cik": "0001030894",
+      "company_id": "cik_0001030894",
+      "item_id": "secfacts_0001030894",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001030894.json",
+      "symbol": "CLS"
+    },
+    {
+      "cik": "0001035983",
+      "company_id": "cik_0001035983",
+      "item_id": "secfacts_0001035983",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001035983.json",
+      "symbol": "FIX"
+    },
+    {
+      "cik": "0001047127",
+      "company_id": "cik_0001047127",
+      "item_id": "secfacts_0001047127",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001047127.json",
+      "symbol": "AMKR"
+    },
+    {
+      "cik": "0001049502",
+      "company_id": "cik_0001049502",
+      "item_id": "secfacts_0001049502",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001049502.json",
+      "symbol": "MKSI"
+    },
+    {
+      "cik": "0001173420",
+      "company_id": "cik_0001173420",
+      "item_id": "secfacts_0001173420",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001173420.json",
+      "symbol": "NG"
+    },
+    {
+      "cik": "0001180262",
+      "company_id": "cik_0001180262",
+      "item_id": "secfacts_0001180262",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001180262.json",
+      "symbol": "HLF"
+    },
+    {
+      "cik": "0001227654",
+      "company_id": "cik_0001227654",
+      "item_id": "secfacts_0001227654",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001227654.json",
+      "symbol": "CMP"
+    },
+    {
+      "cik": "0001277866",
+      "company_id": "cik_0001277866",
+      "item_id": "secfacts_0001277866",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001277866.json",
+      "symbol": "EXK"
+    },
+    {
+      "cik": "0001285550",
+      "company_id": "cik_0001285550",
+      "item_id": "secfacts_0001285550",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001285550.json",
+      "symbol": "CLPT"
+    },
+    {
+      "cik": "0001309402",
+      "company_id": "cik_0001309402",
+      "item_id": "secfacts_0001309402",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001309402.json",
+      "symbol": "GPRE"
+    },
+    {
+      "cik": "0001320461",
+      "company_id": "cik_0001320461",
+      "item_id": "secfacts_0001320461",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001320461.json",
+      "symbol": "CPS"
+    },
+    {
+      "cik": "0001325964",
+      "company_id": "cik_0001325964",
+      "item_id": "secfacts_0001325964",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001325964.json",
+      "symbol": "LWLG"
+    },
+    {
+      "cik": "0001326732",
+      "company_id": "cik_0001326732",
+      "item_id": "secfacts_0001326732",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001326732.json",
+      "symbol": "XNCR"
+    },
+    {
+      "cik": "0001347426",
+      "company_id": "cik_0001347426",
+      "item_id": "secfacts_0001347426",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001347426.json",
+      "symbol": "BMA"
+    },
+    {
+      "cik": "0001364125",
+      "company_id": "cik_0001364125",
+      "item_id": "secfacts_0001364125",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001364125.json",
+      "symbol": "WRN"
+    },
+    {
+      "cik": "0001369085",
+      "company_id": "cik_0001369085",
+      "item_id": "secfacts_0001369085",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001369085.json",
+      "symbol": "NEWP"
+    },
+    {
+      "cik": "0001374690",
+      "company_id": "cik_0001374690",
+      "item_id": "secfacts_0001374690",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001374690.json",
+      "symbol": "LRMR"
+    },
+    {
+      "cik": "0001398733",
+      "company_id": "cik_0001398733",
+      "item_id": "secfacts_0001398733",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001398733.json",
+      "symbol": "AQST"
+    },
+    {
+      "cik": "0001401257",
+      "company_id": "cik_0001401257",
+      "item_id": "secfacts_0001401257",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001401257.json",
+      "symbol": "FET"
+    },
+    {
+      "cik": "0001425205",
+      "company_id": "cik_0001425205",
+      "item_id": "secfacts_0001425205",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001425205.json",
+      "symbol": "IOVA"
+    },
+    {
+      "cik": "0001440972",
+      "company_id": "cik_0001440972",
+      "item_id": "secfacts_0001440972",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001440972.json",
+      "symbol": "LAR"
+    },
+    {
+      "cik": "0001464790",
+      "company_id": "cik_0001464790",
+      "item_id": "secfacts_0001464790",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001464790.json",
+      "symbol": "RILY"
+    },
+    {
+      "cik": "0001472012",
+      "company_id": "cik_0001472012",
+      "item_id": "secfacts_0001472012",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001472012.json",
+      "symbol": "IMNM"
+    },
+    {
+      "cik": "0001478320",
+      "company_id": "cik_0001478320",
+      "item_id": "secfacts_0001478320",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001478320.json",
+      "symbol": "ADPT"
+    },
+    {
+      "cik": "0001509261",
+      "company_id": "cik_0001509261",
+      "item_id": "secfacts_0001509261",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001509261.json",
+      "symbol": "RZLT"
+    },
+    {
+      "cik": "0001510593",
+      "company_id": "cik_0001510593",
+      "item_id": "secfacts_0001510593",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001510593.json",
+      "symbol": "XNET"
+    },
+    {
+      "cik": "0001512762",
+      "company_id": "cik_0001512762",
+      "item_id": "secfacts_0001512762",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001512762.json",
+      "symbol": "CHRS"
+    },
+    {
+      "cik": "0001517228",
+      "company_id": "cik_0001517228",
+      "item_id": "secfacts_0001517228",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001517228.json",
+      "symbol": "VISN"
+    },
+    {
+      "cik": "0001527762",
+      "company_id": "cik_0001527762",
+      "item_id": "secfacts_0001527762",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001527762.json",
+      "symbol": "CD"
+    },
+    {
+      "cik": "0001528115",
+      "company_id": "cik_0001528115",
+      "item_id": "secfacts_0001528115",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001528115.json",
+      "symbol": "ANNX"
+    },
+    {
+      "cik": "0001530804",
+      "company_id": "cik_0001530804",
+      "item_id": "secfacts_0001530804",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001530804.json",
+      "symbol": "TROX"
+    },
+    {
+      "cik": "0001549595",
+      "company_id": "cik_0001549595",
+      "item_id": "secfacts_0001549595",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001549595.json",
+      "symbol": "NRIX"
+    },
+    {
+      "cik": "0001573221",
+      "company_id": "cik_0001573221",
+      "item_id": "secfacts_0001573221",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001573221.json",
+      "symbol": "REAL"
+    },
+    {
+      "cik": "0001583107",
+      "company_id": "cik_0001583107",
+      "item_id": "secfacts_0001583107",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001583107.json",
+      "symbol": "TBPH"
+    },
+    {
+      "cik": "0001584549",
+      "company_id": "cik_0001584549",
+      "item_id": "secfacts_0001584549",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001584549.json",
+      "symbol": "VFF"
+    },
+    {
+      "cik": "0001590560",
+      "company_id": "cik_0001590560",
+      "item_id": "secfacts_0001590560",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001590560.json",
+      "symbol": "QURE"
+    },
+    {
+      "cik": "0001597672",
+      "company_id": "cik_0001597672",
+      "item_id": "secfacts_0001597672",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001597672.json",
+      "symbol": "RYAM"
+    },
+    {
+      "cik": "0001600983",
+      "company_id": "cik_0001600983",
+      "item_id": "secfacts_0001600983",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001600983.json",
+      "symbol": "KSCP"
+    },
+    {
+      "cik": "0001622536",
+      "company_id": "cik_0001622536",
+      "item_id": "secfacts_0001622536",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001622536.json",
+      "symbol": "TLN"
+    },
+    {
+      "cik": "0001623526",
+      "company_id": "cik_0001623526",
+      "item_id": "secfacts_0001623526",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001623526.json",
+      "symbol": "STOK"
+    },
+    {
+      "cik": "0001630805",
+      "company_id": "cik_0001630805",
+      "item_id": "secfacts_0001630805",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001630805.json",
+      "symbol": "BW"
+    },
+    {
+      "cik": "0001649009",
+      "company_id": "cik_0001649009",
+      "item_id": "secfacts_0001649009",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001649009.json",
+      "symbol": "CHAI"
+    },
+    {
+      "cik": "0001649989",
+      "company_id": "cik_0001649989",
+      "item_id": "secfacts_0001649989",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001649989.json",
+      "symbol": "OTLK"
+    },
+    {
+      "cik": "0001654126",
+      "company_id": "cik_0001654126",
+      "item_id": "secfacts_0001654126",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001654126.json",
+      "symbol": "ZIM"
+    },
+    {
+      "cik": "0001657573",
+      "company_id": "cik_0001657573",
+      "item_id": "secfacts_0001657573",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001657573.json",
+      "symbol": "XMTR"
+    },
+    {
+      "cik": "0001661181",
+      "company_id": "cik_0001661181",
+      "item_id": "secfacts_0001661181",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001661181.json",
+      "symbol": "ORGO"
+    },
+    {
+      "cik": "0001662991",
+      "company_id": "cik_0001662991",
+      "item_id": "secfacts_0001662991",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001662991.json",
+      "symbol": "SEZL"
+    },
+    {
+      "cik": "0001671502",
+      "company_id": "cik_0001671502",
+      "item_id": "secfacts_0001671502",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001671502.json",
+      "symbol": "QNRX"
+    },
+    {
+      "cik": "0001674632",
+      "company_id": "cik_0001674632",
+      "item_id": "secfacts_0001674632",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001674632.json",
+      "symbol": "BBNX"
+    },
+    {
+      "cik": "0001682639",
+      "company_id": "cik_0001682639",
+      "item_id": "secfacts_0001682639",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001682639.json",
+      "symbol": "HYPD"
+    },
+    {
+      "cik": "0001701108",
+      "company_id": "cik_0001701108",
+      "item_id": "secfacts_0001701108",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001701108.json",
+      "symbol": "SPRO"
+    },
+    {
+      "cik": "0001707502",
+      "company_id": "cik_0001707502",
+      "item_id": "secfacts_0001707502",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001707502.json",
+      "symbol": "SLDB"
+    },
+    {
+      "cik": "0001709626",
+      "company_id": "cik_0001709626",
+      "item_id": "secfacts_0001709626",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001709626.json",
+      "symbol": "NCNA"
+    },
+    {
+      "cik": "0001720446",
+      "company_id": "cik_0001720446",
+      "item_id": "secfacts_0001720446",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001720446.json",
+      "symbol": "ZEPP"
+    },
+    {
+      "cik": "0001725160",
+      "company_id": "cik_0001725160",
+      "item_id": "secfacts_0001725160",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001725160.json",
+      "symbol": "ZNTL"
+    },
+    {
+      "cik": "0001728117",
+      "company_id": "cik_0001728117",
+      "item_id": "secfacts_0001728117",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001728117.json",
+      "symbol": "GOSS"
+    },
+    {
+      "cik": "0001737953",
+      "company_id": "cik_0001737953",
+      "item_id": "secfacts_0001737953",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001737953.json",
+      "symbol": "REPL"
+    },
+    {
+      "cik": "0001738021",
+      "company_id": "cik_0001738021",
+      "item_id": "secfacts_0001738021",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001738021.json",
+      "symbol": "CMPX"
+    },
+    {
+      "cik": "0001751008",
+      "company_id": "cik_0001751008",
+      "item_id": "secfacts_0001751008",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001751008.json",
+      "symbol": "APP"
+    },
+    {
+      "cik": "0001753539",
+      "company_id": "cik_0001753539",
+      "item_id": "secfacts_0001753539",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001753539.json",
+      "symbol": "BKSY"
+    },
+    {
+      "cik": "0001756262",
+      "company_id": "cik_0001756262",
+      "item_id": "secfacts_0001756262",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001756262.json",
+      "symbol": "TMDX"
+    },
+    {
+      "cik": "0001756607",
+      "company_id": "cik_0001756607",
+      "item_id": "secfacts_0001756607",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001756607.json",
+      "symbol": "EQX"
+    },
+    {
+      "cik": "0001780201",
+      "company_id": "cik_0001780201",
+      "item_id": "secfacts_0001780201",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001780201.json",
+      "symbol": "LVLU"
+    },
+    {
+      "cik": "0001786286",
+      "company_id": "cik_0001786286",
+      "item_id": "secfacts_0001786286",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001786286.json",
+      "symbol": "DPRO"
+    },
+    {
+      "cik": "0001796280",
+      "company_id": "cik_0001796280",
+      "item_id": "secfacts_0001796280",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001796280.json",
+      "symbol": "ORIC"
+    },
+    {
+      "cik": "0001805077",
+      "company_id": "cik_0001805077",
+      "item_id": "secfacts_0001805077",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001805077.json",
+      "symbol": "EOSE"
+    },
+    {
+      "cik": "0001809196",
+      "company_id": "cik_0001809196",
+      "item_id": "secfacts_0001809196",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001809196.json",
+      "symbol": "IMTX"
+    },
+    {
+      "cik": "0001812364",
+      "company_id": "cik_0001812364",
+      "item_id": "secfacts_0001812364",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001812364.json",
+      "symbol": "RLAY"
+    },
+    {
+      "cik": "0001815442",
+      "company_id": "cik_0001815442",
+      "item_id": "secfacts_0001815442",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001815442.json",
+      "symbol": "KYMR"
+    },
+    {
+      "cik": "0001818331",
+      "company_id": "cik_0001818331",
+      "item_id": "secfacts_0001818331",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001818331.json",
+      "symbol": "WGS"
+    },
+    {
+      "cik": "0001819576",
+      "company_id": "cik_0001819576",
+      "item_id": "secfacts_0001819576",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001819576.json",
+      "symbol": "LQDA"
+    },
+    {
+      "cik": "0001825024",
+      "company_id": "cik_0001825024",
+      "item_id": "secfacts_0001825024",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001825024.json",
+      "symbol": "OPAD"
+    },
+    {
+      "cik": "0001831631",
+      "company_id": "cik_0001831631",
+      "item_id": "secfacts_0001831631",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001831631.json",
+      "symbol": "LDI"
+    },
+    {
+      "cik": "0001831651",
+      "company_id": "cik_0001831651",
+      "item_id": "secfacts_0001831651",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001831651.json",
+      "symbol": "SHLS"
+    },
+    {
+      "cik": "0001843165",
+      "company_id": "cik_0001843165",
+      "item_id": "secfacts_0001843165",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001843165.json",
+      "symbol": "YHC"
+    },
+    {
+      "cik": "0001844862",
+      "company_id": "cik_0001844862",
+      "item_id": "secfacts_0001844862",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001844862.json",
+      "symbol": "SLDP"
+    },
+    {
+      "cik": "0001845840",
+      "company_id": "cik_0001845840",
+      "item_id": "secfacts_0001845840",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001845840.json",
+      "symbol": "TSAT"
+    },
+    {
+      "cik": "0001847806",
+      "company_id": "cik_0001847806",
+      "item_id": "secfacts_0001847806",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001847806.json",
+      "symbol": "GNS"
+    },
+    {
+      "cik": "0001856725",
+      "company_id": "cik_0001856725",
+      "item_id": "secfacts_0001856725",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001856725.json",
+      "symbol": "RANI"
+    },
+    {
+      "cik": "0001857816",
+      "company_id": "cik_0001857816",
+      "item_id": "secfacts_0001857816",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001857816.json",
+      "symbol": "GCT"
+    },
+    {
+      "cik": "0001888886",
+      "company_id": "cik_0001888886",
+      "item_id": "secfacts_0001888886",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001888886.json",
+      "symbol": "GPCR"
+    },
+    {
+      "cik": "0001897087",
+      "company_id": "cik_0001897087",
+      "item_id": "secfacts_0001897087",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001897087.json",
+      "symbol": "SUPX"
+    },
+    {
+      "cik": "0001898795",
+      "company_id": "cik_0001898795",
+      "item_id": "secfacts_0001898795",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001898795.json",
+      "symbol": "LVWR"
+    },
+    {
+      "cik": "0001927578",
+      "company_id": "cik_0001927578",
+      "item_id": "secfacts_0001927578",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001927578.json",
+      "symbol": "NTCL"
+    },
+    {
+      "cik": "0001930021",
+      "company_id": "cik_0001930021",
+      "item_id": "secfacts_0001930021",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001930021.json",
+      "symbol": "HOVR"
+    },
+    {
+      "cik": "0001944399",
+      "company_id": "cik_0001944399",
+      "item_id": "secfacts_0001944399",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001944399.json",
+      "symbol": "PDC"
+    },
+    {
+      "cik": "0001961847",
+      "company_id": "cik_0001961847",
+      "item_id": "secfacts_0001961847",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001961847.json",
+      "symbol": "INHD"
+    },
+    {
+      "cik": "0001963088",
+      "company_id": "cik_0001963088",
+      "item_id": "secfacts_0001963088",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001963088.json",
+      "symbol": "ATCH"
+    },
+    {
+      "cik": "0001975940",
+      "company_id": "cik_0001975940",
+      "item_id": "secfacts_0001975940",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001975940.json",
+      "symbol": "FLYE"
+    },
+    {
+      "cik": "0001997859",
+      "company_id": "cik_0001997859",
+      "item_id": "secfacts_0001997859",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001997859.json",
+      "symbol": "WBTN"
+    },
+    {
+      "cik": "0002010499",
+      "company_id": "cik_0002010499",
+      "item_id": "secfacts_0002010499",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002010499.json",
+      "symbol": "DGNX"
+    },
+    {
+      "cik": "0002012593",
+      "company_id": "cik_0002012593",
+      "item_id": "secfacts_0002012593",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002012593.json",
+      "symbol": "RAPP"
+    },
+    {
+      "cik": "0002015845",
+      "company_id": "cik_0002015845",
+      "item_id": "secfacts_0002015845",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002015845.json",
+      "symbol": "ECG"
+    },
+    {
+      "cik": "0002019505",
+      "company_id": "cik_0002019505",
+      "item_id": "secfacts_0002019505",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002019505.json",
+      "symbol": "HIT"
+    },
+    {
+      "cik": "0002024656",
+      "company_id": "cik_0002024656",
+      "item_id": "secfacts_0002024656",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002024656.json",
+      "symbol": "FMFC"
+    },
+    {
+      "cik": "0002031688",
+      "company_id": "cik_0002031688",
+      "item_id": "secfacts_0002031688",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002031688.json",
+      "symbol": "ANPA"
+    },
+    {
+      "cik": "0002036042",
+      "company_id": "cik_0002036042",
+      "item_id": "secfacts_0002036042",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002036042.json",
+      "symbol": "SION"
+    },
+    {
+      "cik": "0002081043",
+      "company_id": "cik_0002081043",
+      "item_id": "secfacts_0002081043",
+      "required_as_of_max": "2025-09-30",
+      "required_as_of_min": "2025-01-31",
+      "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002081043.json",
+      "symbol": "ATAI"
+    }
+  ],
+  "missing_cik": [],
+  "missing_cik_count": 0,
+  "plan_hash": "e8f86b50e8066bf3671ad085f428dc30fc14d013a881d01b04c752ef2c380bf6",
+  "request_count": 115,
+  "schema_version": "sec-company-facts-backfill-plan-v1",
+  "selection": {
+    "allowed_url_pattern": "https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json",
+    "availability_policy": "next_utc_day_after_companyfacts_filed_date",
+    "available_at_through": "2025-09-30T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "kind": "sec_company_facts",
+    "outcome_fields_included": false,
+    "period_end_from": "2022-01-27",
+    "period_end_through": "2025-09-30",
+    "period_lookback_days": 1100,
+    "prediction_dates": [
+      "2025-01-31",
+      "2025-03-31",
+      "2025-05-30",
+      "2025-07-31",
+      "2025-09-30"
+    ],
+    "split_ownership_included": false,
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_artifact": {
+    "path": "/Users/l/Project/Recommandation/reports/signal-magnitude-c5-backfill-scope-20260921.json",
+    "sha256": "a510fe013dc695acfebd312f62f64167e2c3b3e310f964cf62ee24190a05ccd6",
+    "size_bytes": 20021
+  }
+}

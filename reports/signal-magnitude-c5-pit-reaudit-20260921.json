@@ -1,0 +1,43 @@
+{
+  "scope": "ge3 research population (true >=2x cases) \u2014 user-confirmed rescoping 2026-09-21",
+  "after_backfill": "sec company facts 115/115 (plan e8f86b50, 321639 rows, 2 zero-fact issuers)",
+  "pools": [
+    {
+      "pool": "discovery",
+      "total_surge": 565,
+      "groups": {
+        "ge3_high": {
+          "cases": 159,
+          "covered": 159,
+          "coverage": 1.0,
+          "distinct_issuers": 102
+        },
+        "ge3_low": {
+          "cases": 406,
+          "covered": 406,
+          "coverage": 1.0,
+          "distinct_issuers": 270
+        }
+      }
+    },
+    {
+      "pool": "evolution_validation",
+      "total_surge": 236,
+      "groups": {
+        "ge3_high": {
+          "cases": 65,
+          "covered": 61,
+          "coverage": 0.9385,
+          "distinct_issuers": 44
+        },
+        "ge3_low": {
+          "cases": 171,
+          "covered": 169,
+          "coverage": 0.9883,
+          "distinct_issuers": 109
+        }
+      }
+    }
+  ],
+  "gate_pass_90pct": true
+}
