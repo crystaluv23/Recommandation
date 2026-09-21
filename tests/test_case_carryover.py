@@ -162,6 +162,83 @@ class CarryOverAttemptTest(unittest.TestCase):
         self.assertIn("missing_source_evidence", blocked.reasons)
 
 
+class EvaluatorCarryOverTest(unittest.TestCase):
+    """The inline abstain path through RuntimePlanEvaluator.evaluate."""
+
+    def test_first_case_rejection_carries_over_and_scores(self):
+        import tempfile
+
+        from stock_opportunity_agent.research.plan_evolution import (
+            RuntimePlanEvaluator,
+        )
+
+        class StubPredictor:
+            def predict(self, final_context):
+                return AgentStep(
+                    BlindPrediction(
+                        is_surge=False,
+                        candidate_judgment=CandidateJudgment.UNLIKELY,
+                        magnitude=None,
+                        confidence=ConfidenceLevel.LOW,
+                        key_reasons=("stub",),
+                        uncertainties=(),
+                        session_id="s",
+                    ),
+                    AgentUsage(),
+                )
+
+            def reflect(self, ctx, prediction, truth):
+                return AgentStep(
+                    PredictionSelfReflection(correct=not truth.is_surge),
+                    AgentUsage(),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+
+            class FailingOnceController:
+                def __init__(self) -> None:
+                    self.calls = 0
+
+                def initialize(self, plan, basic_info):
+                    self.calls += 1
+                    if self.calls == 1:
+                        raise CandidateExecutionRejected(
+                            "research_controller_initialize",
+                            "simulated guard rejection",
+                        )
+                    return AgentStep(
+                        ResearchState(decision=ResearchDecision.FINALIZE),
+                        AgentUsage(),
+                    )
+
+                def reflect(self, *args, **kwargs):
+                    return AgentStep(
+                        ResearchState(decision=ResearchDecision.FINALIZE),
+                        AgentUsage(),
+                    )
+
+            evaluator = RuntimePlanEvaluator(
+                raw_info_store=RawInfoStore(documents=()),
+                controller=FailingOnceController(),
+                signal_agent=None,
+                predictor=StubPredictor(),
+                prediction_root=root / "predictions",
+            )
+            cases = (make_case("c1", 4.0), make_case("c2", 1.2))
+            attempt = evaluator.evaluate(
+                default_information_plan(), cases, registry.freeze()
+            )
+            self.assertEqual(len(attempt.failures), 1)
+            self.assertEqual(len(attempt.trajectories), 2)
+            self.assertEqual(len(attempt.technical_exclusion_case_ids), 1)
+            metrics = attempt.metrics
+            self.assertIsNotNone(metrics)
+            self.assertEqual(metrics.false_negative, 1)
+
+
 class InitializeCombinedConstraintTest(unittest.TestCase):
     def test_initialize_prompt_names_simultaneous_obligations(self):
         import inspect

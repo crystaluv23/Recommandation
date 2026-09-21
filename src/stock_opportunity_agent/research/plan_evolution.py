@@ -34,6 +34,7 @@ from stock_opportunity_agent.signal_library import (
     SignalResult,
 )
 
+from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.research.evolution_core import (
     BlindPrediction,
     BlindPredictor,
@@ -85,6 +86,12 @@ from stock_opportunity_agent.research.evolution_core import (
     execute_information_plan,
     score_predictions,
     summarize_information_plan,
+    CandidateJudgment,
+    ConfidenceLevel,
+    PredictionSelfReflection,
+    RuntimeStopReason,
+    ResearchDecision,
+    ResearchState,
 )
 
 
@@ -497,6 +504,7 @@ class RuntimePlanEvaluator:
                                 ),
                             ),
                             stop_reason=RuntimeStopReason.FINALIZED,
+                            usage=AgentUsage(),
                         )
                     )
                     _write_or_verify_json(
