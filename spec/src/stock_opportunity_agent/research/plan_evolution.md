@@ -43,7 +43,7 @@ A CandidateExecutionRejected case (bounded correction exhaustion, including
 the same-request guard) records its failure artifact, abstains as a real
 finalized negative prediction (`insufficient_information` with a persisted
 prediction ref), stays in the label-blind confusion matrix, and never blocks
-the candidate while at most `MAX_TECHNICAL_CASE_EXCLUSIONS` (2) cases are
+the candidate while at most `MAX_TECHNICAL_CASE_EXCLUSIONS` (6, raised from 2 on 2026-09-21 after live measurement: at the observed ~25-30% per-case correction-exhaustion rate a cap of 2 made round viability 1-4% statistically) cases are
 excluded in one evaluation. Abstain rows are exempt only from the
 source-evidence eligibility check — their absence of evidence reflects the
 recorded failure, not a research gap; completeness, finalization, and

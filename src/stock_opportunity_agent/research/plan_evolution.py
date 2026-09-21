@@ -1822,7 +1822,7 @@ class PlanEvaluationResult:
     fitness: FitnessEligibility
 
 
-MAX_TECHNICAL_CASE_EXCLUSIONS = 2
+MAX_TECHNICAL_CASE_EXCLUSIONS = 6
 
 
 class EvaluationCancelled(ValidationError):

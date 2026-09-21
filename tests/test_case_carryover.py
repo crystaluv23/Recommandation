@@ -121,10 +121,13 @@ class CarryOverAttemptTest(unittest.TestCase):
     def test_over_cap_stays_rejected_with_metrics_none(self):
         cases = (
             self._cases()
-            + (make_case("carry_x1", 6.0), make_case("carry_x2", 7.0))
+            + tuple(
+                make_case(f"carry_x{i}", 6.0 + i)
+                for i in range(MAX_TECHNICAL_CASE_EXCLUSIONS)
+            )
         )
         trajectories = self._trajectories_with_abstain(cases, abstain_index=0)
-        # Three distinct fresh failures (plus one replayed abstain) exceed
+        # MAX+1 distinct fresh failures (plus one replayed abstain) exceed
         # the cumulative per-candidate cap.
         failures = tuple(
             CaseEvaluationFailure(
@@ -134,7 +137,7 @@ class CarryOverAttemptTest(unittest.TestCase):
                 message="m",
                 artifact_ref="a",
             )
-            for case in cases[2:5]
+            for case in cases[2 : 2 + MAX_TECHNICAL_CASE_EXCLUSIONS + 1]
         )
         attempt = _attempt(
             [case.case_id for case in cases], trajectories, failures
@@ -302,7 +305,12 @@ class CumulativeCapAcrossRestartTest(unittest.TestCase):
             root = Path(directory)
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
-            cases = tuple(make_case(f"c{i}", m) for i, m in enumerate((4.0, 1.2, 5.0, 1.1, 6.0)))
+            cases = tuple(
+        make_case(f"c{i}", m)
+        for i, m in enumerate(
+            (4.0, 1.2, 5.0, 1.1, 6.0, 2.5, 3.0)
+        )
+    )
 
             def build(fail_on):
                 return RuntimePlanEvaluator(
@@ -313,19 +321,22 @@ class CumulativeCapAcrossRestartTest(unittest.TestCase):
                     prediction_root=root / "predictions",
                 )
 
-            first = build({1, 2}).evaluate(
+            first = build({1, 2, 3, 4, 5, 6}).evaluate(
                 default_information_plan(), cases, registry.freeze()
             )
-            self.assertEqual(len(first.technical_exclusion_case_ids), 2)
+            self.assertEqual(
+                len(first.technical_exclusion_case_ids),
+                MAX_TECHNICAL_CASE_EXCLUSIONS,
+            )
             self.assertIsNotNone(first.metrics)
             checkpoint_files = list(
                 (root / "trajectories").glob("*/*.json")
             )
             self.assertTrue(checkpoint_files, "abstain checkpoints persisted")
 
-            # Simulate the crash point: only the two abstain checkpoints
+            # Simulate the crash point: only the abstain checkpoints
             # existed when the process died; later cases restart fresh.
-            for case in cases[2:]:
+            for case in cases[MAX_TECHNICAL_CASE_EXCLUSIONS:]:
                 for path in (root / "trajectories").glob(
                     f"*/{case.case_id}.json"
                 ):
