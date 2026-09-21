@@ -508,3 +508,23 @@ Candidate validation, holdout, paired effectiveness, and promotion gates are
 identical for both paths and are never weakened for yield. The controller's
 mining ledger is a new feedback unit type whose reflection consumption follows
 the existing append-only memory rules.
+
+## Magnitude research targets (data-gated)
+
+Magnitude-class research targets reuse the existing Mining chain with a frozen
+target contract: a fixed projection of the existing realized labels (for
+example `magnitude_ge3` splitting the true-≥2x population at 3x), never a
+redefinition of future outcomes. Every new target requires a data-gate record
+(listed in the action-plan C0 baseline) confirming, before any mining result
+is seen: per-group independent-issuer counts and time coverage on both the
+induction and validation pools, issuer and date isolation, prediction-time
+evidence coverage, and user-confirmed minimum support thresholds. A target
+whose gate is unconfirmed or failing gets no target-specific schema,
+projection, sampler, prompt, validation, or promotion code. As of 2026-09-21:
+`magnitude_ge10` and `magnitude_extremes` are blocked (insufficient support);
+`magnitude_ge3` passes the raw data checks but its numeric thresholds await
+user confirmation. Label-free extraction (H1 hypothesis, E1/H2 evidence) never
+sees group membership; grouping reaches only E2/H3 after evidence packs are
+frozen. Promotion for magnitude targets remains an unapproved change: until a
+separately confirmed decision package, existing directional gates apply
+unchanged and Slow reports keep `magnitude_contribution.assessed=false`.

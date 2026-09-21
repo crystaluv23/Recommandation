@@ -567,3 +567,22 @@ those descriptions for the actual supplied registry, including overrides; it
 never substitutes a built-in description merely because the function name
 matches. Missing documentation is explicit. These descriptions do not change
 execution, thresholds, point-in-time checks, or candidate validation.
+
+## Multi-target evaluation statistics (gated, unimplemented)
+
+Approved design direction (2026-09-21 action plan, gated behind the magnitude
+data gate): Signal observation statistics remain direction-keyed and unchanged
+— `SignalStats` state counters, `surge_rate`, observation identity, learning
+events, and learned profiles keep their exact current semantics for the
+`surge_direction` target. Any additional research target (for example a
+magnitude-class contrast) gets a separate, version-bound target-evaluation
+namespace: records are keyed by Signal version × target × evaluation protocol,
+never mixed into the direction `surge` buckets. One physical Signal execution
+accounts once for execution count, tokens, and cost; any number of target
+evaluations may reference that same observation with their own evaluation
+identity and result. Observation deduplication and target-evaluation
+deduplication are separate idempotency rules, including across restarts.
+Records that predate a target are unknown for it — never zero-filled and never
+counted as support. No target-specific schema, sampler, prompt, or statistics
+code is implemented until that target's data-gate record passes; see
+`signal_evolution.md`.

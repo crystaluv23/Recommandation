@@ -36,3 +36,24 @@ on the Slow Signal engine.
   separate technical diagnostic but never formal Slow-learning needs.
 - A resumed Slow loop refreshes the backlog before creating a new frozen Slow
   validation. An already staged validation retains its exact original backlog.
+
+## Bounded parallel candidate evaluation
+
+One coordinator (the engine, holding the workspace execution lock) may
+evaluate the round's candidate plans with bounded worker threads. Frozen
+inputs — round dataset snapshot, parents, meta, Signal registry snapshot,
+limits — are shared read-only. All candidate proposals are generated and
+persisted sequentially before any evaluation starts. Workers are dispatched
+in ascending candidate-slot order, each worker owns one candidate at a time,
+and each worker operates on its own mutable role instances (research
+controller, Signal agent, Predictor, resolver context, provider client); no
+role object is shared across workers. Case order inside a candidate and
+research order inside a case are unchanged. Results are recombined,
+validated, critiqued, reflected, and committed by the coordinator in the
+original candidate-slot order, so completion order never influences metrics,
+selection, meta, or the archive. Concurrency level is a frozen run-contract
+parameter; level 1 must remain byte-equivalent to the sequential engine. Stop
+handling lives solely in the coordinator's main thread: a stop signal marks a
+shared cancel flag, admission of new work and requests stops immediately,
+workers check the flag at safe boundaries, and waits on workers are bounded.
+Slow never overlaps the same cycle's Fast.
