@@ -1650,6 +1650,33 @@ class EvaluationCancelled(ValidationError):
         self.round_id = round_id
 
 
+def install_stop_handler(
+    cancel_event: threading.Event,
+) -> Callable[[], None]:
+    """Handle SIGINT in the coordinator thread by marking stop intent.
+
+    Defect #12 fix: the handler replaces the default KeyboardInterrupt with a
+    cancel flag, so a stop during a blocking provider call is no longer
+    swallowed-or-fatal; the engine finishes the in-flight unit, then stops
+    admission at the next safe boundary. Only the coordinator main thread
+    installs it; workers never install signal handlers.
+    """
+
+    import signal
+
+    previous = signal.getsignal(signal.SIGINT)
+
+    def _mark_stop(signum, frame):  # noqa: ARG001
+        cancel_event.set()
+
+    signal.signal(signal.SIGINT, _mark_stop)
+
+    def restore() -> None:
+        signal.signal(signal.SIGINT, previous)
+
+    return restore
+
+
 class PlanEvolutionEngine:
     """Bounded Information Plan Fast Loop under a frozen Signal Registry."""
 
@@ -1686,6 +1713,7 @@ class PlanEvolutionEngine:
         evaluator_factory: Callable[[], "PlanEvaluator"] | None = None,
         max_parallel_plans: int = 1,
         cancel_event: threading.Event | None = None,
+        worker_wait_timeout_seconds: float = 3600.0,
     ) -> None:
         if candidates_per_round < 1:
             raise ValidationError("candidates_per_round must be positive")
@@ -1705,6 +1733,8 @@ class PlanEvolutionEngine:
         self.evaluator_factory = evaluator_factory
         self.max_parallel_plans = max_parallel_plans
         self.cancel_event = cancel_event
+        self.worker_wait_timeout_seconds = float(worker_wait_timeout_seconds)
+        self._progress_lock = threading.Lock()
         self.proposer = proposer
         self.critic = critic
         self.round_reflector = round_reflector
@@ -2033,6 +2063,11 @@ class PlanEvolutionEngine:
                 signal_snapshot=signal_snapshot,
             )
         for candidate_index, plan in enumerate(candidate_plans, start=1):
+            if self.cancel_event is not None and self.cancel_event.is_set():
+                raise EvaluationCancelled(
+                    round_id,
+                    "stop requested before candidate admission",
+                )
             if evaluated is not None:
                 _, plan, attempt, attempt_path = evaluated[candidate_index - 1]
             else:
@@ -2399,9 +2434,24 @@ class PlanEvolutionEngine:
                     signal_snapshot=signal_snapshot,
                 )
                 futures[future] = candidate_index
-            for future in concurrent.futures.as_completed(futures):
+            pending = set(futures)
+            done, not_done = concurrent.futures.wait(
+                pending,
+                timeout=self.worker_wait_timeout_seconds,
+            )
+            if not_done:
+                for future in not_done:
+                    future.cancel()
+                raise EvaluationCancelled(
+                    round_id,
+                    "bounded wait for evaluation workers exceeded "
+                    f"{self.worker_wait_timeout_seconds}s with "
+                    f"{len(not_done)} candidate(s) unfinished; staged attempts "
+                    "are preserved for recovery",
+                )
+            for future, index in futures.items():
                 entry = future.result()
-                results[entry[0]] = entry
+                results[index] = entry
         return [results[index] for index in range(1, len(candidate_plans) + 1)]
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:
