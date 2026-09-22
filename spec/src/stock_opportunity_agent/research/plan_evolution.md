@@ -56,6 +56,21 @@ must satisfy every prior obligation simultaneously: horizon compliance and
 claim-quantity grounding are jointly required, and repairing one by
 reintroducing the other is not a correction.
 
+Technical carry-over affects scoring but is not research evidence. Formal
+Binary F1 and magnitude metrics retain the frozen cohort denominator: a failed
+positive remains a false negative, while a failed negative is reported as a
+technical abstention and must not be described as a successful negative
+research judgment. Critic, Round reflector, proposer FIFO, capability backlog,
+and Slow feedback receive an explicit technical-exclusion record instead of the
+synthetic `insufficient_information` judgment, its four-way feedback, its empty
+trajectory, or a fabricated magnitude miss. Magnitude diagnostics used for
+research attribution are recomputed over research-completed trajectories and
+carry the excluded count; the formal score-denominator metrics remain unchanged
+beside them. Completion rate and failure classification are reported separately
+from F1 and from Anchor/Random cohort metrics. Legacy committed reflections are
+projected through the same separation at model-read time without rewriting the
+historical artifact.
+
 ## Bounded parallel candidate evaluation
 
 One coordinator (the engine, holding the workspace execution lock) may
@@ -76,3 +91,14 @@ handling lives solely in the coordinator's main thread: a stop signal marks a
 shared cancel flag, admission of new work and requests stops immediately,
 workers check the flag at safe boundaries, and waits on workers are bounded.
 Slow never overlaps the same cycle's Fast.
+
+Production composition freezes `max_parallel_plans` in every newly created run
+contract (default 2, bounded by the candidate count). A missing field in a
+legacy readable contract means 1 and preserves the former V130 sequential
+path. Parallel production creates a fresh evaluator, controller, retrieval
+agent, Predictor, Signal runner, evidence-resolver context, and structured role
+client for every candidate worker while sharing only frozen inputs and the
+thread-safe cache/ledger boundaries. Runtime progress is serialized through one
+coordinator-owned event writer so sequence numbers and JSONL records cannot
+race. `max_parallel_plans=1` stays on the original direct sequential evaluator
+path rather than introducing a worker thread.

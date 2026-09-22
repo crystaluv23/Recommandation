@@ -91,17 +91,17 @@ observation cycle.
 
 - The controller view and ledger carry runtime-computed `modality_coverage`
   for the structured and narrative modalities: `{available, explored,
-  status}`, where availability derives from the available narrative source
-  families and exploration from actual ledger narrative reads/catalog/fetches.
-- While narrative evidence is available and unexplored, domain terminal
-  actions (`propose_candidate`, `record_no_pattern`) are inadmissible; the
-  bounded correction names the options (fetch a narrative family, read an
-  event/document, inspect the evidence catalog, or take a control-plane
-  terminal). Control-plane terminals (`record_deferred` and its
+  status}`. Availability derives from the value-free measurable-evidence
+  manifest and available source families; exploration derives from actual
+  ledger fetch/catalog/read actions.
+- While either available modality is unexplored, domain terminal actions
+  (`propose_candidate`, `record_no_pattern`) are inadmissible; the bounded
+  correction names the remaining modality and legitimate exploration actions.
+  Control-plane terminals (`record_deferred` and its
   `deferred_budget`/`evidence_unavailable` outcomes, correction-exhaustion
   `technical_failure`) always satisfy the obligation — the obligation binds
   exploration opportunity, never candidate outcomes. No quota forces a
-  narrative candidate, and none may be added.
+  candidate from either modality, and none may be added merely for balance.
 - The mining audit reports the modality metrics: eligible narrative seed
   count, exploration completions, typed unavailability, narrative reads,
   candidates, materializations, and validations, so reflection can consume

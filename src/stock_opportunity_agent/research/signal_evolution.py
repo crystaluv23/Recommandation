@@ -262,10 +262,11 @@ def magnitude_feedback_rows(
     Only locally committed rounds (``1 <= round_id <= last_completed_round``)
     contribute; rebased imported-history entries keep reserved negative ids
     and are proposer-view constructs, not locally committed feedback. Rows are
-    derived only from Plan reflections that authentically carry
-    ``magnitude_diagnostics`` — legacy entries without the block contribute no
-    row rather than a zero-valued substitute. These rows are reflection
-    evidence only; no promotion gate reads them.
+    derived only from Plan reflections that authentically carry research-case
+    magnitude evidence — legacy entries without the block contribute no row
+    rather than a zero-valued substitute. Legacy technical exclusions are
+    projected out through the same model-view boundary used by Fast roles.
+    These rows are reflection evidence only; no promotion gate reads them.
     """
 
     rows: list[dict[str, Any]] = []
@@ -275,13 +276,19 @@ def magnitude_feedback_rows(
         if round_id < 1 or round_id > last_completed_round:
             continue
         for reflection in getattr(entry, "plan_reflections", ()):
-            diagnostics = getattr(reflection, "magnitude_diagnostics", None)
+            if getattr(reflection, "magnitude_diagnostics", None) is None:
+                continue
+            model_view = reflection.to_model_dict()
+            diagnostics = model_view.get("magnitude_diagnostics")
             if diagnostics is None:
                 continue
             event = {
                 "plan_id": reflection.plan_id,
                 "round_id": round_id,
                 "magnitude_diagnostics": dict(diagnostics),
+                "technical_completion": dict(
+                    model_view["technical_completion"]
+                ),
             }
             feedback_ref = f"magnitude:{reflection.plan_id}"
             rows.append(
@@ -6123,11 +6130,17 @@ class SignalEvolutionEngine:
                         for candidate in result.candidates
                         if self._is_narrative_candidate(candidate)
                     ),
+                    "structured_candidate_count": sum(
+                        1
+                        for candidate in result.candidates
+                        if not self._is_narrative_candidate(candidate)
+                    ),
                 }
             )
 
         candidate_refs: list[str] = []
         narrative_candidate_refs: list[str] = []
+        structured_candidate_refs: list[str] = []
         induction_case_ids: dict[str, tuple[str, ...]] = {}
         validation_case_ids: dict[str, tuple[str, ...]] = {}
         validation_by_class: dict[bool, list[str]] = {True: [], False: []}
@@ -6137,6 +6150,8 @@ class SignalEvolutionEngine:
             )
         narrative_materialized = 0
         narrative_validated = 0
+        structured_materialized = 0
+        structured_validated = 0
         for candidate_seed, candidate in candidates:
             evidence = {}
             for seed_cited in cited.values():
@@ -6162,6 +6177,9 @@ class SignalEvolutionEngine:
             if is_narrative:
                 narrative_materialized += 1
                 narrative_candidate_refs.append(signal_ref)
+            else:
+                structured_materialized += 1
+                structured_candidate_refs.append(signal_ref)
             induction_case_ids[signal_ref] = (
                 fetched_case_refs.get(staged_seed)
                 or tuple(opaque.values())
@@ -6179,7 +6197,34 @@ class SignalEvolutionEngine:
             )
             if is_narrative:
                 narrative_validated += 1
+            else:
+                structured_validated += 1
         modality_metrics = {
+            "eligible_structured_seed_count": sum(
+                1
+                for report in seed_reports
+                if isinstance(report, Mapping)
+                and report.get("status") == "completed"
+                and dict(report.get("modality_coverage", {}))
+                .get("structured", {})
+                .get("available")
+            ),
+            "structured_exploration_completed": sum(
+                1
+                for report in seed_reports
+                if isinstance(report, Mapping)
+                and report.get("status") == "completed"
+                and dict(report.get("modality_coverage", {}))
+                .get("structured", {})
+                .get("explored")
+            ),
+            "structured_candidate_count": sum(
+                int(report.get("structured_candidate_count", 0) or 0)
+                for report in seed_reports
+                if isinstance(report, Mapping)
+            ),
+            "structured_materialization_count": structured_materialized,
+            "structured_validation_count": structured_validated,
             "eligible_narrative_seed_count": sum(
                 1
                 for report in seed_reports
@@ -6228,6 +6273,7 @@ class SignalEvolutionEngine:
             "need_disposition_counts": need_disposition_counts,
             "candidate_refs": list(candidate_refs),
             "narrative_candidate_refs": list(narrative_candidate_refs),
+            "structured_candidate_refs": list(structured_candidate_refs),
             "refined_hypotheses": {},
         }
         return self._mining_output(

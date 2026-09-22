@@ -164,6 +164,10 @@ class EvolutionCliTests(TestCase):
                     2,
                 )
                 self.assertEqual(
+                    contract["contract"]["limits"]["max_parallel_plans"],
+                    2,
+                )
+                self.assertEqual(
                     contract["contract"]["slow_history_manifest_hash"],
                     history_hash,
                 )

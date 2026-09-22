@@ -69,6 +69,15 @@ bounded Fast/Slow cycle entry point.
   represented separately.
 - This module composes lower layers and contains no role-specific parser.
 
+Every newly frozen executable contract records `max_parallel_plans`; the CLI
+defaults it to 2 and validates it as a positive integer no greater than the
+candidate count. Runtime passes values above 1 to a production evaluator
+factory that creates worker-local mutable role/resolver/client state. Legacy
+contracts without the field execute with 1, preserving the proven V130
+sequential composition. The workspace lock still has one coordinator, and all
+worker progress is funneled through a lock-protected append so event order and
+sequence ids remain valid.
+
 
 The production evidence resolver connects configured Finnhub news after Alpha
 Vantage, matching the existing news capability catalog. The fallback uses the

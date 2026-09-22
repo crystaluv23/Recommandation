@@ -41,6 +41,16 @@ records reachable at or below that pointer. It projects:
 - count of corrupt/truncated debug-event lines ignored during projection; and
 - `contains_final_test_metrics=false`.
 
+For each committed candidate, the projection also reports technical completion
+count/rate and failure-class counts separately from formal metrics; Anchor,
+Random, and Combined metrics remain visible. Magnitude reporting includes the
+predicted-class distribution, true-class support, per-class recall, and
+underestimate/overestimate/missed-surge counts. A technical exclusion stays in
+the formal score denominator but is not labeled a correct research judgment in
+these completion diagnostics. This prevents a higher macro-F1 or a negative-case
+abstention from being presented as proof that higher-magnitude discrimination or
+research completion improved.
+
 Plan files, trajectory files, checkpoints, or events above the committed pointer
 must not create a chart round. Staged artifacts may contribute only to the
 explicit active/resume status, never to F1 or Top-K.

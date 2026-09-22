@@ -12,6 +12,19 @@ and apply only explicitly allowed deterministic recovery transforms.
 - A recovery transform must be generic to the declared schema; it must not
   encode provider-, company-, or case-specific exceptions.
 
+When a Signal quantity-grounding issue says that a missing literal exists in
+another evidence location of the same exact Signal, the machine-readable
+obligation must authorize the minimal provenance coordinates needed to use that
+location (`evidence_group` and `evidence_index`) as permitted dependencies of
+the rejected claim. The claim remains the required change path. This permission
+does not authorize changing `signal_ref`, unrelated evidence rows, or any other
+ResearchState field. A corrected tuple is accepted only after the ordinary
+Signal catalog, canonical-span, quantity, point-in-time, and whole-state
+validators all pass. Merely switching an index while leaving another claimed
+quantity unsupported therefore makes scoped progress but remains invalid and
+must receive the next truthful validation diagnostic; it must not be projected
+back to the original invalid tuple or terminated as a byte-identical retry.
+
 Ordinary structured correction obligations use their explicit change paths and
 permitted dependency paths even when a Controller enables exact compaction
 scope. The compaction-specific scope resolver runs only for actual compaction

@@ -8,6 +8,7 @@ import json
 import math
 import random
 import re
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from enum import Enum
@@ -1467,19 +1468,12 @@ def binary_f1_fraction(metrics: PlanMetrics) -> Fraction:
     return Fraction(2 * metrics.true_positive, denominator)
 
 
-def magnitude_diagnostics(
-    trajectories: Iterable[ExecutionTrajectory],
+def _magnitude_diagnostics_from_classes(
+    rows: Iterable[tuple[str, str | None]],
 ) -> dict[str, Any]:
-    """Aggregate the full magnitude misclassification diagnostics for one batch.
+    """Aggregate canonical diagnostics from true/predicted class pairs."""
 
-    Numeric definitions deliberately mirror ``score_predictions``: supports and
-    misses are counted over the complete true-surge population so a Stage-1
-    false negative still counts as a missed magnitude prediction. The
-    conditional accuracy over true positives is diagnostic only and is
-    ``None`` with an explicit reason when the denominator is zero.
-    """
-
-    rows = tuple(trajectories)
+    rows = tuple(rows)
     columns = ("predicted_negative",) + tuple(
         f"predicted_{magnitude.value}" for magnitude in _MAGNITUDE_CLASS_ORDER
     )
@@ -1497,22 +1491,14 @@ def magnitude_diagnostics(
     underestimate = 0
     overestimate = 0
     missed_surge = 0
-    for row in rows:
-        truth_class = (
-            row.ground_truth.magnitude.value
-            if row.ground_truth.is_surge
-            else "non_surge"
-        )
-        predicted_class = (
-            row.prediction.magnitude.value if row.prediction.magnitude else None
-        )
+    for truth_class, predicted_class in rows:
         matrix[truth_class][
             "predicted_negative" if predicted_class is None else f"predicted_{predicted_class}"
         ] += 1
         truth_distribution[truth_class] += 1
         if predicted_class is not None:
             prediction_distribution[f"predicted_{predicted_class}"] += 1
-        if not row.ground_truth.is_surge:
+        if truth_class == "non_surge":
             continue
         if predicted_class is None:
             missed_surge += 1
@@ -1525,19 +1511,16 @@ def magnitude_diagnostics(
                 underestimate += 1
             else:
                 overestimate += 1
-    surge_count = sum(
-        1 for row in rows if row.ground_truth.is_surge
-    )
+    surge_count = sum(1 for truth_class, _predicted in rows if truth_class != "non_surge")
     magnitude_correct = sum(
         1
-        for row in rows
-        if row.ground_truth.is_surge
-        and row.prediction.magnitude is row.ground_truth.magnitude
+        for truth_class, predicted_class in rows
+        if truth_class != "non_surge" and predicted_class == truth_class
     )
     tp_count = sum(
         1
-        for row in rows
-        if row.prediction.is_surge and row.ground_truth.is_surge
+        for truth_class, predicted_class in rows
+        if truth_class != "non_surge" and predicted_class is not None
     )
     conditional_on_tp: float | None
     undefined_reason: str | None = None
@@ -1562,6 +1545,81 @@ def magnitude_diagnostics(
         "tp_denominator": tp_count,
         "undefined_reason": undefined_reason,
     }
+
+
+def magnitude_diagnostics(
+    trajectories: Iterable[ExecutionTrajectory],
+) -> dict[str, Any]:
+    """Aggregate full score-denominator magnitude diagnostics for one batch."""
+
+    return _magnitude_diagnostics_from_classes(
+        (
+            (
+                row.ground_truth.magnitude.value
+                if row.ground_truth.is_surge
+                else "non_surge",
+                row.prediction.magnitude.value
+                if row.prediction.magnitude
+                else None,
+            )
+            for row in trajectories
+        )
+    )
+
+
+def is_technical_exclusion_trajectory(trajectory: Any) -> bool:
+    """Return whether a scored trajectory is a framework-created abstention."""
+
+    prediction = getattr(trajectory, "prediction", None)
+    return str(getattr(prediction, "session_id", "")).startswith("exclusion_")
+
+
+def technical_completion_diagnostics(
+    trajectories: Iterable[ExecutionTrajectory],
+) -> dict[str, Any]:
+    """Separate research completion from the frozen score denominator."""
+
+    rows = tuple(trajectories)
+    excluded = tuple(row for row in rows if is_technical_exclusion_trajectory(row))
+    completed = len(rows) - len(excluded)
+    return {
+        "scored_case_count": len(rows),
+        "research_completed_case_count": completed,
+        "technical_exclusion_count": len(excluded),
+        "technical_completion_rate": (completed / len(rows) if rows else None),
+        "failure_class_counts": (
+            {"bounded_structured_correction_exhaustion": len(excluded)}
+            if excluded
+            else {}
+        ),
+        "scoring_effect_counts": {
+            "false_negative": sum(row.ground_truth.is_surge for row in excluded),
+            "technical_negative_abstention_not_true_negative": sum(
+                not row.ground_truth.is_surge for row in excluded
+            ),
+        },
+    }
+
+
+def research_magnitude_diagnostics(
+    trajectories: Iterable[ExecutionTrajectory],
+) -> dict[str, Any]:
+    """Build magnitude attribution only from cases with completed research."""
+
+    rows = tuple(trajectories)
+    completed = tuple(
+        row for row in rows if not is_technical_exclusion_trajectory(row)
+    )
+    diagnostics = magnitude_diagnostics(completed)
+    diagnostics.update(
+        {
+            "diagnostic_population": "research_completed",
+            "scored_case_count": len(rows),
+            "research_completed_case_count": len(completed),
+            "excluded_technical_case_count": len(rows) - len(completed),
+        }
+    )
+    return diagnostics
 
 
 @dataclass(frozen=True)
@@ -1950,9 +2008,10 @@ class CaseReflectionEvidence:
     case_index: int
     stop_reason: RuntimeStopReason
     termination_trigger: RuntimeStopReason | None
-    candidate_judgment_feedback: Mapping[str, Any]
-    self_reflection: PredictionSelfReflection
+    candidate_judgment_feedback: Mapping[str, Any] | None = None
+    self_reflection: PredictionSelfReflection | None = None
     magnitude_feedback: Mapping[str, Any] | None = None
+    technical_exclusion: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.case_index < 1:
@@ -1970,6 +2029,39 @@ class CaseReflectionEvidence:
                 self,
                 "termination_trigger",
                 RuntimeStopReason(self.termination_trigger),
+            )
+        if self.technical_exclusion is not None:
+            technical = dict(self.technical_exclusion)
+            if set(technical) != {
+                "failure_class",
+                "scoring_effect",
+                "research_attribution_allowed",
+            }:
+                raise ValidationError(
+                    "case reflection technical-exclusion fields are invalid"
+                )
+            if technical["failure_class"] != (
+                "bounded_structured_correction_exhaustion"
+            ) or technical["scoring_effect"] not in {
+                "false_negative",
+                "technical_negative_abstention_not_true_negative",
+            } or technical["research_attribution_allowed"] is not False:
+                raise ValidationError(
+                    "case reflection technical-exclusion semantics are invalid"
+                )
+            if (
+                self.candidate_judgment_feedback is not None
+                or self.self_reflection is not None
+                or self.magnitude_feedback is not None
+            ):
+                raise ValidationError(
+                    "technical exclusion cannot carry research-attribution feedback"
+                )
+            object.__setattr__(self, "technical_exclusion", technical)
+            return
+        if self.candidate_judgment_feedback is None or self.self_reflection is None:
+            raise ValidationError(
+                "research case reflection requires judgment feedback and reflection"
             )
         feedback = dict(self.candidate_judgment_feedback)
         expected_fields = {
@@ -2033,6 +2125,17 @@ class CaseReflectionEvidence:
             )
 
     def to_dict(self) -> dict[str, Any]:
+        if self.technical_exclusion is not None:
+            return {
+                "case_index": self.case_index,
+                "stop_reason": self.stop_reason.value,
+                "termination_trigger": (
+                    self.termination_trigger.value
+                    if self.termination_trigger
+                    else None
+                ),
+                "technical_exclusion": dict(self.technical_exclusion),
+            }
         value = {
             "case_index": self.case_index,
             "stop_reason": self.stop_reason.value,
@@ -2057,6 +2160,23 @@ class CaseReflectionEvidence:
     ) -> "CaseReflectionEvidence":
         """Build the identity-free layer from one immutable trajectory."""
 
+        if is_technical_exclusion_trajectory(trajectory):
+            return cls(
+                case_index=case_index,
+                stop_reason=trajectory.stop_reason,
+                termination_trigger=trajectory.termination_trigger,
+                technical_exclusion={
+                    "failure_class": (
+                        "bounded_structured_correction_exhaustion"
+                    ),
+                    "scoring_effect": (
+                        "false_negative"
+                        if trajectory.ground_truth.is_surge
+                        else "technical_negative_abstention_not_true_negative"
+                    ),
+                    "research_attribution_allowed": False,
+                },
+            )
         return cls(
             case_index=case_index,
             stop_reason=trajectory.stop_reason,
@@ -2074,6 +2194,29 @@ class CaseReflectionEvidence:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "CaseReflectionEvidence":
+        if "technical_exclusion" in data:
+            required = {
+                "case_index",
+                "stop_reason",
+                "termination_trigger",
+                "technical_exclusion",
+            }
+            if set(data) != required or not isinstance(
+                data["technical_exclusion"], Mapping
+            ):
+                raise ValidationError(
+                    "technical case reflection evidence fields are invalid"
+                )
+            return cls(
+                case_index=int(data["case_index"]),
+                stop_reason=RuntimeStopReason(str(data["stop_reason"])),
+                termination_trigger=(
+                    RuntimeStopReason(str(data["termination_trigger"]))
+                    if data["termination_trigger"] is not None
+                    else None
+                ),
+                technical_exclusion=dict(data["technical_exclusion"]),
+            )
         required = {
             "case_index",
             "stop_reason",
@@ -2110,6 +2253,112 @@ class CaseReflectionEvidence:
                 else None
             ),
         )
+
+    @property
+    def is_technical_exclusion(self) -> bool:
+        """Recognize both current typed rows and legacy synthetic reflections."""
+
+        if self.technical_exclusion is not None:
+            return True
+        return bool(
+            self.self_reflection is not None
+            and any(
+                str(item).startswith("technical_case_exclusion:")
+                for item in self.self_reflection.plan_issues
+            )
+        )
+
+    def to_model_dict(self) -> dict[str, Any]:
+        """Project legacy technical rows without synthetic research feedback."""
+
+        if not self.is_technical_exclusion:
+            return self.to_dict()
+        if self.technical_exclusion is not None:
+            return self.to_dict()
+        scoring_effect = (
+            "false_negative"
+            if self.candidate_judgment_feedback is not None
+            and self.candidate_judgment_feedback.get("true_binary_label") == "surge"
+            else "technical_negative_abstention_not_true_negative"
+        )
+        return {
+            "case_index": self.case_index,
+            "stop_reason": self.stop_reason.value,
+            "termination_trigger": (
+                self.termination_trigger.value if self.termination_trigger else None
+            ),
+            "technical_exclusion": {
+                "failure_class": "bounded_structured_correction_exhaustion",
+                "scoring_effect": scoring_effect,
+                "research_attribution_allowed": False,
+            },
+        }
+
+
+def case_reflection_completion_diagnostics(
+    reflections: Iterable[CaseReflectionEvidence],
+) -> dict[str, Any]:
+    """Summarize technical exclusions without turning them into judgments."""
+
+    rows = tuple(reflections)
+    excluded = tuple(row for row in rows if row.is_technical_exclusion)
+    completed = len(rows) - len(excluded)
+    effects = Counter(
+        str(row.to_model_dict()["technical_exclusion"]["scoring_effect"])
+        for row in excluded
+    )
+    return {
+        "scored_case_count": len(rows),
+        "research_completed_case_count": completed,
+        "technical_exclusion_count": len(excluded),
+        "technical_completion_rate": (completed / len(rows) if rows else None),
+        "failure_class_counts": (
+            {"bounded_structured_correction_exhaustion": len(excluded)}
+            if excluded
+            else {}
+        ),
+        "scoring_effect_counts": dict(sorted(effects.items())),
+    }
+
+
+def case_reflection_magnitude_diagnostics(
+    reflections: Iterable[CaseReflectionEvidence],
+) -> dict[str, Any] | None:
+    """Rebuild attribution diagnostics from non-technical reflection blocks."""
+
+    rows = tuple(reflections)
+    completed = tuple(row for row in rows if not row.is_technical_exclusion)
+    blocks = tuple(
+        dict(row.magnitude_feedback)
+        for row in completed
+        if row.magnitude_feedback is not None
+    )
+    if len(blocks) != len(completed):
+        return None
+    diagnostics = _magnitude_diagnostics_from_classes(
+        (
+            (
+                str(block["true_magnitude"])
+                if block["magnitude_applicable"]
+                else "non_surge",
+                (
+                    str(block["predicted_magnitude"])
+                    if block["predicted_magnitude"] is not None
+                    else None
+                ),
+            )
+            for block in blocks
+        )
+    )
+    diagnostics.update(
+        {
+            "diagnostic_population": "research_completed",
+            "scored_case_count": len(rows),
+            "research_completed_case_count": len(completed),
+            "excluded_technical_case_count": len(rows) - len(completed),
+        }
+    )
+    return diagnostics
 
 
 class RuntimeBudgetExceeded(ValidationError):
@@ -4489,6 +4738,25 @@ class PlanMetaReflection:
             value["magnitude_diagnostics"] = dict(self.magnitude_diagnostics)
         return value
 
+    def to_model_dict(self) -> dict[str, Any]:
+        """Return an attribution-safe FIFO view, including for legacy rows."""
+
+        value = self.to_dict()
+        value["original_case_reflections"] = [
+            item.to_model_dict() for item in self.original_case_reflections
+        ]
+        value["technical_completion"] = case_reflection_completion_diagnostics(
+            self.original_case_reflections
+        )
+        diagnostics = case_reflection_magnitude_diagnostics(
+            self.original_case_reflections
+        )
+        if diagnostics is None:
+            value.pop("magnitude_diagnostics", None)
+        else:
+            value["magnitude_diagnostics"] = diagnostics
+        return value
+
     @classmethod
     def from_record(
         cls,
@@ -4514,7 +4782,9 @@ class PlanMetaReflection:
             ),
             vertical_plan_reflection=record.reflection,
             parent_comparisons=parent_comparisons,
-            magnitude_diagnostics=magnitude_diagnostics(record.trajectories),
+            magnitude_diagnostics=research_magnitude_diagnostics(
+                record.trajectories
+            ),
         )
 
     @classmethod
@@ -4969,6 +5239,15 @@ class RoundMetaEntry:
             "evidence_refs": list(self.evidence_refs),
         }
 
+    def to_model_dict(self) -> dict[str, Any]:
+        """Return the additive FIFO with attribution-safe Plan reflections."""
+
+        value = self.to_dict()
+        value["plan_reflections"] = [
+            item.to_model_dict() for item in self.plan_reflections
+        ]
+        return value
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RoundMetaEntry":
         required = {
@@ -5088,7 +5367,7 @@ class PlanMetaMemory:
         """Serialize the complete retained additive FIFO for model consumers."""
 
         del max_chars
-        return tuple(entry.to_dict() for entry in self._entries)
+        return tuple(entry.to_model_dict() for entry in self._entries)
 
 
 @dataclass(frozen=True)

@@ -25,6 +25,7 @@ from stock_opportunity_agent.llm.openai import RetryableOpenAIClientError
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     EvolutionWorkspace,
+    EvaluationCancelled,
     EvaluationDatasetInfeasible,
     EvaluationDatasetManager,
     PlanEvaluationConfig,
@@ -273,6 +274,12 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--max-slow-cycles", type=int, default=1)
     freeze.add_argument("--min-new-signals-per-cycle", type=int, default=1)
     freeze.add_argument("--candidates-per-round", type=int, default=3)
+    freeze.add_argument(
+        "--max-parallel-plans",
+        type=int,
+        default=2,
+        help="maximum independently evaluated Fast Plan candidates in flight",
+    )
     freeze.add_argument("--parent-selection-seed", type=int, default=42)
     freeze.add_argument("--max-external-attempts", type=int, default=2500)
     freeze.add_argument("--max-total-cost", type=float, default=100.0)
@@ -696,6 +703,7 @@ def freeze_run(
     max_external_attempts: int,
     max_total_cost: float,
     h1_request_budget: int = 512_000,
+    max_parallel_plans: int = 2,
     slow_bootstrap_sources: tuple[Path, ...] = (),
     cycle_mode: str | None = None,
     slow_history_from: Path | None = None,
@@ -710,6 +718,10 @@ def freeze_run(
 ) -> dict[str, object]:
     if h1_request_budget < 1:
         raise ValueError("H1 request budget must be positive")
+    if not 1 <= max_parallel_plans <= candidates_per_round:
+        raise ValueError(
+            "max parallel Plans must be between one and candidates per round"
+        )
     _load_local_env(PROJECT_ROOT / ".env.local")
     oracle = RawInfoOracle.load_or_create(raw_info_root)
     raw_info_store = RawInfoStore(raw_info_root)
@@ -775,6 +787,8 @@ def freeze_run(
             or contract.cycle_mode != resolved_cycle_mode
             or int(contract.limits["candidates_per_round"])
             != candidates_per_round
+            or int(contract.limits.get("max_parallel_plans", 1))
+            != max_parallel_plans
             or int(contract.limits["parent_selection_seed"])
             != parent_selection_seed
             or contract.max_external_attempts != max_external_attempts
@@ -851,6 +865,7 @@ def freeze_run(
             limits={
                 "plan_rounds_per_signal_cycle": effective_plan_rounds,
                 "candidates_per_round": candidates_per_round,
+                "max_parallel_plans": max_parallel_plans,
                 "top_k": 3,
                 "random_k": 2,
                 "similarity_threshold": 0.9,
@@ -1738,6 +1753,7 @@ def main() -> int:
                 evolution_model=args.evolution_model,
                 plan_rounds=args.plan_rounds,
                 candidates_per_round=args.candidates_per_round,
+                max_parallel_plans=args.max_parallel_plans,
                 parent_selection_seed=args.parent_selection_seed,
                 max_external_attempts=args.max_external_attempts,
                 max_total_cost=args.max_total_cost,
@@ -1783,6 +1799,11 @@ def main() -> int:
         else:
             result = workspace_status(args.workspace)
     except KeyboardInterrupt:
+        if args.command not in {"run-cycle", "run-loop"}:
+            raise
+        result = _interrupt_result(args.workspace, on_progress=progress)
+        exit_code = 130
+    except EvaluationCancelled:
         if args.command not in {"run-cycle", "run-loop"}:
             raise
         result = _interrupt_result(args.workspace, on_progress=progress)

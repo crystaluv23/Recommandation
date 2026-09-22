@@ -1214,6 +1214,29 @@ class RunControlTests(TestCase):
                 **{**contract.__dict__, "code_revision": ""}
             )
 
+    def test_parallel_plan_limit_is_optional_for_legacy_and_bounded_for_new(self) -> None:
+        contract = make_contract()
+        self.assertNotIn("max_parallel_plans", contract.limits)
+        candidate_count = int(contract.limits["candidates_per_round"])
+        parallel = replace(
+            contract,
+            limits={
+                **contract.limits,
+                "max_parallel_plans": candidate_count,
+            },
+        )
+        self.assertEqual(
+            parallel.limits["max_parallel_plans"], candidate_count
+        )
+        with self.assertRaisesRegex(ValidationError, "max_parallel_plans"):
+            replace(
+                contract,
+                limits={
+                    **contract.limits,
+                    "max_parallel_plans": candidate_count + 1,
+                },
+            )
+
     def test_contract_separates_data_acquisition_from_llm_external_scope(self) -> None:
         contract = EvolutionRunContract(
             **{

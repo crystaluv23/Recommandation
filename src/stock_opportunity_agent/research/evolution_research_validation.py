@@ -2208,11 +2208,26 @@ def _validate_signal_claim_quantities(
             location_hints = _signal_quantity_location_hints(
                 missing, cited_signal_refs, available
             )
+            provenance_dependency_paths = (
+                [
+                    f"supporting_evidence[{ref_index}].{field_name}"
+                    for ref_index, ref in enumerate(state.supporting_evidence)
+                    if isinstance(ref, ResearchEvidenceRef)
+                    and ref.kind == "signal"
+                    and ref.claim == claim
+                    and ref.signal_ref in cited_signal_refs
+                    for field_name in ("evidence_group", "evidence_index")
+                ]
+                if location_hints
+                else []
+            )
             hint_instruction = (
                 " Missing quantities occur in same-Signal evidence "
                 f"locations {json.dumps(location_hints, separators=(',', ':'))}: "
                 "add the exact evidence ref tuple for one such location with "
-                "the same claim, or narrow the claim to the cited literals"
+                "the same claim, or move an existing same-claim ref by changing "
+                "only its permitted evidence_group/evidence_index coordinates, "
+                "or narrow the claim to the cited literals"
                 if location_hints
                 else ""
             )
@@ -2237,12 +2252,23 @@ def _validate_signal_claim_quantities(
                     ),
                     paths=tuple(dict.fromkeys(evidence_paths)),
                     allowed_repairs=("replace", "remove", "add"),
-                    dependent_paths=tuple(linked),
+                    dependent_paths=tuple(
+                        dict.fromkeys((*linked, *provenance_dependency_paths))
+                    ),
                     source_refs=cited_signal_refs,
                     repair_context={
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        **(
+                            {
+                                "permitted_evidence_ref_paths": (
+                                    provenance_dependency_paths
+                                )
+                            }
+                            if provenance_dependency_paths
+                            else {}
+                        ),
                         **(
                             {"quantity_location_hints": location_hints}
                             if location_hints

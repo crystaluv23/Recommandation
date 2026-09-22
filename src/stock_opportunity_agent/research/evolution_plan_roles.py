@@ -34,8 +34,10 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RoundMetaEntry,
     SignalSelectionDecision,
     candidate_judgment_feedback,
-    magnitude_diagnostics,
+    is_technical_exclusion_trajectory,
     magnitude_feedback,
+    research_magnitude_diagnostics,
+    technical_completion_diagnostics,
     _mask_identity_values,
 )
 from stock_opportunity_agent.signal_library import (
@@ -1856,7 +1858,10 @@ class LLMInformationPlanProposer:
             "H_init, H_reflect, or H_analyse, never by changing prediction "
             "semantics, labels, or class definitions; a batch where every "
             "candidate leaves an obvious recurring magnitude defect untouched "
-            "needs the change content itself to show why. Outcome-aware "
+            "needs the change content itself to show why. Technical exclusions "
+            "describe incomplete research and its scoring effect only; never "
+            "turn them into evidence that the Plan misjudged direction, magnitude, "
+            "or a company's fundamentals. Outcome-aware "
             "reflection may guide the new Plan, but never change "
             "labels, metrics, or prediction semantics. Copying a selected parent's "
             "four evolvable fields verbatim is invalid. Apply the supplied "
@@ -2016,6 +2021,25 @@ def _plan_critic_trajectory(
 ) -> dict[str, Any]:
     """Return the outcome-aware critic view without repeated source context."""
 
+    if is_technical_exclusion_trajectory(item):
+        return {
+            "case_index": case_index,
+            "stop_reason": item.stop_reason.value,
+            "termination_trigger": (
+                item.termination_trigger.value
+                if item.termination_trigger is not None
+                else None
+            ),
+            "technical_exclusion": {
+                "failure_class": "bounded_structured_correction_exhaustion",
+                "scoring_effect": (
+                    "false_negative"
+                    if item.ground_truth.is_surge
+                    else "technical_negative_abstention_not_true_negative"
+                ),
+                "research_attribution_allowed": False,
+            },
+        }
     data = dict(item.to_dict())
     compact: dict[str, Any] = {"case_index": case_index}
     for key in (
@@ -2110,7 +2134,10 @@ def _round_reflection_record(record: PlanRecord) -> dict[str, Any]:
     }
     record_trajectories = getattr(record, "trajectories", None)
     if record_trajectories:
-        value["magnitude_diagnostics"] = magnitude_diagnostics(
+        value["magnitude_diagnostics"] = research_magnitude_diagnostics(
+            record_trajectories
+        )
+        value["technical_completion"] = technical_completion_diagnostics(
             record_trajectories
         )
     return value
@@ -2149,7 +2176,10 @@ class LLMPlanCritic:
                 and getattr(item, "ground_truth", None) is not None
                 for item in trajectories
             ):
-                payload["magnitude_diagnostics"] = magnitude_diagnostics(
+                payload["magnitude_diagnostics"] = research_magnitude_diagnostics(
+                    trajectories
+                )
+                payload["technical_completion"] = technical_completion_diagnostics(
                     trajectories
                 )
             if self.anonymous_aliases:
@@ -2181,7 +2211,10 @@ class LLMPlanCritic:
                     "evidence about what failed; Combined Binary F1 remains the "
                     "primary fitness and parent-selection score, with magnitude "
                     "macro-F1 as the confirmed secondary ordering applied only at "
-                    "exactly equal Combined Binary F1. "
+                    "exactly equal Combined Binary F1. Technical exclusions remain "
+                    "inside the frozen score denominator, but are incomplete research: "
+                    "report their completion and scoring effects separately and never "
+                    "attribute their synthetic abstentions to Plan research quality. "
                     "Use parent_comparisons to identify structural regressions or "
                     "improvements. A metric_delta is valid only when "
                     "same_evaluation_snapshot is true; otherwise compare Plan "
@@ -2273,7 +2306,10 @@ class LLMRoundReflector:
                     "Parent comparisons are reflection evidence only; Combined "
                     "Binary F1 remains the primary fitness and parent-selection "
                     "score, with magnitude macro-F1 as the confirmed secondary "
-                    "ordering applied only at exactly equal Combined Binary F1."
+                    "ordering applied only at exactly equal Combined Binary F1. "
+                    "Technical exclusions remain scored but are not research "
+                    "outcomes: use technical_completion only for completion and "
+                    "scoring-impact reporting, never for Plan or magnitude lessons."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _ROUND_META_OUTPUT
                 ),

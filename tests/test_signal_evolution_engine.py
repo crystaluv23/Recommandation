@@ -1062,9 +1062,11 @@ class SignalEvolutionTests(TestCase):
                     return (
                         {
                             "action": "fetch_evidence",
-                            "rationale": ["Fetch news."],
+                            "rationale": [
+                                "Explore narrative and structured evidence."
+                            ],
                             "case_refs": view["case_refs"][:2],
-                            "source_families": ["news"],
+                            "source_families": ["news", "financials"],
                             "max_documents": 2,
                         },
                         AgentUsage(llm_calls=1),
@@ -1215,6 +1217,14 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(audit["track"], "controller")
             self.assertEqual(audit["status"], "completed")
             metrics = audit["modality_metrics"]
+            self.assertEqual(metrics["eligible_structured_seed_count"], 2)
+            self.assertLessEqual(
+                metrics["structured_exploration_completed"],
+                metrics["eligible_structured_seed_count"],
+            )
+            self.assertIn("structured_candidate_count", metrics)
+            self.assertIn("structured_materialization_count", metrics)
+            self.assertIn("structured_validation_count", metrics)
             self.assertEqual(metrics["eligible_narrative_seed_count"], 2)
             self.assertEqual(metrics["narrative_exploration_completed"], 2)
             self.assertEqual(metrics["narrative_unavailable_count"], 0)
@@ -1222,6 +1232,7 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(metrics["narrative_candidate_count"], 1)
             self.assertEqual(metrics["narrative_materialization_count"], 1)
             self.assertEqual(metrics["narrative_validation_count"], 1)
+            self.assertIn("structured_candidate_refs", audit)
             self.assertTrue(output["candidate_refs"])
 
     def test_fixture_with_no_visible_documents_is_unavailable_by_construction(

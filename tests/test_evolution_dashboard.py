@@ -136,6 +136,20 @@ class EvolutionDashboardTests(TestCase):
             self.assertEqual(v1["interruption_count"], 1)
             self.assertEqual(v1["trajectory_event_corrupt_line_count"], 1)
             self.assertEqual(v1["current_top_k"][0]["binary_f1"], 0.75)
+            candidate = v1["rounds"][0]["candidates"][0]
+            self.assertEqual(
+                candidate["technical_completion"],
+                {
+                    "scored_case_count": 2,
+                    "research_completed_case_count": 1,
+                    "technical_exclusion_count": 1,
+                    "technical_completion_rate": 0.5,
+                },
+            )
+            self.assertEqual(
+                candidate["research_magnitude"]["truth_class_counts"],
+                {"10x_plus": 1},
+            )
             self.assertNotIn("secret_prompt", json.dumps(v1["recent_events"]))
             self.assertEqual(bundle["skipped_runs"][0]["run_id"], "malformed-run")
 
@@ -188,6 +202,15 @@ def _record(plan_id: str, *, round_id: int, binary_f1: float) -> dict:
             {
                 "case_id": "case_a",
                 "stop_reason": "finalized",
+                "prediction": {
+                    "is_surge": True,
+                    "magnitude": "3_10x",
+                    "session_id": "session_case_a",
+                },
+                "ground_truth": {
+                    "is_surge": True,
+                    "magnitude": "10x_plus",
+                },
                 "usage": {
                     "signal_calls": 1,
                     "model": {"llm_calls": 4, "tokens": 100, "cost": 0.1},
@@ -196,6 +219,15 @@ def _record(plan_id: str, *, round_id: int, binary_f1: float) -> dict:
             {
                 "case_id": "case_b",
                 "stop_reason": "max_signal_rounds",
+                "prediction": {
+                    "is_surge": False,
+                    "magnitude": None,
+                    "session_id": "exclusion_case_b",
+                },
+                "ground_truth": {
+                    "is_surge": True,
+                    "magnitude": "2_3x",
+                },
                 "usage": {
                     "signal_calls": 2,
                     "model": {"llm_calls": 5, "tokens": 120, "cost": 0.2},

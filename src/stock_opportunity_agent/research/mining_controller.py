@@ -519,11 +519,18 @@ class LabelAwareMiningController:
     def _modality_coverage(self) -> dict[str, Any]:
         """Runtime-computed structured/narrative exploration coverage."""
 
-        narrative_available = bool(
-            set(self.available_source_families) & _NARRATIVE_FAMILIES
+        normalized_available = {
+            _evidence_source_family(family)
+            for family in self.available_source_families
+        }
+        structured_available = bool(
+            normalized_available - _NARRATIVE_FAMILIES
+        ) or bool(self.manifest.get("structured_financial_concepts")) or bool(
+            self.manifest.get("pre_cutoff_price_series_cases")
         )
+        narrative_available = bool(normalized_available & _NARRATIVE_FAMILIES)
         structured_explored = any(
-            family not in _NARRATIVE_FAMILIES
+            _evidence_source_family(family) not in _NARRATIVE_FAMILIES
             for family in self.ledger.explored_families()
         )
         narrative_status = "not_available"
@@ -534,8 +541,15 @@ class LabelAwareMiningController:
                 narrative_status = "required"
         return {
             "structured": {
-                "available": True,
+                "available": structured_available,
                 "explored": structured_explored,
+                "status": (
+                    "not_available"
+                    if not structured_available
+                    else "explored"
+                    if structured_explored
+                    else "required"
+                ),
             },
             "narrative": {
                 "available": narrative_available,
@@ -545,7 +559,7 @@ class LabelAwareMiningController:
         }
 
     def _require_modality_obligation(self, action: str) -> None:
-        """Domain terminals are inadmissible while narrative is unexplored.
+        """Domain terminals are inadmissible while a modality is unexplored.
 
         The obligation binds exploration opportunity, never candidate
         outcomes: control-plane terminals (record_deferred and its outcomes)
@@ -553,15 +567,20 @@ class LabelAwareMiningController:
         """
 
         coverage = self._modality_coverage()
-        narrative = coverage["narrative"]
-        if narrative["available"] and not narrative["explored"]:
+        missing = [
+            modality
+            for modality in ("structured", "narrative")
+            if coverage[modality]["available"]
+            and not coverage[modality]["explored"]
+        ]
+        if missing:
             raise InvalidMiningAction(
-                f"{action} is inadmissible while narrative evidence is "
-                "available but unexplored: fetch a narrative family "
-                "(filing/transcript/news), read an event/document via "
-                "read_span, inspect the evidence catalog "
-                "(inspect_catalog with scope=evidence), or take a "
-                "control-plane terminal (record_deferred)"
+                f"{action} is inadmissible while available evidence modalities "
+                f"remain unexplored ({', '.join(missing)}): fetch the missing "
+                "structured or narrative families, read a narrative event/document "
+                "via read_span, inspect the evidence catalog (inspect_catalog with "
+                "scope=evidence), or take a control-plane terminal "
+                "(record_deferred)"
             )
 
     # ------------------------------------------------------------------

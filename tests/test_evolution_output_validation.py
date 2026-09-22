@@ -909,6 +909,20 @@ class ScopedCorrectionProjectionTests(TestCase):
             issues[0].repair_context["quantity_location_hints"],
             {"203.9|203900000": ["supporting[1]"]},
         )
+        self.assertEqual(
+            issues[0].repair_context["permitted_evidence_ref_paths"],
+            [
+                "supporting_evidence[0].evidence_group",
+                "supporting_evidence[0].evidence_index",
+            ],
+        )
+        self.assertEqual(
+            issues[0].dependent_paths,
+            (
+                "supporting_evidence[0].evidence_group",
+                "supporting_evidence[0].evidence_index",
+            ),
+        )
 
     def test_research_state_fallback_uses_issue_code_not_message_text(self) -> None:
         invalid = {

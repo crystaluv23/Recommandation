@@ -455,6 +455,19 @@ fundamentals or early confirmation under that fixed target, rather than seeking
 generic quality metrics or treating source coverage as business differentiation.
 The goal is context, not a change to labels, sample selection or promotion gates.
 
+Slow discovery is modality-neutral across both supported comparison axes. The
+direction axis contrasts surge cases with controls; an active magnitude target
+contrasts its frozen lower- and higher-magnitude groups (currently 2-3x versus
+>=3x, with 10x+ cases retained in the latter). On either axis, structured
+financial/market measurements and source-grounded narrative predicates are
+first-class factor hypotheses. When a modality is available, the controller
+must explore it before a domain terminal; it must not impose a candidate quota,
+invent a factor, or prefer a modality merely to balance counts. Candidate
+validation and promotion, rather than modality, decide survival. The audit must
+preserve per-modality availability, exploration, proposal, materialization, and
+validation evidence so cross-cycle reflection can detect collapse toward either
+structured-only or narrative-only mining.
+
 
 ## Candidate execution semantics supplied to generation
 
@@ -560,3 +573,18 @@ packets carry positive/control labels from the frozen reveal only, and
 candidate paired validation uses the balanced target check ids; direction
 bookkeeping and the direction-only path are unchanged. Target evaluations persist through the
 SignalRegistry namespace described in `signal_library.md`.
+
+Magnitude learning consumes research-completed evidence only. A Fast technical
+exclusion remains visible to Slow as a technical completion/failure diagnostic,
+but its synthetic negative judgment, empty context, four-way feedback, and
+derived magnitude miss cannot support a factor hypothesis or a claim about
+Signal weighting. The `magnitude_feedback` unit carries research-completed
+class diagnostics plus the number excluded from that diagnostic population;
+formal Plan metrics continue to use the full frozen score denominator. The
+approved `magnitude_ge3_v1` contrast includes every true-surge case at or above
+3x, including 10x+ examples, against the 2-3x group. It uses the same
+modality-neutral factor discovery, execution, paired validation, and Registry
+lifecycle as the direction target; magnitude is a comparison namespace, not a
+structured-feature-only path. This verifies that Slow can observe and compare
+high- versus low-magnitude evidence without creating the still-blocked
+ge10/extremes target or claiming a 10x-specific promotion gate.

@@ -805,9 +805,9 @@ class NarrativeInterfaceTests(unittest.TestCase):
             [
                 {
                     "action": "fetch_evidence",
-                    "rationale": ["Fetch news."],
+                    "rationale": ["Explore narrative and structured evidence."],
                     "case_refs": ["case-001"],
-                    "source_families": ["news"],
+                    "source_families": ["news", "company_facts"],
                     "max_documents": 2,
                 },
                 {
@@ -891,7 +891,10 @@ class NarrativeInterfaceTests(unittest.TestCase):
 
         notes = [e.note for e in result.ledger if e.note]
         self.assertTrue(
-            any("narrative evidence is available but unexplored" in n for n in notes),
+            any(
+                "available evidence modalities remain unexplored (narrative)" in n
+                for n in notes
+            ),
             notes,
         )
         # corrections exhausted -> technical_failure (control-plane, obligation honored)
@@ -917,6 +920,49 @@ class NarrativeInterfaceTests(unittest.TestCase):
         controller = self._controller(model, cases, store, seed="discovery")
         result = controller.run()
         self.assertEqual(result.terminal_kind, "evidence_unavailable")
+
+    def test_modality_obligation_also_blocks_narrative_only_collapse(self):
+        cases, store = self._fixture()
+
+        def terminal(_view):
+            return {
+                "action": "record_no_pattern",
+                "rationale": ["Narrative alone found no pattern."],
+                "coverage": {
+                    "explored_families": list(
+                        _view["evidence_digest"]["families_fetched"]
+                    )
+                },
+            }
+
+        model = ScriptedMiningDecisionModel(
+            [
+                {
+                    "action": "fetch_evidence",
+                    "rationale": ["Narrative only."],
+                    "case_refs": ["case-001"],
+                    "source_families": ["news"],
+                    "max_documents": 2,
+                },
+                terminal,
+                terminal,
+                terminal,
+                terminal,
+            ]
+        )
+        controller = self._controller(model, cases, store, seed="discovery")
+        result = controller.run()
+
+        notes = [entry.note for entry in result.ledger if entry.note]
+        self.assertTrue(
+            any(
+                "available evidence modalities remain unexplored (structured)"
+                in note
+                for note in notes
+            ),
+            notes,
+        )
+        self.assertEqual(result.terminal_kind, "technical_failure")
 
     def test_narrative_predicate_requires_intersecting_raw_evidence(self):
         cases, store = self._fixture()
@@ -967,9 +1013,9 @@ class NarrativeInterfaceTests(unittest.TestCase):
             [
                 {
                     "action": "fetch_evidence",
-                    "rationale": ["Fetch news."],
+                    "rationale": ["Explore narrative and structured evidence."],
                     "case_refs": ["case-001"],
-                    "source_families": ["news"],
+                    "source_families": ["news", "company_facts"],
                     "max_documents": 2,
                 },
                 propose_with_predicate,
@@ -983,9 +1029,9 @@ class NarrativeInterfaceTests(unittest.TestCase):
             [
                 {
                     "action": "fetch_evidence",
-                    "rationale": ["Fetch news."],
+                    "rationale": ["Explore narrative and structured evidence."],
                     "case_refs": ["case-001"],
-                    "source_families": ["news"],
+                    "source_families": ["news", "company_facts"],
                     "max_documents": 2,
                 },
                 bad_predicate,

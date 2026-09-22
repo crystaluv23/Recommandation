@@ -7,6 +7,7 @@ import os
 import platform
 import re
 import shutil
+import threading
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
@@ -77,6 +78,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     default_information_plan,
     _mask_identity_values,
     _signal_learning_events_from_record,
+)
+from stock_opportunity_agent.research.plan_evolution import (
+    install_stop_handler,
 )
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -298,6 +302,19 @@ class EvolutionRunContract:
                         f"{schema_label} contract limit {name} must be finite numeric"
                     )
                 return float(value)
+
+            max_parallel_plans = self.limits.get("max_parallel_plans", 1)
+            if (
+                type(max_parallel_plans) is not int
+                or max_parallel_plans < 1
+                or max_parallel_plans > require_integer(
+                    "candidates_per_round", minimum=1
+                )
+            ):
+                raise ValidationError(
+                    f"{schema_label} contract limit max_parallel_plans must be "
+                    "an integer from 1 through candidates_per_round"
+                )
 
             for name in (
                 "candidates_per_round",
@@ -2478,6 +2495,7 @@ def _run_bounded_evolution_cycle_unlocked(
     allow_data_external: bool = False,
     environ: Mapping[str, str] | None = None,
     on_progress: ProgressCallback | None = None,
+    cancel_event: threading.Event | None = None,
 ) -> DualLoopResult:
     """Run one finite cycle while the caller holds the workspace lock."""
 
@@ -2594,19 +2612,22 @@ def _run_bounded_evolution_cycle_unlocked(
     )
     cycle_id = int(cycle["cycle_id"])
 
+    emit_lock = threading.Lock()
+
     def emit(event: Mapping[str, Any]) -> None:
-        event_type = str(event.get("event_type") or "runtime_progress")
-        details = {
-            key: value for key, value in event.items() if key != "event_type"
-        }
-        details.setdefault("cycle_id", cycle_id)
-        if event_type == "round_committed":
-            evolution_workspace.mark_cycle_phase("fast_loop")
-        elif event_type == "slow_loop_started":
-            evolution_workspace.mark_cycle_phase("slow_loop")
-        stored = evolution_workspace.append_event(event_type, details)
-        if on_progress is not None:
-            on_progress(stored)
+        with emit_lock:
+            event_type = str(event.get("event_type") or "runtime_progress")
+            details = {
+                key: value for key, value in event.items() if key != "event_type"
+            }
+            details.setdefault("cycle_id", cycle_id)
+            if event_type == "round_committed":
+                evolution_workspace.mark_cycle_phase("fast_loop")
+            elif event_type == "slow_loop_started":
+                evolution_workspace.mark_cycle_phase("slow_loop")
+            stored = evolution_workspace.append_event(event_type, details)
+            if on_progress is not None:
+                on_progress(stored)
 
     emit(
         {
@@ -2616,6 +2637,7 @@ def _run_bounded_evolution_cycle_unlocked(
             "target_plan_rounds": target_plan_rounds,
             "cycle_mode": contract.cycle_mode,
             "phase": str(cycle["phase"]),
+            "max_parallel_plans": int(limits.get("max_parallel_plans", 1)),
         }
     )
     completed_plan_rounds = int(cycle["completed_plan_rounds"])
@@ -2738,6 +2760,48 @@ def _run_bounded_evolution_cycle_unlocked(
         signal_readiness_snapshot=snapshot,
         on_progress=emit,
     )
+    max_parallel_plans = int(limits.get("max_parallel_plans", 1))
+
+    def build_parallel_evaluator() -> RuntimePlanEvaluator:
+        worker_caller = StructuredRoleClient(
+            registration=get_model(judge_alias, role="judge"),
+            contract=contract,
+            workspace=workspace_root,
+            ledger=ledger,
+            allow_external=allow_external,
+            acknowledged_contract_hash=acknowledged_contract_hash,
+            environ=environ,
+            on_progress=emit,
+        )
+        worker_store = RawInfoStore(raw_info_root)
+        worker_resolver = _build_evidence_resolver(
+            workspace_root,
+            worker_store,
+            contract=contract,
+            allow_data_external=allow_data_external,
+            environ=environ,
+            cycle_id=cycle_id,
+        )
+        worker_source_types = _model_available_source_types(
+            worker_resolver.available_source_types
+        )
+        if worker_source_types != available_source_types:
+            raise ValidationError(
+                "parallel evaluator source catalog differs from coordinator"
+            )
+        return RuntimePlanEvaluator(
+            raw_info_store=worker_store,
+            evidence_resolver=worker_resolver,
+            controller=LLMResearchController(worker_caller),
+            signal_agent=LLMSignalRetrievalAgent(worker_caller),
+            predictor=LLMBlindPredictor(worker_caller),
+            prediction_root=workspace_root / "predictions",
+            trajectory_root=evolution_workspace.trajectory_root,
+            limits=runtime_limits,
+            llm_signal_runner=StructuredLLMSignalRunner(worker_caller),
+            signal_readiness_snapshot=snapshot,
+            on_progress=emit,
+        )
     plan_proposer = LLMInformationPlanProposer(
         evolution_caller,
         temperature=float(limits["plan_proposal_temperature"]),
@@ -2766,6 +2830,11 @@ def _run_bounded_evolution_cycle_unlocked(
         case_readiness=evaluator.check_case_readiness,
         run_contract_hash=contract.contract_hash,
         on_progress=emit,
+        evaluator_factory=(
+            build_parallel_evaluator if max_parallel_plans > 1 else None
+        ),
+        max_parallel_plans=max_parallel_plans,
+        cancel_event=cancel_event,
     )
     mining_model = LLMSignalMiningModel(
         evolution_caller,
@@ -2853,18 +2922,28 @@ def run_bounded_evolution_cycle(
         contract, allow_data_external=allow_data_external
     )
     Path(workspace_path).mkdir(parents=True, exist_ok=True)
-    with EvolutionWorkspace.execution_lock_at(workspace_path):
-        return _run_bounded_evolution_cycle_unlocked(
-            workspace_path=workspace_path,
-            raw_info_root=raw_info_root,
-            approved_dataset_manifest=approved_dataset_manifest,
-            contract=contract,
-            allow_external=allow_external,
-            acknowledged_contract_hash=acknowledged_contract_hash,
-            allow_data_external=allow_data_external,
-            environ=environ,
-            on_progress=on_progress,
-        )
+    cancel_event = threading.Event()
+    restore_stop_handler = (
+        install_stop_handler(cancel_event)
+        if threading.current_thread() is threading.main_thread()
+        else lambda: None
+    )
+    try:
+        with EvolutionWorkspace.execution_lock_at(workspace_path):
+            return _run_bounded_evolution_cycle_unlocked(
+                workspace_path=workspace_path,
+                raw_info_root=raw_info_root,
+                approved_dataset_manifest=approved_dataset_manifest,
+                contract=contract,
+                allow_external=allow_external,
+                acknowledged_contract_hash=acknowledged_contract_hash,
+                allow_data_external=allow_data_external,
+                environ=environ,
+                on_progress=on_progress,
+                cancel_event=cancel_event,
+            )
+    finally:
+        restore_stop_handler()
 
 
 def build_run_contract(

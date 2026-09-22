@@ -142,7 +142,7 @@
     <details>
       <summary>查看候选信息方案与 trajectory 摘要</summary>
       <div class="table-scroll"><table>
-        <thead><tr><th>轮次</th><th>Plan</th><th>父方案</th><th>方案摘要</th><th>F1</th><th>Trajectory</th><th>停止原因</th><th>归档状态</th></tr></thead>
+        <thead><tr><th>轮次</th><th>Plan</th><th>父方案</th><th>方案摘要</th><th>F1</th><th>研究完成</th><th>Magnitude 分布 / Recall</th><th>停止原因</th><th>归档状态</th></tr></thead>
         <tbody id="candidate-table"></tbody>
       </table></div>
     </details>
@@ -292,7 +292,12 @@
             (candidate.parent_ids || candidate.parent_genome_ids || []).join(", ") || "—",
             summaryText,
             format(score(candidate)),
-            candidate.trajectory_count ?? "—",
+            candidate.technical_completion
+              ? `${candidate.technical_completion.research_completed_case_count}/${candidate.technical_completion.scored_case_count}（技术排除 ${candidate.technical_completion.technical_exclusion_count}）`
+              : candidate.trajectory_count ?? "—",
+            candidate.research_magnitude
+              ? JSON.stringify(candidate.research_magnitude)
+              : "—",
             candidate.stop_reason_counts ? JSON.stringify(candidate.stop_reason_counts) : "—",
             candidate.admission_status || "—"
           ];

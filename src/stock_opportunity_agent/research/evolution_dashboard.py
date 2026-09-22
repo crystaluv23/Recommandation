@@ -175,6 +175,8 @@ def _project_v1_workspace(path: Path, recent_event_limit: int) -> dict[str, Any]
                 "metrics_by_cohort": record["metrics_by_cohort"],
                 "plan_summary": record["plan_summary"],
                 "trajectory_count": record["trajectory_count"],
+                "technical_completion": record["technical_completion"],
+                "research_magnitude": record["research_magnitude"],
                 "stop_reason_counts": record["stop_reason_counts"],
                 "usage": record["usage"],
                 "admitted": record["plan_id"] in selected_ids,
@@ -287,6 +289,10 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
     tokens = 0
     cost = 0.0
     signal_calls = 0
+    technical_exclusion_count = 0
+    truth_magnitude_counts: Counter[str] = Counter()
+    predicted_magnitude_counts: Counter[str] = Counter()
+    magnitude_correct_counts: Counter[str] = Counter()
     for trajectory in trajectories:
         if not isinstance(trajectory, Mapping):
             raise ValidationError("dashboard trajectory must be an object")
@@ -297,6 +303,31 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
         llm_calls += int(model.get("llm_calls", 0))
         tokens += int(model.get("tokens", 0))
         cost += float(model.get("cost", 0.0))
+        prediction = trajectory.get("prediction")
+        ground_truth = trajectory.get("ground_truth")
+        if isinstance(prediction, Mapping) and str(
+            prediction.get("session_id", "")
+        ).startswith("exclusion_"):
+            technical_exclusion_count += 1
+            continue
+        if not isinstance(prediction, Mapping) or not isinstance(
+            ground_truth, Mapping
+        ):
+            continue
+        truth_class = (
+            str(ground_truth.get("magnitude"))
+            if ground_truth.get("is_surge")
+            else "non_surge"
+        )
+        predicted_class = (
+            str(prediction.get("magnitude") or "unknown_surge")
+            if prediction.get("is_surge")
+            else "non_surge"
+        )
+        truth_magnitude_counts[truth_class] += 1
+        predicted_magnitude_counts[predicted_class] += 1
+        if predicted_class == truth_class:
+            magnitude_correct_counts[truth_class] += 1
     policy = dict(plan.get("basic_info_policy", {}))
     request_summaries = []
     for request in policy.get("requests", ()):
@@ -330,6 +361,33 @@ def _normalize_record(record: Mapping[str, Any]) -> dict[str, Any]:
             "analysis": _clip(plan.get("analysis_prompt")),
         },
         "trajectory_count": len(trajectories),
+        "technical_completion": {
+            "scored_case_count": len(trajectories),
+            "research_completed_case_count": (
+                len(trajectories) - technical_exclusion_count
+            ),
+            "technical_exclusion_count": technical_exclusion_count,
+            "technical_completion_rate": (
+                (len(trajectories) - technical_exclusion_count)
+                / len(trajectories)
+                if trajectories
+                else None
+            ),
+        },
+        "research_magnitude": {
+            "truth_class_counts": dict(sorted(truth_magnitude_counts.items())),
+            "predicted_class_counts": dict(
+                sorted(predicted_magnitude_counts.items())
+            ),
+            "recall_by_truth_class": {
+                magnitude_class: (
+                    magnitude_correct_counts[magnitude_class] / count
+                )
+                for magnitude_class, count in sorted(
+                    truth_magnitude_counts.items()
+                )
+            },
+        },
         "stop_reason_counts": dict(sorted(stop_reasons.items())),
         "usage": {
             "signal_calls": signal_calls,
