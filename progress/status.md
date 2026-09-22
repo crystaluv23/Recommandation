@@ -1,5 +1,7 @@
 # Status
 
+2026-09-22：完成 [V130／V138 prompt／context／response 与 F1 回退审计](../reports/v130-v138-prompt-flow-audit-20260922.md)。三个 committed record 指标离线重算一致；V138 r1 同 24 案的主要退化是三个原 TP 技术弃权为 FN。生产入口未传 evaluator_factory／max_parallel_plans，实际未启用并行。Ciena／Wynn 实际 correction 引用索引编辑与 claim-only 授权冲突，生产 projection 函数重放确认退回原 invalid_output；r2 critic 将部分技术弃权误归因为研究信息不足。全部正向预测仍为 2–3x，r2 Random 换样，macro-F1 上升不证明高幅度辨别能力改善。已为旧运行报告追加更正说明；本次仅审计文档，无运行代码修改、外部调用或恢复。
+
 2026-09-21（方案评审修订）：[Signal magnitude／Fast 并行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md) 已加入目标数据准入硬门（ge3 待门控，ge10／extremes 延后且不铺专属代码）、Discovery 与 validation 支持量区分、signal_library 及实际调用点的目标统计／去重改动面。缺陷 #11 必须先于 in-flight 去重验收，#12 必须先于并发度 2 验收；补齐采集 JSONL ledger、slot 升序、单进程有界线程及主线程取消协议。允许 A0 与 B0/B1 盘点交错推进。仅修订文档，数值研究门槛、规范性契约变更和实机授权仍按方案逐项确认。
 
 2026-09-21：新增 [Signal 幅度进化与 Fast Plan 并行执行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md)，基于 `9f85f46` 核查，承接已实现的幅度反馈／F1 同分幅度次序／Slow 诊断接线。方案分开规划幅度分层挖掘与目标适配晋升、Plan 级有界并发与预算／缓存／恢复协调，附 C0–C8 实施顺序、故障矩阵、实机效果判据及回滚。仅文档提案，未修改运行代码、现行规格或启动外部调用；研究和接口决策须确认后更新 owning specs，实机另行冻结授权预算。

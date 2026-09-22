@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-09-22: Audited V130/V138 persisted contracts, predictions, role requests/responses, correction projections and cross-round reflection. Recomputed all three committed metrics, traced technical abstentions and two normal round-1 prediction flips, confirmed production parallelism was not wired, reproduced citation-scope rollback on two real corrections, and identified technical-failure misattribution plus unsupported magnitude-progress claims. Added an evidence-backed report and clarification to the original V138 report; no runtime changes or external calls.
+
 - 2026-09-21: Revised the Signal magnitude/Fast concurrency plan after review: hard per-target data admission with only ge3 eligible for first-version consideration, separate Discovery/validation counts, mandatory signal_library target statistics and observation/evaluation deduplication, defect #11/#12 prerequisite gates, acquisition ledgers, ascending slot dispatch and a fixed bounded-thread design. Clarified preparation overlap and implementation acceptance; documentation only.
 
 - 2026-09-21: Added a combined action plan for target-aware magnitude Signal discovery/validation/promotion and bounded Fast Plan concurrency. Documented current implementation boundaries, separate rollout gates, shared-state ownership, atomic budget admission, in-flight request deduplication, cancellation/recovery, test matrices, live evaluation and rollback. Documentation only; no runtime, normative contract or external execution changes.
