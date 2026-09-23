@@ -918,6 +918,84 @@ _SIGNAL_SELECTION_ROLES = frozenset(
 
 
 @dataclass(frozen=True)
+class JevDecisionSignal:
+    """One persisted Jev choice used as diagnostic evolution feedback."""
+
+    provider: str
+    model: str
+    response_id: str
+    question_id: str
+    choice: str
+    probabilities: Mapping[str, float]
+    confidence: float
+
+    def __post_init__(self) -> None:
+        for name in (
+            "provider",
+            "model",
+            "response_id",
+            "question_id",
+            "choice",
+        ):
+            if not str(getattr(self, name)).strip():
+                raise ValidationError(f"Jev decision {name} must not be empty")
+        probabilities = {
+            str(key): float(value) for key, value in self.probabilities.items()
+        }
+        if self.choice not in probabilities:
+            raise ValidationError("Jev choice must be present in probabilities")
+        if not probabilities or any(
+            not math.isfinite(value) or value < 0 or value > 1
+            for value in probabilities.values()
+        ):
+            raise ValidationError("Jev probabilities must be finite values in [0, 1]")
+        if not math.isclose(sum(probabilities.values()), 1.0, abs_tol=0.001):
+            raise ValidationError("Jev probabilities must sum to one")
+        confidence = float(self.confidence)
+        if not math.isfinite(confidence) or not 0 <= confidence <= 1:
+            raise ValidationError("Jev confidence must be in [0, 1]")
+        object.__setattr__(self, "probabilities", probabilities)
+        object.__setattr__(self, "confidence", confidence)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "provider": self.provider,
+            "model": self.model,
+            "response_id": self.response_id,
+            "question_id": self.question_id,
+            "choice": self.choice,
+            "probabilities": dict(self.probabilities),
+            "confidence": self.confidence,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "JevDecisionSignal":
+        required = {
+            "provider",
+            "model",
+            "response_id",
+            "question_id",
+            "choice",
+            "probabilities",
+            "confidence",
+        }
+        if set(data) != required or not isinstance(data["probabilities"], Mapping):
+            raise ValidationError("Jev decision fields are invalid")
+        return cls(
+            provider=str(data["provider"]),
+            model=str(data["model"]),
+            response_id=str(data["response_id"]),
+            question_id=str(data["question_id"]),
+            choice=str(data["choice"]),
+            probabilities={
+                str(key): float(value)
+                for key, value in data["probabilities"].items()
+            },
+            confidence=float(data["confidence"]),
+        )
+
+
+@dataclass(frozen=True)
 class SignalSelectionDecision:
     """Why one exact Signal should be applied in the current blind context."""
 
@@ -930,6 +1008,7 @@ class SignalSelectionDecision:
     target_need_indices: tuple[int, ...] = ()
     answer_scope: str | None = None
     residual_need: str | None = None
+    jev_decision: JevDecisionSignal | None = None
 
     def __post_init__(self) -> None:
         if self.reason_code not in _SIGNAL_SELECTION_REASON_CODES:
@@ -995,6 +1074,14 @@ class SignalSelectionDecision:
         object.__setattr__(self, "target_need_indices", tuple(self.target_need_indices))
         if self.residual_need is not None:
             object.__setattr__(self, "residual_need", self.residual_need.strip())
+        if self.jev_decision is not None and not isinstance(
+            self.jev_decision, JevDecisionSignal
+        ):
+            object.__setattr__(
+                self,
+                "jev_decision",
+                JevDecisionSignal.from_dict(self.jev_decision),
+            )
 
     def to_dict(self) -> dict[str, Any]:
         value = {
@@ -1009,6 +1096,8 @@ class SignalSelectionDecision:
         if self.answer_scope is not None:
             value["answer_scope"] = self.answer_scope
             value["residual_need"] = self.residual_need
+        if self.jev_decision is not None:
+            value["jev_decision"] = self.jev_decision.to_dict()
         return value
 
     def to_learning_dict(self) -> dict[str, Any]:
@@ -1034,7 +1123,12 @@ class SignalSelectionDecision:
             "expected_role",
             "context_tags",
         }
-        optional = {"target_need_indices", "answer_scope", "residual_need"}
+        optional = {
+            "target_need_indices",
+            "answer_scope",
+            "residual_need",
+            "jev_decision",
+        }
         if not required.issubset(data) or set(data) - required - optional:
             raise ValidationError(
                 "Signal selection requires: " + ", ".join(sorted(required))
@@ -1049,6 +1143,11 @@ class SignalSelectionDecision:
             raise ValidationError(
                 "Signal selection answer_scope and residual_need must appear together"
             )
+        raw_jev_decision = data.get("jev_decision")
+        if raw_jev_decision is not None and not isinstance(
+            raw_jev_decision, Mapping
+        ):
+            raise ValidationError("Signal selection Jev decision must be an object")
         return cls(
             signal_ref=str(data["signal_ref"]),
             reason_code=str(data["reason_code"]),
@@ -1065,6 +1164,11 @@ class SignalSelectionDecision:
             residual_need=(
                 str(data["residual_need"])
                 if data.get("residual_need") is not None
+                else None
+            ),
+            jev_decision=(
+                JevDecisionSignal.from_dict(dict(raw_jev_decision))
+                if raw_jev_decision is not None
                 else None
             ),
         )
@@ -1111,6 +1215,7 @@ class BlindPrediction:
     key_reasons: tuple[str, ...]
     uncertainties: tuple[str, ...]
     session_id: str
+    jev_decisions: tuple[JevDecisionSignal, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.is_surge, bool):
@@ -1145,9 +1250,20 @@ class BlindPrediction:
             raise ValidationError("blind prediction requires key reasons")
         object.__setattr__(self, "key_reasons", tuple(self.key_reasons))
         object.__setattr__(self, "uncertainties", tuple(self.uncertainties))
+        decisions = tuple(self.jev_decisions)
+        if any(not isinstance(item, JevDecisionSignal) for item in decisions):
+            decisions = tuple(
+                item
+                if isinstance(item, JevDecisionSignal)
+                else JevDecisionSignal.from_dict(item)
+                for item in decisions
+            )
+        if len({item.question_id for item in decisions}) != len(decisions):
+            raise ValidationError("BlindPrediction Jev question ids must be unique")
+        object.__setattr__(self, "jev_decisions", decisions)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "is_surge": self.is_surge,
             "candidate_judgment": self.candidate_judgment.value,
             "magnitude": self.magnitude.value if self.magnitude else None,
@@ -1156,6 +1272,9 @@ class BlindPrediction:
             "uncertainties": list(self.uncertainties),
             "session_id": self.session_id,
         }
+        if self.jev_decisions:
+            value["jev_decisions"] = [item.to_dict() for item in self.jev_decisions]
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "BlindPrediction":
@@ -1190,6 +1309,11 @@ class BlindPrediction:
         magnitude = data.get("magnitude")
         if magnitude is not None and not isinstance(magnitude, str):
             raise ValidationError("BlindPrediction magnitude must be text or null")
+        raw_jev_decisions = data.get("jev_decisions", ())
+        if not isinstance(raw_jev_decisions, (list, tuple)) or any(
+            not isinstance(item, Mapping) for item in raw_jev_decisions
+        ):
+            raise ValidationError("BlindPrediction Jev decisions must be objects")
         return cls(
             is_surge=_json_boolean(data["is_surge"], "BlindPrediction is_surge"),
             candidate_judgment=data["candidate_judgment"],
@@ -1198,6 +1322,10 @@ class BlindPrediction:
             key_reasons=_json_string_array(data, "key_reasons"),
             uncertainties=_json_string_array(data, "uncertainties"),
             session_id=data["session_id"],
+            jev_decisions=tuple(
+                JevDecisionSignal.from_dict(item)
+                for item in raw_jev_decisions
+            ),
         )
 
 
@@ -1374,6 +1502,68 @@ def magnitude_feedback(
         "magnitude_correct": correct,
         "error_kind": error_kind,
         "ordinal_distance": ordinal_distance,
+    }
+
+
+def jev_decision_feedback(
+    prediction: BlindPrediction,
+    ground_truth: GroundTruth,
+) -> dict[str, Any] | None:
+    """Project persisted Jev distributions onto realized labels for reflection.
+
+    The values remain provider decision signals rather than calibrated
+    live-market probabilities and never participate in fitness.
+    """
+
+    if not prediction.jev_decisions:
+        return None
+    by_question = {item.question_id: item for item in prediction.jev_decisions}
+    judgment = by_question.get("candidate_judgment")
+    magnitude = by_question.get("magnitude")
+    if judgment is None or magnitude is None or set(by_question) != {
+        "candidate_judgment",
+        "magnitude",
+    }:
+        raise ValidationError(
+            "Jev BlindPrediction requires candidate_judgment and magnitude decisions"
+        )
+    positive_probability = sum(
+        judgment.probabilities.get(value, 0.0)
+        for value in (
+            CandidateJudgment.LIKELY.value,
+            CandidateJudgment.POSSIBLE.value,
+        )
+    )
+    negative_probability = sum(
+        judgment.probabilities.get(value, 0.0)
+        for value in (
+            CandidateJudgment.UNLIKELY.value,
+            CandidateJudgment.INSUFFICIENT_INFORMATION.value,
+        )
+    )
+    true_binary_probability = (
+        positive_probability if ground_truth.is_surge else negative_probability
+    )
+    true_magnitude = ground_truth.magnitude.value if ground_truth.magnitude else None
+    return {
+        "interpretation": (
+            "provider decision signal only; not a calibrated live-market probability"
+        ),
+        "candidate_judgment": {
+            **judgment.to_dict(),
+            "positive_probability": positive_probability,
+            "negative_probability": negative_probability,
+            "probability_assigned_to_realized_binary": true_binary_probability,
+        },
+        "magnitude": {
+            **magnitude.to_dict(),
+            "true_magnitude": true_magnitude,
+            "probability_assigned_to_true_magnitude": (
+                magnitude.probabilities.get(true_magnitude, 0.0)
+                if true_magnitude is not None
+                else None
+            ),
+        },
     }
 
 
@@ -1719,9 +1909,21 @@ class SignalRound:
     information_needs: tuple[str, ...]
     selections: tuple[SignalSelectionDecision, ...]
     batch: SignalBatchResult
+    jev_routing_decisions: tuple[JevDecisionSignal, ...] = ()
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "selections", tuple(self.selections))
+        decisions = tuple(self.jev_routing_decisions)
+        if any(not isinstance(item, JevDecisionSignal) for item in decisions):
+            decisions = tuple(
+                item
+                if isinstance(item, JevDecisionSignal)
+                else JevDecisionSignal.from_dict(item)
+                for item in decisions
+            )
+        if len({item.question_id for item in decisions}) != len(decisions):
+            raise ValidationError("Signal round Jev question ids must be unique")
+        object.__setattr__(self, "jev_routing_decisions", decisions)
         selected = self.selected_signals
         executed = tuple(result.ref for result in self.batch.results)
         if len(set(selected)) != len(selected):
@@ -1736,7 +1938,7 @@ class SignalRound:
         return tuple(item.signal_ref for item in self.selections)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "information_needs": list(self.information_needs),
             "selected_signals": list(self.selected_signals),
             "selections": [item.to_dict() for item in self.selections],
@@ -1756,11 +1958,16 @@ class SignalRound:
                 ),
             },
         }
+        if self.jev_routing_decisions:
+            value["jev_routing_decisions"] = [
+                item.to_dict() for item in self.jev_routing_decisions
+            ]
+        return value
 
     def to_model_context_dict(self) -> dict[str, Any]:
         """Return semantic Signal evidence without cache-variant usage metadata."""
 
-        return {
+        value = {
             "information_needs": list(self.information_needs),
             "selected_signals": list(self.selected_signals),
             "selections": [item.to_dict() for item in self.selections],
@@ -1769,10 +1976,20 @@ class SignalRound:
                 "signal_calls": self.batch.signal_calls,
             },
         }
+        if self.jev_routing_decisions:
+            value["jev_routing_decisions"] = [
+                item.to_dict() for item in self.jev_routing_decisions
+            ]
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalRound":
         batch = dict(data["batch"])
+        raw_jev_decisions = data.get("jev_routing_decisions", ())
+        if not isinstance(raw_jev_decisions, (list, tuple)) or any(
+            not isinstance(item, Mapping) for item in raw_jev_decisions
+        ):
+            raise ValidationError("Signal round Jev decisions must be objects")
         return cls(
             information_needs=tuple(
                 str(item) for item in data.get("information_needs", ())
@@ -1787,6 +2004,10 @@ class SignalRound:
                     SignalSelectionDecision.legacy(str(item))
                     for item in data.get("selected_signals", ())
                 )
+            ),
+            jev_routing_decisions=tuple(
+                JevDecisionSignal.from_dict(item)
+                for item in raw_jev_decisions
             ),
             batch=SignalBatchResult(
                 results=tuple(
@@ -1952,6 +2173,9 @@ class ExecutionTrajectory:
             ),
             "usage": self.usage.to_dict(),
         }
+        decision_feedback = jev_decision_feedback(self.prediction, self.ground_truth)
+        if decision_feedback is not None:
+            value["jev_decision_feedback"] = decision_feedback
         return value
 
     @classmethod
@@ -1998,6 +2222,18 @@ class ExecutionTrajectory:
                 raise ValidationError(
                     "candidate_judgment_feedback does not match prediction and truth"
                 )
+        serialized_jev_feedback = data.get("jev_decision_feedback")
+        expected_jev_feedback = jev_decision_feedback(
+            trajectory.prediction,
+            trajectory.ground_truth,
+        )
+        if serialized_jev_feedback is not None:
+            if not isinstance(serialized_jev_feedback, Mapping):
+                raise ValidationError("jev_decision_feedback must be an object")
+            if dict(serialized_jev_feedback) != expected_jev_feedback:
+                raise ValidationError(
+                    "jev_decision_feedback does not match prediction and truth"
+                )
         return trajectory
 
 
@@ -2011,6 +2247,7 @@ class CaseReflectionEvidence:
     candidate_judgment_feedback: Mapping[str, Any] | None = None
     self_reflection: PredictionSelfReflection | None = None
     magnitude_feedback: Mapping[str, Any] | None = None
+    jev_decision_feedback: Mapping[str, Any] | None = None
     technical_exclusion: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
@@ -2053,6 +2290,7 @@ class CaseReflectionEvidence:
                 self.candidate_judgment_feedback is not None
                 or self.self_reflection is not None
                 or self.magnitude_feedback is not None
+                or self.jev_decision_feedback is not None
             ):
                 raise ValidationError(
                     "technical exclusion cannot carry research-attribution feedback"
@@ -2123,6 +2361,11 @@ class CaseReflectionEvidence:
                     true_is_surge=true_is_surge,
                 ),
             )
+        if self.jev_decision_feedback is not None:
+            jev_feedback = dict(self.jev_decision_feedback)
+            if not isinstance(jev_feedback.get("candidate_judgment"), Mapping):
+                raise ValidationError("case reflection Jev feedback is invalid")
+            object.__setattr__(self, "jev_decision_feedback", jev_feedback)
 
     def to_dict(self) -> dict[str, Any]:
         if self.technical_exclusion is not None:
@@ -2149,6 +2392,8 @@ class CaseReflectionEvidence:
         }
         if self.magnitude_feedback is not None:
             value["magnitude_feedback"] = dict(self.magnitude_feedback)
+        if self.jev_decision_feedback is not None:
+            value["jev_decision_feedback"] = dict(self.jev_decision_feedback)
         return value
 
     @classmethod
@@ -2190,6 +2435,10 @@ class CaseReflectionEvidence:
                 trajectory.prediction,
                 trajectory.ground_truth,
             ),
+            jev_decision_feedback=jev_decision_feedback(
+                trajectory.prediction,
+                trajectory.ground_truth,
+            ),
         )
 
     @classmethod
@@ -2224,9 +2473,10 @@ class CaseReflectionEvidence:
             "candidate_judgment_feedback",
             "self_reflection",
         }
-        if not set(data) <= required | {"magnitude_feedback"} or not required <= set(
-            data
-        ):
+        if not set(data) <= required | {
+            "magnitude_feedback",
+            "jev_decision_feedback",
+        } or not required <= set(data):
             raise ValidationError("case reflection evidence fields are invalid")
         feedback = data["candidate_judgment_feedback"]
         reflection = data["self_reflection"]
@@ -2237,6 +2487,9 @@ class CaseReflectionEvidence:
             serialized_magnitude, Mapping
         ):
             raise ValidationError("case reflection magnitude feedback is invalid")
+        serialized_jev = data.get("jev_decision_feedback")
+        if serialized_jev is not None and not isinstance(serialized_jev, Mapping):
+            raise ValidationError("case reflection Jev feedback is invalid")
         return cls(
             case_index=int(data["case_index"]),
             stop_reason=RuntimeStopReason(str(data["stop_reason"])),
@@ -2251,6 +2504,9 @@ class CaseReflectionEvidence:
                 dict(serialized_magnitude)
                 if serialized_magnitude is not None
                 else None
+            ),
+            jev_decision_feedback=(
+                dict(serialized_jev) if serialized_jev is not None else None
             ),
         )
 
@@ -2558,6 +2814,19 @@ def execute_information_plan(
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
         model_usage = _consume_model_step(model_usage, selection_step.usage, limits)
+        raw_jev_routing_decisions = selection_step.metadata.get(
+            "jev_routing_decisions", ()
+        )
+        if not isinstance(raw_jev_routing_decisions, (list, tuple)) or any(
+            not isinstance(item, Mapping) for item in raw_jev_routing_decisions
+        ):
+            raise ValidationError(
+                "Signal Retrieval Agent Jev decisions must be objects"
+            )
+        jev_routing_decisions = tuple(
+            JevDecisionSignal.from_dict(item)
+            for item in raw_jev_routing_decisions
+        )
         selections = tuple(selection_step.value)
         bounded_selections: list[SignalSelectionDecision] = []
         llm_count = 0
@@ -2663,6 +2932,7 @@ def execute_information_plan(
                     item for item in selections if item.signal_ref in executed
                 ),
                 batch=batch,
+                jev_routing_decisions=jev_routing_decisions,
             )
         )
         reflection_termination_trigger: RuntimeStopReason | None = None

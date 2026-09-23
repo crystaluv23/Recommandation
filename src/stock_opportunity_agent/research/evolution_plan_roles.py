@@ -35,6 +35,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalSelectionDecision,
     candidate_judgment_feedback,
     is_technical_exclusion_trajectory,
+    jev_decision_feedback,
     magnitude_feedback,
     research_magnitude_diagnostics,
     technical_completion_diagnostics,
@@ -1651,6 +1652,10 @@ class LLMBlindPredictor:
                 original_prediction,
                 ground_truth,
             )
+            jev_feedback = jev_decision_feedback(
+                original_prediction,
+                ground_truth,
+            )
             compact_context = _compact_posthoc_context(original_context)
             reflection, usage = _complete_parsed_role(
                 self.caller,
@@ -1672,6 +1677,10 @@ class LLMBlindPredictor:
                     "correctness bit or any saved field. Do not "
                     "rewrite the saved four-way judgment or infer that "
                     "one realized outcome proves an ex-ante probability category. "
+                    "When jev_decision_feedback is present, use its probabilities "
+                    "and confidence only as provider decision signals for diagnosing "
+                    "calibration, overconfidence, conservatism, or class confusion; "
+                    "do not call them calibrated live-market probabilities. "
                     "When framework_prediction_correct is true, decision_drivers must "
                     "name at least one specific supplied evidence or counter-evidence "
                     "reason that made the saved judgment work. When it is false, "
@@ -1692,6 +1701,11 @@ class LLMBlindPredictor:
                     "framework_prediction_correct": framework_correct,
                     "candidate_judgment_feedback": judgment_feedback,
                     "magnitude_feedback": magnitude_block,
+                    **(
+                        {"jev_decision_feedback": jev_feedback}
+                        if jev_feedback is not None
+                        else {}
+                    ),
                 },
                 parser=lambda value: _prediction_reflection_from_role(
                     value,
@@ -2048,6 +2062,7 @@ def _plan_critic_trajectory(
         "prediction",
         "ground_truth",
         "candidate_judgment_feedback",
+        "jev_decision_feedback",
         "self_reflection",
     ):
         if key in data:
@@ -2090,18 +2105,23 @@ def _plan_critic_trajectory(
                     for value in (evidence.get(key),)
                 }
             signal_results.append(compact_result)
-        compact_rounds.append(
-            {
-                "information_needs": list(round_value.get("information_needs", ())),
-                "selected_signals": list(round_value.get("selected_signals", ())),
-                "selections": [
-                    dict(item)
-                    for item in round_value.get("selections", ())
-                    if isinstance(item, Mapping)
-                ],
-                "signal_results": signal_results,
-            }
-        )
+        compact_round = {
+            "information_needs": list(round_value.get("information_needs", ())),
+            "selected_signals": list(round_value.get("selected_signals", ())),
+            "selections": [
+                dict(item)
+                for item in round_value.get("selections", ())
+                if isinstance(item, Mapping)
+            ],
+            "signal_results": signal_results,
+        }
+        if "jev_routing_decisions" in round_value:
+            compact_round["jev_routing_decisions"] = [
+                dict(item)
+                for item in round_value.get("jev_routing_decisions", ())
+                if isinstance(item, Mapping)
+            ]
+        compact_rounds.append(compact_round)
     compact["signal_rounds"] = compact_rounds
     return compact
 

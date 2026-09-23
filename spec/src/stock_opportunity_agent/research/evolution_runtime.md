@@ -76,6 +76,13 @@ checks emit the same issue contract. Optional routing quarantine may preserve
 valid siblings only when at least one validated selection remains; removing the
 entire invalid portfolio is an execution failure rather than a domain `no_match`.
 
+The parallel Jev experiment uses the OpenRouter Decisions endpoint through a
+separate typed transport rather than pretending that a Decisions response is a
+chat JSON response. Its zero-network replay injects recorded typed answers and
+must never read `OPENROUTER_API_KEY` or create an external attempt. A future live
+shadow run requires its own frozen model/endpoint identity, exact request audit,
+attempt ledger and explicit external authorization before transmission.
+
 ## Frozen Run Contract
 
 One immutable, secret-free `EvolutionRunContract` binds:

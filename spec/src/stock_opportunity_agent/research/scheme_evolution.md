@@ -1073,6 +1073,54 @@ uncertainties. Numeric probability is not required, and the active Predictor
 does not make a separate token-probability call. Continuous
 `realized_max_multiple` remains the underlying truth.
 
+### Parallel Jev decision path
+
+An experimental parallel path may replace only two closed-choice decisions with
+OpenRouter Jev: selection among the frozen eligible Signal cards and the fixed
+Blind Predictor judgment/magnitude choices. It does not change the production
+path until a separate shadow-acceptance decision. The same anonymous,
+point-in-time inputs, card eligibility filters, selection caps, prediction
+semantics, persistence-before-label boundary, scoring rules, and post-label
+reflection remain authoritative.
+
+For Blind Prediction, Jev owns the immutable `candidate_judgment` choice and a
+conditional magnitude choice. A conventional no-web LLM then receives the same
+label-free final context plus Jev's already-fixed decision and writes only
+`key_reasons` and `uncertainties`; it may not replace the choice. The combined
+prediction is persisted before ground truth is loaded. After label reveal, the
+existing LLM reflection runs against that immutable prediction.
+
+Every Jev choice persists its provider, resolved model snapshot, response id,
+question id, chosen option, per-option provider probabilities, and confidence.
+These values are diagnostic feedback signals: post-label reflection and compact
+Plan feedback receive the probability mass assigned to the realized binary and,
+when applicable, magnitude outcomes. They do not represent calibrated live-
+market probabilities, do not modify Binary F1 or magnitude macro-F1, and do not
+enter parent selection until an independently reviewed calibration experiment
+changes this contract.
+
+The legacy qualitative confidence field remains available for existing
+consumers. The parallel adapter derives it mechanically from Jev confidence:
+`high` at or above `0.85`, `medium` at or above `0.60`, and `low` below `0.60`.
+The persisted numeric confidence and full probability distribution remain the
+authoritative Jev diagnostic signals.
+
+For Signal routing, Jev chooses one target information need or `no_match` for
+each already eligible compact card. Runtime applies the established total/LLM
+caps deterministically and preserves the Jev decision signal on each selected
+card. The Signal round also persists every card-level decision, including
+`no_match` and decisions removed by deterministic caps, so later reflection can
+inspect both selection and rejection probabilities. Jev cannot recreate omitted
+refs, override Registry applicability rules, or convert a contradicted exact-
+card match into a valid empty selection.
+
+The first acceptance stage is zero-network replay with recorded Jev and LLM
+responses. It must prove exact request construction, schema validation,
+selection caps, immutable choice plus LLM explanation, persistence/reload of
+probability and confidence, label-reveal ordering, and downstream reflection
+visibility. This proves wiring only; model quality requires a separately
+authorized shadow run on frozen cases.
+
 A positive `likely` or `possible` judgment requires at least one `key_reasons`
 item that affirmatively connects supplied source-backed evidence to a credible
 candidate for the defined price outcome. A portfolio whose every key reason

@@ -1,0 +1,162 @@
+{
+  "acceptance": {
+    "immutable_decision_with_llm_explanation": true,
+    "network_disabled": true,
+    "post_label_feedback_visibility": true,
+    "probability_and_confidence_round_trip": true,
+    "selected_and_rejected_routing_feedback": true,
+    "typed_prediction_choices": true,
+    "typed_routing_choice": true
+  },
+  "external_calls": 0,
+  "jev_decision_feedback": {
+    "candidate_judgment": {
+      "choice": "possible",
+      "confidence": 0.62,
+      "model": "typesafe/jev-1.13-20260917",
+      "negative_probability": 0.2,
+      "positive_probability": 0.8,
+      "probabilities": {
+        "insufficient_information": 0.08,
+        "likely": 0.18,
+        "possible": 0.62,
+        "unlikely": 0.12
+      },
+      "probability_assigned_to_realized_binary": 0.8,
+      "provider": "TypeSafe",
+      "question_id": "candidate_judgment",
+      "response_id": "recorded-prediction-1"
+    },
+    "interpretation": "provider decision signal only; not a calibrated live-market probability",
+    "magnitude": {
+      "choice": "3-10x",
+      "confidence": 0.65,
+      "model": "typesafe/jev-1.13-20260917",
+      "probabilities": {
+        "10x+": 0.05,
+        "2-3x": 0.2,
+        "3-10x": 0.65,
+        "not_applicable": 0.1
+      },
+      "probability_assigned_to_true_magnitude": 0.65,
+      "provider": "TypeSafe",
+      "question_id": "magnitude",
+      "response_id": "recorded-prediction-1",
+      "true_magnitude": "3-10x"
+    }
+  },
+  "limitations": [
+    "Recorded responses prove wiring and persistence, not Jev research quality.",
+    "A separately authorized frozen-case shadow run is required before cutover."
+  ],
+  "post_label_reflection_received_jev_feedback": true,
+  "prediction": {
+    "candidate_judgment": "possible",
+    "confidence": {
+      "level": "medium"
+    },
+    "is_surge": true,
+    "jev_decisions": [
+      {
+        "choice": "possible",
+        "confidence": 0.62,
+        "model": "typesafe/jev-1.13-20260917",
+        "probabilities": {
+          "insufficient_information": 0.08,
+          "likely": 0.18,
+          "possible": 0.62,
+          "unlikely": 0.12
+        },
+        "provider": "TypeSafe",
+        "question_id": "candidate_judgment",
+        "response_id": "recorded-prediction-1"
+      },
+      {
+        "choice": "3-10x",
+        "confidence": 0.65,
+        "model": "typesafe/jev-1.13-20260917",
+        "probabilities": {
+          "10x+": 0.05,
+          "2-3x": 0.2,
+          "3-10x": 0.65,
+          "not_applicable": 0.1
+        },
+        "provider": "TypeSafe",
+        "question_id": "magnitude",
+        "response_id": "recorded-prediction-1"
+      }
+    ],
+    "key_reasons": [
+      "The supplied catalyst and growth evidence support a candidate."
+    ],
+    "magnitude": "3-10x",
+    "session_id": "recorded-prediction-1",
+    "uncertainties": [
+      "Magnitude remains uncertain."
+    ]
+  },
+  "prediction_persisted_before_truth": true,
+  "recorded_llm_request_count": 2,
+  "recorded_prediction_request_count": 1,
+  "reflection": {
+    "decision_drivers": [
+      "The supplied catalyst supported the saved positive decision."
+    ],
+    "ignored_evidence": [],
+    "misleading_signals": [],
+    "missing_information": [],
+    "plan_issues": [],
+    "prediction_outcome": {
+      "correct": true
+    },
+    "why_prediction_failed": []
+  },
+  "routing": {
+    "all_card_decisions": [
+      {
+        "choice": "need_0",
+        "confidence": 0.82,
+        "model": "typesafe/jev-1.13-20260917",
+        "probabilities": {
+          "context_only": 0.08,
+          "need_0": 0.82,
+          "no_match": 0.1
+        },
+        "provider": "TypeSafe",
+        "question_id": "signal_000__revenue_growth_yoy:v1",
+        "response_id": "recorded-routing-1"
+      },
+      {
+        "choice": "no_match",
+        "confidence": 0.8,
+        "model": "typesafe/jev-1.13-20260917",
+        "probabilities": {
+          "context_only": 0.08,
+          "need_0": 0.12,
+          "no_match": 0.8
+        },
+        "provider": "TypeSafe",
+        "question_id": "signal_001__price_momentum_126d:v1",
+        "response_id": "recorded-routing-1"
+      }
+    ],
+    "decision": {
+      "choice": "need_0",
+      "confidence": 0.82,
+      "model": "typesafe/jev-1.13-20260917",
+      "probabilities": {
+        "context_only": 0.08,
+        "need_0": 0.82,
+        "no_match": 0.1
+      },
+      "provider": "TypeSafe",
+      "question_id": "signal_000__revenue_growth_yoy:v1",
+      "response_id": "recorded-routing-1"
+    },
+    "recorded_request_count": 1,
+    "selected_signal_refs": [
+      "revenue_growth_yoy:v1"
+    ]
+  },
+  "schema_version": "jev-parallel-offline-replay-v1"
+}
