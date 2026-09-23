@@ -602,6 +602,36 @@ def score_sequential_probe(
             sum(float(row[key]) for row in group) / len(group) if group else None
         )
 
+    by_slot = {}
+    for slot in range(1, int(manifest["max_slots_per_round"]) + 1):
+        group = [row for row in chosen_diagnostics if int(row["slot"]) == slot]
+        by_slot[str(slot)] = {
+            "count": len(group),
+            "historical_overlap_rate": (
+                sum(bool(row["matches_historical_llm"]) for row in group) / len(group)
+                if group
+                else None
+            ),
+            "mean_choice_probability": mean_of(group, "choice_probability"),
+            "mean_confidence": mean_of(group, "confidence"),
+            "mean_runner_up_margin": mean_of(group, "runner_up_margin"),
+            "choice_probability_auc_for_llm_overlap": _auc(
+                [
+                    (
+                        float(row["choice_probability"]),
+                        bool(row["matches_historical_llm"]),
+                    )
+                    for row in group
+                ]
+            ),
+            "confidence_auc_for_llm_overlap": _auc(
+                [
+                    (float(row["confidence"]), bool(row["matches_historical_llm"]))
+                    for row in group
+                ]
+            ),
+        }
+
     result_state_metrics = {}
     for value in sorted(retention):
         selected_group = [
@@ -619,10 +649,62 @@ def score_sequential_probe(
             ),
             "mean_confidence_when_retained": mean_of(selected_group, "confidence"),
         }
+    result_rows = [
+        row
+        for row in chosen_diagnostics
+        if row["historical_result_value"] is not None
+    ]
+    result_state_ranking = {}
+    for metric in ("choice_probability", "confidence", "runner_up_margin"):
+        result_state_ranking[metric] = {
+            "positive_vs_rest_auc": _auc(
+                [
+                    (float(row[metric]), row["historical_result_value"] == "positive")
+                    for row in result_rows
+                ]
+            ),
+            "positive_vs_negative_auc": _auc(
+                [
+                    (float(row[metric]), row["historical_result_value"] == "positive")
+                    for row in result_rows
+                    if row["historical_result_value"] in {"positive", "negative"}
+                ]
+            ),
+            "available_vs_unavailable_auc": _auc(
+                [
+                    (
+                        float(row[metric]),
+                        row["historical_result_value"] != "unavailable",
+                    )
+                    for row in result_rows
+                ]
+            ),
+        }
     execution = _read_json(workspace / "execution_summary.json")
     historical_execution = _historical_llm_execution(
         list(input_bundle["requests"]), source_workspace
     )
+    execution_comparison = {
+        "actual_cost_saving_fraction": 1.0
+        - execution["actual_cost_usd"] / historical_execution["actual_cost_usd"],
+        "budget_charge_saving_fraction": 1.0
+        - execution["budget_charge_usd"] / historical_execution["actual_cost_usd"],
+        "per_call_latency_reduction_fraction": 1.0
+        - execution["mean_call_latency_seconds"]
+        / historical_execution["mean_call_latency_seconds"],
+        "per_round_latency_change_fraction": execution[
+            "mean_round_external_latency_seconds"
+        ]
+        / historical_execution["mean_round_external_latency_seconds"]
+        - 1.0,
+        "p90_round_latency_change_fraction": execution[
+            "p90_round_external_latency_seconds"
+        ]
+        / historical_execution["p90_round_external_latency_seconds"]
+        - 1.0,
+        "logical_call_multiple": execution["logical_request_count"]
+        / historical_execution["logical_external_call_count"],
+    }
     score = {
         "schema_version": "jev-sequential-routing-score-v1",
         "scored_at": datetime.now(timezone.utc).isoformat(),
@@ -631,7 +713,11 @@ def score_sequential_probe(
         "strict_per_card_jev": source_score["parity_jev"],
         "broad_per_card_jev": source_score["source_broad_jev"],
         "historical_llm": source_score["historical_llm"],
-        "execution": {"sequential_jev": execution, "historical_llm": historical_execution},
+        "execution": {
+            "sequential_jev": execution,
+            "historical_llm": historical_execution,
+            "comparison": execution_comparison,
+        },
         "stop_reasons": dict(Counter(row["stop_reason"] for row in rows)),
         "chosen_decision_diagnostics": {
             "count": len(chosen_diagnostics),
@@ -651,8 +737,10 @@ def score_sequential_probe(
                 "overlap": mean_of(overlap, "runner_up_margin"),
                 "novel": mean_of(novel, "runner_up_margin"),
             },
+            "by_slot": by_slot,
         },
         "historical_signal_result_state_diagnostics": result_state_metrics,
+        "historical_signal_result_state_ranking": result_state_ranking,
         "rows": rows,
         "limitations": [
             "Historical LLM selection is a behavioral reference, not ground truth.",
