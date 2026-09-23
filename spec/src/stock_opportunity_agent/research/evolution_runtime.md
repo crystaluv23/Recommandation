@@ -83,6 +83,25 @@ must never read `OPENROUTER_API_KEY` or create an external attempt. A future liv
 shadow run requires its own frozen model/endpoint identity, exact request audit,
 attempt ledger and explicit external authorization before transmission.
 
+A Jev-only historical shadow freezes label-free inputs separately from labels.
+Preparation writes a content-hashed input bundle containing the exact historical
+final Predictor contexts and the accepted round's actual initial Signal-routing
+payloads, plus a separate content-hashed label bundle. Execution reads only the
+input bundle, uses the exact pinned Jev model and endpoint, persists each
+secret-free request before transmission, and durably records each response and
+actual usage in an experiment-local attempt ledger. It makes no data-provider,
+Signal-execution, chat-LLM, explanation, or reflection calls. Scoring is a
+separate phase that starts only after every Jev response is durable and then
+loads the label bundle.
+
+The primary prediction comparison excludes historical technical exclusions
+that never produced a non-empty final context; these cases remain visible as a
+separate operational-coverage count. Signal-routing results are proxy evidence:
+the shadow can measure agreement, selection size, confidence, and retention of
+historically productive or unavailable Signals, but cannot claim that newly
+selected counterfactual Signals would have improved the research outcome unless
+they are executed in a later, separately authorized experiment.
+
 ## Frozen Run Contract
 
 One immutable, secret-free `EvolutionRunContract` binds:

@@ -1,0 +1,753 @@
+#!/usr/bin/env python3
+"""Freeze, execute, and score a Jev-only historical shadow experiment."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import os
+import random
+import subprocess
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Mapping
+
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.llm.openai import UrllibTransport, canonical_json_bytes
+from stock_opportunity_agent.llm.openrouter_jev import (
+    DEFAULT_JEV_MODEL,
+    DEFAULT_JEV_URL,
+    JevDecisionResponse,
+    OpenRouterJevClient,
+)
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_jev_roles import (
+    _JUDGMENT_CRITERIA,
+    _MAGNITUDE_CRITERIA,
+    _routing_questions,
+)
+from stock_opportunity_agent.research.evolution_plan_roles import (
+    _signal_routing_result_view,
+)
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SOURCE_ROOT = (
+    PROJECT_ROOT
+    / "runs/cold_start/evolution/"
+    "information-evolution-dual-self-evolution-20260922-v139"
+)
+DEFAULT_RECORD = DEFAULT_SOURCE_ROOT / "plans/plan_r0001_c01/record.json"
+DEFAULT_WORKSPACE = (
+    PROJECT_ROOT
+    / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v1"
+)
+SCHEMA_VERSION = "jev-historical-shadow-v1"
+MAX_COST_USD = 0.25
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValidationError(f"expected JSON object: {path}")
+    return value
+
+
+def _sha256_file(path: Path) -> str:
+    import hashlib
+
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _git_head() -> str:
+    return subprocess.check_output(
+        ["git", "rev-parse", "HEAD"],
+        cwd=PROJECT_ROOT,
+        text=True,
+    ).strip()
+
+
+def _load_routing_requests(source_root: Path) -> list[tuple[str, dict[str, Any]]]:
+    rows: list[tuple[str, dict[str, Any]]] = []
+    for path in sorted((source_root / "requests").glob("*.json")):
+        request_record = _read_json(path).get("request", {})
+        messages = request_record.get("messages", ())
+        if not isinstance(messages, list) or not messages:
+            continue
+        content = messages[-1].get("content")
+        if not isinstance(content, str):
+            continue
+        try:
+            payload = json.loads(content)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(payload, dict) or "available_signal_cards" not in payload:
+            continue
+        if payload.get("validation_feedback"):
+            continue
+        rows.append((path.name, payload))
+    return rows
+
+
+def _prediction_questions() -> dict[str, dict[str, Any]]:
+    return {
+        "candidate_judgment": {
+            "type": "choice",
+            "instructions": (
+                "Which fixed opportunity-discovery judgment best fits the supplied "
+                "evidence? Possible is a screening category and does not require "
+                "more than 50 percent event probability."
+            ),
+            "criteria": dict(_JUDGMENT_CRITERIA),
+        },
+        "magnitude": {
+            "type": "choice",
+            "instructions": (
+                "Choose the supported magnitude for a positive candidate judgment, "
+                "or not_applicable for a negative judgment."
+            ),
+            "criteria": dict(_MAGNITUDE_CRITERIA),
+        },
+    }
+
+
+def _request_hash(state: Mapping[str, Any], questions: Mapping[str, Any]) -> str:
+    import hashlib
+
+    return hashlib.sha256(
+        canonical_json_bytes(
+            {
+                "model": DEFAULT_JEV_MODEL,
+                "state": dict(state),
+                "questions": dict(questions),
+            }
+        )
+    ).hexdigest()
+
+
+def prepare_shadow(
+    *,
+    source_root: Path = DEFAULT_SOURCE_ROOT,
+    record_path: Path = DEFAULT_RECORD,
+    workspace: Path = DEFAULT_WORKSPACE,
+) -> dict[str, Any]:
+    """Freeze label-free Jev requests and labels into separate hashed bundles."""
+
+    if workspace.exists() and any(workspace.iterdir()):
+        raise ValidationError(f"shadow workspace already exists and is not empty: {workspace}")
+    record = _read_json(record_path)
+    trajectories = record.get("trajectories")
+    if not isinstance(trajectories, list) or not trajectories:
+        raise ValidationError("source record has no trajectories")
+    routing_requests = _load_routing_requests(source_root)
+    inputs: list[dict[str, Any]] = []
+    labels: list[dict[str, Any]] = []
+    technical_exclusions: list[str] = []
+
+    for case_index, trajectory in enumerate(trajectories, start=1):
+        case_key = f"case_{case_index:03d}"
+        labels.append(
+            {
+                "case_key": case_key,
+                "source_case_id": str(trajectory["case_id"]),
+                "ground_truth": dict(trajectory["ground_truth"]),
+            }
+        )
+        final_context = trajectory.get("final_context", {})
+        if final_context:
+            state = {
+                "description": (
+                    "Anonymous point-in-time research context for the fixed six-calendar-"
+                    "month adjusted-share-price opportunity decision. The baseline and "
+                    "five-trading-day smoothing rule are supplied in final_context."
+                ),
+                "final_context": dict(final_context),
+            }
+            questions = _prediction_questions()
+            inputs.append(
+                {
+                    "request_id": f"prediction_{case_index:03d}",
+                    "kind": "prediction",
+                    "case_key": case_key,
+                    "state": state,
+                    "questions": questions,
+                    "request_body_sha256": _request_hash(state, questions),
+                    "analysis_metadata": {
+                        "baseline_prediction": dict(trajectory["prediction"]),
+                        "prediction_time": str(trajectory["prediction_time"]),
+                    },
+                }
+            )
+        else:
+            technical_exclusions.append(case_key)
+
+        prior_results: dict[str, Mapping[str, Any]] = {}
+        for round_index, round_value in enumerate(
+            trajectory.get("signal_rounds", ()), start=1
+        ):
+            expected_previous = {
+                ref: _signal_routing_result_view(value)
+                for ref, value in prior_results.items()
+            }
+            matches = [
+                (request_name, payload)
+                for request_name, payload in routing_requests
+                if tuple(payload.get("information_needs", ()))
+                == tuple(round_value["information_needs"])
+                and (payload.get("evaluation_context") or {}).get("prediction_time")
+                == trajectory["prediction_time"]
+                and payload.get("previous_signal_results", {}) == expected_previous
+            ]
+            if len(matches) != 1:
+                raise ValidationError(
+                    f"expected one frozen routing request for {case_key} round "
+                    f"{round_index}, found {len(matches)}"
+                )
+            request_name, frozen_payload = matches[0]
+            state = dict(frozen_payload)
+            state.pop("validation_feedback", None)
+            cards = state.get("available_signal_cards")
+            needs = state.get("information_needs")
+            if not isinstance(cards, list) or not isinstance(needs, list):
+                raise ValidationError("frozen routing request has invalid cards or needs")
+            questions = _routing_questions(cards, tuple(str(item) for item in needs))
+            results = round_value["batch"]["results"]
+            result_values = {
+                f"{item['signal_id']}:v{item['version']}": item["state"]["value"]
+                for item in results
+            }
+            inputs.append(
+                {
+                    "request_id": f"routing_{case_index:03d}_{round_index:02d}",
+                    "kind": "routing",
+                    "case_key": case_key,
+                    "state": state,
+                    "questions": questions,
+                    "request_body_sha256": _request_hash(state, questions),
+                    "analysis_metadata": {
+                        "source_request_file": request_name,
+                        "baseline_selected_refs": list(round_value["selected_signals"]),
+                        "baseline_result_values": result_values,
+                        "round_index": round_index,
+                    },
+                }
+            )
+            for result in results:
+                ref = f"{result['signal_id']}:v{result['version']}"
+                prior_results[ref] = result
+
+    input_bundle = {"schema_version": SCHEMA_VERSION, "requests": inputs}
+    label_bundle = {"schema_version": SCHEMA_VERSION, "labels": labels}
+    input_hash = canonical_json_hash(input_bundle)
+    label_hash = canonical_json_hash(label_bundle)
+    manifest = {
+        "schema_version": SCHEMA_VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_root": str(source_root.relative_to(PROJECT_ROOT)),
+        "source_record": str(record_path.relative_to(PROJECT_ROOT)),
+        "source_record_sha256": _sha256_file(record_path),
+        "git_commit": _git_head(),
+        "provider": "openrouter",
+        "model": DEFAULT_JEV_MODEL,
+        "endpoint": DEFAULT_JEV_URL,
+        "input_bundle_sha256": input_hash,
+        "label_bundle_sha256": label_hash,
+        "prediction_request_count": sum(item["kind"] == "prediction" for item in inputs),
+        "routing_request_count": sum(item["kind"] == "routing" for item in inputs),
+        "technical_exclusion_count": len(technical_exclusions),
+        "technical_exclusion_case_keys": technical_exclusions,
+        "max_external_attempts": len(inputs),
+        "max_total_cost_usd": MAX_COST_USD,
+        "execution_boundary": (
+            "execute reads inputs.json only; score loads labels.json after every "
+            "response is durable"
+        ),
+    }
+    manifest["manifest_hash"] = canonical_json_hash(manifest)
+    atomic_write_json(workspace / "inputs.json", input_bundle)
+    atomic_write_json(workspace / "labels.json", label_bundle)
+    atomic_write_json(workspace / "manifest.json", manifest)
+    atomic_write_json(
+        workspace / "attempts.json",
+        {
+            "schema_version": SCHEMA_VERSION,
+            "max_external_attempts": len(inputs),
+            "max_total_cost_usd": MAX_COST_USD,
+            "attempts": [],
+        },
+    )
+    return manifest
+
+
+def _load_env_value(path: Path, key: str) -> str:
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        if name.strip() == key:
+            return value.strip().strip('"').strip("'")
+    raise ValidationError(f"{key} is not present in {path}")
+
+
+def _verify_workspace(workspace: Path, acknowledged_hash: str) -> tuple[dict, dict]:
+    manifest = _read_json(workspace / "manifest.json")
+    stored_hash = manifest.pop("manifest_hash", None)
+    actual_hash = canonical_json_hash(manifest)
+    manifest["manifest_hash"] = stored_hash
+    if stored_hash != actual_hash or acknowledged_hash != stored_hash:
+        raise ValidationError("Jev shadow manifest hash is missing, changed, or unacknowledged")
+    inputs = _read_json(workspace / "inputs.json")
+    if canonical_json_hash(inputs) != manifest["input_bundle_sha256"]:
+        raise ValidationError("Jev shadow input bundle hash changed")
+    return manifest, inputs
+
+
+def execute_shadow(
+    *,
+    workspace: Path,
+    acknowledged_hash: str,
+    env_file: Path,
+) -> dict[str, Any]:
+    """Call only Jev over the frozen label-free input bundle."""
+
+    manifest, input_bundle = _verify_workspace(workspace, acknowledged_hash)
+    if manifest["git_commit"] != _git_head():
+        raise ValidationError("current Git commit differs from frozen shadow harness")
+    ledger_path = workspace / "attempts.json"
+    ledger = _read_json(ledger_path)
+    attempts = list(ledger.get("attempts", ()))
+    completed = {item["request_id"]: item for item in attempts if item["status"] == "completed"}
+    if any(item["status"] != "completed" for item in attempts):
+        raise ValidationError("shadow ledger has a non-completed attempt; inspect before retry")
+    api_key = os.environ.get("OPENROUTER_API_KEY") or _load_env_value(
+        env_file, "OPENROUTER_API_KEY"
+    )
+    client = OpenRouterJevClient(
+        api_key,
+        model=str(manifest["model"]),
+        endpoint=str(manifest["endpoint"]),
+        transport=UrllibTransport(timeout_seconds=60.0, max_attempts=1),
+    )
+    total_cost = sum(float(item.get("actual_cost", 0.0)) for item in completed.values())
+    for item in input_bundle["requests"]:
+        request_id = item["request_id"]
+        if request_id in completed:
+            continue
+        if len(attempts) >= manifest["max_external_attempts"]:
+            raise ValidationError("Jev shadow external-attempt ceiling reached")
+        if total_cost >= manifest["max_total_cost_usd"]:
+            raise ValidationError("Jev shadow cost ceiling reached")
+        prepared = client.prepare_request(state=item["state"], questions=item["questions"])
+        if prepared.body_sha256 != item["request_body_sha256"]:
+            raise ValidationError(f"frozen request hash changed: {request_id}")
+        atomic_write_json(
+            workspace / "requests" / f"{request_id}.json",
+            {
+                "request_id": request_id,
+                "endpoint": prepared.url,
+                "body_sha256": prepared.body_sha256,
+                "payload": dict(prepared.payload),
+            },
+        )
+        attempt = {
+            "attempt_id": len(attempts) + 1,
+            "request_id": request_id,
+            "request_body_sha256": prepared.body_sha256,
+            "started_at": datetime.now(timezone.utc).isoformat(),
+            "status": "in_progress",
+        }
+        attempts.append(attempt)
+        ledger["attempts"] = attempts
+        atomic_write_json(ledger_path, ledger)
+        try:
+            response = client.decide(state=item["state"], questions=item["questions"])
+        except Exception as exc:
+            attempt["status"] = "failed"
+            attempt["finished_at"] = datetime.now(timezone.utc).isoformat()
+            attempt["error_type"] = type(exc).__name__
+            attempt["error"] = str(exc)
+            atomic_write_json(ledger_path, ledger)
+            raise
+        response_value = {
+            "request_id": request_id,
+            "response": {
+                "id": response.response_id,
+                "model": response.model,
+                "provider": response.provider,
+                "answers": {
+                    key: value.to_dict() for key, value in response.answers.items()
+                },
+                "usage": {
+                    "input_tokens": response.usage.tokens,
+                    "output_tokens": 0,
+                    "cost": response.usage.cost,
+                },
+            },
+        }
+        response_hash = canonical_json_hash(response_value)
+        atomic_write_json(workspace / "responses" / f"{request_id}.json", response_value)
+        attempt.update(
+            {
+                "status": "completed",
+                "finished_at": datetime.now(timezone.utc).isoformat(),
+                "response_sha256": response_hash,
+                "response_id": response.response_id,
+                "resolved_model": response.model,
+                "provider": response.provider,
+                "actual_cost": response.usage.cost,
+                "tokens": response.usage.tokens,
+            }
+        )
+        total_cost += response.usage.cost
+        atomic_write_json(ledger_path, ledger)
+    if total_cost > manifest["max_total_cost_usd"]:
+        raise ValidationError("Jev shadow exceeded its cost ceiling")
+    summary = {
+        "schema_version": SCHEMA_VERSION,
+        "completed_request_count": len(attempts),
+        "total_cost_usd": total_cost,
+        "total_tokens": sum(int(item.get("tokens", 0)) for item in attempts),
+        "resolved_models": sorted({str(item["resolved_model"]) for item in attempts}),
+        "providers": sorted({str(item["provider"]) for item in attempts}),
+        "completed_at": datetime.now(timezone.utc).isoformat(),
+    }
+    atomic_write_json(workspace / "execution_summary.json", summary)
+    return summary
+
+
+def _binary_metrics(rows: list[tuple[bool, bool]]) -> dict[str, Any]:
+    tp = sum(pred and truth for pred, truth in rows)
+    fp = sum(pred and not truth for pred, truth in rows)
+    tn = sum(not pred and not truth for pred, truth in rows)
+    fn = sum(not pred and truth for pred, truth in rows)
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    f1 = 2 * tp / (2 * tp + fp + fn) if 2 * tp + fp + fn else 0.0
+    return {
+        "sample_count": len(rows),
+        "accuracy": (tp + tn) / len(rows) if rows else 0.0,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+        "confusion": {"tp": tp, "fp": fp, "tn": tn, "fn": fn},
+    }
+
+
+def _magnitude_metrics(rows: list[tuple[str | None, str | None]]) -> dict[str, Any]:
+    classes = ("2-3x", "3-10x", "10x+")
+    positive_rows = [(pred, truth) for pred, truth in rows if truth is not None]
+    per_class: dict[str, Any] = {}
+    f1_values = []
+    for label in classes:
+        tp = sum(pred == label and truth == label for pred, truth in rows)
+        fp = sum(pred == label and truth != label for pred, truth in rows)
+        fn = sum(pred != label and truth == label for pred, truth in rows)
+        f1 = 2 * tp / (2 * tp + fp + fn) if 2 * tp + fp + fn else 0.0
+        f1_values.append(f1)
+        per_class[label] = {"tp": tp, "fp": fp, "fn": fn, "f1": f1}
+    return {
+        "positive_truth_count": len(positive_rows),
+        "accuracy_on_positive_truth": (
+            sum(pred == truth for pred, truth in positive_rows) / len(positive_rows)
+            if positive_rows
+            else 0.0
+        ),
+        "macro_f1": sum(f1_values) / len(f1_values),
+        "per_class": per_class,
+    }
+
+
+def _mcnemar_exact(jev_only: int, baseline_only: int) -> float:
+    discordant = jev_only + baseline_only
+    if discordant == 0:
+        return 1.0
+    tail = sum(
+        math.comb(discordant, index) * 0.5**discordant
+        for index in range(0, min(jev_only, baseline_only) + 1)
+    )
+    return min(1.0, 2 * tail)
+
+
+def _bootstrap_f1_delta(
+    jev_rows: list[tuple[bool, bool]],
+    baseline_rows: list[tuple[bool, bool]],
+    *,
+    samples: int = 10_000,
+) -> dict[str, float]:
+    rng = random.Random(20260923)
+    deltas = []
+    for _ in range(samples):
+        indices = [rng.randrange(len(jev_rows)) for _ in jev_rows]
+        jev = _binary_metrics([jev_rows[index] for index in indices])["f1"]
+        baseline = _binary_metrics([baseline_rows[index] for index in indices])["f1"]
+        deltas.append(jev - baseline)
+    deltas.sort()
+    return {
+        "samples": samples,
+        "lower_95": deltas[int(samples * 0.025)],
+        "upper_95": deltas[int(samples * 0.975)],
+    }
+
+
+def _probability_metrics(rows: list[tuple[float, bool, float, bool]]) -> dict[str, Any]:
+    epsilon = 1e-12
+    brier = sum((probability - float(truth)) ** 2 for probability, truth, _, _ in rows) / len(rows)
+    log_loss = -sum(
+        math.log(max(epsilon, min(1 - epsilon, probability if truth else 1 - probability)))
+        for probability, truth, _, _ in rows
+    ) / len(rows)
+    buckets = {"low": [], "medium": [], "high": []}
+    for probability, truth, confidence, correct in rows:
+        del probability, truth
+        bucket = "high" if confidence >= 0.85 else "medium" if confidence >= 0.60 else "low"
+        buckets[bucket].append(correct)
+    return {
+        "brier": brier,
+        "log_loss": log_loss,
+        "mean_probability_assigned_to_realized_binary": sum(
+            probability if truth else 1 - probability
+            for probability, truth, _, _ in rows
+        )
+        / len(rows),
+        "confidence_buckets": {
+            key: {
+                "count": len(values),
+                "accuracy": sum(values) / len(values) if values else None,
+            }
+            for key, values in buckets.items()
+        },
+    }
+
+
+def _selected_routing_refs(item: Mapping[str, Any], response: JevDecisionResponse) -> list[str]:
+    cards = item["state"]["available_signal_cards"]
+    candidates = []
+    llm_count = 0
+    for index, card in enumerate(cards):
+        answer = response.answers[f"signal_{index:03d}__{card['signal_ref']}"]
+        if answer.choice == "no_match":
+            continue
+        candidates.append((answer.probabilities[answer.choice], index, card))
+    selected = []
+    for _, _, card in sorted(candidates, key=lambda row: (-row[0], row[1])):
+        if card.get("execution_type") == "llm":
+            if llm_count >= 2:
+                continue
+            llm_count += 1
+        selected.append(str(card["signal_ref"]))
+        if len(selected) >= 4:
+            break
+    return selected
+
+
+def score_shadow(*, workspace: Path, acknowledged_hash: str) -> dict[str, Any]:
+    """Load labels only after all Jev responses exist, then score the shadow."""
+
+    manifest, input_bundle = _verify_workspace(workspace, acknowledged_hash)
+    labels = _read_json(workspace / "labels.json")
+    if canonical_json_hash(labels) != manifest["label_bundle_sha256"]:
+        raise ValidationError("Jev shadow label bundle hash changed")
+    label_by_case = {item["case_key"]: item for item in labels["labels"]}
+    if len(list((workspace / "responses").glob("*.json"))) != len(
+        input_bundle["requests"]
+    ):
+        raise ValidationError("Jev shadow responses are incomplete")
+
+    prediction_rows = []
+    routing_rows = []
+    for item in input_bundle["requests"]:
+        stored = _read_json(workspace / "responses" / f"{item['request_id']}.json")
+        response = JevDecisionResponse.from_dict(stored["response"])
+        if item["kind"] == "prediction":
+            truth = label_by_case[item["case_key"]]["ground_truth"]
+            baseline = item["analysis_metadata"]["baseline_prediction"]
+            judgment = response.answers["candidate_judgment"]
+            magnitude = response.answers["magnitude"]
+            jev_positive = judgment.choice in {"likely", "possible"}
+            truth_positive = bool(truth["is_surge"])
+            adapter_valid = (
+                jev_positive and magnitude.choice in {"2-3x", "3-10x", "10x+"}
+            ) or (not jev_positive and magnitude.choice == "not_applicable")
+            positive_probability = sum(
+                judgment.probabilities.get(value, 0.0)
+                for value in ("likely", "possible")
+            )
+            prediction_rows.append(
+                {
+                    "case_key": item["case_key"],
+                    "source_case_id": label_by_case[item["case_key"]]["source_case_id"],
+                    "truth_positive": truth_positive,
+                    "true_magnitude": truth.get("magnitude"),
+                    "baseline_positive": bool(baseline["is_surge"]),
+                    "baseline_judgment": baseline["candidate_judgment"],
+                    "baseline_magnitude": baseline.get("magnitude"),
+                    "jev_positive": jev_positive,
+                    "jev_judgment": judgment.choice,
+                    "jev_magnitude": (
+                        magnitude.choice if magnitude.choice != "not_applicable" else None
+                    ),
+                    "adapter_valid": adapter_valid,
+                    "binary_positive_probability": positive_probability,
+                    "judgment_confidence": judgment.confidence,
+                    "judgment_probabilities": dict(judgment.probabilities),
+                    "magnitude_confidence": magnitude.confidence,
+                    "magnitude_probabilities": dict(magnitude.probabilities),
+                }
+            )
+        else:
+            selected = _selected_routing_refs(item, response)
+            baseline = list(item["analysis_metadata"]["baseline_selected_refs"])
+            baseline_set, selected_set = set(baseline), set(selected)
+            union = baseline_set | selected_set
+            routing_rows.append(
+                {
+                    "request_id": item["request_id"],
+                    "case_key": item["case_key"],
+                    "baseline_selected_refs": baseline,
+                    "jev_selected_refs": selected,
+                    "exact_match": baseline == selected,
+                    "set_match": baseline_set == selected_set,
+                    "jaccard": len(baseline_set & selected_set) / len(union) if union else 1.0,
+                    "baseline_ref_recall": (
+                        len(baseline_set & selected_set) / len(baseline_set)
+                        if baseline_set
+                        else 1.0
+                    ),
+                    "baseline_result_values": dict(
+                        item["analysis_metadata"]["baseline_result_values"]
+                    ),
+                }
+            )
+
+    jev_binary = [(row["jev_positive"], row["truth_positive"]) for row in prediction_rows]
+    baseline_binary = [
+        (row["baseline_positive"], row["truth_positive"]) for row in prediction_rows
+    ]
+    jev_correct = [pred == truth for pred, truth in jev_binary]
+    baseline_correct = [pred == truth for pred, truth in baseline_binary]
+    jev_only = sum(j and not b for j, b in zip(jev_correct, baseline_correct, strict=True))
+    baseline_only = sum(b and not j for j, b in zip(jev_correct, baseline_correct, strict=True))
+    probability_rows = [
+        (
+            row["binary_positive_probability"],
+            row["truth_positive"],
+            row["judgment_confidence"],
+            correct,
+        )
+        for row, correct in zip(prediction_rows, jev_correct, strict=True)
+    ]
+    retention_by_value: dict[str, dict[str, int]] = {}
+    for row in routing_rows:
+        selected = set(row["jev_selected_refs"])
+        for ref, value in row["baseline_result_values"].items():
+            bucket = retention_by_value.setdefault(str(value), {"total": 0, "retained": 0})
+            bucket["total"] += 1
+            bucket["retained"] += ref in selected
+
+    result = {
+        "schema_version": SCHEMA_VERSION,
+        "manifest_hash": acknowledged_hash,
+        "scored_at": datetime.now(timezone.utc).isoformat(),
+        "scope": {
+            "source_record": manifest["source_record"],
+            "historical_case_count": len(labels["labels"]),
+            "comparable_prediction_count": len(prediction_rows),
+            "technical_exclusion_count": manifest["technical_exclusion_count"],
+            "routing_round_count": len(routing_rows),
+            "interpretation": "in-sample historical shadow, not independent generalization",
+        },
+        "prediction": {
+            "jev": _binary_metrics(jev_binary),
+            "historical_llm": _binary_metrics(baseline_binary),
+            "jev_magnitude": _magnitude_metrics(
+                [(row["jev_magnitude"], row["true_magnitude"]) for row in prediction_rows]
+            ),
+            "historical_llm_magnitude": _magnitude_metrics(
+                [
+                    (row["baseline_magnitude"], row["true_magnitude"])
+                    for row in prediction_rows
+                ]
+            ),
+            "adapter_valid_count": sum(row["adapter_valid"] for row in prediction_rows),
+            "paired_correctness": {
+                "both_correct": sum(j and b for j, b in zip(jev_correct, baseline_correct, strict=True)),
+                "jev_only_correct": jev_only,
+                "historical_llm_only_correct": baseline_only,
+                "both_wrong": sum(not j and not b for j, b in zip(jev_correct, baseline_correct, strict=True)),
+                "mcnemar_exact_p": _mcnemar_exact(jev_only, baseline_only),
+                "f1_delta_bootstrap_95": _bootstrap_f1_delta(jev_binary, baseline_binary),
+            },
+            "probability_diagnostics": _probability_metrics(probability_rows),
+            "rows": prediction_rows,
+        },
+        "routing": {
+            "exact_ordered_match_rate": sum(row["exact_match"] for row in routing_rows)
+            / len(routing_rows),
+            "exact_set_match_rate": sum(row["set_match"] for row in routing_rows)
+            / len(routing_rows),
+            "mean_jaccard": sum(row["jaccard"] for row in routing_rows) / len(routing_rows),
+            "mean_historical_ref_recall": sum(
+                row["baseline_ref_recall"] for row in routing_rows
+            )
+            / len(routing_rows),
+            "mean_historical_selection_size": sum(
+                len(row["baseline_selected_refs"]) for row in routing_rows
+            )
+            / len(routing_rows),
+            "mean_jev_selection_size": sum(
+                len(row["jev_selected_refs"]) for row in routing_rows
+            )
+            / len(routing_rows),
+            "historical_result_retention": retention_by_value,
+            "limitation": (
+                "Agreement and retention are proxy metrics; Jev-only alternative "
+                "Signals were not executed and have no counterfactual outcome."
+            ),
+            "rows": routing_rows,
+        },
+        "execution": _read_json(workspace / "execution_summary.json"),
+    }
+    atomic_write_json(workspace / "score.json", result)
+    return result
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    prepare = subparsers.add_parser("prepare")
+    prepare.add_argument("--source-root", type=Path, default=DEFAULT_SOURCE_ROOT)
+    prepare.add_argument("--record", type=Path, default=DEFAULT_RECORD)
+    prepare.add_argument("--workspace", type=Path, default=DEFAULT_WORKSPACE)
+    execute = subparsers.add_parser("execute")
+    execute.add_argument("--workspace", type=Path, default=DEFAULT_WORKSPACE)
+    execute.add_argument("--acknowledge-manifest-hash", required=True)
+    execute.add_argument("--env-file", type=Path, default=PROJECT_ROOT / ".env.local")
+    score = subparsers.add_parser("score")
+    score.add_argument("--workspace", type=Path, default=DEFAULT_WORKSPACE)
+    score.add_argument("--acknowledge-manifest-hash", required=True)
+    args = parser.parse_args()
+    if args.command == "prepare":
+        value = prepare_shadow(
+            source_root=args.source_root,
+            record_path=args.record,
+            workspace=args.workspace,
+        )
+    elif args.command == "execute":
+        value = execute_shadow(
+            workspace=args.workspace,
+            acknowledged_hash=args.acknowledge_manifest_hash,
+            env_file=args.env_file,
+        )
+    else:
+        value = score_shadow(
+            workspace=args.workspace,
+            acknowledged_hash=args.acknowledge_manifest_hash,
+        )
+    print(json.dumps(value, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()
