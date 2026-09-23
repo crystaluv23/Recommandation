@@ -1,0 +1,250 @@
+{
+  "broad_per_card_jev": {
+    "baseline_selected_count": 249,
+    "empty_rounds": 1,
+    "exact_ordered_match_rate": 0.0125,
+    "exact_set_match_rate": 0.0625,
+    "intersection_count": 158,
+    "mean_jaccard": 0.4203571428571428,
+    "mean_selection_size": 3.9,
+    "micro_f1": 0.5632798573975045,
+    "micro_precision": 0.5064102564102564,
+    "micro_recall": 0.6345381526104418,
+    "round_count": 80,
+    "rounds_at_cap_four": 77,
+    "selected_count": 312
+  },
+  "chosen_decision_diagnostics": {
+    "by_slot": {
+      "1": {
+        "choice_probability_auc_for_llm_overlap": 0.6254480286738351,
+        "confidence_auc_for_llm_overlap": 0.600358422939068,
+        "count": 80,
+        "historical_overlap_rate": 0.775,
+        "mean_choice_probability": 0.4777348484848485,
+        "mean_confidence": 0.425,
+        "mean_runner_up_margin": 0.2758724747474747
+      },
+      "2": {
+        "choice_probability_auc_for_llm_overlap": 0.6525974025974026,
+        "confidence_auc_for_llm_overlap": 0.6150278293135436,
+        "count": 71,
+        "historical_overlap_rate": 0.6901408450704225,
+        "mean_choice_probability": 0.4292730118082231,
+        "mean_confidence": 0.37,
+        "mean_runner_up_margin": 0.23226774790155072
+      },
+      "3": {
+        "choice_probability_auc_for_llm_overlap": 0.43555555555555553,
+        "confidence_auc_for_llm_overlap": 0.37,
+        "count": 43,
+        "historical_overlap_rate": 0.4186046511627907,
+        "mean_choice_probability": 0.3647756636128729,
+        "mean_confidence": 0.28162790697674417,
+        "mean_runner_up_margin": 0.15404510218463707
+      },
+      "4": {
+        "choice_probability_auc_for_llm_overlap": 0.4965034965034965,
+        "confidence_auc_for_llm_overlap": 0.45454545454545453,
+        "count": 24,
+        "historical_overlap_rate": 0.4583333333333333,
+        "mean_choice_probability": 0.3145833333333333,
+        "mean_confidence": 0.21458333333333335,
+        "mean_runner_up_margin": 0.075
+      }
+    },
+    "choice_probability_auc_for_llm_overlap": 0.6289377289377289,
+    "confidence_auc_for_llm_overlap": 0.6074175824175824,
+    "count": 218,
+    "historical_novel_count": 78,
+    "historical_overlap_count": 140,
+    "mean_choice_probability": {
+      "novel": 0.38121471121471123,
+      "overlap": 0.4442698412698413
+    },
+    "mean_confidence": {
+      "novel": 0.316025641025641,
+      "overlap": 0.3777142857142857
+    },
+    "mean_runner_up_margin": {
+      "novel": 0.1746114996114996,
+      "overlap": 0.23832178932178932
+    }
+  },
+  "date": "2026-09-23",
+  "decision": "retain sequential Jev as a shadow selector; do not cut over production or update Signal fitness before paired downstream execution",
+  "execution": {
+    "comparison": {
+      "actual_cost_saving_fraction": 0.3732995990229834,
+      "budget_charge_saving_fraction": 0.2939060703101152,
+      "logical_call_multiple": 3.4125,
+      "p90_round_latency_change_fraction": 1.3619217858310604,
+      "per_call_latency_reduction_fraction": 0.44441394340441276,
+      "per_round_latency_change_fraction": 0.8959374181324413
+    },
+    "historical_llm": {
+      "actual_cost_usd": 0.10076388000000001,
+      "input_tokens": 279565,
+      "logical_external_call_count": 80,
+      "mean_call_latency_seconds": 4.281209725,
+      "mean_round_external_latency_seconds": 4.281209725,
+      "median_call_latency_seconds": 4.323431,
+      "output_tokens": 40153,
+      "p90_call_latency_seconds": 4.853673,
+      "p90_round_external_latency_seconds": 4.853673,
+      "routing_round_count": 80
+    },
+    "sequential_jev": {
+      "actual_cost_usd": 0.063148764,
+      "budget_charge_usd": 0.071148764,
+      "completed_at": "2026-09-23T14:54:06.442517+00:00",
+      "completed_round_count": 80,
+      "logical_request_count": 273,
+      "mean_call_latency_seconds": 2.3785804285714285,
+      "mean_round_external_latency_seconds": 8.1169057125,
+      "median_call_latency_seconds": 2.085913,
+      "p90_call_latency_seconds": 3.684518,
+      "p90_round_external_latency_seconds": 11.463996,
+      "physical_attempt_count": 277,
+      "retryable_or_interrupted_attempt_count": 4,
+      "schema_version": "jev-sequential-routing-execution-v1",
+      "total_tokens": 1542259,
+      "wall_seconds_this_invocation": 681.252791
+    }
+  },
+  "historical_llm": {
+    "mean_selection_size": 3.1125,
+    "round_count": 80,
+    "selected_count": 249
+  },
+  "historical_signal_result_state_diagnostics": {
+    "negative": {
+      "historical_count": 66,
+      "mean_choice_probability_when_retained": 0.4051984126984127,
+      "mean_confidence_when_retained": 0.31857142857142856,
+      "retained_count": 28,
+      "retention_rate": 0.42424242424242425
+    },
+    "neutral": {
+      "historical_count": 77,
+      "mean_choice_probability_when_retained": 0.45736549165120594,
+      "mean_confidence_when_retained": 0.39224489795918366,
+      "retained_count": 49,
+      "retention_rate": 0.6363636363636364
+    },
+    "positive": {
+      "historical_count": 79,
+      "mean_choice_probability_when_retained": 0.44905652267354396,
+      "mean_confidence_when_retained": 0.3902127659574468,
+      "retained_count": 47,
+      "retention_rate": 0.5949367088607594
+    },
+    "unavailable": {
+      "historical_count": 27,
+      "mean_choice_probability_when_retained": 0.4584785353535354,
+      "mean_confidence_when_retained": 0.4,
+      "retained_count": 16,
+      "retention_rate": 0.5925925925925926
+    }
+  },
+  "historical_signal_result_state_ranking": {
+    "choice_probability": {
+      "available_vs_unavailable_auc": 0.4561491935483871,
+      "positive_vs_negative_auc": 0.5820668693009119,
+      "positive_vs_rest_auc": 0.5126973232669869
+    },
+    "confidence": {
+      "available_vs_unavailable_auc": 0.44455645161290325,
+      "positive_vs_negative_auc": 0.6227203647416414,
+      "positive_vs_rest_auc": 0.5291695264241593
+    },
+    "runner_up_margin": {
+      "available_vs_unavailable_auc": 0.4536290322580645,
+      "positive_vs_negative_auc": 0.5980243161094225,
+      "positive_vs_rest_auc": 0.5301990391214825
+    }
+  },
+  "limitations": [
+    "Historical LLM selection is a behavioral reference, not ground truth.",
+    "Choice probability is conditional on the remaining candidate pool and is not an independent Signal-success probability.",
+    "Only historically selected Signals have recorded result states; Jev-only alternatives were not executed.",
+    "No paired downstream Signal execution or ablation was run, so probability and confidence are not accepted Signal performance metrics."
+  ],
+  "manifest_hash": "06a8a6ee900334341083622ba2547dc7c08108d70da08387c92341d507996db1",
+  "metric_decision": {
+    "canonical_signal_performance": false,
+    "reason": "probability and confidence modestly rank LLM overlap in early slots but do not discriminate positive results or availability; paired downstream execution is required",
+    "reflection_feedback": true,
+    "required_context": [
+      "slot",
+      "candidate_count",
+      "candidate_pool_hash",
+      "selected_before",
+      "choice_probability",
+      "stop_probability",
+      "runner_up_margin",
+      "confidence"
+    ]
+  },
+  "paired_jaccard_bootstrap": {
+    "resamples": 20000,
+    "seed": 20260923,
+    "sequential_minus_broad": {
+      "ci95": [
+        -0.017976190476190472,
+        0.11538690476190479
+      ],
+      "mean": 0.04860119047619049,
+      "negative_rounds": 31,
+      "positive_rounds": 36,
+      "tie_rounds": 13
+    },
+    "sequential_minus_strict": {
+      "ci95": [
+        0.04622023809523808,
+        0.18041666666666661
+      ],
+      "mean": 0.11226190476190472,
+      "negative_rounds": 21,
+      "positive_rounds": 42,
+      "tie_rounds": 17
+    }
+  },
+  "schema_version": "jev-sequential-signal-routing-report-v1",
+  "sequential_jev": {
+    "baseline_selected_count": 249,
+    "empty_rounds": 0,
+    "exact_ordered_match_rate": 0.05,
+    "exact_set_match_rate": 0.1,
+    "intersection_count": 140,
+    "mean_jaccard": 0.4689583333333333,
+    "mean_selection_size": 2.725,
+    "micro_f1": 0.5995717344753748,
+    "micro_precision": 0.6422018348623854,
+    "micro_recall": 0.5622489959839357,
+    "round_count": 80,
+    "rounds_at_cap_four": 24,
+    "selected_count": 218
+  },
+  "stop_reasons": {
+    "jev_stop": 55,
+    "no_eligible_card": 1,
+    "total_cap": 24
+  },
+  "strict_per_card_jev": {
+    "baseline_selected_count": 249,
+    "empty_rounds": 7,
+    "exact_ordered_match_rate": 0.0125,
+    "exact_set_match_rate": 0.025,
+    "intersection_count": 131,
+    "mean_jaccard": 0.3566964285714286,
+    "mean_selection_size": 3.2875,
+    "micro_f1": 0.51171875,
+    "micro_precision": 0.49809885931558934,
+    "micro_recall": 0.5261044176706827,
+    "round_count": 80,
+    "rounds_at_cap_four": 56,
+    "selected_count": 263
+  },
+  "workspace": "runs/cold_start/evolution/jev-sequential-signal-routing-20260923-v1"
+}
