@@ -100,6 +100,9 @@ exactly one. A distribution with total mass within `0.05` of one is normalized
 deterministically for downstream feedback while the raw values remain in the
 audit artifact; larger drift, missing choices, or values outside `[0,1]` fail
 closed. This normalization rule is frozen before a scored shadow starts.
+Provider `confidence` is persisted as distribution concentration. It is not a
+correctness probability and cannot weight fitness, promotion, or the strength of
+a reflection lesson without a later independently reviewed calibration change.
 
 The frozen shadow budget distinguishes logical requests from physical attempts.
 It permits at most ten extra physical attempts across the panel and at most

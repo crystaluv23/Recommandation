@@ -1,0 +1,115 @@
+{
+  "audit_verdict": "original_direction_gap_was_primarily_an_instruction_boundary_defect",
+  "content_defects": {
+    "case_008": "target identity Ciena remained visible in the anonymous context",
+    "case_020": "Aris Mining target context contained Aris Water Solutions news and earnings-call evidence"
+  },
+  "corrected_false_negatives": [
+    {
+      "case_key": "case_011",
+      "confidence": 0.78,
+      "positive_probability": 0.11,
+      "realized_max_multiple": 2.0177998156447665,
+      "source_case_id": "cik_0001164727:20250731"
+    },
+    {
+      "case_key": "case_021",
+      "confidence": 0.89,
+      "positive_probability": 0.06,
+      "realized_max_multiple": 2.3746430611079377,
+      "source_case_id": "cik_0001658551:20250131"
+    }
+  ],
+  "corrected_probability_diagnostics": {
+    "brier": 0.18902380952380954,
+    "log_loss": 0.5829892782628399,
+    "roc_auc": 0.8101851851851852
+  },
+  "exact_binary_agreement": {
+    "corrected_jev_vs_historical_llm": 1.0,
+    "matching_cases": 21,
+    "total_cases": 21
+  },
+  "input_audit": {
+    "comparable_contexts_with_exactly_one_historical_llm_payload_match": 21,
+    "historical_llm_system_prompt_characters": 4046,
+    "parity_probe_request_hash_mismatches": 0,
+    "raw_probe_request_hash_mismatches": 0,
+    "shared_source_shadow_hash": "5bd82c478c86d63b482926da34d0481c55924030133932bb6ae645fcf8b7525a"
+  },
+  "metrics": {
+    "corrected_jev": {
+      "accuracy": 0.7619047619047619,
+      "f1": 0.8,
+      "fn": 2,
+      "fp": 3,
+      "precision": 0.7692307692307693,
+      "recall": 0.8333333333333334,
+      "tn": 6,
+      "tp": 10
+    },
+    "corrected_jev_excluding_case_020": {
+      "accuracy": 0.75,
+      "f1": 0.7826086956521738,
+      "fn": 2,
+      "fp": 3,
+      "precision": 0.75,
+      "recall": 0.8181818181818182,
+      "tn": 6,
+      "tp": 9
+    },
+    "corrected_jev_excluding_cases_008_020": {
+      "accuracy": 0.7368421052631579,
+      "f1": 0.761904761904762,
+      "fn": 2,
+      "fp": 3,
+      "precision": 0.7272727272727273,
+      "recall": 0.8,
+      "tn": 6,
+      "tp": 8
+    },
+    "historical_llm": {
+      "accuracy": 0.7619047619047619,
+      "f1": 0.8,
+      "fn": 2,
+      "fp": 3,
+      "precision": 0.7692307692307693,
+      "recall": 0.8333333333333334,
+      "tn": 6,
+      "tp": 10
+    },
+    "original_simultaneous_jev": {
+      "accuracy": 0.6666666666666666,
+      "f1": 0.5882352941176471,
+      "fn": 7,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 0.4166666666666667,
+      "tn": 9,
+      "tp": 5
+    },
+    "raw_context_direction_only_jev": {
+      "accuracy": 0.6190476190476191,
+      "f1": 0.5,
+      "fn": 8,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "tn": 9,
+      "tp": 4
+    }
+  },
+  "probe_execution": {
+    "corrected_cost_usd": 0.007118328,
+    "corrected_manifest_hash": "a2bca5af6cbbd1fe918efe15eec9c446ebcef8a18edb6c3c3a1ffb9483772772",
+    "corrected_requests": 21,
+    "corrected_tokens": 170601,
+    "raw_context_cost_usd": 0.007058352,
+    "raw_context_manifest_hash": "b4d595095d041c4316f5cd1b355533c77f18c6fc11893b5c13665b483dad6f92",
+    "raw_context_requests": 21,
+    "raw_context_tokens": 169197,
+    "retries": 0
+  },
+  "reflection_boundary": "no new chat-LLM explanation or post-label reflection calls were made in the diagnostic probes",
+  "schema_version": "jev-v139-prompt-boundary-and-fn-audit-v1"
+}

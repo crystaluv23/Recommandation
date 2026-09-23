@@ -1115,6 +1115,12 @@ market probabilities, do not modify Binary F1 or magnitude macro-F1, and do not
 enter parent selection until an independently reviewed calibration experiment
 changes this contract.
 
+Jev `confidence` is the concentration of the returned choice distribution, not
+an estimate that the choice is correct. Reflection may use it to distinguish a
+diffuse answer from a concentrated one, but may not use it as an accuracy weight
+or fitness multiplier. A concentrated wrong answer is recorded as such rather
+than being treated as stronger learning evidence.
+
 The legacy qualitative confidence field remains available for existing
 consumers. The parallel adapter derives it mechanically from Jev confidence:
 `high` at or above `0.85`, `medium` at or above `0.60`, and `low` below `0.60`.

@@ -1,4 +1,8 @@
 {
+  "correction": {
+    "direction_quality_status": "superseded_due_to_instruction_boundary_defect",
+    "superseded_by": "reports/jev-v139-prompt-boundary-and-fn-audit-summary-20260923.json"
+  },
   "artifacts": {
     "conditional_magnitude_manifest_hash": "fdccc0f5d3ed40c3d2a81c4a7294c892d8fcdb5dea0f0c4e53d6d30b306f58af",
     "direction_routing_manifest_hash": "5bd82c478c86d63b482926da34d0481c55924030133932bb6ae645fcf8b7525a"

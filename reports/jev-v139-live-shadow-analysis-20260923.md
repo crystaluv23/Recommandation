@@ -2,6 +2,17 @@
 
 Date: 2026-09-23
 
+> **Correction, 2026-09-23:** The direction-quality conclusion below is
+> superseded by
+> `reports/jev-v139-prompt-boundary-and-fn-audit-20260923.md`. The original Jev
+> state forwarded an upstream `analysis_prompt` whose instructions conflicted
+> with the historical LLM's fixed screening system contract. A direction-only
+> probe preserving that state remained conservative (F1 0.500), while the
+> corrected fixed-contract probe matched the historical LLM on all 21 binary
+> choices (F1 0.800). The original run remains valid transport, routing, and
+> magnitude diagnostic evidence; it is not a valid intrinsic Jev-versus-LLM
+> direction comparison.
+
 ## Verdict
 
 Jev is not accepted as a replacement for either the final opportunity classifier
@@ -154,4 +165,3 @@ The next quality gate should use a genuinely held-out period or issuer cohort,
 freeze any probability threshold before label reveal, report calibration as well
 as rank discrimination, and execute the alternative Signal sets if routing value
 is being claimed.
-

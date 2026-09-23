@@ -1550,7 +1550,9 @@ def jev_decision_feedback(
     true_magnitude = ground_truth.magnitude.value if ground_truth.magnitude else None
     return {
         "interpretation": (
-            "provider decision signal only; not a calibrated live-market probability"
+            "provider decision signal only; probabilities are not calibrated "
+            "live-market probabilities and confidence is distribution concentration, "
+            "not correctness probability"
         ),
         "candidate_judgment": {
             **judgment.to_dict(),
