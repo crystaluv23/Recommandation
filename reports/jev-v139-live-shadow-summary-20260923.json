@@ -1,0 +1,81 @@
+{
+  "artifacts": {
+    "conditional_magnitude_manifest_hash": "fdccc0f5d3ed40c3d2a81c4a7294c892d8fcdb5dea0f0c4e53d6d30b306f58af",
+    "direction_routing_manifest_hash": "5bd82c478c86d63b482926da34d0481c55924030133932bb6ae645fcf8b7525a"
+  },
+  "calibration": {
+    "base_rate_brier": 0.2448979591836735,
+    "jev_brier": 0.28186190476190476,
+    "jev_log_loss": 2.11978104768306
+  },
+  "execution": {
+    "conditional_magnitude_requests": 5,
+    "direction_and_routing_requests": 101,
+    "model": "typesafe/jev-1.13-20260917",
+    "provider": "TypeSafe",
+    "retries": 0,
+    "total_cost_usd": 0.038851596,
+    "total_tokens": 1019169
+  },
+  "incremental_value": {
+    "confidence_as_weight": "rejected_pending_more_evidence",
+    "direction_probability_as_feedback": "continue_experimentally",
+    "final_classifier_replacement": "rejected",
+    "magnitude_classifier": "rejected",
+    "signal_selector_replacement": "rejected",
+    "signal_secondary_ranker": "untested_hypothesis"
+  },
+  "magnitude": {
+    "conditional_accuracy": 0.2,
+    "historical_llm_accuracy_on_positive_truth": 0.4166666666666667,
+    "jev_accuracy_on_positive_truth": 0.08333333333333333,
+    "jev_choices": {
+      "10x+": 0,
+      "2-3x": 5,
+      "3-10x": 0
+    }
+  },
+  "prediction": {
+    "auc": 0.8379629629629629,
+    "auc_bootstrap_95": [
+      0.6296296296296297,
+      1.0
+    ],
+    "auc_within_historical_llm_positive": 0.9,
+    "comparable_cases": 21,
+    "historical_llm": {
+      "accuracy": 0.7619047619047619,
+      "f1": 0.8,
+      "precision": 0.7692307692307693,
+      "recall": 0.8333333333333334
+    },
+    "jev": {
+      "accuracy": 0.6666666666666666,
+      "f1": 0.5882352941176471,
+      "precision": 1.0,
+      "recall": 0.4166666666666667
+    },
+    "posthoc_best_threshold": {
+      "f1": 0.8571428571428571,
+      "precision": 1.0,
+      "recall": 0.75,
+      "threshold": 0.29
+    }
+  },
+  "routing": {
+    "card_decisions": 992,
+    "exact_set_match_rate": 0.0375,
+    "mean_historical_ref_recall": 0.5927083333333333,
+    "mean_jaccard": 0.3838095238095238,
+    "mean_jev_selection_size": 3.9,
+    "raw_non_no_match_rate": 0.8850806451612904,
+    "rounds": 80,
+    "rounds_at_cap_four": 77
+  },
+  "schema_version": "jev-v139-live-shadow-summary-v1",
+  "scope": {
+    "historical_cases": 24,
+    "interpretation": "in-sample historical shadow, not independent generalization",
+    "technical_exclusions": 3
+  }
+}

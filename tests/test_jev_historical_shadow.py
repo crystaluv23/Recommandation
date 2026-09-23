@@ -12,6 +12,7 @@ from stock_opportunity_agent.artifacts import atomic_write_json
 from scripts.run_jev_historical_shadow import (
     prepare_magnitude_followup,
     prepare_shadow,
+    score_combined_shadow,
     score_shadow,
 )
 
@@ -171,6 +172,39 @@ class JevHistoricalShadowTests(TestCase):
                 self.assertNotIn(
                     "not_applicable", item["questions"]["magnitude"]["criteria"]
                 )
+                atomic_write_json(
+                    followup / "responses" / f"{item['request_id']}.json",
+                    {
+                        "request_id": item["request_id"],
+                        "response": {
+                            "id": f"recorded-{item['request_id']}",
+                            "model": "typesafe/jev-1.13-test",
+                            "provider": "TypeSafe",
+                            "answers": {
+                                "magnitude": _answer(
+                                    "2-3x", ("2-3x", "3-10x", "10x+")
+                                )
+                            },
+                            "usage": {"input_tokens": 10, "output_tokens": 1, "cost": 0.0},
+                        },
+                    },
+                )
+            atomic_write_json(
+                source / "execution_summary.json",
+                {"completed_request_count": len(inputs["requests"]), "actual_cost_usd": 0.0},
+            )
+            atomic_write_json(
+                followup / "execution_summary.json",
+                {"completed_request_count": 2, "actual_cost_usd": 0.0},
+            )
+            combined = score_combined_shadow(
+                source_workspace=source,
+                source_manifest_hash=manifest["manifest_hash"],
+                magnitude_workspace=followup,
+                magnitude_manifest_hash=followup_manifest["manifest_hash"],
+            )
+            self.assertEqual(combined["prediction"]["adapter_valid_count"], 21)
+            self.assertEqual(combined["conditional_magnitude_followup"]["request_count"], 2)
 
 
 def _answer(choice: str, options: tuple[str, ...]) -> dict:
