@@ -63,7 +63,7 @@ def _discovery_cases():
     )
 
 
-def _promoting_model(rankings):
+def _magnitude_model(rankings):
     new_spec = SignalSpec(
         signal_id="discovery_growth_quality",
         version=1,
@@ -118,7 +118,11 @@ def _raw_store(cases):
                     (
                         "2024-01-01",
                         "2024-12-31",
-                        115.0 if case.ground_truth.is_surge else 90.0,
+                        (
+                            115.0
+                            if case.ground_truth.realized_max_multiple >= 3.0
+                            else 90.0
+                        ),
                         "2025-01-10",
                     ),
                 ),
@@ -210,7 +214,7 @@ class C8FullChainIntegrationTest(unittest.TestCase):
                 dev_limit=4,
                 check_limit=4,
             )
-            mining_model = _promoting_model(sorted(population_ids))
+            mining_model = _magnitude_model(sorted(population_ids))
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=_raw_store(discovery),
@@ -226,9 +230,21 @@ class C8FullChainIntegrationTest(unittest.TestCase):
             )
             result = engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
 
-            # Promotion happened through the ge3-classed comparison.
-            self.assertEqual(set(result.promoted), {"discovery_growth_quality:v1"})
-            self.assertEqual(registry.version, snapshot.version + 1)
+            # The ge3-classed comparison supports the factor, but magnitude
+            # research cannot silently use the direction promotion gate.
+            self.assertEqual(result.promoted, ())
+            self.assertEqual(registry.version, snapshot.version)
+            self.assertIn(
+                "discovery_growth_quality:v1", result.provisional_candidates
+            )
+            effectiveness = result.candidate_effectiveness[
+                "discovery_growth_quality:v1"
+            ]
+            self.assertTrue(effectiveness["target_supported"])
+            self.assertEqual(
+                effectiveness["research_axis"]["target_id"],
+                MAGNITUDE_GE3_TARGET_ID,
+            )
             h3_sample_basis = result.agent_audits["mining_pipeline"]["stages"][
                 "H3"
             ]["decisions"][0]["sample_basis"]
@@ -267,11 +283,19 @@ class C8FullChainIntegrationTest(unittest.TestCase):
 
             # Magnitude contribution is honestly unassessed until C6.
             self.assertFalse(result.magnitude_contribution["assessed"])
-            self.assertIsNone(
+            self.assertTrue(
+                result.magnitude_contribution["target_mining_assessed"]
+            )
+            self.assertEqual(
+                result.magnitude_contribution[
+                    "target_supported_candidate_refs"
+                ],
+                ["discovery_growth_quality:v1"],
+            )
+            with self.assertRaises(ValidationError):
                 registry.target_support(
                     "discovery_growth_quality:v1", MAGNITUDE_GE3_TARGET_ID
                 )
-            )
 
             # --- Commit-barrier interrupted state, then control-layer recovery ---
             self.assertEqual(workspace.last_completed_cycle, 0)
@@ -284,7 +308,8 @@ class C8FullChainIntegrationTest(unittest.TestCase):
             )
             self.assertEqual(workspace.last_completed_cycle, 1)
 
-            # --- Next Fast on the parallel path sees the promoted registry ---
+            # --- Next Fast remains byte-stable until the guarded candidate is
+            # admitted by a separate Fast consumption experiment. ---
             fast_engine().run_round(
                 round_id=2,
                 validation_cases=make_evaluation_pool(),

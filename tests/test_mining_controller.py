@@ -956,7 +956,8 @@ class NarrativeInterfaceTests(unittest.TestCase):
         notes = [entry.note for entry in result.ledger if entry.note]
         self.assertTrue(
             any(
-                "available evidence modalities remain unexplored (structured)"
+                "available evidence modalities remain unexplored "
+                "(structured, narrative)"
                 in note
                 for note in notes
             ),
@@ -1009,6 +1010,15 @@ class NarrativeInterfaceTests(unittest.TestCase):
             ]
             return action
 
+        def read_narrative(view):
+            return {
+                "action": "read_span",
+                "rationale": ["Read the raw narrative before proposing."],
+                "event_ref": sorted(view["known_event_refs"])[0],
+                "offset": 0,
+                "length": 600,
+            }
+
         model = ScriptedMiningDecisionModel(
             [
                 {
@@ -1018,6 +1028,7 @@ class NarrativeInterfaceTests(unittest.TestCase):
                     "source_families": ["news", "company_facts"],
                     "max_documents": 2,
                 },
+                read_narrative,
                 propose_with_predicate,
             ]
         )
@@ -1034,6 +1045,7 @@ class NarrativeInterfaceTests(unittest.TestCase):
                     "source_families": ["news", "company_facts"],
                     "max_documents": 2,
                 },
+                read_narrative,
                 bad_predicate,
                 bad_predicate,
                 bad_predicate,

@@ -79,6 +79,11 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _mask_identity_values,
     _signal_learning_events_from_record,
 )
+from stock_opportunity_agent.research.research_targets import (
+    active_research_targets,
+    build_target_group_manifest,
+    build_target_sampling_manifest,
+)
 from stock_opportunity_agent.research.plan_evolution import (
     install_stop_handler,
 )
@@ -2682,6 +2687,14 @@ def _run_bounded_evolution_cycle_unlocked(
         max_attempts=contract.max_external_attempts,
         max_total_cost=contract.max_total_cost,
     )
+    reconciled_attempts = ledger.reconcile_interrupted()
+    if reconciled_attempts:
+        emit(
+            {
+                "event_type": "external_attempts_reconciled",
+                "interrupted_attempt_count": reconciled_attempts,
+            }
+        )
     judge_alias = str(contract.models["judge"]["alias"])
     evolution_alias = str(contract.models["proposer"]["alias"])
     judge_caller = StructuredRoleClient(
@@ -2759,6 +2772,7 @@ def _run_bounded_evolution_cycle_unlocked(
         llm_signal_runner=signal_runner,
         signal_readiness_snapshot=snapshot,
         on_progress=emit,
+        cancel_event=cancel_event,
     )
     max_parallel_plans = int(limits.get("max_parallel_plans", 1))
 
@@ -2801,6 +2815,7 @@ def _run_bounded_evolution_cycle_unlocked(
             llm_signal_runner=StructuredLLMSignalRunner(worker_caller),
             signal_readiness_snapshot=snapshot,
             on_progress=emit,
+            cancel_event=cancel_event,
         )
     plan_proposer = LLMInformationPlanProposer(
         evolution_caller,
@@ -2844,6 +2859,28 @@ def _run_bounded_evolution_cycle_unlocked(
     mining_model.set_request_token_budget(
         int(limits.get("h1_request_budget", limits["max_tokens"]))
     )
+    active_targets = active_research_targets()
+    if len(active_targets) > 1:
+        raise ValidationError(
+            "production Slow currently requires one active magnitude target "
+            "per cycle so every candidate has an unambiguous owning axis"
+        )
+    target_reveal = None
+    target_sampling = None
+    if active_targets:
+        target_contract = active_targets[0]
+        target_reveal = build_target_group_manifest(
+            dataset.discovery,
+            target_contract,
+        )
+        target_sampling = build_target_sampling_manifest(
+            dataset.discovery,
+            target_contract,
+            cycle_id=cycle_id,
+            base_seed=contract.contract_hash,
+            dev_limit=max(32, int(limits.get("effectiveness_case_limit", 16))),
+            check_limit=int(limits.get("effectiveness_case_limit", 16)),
+        )
     signal_engine = SignalEvolutionEngine(
         registry=registry,
         raw_info_store=raw_info_store,
@@ -2861,6 +2898,8 @@ def _run_bounded_evolution_cycle_unlocked(
         evidence_resolver=evidence_resolver,
         on_progress=emit,
         min_new_signals_per_cycle=contract.min_new_signals_per_cycle,
+        research_target_reveal=target_reveal,
+        research_target_sampling=target_sampling,
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine,

@@ -1,0 +1,156 @@
+{
+  "attempt_recovery": {
+    "historical_status_counts": {
+      "completed": 989,
+      "in_progress": 2
+    },
+    "post_reconcile_summary": {
+      "actual_cost": 3.38332624,
+      "attempt_count": 991,
+      "in_progress": 0,
+      "interrupted": 2,
+      "reserved_cost": 13.434051400000001
+    },
+    "reconciled_on_temporary_copy": 2,
+    "source_workspace_mutated": false
+  },
+  "best_v139_vs_v130": {
+    "absolute_delta": -0.05925925925925912,
+    "bootstrap_probability_delta_nonnegative": 0.2861,
+    "case_count": 24,
+    "mcnemar_discordance": {
+      "exact_two_sided_p": 1.0,
+      "v130_only_correct": 4,
+      "v139_only_correct": 3
+    },
+    "paired_bootstrap_95pct_interval": [
+      -0.26923076923076916,
+      0.13186813186813184
+    ],
+    "significant_decline_detected": false,
+    "v130_f1": 0.7999999999999999,
+    "v139_f1": 0.7407407407407408
+  },
+  "external_calls": 0,
+  "locked_test_accessed": false,
+  "parallel_fast": {
+    "actual_parallel_overlap": true,
+    "witness": {
+      "left_finished": {
+        "at": "2026-09-22T02:55:27.567576+00:00",
+        "case_id": "cik_0001174922:20250731",
+        "plan_id": "plan_r0001_c01",
+        "sequence": 175
+      },
+      "left_started": {
+        "at": "2026-09-22T02:51:48.539971+00:00",
+        "case_id": "cik_0001174922:20250731",
+        "plan_id": "plan_r0001_c01",
+        "sequence": 55
+      },
+      "right_started_before_left_finished": {
+        "at": "2026-09-22T02:53:30.162984+00:00",
+        "case_id": "cik_0000701818:20250930",
+        "plan_id": "plan_r0001_c02",
+        "sequence": 71
+      }
+    }
+  },
+  "pointer_state": {
+    "last_completed_cycle": 1,
+    "last_completed_round": 1
+  },
+  "post_fix_target_sampling": {
+    "check_group_counts": {
+      "ge3_high": 8,
+      "ge3_low": 8
+    },
+    "dev_group_counts": {
+      "ge3_high": 16,
+      "ge3_low": 16
+    },
+    "issuer_disjoint": true,
+    "locked_test_accessed": false,
+    "target_id": "magnitude_ge3_v1"
+  },
+  "schema_version": "v139-zero-call-live-audit-v1",
+  "slow": {
+    "conclusion": "V139 consumed magnitude diagnostics but did not run a target-specific 2-3x versus >=3x mining/effectiveness track. Its narrative exploration completion claim is not grounded by a raw span read.",
+    "historical_magnitude_contribution": {
+      "assessed": false,
+      "reason": "first-version promotion gates are directional only; magnitude-only improvement is not separately evaluated"
+    },
+    "historical_mining_axis": "surge_direction",
+    "historical_target_track_present": false,
+    "magnitude_feedback_count": 2,
+    "magnitude_feedback_refs": [
+      "magnitude:plan_r0001_c01",
+      "magnitude:plan_r0001_c02"
+    ],
+    "narrative_exploration_claim_valid_under_current_contract": false,
+    "narrative_exploration_claims": 2,
+    "narrative_reads": 0
+  },
+  "v130": {
+    "metrics": {
+      "binary_f1": 0.7999999999999999,
+      "binary_precision": 0.75,
+      "binary_recall": 0.8571428571428571,
+      "confusion": {
+        "false_negative": 2,
+        "false_positive": 4,
+        "true_negative": 6,
+        "true_positive": 12
+      },
+      "magnitude_accuracy": 0.35714285714285715,
+      "magnitude_macro_f1": 0.17543859649122806,
+      "precision_defined": true,
+      "predicted_positive_count": 16,
+      "sample_count": 24,
+      "valid_case_count": 24
+    },
+    "plan_id": "plan_r0001_c01"
+  },
+  "v139_plans": [
+    {
+      "metrics": {
+        "binary_f1": 0.7407407407407408,
+        "binary_precision": 0.7692307692307693,
+        "binary_recall": 0.7142857142857143,
+        "confusion": {
+          "false_negative": 4,
+          "false_positive": 3,
+          "true_negative": 7,
+          "true_positive": 10
+        },
+        "magnitude_accuracy": 0.35714285714285715,
+        "magnitude_macro_f1": 0.196078431372549,
+        "precision_defined": true,
+        "predicted_positive_count": 13,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c01"
+    },
+    {
+      "metrics": {
+        "binary_f1": 0.5925925925925927,
+        "binary_precision": 0.6153846153846154,
+        "binary_recall": 0.5714285714285714,
+        "confusion": {
+          "false_negative": 6,
+          "false_positive": 5,
+          "true_negative": 5,
+          "true_positive": 8
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.17777777777777778,
+        "precision_defined": true,
+        "predicted_positive_count": 13,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c02"
+    }
+  ]
+}

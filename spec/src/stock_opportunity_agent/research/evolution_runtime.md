@@ -1676,8 +1676,12 @@ missing summary fields into fabricated empty results.
 candidate-validation fields because those values do not exist until completion.
 The workspace appends those events to its debug trajectory before forwarding
 them to an optional caller callback. An external request interrupted after its
-attempt reservation remains visibly `in_progress`; it is not silently retried
-or marked unused.
+attempt reservation remains visibly uncertain for that process. Before a
+resumed executor admits new work, it atomically reconciles every inherited
+`in_progress` row to `interrupted`, keeps its request hash and timestamps, and
+conservatively settles its reserved cost as actual cost. It is not silently
+retried or marked unused, and no completed run may retain an inherited
+`in_progress` row.
 
 One cycle freezes its mode, start round, configured Fast-round count, and input Signal
 Registry version/hash in `cycle_state.json`. Resume calculates remaining Fast
@@ -1695,6 +1699,10 @@ supervisor may start successive bounded cycles, but `Ctrl+C` stops at the
 current durable boundary without changing the frozen run contract, attempt
 ceiling, cost ceiling, dataset, or Locked Test posture. It may leave only a
 recoverable in-progress Signal transition, never an untracked partial rollover.
+The same shared cancellation event reaches every parallel Plan evaluator. A
+worker may finish its current case, but it must check the event before reusing
+or starting the next case. Once the event is set, no worker may emit a later
+`case_started` event or admit that case's first external role request.
 Slow-history export enumerates learning streams for every immutable Signal
 version present in the committed Registry tree, not only each Signal's current
 manifest version. Contract-bound imported events are compared against their exact

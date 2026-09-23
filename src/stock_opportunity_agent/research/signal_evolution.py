@@ -439,7 +439,14 @@ def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
         "previous_memory_hash",
         "feedback_hash",
     }
-    if set(payload) != required or payload.get("schema_version") != "slow-input-v1":
+    allowed_shapes = {
+        frozenset(required),
+        frozenset(required | {"research_targets"}),
+    }
+    if (
+        set(payload) not in allowed_shapes
+        or payload.get("schema_version") != "slow-input-v1"
+    ):
         raise ValidationError("Slow input shape is invalid")
     if int(payload.get("cycle_id", 0)) < 1 or not str(
         payload.get("contract_hash", "")
@@ -503,6 +510,15 @@ def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
     groups = dict(sampling.get("issuer_groups", {}))
     if dev & check or ({groups.get(item) for item in dev} & {groups.get(item) for item in check}):
         raise ValidationError("Slow dev/check samples must be issuer-disjoint")
+    research_targets = payload.get("research_targets", [])
+    if not isinstance(research_targets, list) or any(
+        not isinstance(item, Mapping)
+        or not str(item.get("target_id", ""))
+        or not isinstance(item.get("group_manifest"), Mapping)
+        or not isinstance(item.get("sampling_manifest"), Mapping)
+        for item in research_targets
+    ):
+        raise ValidationError("Slow input research targets are invalid")
     return payload
 
 
@@ -2037,6 +2053,7 @@ class SignalCandidateEffectiveness:
     current_execution_failed: int = 0
     candidate_confusion: Mapping[str, int] = field(default_factory=dict)
     current_confusion: Mapping[str, int] = field(default_factory=dict)
+    research_axis: Mapping[str, Any] = field(default_factory=dict)
     case_diagnostics: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
@@ -2072,6 +2089,7 @@ class SignalCandidateEffectiveness:
             },
             "candidate_confusion": dict(self.candidate_confusion),
             "current_confusion": dict(self.current_confusion),
+            "research_axis": dict(self.research_axis),
             "case_diagnostics": [dict(item) for item in self.case_diagnostics],
         }
 
@@ -2264,6 +2282,8 @@ class SignalCandidateEffectivenessEvaluator:
         excluded_case_ids: Iterable[str] = (),
         induction_supported: bool = False,
         strict_preferred: bool = False,
+        labels_by_case_id: Mapping[str, bool] | None = None,
+        research_axis: Mapping[str, Any] | None = None,
     ) -> SignalCandidateEffectiveness:
         cases = self._select_cases(
             preferred_case_ids=preferred_case_ids,
@@ -2271,6 +2291,13 @@ class SignalCandidateEffectivenessEvaluator:
             strict_preferred=strict_preferred,
         )
         case_ids = tuple(case.case_id for case in cases)
+        axis = dict(research_axis or {})
+        if labels_by_case_id is not None and any(
+            case.case_id not in labels_by_case_id for case in cases
+        ):
+            raise ValidationError(
+                "target effectiveness labels must cover every selected case"
+            )
         try:
             current = self.registry.latest_spec(spec.signal_id)
         except ValidationError:
@@ -2290,6 +2317,7 @@ class SignalCandidateEffectivenessEvaluator:
                 candidate_decisive=0,
                 candidate_correct=0,
                 candidate_wrong=0,
+                research_axis=axis,
             )
 
         candidate_hash = hashlib.sha256(
@@ -2340,7 +2368,11 @@ class SignalCandidateEffectivenessEvaluator:
                 candidate_values.append(
                     (
                         candidate_result.value,
-                        case.ground_truth.is_surge,
+                        (
+                            bool(labels_by_case_id[case.case_id])
+                            if labels_by_case_id is not None
+                            else case.ground_truth.is_surge
+                        ),
                         candidate_result.execution_status,
                     )
                 )
@@ -2360,7 +2392,11 @@ class SignalCandidateEffectivenessEvaluator:
                     current_values.append(
                         (
                             current_result.value,
-                            case.ground_truth.is_surge,
+                            (
+                                bool(labels_by_case_id[case.case_id])
+                                if labels_by_case_id is not None
+                                else case.ground_truth.is_surge
+                            ),
                             current_result.execution_status,
                         )
                     )
@@ -2380,6 +2416,7 @@ class SignalCandidateEffectivenessEvaluator:
                 candidate_decisive=0,
                 candidate_correct=0,
                 candidate_wrong=0,
+                research_axis=axis,
             )
 
         candidate_counts = _signal_effectiveness_counts(candidate_values)
@@ -2465,6 +2502,7 @@ class SignalCandidateEffectivenessEvaluator:
             current_execution_failed=current_counts[4],
             candidate_confusion=candidate_confusion,
             current_confusion=current_confusion,
+            research_axis=axis,
             case_diagnostics=tuple(case_diagnostics),
         )
 
@@ -2530,6 +2568,8 @@ class SignalCandidateEffectivenessEvaluator:
         excluded_case_ids: Iterable[str] = (),
         induction_supported: bool = False,
         strict_preferred: bool = False,
+        labels_by_case_id: Mapping[str, bool] | None = None,
+        research_axis: Mapping[str, Any] | None = None,
     ) -> Mapping[str, str]:
         """Return the complete stable identity used to cache one paired gate."""
 
@@ -2603,6 +2643,15 @@ class SignalCandidateEffectivenessEvaluator:
                     "excluded_case_ids": list(excluded_ids),
                     "induction_supported": induction_supported,
                     "strict_preferred": strict_preferred,
+                    "labels_by_case_id": (
+                        {
+                            case.case_id: bool(labels_by_case_id[case.case_id])
+                            for case in cases
+                        }
+                        if labels_by_case_id is not None
+                        else None
+                    ),
+                    "research_axis": dict(research_axis or {}),
                 }
             ),
             "source_manifest_hash": _canonical_hash(
@@ -2613,6 +2662,7 @@ class SignalCandidateEffectivenessEvaluator:
                     "schema": "signal-paired-projection-v1",
                     "executor": "SignalExecutor",
                     "point_in_time": True,
+                    "research_axis": dict(research_axis or {}),
                 }
             ),
             "validator_hash": _canonical_hash(
@@ -2799,6 +2849,9 @@ def _merge_mining_fallback(
         ),
         "induction_case_ids": merged_mapping("induction_case_ids"),
         "validation_case_ids": merged_mapping("validation_case_ids"),
+        "candidate_research_targets": merged_mapping(
+            "candidate_research_targets"
+        ),
         "refined_hypotheses": merged_mapping("refined_hypotheses"),
         "failures": merged_mapping("failures"),
         "audit": combined_audit,
@@ -2822,6 +2875,7 @@ class SlowLoopValidation:
     candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
         default_factory=dict
     )
+    candidate_research_targets: Mapping[str, str] = field(default_factory=dict)
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     search_input_fingerprint: str = ""
     slow_input_hash: str = ""
@@ -2856,6 +2910,9 @@ class SlowLoopValidation:
                 ref: dict(value)
                 for ref, value in self.candidate_effectiveness.items()
             },
+            "candidate_research_targets": dict(
+                self.candidate_research_targets
+            ),
             "agent_audits": {
                 name: dict(value) for name, value in self.agent_audits.items()
             },
@@ -2915,6 +2972,12 @@ class SlowLoopValidation:
                     data.get("candidate_effectiveness", {})
                 ).items()
             },
+            candidate_research_targets={
+                str(ref): str(target)
+                for ref, target in dict(
+                    data.get("candidate_research_targets", {})
+                ).items()
+            },
             agent_audits={
                 str(name): dict(value)
                 for name, value in dict(data.get("agent_audits", {})).items()
@@ -2953,6 +3016,7 @@ class SlowLoopResult:
     candidate_effectiveness: Mapping[str, Mapping[str, Any]] = field(
         default_factory=dict
     )
+    candidate_research_targets: Mapping[str, str] = field(default_factory=dict)
     agent_audits: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     search_input_fingerprint: str = ""
     slow_input_hash: str = ""
@@ -3001,6 +3065,9 @@ class SlowLoopResult:
                 ref: dict(value)
                 for ref, value in self.candidate_effectiveness.items()
             },
+            "candidate_research_targets": dict(
+                self.candidate_research_targets
+            ),
             "agent_audits": {
                 name: dict(value) for name, value in self.agent_audits.items()
             },
@@ -3071,6 +3138,12 @@ class SlowLoopResult:
                     data.get("candidate_effectiveness", {})
                 ).items()
             },
+            candidate_research_targets={
+                str(ref): str(target)
+                for ref, target in dict(
+                    data.get("candidate_research_targets", {})
+                ).items()
+            },
             agent_audits={
                 str(name): dict(value)
                 for name, value in dict(data.get("agent_audits", {})).items()
@@ -3125,6 +3198,29 @@ def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
         raise ValidationError(
             f"candidate SignalSpec JSON is invalid: {type(exc).__name__}: {exc}"
         ) from exc
+
+
+def _magnitude_mining_track_statuses(
+    agent_audits: Mapping[str, Mapping[str, Any]],
+) -> dict[str, str]:
+    """Return explicit non-direction mining-axis statuses from one Slow audit."""
+
+    mining = agent_audits.get("mining_pipeline", {})
+    if not isinstance(mining, Mapping):
+        return {}
+    statuses: dict[str, str] = {}
+    axes = mining.get("axes", {})
+    if isinstance(axes, Mapping):
+        for axis_id, axis_audit in axes.items():
+            if str(axis_id) == "surge_direction" or not isinstance(
+                axis_audit, Mapping
+            ):
+                continue
+            statuses[str(axis_id)] = str(axis_audit.get("status", "unknown"))
+    axis_id = str(mining.get("axis_id", ""))
+    if axis_id and axis_id != "surge_direction":
+        statuses.setdefault(axis_id, str(mining.get("status", "unknown")))
+    return statuses
 
 
 def signal_update_effective_changed_paths(
@@ -3418,6 +3514,12 @@ class SignalEvolutionEngine:
                 "slow_sampling_manifest": dict(
                     self._active_sampling_manifest or {}
                 ),
+                "research_target_reveal": dict(
+                    self.research_target_reveal or {}
+                ),
+                "research_target_sampling": dict(
+                    self.research_target_sampling or {}
+                ),
                 "slow_memory": dict(self._active_slow_memory or {}),
             }
         )
@@ -3635,6 +3737,38 @@ class SignalEvolutionEngine:
             if len(promoted_new) >= self.min_new_signals_per_cycle
             else "unmet"
         )
+        magnitude_refs = tuple(
+            ref
+            for ref, target_id in validation.candidate_research_targets.items()
+            if target_id != "surge_direction"
+        )
+        magnitude_supported = tuple(
+            ref
+            for ref in magnitude_refs
+            if validation.candidate_effectiveness.get(ref, {}).get(
+                "target_supported"
+            )
+        )
+        magnitude_track_statuses = _magnitude_mining_track_statuses(
+            validation.agent_audits
+        )
+        magnitude_contribution = {
+            "assessed": False,
+            "reason": (
+                "target mining/effectiveness may be assessed, but the required "
+                "Fast absent/present consumption experiment and Binary-F1 "
+                "protection have not run"
+            ),
+            "target_mining_assessed": bool(magnitude_refs)
+            or any(
+                status == "completed"
+                for status in magnitude_track_statuses.values()
+            ),
+            "target_track_statuses": magnitude_track_statuses,
+            "target_candidate_refs": list(magnitude_refs),
+            "target_supported_candidate_refs": list(magnitude_supported),
+            "fast_consumption_assessed": False,
+        }
         return SlowLoopResult(
             mined_candidates=validation.mined_candidates,
             updated_candidates=validation.updated_candidates,
@@ -3649,6 +3783,7 @@ class SignalEvolutionEngine:
             output_registry_hash=transition.output_hash,
             candidate_evaluations=validation.candidate_evaluations,
             candidate_effectiveness=validation.candidate_effectiveness,
+            candidate_research_targets=validation.candidate_research_targets,
             agent_audits=validation.agent_audits,
             search_input_fingerprint=validation.search_input_fingerprint,
             slow_input_hash=validation.slow_input_hash,
@@ -3661,6 +3796,7 @@ class SignalEvolutionEngine:
             updated_signal_count=validation.updated_signal_count,
             min_new_signals_per_cycle=self.min_new_signals_per_cycle,
             signal_goal_status=goal_status,
+            magnitude_contribution=magnitude_contribution,
         )
 
     def _prepare_slow_input(
@@ -3706,6 +3842,28 @@ class SignalEvolutionEngine:
                 "source_manifest": source_manifest,
                 "feedback_rows": feedback_rows,
                 "sampling_manifest": sampling,
+                **(
+                    {
+                        "research_targets": [
+                            {
+                                "target_id": str(
+                                    self.research_target_sampling.get(
+                                        "target_id", ""
+                                    )
+                                ),
+                                "group_manifest": dict(
+                                    self.research_target_reveal
+                                ),
+                                "sampling_manifest": dict(
+                                    self.research_target_sampling
+                                ),
+                            }
+                        ]
+                    }
+                    if self.research_target_reveal
+                    and self.research_target_sampling
+                    else {}
+                ),
                 "previous_memory_head": (
                     None if previous is None else previous.get("cycle_id")
                 ),
@@ -4578,12 +4736,16 @@ class SignalEvolutionEngine:
         agent_audits: dict[str, Mapping[str, Any]] = {}
         induction_case_ids: dict[str, tuple[str, ...]] = {}
         validation_case_ids: dict[str, tuple[str, ...]] = {}
+        candidate_research_targets: dict[str, str] = {}
         refined_hypotheses: dict[str, tuple[str, ...]] = {}
         try:
             mining_output = self._run_signal_mining(cycle_id=cycle_id)
             mined = list(mining_output["candidate_refs"])
             induction_case_ids = dict(mining_output["induction_case_ids"])
             validation_case_ids = dict(mining_output["validation_case_ids"])
+            candidate_research_targets = dict(
+                mining_output.get("candidate_research_targets", {})
+            )
             refined_hypotheses = dict(mining_output["refined_hypotheses"])
             agent_failures.update(dict(mining_output["failures"]))
             agent_audits["mining_pipeline"] = dict(mining_output["audit"])
@@ -4623,6 +4785,12 @@ class SignalEvolutionEngine:
             updated = list(update_output["candidate_refs"])
             induction_case_ids.update(update_output["induction_case_ids"])
             validation_case_ids.update(update_output["validation_case_ids"])
+            candidate_research_targets.update(
+                {
+                    ref: "surge_direction"
+                    for ref in update_output["candidate_refs"]
+                }
+            )
             agent_failures.update(update_output["failures"])
             agent_audits["update_pipeline"] = dict(update_output["audit"])
         except (EvolutionControlFlow, OpenAIClientError):
@@ -4670,6 +4838,40 @@ class SignalEvolutionEngine:
                 stable_ref = self.registry.latest_spec(spec.signal_id).ref
             except ValidationError:
                 stable_ref = None
+            target_id = candidate_research_targets.get(
+                signal_ref, "surge_direction"
+            )
+            target_labels: dict[str, bool] | None = None
+            research_axis: dict[str, Any] = {
+                "axis_id": "surge_direction",
+                "population": "eligible_discovery_cases",
+                "positive": "realized_max_multiple >= 2.0",
+                "control": "realized_max_multiple < 2.0",
+            }
+            if target_id != "surge_direction":
+                target_groups = (
+                    self.research_target_reveal.get("groups", {})
+                    if isinstance(self.research_target_reveal, Mapping)
+                    else {}
+                )
+                target_labels = {
+                    str(case_id): str(group) == "ge3_high"
+                    for case_id, group in dict(target_groups).items()
+                    if str(group) in {"ge3_high", "ge3_low"}
+                }
+                contract = next(
+                    (
+                        item
+                        for item in active_research_targets()
+                        if item.target_id == target_id
+                    ),
+                    None,
+                )
+                if contract is None:
+                    raise ValidationError(
+                        "candidate references an unknown research target"
+                    )
+                research_axis = contract.descriptor()
             evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
                 spec,
                 candidate_hash=candidate_hash,
@@ -4684,6 +4886,8 @@ class SignalEvolutionEngine:
                 ),
                 induction_supported=signal_ref in induction_case_ids,
                 strict_preferred=self._active_sampling_manifest is not None,
+                labels_by_case_id=target_labels,
+                research_axis=research_axis,
             )
             evaluation_key, _identity = self.registry.candidate_evaluation_key(
                 signal_ref,
@@ -4757,13 +4961,40 @@ class SignalEvolutionEngine:
                         ),
                         induction_supported=signal_ref in induction_case_ids,
                         strict_preferred=self._active_sampling_manifest is not None,
+                        labels_by_case_id=target_labels,
+                        research_axis=research_axis,
                     )
                     effectiveness = paired.to_dict()
                     effectiveness = self._attach_generation_case_ids(
                         signal_ref, effectiveness
                     )
-                    reasons = paired.reasons
-                    accepted = paired.accepted
+                    if target_id != "surge_direction" and paired.accepted:
+                        target_reason = (
+                            "magnitude target evidence passed its frozen "
+                            "high/low check, but Fast absent/present consumption "
+                            "and Binary-F1 protection are not assessed"
+                        )
+                        effectiveness = {
+                            **effectiveness,
+                            "accepted": False,
+                            "disposition": "provisional",
+                            "target_supported": True,
+                            "promotion_blocked": "fast_consumption_unassessed",
+                            "reasons": [target_reason],
+                        }
+                        reasons = (target_reason,)
+                        accepted = False
+                    else:
+                        effectiveness = {
+                            **effectiveness,
+                            "target_supported": (
+                                paired.accepted
+                                if target_id != "surge_direction"
+                                else None
+                            ),
+                        }
+                        reasons = paired.reasons
+                        accepted = paired.accepted
                 else:
                     effectiveness = {
                         "schema_version": "signal-candidate-effectiveness-v4",
@@ -4783,7 +5014,8 @@ class SignalEvolutionEngine:
                     executed_tests=checked.executed_tests,
                 )
             if (
-                stable_ref is None
+                target_id == "surge_direction"
+                and stable_ref is None
                 and effectiveness.get("disposition") == "provisional"
             ):
                 effectiveness = self._apply_pooled_provisional_decision(
@@ -4881,6 +5113,7 @@ class SignalEvolutionEngine:
             input_signal_refs=tuple(spec.ref for spec in input_snapshot.specs),
             candidate_evaluations=accepted_evaluations,
             candidate_effectiveness=effectiveness_by_ref,
+            candidate_research_targets=candidate_research_targets,
             agent_audits=agent_audits,
             search_input_fingerprint=self._search_input_fingerprint(
                 input_snapshot
@@ -5994,7 +6227,158 @@ class SignalEvolutionEngine:
         return _merge_mining_fallback(hypothesis_result, exploration_result)
 
     def _run_controller_mining(self, *, cycle_id: int) -> dict[str, Any]:
-        """Drive Seed A and Seed B through the label-aware controller."""
+        """Run direction and active magnitude tracks without label mixing."""
+
+        direction_dev = self._manifest_cases("dev_case_ids")
+        direction_check = self._manifest_cases("check_case_ids")
+        direction_labels = {
+            case.case_id: (
+                "positive" if case.ground_truth.is_surge else "control"
+            )
+            for case in (*direction_dev, *direction_check)
+        }
+        outputs = [
+            self._run_controller_mining_axis(
+                cycle_id=cycle_id,
+                axis_id="surge_direction",
+                research_axis={
+                    "axis_id": "surge_direction",
+                    "population": "eligible_discovery_cases",
+                    "positive": "realized_max_multiple >= 2.0",
+                    "control": "realized_max_multiple < 2.0",
+                },
+                dev_cases=direction_dev,
+                check_cases=direction_check,
+                labels_by_case_id=direction_labels,
+            )
+        ]
+
+        target_sampling = (
+            self.research_target_sampling.get("sampling", {})
+            if isinstance(self.research_target_sampling, Mapping)
+            else {}
+        )
+        target_groups = (
+            self.research_target_reveal.get("groups", {})
+            if isinstance(self.research_target_reveal, Mapping)
+            else {}
+        )
+        target_id = (
+            str(self.research_target_sampling.get("target_id", ""))
+            if isinstance(self.research_target_sampling, Mapping)
+            else ""
+        )
+        if target_id and isinstance(target_sampling, Mapping) and isinstance(
+            target_groups, Mapping
+        ):
+            case_by_id = {case.case_id: case for case in self.discovery_cases}
+            target_dev = tuple(
+                case_by_id[str(case_id)]
+                for case_id in target_sampling.get("dev_case_ids", ())
+                if str(case_id) in case_by_id
+            )
+            target_check = tuple(
+                case_by_id[str(case_id)]
+                for case_id in target_sampling.get("check_case_ids", ())
+                if str(case_id) in case_by_id
+            )
+            target_labels = {
+                str(case_id): (
+                    "positive" if str(group) == "ge3_high" else "control"
+                )
+                for case_id, group in target_groups.items()
+                if str(group) in {"ge3_high", "ge3_low"}
+            }
+            target_contract = next(
+                (
+                    contract
+                    for contract in active_research_targets()
+                    if contract.target_id == target_id
+                ),
+                None,
+            )
+            if target_contract is None:
+                raise ValidationError(
+                    "active magnitude sampling references an unknown target"
+                )
+            required_ids = {
+                case.case_id for case in (*target_dev, *target_check)
+            }
+            if not target_dev or not target_check or not required_ids <= set(
+                target_labels
+            ):
+                raise ValidationError(
+                    "active magnitude target lacks complete dev/check labels"
+                )
+            outputs.append(
+                self._run_controller_mining_axis(
+                    cycle_id=cycle_id,
+                    axis_id=target_id,
+                    research_axis=target_contract.descriptor(),
+                    dev_cases=target_dev,
+                    check_cases=target_check,
+                    labels_by_case_id=target_labels,
+                )
+            )
+
+        if len(outputs) == 1:
+            return outputs[0]
+
+        def merged_mapping(key: str) -> dict[str, Any]:
+            merged: dict[str, Any] = {}
+            for output in outputs:
+                overlap = set(merged) & set(dict(output.get(key, {})))
+                if overlap:
+                    raise ValidationError(
+                        f"research axes produced conflicting {key}: "
+                        + ", ".join(sorted(overlap))
+                    )
+                merged.update(dict(output.get(key, {})))
+            return merged
+
+        return {
+            "candidate_refs": tuple(
+                ref
+                for output in outputs
+                for ref in output.get("candidate_refs", ())
+            ),
+            "induction_case_ids": merged_mapping("induction_case_ids"),
+            "validation_case_ids": merged_mapping("validation_case_ids"),
+            "candidate_research_targets": merged_mapping(
+                "candidate_research_targets"
+            ),
+            "refined_hypotheses": merged_mapping("refined_hypotheses"),
+            "failures": merged_mapping("failures"),
+            "audit": {
+                "schema_version": "signal-mining-multi-axis-audit-v1",
+                "cycle_id": cycle_id,
+                "track": "controller_multi_axis",
+                "status": "completed",
+                "axes": {
+                    str(output["audit"].get("axis_id", "surge_direction")): dict(
+                        output["audit"]
+                    )
+                    for output in outputs
+                },
+                "candidate_refs": [
+                    ref
+                    for output in outputs
+                    for ref in output.get("candidate_refs", ())
+                ],
+            },
+        }
+
+    def _run_controller_mining_axis(
+        self,
+        *,
+        cycle_id: int,
+        axis_id: str,
+        research_axis: Mapping[str, Any],
+        dev_cases: tuple[EvolutionCase, ...],
+        check_cases: tuple[EvolutionCase, ...],
+        labels_by_case_id: Mapping[str, str],
+    ) -> dict[str, Any]:
+        """Drive both controller seeds for one runtime-owned research axis."""
 
         caller = getattr(self.mining_model, "caller", None)
         if not callable(getattr(caller, "complete_json", None)):
@@ -6002,6 +6386,7 @@ class SignalEvolutionEngine:
                 "schema_version": "signal-mining-audit-v1",
                 "cycle_id": cycle_id,
                 "track": "controller",
+                "axis_id": axis_id,
                 "status": "unavailable",
                 "reason": "controller caller is not configured",
                 "candidate_refs": [],
@@ -6009,13 +6394,15 @@ class SignalEvolutionEngine:
             }
             return self._mining_output(audit=audit, refined={})
 
-        dev_cases = self._manifest_cases("dev_case_ids")
-        check_cases = self._manifest_cases("check_case_ids")
         opaque = {
             case.case_id: f"case-{index:03d}"
             for index, case in enumerate(dev_cases, start=1)
         }
         case_pairs = [(opaque[case.case_id], case) for case in dev_cases]
+        label_map = {
+            opaque[case.case_id]: str(labels_by_case_id[case.case_id])
+            for case in dev_cases
+        }
         context = self._mining_context(cycle_id=cycle_id)
         evidence_manifest = _mask_identity_values(
             self._h1_measurable_evidence_manifest(case_pairs),
@@ -6080,12 +6467,14 @@ class SignalEvolutionEngine:
                         context.get("prior_modality_footprints", ())
                     ),
                     validation_sink=seed_sink,
+                    label_map=label_map,
+                    research_axis=research_axis,
                 )
                 result = controller.run()
             except (EvolutionControlFlow, OpenAIClientError):
                 raise
             except Exception as exc:
-                failures[f"slow_loop:mining_controller:{seed}"] = (
+                failures[f"slow_loop:mining_controller:{axis_id}:{seed}"] = (
                     f"{type(exc).__name__}: {exc}",
                 )
                 seed_reports.append(
@@ -6115,6 +6504,7 @@ class SignalEvolutionEngine:
             seed_reports.append(
                 {
                     "seed": seed,
+                    "axis_id": axis_id,
                     "status": "completed",
                     "terminal_kind": result.terminal_kind,
                     "model_calls": result.model_calls,
@@ -6143,9 +6533,12 @@ class SignalEvolutionEngine:
         structured_candidate_refs: list[str] = []
         induction_case_ids: dict[str, tuple[str, ...]] = {}
         validation_case_ids: dict[str, tuple[str, ...]] = {}
-        validation_by_class: dict[bool, list[str]] = {True: [], False: []}
+        validation_by_class: dict[str, list[str]] = {
+            "positive": [],
+            "control": [],
+        }
         for case in check_cases:
-            validation_by_class[bool(case.ground_truth.is_surge)].append(
+            validation_by_class[str(labels_by_case_id[case.case_id])].append(
                 case.case_id
             )
         narrative_materialized = 0
@@ -6181,16 +6574,20 @@ class SignalEvolutionEngine:
                 structured_materialized += 1
                 structured_candidate_refs.append(signal_ref)
             induction_case_ids[signal_ref] = (
-                fetched_case_refs.get(staged_seed)
-                or tuple(opaque.values())
+                tuple(
+                    controller_case.case_id
+                    for ref in fetched_case_refs.get(staged_seed, ())
+                    for controller_case in (dict(case_pairs).get(ref),)
+                    if controller_case is not None
+                )
+                or tuple(case.case_id for case in dev_cases)
             )
-            target_validation = self._target_mode_validation_case_ids()
-            validation_case_ids[signal_ref] = target_validation or tuple(
+            validation_case_ids[signal_ref] = tuple(
                 [
-                    *validation_by_class[True][
+                    *validation_by_class["positive"][
                         : self.mining_config.validation_cases_per_class
                     ],
-                    *validation_by_class[False][
+                    *validation_by_class["control"][
                         : self.mining_config.validation_cases_per_class
                     ],
                 ]
@@ -6266,6 +6663,8 @@ class SignalEvolutionEngine:
             "schema_version": "signal-mining-audit-v1",
             "cycle_id": cycle_id,
             "track": "controller",
+            "axis_id": axis_id,
+            "research_axis": dict(research_axis),
             "status": "completed",
             "limits": self.mining_config.to_dict(),
             "seeds": seed_reports,
@@ -6283,6 +6682,9 @@ class SignalEvolutionEngine:
             induction_case_ids=induction_case_ids,
             validation_case_ids=validation_case_ids,
             failures=failures,
+            candidate_research_targets={
+                signal_ref: axis_id for signal_ref in candidate_refs
+            },
         )
 
     @staticmethod
@@ -7866,13 +8268,24 @@ class SignalEvolutionEngine:
         induction_case_ids: Mapping[str, tuple[str, ...]] | None = None,
         validation_case_ids: Mapping[str, tuple[str, ...]] | None = None,
         failures: Mapping[str, tuple[str, ...]] | None = None,
+        candidate_research_targets: Mapping[str, str] | None = None,
         staging: Iterable[Mapping[str, Any]] = (),
     ) -> dict[str, Any]:
         del staging
+        refs = tuple(candidate_refs)
+        default_target = (
+            str(self.research_target_sampling.get("target_id", ""))
+            if isinstance(self.research_target_sampling, Mapping)
+            else ""
+        ) or "surge_direction"
+        target_map = dict(candidate_research_targets or {})
+        for signal_ref in refs:
+            target_map.setdefault(signal_ref, default_target)
         return {
-            "candidate_refs": tuple(candidate_refs),
+            "candidate_refs": refs,
             "induction_case_ids": dict(induction_case_ids or {}),
             "validation_case_ids": dict(validation_case_ids or {}),
+            "candidate_research_targets": target_map,
             "refined_hypotheses": dict(refined),
             "failures": dict(failures or {}),
             "audit": dict(audit),

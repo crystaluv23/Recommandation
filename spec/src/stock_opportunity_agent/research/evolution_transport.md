@@ -56,6 +56,15 @@ same integrity rules (no partial lines, no duplicate identities, settled
 status preserved across recovery); the Raw Info append lock alone does not
 cover them.
 
+Resume reconciliation is explicit and single-owner. After the workspace
+execution lock is held and before role clients or worker ledgers are created,
+the coordinator converts inherited `in_progress` attempts to `interrupted` and
+charges their full reservation conservatively. `interrupted` is terminal for
+attempt-count and cost accounting, preserves uncertainty rather than pretending
+provider failure, and can never be finalized a second time. A fresh ledger in
+the same live process must not run reconciliation while worker requests are
+active.
+
 ## Frozen reasoning output reservation
 
 A frozen nonnegative integer `structured_reasoning_token_reserve` adds output

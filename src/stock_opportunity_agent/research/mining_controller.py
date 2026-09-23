@@ -228,6 +228,8 @@ class LabelAwareMiningController:
         prior_modality_footprints: Sequence[Mapping[str, Any]] = (),
         validation_sink: Callable[[Mapping[str, Any]], Mapping[str, Any]] | None = None,
         identity_aliases: Sequence[str] = (),
+        label_map: Mapping[str, str] | None = None,
+        research_axis: Mapping[str, Any] | None = None,
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -249,6 +251,15 @@ class LabelAwareMiningController:
         self._browse_used = 0
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
+        self.research_axis = dict(
+            research_axis
+            or {
+                "axis_id": "surge_direction",
+                "population": "eligible_discovery_cases",
+                "positive": "realized_max_multiple >= 2.0",
+                "control": "realized_max_multiple < 2.0",
+            }
+        )
         available: set[str] = set()
         cohort_companies = {case.company_id for _ref, case in self.case_pairs}
         for document in store.documents:
@@ -271,10 +282,25 @@ class LabelAwareMiningController:
         self._narrative_explored = False
         self._narrative_reads = 0
         self._last_invalid: Mapping[str, Any] | None = None
-        self._label_map: dict[str, str] = {
+        default_labels = {
             ref: ("positive" if case.ground_truth.is_surge else "control")
             for ref, case in self.case_pairs
         }
+        self._label_map = (
+            {str(ref): str(label) for ref, label in label_map.items()}
+            if label_map is not None
+            else default_labels
+        )
+        if set(self._label_map) != set(self.case_by_ref) or any(
+            label not in {"positive", "control"}
+            for label in self._label_map.values()
+        ):
+            raise ValidationError(
+                "runtime-owned label_map must cover every case ref exactly "
+                "with positive/control labels"
+            )
+        if not str(self.research_axis.get("axis_id", "")).strip():
+            raise ValidationError("research_axis requires a stable axis_id")
 
     # ------------------------------------------------------------------
     # Public entry
@@ -358,6 +384,7 @@ class LabelAwareMiningController:
             "known_event_refs": sorted(self._events),
             "known_relation_refs": sorted(self._relations),
             "label_map": dict(self._label_map),
+            "research_axis": dict(self.research_axis),
             "evidence_digest": self._evidence_digest(),
             "modality_coverage": self._modality_coverage(),
             "prior_modality_footprints": [
@@ -576,11 +603,11 @@ class LabelAwareMiningController:
         if missing:
             raise InvalidMiningAction(
                 f"{action} is inadmissible while available evidence modalities "
-                f"remain unexplored ({', '.join(missing)}): fetch the missing "
-                "structured or narrative families, read a narrative event/document "
-                "via read_span, inspect the evidence catalog (inspect_catalog with "
-                "scope=evidence), or take a control-plane terminal "
-                "(record_deferred)"
+                f"remain unexplored ({', '.join(missing)}): fetch structured "
+                "evidence or read a narrative event/document via read_span. "
+                "Listing or fetching a narrative family proves availability "
+                "but is not a grounded read; record_deferred remains the "
+                "control-plane terminal."
             )
 
     # ------------------------------------------------------------------
@@ -632,7 +659,6 @@ class LabelAwareMiningController:
                     )
                 if scope == "evidence":
                     payload = {"families": self._evidence_catalog_view()}
-                    self._narrative_explored = True
                 else:
                     payload = self._catalog_view()
             self._last_action_result = {
@@ -746,12 +772,6 @@ class LabelAwareMiningController:
                 {"excluded_document_ids": list(result.excluded_by_limits)}
             )
         self._heavy_used += 1
-        if any(
-            _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
-            for result in results
-            for document in result.documents
-        ):
-            self._narrative_explored = True
         self._advance("evidence_ready")
         new_relations = {
             relation.relation_ref: relation

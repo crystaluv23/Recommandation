@@ -468,6 +468,28 @@ preserve per-modality availability, exploration, proposal, materialization, and
 validation evidence so cross-cycle reflection can detect collapse toward either
 structured-only or narrative-only mining.
 
+The production controller runs the direction axis and the one active,
+gate-passed magnitude target as separate runtime-owned tracks. The first
+version intentionally activates only `magnitude_ge3_v1`; additional magnitude
+targets require their own data gate and a multi-target scheduling contract
+before activation. Each controller view carries one explicit `research_axis`
+descriptor and one axis-specific positive/control map; a magnitude track must
+never inherit `is_surge` as its validation label.
+Candidate work identity, sampling, validation cache identity, audit and result
+all retain the owning axis. Direction candidates keep the established promotion
+path. Magnitude candidates are checked on the frozen high/low target cohort and
+retained as target-supported research candidates, but remain non-promotable
+until the separately authorized Fast absent/present consumption experiment has
+passed its Binary-F1 protection. A direction-only check may neither validate nor
+reject a magnitude candidate.
+
+Modality availability, discovery and grounded exploration are distinct. Listing
+or fetching a narrative family proves availability/discovery only. A narrative
+track counts as explored only after the controller reads a bounded raw narrative
+span (event or document) which can ground a candidate or a no-pattern terminal.
+Candidate presence never backfills a missing read. Structured exploration still
+requires extracted point-in-time facts/series, not merely a source-family name.
+
 
 ## Candidate execution semantics supplied to generation
 
@@ -573,6 +595,18 @@ packets carry positive/control labels from the frozen reveal only, and
 candidate paired validation uses the balanced target check ids; direction
 bookkeeping and the direction-only path are unchanged. Target evaluations persist through the
 SignalRegistry namespace described in `signal_library.md`.
+
+Production activation additionally builds the target group and issuer-disjoint
+sampling manifests from the contract-bound Discovery dataset at cycle start and
+passes them to the production controller. The direction track always remains
+active beside it. Target effectiveness uses the manifest's high/low labels;
+using the legacy `is_surge` boolean for both 2-3x and >=3x cases is a contract
+failure even when a candidate happens to pass. Until the Fast consumption
+experiment exists, `magnitude_contribution.assessed` remains false, while its
+detail may truthfully report whether target mining/effectiveness was assessed
+and which candidates were supported. A completed target track counts as mining
+assessed even when it honestly produces no candidate; candidate count must not
+be used to collapse "ran and found nothing" into "did not run".
 
 Magnitude learning consumes research-completed evidence only. A Fast technical
 exclusion remains visible to Slow as a technical completion/failure diagnostic,

@@ -500,6 +500,15 @@ def _scenario_narrative_event() -> Scenario:
             },
         }
 
+    def read_narrative(view: Mapping[str, Any]) -> dict[str, Any]:
+        return {
+            "action": "read_span",
+            "rationale": ["Read one raw narrative event before comparison."],
+            "event_ref": sorted(view.get("known_event_refs", ()))[0],
+            "offset": 0,
+            "length": 600,
+        }
+
     return Scenario(
         name="narrative_event",
         store=RawInfoStore(documents=documents + check_documents),
@@ -507,6 +516,7 @@ def _scenario_narrative_event() -> Scenario:
         check_cases=check_cases,
         actions=(
             _fetch_action(refs, ["filing"]),
+            read_narrative,
             action,
         ),
         manifest=_manifest_for([]),
@@ -879,4 +889,3 @@ def run_controlled_closure(name: str) -> ClosureResult:
         dev_fixture=dict(closure.get("dev_fixture", {})),
         holdout=dict(closure.get("holdout", {})),
     )
-

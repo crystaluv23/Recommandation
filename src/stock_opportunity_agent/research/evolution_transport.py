@@ -330,7 +330,7 @@ class ExternalAttemptLedger:
         committed_cost = sum(
             (
                 float(item.get("actual_cost", 0.0))
-                if item.get("status") in {"completed", "failed"}
+                if item.get("status") in {"completed", "failed", "interrupted"}
                 else float(item.get("reserved_cost", 0.0))
             )
             for item in attempts
@@ -353,6 +353,41 @@ class ExternalAttemptLedger:
         data["attempts"] = attempts
         _atomic_write_json(self.path, data)
         return attempt_id
+
+    def reconcile_interrupted(self) -> int:
+        """Settle inherited in-flight rows before a resumed executor starts.
+
+        The caller owns the workspace execution lock and invokes this exactly
+        once before constructing role clients or workers. A request killed
+        between send and response has unknown provider outcome, so its full
+        conservative reservation remains charged rather than being silently
+        released or retried.
+        """
+
+        with self._admission_lock:
+            with self._write_lock:
+                data = _read_json(self.path)
+                attempts = list(data.get("attempts", ()))
+                reconciled = 0
+                finished_at = datetime.now(timezone.utc).isoformat()
+                for attempt in attempts:
+                    if attempt.get("status") != "in_progress":
+                        continue
+                    attempt["status"] = "interrupted"
+                    attempt["actual_cost"] = float(
+                        attempt.get("reserved_cost", 0.0)
+                    )
+                    attempt["finished_at"] = finished_at
+                    attempt["error_type"] = "InterruptedExternalAttempt"
+                    attempt["error_message"] = (
+                        "request outcome was uncertain when the previous "
+                        "executor stopped"
+                    )
+                    reconciled += 1
+                if reconciled:
+                    data["attempts"] = attempts
+                    _atomic_write_json(self.path, data)
+                return reconciled
 
     def finalize(
         self,
@@ -413,6 +448,7 @@ class ExternalAttemptLedger:
         return {
             "attempt_count": len(attempts),
             "in_progress": sum(item.get("status") == "in_progress" for item in attempts),
+            "interrupted": sum(item.get("status") == "interrupted" for item in attempts),
             "reserved_cost": sum(float(item.get("reserved_cost", 0.0)) for item in attempts),
             "actual_cost": sum(float(item.get("actual_cost", 0.0)) for item in attempts),
         }

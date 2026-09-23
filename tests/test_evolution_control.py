@@ -1498,6 +1498,26 @@ class RunControlTests(TestCase):
             self.assertEqual(len(stored["error_message"]), 500)
             self.assertTrue(stored["error_message"].startswith("OpenAI API returned HTTP 400"))
 
+    def test_attempt_ledger_reconciles_interrupted_rows_conservatively(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "attempts.json"
+            ledger = ExternalAttemptLedger(
+                path, max_attempts=3, max_total_cost=0.5
+            )
+            ledger.reserve(SHA_A, reserved_cost=0.2)
+
+            self.assertEqual(ledger.reconcile_interrupted(), 1)
+            self.assertEqual(ledger.reconcile_interrupted(), 0)
+            stored = json.loads(path.read_text(encoding="utf-8"))["attempts"][0]
+            self.assertEqual(stored["status"], "interrupted")
+            self.assertEqual(stored["actual_cost"], 0.2)
+            self.assertEqual(ledger.summary["in_progress"], 0)
+            self.assertEqual(ledger.summary["interrupted"], 1)
+            # The uncertain send remains charged; it is not released as an
+            # unused reservation on resume.
+            with self.assertRaisesRegex(ExternalBudgetExhausted, "cost ceiling"):
+                ledger.reserve(SHA_B, reserved_cost=0.31)
+
     def test_settled_attempts_release_reservation_headroom(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "attempts.json"

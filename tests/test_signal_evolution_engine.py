@@ -1,10 +1,13 @@
 """Slow Signal and dual-loop evolution tests."""
 
+import types
+
 from tests.scheme_evolution_test_support import *  # noqa: F403
 from stock_opportunity_agent.research.signal_evolution import (
     SIGNAL_UPDATE_MUTABLE_PATHS,
     SlowLoopValidation,
     _exploration_comparison_concepts,
+    _magnitude_mining_track_statuses,
     _prioritize_reflection_feedback,
     _signal_effectiveness_counts,
     signal_effectiveness_measurement_contract,
@@ -18,9 +21,35 @@ from stock_opportunity_agent.research.signal_evolution import (
 from stock_opportunity_agent.data.resolution import AcquisitionResult
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.llm.openai import OpenAIClientError
+from stock_opportunity_agent.research.research_targets import (
+    MAGNITUDE_GE3_CONTRACT,
+    build_target_group_manifest,
+    build_target_sampling_manifest,
+)
 
 
 class SignalEvolutionTests(TestCase):
+    def test_completed_magnitude_track_is_assessed_without_candidates(self) -> None:
+        statuses = _magnitude_mining_track_statuses(
+            {
+                "mining_pipeline": {
+                    "schema_version": "signal-mining-multi-axis-audit-v1",
+                    "status": "completed",
+                    "axes": {
+                        "surge_direction": {
+                            "status": "completed",
+                            "candidate_refs": [],
+                        },
+                        "magnitude_ge3_v1": {
+                            "status": "completed",
+                            "candidate_refs": [],
+                        },
+                    },
+                }
+            }
+        )
+        self.assertEqual(statuses, {"magnitude_ge3_v1": "completed"})
+
     def test_effectiveness_contract_explains_available_neutral_results(self) -> None:
         counts = _signal_effectiveness_counts((
             (SignalValue.POSITIVE, True, SignalExecutionStatus.SUCCESS),
@@ -1002,6 +1031,85 @@ class SignalEvolutionTests(TestCase):
             no_caller_engine_output._active_sampling_manifest = manifest
             role_output = no_caller_engine_output._run_signal_mining(cycle_id=1)
             self.assertNotEqual(role_output["audit"].get("track"), "controller")
+
+    def test_controller_runs_direction_and_magnitude_as_separate_axes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = tuple(
+                [make_case(f"axis_high_{index}", 4.0) for index in range(4)]
+                + [make_case(f"axis_low_{index}", 2.2) for index in range(4)]
+                + [make_case(f"axis_ctl_{index}", 1.1) for index in range(4)]
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            target_reveal = build_target_group_manifest(
+                cases, MAGNITUDE_GE3_CONTRACT
+            )
+            target_sampling = build_target_sampling_manifest(
+                cases,
+                MAGNITUDE_GE3_CONTRACT,
+                cycle_id=1,
+                base_seed="multi-axis",
+                dev_limit=4,
+                check_limit=4,
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                research_target_reveal=target_reveal,
+                research_target_sampling=target_sampling,
+            )
+            engine._active_sampling_manifest = build_slow_sampling_manifest(
+                cases,
+                cycle_id=1,
+                base_seed="direction-axis",
+                dev_limit=8,
+                check_limit=4,
+            )
+            observed = []
+
+            def fake_axis(self, **kwargs):
+                observed.append(kwargs)
+                return self._mining_output(
+                    audit={
+                        "schema_version": "signal-mining-audit-v1",
+                        "axis_id": kwargs["axis_id"],
+                        "track": "controller",
+                        "status": "completed",
+                    },
+                    refined={},
+                )
+
+            engine._run_controller_mining_axis = types.MethodType(
+                fake_axis, engine
+            )
+            output = engine._run_controller_mining(cycle_id=1)
+
+            self.assertEqual(
+                [row["axis_id"] for row in observed],
+                ["surge_direction", MAGNITUDE_GE3_CONTRACT.target_id],
+            )
+            magnitude = observed[1]
+            by_id = {case.case_id: case for case in cases}
+            self.assertTrue(
+                all(
+                    magnitude["labels_by_case_id"][case_id]
+                    == (
+                        "positive"
+                        if by_id[case_id].ground_truth.realized_max_multiple
+                        >= 3.0
+                        else "control"
+                    )
+                    for case_id in magnitude["labels_by_case_id"]
+                )
+            )
+            self.assertEqual(output["audit"]["track"], "controller_multi_axis")
 
     def test_controller_mining_audit_reports_true_modality_metrics(self) -> None:
         class FakeNarrativeCaller:

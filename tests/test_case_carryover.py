@@ -8,6 +8,7 @@ cap overflow keep the previous rejection semantics.
 """
 
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 
@@ -245,6 +246,83 @@ class EvaluatorCarryOverTest(unittest.TestCase):
             metrics = attempt.metrics
             self.assertIsNotNone(metrics)
             self.assertEqual(metrics.false_negative, 1)
+
+    def test_cancel_stops_before_the_next_case_starts(self):
+        from stock_opportunity_agent.research.plan_evolution import (
+            EvaluationCancelled,
+            RuntimePlanEvaluator,
+        )
+
+        cancel = threading.Event()
+
+        class CancellingController:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def initialize(self, plan, basic_info):
+                self.calls += 1
+                cancel.set()
+                return AgentStep(
+                    ResearchState(decision=ResearchDecision.FINALIZE),
+                    AgentUsage(),
+                )
+
+            def reflect(self, *args, **kwargs):
+                return AgentStep(
+                    ResearchState(decision=ResearchDecision.FINALIZE),
+                    AgentUsage(),
+                )
+
+        class StubPredictor:
+            def predict(self, final_context):
+                return AgentStep(
+                    BlindPrediction(
+                        is_surge=False,
+                        candidate_judgment=CandidateJudgment.UNLIKELY,
+                        magnitude=None,
+                        confidence=ConfidenceLevel.LOW,
+                        key_reasons=("stub",),
+                        uncertainties=(),
+                        session_id="s",
+                    ),
+                    AgentUsage(),
+                )
+
+            def reflect(self, ctx, prediction, truth):
+                return AgentStep(
+                    PredictionSelfReflection(correct=not truth.is_surge),
+                    AgentUsage(),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            events = []
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            controller = CancellingController()
+            evaluator = RuntimePlanEvaluator(
+                raw_info_store=RawInfoStore(documents=()),
+                controller=controller,
+                signal_agent=None,
+                predictor=StubPredictor(),
+                prediction_root=root / "predictions",
+                cancel_event=cancel,
+                on_progress=events.append,
+            )
+            with self.assertRaises(EvaluationCancelled):
+                evaluator.evaluate(
+                    default_information_plan(),
+                    (make_case("c1", 4.0), make_case("c2", 1.2)),
+                    registry.freeze(),
+                )
+            self.assertEqual(controller.calls, 1)
+            started = [
+                event["case_id"]
+                for event in events
+                if event.get("event_type") == "case_started"
+            ]
+            self.assertEqual(len(started), 1)
+            self.assertTrue(started[0].startswith("c1:"), started)
 
 
 class CumulativeCapAcrossRestartTest(unittest.TestCase):

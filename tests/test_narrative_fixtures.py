@@ -185,6 +185,13 @@ class NarrativeFixtureFamilyTests(unittest.TestCase):
                         "source_families": ["news"],
                         "max_documents": 2,
                     },
+                    lambda view: {
+                        "action": "read_span",
+                        "rationale": ["Read the raw order disclosure."],
+                        "event_ref": sorted(view["known_event_refs"])[0],
+                        "offset": 0,
+                        "length": 600,
+                    },
                     propose,
                 ]
 

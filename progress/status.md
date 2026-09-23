@@ -1,5 +1,7 @@
 # Status
 
+2026-09-23：完成 [V139 零调用实机重放与 Slow 双轴生产修复](../reports/v139-live-replay-and-slow-axis-repair-20260923.md)。V139 指针为 round/cycle `1/1`，两条 Fast Plan 有真实在途重叠；最佳 Plan F1=`0.740741`，相对同 24 案 V130 的 `0.800000` 差 `-0.059259`，配对 bootstrap 95% 区间 `[-0.269231, 0.131868]`、McNemar p=`1.0`，未检出统计显著下降但样本不足以证明等价。审计确认历史 Slow 只跑 `surge_direction`，2–3x 与 >=3x 未被独立对比，且两次 narrative 探索声明没有 raw span read。生产现于 cycle 启动构建 ge3 分组/发行人隔离平衡样本，并列运行方向与 magnitude 轨道；axis/标签贯穿 prompt、候选、验证、缓存、审计与结果，magnitude 候选仅 target-supported provisional，等待 Fast absent/present 与 F1 保护；raw narrative read 成为探索硬条件。暂停事件传入 worker case 边界，恢复会把遗留 `in_progress` 原子结算为保守计费的 `interrupted`。零调用重放还验证 ge3 dev 16/16、check 8/8 且 issuer-disjoint；新 revision 实机 Slow 与候选消费实验仍是剩余效果门。
+
 2026-09-22：完成 [V130／V138 prompt／context／response 与 F1 回退审计](../reports/v130-v138-prompt-flow-audit-20260922.md)。三个 committed record 指标离线重算一致；V138 r1 同 24 案的主要退化是三个原 TP 技术弃权为 FN。生产入口未传 evaluator_factory／max_parallel_plans，实际未启用并行。Ciena／Wynn 实际 correction 引用索引编辑与 claim-only 授权冲突，生产 projection 函数重放确认退回原 invalid_output；r2 critic 将部分技术弃权误归因为研究信息不足。全部正向预测仍为 2–3x，r2 Random 换样，macro-F1 上升不证明高幅度辨别能力改善。已为旧运行报告追加更正说明；本次仅审计文档，无运行代码修改、外部调用或恢复。
 
 2026-09-21（方案评审修订）：[Signal magnitude／Fast 并行行动方案](../reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md) 已加入目标数据准入硬门（ge3 待门控，ge10／extremes 延后且不铺专属代码）、Discovery 与 validation 支持量区分、signal_library 及实际调用点的目标统计／去重改动面。缺陷 #11 必须先于 in-flight 去重验收，#12 必须先于并发度 2 验收；补齐采集 JSONL ledger、slot 升序、单进程有界线程及主线程取消协议。允许 A0 与 B0/B1 盘点交错推进。仅修订文档，数值研究门槛、规范性契约变更和实机授权仍按方案逐项确认。

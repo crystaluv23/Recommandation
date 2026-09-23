@@ -115,6 +115,7 @@ class RuntimePlanEvaluator:
         signal_readiness_snapshot: FrozenSignalRegistry | None = None,
         minimum_signal_readiness: float = 0.8,
         on_progress: ProgressCallback | None = None,
+        cancel_event: threading.Event | None = None,
     ) -> None:
         if not 0 < minimum_signal_readiness <= 1:
             raise ValidationError("minimum Signal readiness must be in (0, 1]")
@@ -137,6 +138,7 @@ class RuntimePlanEvaluator:
         self.signal_readiness_snapshot = signal_readiness_snapshot
         self.minimum_signal_readiness = minimum_signal_readiness
         self.on_progress = on_progress
+        self.cancel_event = cancel_event
 
     def check_case_readiness(
         self, case: EvolutionCase
@@ -305,6 +307,11 @@ class RuntimePlanEvaluator:
             )
 
         for case_index, case in enumerate(cases, start=1):
+            if self.cancel_event is not None and self.cancel_event.is_set():
+                raise EvaluationCancelled(
+                    0,
+                    "stop requested before starting the next evaluation case",
+                )
             case_path = self.prediction_root / plan.plan_id / f"{case.case_id}.json"
             trajectory_path = (
                 self.trajectory_root / plan.plan_id / f"{case.case_id}.json"
