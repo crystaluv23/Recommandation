@@ -15,7 +15,11 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
-from stock_opportunity_agent.llm.openai import UrllibTransport, canonical_json_bytes
+from stock_opportunity_agent.llm.openai import (
+    RetryableOpenAIClientError,
+    UrllibTransport,
+    canonical_json_bytes,
+)
 from stock_opportunity_agent.llm.openrouter_jev import (
     DEFAULT_JEV_MODEL,
     DEFAULT_JEV_URL,
@@ -42,10 +46,13 @@ DEFAULT_SOURCE_ROOT = (
 DEFAULT_RECORD = DEFAULT_SOURCE_ROOT / "plans/plan_r0001_c01/record.json"
 DEFAULT_WORKSPACE = (
     PROJECT_ROOT
-    / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v2"
+    / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v3"
 )
 SCHEMA_VERSION = "jev-historical-shadow-v1"
 MAX_COST_USD = 0.25
+MAX_EXTRA_ATTEMPTS = 10
+MAX_ATTEMPTS_PER_REQUEST = 3
+UNCERTAIN_SEND_COST_RESERVE_USD = 0.002
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -258,7 +265,9 @@ def prepare_shadow(
         "routing_request_count": sum(item["kind"] == "routing" for item in inputs),
         "technical_exclusion_count": len(technical_exclusions),
         "technical_exclusion_case_keys": technical_exclusions,
-        "max_external_attempts": len(inputs),
+        "max_external_attempts": len(inputs) + MAX_EXTRA_ATTEMPTS,
+        "max_attempts_per_request": MAX_ATTEMPTS_PER_REQUEST,
+        "uncertain_send_cost_reserve_usd": UNCERTAIN_SEND_COST_RESERVE_USD,
         "max_total_cost_usd": MAX_COST_USD,
         "execution_boundary": (
             "execute reads inputs.json only; score loads labels.json after every "
@@ -273,7 +282,7 @@ def prepare_shadow(
         workspace / "attempts.json",
         {
             "schema_version": SCHEMA_VERSION,
-            "max_external_attempts": len(inputs),
+            "max_external_attempts": len(inputs) + MAX_EXTRA_ATTEMPTS,
             "max_total_cost_usd": MAX_COST_USD,
             "attempts": [],
         },
@@ -319,9 +328,32 @@ def execute_shadow(
     ledger_path = workspace / "attempts.json"
     ledger = _read_json(ledger_path)
     attempts = list(ledger.get("attempts", ()))
-    completed = {item["request_id"]: item for item in attempts if item["status"] == "completed"}
-    if any(item["status"] != "completed" for item in attempts):
-        raise ValidationError("shadow ledger has a non-completed attempt; inspect before retry")
+    reconciled = False
+    for attempt in attempts:
+        if attempt["status"] == "in_progress":
+            attempt.update(
+                {
+                    "status": "interrupted_unknown_send",
+                    "finished_at": datetime.now(timezone.utc).isoformat(),
+                    "reserved_cost": manifest["uncertain_send_cost_reserve_usd"],
+                }
+            )
+            reconciled = True
+    if reconciled:
+        ledger["attempts"] = attempts
+        atomic_write_json(ledger_path, ledger)
+    allowed_statuses = {
+        "completed",
+        "retryable_failed",
+        "interrupted_unknown_send",
+    }
+    if any(item["status"] not in allowed_statuses for item in attempts):
+        raise ValidationError("shadow ledger has a non-retryable failed attempt")
+    completed = {
+        item["request_id"]: item
+        for item in attempts
+        if item["status"] == "completed"
+    }
     api_key = os.environ.get("OPENROUTER_API_KEY") or _load_env_value(
         env_file, "OPENROUTER_API_KEY"
     )
@@ -332,15 +364,14 @@ def execute_shadow(
         endpoint=str(manifest["endpoint"]),
         transport=transport,
     )
-    total_cost = sum(float(item.get("actual_cost", 0.0)) for item in completed.values())
+    def budget_charge(row: Mapping[str, Any]) -> float:
+        return float(row.get("actual_cost", row.get("reserved_cost", 0.0)))
+
+    total_budget_charge = sum(budget_charge(item) for item in attempts)
     for item in input_bundle["requests"]:
         request_id = item["request_id"]
         if request_id in completed:
             continue
-        if len(attempts) >= manifest["max_external_attempts"]:
-            raise ValidationError("Jev shadow external-attempt ceiling reached")
-        if total_cost >= manifest["max_total_cost_usd"]:
-            raise ValidationError("Jev shadow cost ceiling reached")
         prepared = client.prepare_request(state=item["state"], questions=item["questions"])
         if prepared.body_sha256 != item["request_body_sha256"]:
             raise ValidationError(f"frozen request hash changed: {request_id}")
@@ -353,86 +384,129 @@ def execute_shadow(
                 "payload": dict(prepared.payload),
             },
         )
-        attempt = {
-            "attempt_id": len(attempts) + 1,
-            "request_id": request_id,
-            "request_body_sha256": prepared.body_sha256,
-            "started_at": datetime.now(timezone.utc).isoformat(),
-            "status": "in_progress",
-        }
-        attempts.append(attempt)
-        ledger["attempts"] = attempts
-        atomic_write_json(ledger_path, ledger)
-        try:
-            raw_response = transport.post_json(
-                prepared.url,
-                {
-                    "Authorization": f"Bearer {api_key}",
-                    "HTTP-Referer": client.app_referer,
-                    "X-Title": client.app_title,
-                },
-                prepared.payload,
+        while request_id not in completed:
+            request_attempts = sum(
+                prior["request_id"] == request_id for prior in attempts
             )
-            atomic_write_json(
-                workspace / "raw_responses" / f"{request_id}.json",
-                raw_response,
-            )
-            response = JevDecisionResponse.from_dict(raw_response)
-            missing = set(item["questions"]) - set(response.answers)
-            unexpected = set(response.answers) - set(item["questions"])
-            if missing or unexpected:
+            if request_attempts >= manifest["max_attempts_per_request"]:
                 raise ValidationError(
-                    "Jev response question mismatch: "
-                    f"missing={sorted(missing)}, unexpected={sorted(unexpected)}"
+                    f"Jev shadow per-request attempt ceiling reached: {request_id}"
                 )
-        except Exception as exc:
-            attempt["status"] = "failed"
-            attempt["finished_at"] = datetime.now(timezone.utc).isoformat()
-            attempt["error_type"] = type(exc).__name__
-            attempt["error"] = str(exc)
-            atomic_write_json(ledger_path, ledger)
-            raise
-        response_value = {
-            "request_id": request_id,
-            "response": {
-                "id": response.response_id,
-                "model": response.model,
-                "provider": response.provider,
-                "answers": {
-                    key: value.to_dict() for key, value in response.answers.items()
-                },
-                "usage": {
-                    "input_tokens": response.usage.tokens,
-                    "output_tokens": 0,
-                    "cost": response.usage.cost,
-                },
-            },
-        }
-        response_hash = canonical_json_hash(response_value)
-        atomic_write_json(workspace / "responses" / f"{request_id}.json", response_value)
-        attempt.update(
-            {
-                "status": "completed",
-                "finished_at": datetime.now(timezone.utc).isoformat(),
-                "response_sha256": response_hash,
-                "response_id": response.response_id,
-                "resolved_model": response.model,
-                "provider": response.provider,
-                "actual_cost": response.usage.cost,
-                "tokens": response.usage.tokens,
+            if len(attempts) >= manifest["max_external_attempts"]:
+                raise ValidationError("Jev shadow external-attempt ceiling reached")
+            if total_budget_charge >= manifest["max_total_cost_usd"]:
+                raise ValidationError("Jev shadow cost ceiling reached")
+            attempt = {
+                "attempt_id": len(attempts) + 1,
+                "request_id": request_id,
+                "request_body_sha256": prepared.body_sha256,
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "status": "in_progress",
             }
-        )
-        total_cost += response.usage.cost
-        atomic_write_json(ledger_path, ledger)
-    if total_cost > manifest["max_total_cost_usd"]:
+            attempts.append(attempt)
+            ledger["attempts"] = attempts
+            atomic_write_json(ledger_path, ledger)
+            try:
+                raw_response = transport.post_json(
+                    prepared.url,
+                    {
+                        "Authorization": f"Bearer {api_key}",
+                        "HTTP-Referer": client.app_referer,
+                        "X-Title": client.app_title,
+                    },
+                    prepared.payload,
+                )
+                atomic_write_json(
+                    workspace / "raw_responses" / f"{request_id}.json",
+                    raw_response,
+                )
+                response = JevDecisionResponse.from_dict(raw_response)
+                missing = set(item["questions"]) - set(response.answers)
+                unexpected = set(response.answers) - set(item["questions"])
+                if missing or unexpected:
+                    raise ValidationError(
+                        "Jev response question mismatch: "
+                        f"missing={sorted(missing)}, unexpected={sorted(unexpected)}"
+                    )
+            except RetryableOpenAIClientError as exc:
+                attempt.update(
+                    {
+                        "status": "retryable_failed",
+                        "finished_at": datetime.now(timezone.utc).isoformat(),
+                        "error_type": type(exc).__name__,
+                        "error": str(exc),
+                        "reserved_cost": manifest[
+                            "uncertain_send_cost_reserve_usd"
+                        ],
+                    }
+                )
+                total_budget_charge += budget_charge(attempt)
+                atomic_write_json(ledger_path, ledger)
+                continue
+            except Exception as exc:
+                attempt.update(
+                    {
+                        "status": "failed",
+                        "finished_at": datetime.now(timezone.utc).isoformat(),
+                        "error_type": type(exc).__name__,
+                        "error": str(exc),
+                    }
+                )
+                atomic_write_json(ledger_path, ledger)
+                raise
+            response_value = {
+                "request_id": request_id,
+                "response": {
+                    "id": response.response_id,
+                    "model": response.model,
+                    "provider": response.provider,
+                    "answers": {
+                        key: value.to_dict() for key, value in response.answers.items()
+                    },
+                    "usage": {
+                        "input_tokens": response.usage.tokens,
+                        "output_tokens": 0,
+                        "cost": response.usage.cost,
+                    },
+                },
+            }
+            response_hash = canonical_json_hash(response_value)
+            atomic_write_json(
+                workspace / "responses" / f"{request_id}.json", response_value
+            )
+            attempt.update(
+                {
+                    "status": "completed",
+                    "finished_at": datetime.now(timezone.utc).isoformat(),
+                    "response_sha256": response_hash,
+                    "response_id": response.response_id,
+                    "resolved_model": response.model,
+                    "provider": response.provider,
+                    "actual_cost": response.usage.cost,
+                    "tokens": response.usage.tokens,
+                }
+            )
+            total_budget_charge += response.usage.cost
+            completed[request_id] = attempt
+            atomic_write_json(ledger_path, ledger)
+    if total_budget_charge > manifest["max_total_cost_usd"]:
         raise ValidationError("Jev shadow exceeded its cost ceiling")
+    completed_attempts = [item for item in attempts if item["status"] == "completed"]
     summary = {
         "schema_version": SCHEMA_VERSION,
-        "completed_request_count": len(attempts),
-        "total_cost_usd": total_cost,
-        "total_tokens": sum(int(item.get("tokens", 0)) for item in attempts),
-        "resolved_models": sorted({str(item["resolved_model"]) for item in attempts}),
-        "providers": sorted({str(item["provider"]) for item in attempts}),
+        "completed_request_count": len(completed_attempts),
+        "physical_attempt_count": len(attempts),
+        "retryable_or_interrupted_attempt_count": len(attempts)
+        - len(completed_attempts),
+        "actual_cost_usd": sum(
+            float(item.get("actual_cost", 0.0)) for item in completed_attempts
+        ),
+        "budget_charge_usd": total_budget_charge,
+        "total_tokens": sum(int(item.get("tokens", 0)) for item in completed_attempts),
+        "resolved_models": sorted(
+            {str(item["resolved_model"]) for item in completed_attempts}
+        ),
+        "providers": sorted({str(item["provider"]) for item in completed_attempts}),
         "completed_at": datetime.now(timezone.utc).isoformat(),
     }
     atomic_write_json(workspace / "execution_summary.json", summary)

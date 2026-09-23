@@ -1138,6 +1138,12 @@ normalized to one before persistence and scoring; the exact raw provider
 response is retained separately. Distributions outside that interval fail
 closed and cannot contribute a prediction or routing decision.
 
+A scored shadow may reserve up to ten additional physical attempts for
+transport-level uncertain sends while retaining a three-attempt per-request
+ceiling and the original total cost ceiling. Every failed or interrupted send
+remains in the ledger and consumes attempt and conservative cost budget; typed
+response validation failures are not retried.
+
 A positive `likely` or `possible` judgment requires at least one `key_reasons`
 item that affirmatively connects supplied source-backed evidence to a credible
 candidate for the defined price outcome. A portfolio whose every key reason

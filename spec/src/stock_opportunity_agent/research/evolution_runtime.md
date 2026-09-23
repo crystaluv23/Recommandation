@@ -101,6 +101,15 @@ deterministically for downstream feedback while the raw values remain in the
 audit artifact; larger drift, missing choices, or values outside `[0,1]` fail
 closed. This normalization rule is frozen before a scored shadow starts.
 
+The frozen shadow budget distinguishes logical requests from physical attempts.
+It permits at most ten extra physical attempts across the panel and at most
+three attempts for one request. A retryable transport failure without a durable
+raw response is recorded as an uncertain-send attempt, receives a conservative
+cost reservation, and may retry only inside those frozen bounds. A non-retryable
+schema or semantic failure stops the experiment. On restart, an orphaned
+`in_progress` attempt is reconciled to the same uncertain-send state before any
+retry; it is never erased or reclassified as unsent.
+
 The primary prediction comparison excludes historical technical exclusions
 that never produced a non-empty final context; these cases remain visible as a
 separate operational-coverage count. Signal-routing results are proxy evidence:
