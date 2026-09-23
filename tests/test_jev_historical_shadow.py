@@ -12,8 +12,10 @@ from stock_opportunity_agent.artifacts import atomic_write_json
 from scripts.run_jev_historical_shadow import (
     prepare_direction_probe,
     prepare_magnitude_followup,
+    prepare_routing_context_parity_probe,
     prepare_shadow,
     score_combined_shadow,
+    score_routing_context_parity_probe,
     score_shadow,
 )
 
@@ -246,6 +248,101 @@ class JevHistoricalShadowTests(TestCase):
                 self.assertTrue(
                     all(set(item["questions"]) == {"candidate_judgment"} for item in inputs)
                 )
+
+    def test_routing_parity_uses_exact_llm_context_and_scores_portfolios(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            parity = root / "parity"
+            source_manifest = prepare_shadow(workspace=source)
+            parity_manifest = prepare_routing_context_parity_probe(
+                source_workspace=source,
+                source_manifest_hash=source_manifest["manifest_hash"],
+                workspace=parity,
+            )
+            source_inputs = json.loads((source / "inputs.json").read_text())
+            parity_text = (parity / "inputs.json").read_text()
+            parity_inputs = json.loads(parity_text)
+            source_routing = {
+                item["request_id"]: item
+                for item in source_inputs["requests"]
+                if item["kind"] == "routing"
+            }
+            self.assertEqual(parity_manifest["routing_request_count"], 80)
+            self.assertEqual(parity_manifest["routing_question_count"], 992)
+            self.assertNotIn("ground_truth", parity_text)
+            self.assertNotIn("realized_max_multiple", parity_text)
+            for item in parity_inputs["requests"]:
+                self.assertEqual(item["state"], source_routing[item["request_id"]]["state"])
+                self.assertTrue(
+                    all(
+                        "smallest nonredundant portfolio"
+                        in question["instructions"]
+                        for question in item["questions"].values()
+                    )
+                )
+                baseline_refs = set(
+                    item["analysis_metadata"]["baseline_selected_refs"]
+                )
+                parity_answers = {}
+                source_answers = {}
+                for question_id, question in item["questions"].items():
+                    ref = question_id.split("__", 1)[1]
+                    choice = (
+                        next(
+                            key
+                            for key in question["criteria"]
+                            if key.startswith("need_")
+                        )
+                        if ref in baseline_refs
+                        else "no_match"
+                    )
+                    parity_answers[question_id] = _answer(
+                        choice, tuple(question["criteria"])
+                    )
+                    source_question = source_routing[item["request_id"]]["questions"][
+                        question_id
+                    ]
+                    source_answers[question_id] = _answer(
+                        "no_match", tuple(source_question["criteria"])
+                    )
+                for workspace, answers in (
+                    (parity, parity_answers),
+                    (source, source_answers),
+                ):
+                    atomic_write_json(
+                        workspace / "responses" / f"{item['request_id']}.json",
+                        {
+                            "request_id": item["request_id"],
+                            "response": {
+                                "id": f"recorded-{workspace.name}-{item['request_id']}",
+                                "model": "typesafe/jev-1.13-test",
+                                "provider": "TypeSafe",
+                                "answers": answers,
+                                "usage": {
+                                    "input_tokens": 10,
+                                    "output_tokens": 1,
+                                    "cost": 0.0,
+                                },
+                            },
+                        },
+                    )
+            atomic_write_json(
+                parity / "execution_summary.json",
+                {
+                    "completed_request_count": 80,
+                    "actual_cost_usd": 0.0,
+                    "total_tokens": 800,
+                },
+            )
+            score = score_routing_context_parity_probe(
+                source_workspace=source,
+                source_manifest_hash=source_manifest["manifest_hash"],
+                workspace=parity,
+                acknowledged_hash=parity_manifest["manifest_hash"],
+            )
+            self.assertEqual(score["context_audit"]["object_equal_round_count"], 80)
+            self.assertEqual(score["parity_jev"]["exact_set_match_rate"], 1.0)
 
 
 def _answer(choice: str, options: tuple[str, ...]) -> dict:

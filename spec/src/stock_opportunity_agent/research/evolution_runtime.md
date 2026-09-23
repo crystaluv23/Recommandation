@@ -121,6 +121,20 @@ historically productive or unavailable Signals, but cannot claim that newly
 selected counterfactual Signals would have improved the research outcome unless
 they are executed in a later, separately authorized experiment.
 
+A routing context-parity probe must freeze only the accepted initial
+`signal_retrieval_cards` user payload for each historical round and prove that
+the Jev `state` is object-equal to that payload. It also hashes the corresponding
+LLM system contract and translates its smallest-batch, non-redundancy, prior-
+result, total-cap, and LLM-cap rules into every Jev card question. Across all
+questions in one request, an unselected, redundant, or merely marginal card is
+represented by `no_match`; `context_only` requires material incremental context
+worth one scarce portfolio slot. The probe calls no chat LLM, executes no
+Signal, and reads no outcome label. Scoring compares the capped Jev portfolio
+with the historical LLM portfolio and the earlier broad-criteria Jev portfolio,
+including exact/set agreement, micro precision/recall, selection size, cap
+saturation, probability, and confidence. Agreement remains a parity diagnostic,
+not proof that either portfolio improves final predictions.
+
 Blind direction and magnitude are separate dependent Decisions requests.
 Direction is persisted first; a positive direction freezes a follow-up request
 containing the same label-free evidence context and the immutable direction, and
