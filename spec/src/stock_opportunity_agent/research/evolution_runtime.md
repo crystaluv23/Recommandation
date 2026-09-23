@@ -120,12 +120,22 @@ they are executed in a later, separately authorized experiment.
 
 Blind direction and magnitude are separate dependent Decisions requests.
 Direction is persisted first; a positive direction freezes a follow-up request
-containing the same label-free final context and the immutable direction, and
+containing the same label-free evidence context and the immutable direction, and
 the follow-up exposes only the three positive magnitude classes. A negative
 direction terminates Jev prediction without a magnitude call. Asking both
 questions independently in one request is invalid because `not_applicable` can
 win independently of a positive direction and create an unusable cross-field
 pair.
+
+The Decisions request builder must not forward instruction-bearing
+`final_context.analysis_prompt` or presentation-only `context_contract` as Jev
+state. It builds a runtime-owned decision contract with the exact active
+screening semantics and treats remaining nested strings as evidence rather than
+instructions. The shadow harness and production adapter share this builder;
+duplicated prompt construction is a contract drift defect. A live comparison
+whose direction and magnitude appeared in one request, or whose Jev criteria
+did not carry the active screening semantics, remains transport evidence but is
+not accepted as an intrinsic Jev-versus-LLM quality comparison.
 
 ## Frozen Run Contract
 

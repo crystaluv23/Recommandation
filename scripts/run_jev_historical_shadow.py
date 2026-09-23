@@ -28,8 +28,9 @@ from stock_opportunity_agent.llm.openrouter_jev import (
 )
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_jev_roles import (
-    _JUDGMENT_CRITERIA,
     _MAGNITUDE_CRITERIA,
+    _jev_judgment_questions,
+    _jev_prediction_state,
     _routing_questions,
 )
 from stock_opportunity_agent.research.evolution_plan_roles import (
@@ -52,6 +53,14 @@ DEFAULT_MAGNITUDE_WORKSPACE = (
     PROJECT_ROOT
     / "runs/cold_start/evolution/"
     "jev-shadow-v139-r1-c01-magnitude-followup-20260923-v1"
+)
+DEFAULT_DIRECTION_RAW_WORKSPACE = (
+    PROJECT_ROOT
+    / "runs/cold_start/evolution/jev-direction-probe-raw-context-20260923-v1"
+)
+DEFAULT_DIRECTION_PARITY_WORKSPACE = (
+    PROJECT_ROOT
+    / "runs/cold_start/evolution/jev-direction-probe-parity-20260923-v1"
 )
 SCHEMA_VERSION = "jev-historical-shadow-v1"
 MAX_COST_USD = 0.25
@@ -104,17 +113,7 @@ def _load_routing_requests(source_root: Path) -> list[tuple[str, dict[str, Any]]
 
 
 def _prediction_questions() -> dict[str, dict[str, Any]]:
-    return {
-        "candidate_judgment": {
-            "type": "choice",
-            "instructions": (
-                "Which fixed opportunity-discovery judgment best fits the supplied "
-                "evidence? Possible is a screening category and does not require "
-                "more than 50 percent event probability."
-            ),
-            "criteria": dict(_JUDGMENT_CRITERIA),
-        },
-    }
+    return _jev_judgment_questions()
 
 
 def _magnitude_questions() -> dict[str, dict[str, Any]]:
@@ -174,14 +173,7 @@ def prepare_shadow(
         )
         final_context = trajectory.get("final_context", {})
         if final_context:
-            state = {
-                "description": (
-                    "Anonymous point-in-time research context for the fixed six-calendar-"
-                    "month adjusted-share-price opportunity decision. The baseline and "
-                    "five-trading-day smoothing rule are supplied in final_context."
-                ),
-                "final_context": dict(final_context),
-            }
+            state = _jev_prediction_state(final_context)
             questions = _prediction_questions()
             inputs.append(
                 {
@@ -420,6 +412,96 @@ def _verify_workspace(workspace: Path, acknowledged_hash: str) -> tuple[dict, di
     if canonical_json_hash(inputs) != manifest["input_bundle_sha256"]:
         raise ValidationError("Jev shadow input bundle hash changed")
     return manifest, inputs
+
+
+def prepare_direction_probe(
+    *,
+    source_workspace: Path,
+    source_manifest_hash: str,
+    workspace: Path,
+    variant: str,
+) -> dict[str, Any]:
+    """Freeze direction-only requests without opening historical labels."""
+
+    if variant not in {"raw_context", "parity_context"}:
+        raise ValidationError("direction probe variant must be raw_context or parity_context")
+    if workspace.exists() and any(workspace.iterdir()):
+        raise ValidationError(f"direction probe workspace is not empty: {workspace}")
+    source_manifest, source_inputs = _verify_workspace(
+        source_workspace, source_manifest_hash
+    )
+    requests = []
+    for item in source_inputs["requests"]:
+        if item["kind"] != "prediction":
+            continue
+        if variant == "raw_context":
+            state = dict(item["state"])
+            questions = {
+                "candidate_judgment": dict(
+                    item["questions"]["candidate_judgment"]
+                )
+            }
+        else:
+            final_context = item["state"].get(
+                "final_context", item["state"].get("evidence_context")
+            )
+            if not isinstance(final_context, Mapping):
+                raise ValidationError("source prediction lacks frozen final_context")
+            state = _jev_prediction_state(final_context)
+            questions = _jev_judgment_questions()
+        requests.append(
+            {
+                "request_id": item["request_id"],
+                "kind": "prediction",
+                "case_key": item["case_key"],
+                "state": state,
+                "questions": questions,
+                "request_body_sha256": _request_hash(state, questions),
+                "analysis_metadata": {
+                    **dict(item["analysis_metadata"]),
+                    "source_request_body_sha256": item["request_body_sha256"],
+                },
+            }
+        )
+    input_bundle = {"schema_version": SCHEMA_VERSION, "requests": requests}
+    manifest = {
+        "schema_version": SCHEMA_VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_shadow_workspace": str(source_workspace),
+        "source_shadow_manifest_hash": source_manifest_hash,
+        "source_shadow_input_bundle_sha256": source_manifest[
+            "input_bundle_sha256"
+        ],
+        "source_label_bundle_sha256": source_manifest["label_bundle_sha256"],
+        "probe_variant": variant,
+        "git_commit": _git_head(),
+        "provider": "openrouter",
+        "model": DEFAULT_JEV_MODEL,
+        "endpoint": DEFAULT_JEV_URL,
+        "input_bundle_sha256": canonical_json_hash(input_bundle),
+        "prediction_request_count": len(requests),
+        "max_external_attempts": len(requests) + 5,
+        "max_attempts_per_request": MAX_ATTEMPTS_PER_REQUEST,
+        "uncertain_send_cost_reserve_usd": UNCERTAIN_SEND_COST_RESERVE_USD,
+        "max_total_cost_usd": 0.03,
+        "execution_boundary": (
+            "prepare and execute read only source inputs; score opens source labels "
+            "after every direction response is durable"
+        ),
+    }
+    manifest["manifest_hash"] = canonical_json_hash(manifest)
+    atomic_write_json(workspace / "inputs.json", input_bundle)
+    atomic_write_json(workspace / "manifest.json", manifest)
+    atomic_write_json(
+        workspace / "attempts.json",
+        {
+            "schema_version": SCHEMA_VERSION,
+            "max_external_attempts": manifest["max_external_attempts"],
+            "max_total_cost_usd": manifest["max_total_cost_usd"],
+            "attempts": [],
+        },
+    )
+    return manifest
 
 
 def execute_shadow(
@@ -746,6 +828,101 @@ def _selected_routing_refs(item: Mapping[str, Any], response: JevDecisionRespons
     return selected
 
 
+def score_direction_probe(
+    *,
+    source_workspace: Path,
+    source_manifest_hash: str,
+    workspace: Path,
+    acknowledged_hash: str,
+) -> dict[str, Any]:
+    """Score one direction-only diagnostic after all responses are durable."""
+
+    manifest, input_bundle = _verify_workspace(workspace, acknowledged_hash)
+    if manifest["source_shadow_manifest_hash"] != source_manifest_hash:
+        raise ValidationError("direction probe does not belong to source shadow")
+    source_manifest, _source_inputs = _verify_workspace(
+        source_workspace, source_manifest_hash
+    )
+    response_paths = list((workspace / "responses").glob("*.json"))
+    if len(response_paths) != len(input_bundle["requests"]):
+        raise ValidationError("direction probe responses are incomplete")
+    labels = _read_json(source_workspace / "labels.json")
+    if canonical_json_hash(labels) != source_manifest["label_bundle_sha256"]:
+        raise ValidationError("source label bundle changed")
+    label_by_case = {item["case_key"]: item for item in labels["labels"]}
+    rows = []
+    for item in input_bundle["requests"]:
+        stored = _read_json(workspace / "responses" / f"{item['request_id']}.json")
+        response = JevDecisionResponse.from_dict(stored["response"])
+        judgment = response.answers["candidate_judgment"]
+        source_stored = _read_json(
+            source_workspace / "responses" / f"{item['request_id']}.json"
+        )
+        source_response = JevDecisionResponse.from_dict(source_stored["response"])
+        source_judgment = source_response.answers["candidate_judgment"]
+        truth = bool(label_by_case[item["case_key"]]["ground_truth"]["is_surge"])
+        baseline = item["analysis_metadata"]["baseline_prediction"]
+        probability = sum(
+            judgment.probabilities.get(value, 0.0)
+            for value in ("likely", "possible")
+        )
+        rows.append(
+            {
+                "case_key": item["case_key"],
+                "source_case_id": label_by_case[item["case_key"]]["source_case_id"],
+                "truth_positive": truth,
+                "historical_llm_positive": bool(baseline["is_surge"]),
+                "source_jev_choice": source_judgment.choice,
+                "source_jev_positive": source_judgment.choice
+                in {"likely", "possible"},
+                "probe_choice": judgment.choice,
+                "probe_positive": judgment.choice in {"likely", "possible"},
+                "positive_probability": probability,
+                "confidence": judgment.confidence,
+                "probabilities": dict(judgment.probabilities),
+            }
+        )
+    probe_binary = [
+        (row["probe_positive"], row["truth_positive"]) for row in rows
+    ]
+    source_binary = [
+        (row["source_jev_positive"], row["truth_positive"]) for row in rows
+    ]
+    llm_binary = [
+        (row["historical_llm_positive"], row["truth_positive"]) for row in rows
+    ]
+    probe_correct = [pred == truth for pred, truth in probe_binary]
+    probability_rows = [
+        (
+            row["positive_probability"],
+            row["truth_positive"],
+            row["confidence"],
+            correct,
+        )
+        for row, correct in zip(rows, probe_correct, strict=True)
+    ]
+    result = {
+        "schema_version": "jev-direction-probe-v1",
+        "manifest_hash": acknowledged_hash,
+        "source_manifest_hash": source_manifest_hash,
+        "probe_variant": manifest["probe_variant"],
+        "scored_at": datetime.now(timezone.utc).isoformat(),
+        "sample_count": len(rows),
+        "probe": _binary_metrics(probe_binary),
+        "source_simultaneous_jev": _binary_metrics(source_binary),
+        "historical_llm": _binary_metrics(llm_binary),
+        "probability_diagnostics": _probability_metrics(probability_rows),
+        "choice_counts": dict(Counter(row["probe_choice"] for row in rows)),
+        "changed_choice_count": sum(
+            row["probe_choice"] != row["source_jev_choice"] for row in rows
+        ),
+        "rows": rows,
+        "execution": _read_json(workspace / "execution_summary.json"),
+    }
+    atomic_write_json(workspace / "score.json", result)
+    return result
+
+
 def score_shadow(*, workspace: Path, acknowledged_hash: str) -> dict[str, Any]:
     """Load labels only after all Jev responses exist, then score the shadow."""
 
@@ -1033,6 +1210,18 @@ def main() -> None:
     score_combined.add_argument("--source-manifest-hash", required=True)
     score_combined.add_argument("--magnitude-workspace", type=Path, required=True)
     score_combined.add_argument("--magnitude-manifest-hash", required=True)
+    prepare_direction = subparsers.add_parser("prepare-direction-probe")
+    prepare_direction.add_argument("--source-workspace", type=Path, required=True)
+    prepare_direction.add_argument("--source-manifest-hash", required=True)
+    prepare_direction.add_argument("--workspace", type=Path, required=True)
+    prepare_direction.add_argument(
+        "--variant", choices=("raw_context", "parity_context"), required=True
+    )
+    score_direction = subparsers.add_parser("score-direction-probe")
+    score_direction.add_argument("--source-workspace", type=Path, required=True)
+    score_direction.add_argument("--source-manifest-hash", required=True)
+    score_direction.add_argument("--workspace", type=Path, required=True)
+    score_direction.add_argument("--acknowledge-manifest-hash", required=True)
     args = parser.parse_args()
     if args.command == "prepare":
         value = prepare_shadow(
@@ -1057,12 +1246,26 @@ def main() -> None:
             source_manifest_hash=args.source_manifest_hash,
             workspace=args.workspace,
         )
-    else:
+    elif args.command == "score-combined":
         value = score_combined_shadow(
             source_workspace=args.source_workspace,
             source_manifest_hash=args.source_manifest_hash,
             magnitude_workspace=args.magnitude_workspace,
             magnitude_manifest_hash=args.magnitude_manifest_hash,
+        )
+    elif args.command == "prepare-direction-probe":
+        value = prepare_direction_probe(
+            source_workspace=args.source_workspace,
+            source_manifest_hash=args.source_manifest_hash,
+            workspace=args.workspace,
+            variant=args.variant,
+        )
+    else:
+        value = score_direction_probe(
+            source_workspace=args.source_workspace,
+            source_manifest_hash=args.source_manifest_hash,
+            workspace=args.workspace,
+            acknowledged_hash=args.acknowledge_manifest_hash,
         )
     print(json.dumps(value, sort_keys=True))
 

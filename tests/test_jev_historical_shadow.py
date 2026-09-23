@@ -10,6 +10,7 @@ from unittest import TestCase
 from stock_opportunity_agent.artifacts import atomic_write_json
 
 from scripts.run_jev_historical_shadow import (
+    prepare_direction_probe,
     prepare_magnitude_followup,
     prepare_shadow,
     score_combined_shadow,
@@ -33,6 +34,17 @@ class JevHistoricalShadowTests(TestCase):
             self.assertEqual(len(labels["labels"]), 24)
             self.assertNotIn('"ground_truth"', inputs_text)
             self.assertNotIn("realized_max_multiple", inputs_text)
+            prediction = next(
+                item for item in inputs["requests"] if item["kind"] == "prediction"
+            )
+            self.assertNotIn("final_context", prediction["state"])
+            self.assertNotIn(
+                "analysis_prompt", prediction["state"]["evidence_context"]
+            )
+            self.assertNotIn(
+                "context_contract", prediction["state"]["evidence_context"]
+            )
+            self.assertIn("decision_contract", prediction["state"])
 
     def test_scoring_reloads_all_durable_responses_after_freeze(self):
         with TemporaryDirectory() as directory:
@@ -205,6 +217,35 @@ class JevHistoricalShadowTests(TestCase):
             )
             self.assertEqual(combined["prediction"]["adapter_valid_count"], 21)
             self.assertEqual(combined["conditional_magnitude_followup"]["request_count"], 2)
+
+    def test_direction_probe_freezes_one_question_without_labels(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            raw_probe = root / "raw"
+            parity_probe = root / "parity"
+            source_manifest = prepare_shadow(workspace=source)
+            raw_manifest = prepare_direction_probe(
+                source_workspace=source,
+                source_manifest_hash=source_manifest["manifest_hash"],
+                workspace=raw_probe,
+                variant="raw_context",
+            )
+            parity_manifest = prepare_direction_probe(
+                source_workspace=source,
+                source_manifest_hash=source_manifest["manifest_hash"],
+                workspace=parity_probe,
+                variant="parity_context",
+            )
+            self.assertEqual(raw_manifest["prediction_request_count"], 21)
+            self.assertEqual(parity_manifest["prediction_request_count"], 21)
+            for probe in (raw_probe, parity_probe):
+                text = (probe / "inputs.json").read_text()
+                inputs = json.loads(text)["requests"]
+                self.assertNotIn("ground_truth", text)
+                self.assertTrue(
+                    all(set(item["questions"]) == {"candidate_judgment"} for item in inputs)
+                )
 
 
 def _answer(choice: str, options: tuple[str, ...]) -> dict:

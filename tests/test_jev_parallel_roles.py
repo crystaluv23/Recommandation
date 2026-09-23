@@ -237,6 +237,10 @@ class JevParallelRoleTests(TestCase):
         predictor = JevBlindPredictor(jev, caller)
         prediction_step = predictor.predict(
             {
+                "analysis_prompt": (
+                    "Do not generate a prediction and require a quantified bridge."
+                ),
+                "context_contract": {"kind": "presentation metadata"},
                 "prediction_baseline": {"status": "available", "value": 10.0},
                 "analysis": ["Anonymous point-in-time catalyst evidence."],
             }
@@ -267,6 +271,13 @@ class JevParallelRoleTests(TestCase):
             jev.calls[1]["state"]["immutable_candidate_judgment"],
             "possible",
         )
+        self.assertNotIn(
+            "analysis_prompt", jev.calls[0]["state"]["evidence_context"]
+        )
+        self.assertNotIn(
+            "context_contract", jev.calls[0]["state"]["evidence_context"]
+        )
+        self.assertIn("decision_contract", jev.calls[0]["state"])
 
         reflection = predictor.reflect(
             {"analysis": ["Anonymous point-in-time catalyst evidence."]},

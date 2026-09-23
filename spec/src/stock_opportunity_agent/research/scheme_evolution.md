@@ -1086,9 +1086,21 @@ reflection remain authoritative.
 For Blind Prediction, Jev owns the immutable `candidate_judgment` choice and a
 sequential conditional magnitude choice. Runtime asks the direction question
 first. Only a `likely` or `possible` answer opens a second Jev request over the
-same final context plus that immutable direction, with exactly `2-3x`, `3-10x`,
+same evidence context plus that immutable direction, with exactly `2-3x`, `3-10x`,
 and `10x+` as options. A negative direction creates no magnitude request or
-provider magnitude signal. A conventional no-web LLM then receives the same
+provider magnitude signal.
+
+The Jev evidence state excludes `analysis_prompt` and presentation-only
+`context_contract`. `analysis_prompt` is an evolvable instruction for the
+upstream analysis role; it can require a quantified bridge or say not to make a
+prediction, while Jev has no chat-role hierarchy that reliably subordinates
+those embedded instructions. Runtime supplies a separate fixed decision
+contract matching the active Predictor semantics: this is an
+opportunity-screening share-price judgment, `possible` does not require
+probability above 50%, an explicit price target, guarantee, or quantified
+valuation bridge, and an outcome-stratified evaluation cohort must not be judged
+from broad-market base rates. Each Jev request asks one narrow coherent
+judgment. A conventional no-web LLM then receives the same
 label-free final context plus Jev's already-fixed decision and writes only
 `key_reasons` and `uncertainties`; it may not replace the choice. The combined
 prediction is persisted before ground truth is loaded. After label reveal, the
@@ -1136,6 +1148,14 @@ and cases already used by evolution are in-sample diagnostics, not independent
 generalization evidence. Routing agreement and result-state retention are proxy
 metrics because unselected historical alternatives have no counterfactual
 execution outcome.
+
+A historical direction result is quality-comparable only when direction was the
+sole question and the fixed decision semantics were supplied outside untrusted
+evolvable context. A diagnostic probe may retain the old context and remove only
+the magnitude question to isolate question coupling, but it cannot authorize
+cutover. A matched probe additionally removes embedded upstream instructions and
+supplies the fixed decision contract. Both variants freeze inputs separately
+from labels and reveal labels only after all responses are durable.
 
 Provider-rounded choice distributions with total mass in `[0.95, 1.05]` are
 normalized to one before persistence and scoring; the exact raw provider
