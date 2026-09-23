@@ -123,9 +123,11 @@ they are executed in a later, separately authorized experiment.
 
 A routing context-parity probe must freeze only the accepted initial
 `signal_retrieval_cards` user payload for each historical round and prove that
-the Jev `state` is object-equal to that payload. It also hashes the corresponding
-LLM system contract and translates its smallest-batch, non-redundancy, prior-
-result, total-cap, and LLM-cap rules into every Jev card question. Across all
+the Jev `state` is literally object-equal to that payload, including an explicit
+null `validation_feedback` field. It also hashes the corresponding LLM system
+contract and translates its smallest-batch, non-redundancy, prior-result, total-
+cap, LLM-cap, exact-match, hard-applicability, and answer-need rules into every
+Jev card question. Across all
 questions in one request, an unselected, redundant, or merely marginal card is
 represented by `no_match`; `context_only` requires material incremental context
 worth one scarce portfolio slot. The probe calls no chat LLM, executes no

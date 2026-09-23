@@ -273,10 +273,20 @@ class JevHistoricalShadowTests(TestCase):
             self.assertNotIn("ground_truth", parity_text)
             self.assertNotIn("realized_max_multiple", parity_text)
             for item in parity_inputs["requests"]:
-                self.assertEqual(item["state"], source_routing[item["request_id"]]["state"])
+                expected_state = dict(source_routing[item["request_id"]]["state"])
+                expected_state["validation_feedback"] = None
+                self.assertEqual(item["state"], expected_state)
+                self.assertIn("validation_feedback", item["state"])
                 self.assertTrue(
                     all(
                         "smallest nonredundant portfolio"
+                        in question["instructions"]
+                        for question in item["questions"].values()
+                    )
+                )
+                self.assertTrue(
+                    all(
+                        "routing_answer_need_phrases"
                         in question["instructions"]
                         for question in item["questions"].values()
                     )
