@@ -987,7 +987,7 @@ def _selected_routing_refs(item: Mapping[str, Any], response: JevDecisionRespons
         answer = response.answers[f"signal_{index:03d}__{card['signal_ref']}"]
         if answer.choice == "no_match":
             continue
-        candidates.append((answer.probabilities[answer.choice], index, card))
+        candidates.append((1.0 - answer.probabilities["no_match"], index, card))
     selected = []
     for _, _, card in sorted(candidates, key=lambda row: (-row[0], row[1])):
         if card.get("execution_type") == "llm":

@@ -134,8 +134,10 @@ worth one scarce portfolio slot. The probe calls no chat LLM, executes no
 Signal, and reads no outcome label. Scoring compares the capped Jev portfolio
 with the historical LLM portfolio and the earlier broad-criteria Jev portfolio,
 including exact/set agreement, micro precision/recall, selection size, cap
-saturation, probability, and confidence. Agreement remains a parity diagnostic,
-not proof that either portfolio improves final predictions.
+saturation, probability, and confidence. When more cards are eligible than the
+cap permits, rank them by total selection probability `1 - P(no_match)`, rather
+than the probability of whichever individual need won. Agreement remains a
+parity diagnostic, not proof that either portfolio improves final predictions.
 
 Blind direction and magnitude are separate dependent Decisions requests.
 Direction is persisted first; a positive direction freezes a follow-up request

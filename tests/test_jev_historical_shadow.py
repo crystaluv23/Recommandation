@@ -8,8 +8,10 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 
 from stock_opportunity_agent.artifacts import atomic_write_json
+from stock_opportunity_agent.llm.openrouter_jev import JevDecisionResponse
 
 from scripts.run_jev_historical_shadow import (
+    _selected_routing_refs,
     prepare_direction_probe,
     prepare_magnitude_followup,
     prepare_routing_context_parity_probe,
@@ -21,6 +23,45 @@ from scripts.run_jev_historical_shadow import (
 
 
 class JevHistoricalShadowTests(TestCase):
+    def test_routing_cap_ranks_by_total_selection_probability(self):
+        cards = [
+            {"signal_ref": f"signal_{index}:v1", "execution_type": "deterministic"}
+            for index in range(5)
+        ]
+        selection_probabilities = (0.9, 0.8, 0.7, 0.6, 0.5)
+        answers = {}
+        for index, (card, selection_probability) in enumerate(
+            zip(cards, selection_probabilities, strict=True)
+        ):
+            need_probability = 0.4 if index == 0 else selection_probability
+            answers[f"signal_{index:03d}__{card['signal_ref']}"] = {
+                "type": "choice",
+                "choice": "need_0",
+                "probabilities": {
+                    "need_0": need_probability,
+                    "context_only": selection_probability - need_probability,
+                    "no_match": 1.0 - selection_probability,
+                },
+                "confidence": need_probability,
+            }
+        response = JevDecisionResponse.from_dict(
+            {
+                "id": "routing-rank-test",
+                "model": "typesafe/jev-test",
+                "provider": "test",
+                "answers": answers,
+            }
+        )
+
+        selected = _selected_routing_refs(
+            {"state": {"available_signal_cards": cards}}, response
+        )
+
+        self.assertEqual(
+            selected,
+            ["signal_0:v1", "signal_1:v1", "signal_2:v1", "signal_3:v1"],
+        )
+
     def test_v139_freeze_separates_inputs_and_labels(self):
         with TemporaryDirectory() as directory:
             workspace = Path(directory) / "shadow"
