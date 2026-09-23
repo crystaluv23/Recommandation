@@ -1133,6 +1133,11 @@ generalization evidence. Routing agreement and result-state retention are proxy
 metrics because unselected historical alternatives have no counterfactual
 execution outcome.
 
+Provider-rounded choice distributions with total mass in `[0.95, 1.05]` are
+normalized to one before persistence and scoring; the exact raw provider
+response is retained separately. Distributions outside that interval fail
+closed and cannot contribute a prediction or routing decision.
+
 A positive `likely` or `possible` judgment requires at least one `key_reasons`
 item that affirmatively connects supplied source-backed evidence to a credible
 candidate for the defined price outcome. A portfolio whose every key reason

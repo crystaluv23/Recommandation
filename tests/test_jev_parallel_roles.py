@@ -107,8 +107,13 @@ class OpenRouterJevClientTests(TestCase):
         self.assertEqual(response.usage.tokens, 12)
 
     def test_invalid_probability_distribution_fails_closed(self):
-        with self.assertRaisesRegex(ValidationError, "sum to one"):
+        with self.assertRaisesRegex(ValidationError, "sum within 0.05"):
             _choice("a", {"a": 0.8, "b": 0.8})
+
+    def test_provider_rounded_probability_distribution_is_normalized(self):
+        answer = _choice("a", {"a": 0.66, "b": 0.33})
+        self.assertAlmostEqual(sum(answer.probabilities.values()), 1.0)
+        self.assertAlmostEqual(answer.probabilities["a"], 2 / 3)
 
 
 class JevParallelRoleTests(TestCase):

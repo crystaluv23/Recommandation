@@ -42,7 +42,7 @@ DEFAULT_SOURCE_ROOT = (
 DEFAULT_RECORD = DEFAULT_SOURCE_ROOT / "plans/plan_r0001_c01/record.json"
 DEFAULT_WORKSPACE = (
     PROJECT_ROOT
-    / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v1"
+    / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v2"
 )
 SCHEMA_VERSION = "jev-historical-shadow-v1"
 MAX_COST_USD = 0.25
@@ -325,11 +325,12 @@ def execute_shadow(
     api_key = os.environ.get("OPENROUTER_API_KEY") or _load_env_value(
         env_file, "OPENROUTER_API_KEY"
     )
+    transport = UrllibTransport(timeout_seconds=60.0, max_attempts=1)
     client = OpenRouterJevClient(
         api_key,
         model=str(manifest["model"]),
         endpoint=str(manifest["endpoint"]),
-        transport=UrllibTransport(timeout_seconds=60.0, max_attempts=1),
+        transport=transport,
     )
     total_cost = sum(float(item.get("actual_cost", 0.0)) for item in completed.values())
     for item in input_bundle["requests"]:
@@ -363,7 +364,27 @@ def execute_shadow(
         ledger["attempts"] = attempts
         atomic_write_json(ledger_path, ledger)
         try:
-            response = client.decide(state=item["state"], questions=item["questions"])
+            raw_response = transport.post_json(
+                prepared.url,
+                {
+                    "Authorization": f"Bearer {api_key}",
+                    "HTTP-Referer": client.app_referer,
+                    "X-Title": client.app_title,
+                },
+                prepared.payload,
+            )
+            atomic_write_json(
+                workspace / "raw_responses" / f"{request_id}.json",
+                raw_response,
+            )
+            response = JevDecisionResponse.from_dict(raw_response)
+            missing = set(item["questions"]) - set(response.answers)
+            unexpected = set(response.answers) - set(item["questions"])
+            if missing or unexpected:
+                raise ValidationError(
+                    "Jev response question mismatch: "
+                    f"missing={sorted(missing)}, unexpected={sorted(unexpected)}"
+                )
         except Exception as exc:
             attempt["status"] = "failed"
             attempt["finished_at"] = datetime.now(timezone.utc).isoformat()

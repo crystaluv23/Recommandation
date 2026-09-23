@@ -21,6 +21,7 @@ from stock_opportunity_agent.models import ValidationError
 DEFAULT_JEV_MODEL = "typesafe/jev-1.13"
 DEFAULT_JEV_URL = "https://openrouter.ai/api/alpha/decisions"
 DEFAULT_OPENROUTER_API_KEY_ENV_VAR = "OPENROUTER_API_KEY"
+MAX_PROBABILITY_ROUNDING_DRIFT = 0.05
 
 
 @dataclass(frozen=True)
@@ -42,8 +43,18 @@ class JevChoiceAnswer:
             for value in probabilities.values()
         ):
             raise ValidationError("Jev probabilities must be finite values in [0, 1]")
-        if not math.isclose(sum(probabilities.values()), 1.0, abs_tol=0.001):
-            raise ValidationError("Jev probabilities must sum to one")
+        probability_sum = sum(probabilities.values())
+        if (
+            probability_sum <= 0
+            or abs(probability_sum - 1.0)
+            > MAX_PROBABILITY_ROUNDING_DRIFT + 1e-12
+        ):
+            raise ValidationError(
+                "Jev rounded probabilities must sum within 0.05 of one"
+            )
+        probabilities = {
+            key: value / probability_sum for key, value in probabilities.items()
+        }
         confidence = float(self.confidence)
         if not math.isfinite(confidence) or not 0 <= confidence <= 1:
             raise ValidationError("Jev confidence must be in [0, 1]")

@@ -94,6 +94,13 @@ Signal-execution, chat-LLM, explanation, or reflection calls. Scoring is a
 separate phase that starts only after every Jev response is durable and then
 loads the label bundle.
 
+The live transport persists the exact raw provider response before typed
+parsing. Choice probabilities are provider-rounded decimals and may not sum to
+exactly one. A distribution with total mass within `0.05` of one is normalized
+deterministically for downstream feedback while the raw values remain in the
+audit artifact; larger drift, missing choices, or values outside `[0,1]` fail
+closed. This normalization rule is frozen before a scored shadow starts.
+
 The primary prediction comparison excludes historical technical exclusions
 that never produced a non-empty final context; these cases remain visible as a
 separate operational-coverage count. Signal-routing results are proxy evidence:
