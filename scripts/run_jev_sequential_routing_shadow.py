@@ -16,20 +16,23 @@ from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_
 from stock_opportunity_agent.llm.openrouter_jev import JevDecisionResponse
 from stock_opportunity_agent.models import ValidationError
 
-from scripts.run_jev_historical_shadow import (
-    DEFAULT_JEV_MODEL,
-    DEFAULT_JEV_URL,
-    MAX_ATTEMPTS_PER_REQUEST,
-    PROJECT_ROOT,
-    SCHEMA_VERSION,
-    UNCERTAIN_SEND_COST_RESERVE_USD,
-    _git_head,
-    _read_json,
-    _request_hash,
-    _routing_agreement_metrics,
-    _verify_workspace,
-    execute_shadow,
-)
+if __package__:
+    from scripts import run_jev_historical_shadow as historical_shadow
+else:
+    import run_jev_historical_shadow as historical_shadow
+
+DEFAULT_JEV_MODEL = historical_shadow.DEFAULT_JEV_MODEL
+DEFAULT_JEV_URL = historical_shadow.DEFAULT_JEV_URL
+MAX_ATTEMPTS_PER_REQUEST = historical_shadow.MAX_ATTEMPTS_PER_REQUEST
+PROJECT_ROOT = historical_shadow.PROJECT_ROOT
+SCHEMA_VERSION = historical_shadow.SCHEMA_VERSION
+UNCERTAIN_SEND_COST_RESERVE_USD = historical_shadow.UNCERTAIN_SEND_COST_RESERVE_USD
+_git_head = historical_shadow._git_head
+_read_json = historical_shadow._read_json
+_request_hash = historical_shadow._request_hash
+_routing_agreement_metrics = historical_shadow._routing_agreement_metrics
+_verify_workspace = historical_shadow._verify_workspace
+execute_shadow = historical_shadow.execute_shadow
 
 
 DEFAULT_SOURCE_WORKSPACE = (
