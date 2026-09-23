@@ -127,19 +127,23 @@ Current Jev magnitude output should remain diagnostic only.
 
 ## Signal selection result
 
+The routing portfolio below was rescored on 2026-09-23 after correcting the
+cap-rank score from the winning destination's probability to total inclusion
+probability `1 - P(no_match)`. No Jev request was repeated.
+
 | Measure | Result |
 |---|---:|
 | Exact ordered agreement with historical LLM | 1.25% |
-| Exact set agreement | 3.75% |
-| Mean set Jaccard | 0.384 |
-| Mean recall of historical selected refs | 0.593 |
+| Exact set agreement | 6.25% |
+| Mean set Jaccard | 0.420 |
+| Micro recall of historical selected refs | 0.635 |
 | Mean historical selection size | 3.113 |
 | Mean Jev selection size after cap | 3.900 |
 | Rounds reaching cap of four | 77 / 80 |
 | Raw non-`no_match` card decisions | 878 / 992 = 88.5% |
 
-Retention of previously selected Signal results was 63.3% for positive, 56.1%
-for negative, 61.0% for neutral, and 51.9% for unavailable results. Jev selected
+Retention of previously selected Signal results was 69.6% for positive, 59.1%
+for negative, 62.3% for neutral, and 59.3% for unavailable results. Jev selected
 almost every eligible card and relied on the runtime cap to trim the result. This
 is weak discrimination, not evidence of better routing.
 

@@ -1,0 +1,138 @@
+{
+  "authoritative_workspace": "runs/cold_start/evolution/jev-signal-routing-context-parity-20260923-v3",
+  "card_level_llm_parity": {
+    "binary_accuracy": 0.6330645161290323,
+    "confidence_bucket_agreement": {
+      "no_match": {
+        "high": 0.973,
+        "low": 0.8061,
+        "medium": 0.8901
+      },
+      "selected": {
+        "high": 0.4651,
+        "low": 0.3393,
+        "medium": 0.3219
+      }
+    },
+    "confusion": {
+      "fn": 85,
+      "fp": 279,
+      "tn": 464,
+      "tp": 164
+    },
+    "mean_confidence": {
+      "fn": 0.4865882352941175,
+      "fp": 0.6501792114695337,
+      "tn": 0.5717241379310347,
+      "tp": 0.6889634146341463
+    },
+    "mean_selection_probability": 0.5720410760834156,
+    "reference_selection_prevalence": 0.25100806451612906,
+    "selection_probability_brier": 0.2969655445482034,
+    "selection_probability_log_loss": 0.9015273441068672,
+    "selection_probability_roc_auc": 0.6855767619603582
+  },
+  "context_audit": {
+    "equality": "literal_object_equal_to_initial_signal_retrieval_cards_user_payload",
+    "historical_llm_system_prompt_characters": 3927,
+    "historical_llm_system_prompt_sha256": "20040d426eea8c6240c3a57b5684e188787f75775a3982e55859b0ac0fe6c214",
+    "object_equal_round_count": 80,
+    "system_contract_delivery": "selection-relevant rules translated into Jev question instructions",
+    "validation_feedback_preserved": true
+  },
+  "date": "2026-09-23",
+  "decision": "do_not_replace_final_signal_selector; retain probability and confidence as experimental reflection feedback; test a sequential slot selector before outcome evaluation",
+  "decision_diagnostics": {
+    "choice_counts": {
+      "context_only": 27,
+      "need_0": 81,
+      "need_1": 54,
+      "need_2": 64,
+      "need_3": 97,
+      "need_4": 70,
+      "need_5": 50,
+      "no_match": 549
+    },
+    "confidence_buckets": {
+      "high": 166,
+      "low": 498,
+      "medium": 328
+    },
+    "mean_confidence": 0.6058770161290322,
+    "question_count": 992,
+    "raw_non_no_match_count": 443,
+    "raw_non_no_match_rate": 0.4465725806451613
+  },
+  "diagnostic_extra_run_cost_usd": 0.039571224,
+  "execution": {
+    "actual_cost_usd": 0.044927736,
+    "budget_charge_usd": 0.044927736,
+    "completed_at": "2026-09-23T13:58:35.262886+00:00",
+    "completed_request_count": 80,
+    "physical_attempt_count": 80,
+    "providers": [
+      "TypeSafe"
+    ],
+    "resolved_models": [
+      "typesafe/jev-1.13-20260917"
+    ],
+    "retryable_or_interrupted_attempt_count": 0,
+    "schema_version": "jev-historical-shadow-v1",
+    "total_tokens": 1161183
+  },
+  "historical_llm": {
+    "mean_selection_size": 3.1125,
+    "round_count": 80,
+    "selected_count": 249
+  },
+  "limitation": "Agreement is a routing-parity proxy. Jev-only alternative Signals were not executed, so this probe does not measure final research quality.",
+  "manifest_hash": "2067bd234b01a713fa2e0ff77ffb312bbf7f86ec2be6cc8f2de490b15280e45d",
+  "post_cap_diagnostics": {
+    "fn": 118,
+    "fp": 132,
+    "mean_confidence": {
+      "fn": 0.5269,
+      "fp": 0.7,
+      "tp": 0.7036
+    },
+    "mean_selection_probability": {
+      "fn": 0.5319,
+      "fp": 0.8461,
+      "tp": 0.846
+    },
+    "tp": 131
+  },
+  "schema_version": "jev-signal-routing-context-parity-report-v1",
+  "source_broad_jev_corrected_rank": {
+    "baseline_selected_count": 249,
+    "empty_rounds": 1,
+    "exact_ordered_match_rate": 0.0125,
+    "exact_set_match_rate": 0.0625,
+    "intersection_count": 158,
+    "mean_jaccard": 0.4203571428571428,
+    "mean_selection_size": 3.9,
+    "micro_f1": 0.5632798573975045,
+    "micro_precision": 0.5064102564102564,
+    "micro_recall": 0.6345381526104418,
+    "round_count": 80,
+    "rounds_at_cap_four": 77,
+    "selected_count": 312
+  },
+  "source_manifest_hash": "5bd82c478c86d63b482926da34d0481c55924030133932bb6ae645fcf8b7525a",
+  "source_workspace": "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v3",
+  "strict_context_parity_jev_corrected_rank": {
+    "baseline_selected_count": 249,
+    "empty_rounds": 7,
+    "exact_ordered_match_rate": 0.0125,
+    "exact_set_match_rate": 0.025,
+    "intersection_count": 131,
+    "mean_jaccard": 0.3566964285714286,
+    "mean_selection_size": 3.2875,
+    "micro_f1": 0.51171875,
+    "micro_precision": 0.49809885931558934,
+    "micro_recall": 0.5261044176706827,
+    "round_count": 80,
+    "rounds_at_cap_four": 56,
+    "selected_count": 263
+  }
+}
