@@ -75,7 +75,6 @@ _MAGNITUDE_CRITERIA = {
     "2-3x": "For a positive candidate judgment, the supported price range is 2x to below 3x.",
     "3-10x": "For a positive candidate judgment, the supported price range is 3x to below 10x.",
     "10x+": "For a positive candidate judgment, the supported price range is at least 10x.",
-    "not_applicable": "Use only when candidate_judgment is unlikely or insufficient_information.",
 }
 
 
@@ -219,7 +218,7 @@ class JevBlindPredictor:
             ),
             "final_context": dict(final_context),
         }
-        questions = {
+        judgment_questions = {
             "candidate_judgment": {
                 "type": "choice",
                 "instructions": (
@@ -229,33 +228,44 @@ class JevBlindPredictor:
                 ),
                 "criteria": _JUDGMENT_CRITERIA,
             },
-            "magnitude": {
-                "type": "choice",
-                "instructions": (
-                    "Choose the supported magnitude for a positive candidate judgment, "
-                    "or not_applicable for a negative judgment."
-                ),
-                "criteria": _MAGNITUDE_CRITERIA,
-            },
         }
-        response = self.client.decide(state=state, questions=questions)
-        judgment_answer = response.answers["candidate_judgment"]
-        magnitude_answer = response.answers["magnitude"]
-        _require_options(judgment_answer, set(_JUDGMENT_CRITERIA))
-        _require_options(magnitude_answer, set(_MAGNITUDE_CRITERIA))
-        judgment = CandidateJudgment(judgment_answer.choice)
-        if judgment.is_positive:
-            if magnitude_answer.choice == "not_applicable":
-                raise ValidationError("positive Jev judgment requires a magnitude")
-            magnitude = MagnitudeClass(magnitude_answer.choice)
-        else:
-            if magnitude_answer.choice != "not_applicable":
-                raise ValidationError("negative Jev judgment requires not_applicable")
-            magnitude = None
-        decisions = (
-            _decision_signal(response, "candidate_judgment"),
-            _decision_signal(response, "magnitude"),
+        judgment_response = self.client.decide(
+            state=state,
+            questions=judgment_questions,
         )
+        judgment_answer = judgment_response.answers["candidate_judgment"]
+        _require_options(judgment_answer, set(_JUDGMENT_CRITERIA))
+        judgment = CandidateJudgment(judgment_answer.choice)
+        decisions = (_decision_signal(judgment_response, "candidate_judgment"),)
+        usage = judgment_response.usage
+        if judgment.is_positive:
+            magnitude_state = {
+                **state,
+                "immutable_candidate_judgment": judgment.value,
+            }
+            magnitude_questions = {
+                "magnitude": {
+                    "type": "choice",
+                    "instructions": (
+                        "The positive candidate judgment is immutable. Choose the "
+                        "supported price magnitude within the fixed six-month horizon."
+                    ),
+                    "criteria": _MAGNITUDE_CRITERIA,
+                }
+            }
+            magnitude_response = self.client.decide(
+                state=magnitude_state,
+                questions=magnitude_questions,
+            )
+            magnitude_answer = magnitude_response.answers["magnitude"]
+            _require_options(magnitude_answer, set(_MAGNITUDE_CRITERIA))
+            magnitude = MagnitudeClass(magnitude_answer.choice)
+            decisions = decisions + (
+                _decision_signal(magnitude_response, "magnitude"),
+            )
+            usage = usage + magnitude_response.usage
+        else:
+            magnitude = None
 
         def parse_explanation(value: Mapping[str, Any]) -> tuple[tuple[str, ...], tuple[str, ...]]:
             if set(value) != {"key_reasons", "uncertainties"}:
@@ -299,10 +309,10 @@ class JevBlindPredictor:
             confidence=_qualitative_confidence(judgment_answer.confidence),
             key_reasons=reasons,
             uncertainties=uncertainties,
-            session_id=response.response_id,
+            session_id=judgment_response.response_id,
             jev_decisions=decisions,
         )
-        return AgentStep(prediction, response.usage + explanation_usage)
+        return AgentStep(prediction, usage + explanation_usage)
 
     def reflect(
         self,

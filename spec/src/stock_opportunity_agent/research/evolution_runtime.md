@@ -118,6 +118,15 @@ historically productive or unavailable Signals, but cannot claim that newly
 selected counterfactual Signals would have improved the research outcome unless
 they are executed in a later, separately authorized experiment.
 
+Blind direction and magnitude are separate dependent Decisions requests.
+Direction is persisted first; a positive direction freezes a follow-up request
+containing the same label-free final context and the immutable direction, and
+the follow-up exposes only the three positive magnitude classes. A negative
+direction terminates Jev prediction without a magnitude call. Asking both
+questions independently in one request is invalid because `not_applicable` can
+win independently of a positive direction and create an unusable cross-field
+pair.
+
 ## Frozen Run Contract
 
 One immutable, secret-free `EvolutionRunContract` binds:

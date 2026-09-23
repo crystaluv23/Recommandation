@@ -195,15 +195,19 @@ class JevParallelRoleTests(TestCase):
                             },
                             0.62,
                         ),
+                    },
+                ),
+                _response(
+                    "jev-magnitude-1",
+                    {
                         "magnitude": _choice(
                             "3-10x",
                             {
                                 "2-3x": 0.20,
-                                "3-10x": 0.65,
-                                "10x+": 0.05,
-                                "not_applicable": 0.10,
+                                "3-10x": 0.70,
+                                "10x+": 0.10,
                             },
-                            0.65,
+                            0.70,
                         ),
                     },
                 )
@@ -256,7 +260,12 @@ class JevParallelRoleTests(TestCase):
         )
         self.assertEqual(
             feedback["magnitude"]["probability_assigned_to_true_magnitude"],
-            0.65,
+            0.70,
+        )
+        self.assertEqual(len(jev.calls), 2)
+        self.assertEqual(
+            jev.calls[1]["state"]["immutable_candidate_judgment"],
+            "possible",
         )
 
         reflection = predictor.reflect(
@@ -271,11 +280,11 @@ class JevParallelRoleTests(TestCase):
             "3-10x",
         )
 
-    def test_inconsistent_negative_magnitude_fails_closed(self):
+    def test_negative_judgment_skips_magnitude_request(self):
         client = RecordedJevDecisionClient(
             [
                 _response(
-                    "jev-invalid",
+                    "jev-negative",
                     {
                         "candidate_judgment": _choice(
                             "unlikely",
@@ -286,20 +295,19 @@ class JevParallelRoleTests(TestCase):
                                 "insufficient_information": 0.10,
                             },
                         ),
-                        "magnitude": _choice(
-                            "2-3x",
-                            {
-                                "2-3x": 0.70,
-                                "3-10x": 0.10,
-                                "10x+": 0.05,
-                                "not_applicable": 0.15,
-                            },
-                        ),
                     },
                 )
             ]
         )
-        with self.assertRaisesRegex(ValidationError, "not_applicable"):
-            JevBlindPredictor(client, _ScriptedRoleCaller([])).predict(
-                {"analysis": ["fixture"]}
-            )
+        caller = _ScriptedRoleCaller(
+            [{"key_reasons": ["Evidence is insufficient."], "uncertainties": []}]
+        )
+        prediction = JevBlindPredictor(client, caller).predict(
+            {"analysis": ["fixture"]}
+        ).value
+        self.assertFalse(prediction.is_surge)
+        self.assertIsNone(prediction.magnitude)
+        self.assertEqual(len(prediction.jev_decisions), 1)
+        self.assertEqual(len(client.calls), 1)
+        feedback = jev_decision_feedback(prediction, GroundTruth(1.1))
+        self.assertFalse(feedback["magnitude"]["requested"])

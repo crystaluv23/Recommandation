@@ -139,15 +139,19 @@ def run_replay() -> dict[str, Any]:
                         },
                         0.62,
                     ),
+                },
+            ),
+            _response(
+                "recorded-magnitude-1",
+                {
                     "magnitude": _choice(
                         "3-10x",
                         {
                             "2-3x": 0.20,
-                            "3-10x": 0.65,
-                            "10x+": 0.05,
-                            "not_applicable": 0.10,
+                            "3-10x": 0.70,
+                            "10x+": 0.10,
                         },
-                        0.65,
+                        0.70,
                     ),
                 },
             )

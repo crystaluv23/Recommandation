@@ -48,6 +48,11 @@ DEFAULT_WORKSPACE = (
     PROJECT_ROOT
     / "runs/cold_start/evolution/jev-shadow-v139-r1-c01-20260923-v3"
 )
+DEFAULT_MAGNITUDE_WORKSPACE = (
+    PROJECT_ROOT
+    / "runs/cold_start/evolution/"
+    "jev-shadow-v139-r1-c01-magnitude-followup-20260923-v1"
+)
 SCHEMA_VERSION = "jev-historical-shadow-v1"
 MAX_COST_USD = 0.25
 MAX_EXTRA_ATTEMPTS = 10
@@ -109,14 +114,19 @@ def _prediction_questions() -> dict[str, dict[str, Any]]:
             ),
             "criteria": dict(_JUDGMENT_CRITERIA),
         },
+    }
+
+
+def _magnitude_questions() -> dict[str, dict[str, Any]]:
+    return {
         "magnitude": {
             "type": "choice",
             "instructions": (
-                "Choose the supported magnitude for a positive candidate judgment, "
-                "or not_applicable for a negative judgment."
+                "The positive candidate judgment is immutable. Choose the supported "
+                "price magnitude within the fixed six-month horizon."
             ),
             "criteria": dict(_MAGNITUDE_CRITERIA),
-        },
+        }
     }
 
 
@@ -284,6 +294,104 @@ def prepare_shadow(
             "schema_version": SCHEMA_VERSION,
             "max_external_attempts": len(inputs) + MAX_EXTRA_ATTEMPTS,
             "max_total_cost_usd": MAX_COST_USD,
+            "attempts": [],
+        },
+    )
+    return manifest
+
+
+def prepare_magnitude_followup(
+    *,
+    source_workspace: Path,
+    source_manifest_hash: str,
+    workspace: Path = DEFAULT_MAGNITUDE_WORKSPACE,
+) -> dict[str, Any]:
+    """Freeze conditional magnitude requests from durable positive decisions.
+
+    This phase reads the source input and Jev responses but never opens labels.json.
+    """
+
+    if workspace.exists() and any(workspace.iterdir()):
+        raise ValidationError(
+            f"magnitude workspace already exists and is not empty: {workspace}"
+        )
+    source_manifest, source_inputs = _verify_workspace(
+        source_workspace, source_manifest_hash
+    )
+    requests: list[dict[str, Any]] = []
+    source_response_hashes: dict[str, str] = {}
+    prediction_items = [
+        item for item in source_inputs["requests"] if item["kind"] == "prediction"
+    ]
+    for item in prediction_items:
+        response_path = source_workspace / "responses" / f"{item['request_id']}.json"
+        if not response_path.exists():
+            raise ValidationError("source prediction responses are incomplete")
+        stored = _read_json(response_path)
+        source_response_hashes[item["request_id"]] = _sha256_file(response_path)
+        response = JevDecisionResponse.from_dict(stored["response"])
+        judgment = response.answers.get("candidate_judgment")
+        if judgment is None:
+            raise ValidationError("source response lacks candidate_judgment")
+        if judgment.choice not in {"likely", "possible"}:
+            continue
+        state = {
+            **dict(item["state"]),
+            "immutable_candidate_judgment": judgment.choice,
+        }
+        questions = _magnitude_questions()
+        requests.append(
+            {
+                "request_id": f"magnitude_{item['case_key']}",
+                "kind": "magnitude_followup",
+                "case_key": item["case_key"],
+                "state": state,
+                "questions": questions,
+                "request_body_sha256": _request_hash(state, questions),
+                "analysis_metadata": {
+                    "source_prediction_request_id": item["request_id"],
+                    "source_prediction_response_sha256": source_response_hashes[
+                        item["request_id"]
+                    ],
+                },
+            }
+        )
+    input_bundle = {"schema_version": SCHEMA_VERSION, "requests": requests}
+    input_hash = canonical_json_hash(input_bundle)
+    max_extra_attempts = min(MAX_EXTRA_ATTEMPTS, max(3, len(requests)))
+    manifest = {
+        "schema_version": SCHEMA_VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source_shadow_workspace": str(source_workspace),
+        "source_shadow_manifest_hash": source_manifest_hash,
+        "source_shadow_input_bundle_sha256": source_manifest[
+            "input_bundle_sha256"
+        ],
+        "source_prediction_response_sha256": source_response_hashes,
+        "git_commit": _git_head(),
+        "provider": "openrouter",
+        "model": DEFAULT_JEV_MODEL,
+        "endpoint": DEFAULT_JEV_URL,
+        "input_bundle_sha256": input_hash,
+        "magnitude_request_count": len(requests),
+        "max_external_attempts": len(requests) + max_extra_attempts,
+        "max_attempts_per_request": MAX_ATTEMPTS_PER_REQUEST,
+        "uncertain_send_cost_reserve_usd": UNCERTAIN_SEND_COST_RESERVE_USD,
+        "max_total_cost_usd": 0.05,
+        "execution_boundary": (
+            "prepare and execute never read source labels; combined scoring opens "
+            "labels only after every conditional magnitude response is durable"
+        ),
+    }
+    manifest["manifest_hash"] = canonical_json_hash(manifest)
+    atomic_write_json(workspace / "inputs.json", input_bundle)
+    atomic_write_json(workspace / "manifest.json", manifest)
+    atomic_write_json(
+        workspace / "attempts.json",
+        {
+            "schema_version": SCHEMA_VERSION,
+            "max_external_attempts": manifest["max_external_attempts"],
+            "max_total_cost_usd": manifest["max_total_cost_usd"],
             "attempts": [],
         },
     )
@@ -660,12 +768,17 @@ def score_shadow(*, workspace: Path, acknowledged_hash: str) -> dict[str, Any]:
             truth = label_by_case[item["case_key"]]["ground_truth"]
             baseline = item["analysis_metadata"]["baseline_prediction"]
             judgment = response.answers["candidate_judgment"]
-            magnitude = response.answers["magnitude"]
+            magnitude = response.answers.get("magnitude")
             jev_positive = judgment.choice in {"likely", "possible"}
             truth_positive = bool(truth["is_surge"])
             adapter_valid = (
-                jev_positive and magnitude.choice in {"2-3x", "3-10x", "10x+"}
-            ) or (not jev_positive and magnitude.choice == "not_applicable")
+                jev_positive
+                and magnitude is not None
+                and magnitude.choice in {"2-3x", "3-10x", "10x+"}
+            ) or (
+                not jev_positive
+                and (magnitude is None or magnitude.choice == "not_applicable")
+            )
             positive_probability = sum(
                 judgment.probabilities.get(value, 0.0)
                 for value in ("likely", "possible")
@@ -682,14 +795,23 @@ def score_shadow(*, workspace: Path, acknowledged_hash: str) -> dict[str, Any]:
                     "jev_positive": jev_positive,
                     "jev_judgment": judgment.choice,
                     "jev_magnitude": (
-                        magnitude.choice if magnitude.choice != "not_applicable" else None
+                        magnitude.choice
+                        if magnitude is not None
+                        and magnitude.choice != "not_applicable"
+                        else None
                     ),
                     "adapter_valid": adapter_valid,
                     "binary_positive_probability": positive_probability,
                     "judgment_confidence": judgment.confidence,
                     "judgment_probabilities": dict(judgment.probabilities),
-                    "magnitude_confidence": magnitude.confidence,
-                    "magnitude_probabilities": dict(magnitude.probabilities),
+                    "magnitude_confidence": (
+                        magnitude.confidence if magnitude is not None else None
+                    ),
+                    "magnitude_probabilities": (
+                        dict(magnitude.probabilities)
+                        if magnitude is not None
+                        else None
+                    ),
                 }
             )
         else:
@@ -809,6 +931,83 @@ def score_shadow(*, workspace: Path, acknowledged_hash: str) -> dict[str, Any]:
     return result
 
 
+def score_combined_shadow(
+    *,
+    source_workspace: Path,
+    source_manifest_hash: str,
+    magnitude_workspace: Path,
+    magnitude_manifest_hash: str,
+) -> dict[str, Any]:
+    """Combine frozen direction/routing results with conditional magnitude calls."""
+
+    result = score_shadow(
+        workspace=source_workspace,
+        acknowledged_hash=source_manifest_hash,
+    )
+    magnitude_manifest, magnitude_inputs = _verify_workspace(
+        magnitude_workspace, magnitude_manifest_hash
+    )
+    if magnitude_manifest["source_shadow_manifest_hash"] != source_manifest_hash:
+        raise ValidationError("magnitude follow-up does not belong to source shadow")
+    response_paths = list((magnitude_workspace / "responses").glob("*.json"))
+    if len(response_paths) != len(magnitude_inputs["requests"]):
+        raise ValidationError("conditional magnitude responses are incomplete")
+    followup_by_case: dict[str, JevDecisionResponse] = {}
+    for item in magnitude_inputs["requests"]:
+        stored = _read_json(
+            magnitude_workspace / "responses" / f"{item['request_id']}.json"
+        )
+        response = JevDecisionResponse.from_dict(stored["response"])
+        if set(response.answers) != {"magnitude"}:
+            raise ValidationError("follow-up response must contain only magnitude")
+        answer = response.answers["magnitude"]
+        if set(answer.probabilities) != set(_MAGNITUDE_CRITERIA):
+            raise ValidationError("follow-up magnitude options changed")
+        followup_by_case[item["case_key"]] = response
+
+    positive_cases = {
+        row["case_key"]
+        for row in result["prediction"]["rows"]
+        if row["jev_positive"]
+    }
+    if set(followup_by_case) != positive_cases:
+        raise ValidationError("follow-up cases differ from positive direction choices")
+    for row in result["prediction"]["rows"]:
+        response = followup_by_case.get(row["case_key"])
+        if response is None:
+            row["jev_magnitude"] = None
+            row["magnitude_confidence"] = None
+            row["magnitude_probabilities"] = None
+        else:
+            answer = response.answers["magnitude"]
+            row["jev_magnitude"] = answer.choice
+            row["magnitude_confidence"] = answer.confidence
+            row["magnitude_probabilities"] = dict(answer.probabilities)
+        row["adapter_valid"] = True
+
+    result["schema_version"] = "jev-historical-shadow-combined-v1"
+    result["magnitude_manifest_hash"] = magnitude_manifest_hash
+    result["prediction"]["jev_magnitude"] = _magnitude_metrics(
+        [
+            (row["jev_magnitude"], row["true_magnitude"])
+            for row in result["prediction"]["rows"]
+        ]
+    )
+    result["prediction"]["adapter_valid_count"] = len(
+        result["prediction"]["rows"]
+    )
+    result["conditional_magnitude_followup"] = {
+        "request_count": len(magnitude_inputs["requests"]),
+        "execution": _read_json(magnitude_workspace / "execution_summary.json"),
+        "interpretation": (
+            "Magnitude was requested only after an immutable positive direction; "
+            "negative directions generated no provider magnitude signal."
+        ),
+    }
+    atomic_write_json(magnitude_workspace / "combined_score.json", result)
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -823,6 +1022,17 @@ def main() -> None:
     score = subparsers.add_parser("score")
     score.add_argument("--workspace", type=Path, default=DEFAULT_WORKSPACE)
     score.add_argument("--acknowledge-manifest-hash", required=True)
+    prepare_magnitude = subparsers.add_parser("prepare-magnitude")
+    prepare_magnitude.add_argument("--source-workspace", type=Path, required=True)
+    prepare_magnitude.add_argument("--source-manifest-hash", required=True)
+    prepare_magnitude.add_argument(
+        "--workspace", type=Path, default=DEFAULT_MAGNITUDE_WORKSPACE
+    )
+    score_combined = subparsers.add_parser("score-combined")
+    score_combined.add_argument("--source-workspace", type=Path, required=True)
+    score_combined.add_argument("--source-manifest-hash", required=True)
+    score_combined.add_argument("--magnitude-workspace", type=Path, required=True)
+    score_combined.add_argument("--magnitude-manifest-hash", required=True)
     args = parser.parse_args()
     if args.command == "prepare":
         value = prepare_shadow(
@@ -836,10 +1046,23 @@ def main() -> None:
             acknowledged_hash=args.acknowledge_manifest_hash,
             env_file=args.env_file,
         )
-    else:
+    elif args.command == "score":
         value = score_shadow(
             workspace=args.workspace,
             acknowledged_hash=args.acknowledge_manifest_hash,
+        )
+    elif args.command == "prepare-magnitude":
+        value = prepare_magnitude_followup(
+            source_workspace=args.source_workspace,
+            source_manifest_hash=args.source_manifest_hash,
+            workspace=args.workspace,
+        )
+    else:
+        value = score_combined_shadow(
+            source_workspace=args.source_workspace,
+            source_manifest_hash=args.source_manifest_hash,
+            magnitude_workspace=args.magnitude_workspace,
+            magnitude_manifest_hash=args.magnitude_manifest_hash,
         )
     print(json.dumps(value, sort_keys=True))
 

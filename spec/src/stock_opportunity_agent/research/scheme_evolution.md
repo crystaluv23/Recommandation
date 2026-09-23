@@ -1084,7 +1084,11 @@ semantics, persistence-before-label boundary, scoring rules, and post-label
 reflection remain authoritative.
 
 For Blind Prediction, Jev owns the immutable `candidate_judgment` choice and a
-conditional magnitude choice. A conventional no-web LLM then receives the same
+sequential conditional magnitude choice. Runtime asks the direction question
+first. Only a `likely` or `possible` answer opens a second Jev request over the
+same final context plus that immutable direction, with exactly `2-3x`, `3-10x`,
+and `10x+` as options. A negative direction creates no magnitude request or
+provider magnitude signal. A conventional no-web LLM then receives the same
 label-free final context plus Jev's already-fixed decision and writes only
 `key_reasons` and `uncertainties`; it may not replace the choice. The combined
 prediction is persisted before ground truth is loaded. After label reveal, the

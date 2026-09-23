@@ -1520,12 +1520,15 @@ def jev_decision_feedback(
     by_question = {item.question_id: item for item in prediction.jev_decisions}
     judgment = by_question.get("candidate_judgment")
     magnitude = by_question.get("magnitude")
-    if judgment is None or magnitude is None or set(by_question) != {
-        "candidate_judgment",
-        "magnitude",
-    }:
+    expected_questions = (
+        {"candidate_judgment", "magnitude"}
+        if prediction.is_surge
+        else {"candidate_judgment"}
+    )
+    if judgment is None or set(by_question) != expected_questions:
         raise ValidationError(
-            "Jev BlindPrediction requires candidate_judgment and magnitude decisions"
+            "Jev BlindPrediction requires one direction decision and a magnitude "
+            "decision only for positive judgments"
         )
     positive_probability = sum(
         judgment.probabilities.get(value, 0.0)
@@ -1555,15 +1558,25 @@ def jev_decision_feedback(
             "negative_probability": negative_probability,
             "probability_assigned_to_realized_binary": true_binary_probability,
         },
-        "magnitude": {
-            **magnitude.to_dict(),
-            "true_magnitude": true_magnitude,
-            "probability_assigned_to_true_magnitude": (
-                magnitude.probabilities.get(true_magnitude, 0.0)
-                if true_magnitude is not None
-                else None
-            ),
-        },
+        "magnitude": (
+            {
+                **magnitude.to_dict(),
+                "requested": True,
+                "true_magnitude": true_magnitude,
+                "probability_assigned_to_true_magnitude": (
+                    magnitude.probabilities.get(true_magnitude, 0.0)
+                    if true_magnitude is not None
+                    else None
+                ),
+            }
+            if magnitude is not None
+            else {
+                "requested": False,
+                "reason": "negative candidate_judgment",
+                "true_magnitude": true_magnitude,
+                "probability_assigned_to_true_magnitude": None,
+            }
+        ),
     }
 
 

@@ -9,7 +9,11 @@ from unittest import TestCase
 
 from stock_opportunity_agent.artifacts import atomic_write_json
 
-from scripts.run_jev_historical_shadow import prepare_shadow, score_shadow
+from scripts.run_jev_historical_shadow import (
+    prepare_magnitude_followup,
+    prepare_shadow,
+    score_shadow,
+)
 
 
 class JevHistoricalShadowTests(TestCase):
@@ -38,15 +42,10 @@ class JevHistoricalShadowTests(TestCase):
                 if item["kind"] == "prediction":
                     baseline = item["analysis_metadata"]["baseline_prediction"]
                     judgment = baseline["candidate_judgment"]
-                    magnitude = baseline.get("magnitude") or "not_applicable"
                     answers = {
                         "candidate_judgment": _answer(
                             judgment,
                             ("likely", "possible", "unlikely", "insufficient_information"),
-                        ),
-                        "magnitude": _answer(
-                            magnitude,
-                            ("2-3x", "3-10x", "10x+", "not_applicable"),
                         ),
                     }
                 else:
@@ -105,6 +104,73 @@ class JevHistoricalShadowTests(TestCase):
                 score["prediction"]["historical_llm"]["confusion"],
             )
             self.assertEqual(score["routing"]["exact_set_match_rate"], 1.0)
+
+    def test_magnitude_followup_uses_only_durable_positive_choices(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            followup = root / "followup"
+            manifest = prepare_shadow(workspace=source)
+            inputs = json.loads((source / "inputs.json").read_text())
+            positive_cases = set()
+            prediction_index = 0
+            for item in inputs["requests"]:
+                if item["kind"] == "prediction":
+                    prediction_index += 1
+                    is_positive = prediction_index <= 2
+                    choice = "possible" if is_positive else "unlikely"
+                    if is_positive:
+                        positive_cases.add(item["case_key"])
+                    answers = {
+                        "candidate_judgment": _answer(
+                            choice,
+                            (
+                                "likely",
+                                "possible",
+                                "unlikely",
+                                "insufficient_information",
+                            ),
+                        )
+                    }
+                else:
+                    answers = {
+                        question_id: _answer("no_match", tuple(question["criteria"]))
+                        for question_id, question in item["questions"].items()
+                    }
+                atomic_write_json(
+                    source / "responses" / f"{item['request_id']}.json",
+                    {
+                        "request_id": item["request_id"],
+                        "response": {
+                            "id": f"recorded-{item['request_id']}",
+                            "model": "typesafe/jev-1.13-test",
+                            "provider": "TypeSafe",
+                            "answers": answers,
+                            "usage": {"input_tokens": 10, "output_tokens": 1, "cost": 0.0},
+                        },
+                    },
+                )
+
+            followup_manifest = prepare_magnitude_followup(
+                source_workspace=source,
+                source_manifest_hash=manifest["manifest_hash"],
+                workspace=followup,
+            )
+            followup_inputs_text = (followup / "inputs.json").read_text()
+            followup_inputs = json.loads(followup_inputs_text)
+            self.assertEqual(followup_manifest["magnitude_request_count"], 2)
+            self.assertEqual(
+                {item["case_key"] for item in followup_inputs["requests"]},
+                positive_cases,
+            )
+            self.assertNotIn("ground_truth", followup_inputs_text)
+            self.assertNotIn("labels.json", followup_inputs_text)
+            for item in followup_inputs["requests"]:
+                self.assertIn("immutable_candidate_judgment", item["state"])
+                self.assertEqual(set(item["questions"]), {"magnitude"})
+                self.assertNotIn(
+                    "not_applicable", item["questions"]["magnitude"]["criteria"]
+                )
 
 
 def _answer(choice: str, options: tuple[str, ...]) -> dict:
