@@ -139,6 +139,39 @@ cap permits, rank them by total selection probability `1 - P(no_match)`, rather
 than the probability of whichever individual need won. Agreement remains a
 parity diagnostic, not proof that either portfolio improves final predictions.
 
+A sequential routing probe tests whether Jev can form a coherent Signal
+portfolio when the choice topology makes marginal value explicit. It reuses the
+literal historical LLM initial user payload as immutable base state. At each
+slot it appends only the already selected Signal refs and their durable Jev
+decision metadata, then asks one `choice` question whose options are every
+remaining eligible Signal plus `stop`. A selected Signal is removed from later
+options. Once two LLM-executed Signals have been selected, remaining LLM Signals
+are removed from later options. The probe stops on `stop`, exhaustion, or the
+four-Signal total cap.
+
+Every step is a separately hashed, durable Jev request derived from the frozen
+base input and preceding durable answers. Resume must reconstruct the same path
+and fail closed if any derived request changes. Preparation and execution read
+no outcome label and call no chat LLM, Signal, or research role. Scoring may
+open the historical LLM portfolios and already recorded Signal result states
+only after all sequential responses are durable.
+
+The comparison reports exact/set agreement, Jaccard, micro precision/recall/F1,
+selection size, early-stop behavior, calls per round, latency, token count, and
+cost against the historical LLM, broad per-card Jev, and strict per-card Jev.
+Historical LLM timing and cost must come from its persisted request, response,
+and trajectory events rather than current price assumptions.
+
+Sequential choice probability is a pool-conditional preference, not an
+independent probability that a Signal is useful. Persist the chosen option's
+probability, `stop` probability, runner-up margin, full distribution, and Jev
+confidence. Scoring may test whether these values rank agreement with the
+historical LLM or distinguish recorded Signal result states. They remain
+experimental routing diagnostics. A Signal performance metric requires paired
+downstream execution or ablation showing incremental prediction or evidence
+value; selection probability and confidence alone must not update fitness,
+promotion, or canonical Signal statistics.
+
 Blind direction and magnitude are separate dependent Decisions requests.
 Direction is persisted first; a positive direction freezes a follow-up request
 containing the same label-free evidence context and the immutable direction, and
