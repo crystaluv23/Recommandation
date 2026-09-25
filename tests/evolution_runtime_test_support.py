@@ -99,6 +99,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutor,
     SignalExecutionStatus,
     SignalExecutionType,
+    SignalModality,
     SignalRegistry,
     SignalResult,
     SignalSpec,

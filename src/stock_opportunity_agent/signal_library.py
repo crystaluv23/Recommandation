@@ -168,6 +168,13 @@ class SignalExecutionType(str, Enum):
     LLM = "llm"
 
 
+class SignalModality(str, Enum):
+    """Research identity of the observable, independent of its implementation."""
+
+    STRUCTURED = "structured"
+    NARRATIVE = "narrative"
+
+
 class SignalValue(str, Enum):
     """Low-dimensional canonical state used by statistics."""
 
@@ -396,6 +403,7 @@ class SignalSpec:
     description: str
     execution_type: SignalExecutionType
     source_types: tuple[str, ...]
+    modality: SignalModality | None = None
     evidence_policy: EvidencePolicy = field(default_factory=EvidencePolicy)
     function: str | None = None
     skill_file: str | None = None
@@ -415,6 +423,22 @@ class SignalSpec:
                 "execution_type",
                 SignalExecutionType(self.execution_type),
             )
+        if self.modality is not None and not isinstance(
+            self.modality, SignalModality
+        ):
+            object.__setattr__(self, "modality", SignalModality(self.modality))
+        if (
+            self.modality is SignalModality.STRUCTURED
+            and self.execution_type is not SignalExecutionType.DETERMINISTIC
+        ):
+            raise ValidationError(
+                "structured Signal modality requires deterministic execution"
+            )
+        if (
+            self.modality is SignalModality.NARRATIVE
+            and self.execution_type is not SignalExecutionType.LLM
+        ):
+            raise ValidationError("narrative Signal modality requires LLM execution")
         if not self.source_types:
             raise ValidationError("signal requires at least one raw source type")
         for source_type in self.source_types:
@@ -548,7 +572,7 @@ class SignalSpec:
         return f"{self.signal_id}:v{self.version}"
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "signal_id": self.signal_id,
             "version": self.version,
             "category": self.category,
@@ -572,6 +596,9 @@ class SignalSpec:
             "evidence_policy": self.evidence_policy.to_dict(),
             "parameters": _thaw_json(self.parameters),
         }
+        if self.modality is not None:
+            value["modality"] = self.modality.value
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalSpec":
@@ -598,6 +625,11 @@ class SignalSpec:
             category=str(data["category"]),
             description=str(description),
             execution_type=SignalExecutionType(str(execution["type"])),
+            modality=(
+                SignalModality(str(data["modality"]))
+                if data.get("modality") is not None
+                else None
+            ),
             function=(str(execution["function"]) if execution.get("function") else None),
             skill_file=(
                 str(execution["skill_file"]) if execution.get("skill_file") else None
@@ -2976,6 +3008,11 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
         "financial.gross_margin_change": _gross_margin_change_signal,
         "financial.operating_cash_flow_margin": _operating_cash_flow_margin_signal,
         "financial.net_share_retirement_yoy": _net_share_retirement_yoy_signal,
+        "financial.cash_to_current_liabilities_ratio": (
+            _cash_to_current_liabilities_ratio_signal
+        ),
+        "financial.cash_burn_rate_elevated": _cash_burn_rate_elevated_signal,
+        "financial.liquidity_runway_months": _liquidity_runway_months_signal,
         "market.max_drawdown_1y": _max_drawdown_signal,
         "market.price_momentum_126d": _price_momentum_signal,
         "financial.cash_reserves": _cash_reserves_signal,
@@ -3079,6 +3116,10 @@ _CASH_TAGS = (
     "CashAndCashEquivalentsAtCarryingValue",
     "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
     "CashAndCashEquivalents",
+)
+_CURRENT_LIABILITIES_TAGS = (
+    "LiabilitiesCurrent",
+    "CurrentLiabilities",
 )
 _OPERATING_CASH_FLOW_TAGS = (
     "NetCashProvidedByUsedInOperatingActivities",
@@ -3353,6 +3394,155 @@ def _cash_reserves_signal(
     )
 
 
+def _cash_to_current_liabilities_ratio_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    """Measure latest cash and equivalents / current liabilities for the same SEC
+    instant period and reported currency. Non-positive liabilities and missing,
+    mismatched, or stale facts yield unavailable. Numeric states use positive_min
+    (default 1) and negative_max (default positive_min).
+    """
+
+    facts = _sec_facts(documents, as_of)
+    cash = _instant_series(facts, _CASH_TAGS)
+    liabilities = _instant_series(facts, _CURRENT_LIABILITIES_TAGS)
+    liabilities_by_period = {
+        (fact.end, fact.unit.casefold()): fact for fact in liabilities
+    }
+    pairs = [
+        (cash_fact, liabilities_by_period[(cash_fact.end, cash_fact.unit.casefold())])
+        for cash_fact in cash
+        if (cash_fact.end, cash_fact.unit.casefold()) in liabilities_by_period
+        and liabilities_by_period[(cash_fact.end, cash_fact.unit.casefold())].value > 0
+    ]
+    if not pairs:
+        return _unavailable_result(
+            spec,
+            "Matching SEC cash and positive current-liabilities instant facts were unavailable.",
+        )
+    cash_fact, liabilities_fact = max(
+        pairs,
+        key=lambda pair: (
+            pair[0].end,
+            pair[0].unit.casefold() == "usd",
+            pair[0].filed,
+            pair[0].document.document_id,
+        ),
+    )
+    if not _current_sec_fact_is_fresh(spec, cash_fact, as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest matched SEC liquidity period ended {cash_fact.end} and is stale.",
+        )
+    return _numeric_result(
+        spec,
+        cash_fact.value / liabilities_fact.value,
+        cash_fact.document,
+        as_of,
+        label="cash_to_current_liabilities_ratio",
+        evidence=_fact_evidence((cash_fact, liabilities_fact), as_of),
+    )
+
+
+def _cash_burn_rate_elevated_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    """Measure cash burn as absolute negative operating cash flow / cash for the latest
+    SEC duration, using the closest same-currency cash instant at or before period end.
+    Non-negative operating cash flow is a zero burn ratio. Missing, non-positive cash,
+    mismatched, or stale facts yield unavailable. burn_threshold defaults to 0.10;
+    qualifying burn is positive, observed zero burn is negative, and an observed
+    below-threshold positive burn is neutral.
+    """
+
+    match = _latest_cash_flow_and_cash(spec, documents, as_of)
+    if isinstance(match, SignalResult):
+        return match
+    cash_flow, cash = match
+    threshold = _finite_nonnegative_parameter(spec, "burn_threshold", 0.10)
+    ratio = abs(min(cash_flow.value, 0.0)) / cash.value
+    if cash_flow.value >= 0:
+        state = SignalValue.NEGATIVE
+    elif ratio >= threshold:
+        state = SignalValue.POSITIVE
+    else:
+        state = SignalValue.NEUTRAL
+    return _explicit_numeric_result(
+        spec,
+        state,
+        ratio,
+        label="cash_burn_rate_elevated",
+        evidence=_fact_evidence((cash_flow, cash), as_of),
+    )
+
+
+def _liquidity_runway_months_signal(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> SignalResult:
+    """Measure cash runway in months from the latest SEC operating cash flow
+    duration and the closest same-currency cash instant at or before its end. Monthly
+    burn is absolute cash flow divided by the rounded reported duration in months.
+    Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <=
+    positive_runway_max_months (default 6) is positive,
+    runway >= negative_runway_min_months (default 12) is negative, and values between
+    are neutral. Non-negative operating cash flow is negative evidence of a
+    low-runway condition (an effectively unbounded burn runway).
+    """
+
+    match = _latest_cash_flow_and_cash(spec, documents, as_of)
+    if isinstance(match, SignalResult):
+        return match
+    cash_flow, cash = match
+    if cash_flow.value >= 0:
+        return SignalResult(
+            signal_id=spec.signal_id,
+            version=spec.version,
+            value=SignalValue.NEGATIVE,
+            confidence=1.0,
+            interpretation=(
+                "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow"
+            ),
+            supporting_evidence=_fact_evidence((cash_flow, cash), as_of),
+            coverage=SignalCoverage.SUFFICIENT,
+        )
+    assert cash_flow.start is not None
+    days = (
+        datetime.fromisoformat(cash_flow.end)
+        - datetime.fromisoformat(cash_flow.start)
+    ).days + 1
+    months = max(1, round(days / (365.2425 / 12.0)))
+    runway = cash.value / (abs(cash_flow.value) / months)
+    positive_max = _finite_nonnegative_parameter(
+        spec, "positive_runway_max_months", 6.0
+    )
+    negative_min = _finite_nonnegative_parameter(
+        spec, "negative_runway_min_months", 12.0
+    )
+    if negative_min < positive_max:
+        raise ValidationError(
+            "negative_runway_min_months cannot be below positive_runway_max_months"
+        )
+    if runway <= positive_max:
+        state = SignalValue.POSITIVE
+    elif runway >= negative_min:
+        state = SignalValue.NEGATIVE
+    else:
+        state = SignalValue.NEUTRAL
+    return _explicit_numeric_result(
+        spec,
+        state,
+        runway,
+        label="liquidity_runway_months",
+        evidence=_fact_evidence((cash_flow, cash), as_of),
+    )
+
+
 def _sec_facts(
     documents: tuple[RawInfoDocument, ...], as_of: datetime
 ) -> tuple[_SecFact, ...]:
@@ -3366,6 +3556,10 @@ def _sec_facts(
             continue
         if not isinstance(payload, Mapping):
             continue
+        canonical_spans = (
+            json.dumps(payload, sort_keys=True, separators=(",", ":"))
+            == document.content
+        )
         if payload.get("schema_version") == "sec-company-facts-document-v1":
             filing_date = str(payload.get("filing_date", ""))
             form = str(payload.get("form", ""))
@@ -3381,6 +3575,7 @@ def _sec_facts(
                     form=form,
                     document=document,
                     as_of=as_of,
+                    canonical_spans=canonical_spans,
                 )
                 if fact is not None:
                     facts.append(fact)
@@ -3414,6 +3609,7 @@ def _sec_facts(
                         form=str(raw.get("form", "")),
                         document=document,
                         as_of=as_of,
+                        canonical_spans=canonical_spans,
                     )
                     if fact is not None:
                         facts.append(fact)
@@ -3430,6 +3626,7 @@ def _make_sec_fact(
     form: str,
     document: RawInfoDocument,
     as_of: datetime,
+    canonical_spans: bool = False,
 ) -> _SecFact | None:
     if not tag or not isinstance(value, (int, float)) or isinstance(value, bool):
         return None
@@ -3446,7 +3643,7 @@ def _make_sec_fact(
     if filed_date > as_of.date() or end_date > as_of.date():
         return None
     exact_span = json.dumps(dict(raw), sort_keys=True, separators=(",", ":"))
-    if exact_span not in document.content:
+    if not canonical_spans and exact_span not in document.content:
         return None
     return _SecFact(
         tag=tag,
@@ -3492,6 +3689,100 @@ def _duration_series(
         key=lambda fact: (fact.end, fact.unit.casefold() == "usd", fact.unit),
         reverse=True,
     )
+
+
+def _instant_series(
+    facts: Iterable[_SecFact], tags: tuple[str, ...]
+) -> list[_SecFact]:
+    """Return one preferred monetary instant fact per end date and currency."""
+
+    tag_priority = {tag: index for index, tag in enumerate(tags)}
+    eligible = [
+        fact
+        for fact in facts
+        if fact.tag in tag_priority
+        and fact.start is None
+        and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
+    ]
+    by_period: dict[tuple[str, str], _SecFact] = {}
+    for fact in eligible:
+        key = (fact.end, fact.unit.casefold())
+        current = by_period.get(key)
+        if current is None or (
+            -tag_priority[fact.tag],
+            fact.filed,
+            fact.document.document_id,
+        ) > (
+            -tag_priority[current.tag],
+            current.filed,
+            current.document.document_id,
+        ):
+            by_period[key] = fact
+    return sorted(
+        by_period.values(),
+        key=lambda fact: (fact.end, fact.unit.casefold() == "usd", fact.unit),
+        reverse=True,
+    )
+
+
+def _latest_cash_flow_and_cash(
+    spec: SignalSpec,
+    documents: tuple[RawInfoDocument, ...],
+    as_of: datetime,
+) -> tuple[_SecFact, _SecFact] | SignalResult:
+    """Match latest operating cash flow with the closest prior cash instant."""
+
+    facts = _sec_facts(documents, as_of)
+    tag_priority = {
+        tag: index for index, tag in enumerate(_OPERATING_CASH_FLOW_TAGS)
+    }
+    cash_flows = [
+        fact
+        for fact in facts
+        if fact.tag in tag_priority
+        and fact.start is not None
+        and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
+    ]
+    if not cash_flows:
+        return _unavailable_result(
+            spec, "SEC operating-cash-flow duration facts were unavailable."
+        )
+    cash_flow = max(
+        cash_flows,
+        key=lambda fact: (
+            fact.end,
+            fact.unit.casefold() == "usd",
+            -tag_priority[fact.tag],
+            fact.filed,
+            fact.document.document_id,
+        ),
+    )
+    if not _current_sec_fact_is_fresh(spec, cash_flow, as_of):
+        return _unavailable_result(
+            spec,
+            f"Latest SEC operating-cash-flow period ended {cash_flow.end} and is stale.",
+        )
+    cash_candidates = [
+        fact
+        for fact in _instant_series(facts, _CASH_TAGS)
+        if fact.end <= cash_flow.end
+        and fact.unit.casefold() == cash_flow.unit.casefold()
+        and fact.value > 0
+    ]
+    if not cash_candidates:
+        return _unavailable_result(
+            spec,
+            "A positive same-currency SEC cash instant at or before the latest operating-cash-flow period end was unavailable.",
+        )
+    cash = max(
+        cash_candidates,
+        key=lambda fact: (fact.end, fact.filed, fact.document.document_id),
+    )
+    if not _current_sec_fact_is_fresh(spec, cash, as_of):
+        return _unavailable_result(
+            spec, f"Latest matched SEC cash balance ended {cash.end} and is stale."
+        )
+    return cash_flow, cash
 
 
 def _share_duration_series(facts: Iterable[_SecFact]) -> list[_SecFact]:
@@ -3856,6 +4147,39 @@ def _numeric_result(
         confidence=1.0,
         interpretation=f"{label}={numeric_value:.6g}",
         supporting_evidence=supporting,
+        coverage=SignalCoverage.SUFFICIENT,
+    )
+
+
+def _finite_nonnegative_parameter(
+    spec: SignalSpec, name: str, default: float
+) -> float:
+    raw = spec.parameters.get(name, default)
+    if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+        raise ValidationError(f"{name} must be numeric")
+    value = float(raw)
+    if not math.isfinite(value) or value < 0:
+        raise ValidationError(f"{name} must be finite and non-negative")
+    return value
+
+
+def _explicit_numeric_result(
+    spec: SignalSpec,
+    value: SignalValue,
+    numeric_value: float,
+    *,
+    label: str,
+    evidence: tuple[SignalEvidence, ...],
+) -> SignalResult:
+    if not math.isfinite(numeric_value):
+        raise ValidationError(f"{label} must be finite")
+    return SignalResult(
+        signal_id=spec.signal_id,
+        version=spec.version,
+        value=value,
+        confidence=1.0,
+        interpretation=f"{label}={numeric_value:.6g}",
+        supporting_evidence=evidence,
         coverage=SignalCoverage.SUFFICIENT,
     )
 

@@ -440,9 +440,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 H3 and E2 candidate contracts and the Update contract include descriptions of
 the actual registered deterministic callables from Signal Library. They explain
 measured quantities, required inputs and parameter behavior before construction.
-A function name is not proof that it implements a proposed observable. A new
-measurement without an exact deterministic implementation may use a grounded
-LLM skill; fixtures and all existing semantic and paired gates remain mandatory.
+A function name is not proof that it implements a proposed observable. Every
+materialized candidate persists the controller's research modality. A
+structured measurement may use only an exact registered deterministic
+implementation; when none exists it is retained as a capability gap and cannot
+be silently recast as an LLM Signal. A narrative predicate may use only a
+source-grounded LLM skill. A proposal that combines a numeric formula with
+narrative fallback rules must be split before materialization. Fixtures and all
+existing semantic and paired gates remain mandatory.
 
 ## Shared research target through Slow roles
 

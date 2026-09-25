@@ -13,6 +13,7 @@ from stock_opportunity_agent.signal_library import (
     deterministic_signal_function_contracts,
     SignalExecutionType,
     SignalExecutor,
+    SignalModality,
     SignalSpec,
     SignalValue,
 )
@@ -23,6 +24,29 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_signal_modality_is_explicit_without_rewriting_legacy_specs(self) -> None:
+        from stock_opportunity_agent.models import ValidationError
+
+        structured = _spec(
+            "cash_reserves", "financial.cash_reserves", 30.0, 10.0
+        )
+        self.assertEqual(structured.to_dict()["modality"], "structured")
+        legacy = dict(structured.to_dict())
+        legacy.pop("modality")
+        self.assertIsNone(SignalSpec.from_dict(legacy).modality)
+        self.assertNotIn("modality", SignalSpec.from_dict(legacy).to_dict())
+        with self.assertRaisesRegex(ValidationError, "structured.*deterministic"):
+            SignalSpec(
+                signal_id="invalid_structured",
+                version=1,
+                category="financial",
+                description="Invalid structured executor.",
+                execution_type=SignalExecutionType.LLM,
+                source_types=("financials",),
+                modality=SignalModality.STRUCTURED,
+                skill_file="skills/invalid.md",
+            )
+
     def test_market_measurements_cite_actual_adjusted_price_anchors(self) -> None:
         from stock_opportunity_agent.signal_library import (
             _max_drawdown_signal, _price_momentum_signal,
@@ -250,6 +274,109 @@ class SecFinancialSignalTests(TestCase):
             for evidence in result.supporting_evidence:
                 self.assertIn(evidence.exact_span, content)
                 self.assertNotIn('"val":999', evidence.exact_span)
+
+    def test_structured_liquidity_migrations_use_exact_sec_facts(self) -> None:
+        rows = {
+            "CashAndCashEquivalentsAtCarryingValue": {
+                "units": {"USD": [_row(None, "2024-12-31", 40.0, "2025-01-20")]}
+            },
+            "LiabilitiesCurrent": {
+                "units": {"USD": [_row(None, "2024-12-31", 20.0, "2025-01-20")]}
+            },
+            "NetCashProvidedByUsedInOperatingActivities": {
+                "units": {
+                    "USD": [
+                        _row("2024-01-01", "2024-12-31", -30.0, "2025-01-20")
+                    ]
+                }
+            },
+        }
+        content = json.dumps(
+            {"cik": 1, "facts": {"us-gaap": rows}},
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        specs = (
+            _spec(
+                "cash_to_current_liabilities_ratio",
+                "financial.cash_to_current_liabilities_ratio",
+                1.0,
+                1.0,
+            ),
+            SignalSpec(
+                signal_id="cash_burn_rate_elevated",
+                version=2,
+                category="financial",
+                description="Measure the structured cash burn rate.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                source_types=("financials",),
+                modality=SignalModality.STRUCTURED,
+                function="financial.cash_burn_rate_elevated",
+                parameters={"burn_threshold": 0.1},
+            ),
+            SignalSpec(
+                signal_id="liquidity_runway_months",
+                version=2,
+                category="financial",
+                description="Measure structured liquidity runway months.",
+                execution_type=SignalExecutionType.DETERMINISTIC,
+                source_types=("financials",),
+                modality=SignalModality.STRUCTURED,
+                function="financial.liquidity_runway_months",
+                parameters={
+                    "positive_runway_max_months": 6,
+                    "negative_runway_min_months": 12,
+                },
+            ),
+        )
+        results = SignalExecutor(
+            _snapshot(specs), RawInfoStore(documents=(_document("liquidity", content),))
+        ).execute_batch(
+            tuple(spec.ref for spec in specs),
+            company_id="issuer_1",
+            as_of=AS_OF,
+        ).results
+
+        self.assertEqual(
+            [result.value for result in results],
+            [SignalValue.POSITIVE, SignalValue.POSITIVE, SignalValue.NEGATIVE],
+        )
+        self.assertEqual(
+            [result.interpretation for result in results],
+            [
+                "cash_to_current_liabilities_ratio=2",
+                "cash_burn_rate_elevated=0.75",
+                "liquidity_runway_months=16",
+            ],
+        )
+        for result in results:
+            self.assertEqual(result.confidence, 1.0)
+            self.assertTrue(result.supporting_evidence)
+            self.assertTrue(
+                all(item.exact_span in content for item in result.supporting_evidence)
+            )
+
+        rows["NetCashProvidedByUsedInOperatingActivities"]["units"]["USD"][0][
+            "val"
+        ] = 30.0
+        positive_cash_flow_content = json.dumps(
+            {"cik": 1, "facts": {"us-gaap": rows}},
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        runway = specs[2]
+        no_burn = SignalExecutor(
+            _snapshot((runway,)),
+            RawInfoStore(
+                documents=(
+                    _document("positive-cash-flow", positive_cash_flow_content),
+                )
+            ),
+        ).execute_batch(
+            (runway.ref,), company_id="issuer_1", as_of=AS_OF
+        ).results[0]
+        self.assertEqual(no_burn.value, SignalValue.NEGATIVE)
+        self.assertIn("unbounded_nonnegative", no_burn.interpretation)
 
     def test_accession_scoped_schema_is_supported_with_literal_fact_evidence(self) -> None:
         facts = [
@@ -482,6 +609,7 @@ def _spec(
         category="financial",
         description=f"Fixture {signal_id}.",
         execution_type=SignalExecutionType.DETERMINISTIC,
+        modality=SignalModality.STRUCTURED,
         function=function,
         source_types=("sec_company_facts",),
         parameters={"positive_min": positive_min, "negative_max": negative_max},

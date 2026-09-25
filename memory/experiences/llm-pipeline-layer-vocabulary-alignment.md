@@ -1,6 +1,6 @@
 # LLM Pipeline Layer Vocabulary Alignment
 
-visit_times: 2
+visit_times: 3
 
 ## Trigger
 
@@ -42,6 +42,16 @@ truncated the message away) kills a whole production cycle if raised as a
 non-retryable error, while the existing bounded-retry plus run-level auto-resume
 path handles it cleanly. An explicit provider refusal stays non-retryable and
 surfaces its text.
+
+Research modality and execution type are also separate vocabulary layers.
+Persist the modality carried by the controller into the canonical Signal spec,
+then validate its allowed executor at every materialization boundary. Inferring
+modality only from `llm` versus `deterministic` hides structured formulas behind
+LLM skills and makes later correction look like a behavior update instead of an
+identity repair. Preserve legacy omission only for byte-compatible historical
+reads; require explicit modality for every new or vNext candidate, and keep a
+missing structured implementation as a capability gap rather than silently
+changing the observable's modality.
 
 ## Context
 

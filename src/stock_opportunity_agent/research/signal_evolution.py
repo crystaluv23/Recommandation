@@ -29,6 +29,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionStatus,
     SignalExecutionType,
     SignalExecutor,
+    SignalModality,
     SignalRegistry,
     SignalResult,
     SignalSpec,
@@ -140,6 +141,19 @@ def signal_candidate_execution_contract() -> dict[str, Any]:
     """Expose existing value and retrieval semantics before candidate generation."""
 
     return {
+        "modality": {
+            "structured": (
+                "A typed point-in-time measurement whose value is fully determined "
+                "by inputs and parameters; it requires an exact registered "
+                "deterministic function."
+            ),
+            "narrative": (
+                "A semantic predicate over source text; it requires a grounded LLM skill."
+            ),
+            "mixed": (
+                "Split numeric measurement and narrative fallback into separate Signals."
+            ),
+        },
         "value_semantics": {
             "positive": "Evidence in the direction of the fixed surge target.",
             "negative": "Evidence in the control/opposing direction.",
@@ -1134,6 +1148,8 @@ class SignalCandidateValidator:
             reasons.append("update must use exactly the next stable version")
         if current is not None and spec.category != current.category:
             reasons.append("update must preserve the stable category")
+        if spec.modality is None:
+            reasons.append("candidate must declare structured or narrative modality")
         if current is not None and spec.execution_type is not current.execution_type:
             reasons.append("update must preserve the stable execution type")
         if (
@@ -1223,6 +1239,15 @@ class SignalCandidateValidator:
                 ("share", "retirement"),
                 ("share", "dilution"),
             ),
+            "financial.cash_to_current_liabilities_ratio": (
+                ("cash", "current", "liabilit", "ratio"),
+            ),
+            "financial.cash_burn_rate_elevated": (
+                ("cash", "burn", "rate"),
+            ),
+            "financial.liquidity_runway_months": (
+                ("liquidity", "runway", "month"),
+            ),
             "market.max_drawdown_1y": (("drawdown",),),
             "market.price_momentum_126d": (("momentum",), ("total", "return")),
             "company.market_cap": (("market", "capital"), ("market", "cap")),
@@ -1246,6 +1271,9 @@ class SignalCandidateValidator:
 
         return _canonical_hash(
             {
+                "modality": (
+                    spec.modality.value if spec.modality is not None else None
+                ),
                 "execution_type": spec.execution_type.value,
                 "function": spec.function,
                 "skill": _normalize_semantics(skill or ""),
@@ -3177,6 +3205,10 @@ class SlowLoopResult:
 def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
     """Parse a candidate with the same strict evidence contract at every boundary."""
 
+    if spec.get("modality") not in {item.value for item in SignalModality}:
+        raise ValidationError(
+            "candidate SignalSpec modality must be structured or narrative"
+        )
     evidence_policy = spec.get("evidence_policy")
     if not isinstance(evidence_policy, Mapping):
         raise ValidationError(
@@ -6927,9 +6959,11 @@ class SignalEvolutionEngine:
                     "the runtime normalizes it), a definition faithful to the "
                     "measurement, point-in-time fixtures whose documents "
                     "embed the supplied identity-masked evidence spans "
-                    "verbatim, and either "
-                    "a registered deterministic function that matches the "
-                    "measurement or a source-grounded LLM skill. For a "
+                    "verbatim, and preserve the controller modality. A "
+                    "structured measurement must use a registered deterministic "
+                    "function that exactly matches it; if none matches, report "
+                    "the capability gap instead of recasting it as LLM. A "
+                    "narrative predicate must use a source-grounded LLM skill. For a "
                     "narrative predicate candidate, author an LLM skill that "
                     "judges the semantic condition over the narrative family "
                     "inside the lookback window, cites verbatim supporting "
@@ -7001,6 +7035,16 @@ class SignalEvolutionEngine:
             raise
         except Exception as exc:
             return None, [f"spec parse failed: {type(exc).__name__}: {exc}"]
+        expected_modality = (
+            SignalModality.NARRATIVE
+            if self._is_narrative_candidate(candidate)
+            else SignalModality.STRUCTURED
+        )
+        if spec.modality is not expected_modality:
+            return None, [
+                "materialized Signal modality does not preserve the controller "
+                f"candidate modality: expected {expected_modality.value}"
+            ]
         retrieval_families = {
             str(item)
             for item in dict(spec_dict.get("raw_retrieval", {}) or {}).get(
@@ -9597,8 +9641,10 @@ class SignalEvolutionEngine:
                 "non-empty point-in-time fixtures required",
                 "choose a deterministic function only when its documented measurement "
                 "matches the definition; parameters do not replace its formula",
-                "a different measurement requires a source-grounded LLM skill "
-                "when no registered deterministic function implements it",
+                "structured modality requires an exact registered deterministic "
+                "function; otherwise retain a capability gap",
+                "narrative modality requires a source-grounded LLM skill",
+                "split mixed structured-formula and narrative-fallback proposals",
                 "candidate text and fixtures must not contain Discovery identities or labels",
             ],
         }
@@ -9777,6 +9823,7 @@ class SignalEvolutionEngine:
                         "signal_id",
                         "version",
                         "category",
+                        "modality",
                         "definition",
                         "schema",
                         "execution",
@@ -9789,6 +9836,9 @@ class SignalEvolutionEngine:
                         "signal_id": {"type": "string"},
                         "version": {"type": "integer", "minimum": 1},
                         "category": {"type": "string"},
+                        "modality": {
+                            "enum": ["structured", "narrative"]
+                        },
                         "definition": {
                             "type": "object",
                             "required": ["description"],

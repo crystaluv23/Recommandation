@@ -73,6 +73,7 @@ def _magnitude_model(rankings):
             "with a stricter positive threshold."
         ),
         execution_type=SignalExecutionType.DETERMINISTIC,
+        modality=SignalModality.STRUCTURED,
         function="financial.revenue_growth_yoy",
         source_types=("financials",),
         parameters={"positive_min": 0.10, "negative_max": 0.0},

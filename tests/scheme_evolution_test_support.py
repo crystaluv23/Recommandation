@@ -112,6 +112,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionStatus,
     SignalExecutionType,
     SignalExecutor,
+    SignalModality,
     SignalLearningEvent,
     SignalRetrievalPolicy,
     SignalRegistry,

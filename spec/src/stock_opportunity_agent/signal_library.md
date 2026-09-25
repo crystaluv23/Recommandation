@@ -147,10 +147,20 @@ snapshot. Serialization returns detached mutable JSON values, so caller mutation
 cannot alter executor behavior or silently separate a snapshot from its hash.
 
 Before freeze, `SignalCapabilityAudit` validates every enabled Signal against
-its registered deterministic function or LLM skill, supported source routing,
-and a fixture in the actual Raw Info schema. The enabled-only snapshot and audit
-hash are bound by the run contract. `market_cap` and `pilot_to_volume` remain
-disabled until reliable historical inputs and adapters exist.
+its declared research modality, registered deterministic function or LLM skill,
+supported source routing, and a fixture in the actual Raw Info schema. New
+specifications must persist `modality` as either `structured` or `narrative`.
+`structured` means the value is fully determined by typed point-in-time fields
+and parameters and therefore requires a registered deterministic callable;
+`narrative` means the value depends on semantic interpretation of source text
+and therefore requires an LLM skill. A mixed proposal must be split into a
+structured measurement and a narrative predicate before either is admitted.
+Specifications created before this contract may omit `modality` so immutable
+historical Registry hashes remain readable, but such a legacy omission is not
+accepted for a newly staged candidate or vNext version. The enabled-only
+snapshot and audit hash are bound by the run contract. `market_cap` and
+`pilot_to_volume` remain disabled until reliable historical inputs and adapters
+exist.
 
 ## Seed Hard-Signal Defaults
 
@@ -186,8 +196,33 @@ original seed:
 
 These cutoffs are explicit, reviewable seed heuristics, not values claimed by
 the underlying empirical papers. A future promoted version may change them
-only through the normal candidate validation and exact-hash automatic-promotion
-boundary.
+  only through the normal candidate validation and exact-hash automatic-promotion
+  boundary.
+- `cash_to_current_liabilities_ratio` divides the latest cash and equivalents
+  instant fact by current liabilities from the same period end and reported
+  currency. Non-positive liabilities, missing matched facts, or stale current
+  facts are `unavailable`.
+- `cash_burn_rate_elevated` is the structured numeric component of the legacy
+  mixed Signal: for the latest operating-cash-flow duration it divides negative
+  operating cash flow by the closest cash instant at or before that duration's
+  end. Non-negative operating cash flow has a burn ratio of zero. The default
+  positive threshold is `0.10`; a below-threshold observed burn is neutral and
+  non-negative cash flow is negative. Narrative statements about burn are a
+  separate narrative predicate and cannot act as a fallback for this measure.
+- `liquidity_runway_months` is the structured numeric component of the legacy
+  mixed Signal: latest matched cash divided by absolute average monthly negative
+  operating cash flow over the reported duration. It is positive at no more
+  than six months, negative at at least twelve months, and neutral between;
+  non-negative operating cash flow is negative evidence of low runway (an
+  effectively unbounded burn runway), while missing matched inputs are
+  `unavailable`. Narrative denials or plans require a separate narrative Signal.
+
+The three legacy v1 Signals above were historically stored as LLM Signals.
+Their artifacts remain immutable. A corrected deterministic v2 may be activated
+only after a frozen-input replay verifies exact document ids and hashes,
+point-in-time availability, literal evidence, availability behavior, and state
+differences. Replay results are diagnostic artifacts and do not mutate a
+Registry or count as a completed evolution cycle.
 The cash-flow and issuance literature motivates the measurements, while the
 project vision's early-market-confirmation requirement motivates momentum. The
 system does not yet have a peer-relative execution context, so the momentum

@@ -1112,30 +1112,71 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(output["audit"]["track"], "controller_multi_axis")
 
     def test_controller_mining_audit_reports_true_modality_metrics(self) -> None:
+        class FixtureNarrativeRunner:
+            def execute(self, spec, documents, _skill, as_of):
+                document = documents[0]
+                return (
+                    SignalResult(
+                        signal_id=spec.signal_id,
+                        version=spec.version,
+                        value=SignalValue.POSITIVE,
+                        confidence=1.0,
+                        interpretation="Fixture narrative condition is present.",
+                        supporting_evidence=(
+                            SignalEvidence(
+                                document_id=document.document_id,
+                                exact_span=document.content,
+                                timestamp=min(document.available_at, as_of),
+                            ),
+                        ),
+                        coverage=SignalCoverage.SUFFICIENT,
+                    ),
+                    AgentUsage(llm_calls=1),
+                )
+
         class FakeNarrativeCaller:
             def complete_json(self, *, stage, **_kwargs):
                 if stage == "mining_candidate_materialize":
                     payload = dict(_kwargs["payload"])
                     if not payload.get("last_issues"):
                         return ({"spec": {}}, AgentUsage(llm_calls=1))
-                    stable = registry.latest_spec("revenue_growth_yoy")
                     spec = {
-                        **stable.to_dict(),
                         "signal_id": "fixture_narrative_order",
                         "version": 1,
+                        "category": "orders",
+                        "modality": "narrative",
+                        "definition": {
+                            "description": (
+                                "Judge whether news confirms a definitive "
+                                "purchase agreement."
+                            )
+                        },
+                        "schema": {
+                            "value": {
+                                "type": "categorical",
+                                "values": [
+                                    "positive", "neutral", "negative", "unavailable"
+                                ],
+                            },
+                            "confidence": {"type": "float"},
+                        },
+                        "execution": {
+                            "type": "llm",
+                            "skill_file": "skills/fixture_narrative_order.md",
+                        },
+                        # The retrieval declares the evidence family while the
+                        # cited documents carry its concrete source type.
+                        "raw_retrieval": {
+                            "source_types": ["news"],
+                            "query_terms": ["purchase agreement"],
+                        },
+                        "evidence_policy": {
+                            "require_source": True,
+                            "require_timestamp": True,
+                            "require_exact_span": True,
+                        },
+                        "parameters": {},
                     }
-                    spec["definition"]["description"] = (
-                        "Measure the latest point-in-time year-over-year "
-                        "revenue growth from cited spans with a stricter "
-                        "positive threshold."
-                    )
-                    spec["parameters"]["positive_min"] = 0.15
-                    # The retrieval declares the evidence family while the
-                    # cited documents carry the concrete source type; the
-                    # two vocabularies must stay interchangeable.
-                    raw_retrieval = dict(spec.get("raw_retrieval") or {})
-                    raw_retrieval["source_types"] = ["news"]
-                    spec["raw_retrieval"] = raw_retrieval
                     growth = sec_company_facts_content(
                         ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                         ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
@@ -1143,7 +1184,7 @@ class SignalEvolutionTests(TestCase):
                     return (
                         {
                             "spec": spec,
-                            "skill": None,
+                            "skill": "Judge the cited narrative condition.",
                             "tests": [
                                 {
                                     "name": "growth_positive",
@@ -1304,7 +1345,7 @@ class SignalEvolutionTests(TestCase):
                 workspace=EvolutionWorkspace(root / "workspace"),
                 mining_model=EmptyMiningModel(),
                 update_model=NoChangeUpdateModel(),
-                llm_signal_runner=None,
+                llm_signal_runner=FixtureNarrativeRunner(),
             )
             manifest = build_slow_sampling_manifest(
                 cases,
@@ -2626,6 +2667,7 @@ class SignalEvolutionTests(TestCase):
                 signal_id="fixture_failure_probe", version=1, category="financial",
                 description="Measure year-over-year revenue growth.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy", source_types=("financials",),
             )
             def broken_function(*_args):
@@ -2646,6 +2688,7 @@ class SignalEvolutionTests(TestCase):
             spec = SignalSpec.from_dict({
                 "signal_id": "fixture_coverage_probe", "version": 1,
                 "category": "financial",
+                "modality": "structured",
                 "definition": {"description": "Measure year-over-year revenue growth."},
                 "execution": {"type": "deterministic", "function": "financial.revenue_growth_yoy"},
                 "raw_retrieval": {"source_types": ["financials"], "minimum_observations": 1},
@@ -2668,6 +2711,7 @@ class SignalEvolutionTests(TestCase):
                     "customers and cash for the next period."
                 ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy", source_types=("financials",),
             )
             validator = SignalCandidateValidator(
@@ -5849,6 +5893,7 @@ class SignalEvolutionTests(TestCase):
                 category="risks",
                 description="Use future price to infer the outcome label.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
@@ -5861,6 +5906,7 @@ class SignalEvolutionTests(TestCase):
                 category="financial",
                 description=registry.latest_spec("revenue_growth_yoy").description,
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
@@ -5873,6 +5919,7 @@ class SignalEvolutionTests(TestCase):
                 category="financial",
                 description="Updated growth measure.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
@@ -5894,6 +5941,7 @@ class SignalEvolutionTests(TestCase):
                     "for positive catalyst evidence."
                 ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
@@ -6262,6 +6310,7 @@ class SignalEvolutionTests(TestCase):
                 category="financial",
                 description="Classify comparable revenue growth direction.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )
@@ -6415,6 +6464,7 @@ class SignalEvolutionTests(TestCase):
                     "with a stricter positive threshold."
                 ),
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
                 parameters={"positive_min": 0.10, "negative_max": 0.0},
@@ -7713,6 +7763,7 @@ class DualLoopTests(TestCase):
                 category="financial",
                 description="Measure point-in-time year-over-year revenue growth.",
                 execution_type=SignalExecutionType.DETERMINISTIC,
+                modality=SignalModality.STRUCTURED,
                 function="financial.revenue_growth_yoy",
                 source_types=("financials",),
             )

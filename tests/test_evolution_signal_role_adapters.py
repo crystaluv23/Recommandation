@@ -390,6 +390,7 @@ class SignalRoleAdapterTests(TestCase):
             signal_id="revenue_growth_yoy", version=1, category="financial",
             description="Measure year-over-year revenue growth.",
             execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED,
             source_types=("financials",), function="financial.revenue_growth_yoy",
         )
         candidate = {
@@ -439,6 +440,7 @@ class SignalRoleAdapterTests(TestCase):
             signal_id="revenue_growth_yoy", version=1, category="financial",
             description="Measure year-over-year revenue growth.",
             execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED,
             source_types=("financials",), function="financial.revenue_growth_yoy",
         )
         candidate = {
@@ -487,6 +489,7 @@ class SignalRoleAdapterTests(TestCase):
             signal_id="revenue_growth_yoy", version=1, category="financial",
             description="Measure year-over-year revenue growth.",
             execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED,
             source_types=("financials",), function="financial.revenue_growth_yoy",
         )
         candidate = {
@@ -535,6 +538,7 @@ class SignalRoleAdapterTests(TestCase):
             category="financial",
             description="Read the latest point-in-time cash balance.",
             execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED,
             source_types=("financials",),
             function="financial.cash_reserves",
         )
