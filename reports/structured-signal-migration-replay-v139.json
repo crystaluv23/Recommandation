@@ -1,0 +1,3334 @@
+{
+  "execution_label_blind": true,
+  "occurrence_count": 100,
+  "raw_info_root": "runs/cold_start/data/global-raw-info-oracle-v1",
+  "registry_mutated": false,
+  "rows": [
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20:0cdbc63d8003d80c74bd2c20136b6f0fd58945cefd520d2252f28a39b32c1094"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2025,\"start\":\"2024-08-30\",\"val\":11795000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10163000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20:0cdbc63d8003d80c74bd2c20136b6f0fd58945cefd520d2252f28a39b32c1094"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2025,\"start\":\"2024-08-30\",\"val\":11795000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10163000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20:0cdbc63d8003d80c74bd2c20136b6f0fd58945cefd520d2252f28a39b32c1094"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10163000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10135000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.00276",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-2310000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=4.23636",
+      "new_state": "positive",
+      "old_confidence": 0.8,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-2310000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.708155",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":11124000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.29324",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a:ca6f74c0cda71b17a7b70f7a441110c631d5e50fa8bb9340c7e5606de4808380"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 0.0,
+      "new_evidence": [],
+      "new_interpretation": "Matching SEC cash and positive current-liabilities instant facts were unavailable.",
+      "new_state": "unavailable",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a:ca6f74c0cda71b17a7b70f7a441110c631d5e50fa8bb9340c7e5606de4808380"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-23976000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":90739000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=11.3537",
+      "new_state": "neutral",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":14807000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.0812454",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "company_id": "cik_0000936395",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608:994cb910fa47094f92890608bbf95873938bc7f635be327d6f54f0cd58638391"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608",
+          "exact_span": "{\"accn\":\"0000936395-25-000041\",\"end\":\"2025-08-02\",\"filed\":\"2025-09-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2025,\"start\":\"2024-11-03\",\"val\":435016000}",
+          "timestamp": "2025-09-04T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608",
+          "exact_span": "{\"accn\":\"0000936395-25-000041\",\"end\":\"2025-08-02\",\"filed\":\"2025-09-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1055976000}",
+          "timestamp": "2025-09-04T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-12-30\",\"val\":69000000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1072600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.297968",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-12-30\",\"val\":69000000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":4415000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":4415000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.75,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":4670000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.32441",
+      "new_state": "positive",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8:af02b34425cf9889a432fab8883a00fc2cebd98765761ee8220027acfb026f6c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8:af02b34425cf9889a432fab8883a00fc2cebd98765761ee8220027acfb026f6c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.8,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8:af02b34425cf9889a432fab8883a00fc2cebd98765761ee8220027acfb026f6c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2396795000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.863689",
+      "new_state": "negative",
+      "old_confidence": 0.8,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":666200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.8,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":666200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":537200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.00856",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 4,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "company_id": "cik_0001521036",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac:e45062b56338222af46513acb5863f62fb1118881b0894665c3e967b0f2c43da"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac",
+          "exact_span": "{\"accn\":\"0001628280-25-007970\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":544750000}",
+          "timestamp": "2025-02-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac",
+          "exact_span": "{\"accn\":\"0001628280-25-007970\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":912814000}",
+          "timestamp": "2025-02-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "company_id": "cik_0001521036",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac:e45062b56338222af46513acb5863f62fb1118881b0894665c3e967b0f2c43da"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac",
+          "exact_span": "{\"accn\":\"0001628280-25-007970\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":544750000}",
+          "timestamp": "2025-02-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001521036:financials:e45062b56338222af46513ac",
+          "exact_span": "{\"accn\":\"0001628280-25-007970\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":912814000}",
+          "timestamp": "2025-02-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429:91d5db6ede527161129df429fca9a6a4b8b113da79bce67563556b1ade466582"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-08-04\",\"val\":-1944000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2024Q4I\",\"fy\":2025,\"val\":113205000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=349.398",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-136284000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.451405",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-136284000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=13.2918",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":350940000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.860292",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 4,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776:5856d546b0275ffc5e04f776446d321ce05fad5a741d00fad34b0d750360f727"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-6659264}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":25409974}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=11.4472",
+      "new_state": "neutral",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776:5856d546b0275ffc5e04f776446d321ce05fad5a741d00fad34b0d750360f727"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-6659264}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":25409974}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.262073",
+      "new_state": "positive",
+      "old_confidence": 0.85,
+      "old_state": "positive",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776:5856d546b0275ffc5e04f776446d321ce05fad5a741d00fad34b0d750360f727"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"val\":25409974}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776",
+          "exact_span": "{\"accn\":\"0001213900-25-043731\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-15\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":50417322}",
+          "timestamp": "2025-05-15T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.503993",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "company_id": "cik_0001658551",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba:482349d141d2404df97701baa44de550f3c8bc02e2d5e5ae0b20e4764d798570"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba",
+          "exact_span": "{\"accn\":\"0000950170-24-122833\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-07\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-108639000}",
+          "timestamp": "2024-11-07T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba",
+          "exact_span": "{\"accn\":\"0000950170-24-122833\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-07\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"val\":71839000}",
+          "timestamp": "2024-11-07T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=5.95137",
+      "new_state": "positive",
+      "old_confidence": 0.85,
+      "old_state": "positive",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001658551:20250131",
+      "company_id": "cik_0001658551",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba:482349d141d2404df97701baa44de550f3c8bc02e2d5e5ae0b20e4764d798570"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba",
+          "exact_span": "{\"accn\":\"0000950170-24-122833\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-07\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-108639000}",
+          "timestamp": "2024-11-07T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001658551:financials:482349d141d2404df97701ba",
+          "exact_span": "{\"accn\":\"0000950170-24-122833\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-07\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"val\":71839000}",
+          "timestamp": "2024-11-07T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=1.51226",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629:96261dac477ab51ba02f862938d7202c617932485273839c65ac75b9fcc1ac2d"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629",
+          "exact_span": "{\"accn\":\"0001689548-25-000092\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-107686000}",
+          "timestamp": "2025-08-04T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629",
+          "exact_span": "{\"accn\":\"0001689548-25-000092\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":157415000}",
+          "timestamp": "2025-08-04T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.68409",
+      "new_state": "positive",
+      "old_confidence": 0.75,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629:96261dac477ab51ba02f862938d7202c617932485273839c65ac75b9fcc1ac2d"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629",
+          "exact_span": "{\"accn\":\"0001689548-25-000092\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-107686000}",
+          "timestamp": "2025-08-04T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629",
+          "exact_span": "{\"accn\":\"0001689548-25-000092\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":157415000}",
+          "timestamp": "2025-08-04T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=8.77078",
+      "new_state": "neutral",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a:c2804905238561821d810b3ad719a2fd97f1fc0af945246beb2e6ee2d21ad9e7"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":13349000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":282442000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a:c2804905238561821d810b3ad719a2fd97f1fc0af945246beb2e6ee2d21ad9e7"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":282442000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":164019000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.72201",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a:c2804905238561821d810b3ad719a2fd97f1fc0af945246beb2e6ee2d21ad9e7"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":13349000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":282442000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":114481000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":261739000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":114481000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":261739000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc:88f36095177f7971534698ccfe48e270cad9ea88c47bf55fe57e5022b484fcc6"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":261739000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001830043:financials:88f36095177f7971534698cc",
+          "exact_span": "{\"accn\":\"0001628280-25-038861\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":120495000}",
+          "timestamp": "2025-08-07T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=2.1722",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2023-11-01\",\"val\":35546000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2023-11-01\",\"val\":35546000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":61480000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.768819",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "positive",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":520103000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.020917",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":141237000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":134518000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.87733",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":141237000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139:78c706359f8aae145cb43139eb3a214bc6dfe3d98cadd48d08df336e7a1206b0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"start\":\"2024-06-29\",\"val\":84000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1481000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139:78c706359f8aae145cb43139eb3a214bc6dfe3d98cadd48d08df336e7a1206b0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1481000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1427000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.03784",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139:78c706359f8aae145cb43139eb3a214bc6dfe3d98cadd48d08df336e7a1206b0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"start\":\"2024-06-29\",\"val\":84000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1481000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77:e6788b243ea9f3d1fd159b775d7d5a41e9b4b22ceb582aa5566012510a99c01c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77",
+          "exact_span": "{\"accn\":\"0001104659-25-028819\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2446400000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77",
+          "exact_span": "{\"accn\":\"0001104659-25-028819\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":611500000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.75,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77:e6788b243ea9f3d1fd159b775d7d5a41e9b4b22ceb582aa5566012510a99c01c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77",
+          "exact_span": "{\"accn\":\"0001104659-25-028819\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":2446400000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77",
+          "exact_span": "{\"accn\":\"0001104659-25-028819\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":611500000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20:0cdbc63d8003d80c74bd2c20136b6f0fd58945cefd520d2252f28a39b32c1094"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2025,\"start\":\"2024-08-30\",\"val\":11795000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10163000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20:0cdbc63d8003d80c74bd2c20136b6f0fd58945cefd520d2252f28a39b32c1094"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2025,\"start\":\"2024-08-30\",\"val\":11795000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20",
+          "exact_span": "{\"accn\":\"0000723125-25-000021\",\"end\":\"2025-05-29\",\"filed\":\"2025-06-26\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":10163000000}",
+          "timestamp": "2025-06-26T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-2310000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=4.23636",
+      "new_state": "positive",
+      "old_confidence": 0.8,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-2310000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.708155",
+      "new_state": "positive",
+      "old_confidence": 0.85,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad:ef3e6cc513478702515877addbc93f9ac6e65916e0dee9154ede6a858fa8029c"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":3262000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000839470:financials:ef3e6cc513478702515877ad",
+          "exact_span": "{\"accn\":\"0001558370-25-007769\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-14\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":11124000}",
+          "timestamp": "2025-05-14T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.29324",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a:ca6f74c0cda71b17a7b70f7a441110c631d5e50fa8bb9340c7e5606de4808380"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 0.0,
+      "new_evidence": [],
+      "new_interpretation": "Matching SEC cash and positive current-liabilities instant facts were unavailable.",
+      "new_state": "unavailable",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a:ca6f74c0cda71b17a7b70f7a441110c631d5e50fa8bb9340c7e5606de4808380"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-23976000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":90739000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=11.3537",
+      "new_state": "neutral",
+      "old_confidence": 0.8,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a:ca6f74c0cda71b17a7b70f7a441110c631d5e50fa8bb9340c7e5606de4808380"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-23976000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a",
+          "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":90739000000}",
+          "timestamp": "2025-05-05T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.26423",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "positive",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e:29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+          "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":14807000000}",
+          "timestamp": "2025-08-01T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.0812454",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-12-30\",\"val\":69000000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1072600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.297968",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a:4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-12-30\",\"val\":69000000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "exact_span": "{\"accn\":\"0001628280-25-036963\",\"end\":\"2025-06-29\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":319600000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":4415000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":4670000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.32441",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45:e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":4415000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "exact_span": "{\"accn\":\"0001164727-25-000035\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-24\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":6185000000}",
+          "timestamp": "2025-07-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8:af02b34425cf9889a432fab8883a00fc2cebd98765761ee8220027acfb026f6c"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":133774000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8",
+          "exact_span": "{\"accn\":\"0001174922-25-000084\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-06\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":2070086000}",
+          "timestamp": "2025-05-06T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":666200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.8,
+      "old_state": "neutral",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":666200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.8,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001322422:20250331",
+      "company_id": "cik_0001322422",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9:16eec63cb35ce61a94d0b7c9208720325b221087a6034c4ac332dae4f13aada3"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":541800000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001322422:financials:16eec63cb35ce61a94d0b7c9",
+          "exact_span": "{\"accn\":\"0001062993-25-006369\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-27\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":537200000}",
+          "timestamp": "2025-03-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.00856",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 3,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429:91d5db6ede527161129df429fca9a6a4b8b113da79bce67563556b1ade466582"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-08-04\",\"val\":-1944000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2024Q4I\",\"fy\":2025,\"val\":113205000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.0171724",
+      "new_state": "neutral",
+      "old_confidence": 0.7,
+      "old_state": "neutral",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429:91d5db6ede527161129df429fca9a6a4b8b113da79bce67563556b1ade466582"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-08-04\",\"val\":-1944000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2024Q4I\",\"fy\":2025,\"val\":113205000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=349.398",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429:91d5db6ede527161129df429fca9a6a4b8b113da79bce67563556b1ade466582"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2024Q4I\",\"fy\":2025,\"val\":113205000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429",
+          "exact_span": "{\"accn\":\"0001576942-25-000009\",\"end\":\"2025-02-01\",\"filed\":\"2025-03-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2024Q4I\",\"fy\":2025,\"val\":191154000}",
+          "timestamp": "2025-03-12T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.592219",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-136284000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=13.2918",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-136284000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.451405",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27:16a460f32cff2e45879a2b270de4c6753025642c83bf0025ec7e5ba9a9e504bc"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":301911000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27",
+          "exact_span": "{\"accn\":\"0001590364-25-000023\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":350940000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.860292",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 4,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "company_id": "cik_0001718405",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0:d60d0e738565dfdb0cc3c1d04a26c9706903ae1b8104df2c35d05599685db445"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-18718000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":68768000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=22.0434",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "company_id": "cik_0001718405",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0:d60d0e738565dfdb0cc3c1d04a26c9706903ae1b8104df2c35d05599685db445"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-18718000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":68768000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0.272191",
+      "new_state": "positive",
+      "old_confidence": 0.85,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001718405:20250731",
+      "company_id": "cik_0001718405",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0:d60d0e738565dfdb0cc3c1d04a26c9706903ae1b8104df2c35d05599685db445"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"val\":68768000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001718405:financials:d60d0e738565dfdb0cc3c1d0",
+          "exact_span": "{\"accn\":\"0001718405-25-000026\",\"end\":\"2025-06-30\",\"filed\":\"2025-07-31\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":2899000}",
+          "timestamp": "2025-07-31T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=23.7213",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a:c2804905238561821d810b3ad719a2fd97f1fc0af945246beb2e6ee2d21ad9e7"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":13349000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a",
+          "exact_span": "{\"accn\":\"0001801368-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":282442000}",
+          "timestamp": "2025-02-28T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2023-11-01\",\"val\":35546000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2023-11-01\",\"val\":35546000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5:6c4116d3e8785f0b8e61a6b5d7d6663504f26e3e89a920de409787dd5f87a9d9"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":47267000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5",
+          "exact_span": "{\"accn\":\"0001628280-25-002990\",\"end\":\"2024-10-31\",\"filed\":\"2025-01-29\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":61480000}",
+          "timestamp": "2025-01-30T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=0.768819",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9:dbd7ec9ca3018badd98514e9233b732c72edf27e0263affef7dc0852689fb20e"
+      ],
+      "is_surge_post_execution_audit": false,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":575117000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9",
+          "exact_span": "{\"accn\":\"0001869198-25-000009\",\"end\":\"2024-12-31\",\"filed\":\"2025-02-27\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2024,\"val\":10879000}",
+          "timestamp": "2025-02-27T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001920294:20250530",
+      "company_id": "cik_0001920294",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594:ca91297a923d684997d5c59415b8e66767bdfc4788d83162679b743c0e0d9717"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594",
+          "exact_span": "{\"accn\":\"0000950170-25-057622\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-24\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-21642715}",
+          "timestamp": "2025-04-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594",
+          "exact_span": "{\"accn\":\"0000950170-25-057622\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-24\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":9500000}",
+          "timestamp": "2025-04-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=5.26736",
+      "new_state": "positive",
+      "old_confidence": 0.8,
+      "old_state": "positive",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001920294:20250530",
+      "company_id": "cik_0001920294",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594:ca91297a923d684997d5c59415b8e66767bdfc4788d83162679b743c0e0d9717"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594",
+          "exact_span": "{\"accn\":\"0000950170-25-057622\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-24\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-21642715}",
+          "timestamp": "2025-04-24T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001920294:company_facts:ca91297a923d684997d5c594",
+          "exact_span": "{\"accn\":\"0000950170-25-057622\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-24\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":9500000}",
+          "timestamp": "2025-04-24T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=2.27818",
+      "new_state": "positive",
+      "old_confidence": 0.0,
+      "old_state": "unavailable",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": false
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":141237000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.7,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 0,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_ref": "cash_to_current_liabilities_ratio:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":134518000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_to_current_liabilities_ratio=1.87733",
+      "new_state": "positive",
+      "old_confidence": 0.9,
+      "old_state": "positive",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0001964504:20250530",
+      "company_id": "cik_0001964504",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3:a78296e9a623225c3c07acb36c00091bacda6635685a51f2f785eca5804bedc0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":141237000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001964504:financials:a78296e9a623225c3c07acb3",
+          "exact_span": "{\"accn\":\"0001628280-25-012451\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-13\",\"form\":\"40-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":252535000}",
+          "timestamp": "2025-03-13T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "round_index": 2,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139:78c706359f8aae145cb43139eb3a214bc6dfe3d98cadd48d08df336e7a1206b0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_ref": "cash_burn_rate_elevated:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"start\":\"2024-06-29\",\"val\":84000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1481000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "cash_burn_rate_elevated=0",
+      "new_state": "negative",
+      "old_confidence": 0.9,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "document_count": 1,
+      "document_fingerprints": [
+        "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139:78c706359f8aae145cb43139eb3a214bc6dfe3d98cadd48d08df336e7a1206b0"
+      ],
+      "is_surge_post_execution_audit": true,
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_ref": "liquidity_runway_months:v2",
+      "new_confidence": 1.0,
+      "new_evidence": [
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"start\":\"2024-06-29\",\"val\":84000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        },
+        {
+          "document_id": "sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139",
+          "exact_span": "{\"accn\":\"0002023554-25-000034\",\"end\":\"2025-06-27\",\"filed\":\"2025-08-21\",\"form\":\"10-K\",\"fp\":\"FY\",\"fy\":2025,\"val\":1481000000}",
+          "timestamp": "2025-08-21T00:00:00+00:00"
+        }
+      ],
+      "new_interpretation": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+      "new_state": "negative",
+      "old_confidence": 0.85,
+      "old_state": "negative",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "round_index": 1,
+      "state_agreement": true
+    }
+  ],
+  "schema_version": "structured-signal-migration-replay-v1",
+  "signals": {
+    "cash_burn_rate_elevated": {
+      "legacy_ref": "cash_burn_rate_elevated:v1",
+      "migration_spec": {
+        "category": "financial",
+        "definition": {
+          "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end."
+        },
+        "evidence_policy": {
+          "require_exact_span": true,
+          "require_source": true,
+          "require_timestamp": true
+        },
+        "execution": {
+          "function": "financial.cash_burn_rate_elevated",
+          "type": "deterministic"
+        },
+        "modality": "structured",
+        "parameters": {
+          "burn_threshold": 0.1,
+          "lookback_days": 550,
+          "max_period_age_days": 550
+        },
+        "raw_retrieval": {
+          "lookback_days": 550,
+          "query_terms": [
+            "cash burn rate",
+            "operating cash flow",
+            "cash and cash equivalents",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "CashAndCashEquivalentsAtCarryingValue"
+          ],
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "schema": {
+          "confidence": {
+            "type": "float"
+          },
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          }
+        },
+        "signal_id": "cash_burn_rate_elevated",
+        "version": 2
+      },
+      "new_available": 34,
+      "new_mean_confidence": 1.0,
+      "occurrences": 34,
+      "old_available": 31,
+      "old_mean_confidence": 0.7897058823529413,
+      "post_execution_label_state_counts": {
+        "control": {
+          "negative": 12,
+          "neutral": 1,
+          "positive": 1
+        },
+        "surge": {
+          "negative": 11,
+          "positive": 9
+        }
+      },
+      "state_agreements": 30,
+      "transitions": {
+        "negative->negative": 20,
+        "neutral->negative": 1,
+        "neutral->neutral": 1,
+        "positive->positive": 9,
+        "unavailable->negative": 2,
+        "unavailable->positive": 1
+      }
+    },
+    "cash_to_current_liabilities_ratio": {
+      "legacy_ref": "cash_to_current_liabilities_ratio:v1",
+      "migration_spec": {
+        "category": "financial",
+        "definition": {
+          "description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency."
+        },
+        "evidence_policy": {
+          "require_exact_span": true,
+          "require_source": true,
+          "require_timestamp": true
+        },
+        "execution": {
+          "function": "financial.cash_to_current_liabilities_ratio",
+          "type": "deterministic"
+        },
+        "modality": "structured",
+        "parameters": {
+          "negative_max": 1.0,
+          "positive_min": 1.0
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "latest point-in-time CashAndCashEquivalentsAtCarryingValue and LiabilitiesCurrent for the same company_id",
+          "query_terms": [
+            "CashAndCashEquivalentsAtCarryingValue",
+            "LiabilitiesCurrent",
+            "cash",
+            "current liabilities",
+            "liquidity ratio",
+            "10-Q",
+            "10-K",
+            "20-F",
+            "SEC company facts",
+            "USD"
+          ],
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "schema": {
+          "confidence": {
+            "type": "float"
+          },
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          }
+        },
+        "signal_id": "cash_to_current_liabilities_ratio",
+        "version": 2
+      },
+      "new_available": 25,
+      "new_mean_confidence": 0.9259259259259259,
+      "occurrences": 27,
+      "old_available": 24,
+      "old_mean_confidence": 0.7962962962962963,
+      "post_execution_label_state_counts": {
+        "control": {
+          "negative": 7,
+          "positive": 3,
+          "unavailable": 2
+        },
+        "surge": {
+          "negative": 7,
+          "positive": 8
+        }
+      },
+      "state_agreements": 25,
+      "transitions": {
+        "negative->negative": 13,
+        "neutral->negative": 1,
+        "positive->positive": 10,
+        "unavailable->positive": 1,
+        "unavailable->unavailable": 2
+      }
+    },
+    "liquidity_runway_months": {
+      "legacy_ref": "liquidity_runway_months:v1",
+      "migration_spec": {
+        "category": "financial",
+        "definition": {
+          "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance."
+        },
+        "evidence_policy": {
+          "require_exact_span": true,
+          "require_source": true,
+          "require_timestamp": true
+        },
+        "execution": {
+          "function": "financial.liquidity_runway_months",
+          "type": "deterministic"
+        },
+        "modality": "structured",
+        "parameters": {
+          "max_period_age_days": 365,
+          "negative_runway_min_months": 12,
+          "positive_runway_max_months": 6
+        },
+        "raw_retrieval": {
+          "comparison_requirement": "Use the latest point-in-time CashAndCashEquivalentsAtCarryingValue and NetCashProvidedByUsedInOperatingActivities for the same reporting entity and period; when multiple facts conflict, prefer the most recent available_at.",
+          "lookback_days": 365,
+          "query_terms": [
+            "CashAndCashEquivalentsAtCarryingValue",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "liquidity runway",
+            "operating cash flow",
+            "cash burn",
+            "months"
+          ],
+          "source_types": [
+            "financials",
+            "company_facts"
+          ]
+        },
+        "schema": {
+          "confidence": {
+            "type": "float"
+          },
+          "value": {
+            "type": "categorical",
+            "values": [
+              "positive",
+              "neutral",
+              "negative",
+              "unavailable"
+            ]
+          }
+        },
+        "signal_id": "liquidity_runway_months",
+        "version": 2
+      },
+      "new_available": 39,
+      "new_mean_confidence": 1.0,
+      "occurrences": 39,
+      "old_available": 38,
+      "old_mean_confidence": 0.7589743589743589,
+      "post_execution_label_state_counts": {
+        "control": {
+          "negative": 15,
+          "neutral": 2
+        },
+        "surge": {
+          "negative": 16,
+          "neutral": 2,
+          "positive": 4
+        }
+      },
+      "state_agreements": 28,
+      "transitions": {
+        "negative->negative": 20,
+        "neutral->negative": 5,
+        "neutral->neutral": 4,
+        "positive->negative": 5,
+        "positive->positive": 4,
+        "unavailable->negative": 1
+      }
+    }
+  },
+  "source_identity": "e0eecc202625e168b7dabf552933260ad909cc228e953fe65502424d8d0952f1",
+  "source_run": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v139",
+  "trajectory_count": 48
+}

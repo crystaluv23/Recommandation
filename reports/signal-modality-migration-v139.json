@@ -1,0 +1,184 @@
+{
+  "capability_audit": {
+    "disabled": {},
+    "enabled_refs": [
+      "financing_listing_action:v3",
+      "cash_burn_rate_elevated:v2",
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3",
+      "liquidity_runway_months:v2",
+      "net_share_retirement_yoy:v2",
+      "operating_cash_flow_margin:v2",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v2",
+      "guidance_acceleration:v2",
+      "max_drawdown_1y:v3",
+      "price_momentum_126d:v2",
+      "negative_word_count:v2",
+      "order_confirmation_disclosed:v2",
+      "order_quality:v2",
+      "commercialization_status:v2",
+      "customer_concentration:v2"
+    ],
+    "passed": true,
+    "schema_version": "signal-capability-audit-v1"
+  },
+  "migrations": [
+    {
+      "change": "executor_correction",
+      "modality": "structured",
+      "source_execution": "llm",
+      "source_ref": "cash_burn_rate_elevated:v1",
+      "target_execution": "deterministic",
+      "target_ref": "cash_burn_rate_elevated:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "cash_reserves:v1",
+      "target_execution": "deterministic",
+      "target_ref": "cash_reserves:v2"
+    },
+    {
+      "change": "executor_correction",
+      "modality": "structured",
+      "source_execution": "llm",
+      "source_ref": "cash_to_current_liabilities_ratio:v1",
+      "target_execution": "deterministic",
+      "target_ref": "cash_to_current_liabilities_ratio:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "commercialization_status:v1",
+      "target_execution": "llm",
+      "target_ref": "commercialization_status:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "customer_concentration:v1",
+      "target_execution": "llm",
+      "target_ref": "customer_concentration:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "financing_listing_action:v2",
+      "target_execution": "llm",
+      "target_ref": "financing_listing_action:v3"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "gross_margin_change:v2",
+      "target_execution": "deterministic",
+      "target_ref": "gross_margin_change:v3"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "guidance_acceleration:v1",
+      "target_execution": "llm",
+      "target_ref": "guidance_acceleration:v2"
+    },
+    {
+      "change": "executor_correction",
+      "modality": "structured",
+      "source_execution": "llm",
+      "source_ref": "liquidity_runway_months:v1",
+      "target_execution": "deterministic",
+      "target_ref": "liquidity_runway_months:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "max_drawdown_1y:v2",
+      "target_execution": "deterministic",
+      "target_ref": "max_drawdown_1y:v3"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "negative_word_count:v1",
+      "target_execution": "deterministic",
+      "target_ref": "negative_word_count:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "net_share_retirement_yoy:v1",
+      "target_execution": "deterministic",
+      "target_ref": "net_share_retirement_yoy:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "operating_cash_flow_margin:v1",
+      "target_execution": "deterministic",
+      "target_ref": "operating_cash_flow_margin:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "order_confirmation_disclosed:v1",
+      "target_execution": "llm",
+      "target_ref": "order_confirmation_disclosed:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "narrative",
+      "source_execution": "llm",
+      "source_ref": "order_quality:v1",
+      "target_execution": "llm",
+      "target_ref": "order_quality:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "price_momentum_126d:v1",
+      "target_execution": "deterministic",
+      "target_ref": "price_momentum_126d:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "revenue_acceleration:v1",
+      "target_execution": "deterministic",
+      "target_ref": "revenue_acceleration:v2"
+    },
+    {
+      "change": "modality_backfill",
+      "modality": "structured",
+      "source_execution": "deterministic",
+      "source_ref": "revenue_growth_yoy:v1",
+      "target_execution": "deterministic",
+      "target_ref": "revenue_growth_yoy:v2"
+    }
+  ],
+  "modality_counts": {
+    "narrative": 6,
+    "structured": 12
+  },
+  "plan_hash": "e80fb5e9683db688355a23136d7591973b0d33689c1e517199e4ca46110f505f",
+  "schema_version": "signal-modality-migration-result-v1",
+  "signal_count": 18,
+  "source_registry_hash": "8df0bb48b93349044ff2442b3f589d05a22cb437cadf0c495257deba52e6077c",
+  "source_registry_version": 7,
+  "target_registry_hash": "719bd0520c673005083e4f265ec8cfab13467897c748fa5d37e285cedb234785",
+  "target_registry_version": 8
+}

@@ -162,6 +162,27 @@ snapshot and audit hash are bound by the run contract. `market_cap` and
 `pilot_to_volume` remain disabled until reliable historical inputs and adapters
 exist.
 
+### Legacy Registry modality migration
+
+An existing Registry with legacy specs that omit `modality` is classified by a
+declarative migration plan bound to the exact source Registry version and hash.
+The plan must cover every current stable ref exactly once and declare its
+research modality. The migration runs into a separate successor Registry; it
+never edits the source Registry or its historical versions.
+
+For a Signal whose executor already matches its research identity, migration
+creates the next immutable version with the explicit modality and otherwise
+preserves its spec, skill, and executable fixtures. A legacy numeric formula
+stored as an LLM Signal must declare the registered deterministic function and
+may replace its description, parameters, and fixtures. A narrative Signal must
+retain an LLM skill. The successor advances the Registry version once for the
+whole classification batch, passes the complete capability audit, and emits a
+manifest containing source and target hashes plus every source-to-target ref.
+Missing, duplicate, stale-hash, mixed, or non-executable classifications fail
+closed. Runtime statistics and learning events are not copied into this
+definition-only successor; they remain attached to their exact historical
+Signal versions.
+
 ## Seed Hard-Signal Defaults
 
 The hard-signal seed is intentionally small. It supplies reproducible primitive
