@@ -50,6 +50,12 @@ from stock_opportunity_agent.data.sources.state import (
 )
 from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.llm.openrouter_jev import (
+    DEFAULT_JEV_MODEL,
+    DEFAULT_JEV_URL,
+    DEFAULT_OPENROUTER_API_KEY_ENV_VAR,
+    OpenRouterJevClient,
+)
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.scheme_evolution import (
     DEFAULT_EVOLUTION_PRIORS,
@@ -124,6 +130,10 @@ from stock_opportunity_agent.research.evolution_plan_roles import (
     LLMRoundReflector,
     LLMSignalRetrievalAgent,
 )
+from stock_opportunity_agent.research.evolution_jev_roles import (
+    JevBlindPredictor,
+    JevSignalRetrievalAgent,
+)
 from stock_opportunity_agent.research.evolution_signal_roles import (
     LLMSignalMiningModel,
     LLMSignalUpdateModel,
@@ -158,6 +168,7 @@ class EvolutionRunContract:
     max_slow_cycles: int = 1
     min_new_signals_per_cycle: int = 1
     locked_test_accessed: bool = False
+    parallel_jev_decisions: bool = False
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy()
     schema_version: str = "evolution-run-contract-v8"
 
@@ -215,6 +226,10 @@ class EvolutionRunContract:
             raise ValidationError("external attempt and cost ceilings must be positive")
         if self.locked_test_accessed:
             raise ValidationError("ordinary evolution contract cannot open Locked Test")
+        if self.parallel_jev_decisions and "jev" not in self.models:
+            raise ValidationError(
+                "parallel Jev decisions require a frozen Jev model identity"
+            )
         object.__setattr__(
             self,
             "models",
@@ -545,6 +560,8 @@ class EvolutionRunContract:
             value["slow_history_manifest_hash"] = self.slow_history_manifest_hash
         if self.seed_pool_manifest_hash is not None:
             value["seed_pool_manifest_hash"] = self.seed_pool_manifest_hash
+        if self.parallel_jev_decisions:
+            value["parallel_jev_decisions"] = True
         return value
 
     @property
@@ -635,6 +652,9 @@ class EvolutionRunContract:
                 value.get("min_new_signals_per_cycle", 1)
             ),
             locked_test_accessed=bool(value.get("locked_test_accessed", False)),
+            parallel_jev_decisions=bool(
+                value.get("parallel_jev_decisions", False)
+            ),
             data_acquisition=DataAcquisitionPolicy.from_dict(
                 dict(value.get("data_acquisition", {}))
             ),
@@ -2489,6 +2509,25 @@ def _rebased_history_meta_entries(
     )
 
 
+def _parallel_decision_roles(
+    judge_caller: Any,
+    *,
+    parallel_jev_decisions: bool,
+    environ: Mapping[str, str] | None,
+) -> tuple[Any, Any]:
+    """Return (signal_agent, predictor) honoring the parallel Jev decision path.
+
+    Default production keeps the LLM roles; an explicit frozen-contract flag
+    swaps only the two closed-choice decisions to Jev while the same caller
+    keeps prose explanation and post-label reflection.
+    """
+
+    if not parallel_jev_decisions:
+        return LLMSignalRetrievalAgent(judge_caller), LLMBlindPredictor(judge_caller)
+    client = OpenRouterJevClient.from_environ(environ)
+    return JevSignalRetrievalAgent(client), JevBlindPredictor(client, judge_caller)
+
+
 def _run_bounded_evolution_cycle_unlocked(
     *,
     workspace_path: str | Path,
@@ -2760,12 +2799,17 @@ def _run_bounded_evolution_cycle_unlocked(
             entries=(*bootstrap_meta_entries, *meta_memory.entries)
         )
     signal_runner = StructuredLLMSignalRunner(judge_caller)
+    coordinator_signal_agent, coordinator_predictor = _parallel_decision_roles(
+        judge_caller,
+        parallel_jev_decisions=contract.parallel_jev_decisions,
+        environ=environ,
+    )
     evaluator = RuntimePlanEvaluator(
         raw_info_store=raw_info_store,
         evidence_resolver=evidence_resolver,
         controller=LLMResearchController(judge_caller),
-        signal_agent=LLMSignalRetrievalAgent(judge_caller),
-        predictor=LLMBlindPredictor(judge_caller),
+        signal_agent=coordinator_signal_agent,
+        predictor=coordinator_predictor,
         prediction_root=workspace_root / "predictions",
         trajectory_root=evolution_workspace.trajectory_root,
         limits=runtime_limits,
@@ -2803,12 +2847,17 @@ def _run_bounded_evolution_cycle_unlocked(
             raise ValidationError(
                 "parallel evaluator source catalog differs from coordinator"
             )
+        worker_signal_agent, worker_predictor = _parallel_decision_roles(
+            worker_caller,
+            parallel_jev_decisions=contract.parallel_jev_decisions,
+            environ=environ,
+        )
         return RuntimePlanEvaluator(
             raw_info_store=worker_store,
             evidence_resolver=worker_resolver,
             controller=LLMResearchController(worker_caller),
-            signal_agent=LLMSignalRetrievalAgent(worker_caller),
-            predictor=LLMBlindPredictor(worker_caller),
+            signal_agent=worker_signal_agent,
+            predictor=worker_predictor,
             prediction_root=workspace_root / "predictions",
             trajectory_root=evolution_workspace.trajectory_root,
             limits=runtime_limits,
@@ -3008,6 +3057,7 @@ def build_run_contract(
     min_new_signals_per_cycle: int = 1,
     data_acquisition: DataAcquisitionPolicy = DataAcquisitionPolicy(),
     environ: Mapping[str, str] | None = None,
+    parallel_jev_decisions: bool = False,
 ) -> EvolutionRunContract:
     """Build one bounded contract from reviewed, hashed local inputs."""
 
@@ -3017,6 +3067,20 @@ def build_run_contract(
         raise ValidationError("dataset split manifest is not human-approved")
     if manifest.get("locked_test_sealed") is not True:
         raise ValidationError("dataset split manifest must seal Locked Test")
+    models = public_model_contract(role_aliases, environ=environ)
+    if parallel_jev_decisions:
+        env = os.environ if environ is None else environ
+        models["jev"] = {
+            "alias": "openrouter-jev",
+            "provider": "openrouter",
+            "provider_identity": "openrouter-decisions",
+            "model": DEFAULT_JEV_MODEL,
+            "endpoint": DEFAULT_JEV_URL,
+            "api_key_env_var": DEFAULT_OPENROUTER_API_KEY_ENV_VAR,
+            "api_key_available": bool(env.get(DEFAULT_OPENROUTER_API_KEY_ENV_VAR)),
+            "roles": ["parallel_decisions"],
+            "web_tools_allowed": False,
+        }
     return EvolutionRunContract(
         run_id=run_id,
         created_at=datetime.now(timezone.utc).isoformat(),
@@ -3026,7 +3090,7 @@ def build_run_contract(
         initial_signal_registry_version=initial_signal_registry_version,
         initial_signal_registry_hash=initial_signal_registry_hash,
         priors_hash=_canonical_hash(dict(priors)),
-        models=public_model_contract(role_aliases, environ=environ),
+        models=models,
         code_revision=current_code_revision(project_root),
         python_runtime=platform.python_version(),
         limits=dict(limits),
@@ -3038,6 +3102,7 @@ def build_run_contract(
         slow_history_manifest_hash=slow_history_manifest_hash,
         max_slow_cycles=max_slow_cycles,
         min_new_signals_per_cycle=min_new_signals_per_cycle,
+        parallel_jev_decisions=parallel_jev_decisions,
         data_acquisition=data_acquisition,
     )
 

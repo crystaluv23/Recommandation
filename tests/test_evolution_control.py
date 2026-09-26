@@ -12,9 +12,18 @@ from stock_opportunity_agent.data.sources.alpha_vantage import (
 )
 from stock_opportunity_agent.research.evolution_control import (
     _load_slow_fast_context,
+    _parallel_decision_roles,
     _rebased_history_meta_entries,
     apply_slow_history_manifest,
     build_slow_history_manifest,
+)
+from stock_opportunity_agent.research.evolution_jev_roles import (
+    JevBlindPredictor,
+    JevSignalRetrievalAgent,
+)
+from stock_opportunity_agent.research.evolution_plan_roles import (
+    LLMBlindPredictor,
+    LLMSignalRetrievalAgent,
 )
 from stock_opportunity_agent.signal_library import SignalLearningEvent
 
@@ -1045,6 +1054,59 @@ class RunControlTests(TestCase):
             SHA_A,
         )
         self.assertNotIn("seed_pool_manifest_hash", make_contract().to_dict())
+
+    def test_parallel_jev_decisions_round_trips_and_requires_jev_model(self) -> None:
+        base = make_contract()
+        with self.assertRaisesRegex(
+            ValidationError,
+            "parallel Jev decisions require a frozen Jev model identity",
+        ):
+            EvolutionRunContract(
+                **{**base.__dict__, "parallel_jev_decisions": True}
+            )
+        self.assertFalse(base.parallel_jev_decisions)
+        self.assertNotIn("parallel_jev_decisions", base.to_dict())
+        jev_models = {
+            **base.models,
+            "jev": {
+                "alias": "openrouter-jev",
+                "provider": "openrouter",
+                "model": "typesafe/jev-1.13",
+            },
+        }
+        contract = EvolutionRunContract(
+            **{
+                **base.__dict__,
+                "models": jev_models,
+                "parallel_jev_decisions": True,
+            }
+        )
+        value = contract.to_dict()
+        self.assertTrue(value["parallel_jev_decisions"])
+        self.assertTrue(
+            EvolutionRunContract.from_dict(value).parallel_jev_decisions
+        )
+
+    def test_parallel_decision_roles_dispatch_by_frozen_flag(self) -> None:
+        class _Caller:
+            pass
+
+        signal_agent, predictor = _parallel_decision_roles(
+            _Caller(), parallel_jev_decisions=False, environ={}
+        )
+        self.assertIsInstance(signal_agent, LLMSignalRetrievalAgent)
+        self.assertIsInstance(predictor, LLMBlindPredictor)
+        signal_agent, predictor = _parallel_decision_roles(
+            _Caller(),
+            parallel_jev_decisions=True,
+            environ={"OPENROUTER_API_KEY": "test-key"},
+        )
+        self.assertIsInstance(signal_agent, JevSignalRetrievalAgent)
+        self.assertIsInstance(predictor, JevBlindPredictor)
+        with self.assertRaisesRegex(ValidationError, "OPENROUTER_API_KEY"):
+            _parallel_decision_roles(
+                _Caller(), parallel_jev_decisions=True, environ={}
+            )
 
     def test_fast_then_slow_accepts_slow_history_and_rejects_bootstrap(self) -> None:
         base = make_contract()

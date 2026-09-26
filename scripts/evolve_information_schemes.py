@@ -297,6 +297,15 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("--data-source-type", action="append", default=[])
     freeze.add_argument("--max-data-requests-per-cycle", type=int, default=0)
     freeze.add_argument("--max-data-requests-per-run", type=int, default=0)
+    freeze.add_argument(
+        "--parallel-jev-decisions",
+        action="store_true",
+        help=(
+            "route the closed Signal-routing and Blind-Prediction choices "
+            "through the frozen OpenRouter Jev Decisions endpoint instead of "
+            "the judge LLM; prose explanation and reflection stay with the LLM"
+        ),
+    )
 
     run_cycle = subparsers.add_parser(
         "run-cycle",
@@ -715,6 +724,7 @@ def freeze_run(
     data_source_types: tuple[str, ...] = (),
     max_data_requests_per_cycle: int = 0,
     max_data_requests_per_run: int = 0,
+    parallel_jev_decisions: bool = False,
 ) -> dict[str, object]:
     if h1_request_budget < 1:
         raise ValueError("H1 request budget must be positive")
@@ -799,6 +809,7 @@ def freeze_run(
             or contract.min_new_signals_per_cycle
             != min_new_signals_per_cycle
             or contract.slow_history_manifest_hash != requested_history_hash
+            or contract.parallel_jev_decisions != parallel_jev_decisions
         ):
             raise ValueError("existing run contract conflicts with requested freeze scope")
     else:
@@ -909,6 +920,7 @@ def freeze_run(
             max_slow_cycles=max_slow_cycles,
             min_new_signals_per_cycle=min_new_signals_per_cycle,
             data_acquisition=requested_data_policy,
+            parallel_jev_decisions=parallel_jev_decisions,
         )
         contract.freeze(contract_path)
     seed_pool = None
@@ -934,6 +946,7 @@ def freeze_run(
         "slow_history_manifest_hash": contract.slow_history_manifest_hash,
         "max_slow_cycles": contract.max_slow_cycles,
         "min_new_signals_per_cycle": contract.min_new_signals_per_cycle,
+        "parallel_jev_decisions": contract.parallel_jev_decisions,
         "historical_seed_pool": {
             "manifest_hash": contract.seed_pool_manifest_hash,
             "seed_count": len(seed_pool.entries) if seed_pool else 0,
@@ -1769,6 +1782,7 @@ def main() -> int:
                 data_source_types=tuple(args.data_source_type),
                 max_data_requests_per_cycle=args.max_data_requests_per_cycle,
                 max_data_requests_per_run=args.max_data_requests_per_run,
+                parallel_jev_decisions=args.parallel_jev_decisions,
             )
         elif args.command == "run-cycle":
             result = run_cycle_command(
