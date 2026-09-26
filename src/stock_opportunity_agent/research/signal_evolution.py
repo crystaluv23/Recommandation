@@ -6346,7 +6346,10 @@ class SignalEvolutionEngine:
                 self._run_controller_mining_axis(
                     cycle_id=cycle_id,
                     axis_id=target_id,
-                    research_axis=target_contract.descriptor(),
+                    research_axis={
+                        "axis_id": target_id,
+                        **target_contract.descriptor(),
+                    },
                     dev_cases=target_dev,
                     check_cases=target_check,
                     labels_by_case_id=target_labels,

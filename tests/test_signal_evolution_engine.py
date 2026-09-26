@@ -1111,6 +1111,75 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(output["audit"]["track"], "controller_multi_axis")
 
+    def test_controller_magnitude_axis_constructs_real_controller(self) -> None:
+        class DeferredCaller:
+            def complete_json(self, *, stage, **_kwargs):
+                if stage == "mining_candidate_materialize":
+                    return ({"spec": {}}, AgentUsage(llm_calls=1))
+                return (
+                    {"action": "record_deferred", "rationale": ["Stop."]},
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = tuple(
+                [make_case(f"axis_high_{index}", 4.0) for index in range(4)]
+                + [make_case(f"axis_low_{index}", 2.2) for index in range(4)]
+                + [make_case(f"axis_ctl_{index}", 1.1) for index in range(4)]
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            target_reveal = build_target_group_manifest(
+                cases, MAGNITUDE_GE3_CONTRACT
+            )
+            target_sampling = build_target_sampling_manifest(
+                cases,
+                MAGNITUDE_GE3_CONTRACT,
+                cycle_id=1,
+                base_seed="magnitude-axis",
+                dev_limit=4,
+                check_limit=4,
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                research_target_reveal=target_reveal,
+                research_target_sampling=target_sampling,
+            )
+            engine._active_sampling_manifest = build_slow_sampling_manifest(
+                cases,
+                cycle_id=1,
+                base_seed="direction-axis",
+                dev_limit=8,
+                check_limit=4,
+            )
+            caller_backed = EmptyMiningModel()
+            caller_backed.caller = DeferredCaller()
+            engine.mining_model = caller_backed
+
+            output = engine._run_controller_mining(cycle_id=1)
+
+            audit = output["audit"]
+            self.assertEqual(audit["track"], "controller_multi_axis")
+            magnitude = audit["axes"][MAGNITUDE_GE3_CONTRACT.target_id]
+            self.assertEqual(
+                magnitude["research_axis"].get("axis_id"),
+                MAGNITUDE_GE3_CONTRACT.target_id,
+            )
+            for row in magnitude["seeds"]:
+                self.assertNotEqual(
+                    row.get("status"),
+                    "failed",
+                    f"magnitude seed failed: {row.get('error')}",
+                )
+
     def test_controller_mining_audit_reports_true_modality_metrics(self) -> None:
         class FixtureNarrativeRunner:
             def execute(self, spec, documents, _skill, as_of):
