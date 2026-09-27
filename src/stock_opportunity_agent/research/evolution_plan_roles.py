@@ -37,6 +37,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     is_technical_exclusion_trajectory,
     jev_decision_feedback,
     magnitude_feedback,
+    research_jev_calibration_diagnostics,
     research_magnitude_diagnostics,
     technical_completion_diagnostics,
     _mask_identity_values,
@@ -1680,7 +1681,11 @@ class LLMBlindPredictor:
                     "When jev_decision_feedback is present, use its probabilities "
                     "and confidence only as provider decision signals for diagnosing "
                     "calibration, overconfidence, conservatism, or class confusion; "
-                    "do not call them calibrated live-market probabilities. "
+                    "do not call them calibrated live-market probabilities. Its "
+                    "calibration assessment is deterministic: a correct_low_support "
+                    "case still requires an explanation of why the realized class "
+                    "received little probability; a high-confidence error requires "
+                    "an attribution. Do not reward confidence merely for increasing. "
                     "When framework_prediction_correct is true, decision_drivers must "
                     "name at least one specific supplied evidence or counter-evidence "
                     "reason that made the saved judgment work. When it is false, "
@@ -1872,7 +1877,13 @@ class LLMInformationPlanProposer:
             "H_init, H_reflect, or H_analyse, never by changing prediction "
             "semantics, labels, or class definitions; a batch where every "
             "candidate leaves an obvious recurring magnitude defect untouched "
-            "needs the change content itself to show why. Technical exclusions "
+            "needs the change content itself to show why. When supplied, "
+            "jev_calibration_diagnostics is also deterministic descriptive "
+            "feedback. Address recurring correct_low_support, high-confidence "
+            "error, or concentrated magnitude-choice patterns through a concrete "
+            "change to evidence collection or analysis, or make the Plan content "
+            "show an explicit defer/reject rationale; never inflate confidence as "
+            "an objective by itself. Technical exclusions "
             "describe incomplete research and its scoring effect only; never "
             "turn them into evidence that the Plan misjudged direction, magnitude, "
             "or a company's fundamentals. Outcome-aware "
@@ -2157,6 +2168,9 @@ def _round_reflection_record(record: PlanRecord) -> dict[str, Any]:
         value["magnitude_diagnostics"] = research_magnitude_diagnostics(
             record_trajectories
         )
+        calibration = research_jev_calibration_diagnostics(record_trajectories)
+        if calibration is not None:
+            value["jev_calibration_diagnostics"] = calibration
         value["technical_completion"] = technical_completion_diagnostics(
             record_trajectories
         )
@@ -2199,6 +2213,9 @@ class LLMPlanCritic:
                 payload["magnitude_diagnostics"] = research_magnitude_diagnostics(
                     trajectories
                 )
+                calibration = research_jev_calibration_diagnostics(trajectories)
+                if calibration is not None:
+                    payload["jev_calibration_diagnostics"] = calibration
                 payload["technical_completion"] = technical_completion_diagnostics(
                     trajectories
                 )
@@ -2227,6 +2244,13 @@ class LLMPlanCritic:
                     "direction, underestimates class, overestimates class, or "
                     "concentrates error in one support-poor class, and weigh that "
                     "against the binary tradeoff before proposing changes. Treat "
+                    "jev_calibration_diagnostics as deterministic descriptive "
+                    "feedback: explain correct_low_support cases, high-confidence "
+                    "errors, and concentrated magnitude choices, and connect any "
+                    "recurring defect to a concrete Plan change or an explicit "
+                    "defer/reject rationale. Do not optimize confidence upward in "
+                    "isolation; better feedback means lower Brier/log loss and "
+                    "better class discrimination on frozen cases. Treat "
                     "four-way feedback and magnitude diagnostics as reflection "
                     "evidence about what failed; Combined Binary F1 remains the "
                     "primary fitness and parent-selection score, with magnitude "

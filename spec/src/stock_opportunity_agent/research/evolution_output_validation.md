@@ -77,6 +77,18 @@ such a deterministic repair, so ambiguous literal substitution, invented
 Basic refs, and any unanchored edit fail closed instead of being silently
 accepted.
 
+The transport-level identical-request guard remains fail-closed, but it is not
+the terminal owner of a role that already has a typed invalid object and typed
+obligations. If a later correction would be byte-identical, the role records the
+no-progress diagnostic, sends no duplicate request, and enters the same bounded
+deterministic fallback described above. A successful fallback is fully parsed;
+an ineligible or still-invalid fallback remains a candidate rejection. For
+`claim_quantity_not_supported`, same-row `evidence_group` and `evidence_index`
+dependency paths are source-coordinate alternatives, not independent assertions;
+when the authorized repair removes that entire evidence row, those coordinates
+disappear with it while separately named beliefs or contradictions are removed
+under their own dependency authority.
+
 Field and member granularity is preserved at every path-expansion step. A
 leaf path `root[i].field` authorizes only that field of its member; it never
 authorizes rewriting sibling fields, replacing the whole member, inserting

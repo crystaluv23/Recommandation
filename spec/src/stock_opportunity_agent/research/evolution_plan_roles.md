@@ -10,6 +10,12 @@ Signal retrieval, blind prediction, and Plan reflection.
 - Adapters translate model output into core protocols; they do not own engine
   state or commit pointers.
 - Prediction-time roles never receive labels or target identity.
+- Post-label Jev feedback includes deterministic proper-score and concentration
+  diagnostics. Post-hoc reflection and the Plan critic must explain recurring
+  low-support correct calls, high-confidence errors, and collapsed magnitude
+  choices. Proposer-visible meta derives the same aggregate from immutable case
+  feedback and requires a concrete Plan change or explicit defer/reject rationale;
+  confidence itself remains excluded from fitness and is never maximized alone.
 - Correction and fallback behavior delegates to the shared validators. Plan
   proposal corrections are checked with the same field/member granularity as
   controller corrections: a leaf path such as `B.requests[i].description`

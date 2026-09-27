@@ -12,6 +12,13 @@ Fast/Slow engine dependency.
 
 ## Invariants
 
+- Persisted Jev probability distributions yield deterministic per-case
+  calibration feedback and derived cross-case summaries. Legacy trajectories
+  whose saved Jev feedback predates the calibration sub-block remain loadable;
+  every supplied legacy value must still exactly match the deterministic legacy
+  projection. New serialization emits the enriched record. These diagnostics do
+  not change labels, fitness, parent selection, or promotion.
+
 - Queryless filing windows rank distinct substantive term coverage, not repeated
   mentions of generic business/risk words. The existing filing source-family
   catalog owns alias handling, including foreign and current-report forms.

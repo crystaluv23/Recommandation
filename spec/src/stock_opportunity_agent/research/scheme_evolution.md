@@ -1121,6 +1121,19 @@ diffuse answer from a concentrated one, but may not use it as an accuracy weight
 or fitness multiplier. A concentrated wrong answer is recorded as such rather
 than being treated as stronger learning evidence.
 
+Runtime deterministically turns each saved distribution into a label-revealed
+calibration record. Direction records carry binary Brier score, log loss,
+normalized entropy, binary margin, and an assessment that distinguishes
+`correct_low_support`, `correct_supported`, `error_uncertain`, and
+`high_confidence_error`. Applicable magnitude records additionally carry
+multiclass Brier score, log loss, ordinal ranked-probability score, normalized
+entropy, top-class probability, and the parallel class-error assessment. Compact
+Plan feedback aggregates these records, including magnitude choice counts and
+top-choice share, so a collapse into `2-3x` remains visible across iterations.
+These are descriptive feedback signals only. Improvement means better realized-
+class probability, proper-score performance, and class discrimination on the
+same frozen cases; merely increasing confidence is never an objective.
+
 The legacy qualitative confidence field remains available for existing
 consumers. The parallel adapter derives it mechanically from Jev confidence:
 `high` at or above `0.85`, `medium` at or above `0.60`, and `low` below `0.60`.
@@ -1149,7 +1162,11 @@ persist all responses, and reveal labels only during a later scoring phase.
 Compare Jev and the historical LLM on the same comparable cases using Binary F1,
 precision/recall, paired correctness, magnitude accuracy and class confusion.
 Evaluate Jev probability signals descriptively with Brier score, log loss,
-confidence buckets, and realized-class probability. Small historical samples
+confidence buckets, realized-class probability, ordinal magnitude RPS, and
+magnitude choice concentration. The critic must attribute recurring low-support
+correct calls, concentrated errors, or collapsed magnitude choices; the proposer
+must either connect the pattern to a concrete evidence/analysis change or retain
+an explicit defer/reject rationale in its changed Plan content. Small historical samples
 and cases already used by evolution are in-sample diagnostics, not independent
 generalization evidence. Routing agreement and result-state retention are proxy
 metrics because unselected historical alternatives have no counterfactual

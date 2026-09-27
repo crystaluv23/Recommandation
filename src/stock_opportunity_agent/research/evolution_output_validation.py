@@ -2788,9 +2788,28 @@ def _research_state_evidence_grounding_fallback(
             for path in dependent_paths:
                 if re.fullmatch(r"(?:current_beliefs|contradictions)\[\d+\]", path):
                     continue
+                provenance_match = re.fullmatch(
+                    r"supporting_evidence\[(\d+)\]\."
+                    r"(?:evidence_group|evidence_index)",
+                    path,
+                )
+                if (
+                    provenance_match is not None
+                    and int(provenance_match.group(1)) in evidence_indices
+                ):
+                    # The whole invalid evidence row is removed below. Its
+                    # same-row source coordinates are validation context, not
+                    # independent assertions that require a model-authored edit.
+                    continue
                 return None
             evidence_indices_to_remove.update(evidence_indices)
-            linked_removal_paths.extend(dependent_paths)
+            linked_removal_paths.extend(
+                path
+                for path in dependent_paths
+                if re.fullmatch(
+                    r"(?:current_beliefs|contradictions)\[\d+\]", path
+                )
+            )
             continue
         if issue_code == "basic_literal_not_grounded":
             if len(must_change_paths) != 1 or not isinstance(
@@ -3134,6 +3153,7 @@ def _complete_parsed_role_impl(
     budget_failure: RuntimeBudgetExceeded | None = None
     budget_failure_stage: str | None = None
     scope_drift_diagnostic: str | None = None
+    no_progress_diagnostic: str | None = None
     # A no-projection drift retry keeps the original invalid object and
     # obligations, which would rebuild a byte-identical correction request;
     # the deterministic response cache would then replay the very drifted
@@ -3215,6 +3235,24 @@ def _complete_parsed_role_impl(
                 ),
                 temperature=temperature,
             )
+        except CandidateExecutionRejected as exc:
+            if (
+                attempt
+                and failed_output
+                and failure is not None
+                and "no-progress identical correction request" in str(exc)
+            ):
+                usage = usage + exc.usage
+                no_progress_diagnostic = str(exc)
+                _emit_runtime_progress(
+                    getattr(caller, "on_progress", None),
+                    "structured_correction_no_progress_fallback",
+                    stage=stage,
+                    request_stage=request_stage,
+                    correction_count=completed_corrections,
+                )
+                break
+            raise
         except RuntimeBudgetExceeded as exc:
             usage = usage + exc.usage
             budget_failure = exc
@@ -3705,6 +3743,11 @@ def _complete_parsed_role_impl(
     if scope_drift_diagnostic is not None:
         rejection_message += (
             "; unrelated-correction drift rejected: " + scope_drift_diagnostic
+        )
+    if no_progress_diagnostic is not None:
+        rejection_message += (
+            "; identical correction blocked before deterministic fallback: "
+            + no_progress_diagnostic
         )
     raise CandidateExecutionRejected(
         stage,

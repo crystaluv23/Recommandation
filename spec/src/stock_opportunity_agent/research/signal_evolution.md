@@ -449,6 +449,15 @@ source-grounded LLM skill. A proposal that combines a numeric formula with
 narrative fallback rules must be split before materialization. Fixtures and all
 existing semantic and paired gates remain mandatory.
 
+The runtime classifies modality before materialization. A narrative predicate
+with `value_kind=numeric` whose evidence refs mix structured facts with
+narrative events/documents is `mixed`, even when the predicate itself is valid;
+it is recorded in the mining audit as `capability_gap` with
+`status=split_required`, is excluded from candidate refs, and never reaches
+narrative fixture or effectiveness evaluation. This is not a factor rejection:
+the controller must later return separately executable structured and narrative
+candidates before either can be evaluated.
+
 ## Shared research target through Slow roles
 
 Reflection, H1, E1, H3, E2 and Update receive one runtime-owned research objective

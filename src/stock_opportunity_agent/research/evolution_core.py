@@ -9,6 +9,7 @@ import math
 import random
 import re
 from collections import Counter
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from enum import Enum
@@ -1548,6 +1549,73 @@ def jev_decision_feedback(
         positive_probability if ground_truth.is_surge else negative_probability
     )
     true_magnitude = ground_truth.magnitude.value if ground_truth.magnitude else None
+    binary_brier = (positive_probability - float(ground_truth.is_surge)) ** 2
+    binary_log_loss = -math.log(max(true_binary_probability, 1e-12))
+    binary_entropy = -sum(
+        probability * math.log(probability)
+        for probability in (positive_probability, negative_probability)
+        if probability > 0
+    ) / math.log(2)
+    binary_correct = prediction.is_surge == ground_truth.is_surge
+    if binary_correct and true_binary_probability < 0.60:
+        binary_assessment = "correct_low_support"
+    elif not binary_correct and true_binary_probability <= 0.20:
+        binary_assessment = "high_confidence_error"
+    elif binary_correct:
+        binary_assessment = "correct_supported"
+    else:
+        binary_assessment = "error_uncertain"
+
+    magnitude_calibration: dict[str, Any] | None = None
+    if magnitude is not None and true_magnitude is not None:
+        magnitude_probabilities = tuple(
+            magnitude.probabilities.get(label.value, 0.0)
+            for label in _MAGNITUDE_CLASS_ORDER
+        )
+        truth_index = next(
+            index
+            for index, label in enumerate(_MAGNITUDE_CLASS_ORDER)
+            if label.value == true_magnitude
+        )
+        magnitude_brier = sum(
+            (probability - float(index == truth_index)) ** 2
+            for index, probability in enumerate(magnitude_probabilities)
+        )
+        cumulative_prediction = 0.0
+        cumulative_truth = 0.0
+        ranked_probability_score = 0.0
+        for index in range(len(magnitude_probabilities) - 1):
+            cumulative_prediction += magnitude_probabilities[index]
+            cumulative_truth += float(truth_index <= index)
+            ranked_probability_score += (
+                cumulative_prediction - cumulative_truth
+            ) ** 2
+        true_probability = magnitude_probabilities[truth_index]
+        magnitude_correct = magnitude.choice == true_magnitude
+        if magnitude_correct and true_probability < 0.60:
+            magnitude_assessment = "correct_low_support"
+        elif not magnitude_correct and true_probability <= 0.20:
+            magnitude_assessment = "high_confidence_class_error"
+        elif magnitude_correct:
+            magnitude_assessment = "correct_supported"
+        else:
+            magnitude_assessment = "class_error_uncertain"
+        magnitude_calibration = {
+            "brier_score": magnitude_brier,
+            "log_loss": -math.log(max(true_probability, 1e-12)),
+            "ranked_probability_score": ranked_probability_score,
+            "normalized_entropy": (
+                -sum(
+                    probability * math.log(probability)
+                    for probability in magnitude_probabilities
+                    if probability > 0
+                )
+                / math.log(len(magnitude_probabilities))
+            ),
+            "top_class_probability": max(magnitude_probabilities),
+            "assessment": magnitude_assessment,
+        }
+
     return {
         "interpretation": (
             "provider decision signal only; probabilities are not calibrated "
@@ -1559,6 +1627,13 @@ def jev_decision_feedback(
             "positive_probability": positive_probability,
             "negative_probability": negative_probability,
             "probability_assigned_to_realized_binary": true_binary_probability,
+            "calibration": {
+                "brier_score": binary_brier,
+                "log_loss": binary_log_loss,
+                "normalized_entropy": binary_entropy,
+                "binary_margin": abs(positive_probability - negative_probability),
+                "assessment": binary_assessment,
+            },
         },
         "magnitude": (
             {
@@ -1570,6 +1645,7 @@ def jev_decision_feedback(
                     if true_magnitude is not None
                     else None
                 ),
+                "calibration": magnitude_calibration,
             }
             if magnitude is not None
             else {
@@ -1580,6 +1656,140 @@ def jev_decision_feedback(
             }
         ),
     }
+
+
+def _legacy_jev_decision_feedback(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Project current deterministic feedback to the pre-calibration schema."""
+
+    legacy = deepcopy(dict(value))
+    candidate = legacy.get("candidate_judgment")
+    if isinstance(candidate, dict):
+        candidate.pop("calibration", None)
+    magnitude = legacy.get("magnitude")
+    if isinstance(magnitude, dict):
+        magnitude.pop("calibration", None)
+    return legacy
+
+
+def _jev_calibration_summary(
+    feedback_rows: Iterable[Mapping[str, Any]],
+) -> dict[str, Any] | None:
+    """Aggregate deterministic Jev diagnostics without changing fitness."""
+
+    rows = tuple(dict(row) for row in feedback_rows)
+    if not rows:
+        return None
+    direction_blocks = [
+        dict(row["candidate_judgment"])
+        for row in rows
+        if isinstance(row.get("candidate_judgment"), Mapping)
+    ]
+    direction_rows = [
+        dict(block["calibration"])
+        for block in direction_blocks
+        if isinstance(block.get("calibration"), Mapping)
+    ]
+    if not direction_rows:
+        return None
+    magnitude_blocks = [
+        dict(row["magnitude"])
+        for row in rows
+        if isinstance(row.get("magnitude"), Mapping)
+        and row["magnitude"].get("requested") is True
+    ]
+    magnitude_rows = [
+        dict(block["calibration"])
+        for block in magnitude_blocks
+        if isinstance(block.get("calibration"), Mapping)
+    ]
+
+    def mean(items: Iterable[float]) -> float | None:
+        values = tuple(float(item) for item in items)
+        return sum(values) / len(values) if values else None
+
+    choice_counts = Counter(
+        str(block["choice"])
+        for block in magnitude_blocks
+        if isinstance(block.get("choice"), str)
+    )
+    total_magnitude_choices = sum(choice_counts.values())
+    return {
+        "interpretation": (
+            "descriptive provider-signal calibration only; excluded from fitness"
+        ),
+        "direction": {
+            "case_count": len(direction_rows),
+            "mean_brier_score": mean(
+                row["brier_score"] for row in direction_rows
+            ),
+            "mean_log_loss": mean(row["log_loss"] for row in direction_rows),
+            "mean_probability_assigned_to_realized_binary": mean(
+                block["probability_assigned_to_realized_binary"]
+                for block in direction_blocks
+            ),
+            "mean_provider_confidence": mean(
+                block["confidence"] for block in direction_blocks
+            ),
+            "mean_normalized_entropy": mean(
+                row["normalized_entropy"] for row in direction_rows
+            ),
+            "assessment_counts": dict(
+                sorted(Counter(str(row["assessment"]) for row in direction_rows).items())
+            ),
+        },
+        "magnitude": {
+            "scored_case_count": len(magnitude_rows),
+            "requested_case_count": len(magnitude_blocks),
+            "mean_brier_score": mean(
+                row["brier_score"] for row in magnitude_rows
+            ),
+            "mean_log_loss": mean(row["log_loss"] for row in magnitude_rows),
+            "mean_probability_assigned_to_true_magnitude": mean(
+                block["probability_assigned_to_true_magnitude"]
+                for block in magnitude_blocks
+                if block.get("probability_assigned_to_true_magnitude") is not None
+            ),
+            "mean_provider_confidence": mean(
+                block["confidence"] for block in magnitude_blocks
+            ),
+            "mean_ranked_probability_score": mean(
+                row["ranked_probability_score"] for row in magnitude_rows
+            ),
+            "mean_normalized_entropy": mean(
+                row["normalized_entropy"] for row in magnitude_rows
+            ),
+            "choice_counts": dict(sorted(choice_counts.items())),
+            "top_choice_share": (
+                max(choice_counts.values()) / total_magnitude_choices
+                if total_magnitude_choices
+                else None
+            ),
+            "assessment_counts": dict(
+                sorted(Counter(str(row["assessment"]) for row in magnitude_rows).items())
+            ),
+        },
+    }
+
+
+def research_jev_calibration_diagnostics(
+    trajectories: Iterable[Any],
+) -> dict[str, Any] | None:
+    """Summarize Jev signal quality over research-completed trajectories."""
+
+    rows = tuple(trajectories)
+    completed = tuple(row for row in rows if not is_technical_exclusion_trajectory(row))
+    feedback = tuple(
+        value
+        for row in completed
+        for value in (jev_decision_feedback(row.prediction, row.ground_truth),)
+        if value is not None
+    )
+    summary = _jev_calibration_summary(feedback)
+    if summary is not None:
+        summary["scored_case_count"] = len(rows)
+        summary["research_completed_case_count"] = len(completed)
+        summary["excluded_technical_case_count"] = len(rows) - len(completed)
+    return summary
 
 
 def _validated_magnitude_feedback_block(
@@ -2245,7 +2455,14 @@ class ExecutionTrajectory:
         if serialized_jev_feedback is not None:
             if not isinstance(serialized_jev_feedback, Mapping):
                 raise ValidationError("jev_decision_feedback must be an object")
-            if dict(serialized_jev_feedback) != expected_jev_feedback:
+            if (
+                dict(serialized_jev_feedback) != expected_jev_feedback
+                and (
+                    expected_jev_feedback is None
+                    or dict(serialized_jev_feedback)
+                    != _legacy_jev_decision_feedback(expected_jev_feedback)
+                )
+            ):
                 raise ValidationError(
                     "jev_decision_feedback does not match prediction and truth"
                 )
@@ -2630,6 +2847,26 @@ def case_reflection_magnitude_diagnostics(
         }
     )
     return diagnostics
+
+
+def case_reflection_jev_calibration_diagnostics(
+    reflections: Iterable[CaseReflectionEvidence],
+) -> dict[str, Any] | None:
+    """Rebuild Jev diagnostics from non-technical case-reflection evidence."""
+
+    rows = tuple(reflections)
+    completed = tuple(row for row in rows if not row.is_technical_exclusion)
+    feedback = tuple(
+        dict(row.jev_decision_feedback)
+        for row in completed
+        if row.jev_decision_feedback is not None
+    )
+    summary = _jev_calibration_summary(feedback)
+    if summary is not None:
+        summary["scored_case_count"] = len(rows)
+        summary["research_completed_case_count"] = len(completed)
+        summary["excluded_technical_case_count"] = len(rows) - len(completed)
+    return summary
 
 
 class RuntimeBudgetExceeded(ValidationError):
@@ -5040,6 +5277,11 @@ class PlanMetaReflection:
             value.pop("magnitude_diagnostics", None)
         else:
             value["magnitude_diagnostics"] = diagnostics
+        calibration = case_reflection_jev_calibration_diagnostics(
+            self.original_case_reflections
+        )
+        if calibration is not None:
+            value["jev_calibration_diagnostics"] = calibration
         return value
 
     @classmethod

@@ -2882,6 +2882,7 @@ def _merge_mining_fallback(
         ),
         "refined_hypotheses": merged_mapping("refined_hypotheses"),
         "failures": merged_mapping("failures"),
+        "capability_gaps": merged_mapping("capability_gaps"),
         "audit": combined_audit,
     }
 
@@ -6384,6 +6385,7 @@ class SignalEvolutionEngine:
             ),
             "refined_hypotheses": merged_mapping("refined_hypotheses"),
             "failures": merged_mapping("failures"),
+            "capability_gaps": merged_mapping("capability_gaps"),
             "audit": {
                 "schema_version": "signal-mining-multi-axis-audit-v1",
                 "cycle_id": cycle_id,
@@ -6479,6 +6481,7 @@ class SignalEvolutionEngine:
 
         seed_reports: list[dict[str, Any]] = []
         failures: dict[str, tuple[str, ...]] = {}
+        capability_gaps: dict[str, dict[str, Any]] = {}
         need_disposition_counts: dict[str, int] = {}
         fetched_case_refs: dict[str, tuple[str, ...]] = {}
         for seed in ("hypothesis", "discovery"):
@@ -6558,7 +6561,12 @@ class SignalEvolutionEngine:
                     "structured_candidate_count": sum(
                         1
                         for candidate in result.candidates
-                        if not self._is_narrative_candidate(candidate)
+                        if self._candidate_modality(candidate) == "structured"
+                    ),
+                    "mixed_candidate_count": sum(
+                        1
+                        for candidate in result.candidates
+                        if self._candidate_modality(candidate) == "mixed"
                     ),
                 }
             )
@@ -6581,6 +6589,15 @@ class SignalEvolutionEngine:
         structured_materialized = 0
         structured_validated = 0
         for candidate_seed, candidate in candidates:
+            capability_gap = self._candidate_capability_gap(
+                candidate,
+                axis_id=axis_id,
+                seed=candidate_seed,
+            )
+            if capability_gap is not None:
+                gap_ref, gap = capability_gap
+                capability_gaps[gap_ref] = gap
+                continue
             evidence = {}
             for seed_cited in cited.values():
                 evidence.update(
@@ -6708,6 +6725,7 @@ class SignalEvolutionEngine:
             "candidate_refs": list(candidate_refs),
             "narrative_candidate_refs": list(narrative_candidate_refs),
             "structured_candidate_refs": list(structured_candidate_refs),
+            "capability_gaps": capability_gaps,
             "refined_hypotheses": {},
         }
         return self._mining_output(
@@ -6717,6 +6735,7 @@ class SignalEvolutionEngine:
             induction_case_ids=induction_case_ids,
             validation_case_ids=validation_case_ids,
             failures=failures,
+            capability_gaps=capability_gaps,
             candidate_research_targets={
                 signal_ref: axis_id for signal_ref in candidate_refs
             },
@@ -6759,20 +6778,77 @@ class SignalEvolutionEngine:
         return slug or "controller_mined_signal"
 
     @staticmethod
-    def _is_narrative_candidate(candidate: Mapping[str, Any]) -> bool:
-        """A candidate whose measurement carries a narrative predicate.
+    def _candidate_modality(candidate: Mapping[str, Any]) -> str:
+        """Classify one controller candidate before materialization.
 
-        The controller only admits predicates with modality "narrative"
-        (Phase 3 contract), so a validated predicate marks the candidate
-        as narrative-mined for audit and cross-cycle modality footprints.
+        A numeric value whose predicate is narrative and whose evidence mixes
+        structured facts with narrative events/documents is deliberately
+        neither executable type: it requires a split contract.
         """
 
         measurement = candidate.get("measurement")
         if not isinstance(measurement, Mapping):
-            return False
+            return "structured"
         predicate = measurement.get("predicate")
-        return isinstance(predicate, Mapping) and (
+        narrative_predicate = isinstance(predicate, Mapping) and (
             str(predicate.get("modality", "narrative")) == "narrative"
+        )
+        if not narrative_predicate:
+            return "structured"
+        evidence_refs = {
+            str(ref) for ref in candidate.get("evidence_refs", ())
+        }
+        cites_structured = any(ref.startswith("fact-") for ref in evidence_refs)
+        cites_narrative = any(
+            ref.startswith(("event-", "document-")) for ref in evidence_refs
+        )
+        if (
+            str(measurement.get("value_kind", "")).casefold() == "numeric"
+            and cites_structured
+            and cites_narrative
+        ):
+            return "mixed"
+        return "narrative"
+
+    @staticmethod
+    def _is_narrative_candidate(candidate: Mapping[str, Any]) -> bool:
+        """Return whether a candidate is a pure narrative executable."""
+
+        return SignalEvolutionEngine._candidate_modality(candidate) == "narrative"
+
+    @staticmethod
+    def _candidate_capability_gap(
+        candidate: Mapping[str, Any],
+        *,
+        axis_id: str,
+        seed: str,
+    ) -> tuple[str, dict[str, Any]] | None:
+        """Return the pre-materialization disposition for a mixed candidate."""
+
+        if SignalEvolutionEngine._candidate_modality(candidate) != "mixed":
+            return None
+        measurement = candidate.get("measurement", {})
+        observable = (
+            str(measurement.get("observable", "mixed_candidate"))
+            if isinstance(measurement, Mapping)
+            else "mixed_candidate"
+        )
+        slug = re.sub(r"[^a-z0-9]+", "_", observable.casefold())
+        slug = re.sub(r"_+", "_", slug).strip("_") or "mixed_candidate"
+        return (
+            f"slow_loop:mining_capability_gap:{axis_id}:{slug}",
+            {
+                "status": "split_required",
+                "reason": (
+                    "numeric measurement mixes structured fact refs with a "
+                    "narrative predicate and must be split into separately "
+                    "executable structured and narrative candidates before "
+                    "materialization"
+                ),
+                "axis_id": axis_id,
+                "seed": seed,
+                "observable": observable,
+            },
         )
 
     @staticmethod
@@ -8315,6 +8391,7 @@ class SignalEvolutionEngine:
         induction_case_ids: Mapping[str, tuple[str, ...]] | None = None,
         validation_case_ids: Mapping[str, tuple[str, ...]] | None = None,
         failures: Mapping[str, tuple[str, ...]] | None = None,
+        capability_gaps: Mapping[str, Mapping[str, Any]] | None = None,
         candidate_research_targets: Mapping[str, str] | None = None,
         staging: Iterable[Mapping[str, Any]] = (),
     ) -> dict[str, Any]:
@@ -8335,6 +8412,10 @@ class SignalEvolutionEngine:
             "candidate_research_targets": target_map,
             "refined_hypotheses": dict(refined),
             "failures": dict(failures or {}),
+            "capability_gaps": {
+                str(key): dict(value)
+                for key, value in dict(capability_gaps or {}).items()
+            },
             "audit": dict(audit),
         }
 
