@@ -1,6 +1,6 @@
 # Paired Blind-LLM Comparison Noise
 
-visit_times: 11
+visit_times: 12
 
 ## Trigger
 
