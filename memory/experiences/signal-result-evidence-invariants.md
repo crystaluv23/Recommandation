@@ -1,6 +1,6 @@
 # Signal Result Evidence Invariants
 
-visit_times: 10
+visit_times: 11
 
 ## Trigger
 
