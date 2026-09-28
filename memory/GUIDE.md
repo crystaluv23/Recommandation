@@ -7,6 +7,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 | Trigger | Experience | visit_times | Notes |
 | --- | --- | ---: | --- |
 | Changing local LLM repairs, structured reflections, memory indexes or context growth | [`experiences/incremental-repair-and-sourced-memory.md`](experiences/incremental-repair-and-sourced-memory.md) | 0 | Align prompt, validator and typed repair authority; preserve originals and budget actual consumer payloads with reachable source reads. |
+| Masking, pseudonymizing, or projecting hash-bound persisted records before index/validator construction | [`experiences/masked-projection-breaks-content-hash-refs.md`](experiences/masked-projection-breaks-content-hash-refs.md) | 0 | Mask only at model-facing egress; entry-level masking of content-hash refs breaks verification and ref stability, and narrow fixture alias sets never reproduce it. |
 | Reflecting on repeated self-evolution failures, preparing another Fast/Slow repair or successor, or claiming learning/quality gain | [`experiences/self-evolution-convergence-and-acceptance.md`](experiences/self-evolution-convergence-and-acceptance.md) | 3 | Separate execution, feedback consumption, and independent gain; replay real production composition and the affected cross-cycle lifecycle before extending complexity. |
 | Adding provider, adapter, registry, or plugin-like extension point | [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md) | 15 | Avoid coupling reusable providers to the first consumer module. |
 | Running or changing formal cold start, blind LLM prompts, OpenRouter cold-start calls, or seed/formal entry points | [`experiences/formal-cold-start-blind-boundaries.md`](experiences/formal-cold-start-blind-boundaries.md) | 48 | Restate the execution contract, exact prediction unit, packet contents, anonymity boundary, and web-search boundary before using existing scaffolding. |
@@ -32,6 +33,7 @@ Do not read memory at session start. Use this guide only when prior project expe
 ## Experience Index
 
 - [`experiences/incremental-repair-and-sourced-memory.md`](experiences/incremental-repair-and-sourced-memory.md): snapshot-bound partial repair, same-generation actionable briefs, stable provenance and actual bounded multi-stage consumption.
+- [`experiences/masked-projection-breaks-content-hash-refs.md`](experiences/masked-projection-breaks-content-hash-refs.md): content-hash refs verify only over authoritative bytes; mask at model-facing egress and pin the masked-input path as rejected.
 
 - [`experiences/self-evolution-convergence-and-acceptance.md`](experiences/self-evolution-convergence-and-acceptance.md): convert the accumulated failure trajectory into concrete acceptance evidence; keep committed cycles, fulfilled subgoals, promoted/used Signals, and independent gain distinct.
 - [`experiences/provider-boundary-placement.md`](experiences/provider-boundary-placement.md): reusable provider registries should live at the capability boundary, not inside the first module that consumes them.
