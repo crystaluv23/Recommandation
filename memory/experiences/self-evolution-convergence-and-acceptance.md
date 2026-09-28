@@ -1,6 +1,6 @@
 # Self-evolution Convergence and Acceptance
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
@@ -36,8 +36,10 @@ The 2026-09-27 retrospective at code `381f32a` found:
 - V138 correction suggested citation edits but did not authorize their paths;
   technical abstentions then entered critic feedback as if research had failed.
 - V141 committed a cycle but made no new promotion or assessed Fast consumption;
-  its next proposal needed an estimated 403,119 tokens against 256,000. Complete
-  history storage and complete per-call history serialization were conflated.
+  its next proposal reserved 403,119 budget units against 256,000. This was
+  conservative HTTP UTF-8 bytes plus maximum output tokens, not measured input
+  tokens; local preflight blocked transmission. Complete history storage and
+  complete per-call history serialization were conflated.
 - Later V141 replay reclassified a mixed candidate as a capability/split gap;
   the original blanket statement that all rejections proved insufficient evidence
   was too strong. Offline repair was not a completed live successor.
