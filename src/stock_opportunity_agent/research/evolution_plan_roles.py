@@ -2016,6 +2016,10 @@ class _ReflectionMemoryCaller:
                         cursor=query["cursor"], level=query.get("level"),
                         max_bytes=min(8_000, remaining),
                     )
+                if self.aliases:
+                    # The index holds authoritative unmasked originals; the
+                    # disclosure served to the model must carry masked content.
+                    disclosure = _mask_identity_values(disclosure, self.aliases)
                 _validate_additive_meta_payload(disclosure)
                 _scan_payload(disclosure, allow_outcomes=True, anonymous_aliases=self.aliases)
                 updated = [*self.disclosures, disclosure]
@@ -2086,8 +2090,8 @@ class LLMInformationPlanProposer:
         prior: str,
     ) -> InformationPlan:
         source_entries = [entry.to_model_dict() for entry in meta_info]
-        if self.anonymous_aliases:
-            source_entries = _mask_identity_values(source_entries, self.anonymous_aliases)
+        # Build the index from authoritative unmasked entries: item/source refs
+        # are content hashes and masking inputs would break ref verification.
         source_index = ReflectionMemoryIndex.from_entries(source_entries)
         meta_payload = source_index.brief_view()
         if self.anonymous_aliases:
@@ -2586,22 +2590,30 @@ class LLMPlanCritic:
                 CaseReflectionEvidence.from_trajectory(item, case_index=position).to_model_dict()
                 for position, item in enumerate(trajectories, start=1)
             ]
-            if self.anonymous_aliases:
-                source_rows = _mask_identity_values(source_rows, self.anonymous_aliases)
+            # Authoritative unmasked index keeps item/source refs verifiable;
+            # identity is removed only from the model-facing payload below.
             source_index = ReflectionMemoryIndex.from_case_rows(
                 source_rows, owner_ref=owner_ref,
             )
             catalog = source_index.catalog_view()
-            payload["source_catalog"] = catalog["sources"]
-            payload["source_coverage"] = catalog["counts"]
-            payload["reflection_briefs"] = source_index.brief_view()
-            payload["trajectories"] = [
+            briefs = source_index.brief_view()
+            trajectories_view = [
                 {key: row[key] for key in (
                     "case_index", "stop_reason", "termination_trigger",
                     "technical_exclusion", "candidate_judgment_feedback", "magnitude_feedback",
                 ) if key in row}
                 for row in source_rows
             ]
+            if self.anonymous_aliases:
+                catalog = _mask_identity_values(catalog, self.anonymous_aliases)
+                briefs = _mask_identity_values(briefs, self.anonymous_aliases)
+                trajectories_view = _mask_identity_values(
+                    trajectories_view, self.anonymous_aliases
+                )
+            payload["source_catalog"] = catalog["sources"]
+            payload["source_coverage"] = catalog["counts"]
+            payload["reflection_briefs"] = briefs
+            payload["trajectories"] = trajectories_view
 
             def parse_reflection(value: Mapping[str, Any]) -> PlanReflection:
                 items, selected, projection = _structured_reflection_items(
@@ -2718,8 +2730,8 @@ class LLMRoundReflector:
                 ).to_model_dict()
                 for record in records
             ]
-            if self.anonymous_aliases:
-                source_rows = _mask_identity_values(source_rows, self.anonymous_aliases)
+            # Authoritative unmasked index; the whole payload is masked at
+            # egress below before it reaches the model.
             owner_ref = "reflection_round:" + _canonical_hash(source_rows)
             source_index = ReflectionMemoryIndex.from_plan_rows(
                 source_rows, owner_ref=owner_ref,

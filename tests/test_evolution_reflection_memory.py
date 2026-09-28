@@ -262,5 +262,76 @@ class SourcedReflectionMemoryTests(unittest.TestCase):
         self.assertEqual(caught.exception.path, "reflection_items")
 
 
+class IdentityEgressMaskingTests(unittest.TestCase):
+    """Identity masking must project views, never the indexed graph.
+
+    item_ref and source_ref are content hashes over the authoritative
+    unmasked rows. Masking entries before index construction both breaks
+    hash verification and rewrites source refs so persisted items stop
+    resolving. The production pattern is: build from unmasked entries,
+    mask only the model-facing views (V142 live mining failure).
+    """
+
+    GUARDS = ("Acme Aerospace Systems", "ACME")
+
+    def _index_with_identity_bearing_item(self):
+        snapshot = case("case:acme")
+        index = ReflectionMemoryIndex.from_case_rows([snapshot], owner_ref="case:acme")
+        source = index.source_catalog()[0]
+        raw = authored(source)
+        raw["detail"] = (
+            "Acme Aerospace Systems disclosed a diluted launch calendar; "
+            "treat the acceleration claim as unverified."
+        )
+        item = index.create_items([raw], level="case", owner_ref="case:acme")[0]
+        entry = {
+            "round_id": 3,
+            "plan_reflections": [{
+                "plan_id": "plan_1", "plan": {"B": []},
+                "original_case_reflections": [{
+                    **snapshot, "case_index": 1,
+                    "self_reflection": {
+                        "reflection_items": [item.to_dict()],
+                        "selected_reflection_refs": [],
+                        "no_findings_reason": None,
+                    },
+                }],
+                "vertical_plan_reflection": {},
+            }],
+        }
+        return entry, item
+
+    def test_masked_input_construction_is_rejected_not_silently_accepted(self):
+        from stock_opportunity_agent.research.evolution_core import _mask_identity_values
+
+        entry, _ = self._index_with_identity_bearing_item()
+        masked = _mask_identity_values(deepcopy(entry), self.GUARDS)
+        with self.assertRaisesRegex(ValidationError, "hash"):
+            ReflectionMemoryIndex.from_entries([masked])
+
+    def test_unmasked_index_and_masked_views_keep_refs_resolvable(self):
+        from stock_opportunity_agent.research.evolution_core import _mask_identity_values
+
+        entry, item = self._index_with_identity_bearing_item()
+        index = ReflectionMemoryIndex.from_entries([entry])
+        self.assertEqual(index.select_items([item.item_ref]), (item,))
+
+        view = _mask_identity_values(index.brief_view(), self.GUARDS)
+        catalog = _mask_identity_values(index.catalog_view(), self.GUARDS)
+        for payload in (view, catalog):
+            self.assertNotIn("Acme Aerospace Systems", json.dumps(payload))
+        # Refs survive masking, so on-demand reads and higher-layer selections
+        # still resolve against the authoritative index.
+        refs = {item.item_ref, *item.source_refs}
+        for row in catalog["sources"]:
+            refs.add(row["source_ref"])
+        disclosed = _mask_identity_values(
+            index.read_refs(sorted(refs)[:2], role="proposer", max_bytes=48_000),
+            self.GUARDS,
+        )
+        self.assertNotIn("Acme Aerospace Systems", json.dumps(disclosed))
+        self.assertTrue(disclosed["sources"])
+
+
 if __name__ == "__main__":
     unittest.main()

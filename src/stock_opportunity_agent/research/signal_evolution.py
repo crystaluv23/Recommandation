@@ -8646,14 +8646,23 @@ class SignalEvolutionEngine:
         capability_backlog = self._mining_capability_backlog_view(
             capability_backlog
         )
-        meta_entries = _mask_identity_values(
-            _project_slow_case_refs(list(self.meta_memory.archive_view())),
+        # The reflection index must be built from the authoritative unmasked
+        # archive: every item_ref and source_ref is a content hash, so masking
+        # entries first would break ref verification and closure. Identity is
+        # removed only from the model-facing views below and from the originals
+        # staged for on-demand reads.
+        meta_entries = list(self.meta_memory.archive_view())
+        meta_index = ReflectionMemoryIndex.from_entries(meta_entries)
+        meta_view = _mask_identity_values(
+            meta_index.brief_view(max_bytes=32_000),
             self.slow_role_identity_guards,
             expand_aliases=False,
         )
-        meta_index = ReflectionMemoryIndex.from_entries(meta_entries)
-        meta_view = meta_index.brief_view(max_bytes=32_000)
-        meta_catalog = meta_index.catalog_view(max_bytes=16_000)
+        meta_catalog = _mask_identity_values(
+            meta_index.catalog_view(max_bytes=16_000),
+            self.slow_role_identity_guards,
+            expand_aliases=False,
+        )
         visible_refs = {row["source_ref"] for row in meta_catalog["sources"]}
         previews = {}
         for action in reflection_actions:
@@ -8671,7 +8680,12 @@ class SignalEvolutionEngine:
                 continue
             original = meta_index.read_refs([ref], role="signal_mining", max_bytes=48_000)["sources"][0]
             fast_sources[ref] = {
-                "visible_to": sorted(_SLOW_SOURCE_ROLES), "content": original,
+                "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                "content": _mask_identity_values(
+                    original,
+                    self.slow_role_identity_guards,
+                    expand_aliases=False,
+                ),
                 **({"brief": previews[ref]} if ref in previews else {}),
             }
         originals, original_manifest = read_slow_sources(
