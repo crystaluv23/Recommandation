@@ -35,10 +35,38 @@ Signal retrieval, blind prediction, and Plan reflection.
   the research question. They must not assume every U.S.-listed issuer files
   domestic `10-K`/`10-Q` forms; the resolver selects applicable domestic or
   foreign operating reports while preserving exact-form restrictions.
-- Plan proposal receives the complete retained additive meta FIFO, validates all
-  original, vertical, and horizontal layers, and submits it under one exact
-  request-token preflight. It does not sample representative cases; transport
-  budget refusal remains a control-plane pause rather than a proposal failure.
+- Plan proposal retains the complete additive FIFO in storage but receives a
+  bounded brief working view. Each brief keeps its source handle, applicability,
+  limitations and verification state. The role can request registered original
+  units with `read_refs` before returning a Plan; each disclosure is masked,
+  validated, bounded and audited under the exact request preflight. Unknown,
+  repeated, over-budget and cross-role reads fail closed; no arbitrary path is
+  resolved. Unread/omitted history remains explicit and available in storage.
+- Case, Plan and Round reflection author structured `reflection_items` with
+  full detail and an actionable `brief` together. Higher layers may select
+  lower items unchanged, or add their own explicitly sourced insight. Runtime
+  supplies source catalogs, stable item IDs and deterministic outcome facts;
+  model-authored success/failure claims cannot contradict them. Existing string
+  categories remain derived compatibility projections, never a second authored
+  output. Legacy archives load unchanged and are marked unreviewed in views.
+- Critic and Round inputs also use bounded brief/catalog views; neither may
+  conceal an unbounded full trajectory or source catalog beside a bounded
+  brief. Complete anonymous original units remain available through the same
+  finite read/browse exchange (three requests, 48,000 aggregate UTF-8 bytes).
+  Case-level correctness and aggregate diagnostics remain runtime facts. Read
+  usage is counted with the owning role and every transmitted request is
+  persisted by the normal caller. Partial coverage is explicit, never an
+  assertion that omitted evidence does not exist.
+- Retrospective prose may discuss observed probability distributions and time
+  horizons. The Plan-instruction semantics filter must not reject the very
+  calibration diagnosis requested by a reflection prompt. Fixed semantics are
+  immutable in runtime and validated when an actual Plan is proposed.
+- H_reflect emits snapshot-bound state operations; runtime owns copying and
+  retaining unchanged state. The same ordinary evidence, need-ownership,
+  temporal and whole-state checks run after assembly. Structured correction
+  returns only authorized operations against the latest failed assembled state;
+  a valid sibling is not rewritten to repair another sibling. A complete object
+  is only necessary when no usable structured baseline exists.
 - A `partial` answer's residual need must retain the targeted information
   need's temporal scope. Production injects the actual runtime prediction
   date into the Signal Retrieval Agent through the same optional

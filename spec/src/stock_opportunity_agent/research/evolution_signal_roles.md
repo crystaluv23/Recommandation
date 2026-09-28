@@ -24,8 +24,26 @@ preassigns episode/lesson refs and validates complete source coverage and the
 lesson reference graph. `appended`, `no_new_lesson`, `reused`, and `failed` are
 distinct terminal states; invalid structured output is never converted to a
 research-empty result.
+New episode and lesson outputs also require `kind` (`fact`, `hypothesis`, or
+`action`) and an actionable `brief` generated alongside their original full
+`reflection` or `guidance`. The brief retains applicability, concrete finding or
+action, and material limitations; it does not upgrade source-linked prose to
+verified truth. Legacy stored entries may omit these additive fields. Existing
+support, counterevidence, qualification, challenge and feedback-coverage guards
+remain unchanged; a brief cannot substitute for the full original.
+Corrections to this reflection output use runtime-issued deltas against the
+current object. Missing/extra envelope fields and wrong-type array containers
+have explicit repair authority; valid episode and lesson siblings remain
+unchanged while invalid rows or citations are corrected.
+Allocated slots are naming capacity, not evidence. New lesson support cites
+only selected feedback, valid episodes actually emitted in this response, or
+existing prior lessons. A newly authored lesson cannot support itself or
+another newly authored lesson. Counter/qualification/challenge references must
+resolve to actual valid emitted or prior entries and cannot cite the same
+lesson. Thus sibling comparisons may remain, but support cycles cannot create
+apparently sourced experience without a lower-level origin.
 The committed feedback catalog remains immutable and identity-bearing for local
-audit, but the reflection v4 provider view is a deep identity-masked projection.
+audit, but the reflection v5 provider view is a deep identity-masked projection.
 It uses the same complete cycle identity inventory that guards the structured
 output, so a copied provider-visible literal cannot fail only because the input
 and output anonymity domains disagree.
@@ -81,13 +99,15 @@ Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
 within the role scope and whole-entry budget, records included/deferred refs and
 hashes, and then asks for the final output. The selection request sees only the
-role name plus opaque refs, hashes and current included/deferred membership; it
-does not receive hidden source contents. A non-empty valid selection replaces
+role name plus opaque refs, hashes, complete read sizes, authored brief previews
+and current included/deferred membership, within a 32KB UTF-8 envelope; omitted
+previews and directory entries are counted without truncating originals. It
+does not receive hidden full source contents. A non-empty valid selection replaces
 the default bounded view as one complete-entry batch, and every unselected
 default item remains explicitly pending. An empty selection retains the default
 view. There is no second selection round. E1, SignalExecutor, and blind
 Predictor have no such access. Prompt, parser, work identity, persisted request,
-provider body, and wire bytes advance together; reflection uses its v4 identity-
+provider body, and wire bytes advance together; reflection uses its v5 identity-
 masked protocol while the remaining roles keep their declared versions.
 The transport appends every canonical request hash to an invocation trace. Role
 adapters attach the slice produced by that logical job to successful

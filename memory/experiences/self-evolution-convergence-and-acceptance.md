@@ -1,6 +1,6 @@
 # Self-evolution Convergence and Acceptance
 
-visit_times: 1
+visit_times: 3
 
 ## Trigger
 

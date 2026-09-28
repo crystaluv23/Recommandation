@@ -693,24 +693,21 @@ class RoutingAndPlanRoleTests(TestCase):
         stable_context = {
             key: value
             for key, value in caller.calls[0]["payload"].items()
-            if key != "validation_feedback"
+            if key not in {"validation_feedback", "output_patch_contract"}
         }
         self.assertEqual(
             stable_context,
             {
                 key: value
                 for key, value in caller.calls[1]["payload"].items()
-                if key != "validation_feedback"
+                if key not in {"validation_feedback", "output_patch_contract"}
             },
         )
-        stable_prefix = json.dumps(
-            stable_context, sort_keys=True, separators=(",", ":")
-        )[:-1] + ',"validation_feedback":'
-        for call in caller.calls:
-            rendered = json.dumps(
-                call["payload"], sort_keys=True, separators=(",", ":")
-            )
-            self.assertTrue(rendered.startswith(stable_prefix))
+        self.assertNotIn("output_patch_contract", caller.calls[0]["payload"])
+        self.assertEqual(
+            caller.calls[1]["payload"]["output_patch_contract"]["base_location"],
+            "validation_feedback.invalid_output",
+        )
 
     def test_v99_guidance_benchmark_does_not_force_empty_correction(self) -> None:
         target_need = (
@@ -2234,11 +2231,8 @@ class RoutingAndPlanRoleTests(TestCase):
         correction_payload = caller.calls[1]["payload"]
         error = validation_error(caller.calls[1])
         self.assertIn("supporting_evidence[0]", error)
-        self.assertIn("missing_fields=['exact_text']", error)
-        self.assertIn(
-            "unexpected_fields=['evidence_group', 'evidence_index']", error
-        )
-        self.assertIn("research_state.supporting_evidence", error)
+        self.assertIn("outside typed authority", error)
+        self.assertIn("exact_text", error)
         self.assertEqual(
             correction_payload["research_state"]["supporting_evidence"][0],
             fixture["prior_evidence_ref"],
@@ -2536,7 +2530,7 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertFalse(prediction.value.is_surge)
         self.assertEqual(prediction.usage.llm_calls, 1)
 
-    def test_v89_blind_predictor_discards_unrelated_correction_drift(self) -> None:
+    def test_v89_blind_predictor_rejects_unrelated_incremental_edits_before_repair(self) -> None:
         invalid = {
             "candidate_judgment": "unlikely",
             "magnitude": None,
@@ -2548,15 +2542,20 @@ class RoutingAndPlanRoleTests(TestCase):
             "uncertainties": ["Commodity prices may change the outlook."],
             "session_id": "fixture-session",
         }
-        drifted = {
-            "candidate_judgment": "possible",
-            "magnitude": "2-3x",
-            "confidence": {"level": "low"},
-            "key_reasons": ["Strong momentum may support a re-rating."],
-            "uncertainties": ["The price target remains below the threshold."],
-            "session_id": "fixture-session",
-        }
-        caller = ScriptedRoleCaller([invalid, drifted])
+        def drifted(request):
+            return {
+                "base_hash": request["payload"]["output_patch_contract"]["base_hash"],
+                "operations": [
+                    {"op": "replace", "path": "key_reasons[0]", "value": "Strong momentum may support a re-rating."},
+                    {"op": "remove", "path": "key_reasons[1]"},
+                    {"op": "replace", "path": "candidate_judgment", "value": "possible"},
+                ],
+            }
+
+        corrected = json.loads(json.dumps(invalid))
+        corrected["key_reasons"][0] = "Strong momentum may support a re-rating."
+        caller = ScriptedRoleCaller([invalid, drifted, corrected])
+        caller.max_structured_corrections = 2
 
         prediction = LLMBlindPredictor(caller).predict(
             {
@@ -2568,16 +2567,12 @@ class RoutingAndPlanRoleTests(TestCase):
                 "final_research_state": {},
             }
         )
-        # The drifted correction never lands: only the authorized
-        # key_reasons slot takes the model's repair, the unauthorized
-        # sibling removal is restored, and every unrelated drifted field
-        # keeps its original validated value.
-        self.assertEqual(prediction.usage.llm_calls, 2)
+        # The unauthorized patch is atomic and rejected. A subsequent delta
+        # repairs only the authorized reason, retaining every valid sibling.
+        self.assertEqual(prediction.usage.llm_calls, 3)
         self.assertEqual(prediction.value.candidate_judgment, "unlikely")
         self.assertIsNone(prediction.value.magnitude)
-        # BlindPrediction stores canonical tuple collections; the reconciled
-        # content keeps the model's authorized repair plus the restored
-        # unauthorized sibling in original order.
+        self.assertIn("outside typed authority", str(caller.calls[2]["payload"]))
         self.assertEqual(
             prediction.value.key_reasons,
             (
@@ -2592,7 +2587,7 @@ class RoutingAndPlanRoleTests(TestCase):
 
         self.assertEqual(
             caller.stages,
-            ["blind_predictor_predict", "blind_predictor_predict_correction"],
+            ["blind_predictor_predict", "blind_predictor_predict_correction", "blind_predictor_predict_correction"],
         )
 
     def test_v88_blind_predictor_rejects_false_market_data_absence(self) -> None:
@@ -2785,12 +2780,12 @@ class RoutingAndPlanRoleTests(TestCase):
 
         self.assertEqual(reflection.usage.llm_calls, 2)
         self.assertIn(
-            "claimed market data was absent",
+            "Market data was supplied",
             validation_error(caller.calls[1]),
         )
-        self.assertIn(
-            "missing_information[0]",
-            validation_error(caller.calls[1]),
+        self.assertEqual(
+            set(caller.calls[1]["payload"]["required_change_paths"]),
+            {"reflection_items[1].brief", "reflection_items[1].detail"},
         )
         self.assertIn(
             "supplied price baseline",
@@ -2856,7 +2851,7 @@ class RoutingAndPlanRoleTests(TestCase):
             ],
         )
         self.assertIn(
-            "all-empty correct reflection",
+            "no_findings_reason",
             caller.calls[1]["payload"]["validation_error"],
         )
         self.assertEqual(reflection.value.decision_drivers, tuple(corrected["decision_drivers"]))
@@ -2901,7 +2896,7 @@ class RoutingAndPlanRoleTests(TestCase):
             ],
         )
         self.assertIn(
-            "all-empty incorrect reflection",
+            "no_findings_reason",
             caller.calls[1]["payload"]["validation_error"],
         )
         self.assertEqual(
@@ -2909,17 +2904,31 @@ class RoutingAndPlanRoleTests(TestCase):
             tuple(corrected["misleading_signals"]),
         )
         self.assertIn(
-            "at least one of why_prediction_failed",
+            "why_prediction_failed",
             caller.calls[0]["system_prompt"],
         )
 
     def test_plan_critic_receives_compact_anonymous_trajectories(self) -> None:
-        class Artifact:
-            def __init__(self, value):
-                self.value = value
+        from tests.scheme_evolution_test_support import make_trajectory
+        from stock_opportunity_agent.research.scheme_evolution import score_predictions
 
-            def to_dict(self):
-                return self.value
+        trajectory = make_trajectory(
+            "identity_must_not_reach_critic", 2.2, True, MagnitudeClass.TWO_TO_THREE,
+            signal_result=SignalResult(
+                signal_id="revenue_growth_yoy", version=1,
+                value=SignalValue.POSITIVE, confidence=0.8,
+                interpretation="accelerating",
+                supporting_evidence=(SignalEvidence(
+                    document_id="fixture-source", exact_span="must be omitted",
+                    timestamp=datetime(2025, 1, 1, tzinfo=timezone.utc),
+                ),),
+            ),
+        )
+        trajectory = replace(
+            trajectory,
+            basic_info={"exact_text": "raw-info-must-not-reach-critic"},
+            final_context={"exact_span": "source-span-must-not-reach-critic"},
+        )
 
         caller = ScriptedRoleCaller(
             [
@@ -2936,60 +2945,8 @@ class RoutingAndPlanRoleTests(TestCase):
 
         reflection = LLMPlanCritic(caller).critique(
             plan=default_information_plan(),
-            trajectories=(
-                Artifact(
-                    {
-                        "case_id": "cik_0000000001:20250101",
-                        "company_id": "identity-must-not-reach-critic",
-                        "basic_info_bundle": {
-                            "exact_text": "raw-info-must-not-reach-critic"
-                        },
-                        "final_context": {
-                            "exact_span": "source-span-must-not-reach-critic"
-                        },
-                        "prediction": {
-                            "is_surge": True,
-                            "candidate_judgment": "possible",
-                        },
-                        "ground_truth": {
-                            "is_surge": True,
-                            "realized_max_multiple": 2.2,
-                        },
-                        "candidate_judgment_feedback": {
-                            "candidate_judgment": "possible",
-                            "predicted_binary_label": "surge",
-                            "true_binary_label": "surge",
-                            "binary_correct": True,
-                            "assessment": "correct_positive_conservative",
-                            "reflection_guidance": "inspect underweighted evidence",
-                        },
-                        "signal_rounds": [
-                            {
-                                "information_needs": ["growth durability"],
-                                "selected_signals": ["revenue_growth_yoy:v1"],
-                                "batch": {
-                                    "results": [
-                                        {
-                                            "signal_id": "revenue_growth_yoy",
-                                            "version": 1,
-                                            "state": {"value": "positive"},
-                                            "interpretation": {"summary": "accelerating"},
-                                            "status": {"coverage": "sufficient"},
-                                            "evidence": {
-                                                "supporting": [
-                                                    {"exact_span": "must be omitted"}
-                                                ],
-                                                "counter": [],
-                                            },
-                                        }
-                                    ]
-                                },
-                            }
-                        ],
-                    }
-                ),
-            ),
-            metrics=Artifact({"binary_f1": 0.75}),
+            trajectories=(trajectory,),
+            metrics=score_predictions((trajectory,)),
             parent_comparisons=(
                 {
                     "source_scope": "historical_seed",
@@ -3014,7 +2971,7 @@ class RoutingAndPlanRoleTests(TestCase):
             reflection.successful_patterns, ("well grounded judgment",)
         )
         prompt = caller.calls[0]["system_prompt"]
-        self.assertIn("saved predictions", prompt)
+        self.assertIn("canonical outcome feedback", prompt)
         self.assertNotIn("token probability", prompt)
         trajectories = caller.calls[0]["payload"]["trajectories"]
         self.assertNotIn("decision_confidence_feedback", trajectories[0])
@@ -3038,12 +2995,10 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertNotIn("company_id", trajectories[0])
         self.assertNotIn("basic_info_bundle", trajectories[0])
         self.assertNotIn("final_context", trajectories[0])
-        self.assertEqual(
-            trajectories[0]["signal_rounds"][0]["signal_results"][0][
-                "evidence_counts"
-            ],
-            {"supporting": 1, "counter": 0},
-        )
+        self.assertNotIn("signal_rounds", trajectories[0])
+        self.assertNotIn("self_reflection", trajectories[0])
+        self.assertTrue(caller.calls[0]["payload"]["source_catalog"])
+        self.assertIn("read_refs", caller.calls[0]["system_prompt"])
         rendered = json.dumps(trajectories)
         self.assertNotIn("raw-info-must-not-reach-critic", rendered)
         self.assertNotIn("source-span-must-not-reach-critic", rendered)
@@ -3052,50 +3007,28 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_round_reflector_receives_compact_records_and_parent_comparisons(
         self,
     ) -> None:
-        class Artifact:
-            def __init__(self, value):
-                self.value = value
+        from tests.scheme_evolution_test_support import make_record, make_trajectory
+        from stock_opportunity_agent.research.scheme_evolution import score_predictions
 
-            def to_dict(self):
-                return self.value
-
-        class Evaluation:
-            evaluation_stage = "round"
-            n_cases = 24
-            dataset_snapshot_ids = (SHA_A,)
-            metrics_by_cohort = {
-                "combined": Artifact({"binary_f1": 0.5})
-            }
-
-        class Record:
-            round_id = 1
-            metrics = Artifact({"binary_f1": 0.5})
-            reflection = Artifact({"failed_patterns": ["lost financial evidence"]})
-            signal_usage = {"revenue_growth_yoy:v1": {"retrieved": 24}}
-            fitness = Artifact({"eligible": True})
-            evaluation = Evaluation()
-
-            def __init__(self, plan_id):
-                self.plan_id = plan_id
-                self.plan = InformationPlan(
-                    plan_id=plan_id,
-                    parent_ids=("historical_seed_parent",),
-                    basic_info_policy=default_information_plan().basic_info_policy,
-                    initial_research_skill="fixture init",
-                    reflection_skill="fixture reflect",
-                    analysis_prompt="fixture analyse",
-                )
-
-            def to_dict(self):
-                return {
-                    "trajectories": [
-                        {
-                            "company_id": "identity-must-not-reach-round-reflector",
-                            "ground_truth": {"is_surge": True},
-                            "basic_info_bundle": "raw-info-must-not-reach-round-reflector",
-                        }
-                    ]
-                }
+        def record(plan_id):
+            base = make_record(plan_id, 0.5, (1.0, 0.0))
+            trajectory = make_trajectory(
+                "identity_must_not_reach_round_reflector", 2.5, False, None,
+            )
+            trajectory = replace(
+                trajectory,
+                basic_info={"marker": "raw-info-must-not-reach-round-reflector"},
+            )
+            return replace(
+                base,
+                plan=replace(base.plan, parent_ids=("historical_seed_parent",)),
+                reflection=PlanReflection(failed_patterns=("lost financial evidence",)),
+                signal_usage={"revenue_growth_yoy:v1": {"retrieved": 24}},
+                trajectories=(trajectory,),
+                metrics=score_predictions((trajectory,)),
+                evaluation=None,
+                fitness=None,
+            )
 
         caller = ScriptedRoleCaller(
             [
@@ -3122,11 +3055,12 @@ class RoutingAndPlanRoleTests(TestCase):
 
         result = LLMRoundReflector(caller).reflect(
             round_id=1,
-            records=(Record("child_plan"), Record("sibling_plan")),
+            records=(record("child_plan"), record("sibling_plan")),
             prior="reflect over the round",
             parent_comparisons_by_plan_id={
                 "child_plan": (
                     {
+                        "child_plan_id": "child_plan",
                         "same_evaluation_snapshot": True,
                         "plan_diff": {
                             "basic_info_requests_removed": [
@@ -3139,14 +3073,14 @@ class RoutingAndPlanRoleTests(TestCase):
             },
         )
 
-        self.assertEqual(result.evidence_refs, ("child_plan",))
+        self.assertEqual(result.evidence_refs, ("child_plan", "sibling_plan"))
         self.assertIn("horizontal insight", caller.calls[0]["system_prompt"])
         payload = caller.calls[0]["payload"]
         self.assertIn("parent_comparisons_by_plan_id", payload)
         self.assertNotIn("trajectories", payload["records"][0])
         self.assertNotIn("case_ids", json.dumps(payload["records"]))
         rendered = json.dumps(payload)
-        self.assertNotIn("identity-must-not-reach-round-reflector", rendered)
+        self.assertNotIn("identity_must_not_reach_round_reflector", rendered)
         self.assertNotIn("raw-info-must-not-reach-round-reflector", rendered)
 
     def test_round_reflector_skips_single_record_horizontal_paraphrase(self) -> None:
@@ -3165,76 +3099,30 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(result.plan_reflections, ())
         self.assertEqual(caller.calls, [])
 
-    def test_plan_proposer_normalizes_observed_deepseek_shape_and_slots_children(self) -> None:
-        caller = ScriptedRoleCaller(
-            [
-                {
-                    "plan_id": "plan_manual_v2",
-                    "parent_ids": ["invented_parent"],
-                    "B": {
-                        "company_name": "placeholder",
-                        "ticker": "PLACEHOLDER",
-                    },
-                    "H_init": {
-                        "basic_info_policy": {
-                            "requests": [
-                                {
-                                    "request_id": "recent_market_backbone",
-                                    "description": "Read recent point-in-time price and volume.",
-                                    "source_types": ["market_data"],
-                                    "lookback_days": 45,
-                                    "max_documents": 1,
-                                }
-                            ]
-                        },
-                        "initial_research_skill": (
-                            "Form a falsifiable hypothesis and list unresolved "
-                            "information needs."
-                        ),
-                    },
-                    "H_reflect": {
-                        "reflection_skill": (
-                            "Track support and contradiction, then continue for the "
-                            "next need or finalize."
-                        )
-                    },
-                    "H_analyse": {
-                        "analysis_prompt": (
-                            "Weigh supporting and counter evidence while exposing "
-                            "uncertainty."
-                        )
-                    },
-                    "fixed_prior": "echoed input",
-                    "meta_info": [],
-                },
-                {
-                    "plan_id": "plan_manual_v2_slot_2",
-                    "parent_ids": ["another_invented_parent"],
-                    "basic_info_policy": {
-                        "requests": [
-                            {
-                                "request_id": "recent_market_backbone",
-                                "description": "Read recent point-in-time price and volume.",
-                                "source_types": ["market_data"],
-                                "lookback_days": 45,
-                                "max_documents": 1,
-                            }
-                        ]
-                    },
-                    "initial_research_skill": (
-                        "Test a distinct hypothesis and list unresolved information "
-                        "needs."
-                    ),
-                    "reflection_skill": (
-                        "Track disconfirming evidence first, then continue for the "
-                        "next need or finalize."
-                    ),
-                    "analysis_prompt": (
-                        "Weigh counter evidence while preserving uncertainty."
-                    ),
-                },
-            ]
-        )
+    def test_plan_proposer_accepts_canonical_fields_and_slots_children(self) -> None:
+        policy = {
+            "requests": [{
+                "request_id": "recent_market_backbone",
+                "description": "Read recent point-in-time price and volume.",
+                "source_types": ["market_data"],
+                "lookback_days": 45,
+                "max_documents": 1,
+            }]
+        }
+        caller = ScriptedRoleCaller([
+            {
+                "B": policy,
+                "H_init": "Form a falsifiable hypothesis and list unresolved information needs.",
+                "H_reflect": "Track support and contradiction, then continue for the next need or finalize.",
+                "H_analyse": "Weigh supporting and counter evidence while exposing uncertainty.",
+            },
+            {
+                "B": policy,
+                "H_init": "Test a distinct hypothesis and list unresolved information needs.",
+                "H_reflect": "Track disconfirming evidence first, then continue for the next need or finalize.",
+                "H_analyse": "Weigh counter evidence while preserving uncertainty.",
+            },
+        ])
         proposer = LLMInformationPlanProposer(caller)
         parent = default_information_plan()
 
@@ -3341,7 +3229,7 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(correction["invalid_output"], duplicate)
 
     def test_plan_proposer_accepts_rebased_imported_history_meta_prefix(self) -> None:
-        """The real proposer prompt path must serialize reserved negative ids."""
+        """Imported and local lessons survive brief projection after id rebasing."""
         from stock_opportunity_agent.research.evolution_control import (
             _rebased_history_meta_entries,
         )
@@ -3403,9 +3291,12 @@ class RoutingAndPlanRoleTests(TestCase):
         )
         self.assertIsNotNone(plan)
         meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"]
+        self.assertEqual([entry.round_id for entry in (*rebased, local)], [-1, 1])
         self.assertEqual(
-            [row["round_id"] for row in meta_payload], [-1, 1]
+            {item["brief"] for item in meta_payload["items"]},
+            {"Imported unresolved Fast need.", "correct binary separation"},
         )
+        self.assertTrue(all(item["source_refs"] for item in meta_payload["items"]))
 
     def test_v111_plan_proposer_does780_relabels_news_as_issuer_owned(self) -> None:
         parent = default_information_plan()
@@ -3690,13 +3581,13 @@ class RoutingAndPlanRoleTests(TestCase):
             caller.calls[1]["payload"]["validation_feedback"]["validation_error"],
         )
 
-    def test_plan_proposer_receives_complete_additive_outcome_aware_fifo_entry(
+    def test_plan_proposer_receives_briefs_with_exact_additive_sources_available(
         self,
     ) -> None:
         caller = ScriptedRoleCaller(
             [
                 {
-                    "basic_info_policy": {
+                    "B": {
                         "requests": [
                             {
                                 "request_id": "recent_market_backbone",
@@ -3707,15 +3598,15 @@ class RoutingAndPlanRoleTests(TestCase):
                             }
                         ]
                     },
-                    "initial_research_skill": (
+                    "H_init": (
                         "Test the preserved hypothesis and list unresolved "
                         "information needs."
                     ),
-                    "reflection_skill": (
+                    "H_reflect": (
                         "Inspect contradiction before finalizing or continuing for "
                         "the next need."
                     ),
-                    "analysis_prompt": (
+                    "H_analyse": (
                         "Weigh supporting and counter evidence while preserving "
                         "uncertainty."
                     ),
@@ -3795,11 +3686,23 @@ class RoutingAndPlanRoleTests(TestCase):
         )
 
         self.assertEqual(proposed.plan_id, "plan_r0002_c01")
-        meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"][
-            0
-        ]
-        plan_meta = meta_payload["plan_reflections"][0]
-        original = plan_meta["original_case_reflections"][0]
+        meta_payload = caller.calls[0]["payload"]["proposal_context"]["meta_info"]
+        self.assertEqual(
+            {item["brief"] for item in meta_payload["items"]},
+            {
+                "annual filing evidence was underweighted",
+                "restore annual filing evidence",
+                "compare restored filing evidence",
+            },
+        )
+        self.assertTrue(all("detail" not in item for item in meta_payload["items"]))
+        case_item = next(item for item in meta_payload["items"] if item["level"] == "case")
+        from stock_opportunity_agent.research.evolution_core import PlanMetaMemory
+
+        memory = PlanMetaMemory(entries=(meta_entry,))
+        original = memory.read_refs(
+            (case_item["source_refs"][-1],), role="proposer",
+        )["sources"][0]["content"]
         self.assertEqual(
             original["candidate_judgment_feedback"]["assessment"],
             "correct_positive_conservative",
@@ -3808,20 +3711,11 @@ class RoutingAndPlanRoleTests(TestCase):
             original["self_reflection"]["ignored_evidence"],
             ["annual filing evidence was underweighted"],
         )
-        self.assertEqual(
-            plan_meta["vertical_plan_reflection"][
-                "next_explorations"
-            ],
-            ["restore annual filing evidence"],
-        )
-        self.assertEqual(
-            meta_payload["search_implications"],
-            ["compare restored filing evidence"],
-        )
         rendered = json.dumps(meta_payload)
         self.assertNotIn('"case_id"', rendered)
         self.assertNotIn('"company_id"', rendered)
-        self.assertIn("as a replacement", caller.calls[0]["system_prompt"])
+        self.assertNotIn("original_case_reflections", rendered)
+        self.assertIn("Complete originals remain stored", caller.calls[0]["system_prompt"])
 
     def test_plan_proposer_budget_preflight_pauses_before_model_call(self) -> None:
         class OversizedCaller(ScriptedRoleCaller):
@@ -3838,7 +3732,7 @@ class RoutingAndPlanRoleTests(TestCase):
         )
 
         with self.assertRaisesRegex(
-            ExternalBudgetExhausted, "complete Information Plan proposal context"
+            ExternalBudgetExhausted, "proposal working view"
         ):
             proposer.propose(
                 round_id=2,

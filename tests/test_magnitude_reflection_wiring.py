@@ -35,7 +35,7 @@ _VALID_ROUND_META = {
     "round_id": 1,
     "plan_level": {
         "successful_patterns": [],
-        "failed_patterns": ["all positives collapse to 2-3x"],
+        "failed_patterns": [],
     },
     "prediction_errors": {
         "false_positive": [],

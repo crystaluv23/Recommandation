@@ -25,6 +25,11 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _mask_identity_values,
 )
 from stock_opportunity_agent.signal_library import signal_result_model_view
+from stock_opportunity_agent.research.evolution_state_patch import (
+    PATCH_INSTRUCTION,
+    apply_state_patch,
+    state_patch_contract,
+)
 from stock_opportunity_agent.research.evolution_transport import (
     JSONRoleCaller,
     _complete_json_with_invalid_value,
@@ -195,20 +200,97 @@ def _blind_prediction_from_role(data: Mapping[str, Any]) -> BlindPrediction:
     missing = sorted(required - set(data))
     extra = sorted(set(data) - required)
     if missing or extra:
-        details = []
-        if missing:
-            details.append("missing fields: " + ", ".join(missing))
-        if extra:
-            details.append("unexpected fields: " + ", ".join(extra))
-        raise ValidationError("BlindPrediction role output " + "; ".join(details))
+        raise StructuredValidationError([
+            *(ValidationIssue(
+                code="prediction_field_missing", message=f"BlindPrediction role output missing field: {name}",
+                paths=(name,), allowed_repairs=("add",),
+            ) for name in missing),
+            *(ValidationIssue(
+                code="prediction_field_unexpected", message=f"BlindPrediction role output unexpected field: {name}",
+                paths=(name,), allowed_repairs=("remove",),
+                repair_context={"invalid_container_paths": [name]},
+            ) for name in extra),
+        ])
     judgment = data["candidate_judgment"]
+    issues: list[ValidationIssue] = []
     if not isinstance(judgment, str) or judgment not in (
         _POSITIVE_SURGE_JUDGMENTS | _NEGATIVE_SURGE_JUDGMENTS
     ):
-        raise ValidationError(
-            "BlindPrediction candidate_judgment must be likely, possible, "
-            "unlikely, or insufficient_information"
-        )
+        issues.append(ValidationIssue(
+            code="prediction_judgment_invalid",
+            message="BlindPrediction candidate_judgment must be likely, possible, unlikely, or insufficient_information",
+            paths=("candidate_judgment",), dependent_paths=("magnitude",),
+            repair_context={"invalid_container_paths": ["candidate_judgment"]},
+        ))
+    magnitude = data["magnitude"]
+    if magnitude not in (None, "2-3x", "3-10x", "10x+"):
+        issues.append(ValidationIssue(
+            code="prediction_magnitude_invalid", message="BlindPrediction magnitude must be null, 2-3x, 3-10x, or 10x+",
+            paths=("magnitude",),
+            repair_context={"invalid_container_paths": ["magnitude"]},
+        ))
+    elif isinstance(judgment, str) and (
+        (judgment in _POSITIVE_SURGE_JUDGMENTS and magnitude is None)
+        or (judgment in _NEGATIVE_SURGE_JUDGMENTS and magnitude is not None)
+    ):
+        issues.append(ValidationIssue(
+            code="prediction_magnitude_judgment_conflict",
+            message="surge prediction requires magnitude class; non-surge prediction cannot include magnitude",
+            paths=("candidate_judgment", "magnitude"), path_policy="any",
+        ))
+    confidence = data["confidence"]
+    if not isinstance(confidence, Mapping):
+        issues.append(ValidationIssue(
+            code="prediction_confidence_invalid", message="BlindPrediction confidence requires exactly a level field",
+            paths=("confidence",),
+            repair_context={"invalid_container_paths": ["confidence"]},
+        ))
+    else:
+        if "level" not in confidence:
+            issues.append(ValidationIssue(
+                code="prediction_confidence_level_missing", message="BlindPrediction confidence requires exactly a level field",
+                paths=("confidence.level",), allowed_repairs=("add",),
+            ))
+        elif confidence["level"] not in ("low", "medium", "high"):
+            issues.append(ValidationIssue(
+                code="prediction_confidence_level_invalid", message="BlindPrediction confidence level must be low, medium, or high",
+                paths=("confidence.level",),
+                repair_context={"invalid_container_paths": ["confidence.level"]},
+            ))
+        for name in set(confidence) - {"level"}:
+            issues.append(ValidationIssue(
+                code="prediction_confidence_field_unexpected", message="BlindPrediction confidence requires exactly a level field",
+                paths=(f"confidence.{name}",), allowed_repairs=("remove",),
+                repair_context={"invalid_container_paths": [f"confidence.{name}"]},
+            ))
+    for name in ("key_reasons", "uncertainties"):
+        rows = data[name]
+        if not isinstance(rows, list):
+            issues.append(ValidationIssue(
+                code="prediction_collection_invalid", message=f"BlindPrediction {name} must be an array",
+                paths=(name,),
+            ))
+        elif name == "key_reasons" and not rows:
+            issues.append(ValidationIssue(
+                code="prediction_reasons_missing", message="blind prediction requires key reasons",
+                paths=(name,), allowed_repairs=("add",),
+            ))
+        else:
+            for index, row in enumerate(rows):
+                if not isinstance(row, str):
+                    issues.append(ValidationIssue(
+                        code="prediction_text_invalid", message=f"BlindPrediction {name}[{index}] must be text",
+                        paths=(f"{name}[{index}]",),
+                        repair_context={"invalid_container_paths": [f"{name}[{index}]"]},
+                    ))
+    if not isinstance(data["session_id"], str) or not data["session_id"].strip():
+        issues.append(ValidationIssue(
+            code="prediction_session_invalid", message="blind prediction requires nonempty text session_id",
+            paths=("session_id",),
+            repair_context={"invalid_container_paths": ["session_id"]},
+        ))
+    if issues:
+        raise StructuredValidationError(issues)
     return BlindPrediction.from_dict(
         {
             "is_surge": judgment in _POSITIVE_SURGE_JUDGMENTS,
@@ -708,10 +790,11 @@ def _validate_proposed_market_backbone(plan: InformationPlan) -> None:
         for request in plan.basic_info_policy.requests
     )
     if not valid:
-        raise ValidationError(
-            "information_plan_propose must retain one compact market_data "
-            "request with lookback_days <= 60 and max_documents = 1"
-        )
+        raise StructuredValidationError([ValidationIssue(
+            code="market_backbone_missing",
+            message="information_plan_propose must retain one compact market_data request with lookback_days <= 60 and max_documents = 1",
+            paths=("B.requests",), allowed_repairs=("replace", "add"),
+        )])
 
 
 _CROSS_ISSUER_REQUEST_TERMS = re.compile(
@@ -846,13 +929,15 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
         ):
             continue
         paths = [f"B.requests[{index}].{field}" for field in cross_issuer_fields]
-        raise ValidationError(
-            "information_plan_propose requested cross-issuer evidence that the "
+        raise StructuredValidationError([ValidationIssue(
+            code="cross_issuer_request_unsupported", paths=tuple(paths),
+            allowed_repairs=("replace", "remove"),
+            message=("information_plan_propose requested cross-issuer evidence that the "
             "target-company-scoped Basic Info resolver cannot retrieve, "
             f"invalid_fields={paths}. Rewrite or remove every named field; a "
             "competitive request must explicitly ask for the target issuer's own "
-            "disclosures or target-company-scoped news mentioning competition"
-        )
+            "disclosures or target-company-scoped news mentioning competition"),
+        )])
 
     all_source_types = {
         source_type
@@ -997,11 +1082,14 @@ def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
         "H_reflect": plan.reflection_skill,
         "H_analyse": plan.analysis_prompt,
     }
-    issues: list[str] = []
+    issues: list[ValidationIssue] = []
     for field, text_value in values.items():
         compact = " ".join(text_value.split())
         if _GENERIC_PLAN_INSTRUCTION.fullmatch(compact):
-            issues.append(f"{field} is a generic placeholder")
+            issues.append(ValidationIssue(
+                code="plan_skill_non_executable", paths=(field,),
+                message=f"information_plan_propose returned non-executable Plan skills: {field} is a generic placeholder",
+            ))
             continue
         missing = [
             description
@@ -1009,12 +1097,12 @@ def _validate_proposed_plan_skills(plan: InformationPlan) -> None:
             if pattern.search(compact) is None
         ]
         if missing:
-            issues.append(f"{field} must explicitly cover " + " and ".join(missing))
+            issues.append(ValidationIssue(
+                code="plan_skill_non_executable", paths=(field,),
+                message=f"information_plan_propose returned non-executable Plan skills: {field} must explicitly cover " + " and ".join(missing),
+            ))
     if issues:
-        raise ValidationError(
-            "information_plan_propose returned non-executable Plan skills: "
-            + "; ".join(issues)
-        )
+        raise StructuredValidationError(issues)
 
 
 def _validate_proposal_change_focus(
@@ -1067,11 +1155,12 @@ _FIXED_SEMANTICS_REDEFINITION = re.compile(
 def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
     """Keep evolvable Plan instructions below the fixed Predictor boundary."""
 
+    issues: list[ValidationIssue] = []
     if _fixed_semantics_violation(plan.analysis_prompt):
-        raise ValidationError(
-            "invalid_field='H_analyse', H_analyse may organize/weight evidence only "
-            "and cannot redefine fixed Predictor semantics"
-        )
+        issues.append(ValidationIssue(
+            code="plan_fixed_semantics_redefined", paths=("H_analyse",),
+            message="invalid_field='H_analyse', H_analyse may organize/weight evidence only and cannot redefine fixed Predictor semantics",
+        ))
     for field_name, text_value in (
         ("H_init", plan.initial_research_skill),
         ("H_reflect", plan.reflection_skill),
@@ -1084,21 +1173,25 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
             flags=re.IGNORECASE,
         )
         if _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY.search(scrubbed):
-            raise ValidationError(
-                f"invalid_field={field_name!r}, {field_name} may update "
+            issues.append(ValidationIssue(
+                code="plan_fixed_semantics_redefined", paths=(field_name,),
+                message=(f"invalid_field={field_name!r}, {field_name} may update "
                 "ResearchState and decide evidence "
                 "collection only; it cannot define or finalize a replacement "
-                "Predictor class ontology"
-            )
+                "Predictor class ontology"),
+            ))
         if (
             field_name == "H_reflect"
             and _RESEARCH_CONTROLLER_DIRECTION_DECISION.search(scrubbed)
         ):
-            raise ValidationError(
-                "invalid_field='H_reflect', H_reflect may decide only whether "
+            issues.append(ValidationIssue(
+                code="controller_decides_price_direction", paths=(field_name,),
+                message=("invalid_field='H_reflect', H_reflect may decide only whether "
                 "evidence collection should continue or finalize; it cannot decide "
-                "which price direction, market trend, or outcome is likely"
-            )
+                "which price direction, market trend, or outcome is likely"),
+            ))
+    if issues:
+        raise StructuredValidationError(issues)
 
 
 def _validate_plan_for_proposer_context(
@@ -1119,10 +1212,15 @@ def _validate_plan_for_proposer_context(
         }
     )
     if unsupported:
-        raise ValidationError(
-            "information_plan_propose used unsupported source types: "
-            + ", ".join(unsupported)
-        )
+        raise StructuredValidationError([ValidationIssue(
+            code="plan_source_type_unsupported",
+            message="information_plan_propose used unsupported source types: " + ", ".join(unsupported),
+            paths=tuple(
+                f"B.requests[{index}].source_types[{source_index}]"
+                for index, request in enumerate(plan.basic_info_policy.requests)
+                for source_index, source in enumerate(request.source_types) if source in unsupported
+            ), allowed_repairs=("replace", "remove"),
+        )])
     _validate_fixed_plan_semantics(plan)
     _validate_proposed_plan_skills(plan)
 
@@ -1240,14 +1338,17 @@ _VALIDATION_ROUTING_RESIDUAL_CANDIDATES = re.compile(
 )
 
 
-class _RepairChoiceValidationError(ValidationError):
+class _RepairChoiceValidationError(StructuredValidationError):
     """Describe a semantic conflict with more than one valid repair path."""
 
     def __init__(self, message: str, *, alternative_paths: Iterable[str]) -> None:
         paths = tuple(dict.fromkeys(str(path) for path in alternative_paths if path))
         if len(paths) < 2:
             raise ValueError("repair-choice validation requires at least two paths")
-        super().__init__(message)
+        super().__init__([ValidationIssue(
+            code="semantic_repair_choice", message=message,
+            paths=paths, path_policy="any",
+        )])
         self.alternative_paths = paths
 
 
@@ -1594,27 +1695,6 @@ def _validation_obligations(
                 "authored numeric tokens and same-claim literals."
             )
         return feedback
-
-    if isinstance(failure, _RepairChoiceValidationError):
-        paths = list(failure.alternative_paths)
-        return {
-            "obligation_count": 1,
-            "obligations": [
-                {
-                    "obligation_index": 1,
-                    "must_change_paths": [],
-                    "must_change_any_of_paths": paths,
-                    "instruction": str(failure),
-                }
-            ],
-            "alternative_change_groups": [paths],
-            "completion_check": (
-                "Change at least one path in every alternative_change_groups row, "
-                "plus any other path in that same row required to keep the complete "
-                "object valid. Preserve every path outside those rows byte-for-byte, "
-                "then rerun the complete output contract."
-            ),
-        }
 
     segments = [
         segment.strip()
@@ -3139,6 +3219,8 @@ def _complete_parsed_role_impl(
     correction_guidance: str = "",
     enforce_scoped_correction: bool = False,
     exact_compaction_scope: bool = False,
+    output_patch_base: Mapping[str, Any] | None = None,
+    patch_corrections: bool = False,
     final_validation_fallback: Callable[
         [Mapping[str, Any], ValidationError],
         tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None,
@@ -3162,6 +3244,10 @@ def _complete_parsed_role_impl(
     # attempt without authorizing the drifted paths.
     scope_drift_retry_note: str | None = None
     completed_corrections = 0
+    incremental = output_patch_base is not None or patch_corrections
+    initial_patch_pending = output_patch_base is not None
+    parsed_object_available = False
+    patch_error_note: str | None = None
     max_corrections = getattr(caller, "max_structured_corrections", 1)
     if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
         raise ValidationError("structured role correction budget must be 1 or 2")
@@ -3189,6 +3275,31 @@ def _complete_parsed_role_impl(
             and all(issue.retryability == "terminal" for issue in failure.issues)
         ):
             break
+        patch_base: Mapping[str, Any] | None = None
+        patch_contract: dict[str, Any] | None = None
+        if incremental:
+            if initial_patch_pending:
+                patch_base = output_patch_base
+                patch_contract = state_patch_contract(patch_base)
+            elif attempt and parsed_object_available and isinstance(failed_output, Mapping):
+                if not isinstance(failure, StructuredValidationError):
+                    # Parsed semantic failures require owning-parser authority.
+                    # Diagnostic prose is never promoted to patch permissions.
+                    break
+                patch_base = failed_output
+                try:
+                    patch_contract = state_patch_contract(
+                        patch_base,
+                        mode="correction",
+                        obligations=_validation_obligations(failure, failed_output)[
+                            "obligations"
+                        ],
+                    )
+                except ValidationError as contract_exc:
+                    patch_error_note = "unrepresentable typed correction contract: " + str(contract_exc)
+                    break
+                if not patch_contract["allowed_operations"]:
+                    break
         request_payload = dict(payload)
         request_stage = stage if attempt == 0 else f"{stage}_correction"
         prompt = (
@@ -3219,6 +3330,29 @@ def _complete_parsed_role_impl(
                     _validation_obligations(failure, failed_output)
                 )
                 prompt += correction_instruction
+        if incremental:
+            prompt += (
+                " Valid parseable outputs are repaired by incremental operations "
+                "under typed validator permissions, never by repeating the full "
+                "object. If no output_patch_contract is supplied, return the "
+                "normal full role object (no parseable correction base exists)."
+                + PATCH_INSTRUCTION
+            )
+            if patch_contract is not None:
+                request_payload["output_patch_contract"] = patch_contract
+                if initial_patch_pending:
+                    if request_payload.get("research_state") == patch_base:
+                        patch_contract["base_location"] = "research_state"
+                    else:
+                        request_payload["output_patch_base"] = dict(patch_base)
+                        patch_contract["base_location"] = "output_patch_base"
+                else:
+                    patch_contract["base_location"] = (
+                        "validation_feedback.invalid_output"
+                        if stable_correction_prefix else "invalid_output"
+                    )
+            if patch_error_note is not None:
+                request_payload["patch_validation_error"] = patch_error_note
         try:
             value, step_usage = _complete_json_with_invalid_value(
                 caller,
@@ -3262,9 +3396,27 @@ def _complete_parsed_role_impl(
         if attempt:
             completed_corrections += 1
         if set(value) == {"invalid_structured_output", "validation_error"}:
-            failed_output = {}
-            failure = ValidationError(str(value["validation_error"]))
+            if patch_contract is not None:
+                # Preserve the last merged frontier and its semantic issues.
+                patch_error_note = str(value["validation_error"])
+                if failure is None:
+                    failure = ValidationError(patch_error_note)
+            else:
+                failed_output = {}
+                parsed_object_available = False
+                failure = ValidationError(str(value["validation_error"]))
             continue
+        if patch_contract is not None:
+            try:
+                value = apply_state_patch(patch_base, value, contract=patch_contract)
+            except ValidationError as patch_exc:
+                patch_error_note = str(patch_exc)
+                if failure is None:
+                    failure = patch_exc
+                continue
+            initial_patch_pending = False
+            patch_error_note = None
+        parsed_object_available = True
         if tuple(sanitize_output_aliases):
             value = _mask_identity_values(value, sanitize_output_aliases)
             _scan_payload(
@@ -3310,6 +3462,7 @@ def _complete_parsed_role_impl(
             if (
                 attempt
                 and enforce_scoped_correction
+                and not incremental
                 and isinstance(failed_output, Mapping)
                 and bool(failed_output)
                 and failure is not None
@@ -3627,13 +3780,13 @@ def _complete_parsed_role_impl(
         except ValidationError as exc:
             failed_output = (
                 (projected_value if projected_value is not None else value)
-                if echo_invalid_output_on_correction
+                if echo_invalid_output_on_correction or incremental
                 else {}
             )
             failure = exc
         except (KeyError, TypeError, ValueError) as exc:
             keys = ", ".join(sorted(str(key) for key in value))
-            failed_output = value if echo_invalid_output_on_correction else {}
+            failed_output = value if echo_invalid_output_on_correction or incremental else {}
             failure = ValidationError(
                 f"{request_stage} returned invalid JSON fields [{keys}]: "
                 f"{type(exc).__name__}: {exc}"
@@ -3749,6 +3902,8 @@ def _complete_parsed_role_impl(
             "; identical correction blocked before deterministic fallback: "
             + no_progress_diagnostic
         )
+    if patch_error_note is not None:
+        rejection_message += "; invalid incremental patch: " + patch_error_note
     raise CandidateExecutionRejected(
         stage,
         rejection_message,

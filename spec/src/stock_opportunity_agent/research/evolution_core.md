@@ -66,11 +66,16 @@ independent. Existing serialized record shapes are unchanged.
 
 Predictor's 24KB display target is advisory; complete validated state and citation
 material cross this boundary unchanged, with target overflow explicitly recorded.
-Hard request/case/cost limits remain enforced by transport. Meta model views
-serialize every retained FIFO entry and every original case reflection without
-sampling. Their consumers mask the complete view and use exact request
-estimation; an oversized request pauses through the existing budget control
-flow and never becomes a content correction or a semantic empty result.
+Hard request/case/cost limits remain enforced by transport. Original meta entries
+and case reflections remain archived in full. Optional structured reflection
+items and unchanged lower-item selections are additive fields; legacy artifacts
+retain their original serialized shape. Meta memory exposes a separate bounded
+brief catalog and exact reference-read API through `evolution_reflection_memory`.
+Consumers mask and scan approved views, enforce their byte/read budgets, and use
+exact request reservation. Deferred items remain visible in the manifest rather
+than being treated as processed or silently dropped. The full archival view stays
+available as `archive_view()` for persistence and offline audit; `model_view()`
+returns the bounded brief dictionary. Blind roles cannot read the index.
 
 For the supported SEC Company Facts response shape, model-facing document views
 preserve taxonomy concept, provider label, unit, and up to the latest necessary

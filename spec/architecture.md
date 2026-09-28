@@ -349,6 +349,33 @@ identity, Raw Info, literal source evidence, or research context, and it is
 never available to blind Plan execution or prediction. Meta-info remains one
 fixed-length FIFO list: appending a completed round evicts only the oldest whole
 entry when capacity is exceeded.
+The complete archive and the model's working view are distinct contracts. As
+approved on 2026-09-28, new case, Plan and Round reflections produce individually
+addressable items: each carries complete content and an actionable brief from
+the same generation, applicability, limitations, and exact supporting/opposing
+source references. Runtime owns identifiers and canonical outcome facts. A
+higher layer selects existing items unchanged or adds a sourced cross-case
+insight; selection never deletes the original archive. Citation existence proves
+provenance, not semantic truth or research benefit. Hypotheses remain hypotheses.
+The proposer initially receives a byte-bounded selection of complete briefs,
+coverage/deferred counts and lookup handles. It may request bounded reads of
+registered anonymous original case/reflection units before proposing a Plan.
+This replaces mandatory full-history replay, not full-history preservation.
+Reads cannot access arbitrary files, identities, Raw Info, blind execution,
+held-out labels or uncommitted rounds. Historical unstructured items remain
+readable as explicitly unreviewed history; they are never silently upgraded to
+validated lessons. One original case repeated across levels is one evidence
+source, and important exceptions and counterexamples remain retrievable.
+
+Research state bookkeeping is runtime-owned. H_reflect proposes ordered,
+snapshot-bound changes instead of rewriting the complete ResearchState. Runtime
+merges them, preserves untouched content, and checks the complete transition
+before it becomes accepted state. Related evidence/claim/need changes form one
+consistent validation unit. Corrections change only machine-authorized invalid
+paths and necessary dependencies; safe progress is retained between attempts.
+Normal instructions, parsers and repair permissions must express the same
+contract. Missing instructions or contradictory producer/consumer contracts are
+engineering failures, not research lessons or evidence of model incapacity.
 Labels, dataset ownership, two-stage prediction semantics, metrics, runtime
 guardrails, and fixed priors `H_R/H_P/H_E/H_U` are framework controls and
 cannot be mutated by a candidate plan. Stage 1 predicts whether

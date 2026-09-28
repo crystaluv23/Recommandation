@@ -1278,13 +1278,14 @@ and missing evidence. It is derived only after truth reveal, cannot mutate the
 saved prediction, and never contributes an ordinal distance, weight, or other
 term to Binary F1 or parent selection.
 
-Plan-level reflection consumes a deterministic compact view of those saved
-trajectories rather than their complete Raw Info and research contexts. Each
-case row retains its prediction, post-hoc reflection, and compact Signal
-results, but uses only an opaque batch index and
-omits literal evidence spans, company/case identity, Basic Info, full research
-states, prediction paths, and usage.
-Before the critic request, the compact trajectory is value-masked and rescanned
+Plan-level reflection initially consumes deterministic per-case outcome and
+technical-completion diagnostics, bounded complete briefs and a bounded source
+catalog. Exact anonymous case units containing original post-hoc reflections
+and their canonical prediction/outcome feedback are registered for progressive reading;
+they are not duplicated into the initial request. All views omit literal
+evidence spans, company/case identity, Basic Info, full research states,
+prediction paths and usage.
+Before the critic request, source units and the working view are value-masked and rescanned
 against the full alias inventory of all 24 cases in the round.
 Every full-inventory mask-and-scan boundary derives its exact case-sensitive and
 case-insensitive alias matchers once per payload traversal and reuses them across
@@ -1307,10 +1308,11 @@ parent metrics are context only and the comparison must not claim a causal
 improvement or regression. Parent comparison evidence can shape critic and FIFO
 meta reflection, but cannot rewrite predictions, metrics, fitness, archive
 membership, or parent selection.
-The round reflector receives only compact PlanRecord summaries: Plan content,
-aggregate metrics, Plan-critic output, Signal-usage counts, fitness, and compact
-evaluation lineage. It does not receive trajectories, case ids, Raw Info,
-research context, or per-case labels. With fewer than two newly completed Plan
+The round reflector initially receives compact PlanRecord summaries (Plan
+content, aggregate metrics, Signal-usage counts, fitness and evaluation lineage),
+bounded briefs and a bounded source catalog. It can read canonical per-case
+outcome facts and exact anonymous lower reflections by reference. Case identities,
+Raw Info and research context remain excluded. With fewer than two newly completed Plan
 records there is no horizontal comparison to perform: local code emits an empty
 horizontal layer and makes no Round-reflector model call instead of restating the
 single vertical reflection.
@@ -1468,23 +1470,28 @@ fixed compatibility mapping. New Plan artifacts write only `requests`.
 One FIFO window, default length 10, stores structured `RoundMetaEntry` values.
 It remains a list-like append-only sliding window: round ids must increase,
 append is the only mutation, and exceeding capacity removes the oldest whole
-entry. No separate archive-derived summary view replaces this list.
+entry. A model working view never replaces this durable list.
 
 Durable entries continue to retain the complete original, vertical, and
-horizontal layers. Model-facing meta is a deterministic derived view capped at
-48,000 characters across the FIFO: every round retains aggregate information;
-the original layer becomes assessment counts plus bounded representative
-samples; vertical/horizontal lists retain whole items, never character slices; and newer entries receive
-representative detail first. For each assessment class, representative selection
-chooses the most information-rich post-hoc reflection rather than the first case
-encountered, retains its opaque case index, and admits up to six distinct classes
-per Plan before the global 48,000-character bound is enforced. This prevents an
-early blank or validation-fallback reflection from hiding a later analyst-authored
-concrete root cause. Whole aggregate items are admitted newest-first under the
-shared budget, with one envelope per round and omitted item counts. Vertical
-reflections are admitted before representative cases, so a large case cannot
-silently erase an otherwise fitting Plan critique. Each omitted whole detail is
-counted. Compact views never replace the durable entries.
+horizontal layers. New live reflections produce individually addressable items
+with full detail and an actionable brief in the same response. Each item states
+its category, fact/hypothesis/action kind, applicability, limitations, supporting
+and opposing references, and any canonical outcome claims. Runtime owns stable
+identities and checks source membership and outcome consistency; source linkage
+does not establish semantic truth or independently confirmed benefit. Higher
+layers select existing items unchanged or append sourced new insights.
+
+As approved on 2026-09-28, the model-facing view is a bounded selection of whole
+briefs and lookup handles, not complete FIFO serialization or character-sliced
+summaries. The default view budget is 48,000 UTF-8 bytes including its metadata;
+omission and deferred coverage are explicit. The proposer can return a bounded
+`read_refs` request before returning its four-field Plan. Runtime reads only
+registered anonymous original units, records each disclosure in the subsequent
+request, and enforces aggregate read and request budgets. Unknown references,
+stale sources and oversized whole-unit reads cannot be silently substituted.
+Legacy strings remain exact, explicitly unreviewed sources without fabricated
+model-authored briefs. Their original content is retrievable. Validated facts,
+unverified causal explanations and technical exclusions retain distinct meaning.
 
 Each entry contains:
 
@@ -1497,7 +1504,7 @@ Each entry contains:
   implications, and evidence refs, now explicitly defined as the horizontal
   layer.
 
-The proposer receives the complete ordered FIFO entries. This is an explicitly
+The proposer receives this working view over committed FIFO entries. This is an explicitly
 outcome-aware retrospective proposal input, but it contains no company id, case
 id, Raw Info, literal evidence spans, or full research context. Older
 pre-layered `RoundMetaEntry` artifacts remain readable as horizontal-only

@@ -27,6 +27,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionType,
     SignalSpec,
 )
+from tests.evolution_runtime_test_support import ScriptedRoleCaller
 
 
 class _RecordingTransport:
@@ -39,14 +40,10 @@ class _RecordingTransport:
         return self.response
 
 
-class _ScriptedRoleCaller:
-    def __init__(self, outputs):
-        self.outputs = list(outputs)
-        self.calls = []
-
+class _ScriptedRoleCaller(ScriptedRoleCaller):
     def complete_json(self, **kwargs):
-        self.calls.append(dict(kwargs))
-        return self.outputs.pop(0), AgentUsage(llm_calls=1, tokens=7, cost=0.01)
+        output, _ = super().complete_json(**kwargs)
+        return output, AgentUsage(llm_calls=1, tokens=7, cost=0.01)
 
 
 def _choice(choice, probabilities, confidence=0.9):

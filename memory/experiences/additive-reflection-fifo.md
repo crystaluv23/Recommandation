@@ -1,6 +1,6 @@
 # Additive Reflection in Fixed FIFO Meta-Info
 
-visit_times: 8
+visit_times: 9
 
 ## Trigger
 
@@ -30,6 +30,12 @@ literal evidence, and research contexts.
 
 ## How to Apply
 
+- Since the user-approved 2026-09-28 contract change, distinguish this complete
+  archival FIFO from each bounded model working view. New items carry detail
+  and brief together; higher layers select exact lower-item references, and
+  consumers can read registered originals progressively. Consult
+  [incremental repair and sourced memory](incremental-repair-and-sourced-memory.md)
+  before changing these views. Full retention never requires full prompt replay.
 - Build original case reflection records deterministically from immutable saved
   predictions, truth-derived four-way feedback, and post-hoc reflection.
 - Let the Plan critic author only vertical cross-case and parent-child insight.
@@ -41,6 +47,7 @@ literal evidence, and research contexts.
 
 ## Limits
 
-FIFO length bounds the number of rounds, not the byte size of one reflection
-entry. If prompt size later becomes a problem, change the explicitly approved
-memory contract rather than silently summarizing or dropping an earlier layer.
+FIFO length bounds rounds, not bytes. The approved bounded-view contract preserves
+original artifacts while limiting whole briefs, catalogs and disclosures. Audit
+actual request composition at every consumer; a small brief helper alone does
+not prove bounded context.

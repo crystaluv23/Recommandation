@@ -161,6 +161,8 @@ def _request_slow_source_refs(
 ) -> AgentStep[tuple[str, ...]]:
     """Return one typed bounded source-read selection without source contents."""
 
+    if payload.get("role_scope") not in {"reflection", "H1", "H3", "E2", "Update"}:
+        raise ValidationError("Slow source selector role scope is invalid")
     available = tuple(
         str(item.get("ref"))
         for item in payload.get("available_sources", ())
@@ -181,6 +183,13 @@ def _request_slow_source_refs(
             )
         return refs
 
+    provider_payload = _mask_identity_values(
+        _project_slow_case_refs(deepcopy(dict(payload))),
+        identity_guard_aliases, expand_aliases=False,
+    )
+    provider_payload["validation_feedback"] = None
+    if len(json.dumps(provider_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) > 32_000:
+        raise ValidationError("Slow source selection payload exceeds 32KB")
     value, usage, request_refs = _complete_parsed_role_with_trace(
         caller,
         stage="slow_source_read",
@@ -191,9 +200,9 @@ def _request_slow_source_refs(
             "the current complete view is sufficient."
             + _UNTRUSTED_DATA_INSTRUCTION
         ),
-        payload=payload,
+        payload=provider_payload,
         parser=parse,
-        allow_outcomes=False,
+        allow_outcomes=True,
         anonymous_aliases=(),
         reject_output_aliases=identity_guard_aliases,
         max_output_tokens=512,
@@ -1288,7 +1297,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "creative_temperature": self.creative_temperature,
             "h1_max_output_tokens": self.h1_max_output_tokens,
             "h1_contract": "signal-mining-hypothesis-v7",
-            "reflection_contract": "signal-mining-reflect-v4",
+            "reflection_contract": "signal-mining-reflect-v5",
             "source_read_contract": "slow-source-read-v1",
             "need_ref_projection": "compact-reflection-action-v2",
             "h3_evidence_scope": "comparison-nested-v1",
@@ -1320,6 +1329,12 @@ class LLMSignalMiningModel(SignalMiningModel):
             for lesson in memory.get("lesson_additions", ())
             if isinstance(lesson, Mapping) and lesson.get("lesson_id")
         }
+        prior_lesson_refs.update(
+            str(item["content"]["lesson_id"])
+            for item in payload.get("prior_memory_disclosures", ())
+            if isinstance(item, Mapping) and isinstance(item.get("content"), Mapping)
+            and item["content"].get("lesson_id")
+        )
         nested_ref_owners: dict[str, set[str]] = {}
 
         def nested_slow_refs(value: Any) -> Iterable[str]:
@@ -1358,14 +1373,32 @@ class LLMSignalMiningModel(SignalMiningModel):
 
         def parse(value: Mapping[str, Any]) -> Mapping[str, Any]:
             canonicalized_nested_refs.clear()
-            if set(value) != {"episode_reflections", "lesson_additions"}:
-                raise ValidationError(
-                    "Signal reflection requires episode_reflections and lesson_additions"
-                )
+            fields = {"episode_reflections", "lesson_additions"}
+            envelope_issues = [
+                ValidationIssue(
+                    code="reflection_envelope_missing", paths=(name,),
+                    message=f"Add required Signal reflection array {name}",
+                    allowed_repairs=("add",),
+                ) for name in sorted(fields - set(value))
+            ] + [
+                ValidationIssue(
+                    code="reflection_envelope_extra", paths=(name,),
+                    message=f"Remove unsupported Signal reflection field {name}",
+                    allowed_repairs=("remove",),
+                ) for name in sorted(set(value) - fields)
+            ] + [
+                ValidationIssue(
+                    code="reflection_envelope_array", paths=(name,),
+                    message=f"Signal reflection {name} must be an array",
+                    allowed_repairs=("replace",),
+                    repair_context={"invalid_container_paths": [name]},
+                ) for name in sorted(fields & set(value))
+                if not isinstance(value[name], list)
+            ]
+            if envelope_issues:
+                raise StructuredValidationError(envelope_issues)
             episodes = value.get("episode_reflections")
             lessons = value.get("lesson_additions")
-            if not isinstance(episodes, list) or not isinstance(lessons, list):
-                raise ValidationError("Signal reflection outputs must be arrays")
             episodes = [
                 {
                     **raw,
@@ -1407,6 +1440,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "source_refs",
                     "reflection",
                     "unresolved_questions",
+                    "kind",
+                    "brief",
                 }:
                     issues.append(
                         ValidationIssue(
@@ -1426,6 +1461,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                     or not source_refs
                     or not set(str(item) for item in source_refs) <= feedback_refs
                     or not str(raw.get("reflection", "")).strip()
+                    or not isinstance(raw.get("kind"), str)
+                    or raw.get("kind") not in {"fact", "hypothesis", "action"}
+                    or not isinstance(raw.get("brief"), str)
+                    or not raw["brief"].strip()
                     or not isinstance(raw.get("unresolved_questions"), list)
                 ):
                     issues.append(
@@ -1483,6 +1522,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                 )
             seen_lessons: set[str] = set()
+            valid_lesson_indices: set[int] = set()
             for index, raw in enumerate(lessons):
                 path = f"lesson_additions[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
@@ -1494,6 +1534,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                     "limitations",
                     "qualifies_refs",
                     "challenges_refs",
+                    "kind",
+                    "brief",
                 }:
                     issues.append(
                         ValidationIssue(
@@ -1505,24 +1547,29 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                     continue
                 lesson_id = str(raw.get("lesson_id", ""))
-                refs = {
-                    str(item)
-                    for key in (
-                        "support_refs",
-                        "counterevidence_refs",
-                        "qualifies_refs",
-                        "challenges_refs",
-                    )
-                    for item in raw.get(key, ())
-                }
+                reference_fields = ("support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs")
+                malformed_refs = [key for key in reference_fields
+                    if not isinstance(raw.get(key), list)
+                    or any(not isinstance(ref, str) or not ref for ref in raw[key])]
+                if malformed_refs:
+                    issues.extend(ValidationIssue(
+                        code="reflection_lesson_refs_invalid", paths=(f"{path}.{key}",),
+                        message=f"{path}.{key} must be an array of opaque references",
+                        allowed_repairs=("replace",),
+                        repair_context={"invalid_container_paths": [f"{path}.{key}"]},
+                    ) for key in malformed_refs)
+                    continue
                 if (
                     lesson_id not in lesson_slots
                     or lesson_id in seen_lessons
                     or not str(raw.get("guidance", "")).strip()
                     or not str(raw.get("applicable_scope", "")).strip()
                     or not str(raw.get("limitations", "")).strip()
+                    or not isinstance(raw.get("kind"), str)
+                    or raw.get("kind") not in {"fact", "hypothesis", "action"}
+                    or not isinstance(raw.get("brief"), str)
+                    or not raw["brief"].strip()
                     or not raw.get("support_refs")
-                    or not refs <= resolvable
                 ):
                     issues.append(
                         ValidationIssue(
@@ -1530,7 +1577,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                             message=(
                                 f"{path} must use one unique lesson slot, contain "
                                 "guidance/scope/limitations, and cite only top-level "
-                                "feedback refs, valid episode/lesson slots, or prior "
+                                "feedback refs, actual emitted episodes, or prior "
                                 "lesson ids"
                             ),
                             paths=(path,),
@@ -1541,6 +1588,23 @@ class LLMSignalMiningModel(SignalMiningModel):
                     )
                     continue
                 seen_lessons.add(lesson_id)
+                valid_lesson_indices.add(index)
+            support_sources = feedback_refs | seen_episodes | prior_lesson_refs
+            actual_sources = support_sources | seen_lessons
+            for index, raw in enumerate(lessons):
+                if index not in valid_lesson_indices:
+                    continue
+                for field in ("support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs"):
+                    refs = raw[field]
+                    allowed = support_sources if field == "support_refs" else actual_sources
+                    if not set(refs) <= allowed or raw["lesson_id"] in refs:
+                        path = f"lesson_additions[{index}].{field}"
+                        issues.append(ValidationIssue(
+                            code="reflection_lesson_source_closure", paths=(path,),
+                            message=(f"{path} must cite actual valid emitted or prior sources, never an unused slot or itself; "
+                                     "support_refs requires feedback, an emitted episode, or a prior lesson, not a new sibling lesson"),
+                            allowed_repairs=("replace", "remove", "add"),
+                        ))
             if issues:
                 raise StructuredValidationError(issues)
             return {
@@ -1560,6 +1624,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 return None
             required = {
                 "episode_ref", "source_refs", "reflection", "unresolved_questions",
+                "kind", "brief",
             }
             episodes = deepcopy(raw_episodes)
             valid_indices: list[int] = []
@@ -1581,6 +1646,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                     or not isinstance(reflection, str)
                     or not reflection.strip()
                     or not isinstance(questions, list)
+                    or not isinstance(raw.get("kind"), str)
+                    or raw.get("kind") not in {"fact", "hypothesis", "action"}
+                    or not isinstance(raw.get("brief"), str)
+                    or not raw["brief"].strip()
                     or any(not isinstance(item, str) for item in questions)
                 ):
                     return None
@@ -1597,6 +1666,10 @@ class LLMSignalMiningModel(SignalMiningModel):
             removed_paths: list[str] = []
             for index in overflow_indices:
                 overflow = episodes[index]
+                if target["kind"] != overflow["kind"]:
+                    return None
+                if overflow["brief"] not in target["brief"]:
+                    target["brief"] += "\n\n" + overflow["brief"]
                 target["source_refs"] = list(
                     dict.fromkeys(
                         [*target["source_refs"], *overflow["source_refs"]]
@@ -1653,10 +1726,22 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "Never invent refs, infer causal Signal credit, or turn technical failure "
                 "into a research conclusion. Return JSON with exactly "
                 "episode_reflections and lesson_additions. Each episode has exactly "
-                "episode_ref, source_refs, reflection, unresolved_questions. Each "
+                "episode_ref, source_refs, reflection, unresolved_questions, kind, brief. Each "
                 "lesson has exactly lesson_id, guidance, applicable_scope, "
                 "support_refs, counterevidence_refs, limitations, qualifies_refs, "
-                "challenges_refs. Use only runtime-provided slots and refs."
+                "challenges_refs, kind, brief. For every episode and lesson, kind "
+                "is fact, hypothesis, or action. Generate its brief together with "
+                "the complete reflection/guidance: preserve the triggering condition, "
+                "specific finding or action, counterevidence and material limitation. "
+                "A heading or generic improvement slogan is insufficient. Citation "
+                "validity establishes provenance, not verified truth; uncertain causal "
+                "explanations remain hypotheses. Use only runtime-provided slots and refs."
+                " Slots reserve names only: they are not evidence until a valid "
+                "entry is actually emitted. Lesson support_refs may cite selected "
+                "feedback, valid episodes emitted now, or existing prior lessons. "
+                "Never support a new lesson by itself or another new lesson. "
+                "Other reference fields may compare actual emitted/prior entries "
+                "but must not cite the same lesson or an unused slot."
                 " In episode source_refs, copy only the top-level feedback_ref "
                 "field of a supplied feedback_units row. Ref-like strings nested "
                 "inside a feedback unit are audit content and are not valid output "
@@ -1673,6 +1758,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             max_output_tokens=5_000,
             enforce_scoped_correction=True,
             stable_correction_prefix=True,
+            patch_corrections=True,
             final_validation_fallback=merge_overflow_episodes,
         )
         return AgentStep(

@@ -235,7 +235,7 @@ def _reflection_replay(workspace: Path) -> dict[str, Any]:
     meta = RoundMetaEntry.from_dict(
         _read(workspace / "meta" / "round-0001.json")
     )
-    model_view = PlanMetaMemory(entries=(meta,)).model_view()[0]
+    model_view = PlanMetaMemory(entries=(meta,)).archive_view()[0]
     serialized = json.dumps(model_view, sort_keys=True)
     if "technical_case_exclusion:" in serialized:
         raise ValueError("legacy synthetic technical reflection reached model view")

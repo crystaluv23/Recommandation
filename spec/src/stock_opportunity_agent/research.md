@@ -75,6 +75,10 @@ Active child specs:
   dual-loop system: adaptive Information Plan execution, two-stage blind
   prediction, Plan Archive and quality-diverse parent selection, FIFO
   experimental meta-info, and bounded Signal mining/update cycles.
+- [`research/evolution_state_patch.md`](research/evolution_state_patch.md):
+  snapshot-bound state deltas and typed local repair permissions.
+- [`research/evolution_reflection_memory.md`](research/evolution_reflection_memory.md):
+  indexed original reflections, same-generation briefs, and bounded source reads.
 - [`research/evolution_benefit.md`](research/evolution_benefit.md): offline,
   immutable four-arm confirmation of Signal capability, downstream lifecycle,
   and paired Plan/Registry system benefit.

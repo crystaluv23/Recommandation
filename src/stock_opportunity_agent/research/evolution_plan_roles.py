@@ -5,11 +5,21 @@ from __future__ import annotations
 import contextlib
 import json
 import re
+from copy import deepcopy
 from dataclasses import replace
 from datetime import date, datetime, timezone
 from typing import Any, Iterable, Mapping
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import _add_months
+from stock_opportunity_agent.research.evolution_reflection_memory import (
+    ReflectionMemoryIndex,
+    ReflectionValidationError,
+)
+from stock_opportunity_agent.research.evolution_state_patch import (
+    PATCH_INSTRUCTION,
+    apply_state_patch,
+    state_patch_contract,
+)
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import (
     StructuredValidationError,
@@ -21,10 +31,11 @@ from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     CandidateExecutionRejected,
     CandidateProposalRejected,
+    CaseReflectionEvidence,
     GroundTruth,
     InformationPlan,
     PlanMetrics,
-    PlanMetaMemory,
+    PlanMetaReflection,
     PlanRecord,
     PlanReflection,
     PredictionSelfReflection,
@@ -32,6 +43,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     ResearchDecision,
     ResearchEvidenceRef,
     RoundMetaEntry,
+    RuntimeBudgetExceeded,
     SignalSelectionDecision,
     candidate_judgment_feedback,
     is_technical_exclusion_trajectory,
@@ -66,20 +78,15 @@ from stock_opportunity_agent.research.evolution_transport import (
 from stock_opportunity_agent.research.evolution_output_validation import (
     _BLIND_PREDICTION_OUTPUT,
     _INFORMATION_PLAN_OUTPUT,
-    _PLAN_REFLECTION_OUTPUT,
-    _PREDICTION_REFLECTION_OUTPUT,
-    _REFLECT_RESEARCH_STATE_OUTPUT,
     _RESEARCH_STATE_CORRECTION_GUIDANCE,
     _RESEARCH_STATE_OUTPUT,
-    _ROUND_META_OUTPUT,
     _UNTRUSTED_DATA_INSTRUCTION,
     _blind_prediction_with_baseline,
     _compact_posthoc_context,
+    _market_data_absence_paths,
     _complete_parsed_role,
     _routing_context_only_fallback,
     _parse_role_output,
-    _prediction_reflection_from_role,
-    _reject_fixed_semantics_redefinition,
     _research_state_evidence_grounding_fallback,
     _scoped_correction_drift_paths,
     _validate_plan_for_proposer_context,
@@ -221,6 +228,7 @@ class LLMResearchController:
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
             enforce_scoped_correction=True,
             exact_compaction_scope=True,
+            patch_corrections=True,
             final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
         return AgentStep(state, usage)
@@ -259,12 +267,13 @@ class LLMResearchController:
             self.caller,
             stage="research_controller_reflect",
             system_prompt=(
-                "Apply H_reflect once to the complete Signal batch. Return one "
-                "ResearchState JSON object with continue/finalize decision. Retain "
-                "the provenance fields of prior Basic Info evidence refs byte-for-byte; "
-                "the claim may be restated. For retained Basic refs, copy exactly "
-                "kind, claim, projection_id, and exact_text from the indexed "
-                "research_state.supporting_evidence item, changing only claim if needed. "
+                "Apply H_reflect to the complete Signal batch in logical steps: "
+                "identify evidence to adopt, update only the affected judgments, "
+                "then update answered needs and the continue/finalize decision. "
+                "Return only snapshot-bound operations under output_patch_contract. "
+                "Runtime assembles and validates the complete ResearchState and "
+                "preserves all untouched fields. Retained Basic Info provenance "
+                "must remain unchanged; only its claim may be restated when needed. "
                 "A new Signal evidence ref must use "
                 "kind=signal, a signal_ref from the current batch, "
                 "evidence_group=supporting or counter, and the zero-based evidence_index. "
@@ -280,7 +289,7 @@ class LLMResearchController:
                 "cite that result, copy the field byte-for-byte into the evidence "
                 "claim and every quantitative belief; do not round it, convert it "
                 "to a percentage, or add approximate raw values. "
-                "Copy a retained Signal ref's prior claim byte-for-byte because its "
+                "Leave a retained Signal ref's prior claim untouched because its "
                 "backing batch is no longer visible. If you adopt new current-batch "
                 "Signal evidence and continue, narrow or replace answered information "
                 "needs and update resolved/open questions. Keep a need byte-for-byte "
@@ -316,7 +325,7 @@ class LLMResearchController:
                 "disclosed about a future schedule, but must not request later "
                 "actuals, results, announcements, or updates."
                 + _UNTRUSTED_DATA_INSTRUCTION
-                + _REFLECT_RESEARCH_STATE_OUTPUT
+                + PATCH_INSTRUCTION
             ),
             payload={
                 "reflection_skill": plan.reflection_skill,
@@ -365,6 +374,8 @@ class LLMResearchController:
             correction_guidance=_RESEARCH_STATE_CORRECTION_GUIDANCE,
             enforce_scoped_correction=True,
             exact_compaction_scope=True,
+            output_patch_base=state.to_dict(),
+            patch_corrections=True,
             final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
         return AgentStep(reflected, usage)
@@ -657,6 +668,7 @@ class LLMSignalRetrievalAgent:
                             code="routing_portfolio_shape_invalid",
                             message="selection output requires selections array",
                             paths=("selections",),
+                            allowed_repairs=("replace", "add"),
                         )
                     ]
                 )
@@ -688,6 +700,7 @@ class LLMSignalRetrievalAgent:
                             ),
                             paths=("selections",),
                             source_refs=explicit_empty_matches,
+                            allowed_repairs=("add",),
                         )
                     ]
                 )
@@ -724,6 +737,7 @@ class LLMSignalRetrievalAgent:
                     self.repair_context: dict[str, Any] = {}
                     self.issues: list[ValidationIssue] = []
                     self.code = "routing_selection_invalid"
+                    self.repairs = ("replace", "remove", "quarantine")
 
                 def bind(
                     self,
@@ -732,11 +746,13 @@ class LLMSignalRetrievalAgent:
                     item_id: str | None = None,
                     path_policy: str = "all",
                     repair_context: Mapping[str, Any] | None = None,
+                    repairs: tuple[str, ...] = ("replace", "remove", "quarantine"),
                 ) -> None:
                     self.paths = (paths,) if isinstance(paths, str) else paths
                     self.item_id = item_id
                     self.path_policy = path_policy
                     self.repair_context = dict(repair_context or {})
+                    self.repairs = repairs
 
                 def append(self, message: str) -> None:
                     super().append(message)
@@ -750,7 +766,7 @@ class LLMSignalRetrievalAgent:
                                 "signal_ref" if self.item_id is not None else None
                             ),
                             path_policy=self.path_policy,
-                            allowed_repairs=("replace", "remove", "quarantine"),
+                            allowed_repairs=self.repairs,
                             source_refs=(
                                 (self.item_id,) if self.item_id is not None else ()
                             ),
@@ -773,7 +789,8 @@ class LLMSignalRetrievalAgent:
                         tuple(
                             f"{path}.{field_name}"
                             for field_name in sorted((*missing, *unexpected))
-                        )
+                        ),
+                        repairs=("add", "remove"),
                     )
                     validation_errors.append(
                         f"{path} requires exactly {sorted(required)}, "
@@ -1531,6 +1548,7 @@ class LLMSignalRetrievalAgent:
             max_request_tokens=self.request_token_budget,
             stable_correction_prefix=True,
             enforce_scoped_correction=True,
+            patch_corrections=True,
             final_validation_fallback=_routing_context_only_fallback,
         )
         return AgentStep(selected, usage)
@@ -1623,6 +1641,7 @@ class LLMBlindPredictor:
             max_output_tokens=2_000,
             max_request_tokens=self.request_token_budget,
             enforce_scoped_correction=True,
+            patch_corrections=True,
         )
         return AgentStep(prediction, usage)
 
@@ -1658,6 +1677,51 @@ class LLMBlindPredictor:
                 ground_truth,
             )
             compact_context = _compact_posthoc_context(original_context)
+            source_identity = "case:" + _canonical_hash({
+                "context": compact_context,
+                "prediction": original_prediction.to_dict(),
+                "judgment_feedback": judgment_feedback,
+                "magnitude_feedback": magnitude_block,
+            })
+            source_snapshot = {
+                "source_identity": source_identity,
+                "candidate_judgment_feedback": judgment_feedback,
+                "magnitude_feedback": magnitude_block,
+                **({"jev_decision_feedback": jev_feedback} if jev_feedback else {}),
+            }
+            source_index = ReflectionMemoryIndex.from_case_rows(
+                [source_snapshot], owner_ref=source_identity,
+            )
+
+            def parse_reflection(value: Mapping[str, Any]) -> PredictionSelfReflection:
+                items, _selected, projection = _structured_reflection_items(
+                    value, index=source_index, level="case", owner_ref=source_identity,
+                )
+                absence_issues = []
+                for position, item in enumerate(items):
+                    paths = tuple(
+                        f"reflection_items[{position}].{field}"
+                        for field in ("brief", "detail")
+                        if _market_data_absence_paths(
+                            ((field, (getattr(item, field),)),),
+                            compact_context.get("prediction_baseline"),
+                        )
+                    )
+                    if paths:
+                        absence_issues.append(ValidationIssue(
+                            code="reflection_market_data_available", paths=paths,
+                            message="Market data was supplied: compact_context.prediction_baseline.status='available'; narrow the gap to missing forward projections or other absent evidence",
+                        ))
+                if absence_issues:
+                    raise StructuredValidationError(tuple(absence_issues))
+                return PredictionSelfReflection(
+                    correct=framework_correct,
+                    **projection,
+                    reflection_items=items,
+                    source_identity=source_identity,
+                    source_snapshot=source_snapshot,
+                )
+
             reflection, usage = _complete_parsed_role(
                 self.caller,
                 stage="blind_predictor_posthoc_reflect",
@@ -1665,7 +1729,7 @@ class LLMBlindPredictor:
                     "The saved prediction is immutable. Given its original anonymous "
                     "compact context and newly revealed truth, reflect on the prediction. "
                     "framework_prediction_correct is deterministic and immutable; "
-                    "copy it into prediction_outcome.correct and do not rejudge it. "
+                    "runtime preserves it, so do not return or rejudge it. "
                     "Use candidate_judgment_feedback to distinguish binary errors, "
                     "conservative but binary-correct calls, and evidence-coverage "
                     "gaps; that feedback covers Stage 1 only, while framework "
@@ -1683,21 +1747,18 @@ class LLMBlindPredictor:
                     "calibration, overconfidence, conservatism, or class confusion; "
                     "do not call them calibrated live-market probabilities. Its "
                     "calibration assessment is deterministic: a correct_low_support "
-                    "case still requires an explanation of why the realized class "
-                    "received little probability; a high-confidence error requires "
-                    "an attribution. Do not reward confidence merely for increasing. "
-                    "When framework_prediction_correct is true, decision_drivers must "
-                    "name at least one specific supplied evidence or counter-evidence "
-                    "reason that made the saved judgment work. When it is false, "
-                    "at least one of why_prediction_failed, misleading_signals, "
-                    "ignored_evidence, missing_information, or plan_issues must name "
-                    "a specific failure attribution; an all-empty incorrect "
-                    "reflection is invalid. When compact_context.prediction_baseline "
+                    "case warrants inspecting why the realized class received little "
+                    "probability; a high-confidence error warrants a testable "
+                    "explanation, not an invented cause. Do not reward confidence "
+                    "merely for increasing. Record known error facts separately "
+                    "from causal hypotheses. A correct prediction does not prove "
+                    "that its reasons caused the outcome or were sufficient. "
+                    "When compact_context.prediction_baseline "
                     "has status=available, do not claim market data is absent or was "
                     "not provided; distinguish missing forward projections or other "
                     "specific gaps from the supplied price baseline."
                     + _UNTRUSTED_DATA_INSTRUCTION
-                    + _PREDICTION_REFLECTION_OUTPUT
+                    + _structured_reflection_contract("case")
                 ),
                 payload={
                     "compact_context": compact_context,
@@ -1706,34 +1767,22 @@ class LLMBlindPredictor:
                     "framework_prediction_correct": framework_correct,
                     "candidate_judgment_feedback": judgment_feedback,
                     "magnitude_feedback": magnitude_block,
+                    "source_catalog": source_index.source_catalog(),
                     **(
                         {"jev_decision_feedback": jev_feedback}
                         if jev_feedback is not None
                         else {}
                     ),
                 },
-                parser=lambda value: _prediction_reflection_from_role(
-                    value,
-                    framework_correct=framework_correct,
-                    compact_context=compact_context,
-                ),
+                parser=parse_reflection,
                 allow_outcomes=True,
                 # Validated enums may equal short ticker aliases such as LOW.
                 anonymous_aliases=(),
                 sanitize_output_aliases=self.anonymous_aliases,
-                max_output_tokens=2_000,
+                max_output_tokens=4_000,
                 max_request_tokens=self.request_token_budget,
+                patch_corrections=True,
             )
-            if reflection.correct != framework_correct:
-                reflection = PredictionSelfReflection(
-                    correct=framework_correct,
-                    decision_drivers=reflection.decision_drivers,
-                    why_prediction_failed=reflection.why_prediction_failed,
-                    misleading_signals=reflection.misleading_signals,
-                    ignored_evidence=reflection.ignored_evidence,
-                    missing_information=reflection.missing_information,
-                    plan_issues=reflection.plan_issues,
-                )
             return AgentStep(reflection, usage)
         except CandidateExecutionRejected as exc:
             correct = original_prediction.is_surge == ground_truth.is_surge and (
@@ -1743,9 +1792,9 @@ class LLMBlindPredictor:
             return AgentStep(
                 PredictionSelfReflection(
                     correct=correct,
-                    plan_issues=(
-                        "posthoc_reflection_validation_failed: " + str(exc),
-                    ),
+                    no_findings_reason="posthoc_reflection_validation_failed: " + str(exc),
+                    source_identity=source_identity,
+                    source_snapshot=source_snapshot,
                 ),
                 exc.usage,
             )
@@ -1765,6 +1814,219 @@ _FORBIDDEN_ADDITIVE_META_KEYS = frozenset(
         "trajectories",
     }
 )
+
+_REFLECTION_CATEGORIES = {
+    "case": (
+        "decision_drivers", "why_prediction_failed", "misleading_signals",
+        "ignored_evidence", "missing_information", "plan_issues",
+    ),
+    "plan": (
+        "successful_patterns", "failed_patterns", "repeated_failure_modes",
+        "misleading_signals", "missing_information_needs", "next_explorations",
+    ),
+    "round": (
+        "successful_patterns", "failed_patterns", "false_positive_patterns",
+        "false_negative_patterns", "useful_signals", "suspicious_signals",
+        "missing_capabilities", "search_implications",
+    ),
+}
+
+
+def _structured_reflection_contract(level: str) -> str:
+    """Describe one authored item contract shared by all reflection levels."""
+
+    access = (
+        " Inputs are bounded working views, not an exhaustive replay. When "
+        "necessary return {\"read_refs\":[\"supplied source_ref or item_ref\"]} "
+        "to inspect complete originals, or {\"browse_memory\":{\"cursor\":0,"
+        "\"level\":\"case\"}} to discover further briefs (case/plan/round). "
+        "Obey memory_access limits and do not infer absence from omitted detail. "
+    ) if level != "case" else ""
+    return access + (
+        " Return only an object with reflection_items (array) and "
+        "selected_reflection_refs (array of supplied lower-level item refs), and "
+        "no_findings_reason (null or a specific reason when both arrays are empty). "
+        "Each authored item has exactly: category, kind (fact/hypothesis/action), "
+        "brief, detail, scope ({case_refs:[], plan_refs:[], conditions:string}), "
+        "limitations (string array), source_refs (nonempty supplied-reference "
+        "array), counter_refs (supplied-reference array), and outcome_claims "
+        "(array of {source_ref, axis:binary|magnitude, correct:boolean}). "
+        f"Allowed categories are {list(_REFLECTION_CATEGORIES[level])}. "
+        "Runtime supplies IDs, level and evidence status; never author them. "
+        "One item makes one main observation, explanation or action. Generate "
+        "complete detail and a self-contained actionable brief together: retain "
+        "the triggering condition, concrete finding/action and material caveat; "
+        "a title or 'improve research' is insufficient. The brief must not add "
+        "claims or turn an uncertain explanation into an established rule. "
+        "Cite exact supplied source handles. All scope case_refs/plan_refs must "
+        "be supported by those sources. State contrary cases in counter_refs "
+        "and limitations. Success/failure assertions require outcome_claims "
+        "matching the canonical source facts; technical exclusions cannot be "
+        "research successes or failures. A realized return does not establish "
+        "why it occurred: label causal explanations as hypotheses and propose "
+        "a test. Source references establish provenance, not correctness. "
+        "Higher levels act as a sieve: select useful existing items by ref "
+        "without rewriting them; author only new sourced comparisons or actions. "
+        "Repeated versions of one case do not constitute independent evidence. "
+        "Empty arrays are valid when there is no supported additional lesson; "
+        "do not invent findings to fill categories."
+    )
+
+
+def _structured_reflection_items(
+    value: Mapping[str, Any], *, index: ReflectionMemoryIndex,
+    level: str, owner_ref: str,
+) -> tuple[tuple[Any, ...], tuple[str, ...], dict[str, Any]]:
+    """Validate new authored items and derive the legacy category projection."""
+
+    required = {"reflection_items", "selected_reflection_refs"}
+    envelope_issues = [
+        ValidationIssue(
+            code="reflection_envelope", paths=(field,),
+            message=f"Add required reflection field {field}", allowed_repairs=("add",),
+        ) for field in sorted(required - set(value))
+    ] + [
+        ValidationIssue(
+            code="reflection_envelope", paths=(field,),
+            message=f"Remove unsupported reflection field {field}", allowed_repairs=("remove",),
+        ) for field in sorted(set(value) - required - {"no_findings_reason"})
+    ]
+    if envelope_issues:
+        raise StructuredValidationError(envelope_issues)
+    # Retrospective descriptions may discuss probabilities and horizons. They
+    # cannot mutate fixed semantics; the eventual Plan proposal is validated at
+    # that owning boundary. Applying the Plan instruction word filter here
+    # would reject the calibration analysis that this role is asked to provide.
+    try:
+        items = index.create_items(
+            value["reflection_items"], level=level, owner_ref=owner_ref,
+        )
+    except ReflectionValidationError as exc:
+        raise StructuredValidationError((ValidationIssue(
+            code="reflection_item", paths=(exc.path,), message=str(exc),
+            dependent_paths=exc.dependency_paths,
+            allowed_repairs=("replace", "add", "remove"),
+            repair_context={"invalid_container_paths": list(exc.invalid_container_paths)},
+        ),)) from exc
+    selected = value["selected_reflection_refs"]
+    if not isinstance(selected, list) or any(
+        not isinstance(ref, str) for ref in selected
+    ):
+        raise StructuredValidationError((ValidationIssue(
+                code="reflection_selection", paths=("selected_reflection_refs",),
+                message="Select only supplied lower-level item references",
+            ),))
+    if level == "case" and selected:
+        raise StructuredValidationError((ValidationIssue(
+            code="reflection_selection", paths=("selected_reflection_refs",),
+            message="case reflection has no lower-level item to select; return []",
+        ),))
+    try:
+        selected_items = index.select_items(selected)
+        levels = {"case": 0, "plan": 1, "round": 2}
+        if any(levels[item.level] >= levels[level] for item in selected_items):
+            raise ValidationError("Select only strictly lower-level reflection items")
+    except ValidationError as exc:
+        raise StructuredValidationError((ValidationIssue(
+            code="reflection_selection", paths=("selected_reflection_refs",),
+            message=str(exc), allowed_repairs=("replace", "remove"),
+        ),)) from exc
+    categories = _REFLECTION_CATEGORIES[level]
+    for position, item in enumerate(items):
+        if item.category not in categories:
+            raise StructuredValidationError((ValidationIssue(
+                    code="reflection_category",
+                    paths=(f"reflection_items[{position}].category",),
+                    message=f"Allowed categories: {list(categories)}",
+                ),))
+    projection = {
+        category: tuple(item.detail for item in items if item.category == category)
+        for category in categories
+    }
+    reason = value.get("no_findings_reason")
+    if reason is not None and (not isinstance(reason, str) or not reason.strip()):
+        raise StructuredValidationError((ValidationIssue(
+            code="reflection_no_findings", paths=("no_findings_reason",),
+            message="no_findings_reason must be null or a nonempty specific reason",
+            allowed_repairs=("replace", "remove"),
+        ),))
+    if not items and not selected and (not isinstance(reason, str) or not reason.strip()):
+        raise StructuredValidationError((ValidationIssue(
+            code="reflection_no_findings",
+            paths=("no_findings_reason", "reflection_items", *(
+                ("selected_reflection_refs",) if level != "case" else ()
+            )), path_policy="any",
+            message="Empty reflection requires a concrete no_findings_reason, or one supported reflection item or allowed lower-level selection",
+            allowed_repairs=("add", "replace"),
+        ),))
+    projection["no_findings_reason"] = reason
+    return items, tuple(selected), projection
+
+
+class _ReflectionMemoryCaller:
+    """Count and audit bounded source reads inside one retrospective role."""
+
+    def __init__(self, caller: JSONRoleCaller, index: ReflectionMemoryIndex, *, role: str, aliases: tuple[str, ...]) -> None:
+        self.caller, self.index, self.role, self.aliases = caller, index, role, aliases
+        self.disclosures: list[dict[str, Any]] = []
+        self.requests: set[str] = set()
+        self.read_refs: set[str] = set()
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self.caller, name)
+
+    def complete_json(self, **kwargs: Any) -> tuple[Mapping[str, Any], AgentUsage]:
+        usage = AgentUsage()
+        while True:
+            request = dict(kwargs)
+            request["payload"] = deepcopy(dict(kwargs["payload"]))
+            request["payload"]["memory_disclosures"] = deepcopy(self.disclosures)
+            request["payload"]["memory_access"] = {
+                "remaining_requests": 3 - len(self.requests),
+                "total_disclosure_bytes": 48_000,
+            }
+            if request.get("max_request_tokens") is not None:
+                request["max_request_tokens"] = max(0, request["max_request_tokens"] - usage.tokens)
+            try:
+                value, used = _complete_json_with_invalid_value(self.caller, **request)
+            except (CandidateExecutionRejected, RuntimeBudgetExceeded) as exc:
+                exc.usage = usage + exc.usage
+                raise
+            usage = usage + used
+            if set(value) not in ({"read_refs"}, {"browse_memory"}):
+                return value, usage
+            key = _canonical_hash(value)
+            try:
+                if len(self.requests) >= 3 or key in self.requests:
+                    raise ValidationError("reflection memory access is repeated or exceeds three requests")
+                remaining = 48_000 - len(json.dumps(self.disclosures, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+                if "read_refs" in value:
+                    refs = value["read_refs"]
+                    if not isinstance(refs, list) or any(not isinstance(ref, str) for ref in refs):
+                        raise ValidationError("read_refs must be an array of supplied references")
+                    if self.read_refs.intersection(refs):
+                        raise ValidationError("reflection source has already been read")
+                    disclosure = self.index.read_refs(refs, role=self.role, max_bytes=remaining)
+                    self.read_refs.update(refs)
+                else:
+                    query = value["browse_memory"]
+                    if not isinstance(query, Mapping) or not {"cursor"} <= set(query) or set(query) - {"cursor", "level"}:
+                        raise ValidationError("browse_memory requires cursor and optional level")
+                    disclosure = self.index.directory(
+                        cursor=query["cursor"], level=query.get("level"),
+                        max_bytes=min(8_000, remaining),
+                    )
+                _validate_additive_meta_payload(disclosure)
+                _scan_payload(disclosure, allow_outcomes=True, anonymous_aliases=self.aliases)
+                updated = [*self.disclosures, disclosure]
+                if len(json.dumps(updated, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) > 48_000:
+                    raise ValidationError("reflection disclosures exceed aggregate byte budget")
+                self.disclosures = updated
+                self.requests.add(key)
+            except ValidationError as exc:
+                raise CandidateExecutionRejected(
+                    self.role, f"reflection memory access rejected: {exc}", usage=usage,
+                ) from exc
 
 
 def _validate_additive_meta_payload(value: Any, *, path: str = "meta_info") -> None:
@@ -1823,9 +2085,11 @@ class LLMInformationPlanProposer:
         meta_info: tuple[RoundMetaEntry, ...],
         prior: str,
     ) -> InformationPlan:
-        meta_payload = list(
-            PlanMetaMemory(maxlen=max(1, len(meta_info)), entries=meta_info).model_view()
-        ) if meta_info else []
+        source_entries = [entry.to_model_dict() for entry in meta_info]
+        if self.anonymous_aliases:
+            source_entries = _mask_identity_values(source_entries, self.anonymous_aliases)
+        source_index = ReflectionMemoryIndex.from_entries(source_entries)
+        meta_payload = source_index.brief_view()
         if self.anonymous_aliases:
             meta_payload = _mask_identity_values(meta_payload, self.anonymous_aliases)
             _scan_payload(
@@ -1839,6 +2103,12 @@ class LLMInformationPlanProposer:
             "parents": [item.to_dict() for item in parents],
             "meta_info": meta_payload,
             "available_source_types": list(self.available_source_types),
+            "memory_disclosures": [],
+            "memory_access": {
+                "max_requests": 3,
+                "total_disclosure_bytes": 48_000,
+                "directory_cursor": 0,
+            },
         }
         change_focuses = (
             "Change at least one Basic Info request or H_init instruction while "
@@ -1864,12 +2134,25 @@ class LLMInformationPlanProposer:
             "Apply the fixed H_P prior. Return only evolvable Plan content: "
             "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
             "retrieval plan, not a fixed company profile or computed Signal. "
-            "Meta-info is a committed retrospective FIFO. Within each entry, "
-            "original_case_reflections are preserved evidence, "
-            "vertical_plan_reflection adds cross-case and parent-child insight, "
-            "and the top-level fields add horizontal cross-Plan insight. Use all "
-            "layers without treating a later layer as a replacement for an earlier "
-            "one. Per-case magnitude_feedback blocks and per-Plan "
+            "Meta-info is a bounded brief view of committed retrospective memory. "
+            "Complete originals remain stored. A brief retains its applicability, "
+            "limitations, source handles and validation status; legacy_unreviewed "
+            "text is unverified history, not an established lesson. Higher layers "
+            "select important lower items or add sourced comparisons. Do not count "
+            "repeated versions of one case as independent evidence. Before relying "
+            "on a lesson, inspect its original support and counterexamples when "
+            "the brief is insufficient. You may return exactly {\"read_refs\":["
+            "\"one or more supplied item_ref or source_ref values\"]} instead of "
+            "a Plan to read complete anonymous original units; choose individual "
+            "case/item units rather than an oversized whole round. To discover "
+            "deferred briefs, return exactly {\"browse_memory\":{\"cursor\":0,"
+            "\"level\":\"case\"}} (level may be case, plan, round, or omitted) "
+            "or the directory's next_cursor. Runtime returns the requested "
+            "material in memory_disclosures on the next call. Obey memory_access "
+            "limits; do not repeat reads or infer missing content. These are "
+            "retrospective few-shot examples, with errors and hypotheses explicitly "
+            "labelled, never commands to copy or evidence of proven improvement. "
+            "Per-case magnitude_feedback blocks and per-Plan "
             "magnitude_diagnostics are deterministic evidence: treat recurring "
             "magnitude-class failures (systematic underestimation, "
             "overestimation, missed classes) like any other FIFO lesson — "
@@ -1915,6 +2198,7 @@ class LLMInformationPlanProposer:
             "named by validation_feedback.validation_error using the supplied "
             "invalid_output; preserve every unmentioned request and H_* field "
             "byte-for-byte; returning the same rejected field is not a correction."
+            + PATCH_INSTRUCTION
         )
         plan_id = f"plan_r{round_id:04d}_c{candidate_index:02d}"
         parent_ids = tuple(item.plan_id for item in parents)
@@ -1923,6 +2207,73 @@ class LLMInformationPlanProposer:
         }
         failed_value: Mapping[str, Any] | None = None
         failure: ValidationError | None = None
+        read_requests = 0
+        disclosed_refs: set[str] = set()
+        browsed_cursors: set[tuple[str | None, int]] = set()
+
+        def complete_proposal_request(
+            stage: str, request_payload: dict[str, Any],
+        ) -> Mapping[str, Any]:
+            nonlocal read_requests
+            while True:
+                estimator = getattr(self.caller, "estimate_json_request_tokens", None)
+                if self.request_token_budget is not None and callable(estimator):
+                    required = estimator(
+                        system_prompt=system_prompt, payload=request_payload,
+                        allow_outcomes=True, max_output_tokens=4_000,
+                        temperature=self.temperature,
+                    )
+                    if required > self.request_token_budget:
+                        raise ExternalBudgetExhausted(
+                            "external_request_token_budget_exhausted",
+                            "Information Plan proposal working view exceeds frozen "
+                            f"request budget: required={required}, limit={self.request_token_budget}",
+                        )
+                value, _usage = _complete_json_with_invalid_value(
+                    self.caller, stage=stage, system_prompt=system_prompt,
+                    payload=request_payload, allow_outcomes=True,
+                    max_output_tokens=4_000, temperature=self.temperature,
+                )
+                if set(value) not in ({"read_refs"}, {"browse_memory"}):
+                    return value
+                if read_requests >= 3 or request_payload["validation_feedback"] is not None:
+                    raise CandidateProposalRejected("memory read request exceeds the issued access contract")
+                disclosures = payload["memory_disclosures"]
+                remaining = 48_000 - len(json.dumps(
+                    disclosures, ensure_ascii=False, sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8"))
+                try:
+                    if "read_refs" in value:
+                        refs = value["read_refs"]
+                        if not isinstance(refs, list) or any(not isinstance(ref, str) for ref in refs):
+                            raise ValidationError("read_refs must be an array of supplied references")
+                        if disclosed_refs.intersection(refs):
+                            raise ValidationError("memory reference was already disclosed")
+                        disclosure = source_index.read_refs(
+                            refs, role="proposer", max_bytes=remaining,
+                        )
+                        disclosed_refs.update(refs)
+                    else:
+                        request = value["browse_memory"]
+                        if not isinstance(request, Mapping) or not {"cursor"} <= set(request) or set(request) - {"cursor", "level"}:
+                            raise ValidationError("browse_memory requires a directory cursor and optional level")
+                        cursor = request["cursor"]
+                        level = request.get("level")
+                        if (level is not None and not isinstance(level, str)) or level not in {None, "case", "plan", "round"} or type(cursor) is not int or (level, cursor) in browsed_cursors:
+                            raise ValidationError("directory cursor is invalid or already disclosed")
+                        disclosure = source_index.directory(cursor=cursor, level=level, max_bytes=min(8_000, remaining))
+                        browsed_cursors.add((level, cursor))
+                    _validate_additive_meta_payload(disclosure)
+                    _scan_payload(disclosure, allow_outcomes=True, anonymous_aliases=self.anonymous_aliases)
+                    trial = [*disclosures, disclosure]
+                    if len(json.dumps(trial, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) > 48_000:
+                        raise ValidationError("complete memory disclosures exceed aggregate byte budget")
+                except ValidationError as exc:
+                    raise CandidateProposalRejected(f"memory disclosure rejected: {exc}") from exc
+                payload["memory_disclosures"] = trial
+                read_requests += 1
+                payload["memory_access"]["remaining_requests"] = 3 - read_requests
         # The proposal attempts share one correction chain so a byte-identical
         # corrected request fails closed instead of replaying the cached
         # rejected response through the exact-response cache.
@@ -1930,113 +2281,117 @@ class LLMInformationPlanProposer:
             chain = getattr(self.caller, "correction_chain", None)
             if callable(chain):
                 chain_stack.enter_context(chain(stage="information_plan_propose"))
-        for attempt in range(2):
-            stage = (
-                "information_plan_propose"
-                if attempt == 0
-                else "information_plan_propose_correction"
-            )
-            request_payload = {
-                "proposal_context": payload,
-                "validation_feedback": (
-                    {
-                        "invalid_output": dict(failed_value or {}),
-                        "validation_error": str(failure),
-                        **_validation_obligations(failure, failed_value),
-                    }
-                    if attempt
-                    else None
-                ),
-            }
-            estimator = getattr(self.caller, "estimate_json_request_tokens", None)
-            if self.request_token_budget is not None and callable(estimator):
-                required = estimator(
-                    system_prompt=system_prompt,
-                    payload=request_payload,
-                    allow_outcomes=True,
-                    max_output_tokens=4_000,
-                    temperature=self.temperature,
+            for attempt in range(2):
+                stage = (
+                    "information_plan_propose"
+                    if attempt == 0
+                    else "information_plan_propose_correction"
                 )
-                if required > self.request_token_budget:
-                    raise ExternalBudgetExhausted(
-                        "external_request_token_budget_exhausted",
-                        "complete Information Plan proposal context exceeds the "
-                        "frozen request-token budget: "
-                        f"required={required}, limit={self.request_token_budget}",
+                request_payload = {
+                    "proposal_context": payload,
+                    "validation_feedback": (
+                        {
+                            "invalid_output": dict(failed_value or {}),
+                            "validation_error": str(failure),
+                            **_validation_obligations(failure, failed_value),
+                        }
+                        if attempt
+                        else None
+                    ),
+                }
+                patch_contract = None
+                if attempt and failed_value and isinstance(failure, StructuredValidationError):
+                    patch_contract = state_patch_contract(
+                        failed_value, mode="correction",
+                        obligations=_validation_obligations(failure, failed_value)["obligations"],
                     )
-            value, _usage = _complete_json_with_invalid_value(
-                self.caller,
-                stage=stage,
-                system_prompt=system_prompt,
-                payload=request_payload,
-                allow_outcomes=True,
-                max_output_tokens=4_000,
-                temperature=self.temperature,
-            )
-            if self.anonymous_aliases:
-                value = _mask_identity_values(value, self.anonymous_aliases)
-                _scan_payload(
-                    value,
-                    allow_outcomes=True,
-                    anonymous_aliases=self.anonymous_aliases,
-                )
-            try:
-                if attempt and failed_value and failure is not None:
-                    obligations = _validation_obligations(failure, failed_value)
-                    must_change_paths = [
-                        path
-                        for obligation in obligations["obligations"]
-                        for path in obligation["must_change_paths"]
-                        if path.startswith(
-                            ("B.", "B[", "H_init", "H_reflect", "H_analyse")
-                        )
-                    ]
-                    if must_change_paths:
-                        drift_paths = _scoped_correction_drift_paths(
-                            failed_value,
-                            value,
-                            must_change_paths,
-                        )
-                        if drift_paths:
-                            raise ValidationError(
-                                "information_plan_propose correction changed "
-                                "unrelated valid content outside "
-                                f"must_change_paths={must_change_paths}, "
-                                f"unrelated_changed_paths={drift_paths}. Preserve "
-                                "every unrelated B request and H_* field "
-                                "byte-for-byte"
+                    patch_contract["base_location"] = "validation_feedback.invalid_output"
+                    request_payload["output_patch_contract"] = patch_contract
+                value = complete_proposal_request(stage, request_payload)
+                if self.anonymous_aliases:
+                    value = _mask_identity_values(value, self.anonymous_aliases)
+                    _scan_payload(
+                        value,
+                        allow_outcomes=True,
+                        anonymous_aliases=self.anonymous_aliases,
+                    )
+                try:
+                    if set(value) == {"invalid_structured_output", "validation_error"}:
+                        raise ValidationError(str(value["validation_error"]))
+                    if patch_contract is not None:
+                        value = apply_state_patch(failed_value, value, contract=patch_contract)
+                    if attempt and failed_value and failure is not None:
+                        obligations = _validation_obligations(failure, failed_value)
+                        must_change_paths = [
+                            path
+                            for obligation in obligations["obligations"]
+                            for path in obligation["must_change_paths"]
+                            if path.startswith(
+                                ("B.", "B[", "H_init", "H_reflect", "H_analyse")
                             )
-                _validate_raw_information_plan_request_fields(value)
-                normalized = _normalize_information_plan_output(
-                    value,
-                    plan_id=plan_id,
-                    parent_ids=parent_ids,
-                )
-                plan = _parse_role_output(
-                    stage, normalized, InformationPlan.from_dict
-                )
-                _validate_plan_for_proposer_context(
-                    plan,
-                    available_source_types=self.available_source_types,
-                )
-                if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
-                    raise ValidationError(
-                        "candidate Plan exactly duplicates a selected parent; apply "
-                        "proposal_constraints.required_change_focus and change at "
-                        "least one of B, H_init, H_reflect, or H_analyse"
+                        ]
+                        if must_change_paths:
+                            drift_paths = _scoped_correction_drift_paths(
+                                failed_value,
+                                value,
+                                must_change_paths,
+                            )
+                            if drift_paths:
+                                raise ValidationError(
+                                    "information_plan_propose correction changed "
+                                    "unrelated valid content outside "
+                                    f"must_change_paths={must_change_paths}, "
+                                    f"unrelated_changed_paths={drift_paths}. Preserve "
+                                    "every unrelated B request and H_* field "
+                                    "byte-for-byte"
+                                )
+                    _validate_raw_information_plan_request_fields(value)
+                    normalized = _normalize_information_plan_output(
+                        value,
+                        plan_id=plan_id,
+                        parent_ids=parent_ids,
                     )
-                _validate_proposal_change_focus(
-                    plan,
-                    parents,
-                    focus_index=(proposal_attempt - 1) % len(change_focuses),
-                )
-                return plan
-            except ValidationError as exc:
-                failed_value = value
-                failure = exc
+                    plan = _parse_role_output(
+                        stage, normalized, InformationPlan.from_dict
+                    )
+                    _validate_plan_for_proposer_context(
+                        plan,
+                        available_source_types=self.available_source_types,
+                    )
+                    if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
+                        raise _proposal_focus_issue(proposal_attempt, "candidate Plan exactly duplicates a selected parent")
+                    try:
+                        _validate_proposal_change_focus(
+                            plan, parents,
+                            focus_index=(proposal_attempt - 1) % len(change_focuses),
+                        )
+                    except ValidationError as exc:
+                        raise _proposal_focus_issue(proposal_attempt, str(exc)) from exc
+                    return plan
+                except ValidationError as exc:
+                    if not isinstance(exc, StructuredValidationError) and set(value) != {
+                        "invalid_structured_output", "validation_error",
+                    }:
+                        raise CandidateProposalRejected(
+                            "information_plan_propose has no typed local repair authority: "
+                            + str(exc)
+                        ) from exc
+                    failed_value = value
+                    failure = exc
         raise CandidateProposalRejected(
             f"information_plan_propose rejected after one correction: {failure}"
         )
+
+
+def _proposal_focus_issue(attempt: int, reason: str) -> StructuredValidationError:
+    """Authorize only the evolvable components required by the issued focus."""
+
+    paths = (("B.requests", "H_init"), ("H_reflect",), ("H_analyse",))[(attempt - 1) % 3]
+    return StructuredValidationError((ValidationIssue(
+        code="proposal_change_focus", paths=paths, path_policy="any",
+        allowed_repairs=("replace", "add", "remove"),
+        message=reason + "; apply proposal_constraints.required_change_focus",
+    ),))
 
 
 def _plan_critic_trajectory(
@@ -2226,14 +2581,48 @@ class LLMPlanCritic:
                     allow_outcomes=True,
                     anonymous_aliases=self.anonymous_aliases,
                 )
+            owner_ref = "reflection_plan:" + _canonical_hash(plan.canonical_dict())
+            source_rows = [
+                CaseReflectionEvidence.from_trajectory(item, case_index=position).to_model_dict()
+                for position, item in enumerate(trajectories, start=1)
+            ]
+            if self.anonymous_aliases:
+                source_rows = _mask_identity_values(source_rows, self.anonymous_aliases)
+            source_index = ReflectionMemoryIndex.from_case_rows(
+                source_rows, owner_ref=owner_ref,
+            )
+            catalog = source_index.catalog_view()
+            payload["source_catalog"] = catalog["sources"]
+            payload["source_coverage"] = catalog["counts"]
+            payload["reflection_briefs"] = source_index.brief_view()
+            payload["trajectories"] = [
+                {key: row[key] for key in (
+                    "case_index", "stop_reason", "termination_trigger",
+                    "technical_exclusion", "candidate_judgment_feedback", "magnitude_feedback",
+                ) if key in row}
+                for row in source_rows
+            ]
+
+            def parse_reflection(value: Mapping[str, Any]) -> PlanReflection:
+                items, selected, projection = _structured_reflection_items(
+                    value, index=source_index, level="plan", owner_ref=owner_ref,
+                )
+                return PlanReflection(
+                    **projection, reflection_items=items,
+                    selected_reflection_refs=selected,
+                )
+
             reflection, _usage = _complete_parsed_role(
-                self.caller,
+                _ReflectionMemoryCaller(
+                    self.caller, source_index, role="plan_critic",
+                    aliases=self.anonymous_aliases,
+                ),
                 stage="plan_critic",
                 system_prompt=(
-                    "Ground the reflection only in the supplied batch. Use the saved "
-                    "predictions, revealed truths, deterministic candidate-judgment "
-                    "feedback, magnitude feedback, post-hoc reflections, and compact "
-                    "Signal results to identify successful and failed Plan patterns. "
+                    "Ground reflection in this batch's deterministic outcome "
+                    "diagnostics and sourced briefs. Read registered original case "
+                    "reflections when post-hoc detail and its canonical outcome "
+                    "feedback are needed to support an observation. "
                     "Return only the vertical cross-case and parent-child layer: the "
                     "runtime preserves every original post-hoc case reflection "
                     "separately, so do not rewrite it or present this output as its "
@@ -2265,22 +2654,20 @@ class LLMPlanCritic:
                     "structure without claiming a causal metric effect. These "
                     "comparisons are reflection evidence only."
                     + _UNTRUSTED_DATA_INSTRUCTION
-                    + _PLAN_REFLECTION_OUTPUT
+                    + _structured_reflection_contract("plan")
                 ),
                 payload=payload,
-                parser=lambda value: PlanReflection.from_dict(
-                    _reject_fixed_semantics_redefinition(value)
-                ),
+                parser=parse_reflection,
                 allow_outcomes=True,
                 anonymous_aliases=self.anonymous_aliases,
                 sanitize_output_aliases=self.anonymous_aliases,
                 max_output_tokens=4_000,
+                patch_corrections=True,
             )
             return reflection
         except CandidateExecutionRejected as exc:
             return PlanReflection(
-                failed_patterns=("plan_critic_validation_failed",),
-                repeated_failure_modes=(str(exc),),
+                no_findings_reason="plan_critic_validation_failed: " + str(exc),
             )
 
 
@@ -2325,6 +2712,35 @@ class LLMRoundReflector:
                     for plan_id in sorted(comparisons)
                 },
             }
+            source_rows = [
+                PlanMetaReflection.from_record(
+                    record, parent_comparisons=comparisons.get(record.plan_id, ()),
+                ).to_model_dict()
+                for record in records
+            ]
+            if self.anonymous_aliases:
+                source_rows = _mask_identity_values(source_rows, self.anonymous_aliases)
+            owner_ref = "reflection_round:" + _canonical_hash(source_rows)
+            source_index = ReflectionMemoryIndex.from_plan_rows(
+                source_rows, owner_ref=owner_ref,
+            )
+            catalog = source_index.catalog_view()
+            payload["source_catalog"] = catalog["sources"]
+            payload["source_coverage"] = catalog["counts"]
+            payload["reflection_briefs"] = source_index.brief_view()
+            for record_view in payload["records"]:
+                record_view.pop("reflection", None)
+
+            def parse_reflection(value: Mapping[str, Any]) -> RoundMetaEntry:
+                items, selected, projection = _structured_reflection_items(
+                    value, index=source_index, level="round", owner_ref=owner_ref,
+                )
+                return RoundMetaEntry(
+                    round_id=round_id, **projection,
+                    evidence_refs=tuple(record.plan_id for record in records),
+                    reflection_items=items, selected_reflection_refs=selected,
+                )
+
             if self.anonymous_aliases:
                 payload = _mask_identity_values(payload, self.anonymous_aliases)
                 _scan_payload(
@@ -2333,11 +2749,14 @@ class LLMRoundReflector:
                     anonymous_aliases=self.anonymous_aliases,
                 )
             reflection, _usage = _complete_parsed_role(
-                self.caller,
+                _ReflectionMemoryCaller(
+                    self.caller, source_index, role="round_reflector",
+                    aliases=self.anonymous_aliases,
+                ),
                 stage="round_reflect",
                 system_prompt=(
-                    "Apply fixed H_R only to these new records; evidence_refs must cite "
-                    "supplied plan ids. Return only horizontal insight across the newly "
+                    "Apply fixed H_R only to these new records; runtime owns round "
+                    "and Plan identities. Return only horizontal insight across the newly "
                     "sampled child Plans. The runtime separately preserves original case "
                     "reflections and exact vertical Plan reflections; do not rewrite or "
                     "replace those layers. Use the per-record magnitude_diagnostics to "
@@ -2355,21 +2774,20 @@ class LLMRoundReflector:
                     "outcomes: use technical_completion only for completion and "
                     "scoring-impact reporting, never for Plan or magnitude lessons."
                     + _UNTRUSTED_DATA_INSTRUCTION
-                    + _ROUND_META_OUTPUT
+                    + _structured_reflection_contract("round")
                 ),
                 payload=payload,
-                parser=lambda value: RoundMetaEntry.from_dict(
-                    _reject_fixed_semantics_redefinition(value)
-                ),
+                parser=parse_reflection,
                 allow_outcomes=True,
                 anonymous_aliases=self.anonymous_aliases,
                 sanitize_output_aliases=self.anonymous_aliases,
-                max_output_tokens=2_000,
+                max_output_tokens=4_000,
+                patch_corrections=True,
             )
             return reflection
         except CandidateExecutionRejected as exc:
             return RoundMetaEntry(
                 round_id=round_id,
-                failed_patterns=("round_reflection_validation_failed: " + str(exc),),
+                no_findings_reason="round_reflection_validation_failed: " + str(exc),
                 evidence_refs=tuple(record.plan_id for record in records),
             )

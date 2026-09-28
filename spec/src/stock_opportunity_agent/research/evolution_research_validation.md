@@ -165,3 +165,33 @@ their repair context, computed from the same per-obligation occurrence
 arithmetic that validates preservation, so downstream deterministic
 recovery can restore missing multiplicity without any whole-list rewrite
 authority.
+
+## Incremental correction authority
+
+The ResearchState owning parser emits typed field/member obligations for raw
+shape and enum failures, invalid evidence tuples, retained evidence changes,
+research/evaluation boundary violations, cosmetic need updates, and terminal
+decision failures. Independently decidable issues retain their typed scope when
+aggregated; diagnostic prose never becomes write authority. An invalid Signal
+tuple permits only its coordinate fields and explicitly removing that evidence
+member, plus exact-claim linked assertions when needed. A retained Signal claim
+permits restoring that claim or removing its member, never changing another
+source identity. Evidence shape failure permits replacing/removing only that
+invalid member; deeper evidence semantics wait for a well-formed member.
+
+Removing an invalid sole remaining next-information need can require changing
+`decision` to `finalize`; that dependency is issued explicitly. It does not
+authorize adding a new unrelated need. Every merged delta is rechecked against
+the unchanged provenance, PIT, need-ownership and complete-state invariants.
+
+The live Plan proposal boundary accepts canonical `B`, `H_init`, `H_reflect`,
+`H_analyse` only. Its raw validator issues typed add/remove/replace operations
+for missing, unexpected and malformed fields before normalization can erase
+their coordinates. `B.requests` contains one to eight request objects with the
+documented required id, description, source-types and max-documents fields,
+plus optional lookback-days/query. Historical record normalization stays a
+separate compatibility concern. Blank optional query keeps its existing
+normalize-to-omitted behavior; other wrong types cannot be coerced into validity.
+The existing canonical forbidden-outcome-field predicate is reused on original
+request coordinates, so outcome-data rejection remains exact and correctable
+without diagnostic-text parsing or a second definition of the rule.

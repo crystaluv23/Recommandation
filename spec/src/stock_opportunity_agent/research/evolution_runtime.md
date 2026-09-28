@@ -842,26 +842,19 @@ correctness changes neither the copied correctness bit nor any saved field,
 and the reflection must first classify an error as direction-versus-class
 before attributing causes.
 
-For a framework-correct case, the accepted post-hoc output must preserve at least one
-specific `decision_drivers` item explaining which supplied evidence or counter-evidence
-made the saved judgment work. An otherwise all-empty correct reflection receives the
-bounded correction instead of entering the original case layer and later allowing a
-generic vertical or horizontal summary to substitute for the case-level reason.
-For a framework-incorrect case, at least one concrete item must appear in
-`why_prediction_failed`, `misleading_signals`, `ignored_evidence`,
-`missing_information`, or `plan_issues`. A false prediction with all diagnostic
-arrays empty receives the same correction and, if still invalid, the existing
-explicit validation-failure fallback rather than a content-free reflection.
+Post-hoc output contains source-linked structured items with complete detail and
+an actionable brief. Correctness does not prove a causal explanation. Empty
+findings are valid with a concrete `no_findings_reason`; unsupported lessons must
+not be invented to fill a category. Exhausted reflection validation is retained
+as a technical no-findings reason, never projected into a research failure lesson.
 
-The Plan critic must not receive complete saved trajectories. Its request uses
-one deterministic compact row per case containing only an opaque case index,
-stop state, prediction, ground truth, candidate-judgment feedback, the derived
-magnitude feedback block, post-hoc reflection, and compact Signal
-id/version/state/interpretation/status summaries
-with evidence counts. It excludes company/case identifiers, Basic Info, initial
-and final research context, literal evidence spans, prediction paths, and usage
-records. This preserves decision-calibration and Plan-failure evidence while
-preventing the 24-case batch from repeating Raw Info into a provider request.
+The Plan critic initial request contains small per-case stop/technical/outcome
+diagnostics, bounded structured briefs, and a bounded source catalog. Exact
+anonymous case units remain registered for bounded `browse_memory`/`read_refs`
+disclosure. Full trajectories, duplicated legacy reflection prose and complete
+catalogs are not initial request fields. All views exclude company/case
+identifiers, Basic Info, full research contexts, literal evidence spans,
+prediction paths and usage records.
 The same request includes deterministic comparisons against the candidate's
 actual parents: parent Plan content, aggregate cohort metrics, a structured
 Plan-field diff, an opaque source snapshot hash, and a same-snapshot flag.
@@ -869,11 +862,12 @@ Confusion/F1/precision/recall deltas exist only when that flag is true. The
 round-reflection request receives the same comparisons keyed by new Plan id so
 cross-generation lessons can reach FIFO meta-info even though historical seeds
 never enter the current Plan Archive.
-Round reflection receives compact record summaries rather than serialized
-trajectories: Plan content, aggregate metrics, Plan-critic output, Signal-usage
-counts, fitness eligibility, and evaluation stage/count/snapshot/cohort
-metrics. It excludes embeddings, case ids, trajectories, Raw Info, research
-contexts, and per-case labels. Horizontal reflection requires at least two newly
+Round reflection receives compact record summaries, bounded briefs and source
+catalogs: Plan content, aggregate metrics, Signal-usage counts, fitness
+eligibility, and evaluation stage/count/snapshot/cohort metrics. Canonical
+per-case outcome facts and exact anonymous lower-level reflections can be read
+by registered reference. Embeddings, case identities, Raw Info and research
+contexts remain excluded. Horizontal reflection requires at least two newly
 completed child Plan records. If only one Plan survives the round, the runtime
 makes zero `H_R` calls and appends a deterministic empty horizontal layer with
 that Plan's evidence ref; the complete original and vertical layers still commit
@@ -883,13 +877,16 @@ After that call returns, the local runtime deterministically composes the final
 `RoundMetaEntry`: original anonymous case reflections first, exact Plan-critic
 and parent-comparison layers second, and the returned horizontal Round
 reflection third. Neither the Plan critic nor Round reflector is asked to
-reproduce an earlier layer. The proposer receives these complete committed FIFO
-entries with outcome scanning enabled only for this retrospective meta-learning
-role; request construction still fails closed on identity-bearing or source-
-context fields. Its bounded original-layer samples choose the richest reflection
-within each assessment class, not the first occurrence, so concrete case-level
-failure attribution remains visible beside exact vertical and horizontal layers.
-Legacy horizontal-only entries remain valid inputs.
+reproduce an earlier layer. Every new authored item includes full detail and a
+useful brief with exact source handles; the higher roles select important lower
+items or add sourced insights. The proposer receives a bounded brief view of
+committed memory and may request registered anonymous original units through
+`read_refs`. Runtime bounds each whole-unit disclosure and subsequent exact
+request, never resolves arbitrary file paths, and records read history in the
+payload. Outcome scanning is enabled only for authorized retrospective roles;
+identity-bearing fields, Raw Info and full research contexts remain excluded.
+Legacy horizontal-only entries remain readable as unreviewed history. No source
+or brief validation is evidence that an experience improves future predictions.
 Candidate-judgment feedback remains reflection-only: fitness and cumulative
 Top-K selection continue to use Combined Binary F1 alone.
 

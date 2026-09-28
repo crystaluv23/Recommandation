@@ -60,7 +60,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             )
         )
 
-        view = memory.model_view()
+        view = memory.archive_view()
 
         self.assertEqual([item["round_id"] for item in view], list(range(1, 11)))
         self.assertEqual(view, tuple(entry.to_dict() for entry in memory.entries))
@@ -74,7 +74,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
         memory = PlanMetaMemory(entries=(RoundMetaEntry(
             round_id=1, successful_patterns=(first, second), evidence_refs=("plan_1",),
         ),))
-        view = memory.model_view(max_chars=4000)[0]
+        view = memory.archive_view()[0]
         self.assertEqual(
             view["plan_level"]["successful_patterns"], [first, second]
         )
@@ -181,7 +181,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
             )
         )
 
-        cases = memory.model_view()[0]["plan_reflections"][0][
+        cases = memory.archive_view()[0]["plan_reflections"][0][
             "original_case_reflections"
         ]
         self.assertEqual([item["case_index"] for item in cases], [1, 2, 3, 4])
@@ -603,7 +603,7 @@ class PlanArchiveAndWorkspaceTests(TestCase):
         combined = (*rebased, *memory.entries)
         view = PlanMetaMemory(
             maxlen=max(1, len(combined)), entries=combined
-        ).model_view()
+        ).archive_view()
         self.assertEqual(
             [row["round_id"] for row in view], [-2, -1, 1, 2, 3]
         )

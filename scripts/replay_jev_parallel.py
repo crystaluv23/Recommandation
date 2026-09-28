@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from stock_opportunity_agent.artifacts import atomic_write_json
 from stock_opportunity_agent.llm.agent import AgentUsage
@@ -35,13 +35,39 @@ DEFAULT_OUTPUT = PROJECT_ROOT / "reports/jev-parallel-offline-replay-20260923.js
 
 
 class _RecordedRoleCaller:
-    def __init__(self, outputs: list[dict[str, Any]]) -> None:
+    def __init__(self, outputs: list[dict[str, Any] | Callable]) -> None:
         self.outputs = list(outputs)
         self.calls: list[dict[str, Any]] = []
 
     def complete_json(self, **kwargs: Any):
         self.calls.append(dict(kwargs))
-        return self.outputs.pop(0), AgentUsage(llm_calls=1, tokens=7, cost=0.0)
+        output = self.outputs.pop(0)
+        if callable(output):
+            output = output(kwargs)
+        return output, AgentUsage(llm_calls=1, tokens=7, cost=0.0)
+
+
+def _scripted_posthoc(request: dict[str, Any]) -> dict[str, Any]:
+    """Bind a fixed offline reflection fixture to the actual issued source."""
+
+    source = request["payload"]["source_catalog"][0]
+    text = "The supplied catalyst supported the saved positive decision."
+    return {
+        "reflection_items": [{
+            "category": "decision_drivers", "kind": "hypothesis",
+            "brief": text, "detail": text,
+            "scope": {
+                "case_refs": source["case_refs"], "plan_refs": source["plan_refs"],
+                "conditions": "The supplied anonymous point-in-time catalyst case.",
+            },
+            "limitations": ["Scripted fixture; not model-authored brief-quality evidence."],
+            "source_refs": [source["source_ref"]], "counter_refs": [],
+            "outcome_claims": [{
+                "source_ref": source["source_ref"], "axis": "binary", "correct": True,
+            }],
+        }],
+        "selected_reflection_refs": [],
+    }
 
 
 def _choice(
@@ -165,17 +191,7 @@ def run_replay() -> dict[str, Any]:
                 ],
                 "uncertainties": ["Magnitude remains uncertain."],
             },
-            {
-                "prediction_outcome": {"correct": True},
-                "decision_drivers": [
-                    "The supplied catalyst supported the saved positive decision."
-                ],
-                "why_prediction_failed": [],
-                "misleading_signals": [],
-                "ignored_evidence": [],
-                "missing_information": [],
-                "plan_issues": [],
-            },
+            _scripted_posthoc,
         ]
     )
     predictor = JevBlindPredictor(prediction_client, role_caller)

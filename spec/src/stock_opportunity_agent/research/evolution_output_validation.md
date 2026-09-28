@@ -12,6 +12,44 @@ and apply only explicitly allowed deterministic recovery transforms.
 - A recovery transform must be generic to the declared schema; it must not
   encode provider-, company-, or case-specific exceptions.
 
+## Incremental response and correction boundary
+
+BlindPrediction shape/enum guards publish exact missing, unexpected and invalid
+field scopes. Magnitude/judgment consistency and a positive judgment contradicted
+by every stated reason publish explicit alternative repair groups, retaining
+their coupled fields. Empty required reasons can append one grounded reason.
+These typed guards preserve the existing prediction semantics and are rerun on
+the fully merged output; diagnostic prose grants no extra authority.
+
+Plan market-backbone, source capability/scope, executable-skill and fixed
+Predictor-boundary guards publish the exact Plan component or field they own.
+A parseable untyped failure cannot silently request a complete Plan replacement.
+
+Roles opt into the shared incremental contract with `output_patch_base` for a
+normal state update and/or `patch_corrections` for semantic repair. Production
+H_reflect uses the previous validated ResearchState as its delta base. A
+parseable failed object is corrected only through typed operation permissions
+from its owning validator, using the [state patch protocol](evolution_state_patch.md).
+Corrected full objects are not silently accepted by this path. A role whose
+initial JSON cannot be parsed may ask for a complete object again; a parseable
+object without typed scope grants no new mutation authority.
+
+Normal requests advertise both the incremental response contract and the later
+correction protocol before a failure occurs. Correction requests include the
+latest merged full object for reference, its exact base hash, current typed
+obligations, permitted operations, and any rejected-patch diagnostic. Model
+output contains only operations. Merge first, then run the original complete
+parser and semantic validator. If one authorized correction succeeds while
+another remains invalid, the merged object and its newly computed issues become
+the next baseline; valid siblings are never regenerated. A patch-envelope or
+scope error does not replace semantic failure with a generic error, discard prior
+progress, or consume an unprocessed member.
+
+Patch attempts share the existing bounded correction and token/cost budget.
+Duplicate transport prevention still hands an existing typed frontier to the
+deterministic fallback. Budget/provider/approval failures retain their existing
+control-plane behavior; partial corrections do not turn them into domain facts.
+
 When a Signal quantity-grounding issue says that a missing literal exists in
 another evidence location of the same exact Signal, the machine-readable
 obligation must authorize the minimal provenance coordinates needed to use that

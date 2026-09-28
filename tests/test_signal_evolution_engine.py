@@ -2817,7 +2817,7 @@ class SignalEvolutionTests(TestCase):
                     "fixture_issuer has a clinical milestone and future business plans.",
                 ),
             ),))
-            original = memory.model_view()
+            original = memory.archive_view()
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),
@@ -2878,7 +2878,7 @@ class SignalEvolutionTests(TestCase):
             self.assertNotIn("Kinross", rendered_backlog)
             self.assertNotIn("/private/path", rendered_backlog)
             self.assertIn("source-", rendered_backlog)
-            self.assertEqual(memory.model_view(), original)
+            self.assertEqual(memory.archive_view(), original)
 
             other = make_case("other_history_issuer", 1.1)
             engine._discovery_cases_by_id[other.case_id] = other
@@ -4887,7 +4887,7 @@ class SignalEvolutionTests(TestCase):
                 first["audit"]["stages"]["H1"]["input_fingerprint"],
             )
             self.assertEqual(
-                model.requests[-1]["meta_info"][0]["signal_observations"]["missing_capabilities"],
+                [item["brief"] for item in model.requests[-1]["meta_info"]["items"] if item["category"] == "missing_capabilities"],
                 ["Separate committed orders from pipeline claims."],
             )
 
@@ -7650,6 +7650,7 @@ class SignalEvolutionTests(TestCase):
                 context["reflection_action_audit"],
                 {
                     "schema_version": "reflection-action-projection-v1",
+                    "budget_bytes": 32_000,
                     "available_count": 1,
                     "projected_count": 1,
                     "omitted_count": 0,

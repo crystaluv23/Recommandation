@@ -8,6 +8,10 @@ import re
 from datetime import date, datetime
 from difflib import SequenceMatcher
 from typing import Any, Iterable, Mapping
+from stock_opportunity_agent.data.resolution import (
+    MAX_BASIC_INFO_REQUESTS,
+    MAX_DOCUMENTS_PER_REQUEST,
+)
 from stock_opportunity_agent.models import (
     StructuredValidationError,
     ValidationError,
@@ -20,6 +24,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     SignalSelectionDecision,
     _normalized_projection_text,
 )
+from stock_opportunity_agent.research.evolution_core import _is_forbidden_basic_info_field
 from stock_opportunity_agent.signal_library import (
     SignalBatchResult,
     SignalCoverage,
@@ -139,21 +144,94 @@ def _normalize_information_plan_output(
 def _validate_raw_information_plan_request_fields(
     value: Mapping[str, Any],
 ) -> None:
-    """Name raw Plan request paths before domain construction can erase them."""
+    """Validate the live canonical Plan shape with exact correction coordinates."""
 
+    issues: list[ValidationIssue] = []
+
+    def issue(path: str, message: str, repairs: tuple[str, ...] = ("replace",), *, invalid_container: bool = False) -> None:
+        issues.append(ValidationIssue(
+            code="plan_output_shape_invalid", message=message,
+            paths=(path,), allowed_repairs=repairs,
+            repair_context={"invalid_container_paths": [path]} if invalid_container else {},
+        ))
+
+    required = {"B", "H_init", "H_reflect", "H_analyse"}
+    for name in sorted(required - set(value)):
+        issue(name, f"information_plan_propose is missing {name}", ("add",))
+    for name in sorted(set(value) - required):
+        issue(name, f"information_plan_propose has unexpected field {name}", ("remove",), invalid_container=True)
+    for name in ("H_init", "H_reflect", "H_analyse"):
+        if name in value and (not isinstance(value[name], str) or not value[name].strip()):
+            issue(name, f"information_plan_propose {name} must be a nonempty string", invalid_container=True)
     basic = value.get("B")
-    if not isinstance(basic, Mapping) or not isinstance(
-        basic.get("requests"), list
-    ):
-        return
-    for index, request in enumerate(basic["requests"]):
-        if not isinstance(request, Mapping) or "query" not in request:
-            continue
-        query = request["query"]
-        if not isinstance(query, str):
-            raise ValidationError(
-                f"B.requests[{index}].query must be omitted or a non-empty string"
-            )
+    if "B" in value and not isinstance(basic, Mapping):
+        issue("B", "information_plan_propose B must be an object", invalid_container=True)
+    elif isinstance(basic, Mapping):
+        if "requests" not in basic:
+            issue("B.requests", "B requires a requests array", ("add",))
+        for name in sorted(set(basic) - {"requests"}):
+            issue(f"B.{name}", f"B has unexpected field {name}", ("remove",), invalid_container=True)
+        requests = basic.get("requests")
+        if "requests" in basic and not isinstance(requests, list):
+            issue("B.requests", "B.requests must be an array")
+        elif isinstance(requests, list):
+            if not requests:
+                issue("B.requests", "basic info policy requires requests", ("add",))
+            if len(requests) > MAX_BASIC_INFO_REQUESTS:
+                issue("B.requests", "basic info policy cannot exceed 8 requests", ("remove",))
+            required_fields = {"request_id", "description", "source_types", "max_documents"}
+            optional_fields = {"lookback_days", "query"}
+            seen_ids: set[str] = set()
+            for index, request in enumerate(requests):
+                prefix = f"B.requests[{index}]"
+                if not isinstance(request, Mapping):
+                    issue(prefix, f"{prefix} must be a request object", ("replace", "remove"), invalid_container=True)
+                    continue
+                for name in sorted(required_fields - set(request)):
+                    issue(f"{prefix}.{name}", f"{prefix} is missing {name}", ("add",))
+                for name in sorted(set(request) - required_fields - optional_fields):
+                    issue(f"{prefix}.{name}", f"{prefix} has unexpected field {name}", ("remove",), invalid_container=True)
+                for name in ("request_id", "description", "query"):
+                    if name in request and (not isinstance(request[name], str) or (name != "query" and not request[name].strip())):
+                        issue(f"{prefix}.{name}", f"{prefix}.{name} must be omitted or a non-empty string" if name == "query" else f"{prefix}.{name} must be nonempty text", ("replace", "remove") if name == "query" else ("replace",), invalid_container=True)
+                    elif isinstance(request.get(name), str) and _is_forbidden_basic_info_field(request[name]):
+                        issues.append(ValidationIssue(
+                            code="plan_outcome_data_forbidden",
+                            message=f"basic info policy cannot request outcome data: {prefix}.{name}",
+                            paths=(f"{prefix}.{name}",),
+                            allowed_repairs=("replace", "remove") if name == "query" else ("replace",),
+                        ))
+                request_id = request.get("request_id")
+                if isinstance(request_id, str):
+                    if request_id in seen_ids:
+                        issue(f"{prefix}.request_id", "basic info policy request ids must be unique")
+                    seen_ids.add(request_id)
+                sources = request.get("source_types")
+                if "source_types" in request and not isinstance(sources, list):
+                    issue(f"{prefix}.source_types", "raw info request requires source_types array")
+                elif isinstance(sources, list):
+                    if not sources:
+                        issue(f"{prefix}.source_types", "raw info request requires source_types", ("add",))
+                    seen_sources: set[str] = set()
+                    for source_index, source in enumerate(sources):
+                        path = f"{prefix}.source_types[{source_index}]"
+                        if not isinstance(source, str) or not source.strip():
+                            issue(path, "raw info request source_types must be nonempty text", invalid_container=True)
+                        elif source in seen_sources:
+                            issue(path, "raw info request source_types must be unique", ("replace", "remove"))
+                        elif _is_forbidden_basic_info_field(source):
+                            issues.append(ValidationIssue(
+                                code="plan_outcome_data_forbidden",
+                                message=f"basic info policy cannot request outcome data: {path}",
+                                paths=(path,), allowed_repairs=("replace", "remove"),
+                            ))
+                        else:
+                            seen_sources.add(source)
+                for name in ("max_documents", "lookback_days"):
+                    if name in request and (type(request[name]) is not int or request[name] < 1 or (name == "max_documents" and request[name] > MAX_DOCUMENTS_PER_REQUEST)):
+                        issue(f"{prefix}.{name}", "raw info max_documents must be between 1 and 10" if name == "max_documents" else "raw info lookback_days must be a positive integer", invalid_container=True)
+    if issues:
+        raise StructuredValidationError(issues)
 
 
 def _normalize_signal_result_output(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -328,7 +406,7 @@ def _matching_answer_excerpt(
 def _raw_initialize_need_issues(
     value: Mapping[str, Any],
     basic_info: Mapping[str, Any],
-) -> list[str | ValidationIssue]:
+) -> list[ValidationIssue]:
     """Find only high-confidence already-answered H_init needs."""
 
     raw_needs = value.get("next_information_needs")
@@ -360,7 +438,7 @@ def _raw_initialize_need_issues(
         }:
             bigram_frequency[bigram] = bigram_frequency.get(bigram, 0) + 1
     distinctive_bigram_cutoff = max(2, math.ceil(len(projection_rows) * 0.25))
-    issues: list[str] = []
+    issues: list[ValidationIssue] = []
     for need_index, need in enumerate(raw_needs):
         if not isinstance(need, str):
             continue
@@ -420,6 +498,7 @@ def _raw_initialize_need_issues(
                         ),
                         paths=(f"next_information_needs[{need_index}]",),
                         allowed_repairs=("replace", "remove"),
+                        dependent_paths=("decision",) if len(raw_needs) == 1 else (),
                     )
                 )
                 break
@@ -428,16 +507,20 @@ def _raw_initialize_need_issues(
             shared = _shared_resolved_need_phrase(need, resolved_question)
             if shared is None:
                 continue
-            issues.append(
-                "research_controller_initialize contradicted its own resolved "
+            issues.append(ValidationIssue(
+                code="resolved_answer_need_retained",
+                message=("research_controller_initialize contradicted its own resolved "
                 "question with a retained information need, "
                 f"invalid_field='next_information_needs[{need_index}]', "
                 f"next_information_needs[{need_index}]={need!r}, "
                 f"matching_resolved_question_index={resolved_index}, "
                 f"matching_resolved_question={resolved_question!r}, "
                 f"shared_content_phrase={shared!r}. Remove the "
-                "answered need or narrow it to unresolved facets"
-            )
+                "answered need or narrow it to unresolved facets"),
+                paths=(f"next_information_needs[{need_index}]",),
+                allowed_repairs=("replace", "remove"),
+                dependent_paths=("decision",) if len(raw_needs) == 1 else (),
+            ))
             break
     return issues
 
@@ -955,10 +1038,10 @@ def _raw_future_information_issues(
 def _raw_research_evaluation_boundary_issues(
     value: Mapping[str, Any],
     evaluation_context: Mapping[str, Any] | None = None,
-) -> list[str | ValidationIssue]:
+) -> list[ValidationIssue]:
     """Reject research state that requests runtime-owned or future facts."""
 
-    issues: list[str | ValidationIssue] = []
+    issues: list[ValidationIssue] = []
     prediction_date: date | None = None
     if isinstance(evaluation_context, Mapping):
         raw_prediction_time = evaluation_context.get("prediction_time")
@@ -1003,6 +1086,10 @@ def _raw_research_evaluation_boundary_issues(
                     ),
                     paths=(path,),
                     allowed_repairs=("remove",),
+                    dependent_paths=("decision",) if (
+                        field_name == "next_information_needs" and len(raw_items) == 1
+                    ) else (),
+                    repair_context={"dependency_allowed_repairs": {"decision": ["replace"]}},
                 )
             )
     if not isinstance(evaluation_context, Mapping):
@@ -1033,14 +1120,16 @@ def _raw_research_evaluation_boundary_issues(
         if _EXPECTATION_TRANSMISSION.search(item):
             continue
         path = f"hypotheses[{index}]"
-        issues.append(
-            "research_controller_initialize directly conditioned the fixed "
+        issues.append(ValidationIssue(
+            code="outside_horizon_event_causality",
+            message=("research_controller_initialize directly conditioned the fixed "
             "six-month price outcome on an operating event outside the horizon, "
             f"invalid_field={path!r}, {path}={item!r}, "
             f"future_event_years={future_years}, horizon_end={horizon_end.isoformat()!r}. "
             "Reframe the hypothesis around within-horizon expectation evidence or "
-            "a de-risking milestone. Do not assume the later event has occurred"
-        )
+            "a de-risking milestone. Do not assume the later event has occurred"),
+            paths=(path,), allowed_repairs=("replace", "remove"),
+        ))
     return issues
 
 
@@ -1051,10 +1140,10 @@ def _raw_research_state_compaction_issues(
     initialize: bool = False,
     basic_info: Mapping[str, Any] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
-) -> list[str | ValidationIssue]:
+) -> list[ValidationIssue]:
     """Validate research questions independently of advisory summary targets."""
 
-    issues: list[str] = []
+    issues: list[ValidationIssue] = []
     if initialize:
         issues.extend(_raw_initialize_need_issues(value, basic_info or {}))
     if initialize or evaluation_context is not None:
@@ -1271,6 +1360,53 @@ def _restore_inherited_need_cutoffs(
         value[field] = restored
 
 
+def _raw_research_state_shape_issues(value: Mapping[str, Any]) -> list[ValidationIssue]:
+    """Give malformed role fields exact repair scope before domain construction."""
+
+    collections = (
+        "hypotheses", "current_beliefs", "supporting_evidence", "contradictions",
+        "resolved_questions", "open_questions", "next_information_needs",
+    )
+    issues: list[ValidationIssue] = []
+    for field in (*collections, "decision"):
+        if field not in value:
+            issues.append(ValidationIssue(
+                code="research_state_field_missing", message=f"ResearchState is missing field {field}",
+                paths=(field,), allowed_repairs=("add",),
+            ))
+        elif field == "decision":
+            if value[field] not in ("continue", "finalize"):
+                issues.append(ValidationIssue(
+                    code="research_state_decision_invalid",
+                    message="ResearchState decision must be continue or finalize",
+                    paths=(field,), allowed_repairs=("replace",),
+                    repair_context={"invalid_container_paths": [field]},
+                ))
+        elif not isinstance(value[field], list):
+            issues.append(ValidationIssue(
+                code="research_state_collection_invalid", message=f"ResearchState {field} must be an array",
+                paths=(field,), allowed_repairs=("replace",),
+            ))
+        elif field != "supporting_evidence":
+            for index, item in enumerate(value[field]):
+                if not isinstance(item, str) or not item.strip():
+                    issues.append(ValidationIssue(
+                        code="research_state_text_invalid",
+                        message=f"ResearchState {field}[{index}] must be nonempty text",
+                        paths=(f"{field}[{index}]",), allowed_repairs=("replace", "remove"),
+                        repair_context={"invalid_container_paths": [f"{field}[{index}]"]},
+                        dependent_paths=("decision",) if field == "next_information_needs" else (),
+                    ))
+    if value.get("decision") == "continue" and value.get("next_information_needs") == []:
+        issues.append(ValidationIssue(
+            code="continuing_research_needs_missing",
+            message="continuing research requires next information needs; finalize or add one unresolved issuer need",
+            paths=("decision", "next_information_needs"), path_policy="any",
+            allowed_repairs=("replace", "add"),
+        ))
+    return issues
+
+
 def _normalize_research_state_output(
     value: Mapping[str, Any],
     *,
@@ -1282,6 +1418,9 @@ def _normalize_research_state_output(
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
     normalized = dict(value)
+    shape_issues = _raw_research_state_shape_issues(normalized)
+    if shape_issues:
+        raise StructuredValidationError(shape_issues)
     _restore_inherited_need_cutoffs(normalized, previous_state, evaluation_context)
     future_information_issues = _raw_future_information_issues(
         normalized,
@@ -1314,19 +1453,11 @@ def _normalize_research_state_output(
         basic_info=basic_info,
         evaluation_context=evaluation_context,
     )
-    structured_preissues = [
-        item for item in issues if isinstance(item, ValidationIssue)
-    ]
-    issues = [item for item in issues if not isinstance(item, ValidationIssue)]
+    structured_preissues = list(issues)
+    issues = []
     if not isinstance(evidence, list):
-        if structured_preissues and not issues:
+        if structured_preissues:
             raise StructuredValidationError(structured_preissues)
-        if issues or structured_preissues:
-            raise ValidationError(
-                "; ".join(
-                    [*issues, *(item.message for item in structured_preissues)]
-                )
-            )
         return normalized
     basic_fields = {"kind", "claim", "projection_id", "exact_text"}
     signal_fields = {
@@ -1340,9 +1471,12 @@ def _normalize_research_state_output(
     normalized_evidence: list[Any] = []
     for index, item in enumerate(evidence):
         if not isinstance(item, Mapping):
-            issues.append(
-                f"supporting_evidence[{index}] must be one tagged-ref JSON object"
-            )
+            issues.append(ValidationIssue(
+                code="evidence_shape_invalid",
+                message=f"supporting_evidence[{index}] must be one tagged-ref JSON object",
+                paths=(f"supporting_evidence[{index}]",), allowed_repairs=("replace", "remove"),
+                repair_context={"invalid_container_paths": [f"supporting_evidence[{index}]"]},
+            ))
             continue
         fields = set(item)
         kind = item.get("kind")
@@ -1355,16 +1489,27 @@ def _normalize_research_state_output(
                 if not isinstance(item.get(name), str)
             )
             if missing or unexpected or non_string:
-                issues.append(
-                    f"supporting_evidence[{index}] basic_info shape is invalid: "
+                issues.append(ValidationIssue(
+                    code="evidence_shape_invalid",
+                    message=(f"supporting_evidence[{index}] basic_info shape is invalid: "
                     f"missing_fields={missing}, unexpected_fields={unexpected}, "
                     f"non_string_fields={non_string}, expected_fields="
                     f"{sorted(basic_fields)}. Copy projection_id and exact_text "
                     "byte-for-byte from one indexed "
                     "research_state.supporting_evidence Basic ref, restate only "
-                    "claim, or remove this evidence item"
-                )
+                    "claim, or remove this evidence item"),
+                    paths=(f"supporting_evidence[{index}]",), allowed_repairs=("replace", "remove"),
+                ))
             else:
+                for name in ("projection_id", "exact_text"):
+                    if not item[name].strip():
+                        issues.append(ValidationIssue(
+                            code="evidence_fields_invalid",
+                            message=f"supporting_evidence[{index}].{name} must be nonempty text",
+                            paths=(f"supporting_evidence[{index}].{name}",),
+                            allowed_repairs=("replace", "remove"),
+                            repair_context={"authorized_member_removals": [f"supporting_evidence[{index}]"]},
+                        ))
                 normalized_evidence.append(dict(item))
             continue
         if kind == "signal":
@@ -1379,27 +1524,46 @@ def _normalize_research_state_output(
                 if not isinstance(item.get(name), str)
             )
             if missing or unexpected or non_string:
-                issues.append(
-                    f"supporting_evidence[{index}] signal shape is invalid: "
+                issues.append(ValidationIssue(
+                    code="evidence_shape_invalid",
+                    message=(f"supporting_evidence[{index}] signal shape is invalid: "
                     f"missing_fields={missing}, unexpected_fields={unexpected}, "
                     f"non_string_fields={non_string}, expected_fields="
                     f"{sorted(signal_fields)}. Use one exact tuple from "
-                    "signal_evidence_ref_catalog or remove this evidence item"
-                )
+                    "signal_evidence_ref_catalog or remove this evidence item"),
+                    paths=(f"supporting_evidence[{index}]",), allowed_repairs=("replace", "remove"),
+                ))
             else:
-                normalized_evidence.append(
-                    {key: item[key] for key in signal_fields}
-                )
+                shaped = {key: item[key] for key in signal_fields}
+                invalid_fields = [
+                    name for name, valid in (
+                        ("signal_ref", bool(shaped["signal_ref"].strip())),
+                        ("evidence_group", shaped["evidence_group"] in {"supporting", "counter"}),
+                        ("evidence_index", type(shaped["evidence_index"]) is int and shaped["evidence_index"] >= 0),
+                    ) if not valid
+                ]
+                if invalid_fields:
+                    issues.append(ValidationIssue(
+                        code="evidence_fields_invalid",
+                        message=f"supporting_evidence[{index}] signal evidence reference fields are invalid: {invalid_fields}",
+                        paths=tuple(f"supporting_evidence[{index}].{name}" for name in invalid_fields),
+                        allowed_repairs=("replace", "remove"),
+                        repair_context={"authorized_member_removals": [f"supporting_evidence[{index}]"]},
+                    ))
+                normalized_evidence.append(shaped)
             continue
-        issues.append(
-            f"supporting_evidence[{index}] has unknown kind {kind!r}, "
-            "expected 'basic_info' or 'signal'"
-        )
+        kind_only = fields | {"kind"} in (basic_fields, signal_fields)
+        issues.append(ValidationIssue(
+            code="evidence_kind_invalid",
+            message=(f"supporting_evidence[{index}] has unknown kind {kind!r}, "
+                     "expected 'basic_info' or 'signal'"),
+            paths=(f"supporting_evidence[{index}]" + (".kind" if kind_only else ""),),
+            allowed_repairs=("add", "remove") if kind_only and "kind" not in fields else ("replace", "remove"),
+            repair_context={"authorized_member_removals": [f"supporting_evidence[{index}]"]},
+        ))
     issues.extend(_raw_research_evidence_claim_length_issues(normalized))
     if issues:
-        raise ValidationError(
-            "; ".join([*issues, *(item.message for item in structured_preissues)])
-        )
+        raise StructuredValidationError([*issues, *structured_preissues])
     typed_issues = list(structured_preissues)
     typed_issues.extend(_raw_basic_claim_quantity_issues(normalized))
     typed_issues.extend(_raw_quantitative_assertion_link_issues(normalized))
@@ -1412,13 +1576,13 @@ def _normalize_research_state_output(
 
 def _raw_research_evidence_claim_length_issues(
     value: Mapping[str, Any],
-) -> list[str]:
+) -> list[ValidationIssue]:
     """Identify empty claims and their linked assertions before construction."""
 
     evidence = value.get("supporting_evidence")
     if not isinstance(evidence, list):
         return []
-    issues: list[str] = []
+    issues: list[ValidationIssue] = []
     for index, item in enumerate(evidence):
         if not isinstance(item, Mapping):
             continue
@@ -1438,12 +1602,16 @@ def _raw_research_evidence_claim_length_issues(
             if linked
             else ""
         )
-        issues.append(
-            f"supporting_evidence[{index}].claim length={len(claim)} "
+        issues.append(ValidationIssue(
+            code="evidence_claim_empty",
+            message=(f"supporting_evidence[{index}].claim length={len(claim)} "
             "must be nonempty text. Supply a grounded claim while retaining "
             "its provenance, or remove this evidence item"
-            + linked_instruction
-        )
+            + linked_instruction),
+            paths=(f"supporting_evidence[{index}].claim",),
+            dependent_paths=tuple(linked), allowed_repairs=("replace", "remove"),
+            repair_context={"authorized_member_removals": [f"supporting_evidence[{index}]"]},
+        ))
     return issues
 
 
@@ -1583,6 +1751,7 @@ def _raw_basic_claim_quantity_issues(
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        "permitted_append_paths": ["supporting_evidence"],
                         **(
                             {"quantity_elsewhere_hints": elsewhere_hints}
                             if elsewhere_hints
@@ -2141,6 +2310,7 @@ def _validate_basic_claim_quantities(
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        "permitted_append_paths": ["supporting_evidence"],
                         **(
                             {"quantity_elsewhere_hints": elsewhere_hints}
                             if elsewhere_hints
@@ -2260,6 +2430,7 @@ def _validate_signal_claim_quantities(
                         "missing_quantity_groups": missing,
                         "missing_quantity_literals": missing_literals,
                         "same_claim_evidence_paths": evidence_paths,
+                        "permitted_append_paths": ["supporting_evidence"],
                         **(
                             {
                                 "permitted_evidence_ref_paths": (
@@ -2327,8 +2498,12 @@ def _validate_research_state_refs(
 ) -> ResearchState:
     """Enforce the v6 visible-evidence transition contract locally."""
 
-    if any(not isinstance(item, ResearchEvidenceRef) for item in state.supporting_evidence):
-        raise ValidationError("active v6 ResearchState evidence must use tagged refs")
+    legacy_issues = [ValidationIssue(
+        code="evidence_shape_invalid", message="active v6 ResearchState evidence must use tagged refs",
+        paths=(f"supporting_evidence[{index}]",), allowed_repairs=("replace", "remove"),
+    ) for index, item in enumerate(state.supporting_evidence) if not isinstance(item, ResearchEvidenceRef)]
+    if legacy_issues:
+        raise StructuredValidationError(legacy_issues)
     refs = tuple(
         item
         for item in state.supporting_evidence
@@ -2360,16 +2535,34 @@ def _validate_research_state_refs(
         for ref, result in results.items()
     }
     structured_issues: list[ValidationIssue] = []
+
+    def reference_issue(
+        index: int, item: ResearchEvidenceRef, code: str, message: str,
+        *, fields: tuple[str, ...] = (), repairs: tuple[str, ...] = ("replace", "remove"),
+    ) -> None:
+        path = f"supporting_evidence[{index}]"
+        linked = tuple(
+            f"{field}[{position}]" for field in ("current_beliefs", "contradictions")
+            for position, assertion in enumerate(getattr(state, field)) if assertion == item.claim
+        )
+        structured_issues.append(ValidationIssue(
+            code=code, message=message,
+            paths=tuple(f"{path}.{field}" for field in fields) if fields else (path,),
+            path_policy="any" if len(fields) > 1 else "all",
+            allowed_repairs=repairs, dependent_paths=linked,
+            repair_context={"authorized_member_removals": [path]},
+        ))
+
     for index, item in enumerate(refs):
         key = _research_evidence_key(item)
         if phase == "finalize":
             if key not in previous:
-                raise ValidationError("finalize cannot introduce a new evidence ref")
+                reference_issue(index, item, "new_finalization_evidence", "finalize cannot introduce a new evidence ref", repairs=("remove",))
             continue
         if item.kind == "basic_info":
             if phase == "reflect":
                 if key not in previous:
-                    raise ValidationError("reflect cannot introduce a new Basic Info ref")
+                    reference_issue(index, item, "new_reflection_basic_evidence", "reflect cannot introduce a new Basic Info ref", repairs=("remove",))
                 continue
             projection = projection_texts.get(str(item.projection_id))
             exact_text = str(item.exact_text)
@@ -2464,11 +2657,11 @@ def _validate_research_state_refs(
         if key in previous:
             prior = previous_refs[key]
             if item.claim != prior.claim:
-                raise ValidationError(
+                reference_issue(index, item, "retained_signal_claim_changed",
                     f"supporting_evidence[{index}] retained Signal claim changed from "
                     f"{prior.claim!r} to {item.claim!r}. Copy the prior claim "
                     "byte-for-byte or remove this evidence item; its backing Signal "
-                    "batch is no longer visible"
+                    "batch is no longer visible", fields=("claim",),
                 )
             continue
         result = results.get(str(item.signal_ref))
@@ -2488,17 +2681,20 @@ def _validate_research_state_refs(
                     evidence_index=item.evidence_index,
                 )
             else:
-                raise ValidationError(
+                reference_issue(index, item, "signal_reference_unknown",
                     f"supporting_evidence[{index}] cited Signal "
                     f"{item.signal_ref!r} outside the current batch; use one exact "
-                    "signal_ref supplied by signal_batch"
+                    "signal_ref supplied by signal_batch",
+                    fields=("signal_ref", "evidence_group", "evidence_index"),
                 )
+                continue
         if not _signal_result_has_adoptable_evidence(result):
-            raise ValidationError(
+            reference_issue(index, item, "signal_result_unavailable",
                 f"supporting_evidence[{index}] cited unavailable Signal result "
                 f"signal_ref={result.ref!r}. Unavailable is a coverage diagnostic, "
-                "not adoptable evidence; remove this evidence item"
+                "not adoptable evidence; remove this evidence item", repairs=("remove",),
             )
+            continue
         evidence = (
             result.supporting_evidence
             if item.evidence_group == "supporting"
@@ -2506,13 +2702,15 @@ def _validate_research_state_refs(
         )
         if int(item.evidence_index or 0) >= len(evidence):
             valid_indices = list(range(len(evidence)))
-            raise ValidationError(
+            reference_issue(index, item, "signal_evidence_coordinate_invalid",
                 f"supporting_evidence[{index}] cited unavailable Signal evidence "
                 f"signal_ref={result.ref!r}, evidence_group={item.evidence_group!r}, "
                 f"evidence_index={item.evidence_index!r}; valid_evidence_indices="
                 f"{valid_indices} for that signal_ref and group. Use one exact tuple "
-                "from signal_evidence_ref_catalog or remove this evidence item"
+                "from signal_evidence_ref_catalog or remove this evidence item",
+                fields=("signal_ref", "evidence_group", "evidence_index"),
             )
+            continue
         claim_literals = signal_claim_literals.setdefault(item.claim, [])
         claim_literals.append(
             (index, evidence[int(item.evidence_index or 0)].exact_span)
@@ -2533,7 +2731,7 @@ def _validate_research_state_refs(
     structured_issues.extend(
         _validate_assertive_state_claim_links(state, tuple(normalized_refs))
     )
-    validation_errors: list[str] = []
+    validation_errors: list[ValidationIssue] = []
     legacy_cross_field_duplicates = (
         set(previous_state.open_questions)
         & set(previous_state.next_information_needs)
@@ -2605,11 +2803,15 @@ def _validate_research_state_refs(
         batch,
     )
     if phase == "reflect" and unavailable_state_errors:
-        validation_errors.append(
-            "research_controller_reflect treated an unavailable Signal as a finding: "
-            f"{unavailable_state_errors}. Unavailable is coverage-only; remove the "
-            "new belief/resolution and keep the topic open if it still matters"
-        )
+        for error in unavailable_state_errors:
+            validation_errors.append(ValidationIssue(
+                code="unavailable_signal_treated_as_finding",
+                message=("research_controller_reflect treated an unavailable Signal as a finding: "
+                         f"{error}. Unavailable is coverage-only; remove the "
+                         "new belief/resolution and keep the topic open if it still matters"),
+                paths=tuple(f"{error['field']}[{index}]" for index, text in enumerate(getattr(state, error["field"])) if text == error["text"]),
+                allowed_repairs=("remove",),
+            ))
     terminal_unavailable_only = (
         phase == "reflect"
         and must_finalize
@@ -2628,24 +2830,27 @@ def _validate_research_state_refs(
         previous_content.pop("decision")
         reflected_content.pop("decision")
         if reflected_content != previous_content:
-            validation_errors.append(
-                "research_controller_reflect received an all-unavailable terminal "
+            validation_errors.append(ValidationIssue(
+                code="terminal_unavailable_state_changed", retryability="terminal",
+                paths=("decision",),
+                message=("research_controller_reflect received an all-unavailable terminal "
                 "batch. Preserve every prior ResearchState field and item "
                 "byte-for-byte and change only decision from 'continue' to "
-                "'finalize'; unavailable coverage cannot justify any other update"
-            )
+                "'finalize'; unavailable coverage cannot justify any other update"),
+            ))
     if (
         phase == "reflect"
         and must_finalize
         and state.decision is not ResearchDecision.FINALIZE
     ):
-        validation_errors.append(
-            "research_controller_reflect reached the last executable evidence "
+        validation_errors.append(ValidationIssue(
+            code="terminal_decision_required", paths=("decision",),
+            message=("research_controller_reflect reached the last executable evidence "
             "batch but returned decision='continue'. Return decision='finalize' "
             "from the accepted evidence; preserve unresolved uncertainty in "
             "open_questions or next_information_needs rather than inventing a "
-            "resolution"
-        )
+            "resolution"),
+        ))
     if phase == "reflect" and adopted_new_signal_evidence:
         for error in targeted_answer_need_errors:
             structured_issues.append(
@@ -2658,13 +2863,17 @@ def _validate_research_state_refs(
         and adopted_new_signal_evidence
     ):
         if cosmetic_needs:
-            validation_errors.append(
-                "research_controller_reflect adopted new current-batch Signal evidence "
+            validation_errors.append(ValidationIssue(
+                code="cosmetic_need_update",
+                paths=tuple(dict.fromkeys(f"next_information_needs[{index}]" for error in cosmetic_needs for index, need in enumerate(state.next_information_needs) if need == error["current_need"])),
+                allowed_repairs=("replace", "remove"),
+                dependent_paths=("decision",) if len(state.next_information_needs) == 1 else (),
+                message=("research_controller_reflect adopted new current-batch Signal evidence "
                 "but cosmetically changed prior next_information_needs: "
                 f"{cosmetic_needs}. Keep an unanswered need byte-for-byte, or narrow/"
                 "replace the answered portion. Do not append a qualifier to the old "
-                "need"
-            )
+                "need"),
+            ))
         if stale_resolved_needs:
             for stale_need in [
                 need
@@ -2712,8 +2921,12 @@ def _validate_research_state_refs(
                 }
                 for index, need in enumerate(previous_state.next_information_needs)
             ]
-            validation_errors.append(
-                "research_controller_reflect adopted evidence from an available "
+            validation_errors.append(ValidationIssue(
+                code="answered_need_without_progress",
+                paths=tuple(row["path"] for row in retained_indexed_items), path_policy="any",
+                allowed_repairs=("replace", "remove"),
+                dependent_paths=("decision",) if len(state.next_information_needs) == 1 else (),
+                message=("research_controller_reflect adopted evidence from an available "
                 "Signal selected with reason_code='answer_need' but retained the "
                 "exact same set of prior next_information_needs; "
                 "invalid_field='next_information_needs'; "
@@ -2721,14 +2934,10 @@ def _validate_research_state_refs(
                 "by removing or genuinely narrowing at least one listed item that "
                 "the supplied selection intent and accepted evidence actually "
                 "answered. Preserve every unanswered listed item byte-for-byte; "
-                "runtime will not choose the need or fabricate a resolution"
-            )
-    if structured_issues and not validation_errors:
-        raise StructuredValidationError(structured_issues)
-    if structured_issues:
-        validation_errors.extend(issue.message for issue in structured_issues)
-    if validation_errors:
-        raise ValidationError("; ".join(validation_errors))
+                "runtime will not choose the need or fabricate a resolution"),
+            ))
+    if structured_issues or validation_errors:
+        raise StructuredValidationError([*validation_errors, *structured_issues])
     if tuple(normalized_refs) == refs:
         return state
     value = state.to_dict()

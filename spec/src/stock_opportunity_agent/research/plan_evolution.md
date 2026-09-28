@@ -36,6 +36,11 @@ on the Slow Signal engine.
   separate technical diagnostic but never formal Slow-learning needs.
 - A resumed Slow loop refreshes the backlog before creating a new frozen Slow
   validation. An already staged validation retains its exact original backlog.
+- Proposal progress hashes the complete retained `archive_view` for historical
+  input identity and derives round/case coverage from those committed entries.
+  This archive audit is distinct from the role's bounded model view and actual
+  transmitted-request hash. The proposer builds its brief/read requests at the
+  owning role boundary; archive serialization is never a model-payload shortcut.
 
 ## Per-case technical-exclusion carry-over (user-approved 2026-09-21)
 

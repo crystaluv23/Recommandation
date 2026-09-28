@@ -996,11 +996,13 @@ class ReflectionRoleAdapterTests(TestCase):
         corrected_reflection = json.loads(
             json.dumps(fixture["corrected_reflection"])
         )
-        corrected_reflection["next_information_needs"] = [
+        invalid_reflection = json.loads(json.dumps(fixture["invalid_reflection"]))
+        invalid_reflection["next_information_needs"] = [
             "Check the remaining mine-disruption risk."
         ]
+        corrected_reflection["next_information_needs"] = invalid_reflection["next_information_needs"]
         caller = ScriptedRoleCaller(
-            [fixture["invalid_reflection"], corrected_reflection]
+            [invalid_reflection, corrected_reflection]
         )
 
         reflected = LLMResearchController(caller).reflect(
@@ -1095,8 +1097,10 @@ class ReflectionRoleAdapterTests(TestCase):
         cosmetic["next_information_needs"] = [
             fixture["previous_need"] + " given the available evidence"
         ]
+        cosmetic_repair = json.loads(json.dumps(cosmetic))
+        cosmetic_repair["next_information_needs"] = [fixture["narrowed_need"]]
         cosmetic_caller = ScriptedRoleCaller(
-            [cosmetic, fixture["corrected_reflection"]]
+            [cosmetic, cosmetic_repair]
         )
         corrected = LLMResearchController(cosmetic_caller).reflect(
             default_information_plan(),
@@ -1191,7 +1195,7 @@ class ReflectionRoleAdapterTests(TestCase):
 
         with self.assertRaisesRegex(
             CandidateExecutionRejected,
-            "cosmetically changed",
+            "outside typed authority",
         ):
             LLMResearchController(caller).reflect(
                 default_information_plan(),
@@ -1331,9 +1335,6 @@ class ReflectionRoleAdapterTests(TestCase):
         }
         corrected = json.loads(json.dumps(unchanged))
         corrected["next_information_needs"] = [other_need]
-        corrected["resolved_questions"] = [
-            "Management disclosed the current production and cost guidance."
-        ]
         caller = ScriptedRoleCaller([unchanged, corrected])
         controller = LLMResearchController(caller)
         controller.set_reflection_runtime_context(
@@ -1422,12 +1423,19 @@ class ReflectionRoleAdapterTests(TestCase):
                     "resolved_questions": [],
                     "supporting_evidence": [evidence_ref],
                 }
-                corrected = json.loads(json.dumps(invalid))
-                corrected["next_information_needs"] = [
-                    unrelated_need,
-                    narrowed_need,
-                ]
-                caller = ScriptedRoleCaller([invalid, corrected])
+                from tests.test_evolution_state_patch import PatchCaller, patch
+                from stock_opportunity_agent.research.evolution_state_patch import recorded_response_patch
+
+                def initial(request):
+                    return recorded_response_patch(request["payload"]["research_state"], invalid)
+
+                def correction(request):
+                    return patch(request["payload"]["output_patch_contract"],
+                        {"op": "replace", "path": "next_information_needs[0]", "value": narrowed_need},
+                        {"op": "append", "path": "next_information_needs", "value": unrelated_need},
+                    )
+
+                caller = PatchCaller(initial, correction)
                 controller = LLMResearchController(caller)
                 controller.set_reflection_runtime_context(
                     selections=(
@@ -1463,7 +1471,7 @@ class ReflectionRoleAdapterTests(TestCase):
                 self.assertNotIn("Remove or genuinely narrow each", error)
                 self.assertEqual(
                     reflected.value.next_information_needs,
-                    (unrelated_need, narrowed_need),
+                    (narrowed_need, unrelated_need),
                 )
                 selection_intent = caller.calls[0]["payload"][
                     "executed_selection_intents"
@@ -1618,16 +1626,22 @@ class ReflectionRoleAdapterTests(TestCase):
                 }
             ],
         }
-        corrected = json.loads(json.dumps(invalid))
-        corrected["current_beliefs"] = ["cash_reserves=2.07009e+09"]
-        corrected["supporting_evidence"][0]["claim"] = "cash_reserves=2.07009e+09"
-        corrected["next_information_needs"] = [
-            revenue_need,
-            guidance_need,
-            narrowed_liquidity_need,
-        ]
-        corrected["open_questions"] = []
-        caller = ScriptedRoleCaller([invalid, corrected])
+        from tests.test_evolution_state_patch import PatchCaller, patch
+        from stock_opportunity_agent.research.evolution_state_patch import recorded_response_patch
+
+        def initial(request):
+            return recorded_response_patch(request["payload"]["research_state"], invalid)
+
+        def correct(request):
+            return patch(request["payload"]["output_patch_contract"],
+                {"op": "replace", "path": "current_beliefs[0]", "value": "cash_reserves=2.07009e+09"},
+                {"op": "replace", "path": "supporting_evidence[0].claim", "value": "cash_reserves=2.07009e+09"},
+                {"op": "remove", "path": "open_questions[0]"},
+                {"op": "remove", "path": "next_information_needs[1]"},
+                {"op": "append", "path": "next_information_needs", "value": revenue_need},
+            )
+
+        caller = PatchCaller(initial, correct)
         controller = LLMResearchController(caller)
         controller.set_reflection_runtime_context(
             selections=(
@@ -1710,7 +1724,7 @@ class ReflectionRoleAdapterTests(TestCase):
         self.assertIn("targeted need remained byte-for-byte", error)
         self.assertEqual(
             reflected.value.next_information_needs,
-            (revenue_need, guidance_need, narrowed_liquidity_need),
+            (guidance_need, revenue_need),
         )
 
     def test_v74_reflect_requires_exact_partial_answer_residual(self) -> None:
@@ -1788,7 +1802,7 @@ class ReflectionRoleAdapterTests(TestCase):
         self.assertIn(residual_need, error)
         self.assertEqual(
             reflected.value.next_information_needs,
-            (residual_need, unrelated_need),
+            (unrelated_need, residual_need),
         )
 
     def test_v23_terminal_reflection_requires_model_authored_finalize(self) -> None:
@@ -2956,6 +2970,7 @@ class ReflectionRoleAdapterTests(TestCase):
         self.assertLess(len(json.dumps(payload["compact_context"])), 24_000)
 
     def test_critic_masks_identity_in_accepted_output_before_meta(self) -> None:
+        from tests.scheme_evolution_test_support import make_trajectory
         caller = ScriptedRoleCaller(
             [
                 {
@@ -2987,7 +3002,7 @@ class ReflectionRoleAdapterTests(TestCase):
 
         reflection = critic.critique(
             plan=default_information_plan(),
-            trajectories=(),
+            trajectories=(make_trajectory("masked_fixture", 2.5, True, MagnitudeClass.TWO_TO_THREE),),
             metrics=metrics,
         )
 

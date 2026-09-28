@@ -31,6 +31,12 @@ from stock_opportunity_agent.data.resolution import (
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_reflection_memory import (
+    ReflectionItem,
+    ReflectionMemoryIndex,
+    reflection_items_from_dict,
+    validate_source_snapshot,
+)
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     SignalBatchResult,
@@ -2048,8 +2054,15 @@ class PredictionSelfReflection:
     ignored_evidence: tuple[str, ...] = ()
     missing_information: tuple[str, ...] = ()
     plan_issues: tuple[str, ...] = ()
+    reflection_items: tuple[ReflectionItem, ...] = ()
+    source_identity: str | None = None
+    source_snapshot: Mapping[str, Any] | None = None
+    no_findings_reason: str | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "reflection_items", tuple(self.reflection_items))
+        if self.source_identity is not None or self.source_snapshot is not None:
+            object.__setattr__(self, "source_snapshot", validate_source_snapshot(self.source_identity, self.source_snapshot))
         for name in (
             "decision_drivers",
             "why_prediction_failed",
@@ -2061,7 +2074,7 @@ class PredictionSelfReflection:
             object.__setattr__(self, name, tuple(str(item) for item in getattr(self, name)))
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "prediction_outcome": {"correct": self.correct},
             "decision_drivers": list(self.decision_drivers),
             "why_prediction_failed": list(self.why_prediction_failed),
@@ -2070,6 +2083,14 @@ class PredictionSelfReflection:
             "missing_information": list(self.missing_information),
             "plan_issues": list(self.plan_issues),
         }
+        if self.reflection_items or self.no_findings_reason is not None:
+            value["reflection_items"] = [item.to_dict() for item in self.reflection_items]
+        if self.source_identity is not None:
+            value["source_identity"] = self.source_identity
+            value["source_snapshot"] = deepcopy(dict(self.source_snapshot or {}))
+        if self.no_findings_reason is not None:
+            value["no_findings_reason"] = self.no_findings_reason
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PredictionSelfReflection":
@@ -2109,6 +2130,10 @@ class PredictionSelfReflection:
             ignored_evidence=_json_string_array(data, "ignored_evidence"),
             missing_information=_json_string_array(data, "missing_information"),
             plan_issues=_json_string_array(data, "plan_issues"),
+            reflection_items=reflection_items_from_dict(data.get("reflection_items", ())),
+            source_identity=data.get("source_identity"),
+            source_snapshot=data.get("source_snapshot"),
+            no_findings_reason=data.get("no_findings_reason"),
         )
 
 
@@ -4891,6 +4916,9 @@ class PlanReflection:
     misleading_signals: tuple[str, ...] = ()
     missing_information_needs: tuple[str, ...] = ()
     next_explorations: tuple[str, ...] = ()
+    reflection_items: tuple[ReflectionItem, ...] = ()
+    selected_reflection_refs: tuple[str, ...] = ()
+    no_findings_reason: str | None = None
 
     def __post_init__(self) -> None:
         for name in (
@@ -4904,7 +4932,7 @@ class PlanReflection:
             object.__setattr__(self, name, tuple(str(item) for item in getattr(self, name)))
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "successful_patterns": list(self.successful_patterns),
             "failed_patterns": list(self.failed_patterns),
             "repeated_failure_modes": list(self.repeated_failure_modes),
@@ -4912,6 +4940,12 @@ class PlanReflection:
             "missing_information_needs": list(self.missing_information_needs),
             "next_explorations": list(self.next_explorations),
         }
+        if self.reflection_items or self.selected_reflection_refs or self.no_findings_reason is not None:
+            value["reflection_items"] = [item.to_dict() for item in self.reflection_items]
+            value["selected_reflection_refs"] = list(self.selected_reflection_refs)
+        if self.no_findings_reason is not None:
+            value["no_findings_reason"] = self.no_findings_reason
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PlanReflection":
@@ -4939,6 +4973,9 @@ class PlanReflection:
                 data, "missing_information_needs"
             ),
             next_explorations=_json_string_array(data, "next_explorations"),
+            reflection_items=reflection_items_from_dict(data.get("reflection_items", ())),
+            selected_reflection_refs=tuple(data.get("selected_reflection_refs", ())),
+            no_findings_reason=data.get("no_findings_reason"),
         )
 
 
@@ -5709,6 +5746,9 @@ class RoundMetaEntry:
     missing_capabilities: tuple[str, ...] = ()
     search_implications: tuple[str, ...] = ()
     evidence_refs: tuple[str, ...] = ()
+    reflection_items: tuple[ReflectionItem, ...] = ()
+    selected_reflection_refs: tuple[str, ...] = ()
+    no_findings_reason: str | None = None
 
     def __post_init__(self) -> None:
         # Negative ids are the reserved in-memory range for imported
@@ -5744,7 +5784,7 @@ class RoundMetaEntry:
             )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value = {
             "round_id": self.round_id,
             "plan_reflections": [
                 item.to_dict() for item in self.plan_reflections
@@ -5765,6 +5805,12 @@ class RoundMetaEntry:
             "search_implications": list(self.search_implications),
             "evidence_refs": list(self.evidence_refs),
         }
+        if self.reflection_items or self.selected_reflection_refs or self.no_findings_reason is not None:
+            value["reflection_items"] = [item.to_dict() for item in self.reflection_items]
+            value["selected_reflection_refs"] = list(self.selected_reflection_refs)
+        if self.no_findings_reason is not None:
+            value["no_findings_reason"] = self.no_findings_reason
+        return value
 
     def to_model_dict(self) -> dict[str, Any]:
         """Return the additive FIFO with attribution-safe Plan reflections."""
@@ -5790,7 +5836,7 @@ class RoundMetaEntry:
             raise ValidationError(
                 "RoundMetaEntry is missing fields: " + ", ".join(missing)
             )
-        allowed = required | {"plan_reflections"}
+        allowed = required | {"plan_reflections", "reflection_items", "selected_reflection_refs", "no_findings_reason"}
         if set(data) - allowed:
             raise ValidationError("RoundMetaEntry contains unknown fields")
         for field_name in (
@@ -5837,6 +5883,9 @@ class RoundMetaEntry:
             ),
             search_implications=_json_string_array(data, "search_implications"),
             evidence_refs=_json_string_array(data, "evidence_refs"),
+            reflection_items=reflection_items_from_dict(data.get("reflection_items", ())),
+            selected_reflection_refs=tuple(data.get("selected_reflection_refs", ())),
+            no_findings_reason=data.get("no_findings_reason"),
         )
 
     def append_plan_reflections(
@@ -5862,6 +5911,9 @@ class RoundMetaEntry:
             missing_capabilities=self.missing_capabilities,
             search_implications=self.search_implications,
             evidence_refs=self.evidence_refs,
+            reflection_items=self.reflection_items,
+            selected_reflection_refs=self.selected_reflection_refs,
+            no_findings_reason=self.no_findings_reason,
         )
 
 
@@ -5890,11 +5942,25 @@ class PlanMetaMemory:
         self._entries.append(entry)
         self._entries = self._entries[-self.maxlen :]
 
-    def model_view(self, *, max_chars: int = 48_000) -> tuple[Mapping[str, Any], ...]:
-        """Serialize the complete retained additive FIFO for model consumers."""
-
-        del max_chars
+    def archive_view(self) -> tuple[Mapping[str, Any], ...]:
+        """Serialize the complete retained FIFO for local audit and fingerprints."""
         return tuple(entry.to_model_dict() for entry in self._entries)
+
+    def model_view(self, *, max_bytes: int = 48_000, max_items: int = 48) -> dict[str, Any]:
+        """Return the bounded model working view; originals require indexed reads."""
+        return self.brief_view(max_bytes=max_bytes, max_items=max_items)
+
+    def reflection_index(self) -> ReflectionMemoryIndex:
+        """Build an exact retrospective catalog without mutating archived entries."""
+        return ReflectionMemoryIndex.from_entries(entry.to_model_dict() for entry in self._entries)
+
+    def brief_view(self, *, max_bytes: int = 48_000, max_items: int = 48) -> dict[str, Any]:
+        """Return a bounded working view, separate from the full archival view."""
+        return self.reflection_index().brief_view(max_bytes=max_bytes, max_items=max_items)
+
+    def read_refs(self, refs: Iterable[str], *, role: str, max_bytes: int = 16_000) -> dict[str, Any]:
+        """Read complete approved source units through registered references only."""
+        return self.reflection_index().read_refs(refs, role=role, max_bytes=max_bytes)
 
 
 @dataclass(frozen=True)
@@ -5920,14 +5986,17 @@ class EvolutionPriors:
 DEFAULT_EVOLUTION_PRIORS = EvolutionPriors(
     reflect_round=(
         "Reflect only on the supplied completed Information Plan experiments. "
-        "Add horizontal cross-Plan patterns, prediction errors, Signal observations, "
-        "missing capabilities, and testable search implications with evidence refs. "
-        "Do not rewrite the preserved original case or vertical Plan layers."
+        "Select unchanged lower-level reflection items or add individually sourced "
+        "horizontal facts, hypotheses and actions with concrete briefs, scope, "
+        "limitations and counterreferences. Canonical outcome facts constrain "
+        "success/failure claims; citations do not prove research interpretations. "
+        "Do not rewrite preserved original case or vertical Plan layers."
     ),
     propose_plan=(
         "Propose one complete Information Plan S=(B,H_init,H_reflect,H_analyse). "
-        "Use the quality-diverse parents and every layer of the additive FIFO "
-        "experiment lessons, make an attributable change, and never change labels, "
+        "Use the quality-diverse parents and bounded sourced reflection briefs. "
+        "Read approved original units by reference when needed, preserve limitations "
+        "and counterexamples, make an attributable change, and never change labels, "
         "datasets, metrics, priors, runtime guards, or the stable Signal Registry."
     ),
     mine_signal=(

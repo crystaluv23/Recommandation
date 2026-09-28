@@ -1,0 +1,250 @@
+{
+  "external_model_calls": 0,
+  "historical_contracts": {
+    "v126": {
+      "request_hash": "006613a63ddc8e2205f914113ee079ebc44be8b9a106be1c53edcae410eee511",
+      "selection_residual_contract_failure_present": true
+    },
+    "v138": [
+      {
+        "historic_reference_changes_were_unauthorized": true,
+        "historic_required_paths": [
+          "supporting_evidence[13].claim"
+        ],
+        "model_changed_reference_paths": [
+          "supporting_evidence[13].evidence_index"
+        ],
+        "request_hash": "c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991"
+      },
+      {
+        "historic_reference_changes_were_unauthorized": true,
+        "historic_required_paths": [
+          "supporting_evidence[8].claim",
+          "supporting_evidence[9].claim"
+        ],
+        "model_changed_reference_paths": [
+          "supporting_evidence[8].evidence_index",
+          "supporting_evidence[9].evidence_index"
+        ],
+        "request_hash": "8119a7cd98bc613f53f553b7de7bd90b2c8d5d5b2d31aa15788983ec75573d4b"
+      }
+    ]
+  },
+  "historical_reflections": {
+    "c02_technical_exclusion_indices": [
+      13,
+      15,
+      16,
+      17,
+      18
+    ],
+    "case_count": 48,
+    "false_success": {
+      "canonical_assessment": "severe_false_negative",
+      "canonical_binary_correct": false,
+      "case_index": 21,
+      "historic_critic_text": "Correct negative calls that used the absence of a qualifying order, negative revenue acceleration, and a large drawdown to support the non-surge direction, as in case 21, even though the realized outcome was a surge.",
+      "plan_id": "plan_r0001_c01"
+    },
+    "plan_count": 2,
+    "raw_meta_compact_utf8_bytes": 249105
+  },
+  "incremental_citation_repair": {
+    "accepted_first_repair_preserved": true,
+    "current_validator_authorizes_recorded_coordinate_repair": true,
+    "first_delta_output_utf8_bytes": 170,
+    "first_patch_operations": 1,
+    "full_state_output_utf8_bytes": 9653,
+    "input_snapshot_unmodified": true,
+    "production_correction_loop_calls": 2,
+    "production_correction_stages": [
+      "research_controller_reflect",
+      "research_controller_reflect_correction"
+    ],
+    "rejections": {
+      "stale_snapshot": "patch base_hash does not match the issued snapshot",
+      "unrelated_edit": "patch operation is outside typed authority: replace decision",
+      "whole_collection_replacement": "patch operation is outside typed authority: replace supporting_evidence"
+    },
+    "remaining_quantity_obligation_after_coordinate_repair": true,
+    "request_hash": "c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991",
+    "second_delta_output_utf8_bytes": 520,
+    "second_patch_only_adds_missing_same_claim_reference": true,
+    "second_patch_operations": 1,
+    "unrelated_fields_preserved": true,
+    "validation_scope": "production patch authorization, typed state loading and exact recorded claim quantity union; not a full historical case rerun"
+  },
+  "limitations": [
+    "New-format patches and briefs are scripted fixtures; no new model output was generated.",
+    "UTF-8 payload byte counts are not tokenizer counts or measured provider usage.",
+    "Offline contract acceptance does not establish brief quality or research gain."
+  ],
+  "network_attempts": 0,
+  "production_proposer": {
+    "after_directory_and_case_read_payload_utf8_bytes": 70816,
+    "directory_then_exact_case_read_then_plan": true,
+    "initial_brief_payload_utf8_bytes": 55765,
+    "initial_payload_reduction_fraction": 0.8366200731862382,
+    "original_case_exactly_matches_retained_model_view": true,
+    "production_stages": [
+      "information_plan_propose",
+      "information_plan_propose",
+      "information_plan_propose"
+    ],
+    "raw_payload_comparison_not_provider_token_usage": true,
+    "retained_case_count": 72,
+    "retained_round_ids": [
+      -1,
+      1
+    ],
+    "returned_plan_id": "plan_r0002_c01",
+    "same_payload_with_full_retained_meta_utf8_bytes": 341321,
+    "scripted_model_calls": 3,
+    "source_references_chosen_only_from_model_visible_directory": true
+  },
+  "production_reflection_consumer_sizes": {
+    "plan_r0001_c01": {
+      "after_disclosure_payload_utf8_bytes": 104354,
+      "exact_lower_case_read_then_selected": true,
+      "initial_payload_utf8_bytes": 88762,
+      "scripted_model_calls": 3,
+      "stage": "plan_critic",
+      "top_level_field_utf8_bytes": {
+        "jev_calibration_diagnostics": 978,
+        "magnitude_diagnostics": 939,
+        "memory_access": 55,
+        "memory_disclosures": 2,
+        "metrics": 357,
+        "parent_comparisons": 2,
+        "plan": 7734,
+        "reflection_briefs": 47450,
+        "source_catalog": 15552,
+        "source_coverage": 46,
+        "technical_completion": 303,
+        "trajectories": 15109
+      }
+    },
+    "plan_r0001_c02": {
+      "after_disclosure_payload_utf8_bytes": 103146,
+      "exact_lower_case_read_then_selected": true,
+      "initial_payload_utf8_bytes": 87734,
+      "scripted_model_calls": 3,
+      "stage": "plan_critic",
+      "top_level_field_utf8_bytes": {
+        "jev_calibration_diagnostics": 1008,
+        "magnitude_diagnostics": 938,
+        "memory_access": 55,
+        "memory_disclosures": 2,
+        "metrics": 370,
+        "parent_comparisons": 2,
+        "plan": 7645,
+        "reflection_briefs": 47672,
+        "source_catalog": 15540,
+        "source_coverage": 46,
+        "technical_completion": 303,
+        "trajectories": 13918
+      }
+    },
+    "round": {
+      "after_disclosure_payload_utf8_bytes": 106238,
+      "exact_lower_case_read_then_selected": true,
+      "initial_payload_utf8_bytes": 90826,
+      "scripted_model_calls": 3,
+      "stage": "round_reflect",
+      "top_level_field_utf8_bytes": {
+        "fixed_prior": 32,
+        "memory_access": 55,
+        "memory_disclosures": 2,
+        "parent_comparisons_by_plan_id": 41,
+        "records": 26869,
+        "reflection_briefs": 47980,
+        "round_id": 1,
+        "source_catalog": 15631,
+        "source_coverage": 46
+      }
+    }
+  },
+  "reflection_memory": {
+    "all_deferred_experiences_discoverable": true,
+    "authored_brief_is_scripted_fixture": true,
+    "brief_counts": {
+      "available": 470,
+      "deferred": 466,
+      "included": 4
+    },
+    "brief_to_item_to_original_case_verified": true,
+    "case_originals_exactly_recoverable": true,
+    "rejections": {
+      "actual_false_success": "reflection outcome claim contradicts canonical feedback",
+      "blind_role_read": "role is not authorized to read retrospective reflection",
+      "filesystem_reference": "reflection reference is not in the authorized catalog",
+      "missing_reference": "reflection reference is not in the authorized catalog",
+      "oversized_source_read": "complete reflection sources exceed the read byte budget",
+      "stale_item_hash": "reflection item content hash mismatch",
+      "technical_research_attribution": "technical exclusion cannot support research outcome attribution"
+    },
+    "selected_brief_limit_bytes": 12000,
+    "selected_brief_utf8_bytes": 9151,
+    "source_count": 1038,
+    "source_directory_page_limit_bytes": 8000,
+    "source_directory_pages": 133,
+    "sources_checked_does_not_claim_verified_truth": true
+  },
+  "schema_version": "incremental-reflection-memory-offline-v1",
+  "source_hashes": [
+    {
+      "path": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v126/requests/006613a63ddc8e2205f914113ee079ebc44be8b9a106be1c53edcae410eee511.json",
+      "sha256_after": "3608c9f8e506d37d250939857f1f85c36314bc52011f52b04951899672752dc6",
+      "sha256_before": "3608c9f8e506d37d250939857f1f85c36314bc52011f52b04951899672752dc6",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/responses/8119a7cd98bc613f53f553b7de7bd90b2c8d5d5b2d31aa15788983ec75573d4b.json",
+      "sha256_after": "7355ab497e70a0e316bfad69036628f93bb4687b5e77c32f7875ad6cf34fb6c7",
+      "sha256_before": "7355ab497e70a0e316bfad69036628f93bb4687b5e77c32f7875ad6cf34fb6c7",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/cache/responses/c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991.json",
+      "sha256_after": "f645c0f5f668152e16f7a96fed20e9682de5dbfadea47c16ca381bf8407e5ab9",
+      "sha256_before": "f645c0f5f668152e16f7a96fed20e9682de5dbfadea47c16ca381bf8407e5ab9",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/8119a7cd98bc613f53f553b7de7bd90b2c8d5d5b2d31aa15788983ec75573d4b.json",
+      "sha256_after": "9c22e15a83f54a790e7943d8d2e97c7114fc345e4871c0ff2fbb5fe35997b497",
+      "sha256_before": "9c22e15a83f54a790e7943d8d2e97c7114fc345e4871c0ff2fbb5fe35997b497",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991.json",
+      "sha256_after": "b17694741d1e80ff162289f5dc8370a255428c834686143e5f68c483c0034b94",
+      "sha256_before": "b17694741d1e80ff162289f5dc8370a255428c834686143e5f68c483c0034b94",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/meta/round-0001.json",
+      "sha256_after": "706145daeb3bdbb733d8116fa1e58df626e1026f13200365cb42b3a44478fcd5",
+      "sha256_before": "706145daeb3bdbb733d8116fa1e58df626e1026f13200365cb42b3a44478fcd5",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/plans/plan_r0001_c01/record.json",
+      "sha256_after": "42816aa820e6ad91076f27318239381eb51559b58df9d3c1e259e58c8550d311",
+      "sha256_before": "42816aa820e6ad91076f27318239381eb51559b58df9d3c1e259e58c8550d311",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/plans/plan_r0001_c02/record.json",
+      "sha256_after": "a3dc91edf0e571c436f78002deb9a3ce3f5ab7fcdc2fc1bf57c9c334c3d90c17",
+      "sha256_before": "a3dc91edf0e571c436f78002deb9a3ce3f5ab7fcdc2fc1bf57c9c334c3d90c17",
+      "unchanged": true
+    },
+    {
+      "path": "runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260926-v141/requests/0e93e5f5e03f91018387a80d2e4bf1295fc8b40059bce1d5dc1d890c4ec9c6dd.json",
+      "sha256_after": "536075f10789be94aba0a1921d542754f996d00225e908c1d3393b1bde8d42e3",
+      "sha256_before": "536075f10789be94aba0a1921d542754f996d00225e908c1d3393b1bde8d42e3",
+      "unchanged": true
+    }
+  ]
+}

@@ -17,6 +17,8 @@ class SignalRoleAdapterTests(TestCase):
                     "source_refs": ["update-target-001"],
                     "reflection": "The target had no paired effectiveness gain.",
                     "unresolved_questions": [],
+                    "kind": "hypothesis",
+                    "brief": "Without paired effectiveness gain, retain this counterexample; transfer is untested.",
                 }
             ],
             "lesson_additions": [],
@@ -144,7 +146,7 @@ class SignalRoleAdapterTests(TestCase):
                 "episode_reflections[0]",
                 "episode_reflections[1]",
                 "episode_reflections",
-                "lesson_additions[0]",
+                "lesson_additions[0].support_refs",
             ],
         )
         self.assertIn("top-level feedback_ref", caller.calls[0]["system_prompt"])
@@ -172,7 +174,18 @@ class SignalRoleAdapterTests(TestCase):
             ],
             "lesson_additions": [],
         }
-        caller = ScriptedRoleCaller([initial, corrected])
+        from tests.test_evolution_state_patch import PatchCaller, patch
+        for output in (initial, corrected):
+            output["episode_reflections"][0]["kind"] = "hypothesis"
+            output["episode_reflections"][0]["brief"] = output["episode_reflections"][0]["reflection"]
+
+        def correct(request):
+            return patch(request["payload"]["output_patch_contract"], {
+                "op": "replace", "path": "episode_reflections[0]",
+                "value": corrected["episode_reflections"][0],
+            })
+
+        caller = PatchCaller(initial, correct)
 
         step = LLMSignalMiningModel(caller).reflect_feedback(
             {
@@ -2432,7 +2445,7 @@ class SignalRoleAdapterTests(TestCase):
 
         with self.assertRaisesRegex(
             CandidateProposalRejected,
-            "correction changed unrelated valid content",
+            "outside typed authority",
         ):
             LLMInformationPlanProposer(
                 ScriptedRoleCaller([invalid, drifted])
@@ -2451,7 +2464,7 @@ class SignalRoleAdapterTests(TestCase):
         deleted_request["B"]["requests"].pop(1)
         with self.assertRaisesRegex(
             CandidateProposalRejected,
-            "correction changed unrelated valid content",
+            "outside typed authority",
         ):
             LLMInformationPlanProposer(
                 ScriptedRoleCaller([invalid, deleted_request])
@@ -2971,9 +2984,23 @@ class SignalRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {"selections": [guidance, duplicate, negative]},
-                {"selections": [drifted_guidance, financing, drifted_negative]},
+                lambda request: {
+                    "base_hash": request["payload"]["output_patch_contract"]["base_hash"],
+                    "operations": [
+                        {"op": "replace", "path": "selections[0]", "value": drifted_guidance},
+                        {"op": "replace", "path": "selections[1]", "value": financing},
+                        {"op": "replace", "path": "selections[2]", "value": drifted_negative},
+                    ],
+                },
+                lambda request: {
+                    "base_hash": request["payload"]["output_patch_contract"]["base_hash"],
+                    "operations": [
+                        {"op": "replace", "path": "selections[1]", "value": financing},
+                    ],
+                },
             ]
         )
+        caller.max_structured_corrections = 2
 
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory) / "signals")
@@ -2998,6 +3025,8 @@ class SignalRoleAdapterTests(TestCase):
         self.assertEqual(result.value[2].selection_reason, negative["selection_reason"])
         self.assertEqual(feedback["validation_contract"], "structured-validation-v1")
         self.assertIn("duplicates", feedback["validation_error"])
+        self.assertEqual(len(caller.calls), 3)
+        self.assertIn("outside typed authority", caller.calls[2]["payload"]["patch_validation_error"])
 
     def test_h3_only_unmatched_comparator_context_forces_inconclusive(self) -> None:
         rejected = {

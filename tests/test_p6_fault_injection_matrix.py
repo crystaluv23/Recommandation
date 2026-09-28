@@ -773,12 +773,9 @@ class S10FailurePropagationTest(unittest.TestCase):
         )
         step = predictor.reflect({"summary": "context"}, prediction, GroundTruth(12.0))
         self.assertFalse(step.value.correct)
-        self.assertTrue(
-            any(
-                "posthoc_reflection_validation_failed" in issue
-                for issue in step.value.plan_issues
-            )
-        )
+        self.assertIn("posthoc_reflection_validation_failed", step.value.no_findings_reason)
+        self.assertEqual(step.value.reflection_items, ())
+        self.assertEqual(step.value.plan_issues, ())
 
 
 class S11EmptyMiningNoOpCycleTest(unittest.TestCase):

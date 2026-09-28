@@ -9,7 +9,13 @@
 - Separate reliable execution, correct feedback consumption, and independent research gain. A committed cycle can contain failed subgoals; a Signal can be promoted without being used; use does not prove benefit. Tests and local replay never prove a live successor completed.
 - Validate real producer-to-consumer record shapes and real production construction. Do not mock the integration boundary under acceptance. Include post-commit work, restart, imported history, next-cycle reads, and context growth when those paths are affected.
 - Classify upstream data, protocol, execution, and capability failures before generating research lessons. Keep their cost in formal frozen-cohort results while preventing synthetic technical abstentions from becoming invented research causes.
-- Preserve full immutable history, but treat a bounded model-facing read view as a separate design problem. Current additive-history constraints must be reviewed top-down before introducing projections; no silent truncation, history deletion, or budget-only workaround.
+- Preserve full immutable history and the user-approved bounded model-facing read view as separate contracts. Generate actionable briefs with original reflections, select by exact reference, and retrieve complete anonymous units progressively; no silent truncation, history deletion, or budget-only workaround.
 - Converge on a comparable baseline before adding more mechanisms. Use the existing independent paired/four-arm confirmation contract to judge gain. If reliable independent evaluation still finds no gain, revisit the research hypothesis rather than endlessly extending guards.
 
 Evidence and qualifications: [multi-iteration retrospective](../../reports/self-evolution-retrospective-20260927.md). These are work and reporting rules, not newly implemented runtime gates or changed scoring/promotion semantics.
+
+## Contract and memory acceptance (2026-09-28)
+
+- Consult [incremental repair and sourced memory](../experiences/incremental-repair-and-sourced-memory.md) for prompt/validator/repair consistency, typed snapshot-bound edits, and unchanged valid siblings.
+- Measure complete production payloads for proposer, critics and Slow consumers; bound catalogs and diagnostics as well as briefs. Verify case discovery and exact source reads within the advertised budget.
+- Verify stable source identity across generation, persistence, restart and rebase. Citations establish provenance; neither a higher reflection level nor model confidence establishes truth or future benefit.

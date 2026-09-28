@@ -279,7 +279,142 @@ def make_contract() -> EvolutionRunContract:
     )
 
 
+def _recorded_reflection_output(output, payload, stage):
+    """Migrate legacy text fixtures using only sources in the issued catalog.
+
+    Fixture text is retained exactly as both detail and brief. These are local
+    scripted examples, not evaluations of authored brief quality. Deliberately
+    malformed envelopes remain untouched for negative tests.
+    """
+
+    if stage.startswith("signal_mining_reflect"):
+        value = json.loads(json.dumps(output))
+        for key, text_field in (("episode_reflections", "reflection"), ("lesson_additions", "guidance")):
+            for item in value.get(key, ()):
+                if isinstance(item, dict):
+                    item.setdefault("brief", item.get(text_field, ""))
+                    item.setdefault("kind", "hypothesis")
+        return value
+    if "reflection_items" in output or "source_catalog" not in payload:
+        return output
+    if stage.startswith("blind_predictor_posthoc_reflect"):
+        level = "case"
+        categories = (
+            "decision_drivers", "why_prediction_failed", "misleading_signals",
+            "ignored_evidence", "missing_information", "plan_issues",
+        )
+        values = output
+    elif stage.startswith("plan_critic"):
+        level = "plan"
+        categories = (
+            "successful_patterns", "failed_patterns", "repeated_failure_modes",
+            "misleading_signals", "missing_information_needs", "next_explorations",
+        )
+        values = output
+    elif stage.startswith("round_reflect"):
+        level = "round"
+        categories = (
+            "successful_patterns", "failed_patterns", "false_positive_patterns",
+            "false_negative_patterns", "useful_signals", "suspicious_signals",
+            "missing_capabilities", "search_implications",
+        )
+        values = {
+            **output.get("plan_level", {}),
+            "false_positive_patterns": output.get("prediction_errors", {}).get("false_positive", []),
+            "false_negative_patterns": output.get("prediction_errors", {}).get("false_negative", []),
+            "useful_signals": output.get("signal_observations", {}).get("useful", []),
+            "suspicious_signals": output.get("signal_observations", {}).get("suspicious", []),
+            "missing_capabilities": output.get("signal_observations", {}).get("missing_capabilities", []),
+            "search_implications": output.get("search_implications", []),
+        }
+    else:
+        return output
+    if not any(key in output for key in (*categories, "plan_level")):
+        return output
+    sources = [
+        row for row in payload["source_catalog"]
+        if not row.get("canonical_outcomes", {}).get("technical_exclusion")
+        and (level == "case" or row["level"] == "case" or (level == "round" and row["level"] == "plan"))
+    ]
+    items = []
+    success_categories = {"successful_patterns", "decision_drivers"}
+    failure_categories = {"failed_patterns", "why_prediction_failed", "false_positive_patterns", "false_negative_patterns"}
+    for category in categories:
+        for text in values.get(category, ()):
+            if not sources or not isinstance(text, str):
+                return output
+            source = sources[0]
+            outcome_claims = []
+            if category in success_categories | failure_categories:
+                desired = category in success_categories
+                matches = [
+                    (row, axis) for row in sources for axis in ("binary", "magnitude")
+                    if row.get("canonical_outcomes", {}).get(axis) is desired
+                ]
+                if not matches:
+                    return output
+                source, axis = matches[0]
+                outcome_claims = [{"source_ref": source["source_ref"], "axis": axis, "correct": desired}]
+            items.append({
+                "category": category, "kind": "hypothesis", "brief": text, "detail": text,
+                "scope": {"case_refs": list(source["case_refs"]), "plan_refs": list(source["plan_refs"]), "conditions": "Explicit offline recorded fixture."},
+                "limitations": ["Recorded fixture conversion; not model-authored brief-quality evidence."],
+                "source_refs": [source["source_ref"]], "counter_refs": [], "outcome_claims": outcome_claims,
+            })
+    return {"reflection_items": items, "selected_reflection_refs": []}
+
+
+def _recorded_output_patch(base, output, contract):
+    """Replay unique Signal rows as validator-authorized atomic modules."""
+
+    from stock_opportunity_agent.research.evolution_state_patch import (
+        recorded_response_patch,
+    )
+
+    if set(base) != {"selections"} or set(output) != {"selections"}:
+        return recorded_response_patch(base, output)
+    old_rows, new_rows = base["selections"], output["selections"]
+    if not isinstance(old_rows, list) or not isinstance(new_rows, list) or any(
+        not isinstance(row, Mapping) or not isinstance(row.get("signal_ref"), str)
+        for row in [*old_rows, *new_rows]
+    ):
+        return recorded_response_patch(base, output)
+    old_refs = [row["signal_ref"] for row in old_rows]
+    new_refs = [row["signal_ref"] for row in new_rows]
+    if len(set(old_refs)) != len(old_refs) or len(set(new_refs)) != len(new_refs):
+        return recorded_response_patch(base, output)
+    if not set(new_refs) <= set(old_refs):
+        return recorded_response_patch(base, output)
+    if [ref for ref in new_refs if ref in old_refs] != [ref for ref in old_refs if ref in new_refs]:
+        raise ValidationError("recorded selection reorder requires an explicit delta")
+    operations = []
+    for index, old in enumerate(old_rows):
+        path = f"selections[{index}]"
+        if old["signal_ref"] not in new_refs:
+            operations.append({"op": "remove", "path": path})
+            continue
+        new = new_rows[new_refs.index(old["signal_ref"])]
+        if old == new:
+            continue
+        if any(permission["op"] == "replace" and permission["path"] == path for permission in contract["allowed_operations"]):
+            operations.append({"op": "replace", "path": path, "value": new})
+        else:
+            for operation in recorded_response_patch({"row": old}, {"row": new})["operations"]:
+                operations.append({**operation, "path": path + operation["path"][3:]})
+    for new in new_rows:
+        if new["signal_ref"] not in old_refs:
+            operations.append({"op": "append", "path": "selections", "value": new})
+    return {"base_hash": contract["base_hash"], "operations": operations}
+
+
 class ScriptedRoleCaller:
+    """Replay recorded full outputs through the explicitly issued delta wire.
+
+    Historical fixtures remain full objects for readability. This offline-only
+    adapter translates them when production explicitly requests a patch; it
+    does not relax the production parser or prove model patch generation.
+    """
+
     def __init__(self, outputs: list[dict[str, object]]) -> None:
         self.outputs = list(outputs)
         self.stages: list[str] = []
@@ -288,7 +423,18 @@ class ScriptedRoleCaller:
     def complete_json(self, **kwargs):
         self.stages.append(str(kwargs["stage"]))
         self.calls.append(dict(kwargs))
-        return self.outputs.pop(0), AgentUsage(llm_calls=1, tokens=5, cost=0.01)
+        output = self.outputs.pop(0)
+        if callable(output):
+            output = output(kwargs)
+        payload = kwargs["payload"]
+        output = _recorded_reflection_output(output, payload, str(kwargs["stage"]))
+        contract = payload.get("output_patch_contract")
+        if contract is not None and "operations" not in output:
+            base = payload
+            for key in contract["base_location"].split("."):
+                base = base[key]
+            output = _recorded_output_patch(base, output, contract)
+        return output, AgentUsage(llm_calls=1, tokens=5, cost=0.01)
 
 
 __all__ = [name for name in globals() if not name.startswith("__")]

@@ -198,7 +198,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
 
         with self.assertRaisesRegex(
-            ValidationError, "information_plan_propose returned"
+            ValidationError, "information_plan_propose is missing B"
         ):
             proposer.propose(
                 round_id=1,
@@ -222,7 +222,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                         "H_analyse": [{"statement": "three"}],
                     },
                     {
-                        "B": {"purpose": "still invalid"},
+                        "B": {"purpose": "not a Basic Info policy"},
                         "H_init": [{"statement": "one"}],
                         "H_reflect": [{"statement": "two"}],
                         "H_analyse": [{"statement": "three"}],
@@ -233,7 +233,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
 
         with self.assertRaisesRegex(
             ValidationError,
-            "information_plan_propose returned incompatible semantic fields",
+            "H_init must be a nonempty string",
         ):
             proposer.propose(
                 round_id=1,
@@ -1488,7 +1488,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
             sort_keys=True,
             separators=(",", ":"),
-        )[:-1] + ',"validation_feedback":'
+        )[:-1] + ","
         for call in caller.calls:
             rendered = json.dumps(
                 call["payload"], sort_keys=True, separators=(",", ":")
@@ -1584,9 +1584,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 "v20_initialize_layered_feedback.json"
             ).read_text(encoding="utf-8")
         )
+        shape_corrected = json.loads(json.dumps(fixture["invalid_output"]))
+        shape_corrected["supporting_evidence"][0]["kind"] = "basic_info"
         caller = ScriptedRoleCaller(
-            [fixture["invalid_output"], fixture["corrected_output"]]
+            [fixture["invalid_output"], shape_corrected, fixture["corrected_output"]]
         )
+        caller.max_structured_corrections = 2
         basic_info = {
             "requests": [
                 {
@@ -1604,7 +1607,9 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             default_information_plan(), basic_info
         )
 
-        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(len(caller.calls), 3)
+        self.assertIn("numeric quantities", validation_error(caller.calls[2]))
+        self.assertEqual(caller.calls[2]["payload"]["validation_feedback"]["invalid_output"], shape_corrected)
         error = validation_error(caller.calls[1])
         self.assertIn("unknown kind None", error)
         self.assertNotIn("numeric quantities", error)
@@ -1627,7 +1632,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(len(required_paths), len(set(required_paths)))
         self.assertIn("supporting_evidence[0].kind", required_paths)
         self.assertIn(
-            "compare every required_change_paths",
+            "outside required_change_paths and permitted_dependency_paths",
             feedback["completion_check"],
         )
         self.assertNotIn("quantity_literal_checks", feedback)
@@ -2566,7 +2571,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         invalid = {
             "hypotheses": ["A material catalyst may support repricing."],
             "current_beliefs": [
-                f"Redundant source-summary belief {index}." for index in range(25)
+                f"Redundant source-summary belief {chr(65 + index)}." for index in range(25)
             ],
             "supporting_evidence": [],
             "contradictions": [],
@@ -2581,7 +2586,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         }
         corrected = {
             "hypotheses": ["A material catalyst may support repricing."],
-            "current_beliefs": ["The catalyst remains unconfirmed."],
+            "current_beliefs": list(invalid["current_beliefs"]),
             "supporting_evidence": [],
             "contradictions": [],
             "resolved_questions": ["What is the current construction progress?"],
@@ -2614,6 +2619,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             basic_info,
         )
 
+        self.assertEqual(initialized.value.current_beliefs, tuple(invalid["current_beliefs"]))
         error = validation_error(caller.calls[1])
         self.assertIn("already answered by visible Basic Info", error)
         self.assertIn("matching_projection_id='projection_analyst'", error)
@@ -3186,7 +3192,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 "decision": "continue",
             }
 
-        caller = ScriptedRoleCaller([state(invalid_need), state(corrected_need)])
+        caller = ScriptedRoleCaller([{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)])
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(
             datetime(2025, 7, 31, tzinfo=timezone.utc)
@@ -3340,7 +3347,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                     }
 
                 caller = ScriptedRoleCaller(
-                    [state(invalid_need), state(corrected_need)]
+                    [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
                 )
                 controller = LLMResearchController(caller)
                 controller.set_evaluation_context(
@@ -3396,7 +3404,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             }
 
         caller = ScriptedRoleCaller(
-            [state(invalid_need), state(corrected_need)]
+            [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
         )
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(
@@ -3477,7 +3486,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             }
 
         caller = ScriptedRoleCaller(
-            [state(invalid_need), state(corrected_need)]
+            [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
         )
         controller = LLMResearchController(caller)
         controller.set_evaluation_context(
@@ -3619,7 +3629,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                     }
 
                 caller = ScriptedRoleCaller(
-                    [state(invalid_need), state(corrected_need)]
+                    [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
                 )
                 controller = LLMResearchController(caller)
                 controller.set_evaluation_context(
@@ -3685,7 +3696,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         for invalid_need in rejecting_needs:
             with self.subTest(invalid_need=invalid_need):
                 caller = ScriptedRoleCaller(
-                    [state(invalid_need), state(corrected_need)]
+                    [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
                 )
                 controller = LLMResearchController(caller)
                 controller.set_evaluation_context(
@@ -3760,7 +3772,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         for invalid_need in rejecting_needs:
             with self.subTest(invalid_need=invalid_need):
                 caller = ScriptedRoleCaller(
-                    [state(invalid_need), state(corrected_need)]
+                    [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
                 )
                 controller = LLMResearchController(caller)
                 controller.set_evaluation_context(
@@ -3838,7 +3851,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         for invalid_need in rejecting_needs:
             with self.subTest(invalid_need=invalid_need):
                 caller = ScriptedRoleCaller(
-                    [state(invalid_need), state(corrected_need)]
+                    [{**state(invalid_need), "next_information_needs": [invalid_need, corrected_need]},
+                     state(corrected_need)]
                 )
                 controller = LLMResearchController(caller)
                 controller.set_evaluation_context(

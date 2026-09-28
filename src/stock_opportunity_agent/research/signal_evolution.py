@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from math import comb
@@ -23,6 +24,7 @@ from stock_opportunity_agent.data.resolution import (
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import OpenAIClientError
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     LLMSignalRunner,
@@ -594,6 +596,9 @@ def validate_slow_memory(
         if not isinstance(raw, Mapping):
             raise ValidationError(f"Slow episode {index} must be an object")
         episode = dict(raw)
+        if "brief" in episode or "kind" in episode:
+            if not isinstance(episode.get("kind"), str) or episode.get("kind") not in {"fact", "hypothesis", "action"} or not isinstance(episode.get("brief"), str) or not episode["brief"].strip():
+                raise ValidationError(f"Slow episode {index} authored brief is invalid")
         episode_ref = str(episode.get("episode_ref", ""))
         source_refs = {str(item) for item in episode.get("source_refs", ())}
         if (
@@ -615,6 +620,16 @@ def validate_slow_memory(
         if not isinstance(raw, Mapping):
             raise ValidationError(f"Slow lesson {index} must be an object")
         lesson = dict(raw)
+        if "brief" in lesson or "kind" in lesson:
+            if not isinstance(lesson.get("kind"), str) or lesson.get("kind") not in {"fact", "hypothesis", "action"} or not isinstance(lesson.get("brief"), str) or not lesson["brief"].strip():
+                raise ValidationError(f"Slow lesson {index} authored brief is invalid")
+            lower_sources = sources | episode_refs | known_lessons
+            if not set(lesson.get("support_refs", ())) <= lower_sources:
+                raise ValidationError(f"Slow lesson {index} support requires actual lower-level sources")
+            if any(lesson.get("lesson_id") in lesson.get(field, ()) for field in (
+                "support_refs", "counterevidence_refs", "qualifies_refs", "challenges_refs",
+            )):
+                raise ValidationError(f"Slow lesson {index} cannot cite itself")
         cited = {
             str(item)
             for key in (
@@ -783,6 +798,29 @@ def _prioritize_reflection_feedback(
     )
 
 
+def slow_method_memory_sources(
+    deltas: Iterable[Mapping[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Register exact authored memory originals for the existing scoped resolver."""
+    result: dict[str, dict[str, Any]] = {}
+    for delta in deltas:
+        for kind, field, identity_field in (
+            ("episode", "episode_reflections", "episode_ref"),
+            ("lesson", "lesson_additions", "lesson_id"),
+        ):
+            for value in delta.get(field, ()):
+                if not isinstance(value, Mapping) or not value.get("brief"):
+                    continue
+                ref = f"slow-memory:{int(delta.get('cycle_id', 0))}:{kind}:{value[identity_field]}"
+                if ref in result:
+                    raise ValidationError("Slow method-memory entry refs must be unique")
+                result[ref] = {
+                    "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                    "content": deepcopy(dict(value)),
+                }
+    return result
+
+
 def project_slow_method_memory(
     deltas: Iterable[Mapping[str, Any]],
     *,
@@ -826,6 +864,14 @@ def project_slow_method_memory(
     requested_refs = tuple(row[0] for row in entry_rows)
     included_refs: list[str] = []
 
+    def brief_entry(ref: str, kind: str, value: Mapping[str, Any]) -> dict[str, Any]:
+        projected = dict(value)
+        if value.get("brief") and value.get("kind") in {"fact", "hypothesis", "action"}:
+            projected.pop("reflection" if kind == "episode" else "guidance", None)
+            projected["original_ref"] = ref
+            projected["original_hash"] = _canonical_hash(value)
+        return projected
+
     def render(refs: Iterable[str]) -> dict[str, Any]:
         included = set(refs)
         projected = []
@@ -839,14 +885,14 @@ def project_slow_method_memory(
                     "memory_hash": _canonical_hash(delta),
                     "failure_ref": delta.get("failure_ref"),
                     "episode_reflections": [
-                        dict(value)
+                        brief_entry(ref, kind, value)
                         for ref, owner, kind, value in entry_rows
                         if ref in included
                         and owner == delta_index
                         and kind == "episode"
                     ],
                     "lesson_additions": [
-                        dict(value)
+                        brief_entry(ref, kind, value)
                         for ref, owner, kind, value in entry_rows
                         if ref in included
                         and owner == delta_index
@@ -3540,7 +3586,7 @@ class SignalEvolutionEngine:
                 ],
                 "relevant_raw_info": relevant_documents,
                 "capability_backlog": backlog,
-                "meta_info": list(self.meta_memory.model_view()),
+                "meta_info": list(self.meta_memory.archive_view()),
                 "mining_config": self.mining_config.to_dict(),
                 "mining_model": self._role_work_identity(self.mining_model),
                 "update_model": self._role_work_identity(self.update_model),
@@ -4404,7 +4450,7 @@ class SignalEvolutionEngine:
                         "" if prior_memory is None else _canonical_hash(prior_memory)
                     ),
                     "model": self._role_work_identity(self.mining_model),
-                    "protocol": "signal-mining-reflect-v4",
+                    "protocol": "signal-mining-reflect-v5",
                 }
             ),
             "model_view_manifest": {
@@ -4449,17 +4495,36 @@ class SignalEvolutionEngine:
                     for index in range(1, 5)
                 ]
                 try:
+                    prior_deltas = [item["slow_memory"] for item in prior[-3:]]
+                    prior_view = project_slow_method_memory(prior_deltas, budget_bytes=32_000)
+                    prior_catalog = slow_method_memory_sources(prior_deltas)
+                    prior_sources, prior_manifest = read_slow_sources(
+                        (), role_scope="reflection", source_catalog=prior_catalog,
+                        budget_bytes=32_000,
+                    )
+                    prior_manifest = {
+                        **prior_manifest,
+                        "requested_refs": list(prior_catalog),
+                        "deferred": [{"ref": ref, "reason": "authored_brief_original_on_request"} for ref in prior_catalog],
+                        "available_count": len(prior_catalog),
+                        "deferred_count": len(prior_catalog),
+                    }
+                    prior_sources, prior_manifest = self._optional_slow_source_read(
+                        model=self.mining_model, role_scope="reflection",
+                        source_catalog=prior_catalog, selected=prior_sources,
+                        manifest=prior_manifest,
+                    )
                     step = reflector(
                         {
-                            "reflection_contract_version": "signal-mining-reflect-v4",
+                            "reflection_contract_version": "signal-mining-reflect-v5",
                             "research_objective": signal_research_objective(),
                             "measurement_contract": signal_effectiveness_measurement_contract(),
                             "episode_slots": episode_slots,
                             "lesson_slots": lesson_slots,
                             "feedback_units": [item["content"] for item in selected],
-                            "prior_memory": [
-                                item["slow_memory"] for item in prior[-3:]
-                            ],
+                            "prior_memory": prior_view["memory_deltas"],
+                            "prior_memory_manifest": prior_view["memory_view_manifest"],
+                            "prior_memory_disclosures": [dict(item) for item in prior_sources],
                             "rules": {
                                 "append_only": True,
                                 "complete_source_coverage": True,
@@ -4503,6 +4568,8 @@ class SignalEvolutionEngine:
                         ),
                         "model_view_manifest": {
                             **common["model_view_manifest"],
+                            "prior_memory_view": prior_view["memory_view_manifest"],
+                            "prior_original_reads": prior_manifest,
                             "canonicalized_nested_refs": dict(
                                 step.metadata.get("canonicalized_nested_refs", {})
                             ),
@@ -7323,6 +7390,8 @@ class SignalEvolutionEngine:
                 "h2_applicability_contract": applicability_contract,
                 "capability_backlog": context["capability_backlog"],
                 "meta_info": context["meta_info"],
+                "meta_source_catalog": context["meta_source_catalog"],
+                "meta_memory_disclosures": context["meta_memory_disclosures"],
                 "research_objective": context["research_objective"],
                 "fixed_prior": context["fixed_prior"],
                 "reflection_action_audit": context["reflection_action_audit"],
@@ -7346,6 +7415,17 @@ class SignalEvolutionEngine:
                 "mining_model": self._role_work_identity(self.mining_model),
             }
         )
+        source_manifests = (
+            dict(context["meta_memory_read_manifest"]),
+            dict(context["slow_method_memory"].get("source_view_manifest", {})),
+        )
+        source_usage = AgentUsage()
+        for source_manifest in source_manifests:
+            source_usage = source_usage + _usage_from_dict(dict(source_manifest.get("source_read_usage", {})))
+        source_request_refs = _ordered_unique(
+            ref for source_manifest in source_manifests
+            for ref in source_manifest.get("source_read_request_refs", ())
+        )
         prior_h1 = next(
             (
                 item
@@ -7365,7 +7445,8 @@ class SignalEvolutionEngine:
                 "conclusion": prior_conclusion,
                 "hypotheses": [],
                 "reused_from_prior_cycle": True,
-                "usage": _usage_to_dict(AgentUsage()),
+                "usage": _usage_to_dict(source_usage),
+                "request_refs": list(source_request_refs),
             }
             audit["candidate_refs"] = []
             audit["refined_hypotheses"] = {}
@@ -7373,13 +7454,17 @@ class SignalEvolutionEngine:
             return self._mining_output(audit=audit, refined={})
         try:
             hypotheses_step = self.mining_model.propose_hypotheses(h1_payload)
+        except RuntimeBudgetExceeded as exc:
+            exc.usage = exc.usage + source_usage
+            raise
         except CandidateExecutionRejected as exc:
             raise CandidateExecutionRejected(
                 exc.stage,
                 str(exc),
-                exc.usage,
+                exc.usage + source_usage,
                 details={
                     **dict(exc.details),
+                    "request_refs": list(_ordered_unique((*source_request_refs, *exc.details.get("request_refs", ())))),
                     "contract_version": "signal-mining-hypothesis-v7",
                     "input_fingerprint": h1_input_fingerprint,
                     "conclusion": {
@@ -7411,30 +7496,10 @@ class SignalEvolutionEngine:
             "input_fingerprint": h1_input_fingerprint,
             "conclusion": dict(hypotheses_step.metadata),
             "hypotheses": [item.to_dict() for item in hypotheses_step.value],
-            "usage": _usage_to_dict(
-                hypotheses_step.usage
-                + _usage_from_dict(
-                    dict(
-                        dict(
-                            context["slow_method_memory"].get(
-                                "source_view_manifest", {}
-                            )
-                        ).get("source_read_usage", {})
-                    )
-                )
-            ),
-            "request_refs": list(
-                _ordered_unique(
-                    [
-                        *dict(
-                            context["slow_method_memory"].get(
-                                "source_view_manifest", {}
-                            )
-                        ).get("source_read_request_refs", ()),
-                        *hypotheses_step.metadata.get("request_refs", ()),
-                    ]
-                )
-            ),
+            "usage": _usage_to_dict(hypotheses_step.usage + source_usage),
+            "request_refs": list(_ordered_unique((
+                *source_request_refs, *hypotheses_step.metadata.get("request_refs", ()),
+            ))),
         }
         if not hypotheses:
             if hypotheses_step.metadata.get("conclusion") == "no_testable_hypothesis":
@@ -8581,10 +8646,45 @@ class SignalEvolutionEngine:
         capability_backlog = self._mining_capability_backlog_view(
             capability_backlog
         )
-        meta_view = _mask_identity_values(
-            _project_slow_case_refs(list(self.meta_memory.model_view())),
+        meta_entries = _mask_identity_values(
+            _project_slow_case_refs(list(self.meta_memory.archive_view())),
             self.slow_role_identity_guards,
             expand_aliases=False,
+        )
+        meta_index = ReflectionMemoryIndex.from_entries(meta_entries)
+        meta_view = meta_index.brief_view(max_bytes=32_000)
+        meta_catalog = meta_index.catalog_view(max_bytes=16_000)
+        visible_refs = {row["source_ref"] for row in meta_catalog["sources"]}
+        previews = {}
+        for action in reflection_actions:
+            visible_refs.update(action.get("reflection_source_refs", ()))
+            if action.get("reflection_item_ref"):
+                visible_refs.add(action["reflection_item_ref"])
+        for item in meta_view["items"]:
+            for ref in (item["item_ref"], *item["source_refs"], *item["counter_refs"]):
+                visible_refs.add(ref)
+            previews[item["item_ref"]] = item["brief"]
+        fast_sources = {}
+        for row in meta_index.source_catalog():
+            ref = row["source_ref"]
+            if ref not in visible_refs or row["read_bytes"] > 48_000:
+                continue
+            original = meta_index.read_refs([ref], role="signal_mining", max_bytes=48_000)["sources"][0]
+            fast_sources[ref] = {
+                "visible_to": sorted(_SLOW_SOURCE_ROLES), "content": original,
+                **({"brief": previews[ref]} if ref in previews else {}),
+            }
+        originals, original_manifest = read_slow_sources(
+            (), role_scope="H1", source_catalog=fast_sources, budget_bytes=48_000,
+        )
+        original_manifest = {
+            **original_manifest, "requested_refs": list(fast_sources),
+            "deferred": [{"ref": ref, "reason": "fast_reflection_original_on_request"} for ref in fast_sources],
+            "available_count": len(fast_sources), "deferred_count": len(fast_sources),
+        }
+        originals, original_manifest = self._optional_slow_source_read(
+            model=self.mining_model, role_scope="H1", source_catalog=fast_sources,
+            selected=originals, manifest=original_manifest,
         )
         prior_modality_footprints: list[dict[str, Any]] = []
         footprint_paths = [
@@ -8637,10 +8737,24 @@ class SignalEvolutionEngine:
                     # the next proposal must not repeat.
                     footprint["staged_candidate_outcomes"] = outcomes
                 prior_modality_footprints.append(footprint)
+        try:
+            slow_method_view = self._slow_method_view("H1")
+        except RuntimeBudgetExceeded as exc:
+            exc.usage = exc.usage + _usage_from_dict(dict(original_manifest.get("source_read_usage", {})))
+            raise
+        except CandidateExecutionRejected as exc:
+            raise CandidateExecutionRejected(exc.stage, str(exc),
+                exc.usage + _usage_from_dict(dict(original_manifest.get("source_read_usage", {}))),
+                details={**dict(exc.details), "request_refs": list(_ordered_unique((
+                    *original_manifest.get("source_read_request_refs", ()), *exc.details.get("request_refs", ()),
+                )))}) from exc
         return {
             "cycle_id": cycle_id,
             "fixed_prior": self.priors.mine_signal,
             "meta_info": meta_view,
+            "meta_source_catalog": meta_catalog,
+            "meta_memory_disclosures": [dict(item) for item in originals],
+            "meta_memory_read_manifest": original_manifest,
             "research_objective": signal_research_objective(),
             "prior_modality_footprints": _mask_identity_values(
                 prior_modality_footprints,
@@ -8649,7 +8763,7 @@ class SignalEvolutionEngine:
             ),
             "meta_context_audit": {
                 "content_hash": _canonical_hash(meta_view),
-                "round_ids": [int(item["round_id"]) for item in meta_view],
+                "round_ids": [entry.round_id for entry in self.meta_memory.entries],
                 "case_count": sum(
                     len(plan.original_case_reflections)
                     for entry in self.meta_memory.entries
@@ -8665,7 +8779,7 @@ class SignalEvolutionEngine:
                 prior_work, self.slow_role_identity_guards, expand_aliases=False
             ),
             "slow_method_memory": _mask_identity_values(
-                self._slow_method_view("H1"),
+                slow_method_view,
                 self.slow_role_identity_guards,
                 expand_aliases=False,
             ),
@@ -8703,6 +8817,24 @@ class SignalEvolutionEngine:
             source_catalog=source_catalog,
             budget_bytes=64_000,
         )
+        prior_deltas = [
+            dict(item["slow_memory"])
+            for item in self.workspace.committed_slow_artifacts()[-3:]
+        ]
+        method_deltas = [*prior_deltas, dict(self._active_slow_memory)]
+        method_sources = slow_method_memory_sources(method_deltas)
+        source_catalog.update(method_sources)
+        if method_sources:
+            manifest = {
+                **manifest,
+                "requested_refs": [*manifest["requested_refs"], *method_sources],
+                "deferred": [*manifest["deferred"], *(
+                    {"ref": ref, "reason": "authored_brief_original_on_request"}
+                    for ref in method_sources
+                )],
+                "available_count": manifest["available_count"] + len(method_sources),
+                "deferred_count": manifest["deferred_count"] + len(method_sources),
+            }
         model = self.update_model if role_scope == "Update" else self.mining_model
         sources, manifest = self._optional_slow_source_read(
             model=model,
@@ -8711,12 +8843,8 @@ class SignalEvolutionEngine:
             selected=sources,
             manifest=manifest,
         )
-        prior_deltas = [
-            dict(item["slow_memory"])
-            for item in self.workspace.committed_slow_artifacts()[-3:]
-        ]
         memory_view = project_slow_method_memory(
-            [*prior_deltas, dict(self._active_slow_memory)],
+            method_deltas,
             budget_bytes=64_000,
         )
         return _project_slow_case_refs({
@@ -8750,35 +8878,52 @@ class SignalEvolutionEngine:
         selector = getattr(model, "request_slow_sources", None)
         if not deferred or not callable(selector):
             return selected, {**dict(manifest), "required_refs": list(required)}
-        available = []
         requested = tuple(str(ref) for ref in manifest.get("requested_refs", ()))
-        for ref in requested[-1024:]:
+        selector_payload = {
+            "source_read_contract_version": "slow-source-read-v1", "role_scope": role_scope,
+            "validation_feedback": None,
+            "available_sources": [], "omitted_available_sources": len(requested),
+            "available_count": len(requested),
+            "included_count": len(manifest.get("included_refs", ())), "deferred_count": len(deferred),
+            "current_view": {
+                "included_refs": [], "deferred_refs": [], "required_refs": list(required),
+                "budget_bytes": int(manifest.get("budget_bytes", 64_000)), "max_items": manifest.get("max_items"),
+            },
+        }
+        for ref in sorted(requested[-1024:], key=lambda ref: not bool(source_catalog.get(ref, {}).get("brief") or source_catalog.get(ref, {}).get("content", {}).get("brief"))):
             raw = source_catalog.get(str(ref))
             if raw is None:
                 continue
-            available.append(
-                {
-                    "ref": str(ref),
-                    "content_hash": _canonical_hash(dict(raw)),
-                    "currently_included": str(ref) in manifest.get("included_refs", ()),
-                }
-            )
-        omitted_sources = max(0, len(requested) - len(available))
-        step = selector(
-            {
-                "source_read_contract_version": "slow-source-read-v1",
-                "role_scope": role_scope,
-                "available_sources": available,
-                "omitted_available_sources": omitted_sources,
-                "current_view": {
-                    "included_refs": list(manifest.get("included_refs", ())),
-                    "deferred_refs": list(deferred),
-                    "required_refs": list(required),
-                    "budget_bytes": int(manifest.get("budget_bytes", 64_000)),
-                    "max_items": manifest.get("max_items"),
-                },
+            entry_size = len(json.dumps({"ref": ref, **dict(raw)}, sort_keys=True, ensure_ascii=False).encode("utf-8"))
+            compact_row = {
+                "ref": str(ref), "content_hash": _canonical_hash(dict(raw)),
+                "currently_included": str(ref) in manifest.get("included_refs", ()),
+                "read_bytes": entry_size,
             }
-        )
+            preview = {
+                **compact_row,
+                **({"brief": raw["content"]["brief"], "kind": raw["content"].get("kind"),
+                    "limitations": raw["content"].get("limitations"),
+                    "applicable_scope": raw["content"].get("applicable_scope")}
+                   if isinstance(raw.get("content"), Mapping) and raw["content"].get("brief") else {}),
+                **({"brief": raw["brief"]} if raw.get("brief") else {}),
+                **({"support_refs": raw["content"]["content"].get("source_refs", [])}
+                   if raw.get("brief") and isinstance(raw.get("content", {}).get("content"), Mapping) else {}),
+            }
+            for offered in (preview, {**compact_row, "preview_omitted": "whole_preview_budget"}):
+                candidate = deepcopy(selector_payload)
+                candidate["available_sources"].append(offered)
+                candidate["omitted_available_sources"] -= 1
+                if ref in manifest.get("included_refs", ()):
+                    candidate["current_view"]["included_refs"].append(ref)
+                if ref in deferred:
+                    candidate["current_view"]["deferred_refs"].append(ref)
+                if len(json.dumps(candidate, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) <= 32_000:
+                    selector_payload = candidate
+                    break
+        if len(json.dumps(selector_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) > 32_000:
+            raise ValidationError("Slow source selector required manifest exceeds 32KB")
+        step = selector(selector_payload)
         requested = tuple(str(item) for item in step.value)
         if not requested:
             return selected, {
@@ -8791,18 +8936,25 @@ class SignalEvolutionEngine:
                 "required_refs": list(required),
             }
         combined = tuple(dict.fromkeys((*required, *requested)))
-        replacement, replacement_manifest = read_slow_sources(
-            combined,
-            role_scope=role_scope,
-            source_catalog=source_catalog,
-            budget_bytes=int(manifest.get("budget_bytes", 64_000)),
-            max_items=manifest.get("max_items"),
-        )
-        if not replacement:
-            raise ValidationError("requested Slow source view exceeds whole-entry budget")
-        included_refs = {str(item["ref"]) for item in replacement}
-        if not set(required) <= included_refs:
-            raise ValidationError("required Slow source view exceeds whole-entry budget")
+        try:
+            replacement, replacement_manifest = read_slow_sources(
+                combined,
+                role_scope=role_scope,
+                source_catalog=source_catalog,
+                budget_bytes=int(manifest.get("budget_bytes", 64_000)),
+                max_items=manifest.get("max_items"),
+            )
+            if not replacement:
+                raise ValidationError("requested Slow source view exceeds whole-entry budget")
+            included_refs = {str(item["ref"]) for item in replacement}
+            if not set(required) <= included_refs:
+                raise ValidationError("required Slow source view exceeds whole-entry budget")
+        except ValidationError as exc:
+            raise CandidateExecutionRejected(
+                "slow_source_read", str(exc), step.usage,
+                details={"request_refs": list(step.metadata.get("request_refs", ())),
+                         "requested_refs": list(combined), "role_scope": role_scope},
+            ) from exc
         all_requested = [str(item) for item in manifest.get("requested_refs", ())]
         replacement_deferred = {
             str(item.get("ref")): str(item.get("reason"))
@@ -8877,9 +9029,9 @@ class SignalEvolutionEngine:
         return result
 
     def _reflection_action_inventory(
-        self, *, limit: int = 48
+        self, *, limit: int = 48, budget_bytes: int = 32_000
     ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-        """Project vertical reflection fairly and report any bounded omission."""
+        """Project whole actionable briefs without replaying compatibility detail."""
 
         rows: list[dict[str, Any]] = []
         seen: set[str] = set()
@@ -8892,8 +9044,11 @@ class SignalEvolutionEngine:
         for entry in reversed(self.meta_memory.entries):
             for plan in entry.plan_reflections:
                 reflection = plan.vertical_plan_reflection
+                structured = bool(reflection.reflection_items or reflection.selected_reflection_refs or reflection.no_findings_reason is not None)
+                items = (*reflection.reflection_items, *(self.meta_memory.reflection_index().select_items(reflection.selected_reflection_refs) if reflection.selected_reflection_refs else ())) if structured else ()
                 for field_name in field_names:
-                    for raw_text in getattr(reflection, field_name):
+                    texts = [(item.brief, item) for item in items if item.category == field_name] if structured else [(text, None) for text in getattr(reflection, field_name)]
+                    for raw_text, item in texts:
                         text = " ".join(str(raw_text).split())
                         semantic_key = _normalize_semantics(text)
                         if not semantic_key or semantic_key in seen:
@@ -8905,30 +9060,33 @@ class SignalEvolutionEngine:
                             "reflection_field": field_name,
                             "text": text,
                         }
-                        rows.append(
-                            {
-                                "need_ref": "reflection-" + _canonical_hash(provenance)[:16],
-                                "kind": "meta_reflection_action",
-                                "need": text,
-                                "reflection_field": field_name,
-                                "source_round": entry.round_id,
-                                "sources": [],
-                            }
-                        )
-        projected = rows[:limit]
-        return projected, {
+                        rows.append({
+                            "need_ref": "reflection-" + _canonical_hash(provenance)[:16],
+                            "kind": "meta_reflection_action", "need": text,
+                            "reflection_field": field_name, "source_round": entry.round_id,
+                            "sources": [],
+                            **({"reflection_item_ref": item.item_ref,
+                                "reflection_source_refs": list(item.source_refs),
+                                "limitations": list(item.limitations)} if item else {}),
+                        })
+        projected: list[dict[str, Any]] = []
+        audit = {
             "schema_version": "reflection-action-projection-v1",
-            "available_count": len(rows),
-            "projected_count": len(projected),
-            "omitted_count": len(rows) - len(projected),
-            "limit": limit,
-            "field_counts": {
-                field_name: sum(
-                    item["reflection_field"] == field_name for item in projected
-                )
-                for field_name in field_names
-            },
+            "available_count": len(rows), "projected_count": 0,
+            "omitted_count": len(rows), "limit": limit, "budget_bytes": budget_bytes,
+            "field_counts": {field_name: 0 for field_name in field_names},
         }
+        for row in rows:
+            if len(projected) >= limit:
+                break
+            proposed_audit = {**audit, "projected_count": len(projected) + 1,
+                "omitted_count": len(rows) - len(projected) - 1,
+                "field_counts": {**audit["field_counts"], row["reflection_field"]: audit["field_counts"][row["reflection_field"]] + 1}}
+            envelope = {"items": [*projected, row], "audit": proposed_audit}
+            if len(json.dumps(envelope, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")) <= budget_bytes:
+                projected.append(row)
+                audit = proposed_audit
+        return projected, audit
 
     @staticmethod
     def _mining_capability_backlog_view(

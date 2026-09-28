@@ -2138,7 +2138,7 @@ class PlanEvolutionEngine:
                 for proposal_attempt in range(
                     1, self.evaluation_config.max_proposal_attempts_per_slot + 1
                 ):
-                    meta_view = self.meta_memory.model_view()
+                    meta_view = self.meta_memory.archive_view()
                     _emit_progress(
                         self.on_progress,
                         "candidate_proposal_started",

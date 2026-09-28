@@ -101,6 +101,37 @@ complete episode and lesson entries in deterministic newest-cycle-first,
 episode/lesson-interleaved order, retains every full entry in immutable storage,
 and records included/deferred refs plus source memory hashes. It never embeds
 unbounded whole `slow_memory.json` deltas in a role request.
+When an entry has an authored `brief` and `kind`, the working view keeps that
+brief, scope, limitations and all reference relationships and replaces only its
+long `reflection`/`guidance` body with an opaque original read handle. Legacy
+entries retain their exact old text. The same role-scoped source resolver and
+optional source selection expose the full immutable original entry by that
+handle; feedback references and processed/pending accounting are unchanged.
+The Slow reflector's own prior-memory input uses the same authored brief view
+over the existing last-three-delta window. A separate bounded original-read
+selection resolves those memory handles before reflection; these reads do not
+mark any feedback unit processed or create another research population.
+New authored lesson records also validate lower-level support on persistence;
+reserved-but-unused slots and self/sibling support cycles are invalid. The
+additional guard applies to the new brief/kind format; legacy archives retain
+their historical serialization and are not silently rewritten or re-certified.
+Fast-to-Slow H1 memory follows the same boundary: initial `meta_info` is a
+32KB brief view with a 16KB source catalog. Approved Fast reflection originals
+are registered in the existing scoped Slow resolver and read only when its
+selector requests them, under a separate 48KB budget. Full FIFO serialization
+is reserved for archive hashes and local audits, never the H1 prompt.
+The source selection request has a separate 32KB complete-envelope UTF-8
+ceiling, including its directory and membership metadata. Omission counts are
+explicit; an oversized preview falls back to its opaque handle and complete
+read size, never truncated text. H1 audit adds both Fast and Slow source-read
+usage and request refs exactly once, including suppressed and rejected H1 work.
+If a successful selector requests a view that the whole-entry resolver rejects,
+the rejection retains that selector's usage and exact request refs; a read
+budget failure cannot erase an already completed selection call.
+The reflection-action backlog projection uses authored briefs and original item
+handles for new structured entries, rather than replaying compatibility detail
+strings. Its complete entries and audit metadata have a separate 32KB ceiling;
+legacy text remains exact when selected, and omitted entries remain archived.
 
 A preflight finding that one H request still cannot fit its frozen per-request
 ceiling is an isolated, zero-call H technical failure, not proof that the run's
