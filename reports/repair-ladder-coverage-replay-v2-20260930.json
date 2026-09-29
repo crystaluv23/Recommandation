@@ -1,0 +1,2858 @@
+{
+ "schema_version": "repair-ladder-coverage-replay-v1",
+ "correction_samples": {
+  "replayable": 395,
+  "passes_current_validator_directly": {
+   "evidence_grounding": 74,
+   "open_question_duplicate": 61,
+   "other": 12,
+   "need_transition": 2,
+   "reflection_rule": 1
+  },
+  "unreplayable_by_class": {
+   "reflection_rule": 134,
+   "other": 15,
+   "shape_schema": 7
+  },
+  "excluded_unreplayable_or_passing": 306,
+  "per_class": [
+   {
+    "class": "anchor_guard",
+    "total": 30,
+    "passes_current_validator_directly": 0,
+    "replayed_still_failing": 30,
+    "ladder_fixed": 11,
+    "still_needs_llm": 19
+   },
+   {
+    "class": "evidence_grounding",
+    "total": 358,
+    "passes_current_validator_directly": 74,
+    "replayed_still_failing": 284,
+    "ladder_fixed": 278,
+    "still_needs_llm": 6
+   },
+   {
+    "class": "need_transition",
+    "total": 32,
+    "passes_current_validator_directly": 2,
+    "replayed_still_failing": 30,
+    "ladder_fixed": 0,
+    "still_needs_llm": 30
+   },
+   {
+    "class": "open_question_duplicate",
+    "total": 61,
+    "passes_current_validator_directly": 61,
+    "replayed_still_failing": 0,
+    "ladder_fixed": 0,
+    "still_needs_llm": 0
+   },
+   {
+    "class": "other",
+    "total": 15,
+    "passes_current_validator_directly": 12,
+    "replayed_still_failing": 3,
+    "ladder_fixed": 0,
+    "still_needs_llm": 3
+   },
+   {
+    "class": "reflection_rule",
+    "total": 2,
+    "passes_current_validator_directly": 1,
+    "replayed_still_failing": 1,
+    "ladder_fixed": 1,
+    "still_needs_llm": 0
+   },
+   {
+    "class": "shape_schema",
+    "total": 1,
+    "passes_current_validator_directly": 0,
+    "replayed_still_failing": 1,
+    "ladder_fixed": 0,
+    "still_needs_llm": 1
+   },
+   {
+    "class": "state_text_shape",
+    "total": 46,
+    "passes_current_validator_directly": 0,
+    "replayed_still_failing": 46,
+    "ladder_fixed": 6,
+    "still_needs_llm": 40
+   }
+  ],
+  "aggregate_fix_rate": 0.749
+ },
+ "truncation_samples": {
+  "total_raw_failures": 31,
+  "l0_revived_parseable": 10
+ },
+ "notes": "Ladder-fixed = repaired output passes the role's real validator; no LLM round spent. Pre-existing post-correction fallbacks are not counted.",
+ "details": [
+  {
+   "source": "010e08bf6f8d6479153cd9a2",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "01676d00c80a33f795a87826",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "02d002ac8f3365ffc46f457a",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "03941b571f85af528f488294",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0443e82f33638e1b28ddc26e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0524e14549752cd14c1b2161",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "063e56cb02d19183ecd6a3a3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0cef55e4e7a25fae55c85fe2",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0d92986e5490a5b189f74bed",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "0ece1e25a5146d04b1bffa00",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "105be750d09672699e23dbbf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "126df24d420baab9dfd3158a",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "127f6a8508b282e59e226c03",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1319b1aa26d0769c7248431c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "144521845cb571f7c8daacfa",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "14e442b8623b5e282c22caa8",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "1670902cea66400f525833ae",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "16964b62f3dbeeb25bb00ba6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "174efcf20a6a8cb9cc48307a",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "17c961155a63b5ebb5ce5416",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "18da2bdaa901fa3b69dcd08f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1905d2bef46bcdbb4c76ca04",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "19d4395c7a1c7c5474dd89e5",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1a2227c475d69228c274182a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1aaa9647c306dd35c2e90cb7",
+   "class": "other",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "1ad9eda9814b2cfc7b45de3a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1d76a4ca7244292f3ae85234",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "200163e53f25504689c8126a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "20ab8ffc6237d72a31626407",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2190e6db831221c10a0cc5ef",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "21cc8f07252c55d6a185eefc",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "23b14d3fb1d5daa70fbdd13b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "23fad50f0e7e438e1daff904",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "248187e558312f31cc079f77",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "277fe3bd2ad7e5be1e5cd672",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "283194cd6c84c644c2a53783",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2917609560c07092d5ebe048",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "29f7d3ea195ba1f4418e9d45",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2bb27c07babebc6b36288c29",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2ebb82d7f5d9b8c57b7065c8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2ecb81ff5112dd9f488e437d",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "31d99870a4accfb7480b749c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "32f01585ee07b597434bc04a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "34e3bd0194ad9b60df370d77",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3588b5be7142330d7ce486cd",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "361e69f513acb9e9d421d118",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3672b679d65cd929845d7d6b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "392b3352b0348365a38a2209",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "3b20ca634fcf98817e1dba14",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "3b925cd237581cf68ff15c7b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3c4d704b8e69a9ce37da52ed",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3cda0eb6e9cbc12baf84da57",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "40f7061d7a1f9fd3739fb185",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4186f71f2e77a255fa5ffba3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "41f5c68a07f07f5e9cec5756",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "446085202d5bfa7973e21d2e",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "454e44eebcfff231ca70cfb9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4572381fd40fb6d2f7d193a9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "471c4bc211a818c011287a72",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "490bad96acb6f65d8e8154b6",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "49c68f34e4ccb8dfbb6410b1",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "4b1baba0c46c3cad3269070c",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "4b9d56e4a0c6ef5aea4bb5a7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4f04ce2f856ff8a99f182110",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4f778ca07f2215cae20cfb96",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "505887eeda91f2c8dbbb4731",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "52056958eae688734ad4e11f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "525a81f21e8d75de67a5b08a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "555c6f7a65911920730327a9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5882f515027b7dcf89f5ecf0",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5aae61d64f955fcf59b48906",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "5bcbf93abae8366737db5fe7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5bd07ed5595d38aa9c438a82",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "5cf1e483bca7620a4b6ec6df",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5d53e0d708e22a7b559dad33",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5f38f9fc3d30843bd886c9a4",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5f4673ebec77dee7a1b2745b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "610ac663791468ae2fd869ad",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "613992bbf38b612fa8a3d639",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "62d91faf8c900c7da9a4ebba",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "6324304b21a9eed8911ce084",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "647513ca94540a9fdaef6f5d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "64bb6f4ab91ee72b22c36713",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "69c5eaf92eeff8ee22a1153f",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "69d2c0cb59a5e1687161d4fd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "69e1ea513b9e256ddf55673d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "6d72d23de442ace6748740ab",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "714d6b56bf18dc977021722f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "71b54e830c5332b3e308e27e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "71f5c17613395734d0b9b3bf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7323b3941eb5c75acc2a5d06",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "73e1acf184ef5e97015b9954",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "747f1a37984b903d0a8da6c8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "77f2d1c56248017877c21e70",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "78af86235f916761ec4397c2",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "79699022f432299df90bfc5d",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "7b46219055e332c57211ac20",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7b6ba57e4310833c4cafb51c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7b96d788de799d690b2b87fa",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7bb28b6a04c507c6caa6e2a3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7c73915f5c7bd642814dd095",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "823301e4f5e180a33a887a57",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8269db55600295826b2a42c9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8431de850d6dd424feb13129",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "846478a38cd860bea79862a0",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8664c7927d8efa7ac27b0cee",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "86a56b1cc04e4942e1b425c6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "87700c847c103c280778791d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "877e540c93cb2ca7bd2e7ac8",
+   "class": "other",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "880ee7b4859e430536d10ef3",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8899a0c993055cdc71d59c76",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "896083291add04eb20ffa071",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8bb932d25de7637d5471e738",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8d307cf04e0cd5e6e6082aa4",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "8d619c0a66b80aa0fc78184e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "906b93c1c6172db545d46cbb",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "912b619fd636548ee78f63c2",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "91e6bef9aa269cf9c8208f8a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "93e9853c96d5d655d2a1b902",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "942e363810a3e10976cb506c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "944462250fd470ea9e36c7c1",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "946ac2b0289ec190d67e18da",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "952fb7e55ed2162ae5e65aa5",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "967d9a5d58ed78086768dbf7",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "96894bc5cf20e6faadb8282c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9935a27c29f529d599273163",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "9b4fb592af6fa0b4e725aa64",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9bb72ce2a454bcbd04dee661",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9c3f19ed06aedae7356ed7a6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9fd03871bbf3fd6cfbca0d00",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a0bc1155d7942d1d33cfb42b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a29e38736295faf2065ac60f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a4a1080c538f5dd5f6a3161c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a7baa551ed65aaaae061d7ca",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a8bb886866f442c9db695489",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "aa4642a9a063e009affefbad",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "adf62385b477e1e59f03545a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "af831ea21e71cbd56361d0aa",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "af9ca36391294a42b0428e76",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "b3fe3ea718311a1e229efba9",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "b4ced05f6af962e92642255d",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "b5f8f1ef1ee60f5442404db6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "bb91e98a9e12ac0e16dc18c7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "bc776d249116ce2b367c48a1",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "be4890c926601d0e38ab1abc",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c006ca3b158531a0c2bebbce",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "c0d203e255df4b8ad4c3fe0a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c1c19a4ccc5a9b59d7f0118d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c21ad2b04d830dbc4ed5c51d",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "c263da15aedd576a9c9ff820",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c433a1c157de3a3096b79c2b",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "c4c278bafec55d9b9615eccf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c95cd99bbba40bfb21d01d4e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cb1a1185a2dae87ad1a389b8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cc914ae81ea6fded49433d3d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cca32c4973b909eba967878b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ce3b45b1736aaf788489d8df",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ce86b0632937b161c5e13f9a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cea941c59597b66cafea576b",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ceb903773ae9941bb3bfdf2d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d0e2f54092fea2d0f127988e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d2cf9e7d2d1a7a586589c84a",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d411aa0a7a4d0cee27cc668e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d433b67b4e904c35f438613c",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d6927ee06d3fda6d96ddd968",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d75753abf1c1c7a995d0c396",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "d9d68deab7d72587a5ca73ff",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "da14f91342ddacea7869323f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "dac991d97e1e33ae652199ac",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "db3a13fcb4a8985f01262416",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "dc13abb11994e13043688e5e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "dc5e2ae2a127a42633f013f3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ddd94a38ae36c06829fbf265",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "debef42df4a86d9a3fcca750",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e2278d6312f48f64ed49135d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e409e99327efebcb073f2687",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e60364b0a5a54d0a22d1b20a",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "e61a6999336b20589c4531a1",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "e6c027682ac1cd2068834961",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e6c82e38cd302fd62c827a92",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e86eb18b901a239815abad8b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e882f16f28b69b8d87935d36",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ed7d134ef10153ff2987d9b6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "eedd328b0b1fbb95c5609f3a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ef8636ffe98a7be373b2dbe2",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f28e146ece203ab7b2dd2863",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f2ef72b0146a12fab9a48184",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f40c1159df854d98f110e988",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "f7ca13d6e3ccd87866d6ce24",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f8cff38df92cfa7cb5521698",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fa82a75f602213d5ee9abba1",
+   "class": "reflection_rule",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fbff9fce15a65e6bfd45841d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fe2cee0dd14889f181950dc4",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "00cbf33d48107d676ca5bc98",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "033b19db245b6083f20db826",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "05332d92ffe60269cca69a06",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0adfde1cadc4350a4a777963",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "0b3fae5f7bad88cda8f49ca7",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "0e270601db95ca68aa19842e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0ee30deb44fe3ea2ad11a904",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0f48ef9562223b3a886ca6a7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "0f8f5806d513c0734ec4a463",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "10d057706785583e1db98bf8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "11e67f04008fbe48461ccf8a",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "13064d548d9ee38a351c5296",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1389454f0357eb92d98294b7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "15c46978901be4d1aa65db07",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "18d51adf234c45df79b7fa6a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "19ba5681469723cec3bbc840",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "19d0e4d16ac2c377c2861914",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "19ed24094bf28f70e62471dc",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1ad447e20989312585aba441",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1de91b7644a0ae341964a28d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1e70d9b62eea78ea71d0b5a3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "1e948330923973ed1888322c",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "1f29c511250b76f52e99817d",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2114eaa648c272d98cd2a4e3",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "221bb987d16d7edb75473f5d",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "22a8a8d2ccdc55a5cb189a56",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "24e54977d825cdc3425a95a2",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2677a81c09024358e7882a82",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "277acc505d6b4777c513a148",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "29db4168a9d28010f933375d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2ab34d53e97c070393847623",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "2cd54023aa47631284c85e0d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "2e1f1fe746e4925050f43712",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "302ab854b2788f1a0753bc78",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "316d7c1b6c56a2c5979a72f0",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "31ae62e91be3df8b2f68ff6f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "332d1c89a1972602f3e7a4ce",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "333b9936e2df66719000d1cf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "33d934322e5b0cadefc6f405",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "36cd977bea05b2fe547d291e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "38e30d8906db6fd7c0ede43a",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "39cf27a225ebbc89e9fe0ce5",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3aa1449508e5c8029bf5c8e8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3ae5a500bb265462b7eb58e9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3b0cfe0d707b26d268b32732",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3c48cd5ea42af4b1439e3acc",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "3c6092f942fb78a9323682fd",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "3d5f2bbb153896d1cbed61df",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "40c9dfe232b091e7f57fed32",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "41503d2adb61efbf6a268f0b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "41d0e7202e7722b5e63ed121",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "42276cd49d7f7b74599c343b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "42eea89cb6152ab03bdd0c85",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4435404a11ab089312f83432",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "46b280166244a20cac515d71",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "46bf3f32e082c5b034098c1b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "46c8d40698943a8e7111c25d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "48b59b5e6cdf8144f98cb06d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4934d0adcea13cf5857f7110",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4ba4224c0700a692556ba170",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4e1c22223a0c8b9a396447ca",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "4e68408614c0a68b87b0b985",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4ebeac7d71483218f44a19ba",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "4ed67a0d3c8ec0ae107fb8cf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "4f9c2070b7814502928fee49",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "51f9abd792239fb964c3a821",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "5260751bcc8553b20212170f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "53de5e29d2ed32135365335e",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "5471672abe1ef1a739b39dfb",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "56bbc96612ea60c90e51c133",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "574b537e268ee397da9ff27e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "582a9c88ee1ebd38d70dd1f1",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "59b14dafcf5d41aed172b3af",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "59ed569815c869cb2b430d1e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5a9df8adfc43bcdc7e67ce7d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5b058df0e5978ffb823524f7",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "5b7157de15bf62e1261072cd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5b755c9d0a86bb3df2806e33",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5bfa1f61b8d65e13a61fe373",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5c659f1c4b446758b6f6617e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "5fc0b79324f7ed0155e38abb",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "611c8d24bb1982580b2ebebf",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "61e61d53be0cfb6017bae4f6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "623cd95b8365020f75b3a244",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "6257ddc679e77b791c1b9957",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "63d727f47503a5431c4be9a5",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "63df2ce01293c0389ef418f9",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "64694134ae3e7eddf189bb79",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "665f2f3e308085d9708f0cfa",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "68c19325d18610970ba64b27",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "68edd2baa97375c619082994",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "6b994d09001b8dc01456c006",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "6c064745015626f0aeafb0ca",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "6cd1b1229393f05f6c0e1a29",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "6df31b6ef5003dde3973c9da",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "70128a2e5e28ed1848559e47",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "70cd8788beaa18a336736b02",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "70d25dca1048495a90646ebb",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "7120a9266c575a95710c46d9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7548d13b6e40db4cf30f54a9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "7981a27f36f25f0a7889887e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "79a36e89b6cd84971913f821",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "79d27a8220dd89b41a1259f5",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7a78ef52a80fdec1524157b8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7bb9951e8d8755b132196935",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7beed558a3e5f5fe4e2799b9",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7dfcdc003fa3978bc9802c55",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7ec70ee730ec995ef74b561b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7edaaf23e34a27dd37ff7a7c",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "7f0109be066d4ae672b7fef6",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "7f396dc2abf383d424f9d4fd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "7f8ba412f0847149319a009f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "80069d18c964d8d140e8299a",
+   "class": "shape_schema",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "81372f53bacc5b9f6a8de225",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "824c629d863442d525a06536",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "83b0d4dd3978a6301307b716",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8505ee13b9ded636623be908",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "86a6acccfbe7643214c95710",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8965a3649669001f5e4bf873",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "89a047efa796e0fce31878ce",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8b8a2b1ed93e27aa36384bd4",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8c1f3946cbbb779a22c3c620",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8cae71d91588a03208e9bb66",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8d4ac83798bc0eebb721591e",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8d6fe90ac6ee3ddaa6df72e7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "8dd71955c8f25571938e6af4",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "8f0038f6dfad50ba8aa37356",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "954d224b5bc3e4ca1c55c407",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "955c2643732247b134dae964",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "95d5710766576499965cef65",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "998f1f7f1b6f0d34e316a860",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9ac46ac7ee33c7e3ae245f81",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9be873062e8f23a503eba065",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "9d08f195b80afd3513a20fd4",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "a13fb3c725a0b91f992f1631",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a4464a631c172599eb326d43",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "a48c20f2cdf70ea93f2e03bd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a7847c383a17231b76a64a61",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "a86b7818449c9ae3017858c7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "aba2b3e2b2c1eef777f8ccef",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ac3ee3412aab085e38dc170d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ad56fc38a45dadcb4c633b95",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ae73ed8a9bc5008c3195d0e3",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "b17b77c7d359fb81a65b4a17",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "b59120c668c55071ffcea514",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "b633fdef4ef94402e63bdbf0",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "b704878e1d4dd8d8bfd1b59b",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "b8c83ed8ab22b7b71eea87a6",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "bc9126b4ab4bcd8c0688fa2f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "bd5dce7bac8a5cd7f9bdf1b7",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "bf7c1df1966b52b42fc697c2",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c1fef69e5cc88b965f559a02",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c47571e9251e75e9c3caf791",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "c4d97b886b6d96ba5370d5bd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c575420f9ecd0eff1e692318",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c5f8c0fef68c114b7b6665bd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "c99d7da06e26aa2a3915e7d6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ca181585c9b6d81e83707314",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cc23fa7fcef746dd5bc00370",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "cc97eee4c8e5375d4938c570",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ccb410c61e7de64a355460de",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "cdf917564deca12423d5d7e7",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "d1f06f294dca6c1470310661",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "d3a155e8a43c54bf7b3cbed2",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "d3bec4f6b9abc8aff4dfe98e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d3d43b7b1f42bdc49b44f226",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d40114e4bc7f35b8a2c7ed9d",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d601bc519ca3e10fe69b6b9f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d7a33bbb685b5fd53fbc548e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d7fe58e146744ce456610a32",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "d8d848d254d8deac25ab7590",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d9c21ed17bb27d8d73f389b4",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "d9dc9ed291f87a63b38f00b3",
+   "class": "need_transition",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "dababeb1ff9b6e514361b24b",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "db5ad260c93fdf880f3e081f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "dfa8a9d749f6012792a54a08",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "dfe0c736ecba428e68d57de0",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e13cc19bdc0fa46087c8a59e",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e30574355403fc94940f9815",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e30b00cc8e21b474811602da",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e35a019743c7987e81143bf8",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e40711a5a297217c7eaee691",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "ladder accepted"
+  },
+  {
+   "source": "e521d5ba557ff19f05fe5a44",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e5c452f149f2d3d1ed2f9824",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e6add68afa51495079f92734",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "e7aabcdd84efce8d6415f8e6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "e92f251c6152e0f7232f5521",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "ea374527344f844a4bd762c0",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "ea3dba859bce92044e0412ed",
+   "class": "anchor_guard",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "f0719c4f30ecce3116672b83",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f241ab74a35e90ec2f294d9c",
+   "class": "state_text_shape",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  },
+  {
+   "source": "f247819360587a892ed129fa",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f2552927311c83b0ebcc1197",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f2abc09111da5f1e1f14e549",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f53c09f4910248217754e1cd",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f5d55a4e52827129778b827f",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "f6c3470c6bea62746b4f85fc",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fa2f5764d3900dedf253d0ff",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fb21578842866115ffb739b6",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fb33d46ba0e01dbe4abecf4a",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fcf5aec06c566c97fbd9c309",
+   "class": "evidence_grounding",
+   "kind": "research_state",
+   "fixed": true,
+   "detail": "promoted fallback accepted"
+  },
+  {
+   "source": "fe63bad0971c4a8dcbd5e676",
+   "class": "other",
+   "kind": "research_state",
+   "fixed": false,
+   "detail": "still needs LLM correction"
+  }
+ ]
+}

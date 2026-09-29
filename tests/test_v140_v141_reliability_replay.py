@@ -111,8 +111,12 @@ class V140V141ReliabilityReplayTests(TestCase):
             value["supporting_evidence"], [{"claim": "Grounded sibling"}]
         )
         self.assertEqual(value["current_beliefs"], ["Grounded sibling"])
-        self.assertEqual(caller.calls, 3)
-        self.assertEqual(usage.llm_calls, 2)
+        # With the fallback promoted ahead of the LLM round for mechanical
+        # quantity failures, the same deterministic outcome is reached on
+        # the first answer; the no-progress transport guard scenario the
+        # historical replay exercised remains covered by transport tests.
+        self.assertEqual(caller.calls, 1)
+        self.assertEqual(usage.llm_calls, 1)
 
 
 if __name__ == "__main__":

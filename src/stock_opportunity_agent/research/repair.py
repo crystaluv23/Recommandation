@@ -409,6 +409,54 @@ def drop_empty_text_rows(
     return result, ops
 
 
+def flatten_text_array_objects(
+    value: Mapping[str, Any],
+) -> tuple[dict[str, Any], list[RepairOp]]:
+    """Flatten evidence objects misplaced into research-state text arrays.
+
+    A text-array row written as an evidence object has exactly one
+    prose-bearing field by schema: ``claim`` when present, otherwise the
+    sole string field. Flattening to that string is the unique
+    non-inventive action; rows with several string candidates stay for
+    the LLM correction.
+    """
+
+    ops: list[RepairOp] = []
+    result = dict(value)
+    for field_name in _TEXT_ARRAY_FIELDS:
+        rows = value.get(field_name)
+        if not isinstance(rows, list):
+            continue
+        flattened: list[Any] = []
+        for index, row in enumerate(rows):
+            replacement = row
+            if isinstance(row, Mapping):
+                claim = row.get("claim")
+                if isinstance(claim, str) and claim.strip():
+                    replacement = claim
+                else:
+                    strings = [
+                        item
+                        for item in row.values()
+                        if isinstance(item, str) and item.strip()
+                    ]
+                    replacement = strings[0] if len(strings) == 1 else row
+            if replacement is not row:
+                ops.append(
+                    RepairOp(
+                        level=L2_MECHANICAL,
+                        action="flatten_text_array_object",
+                        path=f"{field_name}[{index}]",
+                        before=dict(row),
+                        after=replacement,
+                    )
+                )
+            flattened.append(replacement)
+        if any(item is not orig for item, orig in zip(flattened, rows)):
+            result[field_name] = flattened
+    return result, ops
+
+
 def mechanical_repairs_for(
     value: Any,
     resolver: Callable[[str], Mapping[str, Any] | None] | None = None,
@@ -422,7 +470,11 @@ def mechanical_repairs_for(
         chain.append(split_mixed_axis_items)
         return chain
     if _repairable_research_state(value):
-        return [drop_duplicate_open_questions, drop_empty_text_rows]
+        return [
+            flatten_text_array_objects,
+            drop_duplicate_open_questions,
+            drop_empty_text_rows,
+        ]
     return []
 
 

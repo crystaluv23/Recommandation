@@ -621,7 +621,12 @@ _RUNTIME_ANCHOR_TEMPORAL_BOUNDARY_PREPOSITIONS = frozenset(
 _RUNTIME_ANCHOR_EVIDENCE_AVAILABILITY_WORDS = frozenset(
     "disclosed reported filed announced published available released "
     "provided furnished communicated posted stated said guided "
-    "submitted listed recorded".split()
+    "submitted listed recorded "
+    # Bare verb forms: issuer-evidence questions ask "did the issuer
+    # disclose/publish ... by the prediction time", and the temporal-boundary
+    # scan meets the verb, not the participle.
+    "disclose publish report file announce provide state submit "
+    "record communicate furnish".split()
 )
 
 

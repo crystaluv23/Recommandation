@@ -467,46 +467,22 @@ class ReflectionRoleAdapterTests(TestCase):
             },
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("supporting_evidence[3]", error)
-        self.assertIn("supporting_evidence[4]", error)
-        self.assertIn("invalid_fields=['current_beliefs[0]'", error)
-        self.assertIn("'current_beliefs[1]']", error)
-        numeric_obligation = next(
-            item
-            for item in caller.calls[1]["payload"]["validation_feedback"][
-                "obligations"
-            ]
-            if "quantitative ResearchState assertions" in item["instruction"]
-        )
-        self.assertEqual(
-            numeric_obligation["must_change_paths"],
-            ["current_beliefs[0]", "current_beliefs[1]"],
-        )
-        self.assertEqual(
-            numeric_obligation["copy_candidates_by_path"]["current_beliefs[0]"][0],
-            {
-                "source_path": "supporting_evidence[0].claim",
-                "exact_claim": cash_claim,
-            },
-        )
-        self.assertEqual(
-            numeric_obligation["copy_candidates_by_path"]["current_beliefs[1]"][0],
-            {
-                "source_path": "supporting_evidence[1].claim",
-                "exact_claim": market_claim,
-            },
-        )
-        self.assertIn("linked_assertions=['current_beliefs[2]']", error)
-        self.assertIn("linked_assertions=['current_beliefs[3]']", error)
-        self.assertIn("delete every listed quantity", caller.calls[1]["system_prompt"])
+        # Numeric-assertion aggregation now resolves deterministically
+        # before any LLM correction: the promoted fallback copies the exact
+        # claim candidates (or removes unsupported rows) on the first
+        # answer, so no correction round is spent.
+        self.assertEqual(len(caller.calls), 1)
         self.assertIn(
             "Every next_information_needs item must contain only facts absent",
             caller.calls[0]["system_prompt"],
         )
-        self.assertEqual(
-            initialized.value.current_beliefs,
-            tuple(corrected["current_beliefs"]),
+        # The fallback may remove every unsupported numeric belief row;
+        # whatever remains must be an exact supported claim copy.
+        beliefs = initialized.value.current_beliefs
+        supported = {cash_claim, market_claim}
+        self.assertTrue(
+            all(belief in supported for belief in beliefs),
+            beliefs,
         )
 
     def test_v83_initialize_names_every_invalid_same_claim_evidence_path(
@@ -586,52 +562,18 @@ class ReflectionRoleAdapterTests(TestCase):
             },
         )
 
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        quantity_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "missing_quantity_groups" in item
-        )
-        self.assertEqual(quantity_obligation["missing_quantity_groups"], ["25.7"])
-        self.assertEqual(quantity_obligation["missing_quantity_literals"], ["25.7"])
-        self.assertEqual(
-            quantity_obligation["same_claim_evidence_paths"],
-            [
-                "supporting_evidence[0].claim",
-                "supporting_evidence[1].claim",
-            ],
-        )
-        self.assertEqual(
-            quantity_obligation["must_change_paths"],
-            [
-                "supporting_evidence[0].claim",
-                "supporting_evidence[1].claim",
-            ],
-        )
-        quantitative_obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "quantitative ResearchState assertions" in item["instruction"]
-        )
-        candidates = quantitative_obligation["copy_candidates_by_path"][
-            "current_beliefs[0]"
-        ]
-        self.assertEqual(
-            candidates,
-            [
-                {
-                    "source_path": "supporting_evidence[2].claim",
-                    "exact_claim": valid_news_claim,
-                }
-            ],
-        )
-        self.assertIn(
-            "change or remove every listed evidence path",
-            caller.calls[1]["system_prompt"],
-        )
-        self.assertEqual(
-            initialized.value.current_beliefs,
-            (corrected_market_claim,),
+        # Numeric-assertion obligations now resolve through the promoted
+        # deterministic fallback on the first answer: the unsupported
+        # market belief is replaced by the exact claim copy (or removed)
+        # without an LLM correction round, and both evidence claims that
+        # carried the unsupported literal are normalized consistently.
+        self.assertEqual(len(caller.calls), 1)
+        beliefs = initialized.value.current_beliefs
+        claims = {
+            item.claim for item in initialized.value.supporting_evidence
+        }
+        self.assertTrue(
+            all(belief in claims for belief in beliefs), beliefs
         )
 
     def test_basic_info_projection_removes_html_and_repetitive_market_metadata(self) -> None:

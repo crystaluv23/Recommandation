@@ -4011,6 +4011,50 @@ def _complete_parsed_role_impl(
                     repairs=[op.__dict__ for op in repair_ops],
                 )
                 return parsed_value, usage
+            # Deterministic post-correction fallbacks are promoted ahead
+            # of the LLM round only for mechanical failure classes —
+            # numeric-assertion grounding whose unique fixes are
+            # copy-literal or whole-row removal. Semantic classes (need
+            # transitions, temporal scope, anchor guards) keep the
+            # post-correction fallback position, where the model first gets
+            # its bounded correction chance.
+            if (
+                final_validation_fallback is not None
+                and isinstance(value, Mapping)
+                and bool(value)
+                and isinstance(exc, StructuredValidationError)
+                and exc.issues
+                and all(
+                    issue.code
+                    in {
+                        "assertion_without_support",
+                        "claim_quantity_not_supported",
+                        "evidence_claim_empty",
+                    }
+                    for issue in exc.issues
+                )
+            ):
+                early = final_validation_fallback(value, exc)
+                if early is not None:
+                    early_output, early_actions = early
+                    try:
+                        early_parsed = _parse_role_output(
+                            f"{stage}_early_fallback", early_output, parser
+                        )
+                    except ValidationError:
+                        early_parsed = None
+                    if early_parsed is not None:
+                        _emit_runtime_progress(
+                            getattr(caller, "on_progress", None),
+                            "deterministic_fallback_promoted",
+                            stage=stage,
+                            request_stage=request_stage,
+                            actions={
+                                key: list(items)
+                                for key, items in early_actions.items()
+                            },
+                        )
+                        return early_parsed, usage
             failed_output = (
                 (projected_value if projected_value is not None else value)
                 if echo_invalid_output_on_correction or incremental

@@ -209,12 +209,48 @@ def replay_sample(invalid: Mapping, payload: Mapping):
     except Exception as exc:
         return kind, None, None, f"validator context error: {type(exc).__name__}"
 
+    baseline_error = None
     try:
         result = apply_mechanical_repairs(invalid, validator, resolver)
     except Exception:
         result = None
     if result is not None:
         return kind, True, True, "ladder accepted"
+
+    # Mirror the frontier's early fallback promotion: deterministic
+    # copy-literal / row-removal for mechanical quantity failures,
+    # arbitrated by the same full validator.
+    from stock_opportunity_agent.models import StructuredValidationError
+    from stock_opportunity_agent.research.evolution_output_validation import (
+        _research_state_evidence_grounding_fallback,
+    )
+
+    try:
+        validator(invalid)
+    except ValidationError as exc:
+        baseline_error = exc
+    if isinstance(baseline_error, StructuredValidationError) and all(
+        issue.code
+        in {
+            "assertion_without_support",
+            "claim_quantity_not_supported",
+            "evidence_claim_empty",
+        }
+        for issue in baseline_error.issues
+    ):
+        try:
+            early = _research_state_evidence_grounding_fallback(
+                invalid, baseline_error
+            )
+        except Exception:
+            early = None
+        if early is not None:
+            early_output, _actions = early
+            try:
+                validator(early_output)
+                return kind, True, True, "promoted fallback accepted"
+            except ValidationError:
+                pass
     return kind, True, False, "still needs LLM correction"
 
 

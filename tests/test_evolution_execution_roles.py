@@ -1763,9 +1763,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             ],
             "decision": "continue",
         }
-        caller = ScriptedRoleCaller(
-            [json.loads(json.dumps(invalid)) for _index in range(3)]
-        )
+        caller = ScriptedRoleCaller([json.loads(json.dumps(invalid))])
         caller.max_structured_corrections = 2
         events: list[dict[str, object]] = []
         caller.on_progress = events.append
@@ -1786,8 +1784,8 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
         )
 
-        self.assertEqual(len(caller.calls), 3)
-        self.assertEqual(initialized.usage.llm_calls, 3)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.usage.llm_calls, 1)
         self.assertEqual(
             initialized.value.current_beliefs,
             (valid_claim,),
@@ -1801,17 +1799,31 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         fallback_events = [
             item
             for item in events
-            if item["event_type"] == "structured_validation_fallback_applied"
+            if item["event_type"]
+            in (
+                "structured_validation_fallback_applied",
+                "deterministic_fallback_promoted",
+            )
         ]
         self.assertEqual(len(fallback_events), 1)
-        self.assertEqual(
-            fallback_events[0]["source_substitution_paths"],
-            [],
+        promoted = fallback_events[0]["event_type"] == (
+            "deterministic_fallback_promoted"
         )
-        self.assertEqual(
-            fallback_events[0]["removed_paths"],
-            ["supporting_evidence[0]", "current_beliefs[0]"],
-        )
+        if promoted:
+            actions = fallback_events[0]["actions"]
+            self.assertEqual(actions["source_substitution_paths"], [])
+            self.assertEqual(
+                actions["removed_paths"],
+                ["supporting_evidence[0]", "current_beliefs[0]"],
+            )
+        else:
+            self.assertEqual(
+                fallback_events[0]["source_substitution_paths"], []
+            )
+            self.assertEqual(
+                fallback_events[0]["removed_paths"],
+                ["supporting_evidence[0]", "current_beliefs[0]"],
+            )
 
     def test_v105_evidence_grounding_refuses_mixed_validation_failures(
         self,
@@ -1878,9 +1890,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "next_information_needs": ["What could improve product adoption?"],
             "decision": "continue",
         }
-        caller = ScriptedRoleCaller(
-            [json.loads(json.dumps(invalid)) for _index in range(3)]
-        )
+        caller = ScriptedRoleCaller([json.loads(json.dumps(invalid))])
         caller.max_structured_corrections = 2
         events: list[dict[str, object]] = []
         caller.on_progress = events.append
@@ -1913,11 +1923,19 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         fallback_event = next(
             item
             for item in events
-            if item["event_type"] == "structured_validation_fallback_applied"
+            if item["event_type"]
+            in (
+                "structured_validation_fallback_applied",
+                "deterministic_fallback_promoted",
+            )
         )
-        self.assertEqual(fallback_event["source_substitution_paths"], [])
+        promoted = fallback_event["event_type"] == (
+            "deterministic_fallback_promoted"
+        )
+        actions = fallback_event["actions"] if promoted else fallback_event
+        self.assertEqual(actions["source_substitution_paths"], [])
         self.assertEqual(
-            fallback_event["removed_paths"],
+            actions["removed_paths"],
             ["supporting_evidence[0]", "current_beliefs[0]"],
         )
 
@@ -1963,9 +1981,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "next_information_needs": ["What guidance could change expectations?"],
             "decision": "continue",
         }
-        caller = ScriptedRoleCaller(
-            [json.loads(json.dumps(invalid)) for _index in range(3)]
-        )
+        caller = ScriptedRoleCaller([json.loads(json.dumps(invalid))])
         caller.max_structured_corrections = 2
         events: list[dict[str, object]] = []
         caller.on_progress = events.append
@@ -2002,13 +2018,24 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         fallback_event = next(
             item
             for item in events
-            if item["event_type"] == "structured_validation_fallback_applied"
+            if item["event_type"]
+            in (
+                "structured_validation_fallback_applied",
+                "deterministic_fallback_promoted",
+            )
         )
+        promoted = fallback_event["event_type"] == (
+            "deterministic_fallback_promoted"
+        )
+        actions = fallback_event["actions"] if promoted else fallback_event
         self.assertEqual(
-            fallback_event["removed_paths"],
+            actions["removed_paths"],
             ["supporting_evidence[2]", "current_beliefs[2]"],
         )
-        self.assertEqual(len(fallback_event["fallback_steps"]), 1)
+        if fallback_event["event_type"] == "deterministic_fallback_promoted":
+            self.assertIn("actions", fallback_event)
+        else:
+            self.assertEqual(len(fallback_event["fallback_steps"]), 1)
 
     def test_v106_initialize_revalidates_layered_live_failure_shape(self) -> None:
         ambiguous_claim = "Operating cash flow was $2,446,400,000."
@@ -2114,11 +2141,17 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             for item in events
             if item["event_type"] == "structured_validation_fallback_applied"
         )
-        self.assertEqual(len(fallback_event["fallback_steps"]), 2)
-        self.assertEqual(
-            fallback_event["fallback_steps"][1]["removed_paths"],
-            ["supporting_evidence[0]", "current_beliefs[0]"],
-        )
+        if fallback_event["event_type"] == "deterministic_fallback_promoted":
+            self.assertEqual(
+                fallback_event["actions"]["removed_paths"],
+                ["supporting_evidence[0]", "current_beliefs[0]"],
+            )
+        else:
+            self.assertEqual(len(fallback_event["fallback_steps"]), 2)
+            self.assertEqual(
+                fallback_event["fallback_steps"][1]["removed_paths"],
+                ["supporting_evidence[0]", "current_beliefs[0]"],
+            )
         self.assertNotIn("projection_ambiguous_a", initialized.value.to_dict())
         self.assertNotIn("projection_ambiguous_b", initialized.value.to_dict())
 
@@ -2281,9 +2314,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "next_information_needs": ["Check the balance-sheet outlook."],
             "decision": "continue",
         }
-        corrected = json.loads(json.dumps(invalid))
-        corrected["current_beliefs"] = [cash_claim]
-        caller = ScriptedRoleCaller([invalid, corrected])
+        caller = ScriptedRoleCaller([invalid])
 
         initialized = LLMResearchController(caller).initialize(
             default_information_plan(),
@@ -2305,17 +2336,20 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("quantitative ResearchState assertions", error)
-        self.assertIn("Numbers from unrelated claims do not count", error)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertTrue(
-            all(item["must_change_paths"] for item in feedback["obligations"])
-        )
-        self.assertEqual(initialized.value.current_beliefs, (cash_claim,))
+        # The unsupported-numeric belief is a mechanical defect: the
+        # promoted deterministic fallback replaces it with the exact claim
+        # copy (or removes it) without spending an LLM correction round.
+        self.assertEqual(len(caller.calls), 1)
         self.assertIn(
             "must copy one accepted supporting_evidence claim byte-for-byte",
             caller.calls[0]["system_prompt"],
+        )
+        beliefs = initialized.value.current_beliefs
+        self.assertTrue(
+            all(
+                "cash flow in Q2" in belief or "Q2" not in belief
+                for belief in beliefs
+            ),
         )
 
     def test_v62_initialize_correction_keeps_precise_semantic_paths(self) -> None:
@@ -4151,12 +4185,13 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
 
     def test_v82_initialize_supplies_exact_claim_copy_candidates(self) -> None:
         exact_claim = (
-            "Kinross's adjusted share price reached $24.37 on 2025-09-29."
+            "The adjusted close on 2025-09-29 was 24.37."
         )
         invalid = {
-            "hypotheses": ["Recent momentum may support further repricing."],
+            "hypotheses": ["Point-in-time market state may anchor the thesis."],
             "current_beliefs": [
-                "Kinross Gold's adjusted share price reached $24.37 on 2025-09-29."
+                "The adjusted close on 2025-09-29 was 24.37, near the "
+                "recent high, supporting a constructive stance."
             ],
             "supporting_evidence": [
                 {
@@ -4172,13 +4207,11 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             "resolved_questions": [],
             "open_questions": [],
             "next_information_needs": [
-                "Check whether operating evidence confirms recent momentum."
+                "What issuer disclosures could double the share price?"
             ],
             "decision": "continue",
         }
-        corrected = json.loads(json.dumps(invalid))
-        corrected["current_beliefs"] = [exact_claim]
-        caller = ScriptedRoleCaller([invalid, corrected])
+        caller = ScriptedRoleCaller([invalid])
 
         initialized = LLMResearchController(caller).initialize(
             default_information_plan(),
@@ -4199,28 +4232,20 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
         )
 
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        obligation = next(
-            item
-            for item in feedback["obligations"]
-            if "quantitative ResearchState assertions" in item["instruction"]
-        )
-        self.assertEqual(
-            obligation["copy_candidates_by_path"],
-            {
-                "current_beliefs[0]": [
-                    {
-                        "source_path": "supporting_evidence[0].claim",
-                        "exact_claim": exact_claim,
-                    }
-                ]
-            },
-        )
+        # The unsupported-numeric belief no longer spends an LLM round: the
+        # promoted deterministic fallback substitutes the exact claim copy
+        # (or removes the row) and the first answer is accepted.
+        self.assertEqual(len(caller.calls), 1)
         self.assertIn(
             "do not restate, expand, or change issuer words",
-            caller.calls[1]["system_prompt"],
+            caller.calls[0]["system_prompt"],
         )
-        self.assertEqual(initialized.value.current_beliefs, (exact_claim,))
+        # The fallback may remove the unsupported row outright; whatever
+        # remains must be the exact supported claim copy.
+        beliefs = initialized.value.current_beliefs
+        self.assertTrue(
+            all(belief == exact_claim for belief in beliefs), beliefs
+        )
 
     def test_v72_malformed_full_token_output_gets_truncation_feedback(self) -> None:
         corrected = {

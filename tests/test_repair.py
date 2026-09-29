@@ -405,3 +405,96 @@ class UnifiedLadderWiringTests(unittest.TestCase):
         )
         self.assertEqual(value["spec"]["signal_id"], "abc")
         self.assertEqual(usage.tokens, 50)
+
+
+class PromotedFallbackTests(unittest.TestCase):
+    def test_v149_promotion_gated_to_mechanical_quantity_codes(self):
+        # 数值断言失败（claim_quantity_not_supported）被提升 fallback
+        # 在首答解决；语义类失败不提升（仍走 LLM 纠错）。
+        import sys
+
+        sys.path.insert(0, "tests")
+        from tests.evolution_runtime_test_support import (
+            LLMResearchController,
+            ScriptedRoleCaller,
+            default_information_plan,
+        )
+        from tests.scheme_evolution_test_support import NOW
+
+        exact_claim = "The adjusted close was 24.37."
+        literal = '{"adjusted_close":24.37,"as_of_date":"2025-09-29"}'
+        invalid = {
+            "hypotheses": ["Market state may anchor the thesis."],
+            "current_beliefs": [
+                "The adjusted close was 24.37, near the recent high."
+            ],
+            "supporting_evidence": [
+                {
+                    "kind": "basic_info",
+                    "claim": exact_claim,
+                    "projection_id": "projection_market",
+                    "exact_text": literal,
+                }
+            ],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": [
+                "What disclosures could change expectations?"
+            ],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([invalid])
+        from datetime import timezone
+
+        initialized = LLMResearchController(caller).initialize(
+            default_information_plan(),
+            {
+                "requests": [
+                    {
+                        "projections": [
+                            {
+                                "projection_id": "projection_market",
+                                "exact_text": literal,
+                            }
+                        ]
+                    }
+                ]
+            },
+        )
+        # One call, no LLM correction; the surviving belief is the exact
+        # claim copy or nothing (removal), never the unsupported rewrite.
+        self.assertEqual(len(caller.calls), 1)
+        beliefs = initialized.value.current_beliefs
+        self.assertTrue(
+            all(belief == exact_claim for belief in beliefs), beliefs
+        )
+
+    def test_v149_flatten_text_array_objects_extracts_unique_prose(self):
+        from stock_opportunity_agent.research.repair import (
+            flatten_text_array_objects,
+        )
+
+        state = {
+            "contradictions": [
+                {"claim": "Orders contradicted the thesis.", "group": "counter"},
+                {"claim": "Ambiguous.", "note": "other", "text": "strings"},
+                "Already text.",
+            ],
+            "next_information_needs": ["Check orders."],
+        }
+        repaired, ops = flatten_text_array_objects(state)
+        # claim 字段优先于其余字符串字段，包括多候选情形（唯一散文域）。
+        self.assertEqual(
+            repaired["contradictions"],
+            [
+                "Orders contradicted the thesis.",
+                "Ambiguous.",
+                "Already text.",
+            ],
+        )
+        self.assertEqual(len(ops), 2)
+        self.assertEqual(ops[0].path, "contradictions[0]")
+        self.assertEqual(ops[1].path, "contradictions[1]")
+        self.assertEqual(ops[0].action, "flatten_text_array_object")
+        self.assertEqual(ops[0].path, "contradictions[0]")
