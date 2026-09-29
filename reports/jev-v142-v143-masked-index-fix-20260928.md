@@ -1,5 +1,7 @@
 # V142/V143 自进化 live 验证：增量纠错与可溯源反思内存 + 入口脱敏缺陷修复
 
+> 2026-09-29 复核更正：本报告保留当时的过程记录；其中“posthoc全部收敛”“所有Slow判定均研究性”“唯一变量是代码”及部分截断/完成度描述不成立。应以[独立过程与F1审计](jev-v143-process-and-f1-audit-20260929.md)的冻结产物复核为准。高层反思失败与真实挖掘分支漏传经验意味着完整学习闭环尚未获得公平验证。
+
 日期：2026-09-28。运行目录：`.delegation/fast-slow-20260919/v142`、`v143`；workspace 见 `runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-2026092{8-v142,8-v143}`。
 
 ## 概要
