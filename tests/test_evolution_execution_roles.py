@@ -2229,21 +2229,19 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         }
         corrected = json.loads(json.dumps(invalid))
         corrected["open_questions"] = []
-        caller = ScriptedRoleCaller([invalid, corrected])
+        caller = ScriptedRoleCaller([invalid])
 
         initialized = LLMResearchController(caller).initialize(
             default_information_plan(),
             {"requests": []},
         )
 
+        # The exact duplicate is a mechanical defect: the L2 ladder removes
+        # it deterministically and the first answer is accepted without
+        # spending an LLM correction round.
         self.assertEqual(initialized.value.open_questions, ())
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        duplicate = next(
-            item
-            for item in feedback["obligations"]
-            if "duplicates one next information need" in item["instruction"]
-        )
-        self.assertEqual(duplicate["must_change_paths"], ["open_questions[0]"])
+        self.assertEqual(initialized.value.next_information_needs, (need,))
+        self.assertEqual(len(caller.calls), 1)
         self.assertIn(
             "Never repeat an exact next_information_needs string in open_questions",
             caller.calls[0]["system_prompt"],
@@ -4097,14 +4095,16 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         }
         corrected = json.loads(json.dumps(invalid))
         corrected["open_questions"] = corrected["open_questions"][1:]
-        caller = ScriptedRoleCaller([invalid, corrected])
+        caller = ScriptedRoleCaller([invalid])
 
         initialized = LLMResearchController(caller).initialize(
             default_information_plan(),
             {"requests": []},
         )
 
-        self.assertEqual(len(caller.calls), 2)
+        # The duplicate row is removed deterministically by the L2 ladder;
+        # no correction round is spent and summary targets are untouched.
+        self.assertEqual(len(caller.calls), 1)
         self.assertEqual(
             initialized.value.open_questions,
             tuple(corrected["open_questions"]),

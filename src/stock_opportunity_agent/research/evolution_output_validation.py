@@ -24,6 +24,7 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimeBudgetExceeded,
     _mask_identity_values,
 )
+from stock_opportunity_agent.research.repair import apply_mechanical_repairs
 from stock_opportunity_agent.signal_library import signal_result_model_view
 from stock_opportunity_agent.research.evolution_state_patch import (
     PATCH_INSTRUCTION,
@@ -3525,6 +3526,36 @@ def _complete_parsed_role_impl(
         if attempt:
             completed_corrections += 1
         if set(value) == {"invalid_structured_output", "validation_error"}:
+            # L0 truncation rescue: attempt deterministic JSON completion and
+            # accept only when the complete unchanged parser validates the
+            # candidate; otherwise the truncation feedback flows on as before.
+            from stock_opportunity_agent.research.repair import (
+                complete_truncated_json,
+            )
+
+            l0 = complete_truncated_json(str(value["invalid_structured_output"]))
+            if l0 is not None:
+                candidate_text, l0_ops = l0
+                try:
+                    candidate_value = json.loads(candidate_text)
+                except json.JSONDecodeError:
+                    candidate_value = None
+                if isinstance(candidate_value, Mapping):
+                    try:
+                        l0_parsed = _parse_role_output(
+                            f"{stage}_json_repair", candidate_value, parser
+                        )
+                    except ValidationError:
+                        l0_parsed = None
+                    if l0_parsed is not None:
+                        _emit_runtime_progress(
+                            getattr(caller, "on_progress", None),
+                            "mechanical_json_repair_accepted",
+                            stage=stage,
+                            request_stage=request_stage,
+                            ops=[op.__dict__ for op in l0_ops],
+                        )
+                        return l0_parsed, usage
             if patch_contract is not None:
                 # Preserve the last merged frontier and its semantic issues.
                 patch_error_note = str(value["validation_error"])
@@ -3907,6 +3938,24 @@ def _complete_parsed_role_impl(
                 )
             return parsed_value, usage
         except ValidationError as exc:
+            mechanical = None
+            if isinstance(value, Mapping):
+                mechanical = apply_mechanical_repairs(
+                    value,
+                    lambda candidate: _parse_role_output(
+                        request_stage, candidate, parser
+                    ),
+                )
+            if mechanical is not None:
+                parsed_value, repair_ops = mechanical
+                _emit_runtime_progress(
+                    getattr(caller, "on_progress", None),
+                    "mechanical_repair_accepted",
+                    stage=stage,
+                    request_stage=request_stage,
+                    repairs=[op.__dict__ for op in repair_ops],
+                )
+                return parsed_value, usage
             failed_output = (
                 (projected_value if projected_value is not None else value)
                 if echo_invalid_output_on_correction or incremental
