@@ -4496,3 +4496,117 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
         self.assertIn("never", caller.calls[0]["system_prompt"])
         self.assertIn("restate", caller.calls[0]["system_prompt"])
+
+    def test_v145_reflect_document_channel_fetches_through_catalog(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _DocumentChannelProvider,
+        )
+
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        news = RawInfoDocument.create(
+            document_id="news-sale",
+            company_id="issuer-channel",
+            source_type="news",
+            published_at=as_of,
+            available_at=as_of,
+            content=json.dumps(
+                {
+                    "title": "Issuer Faces Potential Sale After CEO Exit",
+                    "summary": "The board opened a strategic review.",
+                }
+            ),
+        )
+        store = RawInfoStore(documents=(news,))
+        state = ResearchState(
+            hypotheses=["A sale process may reprice the issuer."],
+            next_information_needs=["Check board commentary."],
+        )
+        same_state = ResearchState.from_dict(state.to_dict())
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="guidance_acceleration",
+                    version=1,
+                    value=SignalValue.NEUTRAL,
+                    confidence=0.5,
+                    interpretation="No new guidance in this batch.",
+                ),
+            ),
+            signal_calls=1,
+        )
+        caller = ScriptedRoleCaller(
+            [
+                {"fetch_documents": [{"document_id": "news-sale"}]},
+                same_state.to_dict(),
+            ]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_document_channel(
+            _DocumentChannelProvider(
+                store, company_id="issuer-channel", as_of=as_of
+            )
+        )
+
+        controller.reflect(default_information_plan(), state, batch)
+
+        first_payload = caller.calls[0]["payload"]
+        catalog_ids = [
+            card["document_id"]
+            for card in first_payload["document_catalog"]["cards"]
+        ]
+        self.assertIn("news-sale", catalog_ids)
+        second_payload = caller.calls[1]["payload"]
+        channel = second_payload["document_channel"]
+        self.assertEqual(len(channel), 1)
+        self.assertEqual(channel[0]["reference"]["document_id"], "news-sale")
+        self.assertIn("Potential Sale", channel[0]["text"])
+        # The catalog exchange is disclosed in the prompt contract itself.
+        self.assertIn("fetch_documents", caller.calls[0]["system_prompt"])
+
+    def test_v145_document_channel_rejects_repeated_and_unknown_fetches(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _DocumentChannelProvider,
+        )
+        from stock_opportunity_agent.models import ValidationError as RepoValidationError
+
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        news = RawInfoDocument.create(
+            document_id="news-sale",
+            company_id="issuer-channel",
+            source_type="news",
+            published_at=as_of,
+            available_at=as_of,
+            content="Plain body text for the channel fixture.",
+        )
+        store = RawInfoStore(documents=(news,))
+        state = ResearchState(
+            hypotheses=["Fixture."],
+            next_information_needs=["Check disclosures."],
+        )
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="guidance_acceleration",
+                    version=1,
+                    value=SignalValue.NEUTRAL,
+                    confidence=0.5,
+                    interpretation="Fixture batch.",
+                ),
+            ),
+            signal_calls=1,
+        )
+        repeated = [
+            {"fetch_documents": [{"document_id": "news-sale"}]},
+            {"fetch_documents": [{"document_id": "news-sale"}]},
+        ]
+        caller = ScriptedRoleCaller(repeated)
+        controller = LLMResearchController(caller)
+        controller.set_document_channel(
+            _DocumentChannelProvider(
+                store, company_id="issuer-channel", as_of=as_of
+            )
+        )
+        with self.assertRaises(RepoValidationError):
+            controller.reflect(default_information_plan(), state, batch)

@@ -3060,6 +3060,17 @@ def execute_information_plan(
     )
     if evaluation_anchor.get("status") == "available":
         _set_evaluation_anchor(controller, evaluation_anchor)
+    _set_document_channel_if_capable = getattr(
+        controller, "set_document_channel", None
+    )
+    if callable(_set_document_channel_if_capable):
+        _set_document_channel_if_capable(
+            _DocumentChannelProvider(
+                signal_executor.raw_info_store,
+                company_id=company_id,
+                as_of=prediction_time,
+            )
+        )
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
     initial_state = initial_step.value
@@ -3410,6 +3421,39 @@ def _set_evaluation_anchor(component: Any, anchor: Mapping[str, Any]) -> None:
         setter(anchor)
 
 
+class _DocumentChannelProvider:
+    """Bounded point-in-time Raw Info catalog/fetch channel for one case."""
+
+    def __init__(self, store: Any, *, company_id: str, as_of: Any) -> None:
+        self.store = store
+        self.company_id = company_id
+        self.as_of = as_of
+
+    def catalog_view(self) -> dict[str, Any]:
+        from stock_opportunity_agent.data.disclosure import document_catalog
+
+        return document_catalog(
+            self.store, company_id=self.company_id, as_of=self.as_of
+        )
+
+    def fetch(self, entries: Any) -> list[dict[str, Any]]:
+        from stock_opportunity_agent.data.disclosure import fetch_entry
+
+        return [
+            fetch_entry(
+                self.store,
+                str(entry["document_id"]),
+                as_of=self.as_of,
+                section_id=(
+                    str(entry["section_id"])
+                    if entry.get("section_id") is not None
+                    else None
+                ),
+            )
+            for entry in entries
+        ]
+
+
 def _set_reflection_runtime_context(
     component: Any,
     *,
@@ -3648,6 +3692,80 @@ def _prediction_baseline_from_market_documents(
     }
 
 
+def _basic_info_projection_cards(
+    basic_info: Mapping[str, Any],
+    *,
+    total_chars: int = 8_000,
+    per_request: int = 2,
+    per_card: int = 2_000,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Bound the visible Basic Info projections into typed carry-over cards.
+
+    The assembled final context is append-only: content visible at the
+    bootstrap stage stays present (bounded, with disclosure) instead of
+    surviving only as projection ids in a source index.
+    """
+
+    requests = [
+        row
+        for row in basic_info.get("requests", ())
+        if isinstance(row, Mapping)
+    ]
+    projections_by_request: list[tuple[Any, list[dict[str, Any]]]] = []
+    available = 0
+    for row in requests:
+        request = row.get("request")
+        projections = [
+            item
+            for item in row.get("projections", ())
+            if isinstance(item, Mapping)
+            and isinstance(item.get("exact_text"), str)
+            and item["exact_text"].strip()
+        ]
+        available += len(projections)
+        projections_by_request.append((request, projections[:per_request]))
+
+    cards: list[dict[str, Any]] = []
+    included_projection_ids: set[str] = set()
+    remaining = total_chars
+
+    def add_card(request: Any, item: Mapping[str, Any]) -> None:
+        nonlocal remaining
+        if remaining <= 0:
+            return
+        text = str(item["exact_text"])
+        take = min(len(text), remaining, per_card)
+        cards.append(
+            {
+                "request_id": (
+                    request.get("request_id")
+                    if isinstance(request, Mapping)
+                    else None
+                ),
+                "projection_id": item.get("projection_id"),
+                "exact_text": text[:take],
+                "truncated": take < len(text),
+            }
+        )
+        included_projection_ids.add(str(item.get("projection_id")))
+        remaining -= take
+
+    for request, projections in projections_by_request:
+        if projections:
+            add_card(request, projections[0])
+    for request, projections in projections_by_request:
+        for item in projections[1:]:
+            if remaining <= 0:
+                break
+            add_card(request, item)
+    counts = {
+        "available_projections": available,
+        "included_cards": len(cards),
+        "deferred_projections": max(0, available - len(cards)),
+    }
+    return cards, counts
+
+
 def _assemble_final_context(
     *,
     plan: InformationPlan,
@@ -3777,16 +3895,35 @@ def _assemble_final_context(
         )
         seen_signal_evidence.add(key)
 
+    projection_cards, projection_card_counts = _basic_info_projection_cards(
+        basic_info
+    )
     context = {
         "context_contract": {
-            "kind": "bounded_prediction_projection",
+            "kind": "typed_append_only_assembly",
             "target_utf8_bytes": MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
             "budget_enforcement": "exact_wire_remaining_case_tokens",
             "complete_trajectory_retained_locally": True,
+            # The append order of typed blocks: content visible at any
+            # stage stays present or explicitly dispositioned; numeric
+            # decision inputs come only from the computed anchor block.
+            "assembly_blocks": [
+                {"block_type": "basic_info_cards", "provenance": "projection_id"},
+                {"block_type": "computed_anchor", "provenance": "runtime_market_computation"},
+                {"block_type": "signal_results", "provenance": "signal_ref"},
+                {"block_type": "cited_signal_evidence", "provenance": "signal_evidence_ref"},
+                {"block_type": "research_state", "provenance": "runtime_validated_state"},
+                {"block_type": "analysis_prompt", "provenance": "plan"},
+            ],
+            "numeric_decision_inputs_permitted_only_in": [
+                "prediction_baseline",
+            ],
         },
         "basic_info": {
             "source_index": source_index,
             "data_gaps": data_gaps,
+            "projection_cards": projection_cards,
+            "projection_card_counts": projection_card_counts,
         },
         "prediction_baseline": (
             dict(prediction_baseline)
@@ -6279,7 +6416,6 @@ def default_information_plan() -> InformationPlan:
                     source_types=("news",),
                     lookback_days=180,
                     max_documents=5,
-                    query="regulatory customer financing product order",
                 ),
                 RawInfoRequest(
                     request_id="reported_financial_facts",

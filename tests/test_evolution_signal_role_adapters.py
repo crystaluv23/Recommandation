@@ -2439,7 +2439,7 @@ class SignalRoleAdapterTests(TestCase):
             ),
         }
         minimally_corrected = json.loads(json.dumps(invalid))
-        minimally_corrected["B"]["requests"][1]["query"] = "price volume"
+        del minimally_corrected["B"]["requests"][1]["query"]
         drifted = json.loads(json.dumps(minimally_corrected))
         drifted["H_init"] += " Compare management strategy with market signals."
 
@@ -2491,7 +2491,7 @@ class SignalRoleAdapterTests(TestCase):
             prior="fixed H_P",
         )
 
-        self.assertEqual(plan.basic_info_policy.requests[1].query, "price volume")
+        self.assertIsNone(plan.basic_info_policy.requests[1].query)
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertEqual(
             feedback["obligations"][0]["must_change_paths"],
@@ -2568,7 +2568,6 @@ class SignalRoleAdapterTests(TestCase):
                         ),
                         "source_types": ["news"],
                         "lookback_days": 180,
-                        "query": "competitor product launch market share",
                         "max_documents": 3,
                     },
                 ]
@@ -2591,7 +2590,6 @@ class SignalRoleAdapterTests(TestCase):
         corrected_request["description"] = (
             "Read target-company-scoped news about competitive position."
         )
-        corrected_request["query"] = "competitive position"
         caller = ScriptedRoleCaller([invalid, corrected])
 
         plan = LLMInformationPlanProposer(caller).propose(
@@ -2609,7 +2607,6 @@ class SignalRoleAdapterTests(TestCase):
             "validation_error"
         ]
         self.assertIn("B.requests[2].description", error)
-        self.assertIn("B.requests[2].query", error)
         self.assertIn("target-company-scoped Basic Info resolver", error)
         self.assertIn("target company_id", caller.calls[0]["system_prompt"])
         self.assertEqual(

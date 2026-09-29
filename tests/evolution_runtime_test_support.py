@@ -429,7 +429,13 @@ class ScriptedRoleCaller:
         payload = kwargs["payload"]
         output = _recorded_reflection_output(output, payload, str(kwargs["stage"]))
         contract = payload.get("output_patch_contract")
-        if contract is not None and "operations" not in output:
+        if (
+            contract is not None
+            and "operations" not in output
+            # Mid-call disclosure exchanges are not patch candidates.
+            and set(output)
+            not in ({"read_refs"}, {"browse_memory"}, {"fetch_documents"})
+        ):
             base = payload
             for key in contract["base_location"].split("."):
                 base = base[key]

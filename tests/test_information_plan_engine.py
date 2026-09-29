@@ -954,7 +954,17 @@ class InformationPlanRuntimeTests(TestCase):
         self.assertLessEqual(
             len(serialized.encode("utf-8")), MAX_PREDICTOR_CONTEXT_UTF8_BYTES
         )
-        self.assertNotIn("full-basic-marker-" + "x" * 100, serialized)
+        # The append-only assembly guarantees bounded presence instead of
+        # omission: the long bootstrap projection survives as a truncated
+        # typed card (capped, flagged) even though the state also quotes a
+        # short literal from it — carry-over loss is the older defect.
+        cards = context["basic_info"]["projection_cards"]
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]["projection_id"], "projection_large")
+        self.assertTrue(cards[0]["truncated"])
+        self.assertLessEqual(len(cards[0]["exact_text"]), 2_000)
+        self.assertIn("full-basic-marker-", cards[0]["exact_text"])
+        self.assertNotIn("full-basic-marker-" + "x" * 2_100, serialized)
         self.assertEqual(
             context["basic_info"]["source_index"][0]["projection_ids"],
             ["projection_large"],
@@ -1853,3 +1863,55 @@ class EvaluationDatasetSamplingTests(TestCase):
                     make_anchor_pool(),
                     PlanEvaluationConfig(),
                 )
+
+    def test_v145_assembly_carries_visible_basic_info_catalyst(self) -> None:
+        # The GPRE failure shape: a catalyst projection is visible at the
+        # bootstrap stage but the research state never adopted it. The
+        # append-only assembled context must still carry its text.
+        basic_info = {
+            "requests": [
+                {
+                    "request": {
+                        "request_id": "target_scoped_news",
+                        "source_types": ["news"],
+                    },
+                    "status": "resolved",
+                    "data_gap": None,
+                    "projections": [
+                        {
+                            "projection_id": "projection_sale_news",
+                            "exact_text": (
+                                "US Ethanol Giant Faces Potential Sale After "
+                                "CEO Stepped Down. The board opened a "
+                                "strategic review of alternatives including "
+                                "a potential sale of the company."
+                            ),
+                        }
+                    ],
+                }
+            ]
+        }
+        state = ResearchState(decision=ResearchDecision.FINALIZE)
+        context = _assemble_final_context(
+            plan=default_information_plan(),
+            company_id="issuer-fixture",
+            additional_identity_aliases=(),
+            basic_info=basic_info,
+            state=state,
+            rounds=(),
+            prediction_time=NOW,
+        )
+        cards = context["basic_info"]["projection_cards"]
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]["projection_id"], "projection_sale_news")
+        self.assertFalse(cards[0]["truncated"])
+        self.assertIn("Potential Sale", cards[0]["exact_text"])
+        self.assertEqual(
+            context["basic_info"]["projection_card_counts"],
+            {"available_projections": 1, "included_cards": 1, "deferred_projections": 0},
+        )
+        contract = context["context_contract"]
+        self.assertEqual(contract["kind"], "typed_append_only_assembly")
+        block_types = [row["block_type"] for row in contract["assembly_blocks"]]
+        self.assertEqual(block_types[0], "basic_info_cards")
+        self.assertIn("computed_anchor", block_types)

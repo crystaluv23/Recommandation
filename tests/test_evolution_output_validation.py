@@ -3497,3 +3497,94 @@ class OwnershipScopeLocalNegationTests(TestCase):
                 )
             )
         )
+
+    def test_v145_basic_info_menu_rejects_free_text_query_and_foreign_families(
+        self,
+    ):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _validate_plan_for_proposer_context,
+        )
+        from stock_opportunity_agent.research.evolution_core import (
+            BasicInfoPolicy,
+        )
+
+        def plan_with(requests):
+            return InformationPlan(
+                plan_id="menu_fixture",
+                parent_ids=(),
+                basic_info_policy=BasicInfoPolicy(
+                    requests=tuple(RawInfoRequest(**row) for row in requests)
+                ),
+                initial_research_skill=(
+                    "Form a hypothesis and list unresolved information needs."
+                ),
+                reflection_skill=(
+                    "Track support and contradiction, then continue for the "
+                    "next need or finalize."
+                ),
+                analysis_prompt="Weigh supporting and counter evidence.",
+            )
+
+        base = {
+            "request_id": "scoped_news",
+            "description": "Recent company news.",
+            "source_types": ["news"],
+            "lookback_days": 180,
+            "max_documents": 5,
+        }
+        market = {
+            "request_id": "recent_market_backbone",
+            "description": "Point-in-time price and volume.",
+            "source_types": ["market_data"],
+            "lookback_days": 45,
+            "max_documents": 1,
+        }
+        # The menu-compliant composition passes.
+        _validate_plan_for_proposer_context(
+            plan_with([base, market]), available_source_types=("news", "market_data")
+        )
+        # A free-text query is not expressible at the orientation stage.
+        with_query = dict(base, query="guidance backlog analyst target")
+        with self.assertRaises(StructuredValidationError) as caught:
+            _validate_plan_for_proposer_context(
+                plan_with([with_query, market]),
+                available_source_types=("news", "market_data"),
+            )
+        codes = [issue.code for issue in caught.exception.issues]
+        self.assertIn("basic_info_query_not_expressible", codes)
+        self.assertEqual(
+            caught.exception.issues[0].paths, ("B.requests[0].query",)
+        )
+        # A source family outside the closed menu is rejected with its path.
+        foreign = dict(base, source_types=["social_media"])
+        with self.assertRaises(StructuredValidationError) as caught:
+            _validate_plan_for_proposer_context(
+                plan_with([foreign, market]),
+                available_source_types=("social_media", "market_data"),
+            )
+        codes = [issue.code for issue in caught.exception.issues]
+        self.assertIn("basic_info_family_outside_menu", codes)
+        # Mixed families obey the strictest matched lookback bound.
+        mixed = {
+            "request_id": "bridge",
+            "description": "Bridge view.",
+            "source_types": ["earnings_call", "filing", "financials"],
+            "lookback_days": 365,
+            "max_documents": 3,
+        }
+        _validate_plan_for_proposer_context(
+            plan_with([mixed, market]),
+            available_source_types=(
+                "earnings_call", "filing", "financials", "market_data",
+            ),
+        )
+        overreached = dict(mixed, lookback_days=730)
+        with self.assertRaises(StructuredValidationError) as caught:
+            _validate_plan_for_proposer_context(
+                plan_with([overreached, market]),
+                available_source_types=(
+                    "earnings_call", "filing", "financials", "market_data",
+                ),
+            )
+        codes = [issue.code for issue in caught.exception.issues]
+        self.assertIn("basic_info_lookback_out_of_bounds", codes)

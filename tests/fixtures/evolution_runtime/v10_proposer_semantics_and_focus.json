@@ -1,42 +1,41 @@
 {
-  "false_positive_analysis_prompts": [
-    "Analyze and weight all source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Organize evidence into supporting and counter categories, distinguishing real commercial adoption from narrative. Expose uncertainty without calculating probabilities, classifying the final answer, altering the four-way judgment, or generating a prediction.",
-    "Organize and weight all source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Categorize evidence into supporting and counter categories, distinguishing real commercial adoption from narrative. Expose uncertainty without calculating probabilities, classifying the final answer, altering the four-way judgment, or generating a prediction."
+ "false_positive_analysis_prompts": [
+  "Analyze and weight all source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Organize evidence into supporting and counter categories, distinguishing real commercial adoption from narrative. Expose uncertainty without calculating probabilities, classifying the final answer, altering the four-way judgment, or generating a prediction.",
+  "Organize and weight all source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Categorize evidence into supporting and counter categories, distinguishing real commercial adoption from narrative. Expose uncertainty without calculating probabilities, classifying the final answer, altering the four-way judgment, or generating a prediction."
+ ],
+ "source": {
+  "attempt_ids": [
+   1,
+   2,
+   6
   ],
-  "source": {
-    "attempt_ids": [
-      1,
-      2,
-      6
-    ],
-    "run_id": "deepseek-v6-context-remediation-20260823-v10"
-  },
-  "unchanged_focus_fields": {
-    "B": {
-      "requests": [
-        {
-          "description": "Recent company-specific news that may change expectations",
-          "lookback_days": 180,
-          "max_documents": 5,
-          "query": "regulatory customer financing product",
-          "request_id": "recent_company_news",
-          "source_types": [
-            "news"
-          ]
-        },
-        {
-          "description": "Recent point-in-time price and volume for early market confirmation",
-          "lookback_days": 45,
-          "max_documents": 1,
-          "request_id": "recent_market_backbone",
-          "source_types": [
-            "market_data"
-          ]
-        }
-      ]
+  "run_id": "deepseek-v6-context-remediation-20260823-v10"
+ },
+ "unchanged_focus_fields": {
+  "B": {
+   "requests": [
+    {
+     "description": "Recent company-specific news that may change expectations",
+     "lookback_days": 180,
+     "max_documents": 5,
+     "request_id": "recent_company_news",
+     "source_types": [
+      "news"
+     ]
     },
-    "H_init": "Initial research skill: Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs. Additionally, identify any discrepancies between the company's stated strategy and observable market signals to refine the hypothesis."
+    {
+     "description": "Recent point-in-time price and volume for early market confirmation",
+     "lookback_days": 45,
+     "max_documents": 1,
+     "request_id": "recent_market_backbone",
+     "source_types": [
+      "market_data"
+     ]
+    }
+   ]
   },
-  "parent_analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
-  "wrong_focus_analysis_prompt": "Complete final analysis instructions: Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction. Use the evidence to refine the understanding of the commercialization gap and market expectations, but do not change the horizon, label, or prediction semantics."
+  "H_init": "Initial research skill: Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs. Additionally, identify any discrepancies between the company's stated strategy and observable market signals to refine the hypothesis."
+ },
+ "parent_analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+ "wrong_focus_analysis_prompt": "Complete final analysis instructions: Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction. Use the evidence to refine the understanding of the commercialization gap and market expectations, but do not change the horizon, label, or prediction semantics."
 }

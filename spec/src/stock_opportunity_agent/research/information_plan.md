@@ -210,6 +210,22 @@ none of these artifacts may be called gold.
 
 ## Invariants
 
+- Basic Info is a constrained orientation stage. Proposed `B.requests`
+  compose closed source-type families — market backbone (market_data and
+  price aliases, lookback <= 120, 1-2 documents), operating report (filing
+  family, <= 730, 1-5), management commentary (earnings_call/transcript,
+  <= 365, 1-3), scoped news (news/company_news, <= 365, 1-5), and
+  financial facts (financials/sec_company_facts and semantic aliases,
+  <= 730, 1-3). Requests may combine families under the strictest matched
+  bounds; every source type must belong to some family. A free-text
+  `query` is not expressible: proposals carrying one are rejected with a
+  typed `B.requests[i].query` obligation, and unknown provider-level
+  source types keep their earlier unsupported-type rejection. The proposer
+  prompt discloses the menu before the first answer; historical plans load
+  unchanged (the constraint applies at the live proposal boundary), and
+  maintenance replays strip inexpressible queries from replayed parents
+  explicitly.
+
 - Preserve point-in-time availability and full source provenance.
 - Diagnose an extraction failure only from sentence-scoped, action-qualified
   candidate evidence. Bare words such as `contract`, `customer`, `FDA`, or `AI`

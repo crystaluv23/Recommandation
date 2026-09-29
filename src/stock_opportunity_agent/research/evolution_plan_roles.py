@@ -126,6 +126,7 @@ class LLMResearchController:
         self.request_token_budget: int | None = None
         self.evaluation_context: dict[str, Any] | None = None
         self.evaluation_anchor: dict[str, Any] | None = None
+        self.document_channel: Any = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
         self.reflection_termination_trigger: RuntimeStopReason | None = None
@@ -174,6 +175,20 @@ class LLMResearchController:
         self.evaluation_anchor = dict(anchor)
         if isinstance(self.evaluation_context, dict):
             self.evaluation_context["evaluation_anchor"] = dict(anchor)
+
+    def set_document_channel(self, provider: Any) -> None:
+        """Attach the bounded in-loop Raw Info catalog/fetch channel.
+
+        The provider exposes ``catalog_view()`` (bounded point-in-time
+        document cards) and ``fetch(entries)`` (bounded verbatim or
+        section views resolved through the disclosure interface). While
+        set, every H_reflect call receives the catalog view and may spend
+        bounded mid-call exchanges on ``fetch_documents`` requests before
+        returning the state — the improvised retrieval channel alongside
+        frozen-policy Signal execution.
+        """
+
+        self.document_channel = provider
 
     def set_reflection_runtime_context(
         self,
@@ -298,8 +313,13 @@ class LLMResearchController:
             return AgentStep(
                 replace(state, decision=ResearchDecision.FINALIZE), AgentUsage()
             )
+        reflect_caller = (
+            _DocumentChannelCaller(self.caller, self.document_channel)
+            if self.document_channel is not None
+            else self.caller
+        )
         reflected, usage = _complete_parsed_role(
-            self.caller,
+            reflect_caller,
             stage="research_controller_reflect",
             system_prompt=(
                 "Apply H_reflect to the complete Signal batch in logical steps: "
@@ -368,6 +388,14 @@ class LLMResearchController:
                 "recent close, ratios) verbatim whenever referenced and never "
                 "restate, round, or recompute them; a belief restating a different "
                 "baseline or threshold value is invalid. "
+                "When document_catalog is supplied you may spend bounded mid-call "
+                "exchanges returning exactly "
+                '{"fetch_documents":[{"document_id":"supplied id",'
+                '"section_id":"supplied id or omitted"}]} (at most two exchanges '
+                "of two entries, no repeats) to read one complete document or an "
+                "exact section through the point-in-time disclosure interface; "
+                "fetched views arrive in document_channel and are citable "
+                "evidence like any other source. "
                 "open_questions holds only material uncertainty that is not itself "
                 "an actionable retrieval question; put every actionable retrieval "
                 "question only in next_information_needs, never repeat an exact "
@@ -2098,6 +2126,84 @@ def _structured_reflection_items(
     return items, tuple(selected), projection
 
 
+class _DocumentChannelCaller:
+    """Bounded in-loop Raw Info catalog/fetch exchanges for one reflect call.
+
+    Mirrors the proposer's read_refs pattern: the first answers may be
+    ``{"fetch_documents": [...]}`` requests (at most two exchanges, at most
+    two supplied catalog ids each, no repeats), which the runtime resolves
+    through the disclosure interface — point-in-time filtered, journaled by
+    the ordinary caller persistence — before the model returns its state.
+    """
+
+    _MAX_EXCHANGES = 2
+    _MAX_ENTRIES_PER_EXCHANGE = 2
+
+    def __init__(self, caller: JSONRoleCaller, provider: Any) -> None:
+        self.caller = caller
+        self.provider = provider
+        self.exchanges = 0
+        self.fetched_keys: set[tuple[str, str | None]] = set()
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self.caller, name)
+
+    def complete_json(self, **kwargs: Any) -> tuple[Mapping[str, Any], AgentUsage]:
+        usage = AgentUsage()
+        payload = dict(kwargs["payload"])
+        payload["document_catalog"] = self.provider.catalog_view()
+        while True:
+            request = dict(kwargs)
+            request["payload"] = deepcopy(payload)
+            if request.get("max_request_tokens") is not None:
+                request["max_request_tokens"] = max(
+                    0, request["max_request_tokens"] - usage.tokens
+                )
+            value, used = _complete_json_with_invalid_value(
+                self.caller, **request
+            )
+            usage = usage + used
+            if set(value) != {"fetch_documents"}:
+                return value, usage
+            entries = value["fetch_documents"]
+            if (
+                not isinstance(entries, list)
+                or not entries
+                or len(entries) > self._MAX_ENTRIES_PER_EXCHANGE
+                or any(not isinstance(item, Mapping) for item in entries)
+            ):
+                raise ValidationError(
+                    "fetch_documents must be a nonempty array of at most "
+                    f"{self._MAX_ENTRIES_PER_EXCHANGE} objects"
+                )
+            if self.exchanges >= self._MAX_EXCHANGES:
+                raise ValidationError(
+                    "document channel fetches exceed the issued exchange budget"
+                )
+            resolved_keys: list[tuple[str, str | None]] = []
+            for entry in entries:
+                document_id = entry.get("document_id")
+                section_id = entry.get("section_id")
+                if not isinstance(document_id, str) or not (
+                    isinstance(section_id, str) or section_id is None
+                ):
+                    raise ValidationError(
+                        "fetch_documents entries require a document_id and "
+                        "optional section_id from the supplied catalog"
+                    )
+                key = (document_id, section_id)
+                if key in self.fetched_keys:
+                    raise ValidationError(
+                        "document channel entry was already fetched"
+                    )
+                resolved_keys.append(key)
+            self.exchanges += 1
+            cards = self.provider.fetch(entries)
+            self.fetched_keys.update(resolved_keys)
+            existing = list(payload.get("document_channel", ()))
+            payload["document_channel"] = existing + list(cards)
+
+
 class _ReflectionMemoryCaller:
     """Count and audit bounded source reads inside one retrospective role."""
 
@@ -2277,6 +2383,16 @@ class LLMInformationPlanProposer:
             "Apply the fixed H_P prior. Return only evolvable Plan content: "
             "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
             "retrieval plan, not a fixed company profile or computed Signal. "
+            "Basic Info is a constrained orientation stage: compose B.requests "
+            "from the closed source-type families — market backbone "
+            "(market_data, lookback <= 120, 1-2 documents), operating report "
+            "(filing, <= 730, 1-5), management commentary (earnings_call/"
+            "earnings_transcript, <= 365, 1-3), scoped news (news/company_news, "
+            "<= 365, 1-5), and financial facts (financials/sec_company_facts, "
+            "<= 730, 1-3). Requests may combine families under the strictest "
+            "matched bounds. A free-text query field is not expressible and "
+            "will be rejected; deep retrieval happens in the research loop's "
+            "document channel and Signal execution, not at bootstrap. "
             "Meta-info is a bounded brief view of committed retrospective memory. "
             "Complete originals remain stored. A brief retains its applicability, "
             "limitations, source handles and validation status; legacy_unreviewed "

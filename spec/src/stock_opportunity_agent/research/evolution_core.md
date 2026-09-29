@@ -12,6 +12,23 @@ Fast/Slow engine dependency.
 
 ## Invariants
 
+- The research loop carries an improvised retrieval channel alongside
+  frozen-policy Signal execution: every H_reflect call receives a bounded
+  point-in-time `document_catalog` view (disclosure interface cards) and
+  may spend at most two mid-call `fetch_documents` exchanges of two
+  supplied catalog entries each — complete documents or exact sections,
+  resolved through the disclosure interface with deduplication and
+  journaling by ordinary caller persistence. Fetched views arrive in
+  `document_channel` as citable evidence; Signals keep their frozen
+  retrieval policies for cross-case comparability.
+- The assembled final context is a typed append-only artifact:
+  `basic_info.projection_cards` bound the visible bootstrap projections
+  (first visible projection per request guaranteed, disclosure counts for
+  the deferred tail) so stage-to-stage carry-over loss is structurally
+  impossible; `context_contract.assembly_blocks` records the typed block
+  order and restricts numeric decision inputs to the computed anchor
+  block.
+
 - Computation before interpretation: the case runtime derives one evaluation
   anchor block from complete point-in-time market documents (five-day mean
   adjusted close plus deterministic derived facts — doubling threshold,

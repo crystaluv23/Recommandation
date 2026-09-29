@@ -1194,6 +1194,134 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
         raise StructuredValidationError(issues)
 
 
+# Constrained Basic Info action space: a Plan composes orientation requests
+# from closed source-type families with bounded lookback and document
+# counts. Free-text retrieval queries are not expressible at the bootstrap
+# stage — deep retrieval lives in the research loop's document channel and
+# in frozen-policy Signal execution.
+_BASIC_INFO_ORIENTATION_MENU = {
+    "market_backbone": {
+        "source_types": {"market_data", "historical_price", "price_daily", "prices"},
+        "max_lookback_days": 120,
+        "document_range": (1, 2),
+    },
+    "operating_report": {
+        "source_types": {"filing", "sec_filing", "filing_body"},
+        "max_lookback_days": 730,
+        "document_range": (1, 5),
+    },
+    "management_commentary": {
+        "source_types": {"earnings_call", "earnings_transcript"},
+        "max_lookback_days": 365,
+        "document_range": (1, 3),
+    },
+    "scoped_news": {
+        "source_types": {"news", "company_news"},
+        "max_lookback_days": 365,
+        "document_range": (1, 5),
+    },
+    "financial_facts": {
+        "source_types": {
+            "financials",
+            "sec_company_facts",
+            "financial_statements",
+            "company_facts",
+        },
+        "max_lookback_days": 730,
+        "document_range": (1, 3),
+    },
+}
+
+
+def _validate_basic_info_orientation_menu(plan: InformationPlan) -> None:
+    """Constrain proposed Basic Info requests to the closed orientation menu.
+
+    Requests may compose several orientation families (a bridge request may
+    combine transcript, filing, and financial sources), but every source
+    type must belong to some family, the lookback obeys the strictest
+    matched bound, and the document count stays inside the matched range.
+    Free-text retrieval queries are never expressible.
+    """
+
+    issues: list[ValidationIssue] = []
+    families = tuple(_BASIC_INFO_ORIENTATION_MENU.values())
+    all_menu_sources = {
+        source for entry in families for source in entry["source_types"]
+    }
+    for index, request in enumerate(plan.basic_info_policy.requests):
+        base = "B.requests[{}]".format(index)
+        if request.query and str(request.query).strip():
+            issues.append(ValidationIssue(
+                code="basic_info_query_not_expressible",
+                message=(
+                    "Basic Info is a constrained orientation stage: free-text "
+                    "retrieval queries are not expressible. Compose orientation "
+                    "actions from the closed source-type families with bounded "
+                    "lookback and document counts; deep retrieval belongs to the "
+                    "research loop's document channel and Signal execution."
+                ),
+                paths=(base + ".query",),
+                allowed_repairs=("remove",),
+            ))
+        matched = [
+            entry
+            for entry in families
+            if request.source_types
+            and set(request.source_types) & entry["source_types"]
+        ]
+        uncovered = (
+            set(request.source_types) - all_menu_sources
+            if request.source_types
+            else set()
+        )
+        if not matched or uncovered:
+            family_summary = ", ".join(
+                "{}: {}".format(name, sorted(entry["source_types"]))
+                for name, entry in _BASIC_INFO_ORIENTATION_MENU.items()
+            )
+            issues.append(ValidationIssue(
+                code="basic_info_family_outside_menu",
+                message=(
+                    "Basic Info request source types must belong to the closed "
+                    "orientation families (" + family_summary
+                    + "); uncovered=" + repr(sorted(uncovered))
+                ),
+                paths=(base + ".source_types",),
+                allowed_repairs=("replace",),
+            ))
+            continue
+        strictest_lookback = min(entry["max_lookback_days"] for entry in matched)
+        if (
+            request.lookback_days is None
+            or request.lookback_days > strictest_lookback
+        ):
+            issues.append(ValidationIssue(
+                code="basic_info_lookback_out_of_bounds",
+                message=(
+                    "Basic Info lookback must be at most "
+                    + str(strictest_lookback)
+                    + " days for this orientation composition"
+                ),
+                paths=(base + ".lookback_days",),
+                allowed_repairs=("replace",),
+            ))
+        low = min(entry["document_range"][0] for entry in matched)
+        high = max(entry["document_range"][1] for entry in matched)
+        if not low <= request.max_documents <= high:
+            issues.append(ValidationIssue(
+                code="basic_info_document_count_out_of_bounds",
+                message=(
+                    "Basic Info max_documents must be between "
+                    + str(low) + " and " + str(high)
+                    + " for this orientation composition"
+                ),
+                paths=(base + ".max_documents",),
+                allowed_repairs=("replace",),
+            ))
+    if issues:
+        raise StructuredValidationError(issues)
+
+
 def _validate_plan_for_proposer_context(
     plan: InformationPlan,
     *,
@@ -1221,6 +1349,7 @@ def _validate_plan_for_proposer_context(
                 for source_index, source in enumerate(request.source_types) if source in unsupported
             ), allowed_repairs=("replace", "remove"),
         )])
+    _validate_basic_info_orientation_menu(plan)
     _validate_fixed_plan_semantics(plan)
     _validate_proposed_plan_skills(plan)
 

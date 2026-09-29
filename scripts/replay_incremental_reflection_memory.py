@@ -468,6 +468,27 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
         for case in plan["original_case_reflections"]
     ]
     parent = entries[-1].plan_reflections[-1].plan
+    # Menu-era adaptation: the historical parent predates the constrained
+    # Basic Info orientation menu, whose validator now rejects free-text
+    # queries. This replay verifies reflection-memory protocol, so the
+    # inexpressible query fields are dropped from the replayed policy.
+    from dataclasses import replace as _dc_replace
+
+    from stock_opportunity_agent.data.resolution import RawInfoRequest
+
+    parent = _dc_replace(
+        parent,
+        basic_info_policy=type(parent.basic_info_policy)(
+            requests=tuple(
+                (
+                    _dc_replace(request, query=None)
+                    if getattr(request, "query", None)
+                    else request
+                )
+                for request in parent.basic_info_policy.requests
+            )
+        ),
+    )
 
     class BrowsingCaller:
         def __init__(self) -> None:
