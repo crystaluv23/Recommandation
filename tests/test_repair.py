@@ -100,6 +100,27 @@ class L2MechanicalRepairTests(unittest.TestCase):
             repaired["reflection_items"][0]["scope"]["case_refs"],
             ["case:1", "case:2"],
         )
+        # Union semantics: a declared-but-uncited case is dropped and a
+        # cited source's coverage replaces the declaration entirely.
+        ghost_package = {
+            "reflection_items": [
+                {
+                    "category": "missing_information",
+                    "source_refs": ["reflection:a"],
+                    "outcome_claims": [],
+                    "scope": {
+                        "case_refs": ["case:ghost"],
+                        "plan_refs": [],
+                        "conditions": "x",
+                    },
+                }
+            ],
+        }
+        repaired_ghost, _ops = scope_narrow_to_support(ghost_package, resolver)
+        self.assertEqual(
+            repaired_ghost["reflection_items"][0]["scope"]["case_refs"],
+            ["case:1"],
+        )
         self.assertEqual(ops[0].action, "scope_narrow_to_support")
 
     def test_v147_mixed_axis_item_splits_into_single_axis_forms(self):
@@ -194,3 +215,193 @@ class L2MechanicalRepairTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UnifiedLadderWiringTests(unittest.TestCase):
+    def test_v148_frontier_scope_repair_with_resolver(self):
+        # End-to-end: a plan-critic package with an over-broad scope is
+        # accepted on the first answer through the index-aware L2 rung —
+        # no LLM correction round is spent.
+        import sys
+
+        sys.path.insert(0, "tests")
+        from tests.evolution_runtime_test_support import (
+            LLMPlanCritic,
+            ScriptedRoleCaller,
+            default_information_plan,
+            PlanMetrics,
+        )
+        from tests.scheme_evolution_test_support import (
+            make_trajectory,
+            MagnitudeClass,
+        )
+        from stock_opportunity_agent.research.evolution_reflection_memory import (
+            ReflectionMemoryIndex,
+        )
+
+        snapshot = {
+            "source_identity": "case:scope",
+            "candidate_judgment_feedback": {"binary_correct": False},
+            "magnitude_feedback": {
+                "magnitude_applicable": True,
+                "magnitude_correct": False,
+            },
+        }
+        from stock_opportunity_agent.research.evolution_plan_roles import (
+            CaseReflectionEvidence,
+        )
+
+        trajectory = make_trajectory(
+            "scope", 1.5, True, MagnitudeClass.TWO_TO_THREE
+        )
+        plan = default_information_plan()
+        from stock_opportunity_agent.artifacts import canonical_json_hash
+
+        critic_owner = "reflection_plan:" + canonical_json_hash(
+            plan.canonical_dict()
+        )
+        source_rows = [
+            CaseReflectionEvidence.from_trajectory(
+                trajectory, case_index=1
+            ).to_model_dict()
+        ]
+        index_hint = ReflectionMemoryIndex.from_case_rows(
+            source_rows, owner_ref=critic_owner
+        )
+        source = index_hint.source_catalog()[0]
+        package = {
+            "reflection_items": [
+                {
+                    "category": "repeated_failure_modes",
+                    "kind": "fact",
+                    "brief": "Both axes failed without a quantified bridge.",
+                    "detail": "Binary and magnitude both wrong.",
+                    "scope": {
+                        "case_refs": list(source["case_refs"]) + ["case:ghost"],
+                        "plan_refs": [],
+                        "conditions": "Always.",
+                    },
+                    "limitations": [],
+                    "source_refs": [source["source_ref"]],
+                    "counter_refs": [],
+                    "outcome_claims": [
+                        {
+                            "source_ref": source["source_ref"],
+                            "axis": "binary",
+                            "correct": False,
+                        }
+                    ],
+                }
+            ],
+            "selected_reflection_refs": [],
+            "no_findings_reason": None,
+        }
+        caller = ScriptedRoleCaller([package])
+        critic = LLMPlanCritic(caller)
+        metrics = PlanMetrics(
+            binary_precision=0.5,
+            binary_recall=0.5,
+            binary_f1=0.5,
+            magnitude_accuracy=0.5,
+            magnitude_macro_f1=0.5,
+            true_positive=1,
+            false_positive=1,
+            true_negative=1,
+            false_negative=1,
+            sample_count=4,
+        )
+        reflection = critic.critique(
+            plan=plan,
+            trajectories=(trajectory,),
+            metrics=metrics,
+        )
+        self.assertEqual(len(reflection.reflection_items), 1)
+        # The ghost case was scoped out mechanically; one call, no correction.
+        self.assertIsNone(reflection.no_findings_reason)
+        self.assertEqual(len(caller.calls), 1)
+
+    def test_v148_salvage_repairs_scope_before_dropping(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import (
+            _reflection_salvage_fallback,
+        )
+        from stock_opportunity_agent.research.evolution_reflection_memory import (
+            ReflectionMemoryIndex,
+        )
+
+        snapshot = {
+            "source_identity": "case:salv",
+            "candidate_judgment_feedback": {"binary_correct": False},
+            "magnitude_feedback": {
+                "magnitude_applicable": True,
+                "magnitude_correct": False,
+            },
+        }
+        index = ReflectionMemoryIndex.from_case_rows(
+            [snapshot], owner_ref="case:salv"
+        )
+        source = index.source_catalog()[0]
+        row = {
+            "category": "missing_information",
+            "kind": "fact",
+            "brief": "Missing forward bridge.",
+            "detail": "No quantified bridge was supplied.",
+            "scope": {
+                "case_refs": ["case:ghost"],
+                "plan_refs": [],
+                "conditions": "Always.",
+            },
+            "limitations": [],
+            "source_refs": [source["source_ref"]],
+            "counter_refs": [],
+            "outcome_claims": [],
+        }
+        salvage = _reflection_salvage_fallback(index, "case", "case:salv")
+        result = salvage(
+            {
+                "reflection_items": [row],
+                "selected_reflection_refs": [],
+                "no_findings_reason": None,
+            },
+            ValidationError("scope not covered"),
+        )
+        self.assertIsNotNone(result)
+        next_output, actions = result
+        # The row was repaired (scope narrowed), not removed.
+        self.assertEqual(len(next_output["reflection_items"]), 1)
+        self.assertEqual(actions["removed_paths"], ())
+        self.assertTrue(actions["normalized_paths"])
+
+    def test_v148_complete_json_repaired_rescues_truncation(self):
+        import json as _json
+
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            complete_json_repaired,
+        )
+        from stock_opportunity_agent.research.evolution_transport import (
+            StructuredOutputInvalid,
+        )
+        from tests.evolution_runtime_test_support import AgentUsage
+
+        truncated = (
+            '{"spec": {"signal_id": "abc", "definition": "measures gro'
+        )
+
+        class TruncatingCaller:
+            def complete_json(self, **kwargs):
+                raise StructuredOutputInvalid(
+                    "truncated",
+                    truncated,
+                    AgentUsage(llm_calls=1, tokens=50),
+                    output_tokens=50,
+                    output_token_limit=100,
+                )
+
+        def parse(value):
+            assert value["spec"]["signal_id"] == "abc"
+            return value
+
+        value, usage = complete_json_repaired(
+            TruncatingCaller(), parse=parse, stage="unit"
+        )
+        self.assertEqual(value["spec"]["signal_id"], "abc")
+        self.assertEqual(usage.tokens, 50)

@@ -36,6 +36,7 @@ from stock_opportunity_agent.research.evolution_transport import (
     _complete_json_with_invalid_value,
     _emit_runtime_progress,
     _scan_payload,
+    StructuredOutputInvalid,
 )
 
 
@@ -1391,6 +1392,52 @@ def _fixed_semantics_match(text_value: str) -> re.Match[str] | None:
         flags=re.IGNORECASE,
     )
     return _FIXED_SEMANTICS_REDEFINITION.search(scrubbed)
+
+
+def complete_json_repaired(
+    caller: JSONRoleCaller,
+    *,
+    parse: Callable[[Mapping[str, Any]], Any],
+    **kwargs: Any,
+) -> tuple[Any, AgentUsage]:
+    """Direct completion with L0 truncation rescue for bypass frontiers.
+
+    Roles that drive ``complete_json`` themselves (proposer exchanges,
+    module-staged materialization) get the same first rung: a truncated
+    response is deterministically completed and accepted only when the
+    supplied full validator parses the candidate; otherwise the caller's
+    normal correction path continues unchanged.
+    """
+
+    try:
+        value, usage = caller.complete_json(**kwargs)
+    except StructuredOutputInvalid as exc:
+        from stock_opportunity_agent.research.repair import (
+            complete_truncated_json,
+        )
+
+        repair = complete_truncated_json(exc.raw_output)
+        if repair is not None:
+            candidate_text, l0_ops = repair
+            try:
+                candidate_value = json.loads(candidate_text)
+            except json.JSONDecodeError:
+                candidate_value = None
+            if isinstance(candidate_value, Mapping):
+                try:
+                    parsed = parse(candidate_value)
+                except ValidationError:
+                    parsed = None
+                if parsed is not None:
+                    _emit_runtime_progress(
+                        getattr(caller, "on_progress", None),
+                        "mechanical_json_repair_accepted",
+                        stage=str(kwargs.get("stage", "")),
+                        ops=[op.__dict__ for op in l0_ops],
+                    )
+                    return parsed, exc.usage
+        raise
+    return value, usage
 
 
 def _parse_role_output(stage: str, value: Mapping[str, Any], parser: Any) -> Any:
@@ -3317,6 +3364,12 @@ def _complete_parsed_role(
 ) -> tuple[Any, AgentUsage]:
     """Apply the caller's bounded semantic corrections around a structured role.
 
+    ``repair_resolver`` in ``kwargs`` optionally supplies a ref-resolution
+    callable enabling the index-aware L2 repairs (scope narrowing) before
+    any LLM correction round is spent.
+    """
+    """Apply the caller's bounded semantic corrections around a structured role.
+
     When the caller supports chain-scoped no-progress rejection, the whole
     initial-plus-correction sequence runs inside one correction chain so a
     byte-identical corrected request fails closed instead of replaying the
@@ -3332,6 +3385,7 @@ def _complete_parsed_role(
 
 def _complete_parsed_role_impl(
     caller: JSONRoleCaller,
+    repair_resolver: Any = None,
     *,
     stage: str,
     system_prompt: str,
@@ -3945,6 +3999,7 @@ def _complete_parsed_role_impl(
                     lambda candidate: _parse_role_output(
                         request_stage, candidate, parser
                     ),
+                    resolver=repair_resolver,
                 )
             if mechanical is not None:
                 parsed_value, repair_ops = mechanical

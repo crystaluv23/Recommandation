@@ -7151,8 +7151,19 @@ class SignalEvolutionEngine:
         *,
         caller: Any,
     ) -> tuple[Any, list[str]]:
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            complete_json_repaired,
+        )
+
+        def module_parse(value: Any) -> Any:
+            if not isinstance(value, Mapping):
+                raise ValidationError("module output must be an object")
+            return value
+
         try:
-            parsed, _usage = caller.complete_json(
+            parsed, _usage = complete_json_repaired(
+                caller,
+                parse=module_parse,
                 stage=f"mining_candidate_materialize_{module}",
                 system_prompt=(
                     "Return exactly one JSON object. " + instruction

@@ -1893,6 +1893,7 @@ class LLMBlindPredictor:
                 final_validation_fallback=_reflection_salvage_fallback(
                     source_index, "case", source_identity,
                 ),
+                repair_resolver=source_index.citation_closure,
             )
             return AgentStep(reflection, usage)
         except CandidateExecutionRejected as exc:
@@ -2002,6 +2003,32 @@ def _structured_reflection_contract(level: str) -> str:
     )
 
 
+def _repair_reflection_row(
+    raw: Any,
+    index: "ReflectionMemoryIndex",
+    *,
+    level: str,
+    owner_ref: str,
+) -> Any | None:
+    """Mechanically repair one invalid reflection row before dropping it."""
+
+    if not isinstance(raw, Mapping):
+        return None
+    from stock_opportunity_agent.research.repair import apply_mechanical_repairs
+
+    result = apply_mechanical_repairs(
+        {"reflection_items": [raw]},
+        lambda package: index.create_items(
+            package["reflection_items"], level=level, owner_ref=owner_ref
+        ),
+        resolver=index.citation_closure,
+    )
+    if result is None:
+        return None
+    items, _ops = result
+    return items[0] if items else None
+
+
 def _reflection_salvage_fallback(
     index: "ReflectionMemoryIndex",
     level: str,
@@ -2027,17 +2054,24 @@ def _reflection_salvage_fallback(
         if not isinstance(raw_items, list) or not raw_items:
             return None
         removed: list[int] = []
+        repaired_rows: dict[int, Any] = {}
         for position, raw in enumerate(raw_items):
             try:
                 index.create_items((raw,), level=level, owner_ref=owner_ref)
             except ValidationError:
+                repaired_row = _repair_reflection_row(
+                    raw, index, level=level, owner_ref=owner_ref
+                )
+                if repaired_row is not None:
+                    repaired_rows[position] = repaired_row
+                    continue
                 removed.append(position)
-        if not removed:
+        if not removed and not repaired_rows:
             return None
         dropped = set(removed)
         next_output = dict(failed_output)
         remaining = [
-            raw
+            repaired_rows.get(position, raw)
             for position, raw in enumerate(raw_items)
             if position not in dropped
         ]
@@ -2054,7 +2088,10 @@ def _reflection_salvage_fallback(
             ),
             "source_substitution_paths": (),
             "context_only_paths": (),
-            "normalized_paths": (),
+            "normalized_paths": tuple(
+                f"reflection_items[{position}]"
+                for position in sorted(repaired_rows)
+            ),
         }
 
     return salvage
@@ -2528,6 +2565,24 @@ class LLMInformationPlanProposer:
                     payload=request_payload, allow_outcomes=True,
                     max_output_tokens=4_000, temperature=self.temperature,
                 )
+                if set(value) == {"invalid_structured_output", "validation_error"}:
+                    from stock_opportunity_agent.research.repair import (
+                        complete_truncated_json,
+                    )
+
+                    _l0 = complete_truncated_json(
+                        str(value["invalid_structured_output"])
+                    )
+                    if _l0 is not None:
+                        try:
+                            _candidate = json.loads(_l0[0])
+                        except json.JSONDecodeError:
+                            _candidate = None
+                        if isinstance(_candidate, dict):
+                            # Candidate flows into the proposer's own
+                            # validation below; the L0 rescue only restores
+                            # parseability, the validator stays the arbiter.
+                            value = _candidate
                 if set(value) not in ({"read_refs"}, {"browse_memory"}):
                     return value
                 if read_requests >= 3 or request_payload["validation_feedback"] is not None:
@@ -2968,6 +3023,7 @@ class LLMPlanCritic:
                 final_validation_fallback=_reflection_salvage_fallback(
                     source_index, "plan", owner_ref,
                 ),
+                repair_resolver=source_index.citation_closure,
             )
             return reflection
         except CandidateExecutionRejected as exc:
@@ -3102,6 +3158,7 @@ class LLMRoundReflector:
                 final_validation_fallback=_reflection_salvage_fallback(
                     source_index, "round", owner_ref,
                 ),
+                repair_resolver=source_index.citation_closure,
             )
             return reflection
         except CandidateExecutionRejected as exc:

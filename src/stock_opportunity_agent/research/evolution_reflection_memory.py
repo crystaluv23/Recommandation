@@ -524,6 +524,23 @@ class ReflectionMemoryIndex:
             result.append(item)
         return tuple(result)
 
+    def citation_closure(self, ref: str) -> dict[str, Any] | None:
+        """Return one ref's case/Plan closure for mechanical scope repair."""
+
+        row = self._sources.get(ref)
+        if row is not None:
+            return {
+                "case_refs": list(row["case_refs"]),
+                "plan_refs": list(row["plan_refs"]),
+            }
+        item = self._items.get(ref)
+        if item is not None:
+            return {
+                "case_refs": list(item.scope["case_refs"]),
+                "plan_refs": list(item.scope["plan_refs"]),
+            }
+        return None
+
     def select_items(self, refs: Iterable[str]) -> tuple[ReflectionItem, ...]:
         """Select existing items without rewriting or upgrading legacy hypotheses."""
         refs = _strings(tuple(refs), "selected_reflection_refs")

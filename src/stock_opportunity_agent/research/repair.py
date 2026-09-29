@@ -305,8 +305,12 @@ def scope_narrow_to_support(
         if not isinstance(scope, Mapping):
             items.append(raw)
             continue
-        case_refs = [row for row in scope.get("case_refs") or () if row in covered_cases]
-        plan_refs = [row for row in scope.get("plan_refs") or () if row in covered_plans]
+        # Union semantics: the declared scope becomes exactly what the
+        # item's citations cover. Declared-but-uncited entries are dropped
+        # and covered-but-undeclared entries are added — the model cited
+        # the sources, so their closure is the scope it can claim.
+        case_refs = sorted(covered_cases)
+        plan_refs = sorted(covered_plans)
         if case_refs == list(scope.get("case_refs") or ()) and plan_refs == list(
             scope.get("plan_refs") or ()
         ):
