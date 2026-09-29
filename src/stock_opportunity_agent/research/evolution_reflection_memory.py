@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
@@ -20,6 +21,34 @@ _CATEGORIES = {
 }
 _OUTCOME_CATEGORIES = frozenset({"successful_patterns", "failed_patterns", "why_prediction_failed", "decision_drivers", "false_positive_patterns", "false_negative_patterns"})
 _FACT_FIELDS = ("candidate_judgment_feedback", "magnitude_feedback", "jev_decision_feedback", "technical_exclusion")
+
+# Ingestion gate: an authored action item may not advise consulting
+# information that only exists after the prediction boundary. The scan is
+# deliberately narrow and lexical — sources_checked proves provenance, never
+# point-in-time executability.
+_PIT_INEXECUTABLE_ACTION = re.compile(
+    r"(?:post[- ]prediction[- ]time|after\s+the\s+prediction\s+time|"
+    r"post[- ]outcome|after\s+outcome\s+reveal|"
+    r"(?:realized|subsequent)\s+price\s+action)",
+    re.IGNORECASE,
+)
+
+
+def _reject_pit_inexecutable_action(
+    value: Mapping[str, Any],
+    invalid: Any,
+    fields: tuple[str, ...],
+) -> None:
+    for field_name in fields:
+        text = value.get(field_name)
+        if isinstance(text, str) and _PIT_INEXECUTABLE_ACTION.search(text):
+            invalid(
+                "action reflection advises consulting post-prediction-time "
+                "information; research actions must be executable from "
+                "facts available by the prediction boundary",
+                field_name,
+                ("kind",),
+            )
 
 
 class ReflectionValidationError(ValidationError):
@@ -486,6 +515,10 @@ class ReflectionMemoryIndex:
                 invalid("outcome claims do not cover the declared case scope", "outcome_claims", ("scope.case_refs", "source_refs", "category"))
             if value["category"] in _OUTCOME_CATEGORIES and not set(scope["plan_refs"]) <= outcome_plans:
                 invalid("outcome claims do not cover the declared Plan scope", "outcome_claims", ("scope.plan_refs", "source_refs", "category"))
+            if value["kind"] == "action":
+                _reject_pit_inexecutable_action(
+                    value, invalid, ("brief", "detail")
+                )
             content = {**value, "level": level, "owner_ref": owner_ref, "evidence_status": "sources_checked"}
             item = ReflectionItem.from_dict({"item_ref": _ref("reflection", content), **content})
             result.append(item)

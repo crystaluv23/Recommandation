@@ -22,6 +22,15 @@ files, calls models, or grants access to Raw Info or blind execution.
   local resolver remains available; omitted-count metadata never expands into
   an unbounded list of identifiers.
 - A source-backed item is `sources_checked`, never automatically `verified`.
+  Ingestion additionally applies a point-in-time executability gate: an
+  authored `action` item may not advise consulting post-prediction-time
+  information (narrow lexical scan over brief and detail — post-prediction
+  time, post-outcome, realized price action and direct equivalents);
+  observations and hypotheses may discuss post-outcome facts, only
+  executable research actions are constrained. The proposer payload pins
+  an `experience_snapshot_hash` — the canonical hash of the exact masked
+  brief view consumed — so later fitness comparisons can attribute Plans
+  to the memory state that produced them.
   Runtime-owned outcome facts may be verified; model confidence and citation
   presence are not truth. Explicit outcome claims must match canonical outcome
   records, and technical exclusions cannot support research attribution.

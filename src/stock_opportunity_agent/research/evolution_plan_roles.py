@@ -2241,6 +2241,10 @@ class LLMInformationPlanProposer:
             "fixed_prior": prior,
             "parents": [item.to_dict() for item in parents],
             "meta_info": meta_payload,
+            # Snapshot discipline: pin the exact experience-tree view this
+            # proposal consumed, so later fitness comparisons can attribute
+            # Plans to the memory state that produced them.
+            "experience_snapshot_hash": _canonical_hash(meta_payload),
             "available_source_types": list(self.available_source_types),
             "memory_disclosures": [],
             "memory_access": {

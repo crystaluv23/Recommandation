@@ -3752,3 +3752,47 @@ class RoutingAndPlanRoleTests(TestCase):
             )
 
         self.assertEqual(caller.calls, [])
+
+    def test_v145_proposer_pins_experience_snapshot_hash(self) -> None:
+        policy = {
+            "requests": [{
+                "request_id": "recent_market_backbone",
+                "description": "Read recent point-in-time price and volume.",
+                "source_types": ["market_data"],
+                "lookback_days": 45,
+                "max_documents": 1,
+            }]
+        }
+        plan_output = {
+            "B": policy,
+            "H_init": "Form a falsifiable hypothesis and list unresolved information needs.",
+            "H_reflect": "Track support and contradiction, then continue for the next need or finalize.",
+            "H_analyse": "Weigh supporting and counter evidence while exposing uncertainty.",
+        }
+        caller = ScriptedRoleCaller([plan_output, plan_output])
+        proposer = LLMInformationPlanProposer(caller)
+        proposal = proposer.propose(
+            round_id=1,
+            candidate_index=1,
+            candidate_count=1,
+            proposal_attempt=1,
+            forbidden_plan_ids=(),
+            parents=(),
+            meta_info=(),
+            prior="fixed prior",
+        )
+        self.assertTrue(proposal)
+        payload = caller.calls[0]["payload"]["proposal_context"]
+        snapshot_hash = payload.get("experience_snapshot_hash")
+        self.assertIsInstance(snapshot_hash, str)
+        self.assertEqual(len(snapshot_hash), 64)
+        import hashlib
+        expected = hashlib.sha256(
+            json.dumps(
+                payload["meta_info"],
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        self.assertEqual(snapshot_hash, expected)

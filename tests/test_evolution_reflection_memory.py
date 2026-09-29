@@ -393,3 +393,44 @@ class IdentityEgressMaskingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_v145_pit_gate_rejects_post_prediction_action_lessons(self):
+        snapshot = case("case:pit")
+        index = ReflectionMemoryIndex.from_case_rows([snapshot], owner_ref="case:pit")
+        source = index.source_catalog()[0]
+
+        def action_item(kind, detail):
+            return {
+                "category": "plan_issues", "kind": kind,
+                "brief": "Verify timing of evidence before relying on it.",
+                "detail": detail,
+                "scope": {"case_refs": list(source["case_refs"]), "plan_refs": [], "conditions": "Always."},
+                "limitations": [], "source_refs": [source["source_ref"]],
+                "counter_refs": [], "outcome_claims": [],
+            }
+
+        inexecutable = action_item(
+            "action",
+            "Before finalizing, search post-prediction-time price action to "
+            "confirm the thesis direction.",
+        )
+        with self.assertRaises(ReflectionValidationError) as caught:
+            index.create_items([inexecutable], level="case", owner_ref="case:pit")
+        self.assertIn("post-prediction-time", str(caught.exception))
+
+        # The same observation as a hypothesis is retained: the gate
+        # constrains executable actions, not retrospective observations.
+        observation = action_item(
+            "hypothesis",
+            "Post-outcome price action confirmed the thesis direction.",
+        )
+        items = index.create_items([observation], level="case", owner_ref="case:pit")
+        self.assertEqual(len(items), 1)
+
+        executable = action_item(
+            "action",
+            "Before finalizing, check guidance disclosed by the prediction "
+            "time and require a quantified bridge.",
+        )
+        items = index.create_items([executable], level="case", owner_ref="case:pit")
+        self.assertEqual(len(items), 1)
