@@ -12,6 +12,32 @@ and apply only explicitly allowed deterministic recovery transforms.
 - A recovery transform must be generic to the declared schema; it must not
   encode provider-, company-, or case-specific exceptions.
 
+## Mechanical repair ladder (round 31)
+
+Structured role outputs pass a deterministic repair ladder before any LLM
+correction is spent. L0 completes JSON truncated at the output ceiling
+(closing open strings and the bracket stack, dropping dangling commas or
+colons, stripping code fences) and accepts the candidate only when the
+complete unchanged parser validates it; roles that drive ``complete_json``
+directly (module-staged materialization, the Plan proposer) receive the
+same rung through ``complete_json_repaired`` or an inline rescue, while
+the mining controller's tiny action objects keep their own retry state
+machine. L2 repairs reorganize model-provided information where the
+correct action is unique: registering claim-cited resolvable refs into
+``source_refs``, narrowing a reflection item's declared scope to its
+citation closure under union semantics (the declared scope becomes
+exactly what the item's citations cover) via the ``repair_resolver``
+wired by the critic, round reflector, and posthoc reflection, splitting
+a mixed success/failure-axis item into its two single-axis forms with
+fixed counterpart categories, removing open questions that repeat a need
+byte-for-byte, and dropping empty text rows. Row-level salvage applies
+the same chain per row before dropping, replacing repaired rows and
+recording them under normalized paths. Every repair is a typed operation
+with before/after values emitted as a progress event; the validator —
+never the repair — remains the arbiter, and anything ambiguous (values,
+semantic choices, hallucinated references) stays with the bounded LLM
+correction or explicit failure.
+
 ## Incremental response and correction boundary
 
 BlindPrediction shape/enum guards publish exact missing, unexpected and invalid
