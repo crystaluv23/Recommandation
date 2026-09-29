@@ -24,7 +24,10 @@ from stock_opportunity_agent.research.scheme_evolution import (
     RuntimeBudgetExceeded,
     _mask_identity_values,
 )
-from stock_opportunity_agent.research.repair import apply_mechanical_repairs
+from stock_opportunity_agent.research.repair import (
+    MECHANICAL_FALLBACK_CODES,
+    apply_mechanical_repairs,
+)
 from stock_opportunity_agent.signal_library import signal_result_model_view
 from stock_opportunity_agent.research.evolution_state_patch import (
     PATCH_INSTRUCTION,
@@ -4025,12 +4028,7 @@ def _complete_parsed_role_impl(
                 and isinstance(exc, StructuredValidationError)
                 and exc.issues
                 and all(
-                    issue.code
-                    in {
-                        "assertion_without_support",
-                        "claim_quantity_not_supported",
-                        "evidence_claim_empty",
-                    }
+                    issue.code in MECHANICAL_FALLBACK_CODES
                     for issue in exc.issues
                 )
             ):

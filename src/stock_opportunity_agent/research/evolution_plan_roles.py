@@ -2016,12 +2016,24 @@ def _repair_reflection_row(
         return None
     from stock_opportunity_agent.research.repair import apply_mechanical_repairs
 
+    from stock_opportunity_agent.research.evolution_reflection_memory import (
+        _CATEGORIES,
+    )
+
+    level_categories = _CATEGORIES.get(level)
+
+    def salvage_parse(package):
+        return index.create_items(
+            package["reflection_items"],
+            level=level,
+            owner_ref=owner_ref,
+        )
+
     result = apply_mechanical_repairs(
         {"reflection_items": [raw]},
-        lambda package: index.create_items(
-            package["reflection_items"], level=level, owner_ref=owner_ref
-        ),
+        salvage_parse,
         resolver=index.citation_closure,
+        level_categories=level_categories,
     )
     if result is None:
         return None

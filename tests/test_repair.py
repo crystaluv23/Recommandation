@@ -498,3 +498,109 @@ class PromotedFallbackTests(unittest.TestCase):
         self.assertEqual(ops[1].path, "contradictions[1]")
         self.assertEqual(ops[0].action, "flatten_text_array_object")
         self.assertEqual(ops[0].path, "contradictions[0]")
+
+
+class GeneralityTests(unittest.TestCase):
+    def test_v150_text_fields_derive_from_owning_model(self):
+        # 单一事实源：给 ResearchState 增加一个 tuple[str, ...] 字段，
+        # 修复链自动覆盖（这里验证派生函数的判据本身）。
+        import dataclasses
+        import typing
+        from stock_opportunity_agent.research.repair import _TEXT_ARRAY_FIELDS
+
+        self.assertIn("open_questions", _TEXT_ARRAY_FIELDS)
+        self.assertNotIn("supporting_evidence", _TEXT_ARRAY_FIELDS)
+        self.assertNotIn("decision", _TEXT_ARRAY_FIELDS)
+
+    def test_v150_registry_accepts_new_shape_family(self):
+        from stock_opportunity_agent.research.repair import (
+            REPAIR_CHAIN_REGISTRY,
+            apply_mechanical_repairs,
+            mechanical_repairs_for,
+            register_repair_chain,
+        )
+        from stock_opportunity_agent.models import ValidationError
+
+        def is_widget(value):
+            return isinstance(value, dict) and "widget_rows" in value
+
+        def drop_empty_widget_rows(value, resolver, level_categories=None):
+            def repair(mapping):
+                kept = [
+                    row
+                    for row in mapping["widget_rows"]
+                    if isinstance(row, str) and row.strip()
+                ]
+                if len(kept) == len(mapping["widget_rows"]):
+                    return dict(mapping), []
+                result = dict(mapping)
+                result["widget_rows"] = kept
+                return result, ["dropped"]
+
+            return [repair]
+
+        register_repair_chain(is_widget, drop_empty_widget_rows)
+        try:
+            widget = {"widget_rows": ["real row", ""]}
+            self.assertTrue(mechanical_repairs_for(widget))
+
+            def parse(value):
+                if any(not row.strip() for row in value["widget_rows"]):
+                    raise ValidationError("empty row")
+                return value
+
+            result = apply_mechanical_repairs(widget, parse)
+            self.assertIsNotNone(result)
+            self.assertEqual(result[0]["widget_rows"], ["real row"])
+        finally:
+            REPAIR_CHAIN_REGISTRY.pop()
+
+    def test_v150_split_respects_level_categories(self):
+        from stock_opportunity_agent.research.repair import (
+            split_mixed_axis_items,
+        )
+
+        package = {
+            "reflection_items": [
+                {
+                    "category": "failed_patterns",
+                    "brief": "Mixed outcome.",
+                    "detail": "Both axes.",
+                    "source_refs": ["reflection:a"],
+                    "counter_refs": [],
+                    "outcome_claims": [
+                        {"source_ref": "reflection:a", "axis": "binary", "correct": True},
+                        {"source_ref": "reflection:a", "axis": "magnitude", "correct": False},
+                    ],
+                    "scope": {"case_refs": ["c"], "plan_refs": [], "conditions": "z"},
+                    "limitations": [],
+                }
+            ],
+        }
+        # case 层没有 failed_patterns/successful_patterns：传入层级词汇后
+        # 不再产出该层不存在的类别，行留给下一梯级。
+        case_categories = {
+            "decision_drivers", "why_prediction_failed", "misleading_signals",
+            "ignored_evidence", "missing_information", "plan_issues",
+        }
+        repaired, ops = split_mixed_axis_items(package, case_categories)
+        self.assertEqual(len(repaired["reflection_items"]), 1)
+        self.assertEqual(ops, [])
+        # plan 层两类都存在：正常拆分。
+        plan_categories = {
+            "successful_patterns", "failed_patterns", "repeated_failure_modes",
+        }
+        repaired, ops = split_mixed_axis_items(package, plan_categories)
+        self.assertEqual(len(repaired["reflection_items"]), 2)
+        self.assertEqual(len(ops), 1)
+
+    def test_v150_gate_codes_single_sourced(self):
+        from stock_opportunity_agent.research.repair import (
+            MECHANICAL_FALLBACK_CODES,
+        )
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            MECHANICAL_FALLBACK_CODES as frontier_codes,
+        )
+
+        self.assertIs(MECHANICAL_FALLBACK_CODES, frontier_codes)
+        self.assertIn("claim_quantity_not_supported", MECHANICAL_FALLBACK_CODES)

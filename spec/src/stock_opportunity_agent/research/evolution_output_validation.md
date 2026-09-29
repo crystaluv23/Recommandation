@@ -44,7 +44,14 @@ anchor-guard evidence-availability vocabulary includes bare verb forms
 (``disclose``, ``publish``, ...) beside participles, and misplaced
 evidence objects in research-state text arrays flatten to their unique
 prose field (``claim``, else the sole string field); rows with several
-string candidates stay for LLM correction. Every repair is a typed operation
+string candidates stay for LLM correction. The ladder is general by
+construction: text-array fields derive from the owning ``ResearchState``
+model instead of a copied list, the mechanical fallback gate codes are
+single-sourced (``MECHANICAL_FALLBACK_CODES``), mixed-axis splitting is
+level-aware when the salvage path supplies the level's category
+vocabulary, and repair families register against an open
+``REPAIR_CHAIN_REGISTRY`` keyed by shape predicate — a new output schema
+joins the ladder by registering a family, not by editing the dispatcher. Every repair is a typed operation
 with before/after values emitted as a progress event; the validator —
 never the repair — remains the arbiter, and anything ambiguous (values,
 semantic choices, hallucinated references) stays with the bounded LLM

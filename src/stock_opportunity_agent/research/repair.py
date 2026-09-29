@@ -39,6 +39,17 @@ from stock_opportunity_agent.models import ValidationError
 L0_JSON = "L0_json_text"
 L2_MECHANICAL = "L2_mechanical"
 
+# Issue codes whose unique fixes are copy-literal or whole-row removal;
+# deterministic fallbacks may be promoted ahead of the LLM round only for
+# these. Semantic classes keep the post-correction position.
+MECHANICAL_FALLBACK_CODES = frozenset(
+    {
+        "assertion_without_support",
+        "claim_quantity_not_supported",
+        "evidence_claim_empty",
+    }
+)
+
 _SUCCESS_COUNTERPART = {
     "why_prediction_failed": "decision_drivers",
     "failed_patterns": "successful_patterns",
@@ -49,14 +60,42 @@ _FAILURE_COUNTERPART = {
     "successful_patterns": "failed_patterns",
     "decision_drivers": "why_prediction_failed",
 }
-_TEXT_ARRAY_FIELDS = (
-    "hypotheses",
-    "current_beliefs",
-    "contradictions",
-    "resolved_questions",
-    "open_questions",
-    "next_information_needs",
-)
+def _derive_text_array_fields() -> tuple[str, ...]:
+    """Derive the research-state text-array fields from the owning model.
+
+    Single source of truth: adding a ``tuple[str, ...]`` field to
+    ``ResearchState`` extends the repairs automatically instead of
+    drifting a copied list here.
+    """
+
+    import dataclasses
+    import inspect
+    import typing
+
+    from stock_opportunity_agent.research.evolution_core import ResearchState
+
+    module = inspect.getmodule(ResearchState)
+    scope = vars(module)
+    fields = []
+    for field in dataclasses.fields(ResearchState):
+        annotation = field.type
+        if isinstance(annotation, str):
+            try:
+                annotation = eval(annotation, scope)  # noqa: S307
+            except Exception:
+                continue
+        args = typing.get_args(annotation)
+        if (
+            typing.get_origin(annotation) is tuple
+            and len(args) == 2
+            and args[0] is str
+            and args[1] is Ellipsis
+        ):
+            fields.append(field.name)
+    return tuple(fields)
+
+
+_TEXT_ARRAY_FIELDS = _derive_text_array_fields()
 
 
 @dataclass(frozen=True)
@@ -194,6 +233,7 @@ def claim_refs_into_source_refs(
 
 def split_mixed_axis_items(
     value: Mapping[str, Any],
+    level_categories: frozenset[str] | set[str] | None = None,
 ) -> tuple[dict[str, Any], list[RepairOp]]:
     """Split items whose claims straddle success and failure axes.
 
@@ -229,6 +269,15 @@ def split_mixed_axis_items(
         elif category in _FAILURE_COUNTERPART:
             keep_sign, split_category = True, _FAILURE_COUNTERPART[category]
         else:
+            items.append(raw)
+            continue
+        if (
+            level_categories is not None
+            and split_category not in level_categories
+        ):
+            # The counterpart category does not exist at this level; the
+            # full validator would reject the split, so leave the row for
+            # the next rung instead of producing a known-invalid shape.
             items.append(raw)
             continue
         kept_claims = [
@@ -457,24 +506,58 @@ def flatten_text_array_objects(
     return result, ops
 
 
+# Open registry: (shape predicate, chain factory). New output schemas
+# register a repair family here instead of editing the dispatcher; the
+# frontier and salvage path both consult the same registry.
+REPAIR_CHAIN_REGISTRY: list[
+    tuple[
+        Callable[[Any], bool],
+        Callable[
+            [Any, Callable[[str], Mapping[str, Any] | None] | None],
+            list[Callable[[Mapping[str, Any]], tuple[dict[str, Any], list[RepairOp]]]],
+        ],
+    ]
+] = []
+
+
+def register_repair_chain(predicate, factory) -> None:
+    """Register one repair family for a new output shape."""
+
+    REPAIR_CHAIN_REGISTRY.append((predicate, factory))
+
+
+def _reflection_chain(value, resolver, level_categories=None):
+    chain: list[Any] = [claim_refs_into_source_refs]
+    if resolver is not None:
+        chain.append(lambda v: scope_narrow_to_support(v, resolver))
+    chain.append(
+        lambda v: split_mixed_axis_items(v, level_categories)
+    )
+    return chain
+
+
+def _research_state_chain(value, resolver, level_categories=None):
+    return [
+        flatten_text_array_objects,
+        drop_duplicate_open_questions,
+        drop_empty_text_rows,
+    ]
+
+
+register_repair_chain(_repairable_reflection_package, _reflection_chain)
+register_repair_chain(_repairable_research_state, _research_state_chain)
+
+
 def mechanical_repairs_for(
     value: Any,
     resolver: Callable[[str], Mapping[str, Any] | None] | None = None,
+    level_categories: frozenset[str] | set[str] | None = None,
 ) -> list[Callable[[Mapping[str, Any]], tuple[dict[str, Any], list[RepairOp]]]]:
     """Return the applicable L2 repair chain for one parsed output."""
 
-    if _repairable_reflection_package(value):
-        chain: list[Any] = [claim_refs_into_source_refs]
-        if resolver is not None:
-            chain.append(lambda v: scope_narrow_to_support(v, resolver))
-        chain.append(split_mixed_axis_items)
-        return chain
-    if _repairable_research_state(value):
-        return [
-            flatten_text_array_objects,
-            drop_duplicate_open_questions,
-            drop_empty_text_rows,
-        ]
+    for predicate, factory in REPAIR_CHAIN_REGISTRY:
+        if predicate(value):
+            return factory(value, resolver, level_categories)
     return []
 
 
@@ -482,6 +565,7 @@ def apply_mechanical_repairs(
     value: Mapping[str, Any],
     parse: Callable[[Mapping[str, Any]], Any],
     resolver: Callable[[str], Mapping[str, Any] | None] | None = None,
+    level_categories: frozenset[str] | set[str] | None = None,
 ) -> tuple[Any, list[RepairOp]] | None:
     """Run the L2 chain and accept only a full-validator pass.
 
@@ -490,7 +574,7 @@ def apply_mechanical_repairs(
     means no repair applied or the repaired object still fails.
     """
 
-    repairs = mechanical_repairs_for(value, resolver)
+    repairs = mechanical_repairs_for(value, resolver, level_categories)
     if not repairs:
         return None
     current: Mapping[str, Any] = value
