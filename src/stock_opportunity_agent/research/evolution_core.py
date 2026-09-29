@@ -2385,6 +2385,7 @@ class ExecutionTrajectory:
     case_id: str = ""
     termination_trigger: RuntimeStopReason | None = None
     basic_info_projection: Mapping[str, Any] = field(default_factory=dict)
+    state_deltas: tuple[Mapping[str, Any], ...] = ()
 
     def __post_init__(self) -> None:
         _validate_id(self.company_id, "company_id")
@@ -2398,6 +2399,9 @@ class ExecutionTrajectory:
         object.__setattr__(self, "basic_info", dict(self.basic_info))
         object.__setattr__(self, "basic_info_projection", dict(self.basic_info_projection))
         object.__setattr__(self, "signal_rounds", tuple(self.signal_rounds))
+        object.__setattr__(
+            self, "state_deltas", tuple(dict(row) for row in self.state_deltas)
+        )
         object.__setattr__(self, "final_context", dict(self.final_context))
         if not isinstance(self.stop_reason, RuntimeStopReason):
             object.__setattr__(self, "stop_reason", RuntimeStopReason(self.stop_reason))
@@ -2429,6 +2433,7 @@ class ExecutionTrajectory:
                 self.ground_truth,
             ),
             "self_reflection": self.self_reflection.to_dict(),
+            "state_deltas": [dict(row) for row in self.state_deltas],
             "stop_reason": self.stop_reason.value,
             "termination_trigger": (
                 self.termination_trigger.value if self.termination_trigger else None
@@ -2461,6 +2466,9 @@ class ExecutionTrajectory:
             ground_truth=GroundTruth.from_dict(dict(data["ground_truth"])),
             self_reflection=PredictionSelfReflection.from_dict(
                 dict(data["self_reflection"])
+            ),
+            state_deltas=tuple(
+                dict(item) for item in data.get("state_deltas", ())
             ),
             stop_reason=RuntimeStopReason(str(data["stop_reason"])),
             usage=RuntimeUsage.from_dict(dict(data["usage"])),
@@ -3060,6 +3068,28 @@ def execute_information_plan(
     )
     if evaluation_anchor.get("status") == "available":
         _set_evaluation_anchor(controller, evaluation_anchor)
+    # Computation before interpretation at bootstrap: one closed-form price
+    # shape card over the trailing window joins the anchor so orientation
+    # numbers are computed, never narrated.
+    bootstrap_computed: list[dict[str, Any]] = []
+    try:
+        from stock_opportunity_agent.research.compute_tools import compute_metric
+
+        bootstrap_computed.append(
+            compute_metric(
+                "price_shape",
+                {"window_days": 180},
+                documents=market_documents_for_anchor,
+                as_of=prediction_time,
+            )
+        )
+    except ValidationError:
+        bootstrap_computed = []
+    _set_computed_metrics_if_capable = getattr(
+        controller, "set_computed_metrics", None
+    )
+    if callable(_set_computed_metrics_if_capable) and bootstrap_computed:
+        _set_computed_metrics_if_capable(bootstrap_computed)
     _set_document_channel_if_capable = getattr(
         controller, "set_document_channel", None
     )
@@ -3069,6 +3099,12 @@ def execute_information_plan(
                 signal_executor.raw_info_store,
                 company_id=company_id,
                 as_of=prediction_time,
+                market_documents=market_documents_for_anchor,
+                anchor=(
+                    evaluation_anchor
+                    if evaluation_anchor.get("status") == "available"
+                    else None
+                ),
             )
         )
     initial_step = controller.initialize(plan, basic_info)
@@ -3076,6 +3112,7 @@ def execute_information_plan(
     initial_state = initial_step.value
     state = initial_state
     rounds: list[SignalRound] = []
+    state_deltas: list[dict[str, Any]] = []
     signal_calls = 0
     stop_reason = RuntimeStopReason.FINALIZED
     termination_trigger: RuntimeStopReason | None = None
@@ -3301,7 +3338,14 @@ def execute_information_plan(
                 model_usage = _consume_usage(model_usage, terminal_error.usage, limits)
                 break
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
-        state = reflection_step.value
+        reflected_state = reflection_step.value
+        state_deltas.append(
+            {
+                "round": len(rounds),
+                "delta": _research_state_delta(state, reflected_state),
+            }
+        )
+        state = reflected_state
         if reflection_termination_trigger is not None:
             termination_trigger = reflection_termination_trigger
             if state.decision is ResearchDecision.CONTINUE:
@@ -3339,6 +3383,7 @@ def execute_information_plan(
             if evaluation_anchor.get("status") == "available"
             else None
         ),
+        state_deltas=tuple(state_deltas),
     )
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
@@ -3389,6 +3434,7 @@ def execute_information_plan(
         stop_reason=stop_reason,
         termination_trigger=termination_trigger,
         basic_info_projection=basic_info_projection,
+        state_deltas=tuple(state_deltas),
         usage=RuntimeUsage(
             signal_rounds=len(rounds),
             signal_calls=signal_calls,
@@ -3422,12 +3468,22 @@ def _set_evaluation_anchor(component: Any, anchor: Mapping[str, Any]) -> None:
 
 
 class _DocumentChannelProvider:
-    """Bounded point-in-time Raw Info catalog/fetch channel for one case."""
+    """Bounded point-in-time Raw Info catalog/fetch/compute channel for one case."""
 
-    def __init__(self, store: Any, *, company_id: str, as_of: Any) -> None:
+    def __init__(
+        self,
+        store: Any,
+        *,
+        company_id: str,
+        as_of: Any,
+        market_documents: Iterable[RawInfoDocument] = (),
+        anchor: Mapping[str, Any] | None = None,
+    ) -> None:
         self.store = store
         self.company_id = company_id
         self.as_of = as_of
+        self.market_documents = tuple(market_documents)
+        self.anchor = dict(anchor) if isinstance(anchor, Mapping) else None
 
     def catalog_view(self) -> dict[str, Any]:
         from stock_opportunity_agent.data.disclosure import document_catalog
@@ -3452,6 +3508,18 @@ class _DocumentChannelProvider:
             )
             for entry in entries
         ]
+
+    def compute(self, entries: Any) -> list[dict[str, Any]]:
+        from stock_opportunity_agent.research.compute_tools import (
+            compute_metric_requests,
+        )
+
+        return compute_metric_requests(
+            entries,
+            documents=self.market_documents,
+            as_of=self.as_of,
+            anchor=self.anchor,
+        )
 
 
 def _set_reflection_runtime_context(
@@ -3692,6 +3760,71 @@ def _prediction_baseline_from_market_documents(
     }
 
 
+def _research_state_delta(
+    previous: ResearchState, current: ResearchState
+) -> dict[str, Any]:
+    """Deterministic per-round delta between two research states.
+
+    Rows are compared by value on the text-array fields and by their stable
+    ref identity (projection_id / signal tuple) on supporting evidence, so
+    the assembled artifact records what each round added, removed, or
+    changed instead of restating the whole frontier.
+    """
+
+    def text_delta(field_name: str) -> dict[str, list[str]]:
+        old_values = list(getattr(previous, field_name))
+        new_values = list(getattr(current, field_name))
+        added = [row for row in new_values if row not in old_values]
+        removed = [row for row in old_values if row not in new_values]
+        return {"added": added, "removed": removed}
+
+    def evidence_key(ref: Any) -> str:
+        if isinstance(ref, str):
+            return "text:" + ref
+        if getattr(ref, "kind", None) == "signal":
+            return "signal:{0}:{1}:{2}".format(
+                ref.signal_ref, ref.evidence_group, ref.evidence_index
+            )
+        return "basic_info:{0}".format(getattr(ref, "projection_id", ""))
+
+    old_evidence = {evidence_key(ref): ref for ref in previous.supporting_evidence}
+    new_evidence = {evidence_key(ref): ref for ref in current.supporting_evidence}
+    added_evidence = [
+        {
+            "key": key,
+            "claim": (
+                new_evidence[key]
+                if isinstance(new_evidence[key], str)
+                else getattr(new_evidence[key], "claim", "")
+            ),
+        }
+        for key in sorted(set(new_evidence) - set(old_evidence))
+    ]
+    removed_evidence = sorted(set(old_evidence) - set(new_evidence))
+    decision_changed = previous.decision is not current.decision
+    delta: dict[str, Any] = {
+        field_name: text_delta(field_name)
+        for field_name in (
+            "hypotheses",
+            "current_beliefs",
+            "contradictions",
+            "resolved_questions",
+            "open_questions",
+            "next_information_needs",
+        )
+    }
+    delta["supporting_evidence"] = {
+        "added": added_evidence,
+        "removed_keys": removed_evidence,
+    }
+    if decision_changed:
+        delta["decision"] = {
+            "from": previous.decision.value,
+            "to": current.decision.value,
+        }
+    return delta
+
+
 def _basic_info_projection_cards(
     basic_info: Mapping[str, Any],
     *,
@@ -3777,6 +3910,7 @@ def _assemble_final_context(
     prediction_time: datetime,
     market_documents: Iterable[RawInfoDocument] = (),
     prediction_baseline: Mapping[str, Any] | None = None,
+    state_deltas: Iterable[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -3912,6 +4046,7 @@ def _assemble_final_context(
                 {"block_type": "computed_anchor", "provenance": "runtime_market_computation"},
                 {"block_type": "signal_results", "provenance": "signal_ref"},
                 {"block_type": "cited_signal_evidence", "provenance": "signal_evidence_ref"},
+                {"block_type": "state_evolution", "provenance": "per_round_delta"},
                 {"block_type": "research_state", "provenance": "runtime_validated_state"},
                 {"block_type": "analysis_prompt", "provenance": "plan"},
             ],
@@ -3934,6 +4069,7 @@ def _assemble_final_context(
         ),
         "signal_rounds": signal_rounds,
         "cited_signal_evidence": cited_signal_evidence,
+        "state_evolution": [dict(row) for row in state_deltas],
         "final_research_state": state.to_dict(),
         "analysis_prompt": plan.analysis_prompt,
     }

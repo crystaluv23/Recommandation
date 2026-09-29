@@ -4610,3 +4610,88 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         )
         with self.assertRaises(RepoValidationError):
             controller.reflect(default_information_plan(), state, batch)
+
+    def test_v146_reflect_compute_exchange_returns_real_cards(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _DocumentChannelProvider,
+        )
+        from tests.test_compute_tools import BARS, market_document
+
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        market = market_document(BARS)
+        store = RawInfoStore(documents=(market,))
+        state = ResearchState(
+            hypotheses=["Fixture."],
+            next_information_needs=["Check the price trend."],
+        )
+        same_state = ResearchState.from_dict(state.to_dict())
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="guidance_acceleration",
+                    version=1,
+                    value=SignalValue.NEUTRAL,
+                    confidence=0.5,
+                    interpretation="Fixture batch.",
+                ),
+            ),
+            signal_calls=1,
+        )
+        caller = ScriptedRoleCaller(
+            [
+                {"compute": [{"metric": "price_shape", "params": {"window_days": 180}}]},
+                same_state.to_dict(),
+            ]
+        )
+        controller = LLMResearchController(caller)
+        controller.set_document_channel(
+            _DocumentChannelProvider(
+                store,
+                company_id="issuer",
+                as_of=as_of,
+                market_documents=(market,),
+            )
+        )
+        controller.reflect(default_information_plan(), state, batch)
+
+        first_payload = caller.calls[0]["payload"]
+        # The registry contract is disclosed in the first answer.
+        for name in ("price_shape", "return_between", "distance_to_threshold"):
+            self.assertIn(name, caller.calls[0]["system_prompt"])
+        second_payload = caller.calls[1]["payload"]
+        cards = second_payload["computed_metrics"]
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]["metric"], "price_shape")
+        # Content-level: the computed numbers are the closed-form values of
+        # the fixture series, citable verbatim.
+        self.assertAlmostEqual(cards[0]["values"]["last_close"], 13.75, places=6)
+        self.assertEqual(cards[0]["labels"]["trend"], "uptrend")
+
+    def test_v146_controller_payloads_carry_bootstrap_computed_metrics(self) -> None:
+        from tests.test_compute_tools import BARS, market_document
+        from stock_opportunity_agent.research.compute_tools import compute_metric
+
+        as_of = datetime(2025, 7, 31, tzinfo=timezone.utc)
+        card = compute_metric(
+            "price_shape",
+            {"window_days": 180},
+            documents=(market_document(BARS),),
+            as_of=as_of,
+        )
+        state = {
+            "hypotheses": ["Computed orientation fixture."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["Check issuer disclosures."],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_computed_metrics([card])
+        controller.initialize(default_information_plan(), {"requests": []})
+        payload = caller.calls[0]["payload"]
+        self.assertEqual(payload["computed_metrics"][0]["metric"], "price_shape")
+        self.assertIn("never restate", caller.calls[0]["system_prompt"])

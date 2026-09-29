@@ -434,7 +434,12 @@ class ScriptedRoleCaller:
             and "operations" not in output
             # Mid-call disclosure exchanges are not patch candidates.
             and set(output)
-            not in ({"read_refs"}, {"browse_memory"}, {"fetch_documents"})
+            not in (
+                {"read_refs"},
+                {"browse_memory"},
+                {"fetch_documents"},
+                {"compute"},
+            )
         ):
             base = payload
             for key in contract["base_location"].split("."):

@@ -126,6 +126,7 @@ class LLMResearchController:
         self.request_token_budget: int | None = None
         self.evaluation_context: dict[str, Any] | None = None
         self.evaluation_anchor: dict[str, Any] | None = None
+        self.computed_metrics: list[dict[str, Any]] = []
         self.document_channel: Any = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
@@ -176,6 +177,11 @@ class LLMResearchController:
         if isinstance(self.evaluation_context, dict):
             self.evaluation_context["evaluation_anchor"] = dict(anchor)
 
+    def set_computed_metrics(self, cards: list[dict[str, Any]]) -> None:
+        """Attach runtime-computed metric cards for verbatim disclosure."""
+
+        self.computed_metrics = [dict(card) for card in cards]
+
     def set_document_channel(self, provider: Any) -> None:
         """Attach the bounded in-loop Raw Info catalog/fetch channel.
 
@@ -219,6 +225,10 @@ class LLMResearchController:
             payload["evaluation_context"] = evaluation_context
         if self.evaluation_anchor is not None:
             payload["evaluation_anchor"] = dict(self.evaluation_anchor)
+        if self.computed_metrics:
+            payload["computed_metrics"] = [
+                dict(card) for card in self.computed_metrics
+            ]
         state, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_initialize",
@@ -395,7 +405,14 @@ class LLMResearchController:
                 "of two entries, no repeats) to read one complete document or an "
                 "exact section through the point-in-time disclosure interface; "
                 "fetched views arrive in document_channel and are citable "
-                "evidence like any other source. "
+                "evidence like any other source. You may likewise return "
+                '{"compute":[{"metric":"registered id","params":{...}}]} for any '
+                "registered deterministic metric — price_shape(window_days "
+                "30-365), return_between(from_offset_days>to_offset_days, "
+                "1-365), distance_to_threshold(multiple 1.0-10.0, anchor "
+                "relative) — the runtime computes it over point-in-time data "
+                "and the computed card arrives in computed_metrics; copy its "
+                "numbers verbatim and never restate or derive them yourself. "
                 "open_questions holds only material uncertainty that is not itself "
                 "an actionable retrieval question; put every actionable retrieval "
                 "question only in next_information_needs, never repeat an exact "
@@ -413,6 +430,11 @@ class LLMResearchController:
                 **(
                     {"evaluation_anchor": dict(self.evaluation_anchor)}
                     if self.evaluation_anchor is not None
+                    else {}
+                ),
+                **(
+                    {"computed_metrics": [dict(card) for card in self.computed_metrics]}
+                    if self.computed_metrics
                     else {}
                 ),
                 "research_state": state.to_dict(),
@@ -2163,6 +2185,17 @@ class _DocumentChannelCaller:
                 self.caller, **request
             )
             usage = usage + used
+            if set(value) == {"compute"}:
+                entries = value["compute"]
+                if self.exchanges >= self._MAX_EXCHANGES:
+                    raise ValidationError(
+                        "document channel compute exceeds the issued exchange budget"
+                    )
+                self.exchanges += 1
+                cards = self.provider.compute(entries)
+                existing_metrics = list(payload.get("computed_metrics", ()))
+                payload["computed_metrics"] = existing_metrics + list(cards)
+                continue
             if set(value) != {"fetch_documents"}:
                 return value, usage
             entries = value["fetch_documents"]

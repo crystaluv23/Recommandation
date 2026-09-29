@@ -1915,3 +1915,136 @@ class EvaluationDatasetSamplingTests(TestCase):
         block_types = [row["block_type"] for row in contract["assembly_blocks"]]
         self.assertEqual(block_types[0], "basic_info_cards")
         self.assertIn("computed_anchor", block_types)
+
+    def test_v146_state_delta_captures_round_evolution(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _research_state_delta,
+        )
+
+        old_state = ResearchState(
+            hypotheses=("Initial hypothesis.",),
+            current_beliefs=("The margin story is unproven.",),
+            supporting_evidence=(
+                ResearchEvidenceRef(
+                    kind="basic_info",
+                    claim="Prior literal.",
+                    projection_id="projection_a",
+                    exact_text="Prior literal text.",
+                ),
+            ),
+            next_information_needs=("Check order disclosures.",),
+        )
+        new_state = ResearchState(
+            hypotheses=("Initial hypothesis.", "Order catalyst dominates.",),
+            current_beliefs=(),
+            supporting_evidence=(
+                ResearchEvidenceRef(
+                    kind="signal",
+                    claim="Adopted signal claim.",
+                    signal_ref="order_signal:v1",
+                    evidence_group="supporting",
+                    evidence_index=0,
+                ),
+            ),
+            resolved_questions=("Are orders disclosed?",),
+            next_information_needs=("Check order durability.",),
+            decision=ResearchDecision.FINALIZE,
+        )
+        delta = _research_state_delta(old_state, new_state)
+        self.assertEqual(
+            delta["hypotheses"]["added"], ["Order catalyst dominates."]
+        )
+        self.assertEqual(delta["hypotheses"]["removed"], [])
+        self.assertEqual(
+            delta["current_beliefs"]["removed"],
+            ["The margin story is unproven."],
+        )
+        self.assertEqual(
+            delta["supporting_evidence"]["added"],
+            [
+                {
+                    "key": "signal:order_signal:v1:supporting:0",
+                    "claim": "Adopted signal claim.",
+                }
+            ],
+        )
+        self.assertEqual(
+            delta["supporting_evidence"]["removed_keys"],
+            ["basic_info:projection_a"],
+        )
+        self.assertEqual(
+            delta["decision"], {"from": "continue", "to": "finalize"}
+        )
+
+    def test_v146_assembly_carries_state_evolution_block(self) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _research_state_delta,
+        )
+
+        old_state = ResearchState(
+            next_information_needs=("Check disclosures.",),
+        )
+        new_state = ResearchState(
+            current_beliefs=("Orders confirmed the thesis.",),
+            next_information_needs=(),
+            decision=ResearchDecision.FINALIZE,
+        )
+        delta_row = {
+            "round": 1,
+            "delta": _research_state_delta(old_state, new_state),
+        }
+        context = _assemble_final_context(
+            plan=default_information_plan(),
+            company_id="issuer-fixture",
+            additional_identity_aliases=(),
+            basic_info={"requests": []},
+            state=new_state,
+            rounds=(),
+            prediction_time=NOW,
+            state_deltas=(delta_row,),
+        )
+        self.assertEqual(
+            context["state_evolution"][0]["delta"]["current_beliefs"]["added"],
+            ["Orders confirmed the thesis."],
+        )
+        block_types = [
+            row["block_type"]
+            for row in context["context_contract"]["assembly_blocks"]
+        ]
+        self.assertIn("state_evolution", block_types)
+        self.assertLess(
+            block_types.index("state_evolution"),
+            block_types.index("research_state"),
+        )
+        roundtrip = ExecutionTrajectory(
+            company_id="issuer-fixture",
+            prediction_time=NOW,
+            basic_info={},
+            initial_state=old_state,
+            signal_rounds=(),
+            final_state=new_state,
+            final_context=context,
+            prediction=BlindPrediction(
+                is_surge=False,
+                candidate_judgment=CandidateJudgment.UNLIKELY,
+                magnitude=None,
+                confidence=ConfidenceLevel.LOW,
+                key_reasons=("fixture",),
+                uncertainties=(),
+                session_id="session_fixture",
+            ),
+            prediction_ref="predictions/fixture.json",
+            ground_truth=GroundTruth(1.0),
+            self_reflection=PredictionSelfReflection(correct=True),
+            stop_reason=RuntimeStopReason.FINALIZED,
+            usage=RuntimeUsage(
+                signal_rounds=0,
+                signal_calls=0,
+                model=AgentUsage(),
+            ),
+            state_deltas=(delta_row,),
+        )
+        self.assertEqual(
+            ExecutionTrajectory.from_dict(roundtrip.to_dict()).state_deltas,
+            (delta_row,),
+        )
