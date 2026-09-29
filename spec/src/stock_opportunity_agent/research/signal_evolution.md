@@ -211,8 +211,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 - The production mining entry is capability-dispatched: with a frozen v8
   sampling manifest and a mining model exposing a JSON role caller, the
   LabelAwareMiningController (Seeds A and B) mines and its grounded
-  candidates are materialized into the standard {spec, skill, tests} staging
-  payload by one bounded model call, after which the unchanged contract
+  candidates are materialized through module-staged bounded model calls —
+  spec first, skill for narrative predicates second, tests last — where an
+  accepted module is cached across retries so a failing stage never
+  re-renders valid siblings. After staging, the unchanged contract
   validator and paired gates judge them. H/E role-protocol models keep their
   tracks for read-only replay, and manifest-free workspaces keep the v7
   cadence. Every outgoing controller model view carries the composed Fast

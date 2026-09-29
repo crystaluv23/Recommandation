@@ -7088,13 +7088,19 @@ class SignalEvolutionEngine:
             self._controller_signal_id_slug(candidate, {})
         )
         last_issues: list[str] = []
+        # Module-staged materialization: spec, then skill (narrative only),
+        # then tests — each its own bounded call, and an accepted module is
+        # cached across retries so a failing stage never re-renders valid
+        # siblings (the audit's whole-payload redo failure mode).
+        accepted: dict[str, Any] = {}
         while True:
-            parsed, issues = self._materialize_once(
+            parsed, issues, accepted = self._materialize_once(
                 candidate,
                 caller=caller,
                 evidence=evidence,
                 last_issues=last_issues,
                 seed=seed,
+                accepted=accepted,
             )
             if parsed is not None and not issues:
                 return parsed
@@ -7112,63 +7118,46 @@ class SignalEvolutionEngine:
         evidence: Mapping[str, Any],
         last_issues: Sequence[str],
         seed: str,
-    ) -> tuple[tuple[str, str] | None, list[str]]:
-        """One materialization attempt: model call, validate, stage."""
+        accepted: Mapping[str, Any] | None = None,
+    ) -> tuple[tuple[str, str] | None, list[str], dict[str, Any]]:
+        """One staged materialization attempt: spec, skill, then tests."""
 
+        accepted = dict(accepted or {})
+        issues = self._materialize_spec_module(
+            candidate, caller=caller, evidence=evidence,
+            last_issues=last_issues, accepted=accepted,
+        )
+        if issues:
+            return None, issues, accepted
+        issues = self._materialize_skill_module(
+            candidate, caller=caller, evidence=evidence,
+            last_issues=last_issues, accepted=accepted,
+        )
+        if issues:
+            return None, issues, accepted
+        parsed, issues = self._materialize_tests_module(
+            candidate, caller=caller, evidence=evidence,
+            last_issues=last_issues, seed=seed, accepted=accepted,
+        )
+        if issues or parsed is None:
+            return None, issues or ["tests module failed"], accepted
+        return parsed, [], accepted
+
+    def _materialize_module_call(
+        self,
+        module: str,
+        instruction: str,
+        payload: dict[str, Any],
+        *,
+        caller: Any,
+    ) -> tuple[Any, list[str]]:
         try:
             parsed, _usage = caller.complete_json(
-                stage="mining_candidate_materialize",
+                stage=f"mining_candidate_materialize_{module}",
                 system_prompt=(
-                    "Return exactly one JSON object. Convert the grounded "
-                    "mining-controller candidate into a storable Signal "
-                    "candidate following the supplied candidate contract: a "
-                    "new signal_id in lowercase snake_case ([a-z0-9_] only; "
-                    "the runtime normalizes it), a definition faithful to the "
-                    "measurement, point-in-time fixtures whose documents "
-                    "embed the supplied identity-masked evidence spans "
-                    "verbatim, and preserve the controller modality. A "
-                    "structured measurement must use a registered deterministic "
-                    "function that exactly matches it; if none matches, report "
-                    "the capability gap instead of recasting it as LLM. A "
-                    "narrative predicate must use a source-grounded LLM skill. For a "
-                    "narrative predicate candidate, author an LLM skill that "
-                    "judges the semantic condition over the narrative family "
-                    "inside the lookback window, cites verbatim supporting "
-                    "and counter spans, and returns unavailable when "
-                    "evidence is insufficient; fixtures must cover confirmed "
-                    "events, mere proposals or memoranda, cancellations, "
-                    "below-threshold amounts, paraphrases, lookalikes, "
-                    "post-cutoff documents, and evidence-insufficient "
-                    "cases. The skill's classification rules must name each "
-                    "fixture class and assign it the same expected value the "
-                    "fixture asserts: confirmed qualifying events are "
-                    "positive; explicit cancellations or denials of a "
-                    "qualifying event are negative; adequate documents that "
-                    "contain only proposals, memoranda, non-binding intent, "
-                    "lookalikes, or below-threshold mentions are neutral, "
-                    "not unavailable; unavailable is reserved for empty or "
-                    "post-cutoff-only corpora and genuinely insufficient "
-                    "text. Output exactly {spec, skill, tests}."
+                    "Return exactly one JSON object. " + instruction
                 ),
-                payload={
-                    "candidate": dict(candidate),
-                    "candidate_contract": self._mining_candidate_contract(),
-                    "cited_evidence": self._masked_controller_evidence_excerpts(
-                        candidate, evidence
-                    ),
-                    "retrieval_guidance": {
-                        "rule": (
-                            "raw_retrieval.source_types must cover the "
-                            "source types of the cited evidence (a family "
-                            "name like news, filing, or transcript is "
-                            "interchangeable with its concrete types like "
-                            "company_news, sec_filing, earnings_call), and "
-                            "coverage minima must not exceed what the cited "
-                            "evidence itself demonstrates"
-                        ),
-                    },
-                    "last_issues": list(last_issues),
-                },
+                payload=payload,
                 allow_outcomes=True,
                 max_output_tokens=ROLE_OUTPUT_TOKEN_LIMITS["proposer"],
                 temperature=0.2,
@@ -7177,38 +7166,75 @@ class SignalEvolutionEngine:
             raise
         except Exception as exc:
             return None, [
-                f"materialization call failed: {type(exc).__name__}: {exc}"
+                f"{module} module call failed: {type(exc).__name__}: {exc}"
             ]
-        if not isinstance(parsed, Mapping) or set(parsed) != {
+        return parsed, []
+
+    def _materialize_spec_module(
+        self,
+        candidate: Mapping[str, Any],
+        *,
+        caller: Any,
+        evidence: Mapping[str, Any],
+        last_issues: Sequence[str],
+        accepted: dict[str, Any],
+    ) -> list[str]:
+        if "spec" in accepted:
+            return []
+        parsed, call_issues = self._materialize_module_call(
             "spec",
-            "skill",
-            "tests",
-        }:
-            return None, ["materialization requires exactly spec, skill, and tests"]
-        if not isinstance(parsed["spec"], Mapping):
-            return None, ["materialized spec must be an object"]
-        if not isinstance(parsed["tests"], list) or not parsed["tests"]:
-            return None, ["materialized tests must be a non-empty array"]
+            "Convert the grounded mining-controller candidate into the "
+            "Signal spec object only: a new signal_id in lowercase "
+            "snake_case ([a-z0-9_] only; the runtime normalizes it), a "
+            "definition faithful to the measurement, a retrieval policy "
+            "whose source_types cover the cited evidence source types "
+            "(family names like news, filing, or transcript are "
+            "interchangeable with concrete types like company_news, "
+            "sec_filing, earnings_call) and coverage minima that do not "
+            "exceed what the cited evidence demonstrates. Preserve the "
+            "controller modality: a structured measurement must name a "
+            "registered deterministic function that exactly matches it "
+            "(if none matches, report the capability gap instead of "
+            "recasting it as LLM); a narrative predicate must declare the "
+            "LLM skill modality. Return exactly {\"spec\": {...}}.",
+            {
+                "candidate": dict(candidate),
+                "candidate_contract": self._mining_candidate_contract(),
+                "cited_evidence": self._masked_controller_evidence_excerpts(
+                    candidate, evidence
+                ),
+                "last_issues": [
+                    issue for issue in last_issues
+                    if "spec" in issue or "modality" in issue
+                ],
+            },
+            caller=caller,
+        )
+        if call_issues:
+            return call_issues
+        if (
+            not isinstance(parsed, Mapping)
+            or set(parsed) != {"spec"}
+            or not isinstance(parsed["spec"], Mapping)
+        ):
+            return ["spec module requires exactly a spec object"]
         spec_dict = dict(parsed["spec"])
         spec_dict["signal_id"] = self._controller_signal_id_slug(
             candidate, spec_dict
-        )
-        skill = (
-            str(parsed["skill"]) if parsed["skill"] is not None else None
         )
         try:
             spec = candidate_signal_spec_from_dict(spec_dict)
         except (EvolutionControlFlow, OpenAIClientError):
             raise
         except Exception as exc:
-            return None, [f"spec parse failed: {type(exc).__name__}: {exc}"]
+            return [f"spec parse failed: {type(exc).__name__}: {exc}"]
         expected_modality = (
             SignalModality.NARRATIVE
             if self._is_narrative_candidate(candidate)
             else SignalModality.STRUCTURED
         )
         if spec.modality is not expected_modality:
-            return None, [
+            return [
                 "materialized Signal modality does not preserve the controller "
                 f"candidate modality: expected {expected_modality.value}"
             ]
@@ -7231,7 +7257,7 @@ class SignalEvolutionEngine:
         if retrieval_families and evidence_families and not (
             source_types_compatible(retrieval_families, evidence_families)
         ):
-            return None, [
+            return [
                 "raw_retrieval.source_types do not include any cited-evidence "
                 "source family; retrieve from the source types or families "
                 "the measurement actually cites (cited evidence source "
@@ -7239,19 +7265,136 @@ class SignalEvolutionEngine:
                 "such as news/company_news, filing/10-k/8-k, or "
                 "transcript/earnings_call are interchangeable)"
             ]
+        accepted["spec"] = spec_dict
+        return []
+
+    def _materialize_skill_module(
+        self,
+        candidate: Mapping[str, Any],
+        *,
+        caller: Any,
+        evidence: Mapping[str, Any],
+        last_issues: Sequence[str],
+        accepted: dict[str, Any],
+    ) -> list[str]:
+        if "skill" in accepted:
+            return []
+        if not self._is_narrative_candidate(candidate):
+            accepted["skill"] = None
+            return []
+        parsed, call_issues = self._materialize_module_call(
+            "skill",
+            "Author the LLM skill for the already-materialized spec: it "
+            "judges the semantic condition over the narrative family inside "
+            "the lookback window, cites verbatim supporting and counter "
+            "spans, and returns unavailable when evidence is insufficient. "
+            "The skill's classification rules must assign confirmed "
+            "qualifying events positive; explicit cancellations or denials "
+            "negative; documents containing only proposals, memoranda, "
+            "non-binding intent, lookalikes, or below-threshold mentions "
+            "neutral (not unavailable); unavailable is reserved for empty "
+            "or post-cutoff-only corpora and genuinely insufficient text. "
+            "Return exactly {\"skill\": \"markdown text\"}.",
+            {
+                "candidate": dict(candidate),
+                "spec": accepted["spec"],
+                "cited_evidence": self._masked_controller_evidence_excerpts(
+                    candidate, evidence
+                ),
+                "last_issues": [
+                    issue for issue in last_issues if "skill" in issue
+                ],
+            },
+            caller=caller,
+        )
+        if call_issues:
+            return call_issues
+        if (
+            not isinstance(parsed, Mapping)
+            or set(parsed) != {"skill"}
+            or not isinstance(parsed["skill"], str)
+            or not parsed["skill"].strip()
+        ):
+            return ["skill module requires exactly a nonempty skill string"]
+        accepted["skill"] = parsed["skill"]
+        return []
+
+    def _materialize_tests_module(
+        self,
+        candidate: Mapping[str, Any],
+        *,
+        caller: Any,
+        evidence: Mapping[str, Any],
+        last_issues: Sequence[str],
+        seed: str,
+        accepted: dict[str, Any],
+    ) -> tuple[tuple[str, str] | None, list[str]]:
+        if "tests" in accepted:
+            parsed_tests = accepted["tests"]
+        else:
+            parsed, call_issues = self._materialize_module_call(
+                "tests",
+                "Author the point-in-time fixtures for the already "
+                "materialized spec and skill: fixture documents must embed "
+                "the supplied identity-masked evidence spans verbatim. For "
+                "a narrative predicate, cover confirmed qualifying events, "
+                "mere proposals or memoranda, cancellations, "
+                "below-threshold amounts, paraphrases, lookalikes, "
+                "post-cutoff documents, and evidence-insufficient cases — "
+                "each expected value must match the skill's classification "
+                "rule for that class. A generic-contract funding lookalike "
+                "the skill scores neutral must not expect unavailable. "
+                "Return exactly {\"tests\": [...]}.",
+                {
+                    "candidate": dict(candidate),
+                    "spec": accepted["spec"],
+                    "skill": accepted.get("skill"),
+                    "cited_evidence": self._masked_controller_evidence_excerpts(
+                        candidate, evidence
+                    ),
+                    "last_issues": [
+                        issue for issue in last_issues if "fixture" in issue or "tests" in issue
+                    ],
+                },
+                caller=caller,
+            )
+            if call_issues:
+                return None, call_issues
+            if (
+                not isinstance(parsed, Mapping)
+                or set(parsed) != {"tests"}
+                or not isinstance(parsed["tests"], list)
+                or not parsed["tests"]
+            ):
+                return None, [
+                    "tests module requires exactly a nonempty tests array"
+                ]
+            parsed_tests = parsed["tests"]
+        spec_dict = dict(accepted["spec"])
+        spec_dict["signal_id"] = self._controller_signal_id_slug(
+            candidate, spec_dict
+        )
+        skill = accepted.get("skill")
+        skill = str(skill) if skill is not None else None
+        try:
+            spec = candidate_signal_spec_from_dict(spec_dict)
+        except (EvolutionControlFlow, OpenAIClientError):
+            raise
+        except Exception as exc:
+            return None, [f"spec parse failed: {type(exc).__name__}: {exc}"]
         checked = self.validator.validate(
-            spec, skill=skill, tests=parsed["tests"]
+            spec, skill=skill, tests=parsed_tests
         )
         if not checked.accepted:
             return None, [
-                f"contract validation rejected the materialized candidate: "
+                "contract validation rejected the materialized candidate: "
                 + "; ".join(str(reason) for reason in checked.reasons)
             ]
         try:
             signal_ref = self._stage_from_tool(
                 spec=spec.to_dict(),
                 skill=skill,
-                tests=parsed["tests"],
+                tests=parsed_tests,
                 origin="mining:controller",
                 collected=[],
             )

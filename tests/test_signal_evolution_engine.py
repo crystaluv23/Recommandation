@@ -849,10 +849,8 @@ class SignalEvolutionTests(TestCase):
 
             def complete_json(self, *, stage, **_kwargs):
                 self.stages.append(stage)
-                if stage == "mining_candidate_materialize":
+                if stage.startswith("mining_candidate_materialize"):
                     payload = dict(_kwargs["payload"])
-                    if not payload.get("last_issues"):
-                        return ({"spec": {}}, AgentUsage(llm_calls=1))
                     stable = registry.latest_spec("revenue_growth_yoy")
                     spec = {
                         **stable.to_dict(),
@@ -869,10 +867,14 @@ class SignalEvolutionTests(TestCase):
                         ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                         ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
                     )
+                    if stage.endswith("_spec"):
+                        if not payload.get("last_issues"):
+                            return ({"spec": {}}, AgentUsage(llm_calls=1))
+                        return ({"spec": spec}, AgentUsage(llm_calls=1))
+                    if stage.endswith("_skill"):
+                        return ({"skill": None}, AgentUsage(llm_calls=1))
                     return (
                         {
-                            "spec": spec,
-                            "skill": None,
                             "tests": [
                                 {
                                     "name": "growth_positive",
@@ -885,7 +887,7 @@ class SignalEvolutionTests(TestCase):
                                         }
                                     ],
                                 }
-                            ],
+                            ]
                         },
                         AgentUsage(llm_calls=1),
                     )
@@ -1118,7 +1120,7 @@ class SignalEvolutionTests(TestCase):
             def complete_json(self, *, stage, payload, **_kwargs):
                 if stage == "mining_controller_step":
                     captured.append(dict(payload))
-                if stage == "mining_candidate_materialize":
+                if stage.startswith("mining_candidate_materialize"):
                     return ({"spec": {}}, AgentUsage(llm_calls=1))
                 return (
                     {"action": "record_deferred", "rationale": ["Stop."]},
@@ -1198,7 +1200,7 @@ class SignalEvolutionTests(TestCase):
     def test_controller_magnitude_axis_constructs_real_controller(self) -> None:
         class DeferredCaller:
             def complete_json(self, *, stage, **_kwargs):
-                if stage == "mining_candidate_materialize":
+                if stage.startswith("mining_candidate_materialize"):
                     return ({"spec": {}}, AgentUsage(llm_calls=1))
                 return (
                     {"action": "record_deferred", "rationale": ["Stop."]},
@@ -1289,10 +1291,8 @@ class SignalEvolutionTests(TestCase):
 
         class FakeNarrativeCaller:
             def complete_json(self, *, stage, **_kwargs):
-                if stage == "mining_candidate_materialize":
+                if stage.startswith("mining_candidate_materialize"):
                     payload = dict(_kwargs["payload"])
-                    if not payload.get("last_issues"):
-                        return ({"spec": {}}, AgentUsage(llm_calls=1))
                     spec = {
                         "signal_id": "fixture_narrative_order",
                         "version": 1,
@@ -1334,10 +1334,17 @@ class SignalEvolutionTests(TestCase):
                         ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
                         ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
                     )
+                    if stage.endswith("_spec"):
+                        if not payload.get("last_issues"):
+                            return ({"spec": {}}, AgentUsage(llm_calls=1))
+                        return ({"spec": spec}, AgentUsage(llm_calls=1))
+                    if stage.endswith("_skill"):
+                        return (
+                            {"skill": "Judge the cited narrative condition."},
+                            AgentUsage(llm_calls=1),
+                        )
                     return (
                         {
-                            "spec": spec,
-                            "skill": "Judge the cited narrative condition.",
                             "tests": [
                                 {
                                     "name": "growth_positive",
@@ -1350,7 +1357,7 @@ class SignalEvolutionTests(TestCase):
                                         }
                                     ],
                                 }
-                            ],
+                            ]
                         },
                         AgentUsage(llm_calls=1),
                     )
@@ -8321,3 +8328,94 @@ class DualLoopTests(TestCase):
                 (workspace.evaluation_root / "round_002" / "champion.json").exists()
             )
             self.assertEqual(len(evaluator.seen_company_ids), 24)
+
+    def test_v147_materialization_modules_reuse_accepted_siblings(self) -> None:
+        # Module-staged materialization: a failing tests module must not
+        # re-render an already-accepted spec (the audit's whole-payload redo
+        # failure mode).
+        stage_calls: list[str] = []
+        spec_dict: dict = {}
+
+        class ModuleCaller:
+            def complete_json(self, *, stage, **kwargs):
+                stage_calls.append(stage)
+                if stage.endswith("_spec"):
+                    stable = registry.latest_spec("revenue_growth_yoy")
+                    spec = {
+                        **stable.to_dict(),
+                        "signal_id": "fixture_module_reuse",
+                        "version": 1,
+                    }
+                    spec["definition"]["description"] = (
+                        "Measure point-in-time revenue growth for module reuse."
+                    )
+                    spec["parameters"]["positive_min"] = 0.15
+                    spec_dict.update(spec)
+                    return ({"spec": spec}, AgentUsage(llm_calls=1))
+                if stage.endswith("_skill"):
+                    return ({"skill": None}, AgentUsage(llm_calls=1))
+                payload = kwargs["payload"]
+                if not payload.get("last_issues"):
+                    return ({"tests": []}, AgentUsage(llm_calls=1))
+                growth = sec_company_facts_content(
+                    ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                    ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                )
+                return (
+                    {
+                        "tests": [
+                            {
+                                "name": "growth_positive",
+                                "expected": "positive",
+                                "as_of": "2025-02-01T00:00:00+00:00",
+                                "documents": [
+                                    {"source_type": "financials", "content": growth}
+                                ],
+                            }
+                        ]
+                    },
+                    AgentUsage(llm_calls=1),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = tuple(
+                make_case(f"reuse_positive_{index}", 4.0) for index in range(2)
+            ) + tuple(
+                make_case(f"reuse_control_{index}", 1.1) for index in range(2)
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=PlanMetaMemory(),
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+            )
+            candidate = {
+                "measurement": {
+                    "observable": "fixture_revenue_growth",
+                    "value_kind": "numeric",
+                    "normalization": "latest yoy growth",
+                },
+                "falsifiers": [],
+            }
+            evidence: dict = {}
+            failures: dict = {}
+            module_caller = ModuleCaller()
+            result = engine._materialize_controller_candidate(
+                candidate,
+                caller=module_caller,
+                failures=failures,
+                evidence=evidence,
+                seed="hypothesis",
+            )
+            self.assertIsNotNone(result)
+            spec_stage_calls = [s for s in stage_calls if s.endswith("_spec")]
+            test_stage_calls = [s for s in stage_calls if s.endswith("_tests")]
+            self.assertEqual(len(spec_stage_calls), 1)
+            self.assertGreaterEqual(len(test_stage_calls), 2)
