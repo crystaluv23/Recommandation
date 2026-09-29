@@ -2491,10 +2491,10 @@ def _select_context_spans(
     return selected
 
 
-def _markup_context_windows(
+def _normalized_visible_text(
     raw_text: str,
-) -> tuple[tuple[int, int, str], ...]:
-    """Choose readable markup windows while retaining exact raw boundaries."""
+) -> tuple[list[str], list[tuple[int, int]]]:
+    """Map markup content to readable characters with raw-offset origins."""
 
     visible: list[str] = []
     origins: list[tuple[int, int]] = []
@@ -2519,6 +2519,15 @@ def _markup_context_windows(
     while visible and visible[-1] == " ":
         visible.pop()
         origins.pop()
+    return visible, origins
+
+
+def _markup_context_windows(
+    raw_text: str,
+) -> tuple[tuple[int, int, str], ...]:
+    """Choose readable markup windows while retaining exact raw boundaries."""
+
+    visible, origins = _normalized_visible_text(raw_text)
     if not visible:
         return ()
 

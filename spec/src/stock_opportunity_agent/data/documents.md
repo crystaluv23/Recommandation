@@ -53,9 +53,36 @@ The implementation exposes:
   replace or overwrite the archived source body used for extraction and audit.
 - Text chunking must preserve document ids and source metadata.
 
+## Disclosure Interface
+
+The document archive exposes the shared three-layer disclosure interface
+(`data/disclosure.py`), pure over immutable documents and the supplied
+point-in-time cutoff:
+
+- **Catalog** (`document_catalog`): bounded pages of deterministic cards —
+  provider news titles, filing form types (authoritative acquisition
+  metadata first, entity-tolerant cover-text detection as fallback), SEC
+  Part/Item section indexes with exact raw offsets, availability dates, and
+  readable sizes. The envelope discloses eligible/included/omitted counts
+  with cursor pagination; a title query filters by deterministic extracted
+  text. Point-in-time filtering is enforced: future documents never appear.
+- **Fetch** (`fetch_entry`): one bounded working view of summary plus a
+  content-addressed reference (document id, content hash, raw span). A unit
+  that fits the budget returns complete verbatim readable text — including
+  an exact section when a section id is supplied; an oversized unit returns
+  head windows plus bounded readable omission markers, and the reference
+  stays valid for distillation and provenance reads.
+- **Provenance** (`read_provenance`): a reference resolves to the exact raw
+  substring, failing closed on hash mismatch, invalid offsets, or a budget
+  exceeding read. Filesystem paths are never used as references.
+
 ## Testing
 
 Cover as-of filtering, duplicate replacement in the early store, chunk
 metadata, source-linked evidence conversion, future-document exclusion, and
 proof that complete filing/transcript bodies survive acquisition while packet
-evidence remains bounded.
+evidence remains bounded. Cover the disclosure interface content-level:
+title/form/section metadata on cards, envelope counts and pagination,
+title-query catalyst discovery, verbatim-versus-bounded fetch semantics with
+omission markers, exact section fetch, and provenance byte-exactness with
+hash/offset rejection.
