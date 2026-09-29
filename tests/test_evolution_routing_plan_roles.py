@@ -3098,6 +3098,12 @@ class RoutingAndPlanRoleTests(TestCase):
         self.assertEqual(result.evidence_refs, ("only_plan",))
         self.assertEqual(result.plan_reflections, ())
         self.assertEqual(caller.calls, [])
+        # The skip must be distinguishable from "the model found nothing"
+        # in downstream learning audits.
+        self.assertEqual(
+            result.no_findings_reason,
+            "round_reflection_skipped_single_complete_plan",
+        )
 
     def test_plan_proposer_accepts_canonical_fields_and_slots_children(self) -> None:
         policy = {

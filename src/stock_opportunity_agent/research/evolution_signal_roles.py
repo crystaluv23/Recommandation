@@ -195,7 +195,9 @@ def _request_slow_source_refs(
         stage="slow_source_read",
         system_prompt=(
             "Select only complete opaque Slow source refs needed for the named role. "
-            "Do not infer source contents from ref names. Return exactly "
+            "Do not infer source contents from ref names. Choose at most 8 refs, "
+            "each exactly as supplied and never repeated; prefer the fewest "
+            "complete refs that serve the role. Return exactly "
             '{"read_source_refs":[]} using only supplied refs; an empty list means '
             "the current complete view is sufficient."
             + _UNTRUSTED_DATA_INSTRUCTION

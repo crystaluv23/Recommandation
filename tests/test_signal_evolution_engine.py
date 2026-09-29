@@ -1111,6 +1111,90 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(output["audit"]["track"], "controller_multi_axis")
 
+    def test_v144_controller_requests_carry_composed_reflection_memory(self) -> None:
+        captured: list[dict] = []
+
+        class CapturingCaller:
+            def complete_json(self, *, stage, payload, **_kwargs):
+                if stage == "mining_controller_step":
+                    captured.append(dict(payload))
+                if stage == "mining_candidate_materialize":
+                    return ({"spec": {}}, AgentUsage(llm_calls=1))
+                return (
+                    {"action": "record_deferred", "rationale": ["Stop."]},
+                    AgentUsage(llm_calls=1),
+                )
+
+        from stock_opportunity_agent.research.evolution_core import (
+            PlanMetaMemory,
+            RoundMetaEntry,
+        )
+
+        lesson = (
+            "Order-driven catalysts were direction-right but "
+            "magnitude-underestimated across sampled Plans."
+        )
+        memory = PlanMetaMemory()
+        memory.append(
+            RoundMetaEntry(
+                round_id=1,
+                successful_patterns=(lesson,),
+                evidence_refs=("plan_wire",),
+            )
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = tuple(
+                [make_case(f"wire_high_{index}", 4.0) for index in range(4)]
+                + [make_case(f"wire_ctl_{index}", 1.1) for index in range(4)]
+            )
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            target_reveal = build_target_group_manifest(
+                cases, MAGNITUDE_GE3_CONTRACT
+            )
+            target_sampling = build_target_sampling_manifest(
+                cases,
+                MAGNITUDE_GE3_CONTRACT,
+                cycle_id=1,
+                base_seed="wire-axis-target",
+                dev_limit=4,
+                check_limit=4,
+            )
+            engine = SignalEvolutionEngine(
+                registry=registry,
+                raw_info_store=RawInfoStore(),
+                discovery_cases=cases,
+                meta_memory=memory,
+                workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=EmptyMiningModel(),
+                update_model=NoChangeUpdateModel(),
+                llm_signal_runner=None,
+                research_target_reveal=target_reveal,
+                research_target_sampling=target_sampling,
+            )
+            engine._active_sampling_manifest = build_slow_sampling_manifest(
+                cases,
+                cycle_id=1,
+                base_seed="wire-axis",
+                dev_limit=4,
+                check_limit=4,
+            )
+            caller_backed = EmptyMiningModel()
+            caller_backed.caller = CapturingCaller()
+            engine.mining_model = caller_backed
+
+            output = engine._run_controller_mining(cycle_id=1)
+
+            self.assertEqual(output["audit"]["track"], "controller_multi_axis")
+            self.assertTrue(captured)
+            for payload in captured:
+                self.assertIn("meta_info", payload)
+                self.assertIn("meta_memory_disclosures", payload)
+            rendered = json.dumps(captured)
+            self.assertIn("magnitude-underestimated", rendered)
+
     def test_controller_magnitude_axis_constructs_real_controller(self) -> None:
         class DeferredCaller:
             def complete_json(self, *, stage, **_kwargs):
@@ -6171,6 +6255,177 @@ class SignalEvolutionTests(TestCase):
             )
             self.assertEqual(result.candidate_confusion["tp"], 0)
             self.assertEqual(result.candidate_confusion["fn"], 2)
+
+    def test_v144_technical_execution_failure_keeps_candidate_provisional(
+        self,
+    ) -> None:
+        def exploding_signal(spec, documents, as_of):
+            raise ValueError("fixture transport exploded")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = tuple(
+                make_case(f"techfail_positive_{index}", 4.0)
+                for index in range(4)
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"techfail_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            ("2024-01-01", "2024-12-31", 125.0, "2025-01-10"),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "signal_id": "techfail_measurement",
+                    "version": 1,
+                    "description": "Candidate whose execution path fails technically.",
+                }
+            )
+
+            result = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                llm_runner=None,
+                deterministic_functions={current.function: exploding_signal},
+            ).evaluate(candidate, skill=None)
+
+            self.assertFalse(result.accepted)
+            # Technical failure is not a research verdict: the mined
+            # hypothesis stays admitted as a provisional resident instead
+            # of being evicted at the admission boundary.
+            self.assertEqual(result.disposition, "provisional")
+            self.assertIn(
+                "below paired minimum",
+                " ".join(result.reasons),
+            )
+            self.assertNotIn(
+                "paired effectiveness execution failed",
+                " ".join(result.reasons),
+            )
+
+    def test_v144_nondecisive_update_with_current_stays_provisional(
+        self,
+    ) -> None:
+        # The audit's real rejection shape: an update whose execution side
+        # yields no decisive support (contained technical failures or honest
+        # abstention) against an existing current signal. At small n this is
+        # unproven, not disproved: admission keeps the mined candidate as a
+        # provisional resident for later pooled cohorts.
+        current = None
+
+        def versioned_signal(spec, documents, as_of):
+            document = documents[0]
+            payload = json.loads(document.content)
+            records = payload["facts"]["us-gaap"][
+                "RevenueFromContractWithCustomerExcludingAssessedTax"
+            ]["units"]["USD"]
+            latest = max(records, key=lambda row: row["end"])
+            prior = next(
+                row["val"] for row in records if row["end"] < latest["end"]
+            )
+            declined = float(latest["val"]) < float(prior)
+            evidence = (
+                SignalEvidence(
+                    document_id=document.document_id,
+                    exact_span=document.content,
+                    timestamp=document.available_at,
+                ),
+            )
+            if spec.version == 1:
+                # Current arm: fires exactly on the declining controls,
+                # which are negative labels — maximally wrong.
+                if declined:
+                    return SignalResult(
+                        signal_id=spec.signal_id,
+                        version=spec.version,
+                        value=SignalValue.POSITIVE,
+                        confidence=0.5,
+                        interpretation="Decline framed as positive.",
+                        supporting_evidence=evidence,
+                    )
+                return SignalResult(
+                    signal_id=spec.signal_id,
+                    version=spec.version,
+                    value=SignalValue.NEUTRAL,
+                    confidence=0.5,
+                    interpretation="No call on growth.",
+                    supporting_evidence=evidence,
+                )
+            # Candidate arm: honest abstention everywhere.
+            return SignalResult(
+                signal_id=spec.signal_id,
+                version=spec.version,
+                value=SignalValue.NEUTRAL,
+                confidence=0.5,
+                interpretation="Measurement present but not decisive.",
+                supporting_evidence=evidence,
+            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = SignalRegistry(root / "signals")
+            registry.install_catalog(SEED_CATALOG)
+            cases = (
+                *(make_case(f"nd_positive_{index}", 4.0) for index in range(2)),
+                *(make_case(f"nd_control_{index}", 1.1) for index in range(2)),
+            )
+            store = RawInfoStore(
+                documents=tuple(
+                    RawInfoDocument.create(
+                        document_id=f"nd_financial_{index}",
+                        company_id=case.company_id,
+                        source_type="financials",
+                        published_at=NOW,
+                        available_at=NOW,
+                        content=sec_company_facts_content(
+                            ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                            (
+                                "2024-01-01",
+                                "2024-12-31",
+                                50.0 if not case.ground_truth.is_surge else 125.0,
+                                "2025-01-10",
+                            ),
+                        ),
+                    )
+                    for index, case in enumerate(cases)
+                )
+            )
+            current = registry.latest_spec("revenue_growth_yoy")
+            candidate = SignalSpec(
+                **{
+                    **current.__dict__,
+                    "version": current.version + 1,
+                    "description": "Abstaining update judged at small n.",
+                }
+            )
+
+            result = SignalCandidateEffectivenessEvaluator(
+                registry,
+                raw_info_store=store,
+                discovery_cases=cases,
+                llm_runner=None,
+                deterministic_functions={current.function: versioned_signal},
+            ).evaluate(candidate, skill=None)
+
+            self.assertFalse(result.accepted)
+            self.assertEqual(result.disposition, "provisional")
+            reasons = " ".join(result.reasons)
+            self.assertIn("below paired minimum", reasons)
 
     def test_paired_effectiveness_rejects_an_identical_update(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

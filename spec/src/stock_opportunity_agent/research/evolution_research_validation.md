@@ -93,17 +93,27 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   occurrence is reference use only when scanning left from the anchor across
   noun-phrase fillers reaches a closed reference construct: a reference
   preposition or reference phrase ("from / relative to / compared with /
-  above ... the supplied baseline"), or "of" headed by a fixed-outcome noun
-  ("a doubling of the adjusted share price"). Bare "with" is not a
-  reference preposition: in a dative request ("provide / supply me with
-  the baseline date") the "with" introduces the requested object, so the
-  scan fails closed on the request verb; reference "with" is licensed
-  only as an explicit reference phrase ("compared with", "with respect
-  to"). Nomination enumerates every anchor-word occurrence inside each
-  proximity span, not only the first: a proximity span may greedily
-  cover repeated mentions across clauses, and an early reference mention
-  never hides a later direct lookup of the same anchor ("Using the
-  supplied baseline price, what is the baseline price?" rejects).
+  above ... the supplied baseline"), "of" headed by a fixed-outcome noun
+  ("a doubling of the adjusted share price"), or a temporal-boundary
+  preposition ("by / before / through / prior to") whose own next external
+  governor is an evidence-availability participle from a closed set
+  (disclosed / reported / filed / announced / published / available /
+  released / provided / furnished / communicated / posted / stated /
+  said / guided / submitted / listed / recorded), because
+  "guidance disclosed by the prediction time" bounds an issuer-disclosure
+  window instead of requesting the anchor. A temporal-boundary
+  preposition governed by anything else — a request verb or scalar
+  lookup ("what was the share price by the prediction time", "give me
+  the baseline price by the prediction time") — still rejects. Bare
+  "with" is not a reference preposition: in a dative request ("provide /
+  supply me with the baseline date") the "with" introduces the requested
+  object, so the scan fails closed on the request verb; reference "with"
+  is licensed only as an explicit reference phrase ("compared with",
+  "with respect to"). Nomination enumerates every anchor-word occurrence
+  inside each proximity span, not only the first: a proximity span may
+  greedily cover repeated mentions across clauses, and an early reference
+  mention never hides a later direct lookup of the same anchor ("Using
+  the supplied baseline price, what is the baseline price?" rejects).
   Anything else fails closed: a
   request operator governing the anchor ("What is the exact baseline date",
   "Confirm the current share price"), an unrecognized governor ("the value

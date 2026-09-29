@@ -8,7 +8,7 @@ import re
 from copy import deepcopy
 from dataclasses import replace
 from datetime import date, datetime, timezone
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import _add_months
 from stock_opportunity_agent.research.evolution_reflection_memory import (
@@ -83,6 +83,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _UNTRUSTED_DATA_INSTRUCTION,
     _blind_prediction_with_baseline,
     _compact_posthoc_context,
+    _emit_runtime_progress,
     _market_data_absence_paths,
     _complete_parsed_role,
     _routing_context_only_fallback,
@@ -323,7 +324,20 @@ class LLMResearchController:
                 "new or retained question must request only facts available by "
                 "prediction_time. A cutoff-bounded question may ask what was already "
                 "disclosed about a future schedule, but must not request later "
-                "actuals, results, announcements, or updates."
+                "actuals, results, announcements, or updates. "
+                "hypotheses, current_beliefs, contradictions, resolved_questions, "
+                "open_questions, and next_information_needs are arrays of nonempty "
+                "strings; never write an evidence object into one of them — new "
+                "evidence goes to supporting_evidence with its own ref shape. "
+                "open_questions holds only material uncertainty that is not itself "
+                "an actionable retrieval question; put every actionable retrieval "
+                "question only in next_information_needs, never repeat an exact "
+                "next_information_needs string in open_questions, and return "
+                "open_questions=[] when every open question is already actionable "
+                "there. Every numeric-bearing current_beliefs or contradictions "
+                "item must copy one accepted supporting_evidence claim "
+                "byte-for-byte. Retained Basic Info provenance stays unchanged "
+                "while its claim may be restated."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + PATCH_INSTRUCTION
             ),
@@ -1779,12 +1793,20 @@ class LLMBlindPredictor:
                 # Validated enums may equal short ticker aliases such as LOW.
                 anonymous_aliases=(),
                 sanitize_output_aliases=self.anonymous_aliases,
-                max_output_tokens=4_000,
+                max_output_tokens=8_000,
                 max_request_tokens=self.request_token_budget,
                 patch_corrections=True,
+                final_validation_fallback=_reflection_salvage_fallback(
+                    source_index, "case", source_identity,
+                ),
             )
             return AgentStep(reflection, usage)
         except CandidateExecutionRejected as exc:
+            _emit_runtime_progress(
+                getattr(self.caller, "on_progress", None),
+                "posthoc_reflection_validation_failed",
+                reason=str(exc)[:400],
+            )
             correct = original_prediction.is_surge == ground_truth.is_surge and (
                 not ground_truth.is_surge
                 or original_prediction.magnitude is ground_truth.magnitude
@@ -1862,7 +1884,18 @@ def _structured_reflection_contract(level: str) -> str:
         "be supported by those sources. State contrary cases in counter_refs "
         "and limitations. Success/failure assertions require outcome_claims "
         "matching the canonical source facts; technical exclusions cannot be "
-        "research successes or failures. A realized return does not establish "
+        "research successes or failures. Category and claim correctness are "
+        "linked: successful_patterns and decision_drivers items may carry only "
+        "correct=true claims, while failed_patterns, why_prediction_failed, "
+        "false_positive_patterns, and false_negative_patterns items may carry "
+        "only correct=false claims. A mixed outcome is not a fact error: when "
+        "binary direction was right but magnitude was wrong (or the reverse), "
+        "author separate items — the correct axis as one success-category "
+        "item, the incorrect axis as one failure-category item — instead of "
+        "one item whose claims straddle both. Author at most 6 new items in "
+        "one response and prefer selecting existing lower-level items by ref; "
+        "a complete response with fewer items beats a truncated one. "
+        "A realized return does not establish "
         "why it occurred: label causal explanations as hypotheses and propose "
         "a test. Source references establish provenance, not correctness. "
         "Higher levels act as a sieve: select useful existing items by ref "
@@ -1871,6 +1904,64 @@ def _structured_reflection_contract(level: str) -> str:
         "Empty arrays are valid when there is no supported additional lesson; "
         "do not invent findings to fill categories."
     )
+
+
+def _reflection_salvage_fallback(
+    index: "ReflectionMemoryIndex",
+    level: str,
+    owner_ref: str,
+) -> Callable[
+    [Mapping[str, Any], ValidationError],
+    tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None,
+]:
+    """Row-level salvage for authored reflection item packages.
+
+    When bounded corrections cannot repair a reflection response, drop only
+    the complete invalid ``reflection_items`` rows and reparse, so
+    independently valid sibling lessons persist instead of the whole
+    package being lost to one bad item. Item refs are content hashes and
+    index registration overwrites, so the dry-run validation performed here
+    is idempotent with the subsequent full parse of the same rows.
+    """
+
+    def salvage(
+        failed_output: Mapping[str, Any], failure: ValidationError,
+    ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+        raw_items = failed_output.get("reflection_items")
+        if not isinstance(raw_items, list) or not raw_items:
+            return None
+        removed: list[int] = []
+        for position, raw in enumerate(raw_items):
+            try:
+                index.create_items((raw,), level=level, owner_ref=owner_ref)
+            except ValidationError:
+                removed.append(position)
+        if not removed:
+            return None
+        dropped = set(removed)
+        next_output = dict(failed_output)
+        remaining = [
+            raw
+            for position, raw in enumerate(raw_items)
+            if position not in dropped
+        ]
+        next_output["reflection_items"] = remaining
+        if remaining:
+            next_output["no_findings_reason"] = None
+        else:
+            next_output["no_findings_reason"] = (
+                "reflection_items_all_invalid_salvaged: " + str(failure)[:160]
+            )
+        return next_output, {
+            "removed_paths": tuple(
+                f"reflection_items[{position}]" for position in removed
+            ),
+            "source_substitution_paths": (),
+            "context_only_paths": (),
+            "normalized_paths": (),
+        }
+
+    return salvage
 
 
 def _structured_reflection_items(
@@ -2673,11 +2764,19 @@ class LLMPlanCritic:
                 allow_outcomes=True,
                 anonymous_aliases=self.anonymous_aliases,
                 sanitize_output_aliases=self.anonymous_aliases,
-                max_output_tokens=4_000,
+                max_output_tokens=8_000,
                 patch_corrections=True,
+                final_validation_fallback=_reflection_salvage_fallback(
+                    source_index, "plan", owner_ref,
+                ),
             )
             return reflection
         except CandidateExecutionRejected as exc:
+            _emit_runtime_progress(
+                getattr(self.caller, "on_progress", None),
+                "plan_critic_validation_failed",
+                reason=str(exc)[:400],
+            )
             return PlanReflection(
                 no_findings_reason="plan_critic_validation_failed: " + str(exc),
             )
@@ -2710,8 +2809,14 @@ class LLMRoundReflector:
                 "round reflection parent comparisons cite an unknown Plan"
             )
         if len(records) < 2:
+            # Visible skip: a single complete Plan carries no horizontal
+            # cross-Plan insight, but the skip must be distinguishable from
+            # "the model found nothing" in downstream learning audits.
             return RoundMetaEntry(
                 round_id=round_id,
+                no_findings_reason=(
+                    "round_reflection_skipped_single_complete_plan"
+                ),
                 evidence_refs=tuple(record.plan_id for record in records),
             )
         try:
@@ -2793,11 +2898,19 @@ class LLMRoundReflector:
                 allow_outcomes=True,
                 anonymous_aliases=self.anonymous_aliases,
                 sanitize_output_aliases=self.anonymous_aliases,
-                max_output_tokens=4_000,
+                max_output_tokens=8_000,
                 patch_corrections=True,
+                final_validation_fallback=_reflection_salvage_fallback(
+                    source_index, "round", owner_ref,
+                ),
             )
             return reflection
         except CandidateExecutionRejected as exc:
+            _emit_runtime_progress(
+                getattr(self.caller, "on_progress", None),
+                "round_reflection_validation_failed",
+                reason=str(exc)[:400],
+            )
             return RoundMetaEntry(
                 round_id=round_id,
                 no_findings_reason="round_reflection_validation_failed: " + str(exc),

@@ -46,7 +46,33 @@ files, calls models, or grants access to Raw Info or blind execution.
   covering their declared cases. These must agree with machine feedback;
   technical exclusions and non-applicable outcomes cannot support such claims.
   These checks constrain explicit factual assertions, not all semantic truth
-  in authored prose. Confidence is never a correctness substitute.
+  in authored prose. Confidence is never a correctness substitute. The
+  first-contact reflection contract discloses the link between category and
+  claim correctness (success categories carry only correct claims, failure
+  categories only incorrect claims) and instructs that a mixed
+  direction/magnitude outcome is expressed as separate success-axis and
+  failure-axis items rather than one straddling item; it also caps authored
+  items per response (six) and prefers selecting existing lower-level items,
+  so a response cannot outgrow its output ceiling. When bounded corrections
+  and salvage cannot repair a package, a row-level final fallback drops only
+  the complete invalid `reflection_items` rows and reparses, persisting
+  independently valid sibling lessons; removing every row yields an explicit
+  `reflection_items_all_invalid_salvaged` reason instead of a silent empty
+  result. Reflection-role output ceilings are 8,000 tokens, and critic,
+  round-reflector, and posthoc validation failures emit typed progress
+  events so scaffolding failure is never confused with "no findings". The
+  round reflector's single-complete-Plan skip records
+  `round_reflection_skipped_single_complete_plan` as its
+  `no_findings_reason`.
+- Brief views select complete entries within a UTF-8 byte budget and retain
+  included/deferred references and counts. Authored structured items outrank
+  `legacy_unreviewed` strings — including technical diagnostics such as
+  `budget_skipped` — for the bounded brief slots; legacy entries remain
+  complete and addressable by reference through the directory. A
+  byte-bounded read-by-reference
+  returns exact approved original units, never arbitrary files or a silently
+  truncated excerpt. Source existence and selected coverage do not establish
+  semantic support or completeness; manifests report these separately.
 - A paginated directory exposes bounded complete briefs for omitted entries;
   its cursor/counts remain visible when the complete deferred-ref list does not
   fit. A `level` filter (`case`, `plan`, `round`) lets the consumer discover

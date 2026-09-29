@@ -102,7 +102,11 @@ hashes, and then asks for the final output. The selection request sees only the
 role name plus opaque refs, hashes, complete read sizes, authored brief previews
 and current included/deferred membership, within a 32KB UTF-8 envelope; omitted
 previews and directory entries are counted without truncating originals. It
-does not receive hidden full source contents. A non-empty valid selection replaces
+does not receive hidden full source contents. The first-answer selection
+prompt itself discloses the validator's contract — at most 8 unique supplied
+refs, fewest-complete preferred — so the limit is visible before any
+correction is spent instead of appearing only in rejection feedback. A
+non-empty valid selection replaces
 the default bounded view as one complete-entry batch, and every unselected
 default item remains explicitly pending. An empty selection retains the default
 view. There is no second selection round. E1, SignalExecutor, and blind

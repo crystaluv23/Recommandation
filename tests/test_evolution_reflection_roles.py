@@ -3068,3 +3068,239 @@ class NeedCorrectionBeliefScopeTests(TestCase):
             },
         )
         self.assertEqual(usage.llm_calls, 2)
+
+    def test_v144_model_view_discloses_omitted_ranked_spans(self) -> None:
+        as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
+        boilerplate = RawInfoDocument.create(
+            document_id="boilerplate-10q",
+            company_id="issuer-1",
+            source_type="10-q",
+            published_at=as_of,
+            available_at=as_of,
+            content=(
+                "<p>Risk factors management discussion business risk factors "
+                "management.</p>\n" * 120
+            ),
+        )
+        catalyst = RawInfoDocument.create(
+            document_id="catalyst-8k",
+            company_id="issuer-1",
+            source_type="8-k",
+            published_at=as_of,
+            available_at=as_of,
+            content=(
+                "<p>The subsidiary received export permits to resume shipping "
+                "and expects several million dollars of new revenue not in "
+                "guidance. Business improved.</p>\n" * 40
+            ),
+        )
+        resolver = EvidenceResolver(
+            RawInfoStore(documents=(boilerplate, catalyst))
+        )
+        bundle = resolver.resolve_basic_info(
+            (
+                RawInfoRequest(
+                    "report",
+                    "demo",
+                    ("filing",),
+                    max_documents=2,
+                    query="business risk factors management discussion",
+                ),
+            ),
+            company_id="issuer-1",
+            identity={},
+            as_of=as_of,
+        )
+
+        model_view, audit = project_basic_info_bundle(bundle)
+        self.assertEqual(len(model_view["requests"]), 1)
+        row = model_view["requests"][0]
+        # Whatever the budgets funded, the model view must disclose previews
+        # of the ranked-but-omitted content instead of letting it vanish
+        # behind a green structural status.
+        rendered_visible = " ".join(
+            span["exact_text"] for span in row["projections"]
+        )
+        markers = row["omitted_context_markers"]
+        self.assertTrue(isinstance(markers, list))
+        self.assertLessEqual(len(markers), 8)
+        for marker in markers:
+            self.assertNotIn("<", marker)
+            self.assertLessEqual(len(marker), 110)
+        covered = rendered_visible + " " + " ".join(markers)
+        self.assertIn("export permits", covered)
+        self.assertTrue(audit["entries"])
+
+
+class ReflectionSalvageTests(TestCase):
+    def test_v144_invalid_mixed_axis_row_is_dropped_and_valid_siblings_persist(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.evolution_plan_roles import (
+            _reflection_salvage_fallback,
+            _structured_reflection_items,
+        )
+        from stock_opportunity_agent.research.evolution_reflection_memory import (
+            ReflectionMemoryIndex,
+        )
+
+        # The audit's V143 mixed-outcome shape: binary direction correct,
+        # magnitude class wrong. The model authored one why-it-failed item
+        # whose binary claim is correct=true — a category/claim mismatch,
+        # not a factual error.
+        snapshot = {
+            "source_identity": "case:mixed",
+            "candidate_judgment_feedback": {"binary_correct": True},
+            "magnitude_feedback": {
+                "magnitude_applicable": True,
+                "magnitude_correct": False,
+            },
+        }
+        index = ReflectionMemoryIndex.from_case_rows(
+            [snapshot], owner_ref="plan:mixed"
+        )
+        source = index.source_catalog()[0]
+        good = {
+            "category": "repeated_failure_modes",
+            "kind": "action",
+            "brief": (
+                "Split mixed direction/magnitude outcomes into two items: the "
+                "correct binary axis as a success item, the wrong magnitude "
+                "axis as a failure item."
+            ),
+            "detail": (
+                "When candidate_judgment_feedback.binary_correct is true but "
+                "magnitude_feedback.magnitude_correct is false, author two "
+                "scoped items instead of one straddling item so each claim "
+                "matches its category axis."
+            ),
+            "scope": {
+                "case_refs": list(source["case_refs"]),
+                "plan_refs": list(source["plan_refs"]),
+                "conditions": "When a mixed direction/magnitude outcome appears.",
+            },
+            "limitations": ["Untested attribution of the magnitude miss."],
+            "source_refs": [source["source_ref"]],
+            "counter_refs": [],
+            "outcome_claims": [],
+        }
+        mixed = {
+            "category": "failed_patterns",
+            "kind": "fact",
+            "brief": "Binary direction was right while magnitude class was wrong.",
+            "detail": "The call was directionally correct but underestimated class.",
+            "scope": {
+                "case_refs": list(source["case_refs"]),
+                "plan_refs": list(source["plan_refs"]),
+                "conditions": "When both axes are observed together.",
+            },
+            "limitations": [],
+            "source_refs": [source["source_ref"]],
+            "counter_refs": [],
+            "outcome_claims": [
+                {
+                    "source_ref": source["source_ref"],
+                    "axis": "binary",
+                    "correct": True,
+                }
+            ],
+        }
+        package = {
+            "reflection_items": [good, mixed],
+            "selected_reflection_refs": [],
+            "no_findings_reason": None,
+        }
+
+        def parse(value):
+            items, selected, projection = _structured_reflection_items(
+                value, index=index, level="plan", owner_ref="plan:mixed",
+            )
+            return {"items": items, "selected": selected, **projection}
+
+        # The model repeats the same straddling package on its one
+        # correction attempt, exhausting the frontier without fixing it.
+        caller = ScriptedRoleCaller([package, package])
+        value, _usage = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="plan_critic",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=parse,
+            allow_outcomes=True,
+            patch_corrections=True,
+            final_validation_fallback=_reflection_salvage_fallback(
+                index, "plan", "plan:mixed",
+            ),
+        )
+
+        items = value["items"]
+        self.assertEqual(len(items), 1)
+        # Content-level assertions: the persisted lesson is the authored
+        # sibling, verbatim and non-generic, not an empty salvage shell.
+        self.assertIn("Split mixed direction/magnitude outcomes", items[0].brief)
+        self.assertIn(
+            "magnitude_feedback.magnitude_correct is false", items[0].detail
+        )
+        self.assertEqual(items[0].source_refs, (source["source_ref"],))
+        self.assertEqual(items[0].category, "repeated_failure_modes")
+        self.assertIsNone(value["no_findings_reason"])
+        # The salvaged item must resolve as a real, selectable index entry.
+        self.assertEqual(
+            index.select_items([items[0].item_ref]), (items[0],)
+        )
+
+    def test_v144_salvage_reports_all_invalid_rows_as_explicit_reason(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.evolution_plan_roles import (
+            _reflection_salvage_fallback,
+        )
+        from stock_opportunity_agent.research.evolution_reflection_memory import (
+            ReflectionMemoryIndex,
+        )
+
+        snapshot = {
+            "source_identity": "case:bad",
+            "candidate_judgment_feedback": {"binary_correct": False},
+            "magnitude_feedback": {
+                "magnitude_applicable": True,
+                "magnitude_correct": False,
+            },
+        }
+        index = ReflectionMemoryIndex.from_case_rows(
+            [snapshot], owner_ref="case:bad"
+        )
+        source = index.source_catalog()[0]
+        broken = {
+            "category": "why_prediction_failed",
+            "kind": "fact",
+            "brief": "Broken row.",
+            "detail": "Broken row detail.",
+            "scope": {
+                "case_refs": list(source["case_refs"]),
+                "plan_refs": [],
+                "conditions": "Never.",
+            },
+            "limitations": [],
+            "source_refs": [source["source_ref"]],
+            "counter_refs": ["reflection_source:unknown"],
+            "outcome_claims": [],
+        }
+        salvage = _reflection_salvage_fallback(index, "case", "case:bad")
+        result = salvage(
+            {
+                "reflection_items": [broken],
+                "selected_reflection_refs": [],
+                "no_findings_reason": None,
+            },
+            ValidationError("reflection_items[0].counter_refs invalid"),
+        )
+        self.assertIsNotNone(result)
+        next_output, actions = result
+        self.assertEqual(next_output["reflection_items"], [])
+        self.assertEqual(actions["removed_paths"], ("reflection_items[0]",))
+        self.assertTrue(
+            next_output["no_findings_reason"].startswith(
+                "reflection_items_all_invalid_salvaged:"
+            )
+        )

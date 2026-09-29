@@ -4268,3 +4268,90 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             caller.calls[1]["system_prompt"],
         )
         self.assertEqual(initialized.value, ResearchState.from_dict(corrected))
+
+    def test_v144_temporal_boundary_disclosure_questions_are_not_baseline_lookups(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _runtime_evaluation_input_requested,
+        )
+
+        dates = {"2025-03-31"}
+        issuer_evidence_questions = (
+            # The real V143 r2 c02 MP sentence (cik_0001801368): issuer
+            # guidance/orders/analyst targets bounded by the prediction time,
+            # previously misread as a runtime baseline request.
+            "What guidance, backlog, RPO, orders, or analyst targets had the "
+            "issuer disclosed by the prediction time to support the doubling "
+            "research on the share price?",
+            "Which expected releases were reported before the prediction time "
+            "that could move the share price?",
+            "What analyst price targets were published through the prediction "
+            "time?",
+            "Which filings were made available prior to the prediction time?",
+            "Provide the share price as disclosed by the prediction time.",
+        )
+        for question in issuer_evidence_questions:
+            with self.subTest(question=question):
+                self.assertFalse(
+                    _runtime_evaluation_input_requested(question, dates)
+                )
+
+        runtime_lookups = (
+            "What is the baseline price for the six-month evaluation outcome?",
+            "Confirm the exact baseline date used by the runtime evaluation.",
+            "What is the current adjusted share price?",
+            "What was the share price by the prediction time?",
+            "Give me the baseline price by the prediction time.",
+            "What is the value of the baseline price?",
+            "Please obtain the baseline date and price.",
+            "Using the supplied baseline price, what is the baseline price?",
+        )
+        for question in runtime_lookups:
+            with self.subTest(lookup=question):
+                self.assertTrue(
+                    _runtime_evaluation_input_requested(question, dates)
+                )
+
+    def test_v144_reflect_first_answer_prompt_discloses_state_shape_rules(
+        self,
+    ) -> None:
+        prior_ref = ResearchEvidenceRef(
+            kind="basic_info",
+            claim="The operator resumed limited shipping.",
+            projection_id="projection-demo",
+            exact_text="The operator resumed limited shipping.",
+        )
+        state = ResearchState(
+            hypotheses=("Export permits may reopen revenue.",),
+            supporting_evidence=(prior_ref,),
+            next_information_needs=("Check permit status by the cutoff.",),
+        )
+        batch = SignalBatchResult(
+            results=(
+                SignalResult(
+                    signal_id="guidance_acceleration",
+                    version=1,
+                    value=SignalValue.NEUTRAL,
+                    confidence=0.5,
+                    interpretation="No new guidance in this batch.",
+                ),
+            ),
+            signal_calls=1,
+        )
+        same_state = ResearchState.from_dict(state.to_dict())
+        caller = ScriptedRoleCaller([same_state.to_dict()])
+        controller = LLMResearchController(caller)
+        controller.reflect(default_information_plan(), state, batch)
+
+        prompt = caller.calls[0]["system_prompt"]
+        # The contract the validator enforces must be visible in the first
+        # answer, not only in correction feedback.
+        self.assertIn("arrays of nonempty", prompt)
+        self.assertIn("never write an evidence object", prompt)
+        self.assertIn(
+            "never repeat an exact next_information_needs string "
+            "in open_questions",
+            prompt,
+        )
+        self.assertIn("copy one accepted supporting_evidence claim", prompt)

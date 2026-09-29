@@ -505,10 +505,23 @@ class ReflectionMemoryIndex:
         preferred_refs = tuple(preferred_refs)
         preferred = preferred_refs + tuple(self._preferred)
         self.select_items(preferred_refs)
-        levels = {
-            level: [ref for ref in reversed(tuple(self._items)) if self._items[ref].level == level]
-            for level in _CATEGORIES
-        }
+        levels: dict[str, list[str]] = {}
+        for level in _CATEGORIES:
+            ordered = [
+                ref
+                for ref in reversed(tuple(self._items))
+                if self._items[ref].level == level
+            ]
+            # Authored structured items outrank unreviewed legacy strings —
+            # which include technical diagnostics such as budget_skipped —
+            # for the bounded brief slots. Legacy entries stay complete and
+            # addressable by ref; only their slot priority drops.
+            ordered.sort(
+                key=lambda ref: (
+                    self._items[ref].evidence_status == "legacy_unreviewed"
+                )
+            )
+            levels[level] = ordered
         interleaved = [
             refs[position] for position in range(max(map(len, levels.values()), default=0))
             for refs in levels.values() if position < len(refs)

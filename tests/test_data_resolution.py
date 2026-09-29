@@ -2096,3 +2096,158 @@ class EvidenceResolverTests(TestCase):
                 }
             ],
         )
+
+
+class SpanSelectionVisibilityTests(TestCase):
+    """Content-level checks for capped/rarity-weighted span selection."""
+
+    def test_v144_rarity_weighting_funds_substantive_over_boilerplate(self) -> None:
+        from stock_opportunity_agent.data.resolution import (
+            MAX_BASIC_INFO_CONTEXT_CHARS,
+            _select_context_spans,
+        )
+
+        boilerplate = document(
+            "boilerplate-filing",
+            "Business risk management business risk factors management "
+            "discussion of business risk. " * 400,
+            source_type="filing",
+            available_at=AS_OF - timedelta(days=2),
+        )
+        catalyst = document(
+            "catalyst-8k",
+            "The subsidiary received export permits from the Ministry of "
+            "Commerce to resume shipping substrates to additional customers, "
+            "supporting several million dollars of new revenue not included "
+            "in quarterly guidance. Business conditions improved.",
+            source_type="filing",
+            available_at=AS_OF - timedelta(days=1),
+        )
+        request = RawInfoRequest(
+            request_id="recent_operating_report",
+            description="demo",
+            source_types=("filing",),
+            lookback_days=730,
+            max_documents=2,
+            query="business risk factors management discussion segment economics",
+        )
+        spans = _select_context_spans(
+            (boilerplate, catalyst), request, MAX_BASIC_INFO_CONTEXT_CHARS,
+            as_of=AS_OF,
+        )
+        self.assertTrue(spans)
+        catalyst_spans = [
+            span for span in spans if span.document_id == "catalyst-8k"
+        ]
+        self.assertTrue(
+            catalyst_spans,
+            "rarity weighting must fund the catalyst document before "
+            "boilerplate consumes the budget",
+        )
+        joined = " ".join(span.exact_text for span in catalyst_spans)
+        self.assertIn("export permits", joined)
+        self.assertIn("several million dollars", joined)
+
+    def test_v144_near_duplicate_windows_do_not_repeat(self) -> None:
+        from stock_opportunity_agent.data.resolution import (
+            MAX_BASIC_INFO_CONTEXT_CHARS,
+            _select_context_spans,
+        )
+
+        repeated = document(
+            "repeated-news",
+            "Identical announcement body repeated across the window. " * 60,
+        )
+        request = RawInfoRequest(
+            request_id="news",
+            description="demo",
+            source_types=("news",),
+            lookback_days=30,
+            max_documents=1,
+            query="identical announcement",
+        )
+        spans = _select_context_spans(
+            (repeated,), request, MAX_BASIC_INFO_CONTEXT_CHARS, as_of=AS_OF,
+        )
+        self.assertTrue(spans)
+        for span in spans[1:]:
+            for kept in spans[:1]:
+                overlap = max(
+                    0, min(span.end, kept.end) - max(span.start, kept.start)
+                )
+                self.assertLess(
+                    overlap / (span.end - span.start),
+                    0.6,
+                    "a window almost fully covered by a selected window "
+                    "must not be selected again",
+                )
+
+    def test_v144_markup_budget_bills_visible_characters(self) -> None:
+        from stock_opportunity_agent.data.resolution import (
+            RawInfoContextSpan,
+            _select_context_spans,
+        )
+
+        tagged = ("<p>" + ("word " * 40) + "</p>\n") * 30
+        markup = document("tagged-filing", tagged, source_type="filing")
+        request = RawInfoRequest(
+            request_id="filing",
+            description="demo",
+            source_types=("filing",),
+            lookback_days=30,
+            max_documents=1,
+        )
+        spans = _select_context_spans((markup,), request, 10_000, as_of=AS_OF)
+        self.assertTrue(spans)
+        billed = sum(span.billable_chars for span in spans)
+        raw_total = sum(len(span.exact_text) for span in spans)
+        self.assertLessEqual(billed, 10_000)
+        self.assertLess(billed, raw_total)
+        any_visible = False
+        for span in spans:
+            if span.visible_chars is None:
+                self.assertEqual(span.billable_chars, len(span.exact_text))
+                continue
+            any_visible = True
+            self.assertLess(span.visible_chars, len(span.exact_text))
+            roundtrip = RawInfoContextSpan.from_dict(span.to_dict())
+            self.assertEqual(roundtrip.visible_chars, span.visible_chars)
+            self.assertEqual(roundtrip.exact_text, span.exact_text)
+        self.assertTrue(
+            any_visible,
+            "markup windows must carry normalized visible character counts",
+        )
+
+    def test_v144_omission_markers_disclose_unfunded_ranked_spans(self) -> None:
+        from stock_opportunity_agent.data.resolution import (
+            _omitted_context_markers,
+            _select_context_spans,
+        )
+
+        body = (
+            "The board announced a strategic review of alternatives including "
+            "a potential sale of the company. " * 30
+        )
+        news = document("sale-news", body)
+        request = RawInfoRequest(
+            request_id="news",
+            description="demo",
+            source_types=("news",),
+            lookback_days=30,
+            max_documents=1,
+            query="strategic review potential sale",
+        )
+        all_spans = _select_context_spans((news,), request, 10**12, as_of=AS_OF)
+        funded = _select_context_spans((news,), request, 2_000, as_of=AS_OF)
+        markers = _omitted_context_markers(funded, all_spans)
+        self.assertTrue(funded)
+        self.assertLess(len(funded), len(all_spans))
+        self.assertTrue(markers)
+        self.assertLessEqual(len(markers), 6)
+        for marker in markers:
+            self.assertNotIn("<", marker)
+            self.assertLessEqual(len(marker), 110)
+        self.assertTrue(
+            any("strategic review" in marker for marker in markers),
+            "the unfunded ranked content must be disclosed by preview",
+        )

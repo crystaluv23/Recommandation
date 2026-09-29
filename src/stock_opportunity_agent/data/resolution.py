@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import threading
 import os
 import re
@@ -260,9 +261,31 @@ class RawInfoContextSpan:
     start: int
     end: int
     exact_text: str
+    # Readable-character count used for budget accounting. Markup windows
+    # carry raw exact_text padded with tags; visibility budgets bill this
+    # normalized size instead. None means exact_text is already readable.
+    visible_chars: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.visible_chars is not None and (
+            type(self.visible_chars) is not int
+            or not 1 <= self.visible_chars <= len(self.exact_text)
+        ):
+            raise ValidationError(
+                "raw info context span visible characters must be a positive "
+                "count within the literal span"
+            )
+
+    @property
+    def billable_chars(self) -> int:
+        """Characters charged against visibility budgets for this span."""
+
+        return self.visible_chars if self.visible_chars is not None else len(
+            self.exact_text
+        )
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        value: dict[str, Any] = {
             "document_id": self.document_id,
             "content_hash": self.content_hash,
             "available_at": self.available_at.isoformat(),
@@ -270,6 +293,9 @@ class RawInfoContextSpan:
             "end": self.end,
             "exact_text": self.exact_text,
         }
+        if self.visible_chars is not None:
+            value["visible_chars"] = self.visible_chars
+        return value
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RawInfoContextSpan":
@@ -280,6 +306,11 @@ class RawInfoContextSpan:
             start=int(data["start"]),
             end=int(data["end"]),
             exact_text=str(data["exact_text"]),
+            visible_chars=(
+                int(data["visible_chars"])
+                if data.get("visible_chars") is not None
+                else None
+            ),
         )
 
 
@@ -753,6 +784,10 @@ class RawInfoResolution:
     appended_documents: tuple[RawInfoDocumentRef, ...] = ()
     gap: DataGap | None = None
     coverage: RawInfoCoverage | None = None
+    # Bounded readable previews of ranked-but-unfunded spans, disclosed so a
+    # consumer can see what the budget omitted instead of treating the
+    # selected spans as the complete relevant content.
+    omitted_context_markers: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if self.status not in {"resolved", "unresolved"}:
@@ -763,6 +798,9 @@ class RawInfoResolution:
         object.__setattr__(self, "context_spans", tuple(self.context_spans))
         object.__setattr__(self, "events", tuple(self.events))
         object.__setattr__(self, "appended_documents", tuple(self.appended_documents))
+        object.__setattr__(
+            self, "omitted_context_markers", tuple(self.omitted_context_markers)
+        )
         if self.coverage is None:
             object.__setattr__(
                 self,
@@ -787,9 +825,12 @@ class RawInfoResolution:
             "documents": [item.to_dict() for item in self.documents],
             "context_spans": [item.to_dict() for item in self.context_spans],
             "events": [item.to_dict() for item in self.events],
-            "appended_documents": [item.to_dict() for item in self.appended_documents],
+            "appended_documents": [
+                item.to_dict() for item in self.appended_documents
+            ],
             "data_gap": self.gap.to_dict() if self.gap else None,
             "coverage": self.coverage.to_dict(),
+            "omitted_context_markers": list(self.omitted_context_markers),
         }
 
     @classmethod
@@ -820,6 +861,9 @@ class RawInfoResolution:
                 RawInfoCoverage.from_dict(dict(data["coverage"]))
                 if isinstance(data.get("coverage"), Mapping)
                 else None
+            ),
+            omitted_context_markers=tuple(
+                str(item) for item in data.get("omitted_context_markers", ())
             ),
         )
 
@@ -1392,8 +1436,10 @@ class EvidenceResolver:
                 coverage = coverage.with_visibility(
                     span_count=len(spans), truncated=len(spans) < len(all_spans)
                 )
+                omitted_markers = _omitted_context_markers(spans, all_spans)
             else:
                 spans = ()
+                omitted_markers = ()
             return RawInfoResolution(
                 request=request,
                 status="resolved",
@@ -1404,6 +1450,7 @@ class EvidenceResolver:
                 events=tuple(events),
                 appended_documents=tuple(appended),
                 coverage=coverage,
+                omitted_context_markers=omitted_markers,
             )
         if documents and include_context:
             all_spans = tuple(
@@ -1417,8 +1464,10 @@ class EvidenceResolver:
             coverage = coverage.with_visibility(
                 span_count=len(spans), truncated=len(spans) < len(all_spans)
             )
+            omitted_markers = _omitted_context_markers(spans, all_spans)
         else:
             spans = ()
+            omitted_markers = ()
         incomplete_message = (
             "Point-in-time documents were found but required coverage is incomplete: "
             + "; ".join(coverage.missing_requirements)
@@ -1434,6 +1483,7 @@ class EvidenceResolver:
             context_spans=spans,
             events=tuple(events),
             appended_documents=tuple(appended),
+            omitted_context_markers=omitted_markers,
             gap=(
                 self._gap(
                     request,
@@ -1567,15 +1617,15 @@ class EvidenceResolver:
         ]
         remaining = MAX_BASIC_INFO_CONTEXT_CHARS
         for index, rows in enumerate(candidates):
-            if rows and len(rows[0].exact_text) <= remaining:
+            if rows and rows[0].billable_chars <= remaining:
                 selected[index].append(rows[0])
-                remaining -= len(rows[0].exact_text)
+                remaining -= rows[0].billable_chars
         for index, rows in enumerate(candidates):
             for span in rows[1:]:
-                if len(span.exact_text) > remaining:
+                if span.billable_chars > remaining:
                     continue
                 selected[index].append(span)
-                remaining -= len(span.exact_text)
+                remaining -= span.billable_chars
 
         resolutions = tuple(
             RawInfoResolution(
@@ -1589,6 +1639,9 @@ class EvidenceResolver:
                 coverage=resolution.coverage.with_visibility(
                     span_count=len(selected[index]),
                     truncated=len(selected[index]) < len(all_candidates[index]),
+                ),
+                omitted_context_markers=_omitted_context_markers(
+                    selected[index], all_candidates[index]
                 ),
             )
             for index, resolution in enumerate(resolved_without_context)
@@ -2253,6 +2306,50 @@ def _acquisition_failure_key(
     )
 
 
+# Per-query-token hit cap and rarity weighting keep boilerplate sections from
+# out-scoring rare substantive language: a token repeated many times in one
+# window (risk/business/management in filings) contributes a capped count, and
+# tokens present in most candidate windows are down-weighted by inverse
+# document frequency while rare tokens are up-weighted.
+_TOKEN_HIT_CAP_PER_WINDOW = 3
+_NEAR_DUPLICATE_OVERLAP_FRACTION = 0.6
+_OMITTED_MARKER_COUNT = 6
+_OMITTED_MARKER_CHARS = 110
+
+
+def _readable_span_preview(text: str) -> str:
+    """Collapse one raw span into a short readable marker preview."""
+
+    stripped = _HTML_TAG.sub(" ", text)
+    collapsed = " ".join(stripped.split())
+    return collapsed[:_OMITTED_MARKER_CHARS]
+
+
+def _omitted_context_markers(
+    selected: Iterable[RawInfoContextSpan],
+    all_candidates: Iterable[RawInfoContextSpan],
+) -> tuple[str, ...]:
+    """Disclose bounded previews of ranked-but-unfunded spans.
+
+    Visibility budgets can drop relevant windows even from selected
+    documents. The ranked-but-omitted previews let a consumer see that the
+    content exists instead of treating the funded spans as everything the
+    documents had to offer.
+    """
+
+    selected_keys = {
+        (span.document_id, span.start, span.end) for span in selected
+    }
+    markers: list[str] = []
+    for span in all_candidates:
+        if (span.document_id, span.start, span.end) in selected_keys:
+            continue
+        markers.append(_readable_span_preview(span.exact_text))
+        if len(markers) >= _OMITTED_MARKER_COUNT:
+            break
+    return tuple(markers)
+
+
 def _select_context_spans(
     documents: Iterable[RawInfoDocument],
     request: RawInfoRequest,
@@ -2262,6 +2359,7 @@ def _select_context_spans(
 ) -> list[RawInfoContextSpan]:
     candidates: list[tuple[tuple[Any, ...], RawInfoContextSpan]] = []
     tokens = tuple(token.casefold() for token in _TOKEN.findall(request.query or ""))
+    windows: list[tuple[RawInfoDocument, int, int, str]] = []
     for document in documents:
         market_ranges = _structured_market_context_ranges(document, request, as_of)
         markup_windows = (
@@ -2271,7 +2369,7 @@ def _select_context_spans(
             and _HTML_TAG.search(document.content)
             else None
         )
-        windows = (
+        window_rows = (
             ((start, end, document.content[start:end]) for start, end in market_ranges)
             if market_ranges is not None
             else (
@@ -2283,37 +2381,80 @@ def _select_context_spans(
                 )
             )
         )
-        for start, end, rank_text in windows:
-            text = document.content[start:end]
-            hit_count = sum(
-                rank_text.casefold().count(token) for token in tokens
-            )
-            rank = (
-                -hit_count,
-                -document.available_at.timestamp(),
-                document.document_id,
-                start,
-            )
-            candidates.append(
-                (
-                    rank,
-                    RawInfoContextSpan(
-                        document.document_id,
-                        document.content_hash,
-                        document.available_at,
-                        start,
-                        end,
-                        text,
-                    ),
+        for start, end, rank_text in window_rows:
+            windows.append((document, start, end, rank_text))
+    scores: list[float] = []
+    if tokens:
+        document_frequency: dict[str, int] = {token: 0 for token in tokens}
+        hit_counts: list[dict[str, int]] = []
+        for _document, _start, _end, rank_text in windows:
+            lowered = rank_text.casefold()
+            counts = {
+                token: count
+                for token in tokens
+                if (count := lowered.count(token))
+            }
+            hit_counts.append(counts)
+            for token in counts:
+                document_frequency[token] += 1
+        total_windows = len(windows)
+        weights = {
+            token: math.log((total_windows + 1) / (frequency + 1)) + 1.0
+            for token, frequency in document_frequency.items()
+        }
+        for counts in hit_counts:
+            scores.append(
+                sum(
+                    min(count, _TOKEN_HIT_CAP_PER_WINDOW) * weights[token]
+                    for token, count in counts.items()
                 )
             )
+    else:
+        scores = [0.0] * len(windows)
+    for (document, start, end, rank_text), score in zip(windows, scores):
+        rank = (
+            -score,
+            -document.available_at.timestamp(),
+            document.document_id,
+            start,
+        )
+        exact_text = document.content[start:end]
+        visible_chars = (
+            len(rank_text) if len(rank_text) != len(exact_text) else None
+        )
+        candidates.append(
+            (
+                rank,
+                RawInfoContextSpan(
+                    document.document_id,
+                    document.content_hash,
+                    document.available_at,
+                    start,
+                    end,
+                    exact_text,
+                    visible_chars=visible_chars,
+                ),
+            )
+        )
     selected: list[RawInfoContextSpan] = []
     used = 0
     for _, span in sorted(candidates, key=lambda item: item[0]):
-        if used + len(span.exact_text) > budget:
+        billable = span.billable_chars
+        if used + billable > budget:
+            continue
+        # Near-duplicate suppression: skip a window almost entirely covered by
+        # an already-selected window of the same document. The fixed chunk
+        # overlap (200 characters) stays well below this fraction, so only
+        # substantively repeated windows are dropped.
+        if any(
+            span.document_id == kept.document_id
+            and max(0, min(span.end, kept.end) - max(span.start, kept.start))
+            >= _NEAR_DUPLICATE_OVERLAP_FRACTION * (span.end - span.start)
+            for kept in selected
+        ):
             continue
         selected.append(span)
-        used += len(span.exact_text)
+        used += billable
     return selected
 
 

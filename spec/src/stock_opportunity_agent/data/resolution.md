@@ -19,15 +19,16 @@ differ only in how resolved documents are consumed.
   minimum distinct source periods, minimum period span, and minimum observation
   count.
 - `RawInfoResolution`: request, resolved document refs, optional exact context
-  spans, query/acquisition events, newly appended refs, an optional gap, and a
-  coverage record that separates eligible/retrieved counts, lexical query
-matches, selection truncation, model-visible context truncation, and whether
-the structured completeness requirements were met. Incomplete coverage reports
-the exact missing requirement instead of treating retrieved partial evidence as
-proof that the request was answered.
+  spans, query/acquisition events, newly appended refs, an optional gap, and
+  a coverage record that separates eligible/retrieved counts, lexical query
+  matches, selection truncation, model-visible context truncation, and whether
+  the structured completeness requirements were met. Incomplete coverage reports
+  the exact missing requirement instead of treating retrieved partial evidence as
+  proof that the request was answered.
   Coverage also distinguishes a query that was not requested from a legacy
   query whose match evaluation was never recorded; neither state is reported
-  as a successful match.
+  as a successful match. Resolutions that select context also carry bounded
+  readable `omitted_context_markers` previewing ranked-but-unfunded spans.
 - `BasicInfoBundle`: ordered Basic Info resolutions sent to `H_init`.
 - `DataGap`: request-scoped structured failure with reason, source/provider
   context, and a non-secret message.
@@ -243,25 +244,42 @@ ticker association therefore cannot turn an article about another issuer into
 company evidence.
 
 For Basic Info only, plain-text selected documents are split into 2,000-character
-spans with 200-character overlap. Query ranking uses literal case-insensitive token
-hit count, then public availability, then document id. For SEC/filing markup, tag
-removal and whitespace normalization happen over the complete document before query
-ranking and chunk boundaries are chosen; each readable-text window is then mapped
-back to a raw start/end range. The persisted `RawInfoContextSpan` remains an exact
-literal raw substring, while model projection receives complete removable tags rather
-than fragments beginning inside an HTML/XBRL attribute. Model projection also decodes
-single-character HTML entities with raw-span lineage, so repeated non-breaking-space
-and apostrophe encodings do not consume context as opaque markup. Without a query, documents
-rank by public availability descending. A request selects at most ten documents; a
-Plan has at most eight requests; one case has a 48,000-character raw-span budget. An
-over-budget span is omitted in full, never truncated. Context allocation is
-request-fair rather than a sequential drain: after every request has been resolved,
-the resolver retains one highest-ranked eligible span for each resolved request,
-then assigns the remaining budget in request order. Since one span is at most 2,000
-characters and a Plan has at most eight requests, every resolved non-empty request
-can expose at least one span without raising the existing 48,000-character ceiling.
-This prevents an earlier long transcript from silently starving a later financial or
-filing request while preserving Plan request order and per-request ranking.
+spans with 200-character overlap. Query ranking scores each window with a
+per-token hit count capped at three occurrences, weighted by inverse document
+frequency across the request's candidate windows: tokens present in most
+windows (risk/business/management in filings) are down-weighted while rare
+tokens are up-weighted, so lexical boilerplate cannot out-score substantive
+language merely by repetition. Ranking then orders by weighted score, public
+availability, then document id. Windows almost entirely covered (at least 60%
+of the candidate's range) by an already-selected window of the same document
+are skipped as near-duplicates; the fixed 200-character overlap stays
+selectable. For SEC/filing markup, tag removal and whitespace normalization
+happen over the complete document before query ranking and chunk boundaries
+are chosen; each readable-text window is then mapped back to a raw start/end
+range. The persisted `RawInfoContextSpan` remains an exact literal raw
+substring; markup spans additionally carry `visible_chars`, the normalized
+window length, and every visibility budget (per-request, cross-request
+Basic Info, and model projection) bills `visible_chars` instead of the raw
+length so HTML padding cannot consume readable-content budget. Model
+projection also decodes single-character HTML entities with raw-span lineage,
+so repeated non-breaking-space and apostrophe encodings do not consume
+context as opaque markup. Without a query, documents rank by public
+availability descending. A request selects at most ten documents; a Plan has
+at most eight requests; one case has a 48,000-character readable-span budget.
+An over-budget span is omitted in full, never truncated. Every resolution
+with ranked-but-unfunded spans discloses bounded readable
+`omitted_context_markers` (up to six resolver-side previews, extended to
+eight by projection-side previews in the Basic Info model view), so omitted
+content stays discoverable instead of silently vanishing behind a resolved
+status. Context allocation is request-fair rather than a sequential drain:
+after every request has been resolved, the resolver retains one
+highest-ranked eligible span for each resolved request, then assigns the
+remaining budget in request order. Since one span bills at most 2,000
+readable characters and a Plan has at most eight requests, every resolved
+non-empty request can expose at least one span without raising the existing
+48,000-character ceiling. This prevents an earlier long transcript from
+silently starving a later financial or filing request while preserving Plan
+request order and per-request ranking.
 
 For structured market-data documents, `lookback_days` applies to the dated
 observations exposed to Basic Info, not merely to the publication timestamp of

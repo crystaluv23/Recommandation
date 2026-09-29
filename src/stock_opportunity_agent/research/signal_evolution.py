@@ -187,7 +187,11 @@ def signal_candidate_execution_contract() -> dict[str, Any]:
                 "Non-unavailable fixtures must satisfy the same retrieval coverage "
                 "as production, with literal source evidence and point-in-time dates. "
                 "Missing-input fixtures may expect unavailable; technical failures "
-                "are not successful unavailable measurements."
+                "are not successful unavailable measurements. Every fixture's "
+                "expected value must agree with the skill's own documented "
+                "applicability boundaries: a lookalike the skill scores neutral "
+                "must not be expected unavailable, and a documented "
+                "non-applicable case must not be expected decisive."
             ),
         },
     }
@@ -2381,7 +2385,9 @@ class SignalCandidateEffectivenessEvaluator:
                 signal_ref=spec.ref,
                 current_ref=(current.ref if current is not None else None),
                 accepted=False,
-                disposition=("provisional" if induction_supported else "rejected"),
+                # Too few Discovery cases to judge: an unproven, not
+                # disproved, candidate remains a provisional resident.
+                disposition="provisional",
                 reasons=(
                     "paired effectiveness requires at least "
                     f"{self.minimum_cases} Discovery cases",
@@ -2483,7 +2489,11 @@ class SignalCandidateEffectivenessEvaluator:
                 signal_ref=spec.ref,
                 current_ref=(current.ref if current is not None else None),
                 accepted=False,
-                disposition="rejected",
+                # A paired-run execution failure is a technical outcome, not
+                # a research verdict: the candidate stays a provisional
+                # resident so later mechanisms can re-evaluate it instead of
+                # losing the mined hypothesis outright.
+                disposition="provisional",
                 reasons=("paired effectiveness execution failed: " + str(exc),),
                 case_ids=case_ids,
                 candidate_available=0,
@@ -2537,22 +2547,25 @@ class SignalCandidateEffectivenessEvaluator:
                     "candidate shows no strict paired effectiveness gain"
                 )
         if rejection_reasons:
-            if current is None and set(rejection_reasons) <= {
+            if set(rejection_reasons) <= {
                 _DIRECTIONAL_FLOOR_REASON,
                 _RECALL_FLOOR_REASON,
             }:
-                # A new signal that passed every correctness, availability, and
+                # A signal that passed every correctness, availability, and
                 # decisiveness floor but failed only the directional or recall
-                # floor at the check cohort's small n is not disproved: it
-                # becomes a provisional resident and accumulates paired
-                # evidence on later fresh check cohorts under the pooled
-                # three-zone rule.
+                # floor at the check cohort's small n is not disproved — with
+                # or without a current stable counterpart: it becomes a
+                # provisional resident and accumulates paired evidence on
+                # later fresh check cohorts under the pooled three-zone rule.
                 disposition = "provisional"
             else:
                 disposition = "rejected"
             reasons = rejection_reasons + insufficient_reasons
         elif insufficient_reasons:
-            disposition = "provisional" if induction_supported else "rejected"
+            # An under-sampled candidate is unproven, not disproved: keep it
+            # addressable for later cohorts instead of evicting the mined
+            # hypothesis at the admission boundary.
+            disposition = "provisional"
             reasons = insufficient_reasons
         else:
             disposition = "promoted"
@@ -6574,6 +6587,14 @@ class SignalEvolutionEngine:
                     validation_sink=seed_sink,
                     label_map=label_map,
                     research_axis=research_axis,
+                    # The paid Fast reflection briefs and selected original
+                    # disclosures must reach the real mining model requests;
+                    # dropping them here severed the learning loop while the
+                    # reads were still billed.
+                    meta_memory_briefs=dict(context.get("meta_info") or {}),
+                    meta_memory_disclosures=tuple(
+                        context.get("meta_memory_disclosures", ())
+                    ),
                 )
                 result = controller.run()
             except (EvolutionControlFlow, OpenAIClientError):

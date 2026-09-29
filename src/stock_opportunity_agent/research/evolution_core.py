@@ -504,6 +504,17 @@ def project_basic_info_bundle(
             projection_status = "partial_context_budget"
         else:
             projection_status = "complete"
+        # Disclose what the budgets omitted: resolver-level markers arrive on
+        # the resolution; projection-level omissions preview their normalized
+        # text here. Ranked-but-unfunded content stays addressable instead of
+        # silently vanishing behind a green structural status.
+        chosen_indices = set(indices)
+        omitted_markers = list(resolution.omitted_context_markers)
+        for row_index, (model_row, _audit_row) in enumerate(rows):
+            if row_index in chosen_indices or len(omitted_markers) >= 8:
+                continue
+            preview = " ".join(str(model_row["exact_text"]).split())
+            omitted_markers.append(preview[:110])
         model_requests.append(
             {
                 "request": resolution.request.to_dict(),
@@ -513,6 +524,7 @@ def project_basic_info_bundle(
                 "available_projection_count": available_count,
                 "visible_projection_count": visible_count,
                 "omitted_projection_count": omitted_count,
+                "omitted_context_markers": omitted_markers[:8],
                 "data_gap": resolution.gap.to_dict() if resolution.gap else None,
             }
         )

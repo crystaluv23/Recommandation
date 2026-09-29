@@ -180,13 +180,22 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   half of the positive-label check cases must receive a POSITIVE call — "do
   not abstain on the class that matters"). The recall floor exists because
   accuracy among decisive calls rewards cowardice: a signal firing only on
-  easy controls scores perfectly while missing nearly every surge. A new
-  Signal that passes every correctness, availability, and decisiveness floor
-  but fails only one or both directional floors at the check cohort's small
-  n is not disproved: it becomes a `provisional` resident. Updates keep both
-  floors hard — an incumbent exists, so a version that does not beat it
-  stays rejected, and reducing errors only by abstaining does not turn a
-  still-wrong candidate into an effective Registry version.
+  easy controls scores perfectly while missing nearly every surge. A
+  candidate that passes every correctness, availability, and decisiveness
+  floor but fails only one or both directional floors at the check cohort's
+  small n is not disproved — with or without an incumbent counterpart — and
+  becomes a `provisional` resident. Comparative regressions against an
+  incumbent stay hard: an update that reduces availability or directional
+  correct count, increases wrong count, or shows no strict paired gain over
+  the existing version remains rejected, and reducing errors only by
+  abstaining does not turn a still-wrong candidate into an effective
+  Registry version. Admission is recall-first for the mining loop: an
+  under-sampled candidate (too few Discovery cases, decisive support below
+  the paired minimum, or executor-contained technical failures that leave
+  no decisive calls) is unproven rather than disproved and stays a
+  provisional resident for later pooled cohorts; a paired-run execution
+  error is likewise recorded as provisional with its technical reason, not
+  as a research verdict.
 - Provisional residents accumulate pooled paired evidence: each cycle the
   runtime re-evaluates surviving residents on that cycle's fresh check cohort
   and applies the three-zone rule over their pooled records — promote when
@@ -206,7 +215,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   payload by one bounded model call, after which the unchanged contract
   validator and paired gates judge them. H/E role-protocol models keep their
   tracks for read-only replay, and manifest-free workspaces keep the v7
-  cadence.
+  cadence. Every outgoing controller model view carries the composed Fast
+  reflection memory — the masked bounded `meta_info` brief view plus the
+  paid `meta_memory_disclosures` originals read for the cycle — so the
+  mining loop actually consumes the experience the runtime paid to read;
+  a composition that drops them is a wiring defect, not an accepted
+  economy. Materialized fixtures must agree with their own skill's
+  documented applicability boundaries: a lookalike the skill scores
+  neutral must not be expected unavailable.
 - Every Slow cycle runs bounded Signal Mining independently of whether the
   committed Fast boundary contains a new Signal need. H1 may use identity-masked,
   outcome-aware Fast meta-memory to propose error-driven measurements; the

@@ -608,6 +608,23 @@ _RUNTIME_ANCHOR_NP_INTERNAL_TOKENS = frozenset(
 )
 
 
+# Temporal-boundary prepositions introduce the anchor as the deadline of a
+# disclosure window ("disclosed by the prediction time"), not the requested
+# object. They license reference use only when the next external governor is
+# an evidence-availability participle, so request operators ("what was the
+# share price by the prediction time") still fail closed.
+_RUNTIME_ANCHOR_TEMPORAL_BOUNDARY_PREPOSITIONS = frozenset(
+    "by before through prior".split()
+)
+
+
+_RUNTIME_ANCHOR_EVIDENCE_AVAILABILITY_WORDS = frozenset(
+    "disclosed reported filed announced published available released "
+    "provided furnished communicated posted stated said guided "
+    "submitted listed recorded".split()
+)
+
+
 def _anchor_occurrence_reference_use(text: str, anchor_start: int) -> bool:
     """Return whether one anchor mention is clearly used as a supplied reference.
 
@@ -615,15 +632,20 @@ def _anchor_occurrence_reference_use(text: str, anchor_start: int) -> bool:
     noun-phrase-internal tokens, the first external word must belong to a
     closed set of reference constructs: a reference preposition or phrase
     ("from the supplied baseline", "compared with the supplied baseline"),
-    or "of" headed by a fixed-outcome noun ("a doubling of the adjusted
-    share price"). Bare "with" is not one of the prepositions: in a dative
-    request ("provide me with the baseline date") it introduces the
-    requested object, so the scan reaches the request verb and fails
-    closed. Request operators, unrecognized governors ("the value of the
-    baseline price", "obtain the baseline date"), inverted or passive
-    restatements ("The baseline price is what?"), and mentions with no
-    governor at all are not reference use, so unknown wording keeps the
-    rejection instead of granting permission.
+    "of" headed by a fixed-outcome noun ("a doubling of the adjusted
+    share price"), or a temporal-boundary preposition ("by", "before",
+    "through", "prior to") whose own next external governor is an
+    evidence-availability participle ("guidance disclosed by the
+    prediction time"), because there the anchor bounds a disclosure
+    window instead of naming the requested object. Bare "with" is not
+    one of the prepositions: in a dative request ("provide me with the
+    baseline date") it introduces the requested object, so the scan
+    reaches the request verb and fails closed. Request operators,
+    unrecognized governors ("the value of the baseline price", "obtain
+    the baseline date"), inverted or passive restatements ("The baseline
+    price is what?"), and mentions with no governor at all are not
+    reference use, so unknown wording keeps the rejection instead of
+    granting permission.
     """
 
     left = text[:anchor_start].casefold()
@@ -639,6 +661,19 @@ def _anchor_occurrence_reference_use(text: str, anchor_start: int) -> bool:
             or word in _RUNTIME_ANCHOR_REFERENCE_PHRASES
         ):
             return True
+        if word in _RUNTIME_ANCHOR_TEMPORAL_BOUNDARY_PREPOSITIONS:
+            while words:
+                boundary_word = words.pop()
+                if boundary_word.endswith("'s"):
+                    boundary_word = boundary_word[: -2]
+                if boundary_word == "to":
+                    continue
+                if boundary_word not in _RUNTIME_ANCHOR_NP_INTERNAL_TOKENS:
+                    return (
+                        boundary_word
+                        in _RUNTIME_ANCHOR_EVIDENCE_AVAILABILITY_WORDS
+                    )
+            return False
         if word == "of":
             head = words[-1] if words else ""
             if head.endswith("'s"):

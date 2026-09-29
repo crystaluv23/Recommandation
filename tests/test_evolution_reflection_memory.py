@@ -332,6 +332,64 @@ class IdentityEgressMaskingTests(unittest.TestCase):
         self.assertNotIn("Acme Aerospace Systems", json.dumps(disclosed))
         self.assertTrue(disclosed["sources"])
 
+    def test_v144_brief_view_slots_authored_items_before_legacy_strings(self):
+        # One case row carrying both authored structured lessons and legacy
+        # plan_issues strings (including technical diagnostics such as
+        # budget_skipped): bounded brief slots must go to authored lessons
+        # first; legacy strings stay addressable by ref.
+        snapshot = case("case:a")
+        index = ReflectionMemoryIndex.from_case_rows([snapshot], owner_ref="case:a")
+        source = index.source_catalog()[0]
+        good = index.create_items(
+            [authored(source)], level="case", owner_ref="case:a"
+        )[0]
+        reviewed = PredictionSelfReflection(
+            False,
+            reflection_items=(good,),
+            source_identity="case:a",
+            source_snapshot=snapshot,
+        )
+        skipped = PredictionSelfReflection(
+            False,
+            plan_issues=("budget_skipped",),
+            source_identity="case:a",
+            source_snapshot=snapshot,
+        )
+        entry = {
+            "round_id": 1,
+            "plan_reflections": [
+                {
+                    "plan_id": "plan_1",
+                    "plan": {"B": []},
+                    "original_case_reflections": [
+                        {
+                            **snapshot,
+                            "case_index": 1,
+                            "self_reflection": reviewed.to_dict(),
+                        },
+                        {
+                            **snapshot,
+                            "case_index": 2,
+                            "self_reflection": skipped.to_dict(),
+                        },
+                    ],
+                    "vertical_plan_reflection": {},
+                }
+            ],
+        }
+        composed = ReflectionMemoryIndex.from_entries([entry])
+        view = composed.brief_view(max_bytes=4_000, max_items=1)
+        self.assertEqual(len(view["items"]), 1)
+        self.assertEqual(view["items"][0]["item_ref"], good.item_ref)
+        self.assertIn("counterexample", view["items"][0]["brief"])
+        # The legacy technical string did not take the single brief slot and
+        # remains complete and addressable through the directory.
+        self.assertNotIn("budget_skipped", json.dumps(view["items"]))
+        directory = composed.directory()
+        self.assertTrue(
+            any("budget_skipped" in json.dumps(row) for row in directory["items"])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -63,7 +63,11 @@ Signal retrieval, blind prediction, and Plan reflection.
   immutable in runtime and validated when an actual Plan is proposed.
 - H_reflect emits snapshot-bound state operations; runtime owns copying and
   retaining unchanged state. The same ordinary evidence, need-ownership,
-  temporal and whole-state checks run after assembly. Structured correction
+  temporal and whole-state checks run after assembly. The first-answer
+  prompt itself discloses the text-array field shapes (never an evidence
+  object), the open_questions versus next_information_needs separation with
+  exact-string deduplication, and the numeric-belief copy rule, so these
+  validator obligations are visible before any correction is spent. Structured correction
   returns only authorized operations against the latest failed assembled state;
   a valid sibling is not rewritten to repair another sibling. A complete object
   is only necessary when no usable structured baseline exists.

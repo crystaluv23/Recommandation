@@ -1236,3 +1236,64 @@ class NarrativeSurfaceFixTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_v144_model_views_carry_reflection_briefs_and_paid_disclosures(
+        self,
+    ) -> None:
+        cases, store = _fixture_store()
+        briefs = {
+            "counts": {"available": 1, "included": 1, "deferred": 0},
+            "items": [
+                {
+                    "item_ref": "reflection:fixture_magnitude_lesson",
+                    "level": "plan",
+                    "category": "repeated_failure_modes",
+                    "brief": (
+                        "Order-driven catalysts were direction-right but "
+                        "magnitude-underestimated; require a quantified "
+                        "bridge before scoring magnitude class."
+                    ),
+                    "source_refs": ["reflection_source:fixture"],
+                }
+            ],
+        }
+        disclosures = [
+            {
+                "source_ref": "reflection_source:fixture",
+                "read_bytes": 512,
+                "content": {
+                    "source_identity": "case:fixture",
+                    "candidate_judgment_feedback": {"binary_correct": True},
+                    "magnitude_feedback": {
+                        "magnitude_applicable": True,
+                        "magnitude_correct": False,
+                    },
+                },
+            }
+        ]
+        model = ScriptedMiningDecisionModel(
+            [
+                {"action": "inspect_manifest", "rationale": ["Check coverage."]},
+                {"action": "finalize", "rationale": ["Fixture terminal action."]},
+            ]
+        )
+        controller = _controller(
+            store,
+            cases,
+            model,
+            seed="hypothesis",
+            meta_memory_briefs=briefs,
+            meta_memory_disclosures=disclosures,
+        )
+        controller.run()
+
+        self.assertTrue(model.views)
+        for view in model.views:
+            # Content-level wiring: the paid reflection memory must appear
+            # in every outgoing mining request, not only in the composed
+            # context object that never reaches the model.
+            self.assertEqual(view["meta_info"], briefs)
+            self.assertEqual(view["meta_memory_disclosures"], list(disclosures))
+        rendered = json.dumps(model.views[0])
+        self.assertIn("magnitude-underestimated", rendered)
+        self.assertIn("binary_correct", rendered)

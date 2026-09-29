@@ -13,6 +13,7 @@ unchanged validation pipeline.
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
@@ -230,6 +231,8 @@ class LabelAwareMiningController:
         identity_aliases: Sequence[str] = (),
         label_map: Mapping[str, str] | None = None,
         research_axis: Mapping[str, Any] | None = None,
+        meta_memory_briefs: Mapping[str, Any] | None = None,
+        meta_memory_disclosures: Sequence[Mapping[str, Any]] = (),
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -247,6 +250,14 @@ class LabelAwareMiningController:
         self.attribute_vocabulary = dict(attribute_vocabulary or {})
         self.prior_modality_footprints = tuple(
             dict(row) for row in prior_modality_footprints
+        )
+        # Fast reflection memory this controller must actually consume:
+        # bounded masked briefs plus the paid selected original disclosures.
+        # Without them the mining loop runs blind to prior-round lessons even
+        # though the runtime paid to read them.
+        self.meta_memory_briefs = dict(meta_memory_briefs or {})
+        self.meta_memory_disclosures = tuple(
+            dict(row) for row in meta_memory_disclosures
         )
         self._browse_used = 0
         self.validation_sink = validation_sink
@@ -389,6 +400,10 @@ class LabelAwareMiningController:
             "modality_coverage": self._modality_coverage(),
             "prior_modality_footprints": [
                 dict(row) for row in self.prior_modality_footprints
+            ],
+            "meta_info": deepcopy(self.meta_memory_briefs),
+            "meta_memory_disclosures": [
+                dict(row) for row in self.meta_memory_disclosures
             ],
         }
         if self._last_action_result is not None:
