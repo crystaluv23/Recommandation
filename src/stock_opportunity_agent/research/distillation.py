@@ -215,7 +215,7 @@ class RawInfoDistiller:
             },
             parser=parse,
             allow_outcomes=False,
-            max_output_tokens=2_000,
+            max_output_tokens=8_000,
         )
         card["reference"] = {
             "document_id": document_id,

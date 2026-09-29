@@ -26,8 +26,12 @@ Fast/Slow engine dependency.
   (first visible projection per request guaranteed, disclosure counts for
   the deferred tail) so stage-to-stage carry-over loss is structurally
   impossible; `context_contract.assembly_blocks` records the typed block
-  order and restricts numeric decision inputs to the computed anchor
-  block.
+  order and restricts numeric decision inputs to computed blocks. A
+  `state_evolution` block appends each round's deterministic state delta —
+  added/removed rows per field, evidence added by stable ref key with its
+  claim, removed keys, and decision transitions — so every authored number
+  and belief is attributable to the round that introduced it; the
+  trajectory persists the same per-round deltas.
 
 - Computation before interpretation: the case runtime derives one evaluation
   anchor block from complete point-in-time market documents (five-day mean
