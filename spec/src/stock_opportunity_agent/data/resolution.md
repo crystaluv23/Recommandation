@@ -253,7 +253,10 @@ language merely by repetition. Ranking then orders by weighted score, public
 availability, then document id. Windows almost entirely covered (at least 60%
 of the candidate's range) by an already-selected window of the same document
 are skipped as near-duplicates; the fixed 200-character overlap stays
-selectable. For SEC/filing markup, tag removal and whitespace normalization
+selectable. The earliest window (document head) of every document that
+contributes any selected span is pinned deterministically ahead of that
+document's remaining windows and is exempt from near-duplicate suppression,
+because event-driven filings carry their substance up front. For SEC/filing markup, tag removal and whitespace normalization
 happen over the complete document before query ranking and chunk boundaries
 are chosen; each readable-text window is then mapped back to a raw start/end
 range. The persisted `RawInfoContextSpan` remains an exact literal raw

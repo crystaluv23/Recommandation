@@ -1442,6 +1442,112 @@ def _raw_research_state_shape_issues(value: Mapping[str, Any]) -> list[Validatio
     return issues
 
 
+_ANCHOR_STATE_TEXT_FIELDS = (
+    "current_beliefs",
+    "contradictions",
+    "resolved_questions",
+    "open_questions",
+)
+
+
+def _anchor_restatement_issues(
+    normalized: Mapping[str, Any],
+    evaluation_context: Mapping[str, Any] | None,
+) -> list[ValidationIssue]:
+    """Reject numeric restatements of the runtime evaluation anchor.
+
+    The anchor block is deterministic computation: a research state that
+    mentions a baseline or threshold price with a different number — or
+    derives a doubling threshold from the wrong base — carries an arithmetic
+    error into the decision input. The same pattern family as the predictor
+    check runs here, before prediction, on every authored state text field.
+    """
+
+    if not isinstance(evaluation_context, Mapping):
+        return []
+    anchor = evaluation_context.get("evaluation_anchor")
+    if not isinstance(anchor, Mapping) or anchor.get("status") != "available":
+        return []
+    expected = anchor.get("mean_adjusted_close")
+    if isinstance(expected, bool) or not isinstance(expected, (int, float)):
+        return []
+    from stock_opportunity_agent.research.evolution_output_validation import (
+        _PREDICTOR_BASELINE_MULTIPLE_PREFIX,
+        _PREDICTOR_CURRENT_PRICE,
+    )
+
+    issues: list[ValidationIssue] = []
+    rows: list[tuple[str, str]] = []
+    for field_name in _ANCHOR_STATE_TEXT_FIELDS:
+        values = normalized.get(field_name)
+        if isinstance(values, list):
+            rows.extend(
+                (f"{field_name}[{index}]", str(text))
+                for index, text in enumerate(values)
+                if isinstance(text, str)
+            )
+    evidence = normalized.get("supporting_evidence")
+    if isinstance(evidence, list):
+        for index, item in enumerate(evidence):
+            if isinstance(item, Mapping) and isinstance(item.get("claim"), str):
+                rows.append(
+                    (f"supporting_evidence[{index}].claim", str(item["claim"]))
+                )
+    for path, text in rows:
+        for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
+            returned = float(match.group(1))
+            if math.isclose(
+                returned, float(expected), rel_tol=0.01, abs_tol=0.05
+            ):
+                continue
+            prefix = text[max(0, match.start() - 32) : match.start()]
+            multiple_match = _PREDICTOR_BASELINE_MULTIPLE_PREFIX.search(prefix)
+            if multiple_match is not None:
+                multiple = (
+                    float(multiple_match.group("numeric"))
+                    if multiple_match.group("numeric") is not None
+                    else 2.0
+                )
+                derived_threshold = multiple * float(expected)
+                if math.isclose(
+                    returned, derived_threshold, rel_tol=0.01, abs_tol=0.1
+                ):
+                    continue
+                issues.append(
+                    ValidationIssue(
+                        code="research_state_anchor_arithmetic_invalid",
+                        message=(
+                            f"{path} gives {returned:g} for a {multiple:g}x "
+                            "baseline threshold, but the runtime evaluation "
+                            f"anchor implies {derived_threshold:g}"
+                        ),
+                        paths=(path,),
+                        source_refs=("evaluation_anchor",),
+                        allowed_repairs=("replace", "remove"),
+                        repair_context={
+                            "anchor_derived_threshold": derived_threshold,
+                        },
+                    )
+                )
+                continue
+            issues.append(
+                ValidationIssue(
+                    code="research_state_anchor_value_invalid",
+                    message=(
+                        f"{path} labels {returned:g} as the current or "
+                        "prediction-time baseline price, but the runtime "
+                        "evaluation anchor mean is "
+                        f"{float(expected):g}"
+                    ),
+                    paths=(path,),
+                    source_refs=("evaluation_anchor",),
+                    allowed_repairs=("replace", "remove"),
+                    repair_context={"anchor_mean": float(expected)},
+                )
+            )
+    return issues
+
+
 def _normalize_research_state_output(
     value: Mapping[str, Any],
     *,
@@ -1456,12 +1562,13 @@ def _normalize_research_state_output(
     shape_issues = _raw_research_state_shape_issues(normalized)
     if shape_issues:
         raise StructuredValidationError(shape_issues)
+    anchor_issues = _anchor_restatement_issues(normalized, evaluation_context)
     _restore_inherited_need_cutoffs(normalized, previous_state, evaluation_context)
     future_information_issues = _raw_future_information_issues(
         normalized,
         evaluation_context,
     )
-    if future_information_issues:
+    if future_information_issues or anchor_issues:
         # A temporal rejection still surfaces every other independently
         # decidable raw issue when the evidence shape allows, so one
         # correction round can carry all actionable obligations. The
@@ -1479,6 +1586,7 @@ def _normalize_research_state_output(
             future_information_issues.extend(
                 _raw_basic_literal_identity_issues(normalized, previous_state)
             )
+        future_information_issues.extend(anchor_issues)
         raise StructuredValidationError(future_information_issues)
     evidence = normalized.get("supporting_evidence")
     issues = _raw_research_state_compaction_issues(

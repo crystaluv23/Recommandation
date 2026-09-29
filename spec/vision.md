@@ -147,11 +147,53 @@ Historical learning and backtests must only use information public as of the sim
 The historical-learning program must distinguish information discovery from
 analysis-method research. Label-aware winner/control/failure comparison may
 propose information requirements, candidate signals, and research rubrics.
-Anonymous holdout evaluation then tests whether the proposed information can be
-acquired, extracted, and represented effectively for a fixed plain LLM. The
+Anonymous holdout evaluation then tests whether the proposed information can
+be acquired, extracted, and represented effectively for a fixed plain LLM. The
 project should not attribute failure to the analyzer or move to multi-agent
 methods until source coverage, atomic-fact fidelity, and representation loss
 have been measured separately.
+
+### Progressive Disclosure Everywhere
+
+The system's information surfaces — raw documents, stable signals, and
+accumulated experience — expose one isomorphic three-layer interface:
+a bounded catalog (structured, organized cards that disclose totals,
+omissions, and pagination), item fetch (a bounded working view of summary
+plus provenance reference, degenerating to verbatim text when the unit fits
+the budget), and provenance reads (exact original content addressed by
+content-hash identity, never file paths). Entry actions differ by corpus
+(structured fetch, title search, need-matched browsing), but the envelope
+discipline is identical: whatever a response did not include must be visible
+as omitted and remain addressable. Silent truncation — content that exists in
+a selected source but is invisible to the model behind a green structural
+status — is a defect class, not an economy. Budgets bound every layer; the
+interface makes the cut points visible and recoverable instead of removing
+them.
+
+### Computation Before Interpretation
+
+Any quantity that enters a decision as a number is either a runtime-owned
+anchor injected verbatim at every stage (baseline dates and prices, fixed
+outcome thresholds — never model-restated) or the output of a deterministic
+computation over point-in-time data with literal source references (closed
+descriptive statistics and fixed-vocabulary shape labels). The LLM consumes
+computed facts and produces probability and causal judgments; it never
+recounts, derives, or arithmetically extends numeric facts. Deterministic
+work runs in the deterministic signal channel, which receives complete
+documents rather than bounded spans.
+
+### Three Local Libraries, One Memory Discipline
+
+The system's long-lived knowledge lives in three append-only,
+point-in-time-filtered local libraries: the Raw Info store (immutable
+documents), the Signal Registry (versioned extraction capabilities), and the
+Experience library (structured, source-traceable reflections organized as a
+tree of briefs indexing lower-level originals). The fast research loop and
+the slow self-evolution loop operate on the same Experience entity: the loop
+retrieves general conclusions with real experiences as few-shot evidence, and
+evolution reorganizes the tree through its reflection sieve. Blind prediction
+never reads outcome-derived memory; retrospective roles do, under role-scoped
+masked projections.
 
 ### Theme-first and Stock-second
 

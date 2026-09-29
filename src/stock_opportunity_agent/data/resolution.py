@@ -2438,23 +2438,56 @@ def _select_context_spans(
         )
     selected: list[RawInfoContextSpan] = []
     used = 0
-    for _, span in sorted(candidates, key=lambda item: item[0]):
-        billable = span.billable_chars
-        if used + billable > budget:
-            continue
-        # Near-duplicate suppression: skip a window almost entirely covered by
-        # an already-selected window of the same document. The fixed chunk
-        # overlap (200 characters) stays well below this fraction, so only
-        # substantively repeated windows are dropped.
-        if any(
+    # Deterministic head retention: the first readable window of every
+    # document that contributes any selected span is pinned ahead of that
+    # document's other windows (event-driven filings carry their substance
+    # up front) and is exempt from near-duplicate suppression.
+    head_by_document: dict[str, RawInfoContextSpan] = {}
+    for (document, _start, _end, _rank_text), (_rank, span) in zip(
+        windows, candidates
+    ):
+        existing = head_by_document.get(span.document_id)
+        if existing is None or span.start < existing.start:
+            head_by_document[span.document_id] = span
+
+    def _overlaps_selected(span: RawInfoContextSpan) -> bool:
+        return any(
             span.document_id == kept.document_id
             and max(0, min(span.end, kept.end) - max(span.start, kept.start))
             >= _NEAR_DUPLICATE_OVERLAP_FRACTION * (span.end - span.start)
             for kept in selected
-        ):
+        )
+
+    pinned_documents: set[str] = set()
+
+    def _try_pin_head(document_id: str) -> None:
+        nonlocal used
+        head = head_by_document.get(document_id)
+        if head is None or document_id in pinned_documents:
+            return
+        pinned_documents.add(document_id)
+        if any(kept is head for kept in selected):
+            return
+        if head.billable_chars > budget - used:
+            return
+        selected.append(head)
+        used += head.billable_chars
+
+    for _, span in sorted(candidates, key=lambda item: item[0]):
+        billable = span.billable_chars
+        if used + billable > budget:
+            continue
+        if any(kept is span for kept in selected):
+            continue
+        # Near-duplicate suppression: skip a window almost entirely covered
+        # by an already-selected window of the same document. The fixed
+        # chunk overlap (200 characters) stays well below this fraction, so
+        # only substantively repeated windows are dropped.
+        if _overlaps_selected(span):
             continue
         selected.append(span)
         used += billable
+        _try_pin_head(span.document_id)
     return selected
 
 

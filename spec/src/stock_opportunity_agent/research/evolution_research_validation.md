@@ -157,6 +157,22 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   one assertion into multiple rows; a one-to-many split is an append and
   requires its own explicit bounded add authority.
 
+## Evaluation anchor restatements
+
+When the evaluation context carries an `evaluation_anchor` block (status
+available), every authored state text row — current_beliefs,
+contradictions, resolved_questions, open_questions, and supporting_evidence
+claims — is scanned with the same price-restatement pattern family as the
+predictor baseline check. A number labeled as the current or
+prediction-time baseline that differs from the anchor mean raises
+`research_state_anchor_value_invalid`; a number presented as a multiple of
+the baseline that differs from the derived threshold raises
+`research_state_anchor_arithmetic_invalid`. Both name the exact row path,
+carry the anchor-derived correct value in repair context, and aggregate
+with the other independently decidable raw issues. Correct verbatim copies
+of anchor numbers pass; the check constrains restated numbers only, never
+probability or causal judgments.
+
 ## Aggregated initial feedback and occurrence counts (round 19)
 
 `_normalize_research_state_output` aggregates independently decidable issue

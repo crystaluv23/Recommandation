@@ -54,6 +54,59 @@ Configuration
 -> Meta-learning Layer
 ```
 
+## Three Libraries and the Disclosure Interface
+
+Three append-only, point-in-time-filtered local libraries hold the system's
+durable knowledge — the Raw Info store (immutable documents), the Signal
+Registry (versioned extraction capabilities), and the Experience library
+(structured reflections). All three expose one isomorphic three-layer
+interface:
+
+| Layer | Contract |
+| --- | --- |
+| Catalog | Bounded total view: structured, organized cards (title/type/date/size, section indexes, briefs). Envelope discipline — totals, omissions, pagination — lives here. |
+| Fetch item | Returns summary plus a content-addressed provenance reference; the summary degenerates to verbatim text when the unit fits the budget. |
+| Provenance | The reference resolves to exact original content (document id, content hash, span/section identity) — never filesystem paths. |
+
+Entry actions differ by corpus (typed fetch for known-schema documents,
+title search for unstructured news, need-matched browsing for experience),
+but the envelope discipline is identical: whatever a response did not
+include is disclosed as omitted and stays addressable. When a working unit
+is too large to inline, a bounded-context distillation subagent reads the
+complete original in its own context and returns a structured card — event
+summary plus quantified facts quoted verbatim with source offsets
+(deterministically verifiable) plus source character — under a capped
+output budget; the card and its reference flow back to the calling context
+and the original never does. Every subagent call is journaled, budgeted, and
+point-in-time filtered like any model call.
+
+## Two-Level Context Discipline
+
+Model working contexts are bounded and disposable: each stage sees its own
+current state plus its stage inputs, never an ever-growing transcript. The
+canonical record is a separate append-only typed-block artifact assembled
+across the case run — orientation/basic-info cards, runtime anchor blocks,
+signal result cards, state deltas (not full restatements), distillation
+cards, selected experience briefs, and the analysis prompt — each block
+carrying provenance, with numeric content permitted only from runtime anchor
+or deterministic computation blocks. The assembled artifact is
+simultaneously the final blind-prediction input and the audit record;
+information visible at any stage remains present (or explicitly
+dispositioned) in the final assembly, so stage-to-stage evidence carry-over
+loss is a structural defect rather than a modeled risk.
+
+## Constrained Basic Info
+
+The bootstrap stage of an Information Plan is expressed as a composition of
+well-defined orientation actions from a closed, versioned menu (industry
+profile, shareholder and founder structure, core-business description,
+price-shape statistics, and similar low-variance orientation facts) with
+bounded parameters. Free-text retrieval queries are not expressible at this
+stage: Plans evolve which orientation actions they compose, while deep
+retrieval lives in the research loop's catalog interaction. The runtime
+anchors and deterministic computations injected at this stage are verbatim
+and never model-restated.
+
 The operating cadences are:
 
 ```text
@@ -500,7 +553,7 @@ Module specs live under `spec/src/stock_opportunity_agent/` and describe active 
 - [`data.md`](src/stock_opportunity_agent/data.md): structured and unstructured data access with point-in-time snapshots.
   - [`data/sources.md`](src/stock_opportunity_agent/data/sources.md): provider adapters and capability-level source selection.
   - [`data/structured.md`](src/stock_opportunity_agent/data/structured.md): normalized, source-linked feature records.
-  - [`data/documents.md`](src/stock_opportunity_agent/data/documents.md): source-linked document archive and retrieval.
+  - [`data/documents.md`](src/stock_opportunity_agent/data/documents.md): source-linked document archive, retrieval, and the disclosure interface (catalog cards, section indexes, fetch, provenance).
   - [`data/point_in_time.md`](src/stock_opportunity_agent/data/point_in_time.md): as-of-safe research packet assembly.
 - [`memory.md`](src/stock_opportunity_agent/memory.md): persistent local memory stores.
 - [`themes.md`](src/stock_opportunity_agent/themes.md): theme discovery, industry-chain maps, and segment timing.

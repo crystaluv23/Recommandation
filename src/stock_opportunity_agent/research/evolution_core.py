@@ -3043,6 +3043,23 @@ def execute_information_plan(
     _set_request_token_budget(controller, limits.max_tokens)
     _set_evaluation_context(controller, prediction_time)
     _set_evaluation_context(signal_agent, prediction_time)
+    # Computation before interpretation: the anchor block is derived once
+    # from complete PIT market documents and disclosed verbatim at every
+    # stage; the state validator rejects numeric restatements of it.
+    market_documents_for_anchor = tuple(
+        document
+        for resolution in basic_info_bundle.requests
+        if set(resolution.request.source_types)
+        & {"historical_price", "market_data", "price_daily", "prices"}
+        for document in signal_executor.resolver.load_documents(
+            resolution, as_of=prediction_time
+        )
+    )
+    evaluation_anchor = _prediction_baseline_from_market_documents(
+        market_documents_for_anchor, prediction_time
+    )
+    if evaluation_anchor.get("status") == "available":
+        _set_evaluation_anchor(controller, evaluation_anchor)
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
     initial_state = initial_step.value
@@ -3305,14 +3322,11 @@ def execute_information_plan(
         state=state,
         rounds=rounds,
         prediction_time=prediction_time,
-        market_documents=tuple(
-            document
-            for resolution in basic_info_bundle.requests
-            if set(resolution.request.source_types)
-            & {"historical_price", "market_data", "price_daily", "prices"}
-            for document in signal_executor.resolver.load_documents(
-                resolution, as_of=prediction_time
-            )
+        market_documents=market_documents_for_anchor,
+        prediction_baseline=(
+            evaluation_anchor
+            if evaluation_anchor.get("status") == "available"
+            else None
         ),
     )
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
@@ -3386,6 +3400,14 @@ def _set_evaluation_context(component: Any, prediction_time: datetime) -> None:
     setter = getattr(component, "set_evaluation_context", None)
     if callable(setter):
         setter(prediction_time)
+
+
+def _set_evaluation_anchor(component: Any, anchor: Mapping[str, Any]) -> None:
+    """Expose the computed evaluation anchor to capable role adapters."""
+
+    setter = getattr(component, "set_evaluation_anchor", None)
+    if callable(setter):
+        setter(anchor)
 
 
 def _set_reflection_runtime_context(
@@ -3607,11 +3629,22 @@ def _prediction_baseline_from_market_documents(
             "method": method,
             "reason": "fewer_than_5_source_market_bars",
         }
+    mean_adjusted_close = sum(close for _date, close in recent) / 5
+    doubling_threshold = 2.0 * mean_adjusted_close
+    recent_close_date, recent_close = recent[-1]
     return {
         "status": "available",
         "method": method,
-        "mean_adjusted_close": sum(close for _date, close in recent) / 5,
+        "mean_adjusted_close": mean_adjusted_close,
         "trading_dates": [bar_date for bar_date, _close in recent],
+        # Deterministic derived anchors: the model consumes these verbatim
+        # and never restates or recomputes baseline/threshold arithmetic.
+        "doubling_threshold": doubling_threshold,
+        "recent_close": recent_close,
+        "recent_close_date": recent_close_date,
+        "recent_close_ratio_to_doubling_threshold": (
+            recent_close / doubling_threshold
+        ),
     }
 
 
@@ -3625,6 +3658,7 @@ def _assemble_final_context(
     rounds: Iterable[SignalRound],
     prediction_time: datetime,
     market_documents: Iterable[RawInfoDocument] = (),
+    prediction_baseline: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -3754,8 +3788,12 @@ def _assemble_final_context(
             "source_index": source_index,
             "data_gaps": data_gaps,
         },
-        "prediction_baseline": _prediction_baseline_from_market_documents(
-            market_documents, prediction_time
+        "prediction_baseline": (
+            dict(prediction_baseline)
+            if isinstance(prediction_baseline, Mapping)
+            else _prediction_baseline_from_market_documents(
+                market_documents, prediction_time
+            )
         ),
         "signal_rounds": signal_rounds,
         "cited_signal_evidence": cited_signal_evidence,

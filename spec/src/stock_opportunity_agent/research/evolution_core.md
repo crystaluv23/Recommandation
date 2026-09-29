@@ -12,6 +12,16 @@ Fast/Slow engine dependency.
 
 ## Invariants
 
+- Computation before interpretation: the case runtime derives one evaluation
+  anchor block from complete point-in-time market documents (five-day mean
+  adjusted close plus deterministic derived facts — doubling threshold,
+  most recent close and date, ratio to threshold). The anchor is disclosed
+  verbatim in the H_init and H_reflect payloads as control data and reused
+  in the assembled final context; the research-state validator rejects
+  authored text that restates a different baseline value or derives a
+  wrong multiple of it, with the same pattern family as the predictor's
+  baseline arithmetic check but running before prediction.
+
 - Persisted Jev probability distributions yield deterministic per-case
   calibration feedback and derived cross-case summaries. Legacy trajectories
   whose saved Jev feedback predates the calibration sub-block remain loadable;

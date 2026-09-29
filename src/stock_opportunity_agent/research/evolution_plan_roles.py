@@ -124,7 +124,8 @@ class LLMResearchController:
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.request_token_budget: int | None = None
-        self.evaluation_context: dict[str, str] | None = None
+        self.evaluation_context: dict[str, Any] | None = None
+        self.evaluation_anchor: dict[str, Any] | None = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
         self.reflection_termination_trigger: RuntimeStopReason | None = None
@@ -146,6 +147,33 @@ class LLMResearchController:
             "horizon": "six_calendar_months",
             "horizon_end": _add_months(normalized.date(), 6).isoformat(),
         }
+        if self.evaluation_anchor is not None:
+            self.evaluation_context["evaluation_anchor"] = dict(
+                self.evaluation_anchor
+            )
+
+    def set_evaluation_anchor(self, anchor: Mapping[str, Any] | None) -> None:
+        """Attach the computed evaluation anchor for verbatim disclosure.
+
+        The anchor block (baseline mean, doubling threshold, recent close and
+        derived ratios) is runtime-owned computation. It is disclosed
+        verbatim in the H_init/H_reflect payloads and enforced by the state
+        validator: the model copies these numbers, never restates or
+        recomputes them.
+        """
+
+        if anchor is None:
+            self.evaluation_anchor = None
+            if isinstance(self.evaluation_context, dict):
+                self.evaluation_context.pop("evaluation_anchor", None)
+            return
+        if not isinstance(anchor, Mapping) or anchor.get("status") != "available":
+            raise ValidationError(
+                "evaluation anchor must be an available computed baseline block"
+            )
+        self.evaluation_anchor = dict(anchor)
+        if isinstance(self.evaluation_context, dict):
+            self.evaluation_context["evaluation_anchor"] = dict(anchor)
 
     def set_reflection_runtime_context(
         self,
@@ -174,6 +202,8 @@ class LLMResearchController:
         }
         if evaluation_context is not None:
             payload["evaluation_context"] = evaluation_context
+        if self.evaluation_anchor is not None:
+            payload["evaluation_anchor"] = dict(self.evaluation_anchor)
         state, usage = _complete_parsed_role(
             self.caller,
             stage="research_controller_initialize",
@@ -186,6 +216,10 @@ class LLMResearchController:
                 "future operating event outside the six-month horizon matters only "
                 "through within-horizon evidence or milestone that could change "
                 "expectations. "
+                "When evaluation_anchor is supplied it is deterministic computed "
+                "control data: copy its numbers (baseline mean, doubling threshold, "
+                "recent close, ratios) verbatim whenever referenced and never "
+                "restate, round, or recompute them. "
                 "evaluation_context is control data, not evidence: every need must be "
                 "answerable from facts available by prediction_time and must request "
                 "evidence that could already exist by prediction_time. You may ask what "
@@ -329,6 +363,11 @@ class LLMResearchController:
                 "open_questions, and next_information_needs are arrays of nonempty "
                 "strings; never write an evidence object into one of them — new "
                 "evidence goes to supporting_evidence with its own ref shape. "
+                "When evaluation_anchor is supplied it is deterministic computed "
+                "control data: copy its numbers (baseline mean, doubling threshold, "
+                "recent close, ratios) verbatim whenever referenced and never "
+                "restate, round, or recompute them; a belief restating a different "
+                "baseline or threshold value is invalid. "
                 "open_questions holds only material uncertainty that is not itself "
                 "an actionable retrieval question; put every actionable retrieval "
                 "question only in next_information_needs, never repeat an exact "
@@ -343,6 +382,11 @@ class LLMResearchController:
             ),
             payload={
                 "reflection_skill": plan.reflection_skill,
+                **(
+                    {"evaluation_anchor": dict(self.evaluation_anchor)}
+                    if self.evaluation_anchor is not None
+                    else {}
+                ),
                 "research_state": state.to_dict(),
                 "signal_batch": _signal_batch_model_view(batch),
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),

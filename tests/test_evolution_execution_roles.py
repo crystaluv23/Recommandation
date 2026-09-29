@@ -4355,3 +4355,144 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             prompt,
         )
         self.assertIn("copy one accepted supporting_evidence claim", prompt)
+
+    def test_v145_anchor_block_computes_derived_thresholds_deterministically(
+        self,
+    ) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _prediction_baseline_from_market_documents,
+        )
+
+        bars = [
+            {"as_of_date": f"2025-03-{day:02d}", "adjusted_close": close}
+            for day, close in enumerate(
+                (1.50, 1.55, 1.60, 1.58, 1.62), start=10
+            )
+        ]
+        as_of = datetime(2025, 3, 20, tzinfo=timezone.utc)
+        document = RawInfoDocument.create(
+            document_id="market-anchor",
+            company_id="issuer",
+            source_type="market_data",
+            published_at=as_of,
+            available_at=as_of,
+            content=json.dumps({"rows": bars}),
+        )
+        anchor = _prediction_baseline_from_market_documents(
+            (document,), datetime(2025, 4, 1, tzinfo=timezone.utc)
+        )
+        self.assertEqual(anchor["status"], "available")
+        mean = 1.57
+        self.assertAlmostEqual(anchor["mean_adjusted_close"], mean, places=10)
+        self.assertAlmostEqual(anchor["doubling_threshold"], 2 * mean, places=10)
+        self.assertAlmostEqual(anchor["recent_close"], 1.62, places=10)
+        self.assertEqual(anchor["recent_close_date"], "2025-03-14")
+        self.assertAlmostEqual(
+            anchor["recent_close_ratio_to_doubling_threshold"],
+            1.62 / (2 * mean),
+            places=10,
+        )
+
+    def test_v145_research_state_cannot_restate_wrong_anchor_values(self) -> None:
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+        )
+
+        anchor = {
+            "status": "available",
+            "mean_adjusted_close": 1.57,
+            "doubling_threshold": 3.14,
+            "recent_close": 2.18,
+            "recent_close_date": "2025-07-25",
+        }
+        context = {
+            "prediction_time": "2025-07-31T00:00:00+00:00",
+            "horizon_end": "2026-01-31",
+            "evaluation_anchor": anchor,
+        }
+        valid = {
+            "hypotheses": ["The catalyst may support repricing."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [
+                "The doubling threshold supplied for the fixed outcome is "
+                "3.14."
+            ],
+            "open_questions": [],
+            "next_information_needs": ["Check order disclosures."],
+            "decision": "continue",
+        }
+        normalized = _normalize_research_state_output(
+            valid, evaluation_context=context
+        )
+        self.assertEqual(
+            normalized["resolved_questions"], valid["resolved_questions"]
+        )
+
+        # The restatement check is deterministic and content-level: correct
+        # anchor copies pass, wrong values and wrong threshold arithmetic
+        # produce their typed codes.
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _anchor_restatement_issues,
+        )
+
+        for wrong, code in (
+            (
+                "The operative starting reference baseline price is 1.44.",
+                "research_state_anchor_value_invalid",
+            ),
+            (
+                "The intraday move means twice the baseline price is 2.18.",
+                "research_state_anchor_arithmetic_invalid",
+            ),
+        ):
+            with self.subTest(wrong=wrong):
+                invalid = dict(valid)
+                invalid["resolved_questions"] = [wrong]
+                issues = _anchor_restatement_issues(invalid, context)
+                codes = [issue.code for issue in issues]
+                self.assertIn(code, codes)
+                self.assertIn("runtime evaluation anchor", issues[0].message)
+
+        with self.subTest(wrong="none"):
+            issues = _anchor_restatement_issues(valid, context)
+            self.assertEqual(issues, [])
+
+    def test_v145_controller_payloads_disclose_evaluation_anchor(self) -> None:
+        anchor = {
+            "status": "available",
+            "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+            "mean_adjusted_close": 1.57,
+            "doubling_threshold": 3.14,
+            "recent_close": 2.18,
+            "recent_close_date": "2025-07-25",
+            "recent_close_ratio_to_doubling_threshold": 2.18 / 3.14,
+        }
+        state = {
+            "hypotheses": ["Anchor disclosure fixture."],
+            "current_beliefs": [],
+            "supporting_evidence": [],
+            "contradictions": [],
+            "resolved_questions": [],
+            "open_questions": [],
+            "next_information_needs": ["Check issuer order disclosures."],
+            "decision": "continue",
+        }
+        caller = ScriptedRoleCaller([state])
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(
+            datetime(2025, 7, 31, tzinfo=timezone.utc)
+        )
+        controller.set_evaluation_anchor(anchor)
+        controller.initialize(default_information_plan(), {"requests": []})
+
+        payload = caller.calls[0]["payload"]
+        # The computed anchor reaches the model verbatim in the first
+        # answer, and rides inside the validation context that enforces it.
+        self.assertEqual(payload["evaluation_anchor"], anchor)
+        self.assertEqual(
+            payload["evaluation_context"]["evaluation_anchor"], anchor
+        )
+        self.assertIn("never", caller.calls[0]["system_prompt"])
+        self.assertIn("restate", caller.calls[0]["system_prompt"])

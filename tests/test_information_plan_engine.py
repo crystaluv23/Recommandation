@@ -1074,6 +1074,12 @@ class InformationPlanRuntimeTests(TestCase):
                     "2025-07-29",
                     "2025-07-30",
                 ],
+                "doubling_threshold": 206.0,
+                "recent_close": 105.0,
+                "recent_close_date": "2025-07-30",
+                "recent_close_ratio_to_doubling_threshold": (
+                    105.0 / 206.0
+                ),
             },
         )
 

@@ -2251,3 +2251,53 @@ class SpanSelectionVisibilityTests(TestCase):
             any("strategic review" in marker for marker in markers),
             "the unfunded ranked content must be disclosed by preview",
         )
+
+    def test_v145_document_heads_are_retained_deterministically(self) -> None:
+        from stock_opportunity_agent.data.resolution import (
+            MAX_BASIC_INFO_CONTEXT_CHARS,
+            _select_context_spans,
+        )
+
+        event = document(
+            "event-8k",
+            "FORM 8-K CURRENT REPORT. The subsidiary received export permits "
+            "to resume shipping products to additional customers, supporting "
+            "several million dollars of new revenue. " + "Business update. " * 30,
+            source_type="filing",
+            available_at=AS_OF - timedelta(days=1),
+        )
+        periodic = document(
+            "periodic-10q",
+            "FORM 10-Q. Risk factors management discussion business risk "
+            "factors management discussion segment economics. " * 40,
+            source_type="filing",
+            available_at=AS_OF - timedelta(days=10),
+        )
+        request = RawInfoRequest(
+            request_id="report",
+            description="demo",
+            source_types=("filing",),
+            lookback_days=730,
+            max_documents=2,
+            query="business risk factors management discussion segment economics",
+        )
+        spans = _select_context_spans(
+            (periodic, event), request, MAX_BASIC_INFO_CONTEXT_CHARS, as_of=AS_OF,
+        )
+        by_document: dict[str, list[int]] = {}
+        for span in spans:
+            by_document.setdefault(span.document_id, []).append(span.start)
+        # Both documents contribute; each contributing document's earliest
+        # window (the document head) is present with the 8-K headline text.
+        self.assertIn("periodic-10q", by_document)
+        self.assertIn("event-8k", by_document)
+        self.assertEqual(min(by_document["event-8k"]), 0)
+        self.assertEqual(min(by_document["periodic-10q"]), 0)
+        heads = [
+            span.exact_text
+            for span in spans
+            if span.start == 0
+        ]
+        self.assertTrue(
+            any("8-K" in text and "export permits" in text for text in heads)
+        )
