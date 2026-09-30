@@ -33,6 +33,78 @@ MARKET_SOURCE_TYPES = {
 COMPUTE_SCHEMA_VERSION = "computed-metric-card-v1"
 _MAX_METRICS_PER_REQUEST = 2
 
+# Human-readable labels for computed values: the model sees prose, not JSON
+# keys, so computed results are consumed as narrative facts rather than
+# miscited as raw evidence spans.
+_VALUE_LABELS = {
+    "window_trading_days": "window trading days",
+    "first_close": "first close",
+    "last_close": "last close",
+    "high": "high",
+    "low": "low",
+    "return_pct": "return",
+    "max_drawdown_pct": "max drawdown",
+    "daily_volatility_pct": "daily volatility",
+    "from_date": "from date",
+    "from_close": "from close",
+    "to_date": "to date",
+    "to_close": "to close",
+    "anchor_mean": "anchor mean",
+    "multiple": "multiple",
+    "derived_threshold": "derived threshold",
+    "recent_close": "recent close",
+    "recent_close_date": "recent close date",
+    "gap_pct": "gap to threshold",
+    "recent_close_ratio_to_doubling_threshold": (
+        "recent close ratio to threshold"
+    ),
+}
+_LABEL_LABELS = {
+    "trend": "trend",
+    "crossing": "crossing",
+}
+_METRIC_TITLES = {
+    "price_shape": "price shape",
+    "return_between": "period return",
+    "distance_to_threshold": "distance to threshold",
+}
+
+
+def format_computed_card_readable(card: Mapping[str, Any]) -> str:
+    """Format one computed metric card as readable prose for model context.
+
+    The JSON structure stays authoritative for audit and replay; the
+    model-facing view is a single declarative sentence per metric so
+    computed results are consumed as narrative control data, not cited
+    as evidence exact_text spans.
+    """
+
+    metric = str(card.get("metric", "metric"))
+    title = _METRIC_TITLES.get(metric, metric.replace("_", " "))
+    params = card.get("params", {})
+    parts: list[str] = []
+    for key, value in card.get("values", {}).items():
+        label = _VALUE_LABELS.get(key, key.replace("_", " "))
+        if isinstance(value, float):
+            if "pct" in key:
+                parts.append(f"{label} {value:.2f}%")
+            elif "close" in key or "high" in key or "low" in key or "threshold" in key:
+                parts.append(f"{label} ${value:.2f}" if value > 1 else f"{label} {value:.4f}")
+            else:
+                parts.append(f"{label} {value:g}")
+        else:
+            parts.append(f"{label} {value}")
+    for key, value in card.get("labels", {}).items():
+        label = _LABEL_LABELS.get(key, key.replace("_", " "))
+        parts.append(f"{label} {value}")
+    param_suffix = ""
+    if params:
+        param_parts = [
+            f"{key.replace('_', ' ')} {value}" for key, value in params.items()
+        ]
+        param_suffix = f" ({', '.join(param_parts)})"
+    return f"{title}{param_suffix}: {'; '.join(parts)}."
+
 # Closed, versioned registry. The model may request any entry with bounded
 # parameters; the formulas live here and nowhere else.
 COMPUTE_METRIC_REGISTRY: dict[str, dict[str, Any]] = {

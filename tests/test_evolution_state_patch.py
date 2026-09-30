@@ -195,11 +195,16 @@ class StatePatchTests(TestCase):
                        required_need=need, required_need_occurrences=1)
             for need in ("missing a", "missing b", "missing a")
         ])
-        with self.assertRaisesRegex(ValidationError, "occurrence count"):
-            apply_state_patch(base, patch(contract,
-                {"op": "append", "path": "next_information_needs", "value": "missing a"},
-                {"op": "append", "path": "next_information_needs", "value": "missing a"},
-            ), contract=contract)
+        # Exact-duplicate appends are mechanically deduplicated before the
+        # budget check fires; the surviving single occurrence is the
+        # model's intended repair and passes the per-literal budget.
+        result = apply_state_patch(base, patch(contract,
+            {"op": "append", "path": "next_information_needs", "value": "missing a"},
+            {"op": "append", "path": "next_information_needs", "value": "missing a"},
+        ), contract=contract)
+        self.assertEqual(
+            result["next_information_needs"], ["valid", "missing a"]
+        )
         result = apply_state_patch(base, patch(contract,
             {"op": "append", "path": "next_information_needs", "value": "missing a"},
             {"op": "append", "path": "next_information_needs", "value": "missing b"},

@@ -4718,5 +4718,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         controller.set_computed_metrics([card])
         controller.initialize(default_information_plan(), {"requests": []})
         payload = caller.calls[0]["payload"]
-        self.assertEqual(payload["computed_metrics"][0]["metric"], "price_shape")
-        self.assertIn("never restate", caller.calls[0]["system_prompt"])
+        # The model receives readable prose, not the JSON card structure.
+        computed = payload["computed_metrics"][0]
+        self.assertIn("readable", computed)
+        self.assertIn("price shape", computed["readable"])
+        self.assertIn("13.75", computed["readable"])
+        self.assertIn(
+            "never write them into supporting_evidence",
+            caller.calls[0]["system_prompt"],
+        )

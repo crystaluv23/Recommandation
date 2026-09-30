@@ -241,6 +241,22 @@ def apply_state_patch(
     operations = patch["operations"]
     if not isinstance(operations, list):
         raise ValidationError("patch operations must be an array")
+    # Mechanical dedup: the model sometimes emits the exact same write
+    # twice (identical op, path, and value). Drop exact duplicates only —
+    # different values appended to the same list are legitimate distinct
+    # edits, and removing an exact duplicate cannot invent content.
+    deduplicated: list[Mapping[str, Any]] = []
+    seen_exact: set[tuple[str, str, str]] = set()
+    for raw in operations:
+        if not isinstance(raw, Mapping):
+            continue
+        value_key = json.dumps(raw.get("value"), sort_keys=True, default=str) if "value" in raw else ""
+        exact_key = (str(raw.get("op", "")), str(raw.get("path", "")), value_key)
+        if exact_key in seen_exact:
+            continue
+        seen_exact.add(exact_key)
+        deduplicated.append(dict(raw))
+    operations = deduplicated
     for guard in contract.get("identity_guards", ()):
         row = _lookup(base, _tokens(guard["path"]))
         if not isinstance(row, Mapping) or row.get(guard["field"]) != guard["value"]:

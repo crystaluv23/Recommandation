@@ -178,9 +178,21 @@ class LLMResearchController:
             self.evaluation_context["evaluation_anchor"] = dict(anchor)
 
     def set_computed_metrics(self, cards: list[dict[str, Any]]) -> None:
-        """Attach runtime-computed metric cards for verbatim disclosure."""
+        """Attach runtime-computed metric cards for verbatim disclosure.
 
-        self.computed_metrics = [dict(card) for card in cards]
+        The model-facing payload receives the readable prose form, not the
+        JSON card structure, so computed results are consumed as narrative
+        control data rather than miscited as evidence exact_text spans.
+        """
+
+        from stock_opportunity_agent.research.compute_tools import (
+            format_computed_card_readable,
+        )
+
+        self.computed_metrics = [
+            {"readable": format_computed_card_readable(card)}
+            for card in cards
+        ]
 
     def set_document_channel(self, provider: Any) -> None:
         """Attach the bounded in-loop Raw Info catalog/fetch channel.
@@ -244,7 +256,11 @@ class LLMResearchController:
                 "When evaluation_anchor is supplied it is deterministic computed "
                 "control data: copy its numbers (baseline mean, doubling threshold, "
                 "recent close, ratios) verbatim whenever referenced and never "
-                "restate, round, or recompute them. "
+                "restate, round, or recompute them. Computed metric summaries "
+                "in computed_metrics are also control data: reference their "
+                "numbers in beliefs and reasoning, but never write them into "
+                "supporting_evidence exact_text — evidence citations must come "
+                "only from basic_info projections. "
                 "evaluation_context is control data, not evidence: every need must be "
                 "answerable from facts available by prediction_time and must request "
                 "evidence that could already exist by prediction_time. You may ask what "
@@ -397,7 +413,11 @@ class LLMResearchController:
                 "control data: copy its numbers (baseline mean, doubling threshold, "
                 "recent close, ratios) verbatim whenever referenced and never "
                 "restate, round, or recompute them; a belief restating a different "
-                "baseline or threshold value is invalid. "
+                "baseline or threshold value is invalid. Computed metric summaries "
+                "in computed_metrics are control data: reference their numbers "
+                "in beliefs, but never write them into supporting_evidence "
+                "exact_text — evidence citations must come only from basic_info "
+                "projections or current-batch Signal refs. "
                 "When document_catalog is supplied you may spend bounded mid-call "
                 "exchanges returning exactly "
                 '{"fetch_documents":[{"document_id":"supplied id",'
