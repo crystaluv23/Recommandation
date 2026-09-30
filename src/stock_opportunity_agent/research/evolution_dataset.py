@@ -17,6 +17,11 @@ from stock_opportunity_agent.artifacts import (
     atomic_write_json as _atomic_write_json,
     canonical_json_hash as _canonical_hash,
 )
+from stock_opportunity_agent.cases.outcomes import (
+    SURGE_LABEL_CONTRACT,
+    add_months,
+    six_month_smoothed_multiple,
+)
 from stock_opportunity_agent.cases.selection import eligible_common_stock_listings
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
 from stock_opportunity_agent.data.sources.core import SecurityListing
@@ -592,13 +597,7 @@ def migrate_legacy_raw_info(
 def _surge_label_contract() -> dict[str, Any]:
     """Return the shared six-month surge label contract."""
 
-    return {
-        "horizon": "six_calendar_months",
-        "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
-        "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
-        "binary_threshold": 2.0,
-        "magnitude_classes": ["2-3x", "3-10x", "10x+"],
-    }
+    return dict(SURGE_LABEL_CONTRACT)
 
 
 def prepare_dataset_proposal(
@@ -1405,69 +1404,9 @@ def _validate_v5_dataset_proposal_for_approval(
         )
 
 
-def _six_month_smoothed_multiple(
-    raw_bars: Any, prediction_date: date
-) -> dict[str, Any]:
-    if not isinstance(raw_bars, (list, tuple)):
-        raise ValidationError("missing adjusted price history")
-    parsed: list[tuple[date, float]] = []
-    for bar in raw_bars:
-        if not isinstance(bar, Mapping) or not bar.get("as_of_date"):
-            continue
-        adjusted_close = bar.get("adjusted_close")
-        if adjusted_close is None:
-            continue
-        value = float(adjusted_close)
-        if value <= 0:
-            continue
-        parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
-    parsed.sort(key=lambda item: item[0])
-    baseline_rows = [item for item in parsed if item[0] < prediction_date][-5:]
-    if len(baseline_rows) < 5:
-        raise ValidationError("fewer_than_5_baseline_bars")
-    horizon_end = _add_months(prediction_date, 6)
-    future_rows = [
-        item for item in parsed if prediction_date <= item[0] <= horizon_end
-    ]
-    if len(future_rows) < 5:
-        raise ValidationError("fewer_than_5_future_bars")
-    if future_rows[-1][0] < horizon_end - timedelta(days=7):
-        raise ValidationError("incomplete_six_month_price_horizon")
-    baseline_mean = sum(value for _, value in baseline_rows) / 5
-    windows = [future_rows[index : index + 5] for index in range(len(future_rows) - 4)]
-    peak_window = max(
-        windows,
-        key=lambda rows: sum(value for _, value in rows) / len(rows),
-    )
-    future_peak_mean = sum(value for _, value in peak_window) / 5
-    multiple = future_peak_mean / baseline_mean
-    if multiple < 2.0:
-        magnitude = None
-    elif multiple < 3.0:
-        magnitude = "2-3x"
-    elif multiple < 10.0:
-        magnitude = "3-10x"
-    else:
-        magnitude = "10x+"
-    return {
-        "realized_max_multiple": multiple,
-        "is_surge": multiple >= 2.0,
-        "magnitude": magnitude,
-        "baseline_mean": baseline_mean,
-        "future_peak_mean": future_peak_mean,
-        "baseline_dates": [item[0].isoformat() for item in baseline_rows],
-        "future_peak_dates": [item[0].isoformat() for item in peak_window],
-        "horizon_end": horizon_end.isoformat(),
-    }
+_six_month_smoothed_multiple = six_month_smoothed_multiple
 
-
-def _add_months(value: date, months: int) -> date:
-    total_month = value.month - 1 + months
-    year = value.year + total_month // 12
-    month = total_month % 12 + 1
-    day = min(value.day, monthrange(year, month)[1])
-    return date(year, month, day)
-
+_add_months = add_months
 
 def _propose_issuer_splits(
     cases: list[dict[str, Any]], *, seed: str

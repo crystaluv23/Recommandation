@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+from calendar import monthrange
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from enum import Enum
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.data.sources.core import PriceBar
 from stock_opportunity_agent.models import ValidationError
@@ -199,6 +200,93 @@ def label_price_outcome(
         observation.forward_return,
         trading_days=observation.trading_days,
     ), observation
+
+
+def six_month_smoothed_multiple(
+    raw_bars: Any, prediction_date: date
+) -> dict[str, Any]:
+    """Measure the canonical six-month surge label from adjusted close bars.
+
+    The baseline is the mean of the last five complete adjusted closes strictly
+    before ``prediction_date``; the future peak is the maximum mean of any five
+    consecutive adjusted closes inside the six-calendar-month window starting at
+    ``prediction_date``. Returns the observation (baseline/peak means and
+    dates, horizon end) plus the derived ``realized_max_multiple``,
+    ``is_surge`` (>= 2.0) and magnitude class. Raises ``ValidationError`` when
+    fewer than five baseline bars, fewer than five future bars, or an
+    incomplete horizon would make the measurement uncomparable.
+    """
+
+    if not isinstance(raw_bars, (list, tuple)):
+        raise ValidationError("missing adjusted price history")
+    parsed: list[tuple[date, float]] = []
+    for bar in raw_bars:
+        if not isinstance(bar, Mapping) or not bar.get("as_of_date"):
+            continue
+        adjusted_close = bar.get("adjusted_close")
+        if adjusted_close is None:
+            continue
+        value = float(adjusted_close)
+        if value <= 0:
+            continue
+        parsed.append((date.fromisoformat(str(bar["as_of_date"])), value))
+    parsed.sort(key=lambda item: item[0])
+    baseline_rows = [item for item in parsed if item[0] < prediction_date][-5:]
+    if len(baseline_rows) < 5:
+        raise ValidationError("fewer_than_5_baseline_bars")
+    horizon_end = add_months(prediction_date, 6)
+    future_rows = [
+        item for item in parsed if prediction_date <= item[0] <= horizon_end
+    ]
+    if len(future_rows) < 5:
+        raise ValidationError("fewer_than_5_future_bars")
+    if future_rows[-1][0] < horizon_end - timedelta(days=7):
+        raise ValidationError("incomplete_six_month_price_horizon")
+    baseline_mean = sum(value for _, value in baseline_rows) / 5
+    windows = [future_rows[index : index + 5] for index in range(len(future_rows) - 4)]
+    peak_window = max(
+        windows,
+        key=lambda rows: sum(value for _, value in rows) / len(rows),
+    )
+    future_peak_mean = sum(value for _, value in peak_window) / 5
+    multiple = future_peak_mean / baseline_mean
+    if multiple < 2.0:
+        magnitude = None
+    elif multiple < 3.0:
+        magnitude = "2-3x"
+    elif multiple < 10.0:
+        magnitude = "3-10x"
+    else:
+        magnitude = "10x+"
+    return {
+        "realized_max_multiple": multiple,
+        "is_surge": multiple >= 2.0,
+        "magnitude": magnitude,
+        "baseline_mean": baseline_mean,
+        "future_peak_mean": future_peak_mean,
+        "baseline_dates": [item[0].isoformat() for item in baseline_rows],
+        "future_peak_dates": [item[0].isoformat() for item in peak_window],
+        "horizon_end": horizon_end.isoformat(),
+    }
+
+
+SURGE_LABEL_CONTRACT: dict[str, Any] = {
+    "horizon": "six_calendar_months",
+    "baseline": "mean_last_5_complete_adjusted_closes_strictly_before_as_of",
+    "future_peak": "max_mean_5_consecutive_adjusted_closes_after_as_of",
+    "binary_threshold": 2.0,
+    "magnitude_classes": ["2-3x", "3-10x", "10x+"],
+}
+
+
+def add_months(value: date, months: int) -> date:
+    """Add calendar months, clamping the day to the target month length."""
+
+    total_month = value.month - 1 + months
+    year = value.year + total_month // 12
+    month = total_month % 12 + 1
+    day = min(value.day, monthrange(year, month)[1])
+    return date(year, month, day)
 
 
 def _require_non_empty(value: str, name: str) -> None:

@@ -59,7 +59,38 @@ separate from the forward outcome horizon used to label each candidate.
 - Changing thresholds, horizons, or labeling semantics requires a new definition
   id or version.
 
+## Global Label Store (single door)
+
+All retrospective ground truth consumed by any test, harness, evaluation, or
+experiment comes from one canonical label store under
+`runs/cold_start/data/outcome-label-store-v1/` (a `manifest.json` plus
+`labels.jsonl`). The store key is `(company_id, as_of_date)`: a label without
+an explicit prediction boundary does not exist. Records persist the raw
+smoothed observation (baseline five-day mean, forward five-day-mean peak, their
+dates, horizon end) plus the derived `realized_max_multiple`, `is_surge`, and
+magnitude class, recomputed by the versioned six-month smoothed-multiple
+calculator from the frozen full-market adjusted-price archive. The manifest
+binds the archive identity and hash, the calculator identity, the label
+contract, and the record count; loading verifies all of them.
+
+Consumers derive `GroundTruth` through the `LabelStore` loader and never
+hand-enter outcome constants — a hand-written realized multiple outside the
+store and its tests is a repository-lint failure. A missing
+`(company_id, as_of_date)` key fails closed as an explicit, reported exclusion
+instead of defaulting or silently skipping. The store is an evaluation-path
+artifact: prediction-time and blind-analysis paths must not import or read it.
+Rebuilding against a new price vintage or a changed calculator writes a new
+store version; runs record the store version they scored against, and
+published historical metrics are not retroactively rewritten except through an
+explicitly labeled recomputation. The six-month smoothed-multiple calculator
+itself (`six_month_smoothed_multiple`) lives in this submodule so the
+versioned definition and its only executable copy stay together; the evolution
+dataset layer re-exports it.
+
 ## Testing
 
 Tests should cover definition validation, return labeling boundaries, insufficient
-future data, and later comparison of alternative definitions.
+future data, and later comparison of alternative definitions. Label-store tests
+must additionally cover strict schema loading, manifest/record reconciliation,
+duplicate-key rejection, fail-closed unknown keys, and derivation equivalence
+with the shared calculator on synthetic bars.

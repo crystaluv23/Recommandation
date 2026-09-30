@@ -30,20 +30,31 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "tests"))
 
 ORACLE = REPO / "runs/cold_start/data/global-raw-info-oracle-v1"
+LABEL_STORE_ROOT = REPO / "runs/cold_start/data/outcome-label-store-v1"
 
-# Hand-picked data-rich companies with a mix of surge/non-surge outcomes
-# based on historical data.
+# Hand-picked data-rich companies. Ground truth is NOT written here: labels are
+# derived at runtime from the global label store keyed by (company_id, as_of).
 # prediction_time = 各公司最后 PIT bar 日期后一天（确保锚点可用）
 CASE_COMPANIES = [
-    ("cik_0000001750", 1.4, "2025-01-31"),  # non-surge
-    ("cik_0000002488", 2.8, "2025-05-30"),  # surge 2-3x
-    ("cik_0000002969", 1.1, "2025-01-31"),  # non-surge
-    ("cik_0000003197", 4.2, "2025-03-29"),  # surge 3-10x
-    ("cik_0000004457", 1.6, "2025-01-31"),  # non-surge
-    ("cik_0000039020", 2.3, "2025-03-29"),  # surge 2-3x
-    ("cik_0001847409", 1.2, "2025-01-31"),  # non-surge
-    ("cik_0000316709", 3.5, "2025-05-30"),  # surge 3-10x
+    "cik_0000001750",
+    "cik_0000002488",
+    "cik_0000002969",
+    "cik_0000003197",
+    "cik_0000004457",
+    "cik_0000039020",
+    "cik_0001847409",
+    "cik_0000316709",
 ]
+CASE_PREDICTION_DATES = {
+    "cik_0000001750": "2025-01-31",
+    "cik_0000002488": "2025-05-30",
+    "cik_0000002969": "2025-01-31",
+    "cik_0000003197": "2025-03-29",
+    "cik_0000004457": "2025-01-31",
+    "cik_0000039020": "2025-03-29",
+    "cik_0001847409": "2025-01-31",
+    "cik_0000316709": "2025-05-30",
+}
 
 
 def _load_env() -> None:
@@ -130,18 +141,30 @@ class JournaledCaller:
 
 
 def build_cases(company_list) -> list:
+    from stock_opportunity_agent.cases.label_store import LabelStore
     from stock_opportunity_agent.research.evolution_core import (
         EvolutionCase, GroundTruth,
     )
 
+    label_store = LabelStore.load(LABEL_STORE_ROOT)
+    print(f"  Label store: version {label_store.manifest['store_version']} "
+          f"archive sha {str(label_store.manifest['archive_sha256'])[:12]}… "
+          f"records {label_store.manifest['record_count']}")
     cases = []
-    for company_id, multiple, date_str in company_list:
-        prediction_time = datetime.fromisoformat(date_str + "T00:00:00+00:00")
+    for company_id in company_list:
+        prediction_time = datetime.fromisoformat(
+            CASE_PREDICTION_DATES[company_id] + "T00:00:00+00:00"
+        )
+        truth = label_store.ground_truth(company_id, prediction_time.date())
+        print(f"    label[{company_id}] multiple={truth['realized_max_multiple']:.4f} "
+              f"surge={truth['is_surge']} magnitude={truth['magnitude']}")
         cases.append(EvolutionCase(
             company_id=company_id,
             prediction_time=prediction_time,
             basic_info={"company_id": company_id},
-            ground_truth=GroundTruth(realized_max_multiple=multiple),
+            ground_truth=GroundTruth(
+                realized_max_multiple=truth["realized_max_multiple"]
+            ),
         ))
     return cases
 
@@ -215,6 +238,7 @@ def run_fast_round(caller, root: Path, num_cases: int) -> dict:
     # missing data (earnings_call, financials, SEC filings) exactly like
     # production. Deterministic ("hard") signals that need financials get
     # their data fetched automatically instead of silently failing.
+    from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
     from stock_opportunity_agent.data.acquisition import (
         AlphaVantageNewsAdapter,
         AlphaVantageTranscriptAdapter,
@@ -224,7 +248,6 @@ def run_fast_round(caller, root: Path, num_cases: int) -> dict:
     )
     from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
     from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
-    from stock_opportunity_agent.data.raw_info import RawInfoOracle
 
     adapters = []
     sec_user_agent = os.environ.get("SOA_SEC_USER_AGENT", "").strip()
@@ -240,9 +263,14 @@ def run_fast_round(caller, root: Path, num_cases: int) -> dict:
         adapters.append(AlphaVantageNewsAdapter(alpha_client))
         print(f"  Alpha Vantage adapters: +2 (transcripts, news)")
 
-    oracle = RawInfoOracle(documents=store.documents, adapters=tuple(adapters))
-    resolver = EvidenceResolver(oracle) if adapters else EvidenceResolver(store)
-    print(f"  Resolver with {len(adapters)} adapters")
+    from stock_opportunity_agent.data.resolution import broad_research_data_policy_v1
+
+    resolver = EvidenceResolver(
+        store,
+        adapters=tuple(adapters) if adapters else (),
+        policy=broad_research_data_policy_v1() if adapters else DataAcquisitionPolicy(),
+    )
+    print(f"  Resolver with {len(adapters)} adapters, policy={'broad_research' if adapters else 'default'}")
 
     # Fix 4: Load the accumulated Registry from the latest evolution run
     # instead of starting from seed — the system has promoted validated

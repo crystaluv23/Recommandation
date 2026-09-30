@@ -85,6 +85,15 @@ else
   pass "no trailing whitespace"
 fi
 
+label_literals="$(git grep -n -E '"cik_[0-9]+",[[:space:]]*[0-9]+(\.[0-9]+)?,' -- scripts src 2>/dev/null || true)"
+label_literals="${label_literals}$(git grep -n -E 'realized_max_multiple["'"'"']?[:=][[:space:]]*[0-9]' -- scripts src 2>/dev/null || true)"
+if [ -n "$label_literals" ]; then
+  fail "hand-written outcome label constants (use the global label store)"
+  printf '%s\n' "$label_literals"
+else
+  pass "no hand-written outcome label constants"
+fi
+
 unresolved_links=0
 markdown_files="$(git ls-files '*.md')"
 for file in $markdown_files; do

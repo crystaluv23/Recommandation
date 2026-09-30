@@ -61,6 +61,13 @@ The submodule exposes:
   never as packet evidence.
 - Point-in-time case packets must be anchored to detected inflection dates, not
   to the later date when a matured forward return label is known.
+- Sampling independence: the `as_of` selection rule must not depend on the
+  forward price path. Packets sit at fixed offsets before a detected
+  inflection (T-180/T-120/T-90/T-60/T-30) or at data-availability anchors; an
+  `as_of` chosen with hindsight (for example the day before a known run
+  starts, or mid-surge) turns the task into momentum recognition and
+  contaminates both evaluation and everything the reflection loop learns from
+  the pair.
 - Scanner summaries must record the selection window, input universe size,
   successful price histories, skipped symbols, selected candidates, and
   definition versions.
