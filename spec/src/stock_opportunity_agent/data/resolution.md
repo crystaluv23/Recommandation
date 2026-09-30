@@ -220,10 +220,14 @@ retrieval time.
 
 Adapter routing may deterministically recover the SEC identifier from a
 canonical `company_id` shaped as `cik_##########` when the label-free case
-identity does not repeat a separate `cik` field. This recovered value is passed
-only to acquisition adapters; it is not added to Basic Info or model context.
-An explicit `cik`/`CIK` identity remains authoritative for other company-id
-schemes.
+identity does not repeat a separate `cik` field. The same routing step
+enriches identity with `ticker`/`symbol` derived from local point-in-time
+market documents when the case identity does not already carry them, so
+third-party adapters that route by ticker work for any case regardless of
+what identity the calling pipeline supplies. These recovered values are
+passed only to acquisition adapters; they are not added to Basic Info or
+model context. An explicit `cik`/`CIK` or `ticker`/`symbol` identity
+remains authoritative for other company-id schemes.
 
 ## Exact Basic Info Context
 

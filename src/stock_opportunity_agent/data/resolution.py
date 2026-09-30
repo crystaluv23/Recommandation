@@ -1225,7 +1225,15 @@ class EvidenceResolver:
                         provider=matching_adapters[0].provider,
                     )
                 else:
-                    adapter_identity = _adapter_routing_identity(company_id, identity)
+                    adapter_identity = _adapter_routing_identity(
+                        company_id,
+                        identity,
+                        local_symbol_provider=(
+                            lambda cid: _local_market_symbol(
+                                self.store, cid, as_of
+                            )
+                        ),
+                    )
                     failures: list[tuple[str, DataGapReason]] = []
                     for adapter in authorized_adapters:
                         failure_key = _acquisition_failure_key(
@@ -1841,17 +1849,57 @@ class EvidenceResolver:
 
 
 def _adapter_routing_identity(
-    company_id: str, identity: Mapping[str, Any]
+    company_id: str,
+    identity: Mapping[str, Any],
+    local_symbol_provider: Callable[[str], str | None] | None = None,
 ) -> dict[str, Any]:
-    """Add a canonical CIK route without exposing it to model context."""
+    """Add canonical CIK and ticker routes without exposing them to model context.
+
+    Third-party adapters (Alpha Vantage, Finnhub) route by ticker or symbol,
+    while internal case identity is a canonical ``cik_##########`` company id.
+    When identity does not already carry a ticker/symbol, the resolver
+    enriches it from local point-in-time market documents — every stored
+    market row contains a ``symbol`` field — so any adapter that needs a
+    ticker works regardless of what identity the calling case supplies.
+    """
 
     routed = dict(identity)
-    if any(str(routed.get(key) or "").strip() for key in ("cik", "CIK")):
-        return routed
-    match = _CANONICAL_CIK_COMPANY_ID.fullmatch(company_id)
-    if match is not None:
-        routed["cik"] = match.group(1)
+    if not any(str(routed.get(key) or "").strip() for key in ("cik", "CIK")):
+        match = _CANONICAL_CIK_COMPANY_ID.fullmatch(company_id)
+        if match is not None:
+            routed["cik"] = match.group(1)
+    if not any(
+        str(routed.get(key) or "").strip() for key in ("ticker", "symbol")
+    ):
+        symbol = (
+            local_symbol_provider(company_id)
+            if local_symbol_provider is not None
+            else None
+        )
+        if symbol:
+            routed["ticker"] = symbol
+            routed["symbol"] = symbol
     return routed
+
+
+def _local_market_symbol(store: Any, company_id: str, as_of: datetime) -> str | None:
+    """Derive the issuer ticker from local PIT market documents, if any."""
+
+    import re as _re
+
+    try:
+        documents = store.search(company_id, as_of=as_of)
+    except Exception:
+        return None
+    for document in documents:
+        if document.source_type.casefold() not in {
+            "market_data", "prices", "price_daily", "historical_price",
+        }:
+            continue
+        match = _re.search(r'"symbol":\s*"([A-Z]{1,10})"', document.content[:500])
+        if match is not None:
+            return match.group(1)
+    return None
 
 
 def _select_required_source_documents(
