@@ -1,0 +1,25 @@
+{
+ "case_id": "cik_0000798528:20250331t00001743350400z",
+ "company_id": "cik_0000798528",
+ "prediction_time": "2025-03-31T00:00:00+00:00",
+ "prediction": {
+  "is_surge": false,
+  "candidate_judgment": "insufficient_information",
+  "magnitude": null,
+  "confidence": {
+   "level": "low"
+  },
+  "key_reasons": [
+   "The runtime-computed prediction_baseline is unavailable because fewer than five source market bars exist, so the 2x price outcome cannot be anchored to a point-in-time baseline.",
+   "The only substantive visible development is a joint venture with Capital Latinoamericano for a Mexico phosphate fertilizer project, but the cited text discloses no value, volume, funding commitment, permit, or production timeline.",
+   "Visible financial signals show weak short-term liquidity (cash-to-current-liabilities ratio about 0.213), 100% related-party customer concentration, and negative revenue growth, with no source-backed evidence of expectation-changing acceleration or a material catalyst for repricing."
+  ],
+  "uncertainties": [
+   "No market data or forward price projections are available to assess whether the adjusted share price could reach 2x within six months.",
+   "The joint venture's capital structure, regulatory approvals, and commercialization timeline remain undisclosed, so its potential impact on share price is unquantified.",
+   "Dilution risk from warrants, convertible notes, or equity issuances is unresolved and could affect per-share value."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 33506
+}

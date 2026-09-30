@@ -1,0 +1,31 @@
+{
+  "contract_hash": "minimal-rounds-minimal_rounds_v154_magnitude",
+  "cycle_id": 1,
+  "episode_reflections": [],
+  "failure_ref": null,
+  "input_hash": "287790cf5ece7e7121e0e4334b387ceb626475a30ed77d0a0de3a190b5faf75b",
+  "lesson_additions": [],
+  "model_view_manifest": {
+    "available_count": 0,
+    "budget_bytes": 64000,
+    "bytes": 0,
+    "canonicalized_nested_refs": {},
+    "deferred": [],
+    "deferred_count": 0,
+    "included_count": 0,
+    "included_hashes": {},
+    "included_refs": [],
+    "max_items": 12,
+    "requested_refs": [],
+    "required_refs": [],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1"
+  },
+  "parent_memory_hash": "",
+  "pending_feedback_refs": [],
+  "processed_feedback_refs": [],
+  "reflection_work_hash": "815baa4ecea837a52910822fb720663e233de2a0a6d9e2aa4b72fd51065704df",
+  "schema_version": "slow-memory-v1",
+  "status": "reused",
+  "usage_ref": null
+}

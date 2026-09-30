@@ -34,6 +34,8 @@ LABEL_STORE_ROOT = REPO / "runs/cold_start/data/outcome-label-store-v1"
 
 # Hand-picked data-rich companies. Ground truth is NOT written here: labels are
 # derived at runtime from the global label store keyed by (company_id, as_of).
+# The last two are ge3 (>=3x) cases from the label store so the magnitude
+# research target has both contrast groups.
 # prediction_time = 各公司最后 PIT bar 日期后一天（确保锚点可用）
 CASE_COMPANIES = [
     "cik_0000001750",
@@ -44,6 +46,8 @@ CASE_COMPANIES = [
     "cik_0000039020",
     "cik_0001847409",
     "cik_0000316709",
+    "cik_0000798528",
+    "cik_0000797721",
 ]
 CASE_PREDICTION_DATES = {
     "cik_0000001750": "2025-01-31",
@@ -54,6 +58,8 @@ CASE_PREDICTION_DATES = {
     "cik_0000039020": "2025-03-29",
     "cik_0001847409": "2025-01-31",
     "cik_0000316709": "2025-05-30",
+    "cik_0000798528": "2025-03-31",
+    "cik_0000797721": "2025-05-30",
 }
 
 
@@ -438,63 +444,115 @@ def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
     """Drive one minimal Slow mining cycle using Fast round reflections."""
     from stock_opportunity_agent.data.raw_info import RawInfoStore
     from stock_opportunity_agent.research.evolution_core import (
-        EvolutionCase, GroundTruth, PlanMetaMemory, RoundMetaEntry,
-        PredictionSelfReflection,
+        BlindPrediction, CaseReflectionEvidence, FitnessEligibility,
+        GroundTruth, PlanMetaMemory, PlanMetaReflection, PlanMetrics,
+        PlanReflection, PredictionSelfReflection, RoundMetaEntry,
+        RuntimeStopReason, candidate_judgment_feedback,
+        default_information_plan, magnitude_feedback,
     )
     from stock_opportunity_agent.research.plan_evolution import EvolutionWorkspace
     from stock_opportunity_agent.research.signal_evolution import (
-        SignalEvolutionEngine, SignalMiningConfig,
+        SignalEvolutionEngine,
     )
     from stock_opportunity_agent.signal_library import SignalRegistry
     from stock_opportunity_agent.research.evolution_signal_roles import (
         StructuredLLMSignalRunner,
     )
+    from stock_opportunity_agent.cases.label_store import LabelStore
     from tests.scheme_evolution_test_support import (
-        EmptyMiningModel, NoChangeUpdateModel, SEED_CATALOG,
+        NoChangeUpdateModel, SEED_CATALOG,
     )
 
     print("  Building meta_memory from Fast round reflections...")
     trajs = fast_result["trajectories"] if fast_result else []
-    meta_memory = PlanMetaMemory()
-    for row in trajs:
-        sr = row.get("self_reflection")
-        if not sr or not sr.get("reflection_items"):
-            continue
-        entry_data = {
-            "round_id": 1,
-            "plan_level": {
-                "successful_patterns": [],
-                "failed_patterns": [],
-            },
-            "prediction_errors": {
-                "false_positive": [],
-                "false_negative": [],
-            },
-            "signal_observations": {
-                "useful": [],
-                "suspicious": [],
-                "missing_capabilities": [],
-            },
-            "search_implications": [],
-            "evidence_refs": [row.get("case_id", "")],
-            "plan_reflections": [{
-                "plan_id": "minimal_plan",
-                "plan": {"B": []},
-                "original_case_reflections": [{
-                    "case_index": 1,
-                    "self_reflection": sr,
-                }],
-                "vertical_plan_reflection": {},
-            }],
+    if not trajs and (root / "fast_trajectories.json").is_file():
+        trajs = json.loads((root / "fast_trajectories.json").read_text())
+        print(f"    loaded {len(trajs)} trajectories from disk")
+    label_store = LabelStore.load(LABEL_STORE_ROOT)
+    metrics_payload = (
+        json.loads((root / "fast_summary.json").read_text())
+        if (root / "fast_summary.json").is_file() else {}
+    )
+    if isinstance(metrics_payload.get("confusion"), dict):
+        metrics_payload = {
+            **metrics_payload, **metrics_payload["confusion"]
         }
-        try:
-            entry = RoundMetaEntry.from_dict(entry_data)
-            meta_memory.append(entry)
-            print(f"    + entry from {row['case_id'][:25]} ({len(sr['reflection_items'])} items)")
-        except Exception as exc:
-            print(f"    (skip: {type(exc).__name__}: {str(exc)[:60]})")
-
-    print(f"  Meta memory entries: {len(meta_memory.entries)}")
+    evidences = []
+    for index, row in enumerate(trajs, start=1):
+        company_id = row.get("company_id", "")
+        truth = label_store.ground_truth(
+            company_id, CASE_PREDICTION_DATES[company_id]
+        )
+        ground_truth = GroundTruth(
+            realized_max_multiple=truth["realized_max_multiple"]
+        )
+        stop_reason = RuntimeStopReason(row.get("stop_reason", "finalized"))
+        if row.get("is_technical_exclusion"):
+            evidences.append(CaseReflectionEvidence(
+                case_index=index,
+                stop_reason=stop_reason,
+                termination_trigger=None,
+                technical_exclusion={
+                    "failure_class": "bounded_structured_correction_exhaustion",
+                    "scoring_effect": (
+                        "false_negative" if ground_truth.is_surge
+                        else "technical_negative_abstention_not_true_negative"
+                    ),
+                    "research_attribution_allowed": False,
+                },
+            ))
+            continue
+        prediction = BlindPrediction.from_dict(row["prediction"])
+        self_reflection = (
+            PredictionSelfReflection.from_dict(row["self_reflection"])
+            if row.get("self_reflection") else None
+        )
+        evidences.append(CaseReflectionEvidence(
+            case_index=index,
+            stop_reason=stop_reason,
+            termination_trigger=None,
+            candidate_judgment_feedback=candidate_judgment_feedback(
+                prediction, ground_truth
+            ),
+            self_reflection=self_reflection,
+            magnitude_feedback=magnitude_feedback(prediction, ground_truth),
+        ))
+    meta_memory = PlanMetaMemory()
+    if evidences:
+        plan = default_information_plan()
+        metrics = PlanMetrics(**{
+            field: metrics_payload[field]
+            for field in PlanMetrics.__dataclass_fields__
+            if field in metrics_payload
+        })
+        reflection = PlanMetaReflection(
+            plan=plan,
+            metrics=metrics,
+            metrics_by_cohort={},
+            evaluation_snapshot_ids=(),
+            fitness=FitnessEligibility(
+                eligible=False,
+                reasons=("minimal_rounds_harness_diagnostics_only",),
+                expected_case_count=metrics.sample_count,
+                valid_case_count=metrics.valid_case_count,
+                evidence_covered_count=0,
+                predicted_positive_count=metrics.predicted_positive_count or 0,
+                true_positive_count=metrics.true_positive,
+            ),
+            signal_usage={},
+            original_case_reflections=tuple(evidences),
+            vertical_plan_reflection=PlanReflection(),
+        )
+        meta_memory.append(RoundMetaEntry(
+            round_id=1,
+            plan_reflections=(reflection,),
+            evidence_refs=(plan.plan_id,),
+        ))
+    research_feedback = sum(
+        1 for item in evidences if item.technical_exclusion is None
+    )
+    print(f"    meta entry: {len(evidences)} case reflections "
+          f"({research_feedback} with research feedback)")
 
     # Build cases for mining (same as fast round)
     cases = build_cases(CASE_COMPANIES[:num_cases])
@@ -509,19 +567,11 @@ def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
     registry_dir = root / "signals"
     registry = SignalRegistry(registry_dir)
     registry.install_catalog(SEED_CATALOG)
+    input_snapshot = registry.freeze()
 
     # Mining model: wrap our caller
-    mining_model = EmptyMiningModel()
-    mining_model.caller = caller
     update_model = NoChangeUpdateModel()
     signal_runner = StructuredLLMSignalRunner(caller)
-
-    from stock_opportunity_agent.research.evolution_core import (
-        ResearchState, ResearchDecision,
-    )
-    from stock_opportunity_agent.signal_library import (
-        SignalBatchResult, SignalResult, SignalValue,
-    )
 
     class MiningCallerWrapper:
         """Bridge JournaledCaller to mining controller's complete_json."""
@@ -540,6 +590,27 @@ def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
 
     mining_model = MiningModel(caller)
 
+    # Magnitude research target: both ge3 contrast groups must exist, and the
+    # label store supplies the groups, never a hand-entered value.
+    from stock_opportunity_agent.research.research_targets import (
+        MAGNITUDE_GE3_CONTRACT,
+        build_target_group_manifest,
+        build_target_sampling_manifest,
+    )
+    target_reveal = build_target_group_manifest(cases, MAGNITUDE_GE3_CONTRACT)
+    target_sampling = build_target_sampling_manifest(
+        cases,
+        MAGNITUDE_GE3_CONTRACT,
+        cycle_id=1,
+        base_seed=f"minimal-slow-{root.name}",
+        dev_limit=2,
+        check_limit=2,
+    )
+    ge3_counts: dict[str, int] = {}
+    for group in target_reveal["groups"].values():
+        ge3_counts[group] = ge3_counts.get(group, 0) + 1
+    print(f"  Magnitude target groups: {ge3_counts}")
+
     engine = SignalEvolutionEngine(
         registry=registry,
         raw_info_store=store,
@@ -549,37 +620,49 @@ def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
         mining_model=mining_model,
         update_model=update_model,
         llm_signal_runner=signal_runner,
+        # Small-scale exploratory mining: the default 12 heavy actions starve
+        # evidence gathering before hypothesis formation on a 10-case pool.
+        mining_heavy_action_limit=28,
+        research_target_reveal=target_reveal,
+        research_target_sampling=target_sampling,
     )
-    # Build sampling manifest so the engine can partition dev/check
-    from stock_opportunity_agent.research.signal_evolution import build_slow_sampling_manifest
-    engine._active_sampling_manifest = build_slow_sampling_manifest(
-        tuple(cases), cycle_id=1, base_seed="minimal_slow",
-        dev_limit=6, check_limit=2,
+    # run_cycle requires an active dual-loop cycle bound to the input registry;
+    # slow_only mode targets zero fast rounds, matching this minimal harness.
+    workspace.start_or_resume_cycle(
+        cycle_mode="slow_only",
+        run_contract_hash=f"minimal-rounds-{root.name}",
+        target_plan_rounds=0,
+        initial_signal_registry_version=input_snapshot.version,
+        initial_signal_registry_hash=input_snapshot.registry_hash,
+        observed_signal_registry_version=input_snapshot.version,
+        observed_signal_registry_hash=input_snapshot.registry_hash,
+        max_slow_cycles=1,
     )
 
-    print("\n  Running controller mining (cycle 1)...")
+    print("\n  Running controller mining cycle 1 (validate, stage, promote)...")
     try:
-        output = engine._run_controller_mining(cycle_id=1)
-        audit = output.get("audit", {})
-        track = audit.get("track", "?")
-        print(f"  Track: {track}")
-        candidates = output.get("candidates", [])
-        print(f"  Candidates: {len(candidates)}")
-        for cand in candidates[:5]:
-            if isinstance(cand, tuple) and len(cand) >= 2:
-                print(f"    {cand[0]}")
-            elif isinstance(cand, dict):
-                measurement = cand.get("measurement", {})
-                print(f"    observable={measurement.get('observable','?')}")
-        # Check candidate refs from audit
-        cand_refs = audit.get("candidate_refs", [])
-        print(f"  Candidate refs: {len(cand_refs)}")
-        for ref in cand_refs[:5]:
-            print(f"    {ref}")
-        # Check for staged signals
-        staged = list((root / "signals_candidates").glob("*")) if (root / "signals_candidates").exists() else []
-        print(f"  Staged candidates dir: {len(staged)} files")
-        return {"track": track, "candidates": len(candidates), "candidate_refs": cand_refs}
+        output = engine.run_cycle(cycle_id=1, input_snapshot=input_snapshot)
+        slow_dict = output.to_dict() if hasattr(output, "to_dict") else dict(output)
+        validated = slow_dict.get("validated_candidates", {})
+        print(f"  Validated candidates: {len(validated)}")
+        for ref, entry in list(validated.items())[:6]:
+            print(f"    {ref}: {str(entry)[:120]}")
+        promoted = slow_dict.get("promoted_refs", [])
+        print(f"  Promoted refs: {promoted}")
+        staged_dir = root / "signals_candidates"
+        staged = (
+            [p for p in staged_dir.rglob("*") if p.is_file()]
+            if staged_dir.exists() else []
+        )
+        print(f"  Staged candidate files: {len(staged)}")
+        registry_after = SignalRegistry(registry_dir)
+        print(f"  Registry version after cycle: {registry_after.version}")
+        return {
+            "validated": len(validated),
+            "promoted": list(promoted),
+            "registry_version": registry_after.version,
+            "staged_files": len(staged),
+        }
     except Exception as exc:
         print(f"  ✗ SLOW FAILED: {type(exc).__name__}: {str(exc)[:300]}")
         import traceback
@@ -590,7 +673,7 @@ def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default="runs/cold_start/minimal_rounds_v151")
-    parser.add_argument("--cases", type=int, default=8)
+    parser.add_argument("--cases", type=int, default=10)
     parser.add_argument("--skip-fast", action="store_true")
     parser.add_argument("--skip-slow", action="store_true")
     args = parser.parse_args()

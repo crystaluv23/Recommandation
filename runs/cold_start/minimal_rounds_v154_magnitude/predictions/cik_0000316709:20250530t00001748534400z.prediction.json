@@ -1,0 +1,25 @@
+{
+ "case_id": "cik_0000316709:20250530t00001748534400z",
+ "company_id": "cik_0000316709",
+ "prediction_time": "2025-05-30T00:00:00+00:00",
+ "prediction": {
+  "is_surge": false,
+  "candidate_judgment": "unlikely",
+  "magnitude": null,
+  "confidence": {
+   "level": "medium"
+  },
+  "key_reasons": [
+   "The runtime-computed prediction baseline is a mean adjusted close of 87.83, implying a doubling threshold of 175.66; the supplied evidence shows only modest positive operating signals such as revenue growth of 18.1% year over year, revenue acceleration of 0.1404, and 126-day price momentum of 0.0799902, none of which supports a credible path to a 2x repricing within six months.",
+   "The supplied market and filing evidence is dominated by routine governance, listing, and financial-statement facts, including the May 22, 2025 annual meeting results and standard NYSE listing details, with no source-backed catalyst, guidance, or expectation-changing acceleration tied to a doubling of the adjusted share price.",
+   "The cited price history shows the stock around the high 70s to low 80s in April 2025 and a recent close of 87.76 on 2025-05-29, leaving the security roughly 50% below the 175.66 doubling threshold; the supplied evidence does not contain a material operating or market catalyst sufficient to close that gap in the fixed six-month horizon."
+  ],
+  "uncertainties": [
+   "The packet includes only partial financial-fact context and truncated news items, so additional undisclosed catalysts could exist outside the supplied evidence.",
+   "The analysis prompt and research state reference a doubling threshold and horizon, but the supplied evidence does not include forward projections, management guidance, or a quantified valuation bridge to assess 2x feasibility.",
+   "Market conditions, regulatory developments, and capital-return actions after the prediction time are not observable in the supplied context."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 28451
+}

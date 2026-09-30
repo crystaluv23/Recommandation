@@ -1,0 +1,24 @@
+{
+ "case_id": "cik_0000002969:20250131t00001738252800z",
+ "company_id": "cik_0000002969",
+ "prediction_time": "2025-01-31T00:00:00+00:00",
+ "prediction": {
+  "is_surge": true,
+  "candidate_judgment": "possible",
+  "magnitude": "2-3x",
+  "confidence": {
+   "level": "low"
+  },
+  "key_reasons": [
+   "Activist investor Mantle Ridge secured three board seats at the January 23, 2025 annual meeting, replacing the chairman/CEO and lead director, which is a source-backed governance catalyst that could drive a strategic review or value-unlocking action and support share-price repricing toward the 2x threshold."
+  ],
+  "uncertainties": [
+   "No disclosed strategic review, capital allocation change, or CEO succession outcome yet; the value-unlocking path remains unconfirmed.",
+   "Revenue growth was slightly negative year-over-year and no new order, contract, or offtake confirmation was disclosed, so fundamental acceleration is not established.",
+   "NEOM Green Hydrogen and Jazan project financing could reveal cost overruns or delays that pressure the stock.",
+   "The baseline mean adjusted close of 329.058 implies a doubling threshold near 658.116, a very large move for a large-cap industrial within six months."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 38063
+}

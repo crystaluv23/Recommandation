@@ -1,0 +1,34 @@
+{
+  "cost": {
+    "total_cost": 0.0,
+    "total_tokens": 0
+  },
+  "processed_observation_ids": [],
+  "state_statistics": {
+    "negative": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "neutral": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "positive": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "unavailable": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    }
+  },
+  "usage": {
+    "executed": 0,
+    "retrieved": 0,
+    "unavailable": 0
+  }
+}

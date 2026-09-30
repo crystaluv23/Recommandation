@@ -1,0 +1,27 @@
+{
+  "input_registry_hash": "b7eac6c27f8d5f5a04dc0007188a2035638754b04b128f77bf8581c3ca41e159",
+  "input_registry_version": 1,
+  "input_signal_refs": [
+    "financing_listing_action:v1",
+    "cash_reserves:v1",
+    "gross_margin_change:v1",
+    "net_share_retirement_yoy:v1",
+    "operating_cash_flow_margin:v1",
+    "revenue_acceleration:v1",
+    "revenue_growth_yoy:v1",
+    "guidance_acceleration:v1",
+    "max_drawdown_1y:v1",
+    "price_momentum_126d:v1",
+    "negative_word_count:v1",
+    "order_quality:v1",
+    "commercialization_status:v1",
+    "customer_concentration:v1"
+  ],
+  "output_registry_hash": "b7eac6c27f8d5f5a04dc0007188a2035638754b04b128f77bf8581c3ca41e159",
+  "output_registry_version": 1,
+  "promoted": [],
+  "schema_version": "signal-registry-transition-v1",
+  "status": "applied",
+  "transition_id": "cycle-0001",
+  "validated_candidates": {}
+}

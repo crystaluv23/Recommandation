@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "The product remains a laboratory demonstration.",
+          "source_type": "filing"
+        }
+      ],
+      "expected": "neutral",
+      "name": "technical demo only"
+    }
+  ]
+}

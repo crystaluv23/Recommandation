@@ -1,0 +1,1531 @@
+{
+ "key": "mining_controller_step-1ab8fd23912502c132bcbecf",
+ "mode": "live",
+ "request": {
+  "stage": "mining_controller_step",
+  "system_prompt": "You are the bounded decision core of a label-aware Signal-mining controller over a point-in-time Evidence Graph. The runtime owns tools, the ledger, budgets, labels, and termination; you only choose one action per step. Return exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. Allowed actions and their required fields: inspect_manifest {}; inspect_catalog {}; fetch_evidence {case_refs, source_families, max_documents, query|null} where source_families may list several families in one call and every family must come from available_source_families in the view; sweep the evidence you need in as few fetches as possible; compute_statistic {rule, fact_refs[2]}; read_span with exactly one of {fact_ref | event_ref | document_ref} (event/document reads take bounded offset/length and charge the separate browse budget; raw narrative text is the authoritative narrative evidence); inspect_catalog {scope: signals|evidence} where scope=evidence returns the discovery-only family -> window -> document directory; compare_groups {concepts}; propose_candidate {candidate}; record_deferred {}; record_no_pattern {coverage}. candidate has measurement{observable,value_kind,normalization} where value_kind is exactly one of boolean, ordinal, numeric, categorical (express any ratio as numeric), falsifiers[{condition,expected_observation}], and evidence_refs that may cite only refs from known_fact_refs, known_event_refs, or known_relation_refs. For a narrative measurement, include measurement.predicate{modality:narrative, source_families, lookback_days, semantic_condition, threshold{field,operator,value}} whose source_families intersect your cited narrative evidence. When narrative_summary headlines or attribute_case_coverage show a positive-versus-control contrast (for example order confirmations appearing only in positive cases), a narrative predicate measurement citing those event refs is a first-class candidate and often serves several backlog needs at once. prior_modality_footprints carries earlier cycles' modality metrics and staged_candidate_outcomes — each prior candidate's real check-cohort result (tp/fn/fp/tn, availability, disposition). A semantic family whose fires never overlap the positive class (tp near zero, fn high) is a demonstrated predicate-label mismatch: propose a different narrative contrast instead of re-proposing the same semantic family. Every cited ref must already be in the ledger, at least one fetch_evidence must precede any proposal, and every known concept named in the observable or normalization (compare_groups results show the fact_ref behind each value) must be backed by at least one cited fact of that concept. The observable must be a genuinely new measurement: it may not reuse or version any signal_ref base name from signal_catalog, because changing an existing Signal belongs to the separate Update path. For the hypothesis seed, the proposal must also carry need_dispositions covering every backlog need exactly once (new_measurement, deferred_measurement, update_existing, repair_dependency, not_testable, fast_plan_action); each row is {need_refs, disposition, signal_refs, rationale} where only update_existing cites exactly one existing signal ref and every other disposition cites none. evidence_digest summarizes what your fetches have already collected (families, per-concept positive/control case coverage) and last_action_result reports what your previous action returned; use them instead of re-fetching families that are already covered, and spend remaining budget on compute_statistic, compare_groups, or your terminal action. Once heavy_remaining reaches 0, only inspect_manifest, inspect_catalog, record_no_pattern, and record_deferred remain admissible; repeating a heavy action then ends the seed as deferred_budget. research_axis defines the one comparison represented by positive/control, and labels arrive only through the runtime-owned label_map; never author, rewrite, or expand either. Budget wisely: fetch broadly once or twice, then compute or compare, and reserve budget for your terminal action; a seed with no budget left can only record_deferred. Domain terminals are inadmissible while modality_coverage shows any available structured or narrative modality unexplored: fetch missing structured evidence and read at least one bounded raw narrative event or document span. Listing or fetching narrative families proves availability but is not grounded narrative exploration; a control-plane terminal remains admissible. Exploration creates no candidate quota: propose only a recurring supported factor, regardless of modality. record_no_pattern must cite explored_families actually present in your own prior fetches. When last_invalid_action is present, fix exactly that issue. Never request facts after the prediction time, never use identities or file ordering as features, and never exceed the remaining budgets shown in the view.",
+  "payload": {
+   "seed": "hypothesis",
+   "state": "evidence_ready",
+   "budget": {
+    "heavy_remaining": 18,
+    "light_remaining": -7,
+    "browse_remaining": 19
+   },
+   "actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+   ],
+   "available_source_families": [
+    "10-k",
+    "10-q",
+    "company_facts",
+    "company_news",
+    "filing",
+    "financial",
+    "financials",
+    "market",
+    "market_data",
+    "news",
+    "sec_company_facts",
+    "sec_company_facts_raw_response"
+   ],
+   "measurable_evidence_manifest": {
+    "schema_version": "h1-measurable-evidence-manifest-v1",
+    "cohort_case_count": 5,
+    "structured_financial_concepts": [
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetIncomeLoss",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquity",
+      "source_display_name": "Stockholders' Equity Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "dei",
+      "concept": "EntityCommonStockSharesOutstanding",
+      "source_display_name": "Entity Common Stock, Shares Outstanding",
+      "unit": "shares",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "Revenues",
+      "source_display_name": "Revenues",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "OperatingIncomeLoss",
+      "source_display_name": "Operating Income (Loss)",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "InventoryNet",
+      "source_display_name": "Inventory, Net",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Diluted",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ShortTermInvestments",
+      "source_display_name": "Short-term Investments",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "AssetsCurrent",
+      "source_display_name": "Assets, Current",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LiabilitiesCurrent",
+      "source_display_name": "Liabilities, Current",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CommonStockSharesOutstanding",
+      "source_display_name": "Common Stock, Shares, Outstanding",
+      "unit": "shares",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ResearchAndDevelopmentExpense",
+      "source_display_name": "Research and Development Expense",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 2
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtCurrent",
+      "source_display_name": "Long-term Debt, Current Maturities",
+      "unit": "USD",
+      "case_count": 2,
+      "cases_with_comparable_records": 2
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtNoncurrent",
+      "source_display_name": "Long-term Debt, Excluding Current Maturities",
+      "unit": "USD",
+      "case_count": 2,
+      "cases_with_comparable_records": 2
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "SalesRevenueNet",
+      "source_display_name": "Revenue, Net (Deprecated 2018-01-31)",
+      "unit": "USD",
+      "case_count": 2,
+      "cases_with_comparable_records": 2
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "GrossProfit",
+      "source_display_name": "Gross Profit",
+      "unit": "USD",
+      "case_count": 2,
+      "cases_with_comparable_records": 2
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+      "source_display_name": "Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest",
+      "unit": "USD",
+      "case_count": 2,
+      "cases_with_comparable_records": 2
+     }
+    ],
+    "pre_cutoff_price_series_cases": 4,
+    "narrative_source_families": [
+     {
+      "source_type": "10-q",
+      "case_count": 4
+     },
+     {
+      "source_type": "10-k",
+      "case_count": 3
+     },
+     {
+      "source_type": "company_news",
+      "case_count": 3
+     },
+     {
+      "source_type": "news",
+      "case_count": 2
+     },
+     {
+      "source_type": "filing",
+      "case_count": 1
+     }
+    ],
+    "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+   },
+   "signal_catalog": [
+    {
+     "signal_ref": "financing_listing_action:v1",
+     "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+    },
+    {
+     "signal_ref": "cash_reserves:v1",
+     "description": "Read the latest point-in-time cash and equivalents balance."
+    },
+    {
+     "signal_ref": "gross_margin_change:v1",
+     "description": "Measure the latest point-in-time change in gross margin."
+    },
+    {
+     "signal_ref": "net_share_retirement_yoy:v1",
+     "description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+    },
+    {
+     "signal_ref": "operating_cash_flow_margin:v1",
+     "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+    },
+    {
+     "signal_ref": "revenue_acceleration:v1",
+     "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+    },
+    {
+     "signal_ref": "revenue_growth_yoy:v1",
+     "description": "Measure the latest point-in-time year-over-year revenue growth."
+    },
+    {
+     "signal_ref": "guidance_acceleration:v1",
+     "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+    },
+    {
+     "signal_ref": "max_drawdown_1y:v1",
+     "description": "Measure maximum drawdown from the point-in-time one-year price series."
+    },
+    {
+     "signal_ref": "price_momentum_126d:v1",
+     "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+    },
+    {
+     "signal_ref": "negative_word_count:v1",
+     "description": "Count configured negative terms in complete point-in-time company news source documents."
+    },
+    {
+     "signal_ref": "order_quality:v1",
+     "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+    },
+    {
+     "signal_ref": "commercialization_status:v1",
+     "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+    },
+    {
+     "signal_ref": "customer_concentration:v1",
+     "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+    }
+   ],
+   "case_refs": [
+    "case-001",
+    "case-002",
+    "case-003",
+    "case-004",
+    "case-005"
+   ],
+   "known_fact_refs": [
+    "fact-024359761fe733db",
+    "fact-0439c5122072ba8a",
+    "fact-04cd02c2e836dcfb",
+    "fact-0d1299c1040c72f8",
+    "fact-0ed8f602aab0a621",
+    "fact-0f8c7dffa24976cc",
+    "fact-118f0f8da4192d54",
+    "fact-132d7dc513508bd4",
+    "fact-16744efb7804293c",
+    "fact-16ecd34a4ead1ab1",
+    "fact-1bad39ce4a8c4657",
+    "fact-1cc4188d2c34846d",
+    "fact-1e5a024b9b5d4c84",
+    "fact-1ff327c7e8ea84d6",
+    "fact-2684618dc2092748",
+    "fact-26e9bee098ec4727",
+    "fact-289440dc150004db",
+    "fact-2a2654f567f006e0",
+    "fact-2a59e70f2f59bc7d",
+    "fact-2c21ed38964fb7cb",
+    "fact-2eef6ffd63479920",
+    "fact-2f0c2785de342061",
+    "fact-302bbf1cc445fe28",
+    "fact-34535bd714365b41",
+    "fact-372aed936c3522ee",
+    "fact-37379c2deb475a0d",
+    "fact-374952dc5efed0e7",
+    "fact-37da3c3b2792552d",
+    "fact-3b682aba73284407",
+    "fact-41d0358162733f0e",
+    "fact-4330ae616c2c4d58",
+    "fact-47d065760f701cf9",
+    "fact-4a6fc444960164e7",
+    "fact-4bf3b2c39c8834b0",
+    "fact-4f7a794a6db8e28b",
+    "fact-51263379ba4148dc",
+    "fact-535d1338fafdc95a",
+    "fact-55fc8a1c3858d621",
+    "fact-589e5174703b1e8f",
+    "fact-5bacabab06a6f04e",
+    "fact-5ca6300885076693",
+    "fact-5e1acef75ac300af",
+    "fact-5f7a9cebdc52b166",
+    "fact-6240345b6d4f40fe",
+    "fact-64227ccd594a0f43",
+    "fact-69ac23b1733bf1af",
+    "fact-6a4ffa3840e635fc",
+    "fact-6eada156bf70976c",
+    "fact-6ff2d3cca36991d2",
+    "fact-701c2982b238ca1a",
+    "fact-7035e0fe7ca642b2",
+    "fact-7305829017195475",
+    "fact-7932cfd701ffd607",
+    "fact-79ad7111091870d2",
+    "fact-7e8ced953a30a100",
+    "fact-7ec84d4bba1ae709",
+    "fact-801edc92c4da1682",
+    "fact-80b150d3087bd0d8",
+    "fact-822e5e14c7c5b89b",
+    "fact-82501261ca30d422",
+    "fact-88620209f480fc29",
+    "fact-8862955248447edb",
+    "fact-889f495f81839f4f",
+    "fact-8d466ec155fa3eba",
+    "fact-90299a82c3e21d31",
+    "fact-91fec6e262656352",
+    "fact-9878327984bdbe98",
+    "fact-9a864844d0cbfa54",
+    "fact-9afcb62c05e1c7af",
+    "fact-9da5b471948d68fc",
+    "fact-9ec2388832dd1e37",
+    "fact-a22756a05c87a0eb",
+    "fact-a284be1f397bbe7c",
+    "fact-a81b5f4de219c3a7",
+    "fact-a898ce8956a7b5f1",
+    "fact-a98d709bc0dd6409",
+    "fact-aa3d53db3022dc68",
+    "fact-aa987f8d84e78c42",
+    "fact-aaf509a949fce3ad",
+    "fact-ac6062d740d1dcd8",
+    "fact-afa4c16e8f87c5d7",
+    "fact-b0891fba637a48ec",
+    "fact-b33a9ca14d3e9c21",
+    "fact-b439f24895e62d3b",
+    "fact-b6aa5b219979e861",
+    "fact-babbdb88675da69b",
+    "fact-bb55c572a9c30d32",
+    "fact-c2ee836593e76830",
+    "fact-c3837ad01ee1054e",
+    "fact-c3f34736b63ce7da",
+    "fact-c80812226c1a43d8",
+    "fact-c818ef8523685fb1",
+    "fact-cad226a9026e8d18",
+    "fact-cad7d8a38a70ba09",
+    "fact-ccada6349f81fb8b",
+    "fact-ccf60e871132c0c2",
+    "fact-ce67abb2017f44c3",
+    "fact-cec1c998644e8e50",
+    "fact-d309a3bed4c3ab20",
+    "fact-d314bf505b4a2bc9",
+    "fact-d5906c5aa458b9ae",
+    "fact-d68a2e50258ea857",
+    "fact-d79fa116f979a060",
+    "fact-dc5d239c1dafb690",
+    "fact-debd9a1700d07bc1",
+    "fact-e27ffc5b566d13c8",
+    "fact-e590b0d1da7e4a8c",
+    "fact-e802123a727f972f",
+    "fact-ea3b9860ff5a75e0",
+    "fact-ec655ea2f533404f",
+    "fact-ed04d7fb7beb6ddc",
+    "fact-ed8a4ddc14137826",
+    "fact-ee514a29e6b516d4",
+    "fact-f02c71ec0219eb54",
+    "fact-f54be0e46c34e3e7",
+    "fact-f6502416eb95764d",
+    "fact-f698de53d584d73c",
+    "fact-f8e2400e801d051e",
+    "fact-fb578672fba980b5",
+    "fact-fbc5bb8f0e5c7cc7",
+    "fact-fdf453eda8ba13de",
+    "fact-febdf3489f90522f"
+   ],
+   "known_event_refs": [
+    "event-053ac8e35f56d1df",
+    "event-0a2d14a7b9d8a2e0",
+    "event-0b1739c054f91328",
+    "event-0da3efaf1171fa50",
+    "event-0f8fce0f2c4c3c63",
+    "event-116c7d7bc425e11f",
+    "event-159e0b4ce0bfd21b",
+    "event-17d3f64681f142a6",
+    "event-17e870b8cd415cf8",
+    "event-1badf1c8517594b7",
+    "event-1be1c7fd2c178eb7",
+    "event-1e19a182f0f1632b",
+    "event-1e3228c7ef9da4ab",
+    "event-20d434daa1abeea3",
+    "event-25cf762d5446feef",
+    "event-260b6ede05fdb04e",
+    "event-270d1cdf33d572f0",
+    "event-295a30c0ff481316",
+    "event-2af989dcf7718397",
+    "event-2c6ee434b85f4204",
+    "event-2d3a76709137c502",
+    "event-31c4c902c9a680da",
+    "event-33a0ab8da99419a9",
+    "event-33cda5c17288ad4f",
+    "event-343baee7e5cdadc6",
+    "event-35de6956dd352c28",
+    "event-36a74d3e4941bb8d",
+    "event-3731aa1cefd7e405",
+    "event-3933110ff74f59e3",
+    "event-394e48e7603293f6",
+    "event-3a9412547e3aaf33",
+    "event-3d6781c5e003c206",
+    "event-3e2535096d67fcc2",
+    "event-3e2a761de66457cd",
+    "event-43c47b5fba91a729",
+    "event-45967d557007c89c",
+    "event-45e00b5cb5e09f78",
+    "event-48df9db638218153",
+    "event-4901f956c6e8f2d4",
+    "event-4b0b5c7e9b6296fc",
+    "event-4bb214ad7a3ad505",
+    "event-4d405d03205ce7fc",
+    "event-4e3fea009c23d1c7",
+    "event-5210d20799118a86",
+    "event-532d44c5dcec0c56",
+    "event-57b5fb363c55c225",
+    "event-581357f1458a89ac",
+    "event-5bff485706d93ce7",
+    "event-5f8b93ce12b23a11",
+    "event-60720150b3f9ff5e",
+    "event-6676a18bd717ae4d",
+    "event-695b305cf18e1839",
+    "event-6d8237f4c87a8ea6",
+    "event-6db052a179902112",
+    "event-6de23f26b2579f4b",
+    "event-6f81de170a8efeae",
+    "event-716a361eace5f53a",
+    "event-72e4b6a28032f393",
+    "event-7a04821c5d318b69",
+    "event-7ef9537d339fd6da",
+    "event-80e181d94920afb7",
+    "event-8101b1eeb20b4855",
+    "event-82ac3bcbed563069",
+    "event-86cc9834eef97d5a",
+    "event-8734d0477b0fc762",
+    "event-8aec24796d5dc09d",
+    "event-8b37d1a3705bd870",
+    "event-8ddab7718a8dd025",
+    "event-9014a405c43cb05d",
+    "event-92739e060cac0ba4",
+    "event-93eb9f81e78bb863",
+    "event-9b51184c54725a88",
+    "event-9ce430480cf990e9",
+    "event-9ea2e2cb4260e819",
+    "event-a224c4ddd6dd6c9a",
+    "event-a6099dfd6cb74336",
+    "event-a76b59542e359db4",
+    "event-a8cb34a672f7452f",
+    "event-aa1c776d33aadaa0",
+    "event-ab7eedf76877f6f5",
+    "event-abc24cbc88e90b1d",
+    "event-b09a81fa929c0eeb",
+    "event-b7ee766360fe2f2a",
+    "event-b999c5e359dffdbd",
+    "event-bcb4e4af775e9b3c",
+    "event-bef50f3abedb934f",
+    "event-c211fc5c9569d5bc",
+    "event-c37294e9ac6a554a",
+    "event-c4472ebde2f5c0fa",
+    "event-c9523d20c5998b1a",
+    "event-cc0ae9a27e7d4f67",
+    "event-cc19e7522fee04df",
+    "event-ce7e78921b174ba1",
+    "event-d0fb2c889ef30276",
+    "event-d26b67382ec593aa",
+    "event-d4399522b3c828c8",
+    "event-db4bfb0388a61762",
+    "event-df9ca77ded250d88",
+    "event-e04c6c171c12eda3",
+    "event-e14a276b6423f3cb",
+    "event-e4d116457aea8f20",
+    "event-e66cd902cb39fb80",
+    "event-e92ff6d75a01cbd9",
+    "event-e992e0b878784961",
+    "event-ed541683008def24",
+    "event-f00512e29890e575",
+    "event-f180ff13228548c6",
+    "event-f2615f948e77534d",
+    "event-f9096bc9b7cffcbf",
+    "event-fda7bad5cef567f7",
+    "event-fe466059546d3b05"
+   ],
+   "known_relation_refs": [
+    "relation-0229c413264f670a",
+    "relation-0a3d2165b087f555",
+    "relation-0a67ee118e513d17",
+    "relation-1915e87cf26ac9df",
+    "relation-209830d55f24a73c",
+    "relation-2175d617a4c10d5f",
+    "relation-2afbdd9af5d6e05f",
+    "relation-2e381385e392d7d4",
+    "relation-3066511e6b39d93f",
+    "relation-31081a8b19889b35",
+    "relation-3ed751152633a301",
+    "relation-477320f2e21531ee",
+    "relation-48ba725336574971",
+    "relation-4b5c09a6d0ce529e",
+    "relation-54490c9c3ddc70ac",
+    "relation-57358d7028455fc5",
+    "relation-59cf99d3c16395e3",
+    "relation-608701dd32c1ecc5",
+    "relation-649298b653749b8b",
+    "relation-66cc0de9cd6741bd",
+    "relation-67772f22dd112872",
+    "relation-6807c007bfe96f9c",
+    "relation-6b37f95a1e846a03",
+    "relation-6e15f225334823bd",
+    "relation-6e218a8b9143ab5d",
+    "relation-7ad1d4f100195158",
+    "relation-7e473160d55e714f",
+    "relation-7f58c16b08888695",
+    "relation-8154afee9dbd0d54",
+    "relation-81abd534fffe0cfe",
+    "relation-89239cf9b6f818b1",
+    "relation-8b7daf8a1be676d7",
+    "relation-8b840275e76a273e",
+    "relation-8eecc01a866a0071",
+    "relation-9491adb9ff77dc86",
+    "relation-954637124f855837",
+    "relation-9e7ced7494cad416",
+    "relation-9f2d03a7a25788d1",
+    "relation-a0a926e4b41f462b",
+    "relation-a2ae85127e2dd38b",
+    "relation-a394827a171b3944",
+    "relation-a439e95ee8292325",
+    "relation-aaaaa34ac67ff1d8",
+    "relation-b0094a16c864f9e2",
+    "relation-b1f76f30b95bf0fd",
+    "relation-b798007bf2d8532f",
+    "relation-b7f3950f74c75f48",
+    "relation-c858e623a329c10d",
+    "relation-cc640b31c000b0ab",
+    "relation-ce30c31d1e687c8c",
+    "relation-cf86d85b0ccde327",
+    "relation-d4e97efd3f459be2",
+    "relation-d9b2e06977be082c",
+    "relation-e098cddf4fa1cebe",
+    "relation-e4737bb0c9394db2",
+    "relation-e558c5726d515db7",
+    "relation-e894648aba3b7fee",
+    "relation-f656311f9791d3c2",
+    "relation-f7449822a5a846b5"
+   ],
+   "label_map": {
+    "case-001": "positive",
+    "case-002": "control",
+    "case-003": "positive",
+    "case-004": "control",
+    "case-005": "positive"
+   },
+   "research_axis": {
+    "axis_id": "surge_direction",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0",
+    "control": "realized_max_multiple < 2.0"
+   },
+   "evidence_digest": {
+    "fetches": 15,
+    "families_fetched": [
+     "10-k",
+     "10-q",
+     "company_news",
+     "filing",
+     "financials",
+     "market_data",
+     "news",
+     "sec_company_facts"
+    ],
+    "fact_count": 122,
+    "event_count": 111,
+    "relation_count": 59,
+    "cases_with_facts": [
+     "case-001",
+     "case-002",
+     "case-005"
+    ],
+    "concept_case_coverage": {
+     "AssetsCurrent": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "CashAndCashEquivalentsAtCarryingValue": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "CommonStockSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "EntityCommonStockSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "GrossProfit": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "InventoryNet": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "LiabilitiesCurrent": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "NetCashProvidedByUsedInOperatingActivities": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "NetIncomeLoss": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "OperatingIncomeLoss": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "PaymentsToAcquirePropertyPlantAndEquipment": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "ResearchAndDevelopmentExpense": {
+      "positive_cases": 2,
+      "control_cases": 0
+     },
+     "Revenues": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "StockholdersEquity": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "WeightedAverageNumberOfSharesOutstandingBasic": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "LongTermDebtCurrent": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "LongTermDebtNoncurrent": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "RevenueFromContractWithCustomerExcludingAssessedTax": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "SalesRevenueNet": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ShortTermInvestments": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ShortTermLeaseCost": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ValuationAllowanceDeferredTaxAssetChangeInAmount": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "WarrantDownRoundFeatureDecreaseInNetIncomeLossToCommonShareholderAmount": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "NumberOfReportableSegments": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "SecuritiesSoldUnderAgreementsToRepurchaseCollateralRightToReclaimSecurities": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "SecuritiesSoldUnderAgreementsToRepurchaseGross": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "ShareBasedCompensation": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "ShortTermDebtWeightedAverageInterestRate": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "StockIssuedDuringPeriodValueConversionOfConvertibleSecurities": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "StockholdersEquityOther": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "TimeDepositsAtOrAboveFDICInsuranceLimit": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "TreasuryStockCommonShares": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "TreasuryStockCommonValue": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "TreasuryStockValueAcquiredCostMethod": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "WeightedAverageRateDomesticDepositCertificatesOfDeposit": {
+      "positive_cases": 0,
+      "control_cases": 1
+     }
+    },
+    "label_counts": {
+     "positive": 3,
+     "control": 2
+    },
+    "narrative_summary": {
+     "event_count": 111,
+     "family_counts": {
+      "filing": 79,
+      "news": 32
+     },
+     "sample_titles": [
+      "Marine Mining Market Should Grow to USD 50.0 Billion by 2033",
+      "Odyssey Marine & CapLat Announce JV for Fertilizer Project",
+      "Odyssey wins lawsuit against Mexico to continue seabed mining",
+      "Earnings call transcript: ViaSat Q4 2025 beats revenue forecast, stock steady",
+      "Viasat Announces Appointments of Bill LaPlante and Michael Paull to Its Board of Directors",
+      "Viasat: Positive free cash flow by mid-2026; $1.3B in capex in next 12 months will drop as 2 final Viasat-3 sats are lau",
+      "Telesat secures substantial multi-year contract with Viasat for Telesat Lightspeed services",
+      "News | U-Haul scoops up one of Phoenix's tallest office towers to become new corporate base"
+     ],
+     "note": "inspect_catalog with scope=evidence lists every titled document by family and window; read_span on event_ref reads the verbatim text"
+    },
+    "attribute_case_coverage": {
+     "order_confirmation_disclosed": {
+      "positive_cases": 1,
+      "control_cases": 0,
+      "hits": 261,
+      "amount_usd_median": null,
+      "discovery_only": true,
+      "note": "index only; never sole evidence; a miss never asserts absence"
+     }
+    }
+   },
+   "modality_coverage": {
+    "structured": {
+     "available": true,
+     "explored": true,
+     "status": "explored"
+    },
+    "narrative": {
+     "available": true,
+     "explored": true,
+     "status": "explored"
+    }
+   },
+   "prior_modality_footprints": [],
+   "meta_info": {
+    "items": [
+     {
+      "item_ref": "reflection:0ea57b552cb414748f1017716b368dfda71a373697902d55cf38c4b021ad41de",
+      "level": "case",
+      "owner_ref": "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "Add a pre-decision step that, when prediction_baseline is unavailable and the only catalyst is a narrative pivot, explicitly scores the low-float/narrative-catalyst upside scenario instead of defaulting to insufficient_information.",
+      "scope": {
+       "case_refs": [
+        "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to future predictions where prediction_baseline is unavailable and a narrative catalyst is the only substantive visible development."
+      },
+      "limitations": [
+       "Process change only; it does not guarantee improved accuracy on any single case.",
+       "Requires additional data acquisition (float, dilution, catalyst timing) that may itself be unavailable.",
+       "The proposed step is untested against this case's realized outcome."
+      ],
+      "source_refs": [
+       "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:cd2447d46444127cc893a82b6076c73108cdae555930114ae5928bc56d50db8c",
+      "level": "case",
+      "owner_ref": "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e",
+      "category": "misleading_signals",
+      "kind": "hypothesis",
+      "brief": "Weak-liquidity and related-party-concentration signals were read as bearish, but for a low-float, low-cash microcap these conditions can coincide with high-volatility upside; test by comparing the surge magnitude against float, cash, and dilution disclosures around the prediction date.",
+      "scope": {
+       "case_refs": [
+        "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e"
+       ],
+       "plan_refs": [],
+       "conditions": "If float and dilution data near the prediction date show a small float with limited new issuance."
+      },
+      "limitations": [
+       "Hypothesis only; no float or share-count data was supplied in the visible context.",
+       "The signals themselves were accurately computed; the issue is their directional interpretation, not their measurement.",
+       "A single case cannot establish a general rule about microcap signal interpretation."
+      ],
+      "source_refs": [
+       "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:07126cb77004e49b3936ad002e858e008db0b543ab7bd8e1b8728f30b682b9b9",
+      "level": "case",
+      "owner_ref": "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e",
+      "category": "ignored_evidence",
+      "kind": "hypothesis",
+      "brief": "The joint-venture news item was treated as non-material because no value, volume, or schedule was visible, but a low-priced equity can reprice sharply on a strategic pivot narrative alone; test this by checking whether the surge window coincides with the JV disclosure and subsequent follow-on filings.",
+      "scope": {
+       "case_refs": [
+        "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e"
+       ],
+       "plan_refs": [],
+       "conditions": "If the realized surge window overlaps the JV disclosure period and no competing catalyst is identified."
+      },
+      "limitations": [
+       "Causal explanation only; the realized return does not establish that the JV narrative caused the surge.",
+       "The cited span contains no value, volume, funding commitment, permit, or production timeline, so materiality remains unconfirmed.",
+       "No market bars were supplied, so the surge timing cannot be verified from the provided context."
+      ],
+      "source_refs": [
+       "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:d496357320ca3df4eff5df2692df9e5725acca2aac91a33ab4ed36f9262caac3",
+      "level": "case",
+      "owner_ref": "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e",
+      "category": "missing_information",
+      "kind": "fact",
+      "brief": "The market-data request 'recent_market_backbone' was unresolved with zero available projections, and prediction_baseline status was unavailable because fewer than five source market bars existed.",
+      "scope": {
+       "case_refs": [
+        "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e"
+       ],
+       "plan_refs": [],
+       "conditions": "At the original prediction time, for the market-data and baseline inputs supplied to the prediction."
+      },
+      "limitations": [
+       "Describes the supplied context's coverage state; it does not establish that no market information existed outside the supplied sources.",
+       "The gap alone does not explain the realized surge."
+      ],
+      "source_refs": [
+       "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:ab5c3123da1fda373e4cb52d52530068dbc8ad38c8a1156892c2aa4b43f22b65",
+      "level": "case",
+      "owner_ref": "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e",
+      "category": "why_prediction_failed",
+      "kind": "fact",
+      "brief": "The prediction was a binary false negative: the realized outcome was a surge (3-10x, max multiple ~4.74x) while the saved call was non_surge under insufficient_information.",
+      "scope": {
+       "case_refs": [
+        "case:80738f500a3f49085d6f8eb5dee05695ae737a01cc56d3b153aba25b288fb86e"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the saved prediction for this case at its original prediction time."
+      },
+      "limitations": [
+       "Records the realized outcome and error classification only; no causal mechanism is established by this fact.",
+       "A single realized outcome does not validate or invalidate the ex-ante probability category assigned at prediction time."
+      ],
+      "source_refs": [
+       "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97",
+        "axis": "binary",
+        "correct": false
+       },
+       {
+        "source_ref": "reflection_source:4b18fdba8331ab5c725239542ea8f27b8438196d3aca518e5c8417d1cb6a3b97",
+        "axis": "magnitude",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:96e7de6148ac7f556009533f75bd14efce1f264a98036ab993c072c5c0612826",
+      "level": "case",
+      "owner_ref": "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "For future six-month doubling evaluations, add a required forward-catalyst sizing step: when an acquisition or market-entry catalyst is cited, require a source-backed estimate of timing, revenue contribution, and market impact before treating it as a bridge to the doubling threshold.",
+      "scope": {
+       "case_refs": [
+        "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies when a doubling-threshold prediction relies on an acquisition or market-entry catalyst."
+      },
+      "limitations": [
+       "This is a process recommendation, not a claim about what caused the realized outcome.",
+       "It may not be feasible when the context budget omits forward projections."
+      ],
+      "source_refs": [
+       "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:0671c68ce76c69df192515862accc723b16c348b34024ca8aba49bc39e6bf93b",
+      "level": "case",
+      "owner_ref": "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55",
+      "category": "missing_information",
+      "kind": "fact",
+      "brief": "The packet lacked forward projections for the Purecan acquisition's revenue contribution and first-quarter 2025 same-store sales, and guidance_acceleration, price_momentum_126d, and order_confirmation_disclosed were unavailable, so the catalyst impact could not be sized.",
+      "scope": {
+       "case_refs": [
+        "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the supplied evidence packet for this case."
+      },
+      "limitations": [
+       "Unavailable signals are not negative evidence.",
+       "The gap may have been unavoidable under the context budget."
+      ],
+      "source_refs": [
+       "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:d941220deb0cad65d015c8fbb7e696b0da94544209177a0f6a259d7d803440ba",
+      "level": "case",
+      "owner_ref": "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55",
+      "category": "decision_drivers",
+      "kind": "fact",
+      "brief": "Source-backed operating signals were mixed but did not show the acceleration profile associated with a doubling: revenue growth was about 7.1% year over year, revenue acceleration was -0.295561, and gross margin change was only 0.0035637.",
+      "scope": {
+       "case_refs": [
+        "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the supplied FY2024 financial signals for this case."
+      },
+      "limitations": [
+       "Signal values are point-in-time and may not capture later disclosures.",
+       "The absence of acceleration does not by itself rule out a surge from other causes."
+      ],
+      "source_refs": [
+       "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2",
+        "axis": "binary",
+        "correct": true
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:b699b6fb1d2a9dd738fab15d9780f7b9115eb52ef51dea01887fda433defa501",
+      "level": "case",
+      "owner_ref": "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55",
+      "category": "decision_drivers",
+      "kind": "fact",
+      "brief": "The binary non-surge call was supported by the supplied price baseline: mean adjusted close 2.88 implied a 5.76 doubling threshold, while the most recent close was 2.72 and the realized max multiple was 0.9847, so the security never approached the threshold.",
+      "scope": {
+       "case_refs": [
+        "case:2b9955401804929d603f5ccaa37522ee59072dcfc1e29023919961461ca01a55"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the supplied prediction baseline and realized non-surge outcome for this case."
+      },
+      "limitations": [
+       "The baseline is a mean of five pre-prediction closes and is not a forward projection.",
+       "A correct binary call does not prove the cited reasons were sufficient or causal."
+      ],
+      "source_refs": [
+       "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c63bec81c63bdc5436b06f7e40b3f7e312576de51dffce2b9f73e920e4b48fa2",
+        "axis": "binary",
+        "correct": true
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:79cb452aec26990f25142d592104cb47407cdf3352076359054cfd7b05eefdad",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "For future surge predictions, explicitly weigh positive revenue trajectory and sentiment signals against cash-flow concerns, and treat supplier awards as potential leading indicators pending confirmation.",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to future research plans for similar small-cap defense or technology companies with positive revenue signals and cash-flow concerns."
+      },
+      "limitations": [
+       "The adjustment is based on a single case and may not generalize.",
+       "The realized surge does not prove that these signals were sufficient or causal.",
+       "No forward-looking data was available to test the revised weighting."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:49f8a7b7ea05c2c2de2b502eaa9c32f2cd4f8f5cd1116000afbfed669d7bbac5",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "missing_information",
+      "kind": "fact",
+      "brief": "Key forward-looking signals—customer concentration and guidance acceleration—were unavailable, leaving major drivers of a potential re-rating unmeasured.",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the evidence coverage assessment for this case."
+      },
+      "limitations": [
+       "Unavailable signals are not evidence that the measured condition is absent.",
+       "This item does not claim that obtaining these signals would have changed the prediction."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:2e6f7b3269c31d1ae10de1f8c8f16a3c73cfc3eba150a4a396d946266eee44a9",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "misleading_signals",
+      "kind": "hypothesis",
+      "brief": "The Northrop Grumman Supplier Excellence Award was treated as neutral past-performance recognition, but it may have been a leading indicator of future defense orders that contributed to the surge.",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies when assessing the predictive value of supplier recognition awards for future order flow."
+      },
+      "limitations": [
+       "No evidence in the supplied packet links the award to specific new orders or revenue.",
+       "The surge may have been driven by other factors not visible in the packet.",
+       "This is a hypothesis, not a proven causal mechanism."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:0f4001c800b5f7045e495f4779b0437410b11bc6657e56f5cf0f84a5535a2af0",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "ignored_evidence",
+      "kind": "hypothesis",
+      "brief": "Positive operating signals—revenue growth yoy 0.255101, revenue acceleration 0.0659846, and zero negative words—were present but may have been underweighted relative to cash and liquidity concerns.",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies when evaluating whether positive revenue signals should outweigh negative cash-flow signals for surge prediction."
+      },
+      "limitations": [
+       "The supplied evidence does not include forward guidance, backlog updates, or quantified contract pipeline, so the revenue signals may not have been sufficient on their own.",
+       "This is a post-hoc hypothesis; no controlled test was run.",
+       "The realized outcome does not establish that these signals caused the surge."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:d674c76b596a6d465ed59c22e5f9a33853dc65ce6852a9475c4a856b161e2a34",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "why_prediction_failed",
+      "kind": "fact",
+      "brief": "The prediction also missed the magnitude axis: it predicted no surge and provided no magnitude, while the realized magnitude was 2-3x.",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the magnitude dimension of the surge prediction."
+      },
+      "limitations": [
+       "This item does not assert that the magnitude could have been forecast from the supplied evidence.",
+       "The realized multiple is a single outcome and does not validate any specific magnitude model."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108",
+        "axis": "magnitude",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:2bb726f2ff95442cb10f682cd933d4e6587a34c3fccb4cb5d8914715c174a5ad",
+      "level": "case",
+      "owner_ref": "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2",
+      "category": "why_prediction_failed",
+      "kind": "fact",
+      "brief": "The prediction was a binary false negative: it judged a surge unlikely, but the realized outcome was a surge with a 2-3x magnitude (realized max multiple 2.049).",
+      "scope": {
+       "case_refs": [
+        "case:efc2614369a8a8901d924dda661447731d52e95c69d99902de75afa32b15dca2"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to the binary surge/non-surge judgment for this case."
+      },
+      "limitations": [
+       "This item records the binary direction error only; it does not establish why the surge occurred.",
+       "The realized outcome does not prove that any particular ex-ante probability category was correct or incorrect."
+      ],
+      "source_refs": [
+       "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:abf11fe4e58f2aa1a34a4e0f2057a922cdbae592f65ae2a990e02a5c76932108",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:0434a4463a4fde77263ac9f9cdbe5406dd780dde85cb4731c58039869997dfdc",
+      "level": "case",
+      "owner_ref": "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "For future governance-catalyst cases, require a disclosed value-unlocking action before assigning a 'possible' surge label; if only board composition changes are known, classify as 'unlikely' and document the specific missing forward projections.",
+      "scope": {
+       "case_refs": [
+        "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies to surge predictions where the dominant catalyst is a board or governance change without an announced value-unlocking action."
+      },
+      "limitations": [
+       "This is a proposed process change, not a proven rule; it should be tested on future cases.",
+       "It does not address cases where a governance change is accompanied by a credible but undisclosed plan that later materializes."
+      ],
+      "source_refs": [
+       "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:de055ef63517d00f8dfc361ec86aab1e51893c6299724c1c2efc17cedcaf122a",
+      "level": "case",
+      "owner_ref": "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3",
+      "category": "missing_information",
+      "kind": "fact",
+      "brief": "The compact context lacked forward projections on the specific value-unlocking actions that the governance catalyst would need to produce: no disclosed strategic review, capital allocation change, CEO succession outcome, or project financing update was available.",
+      "scope": {
+       "case_refs": [
+        "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3"
+       ],
+       "plan_refs": [],
+       "conditions": "Prediction time 2025-01-30; six-month horizon; no forward projections on strategic review, CEO succession, or project financing outcomes."
+      },
+      "limitations": [
+       "Missing information is not evidence that the surge was impossible; it only means the prediction rested on an unverified path.",
+       "The baseline market data was available; the gap is specifically forward projections and action outcomes, not price history."
+      ],
+      "source_refs": [
+       "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:f94667acd152ad7c82edd98f4215e3a42b7a75e2780816ddec44da8c1bb60b0e",
+      "level": "case",
+      "owner_ref": "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3",
+      "category": "ignored_evidence",
+      "kind": "fact",
+      "brief": "The supplied signal results already contained negative and neutral fundamentals that should have constrained the surge call: revenue growth was -3.96% year-over-year, net share retirement was essentially flat, and no order, contract, or offtake confirmation was disclosed.",
+      "scope": {
+       "case_refs": [
+        "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3"
+       ],
+       "plan_refs": [],
+       "conditions": "At prediction time, with revenue growth negative and no order confirmation, the fundamental evidence did not support a surge."
+      },
+      "limitations": [
+       "Negative revenue growth alone does not preclude a surge from other catalysts; this is a constraint, not a deterministic rule.",
+       "The order_confirmation_disclosed signal had only partial coverage, so absence of a disclosed order is not proof that none existed."
+      ],
+      "source_refs": [
+       "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:a4ccd9e25b79eae4d6341509fe68d4d1730aec8418dc4e4a48cffab5387265dc",
+      "level": "case",
+      "owner_ref": "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3",
+      "category": "misleading_signals",
+      "kind": "hypothesis",
+      "brief": "The Mantle Ridge board-seat catalyst was treated as a possible surge driver, but a governance change without a disclosed strategic review, capital-return action, or CEO succession outcome is a weak and speculative positive signal for a 2x move within six months.",
+      "scope": {
+       "case_refs": [
+        "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3"
+       ],
+       "plan_refs": [],
+       "conditions": "Applies when the only positive catalyst is a board or governance change without an announced value-unlocking action."
+      },
+      "limitations": [
+       "This is a causal hypothesis, not an established rule; the realized outcome does not prove the board change was irrelevant.",
+       "The compact context did not include forward projections of strategic-review outcomes, so the absence of an announced action is partly an evidence-coverage gap."
+      ],
+      "source_refs": [
+       "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:12e4fa9bd1b54895209ffb4b2c1a1e118c76e8c6b0fabbae13786da5aeec3c45",
+      "level": "case",
+      "owner_ref": "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3",
+      "category": "why_prediction_failed",
+      "kind": "fact",
+      "brief": "The 'possible' surge call was a binary false positive: the realized maximum multiple was only 1.0152x, far below the 2x doubling threshold, so the governance-catalyst thesis did not produce a surge.",
+      "scope": {
+       "case_refs": [
+        "case:e8c4ccbad974b62b1ec72c5a0b1f2b98a0be55116b583b374e9e0e5177be4db3"
+       ],
+       "plan_refs": [],
+       "conditions": "Six-month horizon from the 2025-01-30 baseline; realized max multiple 1.0152x versus 2x threshold."
+      },
+      "limitations": [
+       "The realized outcome does not by itself prove which cause was decisive; it only establishes that the surge did not occur.",
+       "The baseline mean adjusted close of 329.058 and doubling threshold of 658.116 are supplied facts, not forward projections."
+      ],
+      "source_refs": [
+       "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [
+       {
+        "source_ref": "reflection_source:c2b56b671a213020cebae158b6710624ec937520ce5e66d36dc3550a2cf7d327",
+        "axis": "binary",
+        "correct": false
+       }
+      ],
+      "evidence_status": "sources_checked"
+     },
+     {
+      "item_ref": "reflection:668fb18a570ec2f589cb1fca10c9147a36ef982c2626e70fd5760f9d8cf57cbf",
+      "level": "case",
+      "owner_ref": "reflection_case:440720a2dfb3e83fcd1393a635fea76fa544b337e75ae141b2a88d4f8ea00b36",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "budget_skipped",
+      "scope": {
+       "case_refs": [
+        "reflection_case:440720a2dfb3e83fcd1393a635fea76fa544b337e75ae141b2a88d4f8ea00b36"
+       ],
+       "plan_refs": [
+        "reflection_plan:329a942519255a87d11eb90c0ab02c555b6eca1d55419f56a04106c6b21c64f8"
+       ],
+       "conditions": "Legacy original text; scope is its containing record, not verified support."
+      },
+      "limitations": [
+       "legacy_unreviewed: no authored brief or per-item source attribution"
+      ],
+      "source_refs": [
+       "reflection_source:6381e3109bad9a8f777345aa412a53385ac03cadd6a31a13ef3ee99403d3ed3f",
+       "reflection_source:67cee245b335caf886a8fd9028fc5b92004ddbb1fc6b2e3e0286d79c5e2b0fd1",
+       "reflection_source:601dbfc2335c17bcb903a16860e5a8ef8f29091ae6802edbd0d1bda04ccc6d45"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "legacy_unreviewed"
+     },
+     {
+      "item_ref": "reflection:b8a727334076092f6f2d093c8a645888419cfc7ca50de724a8e1be2377e26687",
+      "level": "case",
+      "owner_ref": "reflection_case:0f845f6418f7ff147ded23822a8f1ae539ca2472cd0505f4a845200ff9e9e3c2",
+      "category": "plan_issues",
+      "kind": "action",
+      "brief": "budget_skipped",
+      "scope": {
+       "case_refs": [
+        "reflection_case:0f845f6418f7ff147ded23822a8f1ae539ca2472cd0505f4a845200ff9e9e3c2"
+       ],
+       "plan_refs": [
+        "reflection_plan:329a942519255a87d11eb90c0ab02c555b6eca1d55419f56a04106c6b21c64f8"
+       ],
+       "conditions": "Legacy original text; scope is its containing record, not verified support."
+      },
+      "limitations": [
+       "legacy_unreviewed: no authored brief or per-item source attribution"
+      ],
+      "source_refs": [
+       "reflection_source:b7ec96478df9480a48277ef833057a03544f3ffe5dc94d0da8ecc9cd50fa0aac",
+       "reflection_source:e04d1866b860469e8f81da48a1ce0e91f91f028a9ce5ecd24c41be71e51f9248",
+       "reflection_source:2a29e020573b8cd59226c3f07123ba7f452f3ed9b1af1d1c0ca7e3f3d834b3a8"
+      ],
+      "counter_refs": [],
+      "outcome_claims": [],
+      "evidence_status": "legacy_unreviewed"
+     }
+    ],
+    "included_refs": [
+     "reflection:0ea57b552cb414748f1017716b368dfda71a373697902d55cf38c4b021ad41de",
+     "reflection:cd2447d46444127cc893a82b6076c73108cdae555930114ae5928bc56d50db8c",
+     "reflection:07126cb77004e49b3936ad002e858e008db0b543ab7bd8e1b8728f30b682b9b9",
+     "reflection:d496357320ca3df4eff5df2692df9e5725acca2aac91a33ab4ed36f9262caac3",
+     "reflection:ab5c3123da1fda373e4cb52d52530068dbc8ad38c8a1156892c2aa4b43f22b65",
+     "reflection:96e7de6148ac7f556009533f75bd14efce1f264a98036ab993c072c5c0612826",
+     "reflection:0671c68ce76c69df192515862accc723b16c348b34024ca8aba49bc39e6bf93b",
+     "reflection:d941220deb0cad65d015c8fbb7e696b0da94544209177a0f6a259d7d803440ba",
+     "reflection:b699b6fb1d2a9dd738fab15d9780f7b9115eb52ef51dea01887fda433defa501",
+     "reflection:79cb452aec26990f25142d592104cb47407cdf3352076359054cfd7b05eefdad",
+     "reflection:49f8a7b7ea05c2c2de2b502eaa9c32f2cd4f8f5cd1116000afbfed669d7bbac5",
+     "reflection:2e6f7b3269c31d1ae10de1f8c8f16a3c73cfc3eba150a4a396d946266eee44a9",
+     "reflection:0f4001c800b5f7045e495f4779b0437410b11bc6657e56f5cf0f84a5535a2af0",
+     "reflection:d674c76b596a6d465ed59c22e5f9a33853dc65ce6852a9475c4a856b161e2a34",
+     "reflection:2bb726f2ff95442cb10f682cd933d4e6587a34c3fccb4cb5d8914715c174a5ad",
+     "reflection:0434a4463a4fde77263ac9f9cdbe5406dd780dde85cb4731c58039869997dfdc",
+     "reflection:de055ef63517d00f8dfc361ec86aab1e51893c6299724c1c2efc17cedcaf122a",
+     "reflection:f94667acd152ad7c82edd98f4215e3a42b7a75e2780816ddec44da8c1bb60b0e",
+     "reflection:a4ccd9e25b79eae4d6341509fe68d4d1730aec8418dc4e4a48cffab5387265dc",
+     "reflection:12e4fa9bd1b54895209ffb4b2c1a1e118c76e8c6b0fabbae13786da5aeec3c45",
+     "reflection:668fb18a570ec2f589cb1fca10c9147a36ef982c2626e70fd5760f9d8cf57cbf",
+     "reflection:b8a727334076092f6f2d093c8a645888419cfc7ca50de724a8e1be2377e26687"
+    ],
+    "deferred_refs": [],
+    "counts": {
+     "available": 22,
+     "included": 22,
+     "deferred": 0
+    },
+    "directory": {
+     "cursor": 0,
+     "total": 22,
+     "levels": {
+      "case": 22,
+      "plan": 0,
+      "round": 0
+     }
+    }
+   },
+   "meta_memory_disclosures": [],
+   "last_action_result": {
+    "action": "inspect_catalog",
+    "inspected": [
+     "families"
+    ]
+   },
+   "last_read_span": "<?xml version='1.0' encoding='ASCII'?>\n<!-- DFIN New ActiveDisclosure (SM) Inline XBRL Document - http://www.dfinsolutions.com/ -->\n<!-- Creation Date :2025-02-10T15:38:38.1608+00:00 -->\n<!-- Copyright (c) 2025 Donnelley Financial Solutions, Inc. All Rights Reserved. -->\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xbrldi=\"http://xbrl.org/2006/xbrldi\" xmlns:xbrldt=\"http://xbrl.org/2005/xbrldt\" xmlns:xbrli=\"http://www.xbrl.org/2003/instance\" xmlns:link=\"http://www.xbrl.org/2003/linkbase\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:ix=\"http://www.xbrl.org/2013/inlineXBRL\" xmlns:nonNumeric=\"http://www.xbrl.org/dtr/type/non-numeric\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:us-gaap=\"http://fasb.org/us-gaap/2024\" xmlns:dtr-types=\"http://www.xbrl.org/dtr/type/2022-03-31\" xmlns:country=\"http://xbrl.sec.gov/country/2024\" xmlns:ixt-sec=\"http://www.sec.gov/inlineXBRL/transformation/2015-08-31\" xmlns:vsat=\"http://www.viasat.com/20241231\" xmlns:ecd-sub=\"http://xbrl.sec.gov/ecd-sub/2024\" xmlns:srt=\"http://fasb.org/srt/2024\" xmlns:utr=\"http://www.xbrl.org/2009/utr\" xmlns:dei=\"http://xbrl.sec.gov/dei/2024\" xmlns:iso4217=\"http://www.xbrl.org/2003/iso4217\" xmlns:ecd=\"http://xbrl.sec.gov/ecd/2024\" xmlns:enum2=\"http://xbrl.org/2020/extensible-enumerations-2.0\" xmlns:ixt=\"http://www.xbrl.org/inlineXBRL/transformation/2022-02-16\">\n <head>\n  <title>10-Q</title>\n  <meta http-equiv=\"Content-Type\" content=\"text/html\"/>\n </head>\n <body style=\"padding:8px;margin:auto!important;\">\n  <div style=\"display:none;\"><ix:header><ix:hidden><ix:nonNumeric id=\"F_974ec134-cf3a-4905-a526-7edd58930c25\" name=\"dei:CurrentFiscalYearEndDate\" contextRef=\"C_5e9d660b-0184-457d-bfbe-0d146bed0952\">--03-31</ix:nonNumeric><ix:nonNumeric id=\"F_63a560be-ce7c-45af-a024-ba9b65d6b0d4\" name=\"dei:AmendmentFlag\" contextRef=\"C_5e9d660b-0184-457d-bfbe-0d146bed0952\">false</ix:nonNumeric><ix:nonNumeric id=\"F_2ec92188-e62e-4e64-9db2-95ecccbc7c3d\" name=\"dei:DocumentFiscalPeriodFocus\" contextRef=\"C_5e9d660",
+   "backlog_needs": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"action\":\"read_span\",\"event_ref\":\"event-053ac8e35f56d1df\",\"offset\":0,\"length\":2000,\"rationale\":[\"Narrative modality is marked explored but I have not yet read a verbatim narrative span in this cycle; grounding requires at least one bounded raw narrative read.\",\"Reading a filing/news event lets me test whether a positive-vs-control narrative contrast (e.g., order confirmations, JV/strategic pivots) is actually present before proposing a predicate measurement.\",\"Budget is ample (heavy 18, browse 19), so a bounded read is cheap and preserves room for compute/compare and a terminal action.\"]}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 17975,
+  "cost": 0.0
+ }
+}

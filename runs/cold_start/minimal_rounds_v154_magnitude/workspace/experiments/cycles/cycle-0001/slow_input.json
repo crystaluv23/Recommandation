@@ -1,0 +1,108 @@
+{
+  "contract_hash": "minimal-rounds-minimal_rounds_v154_magnitude",
+  "cycle_id": 1,
+  "feedback_hash": "0a56c2060801dbc298f40794f6495d6cb97f31fea9b72725c5bd6d64d0678322",
+  "feedback_rows": [],
+  "previous_memory_hash": "",
+  "previous_memory_head": null,
+  "registry_hash": "b7eac6c27f8d5f5a04dc0007188a2035638754b04b128f77bf8581c3ca41e159",
+  "research_targets": [
+    {
+      "group_manifest": {
+        "groups": {
+          "cik_0000002488:20250530t00001748534400z": "ge3_low",
+          "cik_0000003197:20250329t00001743177600z": "ge3_low",
+          "cik_0000039020:20250329t00001743177600z": "ge3_low",
+          "cik_0000797721:20250530t00001748534400z": "ge3_high",
+          "cik_0000798528:20250331t00001743350400z": "ge3_high"
+        },
+        "manifest_hash": "b6f88cd020a80224b56a9a6f65d77113b83673f4ffcbd91e1f4da8c155489f5e",
+        "schema_version": "research-target-group-manifest-v1",
+        "target_id": "magnitude_ge3_v1",
+        "target_identity_hash": "efcbcef6f6018c4b6d3891a897f282f5c4ff62296ee425d3a82294c67e3a5bd4"
+      },
+      "sampling_manifest": {
+        "population_case_count": 5,
+        "sampling": {
+          "check_case_ids": [
+            "cik_0000797721:20250530t00001748534400z",
+            "cik_0000039020:20250329t00001743177600z"
+          ],
+          "dev_case_ids": [
+            "cik_0000798528:20250331t00001743350400z",
+            "cik_0000002488:20250530t00001748534400z"
+          ],
+          "issuer_groups": {
+            "cik_0000002488:20250530t00001748534400z": "cik_0000002488",
+            "cik_0000039020:20250329t00001743177600z": "cik_0000039020",
+            "cik_0000797721:20250530t00001748534400z": "cik_0000797721",
+            "cik_0000798528:20250331t00001743350400z": "cik_0000798528"
+          },
+          "schema_version": "slow-sampling-manifest-v1",
+          "seed": "minimal-slow-minimal_rounds_v154_magnitude:magnitude_ge3_v1"
+        },
+        "schema_version": "research-target-sampling-manifest-v1",
+        "target_id": "magnitude_ge3_v1",
+        "target_identity_hash": "efcbcef6f6018c4b6d3891a897f282f5c4ff62296ee425d3a82294c67e3a5bd4"
+      },
+      "target_id": "magnitude_ge3_v1"
+    }
+  ],
+  "sampling_manifest": {
+    "check_case_ids": [
+      "cik_0001847409:20250131t00001738252800z",
+      "cik_0000003197:20250329t00001743177600z",
+      "cik_0000002969:20250131t00001738252800z",
+      "cik_0000039020:20250329t00001743177600z",
+      "cik_0000001750:20250131t00001738252800z"
+    ],
+    "dev_case_ids": [
+      "cik_0000798528:20250331t00001743350400z",
+      "cik_0000316709:20250530t00001748534400z",
+      "cik_0000797721:20250530t00001748534400z",
+      "cik_0000004457:20250131t00001738252800z",
+      "cik_0000002488:20250530t00001748534400z"
+    ],
+    "eligibility": {
+      "label_stratification": "binary_balanced",
+      "one_case_per_issuer": true,
+      "ordering_uses_outcome": false,
+      "source_split": "discovery"
+    },
+    "exclusions": [],
+    "issuer_groups": {
+      "cik_0000001750:20250131t00001738252800z": "issuer-1860e106a90bcc9b",
+      "cik_0000002488:20250530t00001748534400z": "issuer-4c9c397dcd6be95e",
+      "cik_0000002969:20250131t00001738252800z": "issuer-5c81ec0a99d9e41d",
+      "cik_0000003197:20250329t00001743177600z": "issuer-670b15d96a990795",
+      "cik_0000004457:20250131t00001738252800z": "issuer-20401cc651bfc065",
+      "cik_0000039020:20250329t00001743177600z": "issuer-d32b248fd9b5babb",
+      "cik_0000316709:20250530t00001748534400z": "issuer-cb221941daf0e9be",
+      "cik_0000797721:20250530t00001748534400z": "issuer-e207eaddcc738240",
+      "cik_0000798528:20250331t00001743350400z": "issuer-b9a31ac02833bfa3",
+      "cik_0001847409:20250131t00001738252800z": "issuer-d66fc23ee383b5ff"
+    },
+    "population_hash": "90401cd918b17a399bcb983ea52930093af72a7050905e79ef372c0ccefcc58f",
+    "previously_exposed": [],
+    "schema_version": "slow-sampling-manifest-v1",
+    "seed": "23ef480d2a0ce1b305b1e8a067243ddeb628b026813252c2c74c102c9b3e4c31",
+    "selection_order": [
+      "cik_0000798528:20250331t00001743350400z",
+      "cik_0000316709:20250530t00001748534400z",
+      "cik_0000797721:20250530t00001748534400z",
+      "cik_0000004457:20250131t00001738252800z",
+      "cik_0000002488:20250530t00001748534400z",
+      "cik_0001847409:20250131t00001738252800z",
+      "cik_0000003197:20250329t00001743177600z",
+      "cik_0000002969:20250131t00001738252800z",
+      "cik_0000039020:20250329t00001743177600z",
+      "cik_0000001750:20250131t00001738252800z"
+    ]
+  },
+  "schema_version": "slow-input-v1",
+  "source_cutoff": {
+    "committed_fast_round": 0,
+    "committed_slow_cycle": 0
+  },
+  "source_manifest": []
+}

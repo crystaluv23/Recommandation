@@ -1,0 +1,78 @@
+{
+  "category": "management",
+  "definition": {
+    "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skill.md",
+    "type": "llm"
+  },
+  "modality": "narrative",
+  "parameters": {
+    "result_required_evidence_phrases": [
+      "guidance",
+      "outlook",
+      "forecast",
+      "we expect",
+      "management expects",
+      "company expects",
+      "now expects",
+      "raises its",
+      "raised its",
+      "lowers its",
+      "lowered its",
+      "reaffirms",
+      "reaffirmed",
+      "on track to"
+    ],
+    "routing_answer_need_phrases": [
+      "guidance",
+      "outlook",
+      "forecast"
+    ],
+    "routing_need_phrases": [
+      "guidance update",
+      "guidance updates",
+      "updated guidance",
+      "guidance change",
+      "guidance changes",
+      "revised guidance",
+      "guidance revision",
+      "guidance revisions"
+    ]
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Current guidance versus explicit prior guidance.",
+    "lookback_days": 730,
+    "query_terms": [
+      "guidance outlook forecast",
+      "raises lowers reaffirms"
+    ],
+    "source_types": [
+      "earnings_call",
+      "filing",
+      "company_announcement"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "guidance_acceleration",
+  "version": 1
+}

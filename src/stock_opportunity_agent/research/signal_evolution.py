@@ -3486,6 +3486,7 @@ class SignalEvolutionEngine:
         effectiveness_minimum_cases: int = 4,
         mining_config: SignalMiningConfig = SignalMiningConfig(),
         min_new_signals_per_cycle: int = 1,
+        mining_heavy_action_limit: int | None = None,
         research_target_reveal: Mapping[str, Any] | None = None,
         research_target_sampling: Mapping[str, Any] | None = None,
     ) -> None:
@@ -3493,6 +3494,9 @@ class SignalEvolutionEngine:
             raise ValidationError("Signal evolution requires label-visible Discovery cases")
         if min_new_signals_per_cycle < 1:
             raise ValidationError("minimum new Signals per cycle must be positive")
+        if mining_heavy_action_limit is not None and mining_heavy_action_limit < 1:
+            raise ValidationError("mining heavy action limit must be positive")
+        self.mining_heavy_action_limit = mining_heavy_action_limit
         self.registry = registry
         self.raw_info_store = raw_info_store
         self.discovery_cases = discovery_cases
@@ -6570,6 +6574,11 @@ class SignalEvolutionEngine:
                 return {"status": "validated"}
 
             try:
+                controller_kwargs: dict[str, Any] = {}
+                if self.mining_heavy_action_limit is not None:
+                    controller_kwargs["heavy_action_limit"] = (
+                        self.mining_heavy_action_limit
+                    )
                 controller = LabelAwareMiningController(
                     store=self.raw_info_store,
                     model=model,
@@ -6587,6 +6596,7 @@ class SignalEvolutionEngine:
                     validation_sink=seed_sink,
                     label_map=label_map,
                     research_axis=research_axis,
+                    **controller_kwargs,
                     # The paid Fast reflection briefs and selected original
                     # disclosures must reach the real mining model requests;
                     # dropping them here severed the learning loop while the

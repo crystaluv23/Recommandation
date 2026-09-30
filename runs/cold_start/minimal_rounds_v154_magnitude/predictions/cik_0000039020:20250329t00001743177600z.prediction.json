@@ -1,0 +1,25 @@
+{
+ "case_id": "cik_0000039020:20250329t00001743177600z",
+ "company_id": "cik_0000039020",
+ "prediction_time": "2025-03-29T00:00:00+00:00",
+ "prediction": {
+  "is_surge": false,
+  "candidate_judgment": "unlikely",
+  "magnitude": null,
+  "confidence": {
+   "level": "medium"
+  },
+  "key_reasons": [
+   "The supplied prediction baseline is a mean adjusted close of 15.986, implying a doubling threshold near 31.972, while the most recent close is 15.53 and the stock has recently traded down from the 17.23 area, so the required repricing is a very large move from current levels.",
+   "Source-backed operating evidence is mixed rather than clearly accelerating: revenue growth yoy is positive at 0.255101 and revenue acceleration is 0.0659846, but operating cash flow margin is negative at -0.0255494 and cash reserves are only 5.516e+06 against current liabilities, which weakens the case for a near-term 2x repricing.",
+   "The Northrop Grumman Supplier Excellence Award is a positive recognition signal, but the supplied signal interpretation explicitly characterizes it as recognition of past performance rather than a new order, contract, offtake agreement, or binding award with stated value, volume, or delivery schedule, so it does not affirmatively connect to a credible 2x price outcome."
+  ],
+  "uncertainties": [
+   "No forward guidance, backlog update, or quantified contract pipeline is supplied, so the potential revenue impact of the Northrop Grumman recognition cannot be sized.",
+   "Customer concentration and guidance acceleration signals are unavailable, leaving key drivers of a possible re-rating unmeasured.",
+   "The six-month horizon could include new defense orders or contract conversions not visible in the supplied packet, which could change the repricing outlook."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 31383
+}
