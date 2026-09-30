@@ -1615,7 +1615,11 @@ class LLMSignalRetrievalAgent:
             system_prompt=(
                 "Choose the smallest unique batch from available_signal_cards. The "
                 "cards are already versioned, eligible, and unexecuted; never recreate "
-                "omitted refs. For research_context, use it only to test Signal "
+                "omitted refs. Check previous_signal_results: a Signal whose prior "
+                "result was 'unavailable' could not find its required data for this "
+                "case — do not select another Signal with the same data requirement "
+                "unless you have a specific reason to believe it will succeed. "
+                "For research_context, use it only to test Signal "
                 "applicability; it is accepted controller context, not source evidence. "
                 "Preserve previous_context_tags "
                 "when applying card exclusions. Return {\"selections\": []} only when "

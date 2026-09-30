@@ -210,19 +210,65 @@ def run_fast_round(caller, root: Path, num_cases: int) -> dict:
     # Load oracle into store (subset for speed)
     print("  Loading oracle store…")
     store = RawInfoStore(str(ORACLE))
-    resolver = EvidenceResolver(store)
 
-    # Build signal registry with a few stable signals
-    import tempfile
-    registry_dir = root / "signals"
-    registry_dir.mkdir(parents=True, exist_ok=True)
-    registry = SignalRegistry(registry_dir)
-    registry.install_catalog(SEED_CATALOG)
+    # Fix 1+3: Build the full adapter chain so the resolver auto-fetches
+    # missing data (earnings_call, financials, SEC filings) exactly like
+    # production. Deterministic ("hard") signals that need financials get
+    # their data fetched automatically instead of silently failing.
+    from stock_opportunity_agent.data.acquisition import (
+        AlphaVantageNewsAdapter,
+        AlphaVantageTranscriptAdapter,
+        HistoricalPriceAdapter,
+        SecCompanyFactsAdapter,
+        SecFilingAdapter,
+    )
+    from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
+    from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
+    from stock_opportunity_agent.data.raw_info import RawInfoOracle
+
+    adapters = []
+    sec_user_agent = os.environ.get("SOA_SEC_USER_AGENT", "").strip()
+    if sec_user_agent:
+        sec_client = SecEdgarClient(sec_user_agent)
+        adapters.append(SecCompanyFactsAdapter(sec_client))
+        adapters.append(SecFilingAdapter(sec_client))
+        print(f"  SEC adapters: {len(adapters)}")
+    alpha_key = os.environ.get("ALPHA_VANTAGE_API_KEY", "").strip()
+    if alpha_key:
+        alpha_client = AlphaVantageClient(alpha_key)
+        adapters.append(AlphaVantageTranscriptAdapter(alpha_client))
+        adapters.append(AlphaVantageNewsAdapter(alpha_client))
+        print(f"  Alpha Vantage adapters: +2 (transcripts, news)")
+
+    oracle = RawInfoOracle(documents=store.documents, adapters=tuple(adapters))
+    resolver = EvidenceResolver(oracle) if adapters else EvidenceResolver(store)
+    print(f"  Resolver with {len(adapters)} adapters")
+
+    # Fix 4: Load the accumulated Registry from the latest evolution run
+    # instead of starting from seed — the system has promoted validated
+    # signals through Slow loops that the minimal round should consume.
+    v143_signals = REPO / "runs/cold_start/evolution" / (
+        "information-evolution-jev-dual-self-evolution-20260928-v143/signals"
+    )
+    if v143_signals.exists():
+        registry = SignalRegistry(v143_signals)
+        print(f"  Loaded V143 accumulated registry: {len(registry.freeze().specs)} signals")
+    else:
+        registry_dir = root / "signals"
+        registry_dir.mkdir(parents=True, exist_ok=True)
+        registry = SignalRegistry(registry_dir)
+        registry.install_catalog(SEED_CATALOG)
+        print(f"  Fallback to seed catalog: {len(registry.freeze().specs)} signals")
     frozen = registry.freeze()
 
     # Signal executor with our caller for LLM signals
     signal_runner = StructuredLLMSignalRunner(caller)
-    executor = SignalExecutor(frozen, store, llm_runner=signal_runner)
+    if adapters:
+        executor = SignalExecutor(
+            frozen, store, resolver=resolver, llm_runner=signal_runner,
+        )
+    else:
+        executor = SignalExecutor(frozen, store, llm_runner=signal_runner)
 
     # Controller + predictor
     controller = LLMResearchController(caller)
