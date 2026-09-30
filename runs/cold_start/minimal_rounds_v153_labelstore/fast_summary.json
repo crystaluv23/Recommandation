@@ -1,0 +1,17 @@
+{
+ "binary_precision": 0.75,
+ "binary_recall": 1.0,
+ "binary_f1": 0.8571428571428571,
+ "magnitude_accuracy": 1.0,
+ "magnitude_macro_f1": 0.3333333333333333,
+ "confusion": {
+  "true_positive": 3,
+  "false_positive": 1,
+  "true_negative": 4,
+  "false_negative": 0
+ },
+ "sample_count": 8,
+ "predicted_positive_count": 4,
+ "precision_defined": true,
+ "valid_case_count": 8
+}

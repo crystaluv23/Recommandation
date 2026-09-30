@@ -1,0 +1,24 @@
+{
+ "case_id": "cik_0000039020:20250329t00001743177600z",
+ "company_id": "cik_0000039020",
+ "prediction_time": "2025-03-29T00:00:00+00:00",
+ "prediction": {
+  "is_surge": true,
+  "candidate_judgment": "possible",
+  "magnitude": "2-3x",
+  "confidence": {
+   "level": "low"
+  },
+  "key_reasons": [
+   "The company reported year-over-year revenue growth of about 25.5% and positive revenue acceleration of about 6.6%, with an all-time high backlog of $81 million, which is source-backed evidence of demand momentum that could support share-price repricing toward the 2x threshold."
+  ],
+  "uncertainties": [
+   "Operating cash flow margin is negative at about -2.6%, cash burn is elevated, and cash to current liabilities is weak at about 0.24, which could limit the company's ability to convert backlog into profitable growth.",
+   "The backlog disclosure does not name a counterparty or program and does not describe a specific new binding order, so the durability and timing of revenue conversion remain uncertain.",
+   "The baseline mean adjusted close is $15.986 and the doubling threshold is $31.972, requiring a substantial repricing within six months; no explicit future price target or valuation bridge is supplied.",
+   "Customer concentration and contract liability trends are unresolved, and the available evidence does not quantify the financial impact of the Northrop Grumman supplier award or quantum sensor R&D investment."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 26814
+}

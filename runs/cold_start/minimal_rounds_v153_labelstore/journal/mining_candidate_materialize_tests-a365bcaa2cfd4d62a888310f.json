@@ -1,0 +1,232 @@
+{
+ "key": "mining_candidate_materialize_tests-a365bcaa2cfd4d62a888310f",
+ "mode": "live",
+ "request": {
+  "stage": "mining_candidate_materialize_tests",
+  "system_prompt": "Return exactly one JSON object. Author the point-in-time fixtures for the already materialized spec and skill: fixture documents must embed the supplied identity-masked evidence spans verbatim. For a narrative predicate, cover confirmed qualifying events, mere proposals or memoranda, cancellations, below-threshold amounts, paraphrases, lookalikes, post-cutoff documents, and evidence-insufficient cases — each expected value must match the skill's classification rule for that class. A generic-contract funding lookalike the skill scores neutral must not expect unavailable. Return exactly {\"tests\": [...]}.",
+  "payload": {
+   "candidate": {
+    "measurement": {
+     "observable": "order_confirmation_disclosed",
+     "value_kind": "boolean",
+     "normalization": "none",
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "company_news",
+       "news",
+       "filing"
+      ],
+      "lookback_days": 90,
+      "semantic_condition": "A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services.",
+      "threshold": {
+       "field": "order_confirmation_disclosed",
+       "operator": "==",
+       "value": true
+      }
+     }
+    },
+    "falsifiers": [
+     {
+      "condition": "No order confirmation is disclosed in any point-in-time narrative document for a positive case.",
+      "expected_observation": "order_confirmation_disclosed == false for that case"
+     },
+     {
+      "condition": "An order confirmation is disclosed in a control case.",
+      "expected_observation": "order_confirmation_disclosed == true for that control case"
+     }
+    ],
+    "evidence_refs": [
+     "event-00443611f5206477",
+     "event-032f6016926d3529",
+     "event-041af07c51c3a811",
+     "event-05bed2dd16917521",
+     "event-0aaacacdca0336f7"
+    ],
+    "need_dispositions": [
+     {
+      "need_refs": [
+       "need-001"
+      ],
+      "disposition": "new_measurement",
+      "signal_refs": [],
+      "rationale": "Order confirmation disclosure is a new narrative measurement not present in the signal catalog."
+     },
+     {
+      "need_refs": [
+       "need-002"
+      ],
+      "disposition": "deferred_measurement",
+      "signal_refs": [],
+      "rationale": "Deferred due to budget constraints; no existing signal covers this need."
+     },
+     {
+      "need_refs": [
+       "need-003"
+      ],
+      "disposition": "update_existing",
+      "signal_refs": [
+       "order_quality:v1"
+      ],
+      "rationale": "Existing order_quality signal can be updated with this narrative predicate."
+     },
+     {
+      "need_refs": [
+       "need-004"
+      ],
+      "disposition": "repair_dependency",
+      "signal_refs": [],
+      "rationale": "Dependency on narrative event coverage requires repair before measurement."
+     },
+     {
+      "need_refs": [
+       "need-005"
+      ],
+      "disposition": "not_testable",
+      "signal_refs": [],
+      "rationale": "No point-in-time data available for this need in the current cohort."
+     },
+     {
+      "need_refs": [
+       "need-006"
+      ],
+      "disposition": "fast_plan_action",
+      "signal_refs": [],
+      "rationale": "Fast plan action to validate order confirmation disclosure across cases."
+     }
+    ]
+   },
+   "spec": {
+    "signal_id": "order_confirmation_disclosed",
+    "version": 1,
+    "category": "order_quality",
+    "modality": "narrative",
+    "definition": {
+     "description": "A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services."
+    },
+    "schema": {
+     "confidence": {
+      "type": "float"
+     },
+     "value": {
+      "type": "categorical",
+      "values": [
+       "positive",
+       "neutral",
+       "negative",
+       "unavailable"
+      ]
+     }
+    },
+    "execution": {
+     "type": "llm",
+     "skill_file": "order_confirmation_disclosed.md"
+    },
+    "raw_retrieval": {
+     "source_types": [
+      "company_news",
+      "news",
+      "filing"
+     ],
+     "query_terms": [
+      "confirmed order",
+      "contract award",
+      "purchase commitment",
+      "order confirmation",
+      "customer order",
+      "supply agreement"
+     ],
+     "lookback_days": 90,
+     "minimum_observations": null,
+     "minimum_distinct_periods": null,
+     "minimum_period_span_days": null,
+     "comparison_requirement": null,
+     "required_source_groups": []
+    },
+    "evidence_policy": {
+     "require_source": true,
+     "require_exact_span": true,
+     "require_timestamp": true
+    },
+    "parameters": {}
+   },
+   "skill": "# order_confirmation_disclosed\n\n## Purpose\n\nJudge whether a point-in-time company news, filing, or press release document discloses a **confirmed order, contract award, or purchase commitment** for the company's products or services, within the lookback window. Return a categorical value (`positive`, `neutral`, `negative`, `unavailable`) with a confidence score and verbatim supporting/counter spans.\n\n## Inputs\n\n- `spec`: the materialized measurement spec (semantic condition, source families, lookback window, threshold).\n- `documents`: candidate narrative documents, each with `ref`, `source_family`, `title`, `excerpt`, `exact_span`, `published_at`/`available_at`.\n- `lookback_days`: 90 (from spec).\n- `as_of`: evaluation timestamp.\n\n## Output schema\n\n```json\n{\n  \"value\": \"positive | neutral | negative | unavailable\",\n  \"confidence\": 0.0,\n  \"supporting_spans\": [{\"ref\": \"...\", \"span\": \"...\", \"reason\": \"...\"}],\n  \"counter_spans\": [{\"ref\": \"...\", \"span\": \"...\", \"reason\": \"...\"}],\n  \"rationale\": \"...\"\n}\n```\n\n## Procedure\n\n1. **Window filter.** Keep only documents whose `published_at`/`available_at` falls within `[as_of - lookback_days, as_of]`. Discard post-cutoff documents.\n2. **Source-family filter.** Keep only documents whose `source_family` is in `{company_news, news, filing}`. Discard others (e.g., `transcript`) unless the spec explicitly includes them.\n3. **Evidence sufficiency check.** If no documents remain after steps 1–2, or the remaining text is empty/truncated to the point that no semantic judgment is possible, return `unavailable`.\n4. **Semantic classification.** For each remaining document, decide whether it discloses a *confirmed* order, contract award, or purchase commitment for the company's products or services.\n   - **positive** — the document states a confirmed/finalized order, awarded contract, signed supply agreement, or binding purchase commitment (e.g., \"has been awarded\", \"signed a definitive agreement\", \"received a purchase order\").\n   - **negative** — the document explicitly cancels, denies, terminates, or withdraws a previously announced order/contract, or states that no such order exists.\n   - **neutral** — the document contains only proposals, memoranda of understanding, letters of intent, non-binding intent, exploratory discussions, lookalike language (e.g., \"plans to\", \"intends to\", \"in discussions\"), or mentions below the confirmation threshold. Neutral is the default for ambiguous or non-qualifying content; do **not** use `unavailable` for these.\n5. **Aggregate.** If any document is `positive`, the overall value is `positive`. Else if any is `negative`, `negative`. Else if any is `neutral`, `neutral`. Else `unavailable`.\n6. **Spans.** For each cited document, extract the exact verbatim span that supports the classification (supporting) or contradicts it (counter). Spans must be copied exactly from `exact_span`/`excerpt`.\n7. **Confidence.** Assign a float in `[0,1]` reflecting span clarity, source authority, and absence of ambiguity.\n\n## Rules\n\n- **positive**: confirmed order / contract award / binding purchase commitment disclosed.\n- **negative**: explicit cancellation, denial, termination, or withdrawal of such an order/contract.\n- **neutral**: proposals, MOUs, LOIs, non-binding intent, lookalikes, below-threshold mentions. Never `unavailable` for these.\n- **unavailable**: reserved for empty corpora, post-cutoff-only corpora, or genuinely insufficient text to judge. Never use `unavailable` merely because the content is neutral or non-qualifying.\n- Require exact span, source, and timestamp for every cited evidence item.\n- Do not infer confirmation from titles alone; the span must contain the confirming language.\n\n## Examples\n\n- *Positive*: \"The company has been awarded a $12M supply contract by ...\" → `positive`.\n- *Negative*: \"The previously announced order was cancelled by the customer.\" → `negative`.\n- *Neutral*: \"The company announced the launch of branded white-label products ...\" (no order/contract) → `neutral`.\n- *Neutral*: \"We signed a non-binding letter of intent to explore ...\" → `neutral`.\n- *Unavailable*: no documents in window, or only post-cutoff documents → `unavailable`.\n\n## Failure modes\n\n- Treating a product launch or brand announcement as an order → misclassifies as `positive`; must be `neutral`.\n- Treating an MOU/LOI as a confirmed order → must be `neutral`.\n- Returning `unavailable` for neutral content → violates the reserved-use rule.\n- Citing spans not present verbatim in the source → invalid evidence.\n",
+   "cited_evidence": [
+    {
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "company_news",
+       "news",
+       "filing"
+      ],
+      "lookback_days": 90,
+      "semantic_condition": "A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services.",
+      "threshold": {
+       "field": "order_confirmation_disclosed",
+       "operator": "==",
+       "value": true
+      }
+     },
+     "kind": "narrative_predicate"
+    },
+    {
+     "ref": "event-00443611f5206477",
+     "exact_span": "icker_sentiment_score\":\"0.473218\"}],\"time_published\":\"20241231T235959\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"topics\":[{\"relevance_score\":\"0.941311\",\"topic\":\"energy_transportation\"},{\"relevanc",
+     "excerpt": "Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.",
+     "title": "Industrial Decarbonization for Heavy Industries",
+     "source_family": "news",
+     "published_at": "2024-12-31T23:59:59+00:00",
+     "available_at": "2024-12-31T23:59:59+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-041af07c51c3a811",
+     "exact_span": "eft:1.22pt\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\"margin-bottom:3pt\"><span><br/></s",
+     "excerpt": "eliminated in consolidation. 31 Table of Contents Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations First Quarter 2024 in Summary 33 First Quarter 2024 Results of Operations 35 Reconciliations of Non-GAAP Financial Measures 40 Liquidity and Capital Resources 46 Pension Benefits 49 Critical Accounting Policies and Estimates 50 This Management’s Discussion and Analysis contains “forward-looking statements” within the safe harbor provisions of the Private Securities Litigation Reform Act of 1995, including statements about business outlook. These",
+     "title": "10-Q 2024-02-05",
+     "source_family": "filing",
+     "published_at": "2024-02-05T20:01:25+00:00",
+     "available_at": "2024-02-05T20:01:25+00:00"
+    },
+    {
+     "ref": "event-032f6016926d3529",
+     "exact_span": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,",
+     "excerpt": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Inc. has announced the launch of exclusive Queen of Bud branded white-label products, including crystal smoke-eliminating candles, premium Zippo lighters, and a range of innovative pre-rolls, in various Canadian provinces. This initiative follows the acquisition of the Queen of Bud brand in March 2024 and Alberta's",
+     "title": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Mani",
+     "source_family": "news",
+     "published_at": "2024-09-12T10:10:09+00:00",
+     "available_at": "2024-09-12T10:10:09+00:00"
+    },
+    {
+     "ref": "event-0aaacacdca0336f7",
+     "exact_span": "efinitive agreement to acquire a majority stake in Purecan, a profitable German medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ide",
+     "excerpt": "medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ideal entry point into the fast-growing German medical cannabis market. This acquisition aligns with our objectives entering the market profitably, adding unique value and doing so cost-effectively without significant strain on our resources. Purecan is already profitable with impressive adjusted EBITDA margins of 29%, providing a platform to strengthen our core business and deepen relationships with Canadian licensed producers. This transaction is highly accretive. We are",
+     "title": "{\"quarter\":\"2024Q4\",\"symbol\":\"HITI\",\"transcript\":[{\"content\":\"Good morning.",
+     "source_family": "transcript",
+     "published_at": "2025-01-29T00:00:00+00:00",
+     "available_at": "2025-01-30T00:00:00+00:00",
+     "document_source_type": "earnings_transcript"
+    },
+    {
+     "ref": "event-05bed2dd16917521",
+     "exact_span": "<DOCUMENT>\n<TYPE>6-K\n<SEQUENCE>1\n<FILENAME>hightide6k.htm\n<DESCRIPTION>FORM 6-K\n<TEXT>\n<html>\n\n<head>\n    <title>High Tide Inc.: Form 6-K - Filed by newsfilecor",
+     "excerpt": "6-K 1 hightide6k.htm FORM 6-K High Tide Inc.: Form 6-K - Filed by newsfilecorp.com UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 OF THE SECURITIES EXCHANGE ACT OF 1934 For the month of December 2024 Commission File Number: 001-40258 HIGH TIDE INC. (Registrant) 11127 - 15 Street N.E., Unit 112 Calgary, Alberta Canada T3K 2M4 (Address of Principal Executive Offices) Indicate by check mark whether the Registrant files or will file annual reports under cover of Form 20-F or Form 40-F. Form 20-F ☐",
+     "title": "6-K 2024-12-11",
+     "source_family": "filing",
+     "published_at": "2024-12-11T17:27:33+00:00",
+     "available_at": "2024-12-11T17:27:33+00:00"
+    }
+   ],
+   "last_issues": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"tests\":[{\"name\":\"positive_confirmed_order_disclosed\",\"description\":\"A point-in-time filing within the lookback window discloses a confirmed order/contract award for the company's products or services.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-05bed2dd16917521\",\"source_family\":\"filing\",\"title\":\"6-K 2024-12-11\",\"excerpt\":\"6-K 1 hightide6k.htm FORM 6-K High Tide Inc.: Form 6-K - Filed by newsfilecorp.com UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 OF THE SECURITIES EXCHANGE ACT OF 1934 For the month of December 2024 Commission File Number: 001-40258 HIGH TIDE INC. (Registrant) 11127 - 15 Street N.E., Unit 112 Calgary, Alberta Canada T3K 2M4 (Address of Principal Executive Offices) Indicate by check mark whether the Registrant files or will file annual reports under cover of Form 20-F or Form 40-F. Form 20-F ☐\",\"exact_span\":\"<DOCUMENT>\\n<TYPE>6-K\\n<SEQUENCE>1\\n<FILENAME>hightide6k.htm\\n<DESCRIPTION>FORM 6-K\\n<TEXT>\\n<html>\\n\\n<head>\\n    <title>High Tide Inc.: Form 6-K - Filed by newsfilecor\",\"published_at\":\"2024-12-11T17:27:33+00:00\",\"available_at\":\"2024-12-11T17:27:33+00:00\"}],\"expected\":{\"value\":\"positive\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-05bed2dd16917521\",\"span\":\"<DOCUMENT>\\n<TYPE>6-K\\n<SEQUENCE>1\\n<FILENAME>hightide6k.htm\\n<DESCRIPTION>FORM 6-K\\n<TEXT>\\n<html>\\n\\n<head>\\n    <title>High Tide Inc.: Form 6-K - Filed by newsfilecor\",\"reason\":\"Filing within window discloses a confirmed order/contract award for the company's products or services.\"}]}},{\"name\":\"neutral_product_launch_lookalike\",\"description\":\"A news document announces a product/brand launch with no confirmed order or contract; must be neutral, not positive or unavailable.\",\"as_of\":\"2024-10-01T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-032f6016926d3529\",\"source_family\":\"news\",\"title\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Mani\",\"excerpt\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Inc. has announced the launch of exclusive Queen of Bud branded white-label products, including crystal smoke-eliminating candles, premium Zippo lighters, and a range of innovative pre-rolls, in various Canadian provinces. This initiative follows the acquisition of the Queen of Bud brand in March 2024 and Alberta's\",\"exact_span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"published_at\":\"2024-09-12T10:10:09+00:00\",\"available_at\":\"2024-09-12T10:10:09+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-032f6016926d3529\",\"span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"reason\":\"Product/brand launch announcement with no confirmed order or contract; neutral lookalike.\"}]}},{\"name\":\"neutral_generic_contract_funding_lookalike\",\"description\":\"A generic-contract funding lookalike that the skill scores neutral must not expect unavailable.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-00443611f5206477\",\"source_family\":\"news\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"excerpt\":\"Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.\",\"exact_span\":\"icker_sentiment_score\\\":\\\"0.473218\\\"}],\\\"time_published\\\":\\\"20241231T235959\\\",\\\"title\\\":\\\"Industrial Decarbonization for Heavy Industries\\\",\\\"topics\\\":[{\\\"relevance_score\\\":\\\"0.941311\\\",\\\"topic\\\":\\\"energy_transportation\\\"},{\\\"relevanc\",\"published_at\":\"2024-12-31T23:59:59+00:00\",\"available_at\":\"2024-12-31T23:59:59+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-00443611f5206477\",\"span\":\"icker_sentiment_score\\\":\\\"0.473218\\\"}],\\\"time_published\\\":\\\"20241231T235959\\\",\\\"title\\\":\\\"Industrial Decarbonization for Heavy Industries\\\",\\\"topics\\\":[{\\\"relevance_score\\\":\\\"0.941311\\\",\\\"topic\\\":\\\"energy_transportation\\\"},{\\\"relevanc\",\"reason\":\"Generic contract/funding lookalike with no confirmed order; neutral, not unavailable.\"}]}},{\"name\":\"neutral_mere_proposal_or_memorandum\",\"description\":\"A document containing only a proposal, MOU, or non-binding intent is neutral.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-041af07c51c3a811\",\"source_family\":\"filing\",\"title\":\"10-Q 2024-02-05\",\"excerpt\":\"eliminated in consolidation. 31 Table of Contents Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations First Quarter 2024 in Summary 33 First Quarter 2024 Results of Operations 35 Reconciliations of Non-GAAP Financial Measures 40 Liquidity and Capital Resources 46 Pension Benefits 49 Critical Accounting Policies and Estimates 50 This Management’s Discussion and Analysis contains “forward-looking statements” within the safe harbor provisions of the Private Securities Litigation Reform Act of 1995, including statements about business outlook. These\",\"exact_span\":\"eft:1.22pt\\\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\\\"margin-bottom:3pt\\\"><span><br/></s\",\"published_at\":\"2024-02-05T20:01:25+00:00\",\"available_at\":\"2024-02-05T20:01:25+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-041af07c51c3a811\",\"span\":\"eft:1.22pt\\\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\\\"margin-bottom:3pt\\\"><span><br/></s\",\"reason\":\"Only forward-looking/proposal language; no confirmed order; neutral.\"}]}},{\"name\":\"negative_cancellation_of_order\",\"description\":\"A document explicitly cancelling or terminating a previously announced order is negative.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-032f6016926d3529\",\"source_family\":\"news\",\"title\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Mani\",\"excerpt\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Inc. has announced the launch of exclusive Queen of Bud branded white-label products, including crystal smoke-eliminating candles, premium Zippo lighters, and a range of innovative pre-rolls, in various Canadian provinces. This initiative follows the acquisition of the Queen of Bud brand in March 2024 and Alberta's\",\"exact_span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"published_at\":\"2024-09-12T10:10:09+00:00\",\"available_at\":\"2024-09-12T10:10:09+00:00\"}],\"expected\":{\"value\":\"negative\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-032f6016926d3529\",\"span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"reason\":\"Explicit cancellation/termination of a previously announced order/contract.\"}]}},{\"name\":\"neutral_below_threshold_amount\",\"description\":\"A mention of an order/contract below the confirmation threshold is neutral.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-041af07c51c3a811\",\"source_family\":\"filing\",\"title\":\"10-Q 2024-02-05\",\"excerpt\":\"eliminated in consolidation. 31 Table of Contents Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations First Quarter 2024 in Summary 33 First Quarter 2024 Results of Operations 35 Reconciliations of Non-GAAP Financial Measures 40 Liquidity and Capital Resources 46 Pension Benefits 49 Critical Accounting Policies and Estimates 50 This Management’s Discussion and Analysis contains “forward-looking statements” within the safe harbor provisions of the Private Securities Litigation Reform Act of 1995, including statements about business outlook. These\",\"exact_span\":\"eft:1.22pt\\\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\\\"margin-bottom:3pt\\\"><span><br/></s\",\"published_at\":\"2024-02-05T20:01:25+00:00\",\"available_at\":\"2024-02-05T20:01:25+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-041af07c51c3a811\",\"span\":\"eft:1.22pt\\\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\\\"margin-bottom:3pt\\\"><span><br/></s\",\"reason\":\"Order/contract mention below confirmation threshold; neutral.\"}]}},{\"name\":\"neutral_paraphrase_no_confirmation\",\"description\":\"A paraphrase of an order/contract without confirming language is neutral.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-00443611f5206477\",\"source_family\":\"news\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"excerpt\":\"Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.\",\"exact_span\":\"icker_sentiment_score\\\":\\\"0.473218\\\"}],\\\"time_published\\\":\\\"20241231T235959\\\",\\\"title\\\":\\\"Industrial Decarbonization for Heavy Industries\\\",\\\"topics\\\":[{\\\"relevance_score\\\":\\\"0.941311\\\",\\\"topic\\\":\\\"energy_transportation\\\"},{\\\"relevanc\",\"published_at\":\"2024-12-31T23:59:59+00:00\",\"available_at\":\"2024-12-31T23:59:59+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-00443611f5206477\",\"span\":\"icker_sentiment_score\\\":\\\"0.473218\\\"}],\\\"time_published\\\":\\\"20241231T235959\\\",\\\"title\\\":\\\"Industrial Decarbonization for Heavy Industries\\\",\\\"topics\\\":[{\\\"relevance_score\\\":\\\"0.941311\\\",\\\"topic\\\":\\\"energy_transportation\\\"},{\\\"relevanc\",\"reason\":\"Paraphrase without confirming language; neutral.\"}]}},{\"name\":\"neutral_lookalike_language\",\"description\":\"Lookalike language such as 'plans to' or 'intends to' is neutral.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-032f6016926d3529\",\"source_family\":\"news\",\"title\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Mani\",\"excerpt\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Inc. has announced the launch of exclusive Queen of Bud branded white-label products, including crystal smoke-eliminating candles, premium Zippo lighters, and a range of innovative pre-rolls, in various Canadian provinces. This initiative follows the acquisition of the Queen of Bud brand in March 2024 and Alberta's\",\"exact_span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"published_at\":\"2024-09-12T10:10:09+00:00\",\"available_at\":\"2024-09-12T10:10:09+00:00\"}],\"expected\":{\"value\":\"neutral\",\"confidence_min\":0.5,\"supporting_spans\":[{\"ref\":\"event-032f6016926d3529\",\"span\":\"High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,\",\"reason\":\"Lookalike language with no confirmed order; neutral.\"}]}},{\"name\":\"unavailable_post_cutoff_only\",\"description\":\"Only post-cutoff documents remain after window filtering; unavailable.\",\"as_of\":\"2024-10-01T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-0aaacacdca0336f7\",\"source_family\":\"transcript\",\"title\":\"{\\\"quarter\\\":\\\"2024Q4\\\",\\\"symbol\\\":\\\"HITI\\\",\\\"transcript\\\":[{\\\"content\\\":\\\"Good morning.\",\"excerpt\":\"medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ideal entry point into the fast-growing German medical cannabis market. This acquisition aligns with our objectives entering the market profitably, adding unique value and doing so cost-effectively without significant strain on our resources. Purecan is already profitable with impressive adjusted EBITDA margins of 29%, providing a platform to strengthen our core business and deepen relationships with Canadian licensed producers. This transaction is highly accretive. We are\",\"exact_span\":\"efinitive agreement to acquire a majority stake in Purecan, a profitable German medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ide\",\"published_at\":\"2025-01-29T00:00:00+00:00\",\"available_at\":\"2025-01-30T00:00:00+00:00\"}],\"expected\":{\"value\":\"unavailable\",\"confidence_min\":0.5,\"supporting_spans\":[]}},{\"name\":\"unavailable_evidence_insufficient\",\"description\":\"No documents remain after source-family filtering; unavailable.\",\"as_of\":\"2025-01-15T00:00:00+00:00\",\"documents\":[{\"ref\":\"event-0aaacacdca0336f7\",\"source_family\":\"transcript\",\"title\":\"{\\\"quarter\\\":\\\"2024Q4\\\",\\\"symbol\\\":\\\"HITI\\\",\\\"transcript\\\":[{\\\"content\\\":\\\"Good morning.\",\"excerpt\":\"medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ideal entry point into the fast-growing German medical cannabis market. This acquisition aligns with our objectives entering the market profitably, adding unique value and doing so cost-effectively without significant strain on our resources. Purecan is already profitable with impressive adjusted EBITDA margins of 29%, providing a platform to strengthen our core business and deepen relationships with Canadian licensed producers. This transaction is highly accretive. We are\",\"exact_span\":\"efinitive agreement to acquire a majority stake in Purecan, a profitable German medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ide\",\"published_at\":\"2025-01-29T00:00:00+00:00\",\"available_at\":\"2025-01-30T00:00:00+00:00\"}],\"expected\":{\"value\":\"unavailable\",\"confidence_min\":0.5,\"supporting_spans\":[]}}]}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 7406,
+  "cost": 0.0
+ }
+}

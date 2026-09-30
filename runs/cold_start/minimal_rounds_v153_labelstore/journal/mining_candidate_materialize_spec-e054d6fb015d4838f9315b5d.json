@@ -1,0 +1,490 @@
+{
+ "key": "mining_candidate_materialize_spec-e054d6fb015d4838f9315b5d",
+ "mode": "live",
+ "request": {
+  "stage": "mining_candidate_materialize_spec",
+  "system_prompt": "Return exactly one JSON object. Convert the grounded mining-controller candidate into the Signal spec object only: a new signal_id in lowercase snake_case ([a-z0-9_] only; the runtime normalizes it), a definition faithful to the measurement, a retrieval policy whose source_types cover the cited evidence source types (family names like news, filing, or transcript are interchangeable with concrete types like company_news, sec_filing, earnings_call) and coverage minima that do not exceed what the cited evidence demonstrates. Preserve the controller modality: a structured measurement must name a registered deterministic function that exactly matches it (if none matches, report the capability gap instead of recasting it as LLM); a narrative predicate must declare the LLM skill modality. Return exactly {\"spec\": {...}}.",
+  "payload": {
+   "candidate": {
+    "measurement": {
+     "observable": "order_confirmation_disclosed",
+     "value_kind": "boolean",
+     "normalization": "none",
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "company_news",
+       "news",
+       "filing"
+      ],
+      "lookback_days": 90,
+      "semantic_condition": "A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services.",
+      "threshold": {
+       "field": "order_confirmation_disclosed",
+       "operator": "==",
+       "value": true
+      }
+     }
+    },
+    "falsifiers": [
+     {
+      "condition": "No order confirmation is disclosed in any point-in-time narrative document for a positive case.",
+      "expected_observation": "order_confirmation_disclosed == false for that case"
+     },
+     {
+      "condition": "An order confirmation is disclosed in a control case.",
+      "expected_observation": "order_confirmation_disclosed == true for that control case"
+     }
+    ],
+    "evidence_refs": [
+     "event-00443611f5206477",
+     "event-032f6016926d3529",
+     "event-041af07c51c3a811",
+     "event-05bed2dd16917521",
+     "event-0aaacacdca0336f7"
+    ],
+    "need_dispositions": [
+     {
+      "need_refs": [
+       "need-001"
+      ],
+      "disposition": "new_measurement",
+      "signal_refs": [],
+      "rationale": "Order confirmation disclosure is a new narrative measurement not present in the signal catalog."
+     },
+     {
+      "need_refs": [
+       "need-002"
+      ],
+      "disposition": "deferred_measurement",
+      "signal_refs": [],
+      "rationale": "Deferred due to budget constraints; no existing signal covers this need."
+     },
+     {
+      "need_refs": [
+       "need-003"
+      ],
+      "disposition": "update_existing",
+      "signal_refs": [
+       "order_quality:v1"
+      ],
+      "rationale": "Existing order_quality signal can be updated with this narrative predicate."
+     },
+     {
+      "need_refs": [
+       "need-004"
+      ],
+      "disposition": "repair_dependency",
+      "signal_refs": [],
+      "rationale": "Dependency on narrative event coverage requires repair before measurement."
+     },
+     {
+      "need_refs": [
+       "need-005"
+      ],
+      "disposition": "not_testable",
+      "signal_refs": [],
+      "rationale": "No point-in-time data available for this need in the current cohort."
+     },
+     {
+      "need_refs": [
+       "need-006"
+      ],
+      "disposition": "fast_plan_action",
+      "signal_refs": [],
+      "rationale": "Fast plan action to validate order confirmation disclosure across cases."
+     }
+    ]
+   },
+   "candidate_contract": {
+    "execution_semantics": {
+     "modality": {
+      "structured": "A typed point-in-time measurement whose value is fully determined by inputs and parameters; it requires an exact registered deterministic function.",
+      "narrative": "A semantic predicate over source text; it requires a grounded LLM skill.",
+      "mixed": "Split numeric measurement and narrative fallback into separate Signals."
+     },
+     "value_semantics": {
+      "positive": "Evidence in the direction of the fixed surge target.",
+      "negative": "Evidence in the control/opposing direction.",
+      "neutral": "Available measurement without decisive directional evidence.",
+      "unavailable": "Required point-in-time measurement inputs are insufficient.",
+      "orientation": "Do not equate numeric sign with Signal direction. Derive a new candidate's orientation from the observed contrast and keep its definition, implementation and fixtures consistent. Report the underlying quantity in interpretation/evidence. Do not reverse an existing stable definition or copy case labels into the skill."
+     },
+     "retrieval": {
+      "execution_order": "Coverage must resolve before the function or LLM skill runs.",
+      "source_types": "Use source types/formats supported by the supplied evidence; do not invent a provider category.",
+      "minimum_observations": "Counts the largest explicit structured series in a document: lists named prices, observations, rows or series, or lists of records with date/timestamp fields. A standalone financial fact is not such a series. Leave null unless this is a real input requirement.",
+      "period_requirements": "minimum_distinct_periods and minimum_period_span_days check period coverage, not concept completeness or comparable duration. The implementation must still check every required component and period.",
+      "fixtures": "Non-unavailable fixtures must satisfy the same retrieval coverage as production, with literal source evidence and point-in-time dates. Missing-input fixtures may expect unavailable; technical failures are not successful unavailable measurements. Every fixture's expected value must agree with the skill's own documented applicability boundaries: a lookalike the skill scores neutral must not be expected unavailable, and a documented non-applicable case must not be expected decisive."
+     }
+    },
+    "arguments_schema": {
+     "type": "object",
+     "required": [
+      "spec",
+      "tests"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "spec": {
+       "type": "object",
+       "required": [
+        "signal_id",
+        "version",
+        "category",
+        "modality",
+        "definition",
+        "schema",
+        "execution",
+        "raw_retrieval",
+        "evidence_policy",
+        "parameters"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "signal_id": {
+         "type": "string"
+        },
+        "version": {
+         "type": "integer",
+         "minimum": 1
+        },
+        "category": {
+         "type": "string"
+        },
+        "modality": {
+         "enum": [
+          "structured",
+          "narrative"
+         ]
+        },
+        "definition": {
+         "type": "object",
+         "required": [
+          "description"
+         ],
+         "properties": {
+          "description": {
+           "type": "string"
+          }
+         },
+         "additionalProperties": false
+        },
+        "schema": {
+         "const": {
+          "value": {
+           "type": "categorical",
+           "values": [
+            "positive",
+            "neutral",
+            "negative",
+            "unavailable"
+           ]
+          },
+          "confidence": {
+           "type": "float"
+          }
+         }
+        },
+        "execution": {
+         "oneOf": [
+          {
+           "type": "object",
+           "required": [
+            "type",
+            "function"
+           ],
+           "properties": {
+            "type": {
+             "const": "deterministic"
+            },
+            "function": {
+             "enum": [
+              "financial.cash_burn_rate_elevated",
+              "financial.cash_reserves",
+              "financial.cash_to_current_liabilities_ratio",
+              "financial.gross_margin_change",
+              "financial.liquidity_runway_months",
+              "financial.net_share_retirement_yoy",
+              "financial.operating_cash_flow_margin",
+              "financial.revenue_acceleration",
+              "financial.revenue_growth_yoy",
+              "market.max_drawdown_1y",
+              "market.price_momentum_126d",
+              "news.negative_word_count"
+             ]
+            }
+           },
+           "additionalProperties": false
+          },
+          {
+           "type": "object",
+           "required": [
+            "type",
+            "skill_file"
+           ],
+           "properties": {
+            "type": {
+             "const": "llm"
+            },
+            "skill_file": {
+             "type": "string"
+            }
+           },
+           "additionalProperties": false
+          }
+         ]
+        },
+        "raw_retrieval": {
+         "type": "object",
+         "required": [
+          "source_types",
+          "query_terms"
+         ],
+         "properties": {
+          "source_types": {
+           "type": "array",
+           "minItems": 1,
+           "uniqueItems": true,
+           "items": {
+            "type": "string"
+           }
+          },
+          "query_terms": {
+           "type": "array",
+           "minItems": 1,
+           "maxItems": 12,
+           "uniqueItems": true,
+           "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+           }
+          },
+          "lookback_days": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "comparison_requirement": {
+           "type": [
+            "string",
+            "null"
+           ],
+           "minLength": 1,
+           "maxLength": 240
+          },
+          "required_source_groups": {
+           "type": "array",
+           "uniqueItems": true,
+           "items": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+             "type": "string",
+             "minLength": 1
+            }
+           }
+          },
+          "minimum_distinct_periods": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "minimum_period_span_days": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "minimum_observations": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          }
+         },
+         "additionalProperties": false
+        },
+        "evidence_policy": {
+         "const": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+         }
+        },
+        "parameters": {
+         "type": "object"
+        }
+       }
+      },
+      "skill": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "tests": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": "object",
+        "required": [
+         "name",
+         "as_of",
+         "expected",
+         "documents"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "as_of": {
+          "type": "string",
+          "description": "timezone-aware ISO-8601 timestamp"
+         },
+         "company_id": {
+          "type": "string"
+         },
+         "expected": {
+          "enum": [
+           "positive",
+           "neutral",
+           "negative",
+           "unavailable"
+          ]
+         },
+         "documents": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+           "type": "object",
+           "required": [
+            "document_id",
+            "source_type",
+            "published_at",
+            "available_at",
+            "content"
+           ]
+          }
+         }
+        }
+       }
+      }
+     },
+     "constraints": [
+      "deterministic execution cannot include skill",
+      "LLM execution requires non-empty skill",
+      "fixture source_type must be declared by raw_retrieval"
+     ]
+    },
+    "deterministic_function_contracts": {
+     "financial.cash_burn_rate_elevated": "Measure cash burn as absolute negative operating cash flow / cash for the latest SEC duration, using the closest same-currency cash instant at or before period end. Non-negative operating cash flow is a zero burn ratio. Missing, non-positive cash, mismatched, or stale facts yield unavailable. burn_threshold defaults to 0.10; qualifying burn is positive, observed zero burn is negative, and an observed below-threshold positive burn is neutral.",
+     "financial.cash_reserves": "Measure the latest SEC instant cash and equivalents balance, in its reported currency units, without normalizing by burn, revenue or company size. Missing or stale current cash facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.cash_to_current_liabilities_ratio": "Measure latest cash and equivalents / current liabilities for the same SEC instant period and reported currency. Non-positive liabilities and missing, mismatched, or stale facts yield unavailable. Numeric states use positive_min (default 1) and negative_max (default positive_min).",
+     "financial.gross_margin_change": "Measure gross-margin change: latest GrossProfit / revenue minus the previous comparable-duration margin. GrossProfit and revenue must match start, end and units within each period. Missing matched periods, zero revenue or stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.liquidity_runway_months": "Measure cash runway in months from the latest SEC operating cash flow duration and the closest same-currency cash instant at or before its end. Monthly burn is absolute cash flow divided by the rounded reported duration in months. Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <= positive_runway_max_months (default 6) is positive, runway >= negative_runway_min_months (default 12) is negative, and values between are neutral. Non-negative operating cash flow is negative evidence of a low-runway condition (an effectively unbounded burn runway).",
+     "financial.net_share_retirement_yoy": "Measure net share retirement as 1 - current / prior-year weighted-average shares over comparable periods. Positive means net retirement and negative means dilution; this is not a cash buyback amount. Missing comparable or stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.operating_cash_flow_margin": "Measure operating cash flow margin as operating cash flow / positive revenue for the latest matching SEC duration period (same start, end and units). Requires both revenue and operating-cash-flow facts. This does not measure operating-income alignment or cash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.revenue_acceleration": "Measure revenue acceleration as latest year-over-year revenue growth minus an earlier comparable growth rate. Requires two supported revenue year-over-year pairs with matching units and nonzero denominators; incomplete/stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.revenue_growth_yoy": "Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires SEC duration facts, matching units and comparable year-over-year periods; zero prior revenue or missing/stale current facts yields unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "market.max_drawdown_1y": "Measure the minimum price / preceding running peak - 1 over all observations in the latest supplied metadata.prices series. This function does not itself restrict dates to one year; retrieval owns the point-in-time series window. Missing prices yield unavailable; invalid or nonpositive prices fail validation. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement.",
+     "market.price_momentum_126d": "Measure last / first price - 1 over the final lookback_observations + 1 supplied metadata.prices values (default lookback_observations=126, positive integer). Fewer observations yield unavailable; prices must be finite positive numbers. Retrieval owns dates and adjustment convention. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement.",
+     "news.negative_word_count": "Count case-insensitive literal substring occurrences across input documents. terms defaults to decline, loss, risk, delay, investigation, default. Count >= negative_count_min (default 1) is negative; otherwise neutral. This measures lexical frequency, not semantic sentiment or event severity."
+    },
+    "constraints": [
+     "new signal_id only; existing stable identities belong to Update",
+     "non-empty point-in-time fixtures required",
+     "choose a deterministic function only when its documented measurement matches the definition; parameters do not replace its formula",
+     "structured modality requires an exact registered deterministic function; otherwise retain a capability gap",
+     "narrative modality requires a source-grounded LLM skill",
+     "split mixed structured-formula and narrative-fallback proposals",
+     "candidate text and fixtures must not contain Discovery identities or labels"
+    ]
+   },
+   "cited_evidence": [
+    {
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "company_news",
+       "news",
+       "filing"
+      ],
+      "lookback_days": 90,
+      "semantic_condition": "A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services.",
+      "threshold": {
+       "field": "order_confirmation_disclosed",
+       "operator": "==",
+       "value": true
+      }
+     },
+     "kind": "narrative_predicate"
+    },
+    {
+     "ref": "event-00443611f5206477",
+     "exact_span": "icker_sentiment_score\":\"0.473218\"}],\"time_published\":\"20241231T235959\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"topics\":[{\"relevance_score\":\"0.941311\",\"topic\":\"energy_transportation\"},{\"relevanc",
+     "excerpt": "Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.",
+     "title": "Industrial Decarbonization for Heavy Industries",
+     "source_family": "news",
+     "published_at": "2024-12-31T23:59:59+00:00",
+     "available_at": "2024-12-31T23:59:59+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-041af07c51c3a811",
+     "exact_span": "eft:1.22pt\">Sales relate to external customers only. All intersegment sales are eliminated in consolidation.</span></div></ix:nonNumeric></ix:continuation><div style=\"margin-bottom:3pt\"><span><br/></s",
+     "excerpt": "eliminated in consolidation. 31 Table of Contents Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations First Quarter 2024 in Summary 33 First Quarter 2024 Results of Operations 35 Reconciliations of Non-GAAP Financial Measures 40 Liquidity and Capital Resources 46 Pension Benefits 49 Critical Accounting Policies and Estimates 50 This Management’s Discussion and Analysis contains “forward-looking statements” within the safe harbor provisions of the Private Securities Litigation Reform Act of 1995, including statements about business outlook. These",
+     "title": "10-Q 2024-02-05",
+     "source_family": "filing",
+     "published_at": "2024-02-05T20:01:25+00:00",
+     "available_at": "2024-02-05T20:01:25+00:00"
+    },
+    {
+     "ref": "event-032f6016926d3529",
+     "exact_span": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan,",
+     "excerpt": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Manitoba and Ontario High Tide Inc. has announced the launch of exclusive Queen of Bud branded white-label products, including crystal smoke-eliminating candles, premium Zippo lighters, and a range of innovative pre-rolls, in various Canadian provinces. This initiative follows the acquisition of the Queen of Bud brand in March 2024 and Alberta's",
+     "title": "High Tide Announces Launch of Queen of Bud Branded White Label Products in British Columbia, Alberta, Saskatchewan, Mani",
+     "source_family": "news",
+     "published_at": "2024-09-12T10:10:09+00:00",
+     "available_at": "2024-09-12T10:10:09+00:00"
+    },
+    {
+     "ref": "event-0aaacacdca0336f7",
+     "exact_span": "efinitive agreement to acquire a majority stake in Purecan, a profitable German medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ide",
+     "excerpt": "medical cannabis importer and wholesaler is an excellent example. After extensive efforts, we identified Purecan as the ideal entry point into the fast-growing German medical cannabis market. This acquisition aligns with our objectives entering the market profitably, adding unique value and doing so cost-effectively without significant strain on our resources. Purecan is already profitable with impressive adjusted EBITDA margins of 29%, providing a platform to strengthen our core business and deepen relationships with Canadian licensed producers. This transaction is highly accretive. We are",
+     "title": "{\"quarter\":\"2024Q4\",\"symbol\":\"HITI\",\"transcript\":[{\"content\":\"Good morning.",
+     "source_family": "transcript",
+     "published_at": "2025-01-29T00:00:00+00:00",
+     "available_at": "2025-01-30T00:00:00+00:00",
+     "document_source_type": "earnings_transcript"
+    },
+    {
+     "ref": "event-05bed2dd16917521",
+     "exact_span": "<DOCUMENT>\n<TYPE>6-K\n<SEQUENCE>1\n<FILENAME>hightide6k.htm\n<DESCRIPTION>FORM 6-K\n<TEXT>\n<html>\n\n<head>\n    <title>High Tide Inc.: Form 6-K - Filed by newsfilecor",
+     "excerpt": "6-K 1 hightide6k.htm FORM 6-K High Tide Inc.: Form 6-K - Filed by newsfilecorp.com UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 OF THE SECURITIES EXCHANGE ACT OF 1934 For the month of December 2024 Commission File Number: 001-40258 HIGH TIDE INC. (Registrant) 11127 - 15 Street N.E., Unit 112 Calgary, Alberta Canada T3K 2M4 (Address of Principal Executive Offices) Indicate by check mark whether the Registrant files or will file annual reports under cover of Form 20-F or Form 40-F. Form 20-F ☐",
+     "title": "6-K 2024-12-11",
+     "source_family": "filing",
+     "published_at": "2024-12-11T17:27:33+00:00",
+     "available_at": "2024-12-11T17:27:33+00:00"
+    }
+   ],
+   "last_issues": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"spec\":{\"signal_id\":\"order_confirmation_disclosed\",\"version\":1,\"category\":\"order_quality\",\"modality\":\"narrative\",\"definition\":{\"description\":\"A point-in-time company news, filing, or press release document discloses a confirmed order, contract award, or purchase commitment for the company's products or services.\"},\"schema\":{\"confidence\":{\"type\":\"float\"},\"value\":{\"type\":\"categorical\",\"values\":[\"positive\",\"neutral\",\"negative\",\"unavailable\"]}},\"execution\":{\"type\":\"llm\",\"skill_file\":\"order_confirmation_disclosed.md\"},\"raw_retrieval\":{\"source_types\":[\"company_news\",\"news\",\"filing\"],\"query_terms\":[\"confirmed order\",\"contract award\",\"purchase commitment\",\"order confirmation\",\"customer order\",\"supply agreement\"],\"lookback_days\":90,\"minimum_observations\":null,\"minimum_distinct_periods\":null,\"minimum_period_span_days\":null,\"comparison_requirement\":null,\"required_source_groups\":[]},\"evidence_policy\":{\"require_source\":true,\"require_exact_span\":true,\"require_timestamp\":true},\"parameters\":{}}}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 5004,
+  "cost": 0.0
+ }
+}

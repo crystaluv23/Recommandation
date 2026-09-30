@@ -1,0 +1,27 @@
+{
+ "case_id": "cik_0000003197:20250329t00001743177600z",
+ "company_id": "cik_0000003197",
+ "prediction_time": "2025-03-29T00:00:00+00:00",
+ "prediction": {
+  "is_surge": true,
+  "candidate_judgment": "possible",
+  "magnitude": "2-3x",
+  "confidence": {
+   "level": "low"
+  },
+  "key_reasons": [
+   "Backlog grew from $370.9 million at December 31, 2023 to $540.9 million at December 31, 2024, a source-backed demand acceleration that could support a share-price repricing candidate over the six-month horizon.",
+   "The 2025-03-13 news summary cites an optimistic outlook with expected profit doubling and higher cash flow, which is a source-backed expectation-changing catalyst that could contribute to a 2x price outcome even though the exact financial impact remains uncertain.",
+   "The Third Amended and Restated Credit Agreement providing a $400.0 million senior secured revolving credit facility supports liquidity and acquisition integration capacity, which can enable execution on the growth narrative."
+  ],
+  "uncertainties": [
+   "The baseline mean adjusted close is $24.336, so the 2x threshold is about $48.67; the recent close of $23.70 is roughly half that level, requiring a very large repricing within six months.",
+   "Revenue growth year-over-year was only about 2.4%, and operating cash flow margin was about 4.45%, which are not yet consistent with a rapid doubling of the share price.",
+   "Cash to current liabilities was about 0.155, indicating weak short-term liquidity relative to current liabilities despite an approximately 18.3-month liquidity runway.",
+   "Guidance acceleration signal was unavailable, and the profit-doubling and higher-cash-flow expectations are from a news summary rather than a company-issued forward projection in the supplied context.",
+   "No explicit future price target or quantified valuation bridge to the 2x threshold is supplied."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 31205
+}
