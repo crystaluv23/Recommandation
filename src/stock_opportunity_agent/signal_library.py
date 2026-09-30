@@ -3112,6 +3112,11 @@ _REVENUE_TAGS = (
     "RevenueFromSaleOfGoods",
 )
 _MAX_SEC_CURRENT_PERIOD_AGE_DAYS = 550
+# A same-period value at least this many times smaller than the canonical total
+# marks its whole tag as a disaggregation partial (FEIM's $89K/$0 beside a $40M+
+# total is 447x; Hertz's $19M beside $3.2B is 168x; AMD's ASC 606 restatement
+# crossover stays within 1.11x and must NOT count as partial).
+_PARTIAL_VALUE_RATIO = 3.0
 _CASH_TAGS = (
     "CashAndCashEquivalentsAtCarryingValue",
     "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
@@ -3141,15 +3146,19 @@ def _revenue_growth_signal(
     as_of: datetime,
 ) -> SignalResult:
     """Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires
-    SEC duration facts, matching units and comparable year-over-year periods; zero prior
-    revenue or missing/stale current facts yields unavailable. Numeric states use
+    SEC duration facts from the per-issuer canonical total series (dominance-resolved;
+    partial or zero same-period tag values never displace the total), matching units
+    and comparable year-over-year periods; zero prior revenue or missing/stale
+    current facts yields unavailable. Numeric states use
     positive_min (default 0) and negative_max (default positive_min): value >=
     positive_min is positive, otherwise value <= negative_max is negative, otherwise
-    neutral. Thresholds do not change the measurement. max_period_age_days (default 550)
+    neutral. Thresholds do not change the measurement. Values beyond
+    plausible_abs_max (default 5) are downgraded to partial coverage at 0.5
+    confidence with an implausible_value marker. max_period_age_days (default 550)
     bounds current SEC period age; older comparative periods remain allowed.
     """
 
-    series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
     pair = _latest_yoy_pair(series)
     if pair is None or pair[1].value == 0:
         return _unavailable_result(spec, "Comparable SEC revenue periods were unavailable.")
@@ -3166,6 +3175,7 @@ def _revenue_growth_signal(
         as_of,
         label="revenue_growth_yoy",
         evidence=_fact_evidence((current, previous), as_of),
+        plausible_abs_max=5.0,
     )
 
 
@@ -3175,16 +3185,18 @@ def _revenue_acceleration_signal(
     as_of: datetime,
 ) -> SignalResult:
     """Measure revenue acceleration as latest year-over-year revenue growth minus an earlier
-    comparable growth rate. Requires two supported revenue year-over-year pairs with
+    comparable growth rate. Requires two supported revenue year-over-year pairs from the
+    per-issuer canonical total series (dominance-resolved; never mixed-basis), with
     matching units and nonzero denominators; incomplete/stale current facts yield
     unavailable. Numeric states use positive_min (default 0) and negative_max (default
     positive_min): value >= positive_min is positive, otherwise value <= negative_max is
-    negative, otherwise neutral. Thresholds do not change the measurement.
-    max_period_age_days (default 550) bounds current SEC period age; older comparative
-    periods remain allowed.
+    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond
+    plausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence
+    with an implausible_value marker. max_period_age_days (default 550) bounds current
+    SEC period age; older comparative periods remain allowed.
     """
 
-    series = _duration_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
+    series = _canonical_series(_sec_facts(documents, as_of), _REVENUE_TAGS)
     pairs = _yoy_pairs(series)
     if len(pairs) < 2:
         return _unavailable_result(spec, "Two comparable SEC revenue growth periods were unavailable.")
@@ -3212,6 +3224,7 @@ def _revenue_acceleration_signal(
         as_of,
         label="revenue_acceleration",
         evidence=_fact_evidence(facts, as_of),
+        plausible_abs_max=5.0,
     )
 
 
@@ -3222,17 +3235,20 @@ def _gross_margin_change_signal(
 ) -> SignalResult:
     """Measure gross-margin change: latest GrossProfit / revenue minus the previous
     comparable-duration margin. GrossProfit and revenue must match start, end and units
-    within each period. Missing matched periods, zero revenue or stale current facts yield
+    within each period, and revenue comes from the per-issuer canonical total series
+    (dominance-resolved; partial or zero same-period tag values never displace the
+    total). Missing matched periods, zero revenue or stale current facts yield
     unavailable. Numeric states use positive_min (default 0) and negative_max (default
     positive_min): value >= positive_min is positive, otherwise value <= negative_max is
-    negative, otherwise neutral. Thresholds do not change the measurement.
-    max_period_age_days (default 550) bounds current SEC period age; older comparative
-    periods remain allowed.
+    negative, otherwise neutral. Thresholds do not change the measurement. Values beyond
+    plausible_abs_max (default 2) are downgraded to partial coverage at 0.5 confidence
+    with an implausible_value marker. max_period_age_days (default 550) bounds current
+    SEC period age; older comparative periods remain allowed.
     """
 
     facts = _sec_facts(documents, as_of)
-    revenues = _duration_series(facts, _REVENUE_TAGS)
-    gross_profit = _duration_series(facts, ("GrossProfit",))
+    revenues = _canonical_series(facts, _REVENUE_TAGS)
+    gross_profit = _canonical_series(facts, ("GrossProfit",))
     margins: list[tuple[str, float, _SecFact, _SecFact]] = []
     gross_by_period = {
         (fact.start, fact.end, fact.unit.casefold()): fact for fact in gross_profit
@@ -3265,6 +3281,7 @@ def _gross_margin_change_signal(
         evidence=_fact_evidence(
             (current[2], current[3], previous[2], previous[3]), as_of
         ),
+        plausible_abs_max=2.0,
     )
 
 
@@ -3274,18 +3291,24 @@ def _operating_cash_flow_margin_signal(
     as_of: datetime,
 ) -> SignalResult:
     """Measure operating cash flow margin as operating cash flow / positive revenue for the
-    latest matching SEC duration period (same start, end and units). Requires both revenue
+    latest matching SEC duration period (same start, end and units). Revenue comes from
+    the per-issuer canonical total series (dominance-resolved; partial or zero
+    same-period tag values never displace the total). Requires both revenue
     and operating-cash-flow facts. This does not measure operating-income alignment or
     cash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use
     positive_min (default 0) and negative_max (default positive_min): value >=
     positive_min is positive, otherwise value <= negative_max is negative, otherwise
-    neutral. Thresholds do not change the measurement. max_period_age_days (default 550)
-    bounds current SEC period age; older comparative periods remain allowed.
+    neutral. Thresholds do not change the measurement. Values beyond plausible_abs_max
+    (default 1.5) are downgraded to partial coverage at 0.5 confidence with an
+    implausible_value marker. max_period_age_days (default 550) bounds current SEC
+    period age; older comparative periods remain allowed.
     """
 
     facts = _sec_facts(documents, as_of)
-    revenues = _duration_series(facts, _REVENUE_TAGS)
-    operating_cash_flows = _duration_series(facts, _OPERATING_CASH_FLOW_TAGS)
+    revenues = _canonical_series(facts, _REVENUE_TAGS)
+    operating_cash_flows = _canonical_series(
+        facts, _OPERATING_CASH_FLOW_TAGS, dominance=False
+    )
     cash_flow_by_period = {
         (fact.start, fact.end, fact.unit.casefold()): fact for fact in operating_cash_flows
     }
@@ -3317,6 +3340,7 @@ def _operating_cash_flow_margin_signal(
         as_of,
         label="operating_cash_flow_margin",
         evidence=_fact_evidence((latest[2], latest[3]), as_of),
+        plausible_abs_max=1.5,
     )
 
 
@@ -3355,6 +3379,7 @@ def _net_share_retirement_yoy_signal(
         as_of,
         label="net_share_retirement_yoy",
         evidence=_fact_evidence((current, previous), as_of),
+        plausible_abs_max=1.0,
     )
 
 
@@ -3658,9 +3683,31 @@ def _make_sec_fact(
     )
 
 
-def _duration_series(
-    facts: Iterable[_SecFact], tags: tuple[str, ...]
+def _canonical_series(
+    facts: Iterable[_SecFact],
+    tags: tuple[str, ...],
+    *,
+    dominance: bool = True,
 ) -> list[_SecFact]:
+    """Resolve one canonical per-currency series for an issuer's concept total.
+
+    A tag whose same-period value is at least _PARTIAL_VALUE_RATIO times
+    smaller than a co-occurring value (or zero beside a nonzero value) is a
+    disaggregation partial and is excluded entirely, including periods no other
+    tag covers; detection is direction-free and runs before ranking so a
+    coverage tie can never promote a partial tag. Among remaining total tags
+    the canonical basis is the coverage-ranked one: latest period end, then
+    distinct period count, then the declared tag order. A period key covered by
+    the canonical tag keeps the canonical fact; remaining trusted tags fill only
+    uncovered keys, so a tag switch or a percent-level restatement crossover
+    stitches into one series while a partial slice never enters it. When no
+    fact is eligible, or every present tag is partial, the series is empty and
+    callers fail closed. With dominance disabled the legacy priority order
+    stands per key, except a zero-valued preferred tag cannot displace a
+    nonzero same-period value. Returns one currency's series (USD preferred,
+    else latest period end, else unit name), latest end first.
+    """
+
     tag_priority = {tag: index for index, tag in enumerate(tags)}
     eligible = [
         fact
@@ -3669,26 +3716,81 @@ def _duration_series(
         and fact.start is not None
         and re.fullmatch(r"[A-Za-z]{3}", fact.unit) is not None
     ]
-    by_period: dict[tuple[str, str, str], _SecFact] = {}
+    by_key: dict[tuple[str, str, str], dict[str, _SecFact]] = {}
     for fact in sorted(
         eligible,
-        key=lambda item: (
-            item.start or "",
-            item.end,
-            -tag_priority[item.tag],
-            item.filed,
-            item.document.document_id,
-        ),
+        key=lambda item: (item.start or "", item.end, item.filed, item.document.document_id),
     ):
         key = (fact.start or "", fact.end, fact.unit.casefold())
-        current = by_period.get(key)
-        if current is None or tag_priority[fact.tag] < tag_priority[current.tag]:
-            by_period[key] = fact
-    return sorted(
-        by_period.values(),
-        key=lambda fact: (fact.end, fact.unit.casefold() == "usd", fact.unit),
-        reverse=True,
+        by_key.setdefault(key, {}).setdefault(fact.tag, fact)
+
+    present = {fact.tag for fact in eligible}
+    if not present:
+        return []
+    # Direction-free partial detection: a tag at least _PARTIAL_VALUE_RATIO
+    # times smaller than a co-occurring same-period value is a disaggregation
+    # slice and is excluded entirely, before any canonical ranking can prefer
+    # it through a coverage tie.
+    partial_tags: set[str] = set()
+    if dominance:
+        for tag_map in by_key.values():
+            for tag, fact in tag_map.items():
+                if tag in partial_tags:
+                    continue
+                for other_tag, other in tag_map.items():
+                    if other_tag == tag:
+                        continue
+                    if abs(other.value) >= _PARTIAL_VALUE_RATIO * max(
+                        abs(fact.value), 1e-9
+                    ) or (other.value != 0 and fact.value == 0):
+                        partial_tags.add(tag)
+                        break
+    total_tags = present - partial_tags
+    if not total_tags:
+        return []
+    coverage = {
+        tag: (
+            max(fact.end for fact in eligible if fact.tag == tag),
+            sum(1 for key in by_key if tag in by_key[key]),
+        )
+        for tag in total_tags
+    }
+    canonical = max(
+        total_tags,
+        key=lambda tag: (coverage[tag][0], coverage[tag][1], -tag_priority[tag], tag),
     )
+
+    selected: dict[tuple[str, str, str], _SecFact] = {}
+    for key, tag_map in by_key.items():
+        trusted = sorted(
+            (
+                (tag_priority[tag], fact)
+                for tag, fact in tag_map.items()
+                if tag not in partial_tags
+            ),
+            key=lambda row: (row[0], row[1].filed, row[1].document.document_id),
+        )
+        if not trusted:
+            continue
+        chosen = tag_map[canonical] if canonical in tag_map else trusted[0][1]
+        if chosen.value == 0:
+            nonzero = [row[1] for row in trusted if row[1].value != 0]
+            if nonzero:
+                chosen = nonzero[0]
+        selected[key] = chosen
+
+    by_unit: dict[str, list[_SecFact]] = {}
+    for fact in selected.values():
+        by_unit.setdefault(fact.unit.casefold(), []).append(fact)
+    unit = min(
+        by_unit,
+        key=lambda name: (
+            name != "usd",
+            max(fact.end for fact in by_unit[name]),
+            name,
+        ),
+    )
+    return sorted(by_unit[unit], key=lambda fact: fact.end, reverse=True)
 
 
 def _instant_series(
@@ -3709,13 +3811,17 @@ def _instant_series(
         key = (fact.end, fact.unit.casefold())
         current = by_period.get(key)
         if current is None or (
-            -tag_priority[fact.tag],
-            fact.filed,
-            fact.document.document_id,
-        ) > (
-            -tag_priority[current.tag],
-            current.filed,
-            current.document.document_id,
+            (
+                -tag_priority[fact.tag],
+                fact.filed,
+                fact.document.document_id,
+            )
+            > (
+                -tag_priority[current.tag],
+                current.filed,
+                current.document.document_id,
+            )
+            and (fact.value != 0 or current.value == 0)
         ):
             by_period[key] = fact
     return sorted(
@@ -4048,6 +4154,7 @@ def _price_momentum_signal(
         evidence=_price_series_evidence(
             document, values, (len(values) - raw_lookback - 1, len(values) - 1), as_of,
         ),
+        plausible_abs_max=50.0,
     )
 
 
@@ -4121,6 +4228,7 @@ def _numeric_result(
     *,
     label: str,
     evidence: tuple[SignalEvidence, ...] | None = None,
+    plausible_abs_max: float | None = None,
 ) -> SignalResult:
     positive_min = float(spec.parameters.get("positive_min", 0.0))
     negative_max = float(spec.parameters.get("negative_max", positive_min))
@@ -4132,6 +4240,13 @@ def _numeric_result(
         value = SignalValue.NEGATIVE
     else:
         value = SignalValue.NEUTRAL
+    raw_bound = spec.parameters.get("plausible_abs_max", plausible_abs_max)
+    gated = (
+        isinstance(raw_bound, (int, float))
+        and not isinstance(raw_bound, bool)
+        and math.isfinite(float(raw_bound))
+        and abs(numeric_value) > float(raw_bound)
+    )
     span = document.content[: min(240, len(document.content))]
     supporting = evidence or (
         SignalEvidence(
@@ -4144,10 +4259,13 @@ def _numeric_result(
         signal_id=spec.signal_id,
         version=spec.version,
         value=value,
-        confidence=1.0,
-        interpretation=f"{label}={numeric_value:.6g}",
+        confidence=0.5 if gated else 1.0,
+        interpretation=(
+            f"{label}={numeric_value:.6g}"
+            + ("; implausible_value" if gated else "")
+        ),
         supporting_evidence=supporting,
-        coverage=SignalCoverage.SUFFICIENT,
+        coverage=SignalCoverage.PARTIAL if gated else SignalCoverage.SUFFICIENT,
     )
 
 

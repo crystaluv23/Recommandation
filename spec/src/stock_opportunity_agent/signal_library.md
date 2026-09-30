@@ -217,8 +217,30 @@ original seed:
 
 These cutoffs are explicit, reviewable seed heuristics, not values claimed by
 the underlying empirical papers. A future promoted version may change them
-  only through the normal candidate validation and exact-hash automatic-promotion
-  boundary.
+only through the normal candidate validation and exact-hash automatic-promotion
+boundary.
+
+### Canonical basis and the plausibility gate (2026-09-30)
+
+Every financial duration factor consumes the per-issuer canonical series
+resolved under the Execution and Evidence contract, so a year-over-year pair or
+a revenue-matched margin always shares one measurement basis; evidence citation
+of the exact serialized fact rows is unchanged. Literal evidence validates
+inputs, not the semantic validity of a composed measurement, so numeric factors
+additionally declare a plausible magnitude bound: revenue growth and revenue
+acceleration `|x| <= 5`, gross-margin change `|x| <= 2`, operating-cash-flow
+margin `|x| <= 1.5`, net share retirement `|x| <= 1`, and 126-interval price
+momentum `|x| <= 50`. A value beyond its bound keeps its computed canonical
+state but is downgraded to partial coverage at 0.5 confidence with an
+`implausible_value` marker in the interpretation, because a small number of
+genuinely extreme observations exist and must stay visible rather than be
+silently clipped; the bound is overridable per Signal version through the
+`plausible_abs_max` parameter. Levels, drawdown (structurally within `[-1, 0]`),
+and cash-flow-derived ratios are not magnitude-gated. A repository-wide sweep
+script (`scripts/audit_deterministic_signals.py`) executes every deterministic
+financial factor over the local Raw Info oracle and reports downgraded and
+unavailable rates so basis regressions surface without waiting for a live
+Fast round.
 - `cash_to_current_liabilities_ratio` divides the latest cash and equivalents
   instant fact by current liabilities from the same period end and reported
   currency. Non-positive liabilities, missing matched facts, or stale current
@@ -275,14 +297,31 @@ Company Facts API JSON (`us-gaap`, or `ifrs-full` when US GAAP is absent) and ac
 `sec-company-facts-document-v1`; derived evidence cites the exact serialized
 fact rows used in the calculation.
 
-Revenue aliases include both `RevenueFromContractWithCustomerExcludingAssessedTax`
-and `RevenueFromContractWithCustomerIncludingAssessedTax`; a company changing
-between those standard concepts must not make a current case fall back to an older
-legacy `Revenues` fact. IFRS revenue aliases additionally include
-`RevenueFromContractsWithCustomers` and `RevenueFromSaleOfGoods`, in that priority
-order. Use one reporting namespace per raw document to avoid mixing accounting
-bases; do not infer gross profit from a different metric. All period, currency,
-freshness, filing cutoff, and literal-evidence checks remain unchanged. For every duration/balance financial primitive, the newest
+Financial duration primitives never mix reporting bases. For each additive flow
+concept (revenue, gross profit) the executor resolves one canonical per-currency
+series per issuer from the point-in-time fact set. The canonical basis is the
+coverage-ranked tag (latest period end, then distinct period count, then the
+declared tag order), so an issuer's ongoing basis wins over both legacy tags and
+restatement crossovers. A period key covered by the canonical tag keeps the
+canonical fact; a same-period value at least 3x smaller (or zero beside a
+nonzero total) marks its whole tag as a disaggregation partial that is excluded
+entirely, including periods the canonical tag does not cover, while remaining
+trusted tags fill only uncovered keys so a tag switch or a percent-level
+restatement crossover stitches into one series. Company Facts routinely
+co-locates a total under
+`Revenues` next to a partial slice or a zero under
+`RevenueFromContractWithCustomer(Including|Excluding)AssessedTax` (the local
+oracle has ≥2 co-locating revenue tags for 52% of issuers, diverging more than
+3x for ~10%), so static tag priority is not a valid truth ordering; the tag
+order in the alias lists (`RevenueFromContractWithCustomerExcludingAssessedTax`,
+`RevenueFromContractWithCustomerIncludingAssessedTax`, `Revenues`,
+`SalesRevenueNet`, `Revenue`; IFRS: `RevenueFromContractsWithCustomers`,
+`RevenueFromSaleOfGoods`) remains only as the deterministic tie-breaker when
+agreeing tags carry the same value. Cash instant dedupe never lets a zero-valued
+fact from a preferred tag displace a nonzero same-period balance. Use one
+reporting namespace per raw document to avoid mixing accounting bases; do not
+infer gross profit from a different metric. All period, currency, freshness,
+filing cutoff, and literal-evidence checks remain unchanged. For every duration/balance financial primitive, the newest
 fact used as the current period must end no more than 550 calendar days before the
 case as-of date. This accommodates one annual reporting cycle plus filing lag and a
 bounded buffer while making an otherwise valid but years-old concept `unavailable`.

@@ -11,6 +11,7 @@ from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     default_deterministic_signal_functions,
     deterministic_signal_function_contracts,
+    SignalCoverage,
     SignalExecutionType,
     SignalExecutor,
     SignalModality,
@@ -238,6 +239,148 @@ class SecFinancialSignalTests(TestCase):
             (SignalValue.UNAVAILABLE, SignalValue.UNAVAILABLE),
         )
         self.assertTrue(all("stale" in result.interpretation for result in stale))
+    def test_canonical_basis_excludes_same_period_partial_and_zero(self) -> None:
+        # FEIM shape: the contract-revenue tag carries a tiny prior value and a
+        # zero current value beside the Revenues total for the same periods.
+        rows = {
+            "Revenues": {"units": {"USD": [
+                _row("2023-05-01", "2024-01-31", 400.0, "2024-03-18"),
+                _row("2024-05-01", "2025-01-31", 500.0, "2025-01-20"),
+            ]}},
+            "RevenueFromContractWithCustomerIncludingAssessedTax": {"units": {"USD": [
+                _row("2023-05-01", "2024-01-31", 0.089, "2024-03-18"),
+                _row("2024-05-01", "2025-01-31", 0.0, "2025-01-20"),
+            ]}},
+        }
+        spec = _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, 0.0)
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("feim", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(result.interpretation, "revenue_growth_yoy=0.25")
+        self.assertEqual(result.confidence, 1.0)
+        self.assertEqual(result.coverage, SignalCoverage.SUFFICIENT)
+        for evidence in result.supporting_evidence:
+            self.assertNotIn('"val":0.089', evidence.exact_span)
+            self.assertNotIn('"val":0', evidence.exact_span)
+
+    def test_canonical_basis_uses_total_for_cash_flow_margin(self) -> None:
+        # Hertz shape: a nonzero partial slice must not become the denominator.
+        rows = {
+            "Revenues": {"units": {"USD": [
+                _row("2024-04-01", "2024-09-30", 3206.598, "2024-11-06"),
+            ]}},
+            "RevenueFromContractWithCustomerIncludingAssessedTax": {"units": {"USD": [
+                _row("2024-04-01", "2024-09-30", 19.081, "2024-11-06"),
+            ]}},
+            "NetCashProvidedByUsedInOperatingActivities": {"units": {"USD": [
+                _row("2024-04-01", "2024-09-30", 984.278, "2024-11-06"),
+            ]}},
+        }
+        spec = _spec("operating_cash_flow_margin", "financial.operating_cash_flow_margin", 0.1, 0.0)
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("hertz", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(result.interpretation, "operating_cash_flow_margin=0.306954")
+        cited = " ".join(e.exact_span for e in result.supporting_evidence)
+        self.assertNotIn("19.081", cited)
+
+    def test_restatement_crossover_keeps_the_ongoing_basis(self) -> None:
+        # AMD shape: the legacy tag is larger during the crossover quarter, but
+        # the contract tag is the issuer's continuing basis for later periods.
+        rows = {
+            "SalesRevenueNet": {"units": {"USD": [
+                _row("2023-11-01", "2024-01-31", 1222.0, "2024-03-18"),
+            ]}},
+            "RevenueFromContractWithCustomerExcludingAssessedTax": {"units": {"USD": [
+                _row("2023-11-01", "2024-01-31", 1151.0, "2025-01-20"),
+                _row("2024-11-01", "2025-01-31", 1240.0, "2025-01-20"),
+            ]}},
+        }
+        spec = _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.05, 0.0)
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("amd", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(result.interpretation, "revenue_growth_yoy=0.0773241")
+        cited = " ".join(e.exact_span for e in result.supporting_evidence)
+        self.assertNotIn("1222", cited)
+
+    def test_partial_tag_is_excluded_even_for_uncovered_periods(self) -> None:
+        rows = {
+            "Revenues": {"units": {"USD": [
+                _row("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                _row("2024-01-01", "2024-12-31", 125.0, "2025-01-20"),
+            ]}},
+            "RevenueFromContractWithCustomerIncludingAssessedTax": {"units": {"USD": [
+                _row("2022-01-01", "2022-12-31", 0.5, "2023-02-01"),
+                _row("2023-01-01", "2023-12-31", 0.4, "2024-02-01"),
+            ]}},
+        }
+        specs = (
+            _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, 0.0),
+            _spec("revenue_acceleration", "financial.revenue_acceleration", 0.05, -0.05),
+        )
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        results = SignalExecutor(
+            _snapshot(specs), RawInfoStore(documents=(_document("partial", content),))
+        ).execute_batch(
+            tuple(spec.ref for spec in specs), company_id="issuer_1", as_of=AS_OF
+        ).results
+        self.assertEqual(results[0].value, SignalValue.POSITIVE)
+        self.assertEqual(results[0].interpretation, "revenue_growth_yoy=0.25")
+        self.assertEqual(results[1].value, SignalValue.UNAVAILABLE)
+        self.assertIn("Two comparable", results[1].interpretation)
+
+    def test_implausible_values_are_downgraded_not_deleted(self) -> None:
+        rows = {
+            "Revenues": {"units": {"USD": [
+                _row("2023-11-01", "2024-01-31", 10.0, "2024-03-18"),
+                _row("2024-11-01", "2025-01-31", 61.0, "2025-01-20"),
+            ]}},
+        }
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        spec = _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, 0.0)
+        gated = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("gate", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(gated.value, SignalValue.POSITIVE)
+        self.assertEqual(gated.confidence, 0.5)
+        self.assertEqual(gated.coverage, SignalCoverage.PARTIAL)
+        self.assertEqual(gated.interpretation, "revenue_growth_yoy=5.1; implausible_value")
+
+        from dataclasses import replace
+        override = replace(
+            spec, parameters={**spec.parameters, "plausible_abs_max": 6}
+        )
+        cleared = SignalExecutor(
+            _snapshot((override,)), RawInfoStore(documents=(_document("gate2", content),))
+        ).execute_batch((override.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(cleared.confidence, 1.0)
+        self.assertEqual(cleared.coverage, SignalCoverage.SUFFICIENT)
+        self.assertEqual(cleared.interpretation, "revenue_growth_yoy=5.1")
+
+    def test_zero_cash_instant_cannot_displace_nonzero_balance(self) -> None:
+        rows = {
+            "CashAndCashEquivalentsAtCarryingValue": {"units": {"USD": [
+                _row(None, "2024-12-31", 0.0, "2025-01-20"),
+            ]}},
+            "CashAndCashEquivalents": {"units": {"USD": [
+                _row(None, "2024-12-31", 40.0, "2025-01-20"),
+            ]}},
+        }
+        spec = _spec("cash_reserves", "financial.cash_reserves", 30.0, 10.0)
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": rows}}, sort_keys=True, separators=(",", ":"))
+        result = SignalExecutor(
+            _snapshot((spec,)), RawInfoStore(documents=(_document("cash", content),))
+        ).execute_batch((spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        self.assertEqual(result.value, SignalValue.POSITIVE)
+        self.assertEqual(result.interpretation, "cash_reserves=40")
+
     def test_scoped_sec_api_drives_six_financial_signals_and_excludes_future(self) -> None:
         content = _scoped_company_facts_content()
         document = _document("sec_scoped", content)

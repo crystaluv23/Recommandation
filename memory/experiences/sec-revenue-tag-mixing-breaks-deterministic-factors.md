@@ -43,18 +43,27 @@ class with a nonzero partial value (margin 51.58x vs true 0.307).
 
 ## How to Apply
 
-1. Require same-tag period pairing in `_yoy_pairs` (align with
-   `_latest_share_yoy_pair`) and prefer value-consistent series over static
-   tag priority when several tags cover the same period.
-2. Add plausibility guards before `_numeric_result` (e.g. zero current
-   revenue, |growth| or |margin| beyond sane bounds -> unavailable), and never
-   publish confidence=1.0/sufficient for a computation whose inputs are
-   suspect.
+1. Resolve one canonical per-issuer total series before any ratio: exclude a
+   tag as a partial when any same-period co-occurring value is >=3x larger
+   (direction-free, before ranking, excluding its uncovered periods too), then
+   pick the canonical tag by coverage (latest end, then period count, then
+   declared order) and let trusted tags fill only uncovered keys. Strict
+   same-tag pairing or magnitude voting alone both fail: magnitude voting
+   misreads ASC 606 restatement crossovers where the legacy basis is larger
+   (AMD), and coverage ties can promote a partial tag when partial detection
+   runs after ranking.
+2. Add plausibility bounds before publishing numeric results (out-of-bounds
+   keeps the value but downgrades to partial coverage at 0.5 confidence with an
+   `implausible_value` marker); never publish confidence=1.0/sufficient for a
+   computation whose inputs are suspect.
 3. When a deterministic factor contradicts filing prose (e.g. "sharp YoY
    revenue improvement" vs growth=-1), treat the deterministic value as the
    suspect, not the prose; replay the exact function on the exact facts.
 4. Audit the compact blind-prediction context, not just signal results: a
    positive result that never reaches the prompt is invisible to the judge.
+5. Run `scripts/audit_deterministic_signals.py` over the oracle after any
+   basis-resolution change; FEIM/Hertz/AMD replays are the pinned regression
+   set (expected +0.2551 / 0.3070 / 0.359035).
 
 ## Limits
 
