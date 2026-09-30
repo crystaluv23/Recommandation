@@ -1,0 +1,384 @@
+{
+ "key": "mining_controller_step-5c89669550073e23babe853f",
+ "mode": "live",
+ "request": {
+  "stage": "mining_controller_step",
+  "system_prompt": "You are the bounded decision core of a label-aware Signal-mining controller over a point-in-time Evidence Graph. The runtime owns tools, the ledger, budgets, labels, and termination; you only choose one action per step. Return exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. Allowed actions and their required fields: inspect_manifest {}; inspect_catalog {}; fetch_evidence {case_refs, source_families, max_documents, query|null} where source_families may list several families in one call and every family must come from available_source_families in the view; sweep the evidence you need in as few fetches as possible; compute_statistic {rule, fact_refs[2]}; read_span with exactly one of {fact_ref | event_ref | document_ref} (event/document reads take bounded offset/length and charge the separate browse budget; raw narrative text is the authoritative narrative evidence); inspect_catalog {scope: signals|evidence} where scope=evidence returns the discovery-only family -> window -> document directory; compare_groups {concepts}; propose_candidate {candidate}; record_deferred {}; record_no_pattern {coverage}. candidate has measurement{observable,value_kind,normalization} where value_kind is exactly one of boolean, ordinal, numeric, categorical (express any ratio as numeric), falsifiers[{condition,expected_observation}], and evidence_refs that may cite only refs from known_fact_refs, known_event_refs, or known_relation_refs. For a narrative measurement, include measurement.predicate{modality:narrative, source_families, lookback_days, semantic_condition, threshold{field,operator,value}} whose source_families intersect your cited narrative evidence. When narrative_summary headlines or attribute_case_coverage show a positive-versus-control contrast (for example order confirmations appearing only in positive cases), a narrative predicate measurement citing those event refs is a first-class candidate and often serves several backlog needs at once. prior_modality_footprints carries earlier cycles' modality metrics and staged_candidate_outcomes — each prior candidate's real check-cohort result (tp/fn/fp/tn, availability, disposition). A semantic family whose fires never overlap the positive class (tp near zero, fn high) is a demonstrated predicate-label mismatch: propose a different narrative contrast instead of re-proposing the same semantic family. Every cited ref must already be in the ledger, at least one fetch_evidence must precede any proposal, and every known concept named in the observable or normalization (compare_groups results show the fact_ref behind each value) must be backed by at least one cited fact of that concept. The observable must be a genuinely new measurement: it may not reuse or version any signal_ref base name from signal_catalog, because changing an existing Signal belongs to the separate Update path. For the hypothesis seed, the proposal must also carry need_dispositions covering every backlog need exactly once (new_measurement, deferred_measurement, update_existing, repair_dependency, not_testable, fast_plan_action); each row is {need_refs, disposition, signal_refs, rationale} where only update_existing cites exactly one existing signal ref and every other disposition cites none. evidence_digest summarizes what your fetches have already collected (families, per-concept positive/control case coverage) and last_action_result reports what your previous action returned; use them instead of re-fetching families that are already covered, and spend remaining budget on compute_statistic, compare_groups, or your terminal action. Once heavy_remaining reaches 0, only inspect_manifest, inspect_catalog, record_no_pattern, and record_deferred remain admissible; repeating a heavy action then ends the seed as deferred_budget. research_axis defines the one comparison represented by positive/control, and labels arrive only through the runtime-owned label_map; never author, rewrite, or expand either. Budget wisely: fetch broadly once or twice, then compute or compare, and reserve budget for your terminal action; a seed with no budget left can only record_deferred. Domain terminals are inadmissible while modality_coverage shows any available structured or narrative modality unexplored: fetch missing structured evidence and read at least one bounded raw narrative event or document span. Listing or fetching narrative families proves availability but is not grounded narrative exploration; a control-plane terminal remains admissible. Exploration creates no candidate quota: propose only a recurring supported factor, regardless of modality. record_no_pattern must cite explored_families actually present in your own prior fetches. When last_invalid_action is present, fix exactly that issue. Never request facts after the prediction time, never use identities or file ordering as features, and never exceed the remaining budgets shown in the view.",
+  "payload": {
+   "seed": "discovery",
+   "state": "ready",
+   "budget": {
+    "heavy_remaining": 12,
+    "light_remaining": 4,
+    "browse_remaining": 24
+   },
+   "actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+   ],
+   "available_source_families": [
+    "10-k",
+    "10-q",
+    "alpha_vantage_earnings_raw_response",
+    "company_facts",
+    "company_news",
+    "earnings_transcript",
+    "filing",
+    "financial",
+    "financials",
+    "historical_price",
+    "market",
+    "market_data",
+    "news",
+    "sec_company_facts_raw_response",
+    "transcript"
+   ],
+   "measurable_evidence_manifest": {
+    "schema_version": "h1-measurable-evidence-manifest-v1",
+    "cohort_case_count": 6,
+    "structured_financial_concepts": [
+     {
+      "taxonomy": "dei",
+      "concept": "EntityCommonStockSharesOutstanding",
+      "source_display_name": "Entity Common Stock, Shares Outstanding",
+      "unit": "shares",
+      "case_count": 6,
+      "cases_with_comparable_records": 6
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "OperatingIncomeLoss",
+      "source_display_name": "Operating Income (Loss)",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "InventoryNet",
+      "source_display_name": "Inventory, Net",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "Revenues",
+      "source_display_name": "Revenues",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetIncomeLoss",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquity",
+      "source_display_name": "Stockholders' Equity Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtCurrent",
+      "source_display_name": "Long-term Debt, Current Maturities",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtNoncurrent",
+      "source_display_name": "Long-term Debt, Excluding Current Maturities",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "GrossProfit",
+      "source_display_name": "Gross Profit",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "AssetsCurrent",
+      "source_display_name": "Assets, Current",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LiabilitiesCurrent",
+      "source_display_name": "Liabilities, Current",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CommonStockSharesOutstanding",
+      "source_display_name": "Common Stock, Shares, Outstanding",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Diluted",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ResearchAndDevelopmentExpense",
+      "source_display_name": "Research and Development Expense",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "SalesRevenueNet",
+      "source_display_name": "Revenue, Net (Deprecated 2018-01-31)",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ShortTermInvestments",
+      "source_display_name": "Short-term Investments",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     }
+    ],
+    "pre_cutoff_price_series_cases": 6,
+    "narrative_source_families": [
+     {
+      "source_type": "10-k",
+      "case_count": 5
+     },
+     {
+      "source_type": "10-q",
+      "case_count": 5
+     },
+     {
+      "source_type": "company_news",
+      "case_count": 4
+     },
+     {
+      "source_type": "filing",
+      "case_count": 2
+     },
+     {
+      "source_type": "news",
+      "case_count": 2
+     },
+     {
+      "source_type": "earnings_transcript",
+      "case_count": 1
+     }
+    ],
+    "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+   },
+   "signal_catalog": [
+    {
+     "signal_ref": "financing_listing_action:v1",
+     "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+    },
+    {
+     "signal_ref": "cash_reserves:v1",
+     "description": "Read the latest point-in-time cash and equivalents balance."
+    },
+    {
+     "signal_ref": "gross_margin_change:v1",
+     "description": "Measure the latest point-in-time change in gross margin."
+    },
+    {
+     "signal_ref": "net_share_retirement_yoy:v1",
+     "description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+    },
+    {
+     "signal_ref": "operating_cash_flow_margin:v1",
+     "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+    },
+    {
+     "signal_ref": "revenue_acceleration:v1",
+     "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+    },
+    {
+     "signal_ref": "revenue_growth_yoy:v1",
+     "description": "Measure the latest point-in-time year-over-year revenue growth."
+    },
+    {
+     "signal_ref": "guidance_acceleration:v1",
+     "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+    },
+    {
+     "signal_ref": "max_drawdown_1y:v1",
+     "description": "Measure maximum drawdown from the point-in-time one-year price series."
+    },
+    {
+     "signal_ref": "price_momentum_126d:v1",
+     "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+    },
+    {
+     "signal_ref": "negative_word_count:v1",
+     "description": "Count configured negative terms in complete point-in-time company news source documents."
+    },
+    {
+     "signal_ref": "order_quality:v1",
+     "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+    },
+    {
+     "signal_ref": "commercialization_status:v1",
+     "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+    },
+    {
+     "signal_ref": "customer_concentration:v1",
+     "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+    }
+   ],
+   "case_refs": [
+    "case-001",
+    "case-002",
+    "case-003",
+    "case-004",
+    "case-005",
+    "case-006"
+   ],
+   "known_fact_refs": [],
+   "known_event_refs": [],
+   "known_relation_refs": [],
+   "label_map": {
+    "case-001": "positive",
+    "case-002": "control",
+    "case-003": "positive",
+    "case-004": "control",
+    "case-005": "positive",
+    "case-006": "control"
+   },
+   "research_axis": {
+    "axis_id": "surge_direction",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0",
+    "control": "realized_max_multiple < 2.0"
+   },
+   "evidence_digest": {
+    "fetches": 0,
+    "families_fetched": [],
+    "fact_count": 0,
+    "event_count": 0,
+    "relation_count": 0,
+    "cases_with_facts": [],
+    "concept_case_coverage": {},
+    "label_counts": {
+     "positive": 3,
+     "control": 3
+    }
+   },
+   "modality_coverage": {
+    "structured": {
+     "available": true,
+     "explored": false,
+     "status": "required"
+    },
+    "narrative": {
+     "available": true,
+     "explored": false,
+     "status": "required"
+    }
+   },
+   "prior_modality_footprints": [],
+   "meta_info": {
+    "items": [],
+    "included_refs": [],
+    "deferred_refs": [],
+    "counts": {
+     "available": 0,
+     "included": 0,
+     "deferred": 0
+    },
+    "directory": {
+     "cursor": 0,
+     "total": 0,
+     "levels": {
+      "case": 0,
+      "plan": 0,
+      "round": 0
+     }
+    }
+   },
+   "meta_memory_disclosures": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"action\":\"fetch_evidence\",\"case_refs\":[\"case-001\",\"case-002\",\"case-003\",\"case-004\",\"case-005\",\"case-006\"],\"source_families\":[\"company_facts\",\"company_news\",\"10-k\",\"10-q\",\"earnings_transcript\"],\"max_documents\":24,\"query\":null,\"rationale\":[\"First sweep: structured fundamentals plus narrative families across all six cases.\",\"company_facts gives comparable concept records for the structured modality.\",\"company_news/10-k/10-q/transcript cover the narrative modality in one call.\",\"No prior fetches, so broad coverage is the efficient first move.\"]}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 3283,
+  "cost": 0.0
+ }
+}

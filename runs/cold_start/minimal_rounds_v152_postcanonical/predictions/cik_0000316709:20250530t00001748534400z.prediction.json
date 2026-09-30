@@ -1,0 +1,25 @@
+{
+ "case_id": "cik_0000316709:20250530t00001748534400z",
+ "company_id": "cik_0000316709",
+ "prediction_time": "2025-05-30T00:00:00+00:00",
+ "prediction": {
+  "is_surge": false,
+  "candidate_judgment": "unlikely",
+  "magnitude": null,
+  "confidence": {
+   "level": "medium"
+  },
+  "key_reasons": [
+   "The supplied prediction baseline is a mean adjusted close of 87.83, so the six-month 2x threshold is 175.66; the most recent close of 87.76 is only about 0.4996 of that threshold, meaning the stock would need to roughly double from the current level.",
+   "Source-backed evidence shows only modest positive momentum: price_momentum_126d=0.0799902 and recent adjusted closes around 87-89, which is far short of the acceleration or catalyst magnitude typically associated with a 2x move.",
+   "The cited catalysts are not commensurate with a doubling: the 401(k) match program is an early competitive imitation, the annual meeting results are routine governance approvals, and the news sentiment is neutral to somewhat bullish rather than transformative."
+  ],
+  "uncertainties": [
+   "The packet lacks forward projections for client asset inflows, net interest margin, deposit trends, or capital return plans that could materially change the repricing outlook.",
+   "Some source projections are truncated or omitted, so additional positive catalysts may exist but are not visible in the supplied context.",
+   "A broad market or sector re-rating could lift SCHW more than company-specific evidence alone would suggest, but no such source-backed expectation change is supplied."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 23193
+}

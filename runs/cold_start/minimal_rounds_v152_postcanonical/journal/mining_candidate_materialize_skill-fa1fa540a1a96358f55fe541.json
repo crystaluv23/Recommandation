@@ -1,0 +1,344 @@
+{
+ "key": "mining_candidate_materialize_skill-fa1fa540a1a96358f55fe541",
+ "mode": "live",
+ "request": {
+  "stage": "mining_candidate_materialize_skill",
+  "system_prompt": "Return exactly one JSON object. Author the LLM skill for the already-materialized spec: it judges the semantic condition over the narrative family inside the lookback window, cites verbatim supporting and counter spans, and returns unavailable when evidence is insufficient. The skill's classification rules must assign confirmed qualifying events positive; explicit cancellations or denials negative; documents containing only proposals, memoranda, non-binding intent, lookalikes, or below-threshold mentions neutral (not unavailable); unavailable is reserved for empty or post-cutoff-only corpora and genuinely insufficient text. Return exactly {\"skill\": \"markdown text\"}.",
+  "payload": {
+   "candidate": {
+    "measurement": {
+     "observable": "narrative_order_confirmation_disclosed",
+     "value_kind": "boolean",
+     "normalization": "none",
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "news",
+       "filing",
+       "earnings_transcript"
+      ],
+      "lookback_days": 365,
+      "semantic_condition": "A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services.",
+      "threshold": {
+       "field": "confirmed_order_disclosure_count",
+       "operator": ">=",
+       "value": 1
+      }
+     }
+    },
+    "falsifiers": [
+     {
+      "condition": "No point-in-time narrative document in the lookback window discloses a confirmed order, award, or contract.",
+      "expected_observation": "confirmed_order_disclosure_count = 0"
+     },
+     {
+      "condition": "The narrative disclosure is only a proposal, letter of intent, or non-binding discussion rather than a confirmed order.",
+      "expected_observation": "confirmed_order_disclosure_count = 0"
+     }
+    ],
+    "evidence_refs": [
+     "event-00443611f5206477",
+     "event-00098e4bd4292030",
+     "event-00443611f5206477",
+     "event-032f6016926d3529",
+     "event-041af07c51c3a811",
+     "event-093915a4c2d59628",
+     "event-0aaacacdca0336f7",
+     "event-0b0f4d693d541f3d",
+     "event-0c20399571cd44a1",
+     "event-177a4b2b6b6a4391",
+     "event-17d3f64681f142a6",
+     "event-19115f2b03536b17",
+     "event-1b2dde3edd4b7a4e",
+     "event-20d434daa1abeea3",
+     "event-23ad9dbe3fc9f8e6",
+     "event-2483381bfa0e0245",
+     "event-260b6ede05fdb04e",
+     "event-292b0aff2c410548",
+     "event-295a30c0ff481316",
+     "event-29c0c5309d3da4b8",
+     "event-2af989dcf7718397",
+     "event-2d2fdc2e7ba50801",
+     "event-2d3a76709137c502",
+     "event-31281b6c79be285d",
+     "event-31c4c902c9a680da",
+     "event-3731aa1cefd7e405",
+     "event-39b83fdc9af0b618",
+     "event-3abfcd25808dddc6",
+     "event-3d6781c5e003c206",
+     "event-3e2535096d67fcc2",
+     "event-4206d14bea3d2642",
+     "event-425e179eb4b5b86d",
+     "event-4298565c308a9b14",
+     "event-42c7bcf527260c1b",
+     "event-43c47b5fba91a729",
+     "event-45b1fd5421341999",
+     "event-4760a93bc0c0f122",
+     "event-483dd4f5731b19a8",
+     "event-4901f956c6e8f2d4",
+     "event-4aa96847bf069feb",
+     "event-4d382f17839e0efe",
+     "event-4e3fea009c23d1c7",
+     "event-4ed13c8ec4d2f4fe",
+     "event-4ff681b67bf88b96",
+     "event-532d44c5dcec0c56",
+     "event-53f578650ca2450a",
+     "event-5561226ae86e639b",
+     "event-55db58b17fd5660c",
+     "event-56cc8355cbdb55b5",
+     "event-57ad21501a9b5e2d",
+     "event-598a1e22d55951c0",
+     "event-5bff485706d93ce7",
+     "event-5c66a56d5c2b6fc1",
+     "event-606cf16855f3a326",
+     "event-6238d698674e337e",
+     "event-68d01e8cb7aaa10c",
+     "event-695416a19624d873",
+     "event-6de23f26b2579f4b",
+     "event-6f81de170a8efeae",
+     "event-72e4b6a28032f393",
+     "event-73702429dd2aeb00",
+     "event-7508bc88ab72ed8e",
+     "event-7cf59668b6bbbba0",
+     "event-832e79550004dc4b",
+     "event-83ef2fee8dca797d",
+     "event-856ab9743777096f",
+     "event-858c8b83c7495ccd",
+     "event-8932ca779f1ba454",
+     "event-8a01685d70ac5d32",
+     "event-8daf9b00327556ad",
+     "event-8ddab7718a8dd025",
+     "event-8e0a2610eaef4e02",
+     "event-8f0e7ff67a20fefd",
+     "event-8f4cfeadff6b9b57",
+     "event-8f89c5ddff3e28e9",
+     "event-9014a405c43cb05d",
+     "event-91777a4f6a91dfa7",
+     "event-92739e060cac0ba4",
+     "event-97f6d8af44a12378",
+     "event-9ad052037cc3ee27",
+     "event-9b1f5111d854fad7",
+     "event-9b51184c54725a88",
+     "event-9bf98bc7e6bf343a",
+     "event-9ce430480cf990e9",
+     "event-a007857e8c5f0bad",
+     "event-a6099dfd6cb74336",
+     "event-a7361cfe1fcd5b87",
+     "event-b04639635586b8a0",
+     "event-b2519b2d9e4f294d",
+     "event-bc1578471ffbac32",
+     "event-c0ea8f170e3869de",
+     "event-c3f29790fd860a34",
+     "event-cc1647d9b95672fb",
+     "event-cd0b7cded43f6390",
+     "event-ce7e78921b174ba1",
+     "event-d7035a03966fdb6f",
+     "event-ddd97670d6fa6553",
+     "event-df9ca77ded250d88",
+     "event-e376e6c7eb065040",
+     "event-e992e0b878784961",
+     "event-f00512e29890e575",
+     "event-f051668cbd16ff8c",
+     "event-f0623218b441edce",
+     "event-f079549cbb05601c",
+     "event-f54c293a7161d539",
+     "event-f6ac6914d31c0eed",
+     "event-fc00cafa772d6b28",
+     "event-fc6381f58204a1bc",
+     "event-fe466059546d3b05"
+    ]
+   },
+   "spec": {
+    "signal_id": "narrative_order_confirmation_disclosed",
+    "version": 1,
+    "category": "narrative_order_confirmation",
+    "modality": "narrative",
+    "definition": {
+     "description": "A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services."
+    },
+    "schema": {
+     "confidence": {
+      "type": "float"
+     },
+     "value": {
+      "type": "categorical",
+      "values": [
+       "positive",
+       "neutral",
+       "negative",
+       "unavailable"
+      ]
+     }
+    },
+    "execution": {
+     "type": "llm",
+     "skill_file": "narrative_order_confirmation_disclosed.md"
+    },
+    "raw_retrieval": {
+     "source_types": [
+      "company_news",
+      "sec_filing",
+      "earnings_call"
+     ],
+     "query_terms": [
+      "confirmed order",
+      "contract award",
+      "purchase order",
+      "backlog",
+      "bookings",
+      "definitive agreement",
+      "awarded contract",
+      "order intake"
+     ],
+     "lookback_days": 365,
+     "minimum_observations": null,
+     "minimum_distinct_periods": null,
+     "minimum_period_span_days": null,
+     "comparison_requirement": null,
+     "required_source_groups": []
+    },
+    "evidence_policy": {
+     "require_source": true,
+     "require_timestamp": true,
+     "require_exact_span": true
+    },
+    "parameters": {}
+   },
+   "cited_evidence": [
+    {
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "news",
+       "filing",
+       "earnings_transcript"
+      ],
+      "lookback_days": 365,
+      "semantic_condition": "A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services.",
+      "threshold": {
+       "field": "confirmed_order_disclosure_count",
+       "operator": ">=",
+       "value": 1
+      }
+     },
+     "kind": "narrative_predicate"
+    },
+    {
+     "ref": "event-f0623218b441edce",
+     "exact_span": "icker_sentiment_score\":\"0.124790\"}],\"time_published\":\"20241029T061500\",\"title\":\"CECO Environmental Reports Third Quarter 2024 Results\",\"topics\":[{\"relevance_score\":\"0.923200\",\"topic\":\"mergers_and_acquisiti",
+     "excerpt": "CECO Environmental Reports Third Quarter 2024 Results CECO Environmental reported mixed Q3 2024 results with record bookings but lower revenue and income due to customer-driven project delays. The company announced two significant acquisitions, WK and Profire Energy, and updated its FY2024 guidance while introducing a positive FY2025 outlook. These strategic moves and strong backlog are expected to drive substantial growth despite current project delays.",
+     "title": "CECO Environmental Reports Third Quarter 2024 Results",
+     "source_family": "news",
+     "published_at": "2024-10-29T06:15:00+00:00",
+     "available_at": "2024-10-29T06:15:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-b04639635586b8a0",
+     "exact_span": "icker_sentiment_score\":\"0.802720\"}],\"time_published\":\"20241030T000000\",\"title\":\"Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc.\",\"topics\":[{\"relevance_score\":\"",
+     "excerpt": "Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc. Foley & Lardner represented CECO Environmental Corp. in its proposed $125 million acquisition of Profire Energy, Inc. This acquisition will further advance CECO Environmental's position as a leading environmental solutions provider in industrial markets by integrating Profire Energy's burner management technology and combustion control systems. The Foley deal team was led by partners Steven Cade, Jessica Lochmann, and Clyde Tinnen.",
+     "title": "Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc.",
+     "source_family": "news",
+     "published_at": "2024-10-30T00:00:00+00:00",
+     "available_at": "2024-10-30T00:00:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-57ad21501a9b5e2d",
+     "exact_span": "icker_sentiment_score\":\"0.442064\"}],\"time_published\":\"20241029T070500\",\"title\":\"CECO Environmental to Acquire Profire Energy for $125 Million\",\"topics\":[{\"relevance_score\":\"1.000000\",\"topic\":\"mergers_and_",
+     "excerpt": "CECO Environmental to Acquire Profire Energy for $125 Million CECO Environmental announced a definitive agreement to acquire Profire Energy for an all-cash consideration of $125 million, or $2.55 per share. This acquisition aims to expand CECO's leadership in environmental solutions for industrial markets by integrating Profire's burner management technology and combustion control systems. The transaction is expected to close in Q1 2025 and will provide cost synergies and enhance Profire's growth through CECO's international operations.",
+     "title": "CECO Environmental to Acquire Profire Energy for $125 Million",
+     "source_family": "news",
+     "published_at": "2024-10-29T07:05:00+00:00",
+     "available_at": "2024-10-29T07:05:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-83ef2fee8dca797d",
+     "exact_span": "icker_sentiment_score\":\"0.074490\"}],\"time_published\":\"20250313T000000\",\"title\":\"Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now?\",\"topics\":[{\"relevance_score\":\"0.945929\"",
+     "excerpt": "Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now? This article analyzes CECO Environmental Corp. (NASDAQ:CECO) to determine if it's a good investment. While the stock has seen significant price movements, its current valuation appears expensive based on its P/E ratio compared to the industry average. However, the company has an optimistic future outlook with expected profit doubling and higher cash flow, suggesting potential for long-term growth even with current volatility.",
+     "title": "Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now?",
+     "source_family": "news",
+     "published_at": "2025-03-13T00:00:00+00:00",
+     "available_at": "2025-03-13T00:00:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-6238d698674e337e",
+     "exact_span": "-decoration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the three months ended March 31, 2024 and 2023</span></a></p></td>\n    <td style=\"vertica",
+     "excerpt": "of Cash Flows for the three months ended March 31, 2024 and 2023 6 Notes to Condensed Consolidated Financial Statements 7 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 18 Item 3. Quantitative and Qualitative Disclosures about Market Risk 24 Item 4. Controls and Procedures 25 Part II – Other Information 27 Item 1. Legal Proceedings 27 Item 1A. Risk Factors 27 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 27 Item 3. Defaults Upon Senior Securities 27 Item 4. Mine Safety Disclosures 27 Item 5. Other Information 27 Item 6.",
+     "title": "10-Q 2024-04-30",
+     "source_family": "filing",
+     "published_at": "2024-04-30T11:06:19+00:00",
+     "available_at": "2024-04-30T11:06:19+00:00"
+    },
+    {
+     "ref": "event-832e79550004dc4b",
+     "exact_span": "coration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the six months ended June 30, 2024 and 2023</span></a></p></td>\n    <td style=\"vertical-align:",
+     "excerpt": "Cash Flows for the six months ended June 30, 2024 and 2023 6 Notes to Condensed Consolidated Financial Statements 7 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 20 Item 3. Quantitative and Qualitative Disclosures about Market Risk 27 Item 4. Controls and Procedures 28 Part II – Other Information 30 Item 1. Legal Proceedings 30 Item 1A. Risk Factors 30 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 30 Item 3. Defaults Upon Senior Securities 30 Item 4. Mine Safety Disclosures 30 Item 5. Other Information 30 Item 6. Exhibits 31",
+     "title": "10-Q 2024-07-30",
+     "source_family": "filing",
+     "published_at": "2024-07-30T20:09:40+00:00",
+     "available_at": "2024-07-30T20:09:40+00:00"
+    },
+    {
+     "ref": "event-5c66a56d5c2b6fc1",
+     "exact_span": "-decoration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the nine months ended September 30, 2024 and 2023</span></a></p></td>\n    <td style=\"ver",
+     "excerpt": "of Cash Flows for the nine months ended September 30, 2024 and 2023 7 Notes to Condensed Consolidated Financial Statements 8 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 23 Item 3. Quantitative and Qualitative Disclosures about Market Risk 31 Item 4. Controls and Procedures 31 Part II – Other Information 33 Item 1. Legal Proceedings 33 Item 1A. Risk Factors 33 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 33 Item 3. Defaults Upon Senior Securities 33 Item 4. Mine Safety Disclosures 33 Item 5. Other Information 33 Item 6.",
+     "title": "10-Q 2024-10-29",
+     "source_family": "filing",
+     "published_at": "2024-10-29T10:51:52+00:00",
+     "available_at": "2024-10-29T10:51:52+00:00"
+    },
+    {
+     "ref": "event-4aa96847bf069feb",
+     "exact_span": "ss. Global physical climate changes, including unseasonable weather conditions, could result in reduced demand or product obsolescence for certain of our customers&#8217; products and/or price m",
+     "excerpt": "could result in reduced demand for our products. Information Technology and Cybersecurity Risks Our dependence on information systems and the failure of such systems, could significantly disrupt our business and negatively affect our financial condition, results of operations and cash flows. We are highly dependent on information systems that are increasingly operated by third parties and as a result we have a limited ability to ensure their continued operation. We rely on information technology systems, networks and infrastructure in managing our day-to-day operations. In the event of systems",
+     "title": "10-K 2025-02-25",
+     "source_family": "filing",
+     "published_at": "2025-02-25T20:45:46+00:00",
+     "available_at": "2025-02-25T20:45:46+00:00"
+    },
+    {
+     "ref": "event-8daf9b00327556ad",
+     "exact_span": "icker_sentiment_score\":\"0.496993\"}],\"time_published\":\"20241231T235959\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"topics\":[{\"relevance_score\":\"0.946857\",\"topic\":\"energy_transportation\"},{\"relevanc",
+     "excerpt": "Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.",
+     "title": "Industrial Decarbonization for Heavy Industries",
+     "source_family": "news",
+     "published_at": "2024-12-31T23:59:59+00:00",
+     "available_at": "2024-12-31T23:59:59+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-56cc8355cbdb55b5",
+     "exact_span": "cker_sentiment_score\":\"-0.201925\"}],\"time_published\":\"20250113T220700\",\"title\":\"ISS backs three of four dissident director candidates in Air Products fight\",\"topics\":[{\"relevance_score\":\"0.8331",
+     "excerpt": "ISS backs three of four dissident director candidates in Air Products fight Institutional Shareholder Services (ISS) has recommended that Air Products and Chemicals investors elect three of activist investor Mantle Ridge's four director candidates to the company's board. This follows Glass Lewis's recommendation to elect all four dissident nominees. Mantle Ridge aims to change the company's strategy, improve capital allocation, and find a successor for the current CEO, concerns shared by ISS regarding board oversight and succession planning.",
+     "title": "ISS backs three of four dissident director candidates in Air Products fight",
+     "source_family": "news",
+     "published_at": "2025-01-13T22:07:00+00:00",
+     "available_at": "2025-01-13T22:07:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-856ab9743777096f",
+     "exact_span": "cker_sentiment_score\":\"-0.234679\"}],\"time_published\":\"20250113T220700\",\"title\":\"ISS backs three of four dissident director candidates in Air Products fight\",\"topics\":[{\"relevance_score\":\"0.8309",
+     "excerpt": "ISS backs three of four dissident director candidates in Air Products fight Institutional Shareholder Services (ISS) has recommended that Air Products and Chemicals investors elect three of activist investor Mantle Ridge's four director candidates to the company's board. This follows Glass Lewis's recommendation to elect all four dissident nominees. Mantle Ridge aims to change the company's strategy, improve capital allocation, and find a successor for the current CEO, concerns shared by ISS regarding board oversight and succession planning.",
+     "title": "ISS backs three of four dissident director candidates in Air Products fight",
+     "source_family": "news",
+     "published_at": "2025-01-13T22:07:00+00:00",
+     "available_at": "2025-01-13T22:07:00+00:00",
+     "document_source_type": "company_news"
+    }
+   ],
+   "last_issues": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"skill\":\"# narrative_order_confirmation_disclosed\\n\\n## Purpose\\n\\nJudge whether, within the lookback window, a point-in-time company news, filing, or earnings-transcript document discloses a **confirmed order, award, or contract** for the company's products or services. The output is a categorical judgment over the narrative family, supported by verbatim spans.\\n\\n## Inputs\\n\\n- `spec.signal_id`: `narrative_order_confirmation_disclosed`\\n- `spec.modality`: `narrative`\\n- `spec.raw_retrieval.lookback_days`: 365\\n- `spec.raw_retrieval.source_types`: `company_news`, `sec_filing`, `earnings_call`\\n- `spec.raw_retrieval.query_terms`: `confirmed order`, `contract award`, `purchase order`, `backlog`, `bookings`, `definitive agreement`, `awarded contract`, `order intake`\\n- `spec.schema.value`: one of `positive`, `neutral`, `negative`, `unavailable`\\n- `spec.schema.confidence`: float in [0, 1]\\n- `spec.evidence_policy`: `require_exact_span = true`, `require_source = true`, `require_timestamp = true`\\n\\n## Output\\n\\nReturn a single JSON object:\\n\\n```json\\n{\\n  \\\"value\\\": \\\"positive\\\" | \\\"neutral\\\" | \\\"negative\\\" | \\\"unavailable\\\",\\n  \\\"confidence\\\": 0.0,\\n  \\\"supporting_spans\\\": [\\n    {\\\"ref\\\": \\\"<event id>\\\", \\\"source_family\\\": \\\"news|filing|earnings_transcript\\\", \\\"published_at\\\": \\\"<ISO-8601>\\\", \\\"exact_span\\\": \\\"<verbatim text>\\\"}\\n  ],\\n  \\\"counter_spans\\\": [\\n    {\\\"ref\\\": \\\"<event id>\\\", \\\"source_family\\\": \\\"news|filing|earnings_transcript\\\", \\\"published_at\\\": \\\"<ISO-8601>\\\", \\\"exact_span\\\": \\\"<verbatim text>\\\"}\\n  ],\\n  \\\"rationale\\\": \\\"<one to three sentences>\\\"\\n}\\n```\\n\\nEvery span must be verbatim from the cited document, must carry its source family and timestamp, and must be inside the lookback window. Do not paraphrase inside `exact_span`.\\n\\n## Procedure\\n\\n1. **Filter the corpus.** Keep only documents whose `source_family` is in `{news, filing, earnings_transcript}` and whose `published_at` falls within `[now - lookback_days, now]`. Discard anything outside the window or from other families.\\n2. **Scan for the semantic condition.** For each retained document, look for language that discloses a *confirmed* order, award, or contract for the company's products or services. Use the query terms as recall aids, not as the decision rule.\\n3. **Classify each retained document** using the rules below.\\n4. **Aggregate** to a single `value` for the signal.\\n5. **Emit spans.** Cite the strongest supporting span(s) and, when present, the strongest counter span(s). If the value is `unavailable`, cite whatever text was inspected (or none) and explain the insufficiency in `rationale`.\\n\\n## Classification rules\\n\\n### Positive\\n\\nAssign `positive` when at least one retained document contains a verbatim span that discloses a **confirmed** order, award, or contract for the company's products or services. Confirmation requires language of completion or commitment, for example:\\n\\n- \\\"has been awarded\\\", \\\"was awarded\\\", \\\"received a contract\\\", \\\"signed a definitive agreement\\\", \\\"entered into a contract\\\", \\\"secured an order\\\", \\\"booked an order\\\", \\\"won a contract\\\", \\\"purchase order received\\\".\\n- A named counterparty plus a stated scope and a stated value or quantity, presented as a completed or binding commitment.\\n- A definitive agreement (not a letter of intent) that is described as executed or entered into.\\n\\nA single qualifying span is sufficient. Cite it as a supporting span.\\n\\n### Negative\\n\\nAssign `negative` when the retained corpus contains an explicit **cancellation, termination, denial, or retraction** of a previously disclosed order, award, or contract, and no qualifying positive span exists. Examples:\\n\\n- \\\"the contract was terminated\\\", \\\"the order was cancelled\\\", \\\"the award was rescinded\\\", \\\"the company denied reports of a contract\\\".\\n\\nCite the cancellation or denial span as a counter span. If both a positive and a negative span exist, prefer `positive` only when the positive span is a distinct, still-standing confirmation; otherwise report the negative span as a counter span and explain the conflict in `rationale`.\\n\\n### Neutral\\n\\nAssign `neutral` when the retained corpus contains relevant narrative but **no confirmed order, award, or contract**. This includes:\\n\\n- Proposals, bids, tenders, letters of intent, memoranda of understanding, non-binding discussions, or \\\"exploring\\\" language.\\n- Pipeline, backlog, bookings, or order-intake figures that are not tied to a specific confirmed order, award, or contract.\\n- Lookalike language: acquisitions, mergers, divestitures, financing, board or governance matters, analyst commentary, or general market outlook that mentions orders only in passing.\\n- Below-threshold mentions: a single word such as \\\"order\\\" or \\\"contract\\\" without confirmation language, scope, or counterparty.\\n\\nNeutral is the correct value when the corpus is non-empty and on-topic but does not meet the positive bar. Do **not** use `unavailable` for these cases.\\n\\n### Unavailable\\n\\nReserve `unavailable` for:\\n\\n- An empty corpus after filtering.\\n- A corpus containing only documents published after the lookback cutoff.\\n- A corpus whose text is genuinely insufficient to judge (for example, truncated to a few characters, or consisting only of boilerplate with no narrative content).\\n\\nDo not use `unavailable` merely because the evidence is weak, ambiguous, or only proposal-stage. Those cases are `neutral`.\\n\\n## Aggregation\\n\\n- If any retained document is `positive` and no standing `negative` span contradicts it, return `positive`.\\n- Else if any retained document is `negative`, return `negative`.\\n- Else if any retained document is `neutral`, return `neutral`.\\n- Else return `unavailable`.\\n\\n## Confidence\\n\\n- `positive` with a clear, verbatim, dated confirmation span: 0.8–0.95.\\n- `positive` with a weaker but still confirming span: 0.6–0.8.\\n- `neutral` with on-topic but non-confirming narrative: 0.5–0.75.\\n- `negative` with an explicit cancellation or denial span: 0.7–0.9.\\n- `unavailable` due to empty or post-cutoff-only corpus: 0.9–1.0.\\n- `unavailable` due to genuinely insufficient text: 0.5–0.8.\\n\\n## Falsifiers\\n\\nBefore returning `positive`, check the spec's falsifiers:\\n\\n- `confirmed_order_disclosure_count = 0` when no point-in-time narrative document in the window discloses a confirmed order, award, or contract.\\n- `confirmed_order_disclosure_count = 0` when the disclosure is only a proposal, letter of intent, or non-binding discussion.\\n\\nIf either falsifier holds, do not return `positive`.\\n\\n## Evidence discipline\\n\\n- Every span must be verbatim and must include its `ref`, `source_family`, and `published_at`.\\n- Do not invent spans. If no verbatim span supports a value, return `unavailable` or `neutral` as appropriate and say so in `rationale`.\\n- Keep `rationale` short and tied to the cited spans.\\n\"}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 6677,
+  "cost": 0.0
+ }
+}

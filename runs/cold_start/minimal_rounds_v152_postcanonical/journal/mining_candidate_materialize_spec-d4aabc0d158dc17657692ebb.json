@@ -1,0 +1,601 @@
+{
+ "key": "mining_candidate_materialize_spec-d4aabc0d158dc17657692ebb",
+ "mode": "live",
+ "request": {
+  "stage": "mining_candidate_materialize_spec",
+  "system_prompt": "Return exactly one JSON object. Convert the grounded mining-controller candidate into the Signal spec object only: a new signal_id in lowercase snake_case ([a-z0-9_] only; the runtime normalizes it), a definition faithful to the measurement, a retrieval policy whose source_types cover the cited evidence source types (family names like news, filing, or transcript are interchangeable with concrete types like company_news, sec_filing, earnings_call) and coverage minima that do not exceed what the cited evidence demonstrates. Preserve the controller modality: a structured measurement must name a registered deterministic function that exactly matches it (if none matches, report the capability gap instead of recasting it as LLM); a narrative predicate must declare the LLM skill modality. Return exactly {\"spec\": {...}}.",
+  "payload": {
+   "candidate": {
+    "measurement": {
+     "observable": "narrative_order_confirmation_disclosed",
+     "value_kind": "boolean",
+     "normalization": "none",
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "news",
+       "filing",
+       "earnings_transcript"
+      ],
+      "lookback_days": 365,
+      "semantic_condition": "A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services.",
+      "threshold": {
+       "field": "confirmed_order_disclosure_count",
+       "operator": ">=",
+       "value": 1
+      }
+     }
+    },
+    "falsifiers": [
+     {
+      "condition": "No point-in-time narrative document in the lookback window discloses a confirmed order, award, or contract.",
+      "expected_observation": "confirmed_order_disclosure_count = 0"
+     },
+     {
+      "condition": "The narrative disclosure is only a proposal, letter of intent, or non-binding discussion rather than a confirmed order.",
+      "expected_observation": "confirmed_order_disclosure_count = 0"
+     }
+    ],
+    "evidence_refs": [
+     "event-00443611f5206477",
+     "event-00098e4bd4292030",
+     "event-00443611f5206477",
+     "event-032f6016926d3529",
+     "event-041af07c51c3a811",
+     "event-093915a4c2d59628",
+     "event-0aaacacdca0336f7",
+     "event-0b0f4d693d541f3d",
+     "event-0c20399571cd44a1",
+     "event-177a4b2b6b6a4391",
+     "event-17d3f64681f142a6",
+     "event-19115f2b03536b17",
+     "event-1b2dde3edd4b7a4e",
+     "event-20d434daa1abeea3",
+     "event-23ad9dbe3fc9f8e6",
+     "event-2483381bfa0e0245",
+     "event-260b6ede05fdb04e",
+     "event-292b0aff2c410548",
+     "event-295a30c0ff481316",
+     "event-29c0c5309d3da4b8",
+     "event-2af989dcf7718397",
+     "event-2d2fdc2e7ba50801",
+     "event-2d3a76709137c502",
+     "event-31281b6c79be285d",
+     "event-31c4c902c9a680da",
+     "event-3731aa1cefd7e405",
+     "event-39b83fdc9af0b618",
+     "event-3abfcd25808dddc6",
+     "event-3d6781c5e003c206",
+     "event-3e2535096d67fcc2",
+     "event-4206d14bea3d2642",
+     "event-425e179eb4b5b86d",
+     "event-4298565c308a9b14",
+     "event-42c7bcf527260c1b",
+     "event-43c47b5fba91a729",
+     "event-45b1fd5421341999",
+     "event-4760a93bc0c0f122",
+     "event-483dd4f5731b19a8",
+     "event-4901f956c6e8f2d4",
+     "event-4aa96847bf069feb",
+     "event-4d382f17839e0efe",
+     "event-4e3fea009c23d1c7",
+     "event-4ed13c8ec4d2f4fe",
+     "event-4ff681b67bf88b96",
+     "event-532d44c5dcec0c56",
+     "event-53f578650ca2450a",
+     "event-5561226ae86e639b",
+     "event-55db58b17fd5660c",
+     "event-56cc8355cbdb55b5",
+     "event-57ad21501a9b5e2d",
+     "event-598a1e22d55951c0",
+     "event-5bff485706d93ce7",
+     "event-5c66a56d5c2b6fc1",
+     "event-606cf16855f3a326",
+     "event-6238d698674e337e",
+     "event-68d01e8cb7aaa10c",
+     "event-695416a19624d873",
+     "event-6de23f26b2579f4b",
+     "event-6f81de170a8efeae",
+     "event-72e4b6a28032f393",
+     "event-73702429dd2aeb00",
+     "event-7508bc88ab72ed8e",
+     "event-7cf59668b6bbbba0",
+     "event-832e79550004dc4b",
+     "event-83ef2fee8dca797d",
+     "event-856ab9743777096f",
+     "event-858c8b83c7495ccd",
+     "event-8932ca779f1ba454",
+     "event-8a01685d70ac5d32",
+     "event-8daf9b00327556ad",
+     "event-8ddab7718a8dd025",
+     "event-8e0a2610eaef4e02",
+     "event-8f0e7ff67a20fefd",
+     "event-8f4cfeadff6b9b57",
+     "event-8f89c5ddff3e28e9",
+     "event-9014a405c43cb05d",
+     "event-91777a4f6a91dfa7",
+     "event-92739e060cac0ba4",
+     "event-97f6d8af44a12378",
+     "event-9ad052037cc3ee27",
+     "event-9b1f5111d854fad7",
+     "event-9b51184c54725a88",
+     "event-9bf98bc7e6bf343a",
+     "event-9ce430480cf990e9",
+     "event-a007857e8c5f0bad",
+     "event-a6099dfd6cb74336",
+     "event-a7361cfe1fcd5b87",
+     "event-b04639635586b8a0",
+     "event-b2519b2d9e4f294d",
+     "event-bc1578471ffbac32",
+     "event-c0ea8f170e3869de",
+     "event-c3f29790fd860a34",
+     "event-cc1647d9b95672fb",
+     "event-cd0b7cded43f6390",
+     "event-ce7e78921b174ba1",
+     "event-d7035a03966fdb6f",
+     "event-ddd97670d6fa6553",
+     "event-df9ca77ded250d88",
+     "event-e376e6c7eb065040",
+     "event-e992e0b878784961",
+     "event-f00512e29890e575",
+     "event-f051668cbd16ff8c",
+     "event-f0623218b441edce",
+     "event-f079549cbb05601c",
+     "event-f54c293a7161d539",
+     "event-f6ac6914d31c0eed",
+     "event-fc00cafa772d6b28",
+     "event-fc6381f58204a1bc",
+     "event-fe466059546d3b05"
+    ]
+   },
+   "candidate_contract": {
+    "execution_semantics": {
+     "modality": {
+      "structured": "A typed point-in-time measurement whose value is fully determined by inputs and parameters; it requires an exact registered deterministic function.",
+      "narrative": "A semantic predicate over source text; it requires a grounded LLM skill.",
+      "mixed": "Split numeric measurement and narrative fallback into separate Signals."
+     },
+     "value_semantics": {
+      "positive": "Evidence in the direction of the fixed surge target.",
+      "negative": "Evidence in the control/opposing direction.",
+      "neutral": "Available measurement without decisive directional evidence.",
+      "unavailable": "Required point-in-time measurement inputs are insufficient.",
+      "orientation": "Do not equate numeric sign with Signal direction. Derive a new candidate's orientation from the observed contrast and keep its definition, implementation and fixtures consistent. Report the underlying quantity in interpretation/evidence. Do not reverse an existing stable definition or copy case labels into the skill."
+     },
+     "retrieval": {
+      "execution_order": "Coverage must resolve before the function or LLM skill runs.",
+      "source_types": "Use source types/formats supported by the supplied evidence; do not invent a provider category.",
+      "minimum_observations": "Counts the largest explicit structured series in a document: lists named prices, observations, rows or series, or lists of records with date/timestamp fields. A standalone financial fact is not such a series. Leave null unless this is a real input requirement.",
+      "period_requirements": "minimum_distinct_periods and minimum_period_span_days check period coverage, not concept completeness or comparable duration. The implementation must still check every required component and period.",
+      "fixtures": "Non-unavailable fixtures must satisfy the same retrieval coverage as production, with literal source evidence and point-in-time dates. Missing-input fixtures may expect unavailable; technical failures are not successful unavailable measurements. Every fixture's expected value must agree with the skill's own documented applicability boundaries: a lookalike the skill scores neutral must not be expected unavailable, and a documented non-applicable case must not be expected decisive."
+     }
+    },
+    "arguments_schema": {
+     "type": "object",
+     "required": [
+      "spec",
+      "tests"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "spec": {
+       "type": "object",
+       "required": [
+        "signal_id",
+        "version",
+        "category",
+        "modality",
+        "definition",
+        "schema",
+        "execution",
+        "raw_retrieval",
+        "evidence_policy",
+        "parameters"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "signal_id": {
+         "type": "string"
+        },
+        "version": {
+         "type": "integer",
+         "minimum": 1
+        },
+        "category": {
+         "type": "string"
+        },
+        "modality": {
+         "enum": [
+          "structured",
+          "narrative"
+         ]
+        },
+        "definition": {
+         "type": "object",
+         "required": [
+          "description"
+         ],
+         "properties": {
+          "description": {
+           "type": "string"
+          }
+         },
+         "additionalProperties": false
+        },
+        "schema": {
+         "const": {
+          "value": {
+           "type": "categorical",
+           "values": [
+            "positive",
+            "neutral",
+            "negative",
+            "unavailable"
+           ]
+          },
+          "confidence": {
+           "type": "float"
+          }
+         }
+        },
+        "execution": {
+         "oneOf": [
+          {
+           "type": "object",
+           "required": [
+            "type",
+            "function"
+           ],
+           "properties": {
+            "type": {
+             "const": "deterministic"
+            },
+            "function": {
+             "enum": [
+              "financial.cash_burn_rate_elevated",
+              "financial.cash_reserves",
+              "financial.cash_to_current_liabilities_ratio",
+              "financial.gross_margin_change",
+              "financial.liquidity_runway_months",
+              "financial.net_share_retirement_yoy",
+              "financial.operating_cash_flow_margin",
+              "financial.revenue_acceleration",
+              "financial.revenue_growth_yoy",
+              "market.max_drawdown_1y",
+              "market.price_momentum_126d",
+              "news.negative_word_count"
+             ]
+            }
+           },
+           "additionalProperties": false
+          },
+          {
+           "type": "object",
+           "required": [
+            "type",
+            "skill_file"
+           ],
+           "properties": {
+            "type": {
+             "const": "llm"
+            },
+            "skill_file": {
+             "type": "string"
+            }
+           },
+           "additionalProperties": false
+          }
+         ]
+        },
+        "raw_retrieval": {
+         "type": "object",
+         "required": [
+          "source_types",
+          "query_terms"
+         ],
+         "properties": {
+          "source_types": {
+           "type": "array",
+           "minItems": 1,
+           "uniqueItems": true,
+           "items": {
+            "type": "string"
+           }
+          },
+          "query_terms": {
+           "type": "array",
+           "minItems": 1,
+           "maxItems": 12,
+           "uniqueItems": true,
+           "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+           }
+          },
+          "lookback_days": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "comparison_requirement": {
+           "type": [
+            "string",
+            "null"
+           ],
+           "minLength": 1,
+           "maxLength": 240
+          },
+          "required_source_groups": {
+           "type": "array",
+           "uniqueItems": true,
+           "items": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+             "type": "string",
+             "minLength": 1
+            }
+           }
+          },
+          "minimum_distinct_periods": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "minimum_period_span_days": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          },
+          "minimum_observations": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 1
+          }
+         },
+         "additionalProperties": false
+        },
+        "evidence_policy": {
+         "const": {
+          "require_source": true,
+          "require_timestamp": true,
+          "require_exact_span": true
+         }
+        },
+        "parameters": {
+         "type": "object"
+        }
+       }
+      },
+      "skill": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "tests": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": "object",
+        "required": [
+         "name",
+         "as_of",
+         "expected",
+         "documents"
+        ],
+        "properties": {
+         "name": {
+          "type": "string"
+         },
+         "as_of": {
+          "type": "string",
+          "description": "timezone-aware ISO-8601 timestamp"
+         },
+         "company_id": {
+          "type": "string"
+         },
+         "expected": {
+          "enum": [
+           "positive",
+           "neutral",
+           "negative",
+           "unavailable"
+          ]
+         },
+         "documents": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+           "type": "object",
+           "required": [
+            "document_id",
+            "source_type",
+            "published_at",
+            "available_at",
+            "content"
+           ]
+          }
+         }
+        }
+       }
+      }
+     },
+     "constraints": [
+      "deterministic execution cannot include skill",
+      "LLM execution requires non-empty skill",
+      "fixture source_type must be declared by raw_retrieval"
+     ]
+    },
+    "deterministic_function_contracts": {
+     "financial.cash_burn_rate_elevated": "Measure cash burn as absolute negative operating cash flow / cash for the latest SEC duration, using the closest same-currency cash instant at or before period end. Non-negative operating cash flow is a zero burn ratio. Missing, non-positive cash, mismatched, or stale facts yield unavailable. burn_threshold defaults to 0.10; qualifying burn is positive, observed zero burn is negative, and an observed below-threshold positive burn is neutral.",
+     "financial.cash_reserves": "Measure the latest SEC instant cash and equivalents balance, in its reported currency units, without normalizing by burn, revenue or company size. Missing or stale current cash facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.cash_to_current_liabilities_ratio": "Measure latest cash and equivalents / current liabilities for the same SEC instant period and reported currency. Non-positive liabilities and missing, mismatched, or stale facts yield unavailable. Numeric states use positive_min (default 1) and negative_max (default positive_min).",
+     "financial.gross_margin_change": "Measure gross-margin change: latest GrossProfit / revenue minus the previous comparable-duration margin. GrossProfit and revenue must match start, end and units within each period. Missing matched periods, zero revenue or stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.liquidity_runway_months": "Measure cash runway in months from the latest SEC operating cash flow duration and the closest same-currency cash instant at or before its end. Monthly burn is absolute cash flow divided by the rounded reported duration in months. Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <= positive_runway_max_months (default 6) is positive, runway >= negative_runway_min_months (default 12) is negative, and values between are neutral. Non-negative operating cash flow is negative evidence of a low-runway condition (an effectively unbounded burn runway).",
+     "financial.net_share_retirement_yoy": "Measure net share retirement as 1 - current / prior-year weighted-average shares over comparable periods. Positive means net retirement and negative means dilution; this is not a cash buyback amount. Missing comparable or stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.operating_cash_flow_margin": "Measure operating cash flow margin as operating cash flow / positive revenue for the latest matching SEC duration period (same start, end and units). Requires both revenue and operating-cash-flow facts. This does not measure operating-income alignment or cash runway. Missing/mismatched/stale facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.revenue_acceleration": "Measure revenue acceleration as latest year-over-year revenue growth minus an earlier comparable growth rate. Requires two supported revenue year-over-year pairs with matching units and nonzero denominators; incomplete/stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "financial.revenue_growth_yoy": "Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires SEC duration facts, matching units and comparable year-over-year periods; zero prior revenue or missing/stale current facts yields unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+     "market.max_drawdown_1y": "Measure the minimum price / preceding running peak - 1 over all observations in the latest supplied metadata.prices series. This function does not itself restrict dates to one year; retrieval owns the point-in-time series window. Missing prices yield unavailable; invalid or nonpositive prices fail validation. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement.",
+     "market.price_momentum_126d": "Measure last / first price - 1 over the final lookback_observations + 1 supplied metadata.prices values (default lookback_observations=126, positive integer). Fewer observations yield unavailable; prices must be finite positive numbers. Retrieval owns dates and adjustment convention. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement.",
+     "news.negative_word_count": "Count case-insensitive literal substring occurrences across input documents. terms defaults to decline, loss, risk, delay, investigation, default. Count >= negative_count_min (default 1) is negative; otherwise neutral. This measures lexical frequency, not semantic sentiment or event severity."
+    },
+    "constraints": [
+     "new signal_id only; existing stable identities belong to Update",
+     "non-empty point-in-time fixtures required",
+     "choose a deterministic function only when its documented measurement matches the definition; parameters do not replace its formula",
+     "structured modality requires an exact registered deterministic function; otherwise retain a capability gap",
+     "narrative modality requires a source-grounded LLM skill",
+     "split mixed structured-formula and narrative-fallback proposals",
+     "candidate text and fixtures must not contain Discovery identities or labels"
+    ]
+   },
+   "cited_evidence": [
+    {
+     "predicate": {
+      "modality": "narrative",
+      "source_families": [
+       "news",
+       "filing",
+       "earnings_transcript"
+      ],
+      "lookback_days": 365,
+      "semantic_condition": "A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services.",
+      "threshold": {
+       "field": "confirmed_order_disclosure_count",
+       "operator": ">=",
+       "value": 1
+      }
+     },
+     "kind": "narrative_predicate"
+    },
+    {
+     "ref": "event-f0623218b441edce",
+     "exact_span": "icker_sentiment_score\":\"0.124790\"}],\"time_published\":\"20241029T061500\",\"title\":\"CECO Environmental Reports Third Quarter 2024 Results\",\"topics\":[{\"relevance_score\":\"0.923200\",\"topic\":\"mergers_and_acquisiti",
+     "excerpt": "CECO Environmental Reports Third Quarter 2024 Results CECO Environmental reported mixed Q3 2024 results with record bookings but lower revenue and income due to customer-driven project delays. The company announced two significant acquisitions, WK and Profire Energy, and updated its FY2024 guidance while introducing a positive FY2025 outlook. These strategic moves and strong backlog are expected to drive substantial growth despite current project delays.",
+     "title": "CECO Environmental Reports Third Quarter 2024 Results",
+     "source_family": "news",
+     "published_at": "2024-10-29T06:15:00+00:00",
+     "available_at": "2024-10-29T06:15:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-b04639635586b8a0",
+     "exact_span": "icker_sentiment_score\":\"0.802720\"}],\"time_published\":\"20241030T000000\",\"title\":\"Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc.\",\"topics\":[{\"relevance_score\":\"",
+     "excerpt": "Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc. Foley & Lardner represented CECO Environmental Corp. in its proposed $125 million acquisition of Profire Energy, Inc. This acquisition will further advance CECO Environmental's position as a leading environmental solutions provider in industrial markets by integrating Profire Energy's burner management technology and combustion control systems. The Foley deal team was led by partners Steven Cade, Jessica Lochmann, and Clyde Tinnen.",
+     "title": "Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc.",
+     "source_family": "news",
+     "published_at": "2024-10-30T00:00:00+00:00",
+     "available_at": "2024-10-30T00:00:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-57ad21501a9b5e2d",
+     "exact_span": "icker_sentiment_score\":\"0.442064\"}],\"time_published\":\"20241029T070500\",\"title\":\"CECO Environmental to Acquire Profire Energy for $125 Million\",\"topics\":[{\"relevance_score\":\"1.000000\",\"topic\":\"mergers_and_",
+     "excerpt": "CECO Environmental to Acquire Profire Energy for $125 Million CECO Environmental announced a definitive agreement to acquire Profire Energy for an all-cash consideration of $125 million, or $2.55 per share. This acquisition aims to expand CECO's leadership in environmental solutions for industrial markets by integrating Profire's burner management technology and combustion control systems. The transaction is expected to close in Q1 2025 and will provide cost synergies and enhance Profire's growth through CECO's international operations.",
+     "title": "CECO Environmental to Acquire Profire Energy for $125 Million",
+     "source_family": "news",
+     "published_at": "2024-10-29T07:05:00+00:00",
+     "available_at": "2024-10-29T07:05:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-83ef2fee8dca797d",
+     "exact_span": "icker_sentiment_score\":\"0.074490\"}],\"time_published\":\"20250313T000000\",\"title\":\"Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now?\",\"topics\":[{\"relevance_score\":\"0.945929\"",
+     "excerpt": "Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now? This article analyzes CECO Environmental Corp. (NASDAQ:CECO) to determine if it's a good investment. While the stock has seen significant price movements, its current valuation appears expensive based on its P/E ratio compared to the industry average. However, the company has an optimistic future outlook with expected profit doubling and higher cash flow, suggesting potential for long-term growth even with current volatility.",
+     "title": "Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now?",
+     "source_family": "news",
+     "published_at": "2025-03-13T00:00:00+00:00",
+     "available_at": "2025-03-13T00:00:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-6238d698674e337e",
+     "exact_span": "-decoration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the three months ended March 31, 2024 and 2023</span></a></p></td>\n    <td style=\"vertica",
+     "excerpt": "of Cash Flows for the three months ended March 31, 2024 and 2023 6 Notes to Condensed Consolidated Financial Statements 7 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 18 Item 3. Quantitative and Qualitative Disclosures about Market Risk 24 Item 4. Controls and Procedures 25 Part II – Other Information 27 Item 1. Legal Proceedings 27 Item 1A. Risk Factors 27 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 27 Item 3. Defaults Upon Senior Securities 27 Item 4. Mine Safety Disclosures 27 Item 5. Other Information 27 Item 6.",
+     "title": "10-Q 2024-04-30",
+     "source_family": "filing",
+     "published_at": "2024-04-30T11:06:19+00:00",
+     "available_at": "2024-04-30T11:06:19+00:00"
+    },
+    {
+     "ref": "event-832e79550004dc4b",
+     "exact_span": "coration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the six months ended June 30, 2024 and 2023</span></a></p></td>\n    <td style=\"vertical-align:",
+     "excerpt": "Cash Flows for the six months ended June 30, 2024 and 2023 6 Notes to Condensed Consolidated Financial Statements 7 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 20 Item 3. Quantitative and Qualitative Disclosures about Market Risk 27 Item 4. Controls and Procedures 28 Part II – Other Information 30 Item 1. Legal Proceedings 30 Item 1A. Risk Factors 30 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 30 Item 3. Defaults Upon Senior Securities 30 Item 4. Mine Safety Disclosures 30 Item 5. Other Information 30 Item 6. Exhibits 31",
+     "title": "10-Q 2024-07-30",
+     "source_family": "filing",
+     "published_at": "2024-07-30T20:09:40+00:00",
+     "available_at": "2024-07-30T20:09:40+00:00"
+    },
+    {
+     "ref": "event-5c66a56d5c2b6fc1",
+     "exact_span": "-decoration:underline;min-width:fit-content;\">Condensed Consolidated Statements of Cash Flows for the nine months ended September 30, 2024 and 2023</span></a></p></td>\n    <td style=\"ver",
+     "excerpt": "of Cash Flows for the nine months ended September 30, 2024 and 2023 7 Notes to Condensed Consolidated Financial Statements 8 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 23 Item 3. Quantitative and Qualitative Disclosures about Market Risk 31 Item 4. Controls and Procedures 31 Part II – Other Information 33 Item 1. Legal Proceedings 33 Item 1A. Risk Factors 33 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 33 Item 3. Defaults Upon Senior Securities 33 Item 4. Mine Safety Disclosures 33 Item 5. Other Information 33 Item 6.",
+     "title": "10-Q 2024-10-29",
+     "source_family": "filing",
+     "published_at": "2024-10-29T10:51:52+00:00",
+     "available_at": "2024-10-29T10:51:52+00:00"
+    },
+    {
+     "ref": "event-4aa96847bf069feb",
+     "exact_span": "ss. Global physical climate changes, including unseasonable weather conditions, could result in reduced demand or product obsolescence for certain of our customers&#8217; products and/or price m",
+     "excerpt": "could result in reduced demand for our products. Information Technology and Cybersecurity Risks Our dependence on information systems and the failure of such systems, could significantly disrupt our business and negatively affect our financial condition, results of operations and cash flows. We are highly dependent on information systems that are increasingly operated by third parties and as a result we have a limited ability to ensure their continued operation. We rely on information technology systems, networks and infrastructure in managing our day-to-day operations. In the event of systems",
+     "title": "10-K 2025-02-25",
+     "source_family": "filing",
+     "published_at": "2025-02-25T20:45:46+00:00",
+     "available_at": "2025-02-25T20:45:46+00:00"
+    },
+    {
+     "ref": "event-8daf9b00327556ad",
+     "exact_span": "icker_sentiment_score\":\"0.496993\"}],\"time_published\":\"20241231T235959\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"topics\":[{\"relevance_score\":\"0.946857\",\"topic\":\"energy_transportation\"},{\"relevanc",
+     "excerpt": "Industrial Decarbonization for Heavy Industries This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.",
+     "title": "Industrial Decarbonization for Heavy Industries",
+     "source_family": "news",
+     "published_at": "2024-12-31T23:59:59+00:00",
+     "available_at": "2024-12-31T23:59:59+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-56cc8355cbdb55b5",
+     "exact_span": "cker_sentiment_score\":\"-0.201925\"}],\"time_published\":\"20250113T220700\",\"title\":\"ISS backs three of four dissident director candidates in Air Products fight\",\"topics\":[{\"relevance_score\":\"0.8331",
+     "excerpt": "ISS backs three of four dissident director candidates in Air Products fight Institutional Shareholder Services (ISS) has recommended that Air Products and Chemicals investors elect three of activist investor Mantle Ridge's four director candidates to the company's board. This follows Glass Lewis's recommendation to elect all four dissident nominees. Mantle Ridge aims to change the company's strategy, improve capital allocation, and find a successor for the current CEO, concerns shared by ISS regarding board oversight and succession planning.",
+     "title": "ISS backs three of four dissident director candidates in Air Products fight",
+     "source_family": "news",
+     "published_at": "2025-01-13T22:07:00+00:00",
+     "available_at": "2025-01-13T22:07:00+00:00",
+     "document_source_type": "company_news"
+    },
+    {
+     "ref": "event-856ab9743777096f",
+     "exact_span": "cker_sentiment_score\":\"-0.234679\"}],\"time_published\":\"20250113T220700\",\"title\":\"ISS backs three of four dissident director candidates in Air Products fight\",\"topics\":[{\"relevance_score\":\"0.8309",
+     "excerpt": "ISS backs three of four dissident director candidates in Air Products fight Institutional Shareholder Services (ISS) has recommended that Air Products and Chemicals investors elect three of activist investor Mantle Ridge's four director candidates to the company's board. This follows Glass Lewis's recommendation to elect all four dissident nominees. Mantle Ridge aims to change the company's strategy, improve capital allocation, and find a successor for the current CEO, concerns shared by ISS regarding board oversight and succession planning.",
+     "title": "ISS backs three of four dissident director candidates in Air Products fight",
+     "source_family": "news",
+     "published_at": "2025-01-13T22:07:00+00:00",
+     "available_at": "2025-01-13T22:07:00+00:00",
+     "document_source_type": "company_news"
+    }
+   ],
+   "last_issues": []
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"spec\":{\"signal_id\":\"narrative_order_confirmation_disclosed\",\"version\":1,\"category\":\"narrative_order_confirmation\",\"modality\":\"narrative\",\"definition\":{\"description\":\"A point-in-time company news, filing, or earnings-transcript document discloses a confirmed order, award, or contract for the company's products or services.\"},\"schema\":{\"confidence\":{\"type\":\"float\"},\"value\":{\"type\":\"categorical\",\"values\":[\"positive\",\"neutral\",\"negative\",\"unavailable\"]}},\"execution\":{\"type\":\"llm\",\"skill_file\":\"narrative_order_confirmation_disclosed.md\"},\"raw_retrieval\":{\"source_types\":[\"company_news\",\"sec_filing\",\"earnings_call\"],\"query_terms\":[\"confirmed order\",\"contract award\",\"purchase order\",\"backlog\",\"bookings\",\"definitive agreement\",\"awarded contract\",\"order intake\"],\"lookback_days\":365,\"minimum_observations\":null,\"minimum_distinct_periods\":null,\"minimum_period_span_days\":null,\"comparison_requirement\":null,\"required_source_groups\":[]},\"evidence_policy\":{\"require_source\":true,\"require_timestamp\":true,\"require_exact_span\":true},\"parameters\":{}}}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 7601,
+  "cost": 0.0
+ }
+}

@@ -1,0 +1,925 @@
+{
+ "key": "mining_controller_step-9849cb7e2bb0c13a0dd29cef",
+ "mode": "live",
+ "request": {
+  "stage": "mining_controller_step",
+  "system_prompt": "You are the bounded decision core of a label-aware Signal-mining controller over a point-in-time Evidence Graph. The runtime owns tools, the ledger, budgets, labels, and termination; you only choose one action per step. Return exactly one JSON object with keys action and rationale plus the action's own fields. rationale is a non-empty array of short strings. Allowed actions and their required fields: inspect_manifest {}; inspect_catalog {}; fetch_evidence {case_refs, source_families, max_documents, query|null} where source_families may list several families in one call and every family must come from available_source_families in the view; sweep the evidence you need in as few fetches as possible; compute_statistic {rule, fact_refs[2]}; read_span with exactly one of {fact_ref | event_ref | document_ref} (event/document reads take bounded offset/length and charge the separate browse budget; raw narrative text is the authoritative narrative evidence); inspect_catalog {scope: signals|evidence} where scope=evidence returns the discovery-only family -> window -> document directory; compare_groups {concepts}; propose_candidate {candidate}; record_deferred {}; record_no_pattern {coverage}. candidate has measurement{observable,value_kind,normalization} where value_kind is exactly one of boolean, ordinal, numeric, categorical (express any ratio as numeric), falsifiers[{condition,expected_observation}], and evidence_refs that may cite only refs from known_fact_refs, known_event_refs, or known_relation_refs. For a narrative measurement, include measurement.predicate{modality:narrative, source_families, lookback_days, semantic_condition, threshold{field,operator,value}} whose source_families intersect your cited narrative evidence. When narrative_summary headlines or attribute_case_coverage show a positive-versus-control contrast (for example order confirmations appearing only in positive cases), a narrative predicate measurement citing those event refs is a first-class candidate and often serves several backlog needs at once. prior_modality_footprints carries earlier cycles' modality metrics and staged_candidate_outcomes — each prior candidate's real check-cohort result (tp/fn/fp/tn, availability, disposition). A semantic family whose fires never overlap the positive class (tp near zero, fn high) is a demonstrated predicate-label mismatch: propose a different narrative contrast instead of re-proposing the same semantic family. Every cited ref must already be in the ledger, at least one fetch_evidence must precede any proposal, and every known concept named in the observable or normalization (compare_groups results show the fact_ref behind each value) must be backed by at least one cited fact of that concept. The observable must be a genuinely new measurement: it may not reuse or version any signal_ref base name from signal_catalog, because changing an existing Signal belongs to the separate Update path. For the hypothesis seed, the proposal must also carry need_dispositions covering every backlog need exactly once (new_measurement, deferred_measurement, update_existing, repair_dependency, not_testable, fast_plan_action); each row is {need_refs, disposition, signal_refs, rationale} where only update_existing cites exactly one existing signal ref and every other disposition cites none. evidence_digest summarizes what your fetches have already collected (families, per-concept positive/control case coverage) and last_action_result reports what your previous action returned; use them instead of re-fetching families that are already covered, and spend remaining budget on compute_statistic, compare_groups, or your terminal action. Once heavy_remaining reaches 0, only inspect_manifest, inspect_catalog, record_no_pattern, and record_deferred remain admissible; repeating a heavy action then ends the seed as deferred_budget. research_axis defines the one comparison represented by positive/control, and labels arrive only through the runtime-owned label_map; never author, rewrite, or expand either. Budget wisely: fetch broadly once or twice, then compute or compare, and reserve budget for your terminal action; a seed with no budget left can only record_deferred. Domain terminals are inadmissible while modality_coverage shows any available structured or narrative modality unexplored: fetch missing structured evidence and read at least one bounded raw narrative event or document span. Listing or fetching narrative families proves availability but is not grounded narrative exploration; a control-plane terminal remains admissible. Exploration creates no candidate quota: propose only a recurring supported factor, regardless of modality. record_no_pattern must cite explored_families actually present in your own prior fetches. When last_invalid_action is present, fix exactly that issue. Never request facts after the prediction time, never use identities or file ordering as features, and never exceed the remaining budgets shown in the view.",
+  "payload": {
+   "seed": "discovery",
+   "state": "evidence_ready",
+   "budget": {
+    "heavy_remaining": 5,
+    "light_remaining": -5,
+    "browse_remaining": 18
+   },
+   "actions": [
+    "inspect_manifest",
+    "inspect_catalog",
+    "fetch_evidence",
+    "compute_statistic",
+    "read_span",
+    "compare_groups",
+    "propose_candidate",
+    "record_deferred",
+    "record_no_pattern"
+   ],
+   "available_source_families": [
+    "10-k",
+    "10-q",
+    "alpha_vantage_earnings_raw_response",
+    "company_facts",
+    "company_news",
+    "earnings_transcript",
+    "filing",
+    "financial",
+    "financials",
+    "historical_price",
+    "market",
+    "market_data",
+    "news",
+    "sec_company_facts_raw_response",
+    "transcript"
+   ],
+   "measurable_evidence_manifest": {
+    "schema_version": "h1-measurable-evidence-manifest-v1",
+    "cohort_case_count": 6,
+    "structured_financial_concepts": [
+     {
+      "taxonomy": "dei",
+      "concept": "EntityCommonStockSharesOutstanding",
+      "source_display_name": "Entity Common Stock, Shares Outstanding",
+      "unit": "shares",
+      "case_count": 6,
+      "cases_with_comparable_records": 6
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "OperatingIncomeLoss",
+      "source_display_name": "Operating Income (Loss)",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetCashProvidedByUsedInOperatingActivities",
+      "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "InventoryNet",
+      "source_display_name": "Inventory, Net",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "Revenues",
+      "source_display_name": "Revenues",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "NetIncomeLoss",
+      "source_display_name": "Net Income (Loss) Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CashAndCashEquivalentsAtCarryingValue",
+      "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "StockholdersEquity",
+      "source_display_name": "Stockholders' Equity Attributable to Parent",
+      "unit": "USD",
+      "case_count": 5,
+      "cases_with_comparable_records": 5
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtCurrent",
+      "source_display_name": "Long-term Debt, Current Maturities",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LongTermDebtNoncurrent",
+      "source_display_name": "Long-term Debt, Excluding Current Maturities",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "GrossProfit",
+      "source_display_name": "Gross Profit",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "AssetsCurrent",
+      "source_display_name": "Assets, Current",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "LiabilitiesCurrent",
+      "source_display_name": "Liabilities, Current",
+      "unit": "USD",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "CommonStockSharesOutstanding",
+      "source_display_name": "Common Stock, Shares, Outstanding",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Diluted",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+      "unit": "shares",
+      "case_count": 4,
+      "cases_with_comparable_records": 4
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ResearchAndDevelopmentExpense",
+      "source_display_name": "Research and Development Expense",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "SalesRevenueNet",
+      "source_display_name": "Revenue, Net (Deprecated 2018-01-31)",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     },
+     {
+      "taxonomy": "us-gaap",
+      "concept": "ShortTermInvestments",
+      "source_display_name": "Short-term Investments",
+      "unit": "USD",
+      "case_count": 3,
+      "cases_with_comparable_records": 3
+     }
+    ],
+    "pre_cutoff_price_series_cases": 6,
+    "narrative_source_families": [
+     {
+      "source_type": "10-k",
+      "case_count": 5
+     },
+     {
+      "source_type": "10-q",
+      "case_count": 5
+     },
+     {
+      "source_type": "company_news",
+      "case_count": 4
+     },
+     {
+      "source_type": "filing",
+      "case_count": 2
+     },
+     {
+      "source_type": "news",
+      "case_count": 2
+     },
+     {
+      "source_type": "earnings_transcript",
+      "case_count": 1
+     }
+    ],
+    "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort."
+   },
+   "signal_catalog": [
+    {
+     "signal_ref": "financing_listing_action:v1",
+     "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+    },
+    {
+     "signal_ref": "cash_reserves:v1",
+     "description": "Read the latest point-in-time cash and equivalents balance."
+    },
+    {
+     "signal_ref": "gross_margin_change:v1",
+     "description": "Measure the latest point-in-time change in gross margin."
+    },
+    {
+     "signal_ref": "net_share_retirement_yoy:v1",
+     "description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+    },
+    {
+     "signal_ref": "operating_cash_flow_margin:v1",
+     "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+    },
+    {
+     "signal_ref": "revenue_acceleration:v1",
+     "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+    },
+    {
+     "signal_ref": "revenue_growth_yoy:v1",
+     "description": "Measure the latest point-in-time year-over-year revenue growth."
+    },
+    {
+     "signal_ref": "guidance_acceleration:v1",
+     "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+    },
+    {
+     "signal_ref": "max_drawdown_1y:v1",
+     "description": "Measure maximum drawdown from the point-in-time one-year price series."
+    },
+    {
+     "signal_ref": "price_momentum_126d:v1",
+     "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+    },
+    {
+     "signal_ref": "negative_word_count:v1",
+     "description": "Count configured negative terms in complete point-in-time company news source documents."
+    },
+    {
+     "signal_ref": "order_quality:v1",
+     "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+    },
+    {
+     "signal_ref": "commercialization_status:v1",
+     "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+    },
+    {
+     "signal_ref": "customer_concentration:v1",
+     "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+    }
+   ],
+   "case_refs": [
+    "case-001",
+    "case-002",
+    "case-003",
+    "case-004",
+    "case-005",
+    "case-006"
+   ],
+   "known_fact_refs": [
+    "fact-00f36406e1a6ddfc",
+    "fact-011443df6853fc91",
+    "fact-02a87ffb879eb00c",
+    "fact-02d9d092fd49c56c",
+    "fact-04c0d25c7b424822",
+    "fact-0517cbad74319193",
+    "fact-0585d8a7b7d00c96",
+    "fact-06018cd0137284bd",
+    "fact-085a2b5cd40eaf78",
+    "fact-0892009a44b3b28b",
+    "fact-090e8f81979308c6",
+    "fact-0a921da596dbb6d7",
+    "fact-0b10be92f7de2faf",
+    "fact-0e95bffc1b8a6dad",
+    "fact-1e32f72948b3e498",
+    "fact-20e56e59081dd9e3",
+    "fact-229331eaf0132917",
+    "fact-26b21294c200f153",
+    "fact-28496ecef4e6da46",
+    "fact-30f594f43715863d",
+    "fact-322fd2088f2ad413",
+    "fact-324269114611f9e5",
+    "fact-332bd3aabc9d0cdf",
+    "fact-33656e9d117c8cc2",
+    "fact-3533bc12ebc3b622",
+    "fact-3b8b0f29d9570dbd",
+    "fact-3c7a1fd6e19c9f26",
+    "fact-3dc742b7b329ab00",
+    "fact-3f8be81697a460ce",
+    "fact-422735a4d9812259",
+    "fact-42f50cef3614bca3",
+    "fact-435f1d3ef44925a1",
+    "fact-4381d0dc160b6a22",
+    "fact-44982829cd048e46",
+    "fact-46d0b2169cef13ee",
+    "fact-49bfc4cffbfbadd8",
+    "fact-4f40ed694b9aa9e5",
+    "fact-52887677d2ea738d",
+    "fact-542436ba9f0e7c3e",
+    "fact-564d87de6dbcc4b1",
+    "fact-568ccafc213451c5",
+    "fact-57d8de8491a66112",
+    "fact-58b24244aaace795",
+    "fact-5afd0d2a21f02652",
+    "fact-62c7f8733be6a13c",
+    "fact-6386459bb5349453",
+    "fact-63e7964511a9a625",
+    "fact-661ed36a42e28b36",
+    "fact-6949055b94845649",
+    "fact-69ccd15d1021dca8",
+    "fact-69fe0624ec589343",
+    "fact-6aaf06f8797cbf17",
+    "fact-6d6413b4ea1d478d",
+    "fact-6fb00bdf84ee4695",
+    "fact-75614d477c7c9c41",
+    "fact-756e4a48f3ebfc56",
+    "fact-7699d11446452d3a",
+    "fact-77543885bfe746e7",
+    "fact-77723c6255063567",
+    "fact-79226e73b42f627e",
+    "fact-7b3e831990175006",
+    "fact-7b8fd1b8b0dda910",
+    "fact-80453cf028438bbe",
+    "fact-8087f9c0dc9aa135",
+    "fact-821f9669ce18eaa8",
+    "fact-82a0082618d011b8",
+    "fact-8334b3f24fc3c709",
+    "fact-8524df929b02ff6e",
+    "fact-85bae534c38b4e3b",
+    "fact-86160e31d33ce6b0",
+    "fact-878fd55578d5c0f1",
+    "fact-87d744c9537495db",
+    "fact-8b3d7944359e6531",
+    "fact-8c0468e9a28e2d4e",
+    "fact-8c13fe73149f040a",
+    "fact-8d88c34f96678fc5",
+    "fact-8fcf8cac03b9e9b3",
+    "fact-90f81845077da7fc",
+    "fact-913c2af95297a55f",
+    "fact-91c696f61337fae6",
+    "fact-91e8930968537f93",
+    "fact-949a3caf20d66e3d",
+    "fact-951bd9e9c53185c5",
+    "fact-9754e1773ffca6d0",
+    "fact-987fd93262f1e777",
+    "fact-9900b9567cb56023",
+    "fact-99425797e74e776e",
+    "fact-99ba9bf7025499fb",
+    "fact-9ac64927b0505663",
+    "fact-9d0caa502b0ce2d8",
+    "fact-9f833098b0c2a727",
+    "fact-a162c30c3fae4416",
+    "fact-a2259f4c06a67359",
+    "fact-a39db63df7b90574",
+    "fact-a59e8e9f7cae5cec",
+    "fact-a71674196a101f07",
+    "fact-a8e2a1d854bb13a1",
+    "fact-ad5a0b18f2f88981",
+    "fact-ae234034ad425375",
+    "fact-ae25be97bda88d11",
+    "fact-b0b987e7e052535d",
+    "fact-b193994a32470517",
+    "fact-b4c79704ec404021",
+    "fact-b5cdc241af073495",
+    "fact-b5dba88e3716e5c9",
+    "fact-b994b53ad8c061d8",
+    "fact-b9ad747c5d9595a5",
+    "fact-bb335c00cbad4682",
+    "fact-bfc5744d0ce88584",
+    "fact-c356f6dc154ec6f7",
+    "fact-c6373a9a29ea41c4",
+    "fact-c739703e077eaed0",
+    "fact-c81d7d72943833b4",
+    "fact-c8e0c26959db7e20",
+    "fact-cb368adb5d57dbab",
+    "fact-cb5e4742fdcacb1c",
+    "fact-cbc5d0f241b1b116",
+    "fact-cd36cebaa8bdc437",
+    "fact-ce680c51ac9c4925",
+    "fact-cf441fd1bd59f5f6",
+    "fact-d01faf8318e55b9e",
+    "fact-d02f7dcaa86d5cfe",
+    "fact-d1f20833a28deb2a",
+    "fact-d23499073cbb027d",
+    "fact-d269268587949af2",
+    "fact-d31f7f64ac7ad601",
+    "fact-d38eba8cae12d10f",
+    "fact-d3b4f5df265d750a",
+    "fact-d6b3fab175c4afe6",
+    "fact-d7516ae71bfa9527",
+    "fact-dcda83e11695290c",
+    "fact-dd0d9e366f097d28",
+    "fact-dfa1cf1f6c4c7f8d",
+    "fact-dfe4ef2a8c053a9c",
+    "fact-e077bbc749f90960",
+    "fact-e2398add5bfb8afe",
+    "fact-e3ecdfa30467729a",
+    "fact-e4c235d5caeda8a5",
+    "fact-e6133fe4a17da4dc",
+    "fact-e65e0cf568ece452",
+    "fact-e8af1b6527e5b04a",
+    "fact-ec890e240b8ad775",
+    "fact-ecb8e0c16d8ff138",
+    "fact-ee3aeba9beb1a08c",
+    "fact-ef0286676b1a9643",
+    "fact-ef41049ef8d43490",
+    "fact-f0379676dd64c721",
+    "fact-f10afdebc717f050",
+    "fact-f2a7479681971acb",
+    "fact-f2e8fd8ff895e9b1",
+    "fact-f50d894ecf401545",
+    "fact-f5778e4eac39b728",
+    "fact-f61a12a6500770af",
+    "fact-f6f3810efc971365",
+    "fact-f73ec8399113ff4a",
+    "fact-f850e7cbf87ed1f6",
+    "fact-fa8d0e014dbd40e3",
+    "fact-fbaf713331d17991",
+    "fact-fc4753217bb8b6e4",
+    "fact-fc8ef6ffa0c87dc1",
+    "fact-fd4d2ee723c741d9",
+    "fact-fe1f5ec41bef0e70",
+    "fact-ff8a6b9b7ca92276",
+    "fact-ffa333b4eb143505"
+   ],
+   "known_event_refs": [
+    "event-00443611f5206477",
+    "event-032f6016926d3529",
+    "event-041af07c51c3a811",
+    "event-05bed2dd16917521",
+    "event-0aaacacdca0336f7",
+    "event-0b0f4d693d541f3d",
+    "event-0c20399571cd44a1",
+    "event-17d3f64681f142a6",
+    "event-186cb160c308afaf",
+    "event-19115f2b03536b17",
+    "event-1b2dde3edd4b7a4e",
+    "event-1badf1c8517594b7",
+    "event-23ad9dbe3fc9f8e6",
+    "event-2483381bfa0e0245",
+    "event-24c1a9dbf99733f8",
+    "event-260b6ede05fdb04e",
+    "event-270d1cdf33d572f0",
+    "event-2af989dcf7718397",
+    "event-2b8501873eed45c4",
+    "event-2d2fdc2e7ba50801",
+    "event-2d3a76709137c502",
+    "event-31281b6c79be285d",
+    "event-31c4c902c9a680da",
+    "event-3731aa1cefd7e405",
+    "event-3abfcd25808dddc6",
+    "event-3d6781c5e003c206",
+    "event-3e2535096d67fcc2",
+    "event-4206d14bea3d2642",
+    "event-425e179eb4b5b86d",
+    "event-43c47b5fba91a729",
+    "event-4730f9192e7ef90e",
+    "event-4760a93bc0c0f122",
+    "event-4901f956c6e8f2d4",
+    "event-4aa96847bf069feb",
+    "event-4e3fea009c23d1c7",
+    "event-4ff681b67bf88b96",
+    "event-532d44c5dcec0c56",
+    "event-55558042c2fe61e0",
+    "event-5561226ae86e639b",
+    "event-56cc8355cbdb55b5",
+    "event-57ad21501a9b5e2d",
+    "event-5aab574e1f92d7ad",
+    "event-5bff485706d93ce7",
+    "event-5c66a56d5c2b6fc1",
+    "event-6238d698674e337e",
+    "event-67e7a5b4f575b216",
+    "event-68ab283e0e906312",
+    "event-68d01e8cb7aaa10c",
+    "event-695416a19624d873",
+    "event-6de23f26b2579f4b",
+    "event-6f81de170a8efeae",
+    "event-72e4b6a28032f393",
+    "event-7508bc88ab72ed8e",
+    "event-7f692c5ea1ca388d",
+    "event-832e79550004dc4b",
+    "event-83ef2fee8dca797d",
+    "event-856ab9743777096f",
+    "event-858c8b83c7495ccd",
+    "event-8932ca779f1ba454",
+    "event-8a01685d70ac5d32",
+    "event-8a7d12797e37b0ce",
+    "event-8daf9b00327556ad",
+    "event-8ddab7718a8dd025",
+    "event-8e0a2610eaef4e02",
+    "event-8f0e7ff67a20fefd",
+    "event-8f4cfeadff6b9b57",
+    "event-9014a405c43cb05d",
+    "event-91777a4f6a91dfa7",
+    "event-97f6d8af44a12378",
+    "event-9ad052037cc3ee27",
+    "event-9b1f5111d854fad7",
+    "event-9bf98bc7e6bf343a",
+    "event-a007857e8c5f0bad",
+    "event-a1e0671d647aa126",
+    "event-a2de1c923a57bf67",
+    "event-a6099dfd6cb74336",
+    "event-a7361cfe1fcd5b87",
+    "event-b04639635586b8a0",
+    "event-b23c6a7adb1eaa2a",
+    "event-b7a33ba2cc8e37a6",
+    "event-bc121141b7a2e3d4",
+    "event-c17cb6987039a69a",
+    "event-cc1647d9b95672fb",
+    "event-cd0b7cded43f6390",
+    "event-ce7e78921b174ba1",
+    "event-d0fb2c889ef30276",
+    "event-d7035a03966fdb6f",
+    "event-ddd97670d6fa6553",
+    "event-df9ca77ded250d88",
+    "event-e992e0b878784961",
+    "event-ec8b9b80e0108a10",
+    "event-f00512e29890e575",
+    "event-f051668cbd16ff8c",
+    "event-f0623218b441edce",
+    "event-f079549cbb05601c",
+    "event-f54c293a7161d539",
+    "event-f6ac6914d31c0eed",
+    "event-faf3eba7f8b67d88",
+    "event-fc00cafa772d6b28",
+    "event-fea36dfb7733fa1c"
+   ],
+   "known_relation_refs": [
+    "relation-039371b08635438b",
+    "relation-0a8bb5e7fe66171b",
+    "relation-0c1c16cc0ffffb48",
+    "relation-0dd923c89a62fde3",
+    "relation-0f555e1e739ec0f7",
+    "relation-163cbd35916cef3e",
+    "relation-19c337020e0c3802",
+    "relation-1a9ac57a895784be",
+    "relation-1b5d46ab30c8b03b",
+    "relation-1f33d3281efca437",
+    "relation-23d8873f7784613b",
+    "relation-25a378f9b1df929f",
+    "relation-26532c70c1b32568",
+    "relation-26aee1ce350e8d4c",
+    "relation-2af32d849edb008f",
+    "relation-2c0b3d9ff9bfdf9d",
+    "relation-2ca4a93519a432ea",
+    "relation-2db9195b3770d0c4",
+    "relation-2fe0bf9b18bda1b9",
+    "relation-331919dbd18d0a26",
+    "relation-36332bd8e188bd93",
+    "relation-394bf7214b2d4ceb",
+    "relation-3b3656b58db9ab3e",
+    "relation-3b868ce446c1275c",
+    "relation-3bfd22a755d02185",
+    "relation-3ca4fad1dacf5d42",
+    "relation-3fab23c51983339a",
+    "relation-3fe826d4f8f9d742",
+    "relation-40020bce933bf732",
+    "relation-46428acb23bbb8a9",
+    "relation-4b0eed981daa1a1d",
+    "relation-4bf7b7b5b8c27cd7",
+    "relation-4e692e381e918072",
+    "relation-655374f2e7ef97d9",
+    "relation-6af80b1b37e4f09d",
+    "relation-6bcd29a6b09d05f4",
+    "relation-6ccc60590f0bf95e",
+    "relation-6e5ee9fe762f2e06",
+    "relation-6fa4868fb4735c80",
+    "relation-773137cb750cb7d4",
+    "relation-79ed55fd4ec424ac",
+    "relation-807b3e8396cd0375",
+    "relation-80bd8469d252308e",
+    "relation-80de933da1455cf2",
+    "relation-83979a37b1468365",
+    "relation-87624b00faf87ccb",
+    "relation-8937c608f0653763",
+    "relation-89e061f10d165b6a",
+    "relation-8f7f79aa4f4b7eb8",
+    "relation-8f9541693ddfbf34",
+    "relation-928235e8214d98b7",
+    "relation-94da32144c36941c",
+    "relation-9a4ecc4c48ba004d",
+    "relation-9b55ac375daa90d2",
+    "relation-9d7d2991113a7742",
+    "relation-a5b2819890d7a15a",
+    "relation-a875a2ec80cf0a9b",
+    "relation-aca838527307844d",
+    "relation-b18fdef25901ebe3",
+    "relation-b24c29688dad98f8",
+    "relation-b3abe8606b4cd5ef",
+    "relation-b75e8bfa905440a4",
+    "relation-b91a827cc99526a1",
+    "relation-b92ce8b64ab77ae8",
+    "relation-bd8b11f6fe3c88e0",
+    "relation-be6d992d0d7b69df",
+    "relation-cfcdd8b26e66b122",
+    "relation-d16606e6562db2af",
+    "relation-d5496f2f628c0b38",
+    "relation-d98e124367c7bc82",
+    "relation-dd1a447cf0157b4f",
+    "relation-de3cd9a6eb9b1e0f",
+    "relation-e4c989a82c2e2793",
+    "relation-e9e6d0579cfe364f",
+    "relation-ee1e04d44cccadec",
+    "relation-f06c838e5d76ccc6",
+    "relation-f0ef065cd7db960d",
+    "relation-f1eb7f0d4a8ed4da",
+    "relation-f3b6c024c7e5f88d",
+    "relation-ff3f7d899bf6e7c6"
+   ],
+   "label_map": {
+    "case-001": "positive",
+    "case-002": "control",
+    "case-003": "positive",
+    "case-004": "control",
+    "case-005": "positive",
+    "case-006": "control"
+   },
+   "research_axis": {
+    "axis_id": "surge_direction",
+    "population": "eligible_discovery_cases",
+    "positive": "realized_max_multiple >= 2.0",
+    "control": "realized_max_multiple < 2.0"
+   },
+   "evidence_digest": {
+    "fetches": 7,
+    "families_fetched": [
+     "10-k",
+     "10-q",
+     "company_facts",
+     "company_news",
+     "earnings_transcript",
+     "filing",
+     "news"
+    ],
+    "fact_count": 164,
+    "event_count": 100,
+    "relation_count": 80,
+    "cases_with_facts": [
+     "case-001",
+     "case-002",
+     "case-005",
+     "case-006"
+    ],
+    "concept_case_coverage": {
+     "AssetsCurrent": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "CashAndCashEquivalentsAtCarryingValue": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "CommonStockSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "EntityCommonStockSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "GrossProfit": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "InventoryNet": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "LiabilitiesCurrent": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "LongTermDebtCurrent": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "LongTermDebtNoncurrent": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "NetCashProvidedByUsedInOperatingActivities": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "NetIncomeLoss": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "OperatingIncomeLoss": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "PaymentsToAcquirePropertyPlantAndEquipment": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "Revenues": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "StockholdersEquity": {
+      "positive_cases": 2,
+      "control_cases": 2
+     },
+     "WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "WeightedAverageNumberOfSharesOutstandingBasic": {
+      "positive_cases": 2,
+      "control_cases": 1
+     },
+     "CommonStockDividendsPerShareDeclared": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ResearchAndDevelopmentExpense": {
+      "positive_cases": 1,
+      "control_cases": 1
+     },
+     "RevenueFromContractWithCustomerExcludingAssessedTax": {
+      "positive_cases": 1,
+      "control_cases": 1
+     },
+     "SalesRevenueNet": {
+      "positive_cases": 1,
+      "control_cases": 1
+     },
+     "TreasuryStockValue": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ValuationAllowanceDeferredTaxAssetChangeInAmount": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "ValuationAllowancesAndReservesDeductions": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "WeightedAverageNumberDilutedSharesOutstandingAdjustment": {
+      "positive_cases": 1,
+      "control_cases": 0
+     },
+     "RepaymentsOfLinesOfCredit": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "RetainedEarningsAccumulatedDeficit": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "RevenueFromContractWithCustomerIncludingAssessedTax": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "SalesCommissionsAndFees": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "SellingExpense": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "ShortTermInvestments": {
+      "positive_cases": 0,
+      "control_cases": 2
+     },
+     "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "StockholdersEquityPeriodIncreaseDecrease": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "UndistributedEarningsLossAvailableToCommonShareholdersBasic": {
+      "positive_cases": 0,
+      "control_cases": 1
+     },
+     "ValueAddedTaxReceivableCurrent": {
+      "positive_cases": 0,
+      "control_cases": 1
+     }
+    },
+    "label_counts": {
+     "positive": 3,
+     "control": 3
+    },
+    "narrative_summary": {
+     "event_count": 100,
+     "family_counts": {
+      "filing": 53,
+      "news": 43,
+      "transcript": 4
+     },
+     "sample_titles": [
+      "CECO Environmental Reports Third Quarter 2024 Results",
+      "Foley Represents CECO Environmental in Proposed $125 Million Acquisition of Profire Energy Inc.",
+      "CECO Environmental to Acquire Profire Energy for $125 Million",
+      "Should You Think About Buying CECO Environmental Corp. (NASDAQ:CECO) Now?",
+      "Industrial Decarbonization for Heavy Industries",
+      "ISS backs three of four dissident director candidates in Air Products fight",
+      "PR News | Gasthalter Backs Mantle Ridge’s Run on Air Products - Fri., Jan. 24, 2025",
+      "Why Investing in Hydrogen Could Be Your Smartest Move in 2025"
+     ],
+     "note": "inspect_catalog with scope=evidence lists every titled document by family and window; read_span on event_ref reads the verbatim text"
+    },
+    "attribute_case_coverage": {
+     "order_confirmation_disclosed": {
+      "positive_cases": 1,
+      "control_cases": 1,
+      "hits": 87,
+      "amount_usd_median": 125000000.0,
+      "discovery_only": true,
+      "note": "index only; never sole evidence; a miss never asserts absence"
+     }
+    }
+   },
+   "modality_coverage": {
+    "structured": {
+     "available": true,
+     "explored": true,
+     "status": "explored"
+    },
+    "narrative": {
+     "available": true,
+     "explored": true,
+     "status": "explored"
+    }
+   },
+   "prior_modality_footprints": [],
+   "meta_info": {
+    "items": [],
+    "included_refs": [],
+    "deferred_refs": [],
+    "counts": {
+     "available": 0,
+     "included": 0,
+     "deferred": 0
+    },
+    "directory": {
+     "cursor": 0,
+     "total": 0,
+     "levels": {
+      "case": 0,
+      "plan": 0,
+      "round": 0
+     }
+    }
+   },
+   "meta_memory_disclosures": [],
+   "last_action_result": {
+    "action": "inspect_catalog",
+    "inspected": [
+     "families"
+    ]
+   },
+   "last_read_span": "{\"authors\":[],\"banner_image\":null,\"category_within_source\":\"General\",\"overall_sentiment_label\":\"Bullish\",\"overall_sentiment_score\":0.454221,\"source\":\"Air Products\",\"source_domain\":\"Air Products\",\"summary\":\"This article by Air Products discusses industrial decarbonization for heavy industries, which account for 24% of global greenhouse gas emissions. Air Products offers low-carbon intensity hydrogen production, carbon capture, and oxy-fuel combustion technologies to help industries like power generation, electronics, iron and steel reduce their carbon emissions and meet sustainability goals. The article also explains different types of hydrogen (green and blue) and details how hydrogen can decarbonize various industrial sectors.\",\"ticker_sentiment\":[{\"relevance_score\":\"1.000000\",\"ticker\":\"APD\",\"ticker_sentiment_label\":\"Bullish\",\"ticker_sentiment_score\":\"0.473218\"}],\"time_published\":\"20241231T235959\",\"title\":\"Industrial Decarbonization for Heavy Industries\",\"topics\":[{\"relevance_score\":\"0.941311\",\"topic\":\"energy_transportation\"},{\"relevance_score\":\"0.805061\",\"topic\":\"manufacturing\"}],\"url\":\"https://www.airproducts.com/industries/industrial-decarbonization\"}"
+  },
+  "max_output_tokens": 4000,
+  "temperature": 0.2
+ },
+ "response_text": "{\"action\":\"read_span\",\"event_ref\":\"event-00443611f5206477\",\"rationale\":[\"Narrative modality is marked explored but I have only read one Air Products span, which is off-axis for the surge_direction research axis.\",\"Need at least one bounded raw narrative read tied to a cohort case before any terminal action.\",\"Reading a filing/news event span grounds the narrative contrast for a possible predicate measurement.\"]}",
+ "usage": {
+  "llm_calls": 1,
+  "tokens": 8863,
+  "cost": 0.0
+ }
+}

@@ -1,0 +1,1343 @@
+[
+ {
+  "case_id": "cik_0000001750:20250131t00001738252800z",
+  "company_id": "cik_0000001750",
+  "prediction": {
+   "is_surge": false,
+   "candidate_judgment": "unlikely",
+   "magnitude": null,
+   "confidence": {
+    "level": "medium"
+   },
+   "key_reasons": [
+    "The supplied prediction baseline is a mean adjusted close of 69.066, so the 2x threshold is about 138.132; the recent close of 68.84 is only about 0.498x of that threshold, meaning the security would need to roughly double from the current baseline within six months.",
+    "Source-backed positives such as revenue_growth_yoy=0.230755, the Chromalloy multi-year exclusive distribution agreement, the $9.5 million Kansas expansion, and management guidance for H2 margin expansion and USM growth support an improving operating narrative, but they do not supply evidence of a near-term repricing catalyst sufficient for a 2x adjusted-share-price move.",
+    "Counter-evidence weighs against a doubling outcome: cash_to_current_liabilities_ratio is weak at about 0.111, gross_margin_change is slightly negative at -0.0045523, operating_cash_flow_margin is only 0.00252263, and the company disclosed customer collection issues plus a terminated PBH program with a $4.8 million net termination charge."
+   ],
+   "uncertainties": [
+    "The packet does not include a quantified valuation bridge, explicit future price target, or detailed forward financial projections that would connect the cited operating improvements to a 2x share-price outcome.",
+    "Some signal coverage is partial or unavailable, including price_momentum_126d, and the visible evidence may omit additional catalysts or risks within the six-month horizon.",
+    "The fixed six-month horizon ending around late July 2025 may be too short for the cited capacity expansion, contract wins, and margin guidance to translate into the scale of market repricing required for 2x."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "budget_exhausted",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": true
+   },
+   "decision_drivers": [
+    "The saved prediction judged a surge unlikely and the canonical outcome confirms non-surge. The prediction baseline showed the recent close at 68.84 versus a doubling threshold of 138.132, so the security needed roughly a 2x move within the horizon. The realized max multiple of 1.4 did not reach that threshold. This item records the binary outcome fact only; it does not assert that the cited reasons caused the outcome.",
+    "The prediction baseline placed the recent close at about 0.498x of the doubling threshold, meaning a roughly 2x move was required. Counter-evidence included cash_to_current_liabilities_ratio around 0.111, gross_margin_change of -0.0045523, operating_cash_flow_margin of 0.00252263, and disclosed customer collection issues plus a terminated PBH program with a $4.8 million net termination charge. A testable explanation is that these factors made a near-term 2x repricing unlikely. To test, compare similar cases where the baseline distance to threshold was large and similar counter-evidence was present, and measure the frequency of surge outcomes."
+   ],
+   "why_prediction_failed": [],
+   "misleading_signals": [],
+   "ignored_evidence": [],
+   "missing_information": [],
+   "plan_issues": [],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:d5868031d80fa718750e9b78792710cfcb7f51b20060171f76530d7ffa842694",
+     "level": "case",
+     "owner_ref": "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f",
+     "category": "decision_drivers",
+     "kind": "fact",
+     "brief": "The binary non-surge call was correct: the realized outcome was non-surge with a realized max multiple of 1.4, well below the 2x threshold.",
+     "detail": "The saved prediction judged a surge unlikely and the canonical outcome confirms non-surge. The prediction baseline showed the recent close at 68.84 versus a doubling threshold of 138.132, so the security needed roughly a 2x move within the horizon. The realized max multiple of 1.4 did not reach that threshold. This item records the binary outcome fact only; it does not assert that the cited reasons caused the outcome.",
+     "scope": {
+      "case_refs": [
+       "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f"
+      ],
+      "plan_refs": [],
+      "conditions": "Realized outcome was non-surge with realized max multiple 1.4; binary direction was correct."
+     },
+     "limitations": [
+      "A correct binary call does not prove the stated reasons were sufficient or causal.",
+      "The realized max multiple of 1.4 is a single outcome observation and does not establish an ex-ante probability."
+     ],
+     "source_refs": [
+      "reflection_source:d9c2e1869e56340e4f698e504502033989e002050cc0604b739a362ababbea95"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:d9c2e1869e56340e4f698e504502033989e002050cc0604b739a362ababbea95",
+       "axis": "binary",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:d9fb110a5f13889dbd879fe42d514150398f8e52a56b24c49a73c63ec5970d2a",
+     "level": "case",
+     "owner_ref": "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f",
+     "category": "decision_drivers",
+     "kind": "hypothesis",
+     "brief": "The rejection of a surge likely benefited from the large distance to the doubling threshold and from balance-sheet/customer counter-evidence, but this causal attribution is a hypothesis requiring a test.",
+     "detail": "The prediction baseline placed the recent close at about 0.498x of the doubling threshold, meaning a roughly 2x move was required. Counter-evidence included cash_to_current_liabilities_ratio around 0.111, gross_margin_change of -0.0045523, operating_cash_flow_margin of 0.00252263, and disclosed customer collection issues plus a terminated PBH program with a $4.8 million net termination charge. A testable explanation is that these factors made a near-term 2x repricing unlikely. To test, compare similar cases where the baseline distance to threshold was large and similar counter-evidence was present, and measure the frequency of surge outcomes.",
+     "scope": {
+      "case_refs": [
+       "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f"
+      ],
+      "plan_refs": [],
+      "conditions": "Binary non-surge was realized; attribution of the correct call to specific evidence is not established."
+     },
+     "limitations": [
+      "This is a causal hypothesis, not an established rule.",
+      "The evidence packet did not include a quantified valuation bridge or forward projections connecting operating improvements to a 2x price move.",
+      "Some signal coverage was partial or unavailable, including price_momentum_126d."
+     ],
+     "source_refs": [
+      "reflection_source:d9c2e1869e56340e4f698e504502033989e002050cc0604b739a362ababbea95"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:d9c2e1869e56340e4f698e504502033989e002050cc0604b739a362ababbea95",
+       "axis": "binary",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f",
+   "source_snapshot": {
+    "source_identity": "case:013d71f96e1bc7994b58d03f63bb2bbbd015a76438689dec1d723fe609718f8f",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "unlikely",
+     "predicted_binary_label": "non_surge",
+     "true_binary_label": "non_surge",
+     "binary_correct": true,
+     "assessment": "strong_correct_negative",
+     "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": false,
+     "predicted_magnitude": null,
+     "true_magnitude": null,
+     "magnitude_correct": false,
+     "error_kind": "not_applicable",
+     "ordinal_distance": null
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "AAR CORP. is a Delaware-incorporated aviation services company with common stock, $1.00 par value, trading under symbol AIR on the New York Stock Exchange and Chicago Stock Exchange.",
+   "As of November 30, 2024 there were 35,914,649 shares of the registrant’s Common Stock, $1.00 par value per share, outstanding.",
+   "AAR CORP. operates through reportable segments including Repair and Engineering, Parts Supply, Integrated Solutions, and Expeditionary Services, with customer splits across Government and Defense and Commercial customers.",
+   "AAR CORP. reports geographic revenue splits including U.S./Canada, Europe, Asia South Pacific, and other countries outside North America and Europe/Africa.",
+   "AAR Corp. plans to invest $9.5 million to expand its existing facility in Wellington, Kansas, by 100,000 square feet and create 100 new jobs.",
+   "The Kansas expansion is expected to be operational in April and will strengthen the state's aviation industry.",
+   "cash_reserves=6.17e+07",
+   "At November 30, 2024, borrowings outstanding under the Amended Revolving Credit Facility were $447.0 million and there were approximately $9.7 million of outstanding letters of credit, which reduced the availability under this facility to $368.3 million.",
+   "AAR CORP. has signed a multi-year exclusive distribution agreement with Chromalloy for Parts Manufacturer Approval (PMA) parts for the CF6-80C2 engine high pressure turbine (HPT) Stage 1 and Stage 2 turbine blades. This partnership aims to provide global aftermarket customers with innovative solutions and expand AAR's engine aftermarket offerings. The agreement has an initial term of three years, with AAR making an initial provisioning order to ensure global distribution inventory.",
+   "Our Condensed Consolidated Balance Sheet as of August 31, 2024 included accounts receivable of $ 13.2 million, including $ 6.8 million past due, and contract assets of $ 11.2 million related to this customer.",
+   "During fiscal 2024, we experienced delayed collections from one of our significant regional airline customers and issued the customer a Notice of Payment and Other Defaults during the second quarter of fiscal 2024 to request payment and reserve our rights under our agreements. In the fourth quarter of fiscal 2024, we terminated a power-by-the-hour (“PBH”) program with this customer which resulted in a net termination charge of $4.8 million.",
+   "revenue_acceleration=0.0270077",
+   "max_drawdown_1y=-0.160316",
+   "negative_word_count=4",
+   "Latest CashAndCashEquivalentsAtCarryingValue is 61,700,000 USD (end 2024-11-30) and latest LiabilitiesCurrent is 558,300,000 USD (end 2024-11-30).",
+   "Management commentary from the FY25 Q2 earnings call indicates expected margin expansion in the second half of the year versus the first half, with further expansion into Q4.",
+   "Management commentary from the FY25 Q2 earnings call indicates expected further growth in USM as more assets become available.",
+   "Management commentary from the FY25 Q2 earnings call indicates expected growth improvement as government program activities convert their pipeline of opportunities to new business wins and recent contract wins mature.",
+   "gross_margin_change=-0.0045523",
+   "net_share_retirement_yoy=-0.00859599"
+  ]
+ },
+ {
+  "case_id": "cik_0000002488:20250530t00001748534400z",
+  "company_id": "cik_0000002488",
+  "prediction": {
+   "is_surge": true,
+   "candidate_judgment": "possible",
+   "magnitude": "2-3x",
+   "confidence": {
+    "level": "low"
+   },
+   "key_reasons": [
+    "AMD's Q1 2025 filing shows strong revenue growth of 35.9% year-over-year and revenue acceleration of 22.2%, with positive operating cash flow margin of 12.6%, providing source-backed evidence of fundamental momentum that could support share-price repricing toward the 2x threshold of $224.59 from the baseline mean of $112.29."
+   ],
+   "uncertainties": [
+    "The 126-day price momentum is negative at -18.3%, indicating the market has not yet confirmed a repricing trend.",
+    "AMD faces an $800 million inventory charge from export controls on MI308 products, which could weigh on near-term results.",
+    "Customer concentration risk is disclosed, with a small number of customers accounting for a significant portion of revenue.",
+    "No explicit forward guidance or order confirmation for AI accelerators is available in the supplied evidence to quantify a path to 2x.",
+    "The six-month horizon is short relative to the magnitude of repricing required, and no specific catalyst with a clear timeline is identified."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "budget_exhausted",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": true
+   },
+   "decision_drivers": [
+    "The saved prediction labeled the outcome 'possible' with low confidence while still selecting is_surge=true and magnitude 2-3x. The realized outcome was a surge with a 2-3x magnitude (realized max multiple 2.8), so both the binary and magnitude axes were correct. The candidate_judgment_feedback classifies this as 'correct_positive_conservative': binary-correct but conservative relative to the realized surge. The positive evidence cited in the original key_reasons (revenue_growth_yoy=0.359035, revenue_acceleration=0.222131, operating_cash_flow_margin=0.126244) was source-backed and pointed in the correct direction. The conservatism was in the confidence label, not in the directional or magnitude call. This does not prove that the cited reasons caused the outcome, nor does the realized outcome alone establish that 'likely' was the calibrated ex-ante category."
+   ],
+   "why_prediction_failed": [],
+   "misleading_signals": [],
+   "ignored_evidence": [],
+   "missing_information": [
+    "The original uncertainties listed: negative 126-day price momentum (-18.3%), an $800M inventory charge from export controls on MI308, customer concentration risk, no explicit forward guidance or order confirmation for AI accelerators, and a short six-month horizon with no specific catalyst timeline. The signal_results confirm several of these: price_momentum_126d was neutral, guidance_acceleration was neutral with partial coverage, customer_concentration was negative with partial coverage, and order_confirmation_disclosed was unavailable. The basic_info_source_index shows the recent_annual_filing source had 21 available projections but only 13 visible (8 omitted due to partial_context_budget). A testable hypothesis is that the omitted projections contained forward-looking guidance or order data that, if visible, would have supported higher confidence. This is a hypothesis about evidence coverage, not an established cause of the outcome."
+   ],
+   "plan_issues": [
+    "The candidate_judgment_feedback assessment 'correct_positive_conservative' indicates the 'possible' label was conservative relative to the realized surge. The original prediction already had source-backed positive fundamentals (revenue growth 35.9%, revenue acceleration 22.2%, operating cash flow margin 12.6%) and still chose low confidence. A concrete action is to define, before the next prediction, which specific additional evidence (visible forward guidance, AI-accelerator order confirmation, or a positive 126-day momentum reading) would move the judgment from 'possible' to 'likely', and to check whether that evidence is present in the visible projections or omitted. This is a process action, not a claim that the realized outcome proves the ex-ante probability was miscalibrated."
+   ],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:198d534c72960315c93e320c1a4147afe6de5316bab855de7a4b0ed44327c60f",
+     "level": "case",
+     "owner_ref": "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a",
+     "category": "decision_drivers",
+     "kind": "fact",
+     "brief": "The binary surge call was correct and the 2-3x magnitude was correct, but the candidate judgment was only 'possible' with low confidence; the source-backed positive fundamentals (35.9% YoY revenue growth, 22.2% revenue acceleration, 12.6% operating cash flow margin) were sufficient to support the direction and magnitude that were ultimately realized.",
+     "detail": "The saved prediction labeled the outcome 'possible' with low confidence while still selecting is_surge=true and magnitude 2-3x. The realized outcome was a surge with a 2-3x magnitude (realized max multiple 2.8), so both the binary and magnitude axes were correct. The candidate_judgment_feedback classifies this as 'correct_positive_conservative': binary-correct but conservative relative to the realized surge. The positive evidence cited in the original key_reasons (revenue_growth_yoy=0.359035, revenue_acceleration=0.222131, operating_cash_flow_margin=0.126244) was source-backed and pointed in the correct direction. The conservatism was in the confidence label, not in the directional or magnitude call. This does not prove that the cited reasons caused the outcome, nor does the realized outcome alone establish that 'likely' was the calibrated ex-ante category.",
+     "scope": {
+      "case_refs": [
+       "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the anonymous compact context for the recent_annual_filing / recent_company_news / reported_financial_facts / recent_market_backbone request set with prediction_baseline status=available."
+     },
+     "limitations": [
+      "A correct prediction does not prove that its stated reasons caused the outcome or were sufficient.",
+      "The realized outcome alone does not establish that 'likely' was the calibrated ex-ante probability category.",
+      "The prediction_baseline was available (mean adjusted close 112.294, recent close 113.03 on 2025-05-29), so market data was supplied; the gap was in forward projections and catalyst timing, not in the price baseline."
+     ],
+     "source_refs": [
+      "reflection_source:0892434a84050d5c00687122b72d19de3ad8ac34d02ba660d171711b0354a322"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:0892434a84050d5c00687122b72d19de3ad8ac34d02ba660d171711b0354a322",
+       "axis": "binary",
+       "correct": true
+      },
+      {
+       "source_ref": "reflection_source:0892434a84050d5c00687122b72d19de3ad8ac34d02ba660d171711b0354a322",
+       "axis": "magnitude",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:95e739f932df7c0b23dbf1c1e8ba706ce092125dd45d771fd4d14cec06b87d72",
+     "level": "case",
+     "owner_ref": "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a",
+     "category": "missing_information",
+     "kind": "hypothesis",
+     "brief": "The original prediction's low confidence was driven by identified gaps — no explicit forward guidance or AI-accelerator order confirmation, an $800M export-control inventory charge, negative 126-day price momentum (-18.3%), and customer concentration — but the realized surge suggests these gaps did not prevent the repricing; a testable next step is to check whether the omitted projections (8 of 21 in the filing source index) contained forward-looking data that would have raised confidence.",
+     "detail": "The original uncertainties listed: negative 126-day price momentum (-18.3%), an $800M inventory charge from export controls on MI308, customer concentration risk, no explicit forward guidance or order confirmation for AI accelerators, and a short six-month horizon with no specific catalyst timeline. The signal_results confirm several of these: price_momentum_126d was neutral, guidance_acceleration was neutral with partial coverage, customer_concentration was negative with partial coverage, and order_confirmation_disclosed was unavailable. The basic_info_source_index shows the recent_annual_filing source had 21 available projections but only 13 visible (8 omitted due to partial_context_budget). A testable hypothesis is that the omitted projections contained forward-looking guidance or order data that, if visible, would have supported higher confidence. This is a hypothesis about evidence coverage, not an established cause of the outcome.",
+     "scope": {
+      "case_refs": [
+       "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when the recent_annual_filing source index reports projection_status=partial_context_budget with omitted projections."
+     },
+     "limitations": [
+      "The content of the 8 omitted projections is not available in the supplied context, so this remains a hypothesis about coverage, not a verified finding.",
+      "The realized surge does not prove that the omitted projections contained the missing forward guidance.",
+      "The prediction_baseline was available; the gap is specifically in forward projections and catalyst timing, not in the supplied price baseline."
+     ],
+     "source_refs": [
+      "reflection_source:0892434a84050d5c00687122b72d19de3ad8ac34d02ba660d171711b0354a322"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:1fa3ebf62f7b5e486ae1cbfd0ebbc6c60220a63bb894ab4e2d2c3fe34afcc932",
+     "level": "case",
+     "owner_ref": "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a",
+     "category": "plan_issues",
+     "kind": "action",
+     "brief": "For future predictions on this case, when the binary direction and magnitude are both correct but the candidate judgment is 'possible' with low confidence, record the specific evidence that would justify upgrading confidence (e.g., visible forward guidance, order confirmation, or a positive momentum turn) rather than defaulting to low confidence when positive fundamentals are already source-backed.",
+     "detail": "The candidate_judgment_feedback assessment 'correct_positive_conservative' indicates the 'possible' label was conservative relative to the realized surge. The original prediction already had source-backed positive fundamentals (revenue growth 35.9%, revenue acceleration 22.2%, operating cash flow margin 12.6%) and still chose low confidence. A concrete action is to define, before the next prediction, which specific additional evidence (visible forward guidance, AI-accelerator order confirmation, or a positive 126-day momentum reading) would move the judgment from 'possible' to 'likely', and to check whether that evidence is present in the visible projections or omitted. This is a process action, not a claim that the realized outcome proves the ex-ante probability was miscalibrated.",
+     "scope": {
+      "case_refs": [
+       "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to future predictions using the same signal set (revenue_growth_yoy, revenue_acceleration, operating_cash_flow_margin, price_momentum_126d, guidance_acceleration, order_confirmation_disclosed) with a partial_context_budget filing source."
+     },
+     "limitations": [
+      "The realized outcome alone does not establish that 'likely' was the calibrated ex-ante category; this action is about documenting upgrade criteria, not about asserting a specific probability.",
+      "The omitted projections' content is unknown, so the action cannot specify exactly which evidence was missing.",
+      "Confidence should not be increased merely for its own sake; the action requires identifying specific source-backed evidence."
+     ],
+     "source_refs": [
+      "reflection_source:0892434a84050d5c00687122b72d19de3ad8ac34d02ba660d171711b0354a322"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a",
+   "source_snapshot": {
+    "source_identity": "case:8efb14dc93c830402ca09a025f93f2975187b37352bd7a8bcde362794aa5c64a",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "possible",
+     "predicted_binary_label": "surge",
+     "true_binary_label": "surge",
+     "binary_correct": true,
+     "assessment": "correct_positive_conservative",
+     "reflection_guidance": "The possible judgment was binary-correct but conservative relative to the realized surge; inspect whether source-backed positive evidence was underweighted. The realized outcome alone does not prove that likely was the calibrated ex-ante category."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": true,
+     "predicted_magnitude": "2-3x",
+     "true_magnitude": "2-3x",
+     "magnitude_correct": true,
+     "error_kind": "correct",
+     "ordinal_distance": 0
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "AMD's Q1 2025 filing covers the quarterly period ended March 29, 2025 and is filed under Commission File Number 001-07882.",
+   "AMD's Q1 2025 filing discloses a ZT Systems subsequent event dated 2025-03-31.",
+   "cash_reserves=6.049e+09",
+   "price_momentum_126d=-0.183014",
+   "revenue_growth_yoy=0.359035",
+   "operating_cash_flow_margin=0.126244",
+   "revenue_acceleration=0.222131",
+   "negative_word_count=5"
+  ]
+ },
+ {
+  "case_id": "cik_0000002969:20250131t00001738252800z",
+  "company_id": "cik_0000002969",
+  "prediction": {
+   "is_surge": false,
+   "candidate_judgment": "unlikely",
+   "magnitude": null,
+   "confidence": {
+    "level": "medium"
+   },
+   "key_reasons": [
+    "The supplied prediction baseline is a mean adjusted close of 329.058, so the fixed 2x threshold is 658.116; the latest supplied close of 335.1 is only about 0.509 of that threshold, leaving a very large repricing gap for the six-month horizon.",
+    "The source-backed operating evidence is mixed rather than accelerating: revenue growth yoy is negative at -0.0396349, revenue acceleration is only 0.0130397, and net share retirement yoy is slightly negative at -0.000899685, which does not support a credible path to a 2x adjusted share price.",
+    "The activist board change at the January 23, 2025 annual meeting is a real catalyst, but the supplied evidence only shows board reconstitution and a somewhat-bullish news sentiment score of 0.274238; it does not provide a source-backed strategic, capital-allocation, or earnings change sufficient to make a 2x price outcome a credible candidate within six months.",
+    "The NEOM Green Hydrogen project is described as on schedule to come onstream at the end of 2026 with first product delivery in early 2027, which is outside the fixed six-month horizon and therefore does not supply near-term repricing evidence for this exact outcome."
+   ],
+   "uncertainties": [
+    "The packet does not include forward earnings guidance, strategic-review details, or capital-allocation commitments from the new board, so the market impact of the activist outcome remains uncertain.",
+    "The supplied market data baseline is available, but the packet lacks a complete valuation bridge or explicit future price target connecting the available catalysts to a 2x adjusted share price.",
+    "The NEOM and broader energy-transition projects could eventually change expectations, but the supplied timing is beyond the six-month horizon and the financial impact is not quantified."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "budget_exhausted",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": true
+   },
+   "decision_drivers": [
+    "The prediction baseline was available and showed a mean adjusted close of 329.058, a recent close of 335.1 on 2025-01-30, and a doubling threshold of 658.116. The realized maximum multiple of 1.1 confirms the non-surge outcome. The large gap between the recent close and the threshold, combined with mixed operating signals (negative revenue growth yoy of -0.0396349, only slight revenue acceleration of 0.0130397, and slightly negative net share retirement yoy of -0.000899685), supported the binary-correct rejection of a surge. This item records the correct binary axis only; it does not claim the reasons were sufficient or causal."
+   ],
+   "why_prediction_failed": [],
+   "misleading_signals": [
+    "The recent company news reported that Mantle Ridge secured three board seats on January 23, 2025, replacing the chairman, president, and CEO Seifi Ghasemi and independent lead director Edward Monser. The news also carried a somewhat-bullish sentiment score of 0.274238. However, the supplied evidence did not include a strategic review, capital-allocation commitment, or earnings guidance change from the new board. The realized non-surge (maximum multiple 1.1) is consistent with the hypothesis that these signals were insufficient to drive a 2x repricing within six months. This is a hypothesis about signal interpretation, not an established causal rule."
+   ],
+   "ignored_evidence": [],
+   "missing_information": [
+    "The original prediction noted that the packet did not include forward earnings guidance, strategic-review details, or capital-allocation commitments from the new board. The next_information_needs list included questions about fiscal Q1 2025 earnings expectations, the timing and scope of any strategic review, and the status of the NEOM Green Hydrogen project. The realized non-surge suggests that without such forward-looking, source-backed catalysts, a 2x surge was unlikely. Action: when an activist board change is a key catalyst, explicitly search for and require forward guidance or strategic-review disclosures before treating the catalyst as sufficient for a surge scenario."
+   ],
+   "plan_issues": [],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:6b9eeef177c1fdcb5d04da7d400b909d407705d4c95183ec6c0f3b15af2791e5",
+     "level": "case",
+     "owner_ref": "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371",
+     "category": "decision_drivers",
+     "kind": "fact",
+     "brief": "The binary non-surge call was correct: the realized maximum multiple was 1.1, far below the 2x surge threshold, and the supplied baseline showed the latest close at only about 0.509 of the doubling threshold.",
+     "detail": "The prediction baseline was available and showed a mean adjusted close of 329.058, a recent close of 335.1 on 2025-01-30, and a doubling threshold of 658.116. The realized maximum multiple of 1.1 confirms the non-surge outcome. The large gap between the recent close and the threshold, combined with mixed operating signals (negative revenue growth yoy of -0.0396349, only slight revenue acceleration of 0.0130397, and slightly negative net share retirement yoy of -0.000899685), supported the binary-correct rejection of a surge. This item records the correct binary axis only; it does not claim the reasons were sufficient or causal.",
+     "scope": {
+      "case_refs": [
+       "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the six-month horizon ending 2025-07-31 with the fixed 2x adjusted share price threshold."
+     },
+     "limitations": [
+      "A correct binary outcome does not prove that the cited reasons caused the outcome or were sufficient.",
+      "The realized maximum multiple of 1.1 is a single outcome and does not validate the ex-ante probability category."
+     ],
+     "source_refs": [
+      "reflection_source:7bae6e4b7d02cf7133d92eae31a4b58f8e75d719179befe26b1f7f6912c628b6"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:7bae6e4b7d02cf7133d92eae31a4b58f8e75d719179befe26b1f7f6912c628b6",
+       "axis": "binary",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:e98631045db335645deb4d9efb7e354de15588fb243adf6f82efc901c294c6d0",
+     "level": "case",
+     "owner_ref": "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371",
+     "category": "misleading_signals",
+     "kind": "hypothesis",
+     "brief": "The activist board change and somewhat-bullish news sentiment may have been misleading signals for a near-term surge; the supplied evidence showed only board reconstitution and a sentiment score of 0.274238, not a source-backed strategic or earnings change.",
+     "detail": "The recent company news reported that Mantle Ridge secured three board seats on January 23, 2025, replacing the chairman, president, and CEO Seifi Ghasemi and independent lead director Edward Monser. The news also carried a somewhat-bullish sentiment score of 0.274238. However, the supplied evidence did not include a strategic review, capital-allocation commitment, or earnings guidance change from the new board. The realized non-surge (maximum multiple 1.1) is consistent with the hypothesis that these signals were insufficient to drive a 2x repricing within six months. This is a hypothesis about signal interpretation, not an established causal rule.",
+     "scope": {
+      "case_refs": [
+       "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the six-month horizon ending 2025-07-31."
+     },
+     "limitations": [
+      "The realized outcome does not prove that the activist board change was misleading; it may have been relevant over a longer horizon.",
+      "No forward guidance or strategic-review details were supplied, so the market impact of the board change remains uncertain."
+     ],
+     "source_refs": [
+      "reflection_source:7bae6e4b7d02cf7133d92eae31a4b58f8e75d719179befe26b1f7f6912c628b6"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:7bae6e4b7d02cf7133d92eae31a4b58f8e75d719179befe26b1f7f6912c628b6",
+       "axis": "binary",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:829883c2e7449c25ffcf029607ac86eddaf25af358583891c49f7399c6b23489",
+     "level": "case",
+     "owner_ref": "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371",
+     "category": "missing_information",
+     "kind": "action",
+     "brief": "For future similar predictions, obtain forward earnings guidance, strategic-review details, and capital-allocation commitments from the new board before assessing whether an activist catalyst can drive a 2x move within six months.",
+     "detail": "The original prediction noted that the packet did not include forward earnings guidance, strategic-review details, or capital-allocation commitments from the new board. The next_information_needs list included questions about fiscal Q1 2025 earnings expectations, the timing and scope of any strategic review, and the status of the NEOM Green Hydrogen project. The realized non-surge suggests that without such forward-looking, source-backed catalysts, a 2x surge was unlikely. Action: when an activist board change is a key catalyst, explicitly search for and require forward guidance or strategic-review disclosures before treating the catalyst as sufficient for a surge scenario.",
+     "scope": {
+      "case_refs": [
+       "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to predictions where an activist board change is a primary catalyst and the horizon is six months."
+     },
+     "limitations": [
+      "This action is based on one case and may not generalize to all activist situations.",
+      "The absence of forward guidance in the packet does not mean it was unavailable in the market; it was a gap in the supplied evidence."
+     ],
+     "source_refs": [
+      "reflection_source:7bae6e4b7d02cf7133d92eae31a4b58f8e75d719179befe26b1f7f6912c628b6"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371",
+   "source_snapshot": {
+    "source_identity": "case:27391220f056b94c227a531d3f74f0c295059cf2d756140047e26c5b6417c371",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "unlikely",
+     "predicted_binary_label": "non_surge",
+     "true_binary_label": "non_surge",
+     "binary_correct": true,
+     "assessment": "strong_correct_negative",
+     "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": false,
+     "predicted_magnitude": null,
+     "true_magnitude": null,
+     "magnitude_correct": false,
+     "error_kind": "not_applicable",
+     "ordinal_distance": null
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "The recent company news reports that activist investor Mantle Ridge secured three board seats at the annual meeting on January 23, 2025, replacing the chairman, president, and CEO Seifi Ghasemi and independent lead director Edward Monser.",
+   "The recent company news states that Ghasemi will continue as CEO until a new chairman/CEO is appointed by the revamped board, which now includes Mantle Ridge chief Paul Hilal and nominees Dennis Reilly and Andrew Evans.",
+   "The basic info includes a disposal group disclosure for the Liquified Natural Gas Process Technology and Equipment Business.",
+   "The basic info includes variable interest entity disclosures for NEOM Green Hydrogen Company and Jazan Integrated Gasification and Power Company, indicating material project exposure.",
+   "revenue_acceleration=0.0130397",
+   "net_share_retirement_yoy=-0.000899685"
+  ]
+ },
+ {
+  "case_id": "cik_0000003197:20250329t00001743177600z",
+  "company_id": "cik_0000003197",
+  "prediction": {
+   "is_surge": true,
+   "candidate_judgment": "possible",
+   "magnitude": "2-3x",
+   "confidence": {
+    "level": "low"
+   },
+   "key_reasons": [
+    "Backlog grew from $370.9 million at December 31, 2023 to $540.9 million at December 31, 2024, a source-backed demand acceleration that could support a share-price repricing candidate over the six-month horizon.",
+    "The 2025-03-13 news summary cites an optimistic outlook with expected profit doubling and higher cash flow, which is a source-backed expectation-changing catalyst that could contribute to a 2x price outcome even though the exact financial impact remains uncertain.",
+    "The Third Amended and Restated Credit Agreement providing a $400.0 million senior secured revolving credit facility supports liquidity and acquisition integration capacity, which can enable execution on the growth narrative."
+   ],
+   "uncertainties": [
+    "The baseline mean adjusted close is $24.336, so the 2x threshold is about $48.67; the recent close of $23.70 is roughly half that level, requiring a very large repricing within six months.",
+    "Revenue growth year-over-year was only about 2.4%, and operating cash flow margin was about 4.45%, which are not yet consistent with a rapid doubling of the share price.",
+    "Cash to current liabilities was about 0.155, indicating weak short-term liquidity relative to current liabilities despite an approximately 18.3-month liquidity runway.",
+    "Guidance acceleration signal was unavailable, and the profit-doubling and higher-cash-flow expectations are from a news summary rather than a company-issued forward projection in the supplied context.",
+    "No explicit future price target or quantified valuation bridge to the 2x threshold is supplied."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "finalized",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": false
+   },
+   "decision_drivers": [
+    "The original prediction labeled the case as a possible surge and the revealed ground truth confirms is_surge=true with realized_max_multiple=4.2. The canonical case facts mark binary=true and magnitude=false. This item records only the correct binary direction; the magnitude miss is handled separately."
+   ],
+   "why_prediction_failed": [
+    "Magnitude feedback classifies the error as an underestimate with ordinal distance 1. The original prediction's magnitude was 2-3x; the true magnitude was 3-10x. The canonical case facts mark magnitude=false. This item records the magnitude miss only; the correct binary direction is handled separately."
+   ],
+   "misleading_signals": [
+    "The supplied signal results show revenue_growth_yoy=0.0240215 and operating_cash_flow_margin=0.0445, both interpreted as neutral with sufficient coverage. The original prediction cited these as reasons the 2x threshold was demanding. Because the realized magnitude was 3-10x, these neutral fundamentals may have been misleading for magnitude purposes, but the realized outcome alone does not prove they caused the underestimate. A testable next step is to compare how often low revenue growth and low operating cash flow margin coexist with 3-10x surges in the same horizon and universe."
+   ],
+   "ignored_evidence": [],
+   "missing_information": [
+    "The original prediction had a price baseline (mean adjusted close $24.336, recent close $23.70, doubling threshold $48.672) but no quantified valuation bridge to the 2x threshold and no forward projection for the profit-doubling and higher-cash-flow expectations. The magnitude miss suggests the 2-3x cap was not supported by a bridge. Action: for future surge candidates with similar backlog and financing signals, construct an explicit scenario range using backlog conversion, margin assumptions, and share count, and document why the upper magnitude class is excluded if it is excluded."
+   ],
+   "plan_issues": [],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:41d27bc5641f900c15841ad37eba182cebf8482565e318aff5b21e893626019d",
+     "level": "case",
+     "owner_ref": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+     "category": "decision_drivers",
+     "kind": "fact",
+     "brief": "The binary surge call was correct: the realized outcome was a surge with a 4.2x max multiple, so the direction axis should be recorded as a success even though the magnitude was underestimated.",
+     "detail": "The original prediction labeled the case as a possible surge and the revealed ground truth confirms is_surge=true with realized_max_multiple=4.2. The canonical case facts mark binary=true and magnitude=false. This item records only the correct binary direction; the magnitude miss is handled separately.",
+     "scope": {
+      "case_refs": [
+       "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the binary direction axis only; does not assert that the original reasoning caused the surge."
+     },
+     "limitations": [
+      "A correct binary direction does not prove the original reasons were sufficient or causal.",
+      "The realized outcome alone does not establish the ex-ante probability of the surge class."
+     ],
+     "source_refs": [
+      "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf",
+       "axis": "binary",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:11102210fe1c14c04589f3078381348811c6e528a0697c1ad943b7156c90d778",
+     "level": "case",
+     "owner_ref": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+     "category": "why_prediction_failed",
+     "kind": "fact",
+     "brief": "The magnitude was underestimated: the prediction called for 2-3x while the realized magnitude was 3-10x with a 4.2x max multiple, so the magnitude axis is a miss.",
+     "detail": "Magnitude feedback classifies the error as an underestimate with ordinal distance 1. The original prediction's magnitude was 2-3x; the true magnitude was 3-10x. The canonical case facts mark magnitude=false. This item records the magnitude miss only; the correct binary direction is handled separately.",
+     "scope": {
+      "case_refs": [
+       "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the magnitude axis only."
+     },
+     "limitations": [
+      "The realized 4.2x multiple does not by itself explain why the magnitude was larger than predicted.",
+      "Ordinal distance 1 indicates a one-class underestimate, not a direction error."
+     ],
+     "source_refs": [
+      "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf",
+       "axis": "magnitude",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:4e27229c5f93fda08c458ba1c3f5f35ed92c65c4ce3006051d6fd4bf3d88e32f",
+     "level": "case",
+     "owner_ref": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+     "category": "misleading_signals",
+     "kind": "hypothesis",
+     "brief": "The neutral revenue-growth and operating-cash-flow-margin signals may have anchored the magnitude estimate too low, but this is a hypothesis requiring a test against a broader set of surge cases.",
+     "detail": "The supplied signal results show revenue_growth_yoy=0.0240215 and operating_cash_flow_margin=0.0445, both interpreted as neutral with sufficient coverage. The original prediction cited these as reasons the 2x threshold was demanding. Because the realized magnitude was 3-10x, these neutral fundamentals may have been misleading for magnitude purposes, but the realized outcome alone does not prove they caused the underestimate. A testable next step is to compare how often low revenue growth and low operating cash flow margin coexist with 3-10x surges in the same horizon and universe.",
+     "scope": {
+      "case_refs": [
+       "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d"
+      ],
+      "plan_refs": [],
+      "conditions": "Hypothesis only; requires a broader sample before being treated as a rule."
+     },
+     "limitations": [
+      "The signal interpretations are from the supplied context and may not capture forward-looking drivers.",
+      "No counterfactual or base-rate comparison is supplied.",
+      "This is a causal hypothesis, not an established fact."
+     ],
+     "source_refs": [
+      "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:3a0ebc20e7d594e76e8064cb3b778ca42acef1a9ec6de939a29dcb388b55da33",
+     "level": "case",
+     "owner_ref": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+     "category": "missing_information",
+     "kind": "action",
+     "brief": "Add a forward magnitude bridge for surge candidates: when backlog growth and financing capacity are present, require a quantified path from the recent close to the doubling threshold and beyond before capping magnitude at 2-3x.",
+     "detail": "The original prediction had a price baseline (mean adjusted close $24.336, recent close $23.70, doubling threshold $48.672) but no quantified valuation bridge to the 2x threshold and no forward projection for the profit-doubling and higher-cash-flow expectations. The magnitude miss suggests the 2-3x cap was not supported by a bridge. Action: for future surge candidates with similar backlog and financing signals, construct an explicit scenario range using backlog conversion, margin assumptions, and share count, and document why the upper magnitude class is excluded if it is excluded.",
+     "scope": {
+      "case_refs": [
+       "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when a surge candidate has backlog growth and financing capacity but no company-issued forward projection."
+     },
+     "limitations": [
+      "The supplied context did not include a company-issued forward projection, so the bridge would have been assumption-driven.",
+      "This action addresses magnitude calibration, not binary direction."
+     ],
+     "source_refs": [
+      "reflection_source:c130940e729d9aa83ce2ad3d3a2d429e82a84539f091e981fc009f0df3a14baf"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+   "source_snapshot": {
+    "source_identity": "case:ad51a7c1a1d56b8a9d8232d36ce6a583b64f8a4364bc8163b85234c31f7db56d",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "possible",
+     "predicted_binary_label": "surge",
+     "true_binary_label": "surge",
+     "binary_correct": true,
+     "assessment": "correct_positive_conservative",
+     "reflection_guidance": "The possible judgment was binary-correct but conservative relative to the realized surge; inspect whether source-backed positive evidence was underweighted. The realized outcome alone does not prove that likely was the calibrated ex-ante category."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": true,
+     "predicted_magnitude": "2-3x",
+     "true_magnitude": "3-10x",
+     "magnitude_correct": false,
+     "error_kind": "underestimate",
+     "ordinal_distance": 1
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "The 10-K contains segment and customer-concentration tags including Industrial Process Solutions, Engineered Systems, and a NoSingleCustomer member for accounts receivable and sales revenue.",
+   "The 10-K contains credit-agreement tags including AmendedCreditAgreement, RevolvingCreditFacility, SeniorSecuredTermLoan, and SOFR-based rate members.",
+   "The 10-K contains acquisition and intangible tags including VerantisEnvironmentalSolutionsGroup, WKGroup, EnviroCareInternationalLLC, KemcoSystemsCoLLC, TranscendSolution, and customer-list and technology intangible members.",
+   "Our backlog was $540.9 million at December 31, 2024 and $370.9 million at December 31, 2023.",
+   "On October 7, 2024, the Company entered into the Third Amended and Restated Credit Agreement. This agreement provides for a senior secured revolving credit facility in an initial aggregate principal amount of up to $400.0 million."
+  ]
+ },
+ {
+  "case_id": "cik_0000004457:20250131t00001738252800z",
+  "company_id": "cik_0000004457",
+  "prediction": {
+   "is_surge": false,
+   "candidate_judgment": "insufficient_information",
+   "magnitude": null,
+   "confidence": {
+    "level": "low"
+   },
+   "key_reasons": [
+    "Technical exclusion"
+   ],
+   "uncertainties": [],
+   "session_id": "exclusion_cik_0000004457:20250131t00001738252800z"
+  },
+  "stop_reason": "finalized",
+  "is_technical_exclusion": true,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": true
+   },
+   "decision_drivers": [],
+   "why_prediction_failed": [],
+   "misleading_signals": [],
+   "ignored_evidence": [],
+   "missing_information": [],
+   "plan_issues": [
+    "technical_case_exclusion: signal_retrieval_cards failed validation after one correction: selections[1].residual_need must be grounded in the targe"
+   ]
+  },
+  "final_state_beliefs": []
+ },
+ {
+  "case_id": "cik_0000039020:20250329t00001743177600z",
+  "company_id": "cik_0000039020",
+  "prediction": {
+   "is_surge": true,
+   "candidate_judgment": "possible",
+   "magnitude": "2-3x",
+   "confidence": {
+    "level": "low"
+   },
+   "key_reasons": [
+    "The company reported year-over-year revenue growth of about 25.5% and positive revenue acceleration of about 6.6%, with an all-time high backlog of $81 million, which is source-backed evidence of demand momentum that could support share-price repricing toward the 2x threshold."
+   ],
+   "uncertainties": [
+    "Operating cash flow margin is negative at about -2.6%, cash burn is elevated, and cash to current liabilities is weak at about 0.24, which could limit the company's ability to convert backlog into profitable growth.",
+    "The backlog disclosure does not name a counterparty or program and does not describe a specific new binding order, so the durability and timing of revenue conversion remain uncertain.",
+    "The baseline mean adjusted close is $15.986 and the doubling threshold is $31.972, requiring a substantial repricing within six months; no explicit future price target or valuation bridge is supplied.",
+    "Customer concentration and contract liability trends are unresolved, and the available evidence does not quantify the financial impact of the Northrop Grumman supplier award or quantum sensor R&D investment."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "finalized",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": true
+   },
+   "decision_drivers": [
+    "The saved prediction labeled the outcome a surge at 2-3x magnitude, which matched the revealed ground truth (is_surge=true, magnitude=2-3x, realized_max_multiple=2.3). The candidate judgment was 'possible' with low confidence. The cited supporting evidence included revenue_growth_yoy=0.255101, revenue_acceleration=0.0659846, and an all-time high backlog of $81 million. The prediction_baseline was available: recent close $15.53 on 2025-03-28, mean adjusted close $15.986, doubling threshold $31.972, recent close ratio 0.4857. The realized outcome does not prove that 'likely' was the calibrated ex-ante category, but it does show the positive evidence was sufficient to support the correct binary and magnitude call.",
+    "The candidate judgment was 'possible' with low confidence even though revenue_growth_yoy=0.255101, revenue_acceleration=0.0659846, and an all-time high backlog of $81 million were source-backed. Negative signals included operating_cash_flow_margin=-0.0255494, cash_burn_rate_elevated=positive, and cash_to_current_liabilities_ratio=0.241. A testable explanation is that the negative cash-flow and liquidity signals were weighted more heavily than the demand-momentum signals in setting confidence. This is a hypothesis about the decision process, not an established cause."
+   ],
+   "why_prediction_failed": [],
+   "misleading_signals": [],
+   "ignored_evidence": [],
+   "missing_information": [
+    "The signal_results show customer_concentration:v1 as unavailable with confidence 0.0, and order_confirmation_disclosed:v1 as neutral with partial coverage because the $81 million backlog disclosure did not name a counterparty or program. The final_research_state listed open information needs about contract liabilities, customer concentration, and the Northrop Grumman supplier award. These gaps did not prevent a correct binary and magnitude call, but they limited the ability to assess durability and timing of revenue conversion."
+   ],
+   "plan_issues": [
+    "The prediction_baseline was available with recent close ratio 0.4857 to the doubling threshold, and the positive signals (revenue growth 25.5%, acceleration 6.6%, all-time high backlog) were source-backed. The realized outcome was a 2.3x surge. A concrete action is to document, before finalizing, a short rationale for why the confidence level is not higher when multiple independent positive demand signals are present, while still accounting for negative cash-flow and liquidity signals. This is a process improvement, not a claim that higher confidence would have been calibrated."
+   ],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:e5d260c771444010703b9562d88b05decda38b2c20a5340bfb348f85218997c1",
+     "level": "case",
+     "owner_ref": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+     "category": "decision_drivers",
+     "kind": "fact",
+     "brief": "The binary surge call was correct and the 2-3x magnitude was correct, but the candidate judgment was only 'possible' with low confidence despite source-backed demand momentum.",
+     "detail": "The saved prediction labeled the outcome a surge at 2-3x magnitude, which matched the revealed ground truth (is_surge=true, magnitude=2-3x, realized_max_multiple=2.3). The candidate judgment was 'possible' with low confidence. The cited supporting evidence included revenue_growth_yoy=0.255101, revenue_acceleration=0.0659846, and an all-time high backlog of $81 million. The prediction_baseline was available: recent close $15.53 on 2025-03-28, mean adjusted close $15.986, doubling threshold $31.972, recent close ratio 0.4857. The realized outcome does not prove that 'likely' was the calibrated ex-ante category, but it does show the positive evidence was sufficient to support the correct binary and magnitude call.",
+     "scope": {
+      "case_refs": [
+       "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the saved prediction for this case where binary and magnitude were both correct."
+     },
+     "limitations": [
+      "A single realized outcome does not establish the ex-ante probability of surge.",
+      "The correct call does not prove the cited reasons caused the outcome."
+     ],
+     "source_refs": [
+      "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c",
+       "axis": "binary",
+       "correct": true
+      },
+      {
+       "source_ref": "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c",
+       "axis": "magnitude",
+       "correct": true
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:fc18c38c93ef984dfb82db3f5560bda701aa79bd66bf201e8284e9d2c82a567a",
+     "level": "case",
+     "owner_ref": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+     "category": "decision_drivers",
+     "kind": "hypothesis",
+     "brief": "The low-confidence 'possible' judgment may have underweighted the positive revenue growth, acceleration, and backlog signals relative to negative cash-flow and liquidity signals.",
+     "detail": "The candidate judgment was 'possible' with low confidence even though revenue_growth_yoy=0.255101, revenue_acceleration=0.0659846, and an all-time high backlog of $81 million were source-backed. Negative signals included operating_cash_flow_margin=-0.0255494, cash_burn_rate_elevated=positive, and cash_to_current_liabilities_ratio=0.241. A testable explanation is that the negative cash-flow and liquidity signals were weighted more heavily than the demand-momentum signals in setting confidence. This is a hypothesis about the decision process, not an established cause.",
+     "scope": {
+      "case_refs": [
+       "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the confidence calibration of the saved prediction."
+     },
+     "limitations": [
+      "The realized outcome alone does not prove the weighting explanation.",
+      "No internal decision log is available to confirm how signals were weighted."
+     ],
+     "source_refs": [
+      "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "axis": "binary",
+       "correct": true,
+       "source_ref": "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c"
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:6831c627c2f2b18457f6984d99f0756ae2622d7ff5d3f05e898b33fd1db0c5a5",
+     "level": "case",
+     "owner_ref": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+     "category": "missing_information",
+     "kind": "fact",
+     "brief": "Customer concentration and contract liability trends were unresolved at prediction time, and the backlog disclosure lacked counterparty and program detail.",
+     "detail": "The signal_results show customer_concentration:v1 as unavailable with confidence 0.0, and order_confirmation_disclosed:v1 as neutral with partial coverage because the $81 million backlog disclosure did not name a counterparty or program. The final_research_state listed open information needs about contract liabilities, customer concentration, and the Northrop Grumman supplier award. These gaps did not prevent a correct binary and magnitude call, but they limited the ability to assess durability and timing of revenue conversion.",
+     "scope": {
+      "case_refs": [
+       "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the evidence coverage at prediction time."
+     },
+     "limitations": [
+      "The missing information did not change the realized outcome.",
+      "The absence of evidence for customer concentration is not evidence that concentration is absent."
+     ],
+     "source_refs": [
+      "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:c2596caac9fc1d314b58d845f6e2d8205f4dc61723a3afe4d40c5e0cc40f0b2e",
+     "level": "case",
+     "owner_ref": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+     "category": "plan_issues",
+     "kind": "action",
+     "brief": "For future similar cases, when demand-momentum signals are source-backed and the baseline ratio to the doubling threshold is near 0.49, consider whether a 'possible' low-confidence judgment is too conservative relative to the evidence.",
+     "detail": "The prediction_baseline was available with recent close ratio 0.4857 to the doubling threshold, and the positive signals (revenue growth 25.5%, acceleration 6.6%, all-time high backlog) were source-backed. The realized outcome was a 2.3x surge. A concrete action is to document, before finalizing, a short rationale for why the confidence level is not higher when multiple independent positive demand signals are present, while still accounting for negative cash-flow and liquidity signals. This is a process improvement, not a claim that higher confidence would have been calibrated.",
+     "scope": {
+      "case_refs": [
+       "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to future predictions with similar demand-momentum and baseline conditions."
+     },
+     "limitations": [
+      "The realized outcome does not prove that higher confidence would have been correct ex ante.",
+      "This action is based on one case and should be tested across more cases."
+     ],
+     "source_refs": [
+      "reflection_source:8552404ce5ed8df53d95de74300af94a00c506d1dfea4594e69381058a6b9e1c"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+   "source_snapshot": {
+    "source_identity": "case:0bc9d875517aba40eb4455a1f51850a2d2fa5c16c587cb09d9c318b0fd35953f",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "possible",
+     "predicted_binary_label": "surge",
+     "true_binary_label": "surge",
+     "binary_correct": true,
+     "assessment": "correct_positive_conservative",
+     "reflection_guidance": "The possible judgment was binary-correct but conservative relative to the realized surge; inspect whether source-backed positive evidence was underweighted. The realized outcome alone does not prove that likely was the calibrated ex-ante category."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": true,
+     "predicted_magnitude": "2-3x",
+     "true_magnitude": "2-3x",
+     "magnitude_correct": true,
+     "error_kind": "correct",
+     "ordinal_distance": 0
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "revenue_growth_yoy=0.255101",
+   "operating_cash_flow_margin=-0.0255494",
+   "The company's backlog reached an all-time high of $81 million, and it continues to invest heavily in R&D, particularly in quantum sensor technology, to drive future growth.",
+   "revenue_acceleration=0.0659846"
+  ]
+ },
+ {
+  "case_id": "cik_0001847409:20250131t00001738252800z",
+  "company_id": "cik_0001847409",
+  "prediction": {
+   "is_surge": true,
+   "candidate_judgment": "possible",
+   "magnitude": "2-3x",
+   "confidence": {
+    "level": "low"
+   },
+   "key_reasons": [
+    "High Tide reported record fiscal 2024 revenue of $522.3 million with a sixth consecutive quarter of positive free cash flow at $5.9 million and 5.32 million Cabana Club loyalty members, providing source-backed commercial momentum that could support share-price repricing toward the 2x threshold.",
+    "The company is entering the German medical cannabis market through the Purecan GmbH acquisition, a material catalyst that could change growth expectations and contribute to a repricing outcome within the six-month horizon.",
+    "The issuer's forward-looking statements include expectations that same-store sales and consolidated gross margins will continue to increase in the first fiscal quarter of 2025 and beyond, and that revenue will continue to increase through the first fiscal quarter of 2025 and the remainder of the year, which could support an expectation-changing acceleration narrative."
+   ],
+   "uncertainties": [
+    "Revenue acceleration is negative at -0.295561 and gross margin change is only 0.0035637, which may undercut the company's stated expectation of improving same-store sales and margins.",
+    "Cash-to-current-liabilities ratio is approximately 0.47, indicating weaker short-term liquidity that could constrain funding of the Purecan acquisition and ATM program without additional financing.",
+    "Net share retirement is negative at -0.0703325, implying dilution rather than share count reduction, which can weigh on per-share repricing.",
+    "No explicit future price target or quantified valuation bridge to a 2x adjusted share price is supplied, and the baseline mean adjusted close of 2.88 requires a move to 5.76 for doubling."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "finalized",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": false
+   },
+   "decision_drivers": [],
+   "why_prediction_failed": [
+    "The saved prediction labeled is_surge=true with candidate_judgment='possible' and low confidence, citing record FY2024 revenue, positive free cash flow, Cabana Club membership, the Purecan GmbH acquisition, and issuer forward-looking statements about same-store sales and margin increases. The revealed ground truth is is_surge=false with realized_max_multiple=1.2, against a doubling threshold of 5.76 versus a baseline mean adjusted close of 2.88. The binary direction was wrong; magnitude feedback is not_applicable because no surge occurred. This item records the error fact only and does not assert why the price failed to double."
+   ],
+   "misleading_signals": [
+    "The saved key reasons leaned on record FY2024 revenue of $522.3M, a sixth consecutive quarter of positive free cash flow at $5.9M, 5.32M Cabana Club members, the Purecan GmbH acquisition, and issuer forward-looking statements. The same research state carried revenue_acceleration=-0.295561 (negative), gross_margin_change=0.0035637 (near-flat), net_share_retirement_yoy=-0.0703325 (dilution), and a cash-to-current-liabilities ratio of about 0.47. These were listed as uncertainties but did not sufficiently constrain the positive framing. The realized outcome was a 1.2x max multiple, not a doubling."
+   ],
+   "ignored_evidence": [
+    "The saved uncertainties explicitly noted that revenue acceleration is negative at -0.295561, gross margin change is only 0.0035637, cash-to-current-liabilities is about 0.47, and net share retirement is negative at -0.0703325. Despite these, the prediction retained is_surge=true. The realized outcome (1.2x max multiple, no surge) is consistent with the negative signals having more predictive weight than the positive narrative. This item records the evidence-coverage gap; it does not claim the negative signals were sufficient causes."
+   ],
+   "missing_information": [
+    "The prediction_baseline status is available: mean_adjusted_close=2.88, recent_close=2.72 on 2025-01-30, doubling_threshold=5.76, recent_close_ratio_to_doubling_threshold=0.472. The saved uncertainties noted the absence of an explicit future price target or quantified valuation bridge. The realized max multiple of 1.2x corresponds to roughly 3.46 on the baseline, well short of 5.76. This item records the missing forward projection as a coverage gap, not as proof that no surge was possible."
+   ],
+   "plan_issues": [
+    "Triggering condition: a candidate surge call where the positive case rests on record-level results and narrative catalysts while revenue_acceleration is negative, gross margin change is near zero, and net share retirement is negative. Concrete action: before finalizing, require (a) a quantified bridge from the current baseline (e.g., 2.88) to the doubling threshold (e.g., 5.76), and (b) an explicit check that no dominant negative acceleration or dilution signal is present. If either is missing, downgrade to non-surge. Material caveat: this rule is a calibration heuristic derived from one false-positive case and should be tested across multiple cases before being treated as a general rule."
+   ],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:bc60efa81e9db879bec3be24a2d832254d9745bb87674dd20683380f7bbcc063",
+     "level": "case",
+     "owner_ref": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+     "category": "why_prediction_failed",
+     "kind": "fact",
+     "brief": "The 'possible surge' call was a binary false positive: realized max multiple was 1.2x versus a 2x doubling threshold, so no surge occurred.",
+     "detail": "The saved prediction labeled is_surge=true with candidate_judgment='possible' and low confidence, citing record FY2024 revenue, positive free cash flow, Cabana Club membership, the Purecan GmbH acquisition, and issuer forward-looking statements about same-store sales and margin increases. The revealed ground truth is is_surge=false with realized_max_multiple=1.2, against a doubling threshold of 5.76 versus a baseline mean adjusted close of 2.88. The binary direction was wrong; magnitude feedback is not_applicable because no surge occurred. This item records the error fact only and does not assert why the price failed to double.",
+     "scope": {
+      "case_refs": [
+       "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the saved surge prediction evaluated against the realized 1.2x max multiple."
+     },
+     "limitations": [
+      "A single realized non-surge does not establish that the cited catalysts were irrelevant, only that the binary surge call was wrong.",
+      "The 1.2x realized multiple is a max-multiple observation and does not by itself explain the path or timing of price action."
+     ],
+     "source_refs": [
+      "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30",
+       "axis": "binary",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:b64ba8c8dc20278b816ea597882362f99f8b023de14661bb0fb6c4d49d32c4da",
+     "level": "case",
+     "owner_ref": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+     "category": "misleading_signals",
+     "kind": "fact",
+     "brief": "Positive commercial-momentum evidence (record revenue, positive FCF, loyalty membership, acquisition narrative) was treated as surge-supporting despite contemporaneous negative acceleration and dilution signals.",
+     "detail": "The saved key reasons leaned on record FY2024 revenue of $522.3M, a sixth consecutive quarter of positive free cash flow at $5.9M, 5.32M Cabana Club members, the Purecan GmbH acquisition, and issuer forward-looking statements. The same research state carried revenue_acceleration=-0.295561 (negative), gross_margin_change=0.0035637 (near-flat), net_share_retirement_yoy=-0.0703325 (dilution), and a cash-to-current-liabilities ratio of about 0.47. These were listed as uncertainties but did not sufficiently constrain the positive framing. The realized outcome was a 1.2x max multiple, not a doubling.",
+     "scope": {
+      "case_refs": [
+       "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when positive narrative and record-level metrics coexist with negative acceleration and dilution signals."
+     },
+     "limitations": [
+      "This is a retrospective characterization of signal weighting, not proof that the negative signals caused the non-surge.",
+      "Record revenue and positive free cash flow remain genuine positive facts; the issue is their sufficiency for a doubling call."
+     ],
+     "source_refs": [
+      "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30",
+       "axis": "binary",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:2b30394533b64c56463213e2f731aae5fbc8705839c1379e792026b6ae9afaf2",
+     "level": "case",
+     "owner_ref": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+     "category": "ignored_evidence",
+     "kind": "fact",
+     "brief": "Negative revenue acceleration (-0.295561) and dilution (net_share_retirement_yoy=-0.0703325) were acknowledged as uncertainties but not given enough weight to prevent a surge call.",
+     "detail": "The saved uncertainties explicitly noted that revenue acceleration is negative at -0.295561, gross margin change is only 0.0035637, cash-to-current-liabilities is about 0.47, and net share retirement is negative at -0.0703325. Despite these, the prediction retained is_surge=true. The realized outcome (1.2x max multiple, no surge) is consistent with the negative signals having more predictive weight than the positive narrative. This item records the evidence-coverage gap; it does not claim the negative signals were sufficient causes.",
+     "scope": {
+      "case_refs": [
+       "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when decelerating revenue and share dilution are present alongside positive headline results."
+     },
+     "limitations": [
+      "The negative signals were not ignored outright; they were listed as uncertainties, so the gap is one of weighting rather than omission.",
+      "No counterfactual test shows that weighting them more heavily would have produced a correct non-surge call."
+     ],
+     "source_refs": [
+      "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30",
+       "axis": "binary",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:c22fc509eafb5dcd5085ccb849e9e7336afe6a4cacc3d90f799478a12ae5259a",
+     "level": "case",
+     "owner_ref": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+     "category": "missing_information",
+     "kind": "fact",
+     "brief": "No quantified valuation bridge or forward price projection to the 5.76 doubling threshold was supplied; the baseline mean adjusted close of 2.88 required a 2x move that was not evidenced.",
+     "detail": "The prediction_baseline status is available: mean_adjusted_close=2.88, recent_close=2.72 on 2025-01-30, doubling_threshold=5.76, recent_close_ratio_to_doubling_threshold=0.472. The saved uncertainties noted the absence of an explicit future price target or quantified valuation bridge. The realized max multiple of 1.2x corresponds to roughly 3.46 on the baseline, well short of 5.76. This item records the missing forward projection as a coverage gap, not as proof that no surge was possible.",
+     "scope": {
+      "case_refs": [
+       "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when a doubling-threshold call lacks a quantified bridge from current price to the threshold."
+     },
+     "limitations": [
+      "Market baseline data was supplied; the gap is specifically the absence of forward projections or a valuation bridge, not absence of price data.",
+      "A missing valuation bridge does not by itself determine the binary outcome."
+     ],
+     "source_refs": [
+      "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30",
+       "axis": "binary",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:6e08fc075c807eb652025af600ef4e720179a65741fb6673a1a707a266588748",
+     "level": "case",
+     "owner_ref": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+     "category": "plan_issues",
+     "kind": "action",
+     "brief": "For future doubling-threshold calls, require a pre-commit rule: a surge label needs at least one quantified forward driver (e.g., projected revenue/margin bridge) plus no dominant negative acceleration or dilution signal; otherwise default to non-surge.",
+     "detail": "Triggering condition: a candidate surge call where the positive case rests on record-level results and narrative catalysts while revenue_acceleration is negative, gross margin change is near zero, and net share retirement is negative. Concrete action: before finalizing, require (a) a quantified bridge from the current baseline (e.g., 2.88) to the doubling threshold (e.g., 5.76), and (b) an explicit check that no dominant negative acceleration or dilution signal is present. If either is missing, downgrade to non-surge. Material caveat: this rule is a calibration heuristic derived from one false-positive case and should be tested across multiple cases before being treated as a general rule.",
+     "scope": {
+      "case_refs": [
+       "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to future surge/non-surge decisions using a doubling threshold and a supplied price baseline."
+     },
+     "limitations": [
+      "Derived from a single case; not validated as a general rule.",
+      "Requiring a quantified bridge may be infeasible when forward projections are unavailable, in which case the default should be non-surge rather than an unsupported surge call."
+     ],
+     "source_refs": [
+      "reflection_source:6075481c8fe13ae464a47bdfd43e956957e8d86c73b15ff897461bca45af1c30"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+   "source_snapshot": {
+    "source_identity": "case:70f089fd42741552e3287ac4e0f35ffccd40b64f7a069daff1012465fe7953e6",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "possible",
+     "predicted_binary_label": "surge",
+     "true_binary_label": "non_surge",
+     "binary_correct": false,
+     "assessment": "false_positive",
+     "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": false,
+     "predicted_magnitude": "2-3x",
+     "true_magnitude": null,
+     "magnitude_correct": false,
+     "error_kind": "not_applicable",
+     "ordinal_distance": null
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "High Tide reported record fiscal 2024 annual revenue of $522.3 million with a sixth consecutive quarter of positive free cash flow at $5.9 million, and its Cabana Club loyalty program reached 5.32 million members globally.",
+   "High Tide is entering the German medical cannabis market through the acquisition of Purecan GmbH, which the company frames as diversifying revenue streams and fueling future growth.",
+   "The issuer's forward-looking statements include expectations that same-store sales and consolidated gross margins will continue to increase in the first fiscal quarter of 2025 and beyond, and that revenue will continue to increase through the first fiscal quarter of 2025 and the remainder of the year.",
+   "The issuer's forward-looking statements include the closing of the acquisition of Purecan pursuant to the Purecan Acquisition Agreement and the Corporation's ability to generate cash flow from operations and from financing activities.",
+   "The issuer's forward-looking statements include the intention to complete the 2023 at-the-market equity offering program and any additional offering of securities, and the expected use of net proceeds from the 2023 ATM Program, September 2022 Credit Facility or any future offering.",
+   "The issuer's forward-looking statements include the Corporation's ability to obtain, maintain, and renew or extend applicable authorizations, including the timing and impact of the receipt thereof, and the realization of cost savings, synergies or benefits from recent and proposed acquisitions.",
+   "The issuer's forward-looking statements include the Corporation's intention to devote resources to the protection of its intellectual property rights, including by seeking and obtaining registered protections and developing and implementing standard operating procedures.",
+   "gross_margin_change=0.0035637",
+   "revenue_acceleration=-0.295561"
+  ]
+ },
+ {
+  "case_id": "cik_0000316709:20250530t00001748534400z",
+  "company_id": "cik_0000316709",
+  "prediction": {
+   "is_surge": false,
+   "candidate_judgment": "unlikely",
+   "magnitude": null,
+   "confidence": {
+    "level": "medium"
+   },
+   "key_reasons": [
+    "The supplied prediction baseline is a mean adjusted close of 87.83, so the six-month 2x threshold is 175.66; the most recent close of 87.76 is only about 0.4996 of that threshold, meaning the stock would need to roughly double from the current level.",
+    "Source-backed evidence shows only modest positive momentum: price_momentum_126d=0.0799902 and recent adjusted closes around 87-89, which is far short of the acceleration or catalyst magnitude typically associated with a 2x move.",
+    "The cited catalysts are not commensurate with a doubling: the 401(k) match program is an early competitive imitation, the annual meeting results are routine governance approvals, and the news sentiment is neutral to somewhat bullish rather than transformative."
+   ],
+   "uncertainties": [
+    "The packet lacks forward projections for client asset inflows, net interest margin, deposit trends, or capital return plans that could materially change the repricing outlook.",
+    "Some source projections are truncated or omitted, so additional positive catalysts may exist but are not visible in the supplied context.",
+    "A broad market or sector re-rating could lift SCHW more than company-specific evidence alone would suggest, but no such source-backed expectation change is supplied."
+   ],
+   "session_id": "anonymous-session-id"
+  },
+  "stop_reason": "finalized",
+  "is_technical_exclusion": false,
+  "self_reflection": {
+   "prediction_outcome": {
+    "correct": false
+   },
+   "decision_drivers": [],
+   "why_prediction_failed": [
+    "The original prediction set is_surge=false with candidate_judgment 'unlikely' and a medium-confidence rationale anchored on the baseline mean adjusted close of 87.83 versus the 175.66 doubling threshold. The revealed ground truth is is_surge=true with magnitude 3-10x and realized_max_multiple 3.5. This is a binary false negative on the surge axis, not a magnitude-only miss."
+   ],
+   "misleading_signals": [
+    "The key_reasons emphasize that the most recent close of 87.76 is only about 0.4996 of the 175.66 threshold, implying the stock would need to roughly double. That arithmetic is correct but is a statement about required return, not about the likelihood of a surge. Treating the gap as evidence against a surge can crowd out positive catalysts. A testable check: in future cases, separate 'distance to threshold' from 'probability of threshold' and require at least one independent positive catalyst assessment before downgrading a surge to unlikely."
+   ],
+   "ignored_evidence": [
+    "The saved prediction characterized the 401(k) match program as an early competitive imitation and the annual meeting results as routine, and it did not treat the financing_listing_action signal (completed secondary offering plus binding $1.5 billion repurchase) or the cash_reserves signal as surge-relevant. The repurchase is a completed/binding capital-return action that modestly reduces share count, and the cash reserve signal was marked positive with confidence 1.0. A testable check: when a capital-return action is completed or binding and cash reserves are strong, explicitly assess whether these could support a re-rating rather than dismissing them as non-catalysts."
+   ],
+   "missing_information": [
+    "The original uncertainties explicitly noted the absence of forward projections for client asset inflows, net interest margin, deposit trends, and capital return plans, and that some source projections were truncated or omitted. The basic_info_source_index shows reported_financial_facts with projection_status 'partial_context_budget' and 6 omitted projections. These gaps are a coverage limitation on the ex-ante assessment, not a demonstrated cause of the surge."
+   ],
+   "plan_issues": [
+    "The saved prediction's key_reasons leaned on the distance to the doubling threshold and the absence of transformative catalysts. To reduce false negatives, the next research plan should: (1) list every supplied positive signal (cash reserves, completed/binding capital-return actions, competitive program launches, sentiment) with its coverage and confidence; (2) state a separate probability judgment for a surge that is not derived solely from the price gap; and (3) record which forward projections are missing so the gap is visible. This is an action proposal, not a claim that these steps would have predicted the realized 3.5x move."
+   ],
+   "reflection_items": [
+    {
+     "item_ref": "reflection:5aff3ccff7487d74f0ff5194a912af0359a125b8a65c3609628a90120b11b42f",
+     "level": "case",
+     "owner_ref": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+     "category": "why_prediction_failed",
+     "kind": "fact",
+     "brief": "The saved prediction called a surge unlikely, but the realized outcome was a surge of 3-10x (max multiple 3.5), so the binary direction was wrong.",
+     "detail": "The original prediction set is_surge=false with candidate_judgment 'unlikely' and a medium-confidence rationale anchored on the baseline mean adjusted close of 87.83 versus the 175.66 doubling threshold. The revealed ground truth is is_surge=true with magnitude 3-10x and realized_max_multiple 3.5. This is a binary false negative on the surge axis, not a magnitude-only miss.",
+     "scope": {
+      "case_refs": [
+       "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the saved prediction for this case."
+     },
+     "limitations": [
+      "This item records the realized outcome and the saved prediction; it does not establish which evidence caused the surge.",
+      "The realized outcome is a single case and does not validate or invalidate the ex-ante probability category."
+     ],
+     "source_refs": [
+      "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [
+      {
+       "source_ref": "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4",
+       "axis": "binary",
+       "correct": false
+      }
+     ],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:12634be7c8a264918bf360fbbc651ed91f3c8db9f9a9eb60fd13094fe85d3373",
+     "level": "case",
+     "owner_ref": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+     "category": "misleading_signals",
+     "kind": "hypothesis",
+     "brief": "The prediction may have overweighted the distance-to-threshold framing (recent close at ~0.4996 of the doubling threshold) as if it were a strong prior against a surge, when a 2x threshold is a target level rather than a probability estimate.",
+     "detail": "The key_reasons emphasize that the most recent close of 87.76 is only about 0.4996 of the 175.66 threshold, implying the stock would need to roughly double. That arithmetic is correct but is a statement about required return, not about the likelihood of a surge. Treating the gap as evidence against a surge can crowd out positive catalysts. A testable check: in future cases, separate 'distance to threshold' from 'probability of threshold' and require at least one independent positive catalyst assessment before downgrading a surge to unlikely.",
+     "scope": {
+      "case_refs": [
+       "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when a doubling threshold is far above the recent close."
+     },
+     "limitations": [
+      "This is a hypothesis about reasoning, not a demonstrated cause of the realized surge.",
+      "The baseline arithmetic itself is accurate; the concern is its use as a probability proxy."
+     ],
+     "source_refs": [
+      "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:b9886319d0d6dd28112e4b1962e83268590e11922ec6e07f922a71e2faaf44c3",
+     "level": "case",
+     "owner_ref": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+     "category": "ignored_evidence",
+     "kind": "hypothesis",
+     "brief": "Positive or potentially transformative signals in the supplied context may have been underweighted, including the 401(k) match program imitation, the completed $1.5 billion nonvoting common stock repurchase agreement, and the large cash reserve position.",
+     "detail": "The saved prediction characterized the 401(k) match program as an early competitive imitation and the annual meeting results as routine, and it did not treat the financing_listing_action signal (completed secondary offering plus binding $1.5 billion repurchase) or the cash_reserves signal as surge-relevant. The repurchase is a completed/binding capital-return action that modestly reduces share count, and the cash reserve signal was marked positive with confidence 1.0. A testable check: when a capital-return action is completed or binding and cash reserves are strong, explicitly assess whether these could support a re-rating rather than dismissing them as non-catalysts.",
+     "scope": {
+      "case_refs": [
+       "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies when positive capital-return or cash-reserve signals are present alongside a far-above-price doubling threshold."
+     },
+     "limitations": [
+      "This is a hypothesis about which evidence was underweighted; the realized surge may have had other drivers.",
+      "The financing_listing_action signal had only partial coverage and confidence 0.6, so its evidential weight is limited.",
+      "The 401(k) program was described as an early-stage imitation, which may genuinely have limited near-term impact."
+     ],
+     "source_refs": [
+      "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:fd5a9005b27b55aec619319a69dd5d5bf0e892d9a8504246dd76657acddb6c7b",
+     "level": "case",
+     "owner_ref": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+     "category": "missing_information",
+     "kind": "fact",
+     "brief": "The packet lacked forward projections for client asset inflows, net interest margin, deposit trends, and capital return plans, and some source projections were truncated or omitted, which the prediction itself flagged as uncertainties.",
+     "detail": "The original uncertainties explicitly noted the absence of forward projections for client asset inflows, net interest margin, deposit trends, and capital return plans, and that some source projections were truncated or omitted. The basic_info_source_index shows reported_financial_facts with projection_status 'partial_context_budget' and 6 omitted projections. These gaps are a coverage limitation on the ex-ante assessment, not a demonstrated cause of the surge.",
+     "scope": {
+      "case_refs": [
+       "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to the supplied context for this case."
+     },
+     "limitations": [
+      "Missing information is a coverage gap; it does not by itself explain the realized surge.",
+      "The omitted projections may or may not have contained surge-relevant content."
+     ],
+     "source_refs": [
+      "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    },
+    {
+     "item_ref": "reflection:6a3ad673ded2b9d5af82881e76609fb5987ecb0772239b2341147b4281847858",
+     "level": "case",
+     "owner_ref": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+     "category": "plan_issues",
+     "kind": "action",
+     "brief": "For future surge assessments, require an explicit positive-catalyst inventory and a separate probability judgment before allowing a far-above-price threshold to drive an 'unlikely' call.",
+     "detail": "The saved prediction's key_reasons leaned on the distance to the doubling threshold and the absence of transformative catalysts. To reduce false negatives, the next research plan should: (1) list every supplied positive signal (cash reserves, completed/binding capital-return actions, competitive program launches, sentiment) with its coverage and confidence; (2) state a separate probability judgment for a surge that is not derived solely from the price gap; and (3) record which forward projections are missing so the gap is visible. This is an action proposal, not a claim that these steps would have predicted the realized 3.5x move.",
+     "scope": {
+      "case_refs": [
+       "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5"
+      ],
+      "plan_refs": [],
+      "conditions": "Applies to future surge/non-surge predictions using a doubling threshold."
+     },
+     "limitations": [
+      "This is a process recommendation; it is not validated by the single realized outcome.",
+      "It may increase false positives if applied without regard to signal quality."
+     ],
+     "source_refs": [
+      "reflection_source:9286a336a110b1a11a4dc9e55542c3a695de4a7673271b3506cc4bdce5e5cec4"
+     ],
+     "counter_refs": [],
+     "outcome_claims": [],
+     "evidence_status": "sources_checked"
+    }
+   ],
+   "source_identity": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+   "source_snapshot": {
+    "source_identity": "case:ef74c7739a7ba03d2a5f5aed94272e8372fe76e85c3c9050316eabab024913a5",
+    "candidate_judgment_feedback": {
+     "candidate_judgment": "unlikely",
+     "predicted_binary_label": "non_surge",
+     "true_binary_label": "surge",
+     "binary_correct": false,
+     "assessment": "severe_false_negative",
+     "reflection_guidance": "The unlikely judgment missed a realized surge; identify contrary evidence that was overweighted and positive evidence that was ignored."
+    },
+    "magnitude_feedback": {
+     "magnitude_applicable": true,
+     "predicted_magnitude": null,
+     "true_magnitude": "3-10x",
+     "magnitude_correct": false,
+     "error_kind": "missed_surge",
+     "ordinal_distance": null
+    }
+   }
+  },
+  "final_state_beliefs": [
+   "The most recent market data shows adjusted closes of 87.4, 88.63, 88.05, and 87.76 on consecutive trading dates.",
+   "The market data shows adjusted closes ranging from 74.95 to 80.18 across the listed April trading dates.",
+   "All nominees for director were elected, and each nominee received more for votes than against votes cast for the nominee's election.",
+   "The stockholder proposal requesting declassification of the board of directors to elect each director annually was approved.",
+   "Recent news includes a neutral sentiment article on investing basics and a somewhat-bullish article on Schwab's PGA sponsorship, indicating no major negative catalysts.",
+   "Schwab is imitating Fidelity's 401(k) match program, which may enhance its competitive position in wealth management and attract new clients.",
+   "The financial facts show entity public float was $122.8 billion at 2024-06-30, reflecting a large market capitalization."
+  ]
+ }
+]

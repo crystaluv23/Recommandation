@@ -1,0 +1,25 @@
+{
+ "case_id": "cik_0000002488:20250530t00001748534400z",
+ "company_id": "cik_0000002488",
+ "prediction_time": "2025-05-30T00:00:00+00:00",
+ "prediction": {
+  "is_surge": true,
+  "candidate_judgment": "possible",
+  "magnitude": "2-3x",
+  "confidence": {
+   "level": "low"
+  },
+  "key_reasons": [
+   "AMD's Q1 2025 filing shows strong revenue growth of 35.9% year-over-year and revenue acceleration of 22.2%, with positive operating cash flow margin of 12.6%, providing source-backed evidence of fundamental momentum that could support share-price repricing toward the 2x threshold of $224.59 from the baseline mean of $112.29."
+  ],
+  "uncertainties": [
+   "The 126-day price momentum is negative at -18.3%, indicating the market has not yet confirmed a repricing trend.",
+   "AMD faces an $800 million inventory charge from export controls on MI308 products, which could weigh on near-term results.",
+   "Customer concentration risk is disclosed, with a small number of customers accounting for a significant portion of revenue.",
+   "No explicit forward guidance or order confirmation for AI accelerators is available in the supplied evidence to quantify a path to 2x.",
+   "The six-month horizon is short relative to the magnitude of repricing required, and no specific catalyst with a clear timeline is identified."
+  ],
+  "session_id": "anonymous-session-id"
+ },
+ "final_context_size": 32675
+}
