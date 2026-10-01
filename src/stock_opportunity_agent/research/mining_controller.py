@@ -289,7 +289,6 @@ class LabelAwareMiningController:
         self._events: dict[str, Any] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
-        self._last_read_span: str | None = None
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -972,7 +971,6 @@ class LabelAwareMiningController:
             entry["title"] = event.title
             entry["source_family"] = event.source_family
             entry["available_at"] = event.available_at
-            self._last_read_span = masked
         self._last_action_result = {"action": "read_span", **dict(entry)}
         self._append(
             "read_span",
@@ -1020,15 +1018,12 @@ class LabelAwareMiningController:
         masked = _mask_identity_values(
             context, self.identity_aliases, expand_aliases=False
         )
-        self._last_read_span = masked
+        entry = {"fact_ref": fact_ref, "context_chars": len(masked), "masked": masked}
+        self._last_action_result = {"action": "read_span", **entry}
         self._append(
             "read_span",
             raw,
-            payload={
-                "fact_ref": fact_ref,
-                "context_chars": len(masked),
-                "masked": masked,
-            },
+            payload=entry,
             evidence_refs=(fact_ref,),
         )
         self._heavy_used += 1
@@ -1529,18 +1524,6 @@ class LabelAwareMiningController:
                     card["title"] = _mask_identity_values(card["title"], self.identity_aliases, expand_aliases=False)
                     cards.append(card)
         return bounded_entry_page(cards, cursor=cursor)
-
-    def _catalog_view(self) -> dict[str, Any]:
-        return {
-            "signals": [
-                {
-                    "signal_ref": str(card.get("signal_ref", "")),
-                    "description": str(card.get("description", "")),
-                }
-                for card in self.signal_catalog
-            ]
-        }
-
 
 def _action_arguments(raw: Mapping[str, Any]) -> dict[str, Any]:
     return {

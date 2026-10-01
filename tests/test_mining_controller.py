@@ -1300,6 +1300,27 @@ if __name__ == "__main__":
 
 
 class SharedStageBoundaryTests(unittest.TestCase):
+    def test_fact_span_is_returned_in_the_single_current_action_result(self):
+        cases, store = _fixture_store()
+        def read_fact(view):
+            return {"action": "read_span", "fact_ref": view["known_fact_refs"][0],
+                    "rationale": ["Read exact structured context."]}
+        model = ScriptedMiningDecisionModel([
+            {"action": "fetch_evidence", "case_refs": ["case-001"],
+             "source_families": ["company_facts"], "max_documents": 1,
+             "rationale": ["Get disclosed cash facts."]},
+            read_fact,
+            {"action": "record_deferred", "rationale": ["Keep evidence and stop."]},
+        ])
+        controller = _controller(store, cases, model, seed="discovery")
+        result = controller.run()
+        view = model.views[-1]
+        self.assertEqual(view["last_action_result"]["action"], "read_span")
+        self.assertIn("CashAndCashEquivalentsAtCarryingValue", view["last_action_result"]["masked"])
+        self.assertNotIn("last_read_span", view)
+        read = next(entry for entry in result.ledger if entry.action == "read_span")
+        self.assertIn(view["last_action_result"]["fact_ref"], read.evidence_refs)
+
     def test_light_budget_never_negative_and_repeated_inspect_defers(self):
         cases, store = _fixture_store()
         model = ScriptedMiningDecisionModel([

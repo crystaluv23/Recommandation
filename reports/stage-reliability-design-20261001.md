@@ -104,9 +104,9 @@ visited-state 与最大修复步数阻止固定点死循环。
 普通时间词形回归。仍需用真实链路观察这些机制是否能收敛，以及修复结果是否保留
 研究内容；不能只检查调用成功或 schema。
 
-v155 验收入口替换旧 harness，使用生产角色和 exact-request transport/ledger。
+v159 验收入口替换旧 harness，使用生产角色和 exact-request transport/ledger。
 从批准的开发 split 预先选择全局 Label Store 可覆盖、PIT 锚点与叙事来源可用的案例，
-冻结全局 Raw Info 原件引用/标签文件/Registry 的身份（不复制全局 oracle）；四档各 1 Anchor + 1 Random，两个真实
+冻结全局 Raw Info 原件引用/标签文件/Registry 的身份（不复制全局 oracle）；生产 v8 固定的 16 Anchor + 8 Random（原四档配额），两个真实
 Proposed Plans，独立 Discovery 16 案（8 control、4 2–3x、2 3–10x、2 10x+）。
 后者同时支持 direction 两侧的类别覆盖和 ge3 两侧各 4 案的既有效果检验下限。Locked Test 不读取。未覆盖日期明确记录，不
 通过修改日期或真值填补，也不在看到模型结果后换样本。
@@ -115,3 +115,17 @@ Proposed Plans，独立 Discovery 16 案（8 control、4 2–3x、2 3–10x、2 
 原预测与反思一致性、Signal fixture/候选 gate、Fast/Slow 提交指针，以及固定分母上的
 F1/混淆矩阵。合法 no-change/defer 会保留理由；没有执行的分支不能宣称已验收。
 该诊断 cohort 与 v154 不同，F1 不作配对提升比较；系统执行、研究分数和收益证据分别报告。
+
+预检还识别到同一五个历史交易日的 provider 价格与标签档案存在数值差异。
+这类调整/舍入差异记入 `baseline_comparisons`，不把事后标签价格送入盲预测，
+也不以数值逐位相等为理由删除固定 Anchor；标签和时间边界均保持原合同。
+
+另有真实身份反例：[Aris Mining 的当期 SEC 文件](https://www.sec.gov/Archives/edgar/data/1964504/000162828025012451/arismining-2025aifv4.htm)
+说明美国股票当时为 ARMN，而同一 CIK 下已有价格请求使用 ARIS。
+相应原件及内容 hash 记入 [来源审查](raw-info-source-integrity-review-20261001.json)，
+在模型调用前将需要该未证明身份价格来源的诊断案例标记不合格，保留原因；不改历史原件
+或标签，不声称已修复整个历史 ticker resolver。
+
+按用户要求删除不再使用的旧目录 helper 和 last_read_span 缓存字段；所有读取统一由
+last_action_result 返回。结构化 fact read 也补齐这个返回通路，并以实际 fetch→read→下一
+次 model view 回归验证，防止删重时连正确结果一起隐藏。

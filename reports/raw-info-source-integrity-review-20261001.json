@@ -1,0 +1,32 @@
+{
+  "schema_version": "diagnostic-source-integrity-review-v1",
+  "reviewed_at": "2026-10-01",
+  "scope": "pre-model diagnostic cohort eligibility; historical Raw Info remains immutable",
+  "reviews": [
+    {
+      "document_id": "massive:cik_0001964504:market_data:b3aeb9f819db1d504996a99e",
+      "content_hash": "b3aeb9f819db1d504996a99eccd75b5a8638da312021839de8d8d9c9795cb8b1",
+      "company_id": "cik_0001964504",
+      "verdict": "issuer_identity_unproven",
+      "reason": "Historical US price request used ARIS for Aris Mining at 2025-05-30; its US ticker then was ARMN. The local ARIS series has a materially different baseline. Do not substitute it for this issuer or infer a correction from the retrospective label.",
+      "evidence": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1964504/000162828025012451/arismining-2025aifv4.htm",
+          "issuer_cik": "1964504",
+          "document_date": "2025-03-12",
+          "finding": "Market for Securities identifies TSX ARIS and NYSE American ARMN separately."
+        },
+        {
+          "url": "https://www.aris-mining.com/news/detail/149/aris-mining-commences-trading-on-the-nyse-american-as-armn",
+          "document_date": "2023-09-14",
+          "finding": "US listing commences under ARMN; TSX listing remains ARIS."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "This is a source-specific eligibility review, not a complete global source audit or a repair of the provider ticker resolver.",
+    "Other baseline differences remain visible in the frozen input manifest; adjustment conventions and post-as-of corporate actions require separate content review.",
+    "No historical document, approved Anchor case or Label Store value was modified."
+  ]
+}

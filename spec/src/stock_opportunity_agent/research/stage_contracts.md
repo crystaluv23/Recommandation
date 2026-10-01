@@ -97,8 +97,8 @@ Slow, real model adapters for every exercised stage, and source-derived labels.
 `scripts/run_minimal_rounds.py` prepares an immutable diagnostic subset of the
 approved development splits, preserving issuer separation and sealing Locked
 Test. Selection precedes model calls, uses a fixed seed plus label-store and
-point-in-time source availability, and records every exclusion. Four Anchor
-and four Random cases retain all four strata and the existing fitness gates;
+point-in-time source availability, and records every exclusion. The production v8 minimum
+of 16 fixed Anchor and 8 Random cases retains the existing strata and fitness gates;
 two real proposed Plans exercise Critic and Round reflection. Independent
 Discovery uses 16 independent issuers (8 controls, 4 2-3x, 2 3-10x,
 2 10x+) so direction has both classes on dev/check and magnitude has four
@@ -107,6 +107,15 @@ formal benchmark or a paired comparison with the v154 cohort. A copied
 Registry avoids writes to historical evolution workspaces. Raw Info remains
 the shared global oracle outside this workspace; only source references and
 hashes are frozen locally.
+A hashed, source-specific integrity review can mark an exact immutable price
+document as issuer-identity-unproven. Before cohort freeze, cases requiring
+that document are ineligible and the cited reason is preserved; no numeric
+label-to-source rewrite or post-model replacement is permitted. This narrow
+diagnostic safeguard does not claim to repair all historical ticker routing.
+Source and label baselines must refer to the same five pre-prediction dates.
+Provider adjustment/rounding differences are recorded as retrospective audit
+metadata, never used to substitute label prices into blind context or to select
+companies by numerical equality with future-adjusted label archives.
 The entry point uses the production exact-request transport, external-attempt
 ledger, runtime evaluators, role adapters and commit pointers. Frozen run and
 input hashes are verified on resume. `--prepare-only` performs no external

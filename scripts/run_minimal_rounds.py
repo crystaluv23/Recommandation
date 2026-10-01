@@ -63,6 +63,7 @@ APPROVED = REPO / ('runs/cold_start/evolution/full-market-expanded-2025plus-v13-
                    'expanded_dataset_proposal/dataset_manifest.approved.json')
 HISTORY = REPO / ('runs/cold_start/evolution/'
                   'information-evolution-jev-dual-self-evolution-20260928-v143')
+SOURCE_REVIEW = REPO / 'reports/raw-info-source-integrity-review-20261001.json'
 
 
 def _read(path):
@@ -88,11 +89,7 @@ def _load_env():
 
 
 def _evaluation():
-    return PlanEvaluationConfig(
-        cases_per_round=8, label_counts={label: 2 for label in EVALUATION_LABELS},
-        anchor_cases=4, anchor_label_counts={label: 1 for label in EVALUATION_LABELS},
-        random_cases=4, random_label_counts={label: 1 for label in EVALUATION_LABELS},
-    )
+    return PlanEvaluationConfig()
 
 
 def _restore_case(row):
@@ -111,6 +108,8 @@ def _verify_inputs(root):
         raise ValidationError('label manifest changed')
     if _hash_file(LABELS / 'labels.jsonl') != frozen['label_records_hash']:
         raise ValidationError('label records changed')
+    if _hash_file(SOURCE_REVIEW) != frozen['source_integrity_review_hash']:
+        raise ValidationError('source integrity review changed')
     for row in frozen['source_files']:
         path = Path(row['source_path'])
         if _hash_file(path) != row['sha256']:
@@ -127,6 +126,11 @@ def prepare(root):
         raise ValidationError('cannot retrofit inputs into an existing run')
     approved = load_approved_development_dataset(APPROVED)
     labels = LabelStore.load(LABELS)
+    review = _read(SOURCE_REVIEW)
+    if review.get('schema_version') != 'diagnostic-source-integrity-review-v1':
+        raise ValidationError('unsupported diagnostic source review')
+    unproven_sources = {row['document_id']: row for row in review['reviews']
+                        if row['verdict'] == 'issuer_identity_unproven'}
     files_by_company = defaultdict(list)
     for family in sorted(ORACLE.iterdir()):
         if family.is_dir():
@@ -135,12 +139,13 @@ def prepare(root):
                     files_by_company[company.name].extend(sorted(company.glob('*.json')))
     market_cache = {}
     exclusions = []
+    baseline_comparisons = []
     selected = {}
     # Scope and seed are fixed; no score, model confidence or correction result
     # exists when this selection runs. Strata retain the established semantics.
     for split, targets in (
-            ('anchor', {label: 1 for label in EVALUATION_LABELS}),
-            ('evolution_validation', {label: 1 for label in EVALUATION_LABELS}),
+            ('anchor', dict(_evaluation().anchor_label_counts)),
+            ('evolution_validation', dict(_evaluation().random_label_counts)),
             ('discovery', {'non_surge': 8, '2_3x': 4, '3_10x': 2, '10x_plus': 2})):
         candidates = sorted(getattr(approved, split), key=lambda case:
                             hashlib.sha256(('42:' + case.case_id).encode()).hexdigest())
@@ -162,6 +167,15 @@ def prepare(root):
                 market_cache[case.company_id] = tuple(RawInfoDocument.from_dict(_read(path))
                     for path in files_by_company[case.company_id]
                     if path.parent.parent.name in {'historical_price', 'market_data', 'price_daily', 'prices'})
+            unproven = [document.document_id for document in market_cache[case.company_id]
+                        if document.available_at <= case.prediction_time
+                        and document.document_id in unproven_sources
+                        and document.content_hash == unproven_sources[document.document_id]['content_hash']]
+            if unproven:
+                exclusions.append({'split': split, 'case_id': case.case_id,
+                                   'reason': 'price_source_issuer_identity_unproven',
+                                   'document_refs': unproven, 'review_ref': str(SOURCE_REVIEW)})
+                continue
             baseline = _prediction_baseline_from_market_documents(
                 (document for document in market_cache[case.company_id]
                  if document.available_at <= case.prediction_time), case.prediction_time)
@@ -169,11 +183,12 @@ def prepare(root):
                 exclusions.append({'split': split, 'case_id': case.case_id,
                                    'reason': 'pit_price_baseline_unavailable'})
                 continue
-            # Source price and outcome calculator must refer to the same anchor.
+            # Bind the same dates. Provider adjustment/rounding conventions may
+            # differ; do not import retrospective label prices into blind input.
             record = labels.record(case.company_id, case.prediction_time.date())
-            if abs(baseline['mean_adjusted_close'] - record.baseline_mean) > 1e-6:
+            if tuple(baseline['trading_dates']) != record.baseline_dates:
                 exclusions.append({'split': split, 'case_id': case.case_id,
-                                   'reason': 'source_label_baseline_mismatch'})
+                                   'reason': 'source_label_baseline_dates_mismatch'})
                 continue
             has_narrative = any(path.parent.parent.name in {'sec_filing', 'filing', 'earnings_call', 'news', 'company_news'}
                                 and datetime.fromisoformat(_read(path)['available_at']) <= case.prediction_time
@@ -183,6 +198,12 @@ def prepare(root):
                                    'reason': 'pit_narrative_unavailable'})
                 continue
             groups[group].append(case)
+            baseline_comparisons.append({'split': split, 'case_id': case.case_id,
+                                         'source_mean': baseline['mean_adjusted_close'],
+                                         'label_mean': record.baseline_mean,
+                                         'relative_difference': baseline['mean_adjusted_close']/record.baseline_mean-1,
+                                         'same_baseline_dates': True,
+                                         'blind_label_price_substitution': False})
             issuers.add(case.company_id)
             print(f'  select {split}: {case.case_id} [{group}]', flush=True)
             if all(len(groups[label]) == targets[label] for label in EVALUATION_LABELS):
@@ -208,10 +229,12 @@ def prepare(root):
         'approved_manifest_hash': approved.approved_manifest_hash,
         'label_manifest_hash': _hash_file(LABELS / 'manifest.json'),
         'label_records_hash': _hash_file(LABELS / 'labels.jsonl'),
+        'source_integrity_review_hash': _hash_file(SOURCE_REVIEW),
         'locked_test_hash': approved.locked_test_hash, 'locked_test_accessed': False,
         'selection_seed': 42, 'selection_before_model_calls': True,
         'evaluation': _evaluation().to_dict(), 'splits': selected,
         'exclusions': exclusions, 'source_files': source_files,
+        'baseline_comparisons': baseline_comparisons,
         'initial_registry_version': registry.version, 'initial_registry_hash': registry.registry_hash,
         'registry_source': str(HISTORY / 'signals'), 'paired_with_v154': False,
     }
@@ -252,7 +275,7 @@ def run(root, frozen):
             initial_signal_registry_hash=initial.registry_hash,
             priors=_default_priors_dict(), role_aliases={role: 'deepseek-v4-flash' for role in
                 ('judge', 'proposer', 'mining', 'update')}, project_root=REPO,
-            limits=limits, max_external_attempts=600, max_total_cost=100,
+            limits=limits, max_external_attempts=1200, max_total_cost=100,
             data_acquisition=broad_research_data_policy_v1(),
         )
         contract.freeze(contract_path)
