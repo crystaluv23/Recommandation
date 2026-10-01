@@ -1347,37 +1347,24 @@ class StructuredRoleClient:
                         attempt_id=attempt_id,
                         reserved_cost=reserved_cost,
                     )
+                    response = None
                     try:
                         response = client.complete(messages, **kwargs)
-                        usage_data = response.raw.get("usage", {})
-                        input_tokens = int(
-                            usage_data.get(
-                                "input_tokens",
-                                usage_data.get("prompt_tokens", estimated_input_tokens),
-                            )
-                        )
-                        output_tokens = int(
-                            usage_data.get(
-                                "output_tokens",
-                                usage_data.get("completion_tokens", 0),
-                            )
-                        )
+                        usage_data = response.raw.get("usage")
+                        counts = _provider_token_counts(usage_data)
+                        input_tokens, output_tokens = counts or (estimated_input_tokens, output_limit)
                         actual_cost = _model_cost(
-                            self.registration,
-                            input_tokens=input_tokens,
-                            output_tokens=output_tokens,
-                        )
-                        usage = AgentUsage(
-                            llm_calls=1,
-                            tokens=input_tokens + output_tokens,
-                            cost=actual_cost,
-                        )
+                            self.registration, input_tokens=input_tokens, output_tokens=output_tokens,
+                        ) if counts is not None else reserved_cost
+                        usage = AgentUsage(llm_calls=1, tokens=input_tokens + output_tokens, cost=actual_cost)
                         provider_usage = _provider_usage_record(
-                            usage_data,
-                            input_tokens=input_tokens,
-                            output_tokens=output_tokens,
-                            cost=actual_cost,
-                        )
+                            usage_data, input_tokens=input_tokens, output_tokens=output_tokens, cost=actual_cost,
+                        ) if counts is not None else {
+                            "cost": actual_cost, "cost_basis": "reservation_unknown_usage",
+                            "accounting_tokens": input_tokens + output_tokens,
+                        }
+                        if counts is not None:
+                            provider_usage["cost_basis"] = "provider_usage"
                         structured_output_normalization: dict[str, str] | None = None
                         try:
                             if binary_token_output:
@@ -1486,24 +1473,49 @@ class StructuredRoleClient:
                     except StructuredOutputInvalid:
                         raise
                     except Exception as exc:
-                            self.ledger.finalize(
-                                attempt_id,
-                                status="failed",
-                                actual_cost=0.0,
-                                error_type=type(exc).__name__,
-                                error_message=str(exc),
-                            )
-                            _emit_runtime_progress(
-                                self.on_progress,
-                                "external_call_failed",
-                                stage=stage,
-                                model_alias=self.registration.alias,
-                                request_hash=request_hash,
-                                attempt_id=attempt_id,
-                                error_type=type(exc).__name__,
-                                error_message=str(exc)[:500],
-                            )
-                            raise
+                        diagnostic = getattr(exc, "response_diagnostic", None)
+                        usage_data = response.raw.get("usage") if response is not None else (
+                            diagnostic.get("usage") if isinstance(diagnostic, Mapping) else None
+                        )
+                        counts = _provider_token_counts(usage_data)
+                        failure_cost = _model_cost(
+                            self.registration, input_tokens=counts[0], output_tokens=counts[1],
+                        ) if counts is not None else reserved_cost
+                        accounting = _provider_usage_record(
+                            usage_data, input_tokens=counts[0], output_tokens=counts[1], cost=failure_cost,
+                        ) if counts is not None else {
+                            "cost": failure_cost, "cost_basis": "reservation_unknown_usage",
+                        }
+                        if counts is not None:
+                            accounting["cost_basis"] = "provider_usage"
+                        error_message = str(exc)
+                        environment = os.environ if self.environ is None else self.environ
+                        credential = environment.get(self.registration.api_key_env_var)
+                        if isinstance(credential, str) and credential:
+                            error_message = error_message.replace(credential, "[REDACTED_SECRET]")
+                            exc.args = (error_message,)
+                        error_message = error_message[:500]
+                        failure_record = {
+                            "request_hash": request_hash, "attempt_id": attempt_id,
+                            "error_type": type(exc).__name__, "error": error_message,
+                            "failure_boundary": "provider_or_execution", "usage": accounting,
+                            **({"provider_response_diagnostic": diagnostic} if diagnostic is not None else {}),
+                        }
+                        failure_path = self.workspace / "failed_responses" / f"{attempt_id:06d}_{request_hash}.json"
+                        _atomic_write_json(failure_path, failure_record)
+                        self.ledger.finalize(
+                            attempt_id, status="failed", actual_cost=failure_cost,
+                            response_hash=_canonical_hash(failure_record),
+                            error_type=type(exc).__name__, error_message=error_message,
+                        )
+                        _emit_runtime_progress(
+                            self.on_progress, "external_call_failed", stage=stage,
+                            model_alias=self.registration.alias, request_hash=request_hash,
+                            attempt_id=attempt_id, error_type=type(exc).__name__,
+                            error_message=error_message, failure_path=str(failure_path),
+                            actual_cost=failure_cost, cost_basis=accounting.get("cost_basis", "provider_usage"),
+                        )
+                        raise
         def _shared_cached_result():
             cached = self.cache.load(request_hash)
             if cached is None:
@@ -1665,16 +1677,27 @@ def _model_cost(
     ) / 1_000_000
 
 
+
+def _provider_token_counts(usage: Any) -> tuple[int, int] | None:
+    """Read complete measured counts; absence/invalid values remain unknown."""
+
+    if not isinstance(usage, Mapping):
+        return None
+    counts = (usage.get("input_tokens", usage.get("prompt_tokens")),
+              usage.get("output_tokens", usage.get("completion_tokens")))
+    return counts if all(type(value) is int and value >= 0 for value in counts) else None
+
+
 def _provider_usage_record(
     usage_data: Mapping[str, Any],
     *,
     input_tokens: int,
     output_tokens: int,
     cost: float,
-) -> dict[str, int | float]:
+) -> dict[str, int | float | str]:
     """Keep provider cache observability without weakening conservative cost gates."""
 
-    record: dict[str, int | float] = {
+    record: dict[str, int | float | str] = {
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "cost": cost,
@@ -1701,7 +1724,8 @@ def _usage_from_cache(data: Mapping[str, Any]) -> AgentUsage:
     usage = data.get("usage", {})
     return AgentUsage(
         llm_calls=0,
-        tokens=int(usage.get("input_tokens", 0)) + int(usage.get("output_tokens", 0)),
+        tokens=(int(usage["accounting_tokens"]) if "accounting_tokens" in usage
+                else int(usage.get("input_tokens", 0)) + int(usage.get("output_tokens", 0))),
         cost=0.0,
     )
 

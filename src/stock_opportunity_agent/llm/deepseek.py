@@ -15,6 +15,9 @@ from stock_opportunity_agent.llm.openai import (
     PreparedJsonRequest,
     UrllibTransport,
     _require_str,
+    _parse_provider_response,
+    OpenAIClientError,
+    RetryableOpenAIClientError,
 )
 from stock_opportunity_agent.models import ValidationError
 
@@ -98,19 +101,7 @@ class DeepSeekResponsesClient(OpenAIChatClient):
             headers,
             prepared.payload,
         )
-        choices = raw.get("choices")
-        if not isinstance(choices, list) or not choices:
-            raise ValidationError("DeepSeek chat response requires choices")
-        first = choices[0]
-        if not isinstance(first, Mapping) or not isinstance(first.get("message"), Mapping):
-            raise ValidationError("DeepSeek chat response requires a message")
-        output_text = _require_str(first["message"], "content")
-        return ChatResponse(
-            response_id=_require_str(raw, "id"),
-            model=_require_str(raw, "model"),
-            output_text=output_text,
-            raw=dict(raw),
-        )
+        return _parse_provider_response(raw, _extract_chat_output)
 
     def _prepare_chat_with_logprobs(
         self,
@@ -151,6 +142,21 @@ class DeepSeekResponsesClient(OpenAIChatClient):
             f"{self.base_url}/chat/completions",
             payload,
         )
+
+
+def _extract_chat_output(raw: Mapping[str, Any]) -> str:
+    """Validate Chat output/refusal before the shared metadata envelope check."""
+
+    choices = raw.get("choices")
+    if not isinstance(choices, list) or not choices:
+        raise RetryableOpenAIClientError("DeepSeek chat response requires choices")
+    first = choices[0]
+    if not isinstance(first, Mapping) or not isinstance(first.get("message"), Mapping):
+        raise RetryableOpenAIClientError("DeepSeek chat response requires a message")
+    message = first["message"]
+    if isinstance(message.get("refusal"), str):
+        raise OpenAIClientError("DeepSeek chat response refused")
+    return _require_str(message, "content")
 
 
 class DeepSeekClientError(RuntimeError):

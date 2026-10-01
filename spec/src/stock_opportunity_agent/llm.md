@@ -112,3 +112,29 @@ output-schema repair, and maximum-step exhaustion.
 `deepseek-v4-flash-thinking` is an evolution-only alias for the same DeepSeek
 model, with reasoning effort high. The existing plain alias retains effort none
 and its judge eligibility. Selecting the thinking alias does not change Judge.
+
+## Provider response envelope and diagnostics
+
+Responses-compatible adapters share one parser for the provider envelope before
+role JSON parsing. Non-object envelopes, missing/empty id or model, missing
+message output, invalid UTF-8 fields and malformed Chat choices are retryable
+provider anomalies;
+metadata is never synthesized from the requested model or a local identifier.
+Explicit refusal and explicit unknown/permanent error envelopes remain permanent,
+even when id/model are missing. Only declared HTTP-like transient codes (408,
+429, 5xx) and the closed server_error/timeout/rate_limit/service_unavailable
+vocabulary grant retryability. An explicit permanent type/code or non-transient
+4xx wins over conflicting transient fields. Declared failed/nonterminal responses
+cannot be accepted as completed text. Cancellation is not automatically retried.
+Parsing never adds a hidden HTTP call; the existing durable caller/supervisor
+owns bounded retries, the exact request hash and frozen attempt/cost ceilings.
+
+Provider errors carry a secret-free decoded-response diagnostic: canonical body
+hash, fixed known-field shape/lengths, normalized retry classification and
+validated numeric usage counters. No headers, API keys, source text or free-form
+provider error message enters that diagnostic. This is a structural audit view,
+not full raw-response retention, and cannot establish an unknown upstream cause.
+Known usage may settle a failed response. Unknown sent-call usage holds its full
+reservation conservatively rather than asserting zero charge. Valid text with
+missing/malformed usage likewise uses the reservation and explicitly records
+that accounting basis; it does not invent measured token counts.

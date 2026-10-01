@@ -1,0 +1,63 @@
+{
+  "network_calls": 0,
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "contract_hash": "bdbd8542d1c645abd29251d7caba910783f75dcb3d2d5762346e06e24e5a9176",
+  "original_failure_attempt": 571,
+  "original_exception": "OpenAIClientError: OpenAI response missing id",
+  "original_raw_response_available": false,
+  "original_failure_cost_recorded": 0,
+  "original_failure_reserved_cost": 0.08855224,
+  "exact_pending_request_hash": "f950ba5021fe10c548b15282a1911f636bc75d4c172d730c89704c8ee48dae05",
+  "cached_prefix_request_hash": "c7be5bd85e5611ea1596c45406552f5763289d51525e2eca433e8f6eee2b1b82",
+  "pending_request_http_body_bytes": 308258,
+  "exact_original_wire_identity_pass": true,
+  "valid_paid_prefix_cache_preserved": true,
+  "pending_retry_exact_request_pass": true,
+  "unknown_usage_conservative_settlement_pass": true,
+  "provider_failure_outside_role_validation_pass": true,
+  "failure_diagnostic": {
+    "decoded_response_hash": "9873cc4e49e1a5c5b574014edc42790ec02c9d0149b5c196648dea7c2439715f",
+    "envelope_type": "dict",
+    "fields": {
+      "id": {
+        "type": "NoneType"
+      },
+      "model": {
+        "type": "str",
+        "length": 13
+      },
+      "status": {
+        "type": "absent"
+      },
+      "output": {
+        "type": "list",
+        "length": 1
+      },
+      "choices": {
+        "type": "absent"
+      },
+      "error": {
+        "type": "absent"
+      },
+      "usage": {
+        "type": "NoneType"
+      }
+    }
+  },
+  "status": "pass",
+  "limits": "Actual frozen request and paid cache through the production adapter. Missing-id envelope and later successful JSON are explicitly scripted offline fixtures; the original server body was not retained. No new live provider recovery, Mining content acceptance, full Slow cycle or gain is claimed.",
+  "verification": {
+    "focused_tests_passed": 77,
+    "full_tests_passed": 1298,
+    "lint_status": "20 existing historical asset links absent in isolated worktree",
+    "live_fast_committed": 1,
+    "live_slow_committed": 0,
+    "new_live_acceptance": false
+  },
+  "remaining_content_frontiers": [
+    "Exact cumulative reporting periods versus quarter labels",
+    "Computed measurement units and numeric sign versus categorical assessment",
+    "Metric ownership across Plans and research versus technical completion",
+    "Magnitude prediction collapse"
+  ]
+}

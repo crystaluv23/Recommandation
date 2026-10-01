@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：隔离补齐统一供应商响应包边界：缺失/空metadata、无效UTF-8与短暂错误归可重试供应商异常，显式拒绝/取消/永久错误优先；三适配器共享解析且不隐藏重试。失败响应只保存结构/hash/有效usage，绑定attempt和request；未知usage保守结算预留，保留已付费有效缓存和同请求恢复，不进入LLM内容纠错。实际v165最后成功/失败请求零网络生产回放核验相同HTTP字节与hash、缓存前缀及待办恢复；77专项、1,298全量测试通过。隔离lint仍20个既有历史资产链接缺失，主目录目标存在。v165已终止，Fast/Slow指针1/0；固定24案F1 .7333/.6667，尚未完成Slow或以新代码完整实测。期间/单位/符号、跨Plan统计归属及幅度塌缩仍待验收。
+
 2026-10-02：运行时价格算术统一到ResearchState、Predictor与Case Posthoc；baseline/recent close不混用，精确成员patch与完整重验，反思salvage复用同一语义validator。清理重复基准检查和未使用plain-array反思生成入口，修复机械salvage将运行时dataclass混入JSON的问题。真实46份预测扫描与原始错误响应生产适配器重放、保存/恢复/下游索引通过（零网络）；1,291项全量回归及六项新增专项通过（其中一项在全量后补充）。隔离lint仍是20个缺少历史运行资产的链接，全部主目录目标存在。v165冻结主线Fast 1/Slow 0；本轮末Mining供应商返回包缺少id，恢复attempt2以exit1结束，监督/子进程均退出。该异常发生在供应商响应解析、尚未进入Mining内容校验；先审计适配器故障分类，不修改检查点或自行新建运行。修复尚未进入实测，期间/单位/统计归属与幅度塌缩仍待验证。
 
 2026-10-02：隔离打通Mining backlog：默认有界语义需求页+原文/hash引用；新record_need_dispositions按快照hash和当前可见未处置refs逐行校验，正确行保存、错误行保留待办，完整终止重验全量覆盖。accepted delta通过生产engine写入不可变mining_need_units，seed audit区分完整/staged/pending；完整controller/多轴建议进入既有Update入口。真实v165 276条backlog默认输入239,908→4,674 bytes，23页目录及全部原文可解析，离线mixed-row/delta重放通过；178专项、1,286全量回归通过。v165冻结6e3ae1c仍处Slow，供应商SSL失败后同一监督进程第二次执行利用既有缓存恢复；未合并隔离改动。数值/期间/统计归属和完整后继实测仍待修复验收。

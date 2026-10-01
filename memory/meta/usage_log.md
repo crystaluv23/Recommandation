@@ -202,3 +202,5 @@
 2026-10-02：为Mining backlog跨阶段增量处置/保存/Update消费修复，咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；核对实际276条全量输入、完整需求权限及冻结运行，保留正确独立行和不可变delta，分别验证生产构造、存储重放、完整消费与实测待验边界。
 
 2026-10-02：为运行时价格算术跨Research/Predictor/Posthoc的一致检测和局部修复，复查增量修复及收敛验收经验；原始Bumble响应区分baseline与recent close，检查首答/权限/整体验证/行级salvage，不将来源有效等同数值正确。
+
+2026-10-02：供应商missing-id在Mining前终止，复查control-plane与收敛验收经验；统一envelope分类/脱敏结构诊断/未知用量保守计费，验证完成缓存与失败检查点恢复，不把provider异常当作内容纠错，不改冻结历史。

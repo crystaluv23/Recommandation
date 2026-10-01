@@ -116,3 +116,17 @@ Tokens restore requested event/document
 handles before execution; original sources and ledger coordinates remain unchanged.
 Scope unwinds on interruption and cannot bleed into another worker. A new scope is
 not an alternative transport or a bypass of stage/label/budget checks.
+
+## Provider envelope failure lifecycle
+
+Provider-envelope failure remains outside structured role correction. Each failed
+external attempt saves a request/attempt-bound diagnostic in failed_responses and
+binds that immutable record hash in the settled attempt; no valid cache entry is
+written. Known valid usage settles measured cost, otherwise the reservation is
+charged as a conservative upper bound with cost_basis recorded explicitly. A
+valid completion without measured usage has the same conservative accounting
+basis. Historical attempts remain unchanged. On restart, completed exact requests
+still hit cache for zero new usage; only the unfulfilled request may reserve a
+new attempt under unchanged ceilings. Provider exceptions propagate without
+advancing case/cycle pointers or being converted into research findings.
+See the owning [provider-envelope contract](../llm.md#provider-response-envelope-and-diagnostics).

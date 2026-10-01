@@ -14,8 +14,7 @@ from stock_opportunity_agent.llm.openai import (
     OpenAIChatClient,
     PreparedJsonRequest,
     UrllibTransport,
-    _extract_output_text,
-    _require_str,
+    _parse_provider_response,
 )
 from stock_opportunity_agent.models import ValidationError
 
@@ -171,12 +170,7 @@ class OpenRouterChatClient(OpenAIChatClient):
             headers,
             prepared.payload,
         )
-        return ChatResponse(
-            response_id=_require_str(raw, "id"),
-            model=_require_str(raw, "model"),
-            output_text=_extract_output_text(raw),
-            raw=raw,
-        )
+        return _parse_provider_response(raw)
 
 
 class OpenRouterClientError(RuntimeError):
