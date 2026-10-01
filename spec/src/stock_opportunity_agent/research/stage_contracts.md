@@ -146,3 +146,16 @@ change promotion semantics, or establish independent learning benefit.
 F1 improvement is
 reported separately from execution completion; never tune labels/cohorts to
 manufacture a passing result.
+
+### Explicit diagnostic Registry seed (2026-10-02)
+
+`--seed-registry PATH` selects an existing stable Registry for preparation;
+its exact path, version and frozen hash are recorded in the input manifest.
+The entry point copies and audits it into the new run, never changes the source,
+and never treats copied artifacts as completed evolution history. Omission
+retains the historical default for existing callers. A requested seed cannot
+silently differ from a prepared manifest, and a partial destination Registry
+cannot be accepted as the new seed. Invalid/missing seed metadata fails before
+copying. Existing prepared or executed workspaces are not rewritten to fix a
+seed mistake: use a fresh workspace. Cohort selection, labels, strata, score
+denominators, Locked Test sealing and live authorization stay unchanged.

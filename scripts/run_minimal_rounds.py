@@ -117,13 +117,21 @@ def _verify_inputs(root):
     return frozen
 
 
-def prepare(root):
+def prepare(root, *, seed_registry: Path | None = None):
     """Freeze stratified development cases before any model observation."""
+    registry_source = (seed_registry or HISTORY / 'signals').resolve()
     root.mkdir(parents=True, exist_ok=True)
     if (root / 'input_manifest.json').is_file():
-        return _verify_inputs(root)
+        frozen = _verify_inputs(root)
+        if seed_registry is not None and registry_source != Path(frozen['registry_source']).resolve():
+            raise ValidationError('requested Registry seed differs from prepared inputs; use a successor workspace')
+        return frozen
     if (root / 'run_contract.json').exists() or (root / 'state.json').exists():
         raise ValidationError('cannot retrofit inputs into an existing run')
+    if not (registry_source / 'registry.json').is_file():
+        raise ValidationError('diagnostic Registry seed requires existing registry.json')
+    if (root / 'signals').exists():
+        raise ValidationError('partial diagnostic Registry exists without frozen inputs; use a successor workspace')
     approved = load_approved_development_dataset(APPROVED)
     labels = LabelStore.load(LABELS)
     review = _read(SOURCE_REVIEW)
@@ -221,8 +229,7 @@ def prepare(root):
         for source in files_by_company[company_id]:
             source_files.append({'source_path': str(source), 'sha256': _hash_file(source)})
     registry_root = root / 'signals'
-    if not registry_root.exists():
-        shutil.copytree(HISTORY / 'signals', registry_root)
+    shutil.copytree(registry_source, registry_root)
     registry = SignalRegistry(registry_root, candidate_root=root / 'signals_candidates').freeze()
     frozen = {
         'schema_version': 'diagnostic-development-subset-v1',
@@ -236,7 +243,7 @@ def prepare(root):
         'exclusions': exclusions, 'source_files': source_files,
         'baseline_comparisons': baseline_comparisons,
         'initial_registry_version': registry.version, 'initial_registry_hash': registry.registry_hash,
-        'registry_source': str(HISTORY / 'signals'), 'paired_with_v154': False,
+        'registry_source': str(registry_source), 'paired_with_v154': False,
     }
     atomic_write_json(root / 'input_manifest.json', frozen)
     return frozen
@@ -377,6 +384,7 @@ def run(root, frozen):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', required=True)
+    parser.add_argument('--seed-registry', type=Path, help='Stable Registry directory to freeze into a new diagnostic workspace')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--prepare-only', action='store_true')
     mode.add_argument('--run', action='store_true')
@@ -384,7 +392,7 @@ def main():
     root = Path(args.root).resolve()
     root.mkdir(parents=True, exist_ok=True)
     with EvolutionWorkspace.execution_lock_at(root):
-        frozen = prepare(root)
+        frozen = prepare(root, seed_registry=args.seed_registry)
         print(f'Frozen diagnostic inputs: {canonical_json_hash(frozen)}', flush=True)
         if args.run:
             run(root, frozen)

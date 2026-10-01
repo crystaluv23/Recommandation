@@ -1,0 +1,26 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "stage": "prepared_only",
+  "external_calls": 0,
+  "input_manifest_hash": "9201fd574ae516622273454fee62428b69a19322baec4c230d46ca07ce872f86",
+  "predecessor_input_manifest_hash": "a95ba1ea20b03a1502d73d093f1faa3b54efcb561b944d518eb9b2b9a0c2881e",
+  "identical_case_inputs_and_labels": true,
+  "same_evaluation_and_label_store_hashes": true,
+  "same_initial_registry": {
+    "version": 7,
+    "hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0"
+  },
+  "frozen_source_files": 3590,
+  "unchanged_predecessor_source_files": 3552,
+  "additional_source_files": 38,
+  "source_note": "Additional previously acquired PIT documents are now recorded in the source inventory; no predecessor source bytes, case inputs, labels or denominator changed. This is a fresh correctness acceptance run, not a paired gain estimate. Shared oracle acquisition remains the existing authorized diagnostic policy.",
+  "split_case_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "binary_f1_floor": 0.6,
+  "locked_test_accessed": false,
+  "v166": "Prepared with default v6 seed only, never externally executed; retained unchanged and superseded by explicit-v7-seed v167.",
+  "limits": "Preparation does not prove complete Fast/Slow execution or research content correctness. Source revision and exact invocation will be frozen by the live run contract after the implementation checkpoint."
+}
