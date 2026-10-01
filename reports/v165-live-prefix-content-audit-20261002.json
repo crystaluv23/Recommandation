@@ -758,7 +758,7 @@
     {
       "scope": "Mining context",
       "issue": "276 full backlog rows including provenance repeated in every decision; backlog approximately 248KB dominates 83k-94k input tokens. Existing bounded feedback memory does not bound backlog.",
-      "status": "requires dependency-based backlog view with complete, reachable disposition contract"
+      "status": "isolated bounded pages, incremental disposition and complete Update consumer implemented; actual successor acceptance pending"
     },
     {
       "scope": "Mining incremental progress",
@@ -797,11 +797,11 @@
   "limits": "Current live prefix, not a terminal cycle. Exact assembly transport audit covers all 46 persisted real predictions, not semantic truth. Pending source content defects prevent overall acceptance.",
   "verification": {
     "full_suite": {
-      "tests": 1279,
+      "tests": 1286,
       "result": "pass",
       "implementation_root": "/Users/l/.codex/worktrees/shared-stage-content/Recommandation/src",
       "readonly_historical_fixture_root": "/Users/l/Project/Recommandation",
-      "method": "Discover frozen primary tests, replace only the updated final-assembly prompt assertion, append five new regression methods; all implementation imports use isolated source and real historical fixtures."
+      "method": "Frozen primary tests with isolated source and real primary historical fixtures; replace updated final-assembly prompt assertion and append twelve regression methods."
     },
     "lint": {
       "result": "environment_failure",
@@ -929,8 +929,9 @@
           "isolated_fixture_exists": false
         }
       ],
-      "current_task_text_and_git_checks": "pass"
-    }
+      "current_task_text_and_git_checks": "pass; same 20 previously verified absent historical fixture links"
+    },
+    "focused_tests": 178
   },
   "read_progress_repair": {
     "report": "v165-mining-read-progress-replay-20261002.json",
@@ -939,5 +940,19 @@
     "runtime_budget_charges_preserved": true,
     "real_live_application": false,
     "remaining": "Progress metadata is retained; duplicate no-op semantics and incremental backlog disposition are not yet implemented."
+  },
+  "backlog_repair": {
+    "report": "v165-backlog-projection-replay-20261002.json",
+    "scope": "bounded pages, exact original refs, independent snapshot-bound intent rows, immutable delta persistence, complete terminal coverage and controller/multi-axis Update ordering",
+    "status": "isolated replay and tests passed",
+    "live_application": false
+  },
+  "provider_recovery_observation": {
+    "supervisor_pid": 15842,
+    "current_child_pid": 22204,
+    "frozen_code_revision": "6e3ae1c323b4d023e62958187ae17bac5f0ce002",
+    "resume_attempt": 2,
+    "reason": "provider-only SSL record layer failure",
+    "cached_progress_preserved": true
   }
 }

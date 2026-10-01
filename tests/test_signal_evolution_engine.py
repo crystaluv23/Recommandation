@@ -29,6 +29,76 @@ from stock_opportunity_agent.research.research_targets import (
 
 
 class SignalEvolutionTests(TestCase):
+    def test_controller_need_units_persist_and_complete_intents_reach_update(self) -> None:
+        class Caller:
+            def complete_json(self, *, stage, payload, **_kwargs):
+                self_stage = payload.get("seed")
+                if self_stage == "discovery":
+                    return ({"action": "record_deferred", "rationale": ["No synthetic discovery verdict."]}, AgentUsage())
+                contract = payload["need_disposition_contract"]
+                if contract["pending_count"]:
+                    ref = payload["signal_catalog"][0]["signal_ref"]
+                    return ({"action": "record_need_dispositions", "base_hash": contract["base_hash"],
+                             "need_dispositions": [{"need_refs": [row["need_ref"] for row in payload["backlog_needs"]],
+                                 "disposition": "update_existing", "signal_refs": [ref],
+                                 "rationale": ["Inspect the existing extraction capability."]}],
+                             "rationale": ["Save bounded intents."]}, AgentUsage())
+                if not payload["known_fact_refs"]:
+                    return ({"action": "fetch_evidence", "case_refs": payload["case_refs"],
+                             "source_families": ["company_facts"], "max_documents": 1,
+                             "rationale": ["Explore actual structured evidence."]}, AgentUsage())
+                return ({"action": "record_no_pattern", "coverage": {
+                             "explored_families": payload["evidence_digest"]["families_fetched"]},
+                         "rationale": ["No fixture candidate is asserted."]}, AgentUsage())
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = (make_case("need-dev-control", 1.1), make_case("need-dev-positive", 4.0),
+                     make_case("need-check-control", 1.1), make_case("need-check-positive", 4.0))
+            documents = tuple(RawInfoDocument.create(
+                document_id=f"need-facts-{index}", company_id=case.company_id,
+                source_type="company_facts", published_at=NOW, available_at=NOW,
+                content=sec_company_facts_content(
+                    ("2023-01-01", "2023-12-31", 100.0, "2024-02-01"),
+                    ("2024-01-01", "2024-12-31", 125.0, "2025-01-10")))
+                for index, case in enumerate(cases[:2]))
+            registry = SignalRegistry(root / "signals"); registry.install_catalog(SEED_CATALOG)
+            mining = EmptyMiningModel(); mining.caller = Caller()
+            engine = SignalEvolutionEngine(registry=registry, raw_info_store=RawInfoStore(documents=documents),
+                discovery_cases=cases, meta_memory=PlanMetaMemory(), workspace=EvolutionWorkspace(root / "workspace"),
+                mining_model=mining, update_model=NoChangeUpdateModel(), llm_signal_runner=None)
+            needs = [{"need_ref": "n0", "need": "Improve existing extraction?"},
+                     {"need_ref": "n1", "need": "Improve coverage of the same concept?"}]
+            context = {"capability_backlog": {"signal_need_items": needs},
+                       "stable_signal_cards": [{"signal_ref": "annual_revenue_growth:v1", "description": "Revenue growth."}]}
+            engine._mining_context = types.MethodType(lambda self, **kwargs: context, engine)
+            kwargs = {"cycle_id": 1, "axis_id": "surge_direction", "research_axis": {"axis_id": "surge_direction"},
+                      "dev_cases": cases[:2], "check_cases": cases[2:],
+                      "labels_by_case_id": {case.case_id: "positive" if case.ground_truth.is_surge else "control" for case in cases}}
+            output = engine._run_controller_mining_axis(**kwargs)
+            seed = output["audit"]["seeds"][0]
+            self.assertEqual(seed["terminal_kind"], "no_pattern_with_coverage")
+            self.assertEqual(seed["pending_need_refs"], [])
+            self.assertEqual(seed["need_disposition_rows"][0]["need_refs"], ["n0", "n1"])
+            self.assertEqual(engine._mining_update_refs(output["audit"]), ("annual_revenue_growth:v1",))
+            paths = list((root / "workspace/experiments/cycles/cycle-0001/mining_need_units").rglob("*.json"))
+            self.assertEqual(len(paths), 1)
+            original = paths[0].read_bytes()
+            unit = json.loads(original)
+            self.assertEqual(unit["accepted_rows"], seed["staged_need_dispositions"])
+            replay = engine._run_controller_mining_axis(**kwargs)
+            self.assertEqual(paths[0].read_bytes(), original)
+            self.assertEqual(replay["audit"]["seeds"][0]["need_disposition_rows"], seed["need_disposition_rows"])
+
+    def test_mining_update_consumer_preserves_complete_multi_axis_and_legacy_rows(self) -> None:
+        row = {"disposition": "update_existing", "signal_refs": ["cash:v1"]}
+        complete = {"track": "controller", "seeds": [{"status": "completed", "pending_need_refs": [], "need_disposition_rows": [row]}]}
+        partial = {"track": "controller", "seeds": [{"status": "completed", "pending_need_refs": ["n1"], "staged_need_dispositions": [row]}]}
+        self.assertEqual(SignalEvolutionEngine._mining_update_refs(partial), ())
+        multi = {"track": "controller_multi_axis", "axes": {"direction": complete, "magnitude": complete}}
+        self.assertEqual(SignalEvolutionEngine._mining_update_refs(multi), ("cash:v1",))
+        legacy = {"stages": {"H1": {"conclusion": {"need_dispositions": [row]}}}}
+        self.assertEqual(SignalEvolutionEngine._mining_update_refs(legacy), ("cash:v1",))
+
     def test_completed_magnitude_track_is_assessed_without_candidates(self) -> None:
         statuses = _magnitude_mining_track_statuses(
             {

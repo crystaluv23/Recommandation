@@ -90,6 +90,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _usage_from_dict,
     _usage_to_dict,
     _validate_id,
+    _write_or_verify_json,
 )
 from stock_opportunity_agent.research.evolution_settings import (
     FIXED_PREDICTOR_SEMANTICS,
@@ -4898,7 +4899,7 @@ class SignalEvolutionEngine:
         try:
             update_output = self._run_signal_update(
                 cycle_id=cycle_id,
-                suggested_refs=self._h1_update_refs(
+                suggested_refs=self._mining_update_refs(
                     agent_audits.get("mining_pipeline", {})
                 ),
             )
@@ -6149,8 +6150,17 @@ class SignalEvolutionEngine:
         return tuple(item[2] for item in ranked[:limit])
 
     @staticmethod
-    def _h1_update_refs(audit: Mapping[str, Any]) -> tuple[str, ...]:
-        """Recover adapter-validated H1 update suggestions for target ordering."""
+    def _mining_update_refs(audit: Mapping[str, Any]) -> tuple[str, ...]:
+        """Recover complete validated Mining intents for existing Update ordering."""
+
+        if audit.get("track") == "controller_multi_axis":
+            return tuple(_ordered_unique(ref for axis in dict(audit.get("axes", {})).values()
+                                   for ref in SignalEvolutionEngine._mining_update_refs(axis)))
+        if audit.get("track") == "controller":
+            return tuple(_ordered_unique(str(ref) for seed in audit.get("seeds", ()) if seed.get("status") == "completed"
+                for row in seed.get("need_disposition_rows", ())
+                if not seed.get("pending_need_refs") and row.get("disposition") == "update_existing"
+                for ref in row.get("signal_refs", ())))
 
         value: Mapping[str, Any] = audit
         if (
@@ -6167,7 +6177,7 @@ class SignalEvolutionEngine:
             if not isinstance(row, Mapping) or row.get("disposition") != "update_existing":
                 continue
             refs.extend(str(item) for item in row.get("signal_refs", ()))
-        return _ordered_unique(refs)
+        return tuple(_ordered_unique(refs))
 
     def _prior_signal_update(
         self, work_fingerprint: str
@@ -6581,6 +6591,12 @@ class SignalEvolutionEngine:
                 candidates.append((_seed, dict(candidate)))
                 return {"status": "validated"}
 
+            def save_need_unit(unit: Mapping[str, Any]) -> None:
+                scope = _canonical_hash({"axis": unit["axis_id"], "seed": unit["seed"]})
+                path = (self.workspace.experiments_root / "cycles" / f"cycle-{cycle_id:04d}"
+                        / "mining_need_units" / scope / f"{unit['result_hash']}.json")
+                _write_or_verify_json(path, dict(unit))
+
             try:
                 controller_kwargs: dict[str, Any] = {}
                 if self.mining_heavy_action_limit is not None:
@@ -6602,6 +6618,7 @@ class SignalEvolutionEngine:
                         context.get("prior_modality_footprints", ())
                     ),
                     validation_sink=seed_sink,
+                    need_progress_sink=save_need_unit,
                     label_map=label_map,
                     research_axis=research_axis,
                     **controller_kwargs,
@@ -6656,6 +6673,9 @@ class SignalEvolutionEngine:
                     "explored_families": list(controller.ledger.explored_families()),
                     "fetched_case_refs": list(fetched),
                     "need_dispositions": len(result.need_dispositions),
+                    "need_disposition_rows": list(result.need_dispositions),
+                    "staged_need_dispositions": list(result.staged_need_dispositions),
+                    "pending_need_refs": list(result.pending_need_refs),
                     "modality_coverage": dict(result.modality_coverage),
                     "narrative_reads": result.narrative_reads,
                     "candidate_count": len(result.candidates),

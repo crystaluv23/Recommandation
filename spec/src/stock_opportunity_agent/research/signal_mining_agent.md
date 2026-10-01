@@ -162,7 +162,7 @@ observation cycle.
   Each model step returns exactly one action from the closed enum
   `inspect_manifest`, `inspect_catalog`, `fetch_evidence`,
   `compute_statistic`, `read_span`, `compare_groups`, `propose_candidate`,
-  `record_deferred`, `record_no_pattern`. The runtime alone decides
+  `record_need_dispositions`, `record_deferred`, `record_no_pattern`. The runtime alone decides
   admissibility, executes the action, writes the ledger, enforces
   termination, and admits a candidate into validation.
 - Seed states move only along `ready -> exploring -> evidence_ready ->
@@ -252,6 +252,32 @@ observation cycle.
   `deferred_measurement`, `update_existing`, `repair_dependency`,
   `not_testable`, `fast_plan_action`, validated by the existing H1 v7
   disposition checks. The capability-backlog loop keeps exactly one owner.
+- The controller retains the complete immutable backlog locally. Its working
+  view shows a bounded page of unresolved semantic cards (exact need text, ref,
+  kind and status), with totals, omissions and a source hash/read size.
+  `inspect_catalog(scope=backlog)` pages the complete directory; supplied
+  `item_refs` resolve full original rows within the existing 16KB whole-read cap.
+  Neither clipping nor hidden full-source provenance is a default dependency.
+- `record_need_dispositions` accepts only currently disclosed unresolved refs
+  and requires the issued need-state `base_hash`. Each row is validated using
+  the same disposition schema, unique-owner, rationale and existing-Signal
+  rules as the complete terminal validator. Valid independent rows survive
+  sibling errors; rejected rows stay unresolved and receive exact row feedback.
+  Accepted rows cannot be overwritten or repeated. Each successful action must
+  reduce unresolved refs, bounding successful calls by the frozen backlog size;
+  it uses the shared external-call ceilings, not evidence-action budget.
+- Incremental dispositions are staged intent, not a candidate or proof of a
+  resolved capability. Candidate/no-pattern terminals compose staged rows and
+  only newly supplied rows, then require complete coverage with full validation.
+  Control/technical terminals retain staged intent and explicit pending refs;
+  they never manufacture a complete disposition ledger or a no-pattern verdict.
+- Each accepted batch emits a hash-bound immutable delta through the runtime's
+  progress sink. Recovery reconstructs the controller through unchanged cached
+  requests, revalidating each delta and its dependencies; no evidence budget or
+  accepted state is reset midway. Completed rows and pending/staged rows are
+  persisted distinctly in the seed audit. Catalog-valid `update_existing`
+  suggestions from a complete controller ledger reach the existing Update
+  target-ordering consumer, including multi-axis audits. Promotion is unchanged.
 
 ### Seed B: open-ended label-aware discovery
 

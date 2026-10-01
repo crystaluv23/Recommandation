@@ -50,6 +50,7 @@ ACTIONS = (
     "read_span",
     "compare_groups",
     "propose_candidate",
+    "record_need_dispositions",
     "record_deferred",
     "record_no_pattern",
 )
@@ -170,6 +171,8 @@ class ControllerResult:
     model_calls: int
     narrative_reads: int = 0
     modality_coverage: Mapping[str, Any] = field(default_factory=dict)
+    staged_need_dispositions: tuple[Mapping[str, Any], ...] = ()
+    pending_need_refs: tuple[str, ...] = ()
 
 
 class MiningLedger:
@@ -237,6 +240,7 @@ class LabelAwareMiningController:
         research_axis: Mapping[str, Any] | None = None,
         meta_memory_briefs: Mapping[str, Any] | None = None,
         meta_memory_disclosures: Sequence[Mapping[str, Any]] = (),
+        need_progress_sink: Callable[[Mapping[str, Any]], None] | None = None,
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -247,7 +251,16 @@ class LabelAwareMiningController:
         self.manifest = dict(measurable_evidence_manifest)
         self.signal_catalog = tuple(signal_catalog)
         self.seed = seed
-        self.backlog_needs = tuple(backlog_needs)
+        if any(not isinstance(row, Mapping) or not isinstance(row.get("need_ref"), str)
+               or not row["need_ref"].strip() for row in backlog_needs):
+            raise ValidationError("backlog rows require non-empty string need refs")
+        self.backlog_needs = tuple(deepcopy(dict(row)) for row in backlog_needs)
+        self._backlog_by_ref = {row["need_ref"]: row for row in self.backlog_needs}
+        if len(self._backlog_by_ref) != len(backlog_needs):
+            raise ValidationError("backlog need refs must be unique")
+        self._backlog_hash = canonical_json_hash(list(self.backlog_needs))
+        self._staged_need_dispositions: list[Mapping[str, Any]] = []
+        self.need_progress_sink = need_progress_sink
         self.heavy_action_limit = heavy_action_limit
         self.light_action_limit = light_action_limit
         self.browse_limit = browse_limit
@@ -372,6 +385,8 @@ class LabelAwareMiningController:
             model_calls=self._model_calls,
             narrative_reads=self._narrative_reads,
             modality_coverage=self._modality_coverage(),
+            staged_need_dispositions=tuple(deepcopy(self._staged_need_dispositions)),
+            pending_need_refs=() if need_dispositions else tuple(self._pending_need_refs()),
         )
 
     # ------------------------------------------------------------------
@@ -423,11 +438,22 @@ class LabelAwareMiningController:
             if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit)
             and (action not in HEAVY_ACTIONS or self._heavy_used < self.heavy_action_limit
                  or (action == "read_span" and self._browse_used < self.browse_limit))
+            and (action != "record_need_dispositions"
+                 or (self.seed == "hypothesis" and self._pending_need_refs()))
         ]
         if self._last_invalid is not None:
             view["last_invalid_action"] = dict(self._last_invalid)
         if self.seed == "hypothesis":
-            view["backlog_needs"] = [dict(row) for row in self.backlog_needs]
+            page = self._backlog_view(pending_only=True)
+            view["backlog_needs"] = page["items"]
+            view["backlog_disclosure"] = {key: value for key, value in page.items() if key != "items"}
+            view["need_disposition_contract"] = {
+                "base_hash": self._need_state_hash(),
+                "allowed_need_refs": self._disclosed_need_refs(),
+                "pending_count": len(self._pending_need_refs()),
+                "staged_count": len(self._backlog_by_ref) - len(self._pending_need_refs()),
+                "dispositions": sorted(ALLOWED_DISPOSITIONS),
+            }
         return view
 
     def _evidence_digest(self) -> dict[str, Any]:
@@ -693,8 +719,10 @@ class LabelAwareMiningController:
                     payload = bounded_entry_page(self.signal_catalog, cursor=cursor)
                 elif scope == "memory":
                     payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"))
+                elif scope == "backlog":
+                    payload = self._backlog_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 else:
-                    raise InvalidMiningAction("inspect_catalog scope must be signals, evidence or memory")
+                    raise InvalidMiningAction("inspect_catalog scope must be signals, evidence, memory or backlog")
             self._light_used += 1
             self._last_action_result = {
                 "action": action, "scope": raw.get("scope"), "result": deepcopy(payload),
@@ -716,6 +744,8 @@ class LabelAwareMiningController:
             return self._execute_compare(raw)
         if action == "propose_candidate":
             return self._execute_propose(raw)
+        if action == "record_need_dispositions":
+            return self._record_need_dispositions(raw)
         if action == "record_deferred":
             kind = (
                 "deferred_budget"
@@ -725,8 +755,9 @@ class LabelAwareMiningController:
             self._mark_terminal(kind, raw, note="record_deferred")
             return kind, [], ()
         if action == "record_no_pattern":
+            dispositions = self._validate_need_dispositions(raw) if self.seed == "hypothesis" else ()
             self._execute_no_pattern(raw)
-            return "no_pattern_with_coverage", [], ()
+            return "no_pattern_with_coverage", [], dispositions
         raise InvalidMiningAction(f"unhandled action: {action}")
 
     def _budget_exhausted(self) -> bool:
@@ -1330,9 +1361,9 @@ class LabelAwareMiningController:
             )
 
     def _validate_need_dispositions(
-        self, raw: Mapping[str, Any]
+        self, raw: Mapping[str, Any], *, require_complete: bool = True,
     ) -> tuple[Mapping[str, Any], ...]:
-        rows = raw.get("need_dispositions")
+        rows = raw.get("need_dispositions", [] if self._staged_need_dispositions or not self.backlog_needs else None)
         if not isinstance(rows, list):
             raise InvalidMiningAction(
                 "hypothesis seed terminal requires need_dispositions"
@@ -1342,8 +1373,8 @@ class LabelAwareMiningController:
             for row in self.backlog_needs
             if isinstance(row, Mapping)
         }
-        seen: set[str] = set()
-        clean: list[Mapping[str, Any]] = []
+        seen = {str(ref) for row in self._staged_need_dispositions for ref in row["need_refs"]}
+        clean: list[Mapping[str, Any]] = deepcopy(self._staged_need_dispositions) if require_complete else []
         row_issues: list[str] = []
         for index, row in enumerate(rows):
             if not isinstance(row, Mapping) or set(row) != {
@@ -1358,11 +1389,16 @@ class LabelAwareMiningController:
                 )
                 continue
             refs = row["need_refs"]
-            if not isinstance(refs, list) or not refs:
+            if (not isinstance(refs, list) or not refs
+                or any(not isinstance(ref, str) or not ref for ref in refs)
+                or len(set(refs)) != len(refs)):
                 row_issues.append(f"row[{index}] need_refs must be non-empty")
                 continue
+            if require_complete and not set(refs) <= set(self._disclosed_need_refs()):
+                row_issues.append(f"row[{index}] new need refs must be currently disclosed and unresolved")
+                continue
             disposition = row["disposition"]
-            if disposition not in ALLOWED_DISPOSITIONS:
+            if not isinstance(disposition, str) or disposition not in ALLOWED_DISPOSITIONS:
                 row_issues.append(
                     f"row[{index}] disposition must be one of "
                     + ", ".join(sorted(ALLOWED_DISPOSITIONS))
@@ -1372,8 +1408,8 @@ class LabelAwareMiningController:
             if not isinstance(signal_refs, list):
                 row_issues.append(f"row[{index}] signal_refs must be an array")
                 continue
-            if disposition in {"update_existing", "already_covered"}:
-                if len(signal_refs) != 1:
+            if disposition == "update_existing":
+                if len(signal_refs) != 1 or not isinstance(signal_refs[0], str) or signal_refs[0] not in {str(card.get("signal_ref")) for card in self.signal_catalog}:
                     row_issues.append(
                         f"row[{index}] {disposition} cites exactly one signal"
                     )
@@ -1383,6 +1419,10 @@ class LabelAwareMiningController:
                     f"row[{index}] {disposition} must cite no signal_refs; "
                     "only update_existing cites exactly one existing signal"
                 )
+                continue
+            rationale = row["rationale"]
+            if not isinstance(rationale, list) or not rationale or any(not isinstance(text, str) or not text.strip() for text in rationale):
+                row_issues.append(f"row[{index}] rationale must be non-empty strings")
                 continue
             duplicates = sorted(
                 {str(ref) for ref in refs if str(ref) in seen}
@@ -1400,7 +1440,7 @@ class LabelAwareMiningController:
                 "need_dispositions issues: " + "; ".join(row_issues)
             )
         missing = sorted(known_refs - seen)
-        if missing:
+        if require_complete and missing:
             raise InvalidMiningAction(
                 "need_dispositions must cover every backlog need: missing "
                 + ", ".join(missing)
@@ -1411,6 +1451,85 @@ class LabelAwareMiningController:
                 "need_dispositions cite unknown needs: " + ", ".join(unknown)
             )
         return tuple(clean)
+
+    def _pending_need_refs(self) -> list[str]:
+        """Keep frozen-order unresolved identities outside the model transcript."""
+        staged = {ref for row in self._staged_need_dispositions for ref in row["need_refs"]}
+        return [ref for ref in self._backlog_by_ref if ref not in staged]
+
+    def _need_state_hash(self) -> str:
+        """Bind disposition edits to this axis and the exact accepted intent."""
+        return canonical_json_hash({"backlog_hash": self._backlog_hash,
+            "axis": self.research_axis, "seed": self.seed,
+            "staged_rows": self._staged_need_dispositions})
+
+    def _disclosed_need_refs(self) -> list[str]:
+        """Authorize only pending cards actually present in the current view."""
+        refs = [row["need_ref"] for row in self._backlog_view(pending_only=True)["items"]]
+        receipt = self._last_action_result or {}
+        if receipt.get("scope") == "backlog":
+            refs.extend(row["need_ref"] for row in receipt.get("result", {}).get("items", ()))
+        pending = set(self._pending_need_refs())
+        return list(dict.fromkeys(ref for ref in refs if ref in pending))
+
+    def _backlog_view(self, *, cursor: int = 0, pending_only: bool = False,
+                      item_refs: Any = None) -> dict[str, Any]:
+        """Page exact semantic cards; supplied refs resolve whole original rows."""
+        if item_refs is not None:
+            if not isinstance(item_refs, list) or not item_refs or any(not isinstance(ref, str) or ref not in self._backlog_by_ref for ref in item_refs):
+                raise InvalidMiningAction("backlog read requires known item_refs")
+            originals = [self._backlog_by_ref[ref] for ref in item_refs]
+            if json_bytes(originals) > 16_000:
+                raise InvalidMiningAction("backlog read exceeds 16000 whole-entry bytes")
+            return {"items": deepcopy(originals), "included_refs": list(item_refs),
+                    "counts": {"available": len(self._backlog_by_ref), "included": len(originals)}}
+        refs = self._pending_need_refs() if pending_only else list(self._backlog_by_ref)
+        cards = [{"need_ref": ref,
+                  **{key: self._backlog_by_ref[ref][key] for key in ("need", "kind", "status") if key in self._backlog_by_ref[ref]},
+                  "source_hash": canonical_json_hash(self._backlog_by_ref[ref]),
+                  "read_bytes": json_bytes(self._backlog_by_ref[ref])} for ref in refs]
+        page = bounded_entry_page(cards, cursor=cursor)
+        for entry in page["oversized_entries"]:
+            entry["need_ref"] = refs[entry["index"]]
+        return {**page, "backlog_hash": self._backlog_hash,
+                "total_backlog_count": len(self._backlog_by_ref),
+                "read_action": "inspect_catalog scope=backlog item_refs", "read_byte_limit": 16_000}
+
+    def _record_need_dispositions(self, raw: Mapping[str, Any]) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
+        """Save valid independent intent rows and leave rejected siblings pending."""
+        if self.seed != "hypothesis" or raw.get("base_hash") != self._need_state_hash():
+            raise InvalidMiningAction("record_need_dispositions requires the issued hypothesis base_hash")
+        rows = raw.get("need_dispositions")
+        if not isinstance(rows, list) or not rows:
+            raise InvalidMiningAction("record_need_dispositions requires non-empty need_dispositions")
+        allowed = set(self._disclosed_need_refs())
+        accepted, invalid = [], []
+        base_hash = self._need_state_hash()
+        for index, row in enumerate(rows):
+            try:
+                clean = self._validate_need_dispositions({"need_dispositions": [row]}, require_complete=False)
+                if not set(clean[0]["need_refs"]) <= allowed:
+                    raise InvalidMiningAction("need refs must belong to the currently disclosed unresolved page")
+            except InvalidMiningAction as exc:
+                invalid.append({"row_index": index, "issue": str(exc), "invalid_row": deepcopy(row)})
+                continue
+            self._staged_need_dispositions.extend(deepcopy(clean))
+            accepted.extend(deepcopy(clean))
+        if not accepted:
+            raise InvalidMiningAction("no need-disposition progress: " + "; ".join(row["issue"] for row in invalid))
+        unit = {"schema_version": "mining-need-disposition-unit-v1", "backlog_hash": self._backlog_hash,
+                "axis_id": self.research_axis["axis_id"], "seed": self.seed,
+                "base_hash": base_hash, "result_hash": self._need_state_hash(),
+                "accepted_rows": accepted, "pending_count": len(self._pending_need_refs()),
+                "invalid_rows": invalid}
+        self._append("record_need_dispositions", raw, payload=unit)
+        if self.need_progress_sink is not None:
+            try:
+                self.need_progress_sink(deepcopy(unit))
+            except ValidationError as exc:
+                raise RuntimeError("accepted need-unit persistence failed") from exc
+        self._last_action_result = {"action": "record_need_dispositions", "result": unit}
+        return "running", [], ()
 
     def _execute_no_pattern(self, raw: Mapping[str, Any]) -> None:
         if self.ledger.fetch_count() < 1:

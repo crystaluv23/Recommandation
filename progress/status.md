@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：隔离打通Mining backlog：默认有界语义需求页+原文/hash引用；新record_need_dispositions按快照hash和当前可见未处置refs逐行校验，正确行保存、错误行保留待办，完整终止重验全量覆盖。accepted delta通过生产engine写入不可变mining_need_units，seed audit区分完整/staged/pending；完整controller/多轴建议进入既有Update入口。真实v165 276条backlog默认输入239,908→4,674 bytes，23页目录及全部原文可解析，离线mixed-row/delta重放通过；178专项、1,286全量回归通过。v165冻结6e3ae1c仍处Slow，供应商SSL失败后同一监督进程第二次执行利用既有缓存恢复；未合并隔离改动。数值/期间/统计归属和完整后继实测仍待修复验收。
+
 2026-10-02：隔离Mining读取进度修复：每份文档/hash/raw范围以单条有界receipt持久保留，目录/计算操作不再抹掉已读范围，重复范围只递增次数、原文不重复输入、预算规则不变；真实7份已付费动作及实际8-K零网络回放通过。45项Mining专项与1,279项全量测试通过。实际Critic/Round审查另发现第一Plan统计冒充双Plan合计、22/24称完整技术完成，以及因果猜测当作fact；需补统计归属/事实与假设检测。完整闭环仍未验收；隔离修复不进入冻结v165。
 
 2026-10-02：v165 Fast round 已提交、Slow cycle 尚未提交（指针1/0）。两份固定24案Plan Binary F1=.7333/.6667，第一Plan含2个技术弃权、第二Plan24案完整研究；分母未改变。46份真实Predictor完整assembly与实际HTTP输入、hash/字节数逐一匹配。隔离工作树补齐results-event metadata时间判别、初始化独立原文错误首轮反馈、精确runtime摘要误引的类型化机械移除，以及H_init对最终证据拼装的真实说明；真实已付费修正生产回放保留有效兄弟通过，1,278项全量回归通过。隔离lint的结构/空白等检查通过，20个历史链接因未复制运行资产失败（主目录资产均存在），不是本次修改引入。隔离改动尚未应用到冻结6e3ae1c运行。实际Slow Mining揭示276条全量backlog反复输入（约248KB/83k–94k tokens）及相同raw范围重复读；数字分母、期间、单位/符号及过期guidance语义仍待系统修复。完整Fast+Slow产物正确与后继实测验收仍未完成，不声称增益。

@@ -21,6 +21,14 @@ track must not hide an earlier H1 input-budget or validation failure until commi
 
 ## V8 Slow Round self-evolution contract
 
+Controller Mining persists immutable accepted need-disposition deltas under the
+cycle's `mining_need_units/`, bound to backlog, axis, seed and prior/result state
+hashes. These are staged diagnostic units, not cycle commit pointers. The seed
+audit retains full complete rows, staged rows and pending refs separately rather
+than only counts. The existing Update target-ordering consumer reads catalog-
+validated `update_existing` rows from complete controller and multi-axis ledgers
+as well as historical H1 audits; no staged row implies capability resolution.
+
 The engine freezes `slow_input.json`, then appends or reuses one
 `slow_memory.json`, then seals `slow_experiments.json` before staging validation.
 All three artifacts are cycle-scoped, immutable, canonical-hash linked, and may

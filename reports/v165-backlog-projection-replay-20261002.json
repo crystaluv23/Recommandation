@@ -1,0 +1,17 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "source_request_hash": "bf415d61eeef2b9889caf718455dce477ca903f973e7af50696e23e01a3191db",
+  "network_calls": 0,
+  "original_backlog_count": 276,
+  "original_backlog_bytes": 239908,
+  "initial_whole_semantic_cards": 12,
+  "bounded_backlog_input_bytes": 4674,
+  "all_directory_pages": 23,
+  "all_original_refs_and_exact_need_text_preserved": true,
+  "all_original_rows_resolve_and_hashes_match": true,
+  "mixed_row_valid_intent_preserved": true,
+  "invalid_target_remains_pending": true,
+  "immutable_delta_replay_pass": true,
+  "status": "pass",
+  "limits": "Actual frozen need rows, exact production page/read builders and a synthetic disposition probe. No live new-format model output, full corpus fetch coverage, research classification correctness, cycle completion or gain is claimed."
+}

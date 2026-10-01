@@ -52,6 +52,11 @@ the current action result with provenance, not as a repeated stale second copy.
 Read progress persists separately as bounded receipt metadata, so another action
 cannot erase prior document/range coverage. Exact original text remains reachable
 through source coordinates; metadata does not substitute for that text.
+The same bounded view and incremental-save discipline applies to Mining's
+capability backlog: exact unresolved need cards are paged, originals are
+readable by ref, and disposition batches are snapshot-bound independent units.
+Valid rows survive mixed errors; final coverage is checked over the entire
+immutable backlog, never over only the visible page.
 
 ## Detection and no progress
 

@@ -1426,3 +1426,128 @@ class SharedStageBoundaryTests(unittest.TestCase):
         controller = _controller(store, cases, ScriptedMiningDecisionModel([]), seed="discovery", heavy_action_limit=1)
         controller._heavy_used = 1
         controller._validate_action_shape({"action": "read_span", "event_ref": "known", "rationale": ["Browse narrative."]})
+
+
+class IncrementalBacklogTests(unittest.TestCase):
+    """Backlog visibility, independent rows, full coverage and crash replay."""
+
+    @staticmethod
+    def _row(refs, disposition='deferred_measurement', signal_refs=None):
+        return {'need_refs': refs, 'disposition': disposition,
+                'signal_refs': signal_refs or [], 'rationale': ['Retain an explicit scoped intent.']}
+
+    def test_semantic_pages_keep_all_originals_reachable(self):
+        from stock_opportunity_agent.artifacts import canonical_json_hash
+        from stock_opportunity_agent.research.stage_contracts import json_bytes
+        cases, store = _fixture_store()
+        needs = [{'need_ref': f'need-{i:03d}', 'need': f'Exact unresolved question {i}?',
+                  'kind': 'unmatched_signal_need', 'sources': [{'detail': 'source detail ' * 400}]}
+                 for i in range(40)]
+        controller = _controller(store, cases, ScriptedMiningDecisionModel([]), seed='hypothesis', backlog_needs=needs)
+        view = controller._model_view()
+        self.assertEqual(len(view['backlog_needs']), 12)
+        self.assertEqual(view['backlog_disclosure']['counts']['omitted_after'], 28)
+        self.assertLess(json_bytes(view['backlog_needs']), 8000)
+        self.assertNotIn('sources', view['backlog_needs'][0])
+        self.assertEqual(view['backlog_needs'][0]['source_hash'], canonical_json_hash(needs[0]))
+        seen, cursor = [], 0
+        while cursor is not None:
+            page = controller._backlog_view(cursor=cursor)
+            seen.extend(row['need_ref'] for row in page['items'])
+            cursor = page['next_cursor']
+        self.assertEqual(seen, [row['need_ref'] for row in needs])
+        controller._execute('inspect_catalog', {'action': 'inspect_catalog', 'scope': 'backlog',
+                            'item_refs': ['need-025'], 'rationale': ['Read one original.']})
+        self.assertEqual(controller._model_view()['last_action_result']['result']['items'], [needs[25]])
+        self.assertIn('need-025', controller._model_view()['need_disposition_contract']['allowed_need_refs'])
+
+    def test_multiple_pages_assemble_one_complete_terminal_without_restating_rows(self):
+        cases, store = _fixture_store()
+        needs = [{'need_ref': f'need-{i}', 'need': 'Measure an observable cash constraint.'} for i in range(20)]
+        units = []
+        def dispose(view):
+            return {'action': 'record_need_dispositions', 'base_hash': view['need_disposition_contract']['base_hash'],
+                    'need_dispositions': [self._row([row['need_ref'] for row in view['backlog_needs']], 'new_measurement')],
+                    'rationale': ['Save this page without changing prior pages.']}
+        def candidate(view):
+            self.assertEqual(view['need_disposition_contract']['pending_count'], 0)
+            return {'action': 'propose_candidate', 'rationale': ['Propose the sourced measurement.'],
+                    'candidate': {'measurement': {'observable': 'cash_level_new', 'value_kind': 'numeric', 'normalization': 'latest cash'},
+                        'falsifiers': [{'condition': 'no contrast', 'expected_observation': 'no higher positive median'}],
+                        'evidence_refs': view['known_fact_refs'][:1]}}
+        model = ScriptedMiningDecisionModel([dispose, dispose,
+            {'action': 'fetch_evidence', 'case_refs': ['case-001'], 'source_families': ['financial'],
+             'max_documents': 1, 'rationale': ['Fetch the actual measurement inputs.']}, candidate])
+        result = _controller(store, cases, model, seed='hypothesis', backlog_needs=needs, need_progress_sink=units.append).run()
+        self.assertEqual(result.terminal_kind, 'candidate')
+        self.assertEqual(result.pending_need_refs, ())
+        self.assertEqual({ref for row in result.need_dispositions for ref in row['need_refs']}, {row['need_ref'] for row in needs})
+        self.assertEqual(len(units), 2)
+        self.assertEqual(units[0]['result_hash'], units[1]['base_hash'])
+        self.assertEqual(len(units[1]['accepted_rows'][0]['need_refs']), 8)
+        self.assertNotIn('need_dispositions', model.views[-1])
+
+    def test_mixed_rows_preserve_valid_intent_and_correct_only_the_remaining_need(self):
+        cases, store = _fixture_store()
+        needs = [{'need_ref': 'n0', 'need': 'Cash measurement?'}, {'need_ref': 'n1', 'need': 'Cash normalization?'}]
+        units = []
+        def mixed(view):
+            return {'action': 'record_need_dispositions', 'base_hash': view['need_disposition_contract']['base_hash'],
+                    'need_dispositions': [self._row(['n0']), self._row(['n1'], 'update_existing', ['unknown:v1'])],
+                    'rationale': ['Two independent intents.']}
+        def correction(view):
+            self.assertEqual([row['need_ref'] for row in view['backlog_needs']], ['n1'])
+            self.assertEqual(view['need_disposition_contract']['staged_count'], 1)
+            self.assertEqual(view['last_action_result']['result']['invalid_rows'][0]['row_index'], 1)
+            return {'action': 'record_need_dispositions', 'base_hash': view['need_disposition_contract']['base_hash'],
+                    'need_dispositions': [self._row(['n1'], 'update_existing', ['cash_reserves:v1'])], 'rationale': ['Fix the invalid target only.']}
+        model = ScriptedMiningDecisionModel([mixed, correction, {'action': 'record_deferred', 'rationale': ['No candidate claim.']}])
+        result = _controller(store, cases, model, seed='hypothesis', backlog_needs=needs, need_progress_sink=units.append).run()
+        self.assertEqual(result.need_dispositions, ())
+        self.assertEqual(result.staged_need_dispositions[0], self._row(['n0']))
+        self.assertEqual(len(result.staged_need_dispositions), 2)
+        self.assertEqual(units[0]['result_hash'], units[1]['base_hash'])
+
+    def test_stale_or_hidden_refs_cannot_overwrite_accepted_rows(self):
+        from stock_opportunity_agent.research.mining_controller import InvalidMiningAction
+        cases, store = _fixture_store()
+        needs = [{'need_ref': f'n{i}', 'need': 'A need?'} for i in range(14)]
+        controller = _controller(store, cases, ScriptedMiningDecisionModel([]), seed='hypothesis', backlog_needs=needs)
+        initial_hash = controller._need_state_hash()
+        controller._record_need_dispositions({'base_hash': initial_hash, 'need_dispositions': [self._row(['n0'])]})
+        saved = list(controller._staged_need_dispositions)
+        with self.assertRaisesRegex(InvalidMiningAction, 'base_hash'):
+            controller._record_need_dispositions({'base_hash': initial_hash, 'need_dispositions': [self._row(['n1'])]})
+        for row in (self._row(['n0']), self._row(['n13']), self._row(['n1', 'n1']),
+                    self._row(['n1'], ['invalid']), self._row(['n1'], 'update_existing', [['unhashable']])):
+            with self.subTest(row=row), self.assertRaises(InvalidMiningAction):
+                controller._record_need_dispositions({'base_hash': controller._need_state_hash(), 'need_dispositions': [row]})
+            self.assertEqual(controller._staged_need_dispositions, saved)
+        with self.assertRaisesRegex(InvalidMiningAction, 'cover every backlog need'):
+            controller._validate_need_dispositions({})
+        with self.assertRaisesRegex(InvalidMiningAction, 'currently disclosed'):
+            controller._validate_need_dispositions({'need_dispositions': [self._row([f'n{i}' for i in range(1, 14)])]})
+
+    def test_delta_replay_is_immutable_and_control_terminal_retains_pending(self):
+        import tempfile
+        from pathlib import Path
+        from stock_opportunity_agent.research.evolution_core import _write_or_verify_json
+        cases, store = _fixture_store()
+        needs = [{'need_ref': 'n0', 'need': 'One requirement?'}, {'need_ref': 'n1', 'need': 'Another requirement?'}]
+        with tempfile.TemporaryDirectory() as directory:
+            def save(unit):
+                _write_or_verify_json(Path(directory) / (unit['result_hash'] + '.json'), unit)
+            def run_once():
+                def dispose(view):
+                    return {'action': 'record_need_dispositions', 'base_hash': view['need_disposition_contract']['base_hash'],
+                            'need_dispositions': [self._row(['n0'])], 'rationale': ['One accepted unit.']}
+                model = ScriptedMiningDecisionModel([dispose, {'action': 'record_deferred', 'rationale': ['Keep unresolved work.']}])
+                return _controller(store, cases, model, seed='hypothesis', backlog_needs=needs, need_progress_sink=save).run()
+            first = run_once()
+            paths = list(Path(directory).glob('*.json')); before = paths[0].read_bytes()
+            replay = run_once()
+            self.assertEqual(len(list(Path(directory).glob('*.json'))), 1)
+            self.assertEqual(paths[0].read_bytes(), before)
+            self.assertEqual(first.staged_need_dispositions, replay.staged_need_dispositions)
+            self.assertEqual(replay.pending_need_refs, ('n1',))
+            self.assertEqual(replay.need_dispositions, ())
