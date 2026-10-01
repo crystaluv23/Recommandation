@@ -333,7 +333,7 @@ class ReflectBasicLiteralIdentityTests(TestCase):
         )
         self.assertEqual(
             codes,
-            ["assertion_without_support", "basic_literal_identity_mismatch"],
+            ["basic_literal_identity_mismatch"],
         )
         self.assertEqual(
             [str(item) for item in value.current_beliefs],
@@ -548,7 +548,8 @@ class ReflectBasicLiteralIdentityTests(TestCase):
             if event["event_type"] == "structured_validation_fallback_applied"
         ]
         self.assertEqual(len(fallback_events), 1)
-        self.assertIn("current_beliefs[1]", fallback_events[0]["removed_paths"])
+        progress_events = [event for event in events if event["event_type"] == "mechanical_repair_progress"]
+        self.assertTrue(any("current_beliefs[1]" in event.get("actions", {}).get("removed_paths", []) for event in progress_events))
         self.assertIn(
             "supporting_evidence[0].exact_text",
             fallback_events[0]["normalized_paths"],
@@ -2840,28 +2841,9 @@ class NeedTransitionDuplicateRestorationTests(TestCase):
         invalid = self._invalid_output()
         caller = ScriptedRoleCaller([invalid, deepcopy(invalid)])
         value, _ = self._run_role(caller, ResearchState.from_dict(self._prior_state()))
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        restore = [
-            obligation
-            for obligation in feedback["obligations"]
-            if obligation["issue_code"] == "research_need_transition_invalid"
-        ]
-        self.assertEqual(
-            sorted(
-                obligation["prior_state_path"] for obligation in restore
-            ),
-            ["next_information_needs[0]", "next_information_needs[5]"],
-        )
-        by_path = {
-            obligation["prior_state_path"]: obligation for obligation in restore
-        }
-        self.assertEqual(by_path["next_information_needs[0]"]["required_action"], "restore_exactly")
-        self.assertEqual(
-            by_path["next_information_needs[0]"]["required_need_occurrences"], 2
-        )
-        self.assertEqual(
-            by_path["next_information_needs[5]"]["required_need_occurrences"], 1
-        )
+        # Runtime-issued exact restores now precede the LLM correction.
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(caller.calls[0]["payload"]["validation_feedback"], None)
         needs = [str(need) for need in value.next_information_needs]
         self.assertEqual(needs[:5], [self.NEED_B, self.NEED_C, self.NEED_D, self.NARROWED, self.NEED_A])
         self.assertEqual(needs.count(self.NEED_A), 2)

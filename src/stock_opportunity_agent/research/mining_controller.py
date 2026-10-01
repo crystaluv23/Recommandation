@@ -25,6 +25,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _evidence_source_family,
     _mask_identity_values,
 )
+from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, json_bytes
 from stock_opportunity_agent.research.mining_agent_tools import (
     EvidenceFact,
     EvidenceRelation,
@@ -343,8 +344,8 @@ class LabelAwareMiningController:
                         "deferred_budget",
                         raw,
                         note=(
-                            "heavy budget exhausted; model repeated an "
-                            "inadmissible heavy action"
+                            "action budget exhausted; model repeated an "
+                            "inadmissible action"
                         ),
                     )
                     terminal_kind = "deferred_budget"
@@ -401,15 +402,19 @@ class LabelAwareMiningController:
             "prior_modality_footprints": [
                 dict(row) for row in self.prior_modality_footprints
             ],
-            "meta_info": deepcopy(self.meta_memory_briefs),
+            "meta_info": self._memory_view(),
             "meta_memory_disclosures": [
                 dict(row) for row in self.meta_memory_disclosures
             ],
         }
         if self._last_action_result is not None:
             view["last_action_result"] = dict(self._last_action_result)
-        if self._last_read_span is not None:
-            view["last_read_span"] = self._last_read_span
+        view["available_actions"] = [
+            action for action in ACTIONS
+            if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit)
+            and (action not in HEAVY_ACTIONS or self._heavy_used < self.heavy_action_limit
+                 or (action == "read_span" and self._browse_used < self.browse_limit))
+        ]
         if self._last_invalid is not None:
             view["last_invalid_action"] = dict(self._last_invalid)
         if self.seed == "hypothesis":
@@ -648,7 +653,12 @@ class LabelAwareMiningController:
             raise InvalidMiningAction(
                 "rationale must be a non-empty array of short strings"
             )
-        if action in HEAVY_ACTIONS and self._heavy_used >= self.heavy_action_limit:
+        if action in LIGHT_ACTIONS and self._light_used >= self.light_action_limit:
+            raise BudgetInadmissibleAction("light action budget exhausted")
+        narrative_read = action == "read_span" and any(key in raw for key in ("event_ref", "document_ref"))
+        if narrative_read and self._browse_used >= self.browse_limit:
+            raise BudgetInadmissibleAction("browse budget exhausted")
+        if action in HEAVY_ACTIONS and not narrative_read and self._heavy_used >= self.heavy_action_limit:
             raise BudgetInadmissibleAction("heavy action budget exhausted")
 
     def _require_state_at_least(self, minimum: str, action: str) -> None:
@@ -663,28 +673,27 @@ class LabelAwareMiningController:
         self, action: str, raw: Mapping[str, Any]
     ) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         if action in ("inspect_manifest", "inspect_catalog"):
-            self._light_used += 1
             if action == "inspect_manifest":
                 payload = self.manifest
             else:
                 scope = str(raw.get("scope", "signals"))
-                if scope not in {"signals", "evidence"}:
-                    raise InvalidMiningAction(
-                        "inspect_catalog scope must be signals or evidence"
-                    )
+                cursor = raw.get("cursor", 0)
                 if scope == "evidence":
-                    payload = {"families": self._evidence_catalog_view()}
+                    payload = self._evidence_catalog_view(cursor=cursor)
+                elif scope == "signals":
+                    payload = bounded_entry_page(self.signal_catalog, cursor=cursor)
+                elif scope == "memory":
+                    payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 else:
-                    payload = self._catalog_view()
+                    raise InvalidMiningAction("inspect_catalog scope must be signals, evidence or memory")
+            self._light_used += 1
             self._last_action_result = {
-                "action": action,
-                "inspected": sorted(payload),
+                "action": action, "scope": raw.get("scope"), "result": deepcopy(payload),
             }
             self._append(
-                action,
-                raw,
-                payload={"inspected": action},
+                action, raw, payload=payload,
                 coverage={"keys": sorted(payload)},
+                omitted_coverage=dict(payload.get("counts", {})),
             )
             self._advance("exploring")
             return "running", [], ()
@@ -1475,18 +1484,51 @@ class LabelAwareMiningController:
         if _STATE_ORDER[target] > _STATE_ORDER[self._state]:
             self._state = target
 
-    def _evidence_catalog_view(self) -> list[dict[str, Any]]:
-        """Discovery-only directory over the fetched narrative evidence."""
+    def _memory_view(self, *, cursor: int = 0, item_refs: Any = None) -> dict[str, Any]:
+        """Expose whole brief pages and resolve selected immutable local entries."""
+        items = self.meta_memory_briefs.get("items")
+        if not isinstance(items, list):
+            if json_bytes(self.meta_memory_briefs) > 8_000:
+                raise ValidationError("mining memory requires indexed entries above 8000 bytes")
+            return deepcopy(self.meta_memory_briefs)
+        entries = [dict(row) for row in items if isinstance(row, Mapping)]
+        if item_refs is not None:
+            if not isinstance(item_refs, list) or not 1 <= len(item_refs) <= 3 or any(not isinstance(ref, str) for ref in item_refs) or len(set(item_refs)) != len(item_refs):
+                raise InvalidMiningAction("memory read requires 1-3 unique supplied item_refs")
+            by_ref = {str(row.get("item_ref")): row for row in entries}
+            if any(ref not in by_ref for ref in item_refs):
+                raise InvalidMiningAction("memory read references an unknown local item_ref")
+            selected = [by_ref[ref] for ref in item_refs]
+            if json_bytes(selected) > 16_000:
+                raise InvalidMiningAction("memory read exceeds 16000 whole-entry bytes")
+            return {"items": deepcopy(selected), "included_refs": list(item_refs),
+                    "counts": {"available": len(entries), "included": len(selected),
+                               "omitted": len(entries) - len(selected)}}
+        page = bounded_entry_page(entries, cursor=cursor, max_items=6, max_bytes=6_000)
+        directory = bounded_entry_page([
+            {"item_ref": row.get("item_ref"), "level": row.get("level"),
+             "kind": row.get("kind"), "category": row.get("category"),
+             "brief_preview": str(row.get("brief", ""))[:160],
+             "preview_truncated": len(str(row.get("brief", ""))) > 160,
+             "read_bytes": json_bytes(row)} for row in entries
+        ], cursor=cursor, max_items=12, max_bytes=5_000)
+        return {**page, "included_refs": [row.get("item_ref") for row in page["items"]],
+                "directory": directory, "read_action": "inspect_catalog scope=memory item_refs",
+                "read_byte_limit": 16_000,
+                "upstream_counts": deepcopy(self.meta_memory_briefs.get("counts", {}))}
 
-        documents = [
-            document
-            for result in self._documents.values()
-            for document in result.documents
-        ]
-        return narrative_catalog(
-            documents,
-            self._events.values(),
-        )
+    def _evidence_catalog_view(self, *, cursor: int = 0) -> dict[str, Any]:
+        """Return a titled fetched-evidence page with reachable omitted entries."""
+        documents = [document for result in self._documents.values() for document in result.documents]
+        families = narrative_catalog(documents, self._events.values(), max_per_family=max(1, len(documents)))
+        cards = []
+        for family in families:
+            for window in family["windows"]:
+                for entry in window["entries"]:
+                    card = {**entry, "family": family["family"], "window": window["window"]}
+                    card["title"] = _mask_identity_values(card["title"], self.identity_aliases, expand_aliases=False)
+                    cards.append(card)
+        return bounded_entry_page(cards, cursor=cursor)
 
     def _catalog_view(self) -> dict[str, Any]:
         return {

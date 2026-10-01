@@ -316,3 +316,12 @@ observation cycle.
 - Legacy H/E code remains callable as the read-only contrast path; the
   production switch is a separate gated change that also archives the legacy
   specs per repository removal discipline.
+
+## Shared stage boundary (2026-10-01)
+
+Apply [stage contracts](stage_contracts.md). Light budget exhaustion has the same
+bounded-switch/deferred semantics as heavy exhaustion. Catalog actions return
+the actual paginated result in the next view. `scope=memory` supports browsing
+and whole-entry reads by supplied item_refs within the disclosed byte cap; all
+feedback originals remain local and reachable. A raw span is carried once in
+its current action result. Catalog receipts alone are not evidence access.

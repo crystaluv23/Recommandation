@@ -903,6 +903,9 @@ class StructuredRoleClient:
             raise ValidationError(
                 "binary token output requires a decision field and tokens"
             )
+        from stock_opportunity_agent.research.stage_contracts import validate_stage_input
+
+        stage_contract = validate_stage_input(stage, payload, allow_outcomes=allow_outcomes)
         _scan_payload(
             payload,
             allow_outcomes=allow_outcomes,
@@ -955,6 +958,7 @@ class StructuredRoleClient:
             wire_request = _prepare_wire_record(preview_client, messages, kwargs)
 
         request = {
+            "stage_contract": stage_contract,
             "schema_version": "evolution-exact-request-v1",
             "contract_hash": self.contract.contract_hash,
             "stage": stage,

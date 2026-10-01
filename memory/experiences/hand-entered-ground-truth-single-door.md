@@ -1,6 +1,6 @@
 # Hand-Entered Ground Truth Bypasses Every Gate
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

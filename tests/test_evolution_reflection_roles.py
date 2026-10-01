@@ -1215,9 +1215,7 @@ class ReflectionRoleAdapterTests(TestCase):
             ],
         }
         corrected = json.loads(json.dumps(invalid))
-        corrected["next_information_needs"] = [
-            "What operating disruption could prevent delivery?"
-        ]
+        corrected["resolved_questions"] = []
         corrected["supporting_evidence"][0]["claim"] = (
             "Production and cost guidance was reaffirmed."
         )
@@ -1231,11 +1229,11 @@ class ReflectionRoleAdapterTests(TestCase):
 
         error = validation_error(caller.calls[1])
         self.assertIn("numeric quantities", error)
-        self.assertIn("newly resolved a question", error)
-        self.assertIn("cost guidance outlook", error)
+        self.assertNotIn("stale_resolved_need_retained", error)
+        self.assertEqual(caller.calls[1]["payload"]["validation_feedback"]["invalid_output"]["resolved_questions"], [])
         self.assertEqual(
             reflected.value.next_information_needs,
-            ("What operating disruption could prevent delivery?",),
+            (prior_need,),
         )
 
     def test_v23_answer_need_evidence_requires_real_need_progress(self) -> None:
@@ -1402,19 +1400,8 @@ class ReflectionRoleAdapterTests(TestCase):
                     SignalBatchResult(results=(result,), signal_calls=1),
                 )
 
-                error = validation_error(caller.calls[1])
-                self.assertIn("next_information_needs[0]", error)
-                self.assertIn("untargeted need changed or was removed", error)
-                self.assertIn("'required_action': 'restore_exactly'", error)
-                self.assertIn(f"'required_need': {unrelated_need!r}", error)
-                self.assertIn("next_information_needs[1]", error)
-                self.assertIn("targeted need remained byte-for-byte", error)
-                self.assertIn("'required_action': 'remove_exact_target'", error)
-                self.assertNotIn("Remove or genuinely narrow each", error)
-                self.assertEqual(
-                    reflected.value.next_information_needs,
-                    (narrowed_need, unrelated_need),
-                )
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(reflected.value.next_information_needs, (unrelated_need,))
                 selection_intent = caller.calls[0]["payload"][
                     "executed_selection_intents"
                 ][0]
@@ -1578,9 +1565,6 @@ class ReflectionRoleAdapterTests(TestCase):
             return patch(request["payload"]["output_patch_contract"],
                 {"op": "replace", "path": "current_beliefs[0]", "value": "cash_reserves=2.07009e+09"},
                 {"op": "replace", "path": "supporting_evidence[0].claim", "value": "cash_reserves=2.07009e+09"},
-                {"op": "remove", "path": "open_questions[0]"},
-                {"op": "remove", "path": "next_information_needs[1]"},
-                {"op": "append", "path": "next_information_needs", "value": revenue_need},
             )
 
         caller = PatchCaller(initial, correct)
@@ -1660,10 +1644,10 @@ class ReflectionRoleAdapterTests(TestCase):
         )
         error = validation_error(caller.calls[1])
         self.assertIn("2.07", error)
-        self.assertIn("next_information_needs[0]", error)
-        self.assertIn("untargeted need changed or was removed", error)
-        self.assertIn("next_information_needs[2]", error)
-        self.assertIn("targeted need remained byte-for-byte", error)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertNotIn("research_need_transition_invalid", [row["issue_code"] for row in feedback["obligations"]])
+        self.assertEqual(feedback["invalid_output"]["next_information_needs"], [guidance_need, revenue_need])
+        self.assertEqual(feedback["invalid_output"]["open_questions"], [])
         self.assertEqual(
             reflected.value.next_information_needs,
             (guidance_need, revenue_need),
@@ -1739,9 +1723,7 @@ class ReflectionRoleAdapterTests(TestCase):
         ][0]["available_answer_actions"][0]
         self.assertEqual(action["answer_scope"], "partial")
         self.assertEqual(action["residual_need"], residual_need)
-        error = validation_error(caller.calls[1])
-        self.assertIn("partial-answer target omitted its exact residual", error)
-        self.assertIn(residual_need, error)
+        self.assertEqual(len(caller.calls), 1)
         self.assertEqual(
             reflected.value.next_information_needs,
             (unrelated_need, residual_need),

@@ -1,707 +1,375 @@
-"""Run one minimal Fast round then one minimal Slow round with live calls.
+"""Prepare or run a diagnostic Fast+Slow cycle using production components.
 
-Fast round: 1 Plan × 8 data-rich cases, executed end-to-end through
-``execute_information_plan`` with a real provider caller. Every stage's
-intermediate artifact is inspected and reported.
+Usage: PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --prepare-only
+       PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --run
 
-Slow round: replayed from the Fast round's reflection outputs, then driven
-through the multi-axis LabelAwareMiningController with staged
-materialization. Candidates are checked for real admission.
-
-Usage:
-    PYTHONPATH=src python scripts/run_minimal_rounds.py \
-        --root runs/cold_start/minimal_rounds_v151 \
-        [--cases 8] [--skip-fast] [--skip-slow]
+The first command freezes source-derived inputs without model calls. The second
+requires authorization for external execution and a committed source checkout.
+Both preserve the same frozen denominator; failures never become fake research.
 """
-
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
 import os
-import sys
-from datetime import datetime, timezone
+import shutil
+from collections import defaultdict
+from dataclasses import replace
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
+from stock_opportunity_agent.cases.label_store import LabelStore
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
+from stock_opportunity_agent.data.resolution import broad_research_data_policy_v1
+from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_control import (
+    ApprovedDevelopmentDataset, EvolutionRunContract, _build_evidence_resolver,
+    _default_priors_dict, build_run_contract, load_approved_development_dataset,
+)
+from stock_opportunity_agent.research.evolution_core import (
+    EVALUATION_LABELS, EvolutionCase, GroundTruth, PlanEvaluationConfig,
+    RuntimeLimits, _prediction_baseline_from_market_documents,
+    default_information_plan, evaluation_label,
+)
+from stock_opportunity_agent.research.evolution_plan_roles import (
+    LLMBlindPredictor, LLMInformationPlanProposer, LLMPlanCritic,
+    LLMResearchController, LLMRoundReflector, LLMSignalRetrievalAgent,
+)
+from stock_opportunity_agent.research.evolution_signal_roles import (
+    LLMSignalMiningModel, LLMSignalUpdateModel, StructuredLLMSignalRunner,
+)
+from stock_opportunity_agent.research.evolution_transport import (
+    ExternalAttemptLedger, StructuredRoleClient, current_code_revision,
+)
+from stock_opportunity_agent.research.plan_evolution import (
+    EvolutionWorkspace, PlanEvolutionEngine, RuntimePlanEvaluator,
+)
+from stock_opportunity_agent.research.research_targets import (
+    MAGNITUDE_GE3_CONTRACT, build_target_group_manifest,
+    build_target_sampling_manifest,
+)
+from stock_opportunity_agent.research.signal_evolution import (
+    DualLoopEvolutionEngine, SignalEvolutionEngine,
+)
+from stock_opportunity_agent.signal_library import SignalRegistry
 
 REPO = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO))
-sys.path.insert(0, str(REPO / "tests"))
-
-ORACLE = REPO / "runs/cold_start/data/global-raw-info-oracle-v1"
-LABEL_STORE_ROOT = REPO / "runs/cold_start/data/outcome-label-store-v1"
-
-# Hand-picked data-rich companies. Ground truth is NOT written here: labels are
-# derived at runtime from the global label store keyed by (company_id, as_of).
-# The last two are ge3 (>=3x) cases from the label store so the magnitude
-# research target has both contrast groups.
-# prediction_time = 各公司最后 PIT bar 日期后一天（确保锚点可用）
-CASE_COMPANIES = [
-    "cik_0000001750",
-    "cik_0000002488",
-    "cik_0000002969",
-    "cik_0000003197",
-    "cik_0000004457",
-    "cik_0000039020",
-    "cik_0001847409",
-    "cik_0000316709",
-    "cik_0000798528",
-    "cik_0000797721",
-]
-CASE_PREDICTION_DATES = {
-    "cik_0000001750": "2025-01-31",
-    "cik_0000002488": "2025-05-30",
-    "cik_0000002969": "2025-01-31",
-    "cik_0000003197": "2025-03-29",
-    "cik_0000004457": "2025-01-31",
-    "cik_0000039020": "2025-03-29",
-    "cik_0001847409": "2025-01-31",
-    "cik_0000316709": "2025-05-30",
-    "cik_0000798528": "2025-03-31",
-    "cik_0000797721": "2025-05-30",
-}
+ORACLE = REPO / 'runs/cold_start/data/global-raw-info-oracle-v1'
+LABELS = REPO / 'runs/cold_start/data/outcome-label-store-v1'
+APPROVED = REPO / ('runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/'
+                   'expanded_dataset_proposal/dataset_manifest.approved.json')
+HISTORY = REPO / ('runs/cold_start/evolution/'
+                  'information-evolution-jev-dual-self-evolution-20260928-v143')
 
 
-def _load_env() -> None:
-    env_path = REPO / ".env.local"
-    if env_path.is_file():
-        for line in env_path.read_text().splitlines():
-            if "=" in line and not line.startswith("#"):
-                key, value = line.split("=", 1)
+def _read(path):
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def _hash_file(path):
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _load_env():
+    """Load provider configuration without logging credential values."""
+    path = REPO / '.env.local'
+    if path.is_file():
+        for line in path.read_text().splitlines():
+            if '=' in line and not line.lstrip().startswith('#'):
+                key, value = line.split('=', 1)
                 os.environ.setdefault(key.strip(), value.strip())
 
 
-class JournaledCaller:
-    """JSONRoleCaller over DeepSeek with journal+replay."""
-
-    max_structured_corrections = 1
-
-    def __init__(self, client, root: Path) -> None:
-        self.client = client
-        self.journal_root = root / "journal"
-        self.journal_root.mkdir(parents=True, exist_ok=True)
-        self.calls: list[dict[str, Any]] = []
-
-    def _key(self, stage: str, request: dict) -> str:
-        digest = hashlib.sha256(
-            json.dumps(request, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest()
-        return f"{stage}-{digest[:24]}"
-
-    def complete_json(self, *, stage, system_prompt, payload, allow_outcomes=False,
-                      anonymous_aliases=(), max_output_tokens=None, max_request_tokens=None,
-                      temperature=0.0, **extra):
-        request = {
-            "stage": stage,
-            "system_prompt": system_prompt,
-            "payload": dict(payload),
-            "max_output_tokens": max_output_tokens,
-            "temperature": temperature,
-        }
-        key = self._key(stage, request)
-        path = self.journal_root / f"{key}.json"
-        if path.is_file():
-            record = json.loads(path.read_text(encoding="utf-8"))
-            mode = "REPLAY"
-            raw_output = record["response_text"]
-            usage = type("U", (), record["usage"])()
-        else:
-            mode = "LIVE"
-            from stock_opportunity_agent.llm.openai import ChatMessage
-
-            messages = [
-                ChatMessage("system", "Return exactly one JSON object and no non-JSON text. " + system_prompt),
-                ChatMessage("user", json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))),
-            ]
-            response = self.client.complete(
-                messages,
-                max_output_tokens=max_output_tokens or 8_000,
-                response_format={"type": "json_object"},
-                reasoning={"effort": "none"},
-            )
-            raw_output = response.output_text
-            raw = response.raw.get("usage", {})
-            tokens = int(raw.get("total_tokens") or 0)
-            usage = type("U", (), {"llm_calls": 1, "tokens": tokens, "cost": 0.0})()
-            path.write_text(json.dumps({
-                "key": key, "mode": "live", "request": request,
-                "response_text": raw_output,
-                "usage": {"llm_calls": 1, "tokens": tokens, "cost": 0.0},
-            }, ensure_ascii=False, indent=1), encoding="utf-8")
-        self.calls.append({"key": key, "mode": mode, "stage": stage})
-        print(f"    [{mode}] {stage} ({key[:18]}…) tokens={usage.tokens}")
-        try:
-            value = json.loads(raw_output)
-        except json.JSONDecodeError:
-            from stock_opportunity_agent.research.evolution_transport import StructuredOutputInvalid
-            raise StructuredOutputInvalid(
-                "invalid JSON", raw_output, usage,
-                output_tokens=usage.tokens, output_token_limit=max_output_tokens)
-        if not isinstance(value, dict):
-            from stock_opportunity_agent.research.evolution_transport import StructuredOutputInvalid
-            raise StructuredOutputInvalid(
-                "not an object", raw_output, usage,
-                output_tokens=usage.tokens, output_token_limit=max_output_tokens)
-        return value, usage
-
-
-def build_cases(company_list) -> list:
-    from stock_opportunity_agent.cases.label_store import LabelStore
-    from stock_opportunity_agent.research.evolution_core import (
-        EvolutionCase, GroundTruth,
+def _evaluation():
+    return PlanEvaluationConfig(
+        cases_per_round=8, label_counts={label: 2 for label in EVALUATION_LABELS},
+        anchor_cases=4, anchor_label_counts={label: 1 for label in EVALUATION_LABELS},
+        random_cases=4, random_label_counts={label: 1 for label in EVALUATION_LABELS},
     )
 
-    label_store = LabelStore.load(LABEL_STORE_ROOT)
-    print(f"  Label store: version {label_store.manifest['store_version']} "
-          f"archive sha {str(label_store.manifest['archive_sha256'])[:12]}… "
-          f"records {label_store.manifest['record_count']}")
-    cases = []
-    for company_id in company_list:
-        prediction_time = datetime.fromisoformat(
-            CASE_PREDICTION_DATES[company_id] + "T00:00:00+00:00"
-        )
-        truth = label_store.ground_truth(company_id, prediction_time.date())
-        print(f"    label[{company_id}] multiple={truth['realized_max_multiple']:.4f} "
-              f"surge={truth['is_surge']} magnitude={truth['magnitude']}")
-        cases.append(EvolutionCase(
-            company_id=company_id,
-            prediction_time=prediction_time,
-            basic_info={"company_id": company_id},
-            ground_truth=GroundTruth(
-                realized_max_multiple=truth["realized_max_multiple"]
-            ),
-        ))
-    return cases
 
-
-def check_fast_artifacts(trajectory, anchor=None) -> list[str]:
-    """Content-level checks on one trajectory's artifacts."""
-    issues = []
-    fc = trajectory.final_context
-    bi = fc.get("basic_info", {})
-    cards = bi.get("projection_cards", [])
-    if not cards:
-        issues.append("no basic_info projection cards in final context")
-    for card in cards:
-        if not card.get("exact_text", "").strip():
-            issues.append(f"empty projection card {card.get('projection_id')}")
-    pb = fc.get("prediction_baseline", {})
-    if anchor and pb.get("status") == "available":
-        if abs(pb.get("mean_adjusted_close", 0) - anchor.get("mean_adjusted_close", -1)) > 0.02:
-            issues.append(f"baseline mismatch: {pb.get('mean_adjusted_close')} vs {anchor.get('mean_adjusted_close')}")
-        if pb.get("doubling_threshold") is None:
-            issues.append("doubling_threshold missing from prediction_baseline")
-    se = fc.get("state_evolution", [])
-    if not se:
-        issues.append("no state_evolution in final context")
-    contract = fc.get("context_contract", {})
-    if contract.get("kind") != "typed_append_only_assembly":
-        issues.append(f"contract kind is {contract.get('kind')}")
-    sr = trajectory.self_reflection
-    if sr is None:
-        issues.append("no self_reflection")
-    elif sr.reflection_items:
-        for item in sr.reflection_items:
-            if len(item.brief) < 20:
-                issues.append(f"thin reflection brief: {item.brief[:40]}")
-    sd = trajectory.state_deltas
-    if not sd:
-        issues.append("no state_deltas on trajectory")
-    # Check new design: document channel / computed metrics should appear
-    # in reflect stages (indirect: check any computed_metrics in journal)
-    return issues
-
-
-def run_fast_round(caller, root: Path, num_cases: int) -> dict:
-    print(f"\n{'='*20} FAST ROUND ({num_cases} cases) {'='*20}")
-    from stock_opportunity_agent.data.raw_info import RawInfoStore
-    from stock_opportunity_agent.data.resolution import EvidenceResolver, RawInfoRequest
-    from stock_opportunity_agent.research.evolution_core import (
-        ResearchState, ResearchDecision, execute_information_plan,
-        score_predictions, default_information_plan,
+def _restore_case(row):
+    return EvolutionCase(
+        case_id=row['case_id'], company_id=row['company_id'],
+        prediction_time=datetime.fromisoformat(row['prediction_time']),
+        basic_info=row['basic_info'], ground_truth=GroundTruth.from_dict(row['ground_truth']),
     )
-    from stock_opportunity_agent.research.evolution_plan_roles import (
-        LLMResearchController, LLMBlindPredictor,
-    )
-    from stock_opportunity_agent.signal_library import (
-        SignalExecutor, SignalRegistry,
-    )
-    from stock_opportunity_agent.research.evolution_plan_roles import (
-        LLMSignalRetrievalAgent,
-    )
-    from stock_opportunity_agent.research.evolution_signal_roles import (
-        StructuredLLMSignalRunner,
-    )
-    from tests.scheme_evolution_test_support import SEED_CATALOG
 
-    cases = build_cases(CASE_COMPANIES[:num_cases])
-    # Load oracle into store (subset for speed)
-    print("  Loading oracle store…")
-    store = RawInfoStore(str(ORACLE))
 
-    # Fix 1+3: Build the full adapter chain so the resolver auto-fetches
-    # missing data (earnings_call, financials, SEC filings) exactly like
-    # production. Deterministic ("hard") signals that need financials get
-    # their data fetched automatically instead of silently failing.
-    from stock_opportunity_agent.data.resolution import DataAcquisitionPolicy
-    from stock_opportunity_agent.data.acquisition import (
-        AlphaVantageNewsAdapter,
-        AlphaVantageTranscriptAdapter,
-        HistoricalPriceAdapter,
-        SecCompanyFactsAdapter,
-        SecFilingAdapter,
-    )
-    from stock_opportunity_agent.data.sources.alpha_vantage import AlphaVantageClient
-    from stock_opportunity_agent.data.sources.sec_edgar import SecEdgarClient
+def _verify_inputs(root):
+    frozen = _read(root / 'input_manifest.json')
+    if _hash_file(APPROVED) != frozen['approved_manifest_hash']:
+        raise ValidationError('approved input manifest changed')
+    if _hash_file(LABELS / 'manifest.json') != frozen['label_manifest_hash']:
+        raise ValidationError('label manifest changed')
+    if _hash_file(LABELS / 'labels.jsonl') != frozen['label_records_hash']:
+        raise ValidationError('label records changed')
+    for row in frozen['source_files']:
+        path = root / row['local_path']
+        if _hash_file(path) != row['sha256']:
+            raise ValidationError(f'frozen Raw Info changed: {row["local_path"]}')
+    return frozen
 
-    adapters = []
-    sec_user_agent = os.environ.get("SOA_SEC_USER_AGENT", "").strip()
-    if sec_user_agent:
-        sec_client = SecEdgarClient(sec_user_agent)
-        adapters.append(SecCompanyFactsAdapter(sec_client))
-        adapters.append(SecFilingAdapter(sec_client))
-        print(f"  SEC adapters: {len(adapters)}")
-    alpha_key = os.environ.get("ALPHA_VANTAGE_API_KEY", "").strip()
-    if alpha_key:
-        alpha_client = AlphaVantageClient(alpha_key)
-        adapters.append(AlphaVantageTranscriptAdapter(alpha_client))
-        adapters.append(AlphaVantageNewsAdapter(alpha_client))
-        print(f"  Alpha Vantage adapters: +2 (transcripts, news)")
 
-    from stock_opportunity_agent.data.resolution import broad_research_data_policy_v1
+def prepare(root):
+    """Freeze stratified development cases before any model observation."""
+    root.mkdir(parents=True, exist_ok=True)
+    if (root / 'input_manifest.json').is_file():
+        return _verify_inputs(root)
+    if (root / 'run_contract.json').exists() or (root / 'state.json').exists():
+        raise ValidationError('cannot retrofit inputs into an existing run')
+    approved = load_approved_development_dataset(APPROVED)
+    labels = LabelStore.load(LABELS)
+    files_by_company = defaultdict(list)
+    for family in sorted(ORACLE.iterdir()):
+        if family.is_dir():
+            for company in sorted(family.iterdir()):
+                if company.is_dir():
+                    files_by_company[company.name].extend(sorted(company.glob('*.json')))
+    market_cache = {}
+    exclusions = []
+    selected = {}
+    # Scope and seed are fixed; no score, model confidence or correction result
+    # exists when this selection runs. Strata retain the established semantics.
+    for split, per_class in (('anchor', 1), ('evolution_validation', 1), ('discovery', 2)):
+        candidates = sorted(getattr(approved, split), key=lambda case:
+                            hashlib.sha256(('42:' + case.case_id).encode()).hexdigest())
+        groups = defaultdict(list)
+        issuers = set()
+        for original in candidates:
+            try:
+                truth = labels.ground_truth(original.company_id, original.prediction_time.date())
+            except ValidationError:
+                exclusions.append({'split': split, 'case_id': original.case_id,
+                                   'reason': 'label_store_key_unavailable'})
+                continue
+            case = replace(original, ground_truth=GroundTruth(
+                realized_max_multiple=truth['realized_max_multiple']))
+            group = evaluation_label(case)
+            if len(groups[group]) >= per_class or case.company_id in issuers:
+                continue
+            if case.company_id not in market_cache:
+                market_cache[case.company_id] = tuple(RawInfoDocument.from_dict(_read(path))
+                    for path in files_by_company[case.company_id]
+                    if path.parent.parent.name in {'historical_price', 'market_data', 'price_daily', 'prices'})
+            baseline = _prediction_baseline_from_market_documents(
+                (document for document in market_cache[case.company_id]
+                 if document.available_at <= case.prediction_time), case.prediction_time)
+            if baseline.get('status') != 'available':
+                exclusions.append({'split': split, 'case_id': case.case_id,
+                                   'reason': 'pit_price_baseline_unavailable'})
+                continue
+            # Source price and outcome calculator must refer to the same anchor.
+            record = labels.record(case.company_id, case.prediction_time.date())
+            if abs(baseline['mean_adjusted_close'] - record.baseline_mean) > 1e-6:
+                exclusions.append({'split': split, 'case_id': case.case_id,
+                                   'reason': 'source_label_baseline_mismatch'})
+                continue
+            has_narrative = any(path.parent.parent.name in {'sec_filing', 'filing', 'earnings_call', 'news', 'company_news'}
+                                and datetime.fromisoformat(_read(path)['available_at']) <= case.prediction_time
+                                for path in files_by_company[case.company_id])
+            if not has_narrative:
+                exclusions.append({'split': split, 'case_id': case.case_id,
+                                   'reason': 'pit_narrative_unavailable'})
+                continue
+            groups[group].append(case)
+            issuers.add(case.company_id)
+            print(f'  select {split}: {case.case_id} [{group}]', flush=True)
+            if all(len(groups[label]) == per_class for label in EVALUATION_LABELS):
+                break
+        missing = {label: per_class-len(groups[label]) for label in EVALUATION_LABELS
+                   if len(groups[label]) < per_class}
+        if missing:
+            atomic_write_json(root / 'preparation_failure.json', {'split': split, 'missing': missing,
+                                                                  'exclusions': exclusions})
+            raise ValidationError(f'approved source-ready subset insufficient: {split} {missing}')
+        selected[split] = [case.to_discovery_dict() for label in EVALUATION_LABELS for case in groups[label]]
+    companies = {row['company_id'] for rows in selected.values() for row in rows}
+    source_files = []
+    for company_id in sorted(companies):
+        for source in files_by_company[company_id]:
+            relative = source.relative_to(ORACLE)
+            destination = root / 'raw_info' / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            if destination.exists() and _hash_file(destination) != _hash_file(source):
+                raise ValidationError('partial preparation source changed')
+            shutil.copy2(source, destination)
+            source_files.append({'source_path': str(source), 'local_path': str(destination.relative_to(root)),
+                                 'sha256': _hash_file(destination)})
+    registry_root = root / 'signals'
+    if not registry_root.exists():
+        shutil.copytree(HISTORY / 'signals', registry_root)
+    registry = SignalRegistry(registry_root, candidate_root=root / 'signals_candidates').freeze()
+    frozen = {
+        'schema_version': 'diagnostic-development-subset-v1',
+        'approved_manifest_hash': approved.approved_manifest_hash,
+        'label_manifest_hash': _hash_file(LABELS / 'manifest.json'),
+        'label_records_hash': _hash_file(LABELS / 'labels.jsonl'),
+        'locked_test_hash': approved.locked_test_hash, 'locked_test_accessed': False,
+        'selection_seed': 42, 'selection_before_model_calls': True,
+        'evaluation': _evaluation().to_dict(), 'splits': selected,
+        'exclusions': exclusions, 'source_files': source_files,
+        'initial_registry_version': registry.version, 'initial_registry_hash': registry.registry_hash,
+        'registry_source': str(HISTORY / 'signals'), 'paired_with_v154': False,
+    }
+    atomic_write_json(root / 'input_manifest.json', frozen)
+    return frozen
 
-    resolver = EvidenceResolver(
-        store,
-        adapters=tuple(adapters) if adapters else (),
-        policy=broad_research_data_policy_v1() if adapters else DataAcquisitionPolicy(),
-    )
-    print(f"  Resolver with {len(adapters)} adapters, policy={'broad_research' if adapters else 'default'}")
 
-    # Fix 4: Load the accumulated Registry from the latest evolution run
-    # instead of starting from seed — the system has promoted validated
-    # signals through Slow loops that the minimal round should consume.
-    v143_signals = REPO / "runs/cold_start/evolution" / (
-        "information-evolution-jev-dual-self-evolution-20260928-v143/signals"
-    )
-    if v143_signals.exists():
-        registry = SignalRegistry(v143_signals)
-        print(f"  Loaded V143 accumulated registry: {len(registry.freeze().specs)} signals")
+def run(root, frozen):
+    """Execute and resume the actual production cycle, preserving control failures."""
+    _load_env()
+    workspace = EvolutionWorkspace(root)
+    if workspace.last_completed_cycle >= 1:
+        print('The bounded diagnostic cycle is already committed.', flush=True)
+        return
+    registry = SignalRegistry(root / 'signals', candidate_root=root / 'signals_candidates')
+    initial = registry.freeze()
+    oracle = RawInfoOracle.load_or_create(root / 'raw_info')
+    contract_path = root / 'run_contract.json'
+    if contract_path.exists():
+        contract = EvolutionRunContract.from_dict(_read(contract_path)['contract'])
+        if contract.code_revision != current_code_revision(REPO):
+            raise ValidationError('run source revision changed; use a successor workspace')
+        if contract.raw_info_inventory_hash != canonical_json_hash(frozen):
+            raise ValidationError('run diagnostic inputs changed')
+        contract.freeze(contract_path)
     else:
-        registry_dir = root / "signals"
-        registry_dir.mkdir(parents=True, exist_ok=True)
-        registry = SignalRegistry(registry_dir)
-        registry.install_catalog(SEED_CATALOG)
-        print(f"  Fallback to seed catalog: {len(registry.freeze().specs)} signals")
-    frozen = registry.freeze()
-
-    # Signal executor with our caller for LLM signals
-    signal_runner = StructuredLLMSignalRunner(caller)
-    if adapters:
-        executor = SignalExecutor(
-            frozen, store, resolver=resolver, llm_runner=signal_runner,
+        if (initial.version, initial.registry_hash) != (
+                frozen['initial_registry_version'], frozen['initial_registry_hash']):
+            raise ValidationError('prepared Registry changed before run freeze')
+        limits = dict(_read(HISTORY / 'run_contract.json')['contract']['limits'])
+        limits.update(evaluation=_evaluation().to_dict(), candidates_per_round=2,
+                      max_parallel_plans=1, max_structured_corrections=1)
+        # Model registries and exact-request transport own wire settings and cost.
+        contract = build_run_contract(
+            run_id=root.name, dataset_manifest_path=APPROVED, inventory=None,
+            raw_info_oracle=oracle, raw_info_inventory_hash=canonical_json_hash(frozen),
+            initial_signal_registry_version=initial.version,
+            initial_signal_registry_hash=initial.registry_hash,
+            priors=_default_priors_dict(), role_aliases={role: 'deepseek-v4-flash' for role in
+                ('judge', 'proposer', 'mining', 'update')}, project_root=REPO,
+            limits=limits, max_external_attempts=600, max_total_cost=100,
+            data_acquisition=broad_research_data_policy_v1(),
         )
-    else:
-        executor = SignalExecutor(frozen, store, llm_runner=signal_runner)
-
-    # Controller + predictor
-    controller = LLMResearchController(caller)
-    predictor = LLMBlindPredictor(caller)
-    # Signal retrieval agent
-    signal_agent = LLMSignalRetrievalAgent(caller)
-
-    plan = default_information_plan()
-    trajectories = []
-    prediction_dir = root / "predictions"
-    prediction_dir.mkdir(parents=True, exist_ok=True)
-
-    for index, case in enumerate(cases):
-        print(f"\n  --- Case {index+1}/{num_cases}: {case.case_id} "
-              f"(multiple={case.ground_truth.realized_max_multiple:.1f}) ---")
-
-        def sink(company_id, prediction_time, context, prediction):
-            path = prediction_dir / f"{case.case_id}.prediction.json"
-            path.write_text(json.dumps({
-                "case_id": case.case_id,
-                "company_id": company_id,
-                "prediction_time": prediction_time.isoformat(),
-                "prediction": prediction.to_dict(),
-                "final_context_size": len(json.dumps(context)),
-            }, ensure_ascii=False, indent=1), encoding="utf-8")
-            return str(path)
-
-        def truth_provider(company_id):
-            return case.ground_truth
-
-        try:
-            trajectory = execute_information_plan(
-                plan=plan,
-                company_id=case.company_id,
-                case_id=case.case_id,
-                company_basic_source=case.basic_info,
-                prediction_time=case.prediction_time,
-                signal_registry=frozen,
-                signal_executor=executor,
-                controller=controller,
-                signal_agent=signal_agent,
-                predictor=predictor,
-                prediction_sink=sink,
-                ground_truth_provider=truth_provider,
-            )
-            trajectories.append(trajectory)
-            issues = check_fast_artifacts(trajectory)
-            status = "✓" if not issues else "⚠ " + "; ".join(issues[:3])
-            print(f"    Artifacts: {status}")
-            # Print key content for manual inspection
-            pred = trajectory.prediction
-            print(f"    Prediction: {pred.candidate_judgment.value} "
-                  f"(magnitude={pred.magnitude.value if pred.magnitude else None}, "
-                  f"confidence={pred.confidence})")
-            print(f"    Key reasons: {pred.key_reasons[0][:100] if pred.key_reasons else 'none'}")
-            print(f"    Stop: {trajectory.stop_reason.value}, "
-                  f"Rounds: {len(trajectory.signal_rounds)}, "
-                  f"Beliefs: {len(trajectory.final_state.current_beliefs)}")
-            sr = trajectory.self_reflection
-            if sr and sr.reflection_items:
-                print(f"    Reflection items: {len(sr.reflection_items)}")
-                for item in sr.reflection_items[:2]:
-                    print(f"      [{item.category}] {item.brief[:90]}")
-            if trajectory.state_deltas:
-                last = trajectory.state_deltas[-1]
-                d = last.get("delta", {})
-                added_b = d.get("current_beliefs", {}).get("added", [])
-                print(f"    Last delta: beliefs+{len(added_b)} "
-                      f"needs-/+{len(d.get('next_information_needs',{}).get('added',[]))}/{len(d.get('next_information_needs',{}).get('removed',[]))}")
-        except Exception as exc:
-            print(f"    ✗ FAILED: {type(exc).__name__}: {str(exc)[:200]}")
-            import traceback
-            traceback.print_exc()
-            # Record as technical exclusion
-            from stock_opportunity_agent.research.evolution_core import (
-                BlindPrediction, CandidateJudgment, ConfidenceLevel,
-                ExecutionTrajectory, ResearchState, ResearchDecision,
-                RuntimeStopReason, RuntimeUsage, PredictionSelfReflection,
-                GroundTruth,
-            )
-            from stock_opportunity_agent.llm.agent import AgentUsage
-            abstain = BlindPrediction(
-                is_surge=False,
-                candidate_judgment=CandidateJudgment.INSUFFICIENT_INFORMATION,
-                magnitude=None,
-                confidence=ConfidenceLevel.LOW,
-                key_reasons=("Technical exclusion",),
-                uncertainties=(),
-                session_id=f"exclusion_{case.case_id}",
-            )
-            trajectories.append(ExecutionTrajectory(
-                case_id=case.case_id,
-                company_id=case.company_id,
-                prediction_time=case.prediction_time,
-                basic_info={"requests": []},
-                initial_state=ResearchState(decision=ResearchDecision.FINALIZE),
-                signal_rounds=(),
-                final_state=ResearchState(decision=ResearchDecision.FINALIZE),
-                final_context={},
-                prediction=abstain,
-                prediction_ref=str(root / "predictions" / f"{case.case_id}.abstain.json"),
-                ground_truth=case.ground_truth,
-                self_reflection=PredictionSelfReflection(
-                    correct=not case.ground_truth.is_surge,
-                    plan_issues=(f"technical_case_exclusion: {str(exc)[:120]}",),
-                ),
-                stop_reason=RuntimeStopReason.FINALIZED,
-                usage=RuntimeUsage(
-                    signal_rounds=0, signal_calls=0, model=AgentUsage()),
-            ))
-
-    print(f"\n  === Scoring {len(trajectories)} trajectories ===")
-    metrics = score_predictions(trajectories)
-    print(f"    Binary F1:     {metrics.binary_f1:.4f}")
-    print(f"    Precision:     {metrics.binary_precision:.4f}")
-    print(f"    Recall:        {metrics.binary_recall:.4f}")
-    print(f"    Magnitude acc: {metrics.magnitude_accuracy:.4f}")
-    print(f"    Magnitude F1:  {metrics.magnitude_macro_f1:.4f}")
-    print(f"    TP/FP/TN/FN:   {metrics.true_positive}/{metrics.false_positive}/{metrics.true_negative}/{metrics.false_negative}")
-
-    # Save trajectory summaries for slow round
-    summaries = []
-    for traj in trajectories:
-        summaries.append({
-            "case_id": traj.case_id,
-            "company_id": traj.company_id,
-            "prediction": traj.prediction.to_dict(),
-            "stop_reason": traj.stop_reason.value,
-            "is_technical_exclusion": traj.prediction.session_id.startswith("exclusion_"),
-            "self_reflection": traj.self_reflection.to_dict() if traj.self_reflection else None,
-            "final_state_beliefs": list(traj.final_state.current_beliefs) if traj.final_state else [],
-        })
-    (root / "fast_trajectories.json").write_text(
-        json.dumps(summaries, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"metrics": metrics.to_dict(), "trajectories": summaries}
-
-
-def run_slow_round(caller, root: Path, fast_result, num_cases: int) -> dict:
-    """Drive one minimal Slow mining cycle using Fast round reflections."""
-    from stock_opportunity_agent.data.raw_info import RawInfoStore
-    from stock_opportunity_agent.research.evolution_core import (
-        BlindPrediction, CaseReflectionEvidence, FitnessEligibility,
-        GroundTruth, PlanMetaMemory, PlanMetaReflection, PlanMetrics,
-        PlanReflection, PredictionSelfReflection, RoundMetaEntry,
-        RuntimeStopReason, candidate_judgment_feedback,
-        default_information_plan, magnitude_feedback,
+        contract.freeze(contract_path)
+    cycle = workspace.start_or_resume_cycle(
+        run_contract_hash=contract.contract_hash, target_plan_rounds=1,
+        cycle_mode=contract.cycle_mode, max_slow_cycles=contract.max_slow_cycles,
+        initial_signal_registry_version=contract.initial_signal_registry_version,
+        initial_signal_registry_hash=contract.initial_signal_registry_hash,
+        observed_signal_registry_version=initial.version, observed_signal_registry_hash=initial.registry_hash,
     )
-    from stock_opportunity_agent.research.plan_evolution import EvolutionWorkspace
-    from stock_opportunity_agent.research.signal_evolution import (
-        SignalEvolutionEngine,
+    staged = workspace.staged_slow_result(cycle['cycle_id'])
+    if staged is not None:
+        workspace.complete_cycle(cycle_id=cycle['cycle_id'],
+                                 observed_signal_registry_version=initial.version,
+                                 observed_signal_registry_hash=initial.registry_hash)
+        print('Reused staged Slow result and committed its pointer.', flush=True)
+        return
+    def emit(event):
+        event = dict(event)
+        event_type = event.pop('event_type', 'runtime_progress')
+        if event_type == 'slow_loop_started':
+            workspace.mark_cycle_phase('slow_loop')
+        workspace.append_event(event_type, event)
+        print(json.dumps({'event': event_type, **{key: event[key] for key in
+                         ('stage', 'case_id', 'plan_id', 'round_id', 'reason') if key in event}},
+                         ensure_ascii=False), flush=True)
+    ledger = ExternalAttemptLedger(root / 'attempts.json', max_attempts=contract.max_external_attempts,
+                                   max_total_cost=contract.max_total_cost)
+    ledger.reconcile_interrupted()
+    caller = StructuredRoleClient(
+        registration=get_model('deepseek-v4-flash'), contract=contract, workspace=root,
+        ledger=ledger, allow_external=True, acknowledged_contract_hash=contract.contract_hash,
+        on_progress=emit,
     )
-    from stock_opportunity_agent.signal_library import SignalRegistry
-    from stock_opportunity_agent.research.evolution_signal_roles import (
-        StructuredLLMSignalRunner,
+    store = RawInfoStore(root / 'raw_info')
+    resolver = _build_evidence_resolver(root, store, contract=contract, allow_data_external=True,
+                                        environ=None, cycle_id=cycle['cycle_id'])
+    limits = contract.limits
+    runtime_limits = RuntimeLimits(**{key: limits[key] for key in (
+        'max_signal_rounds', 'max_signal_calls', 'max_llm_calls', 'max_tokens',
+        'max_signals_per_round', 'max_llm_signals_per_round', 'finalization_token_reserve')},
+        max_cost=limits['max_case_cost'])
+    runner = StructuredLLMSignalRunner(caller)
+    evaluator = RuntimePlanEvaluator(
+        raw_info_store=store, evidence_resolver=resolver, controller=LLMResearchController(caller),
+        signal_agent=LLMSignalRetrievalAgent(caller), predictor=LLMBlindPredictor(caller),
+        prediction_root=root / 'predictions', trajectory_root=workspace.trajectory_root,
+        limits=runtime_limits, llm_signal_runner=runner, signal_readiness_snapshot=initial,
+        on_progress=emit,
     )
-    from stock_opportunity_agent.cases.label_store import LabelStore
-    from tests.scheme_evolution_test_support import (
-        NoChangeUpdateModel, SEED_CATALOG,
+    meta = workspace.restore_meta()
+    proposer = LLMInformationPlanProposer(caller, available_source_types=resolver.available_source_types)
+    proposer.set_request_token_budget(runtime_limits.max_tokens)
+    plan_engine = PlanEvolutionEngine(
+        archive=workspace.restore_archive(expected_run_contract_hash=contract.contract_hash),
+        meta_memory=meta, signal_registry=registry, evaluator=evaluator, proposer=proposer,
+        critic=LLMPlanCritic(caller), round_reflector=LLMRoundReflector(caller), workspace=workspace,
+        seed_plans=(default_information_plan(),), candidates_per_round=2,
+        capability_source_types=resolver.available_source_types, evaluation_config=_evaluation(),
+        case_readiness=evaluator.check_case_readiness, run_contract_hash=contract.contract_hash,
+        parent_selection_seed=42, on_progress=emit,
     )
-
-    print("  Building meta_memory from Fast round reflections...")
-    trajs = fast_result["trajectories"] if fast_result else []
-    if not trajs and (root / "fast_trajectories.json").is_file():
-        trajs = json.loads((root / "fast_trajectories.json").read_text())
-        print(f"    loaded {len(trajs)} trajectories from disk")
-    label_store = LabelStore.load(LABEL_STORE_ROOT)
-    metrics_payload = (
-        json.loads((root / "fast_summary.json").read_text())
-        if (root / "fast_summary.json").is_file() else {}
+    dataset = ApprovedDevelopmentDataset(**{key: tuple(_restore_case(row) for row in rows)
+                                           for key, rows in frozen['splits'].items()},
+                                         locked_test_hash=frozen['locked_test_hash'],
+                                         approved_manifest_hash=frozen['approved_manifest_hash'])
+    mining = LLMSignalMiningModel(caller)
+    mining.set_request_token_budget(runtime_limits.max_tokens)
+    signal_engine = SignalEvolutionEngine(
+        registry=registry, raw_info_store=store, discovery_cases=dataset.discovery,
+        meta_memory=meta, workspace=workspace, mining_model=mining,
+        update_model=LLMSignalUpdateModel(caller), llm_signal_runner=runner,
+        identity_cases=(*dataset.discovery, *dataset.anchor, *dataset.evolution_validation),
+        evidence_resolver=resolver, on_progress=emit, mining_heavy_action_limit=28,
+        research_target_reveal=build_target_group_manifest(dataset.discovery, MAGNITUDE_GE3_CONTRACT),
+        research_target_sampling=build_target_sampling_manifest(
+            dataset.discovery, MAGNITUDE_GE3_CONTRACT, cycle_id=cycle['cycle_id'],
+            base_seed=contract.contract_hash, dev_limit=2, check_limit=2),
     )
-    if isinstance(metrics_payload.get("confusion"), dict):
-        metrics_payload = {
-            **metrics_payload, **metrics_payload["confusion"]
-        }
-    evidences = []
-    for index, row in enumerate(trajs, start=1):
-        company_id = row.get("company_id", "")
-        truth = label_store.ground_truth(
-            company_id, CASE_PREDICTION_DATES[company_id]
-        )
-        ground_truth = GroundTruth(
-            realized_max_multiple=truth["realized_max_multiple"]
-        )
-        stop_reason = RuntimeStopReason(row.get("stop_reason", "finalized"))
-        if row.get("is_technical_exclusion"):
-            evidences.append(CaseReflectionEvidence(
-                case_index=index,
-                stop_reason=stop_reason,
-                termination_trigger=None,
-                technical_exclusion={
-                    "failure_class": "bounded_structured_correction_exhaustion",
-                    "scoring_effect": (
-                        "false_negative" if ground_truth.is_surge
-                        else "technical_negative_abstention_not_true_negative"
-                    ),
-                    "research_attribution_allowed": False,
-                },
-            ))
-            continue
-        prediction = BlindPrediction.from_dict(row["prediction"])
-        self_reflection = (
-            PredictionSelfReflection.from_dict(row["self_reflection"])
-            if row.get("self_reflection") else None
-        )
-        evidences.append(CaseReflectionEvidence(
-            case_index=index,
-            stop_reason=stop_reason,
-            termination_trigger=None,
-            candidate_judgment_feedback=candidate_judgment_feedback(
-                prediction, ground_truth
-            ),
-            self_reflection=self_reflection,
-            magnitude_feedback=magnitude_feedback(prediction, ground_truth),
-        ))
-    meta_memory = PlanMetaMemory()
-    if evidences:
-        plan = default_information_plan()
-        metrics = PlanMetrics(**{
-            field: metrics_payload[field]
-            for field in PlanMetrics.__dataclass_fields__
-            if field in metrics_payload
-        })
-        reflection = PlanMetaReflection(
-            plan=plan,
-            metrics=metrics,
-            metrics_by_cohort={},
-            evaluation_snapshot_ids=(),
-            fitness=FitnessEligibility(
-                eligible=False,
-                reasons=("minimal_rounds_harness_diagnostics_only",),
-                expected_case_count=metrics.sample_count,
-                valid_case_count=metrics.valid_case_count,
-                evidence_covered_count=0,
-                predicted_positive_count=metrics.predicted_positive_count or 0,
-                true_positive_count=metrics.true_positive,
-            ),
-            signal_usage={},
-            original_case_reflections=tuple(evidences),
-            vertical_plan_reflection=PlanReflection(),
-        )
-        meta_memory.append(RoundMetaEntry(
-            round_id=1,
-            plan_reflections=(reflection,),
-            evidence_refs=(plan.plan_id,),
-        ))
-    research_feedback = sum(
-        1 for item in evidences if item.technical_exclusion is None
-    )
-    print(f"    meta entry: {len(evidences)} case reflections "
-          f"({research_feedback} with research feedback)")
-
-    # Build cases for mining (same as fast round)
-    cases = build_cases(CASE_COMPANIES[:num_cases])
-    store = RawInfoStore(str(ORACLE))
-
-    # Set up workspace
-    ws_root = root / "workspace"
-    ws_root.mkdir(parents=True, exist_ok=True)
-    workspace = EvolutionWorkspace(ws_root)
-
-    # Registry
-    registry_dir = root / "signals"
-    registry = SignalRegistry(registry_dir)
-    registry.install_catalog(SEED_CATALOG)
-    input_snapshot = registry.freeze()
-
-    # Mining model: wrap our caller
-    update_model = NoChangeUpdateModel()
-    signal_runner = StructuredLLMSignalRunner(caller)
-
-    class MiningCallerWrapper:
-        """Bridge JournaledCaller to mining controller's complete_json."""
-        def __init__(self, jc):
-            self.jc = jc
-        def complete_json(self, **kwargs):
-            return self.jc.complete_json(**kwargs)
-        @property
-        def on_progress(self):
-            return None
-
-    class MiningModel:
-        """Mining model backed by the journaled caller."""
-        def __init__(self, jc):
-            self.caller = MiningCallerWrapper(jc)
-
-    mining_model = MiningModel(caller)
-
-    # Magnitude research target: both ge3 contrast groups must exist, and the
-    # label store supplies the groups, never a hand-entered value.
-    from stock_opportunity_agent.research.research_targets import (
-        MAGNITUDE_GE3_CONTRACT,
-        build_target_group_manifest,
-        build_target_sampling_manifest,
-    )
-    target_reveal = build_target_group_manifest(cases, MAGNITUDE_GE3_CONTRACT)
-    target_sampling = build_target_sampling_manifest(
-        cases,
-        MAGNITUDE_GE3_CONTRACT,
-        cycle_id=1,
-        base_seed=f"minimal-slow-{root.name}",
-        dev_limit=2,
-        check_limit=2,
-    )
-    ge3_counts: dict[str, int] = {}
-    for group in target_reveal["groups"].values():
-        ge3_counts[group] = ge3_counts.get(group, 0) + 1
-    print(f"  Magnitude target groups: {ge3_counts}")
-
-    engine = SignalEvolutionEngine(
-        registry=registry,
-        raw_info_store=store,
-        discovery_cases=tuple(cases),
-        meta_memory=meta_memory,
-        workspace=workspace,
-        mining_model=mining_model,
-        update_model=update_model,
-        llm_signal_runner=signal_runner,
-        # Small-scale exploratory mining: the default 12 heavy actions starve
-        # evidence gathering before hypothesis formation on a 10-case pool.
-        mining_heavy_action_limit=28,
-        research_target_reveal=target_reveal,
-        research_target_sampling=target_sampling,
-    )
-    # run_cycle requires an active dual-loop cycle bound to the input registry;
-    # slow_only mode targets zero fast rounds, matching this minimal harness.
-    workspace.start_or_resume_cycle(
-        cycle_mode="slow_only",
-        run_contract_hash=f"minimal-rounds-{root.name}",
-        target_plan_rounds=0,
-        initial_signal_registry_version=input_snapshot.version,
-        initial_signal_registry_hash=input_snapshot.registry_hash,
-        observed_signal_registry_version=input_snapshot.version,
-        observed_signal_registry_hash=input_snapshot.registry_hash,
-        max_slow_cycles=1,
-    )
-
-    print("\n  Running controller mining cycle 1 (validate, stage, promote)...")
-    try:
-        output = engine.run_cycle(cycle_id=1, input_snapshot=input_snapshot)
-        slow_dict = output.to_dict() if hasattr(output, "to_dict") else dict(output)
-        validated = slow_dict.get("validated_candidates", {})
-        print(f"  Validated candidates: {len(validated)}")
-        for ref, entry in list(validated.items())[:6]:
-            print(f"    {ref}: {str(entry)[:120]}")
-        promoted = slow_dict.get("promoted_refs", [])
-        print(f"  Promoted refs: {promoted}")
-        staged_dir = root / "signals_candidates"
-        staged = (
-            [p for p in staged_dir.rglob("*") if p.is_file()]
-            if staged_dir.exists() else []
-        )
-        print(f"  Staged candidate files: {len(staged)}")
-        registry_after = SignalRegistry(registry_dir)
-        print(f"  Registry version after cycle: {registry_after.version}")
-        return {
-            "validated": len(validated),
-            "promoted": list(promoted),
-            "registry_version": registry_after.version,
-            "staged_files": len(staged),
-        }
-    except Exception as exc:
-        print(f"  ✗ SLOW FAILED: {type(exc).__name__}: {str(exc)[:300]}")
-        import traceback
-        traceback.print_exc()
-        return {"error": str(exc)}
+    result = DualLoopEvolutionEngine(
+        plan_engine=plan_engine, signal_engine=signal_engine, signal_registry=registry,
+        dataset=dataset, plan_rounds_per_signal_cycle=1, on_progress=emit,
+    ).run_cycle(cycle_id=cycle['cycle_id'], completed_plan_rounds=cycle['completed_plan_rounds'])
+    slow = result.signal_evolution.to_dict()
+    workspace.stage_slow_result(cycle_id=cycle['cycle_id'], result=slow)
+    final = registry.freeze()
+    workspace.complete_cycle(cycle_id=cycle['cycle_id'], observed_signal_registry_version=final.version,
+                             observed_signal_registry_hash=final.registry_hash)
+    atomic_write_json(root / 'acceptance_summary.json', {
+        'contract_hash': contract.contract_hash,
+        'plans': [{'plan_id': record.plan.plan_id, 'metrics': record.metrics.to_dict(),
+                   'fitness': record.fitness.to_dict()} for record in plan_engine.archive.records],
+        'slow': slow, 'last_completed_round': workspace.last_completed_round,
+        'last_completed_cycle': workspace.last_completed_cycle,
+        'content_inspection_status': 'pending_manual_artifact_review',
+    })
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--root", default="runs/cold_start/minimal_rounds_v151")
-    parser.add_argument("--cases", type=int, default=10)
-    parser.add_argument("--skip-fast", action="store_true")
-    parser.add_argument("--skip-slow", action="store_true")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', required=True)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--prepare-only', action='store_true')
+    mode.add_argument('--run', action='store_true')
     args = parser.parse_args()
-    root = REPO / args.root
+    root = Path(args.root).resolve()
     root.mkdir(parents=True, exist_ok=True)
-    _load_env()
-
-    from stock_opportunity_agent.llm.deepseek import (
-        DeepSeekResponsesClient, DEFAULT_DEEPSEEK_BASE_URL, DEFAULT_DEEPSEEK_MODEL,
-    )
-    client = DeepSeekResponsesClient(
-        DEFAULT_DEEPSEEK_MODEL, os.environ["DEEPSEEK_API_KEY"],
-        base_url=DEFAULT_DEEPSEEK_BASE_URL, temperature=0.0,
-    )
-    caller = JournaledCaller(client, root)
-
-    fast_result = None
-    if not args.skip_fast:
-        fast_result = run_fast_round(caller, root, args.cases)
-        (root / "fast_summary.json").write_text(
-            json.dumps(fast_result["metrics"], indent=1), encoding="utf-8")
-        print(f"\n  Fast round complete. {len(caller.calls)} calls, "
-              f"journal at {caller.journal_root}")
-
-    if not args.skip_slow:
-        print("\n" + "=" * 20 + " SLOW ROUND " + "=" * 20)
-        run_slow_round(caller, root, fast_result, args.cases)
+    with EvolutionWorkspace.execution_lock_at(root):
+        frozen = prepare(root)
+        print(f'Frozen diagnostic inputs: {canonical_json_hash(frozen)}', flush=True)
+        if args.run:
+            run(root, frozen)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -604,3 +604,34 @@ class GeneralityTests(unittest.TestCase):
 
         self.assertIs(MECHANICAL_FALLBACK_CODES, frontier_codes)
         self.assertIn("claim_quantity_not_supported", MECHANICAL_FALLBACK_CODES)
+
+
+class PartialMechanicalProgressTests(unittest.TestCase):
+    def test_partial_shape_repair_is_correction_base_while_semantic_issue_remains(self):
+        from stock_opportunity_agent.models import StructuredValidationError, ValidationIssue
+        from stock_opportunity_agent.research.evolution_output_validation import _complete_parsed_role
+        from stock_opportunity_agent.research.evolution_core import AgentUsage
+
+        class Caller:
+            max_structured_corrections = 1
+            def __init__(self):
+                self.payloads = []
+            def complete_json(self, **kwargs):
+                self.payloads.append(kwargs["payload"])
+                return ({"next_information_needs": ["Need guidance."], "open_questions": ["Need guidance."], "decision": "wrong"} if len(self.payloads) == 1 else
+                        {"next_information_needs": ["Need guidance."], "open_questions": [], "decision": "continue"}), AgentUsage(llm_calls=1)
+        def parse(value):
+            issues = []
+            if value["open_questions"]:
+                issues.append(ValidationIssue(code="duplicate_question", message="Duplicated need", paths=("open_questions[0]",), allowed_repairs=("remove",)))
+            if value["decision"] != "continue":
+                issues.append(ValidationIssue(code="bad_decision", message="Decision invalid", paths=("decision",)))
+            if issues:
+                raise StructuredValidationError(issues)
+            return value
+        caller = Caller()
+        result, _ = _complete_parsed_role(caller, stage="partial_test", system_prompt="Return object", payload={}, parser=parse, allow_outcomes=False, stable_correction_prefix=True)
+        feedback = caller.payloads[1]["validation_feedback"]
+        self.assertEqual(feedback["invalid_output"]["open_questions"], [])
+        self.assertEqual([o["issue_code"] for o in feedback["obligations"]], ["bad_decision"])
+        self.assertEqual(result["next_information_needs"], ["Need guidance."])

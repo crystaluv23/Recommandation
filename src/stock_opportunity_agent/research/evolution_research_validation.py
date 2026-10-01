@@ -769,7 +769,7 @@ _FIXED_PRICE_OUTCOME = re.compile(
 
 _EXPECTATION_TRANSMISSION = re.compile(
     r"\b(?:approval|bookings?|construction progress|de[- ]?risk(?:ed|ing)?|"
-    r"expectation|financing|forecast|guidance|market recognition|milestone|"
+    r"expectations?|financing|forecasts?|guidance|market recognition|milestones?|"
     r"pre[- ]opening|pric(?:e|es|ed|ing)[ -]+in|progress toward)\b",
     re.IGNORECASE,
 )
@@ -3023,32 +3023,45 @@ def _validate_research_state_refs(
                 "need"),
             ))
         if stale_resolved_needs:
-            for stale_need in [
-                need
-                for resolved_question in state.resolved_questions
-                if previous_state is None
-                or resolved_question not in previous_state.resolved_questions
-                for need in state.next_information_needs
-                if _shared_resolved_need_phrase(need, resolved_question) is not None
-            ]:
-                structured_issues.append(
-                    ValidationIssue(
-                        code="stale_resolved_need_retained",
-                        message=(
-                            "research_controller_reflect newly resolved a question "
-                            "but retained an exact matching next_information_need: "
-                            f"{[stale_need]}. Remove or narrow the answered need, or "
-                            "remove the unsupported resolved question"
-                        ),
-                        paths=(
-                            (
-                                "next_information_needs["
-                                f"{state.next_information_needs.index(stale_need)}]"
-                            ),
-                        ),
-                        allowed_repairs=("replace", "remove"),
+            for conflict in stale_resolved_needs:
+                need = conflict["retained_need"]
+                resolved = conflict["newly_resolved_question"]
+                need_path = f"next_information_needs[{state.next_information_needs.index(need)}]"
+                resolved_path = f"resolved_questions[{state.resolved_questions.index(resolved)}]"
+                # A new resolution cannot answer a need without adopted direct
+                # answer evidence. Publish both alternatives, and only mark the
+                # uniquely unsupported resolution as mechanically removable.
+                direct_answer = any(
+                    selection.reason_code == "answer_need"
+                    and selection.signal_ref in adopted_new_signal_refs
+                    and previous_state is not None
+                    and any(
+                        index < len(previous_state.next_information_needs)
+                        and previous_state.next_information_needs[index] == need
+                        for index in selection.target_need_indices
                     )
+                    for selection in selections
                 )
+                structured_issues.append(ValidationIssue(
+                    code="stale_resolved_need_retained",
+                    message=(
+                        "research_controller_reflect newly resolved a question "
+                        f"but retained an unanswered matching need: {need!r}. "
+                        "Remove or narrow the answered need, or remove the "
+                        "unsupported newly resolved question"
+                    ),
+                    paths=(need_path, resolved_path),
+                    path_policy="any",
+                    allowed_repairs=("replace", "remove"),
+                    repair_context={
+                        "retained_need": need,
+                        "resolved_question": resolved,
+                        "resolved_path": resolved_path,
+                        "mechanical_action": (
+                            None if direct_answer else "remove_unsupported_resolution"
+                        ),
+                    },
+                ))
         legacy_answer_need_refs = {
             item.signal_ref
             for item in selections

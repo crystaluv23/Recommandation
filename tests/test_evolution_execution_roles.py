@@ -2147,11 +2147,12 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
                 ["supporting_evidence[0]", "current_beliefs[0]"],
             )
         else:
-            self.assertEqual(len(fallback_event["fallback_steps"]), 2)
-            self.assertEqual(
-                fallback_event["fallback_steps"][1]["removed_paths"],
-                ["supporting_evidence[0]", "current_beliefs[0]"],
-            )
+            self.assertEqual(len(fallback_event["fallback_steps"]), 1)
+            self.assertTrue(any(
+                event["event_type"] == "mechanical_repair_progress"
+                and event.get("actions", {}).get("removed_paths")
+                for event in events
+            ))
         self.assertNotIn("projection_ambiguous_a", initialized.value.to_dict())
         self.assertNotIn("projection_ambiguous_b", initialized.value.to_dict())
 

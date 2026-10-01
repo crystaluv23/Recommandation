@@ -99,3 +99,12 @@ Signal retrieval, blind prediction, and Plan reflection.
   deleted, finalized away, or handed an impossible prompt. Without a runtime
   evaluation context there is no boundary to enforce, so legacy no-scope
   behavior is unchanged.
+
+## Shared stage boundary (2026-10-01)
+
+Follow [stage contracts](stage_contracts.md) for dependency checks, omissions,
+partial mechanical repair and immutable accepted units. A newly resolved
+question conflicting with an unanswered retained need publishes both correction
+paths. Exact runtime restoration of that need may remove only the explicitly
+identified unsupported newly resolved question. The final Predictor input is
+the typed assembled stage products, not only the final state or full raw prompts.

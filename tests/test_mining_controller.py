@@ -593,7 +593,7 @@ class MiningControllerTests(unittest.TestCase):
         self.assertEqual(result.terminal_kind, "deferred_budget")
         notes = [e.note for e in result.ledger if e.note]
         self.assertTrue(
-            any("inadmissible heavy action" in note for note in notes), notes
+            any("inadmissible action" in note for note in notes), notes
         )
 
     def test_one_chance_to_switch_after_exhaustion_is_preserved(self) -> None:
@@ -837,8 +837,8 @@ class NarrativeInterfaceTests(unittest.TestCase):
         result = controller.run()
 
         self.assertEqual(result.terminal_kind, "evidence_unavailable")
-        self.assertIn("last_read_span", seen)
-        self.assertTrue(seen["last_read_span"])
+        self.assertNotIn("last_read_span", seen)
+        self.assertTrue(seen["last_action_result"]["masked"])
         self.assertEqual(controller._browse_used, 1)
         self.assertTrue(controller._narrative_explored)
         reads = [e for e in result.ledger if e.action == "read_span"]
@@ -1297,3 +1297,41 @@ if __name__ == "__main__":
         rendered = json.dumps(model.views[0])
         self.assertIn("magnitude-underestimated", rendered)
         self.assertIn("binary_correct", rendered)
+
+
+class SharedStageBoundaryTests(unittest.TestCase):
+    def test_light_budget_never_negative_and_repeated_inspect_defers(self):
+        cases, store = _fixture_store()
+        model = ScriptedMiningDecisionModel([
+            {"action": "inspect_catalog", "rationale": ["Read directory."]},
+            {"action": "inspect_catalog", "rationale": ["Read again."]},
+            {"action": "inspect_catalog", "rationale": ["Read again."]},
+        ])
+        controller = _controller(store, cases, model, seed="discovery", light_action_limit=1)
+        result = controller.run()
+        self.assertEqual(result.terminal_kind, "deferred_budget")
+        self.assertEqual([v["budget"]["light_remaining"] for v in model.views], [1, 0, 0])
+        self.assertNotIn("inspect_catalog", model.views[-1]["available_actions"])
+        self.assertEqual(model.views[1]["last_action_result"]["result"]["items"][0]["signal_ref"], "cash_reserves:v1")
+
+    def test_feedback_omissions_have_resolvable_whole_entry_reads(self):
+        cases, store = _fixture_store()
+        entries = [{"item_ref": f"reflection:{i}", "brief": "Concrete source-backed lesson. " * 40, "limitations": ["Unproven"]} for i in range(22)]
+        model = ScriptedMiningDecisionModel([
+            {"action": "inspect_catalog", "scope": "memory", "item_refs": ["reflection:20"], "rationale": ["Read related omitted lesson."]},
+            {"action": "record_deferred", "rationale": ["Stop with progress retained."]},
+        ])
+        controller = _controller(store, cases, model, seed="discovery", meta_memory_briefs={"items": entries})
+        controller.run()
+        initial = model.views[0]["meta_info"]
+        self.assertLess(initial["counts"]["included"], len(entries))
+        self.assertGreater(initial["counts"]["omitted_after"], 0)
+        read = model.views[1]["last_action_result"]["result"]
+        self.assertEqual(read["items"], [entries[20]])
+        self.assertEqual(controller.meta_memory_briefs["items"], entries)
+
+    def test_narrative_read_remains_admissible_after_heavy_exhaustion(self):
+        cases, store = _fixture_store()
+        controller = _controller(store, cases, ScriptedMiningDecisionModel([]), seed="discovery", heavy_action_limit=1)
+        controller._heavy_used = 1
+        controller._validate_action_shape({"action": "read_span", "event_ref": "known", "rationale": ["Browse narrative."]})

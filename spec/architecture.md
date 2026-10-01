@@ -95,6 +95,18 @@ information visible at any stage remains present (or explicitly
 dispositioned) in the final assembly, so stage-to-stage evidence carry-over
 loss is a structural defect rather than a modeled risk.
 
+## Shared stage reliability contract
+
+Fast and Slow use the same dependency, disclosure, detection, incremental repair
+and checkpoint discipline, specified in [stage contracts](src/stock_opportunity_agent/research/stage_contracts.md).
+The runtime validates input construction before a model call; domain validators
+retain schema/evidence/PIT authority. Applicable deterministic repairs precede
+LLM correction, retaining partial progress without accepting invalid state.
+Tool results and omitted-context envelopes are actual model-visible data.
+Existing atomic pointers and domain promotion rules retain commit authority.
+Predictor context is assembled from typed stage products, including explicit
+state supersession/removal; it never consumes retrospective label-bearing memory.
+
 ## Constrained Basic Info
 
 The bootstrap stage of an Information Plan is expressed as a composition of

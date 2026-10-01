@@ -32,14 +32,12 @@ a mixed success/failure-axis item into its two single-axis forms with
 fixed counterpart categories, removing open questions that repeat a need
 byte-for-byte, and dropping empty text rows. Row-level salvage applies
 the same chain per row before dropping, replacing repaired rows and
-recording them under normalized paths. Deterministic post-correction
-fallbacks are promoted ahead of the LLM round for mechanical quantity
-failure codes only (``assertion_without_support``,
-``claim_quantity_not_supported``, ``evidence_claim_empty``): their
-copy-literal or whole-row-removal actions are accepted only when the
-full unchanged parser passes the repaired object; semantic classes (need
-transitions, temporal scope, anchor guards) keep the post-correction
-position so the model first gets its bounded correction chance. The
+recording them under normalized paths. Applicable deterministic fallbacks run before LLM correction for their typed
+mechanical issues even when unrelated issues remain. Exact runtime-issued need
+restoration is mechanical. Each transform is followed by full revalidation;
+unresolved issues and transformed candidates become the next correction base.
+Partial progress is retained but never accepted as a valid complete object.
+A bounded visited-state loop prevents oscillation. The
 anchor-guard evidence-availability vocabulary includes bare verb forms
 (``disclose``, ``publish``, ...) beside participles, and misplaced
 evidence objects in research-state text arrays flatten to their unique

@@ -25,8 +25,9 @@ from stock_opportunity_agent.research.scheme_evolution import (
     _mask_identity_values,
 )
 from stock_opportunity_agent.research.repair import (
-    MECHANICAL_FALLBACK_CODES,
-    apply_mechanical_repairs,
+    MECHANICAL_FALLBACK_CODES,  # Public re-export retained for ladder consumers.
+    mechanical_repair_candidate,
+    is_mechanical_issue,
 )
 from stock_opportunity_agent.signal_library import signal_result_model_view
 from stock_opportunity_agent.research.evolution_state_patch import (
@@ -2890,15 +2891,14 @@ def _research_need_transition_fallback(
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
     """Apply only runtime-issued exact need transitions, never model repair prose."""
 
-    if not failure.issues or any(
-        issue.code != "research_need_transition_invalid" for issue in failure.issues
-    ):
+    issues = [issue for issue in failure.issues if issue.code == "research_need_transition_invalid"]
+    if not issues:
         return None
     original = failed_output.get("next_information_needs")
     if not isinstance(original, list) or any(not isinstance(x, str) for x in original):
         return None
     needs = list(original)
-    for issue in failure.issues:
+    for issue in issues:
         context = issue.repair_context
         prior = context.get("prior_need")
         required = context.get("required_need")
@@ -2969,6 +2969,21 @@ def _research_state_evidence_grounding_fallback(
 
     if not isinstance(failure, StructuredValidationError):
         return None
+    # Only an owning-validator instruction permits deleting this resolution.
+    for issue in failure.issues:
+        if issue.code != "stale_resolved_need_retained" or not is_mechanical_issue(issue):
+            continue
+        context = issue.repair_context
+        match = re.fullmatch(r"resolved_questions\[(\d+)\]", str(context.get("resolved_path", "")))
+        questions = failed_output.get("resolved_questions")
+        if match is None or not isinstance(questions, list):
+            continue
+        index = int(match.group(1))
+        if index >= len(questions) or questions[index] != context.get("resolved_question"):
+            continue
+        candidate = deepcopy(dict(failed_output))
+        del candidate["resolved_questions"][index]
+        return candidate, {"removed_paths": (context["resolved_path"],), "source_substitution_paths": ()}
     need_recovery = _research_need_transition_fallback(failed_output, failure)
     if need_recovery is not None:
         return need_recovery
@@ -3995,64 +4010,68 @@ def _complete_parsed_role_impl(
                 )
             return parsed_value, usage
         except ValidationError as exc:
-            mechanical = None
+            mechanical_progress = False
             if isinstance(value, Mapping):
-                mechanical = apply_mechanical_repairs(
-                    value,
-                    lambda candidate: _parse_role_output(
-                        request_stage, candidate, parser
-                    ),
-                    resolver=repair_resolver,
-                )
-            if mechanical is not None:
-                parsed_value, repair_ops = mechanical
-                _emit_runtime_progress(
-                    getattr(caller, "on_progress", None),
-                    "mechanical_repair_accepted",
-                    stage=stage,
-                    request_stage=request_stage,
-                    repairs=[op.__dict__ for op in repair_ops],
-                )
-                return parsed_value, usage
-            # Deterministic post-correction fallbacks are promoted ahead
-            # of the LLM round only for mechanical failure classes —
-            # numeric-assertion grounding whose unique fixes are
-            # copy-literal or whole-row removal. Semantic classes (need
-            # transitions, temporal scope, anchor guards) keep the
-            # post-correction fallback position, where the model first gets
-            # its bounded correction chance.
-            if (
-                final_validation_fallback is not None
-                and isinstance(value, Mapping)
-                and bool(value)
-                and isinstance(exc, StructuredValidationError)
-                and exc.issues
-                and all(
-                    issue.code in MECHANICAL_FALLBACK_CODES
-                    for issue in exc.issues
-                )
-            ):
-                early = final_validation_fallback(value, exc)
-                if early is not None:
-                    early_output, early_actions = early
+                candidate, repair_ops = mechanical_repair_candidate(value, resolver=repair_resolver)
+                if repair_ops:
+                    mechanical_progress = True
+                    value = candidate
+                    _emit_runtime_progress(
+                        getattr(caller, "on_progress", None), "mechanical_repair_progress",
+                        stage=stage, request_stage=request_stage,
+                        repairs=[op.__dict__ for op in repair_ops],
+                    )
                     try:
-                        early_parsed = _parse_role_output(
-                            f"{stage}_early_fallback", early_output, parser
-                        )
-                    except ValidationError:
-                        early_parsed = None
-                    if early_parsed is not None:
-                        _emit_runtime_progress(
-                            getattr(caller, "on_progress", None),
-                            "deterministic_fallback_promoted",
-                            stage=stage,
-                            request_stage=request_stage,
-                            actions={
-                                key: list(items)
-                                for key, items in early_actions.items()
-                            },
-                        )
-                        return early_parsed, usage
+                        parsed_value = _parse_role_output(request_stage, value, parser)
+                    except ValidationError as repaired_exc:
+                        exc = repaired_exc
+                    else:
+                        return parsed_value, usage
+            # Preserve applicable mechanical progress even if other semantic
+            # obligations remain. Every iteration recomputes full validation.
+            visited: set[str] = set()
+            for _repair_step in range(8):
+                if not (
+                    final_validation_fallback is not None
+                    and isinstance(value, Mapping)
+                    and isinstance(exc, StructuredValidationError)
+                ):
+                    break
+                eligible = [issue for issue in exc.issues if is_mechanical_issue(issue)]
+                if not eligible:
+                    break
+                signature = json.dumps(value, ensure_ascii=False, sort_keys=True)
+                if signature in visited:
+                    break
+                visited.add(signature)
+                repaired = final_validation_fallback(value, StructuredValidationError(eligible))
+                if repaired is None:
+                    break
+                candidate, actions = repaired
+                if candidate == value:
+                    break
+                mechanical_progress = True
+                value = candidate
+                _emit_runtime_progress(
+                    getattr(caller, "on_progress", None), "mechanical_repair_progress",
+                    stage=stage, request_stage=request_stage,
+                    actions={key: list(items) for key, items in actions.items()},
+                )
+                try:
+                    parsed_value = _parse_role_output(request_stage, value, parser)
+                except ValidationError as repaired_exc:
+                    exc = repaired_exc
+                else:
+                    _emit_runtime_progress(
+                        getattr(caller, "on_progress", None), "deterministic_fallback_promoted",
+                        stage=stage, request_stage=request_stage,
+                        actions={key: list(items) for key, items in actions.items()},
+                    )
+                    return parsed_value, usage
+            if mechanical_progress:
+                # Scoped projection must not replace the new mechanical base
+                # with the older pre-repair candidate on the next LLM attempt.
+                projected_value = value
             failed_output = (
                 (projected_value if projected_value is not None else value)
                 if echo_invalid_output_on_correction or incremental

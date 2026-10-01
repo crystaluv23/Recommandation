@@ -50,6 +50,19 @@ MECHANICAL_FALLBACK_CODES = frozenset(
     }
 )
 
+def is_mechanical_issue(issue: Any) -> bool:
+    """Recognize only typed unique fallback authority, including mixed failures."""
+    if issue.code in MECHANICAL_FALLBACK_CODES:
+        return True
+    if issue.code == "research_need_transition_invalid":
+        return issue.repair_context.get("required_action") in {
+            "restore_exactly", "replace_with_exact_residual", "remove_exact_target",
+        }
+    if issue.code == "stale_resolved_need_retained":
+        return issue.repair_context.get("mechanical_action") == "remove_unsupported_resolution"
+    return False
+
+
 _SUCCESS_COUNTERPART = {
     "why_prediction_failed": "decision_drivers",
     "failed_patterns": "successful_patterns",
@@ -561,6 +574,26 @@ def mechanical_repairs_for(
     return []
 
 
+def mechanical_repair_candidate(
+    value: Mapping[str, Any],
+    resolver: Callable[[str], Mapping[str, Any] | None] | None = None,
+    level_categories: frozenset[str] | set[str] | None = None,
+) -> tuple[dict[str, Any], list[RepairOp]]:
+    """Return a transformed candidate and operations without claiming validity.
+
+    Consumers revalidate it and retain partial progress as a correction base.
+    The original response remains untouched, including when no repair applies.
+    """
+    from copy import deepcopy
+
+    current = deepcopy(dict(value))
+    ops: list[RepairOp] = []
+    for repair in mechanical_repairs_for(current, resolver, level_categories):
+        current, repair_ops = repair(current)
+        ops.extend(repair_ops)
+    return dict(current), ops
+
+
 def apply_mechanical_repairs(
     value: Mapping[str, Any],
     parse: Callable[[Mapping[str, Any]], Any],
@@ -574,14 +607,7 @@ def apply_mechanical_repairs(
     means no repair applied or the repaired object still fails.
     """
 
-    repairs = mechanical_repairs_for(value, resolver, level_categories)
-    if not repairs:
-        return None
-    current: Mapping[str, Any] = value
-    ops: list[RepairOp] = []
-    for repair in repairs:
-        current, repair_ops = repair(current)
-        ops.extend(repair_ops)
+    current, ops = mechanical_repair_candidate(value, resolver, level_categories)
     if not ops:
         return None
     try:

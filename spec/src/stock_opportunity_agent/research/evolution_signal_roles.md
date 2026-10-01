@@ -134,11 +134,11 @@ independent Exploration sibling.
 ## Purpose
 
 Implement structured adapters for deterministic/LLM Signal execution, Signal
-mining, and Signal update proposals. The H1/H2/H3 and E1/E2 mining adapters are
-the legacy production path and the designated read-only contrast baseline for
-the gated `LabelAwareMiningController` replacement specified in
-`signal_mining_agent.md`; they stay authoritative until shadow acceptance
-passes and are archived with this spec at cutover.
+mining, and Signal update proposals. With a frozen v8 sampling manifest and JSON role caller, production mining
+uses `LabelAwareMiningController` (Phase 6 cutover). H1/H2/H3 and E1/E2
+remain read-only historical/protocol baselines; workspaces without an active
+manifest retain their declared v7 cadence. Shared reliability and disclosure
+follow [stage contracts](stage_contracts.md).
 
 ## Invariants
 

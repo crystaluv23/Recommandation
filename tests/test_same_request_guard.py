@@ -32,7 +32,7 @@ def _client(root: Path, *, events: list | None = None):
 
 _KWARGS = {
     "system_prompt": "Return JSON.",
-    "payload": {"fact": "anonymous"},
+    "payload": {"final_context": {"fact": "anonymous"}},
     "allow_outcomes": False,
     "max_output_tokens": 8000,
 }
