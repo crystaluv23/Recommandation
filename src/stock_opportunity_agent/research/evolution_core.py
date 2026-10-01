@@ -100,15 +100,20 @@ _GENERIC_IDENTITY_LEADING_WORDS = frozenset(
         "advanced",
         "american",
         "bank",
+        "critical",
+        "energy",
         "first",
         "general",
         "global",
+        "green",
         "high",
         "international",
+        "life",
         "national",
         "new",
         "north",
         "the",
+        "travel",
         "united",
         "universal",
     }
@@ -3827,74 +3832,34 @@ def _research_state_delta(
 
 def _basic_info_projection_cards(
     basic_info: Mapping[str, Any],
-    *,
-    total_chars: int = 8_000,
-    per_request: int = 2,
-    per_card: int = 2_000,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Bound the visible Basic Info projections into typed carry-over cards.
+    """Carry every already-disclosed bootstrap projection into the final view.
 
-    The assembled final context is append-only: content visible at the
-    bootstrap stage stays present (bounded, with disclosure) instead of
-    surviving only as projection ids in a source index.
+    Source disclosure is bounded upstream. Cutting these complete visible
+    projections again would break the final Predictor's evidence closure.
     """
 
-    requests = [
-        row
-        for row in basic_info.get("requests", ())
-        if isinstance(row, Mapping)
-    ]
-    projections_by_request: list[tuple[Any, list[dict[str, Any]]]] = []
-    available = 0
-    for row in requests:
-        request = row.get("request")
-        projections = [
-            item
-            for item in row.get("projections", ())
-            if isinstance(item, Mapping)
-            and isinstance(item.get("exact_text"), str)
-            and item["exact_text"].strip()
-        ]
-        available += len(projections)
-        projections_by_request.append((request, projections[:per_request]))
-
     cards: list[dict[str, Any]] = []
-    included_projection_ids: set[str] = set()
-    remaining = total_chars
-
-    def add_card(request: Any, item: Mapping[str, Any]) -> None:
-        nonlocal remaining
-        if remaining <= 0:
-            return
-        text = str(item["exact_text"])
-        take = min(len(text), remaining, per_card)
-        cards.append(
-            {
-                "request_id": (
-                    request.get("request_id")
-                    if isinstance(request, Mapping)
-                    else None
-                ),
+    for row in basic_info.get("requests", ()):
+        if not isinstance(row, Mapping):
+            continue
+        request = row.get("request")
+        for item in row.get("projections", ()):
+            if not isinstance(item, Mapping):
+                continue
+            text = item.get("exact_text")
+            if not isinstance(text, str) or not text.strip():
+                continue
+            cards.append({
+                "request_id": request.get("request_id") if isinstance(request, Mapping) else None,
                 "projection_id": item.get("projection_id"),
-                "exact_text": text[:take],
-                "truncated": take < len(text),
-            }
-        )
-        included_projection_ids.add(str(item.get("projection_id")))
-        remaining -= take
-
-    for request, projections in projections_by_request:
-        if projections:
-            add_card(request, projections[0])
-    for request, projections in projections_by_request:
-        for item in projections[1:]:
-            if remaining <= 0:
-                break
-            add_card(request, item)
+                "exact_text": text,
+                "truncated": False,
+            })
     counts = {
-        "available_projections": available,
+        "available_projections": len(cards),
         "included_cards": len(cards),
-        "deferred_projections": max(0, available - len(cards)),
+        "deferred_projections": 0,
     }
     return cards, counts
 

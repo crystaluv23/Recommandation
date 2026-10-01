@@ -8,6 +8,20 @@ ledgers, exact-response caching, and the structured model-client boundary.
 ## Invariants
 
 - Every external request is persisted before transmission.
+- Runtime case evaluation scopes every participating production caller to a
+  thread-local identity projection, including initialize, routing, Signal
+  execution, document reads, corrections and posthoc. Masking only the final
+  Predictor cannot establish a blind research chain. Exact known aliases,
+  issuer CIK representations and ticker-derived XBRL/filing prefixes are
+  replaced at egress with reversible opaque tokens. Numeric `cik` fields are
+  projected as identity, while ordinary financial numbers remain unchanged.
+  Request estimation, persisted request and actual wire use the same view.
+  Provider/cache responses retain that view; local validation restores only
+  tokens supplied by the exact request, preserving literal evidence and typed
+  repair snapshots. Unknown tokens and guessed target names fail closed.
+  Authoritative source records, projection IDs, source hashes and reflection
+  indexes are never rewritten. Context is unwound on failure/cancellation and
+  never inherited by another worker or case.
 - Cache reuse requires the exact canonical request hash.
 - Attempt, token, and cost ceilings fail closed before network I/O.
 - The attempt ledger admits a new request against settled cost: finalized

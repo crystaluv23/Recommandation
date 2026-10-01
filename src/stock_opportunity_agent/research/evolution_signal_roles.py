@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 from copy import deepcopy
+from contextlib import nullcontext
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from typing import Any, Callable, Iterable, Mapping
@@ -4557,6 +4558,12 @@ class StructuredLLMSignalRunner:
     def __init__(self, caller: JSONRoleCaller) -> None:
         self.caller = caller
         self.request_token_budget: int | None = None
+        self.identity_cases: dict[str, Any] = {}
+
+    def set_identity_cases(self, cases: Iterable[Any]) -> None:
+        """Bind source owners for blind standalone Slow validation/extraction."""
+
+        self.identity_cases = {case.company_id: case for case in cases}
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
@@ -4737,6 +4744,30 @@ class StructuredLLMSignalRunner:
         inputs: tuple[LLMSignalBatchInput, ...],
         as_of: datetime,
     ) -> tuple[Mapping[str, SignalResult], AgentUsage]:
+        """Execute one source-owner batch under its runtime-bound identity scope."""
+
+        from stock_opportunity_agent.research.evolution_core import _case_identity_alias_inventory
+
+        owners = {document.company_id for item in inputs for document in item.documents
+                  if document.company_id in self.identity_cases}
+        if len(owners) > 1:
+            raise ValidationError("one Signal batch cannot mix bound case owners")
+        case = self.identity_cases[next(iter(owners))] if owners else None
+        scope = getattr(self.caller, "anonymous_case", None)
+        boundary = scope(
+            aliases=_case_identity_alias_inventory((case,)), company_id=case.company_id,
+            ticker=str(case.basic_info.get("ticker") or case.basic_info.get("symbol") or ""),
+        ) if case is not None and callable(scope) else nullcontext()
+        with boundary:
+            return self._execute_many(inputs, as_of)
+
+    def _execute_many(
+        self,
+        inputs: tuple[LLMSignalBatchInput, ...],
+        as_of: datetime,
+    ) -> tuple[Mapping[str, SignalResult], AgentUsage]:
+        """Execute and validate against original source coordinates inside egress scope."""
+
         if not inputs or len(inputs) > 2:
             raise ValidationError("LLM Signal batch requires one or two inputs")
         if len({item.spec.ref for item in inputs}) != len(inputs):

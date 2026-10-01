@@ -195,6 +195,108 @@ class ExactResponseCache:
         )
 
 
+class _CaseIdentityProjection:
+    """Project one exact request reversibly without touching source records."""
+
+    def __init__(self, aliases: Iterable[str], company_id: str, ticker: str) -> None:
+        from stock_opportunity_agent.research.evolution_core import (
+            _compiled_identity_aliases, _identity_alias_variants,
+        )
+
+        inventory = tuple(dict.fromkeys((company_id, *aliases)))
+        self.patterns = [row[1] for row in _compiled_identity_aliases(inventory)]
+        cik = re.fullmatch(r"cik_(\d+)", company_id)
+        self.cik = int(cik.group(1)) if cik else None
+        if cik:
+            self.patterns.append(re.compile(
+                r"(?<!\d)" + cik.group(1) + r"(?=\d{8}(?!\d)|[^\d]|$)"
+            ))
+            self.patterns.append(re.compile(
+                r'(?<=cik\\":)' + str(self.cik) + r"(?!\d)"
+            ))
+            self.patterns.append(re.compile(
+                r'(?<=cik":)' + str(self.cik) + r"(?!\d)"
+            ))
+        if ticker and ticker.isalnum():
+            self.patterns.append(re.compile(
+                r"\b" + re.escape(ticker.lower()) + r"(?=:|[-_]?\d{6,})"
+            ))
+        for alias in _identity_alias_variants(inventory):
+            compact_name = "".join(re.findall(r"[A-Za-z]+", alias))
+            if compact_name and len(compact_name) >= 4 and not any(c.isdigit() for c in alias):
+                self.patterns.append(re.compile(
+                    r"(?<=:)(?i:" + re.escape(compact_name) + r")(?=[A-Z])"
+                ))
+                self.patterns.append(re.compile(
+                    r"\b(?i:" + re.escape(compact_name) + r")(?=:|[-_]?\d{6,})"
+                ))
+
+    def project(self, value: Any, *, allow_tokens: bool = False) -> tuple[Any, dict[str, Any]]:
+        """Return the opaque view and a request-local inverse token table."""
+
+        restore: dict[str, Any] = {}
+        tokens: dict[tuple[type, Any], str] = {}
+
+        def token(original: Any) -> str:
+            key = (type(original), original)
+            if key not in tokens:
+                replacement = f"[ANON_ID_{len(tokens):04d}]"
+                tokens[key] = replacement
+                restore[replacement] = original
+            return tokens[key]
+
+        def text(item: str) -> str:
+            if not allow_tokens and "[ANON_ID_" in item:
+                raise ValidationError("identity projection token appeared in canonical input")
+            # Private sentinels prevent one identity matcher rewriting another's token.
+            replacements: dict[str, str] = {}
+            for pattern in self.patterns:
+                def replace(match: re.Match[str]) -> str:
+                    sentinel = f"\ue100{len(replacements)}\ue101"
+                    replacements[sentinel] = token(match.group(0))
+                    return sentinel
+                item = pattern.sub(replace, item)
+            for sentinel, replacement in replacements.items():
+                item = item.replace(sentinel, replacement)
+            return item
+
+        def visit(item: Any, key: str = "") -> Any:
+            if key == "cik" and type(item) is int and item == self.cik:
+                return token(item)
+            if isinstance(item, str):
+                return text(item)
+            if isinstance(item, Mapping):
+                return {text(str(k)): visit(v, str(k)) for k, v in item.items()}
+            if isinstance(item, (list, tuple)):
+                return [visit(child) for child in item]
+            return item
+
+        return visit(value), restore
+
+    @staticmethod
+    def restore(value: Any, tokens: Mapping[str, Any]) -> Any:
+        """Restore only tokens disclosed by this request, including literal casing."""
+
+        def text(item: str) -> Any:
+            if item in tokens:
+                return tokens[item]
+            def replace(match: re.Match[str]) -> str:
+                key = match.group(0)
+                if key not in tokens:
+                    raise ValidationError("model returned an undisclosed identity token")
+                return str(tokens[key])
+            return re.sub(r"\[ANON_ID_[^\]]*\]", replace, item)
+
+        if isinstance(value, str):
+            return text(value)
+        if isinstance(value, Mapping):
+            return {text(str(k)): _CaseIdentityProjection.restore(v, tokens)
+                    for k, v in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [_CaseIdentityProjection.restore(child, tokens) for child in value]
+        return value
+
+
 class _TicketLock:
     """Minimal FIFO ticket lock for fair ledger admission."""
 
@@ -672,6 +774,17 @@ class StructuredRoleClient:
         self._inflight = InFlightRequestCoordinator()
 
     @contextmanager
+    def anonymous_case(self, *, aliases: Iterable[str], company_id: str, ticker: str = ""):
+        """Keep all calls in one case blind while retaining local source identities."""
+
+        previous = getattr(self._chain_state, "identity_projection", None)
+        self._chain_state.identity_projection = _CaseIdentityProjection(aliases, company_id, ticker)
+        try:
+            yield
+        finally:
+            self._chain_state.identity_projection = previous
+
+    @contextmanager
     def correction_chain(self, *, stage: str):
         """Scope no-progress request rejection to one logical correction chain.
 
@@ -720,6 +833,10 @@ class StructuredRoleClient:
     ) -> int:
         """Return the exact conservative byte-plus-output reservation for JSON."""
 
+        projection = getattr(self._chain_state, "identity_projection", None)
+        if projection is not None:
+            view, _ = projection.project({"system_prompt": system_prompt, "payload": payload})
+            system_prompt, payload = view["system_prompt"], view["payload"]
         _scan_payload(
             payload,
             allow_outcomes=allow_outcomes,
@@ -868,7 +985,37 @@ class StructuredRoleClient:
         )
         return str(value[decision_field]), usage, scores
 
-    def _complete_json(
+    def _complete_json(self, **kwargs: Any):
+        """Project at egress and restore response tokens before domain validation."""
+
+        projection = getattr(self._chain_state, "identity_projection", None)
+        if projection is None:
+            return self._complete_json_request(**kwargs)
+        view, tokens = projection.project({
+            "system_prompt": kwargs["system_prompt"], "payload": kwargs["payload"],
+        })
+        projected = {**kwargs, **view}
+        try:
+            value, usage, scores = self._complete_json_request(**projected)
+        except StructuredOutputInvalid as exc:
+            # Raw provider bytes remain in the transport diagnostic; L0 repair
+            # operates against the canonical local validation coordinate.
+            exc.raw_output = str(projection.restore(exc.raw_output, tokens))
+            raise
+        # Restoring supplied tokens is source projection, not permission for a
+        # model to guess an issuer. Check raw names before the inverse step.
+        _masked, guessed_tokens = projection.project(value, allow_tokens=True)
+        if guessed_tokens:
+            raise CandidateExecutionRejected(
+                kwargs["stage"], "model guessed target identity outside supplied tokens", usage
+            )
+        try:
+            restored = projection.restore(value, tokens)
+        except ValidationError as exc:
+            raise CandidateExecutionRejected(kwargs["stage"], str(exc), usage) from exc
+        return restored, usage, scores
+
+    def _complete_json_request(
         self,
         *,
         stage: str,

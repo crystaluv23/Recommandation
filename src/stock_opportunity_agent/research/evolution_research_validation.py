@@ -839,7 +839,9 @@ _EXPLICIT_QUARTER = re.compile(
 _RELATIVE_FUTURE_SCOPE = re.compile(
     r"\b(?:post[- ]cutoff|after\s+(?:the\s+)?(?:prediction|cutoff|as[- ]of)\s+"
     r"(?:date|time)|(?:next|following|subsequent)\s+"
-    r"(?:month|quarter|half|year|reporting\s+period))\b",
+    r"(?:month|quarter|half|year|reporting\s+period)|"
+    r"between\b.{0,80}\band\s+(?:the\s+)?end\s+of\s+"
+    r"(?:the\s+)?(?:six[- ]month\s+)?horizon)\b",
     re.IGNORECASE,
 )
 
@@ -987,7 +989,7 @@ def _future_source_date_refs(
     for match in _EXPLICIT_QUARTER.finditer(text):
         year_group = "year" if match.group("year") else "year_first"
         covered_year_offsets.add(match.start(year_group))
-        if _quarter_match_end(match) > prediction_date:
+        if _quarter_match_end(match) >= prediction_date:
             quarter_ref = match.group(0)
             if quarter_ref not in future:
                 future.append(quarter_ref)

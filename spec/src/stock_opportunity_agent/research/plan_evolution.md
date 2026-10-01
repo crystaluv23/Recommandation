@@ -30,6 +30,11 @@ on the Slow Signal engine.
 - Only committed pointers define completed rounds and cycles.
 - Staged artifacts remain recoverable but never count as progress.
 - Plan evaluation retains Anchor/Random lineage and fitness gating.
+- Case evaluation enters each participating caller's optional `anonymous_case`
+  scope before executing the complete research chain. The scope receives the
+  runtime case/company IDs and source identity inventory; original case records
+  and source hashes remain local and unchanged. Production transport owns the
+  model-facing projection and exact response restoration.
 - The ordinary capability backlog is derived only from Plan records reachable
   through committed round checkpoints. Each committed round refreshes it after
   archive, learning, and meta publication; staged attempts may contribute a

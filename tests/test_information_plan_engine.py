@@ -853,7 +853,7 @@ class InformationPlanRuntimeTests(TestCase):
             ],
         )
 
-    def test_predictor_projection_omits_repeated_full_basic_and_signal_evidence(self) -> None:
+    def test_predictor_preserves_visible_basic_info_and_deduplicates_signal_evidence(self) -> None:
         fixture = json.loads(
             (
                 PROJECT_ROOT
@@ -951,20 +951,15 @@ class InformationPlanRuntimeTests(TestCase):
         serialized = json.dumps(
             context, ensure_ascii=False, sort_keys=True, separators=(",", ":")
         )
-        self.assertLessEqual(
+        self.assertGreater(
             len(serialized.encode("utf-8")), MAX_PREDICTOR_CONTEXT_UTF8_BYTES
         )
-        # The append-only assembly guarantees bounded presence instead of
-        # omission: the long bootstrap projection survives as a truncated
-        # typed card (capped, flagged) even though the state also quotes a
-        # short literal from it — carry-over loss is the older defect.
+        self.assertTrue(context["context_contract"]["presentation_target_exceeded"])
         cards = context["basic_info"]["projection_cards"]
         self.assertEqual(len(cards), 1)
         self.assertEqual(cards[0]["projection_id"], "projection_large")
-        self.assertTrue(cards[0]["truncated"])
-        self.assertLessEqual(len(cards[0]["exact_text"]), 2_000)
-        self.assertIn("full-basic-marker-", cards[0]["exact_text"])
-        self.assertNotIn("full-basic-marker-" + "x" * 2_100, serialized)
+        self.assertFalse(cards[0]["truncated"])
+        self.assertEqual(cards[0]["exact_text"], "full-basic-marker-" + "x" * 31_000)
         self.assertEqual(
             context["basic_info"]["source_index"][0]["projection_ids"],
             ["projection_large"],

@@ -1,5 +1,13 @@
 # Evolution Signal Roles
 
+Standalone LLM Signal execution in Slow fixture/effectiveness/Update evaluation
+uses the same transport identity scope as Fast. The engine binds case owners to
+the runner once; each batch scopes its known source owner before projection,
+estimation and transmission, then restores request-local opaque tokens before
+literal-source validation. Source IDs, hashes and original case labels remain
+local. A batch cannot mix multiple bound owners. Nested Fast scopes unwind to
+their previous context; control failures propagate as before.
+
 H1 capacity deferral is valid only when its hypothesis portfolio fills the frozen
 slot limit. An empty or underfilled portfolio cannot classify measurable demand
 as deferred for lack of slots. This cross-field invariant joins the existing

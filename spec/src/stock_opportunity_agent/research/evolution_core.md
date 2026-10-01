@@ -22,10 +22,11 @@ Fast/Slow engine dependency.
   `document_channel` as citable evidence; Signals keep their frozen
   retrieval policies for cross-case comparability.
 - The assembled final context is a typed append-only artifact:
-  `basic_info.projection_cards` bound the visible bootstrap projections
-  (first visible projection per request guaranteed, disclosure counts for
-  the deferred tail) so stage-to-stage carry-over loss is structurally
-  impossible; `context_contract.assembly_blocks` records the typed block
+  `basic_info.projection_cards` preserve every bootstrap projection already
+  disclosed to the controller, with its complete visible text and stable ID.
+  The upstream projection budget still limits source disclosure; final assembly
+  must not apply a second prefix/tail cut that loses already-visible evidence.
+  `context_contract.assembly_blocks` records the typed block
   order and restricts numeric decision inputs to computed blocks. A
   `state_evolution` block appends each round's deterministic state delta —
   added/removed rows per field, evidence added by stable ref key with its
@@ -72,6 +73,9 @@ Fast/Slow engine dependency.
   ticker aliases retain their existing identity handling.
   URL path/query identity matching remains case-insensitive for short tickers;
   the prose exception does not expose identities in source links.
+  Derived single-word brands do not erase ordinary business vocabulary such
+  as energy, green, life, travel or critical; complete company names and explicit
+  supplied aliases retain their identity handling.
   Shared masking/projection helpers accept an explicit strict-inventory mode
   for aggregate Slow roles, avoiding repeated brand derivation. A bounded cache
   reuses compiled patterns for identical inventory/mode pairs.

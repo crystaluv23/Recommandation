@@ -1,6 +1,6 @@
 # Incremental Repair and Sourced Reflection Memory
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 

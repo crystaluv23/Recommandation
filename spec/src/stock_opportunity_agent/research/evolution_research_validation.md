@@ -1,5 +1,12 @@
 # Evolution Research Validation
 
+An actionable question cannot request complete calendar-quarter actuals at
+the midnight cutoff on that quarter's last day: the period has not completed.
+Explicit requests for facts between the prediction date and the end of the
+forward horizon are also post-cutoff requests, even without a literal future
+end date. Existing cutoff-bounded disclosure/schedule exceptions still apply;
+future actuals are corrected by typed local LLM edits, never silently rewritten.
+
 ## Purpose
 
 Validate point-in-time research state, evidence references, Signal results,

@@ -1,0 +1,208 @@
+{
+  "schema_version": "live-content-boundary-audit-v1",
+  "workspace": "runs/cold_start/minimal_rounds_v159_integrated",
+  "code_revision": "16ea862",
+  "status": "interrupted_for_confirmed_contract_defect",
+  "accepted_as_live_completion": false,
+  "cycle_state": {
+    "active_cycle": {
+      "completed_plan_rounds": 0,
+      "cycle_id": 1,
+      "cycle_mode": "fast_then_slow",
+      "input_signal_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "input_signal_registry_version": 6,
+      "phase": "fast_loop",
+      "start_round": 0,
+      "target_plan_rounds": 1
+    },
+    "current_signal_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+    "current_signal_registry_version": 6,
+    "initial_signal_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+    "initial_signal_registry_version": 6,
+    "last_completed_cycle": 0,
+    "run_contract_hash": "5f2f3d2ac467de5dedf7661af56ed418859bc329e1b35ee92ef6438609add3e9",
+    "schema_version": "dual-loop-cycle-state-v2"
+  },
+  "state": {
+    "last_completed_round": 0
+  },
+  "attempt_ledger_summary": {
+    "attempt_count": 87,
+    "in_progress": 0,
+    "interrupted": 1,
+    "reserved_cost": 1.16440436,
+    "actual_cost": 0.28497028
+  },
+  "interrupted_attempts_reconciled": 1,
+  "stage_request_counts": {
+    "information_plan_propose": 2,
+    "research_controller_initialize": 5,
+    "signal_retrieval_cards": 18,
+    "llm_signal_batch_execute": 17,
+    "llm_signal_batch_execute_correction": 6,
+    "research_controller_reflect": 20,
+    "signal_retrieval_cards_correction": 12,
+    "blind_predictor_predict": 4,
+    "blind_predictor_posthoc_reflect": 4,
+    "research_controller_reflect_correction": 1,
+    "blind_predictor_posthoc_reflect_correction": 1
+  },
+  "completed_case_diagnostics": [
+    {
+      "artifact": "runs/cold_start/minimal_rounds_v159_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "case_id": "cik_0000895728:20250930",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "is_surge": false,
+      "true_surge": false,
+      "visible_bootstrap_projection_count": 20,
+      "carried_projection_count": 6,
+      "omitted_visible_projection_ids": [
+        "projection_19eaf9758c334f0edb44be8d",
+        "projection_1a82f92f5204263404fef4f0",
+        "projection_2172a3ff35bc1a87e4b5d621",
+        "projection_30afab411137e61a879897b8",
+        "projection_58dbe397461fd19198e4e033",
+        "projection_81dd056dae9019ad52ecbf7b",
+        "projection_8b472e5f8337472403932eee",
+        "projection_8dfead1a3a197720a9f8d94c",
+        "projection_b7e5942a49a01763223440e5",
+        "projection_c2433ebfbd09ee96b4c17170",
+        "projection_c50ee40823e7ca56e425d0aa",
+        "projection_c75e3470e4cc7d6f31b07e99",
+        "projection_e02bd69d007e1cff7ac2c2a0",
+        "projection_efc03762de0f90eed943e611"
+      ],
+      "clipped_projection_ids": [
+        "projection_373ee04db38ff7d909bed38a"
+      ],
+      "remaining_need_count": 6
+    },
+    {
+      "artifact": "runs/cold_start/minimal_rounds_v159_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+      "case_id": "cik_0000701818:20250930",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "is_surge": true,
+      "true_surge": false,
+      "visible_bootstrap_projection_count": 21,
+      "carried_projection_count": 7,
+      "omitted_visible_projection_ids": [
+        "projection_09bbb6a880f675a274f4e780",
+        "projection_1e32e8650be3c0534351788b",
+        "projection_355328bc440c4bd776c6d93e",
+        "projection_39d10052dfbfc2cb58eb1721",
+        "projection_46292dbb0dc0dfa21966dffc",
+        "projection_511af3d35762e803ece24de8",
+        "projection_5965da9f20fd6c7f7417aa59",
+        "projection_99dac4d7c66be5e733d3bde1",
+        "projection_9cd3234bf54affbeb7b5f26a",
+        "projection_a3f27a0cc7c9f98f06407233",
+        "projection_d55531ea76fb6c161354d9b4",
+        "projection_d884df0b7a14618af4fcccea",
+        "projection_d95ac02dccab836c1f121f69",
+        "projection_fe31e850a9ef58b532ee11e5"
+      ],
+      "clipped_projection_ids": [
+        "projection_493120e38464967accc37b49",
+        "projection_aff98bcb8c2997c16fb71887"
+      ],
+      "remaining_need_count": 7
+    },
+    {
+      "artifact": "runs/cold_start/minimal_rounds_v159_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+      "case_id": "cik_0001174922:20250731",
+      "stop_reason": "finalized",
+      "termination_trigger": "no_signal_match",
+      "is_surge": true,
+      "true_surge": false,
+      "visible_bootstrap_projection_count": 20,
+      "carried_projection_count": 6,
+      "omitted_visible_projection_ids": [
+        "projection_20a7fce9850841d8d72aabd1",
+        "projection_21626bdaa456a80c9537ffd2",
+        "projection_3c453e15dfc0b9d8687b6825",
+        "projection_40ebdf0bf95671da56b8c2fc",
+        "projection_456b23ea868b255e78d68ea4",
+        "projection_65f75f7ee5b5d1e6f14e5fe1",
+        "projection_6a7273df17877c517baac5ca",
+        "projection_6ed706db1dc9047a36160344",
+        "projection_871c72405c4293d221c12c08",
+        "projection_8e33fb616d74119f805d7630",
+        "projection_9166c6b9b943574eacc3cba4",
+        "projection_ada73633f90816b16d8c97fb",
+        "projection_e244f6c33d3514dcbdfc22c1",
+        "projection_f714bb080d8299a4e6a781a0"
+      ],
+      "clipped_projection_ids": [
+        "projection_fe14cbdf988c58ad2adb4edc"
+      ],
+      "remaining_need_count": 6
+    },
+    {
+      "artifact": "runs/cold_start/minimal_rounds_v159_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+      "case_id": "cik_0001830043:20250930",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "is_surge": false,
+      "true_surge": false,
+      "visible_bootstrap_projection_count": 19,
+      "carried_projection_count": 6,
+      "omitted_visible_projection_ids": [
+        "projection_09797ffacfdca441eb702880",
+        "projection_1c59bd6b3ad5f2755fb5ae37",
+        "projection_2bf70897d1f4254a4884e649",
+        "projection_3ba0cc6afbab3de2d12bf081",
+        "projection_5d15a4dfffed2f35868ee310",
+        "projection_5f1267bf81f5d9525c07a9aa",
+        "projection_6beaabdc04b53cb58d9f6a7c",
+        "projection_ccb38bf834b0293360fe2ade",
+        "projection_ce927065d0aa16084957a2e6",
+        "projection_ddc5023f57d22febf25ad3e4",
+        "projection_f1b1dfdbccfa1ff5e6aac4d4",
+        "projection_f6aa6d2c7d4056cea1db1fe4",
+        "projection_fd1de3f9faf3c14da6c4fd04"
+      ],
+      "clipped_projection_ids": [
+        "projection_47c342ab8589889786aff629"
+      ],
+      "remaining_need_count": 6
+    }
+  ],
+  "findings": [
+    {
+      "kind": "unmasked_upstream_identity",
+      "request": "runs/cold_start/minimal_rounds_v159_integrated/requests/4609c44c6df1cd184d0d8ee0ca45c4a75c8865b71548ed99996b47e4d995d683.json",
+      "stage": "research_controller_initialize",
+      "observed_explicit_name_occurrences": 15,
+      "source_cik_and_xbrl_namespaces_present": true,
+      "fix": "case-scoped reversible identity projection at actual transport boundary"
+    },
+    {
+      "kind": "bootstrap_carry_over_loss",
+      "fix": "retain all already-disclosed projection text in typed Predictor assembly"
+    },
+    {
+      "kind": "semantic_review_remaining",
+      "observations": [
+        "bootstrap operating-report headers and early company-facts rows dominate some working views",
+        "future actual-results needs appear in Kinross terminal residual needs",
+        "distance to 2x threshold is near 50 percent by construction and is not an independently discriminative rejection feature"
+      ]
+    },
+    {
+      "kind": "post_cutoff_actual_question_detection_gap",
+      "fixture": "Kinross Q3 2025 actuals at 2025-09-30 midnight; announcements between prediction date and end of horizon",
+      "fix": "quarter-end inclusive boundary and forward-horizon relative scope; existing cutoff-bounded guidance exception retained",
+      "repair_authority": "typed future_information_unavailable paths; no mechanical reinterpretation"
+    }
+  ],
+  "offline_real_request_replay": {
+    "original_request": "runs/cold_start/minimal_rounds_v159_integrated/requests/4609c44c6df1cd184d0d8ee0ca45c4a75c8865b71548ed99996b47e4d995d683.json",
+    "roundtrip_equal": true,
+    "explicit_name_occurrences_after_projection": 0,
+    "opaque_token_count": 8
+  },
+  "successor_policy": "same frozen input manifest, labels and copied initial Registry; new committed code/contract; no score-based sample replacement",
+  "formal_f1_status": "not accepted: incomplete and anonymity-defective run"
+}

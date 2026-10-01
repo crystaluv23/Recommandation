@@ -8,7 +8,7 @@ import json
 import os
 import random
 import threading
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -406,21 +406,35 @@ class RuntimePlanEvaluator:
                 return truth
 
             try:
-                trajectory = execute_information_plan(
-                    plan=plan,
-                    company_id=case.company_id,
-                    case_id=case.case_id,
-                    company_basic_source=case.basic_info,
-                    prediction_time=case.prediction_time,
-                    signal_registry=signal_registry,
-                    signal_executor=executor,
-                    controller=self.controller,
-                    signal_agent=self.signal_agent,
-                    predictor=self.predictor,
-                    prediction_sink=sink,
-                    ground_truth_provider=truth_provider,
-                    limits=self.limits,
-                )
+                with ExitStack() as boundaries:
+                    callers: set[int] = set()
+                    for role in (self.controller, self.signal_agent, self.predictor,
+                                 self.llm_signal_runner):
+                        caller = getattr(role, "caller", None)
+                        scope = getattr(caller, "anonymous_case", None)
+                        if callable(scope) and id(caller) not in callers:
+                            callers.add(id(caller))
+                            boundaries.enter_context(scope(
+                                aliases=_case_identity_alias_inventory((case,)),
+                                company_id=case.company_id,
+                                ticker=str(case.basic_info.get("ticker") or
+                                           case.basic_info.get("symbol") or ""),
+                            ))
+                    trajectory = execute_information_plan(
+                        plan=plan,
+                        company_id=case.company_id,
+                        case_id=case.case_id,
+                        company_basic_source=case.basic_info,
+                        prediction_time=case.prediction_time,
+                        signal_registry=signal_registry,
+                        signal_executor=executor,
+                        controller=self.controller,
+                        signal_agent=self.signal_agent,
+                        predictor=self.predictor,
+                        prediction_sink=sink,
+                        ground_truth_provider=truth_provider,
+                        limits=self.limits,
+                    )
             except ValidationError as exc:
                 stage = (
                     exc.stage

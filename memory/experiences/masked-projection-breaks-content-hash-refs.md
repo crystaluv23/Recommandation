@@ -1,6 +1,6 @@
 # Masked Projection Must Never Precede Content-Hash Graph Construction
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 

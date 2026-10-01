@@ -3518,6 +3518,9 @@ class SignalEvolutionEngine:
             if callable(setter):
                 setter(discovery_aliases)
         self.llm_signal_runner = llm_signal_runner
+        runner_identity_setter = getattr(llm_signal_runner, "set_identity_cases", None)
+        if callable(runner_identity_setter):
+            runner_identity_setter(identity_population)
         self.evidence_resolver = evidence_resolver or EvidenceResolver(raw_info_store)
         self.priors = priors
         self.mining_config = mining_config
