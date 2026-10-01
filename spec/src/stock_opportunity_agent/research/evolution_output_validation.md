@@ -21,6 +21,14 @@ and apply only explicitly allowed deterministic recovery transforms.
   the proposal is scripted; this does not prove historical research quality.
 - The compact posthoc view retains runtime-computed metric cards from the original
   Predictor packet, so numerical price-shape reasoning remains checkable.
+- Explicitly linked positive endpoints and a percentage change in Predictor
+  prose receive a bounded arithmetic check. Signed declines, endpoint precision,
+  and percentage rounding are respected; separate-window statements, zero bases,
+  and unsupported grammar are not joined or inferred. A mismatch yields
+  `predictor_percent_change_arithmetic_invalid` with the exact reason/uncertainty
+  path. The correct source window is a semantic choice: no mechanical rewrite
+  guesses whether an endpoint or percentage should change. Existing scoped
+  correction edits only that item and revalidates the entire prediction.
 - Validation never infers write authority from diagnostic prose.
 - Scoped correction preserves unrelated valid siblings byte-for-byte.
 - A recovery transform must be generic to the declared schema; it must not

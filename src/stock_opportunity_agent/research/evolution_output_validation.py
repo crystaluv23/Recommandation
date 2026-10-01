@@ -441,6 +441,63 @@ def _market_data_absence_paths(
     ]
 
 
+_EXPLICIT_PERCENT_CHANGE = re.compile(
+    r"\bfrom\s+\$?(?P<first>\d[\d,]*(?:\.\d+)?)"
+    r"(?:\s+on\s+\d{4}-\d{2}-\d{2})?\s+to\s+"
+    r"\$?(?P<last>\d[\d,]*(?:\.\d+)?)"
+    r"(?:\s+on\s+\d{4}-\d{2}-\d{2})?\s*,\s*"
+    r"(?:(?:a|an)\s+|representing\s+(?:a\s+)?|with\s+(?:a\s+)?)?"
+    r"(?P<percent>[+-]?\d+(?:\.\d+)?)%\s*"
+    r"(?P<kind>return|gain|increase|rise|growth|decline|decrease|loss)\b",
+    re.IGNORECASE,
+)
+
+
+def _explicit_percent_change_issues(
+    fields: Iterable[tuple[str, Iterable[str]]],
+) -> list[ValidationIssue]:
+    """Check explicitly linked endpoints and percent changes, allowing rounding."""
+
+    issues: list[ValidationIssue] = []
+    for field, values in fields:
+        for index, text in enumerate(values):
+            for match in _EXPLICIT_PERCENT_CHANGE.finditer(text):
+                first, last = (
+                    float(match.group(name).replace(",", ""))
+                    for name in ("first", "last")
+                )
+                if first <= 0 or not all(math.isfinite(x) for x in (first, last)):
+                    continue
+                expected = (last / first - 1) * 100
+                if not math.isfinite(expected):
+                    continue
+                reported = float(match.group("percent"))
+                if match.group("kind").lower() in {"decline", "decrease", "loss"}:
+                    reported = -abs(reported)
+                rounding = []
+                for name in ("first", "last"):
+                    literal = match.group(name)
+                    decimals = len(literal.split(".", 1)[1]) if "." in literal else 0
+                    rounding.append(0.5 * 10 ** -decimals)
+                tolerance = max(
+                    0.5, 100 * (rounding[1] / first + (last / first) * (rounding[0] / first))
+                )
+                if math.isclose(reported, expected, rel_tol=0.01, abs_tol=tolerance):
+                    continue
+                path = f"{field}[{index}]"
+                issues.append(ValidationIssue(
+                    code="predictor_percent_change_arithmetic_invalid",
+                    message=(
+                        f"{path} links {first:g} to {last:g} with {reported:g}% "
+                        f"change, but those endpoints imply {expected:g}%. "
+                        "Correct this item using one consistent dated computed "
+                        "window; do not attach a different window's return."
+                    ),
+                    paths=(path,),
+                ))
+    return issues
+
+
 def _blind_prediction_with_baseline(
     value: Mapping[str, Any],
     final_context: Mapping[str, Any],
@@ -448,6 +505,12 @@ def _blind_prediction_with_baseline(
     """Reject a historical observation mislabeled as the runtime baseline."""
 
     prediction = _blind_prediction_from_role(value)
+    arithmetic_issues = _explicit_percent_change_issues((
+        ("key_reasons", prediction.key_reasons),
+        ("uncertainties", prediction.uncertainties),
+    ))
+    if arithmetic_issues:
+        raise StructuredValidationError(arithmetic_issues)
     if prediction.candidate_judgment.value in _POSITIVE_SURGE_JUDGMENTS and all(
         _explicitly_rejects_price_outcome(reason)
         for reason in prediction.key_reasons

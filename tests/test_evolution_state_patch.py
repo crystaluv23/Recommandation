@@ -241,6 +241,43 @@ class StatePatchTests(TestCase):
 
 
 class IncrementalRoleTests(TestCase):
+    def test_explicit_percent_change_checks_signed_changes_without_joining_windows(self):
+        from stock_opportunity_agent.research.evolution_output_validation import _explicit_percent_change_issues
+
+        correct = (
+            "Price rose from $48.60 on 2025-02-24 to $113.50 on 2025-09-29, a 133.5% return.",
+            "Price fell from $10.00 to $8.00, a 20% decline.",
+            "Price rose from $10 to $12, a 20% increase.",
+            "Price rose from $10 to $12; a different window returned 30%.",
+            "Profit rose from 0 to 12, a 20% return is not computable.",
+        )
+        self.assertEqual(_explicit_percent_change_issues((("key_reasons", correct),)), [])
+        wrong = "Price rose from $41.33 on 2025-08-01 to $113.50 on 2025-09-29, a 133.5% return."
+        issues = _explicit_percent_change_issues((("key_reasons", (wrong, correct[0])),))
+        self.assertEqual(len(issues), 1)
+        self.assertEqual(issues[0].paths, ("key_reasons[0]",))
+        self.assertIn("174.619", issues[0].message)
+
+    def test_percent_change_repair_uses_one_item_and_preserves_prediction_siblings(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+
+        invalid = {"candidate_judgment": "possible", "magnitude": "2-3x",
+                   "confidence": {"level": "low"}, "session_id": "test",
+                   "key_reasons": ["Price rose from $41.33 on 2025-08-01 to $113.50 on 2025-09-29, a 133.5% return that could support repricing.",
+                                   "A supported catalyst could drive share-price repricing."],
+                   "uncertainties": ["Keep the existing uncertainty."]}
+        corrected = "Price rose from $48.60 on 2025-02-24 to $113.50 on 2025-09-29, a 133.5% return that could support repricing."
+        def repair(call):
+            contract = call["payload"]["output_patch_contract"]
+            self.assertEqual(call["payload"]["required_change_paths"], ["key_reasons[0]"])
+            return patch(contract, {"op": "replace", "path": "key_reasons[0]", "value": corrected})
+        caller = PatchCaller(invalid, repair)
+        result = LLMBlindPredictor(caller).predict({}).value
+        self.assertEqual(result.key_reasons, (corrected, invalid["key_reasons"][1]))
+        self.assertEqual(result.uncertainties, tuple(invalid["uncertainties"]))
+        self.assertEqual(result.candidate_judgment.value, "possible")
+        self.assertEqual(result.magnitude.value, "2-3x")
+
     def run_role(self, caller, parser, **kwargs):
         return _complete_parsed_role(
             caller, stage="test_role", system_prompt="Return role contract.",

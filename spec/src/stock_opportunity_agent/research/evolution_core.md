@@ -79,6 +79,8 @@ Fast/Slow engine dependency.
   ticker, symbol, or exchange marker. This matches the outgoing transport guard
   and preserves ordinary text such as Gen Z, Q2, and AI. Full names and longer
   ticker aliases retain their existing identity handling.
+  Explicit identity fields and `known_aliases` array members always project exact
+  known identities, including short tickers; the exception is limited to prose.
   URL path/query identity matching remains case-insensitive for short tickers;
   the prose exception does not expose identities in source links.
   Derived single-word brands do not erase ordinary business vocabulary such

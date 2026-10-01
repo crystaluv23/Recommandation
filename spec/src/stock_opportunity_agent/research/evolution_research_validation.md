@@ -20,6 +20,13 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
 
 ## Invariants
 
+- A canonical numeric Signal claim retains its exact adoption string, plus the
+  shared Signal model view's `measurement_context`. Suppressing duplicate raw
+  numeric evidence text must not suppress source durations/dated anchors or
+  confuse a predicate's categorical value with stock-price direction. These
+  observations explain existing literals; they do not grant additional evidence
+  reference or repair authority.
+
 - Evidence must resolve to local immutable source spans.
 - Outcome and target-identity leakage checks remain fail closed.
 - State transitions preserve stable ids and cumulative research history.

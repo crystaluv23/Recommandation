@@ -25,6 +25,60 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_model_view_keeps_numeric_periods_without_changing_result_or_reflection_claim(self):
+        from stock_opportunity_agent.signal_library import signal_result_model_view
+        from stock_opportunity_agent.research.evolution_research_validation import _signal_batch_model_view
+        from stock_opportunity_agent.signal_library import SignalBatchResult
+
+        rows = [_row("2023-07-01", "2023-12-31", 100, "2024-01-20"),
+                _row("2024-07-01", "2024-12-31", 150, "2025-01-20")]
+        content = json.dumps({"cik": 1, "facts": {"us-gaap": {
+            "Revenues": {"units": {"USD": rows}}}}}, sort_keys=True, separators=(",", ":"))
+        spec = _spec("revenue_growth_yoy", "financial.revenue_growth_yoy", 0.2, 0.0)
+        result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(
+            _document("durations", content),))).execute_batch(
+                (spec.ref,), company_id="issuer_1", as_of=AS_OF).results[0]
+        original = result.to_dict()
+        view = signal_result_model_view(result)
+        context = view["interpretation"]["measurement_context"]
+        self.assertEqual([(row["start"], row["end"], row["val"])
+                          for row in context["source_observations"]],
+                         [("2024-07-01", "2024-12-31", 150), ("2023-07-01", "2023-12-31", 100)])
+        self.assertTrue(context["categorical_value_is_not_stock_direction"])
+        reflect = _signal_batch_model_view(SignalBatchResult((result,), 1))[0]
+        self.assertEqual(reflect["measurement_context"], context)
+        self.assertEqual(reflect["exact_claim_if_adopted"], result.interpretation)
+        self.assertEqual(result.to_dict(), original)
+
+    def test_numeric_model_context_does_not_invent_undated_or_invalid_observations(self):
+        from stock_opportunity_agent.signal_library import signal_result_model_view
+
+        raw = {"signal_id": "metric", "state": {"value": "positive"},
+               "interpretation": {"summary": "metric=3"},
+               "evidence": {"supporting": [{"exact_span": span} for span in (
+                   '{"val":3}', '{"end":"not-a-date","val":3}',
+                   '{"end":"2024-01-01","val":true}', 'prose 3')], "counter": []}}
+        view = signal_result_model_view(raw)
+        self.assertNotIn("source_observations", view["interpretation"]["measurement_context"])
+        self.assertNotIn("measurement_context", raw["interpretation"])
+        raw["state"]["value"] = "unavailable"
+        unavailable = signal_result_model_view(raw)
+        self.assertNotIn("measurement_context", unavailable["interpretation"])
+
+    def test_numeric_model_context_supports_both_fact_schemas_and_price_anchors(self):
+        from stock_opportunity_agent.signal_library import signal_result_model_view
+
+        rows = [{"start": "2024-01-01", "end": "2024-06-30", "value": 120,
+                 "tag": "Revenues", "unit": "USD"},
+                {"as_of_date": "2024-06-28", "adjusted_close": 48.60}]
+        raw = {"signal_id": "metric", "state": {"value": "negative"},
+               "interpretation": {"summary": "metric=-1"},
+               "evidence": {"supporting": [{"exact_span": json.dumps(row)} for row in rows],
+                            "counter": []}}
+        observations = signal_result_model_view(raw)["interpretation"]["measurement_context"]["source_observations"]
+        self.assertEqual(observations, [{"evidence_group": "supporting", "evidence_index": i, **row}
+                                        for i, row in enumerate(rows)])
+
     def test_signal_modality_is_explicit_without_rewriting_legacy_specs(self) -> None:
         from stock_opportunity_agent.models import ValidationError
 

@@ -620,6 +620,9 @@ def _signal_routing_result_view(
     """Return one prior conclusion without evidence literals or provenance."""
 
     model_view = signal_result_model_view(value)
+    model_view["interpretation"] = {
+        "summary": model_view["interpretation"]["summary"]
+    }
     return {
         key: model_view[key]
         for key in (
@@ -1721,6 +1724,10 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "threshold define the outcome: being near half that threshold is expected "
     "by construction and is not independent counter-evidence against a surge. "
     "Use supplied computed_metrics for quantitative price-trend statements; "
+    "keep each computed return with that card's own first/last prices and dates, "
+    "rather than attaching an unrelated Basic Info price. Respect Signal "
+    "measurement_context: categorical states are not stock-direction forecasts, "
+    "and dated cumulative financial observations are not individual-quarter totals. "
     "do not call a price change a doubling unless a computed card verifies it. "
     "If the needed computed window is absent, keep that comparison uncertain. This "
     "is a stock-price repricing outcome, not a requirement that revenue, "

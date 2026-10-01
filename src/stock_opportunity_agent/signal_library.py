@@ -910,9 +910,76 @@ def signal_result_model_view(
         }
         result["evidence"] = {"supporting": [], "counter": []}
         result["status"] = {"coverage": SignalCoverage.UNAVAILABLE.value}
+    else:
+        interpretation = dict(result.get("interpretation", {}))
+        measurement_context: dict[str, Any] = {
+            "categorical_value_is_not_stock_direction": True,
+        }
+        if str(interpretation.get("summary", "")).startswith(
+            str(result.get("signal_id", "")) + "="
+        ):
+            observations = _numeric_source_observations(result)
+            if observations:
+                measurement_context["source_observations"] = observations[:8]
+                measurement_context["deferred_observation_count"] = max(
+                    0, len(observations) - 8
+                )
+                measurement_context["period_rule"] = (
+                    "Use the exact reported start/end duration; fiscal-period "
+                    "labels do not turn a cumulative duration into one quarter. "
+                    "Keep a computed return with its own dated price anchors."
+                )
+        interpretation["measurement_context"] = measurement_context
+        result["interpretation"] = interpretation
     if isinstance(execution, Mapping):
         result["execution"] = {"status": execution_status}
     return result
+
+
+def _numeric_source_observations(result: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Project dated numeric literals without inferring missing periods or units."""
+
+    observations: list[dict[str, Any]] = []
+    evidence = result.get("evidence", {})
+    if not isinstance(evidence, Mapping):
+        return observations
+    for group in ("supporting", "counter"):
+        for index, item in enumerate(evidence.get(group, ())):
+            if not isinstance(item, Mapping):
+                continue
+            try:
+                raw = json.loads(item.get("exact_span", ""))
+            except (TypeError, ValueError):
+                continue
+            for row in (raw if isinstance(raw, list) else [raw]):
+                if not isinstance(row, Mapping):
+                    continue
+                date_key, value_key = (
+                    ("end", "val" if "val" in row else "value") if "end" in row
+                    else ("as_of_date", "adjusted_close")
+                )
+                number = row.get(value_key)
+                if (
+                    isinstance(number, bool)
+                    or not isinstance(number, (int, float))
+                    or not math.isfinite(number)
+                ):
+                    continue
+                dates = {key: row[key] for key in ("start", date_key) if key in row}
+                try:
+                    if date_key not in dates:
+                        continue
+                    for date in dates.values():
+                        datetime.strptime(date, "%Y-%m-%d")
+                except (TypeError, ValueError):
+                    continue
+                observations.append({
+                    "evidence_group": group, "evidence_index": index,
+                    **dates, value_key: number,
+                    **{key: row[key] for key in ("tag", "unit")
+                       if isinstance(row.get(key), str)},
+                })
+    return observations
 
 
 def signal_execution_failure_result(

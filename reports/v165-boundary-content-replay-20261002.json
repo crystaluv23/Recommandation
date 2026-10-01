@@ -1,0 +1,225 @@
+{
+  "external_calls": 0,
+  "original_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated",
+  "identity_reconstruction": {
+    "old_request": "6700e7ce2a7f51e627386b58deea9bd0fff9d5c6447a3b846dcbbdd76c09a64a",
+    "old_raw_known_alias": "MS",
+    "new_subject": {
+      "company_id": "[ANON_ID_0000]",
+      "known_aliases": [
+        "[ANON_ID_0004]",
+        "[ANON_ID_0000]",
+        "[ANON_ID_0005]",
+        "[ANON_ID_0006]"
+      ],
+      "source_scope_is_not_event_subject": true
+    },
+    "new_wire_bytes": 45927,
+    "source_document_ids": [
+      "alpha_vantage:cik_0000895421:earnings_call:4991cd407c0da0768c268d49",
+      "alpha_vantage:cik_0000895421:earnings_call:5d4f3600f93dd9c8e001d802",
+      "sec:cik_0000895421:000089542125000419"
+    ],
+    "method": "production Signal runner rebuilt from the same frozen authoritative source files; projection may differ from the historical window, not an identical-response or gain replay"
+  },
+  "consumer_reconstruction": [
+    {
+      "case_id": "cik_0001590364:20250731",
+      "numeric_views": [
+        {
+          "signal_ref": "revenue_growth_yoy:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "start": "2025-01-01",
+              "end": "2025-06-30",
+              "val": 1178317000
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "start": "2024-01-01",
+              "end": "2024-06-30",
+              "val": 770288000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        }
+      ],
+      "baseline_and_computed_cards_preserved": true,
+      "final_context_bytes": 54042
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "numeric_views": [
+        {
+          "signal_ref": "revenue_growth_yoy:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "start": "2024-06-29",
+              "end": "2025-06-27",
+              "val": 7355000000
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "start": "2023-07-01",
+              "end": "2024-06-28",
+              "val": 6663000000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        },
+        {
+          "signal_ref": "cash_reserves:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "end": "2025-06-27",
+              "val": 1481000000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        }
+      ],
+      "baseline_and_computed_cards_preserved": true,
+      "final_context_bytes": 68753
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "numeric_views": [
+        {
+          "signal_ref": "cash_reserves:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "end": "2025-03-31",
+              "val": 2070086000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        },
+        {
+          "signal_ref": "liquidity_runway_months:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "start": "2025-01-01",
+              "end": "2025-03-31",
+              "val": 133774000
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "end": "2025-03-31",
+              "val": 2070086000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        },
+        {
+          "signal_ref": "operating_cash_flow_margin:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "start": "2025-01-01",
+              "end": "2025-03-31",
+              "val": 1700397000
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "start": "2025-01-01",
+              "end": "2025-03-31",
+              "val": 133774000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        },
+        {
+          "signal_ref": "cash_to_current_liabilities_ratio:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "end": "2025-03-31",
+              "val": 2070086000
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "end": "2025-03-31",
+              "val": 2396795000
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        },
+        {
+          "signal_ref": "max_drawdown_1y:v2",
+          "categorical_value_is_not_stock_direction": true,
+          "source_observations": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "as_of_date": "2024-08-16",
+              "adjusted_close": 76.29
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "as_of_date": "2024-10-07",
+              "adjusted_close": 106.41
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 2,
+              "as_of_date": "2025-04-08",
+              "adjusted_close": 66.1
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 3,
+              "as_of_date": "2025-07-30",
+              "adjusted_close": 109.53
+            }
+          ],
+          "deferred_observation_count": 0,
+          "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+        }
+      ],
+      "baseline_and_computed_cards_preserved": true,
+      "final_context_bytes": 57735
+    }
+  ],
+  "explicit_arithmetic_repair": {
+    "case_id": "cik_0002023554:20250930",
+    "calls": 2,
+    "changed_paths": [
+      "key_reasons[0]"
+    ],
+    "candidate_judgment": "possible",
+    "magnitude": "2-3x",
+    "method": "offline supplied endpoint-only patch; production parser and exact permitted repair, not live model success"
+  }
+}

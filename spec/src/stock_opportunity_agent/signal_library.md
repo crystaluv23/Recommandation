@@ -446,6 +446,22 @@ insufficient for a canonical conclusion and this is not evidence of absence.
 An unavailable Signal cannot create a supporting/counter claim or resolve a
 research question.
 
+Available evidence-consuming views carry a runtime-owned `measurement_context` inside
+`interpretation`: categorical states describe the version's measured condition,
+not the stock's forecast direction. For numeric canonical interpretations, exact
+JSON evidence rows with a dated reported value also disclose bounded
+`source_observations` (`evidence_group/index`, raw `start/end/val` or `value`, or dated
+adjusted-close anchors). Reporting-period labels cannot replace actual duration
+boundaries; a cumulative duration must not be relabeled as an individual quarter.
+This is a projection of existing validated literals, not a new calculation or
+canonical SignalResult field. Missing/invalid/undated rows stay absent; source
+records, results, thresholds and scoring remain unchanged. H_reflect retains
+this context even when it suppresses repeated numeric evidence text, and final
+Predictor assembly receives the same interpretation context.
+Routing history stays conclusion-only: it excludes source observations and this
+evidence-context envelope, so selection does not gain citation authority or
+replay accumulated evidence through prior results.
+
 A Signal version may declare a small `routing_need_phrases` string array inside
 `parameters`. These phrases are conservative direct matches, not fuzzy search
 terms, and each phrase contains at least two normalized words so a bare topic noun

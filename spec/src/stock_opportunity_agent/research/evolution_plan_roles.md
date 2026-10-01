@@ -14,6 +14,13 @@ Price-baseline distance is outcome-definition arithmetic, not independent
 counter-evidence against a surge. Predictor instructions distinguish it from
 source-backed contrary evidence and require computed price-change cards for
 quantitative price-trend claims; an absent computed window remains uncertainty.
+Computed returns must retain their own first/last observations and dates;
+unrelated Basic Info prices cannot be attached to that return. Explicit prose
+of the form "from X to Y, a Z% return/increase/decrease" is checked for arithmetic
+consistency, with rounding tolerance and signed decrease handling. A contradiction
+creates a typed issue for that single reason/uncertainty; shared incremental
+correction preserves other valid fields and revalidates the complete prediction.
+This bounded check does not claim to verify arbitrary prose or forecast quality.
 
 ## Purpose
 

@@ -22,6 +22,11 @@ ledgers, exact-response caching, and the structured model-client boundary.
   Authoritative source records, projection IDs, source hashes and reflection
   indexes are never rewritten. Context is unwound on failure/cancellation and
   never inherited by another worker or case.
+  Explicit `company_id`, `ticker`, `symbol` and `known_aliases` fields are
+  identity coordinates: an exact member of the bound inventory is always
+  projected, including a one/two-character ticker. The short-ticker prose
+  exception does not apply to these fields or their array members. Ordinary
+  unmarked abbreviations in source prose keep the existing matching rules.
 - Cache reuse requires the exact canonical request hash.
 - Attempt, token, and cost ceilings fail closed before network I/O.
 - The attempt ledger admits a new request against settled cost: finalized

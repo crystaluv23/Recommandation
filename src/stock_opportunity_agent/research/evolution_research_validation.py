@@ -2222,6 +2222,9 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
         }
         if use_canonical_interpretation:
             row["exact_claim_if_adopted"] = result.interpretation
+            row["measurement_context"] = model_result["interpretation"][
+                "measurement_context"
+            ]
         else:
             row["interpretation"] = model_result["interpretation"]
         rows.append(row)

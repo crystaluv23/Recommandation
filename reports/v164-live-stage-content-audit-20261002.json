@@ -1,0 +1,130 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated",
+  "code_revision": "2ea1716c2d066af4a4b0bb1458c09b75f2607863",
+  "contract_hash": "2c38dd537ac3df2ce6b19a21d0b9ddad84c2fb0add30dc5034e9c1c35b6ac260",
+  "terminal": {
+    "assistant_interrupt": true,
+    "reason": "confirmed explicit known_aliases identity fields used short-ticker prose exception; stopped wrapper retries then interrupted child",
+    "wrapper_exec_exit_code": 143,
+    "preceding_provider_failures": 2,
+    "all_runtime_processes_absent": true
+  },
+  "committed": {
+    "fast_round": 0,
+    "slow_cycle": 0
+  },
+  "attempts": 217,
+  "attempt_status_counts": {
+    "completed": 215,
+    "failed": 2
+  },
+  "accounted_cost": 0.6608106400000001,
+  "request_stage_counts": {
+    "llm_signal_batch_execute_correction": 13,
+    "research_controller_initialize": 18,
+    "research_controller_initialize_correction": 11,
+    "signal_retrieval_cards_correction": 23,
+    "blind_predictor_predict": 16,
+    "signal_retrieval_cards": 36,
+    "blind_predictor_posthoc_reflect": 16,
+    "llm_signal_batch_execute": 35,
+    "research_controller_reflect": 51,
+    "blind_predictor_posthoc_reflect_correction": 8,
+    "information_plan_propose": 3,
+    "information_plan_propose_correction": 2
+  },
+  "saved_cases_by_plan": {
+    "plan_r0001_c01": 17
+  },
+  "technical_abstention_count": 1,
+  "technical_failures": [
+    {
+      "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v164_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.failure.json",
+      "case_id": "cik_0000895421:20250731",
+      "error_type": "CandidateExecutionRejected",
+      "input_hash": "14764ca02c7c905de05644563b8a8fa56bea2f8e326b33c136ea6bbc544478ee",
+      "message": "model guessed target identity outside supplied tokens",
+      "schema_version": "case-evaluation-failure-v1",
+      "stage": "llm_signal_batch_execute"
+    }
+  ],
+  "complete_plan_metrics": null,
+  "binary_f1_floor": 0.6,
+  "full_cycle_accepted": false,
+  "explicit_identity_field_disclosures": [
+    {
+      "request_hash": "03d49898385a75bc28d4f1a48cb0500fb8f350800e3fc9fae96ccf5691224783",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MP"
+      ]
+    },
+    {
+      "request_hash": "29d0fdfba307d7ad5dd0aa13ba44b3f27f51a6a89813391463a84cf858f86d70",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MU"
+      ]
+    },
+    {
+      "request_hash": "6700e7ce2a7f51e627386b58deea9bd0fff9d5c6447a3b846dcbbdd76c09a64a",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MS"
+      ]
+    },
+    {
+      "request_hash": "245944823725a148e13a15f42a9078303c1678c7a19f33c1d119628e1458fd5e",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MU"
+      ]
+    },
+    {
+      "request_hash": "1891f7ba46edb526fb2a1e01e536c8bb5856a909c917f52b9e4f7c2842a6c2f1",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MU"
+      ]
+    },
+    {
+      "request_hash": "04c92bcf04786404e675053db827d19042a892c8ecf21410545304cfd0b0c75b",
+      "stage": "llm_signal_batch_execute",
+      "unprojected_explicit_known_aliases": [
+        "MP"
+      ]
+    }
+  ],
+  "semantic_findings": [
+    {
+      "case": "cik_0001164727:20250731",
+      "boundary": "Predictor",
+      "issue": "baseline near half of 2x threshold still phrased as adverse evidence in reason, alongside actual price shape and operations risks"
+    },
+    {
+      "case": "cik_0001590364:20250731",
+      "boundary": "fact period to Predictor",
+      "issue": "Jan-Jun YTD revenue 1.178B /prior .770B described as Q2, while Q2 EBITDA347.8M is correctly sourced"
+    },
+    {
+      "case": "cik_0001174922:20250731",
+      "boundary": "Signal predicate polarity",
+      "issue": "unbounded runway negative is consistent low-runway predicate; Predictor uncertainty reveals ambiguous downstream meaning"
+    },
+    {
+      "case": "cik_0002023554:20250930",
+      "boundary": "computed return to Predictor",
+      "issue": "133.5391% return uses48.6 on2025-02-24 to113.5 on2025-09-29; key reason instead attaches41.33 on2025-08-01 (would imply174.619%)"
+    },
+    {
+      "boundary": "predicted magnitude",
+      "issue": "all saved positive predictions use2-3x; class collapse remains unaccepted research-quality risk"
+    }
+  ],
+  "acceptance_limits": [
+    "17 of24 cases saved in first Plan; no complete scored Plan, no Critic/Round/Slow",
+    "no formal F1 or research-gain claim from this partial, identity-defective diagnostic",
+    "strict per-Signal validation failures remain unknown; literal provenance does not prove semantic classification"
+  ],
+  "successor_replay": "reports/v165-boundary-content-replay-20261002.json"
+}

@@ -24,6 +24,46 @@ SOURCE = ('Enbridge Inc. reports Enbridge growth. enb:RevenueMember '
 
 
 class CaseIdentityTransportTests(TestCase):
+    def test_explicit_short_identity_fields_do_not_use_prose_exception(self):
+        aliases = ("Acme Bank", "MS", "AI", "Z")
+        original = {
+            "target_subject": {"company_id": "MS", "known_aliases": list(aliases)},
+            "ticker": "AI", "symbol": "Z", "peer": {"symbol": "OTHER"},
+            "text": "AI demand and Gen Z matter; fiscal Q2 is unchanged.",
+        }
+        projection = _CaseIdentityProjection(aliases, "cik_0000000001", "MS")
+        view, inverse = projection.project(original)
+        for item in view["target_subject"]["known_aliases"]:
+            self.assertTrue(item.startswith("[ANON_ID_"))
+        for item in (view["target_subject"]["company_id"], view["ticker"], view["symbol"]):
+            self.assertTrue(item.startswith("[ANON_ID_"))
+        self.assertEqual(view["text"], original["text"])
+        self.assertEqual(view["peer"], original["peer"])
+        self.assertEqual(projection.restore(view, inverse), original)
+
+    def test_short_alias_inventory_wire_estimate_cache_and_restore_agree(self):
+        aliases = ("Acme Bank", "MS")
+        payload = {"target_subject": {"known_aliases": list(aliases)}, "cash": 1203,
+                   "signals": [], "source_projection": [], "as_of": "2025-07-31T00:00:00+00:00"}
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            with client.anonymous_case(aliases=aliases, company_id="cik_0000000001", ticker="MS"):
+                kwargs = dict(stage="llm_signal_batch_execute", system_prompt="Return supplied fields.",
+                              payload=payload, allow_outcomes=False, max_output_tokens=4000)
+                estimate = client.estimate_json_request_tokens(
+                    **{key: value for key, value in kwargs.items() if key != "stage"})
+                with self.assertRaises(ExternalRequestPending) as pending:
+                    client.complete_json(**kwargs)
+                recorded = json.loads(Path(pending.exception.request_path).read_text())
+                request = recorded["request"]
+                self.assertEqual(estimate, request["wire_request"]["body_bytes"] + request["max_output_tokens"])
+                anonymous = json.loads(request["messages"][-1]["content"])
+                self.assertTrue(all(item.startswith("[ANON_ID_") for item in
+                                    anonymous["target_subject"]["known_aliases"]))
+                client.cache.store(recorded["request_hash"], {"json_output": anonymous,
+                                   "model": "deepseek-v4-flash", "usage": {"tokens": 10, "cost": 0}})
+                self.assertEqual(client.complete_json(**kwargs)[0], payload)
+
     def test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary(self):
         handle = "secfacts:0001309402:0001309402-22-000072:" + "a" * 64
         aliases = ("cik_0001309402",)

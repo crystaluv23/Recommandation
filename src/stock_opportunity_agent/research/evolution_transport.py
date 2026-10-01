@@ -210,6 +210,7 @@ class _CaseIdentityProjection:
         inventory = tuple(dict.fromkeys(
             alias for alias in (company_id, *aliases) if alias.strip()
         ))
+        self.exact_aliases = frozenset(alias.casefold() for alias in inventory)
         matchers = _compiled_identity_aliases(inventory, expand_aliases=expand_aliases)
         self.patterns = [row[1] for row in matchers]
         self.url_patterns = [row[2] for row in matchers]
@@ -305,11 +306,16 @@ class _CaseIdentityProjection:
             if key == "cik" and type(item) is int and item in self.ciks:
                 return token(item)
             if isinstance(item, str):
+                if (
+                    key in {"company_id", "ticker", "symbol", "known_aliases"}
+                    and item.casefold() in self.exact_aliases
+                ):
+                    return token(item)
                 return text(item)
             if isinstance(item, Mapping):
                 return {text(str(k)): visit(v, str(k)) for k, v in item.items()}
             if isinstance(item, (list, tuple)):
-                return [visit(child) for child in item]
+                return [visit(child, key) for child in item]
             return item
 
         return visit(value), restore
