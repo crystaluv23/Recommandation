@@ -106,8 +106,9 @@ visited-state 与最大修复步数阻止固定点死循环。
 
 v155 验收入口替换旧 harness，使用生产角色和 exact-request transport/ledger。
 从批准的开发 split 预先选择全局 Label Store 可覆盖、PIT 锚点与叙事来源可用的案例，
-冻结 source files/标签文件/Registry 的身份；四档各 1 Anchor + 1 Random，两个真实
-Proposed Plans，独立 Discovery 8 案。Locked Test 不读取。未覆盖日期明确记录，不
+冻结全局 Raw Info 原件引用/标签文件/Registry 的身份（不复制全局 oracle）；四档各 1 Anchor + 1 Random，两个真实
+Proposed Plans，独立 Discovery 16 案（8 control、4 2–3x、2 3–10x、2 10x+）。
+后者同时支持 direction 两侧的类别覆盖和 ge3 两侧各 4 案的既有效果检验下限。Locked Test 不读取。未覆盖日期明确记录，不
 通过修改日期或真值填补，也不在看到模型结果后换样本。
 
 验收包括：每种实际阶段的保存请求与响应、目录遗漏可达性、原文引用、状态迁移、

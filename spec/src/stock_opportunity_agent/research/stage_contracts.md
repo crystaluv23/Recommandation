@@ -100,9 +100,13 @@ Test. Selection precedes model calls, uses a fixed seed plus label-store and
 point-in-time source availability, and records every exclusion. Four Anchor
 and four Random cases retain all four strata and the existing fitness gates;
 two real proposed Plans exercise Critic and Round reflection. Independent
-Discovery issuers feed both Slow axes. This diagnostic subset is not a new
+Discovery uses 16 independent issuers (8 controls, 4 2-3x, 2 3-10x,
+2 10x+) so direction has both classes on dev/check and magnitude has four
+issuer-disjoint dev and four check cases, satisfying the existing paired floor. This diagnostic subset is not a new
 formal benchmark or a paired comparison with the v154 cohort. A copied
-Registry and local Raw Info snapshot avoid writes to historical workspaces.
+Registry avoids writes to historical evolution workspaces. Raw Info remains
+the shared global oracle outside this workspace; only source references and
+hashes are frozen locally.
 The entry point uses the production exact-request transport, external-attempt
 ledger, runtime evaluators, role adapters and commit pointers. Frozen run and
 input hashes are verified on resume. `--prepare-only` performs no external

@@ -112,9 +112,9 @@ def _verify_inputs(root):
     if _hash_file(LABELS / 'labels.jsonl') != frozen['label_records_hash']:
         raise ValidationError('label records changed')
     for row in frozen['source_files']:
-        path = root / row['local_path']
+        path = Path(row['source_path'])
         if _hash_file(path) != row['sha256']:
-            raise ValidationError(f'frozen Raw Info changed: {row["local_path"]}')
+            raise ValidationError(f'frozen Raw Info changed: {row["source_path"]}')
     return frozen
 
 
@@ -138,7 +138,10 @@ def prepare(root):
     selected = {}
     # Scope and seed are fixed; no score, model confidence or correction result
     # exists when this selection runs. Strata retain the established semantics.
-    for split, per_class in (('anchor', 1), ('evolution_validation', 1), ('discovery', 2)):
+    for split, targets in (
+            ('anchor', {label: 1 for label in EVALUATION_LABELS}),
+            ('evolution_validation', {label: 1 for label in EVALUATION_LABELS}),
+            ('discovery', {'non_surge': 8, '2_3x': 4, '3_10x': 2, '10x_plus': 2})):
         candidates = sorted(getattr(approved, split), key=lambda case:
                             hashlib.sha256(('42:' + case.case_id).encode()).hexdigest())
         groups = defaultdict(list)
@@ -153,7 +156,7 @@ def prepare(root):
             case = replace(original, ground_truth=GroundTruth(
                 realized_max_multiple=truth['realized_max_multiple']))
             group = evaluation_label(case)
-            if len(groups[group]) >= per_class or case.company_id in issuers:
+            if len(groups[group]) >= targets[group] or case.company_id in issuers:
                 continue
             if case.company_id not in market_cache:
                 market_cache[case.company_id] = tuple(RawInfoDocument.from_dict(_read(path))
@@ -182,10 +185,10 @@ def prepare(root):
             groups[group].append(case)
             issuers.add(case.company_id)
             print(f'  select {split}: {case.case_id} [{group}]', flush=True)
-            if all(len(groups[label]) == per_class for label in EVALUATION_LABELS):
+            if all(len(groups[label]) == targets[label] for label in EVALUATION_LABELS):
                 break
-        missing = {label: per_class-len(groups[label]) for label in EVALUATION_LABELS
-                   if len(groups[label]) < per_class}
+        missing = {label: targets[label]-len(groups[label]) for label in EVALUATION_LABELS
+                   if len(groups[label]) < targets[label]}
         if missing:
             atomic_write_json(root / 'preparation_failure.json', {'split': split, 'missing': missing,
                                                                   'exclusions': exclusions})
@@ -195,14 +198,7 @@ def prepare(root):
     source_files = []
     for company_id in sorted(companies):
         for source in files_by_company[company_id]:
-            relative = source.relative_to(ORACLE)
-            destination = root / 'raw_info' / relative
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            if destination.exists() and _hash_file(destination) != _hash_file(source):
-                raise ValidationError('partial preparation source changed')
-            shutil.copy2(source, destination)
-            source_files.append({'source_path': str(source), 'local_path': str(destination.relative_to(root)),
-                                 'sha256': _hash_file(destination)})
+            source_files.append({'source_path': str(source), 'sha256': _hash_file(source)})
     registry_root = root / 'signals'
     if not registry_root.exists():
         shutil.copytree(HISTORY / 'signals', registry_root)
@@ -232,7 +228,7 @@ def run(root, frozen):
         return
     registry = SignalRegistry(root / 'signals', candidate_root=root / 'signals_candidates')
     initial = registry.freeze()
-    oracle = RawInfoOracle.load_or_create(root / 'raw_info')
+    oracle = RawInfoOracle.load_or_create(ORACLE)
     contract_path = root / 'run_contract.json'
     if contract_path.exists():
         contract = EvolutionRunContract.from_dict(_read(contract_path)['contract'])
@@ -291,7 +287,7 @@ def run(root, frozen):
         ledger=ledger, allow_external=True, acknowledged_contract_hash=contract.contract_hash,
         on_progress=emit,
     )
-    store = RawInfoStore(root / 'raw_info')
+    store = RawInfoStore(ORACLE)
     resolver = _build_evidence_resolver(root, store, contract=contract, allow_data_external=True,
                                         environ=None, cycle_id=cycle['cycle_id'])
     limits = contract.limits
@@ -334,7 +330,7 @@ def run(root, frozen):
         research_target_reveal=build_target_group_manifest(dataset.discovery, MAGNITUDE_GE3_CONTRACT),
         research_target_sampling=build_target_sampling_manifest(
             dataset.discovery, MAGNITUDE_GE3_CONTRACT, cycle_id=cycle['cycle_id'],
-            base_seed=contract.contract_hash, dev_limit=2, check_limit=2),
+            base_seed=contract.contract_hash, dev_limit=4, check_limit=4),
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine, signal_engine=signal_engine, signal_registry=registry,

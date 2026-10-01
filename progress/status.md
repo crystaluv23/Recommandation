@@ -1,6 +1,6 @@
 # Status
 
-2026-10-01：综合机制统一实施中。架构与共同阶段契约已同步；输入依赖审计接入生产 transport，Mining 返回真实分页目录/有界 memory、单份 span 和非负预算；混合错误先执行类型化机械修复，保存中间修复结果，再仅纠正剩余义务。修复 stale resolved/retained need 的双方权限与 v154 VSAT expectations 复数误拒。`run_minimal_rounds.py` 已替换为真实生产 evaluator/Proposer/Critic/Round/Mining/Update/transport/ledger 和同一复制 Registry；v155 输入已在调用前冻结（4 Anchor + 4 Random，全四档；独立 Discovery 8）。历史未覆盖标签日期显式排除，未读取 Locked Test，不把不同 cohort 的 F1 当成 v154 配对收益。离线专项检查通过，完整回归及真实 Fast + Slow 内容/F1 验收进行中。
+2026-10-01：综合机制统一实施中。架构与共同阶段契约已同步；输入依赖审计接入生产 transport，Mining 返回真实分页目录/有界 memory、单份 span 和非负预算；混合错误先执行类型化机械修复，保存中间修复结果，再仅纠正剩余义务。修复 stale resolved/retained need 的双方权限与 v154 VSAT expectations 复数误拒。`run_minimal_rounds.py` 已替换为真实生产 evaluator/Proposer/Critic/Round/Mining/Update/transport/ledger 和同一复制 Registry；v157 输入已在调用前冻结（4 Anchor + 4 Random，全四档；独立 Discovery 16，direction/ge3 两侧均有两组，ge3 check 4 案满足既有下限）。历史未覆盖标签日期显式排除，未读取 Locked Test，不把不同 cohort 的 F1 当成 v154 配对收益。离线专项检查通过，完整回归及真实 Fast + Slow 内容/F1 验收进行中。
 
 2026-10-01：完成 Fast → Slow context 审计（分析文档，无生产变更）。按当前代码/spec、v154 的 328 条 journal、v143 的 1,366 个保存请求以及 v142 Round 请求，逐环节对照必要输入、实际输入、重复与缺失；历史请求与当前实现分别标记，并对历史 request hash/attempt 做关联。确认 Mining 目录内容未回传、light budget 负值仍继续、重复 feedback，以及 v154 的 axis/Registry 输入衔接问题；记录现有 routing 投影、reflect patch、Signal pending 重试和候选分模块缓存。产物：`reports/fast-slow-context-audit-20261001.md` 与机器审计表；统一检测/修复契约仅为建议，未修改 runtime、未执行 live cycle。
 
