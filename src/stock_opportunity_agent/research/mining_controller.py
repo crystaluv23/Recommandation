@@ -294,6 +294,7 @@ class LabelAwareMiningController:
         self._documents: dict[str, Any] = {}
         self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
+        self._read_progress: dict[tuple[str, str, int, int], dict[str, Any]] = {}
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -412,6 +413,11 @@ class LabelAwareMiningController:
         }
         if self._last_action_result is not None:
             view["last_action_result"] = dict(self._last_action_result)
+        if self._read_progress:
+            view["narrative_read_progress"] = bounded_entry_page(
+                list(reversed(list(self._read_progress.values()))),
+                max_items=max(1, len(self._read_progress)),
+            )
         view["available_actions"] = [
             action for action in ACTIONS
             if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit)
@@ -985,6 +991,17 @@ class LabelAwareMiningController:
             entry["title"] = event.title
             entry["source_family"] = event.source_family
             entry["available_at"] = event.available_at
+        progress_key = (*identity, offset, length)
+        previous_receipt = self._read_progress.pop(progress_key, {})
+        self._read_progress[progress_key] = {
+            "document_ref": document_ref,
+            "content_hash": document.content_hash,
+            **{key: entry[key] for key in (
+                "offset", "length", "verbatim_hash", "has_readable_text",
+                "next_readable_start",
+            )},
+            "read_count": previous_receipt.get("read_count", 0) + 1,
+        }
         self._last_action_result = {"action": "read_span", **dict(entry)}
         self._append(
             "read_span",
@@ -1538,6 +1555,12 @@ class LabelAwareMiningController:
                 for entry in window["entries"]:
                     card = {**entry, "family": family["family"], "window": window["window"]}
                     card["title"] = _mask_identity_values(card["title"], self.identity_aliases, expand_aliases=False)
+                    reads = [{key: value for key, value in row.items()
+                              if key not in {"document_ref", "content_hash"}}
+                             for row in self._read_progress.values()
+                             if row["document_ref"] == card["document_ref"]]
+                    if reads:
+                        card["read_windows"] = reads
                     cards.append(card)
         return bounded_entry_page(cards, cursor=cursor)
 

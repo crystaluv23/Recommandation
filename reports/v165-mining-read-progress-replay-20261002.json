@@ -1,0 +1,25 @@
+{
+  "network_calls": 0,
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "source_document_id": "sec:cik_0001746129:000114036125026134",
+  "source_content_hash": "4cd1152c2e2b0a7351db39e8a7bfbe4e1dfa0da8a213e75ea563d6de06839229",
+  "paid_request_hashes": [
+    "bf415d61eeef2b9889caf718455dce477ca903f973e7af50696e23e01a3191db",
+    "f9fdd7904d6b9f4e74475efaf025889a0bfafc6311754665834b842d7c90cfad",
+    "e72c9fe016c510f6a54a313dba6228dccdca07009f8fef9f6cf2b023a4d43039",
+    "440218cbcf2f932f56ca5476d1d69f1ef9284535369f498248a148bd0ea3b253",
+    "20206a54c76ce84fe7b74030f5d4cffdef6da5ecb11da2cba233c8e1f56a83b2",
+    "63aa71bdb538048da978e6b764b03130bdc81afa0f7331e85654b7564daf0bb7",
+    "3f925819ae0f3dc8d0a2064b87ab52f4294258480a4ae0435ca316cd250b9b83"
+  ],
+  "replay_calls": 8,
+  "paid_prefix_replayed": 7,
+  "read_count": 2,
+  "unique_immutable_read_ranges": 1,
+  "receipt_survives_catalog": true,
+  "event_document_coordinate_binding_preserved": true,
+  "raw_text_not_duplicated_in_progress_view": true,
+  "original_budget_charges_preserved": true,
+  "status": "pass",
+  "limits": "Source-family availability comes from the frozen actual controller input; only the exact repeated target source is loaded into an in-memory PIT store; full corpus fetch coverage is not evaluated. The final deferred action is a replay harness stop, not a live outcome or completion proof."
+}

@@ -764,6 +764,27 @@
       "scope": "Mining incremental progress",
       "issue": "At least three requests repeat same event/offset/length; intervening catalog action replaces previous read receipt and no durable read-progress summary is supplied. Raw source read succeeded; replaying it adds no evidence.",
       "status": "requires persistent read progress and no-op semantics without replacing exact source evidence"
+    },
+    {
+      "scope": "Round reflection",
+      "request_hash": "f5510fc9046d6400e78fc28e9681ad229e2aa58fbeec7033e4b8c1969dce9ea6",
+      "path": "reflection_items[0].brief/detail/scope",
+      "issue": "Claims combined two-Plan counts but uses c01-only TP=11, predictions=16, underestimates=6 and truth supports; two distinct Plan results have no runtime-owned joint metric. The first source_ref resolves one case, not the claimed round aggregation.",
+      "status": "pending exact owner/metric binding checks and no invented aggregate"
+    },
+    {
+      "scope": "Round reflection",
+      "request_hash": "f5510fc9046d6400e78fc28e9681ad229e2aa58fbeec7033e4b8c1969dce9ea6",
+      "path": "reflection_items[1].brief",
+      "issue": "Calls c01 full technical completion (22/24), while its own detail correctly reports .9167 and two technical exclusions; accepted factual wording contradicts runtime technical completion.",
+      "status": "pending cross-field/owner consistency check"
+    },
+    {
+      "scope": "Critic reflection",
+      "request_hash": "6c05483e4fd6e023c063d97e95c01b7aea6e6fc60307bafedd8fd9fe656563ee",
+      "path": "reflection_items[0].detail",
+      "issue": "Descriptive class collapse is grounded, but asserts a causal downstream consequence of evidence-weighting guidance within kind=fact; diagnostics do not establish that cause.",
+      "status": "pending fact versus hypothesis semantic boundary"
     }
   ],
   "acceptance": {
@@ -776,11 +797,11 @@
   "limits": "Current live prefix, not a terminal cycle. Exact assembly transport audit covers all 46 persisted real predictions, not semantic truth. Pending source content defects prevent overall acceptance.",
   "verification": {
     "full_suite": {
-      "tests": 1278,
+      "tests": 1279,
       "result": "pass",
       "implementation_root": "/Users/l/.codex/worktrees/shared-stage-content/Recommandation/src",
       "readonly_historical_fixture_root": "/Users/l/Project/Recommandation",
-      "method": "Discover frozen primary tests, replace only the updated final-assembly prompt assertion, append four new regression methods; all imports use isolated source."
+      "method": "Discover frozen primary tests, replace only the updated final-assembly prompt assertion, append five new regression methods; all implementation imports use isolated source and real historical fixtures."
     },
     "lint": {
       "result": "environment_failure",
@@ -910,5 +931,13 @@
       ],
       "current_task_text_and_git_checks": "pass"
     }
+  },
+  "read_progress_repair": {
+    "report": "v165-mining-read-progress-replay-20261002.json",
+    "paid_actions_replayed": 7,
+    "status": "pass",
+    "runtime_budget_charges_preserved": true,
+    "real_live_application": false,
+    "remaining": "Progress metadata is retained; duplicate no-op semantics and incremental backlog disposition are not yet implemented."
   }
 }

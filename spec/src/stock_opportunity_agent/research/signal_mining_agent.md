@@ -189,6 +189,13 @@ observation cycle.
   fact/event/relation counts, per-concept positive/control case coverage) and
   the `last_action_result` of the previous executed action. A view that hides
   what fetches already collected invites redundant sweeps and is a defect.
+- Narrative read progress survives intervening catalog and computation actions.
+  Every unique immutable document/hash/raw range retains its receipt metadata
+  (coordinates, readable status, hash and next readable offset), without another
+  raw-text copy. Repeated reads update a count instead of growing the view.
+  A bounded whole-receipt page discloses omitted ranges; the evidence directory
+  also lists each document's read windows. Progress metadata proves a read,
+  not its semantic sufficiency, and does not alter existing budget charges.
 - A candidate's measurement observable must be a genuinely new measurement:
   it may not reuse or version the base name of any Signal in the stable
   catalog, because changing an existing Signal belongs to the unchanged

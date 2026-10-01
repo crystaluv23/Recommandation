@@ -888,6 +888,49 @@ class NarrativeInterfaceTests(unittest.TestCase):
         )
         self.assertTrue(reads[0].output_hash)
 
+    def test_read_progress_survives_catalog_and_coalesces_document_aliases(self):
+        for second_offset in (0, 50):
+            with self.subTest(second_offset=second_offset):
+                cases, store = self._fixture()
+                def first_read(view):
+                    return {"action": "read_span", "event_ref": view["known_event_refs"][0],
+                            "offset": 0, "length": 100, "rationale": ["Read source."]}
+                def after_catalog(view):
+                    self.assertEqual(view["last_action_result"]["action"], "inspect_catalog")
+                    receipts = view["narrative_read_progress"]["items"]
+                    self.assertEqual(len(receipts), 1)
+                    receipt = receipts[0]
+                    self.assertNotIn("masked", receipt)
+                    self.assertNotIn("exact_span", receipt)
+                    self.assertEqual(receipt["read_count"], 1)
+                    cards = view["last_action_result"]["result"]["items"]
+                    card = next(row for row in cards if row["document_ref"] == receipt["document_ref"])
+                    self.assertEqual(card["read_windows"][0]["verbatim_hash"], receipt["verbatim_hash"])
+                    return {"action": "read_span", "document_ref": receipt["document_ref"],
+                            "offset": second_offset, "length": 100, "rationale": ["Read document."]}
+                def finish(view):
+                    receipts = view["narrative_read_progress"]["items"]
+                    self.assertEqual(len(receipts), 1 if second_offset == 0 else 2)
+                    self.assertEqual(receipts[0]["offset"], second_offset)
+                    self.assertEqual(receipts[0]["read_count"], 2 if second_offset == 0 else 1)
+                    document = controller._document_by_ref(receipts[0]["document_ref"])
+                    import hashlib
+                    self.assertEqual(receipts[0]["content_hash"], document.content_hash)
+                    self.assertEqual(receipts[0]["verbatim_hash"], hashlib.sha256(
+                        document.content[second_offset:second_offset + 100].encode()).hexdigest())
+                    return {"action": "record_deferred", "rationale": ["Stop with receipts retained."]}
+                model = ScriptedMiningDecisionModel([
+                    {"action": "fetch_evidence", "case_refs": ["case-001"],
+                     "source_families": ["news"], "max_documents": 2, "rationale": ["Fetch source."]},
+                    first_read,
+                    {"action": "inspect_catalog", "scope": "evidence", "rationale": ["Inspect directory."]},
+                    after_catalog, finish,
+                ])
+                controller = self._controller(model, cases, store, seed="discovery")
+                result = controller.run()
+                self.assertEqual(result.narrative_reads, 2)
+                self.assertEqual(controller._browse_used, 2)
+
     def test_modality_obligation_blocks_domain_terminal_until_explored(self):
         cases, store = self._fixture()
 

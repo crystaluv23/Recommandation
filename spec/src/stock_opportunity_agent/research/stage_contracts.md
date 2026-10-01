@@ -49,6 +49,9 @@ an explicit byte cap. Omitted entries are not treated as absent. Evidence
 catalog requests return actual titled rows, counts and pagination in the next
 model input, not merely the names of result fields. Raw spans appear once in
 the current action result with provenance, not as a repeated stale second copy.
+Read progress persists separately as bounded receipt metadata, so another action
+cannot erase prior document/range coverage. Exact original text remains reachable
+through source coordinates; metadata does not substitute for that text.
 
 ## Detection and no progress
 
