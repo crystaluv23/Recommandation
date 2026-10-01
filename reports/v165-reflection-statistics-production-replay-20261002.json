@@ -1,0 +1,586 @@
+{
+  "network_calls": 0,
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "immutable_originals": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/plans/plan_r0001_c01/record.json": "5564af836ed23610dec9bde987f3ce6f073a04452aa5e86ef50bd85e1878a4e3",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/plans/plan_r0001_c02/record.json": "19476b60e2345a0f29987c987ad5860863b57bd109ea573b8b7aa078d4a92cbc",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated/meta/round-0001.json": "45c1055baa9040b07c473ce445a94ceb045f3db4a599468c0f674486005dde02"
+  },
+  "new_authorship_rejections": [
+    {
+      "item_index": 0,
+      "path": "reflection_items[0].brief",
+      "error": "evaluation statistics require runtime_plan_statistics support, not a case or authored lesson source",
+      "repair_dependencies": [
+        "reflection_items[0].source_refs",
+        "reflection_items[0].scope.plan_refs",
+        "reflection_items[0].scope.case_refs",
+        "reflection_items[0].outcome_claims",
+        "reflection_items[0].detail"
+      ]
+    },
+    {
+      "item_index": 1,
+      "path": "reflection_items[0].brief",
+      "error": "evaluation statistics require runtime_plan_statistics support, not a case or authored lesson source",
+      "repair_dependencies": [
+        "reflection_items[0].source_refs",
+        "reflection_items[0].scope.plan_refs",
+        "reflection_items[0].scope.case_refs",
+        "reflection_items[0].outcome_claims",
+        "reflection_items[0].detail"
+      ]
+    },
+    {
+      "item_index": 3,
+      "path": "reflection_items[0].detail",
+      "error": "evaluation statistics require runtime_plan_statistics support, not a case or authored lesson source",
+      "repair_dependencies": [
+        "reflection_items[0].source_refs",
+        "reflection_items[0].scope.plan_refs",
+        "reflection_items[0].scope.case_refs",
+        "reflection_items[0].outcome_claims"
+      ]
+    },
+    {
+      "item_index": 4,
+      "path": "reflection_items[0].detail",
+      "error": "evaluation statistics require runtime_plan_statistics support, not a case or authored lesson source",
+      "repair_dependencies": [
+        "reflection_items[0].source_refs",
+        "reflection_items[0].scope.plan_refs",
+        "reflection_items[0].scope.case_refs",
+        "reflection_items[0].outcome_claims"
+      ]
+    }
+  ],
+  "legacy_statistics_unchecked_disclosed": [
+    "reflection:f8c28fde9377f83142651263eec5c7b2a39b89393a56cd7aebc9b3a8ff844ede",
+    "reflection:96d6c8ec2fe912d29f48db812746ebfd0d8e9c598b6d094c4bd6a1e9b615f984",
+    "reflection:18785f636ba0399d638c1f8617145b6e804522eda5c9ebcca99df23c5341796e",
+    "reflection:2c670904f3572837e851b7948bf9bb373cbf49da2959a5aa92ea5e01285266ee"
+  ],
+  "runtime_statistics_sources": 10,
+  "critic_round_archive_identical_handles": [
+    {
+      "plan_id": "plan_r0001_c01",
+      "group": "metrics",
+      "source_ref": "reflection_source:868c57d104326140f4cd0d60fd421a5d230e78b06ffc58cad5bc04ced743a183"
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "group": "magnitude_diagnostics",
+      "source_ref": "reflection_source:bf5990eb70bc6b1b1d88e0876c30659b2346b32965c3ea0161dfd6d0749d8525"
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "group": "technical_completion",
+      "source_ref": "reflection_source:79359d91f6b5e0ff8132028060c8b6bbee663a82f8b054297f9f9c9e18d5bfd5"
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "group": "metrics",
+      "source_ref": "reflection_source:7b398166c62a403fadd137696b7537619d907b36fa33afb0d5940979e4411734"
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "group": "magnitude_diagnostics",
+      "source_ref": "reflection_source:75d646ee8319bdd0e320da5dbc0074d44050be5ced7be09c78c1ab4a72e66709"
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "group": "technical_completion",
+      "source_ref": "reflection_source:276d4a14ab69682829e89970e771d427b0d528c426061509e379ac7692ac120a"
+    }
+  ],
+  "production_local_repairs": [
+    {
+      "original_item_index": 0,
+      "calls": 2,
+      "repaired_item": {
+        "item_ref": "reflection:c75da6428264c70e7518f4dc08e72f9c263bf263840554a62190c9069df232e0",
+        "level": "round",
+        "owner_ref": "reflection_round:e4aa8984bd111a583943c55533a271e759b8e86a05c65e7a995a55e7faba733d",
+        "category": "useful_signals",
+        "kind": "fact",
+        "brief": "Both Plans each have underestimate_count=6 and overestimate_count=0 in research-completed magnitude diagnostics.",
+        "detail": "plan_r0001_c01 missed_surge_count=2 in research-completed magnitude diagnostics; plan_r0001_c02 missed_surge_count=4. Each Plan has predicted_2-3x=16, predicted_3-10x=0 and predicted_10x+=0. These are per-Plan observations, not pooled independent cases or proof of inability to express a larger class.",
+        "scope": {
+          "case_refs": [
+            "case:6b2ac18839160fcaa8efab8c6ab105433192b1478f19e0cbdc48ab1a32d6a59d"
+          ],
+          "plan_refs": [
+            "reflection_plan:1e8766e631c7e3d60c2e880d1894e4342ac2ced4515298b21e0ad271270d69f3",
+            "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+          ],
+          "conditions": "Applies to the combined cohort of the two newly sampled child Plans at round 1, where binary surge calls were frequently correct but magnitude classes were never predicted above 2-3x."
+        },
+        "limitations": [
+          "The magnitude_diagnostics aggregate does not identify which individual cases were underestimated; per-case attribution requires reading the underlying case reflections.",
+          "A one-sided underestimate pattern in one round does not prove the magnitude head is structurally incapable of emitting higher classes; it may reflect the specific case mix.",
+          "The two child Plans share the same parent (plan_manual_v1) and the same evaluation snapshot, so they are not independent replications."
+        ],
+        "source_refs": [
+          "reflection_source:bf5990eb70bc6b1b1d88e0876c30659b2346b32965c3ea0161dfd6d0749d8525",
+          "reflection_source:75d646ee8319bdd0e320da5dbc0074d44050be5ced7be09c78c1ab4a72e66709",
+          "reflection_source:8c91ddd48a9e87f555a9a2123e3621ec0446bb5b0dafbac6cf48e241eaff8c8d"
+        ],
+        "counter_refs": [],
+        "outcome_claims": [
+          {
+            "axis": "binary",
+            "correct": true,
+            "source_ref": "reflection_source:8c91ddd48a9e87f555a9a2123e3621ec0446bb5b0dafbac6cf48e241eaff8c8d"
+          }
+        ],
+        "evidence_status": "sources_checked"
+      },
+      "valid_sibling_unchanged": true,
+      "sibling_fixture": "Original item 3 text plus runtime magnitude references prepared offline before the initial request",
+      "reload_and_rebase_source_resolution": true,
+      "patch_permissions": [
+        {
+          "op": "replace",
+          "path": "reflection_items[0].brief",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].brief",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:868c57d104326140f4cd0d60fd421a5d230e78b06ffc58cad5bc04ced743a183"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:bf5990eb70bc6b1b1d88e0876c30659b2346b32965c3ea0161dfd6d0749d8525"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:79359d91f6b5e0ff8132028060c8b6bbee663a82f8b054297f9f9c9e18d5bfd5"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:f08ba61327d612201df92dd1d9528546e48f133f09f1abc718acf4bc61270e87"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:6fc0c01c627e49b21017161dabe5bd15ccc8b49356da2843dc836e25ec1f9eaf"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:7b398166c62a403fadd137696b7537619d907b36fa33afb0d5940979e4411734"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:75d646ee8319bdd0e320da5dbc0074d44050be5ced7be09c78c1ab4a72e66709"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:276d4a14ab69682829e89970e771d427b0d528c426061509e379ac7692ac120a"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:2cbc4c8ae684c2523d87855f5854daea0e5708b506764550df04ad024f1f8cb2"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:b1fffe159fb5d49db584479dd850ae569258281664baa00788d5b28f8f9318bf"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].scope.plan_refs",
+          "descendants": false,
+          "exact_value": "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].outcome_claims[0]",
+          "descendants": true
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].outcome_claims[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        }
+      ]
+    },
+    {
+      "original_item_index": 1,
+      "calls": 2,
+      "repaired_item": {
+        "item_ref": "reflection:88f2162a38d42b77068d63c03042a3671157131c4b2229ba04b8e73c40e9b694",
+        "level": "round",
+        "owner_ref": "reflection_round:e4aa8984bd111a583943c55533a271e759b8e86a05c65e7a995a55e7faba733d",
+        "category": "useful_signals",
+        "kind": "fact",
+        "brief": "plan_r0001_c01 research_completed_case_count=22; plan_r0001_c02 research_completed_case_count=24.",
+        "detail": "plan_r0001_c01 scored_case_count=24, technical_exclusion_count=2 and technical_completion_rate=0.9167; plan_r0001_c02 scored_case_count=24, technical_exclusion_count=0 and technical_completion_rate=1.0. The first Plan did not achieve full technical completion. Official score denominators remain unchanged.",
+        "scope": {
+          "case_refs": [],
+          "plan_refs": [
+            "reflection_plan:1e8766e631c7e3d60c2e880d1894e4342ac2ced4515298b21e0ad271270d69f3",
+            "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+          ],
+          "conditions": "Applies to the round-1 evaluation of the two child Plans against the shared parent plan_manual_v1."
+        },
+        "limitations": [
+          "same_evaluation_snapshot is false for both parent comparisons, so no causal metric effect can be claimed from the Plan diffs.",
+          "The two Plans differ in multiple dimensions simultaneously (basic_info_requests, analysis_prompt, initial_research_skill, reflection_skill), so the F1 gap cannot be attributed to any single change.",
+          "The anchor cohort is identical across both Plans, so it provides no discriminating signal."
+        ],
+        "source_refs": [
+          "reflection_source:79359d91f6b5e0ff8132028060c8b6bbee663a82f8b054297f9f9c9e18d5bfd5",
+          "reflection_source:276d4a14ab69682829e89970e771d427b0d528c426061509e379ac7692ac120a"
+        ],
+        "counter_refs": [],
+        "outcome_claims": [],
+        "evidence_status": "sources_checked"
+      },
+      "valid_sibling_unchanged": true,
+      "sibling_fixture": "Original item 3 text plus runtime magnitude references prepared offline before the initial request",
+      "reload_and_rebase_source_resolution": true,
+      "patch_permissions": [
+        {
+          "op": "replace",
+          "path": "reflection_items[0].brief",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].brief",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:868c57d104326140f4cd0d60fd421a5d230e78b06ffc58cad5bc04ced743a183"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:bf5990eb70bc6b1b1d88e0876c30659b2346b32965c3ea0161dfd6d0749d8525"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:79359d91f6b5e0ff8132028060c8b6bbee663a82f8b054297f9f9c9e18d5bfd5"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:f08ba61327d612201df92dd1d9528546e48f133f09f1abc718acf4bc61270e87"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:6fc0c01c627e49b21017161dabe5bd15ccc8b49356da2843dc836e25ec1f9eaf"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:7b398166c62a403fadd137696b7537619d907b36fa33afb0d5940979e4411734"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:75d646ee8319bdd0e320da5dbc0074d44050be5ced7be09c78c1ab4a72e66709"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:276d4a14ab69682829e89970e771d427b0d528c426061509e379ac7692ac120a"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:2cbc4c8ae684c2523d87855f5854daea0e5708b506764550df04ad024f1f8cb2"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:b1fffe159fb5d49db584479dd850ae569258281664baa00788d5b28f8f9318bf"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].scope.plan_refs",
+          "descendants": false,
+          "exact_value": "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        }
+      ]
+    },
+    {
+      "original_item_index": 4,
+      "calls": 2,
+      "repaired_item": {
+        "item_ref": "reflection:78ee0c32da5340134288fb488564bdf49748d84564a5f1123027002d3988b425",
+        "level": "round",
+        "owner_ref": "reflection_round:e4aa8984bd111a583943c55533a271e759b8e86a05c65e7a995a55e7faba733d",
+        "category": "search_implications",
+        "kind": "action",
+        "brief": "For the next round, prioritize retrieving committed magnitude evidence (backlog/remaining performance obligations, capacity utilization, realized pricing, unit volumes) over additional narrative or commentary sources, because the observed failure mode is magnitude underestimation rather than binary direction error.",
+        "detail": "Each metric belongs to one Plan and its scored combined cohort. Source-backed research may explore committed business indicators; these diagnostics do not prove a causal improvement.",
+        "scope": {
+          "case_refs": [],
+          "plan_refs": [
+            "reflection_plan:1e8766e631c7e3d60c2e880d1894e4342ac2ced4515298b21e0ad271270d69f3",
+            "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+          ],
+          "conditions": "Applies to future rounds where the binary surge call is positive and the magnitude class is at risk of defaulting to the lowest band."
+        },
+        "limitations": [
+          "The search implication is inferred from aggregate diagnostics, not from per-case evidence that committed magnitude data was available and missed.",
+          "Adding a request does not guarantee the data exists or is retrievable for a given issuer.",
+          "The effect on magnitude accuracy cannot be measured until the next round is evaluated."
+        ],
+        "source_refs": [
+          "reflection_source:868c57d104326140f4cd0d60fd421a5d230e78b06ffc58cad5bc04ced743a183",
+          "reflection_source:7b398166c62a403fadd137696b7537619d907b36fa33afb0d5940979e4411734"
+        ],
+        "counter_refs": [],
+        "outcome_claims": [],
+        "evidence_status": "sources_checked"
+      },
+      "valid_sibling_unchanged": true,
+      "sibling_fixture": "Original item 3 text plus runtime magnitude references prepared offline before the initial request",
+      "reload_and_rebase_source_resolution": true,
+      "patch_permissions": [
+        {
+          "op": "replace",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].detail",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:868c57d104326140f4cd0d60fd421a5d230e78b06ffc58cad5bc04ced743a183"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:bf5990eb70bc6b1b1d88e0876c30659b2346b32965c3ea0161dfd6d0749d8525"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:79359d91f6b5e0ff8132028060c8b6bbee663a82f8b054297f9f9c9e18d5bfd5"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:f08ba61327d612201df92dd1d9528546e48f133f09f1abc718acf4bc61270e87"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:6fc0c01c627e49b21017161dabe5bd15ccc8b49356da2843dc836e25ec1f9eaf"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:7b398166c62a403fadd137696b7537619d907b36fa33afb0d5940979e4411734"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:75d646ee8319bdd0e320da5dbc0074d44050be5ced7be09c78c1ab4a72e66709"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:276d4a14ab69682829e89970e771d427b0d528c426061509e379ac7692ac120a"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:2cbc4c8ae684c2523d87855f5854daea0e5708b506764550df04ad024f1f8cb2"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:b1fffe159fb5d49db584479dd850ae569258281664baa00788d5b28f8f9318bf"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].scope.plan_refs",
+          "descendants": false,
+          "exact_value": "reflection_plan:8443b60434cb68a8e0d80bf207a6994fb8206ab7e13c1046269944e56988bd55"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].scope.case_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[0].outcome_claims",
+          "descendants": false
+        }
+      ]
+    }
+  ],
+  "catalog_bytes": 15926,
+  "limits": "Offline production adapter replay with original committed content and explicitly scripted local patches. Original artifacts, sample membership and scores are unchanged. This proves detection/repair/persistence wiring, not new live compliance, universal semantic correctness, research gain or complete Fast+Slow acceptance."
+}

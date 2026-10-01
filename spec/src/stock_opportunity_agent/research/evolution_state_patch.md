@@ -75,3 +75,16 @@ equivalent deltas in offline replay adapters. This proves interface composition
 and regression behavior, not that a live model will produce a valid new delta.
 Production roles using this protocol reject full-object correction responses;
 only a role with no parseable full object may request a complete new object.
+
+## Exact reference additions (2026-10-02)
+
+An owning validator may supply `allowed_append_values`, a mapping from already
+permitted list paths to a finite set of string values. Each value can be added
+at most once and only if absent from the base snapshot. This is value-bound
+repair authority, not a blanket larger append budget. It supplies the multiple
+runtime statistic handles needed by a single cross-Plan assertion while
+rejecting unrelated references. Exact duplicate operations retain the existing
+mechanical deduplication; merged reference uniqueness remains domain-validated.
+The metadata cannot grant an
+unnamed path or bypass the existing add permission. Other obligation append
+semantics, indexed writes and full merged-object validation remain unchanged.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 from copy import deepcopy
 from dataclasses import dataclass
@@ -21,6 +22,88 @@ _CATEGORIES = {
 }
 _OUTCOME_CATEGORIES = frozenset({"successful_patterns", "failed_patterns", "why_prediction_failed", "decision_drivers", "false_positive_patterns", "false_negative_patterns"})
 _FACT_FIELDS = ("candidate_judgment_feedback", "magnitude_feedback", "jev_decision_feedback", "technical_exclusion")
+
+# These are evaluation assertions, not numbers appearing in company evidence.
+# Keeping the grammar bounded avoids treating a forecast or a class label as
+# a measured statistic. Exact source membership still does not verify prose.
+_STATISTIC_NAMES = {
+    "binary_f1": r"binary[_ ]f1",
+    "binary_precision": r"(?:binary[_ ])?precision",
+    "binary_recall": r"(?:binary[_ ])?recall",
+    "magnitude_macro_f1": r"magnitude[_ ]macro[_ ]f1",
+    "conditional_accuracy_on_tp": r"conditional[_ ]accuracy(?:[_ ]on[_ ](?:tp|true positives))?",
+    "underestimate_count": r"underestimate[_ ]count",
+    "overestimate_count": r"overestimate[_ ]count",
+    "missed_surge_count": r"missed[_ ]surge[_ ]count",
+    "technical_completion_rate": r"technical[_ ]completion[_ ]rate",
+    "research_completed_case_count": r"research[_ ]completed[_ ]case[_ ]count",
+    "scored_case_count": r"scored[_ ]case[_ ]count",
+    "technical_exclusion_count": r"technical[_ ]exclusion[_ ]count",
+    "predicted_positive_count": r"predicted[_ ]positive[_ ]count",
+    "predicted_2-3x": r"predicted[_ ]2-3x",
+    "predicted_3-10x": r"predicted[_ ]3-10x",
+    "predicted_10x+": r"predicted[_ ]10x\+",
+    "true_positive": r"true[_ ]positive(?:[_ ]count)?",
+    "true_negative": r"true[_ ]negative(?:[_ ]count)?",
+    "false_positive": r"false[_ ]positive(?:[_ ]count)?",
+    "false_negative": r"false[_ ]negative(?:[_ ]count)?",
+}
+_STATISTIC_NUMBER = r"[-+]?\d+(?:\.\d+)?%?"
+_STATISTIC_PATTERNS = tuple(
+    (key, re.compile(r"\b" + name + r"\s*(?:=|:|of\b|is\b|was\b)\s*(" + _STATISTIC_NUMBER + r")", re.I))
+    for key, name in _STATISTIC_NAMES.items()
+) + tuple(
+    (key, re.compile(r"\b(" + _STATISTIC_NUMBER + r")\s+" + name + r"\b", re.I))
+    for key, name in (
+        ("underestimate_count", "underestimates"),
+        ("overestimate_count", "overestimates"),
+        ("false_positive", "false positives"),
+        ("false_negative", "false negatives"),
+        ("predicted_positive_count", "(?:positive predictions|predicted positives)"),
+    )
+)
+_FULL_COMPLETION = re.compile(r"\b(?:full|complete|100%)(?:\s+technical|\s+research)[ -]completion\b", re.I)
+_ROUND_POOLING = re.compile(
+    r"\b(?:combined|pooled|aggregate(?:d)?)\s+(?:magnitude_diagnostics|diagnostics|statistics|counts|results|evaluation)\s+(?:for|across|of)\s+(?:the\s+)?(?:round|(?:both|two|all)\s+(?:child\s+)?plans)\b|"
+    r"\b(?:round[- ]wide|pooled[- ]round)\s+(?:diagnostics|statistics|counts|results)\b", re.I,
+)
+_MULTI_PLAN = re.compile(r"\b(?:both|two|all|across(?:\s+the)?(?:\s+newly sampled)?(?:\s+child)?)\s+(?:child\s+)?plans\b", re.I)
+
+
+def _numeric_leaves(value: Mapping[str, Any], prefix: str = "") -> dict[str, float | int]:
+    result = {}
+    for key, item in value.items():
+        path = prefix + str(key)
+        if isinstance(item, Mapping):
+            result.update(_numeric_leaves(item, path + "."))
+        elif type(item) in (int, float) and math.isfinite(item):
+            result[path] = item
+    return result
+
+
+def _statistic_assertions(text: str) -> list[tuple[str, str, int]]:
+    return [(key, match.group(1), match.start()) for key, pattern in _STATISTIC_PATTERNS for match in pattern.finditer(text)]
+
+
+def _has_statistics(text: str) -> bool:
+    return bool(_statistic_assertions(text) or _completion_claims(text))
+
+
+def _completion_claims(text: str) -> list[Any]:
+    return [match for match in _FULL_COMPLETION.finditer(text) if not re.search(
+        r"\b(?:not|without|failed to|target|aim for)\b[^.;]{0,35}$",
+        text[max(0, match.start() - 50):match.start()], re.I,
+    )]
+
+
+def _rounded_statistic_matches(token: str, expected: float | int) -> bool:
+    scaled = float(token.rstrip("%")) / (100 if token.endswith("%") else 1)
+    decimal_places = len(token.rstrip("%").partition(".")[2])
+    tolerance = 0.5 * 10 ** (-decimal_places) / (100 if token.endswith("%") else 1)
+    # Integer counts are exact; displayed rates may be rounded.
+    if type(expected) is int or ("." not in token and not token.endswith("%")):
+        return scaled == expected
+    return abs(scaled - expected) <= tolerance + 1e-12
 
 # Ingestion gate: an authored action item may not advise consulting
 # information that only exists after the prediction boundary. The scan is
@@ -91,11 +174,12 @@ def _reject_pit_inexecutable_action(
 class ReflectionValidationError(ValidationError):
     """A role adapter may translate this precise path into scoped correction."""
 
-    def __init__(self, message: str, *, path: str, dependency_paths: tuple[str, ...] = (), invalid_container_paths: tuple[str, ...] = ()) -> None:
+    def __init__(self, message: str, *, path: str, dependency_paths: tuple[str, ...] = (), invalid_container_paths: tuple[str, ...] = (), allowed_append_values: Mapping[str, Iterable[str]] | None = None) -> None:
         super().__init__(message)
         self.path = path
         self.dependency_paths = dependency_paths
         self.invalid_container_paths = invalid_container_paths
+        self.allowed_append_values = {key: list(values) for key, values in (allowed_append_values or {}).items()}
 
 
 def validate_source_snapshot(identity: Any, snapshot: Any) -> dict[str, Any]:
@@ -257,7 +341,9 @@ class ReflectionMemoryIndex:
                     authored = item.to_dict()
                     for field in ("item_ref", "owner_ref", "level", "evidence_status"):
                         authored.pop(field)
-                    self._create_items((authored,), level=level, owner_ref=item.owner_ref)
+                    # Immutable pre-contract items retain their original
+                    # provenance checks; their new-view status is explicit.
+                    self._create_items((authored,), level=level, owner_ref=item.owner_ref, check_statistics=False)
                 self._item(item)
             selected = _strings(value.get("selected_reflection_refs", ()), "selected_reflection_refs")
             for ref in selected:
@@ -324,6 +410,42 @@ class ReflectionMemoryIndex:
         result._cases(rows, owner_ref)
         return result
 
+    def register_plan_statistics(self, values: Mapping[str, Any], *, plan_ref: str, plan_id: str) -> None:
+        """Register existing runtime aggregates without recomputing scores.
+
+        Critic and archive adapters supply their approved runtime projection.
+        Sources bind exact case membership and expose only Plan attribution.
+        """
+        cases = sorted({ref for source in self._sources.values() if plan_ref in source["plan_refs"] for ref in source["case_refs"]})
+        groups = {
+            "metrics": (values.get("metrics", {}), "scored_cases", "combined"),
+            "magnitude_diagnostics": (values.get("magnitude_diagnostics", {}), "research_completed", "combined"),
+            "technical_completion": (values.get("technical_completion", {}), "scored_cases", "combined"),
+        }
+        evaluation = values.get("evaluation", {})
+        for cohort, metrics in evaluation.get("metrics_by_cohort", {}).items():
+            if cohort != "combined":
+                groups["metrics_" + cohort] = (metrics, "scored_cases", cohort)
+        for group, (raw, population, cohort) in groups.items():
+            if not isinstance(raw, Mapping) or not raw:
+                continue
+            if group == "technical_completion":
+                raw = {key: raw[key] for key in (
+                    "scored_case_count", "research_completed_case_count",
+                    "technical_exclusion_count", "technical_completion_rate",
+                ) if key in raw}
+            numbers = _numeric_leaves(raw)
+            if not numbers:
+                continue
+            content = {
+                "schema_version": "plan-statistics-v1", "plan_ref": plan_ref,
+                "plan_id": plan_id, "group": group, "cohort": cohort,
+                "population": population, "case_membership_hash": canonical_json_hash(cases),
+                "case_count": len(cases), "values": numbers,
+            }
+            ref = self._source(content, level="plan", plan_refs=(plan_ref,))
+            self._sources[ref]["runtime_statistics"] = True
+
     def _plans(self, rows: Iterable[Mapping[str, Any]], owner_ref: str) -> tuple[str, ...]:
         plans = []
         for position, raw in enumerate(rows):
@@ -343,6 +465,7 @@ class ReflectionMemoryIndex:
             plan_ref = _ref("reflection_plan", canonical_plan or {"owner": owner_ref, "position": position})
             plans.append(plan_ref)
             cases = self._cases(row.get("original_case_reflections", ()), plan_ref)
+            self.register_plan_statistics(row, plan_ref=plan_ref, plan_id=str(row.get("plan_id", "")))
             original_ref = self._source(row, level="plan", case_refs=cases, plan_refs=(plan_ref,))
             reflection = row.get("vertical_plan_reflection", row.get("reflection", {}))
             if isinstance(reflection, Mapping):
@@ -387,11 +510,18 @@ class ReflectionMemoryIndex:
     def _catalog_row(self, source: Mapping[str, Any]) -> dict[str, Any]:
         value = {key: deepcopy(item) for key, item in source.items() if key != "content"}
         value["source_kind"] = (
+            "runtime_plan_statistics" if source.get("runtime_statistics") else
             "item" if source["source_ref"] in self._items else
             "canonical_case_facts" if "source_identity" in source["content"] else
             "legacy_snippet" if {"category", "index", "text", "owner_ref"} <= set(source["content"]) else
             "original_" + source["level"]
         )
+        if source.get("runtime_statistics"):
+            value["statistics"] = deepcopy(source["content"])
+        if source["source_ref"] in self._items:
+            status = self._statistics_status(self._items[source["source_ref"]])
+            if status:
+                value["statistics_status"] = status
         packet = {"sources": [source], "requested_refs": [source["source_ref"]], "byte_count": 0}
         while packet["byte_count"] != _bytes(packet):
             packet["byte_count"] = _bytes(packet)
@@ -401,6 +531,8 @@ class ReflectionMemoryIndex:
     def catalog_view(self, *, max_bytes: int = 16_000) -> dict[str, Any]:
         """Bound a role's source directory, avoiding repeated legacy item scopes."""
         def priority(source: Mapping[str, Any]) -> int:
+            if source.get("runtime_statistics"):
+                return -1
             if "source_identity" in source["content"]:
                 return 0
             if source["source_ref"] in self._items:
@@ -448,6 +580,7 @@ class ReflectionMemoryIndex:
                     str(exc), path=prefixed(exc.path),
                     dependency_paths=tuple(prefixed(path) for path in exc.dependency_paths),
                     invalid_container_paths=tuple(prefixed(path) for path in exc.invalid_container_paths),
+                    allowed_append_values={prefixed(path): values for path, values in exc.allowed_append_values.items()},
                 ) from exc
             except ValidationError as exc:
                 raise ReflectionValidationError(str(exc), path=f"reflection_items[{index}]") from exc
@@ -455,7 +588,79 @@ class ReflectionMemoryIndex:
             self._item(item)
         return tuple(result)
 
-    def _create_items(self, raw_items: Iterable[Mapping[str, Any]], *, level: str, owner_ref: str) -> tuple[ReflectionItem, ...]:
+    def _statistics_status(self, item: ReflectionItem) -> str | None:
+        if item.level == "case" or not any(_has_statistics(text) or _ROUND_POOLING.search(text) for text in (item.brief, item.detail, item.scope["conditions"])):
+            return None
+        return "runtime_source_checked" if any(self._sources.get(ref, {}).get("runtime_statistics") for ref in item.source_refs) else "legacy_statistics_unchecked"
+
+    def _brief(self, item: ReflectionItem) -> dict[str, Any]:
+        value = item.brief_dict()
+        status = self._statistics_status(item)
+        if status:
+            value["statistics_status"] = status
+        return value
+
+    def _validate_statistics(self, value: Mapping[str, Any], supporting: tuple[dict[str, Any], ...]) -> None:
+        statistics = [source["content"] for source in supporting if source.get("runtime_statistics")]
+        fields = (("brief", value["brief"]), ("detail", value["detail"]), ("scope.conditions", value["scope"]["conditions"]))
+        statistical_paths = tuple(path for path, text in fields if _has_statistics(text) or _ROUND_POOLING.search(text))
+        known_ids = {source["content"]["plan_id"] for source in self._sources.values() if source.get("runtime_statistics") and source["content"]["plan_id"]}
+        allowed_sources = [source for source in self._sources.values() if source.get("runtime_statistics")]
+        combined_text = " ".join(text for _, text in fields)
+        named_owners = {plan_id for plan_id in known_ids if re.search(r"(?<![\w])" + re.escape(plan_id) + r"(?![\w])", combined_text)}
+        if named_owners:
+            allowed_sources = [source for source in allowed_sources if source["content"]["plan_id"] in named_owners]
+        elif not _MULTI_PLAN.search(combined_text):
+            allowed_sources = [source for source in allowed_sources if set(source["plan_refs"]) & set(value["scope"]["plan_refs"])]
+
+        def statistical_invalid(message: str, path: str, dependencies: tuple[str, ...]) -> None:
+            raise ReflectionValidationError(message, path=path, dependency_paths=dependencies, allowed_append_values={
+                "source_refs": [source["source_ref"] for source in allowed_sources],
+                "scope.plan_refs": sorted({ref for source in allowed_sources for ref in source["plan_refs"]}),
+                "scope.case_refs": [],
+            })
+
+        def candidates_at(text: str, position: int) -> list[dict[str, Any]]:
+            separators = list(re.finditer(r";|\.(?=\s+[A-Z])", text))
+            left = max((mark.end() for mark in separators if mark.end() <= position), default=0)
+            right = min((mark.start() for mark in separators if mark.start() > position), default=len(text))
+            clause = text[left:right]
+            owners = [plan_id for plan_id in known_ids if re.search(r"(?<![\w])" + re.escape(plan_id) + r"(?![\w])", clause)]
+            cohort_names = re.findall(r"\b(anchor|random|combined)(?:[_ ]cohort)?\b", clause, re.I)
+            cohort = cohort_names[0].lower() if len(set(name.lower() for name in cohort_names)) == 1 else "combined"
+            return [source for source in statistics if source["cohort"] == cohort and (len(owners) != 1 or source["plan_id"] == owners[0])]
+
+        for path, text in fields:
+            if path not in statistical_paths:
+                continue
+            dependencies = ("source_refs", "scope.plan_refs", "scope.case_refs", "outcome_claims", *(other for other in statistical_paths if other != path))
+            if not statistics:
+                statistical_invalid("evaluation statistics require runtime_plan_statistics support, not a case or authored lesson source", path, dependencies)
+            owners = {source["plan_ref"] for source in statistics}
+            if not owners <= set(value["scope"]["plan_refs"]):
+                statistical_invalid("statistical source owners must appear in the declared Plan scope", path, dependencies)
+            mentioned = {plan_id for plan_id in known_ids if re.search(r"(?<![\w])" + re.escape(plan_id) + r"(?![\w])", text)}
+            if not mentioned <= {source["plan_id"] for source in statistics} or (_MULTI_PLAN.search(text) and len(owners) < 2):
+                statistical_invalid("multi-Plan statistics require each named Plan's runtime statistics source", path, dependencies)
+            if _ROUND_POOLING.search(text) or (len(owners) > 1 and re.search(r"\bcombined diagnostics\b", text, re.I)):
+                statistical_invalid("only per-Plan statistics exist; do not describe one Plan's combined cohort as pooled round statistics", path, dependencies)
+            for complete in _completion_claims(text):
+                completion = [source["values"] for source in candidates_at(text, complete.start()) if source["group"] == "technical_completion"]
+                if not completion or any(row.get("technical_completion_rate") != 1 for row in completion):
+                    statistical_invalid("full research/technical completion contradicts the cited runtime completion totals or lacks completion support", path, dependencies)
+            for key, token, position in _statistic_assertions(text):
+                candidates = candidates_at(text, position)
+                paths = {key, "confusion." + key} if key in {"true_positive", "true_negative", "false_positive", "false_negative"} else {key}
+                if key.startswith("predicted_") and key != "predicted_positive_count":
+                    paths = {"prediction_distribution." + key}
+                numbers = [(source["plan_ref"], number) for source in candidates for name, number in source["values"].items() if name in paths]
+                matched = {owner for owner, number in numbers if _rounded_statistic_matches(token, number)}
+                universal = _MULTI_PLAN.search(text) and len({source["plan_ref"] for source in candidates}) > 1
+                expected_owners = {source["plan_ref"] for source in candidates}
+                if not matched or (universal and not expected_owners <= matched):
+                    statistical_invalid(f"{key}={token} is not supported by the cited runtime statistics; preserve its Plan/cohort/population instead of changing the scoring denominator", path, dependencies)
+
+    def _create_items(self, raw_items: Iterable[Mapping[str, Any]], *, level: str, owner_ref: str, check_statistics: bool = True) -> tuple[ReflectionItem, ...]:
         """Validate authored content and issue paths at the owning rule boundary."""
 
         def invalid(message: str, path: str, dependencies: tuple[str, ...] = (), *, container: bool = False) -> None:
@@ -518,7 +723,7 @@ class ReflectionMemoryIndex:
                 invalid("reflection item requires supporting sources", "source_refs", ("scope", "outcome_claims"))
             for name, sources in (("source_refs", supporting), ("counter_refs", counters)):
                 dependencies = ("scope", "outcome_claims") if name == "source_refs" else ()
-                if level not in ranks or (level != "case" and any(ranks[source["level"]] >= ranks[level] for source in sources)):
+                if level not in ranks or (level != "case" and any(ranks[source["level"]] >= ranks[level] and not (level == "plan" and source.get("runtime_statistics") and source["plan_refs"] == [owner_ref]) for source in sources)):
                     invalid("higher reflection requires lower-level sources", name, dependencies)
                 if level == "case" and any(source["level"] != "case" for source in sources):
                     invalid("case reflection requires case sources", name, dependencies)
@@ -552,6 +757,8 @@ class ReflectionMemoryIndex:
                 invalid("outcome claims do not cover the declared case scope", "outcome_claims", ("scope.case_refs", "source_refs", "category"))
             if value["category"] in _OUTCOME_CATEGORIES and not set(scope["plan_refs"]) <= outcome_plans:
                 invalid("outcome claims do not cover the declared Plan scope", "outcome_claims", ("scope.plan_refs", "source_refs", "category"))
+            if level != "case" and (check_statistics or any(source.get("runtime_statistics") for source in supporting)):
+                self._validate_statistics(value, supporting)
             if value["kind"] == "action":
                 for field_name in ("brief", "detail"):
                     if violates_opportunity_proof_gate(value[field_name]):
@@ -633,7 +840,7 @@ class ReflectionMemoryIndex:
             if len(result["items"]) >= max_items:
                 break
             trial = deepcopy(result)
-            trial["items"].append(self._items[ref].brief_dict())
+            trial["items"].append(self._brief(self._items[ref]))
             trial["included_refs"].append(ref)
             if ref in trial["deferred_refs"]:
                 trial["deferred_refs"].remove(ref)
@@ -649,7 +856,7 @@ class ReflectionMemoryIndex:
         """Page complete briefs under a full-envelope budget for deferred discovery."""
         if level is not None and (not isinstance(level, str) or level not in _CATEGORIES):
             raise ValidationError("reflection directory level is invalid")
-        catalog = [item.brief_dict() for item in reversed(tuple(self._items.values())) if level is None or item.level == level]
+        catalog = [self._brief(item) for item in reversed(tuple(self._items.values())) if level is None or item.level == level]
         if type(cursor) is not int or not 0 <= cursor <= len(catalog):
             raise ValidationError("reflection directory cursor is invalid")
         result: dict[str, Any] = {"items": [], "total": len(catalog), "level": level, "next_cursor": cursor if cursor < len(catalog) else None, "oversized_refs": []}

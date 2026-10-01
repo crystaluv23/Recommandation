@@ -125,3 +125,46 @@ during row salvage, including mechanically repaired rows. Runtime ReflectionItem
 objects never replace authored JSON in a retry snapshot. Legacy archives remain
 immutable; source membership does not make numerical prose true.
 See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).
+
+## Runtime-owned Plan statistics (2026-10-02)
+
+Assumption: this change repairs statistical provenance and population wording;
+it does not redefine metrics, cohort membership, labels or fitness. Critic and
+Round reuse existing runtime diagnostics, never ask the model to pool Plans.
+
+The index registers content-addressed `runtime_plan_statistics` sources for
+metrics, research-completed magnitude diagnostics, technical completion and
+available cohort metrics. Each source binds the canonical Plan reference,
+Plan ID, exact anonymous case-membership hash/count, cohort and population.
+Scalar numerical leaves are copied from the existing producer. Technical
+completion uses its four scalar totals/rate, avoiding optional zero-valued
+failure-detail differences between trajectory and archived projections.
+These aggregate sources carry Plan scope and no individual-case outcomes.
+They can support same-level Plan interpretation because they are runtime input
+facts, not authored Plan lessons; authored same/higher-level sources still fail.
+No aggregate source can establish a case success/failure claim.
+
+The bounded catalog prioritizes these sources and exposes their exact values
+and ownership. Full membership remains bound by hash rather than duplicating
+case-reference vectors in every card. Missing/deferred sources stay readable
+through the existing authorized resolver. Critic and archived model projections
+must reproduce identical handles for the same statistics; additional cohort
+sources do not change the combined source identity.
+
+New Plan/Round items containing recognized evaluation statistics must cite the
+runtime source with matching scope. A shared bounded guard checks named numeric
+assertions (with displayed rounding), explicit multi-Plan ownership/pooling and
+full-completion claims. Combined cohort of one Plan is distinct from pooled
+round data: no pooled-round source exists. A population error is not repaired by
+choosing a different denominator or recalculating F1. The guard reports the exact
+brief/detail/conditions path plus source/scope dependencies for snapshot-bound
+local correction. Valid siblings persist and complete validation runs again.
+Ambiguous semantic wording remains subject to real-content review; this guard
+is not universal statistical or causal truth verification.
+
+Immutable older items lacking these sources remain readable and retain their
+original identities/status, with `legacy_statistics_unchecked` disclosed in
+model brief/catalog views. Archive ingestion still checks their original
+provenance/outcome contract rather than retroactively applying a new authored
+statistics requirement. New items citing runtime sources are rechecked on reload.
+Selecting old items does not upgrade their statistical support.

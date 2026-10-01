@@ -2067,6 +2067,14 @@ def _structured_reflection_contract(level: str) -> str:
         "to inspect complete originals, or {\"browse_memory\":{\"cursor\":0,"
         "\"level\":\"case\"}} to discover further briefs (case/plan/round). "
         "Obey memory_access limits and do not infer absence from omitted detail. "
+        "Numeric evaluation claims must cite runtime_plan_statistics sources "
+        "for each owning Plan, cohort and population; a case reference cannot "
+        "support aggregate counts or F1. Combined cohort is per Plan, never "
+        "pooled round statistics. Research-completed diagnostics exclude "
+        "technical cases while official scored metrics retain them. Do not "
+        "recompute, pool or change these denominators. Full completion requires "
+        "the cited runtime completion rate to be 1. Legacy_statistics_unchecked "
+        "items remain readable history, not verified statistical support. "
     ) if level != "case" else ""
     return access + (
         " Return only an object with reflection_items (array) and "
@@ -2262,7 +2270,10 @@ def _structured_reflection_items(
             code="reflection_item", paths=(exc.path,), message=str(exc),
             dependent_paths=exc.dependency_paths,
             allowed_repairs=("replace", "add", "remove"),
-            repair_context={"invalid_container_paths": list(exc.invalid_container_paths)},
+            repair_context={
+                "invalid_container_paths": list(exc.invalid_container_paths),
+                "allowed_append_values": exc.allowed_append_values,
+            },
         ),)) from exc
     selected = value["selected_reflection_refs"]
     if not isinstance(selected, list) or any(
@@ -3071,6 +3082,9 @@ class LLMPlanCritic:
             # identity is removed only from the model-facing payload below.
             source_index = ReflectionMemoryIndex.from_case_rows(
                 source_rows, owner_ref=owner_ref,
+            )
+            source_index.register_plan_statistics(
+                payload, plan_ref=owner_ref, plan_id=plan.plan_id,
             )
             catalog = source_index.catalog_view()
             briefs = source_index.brief_view()

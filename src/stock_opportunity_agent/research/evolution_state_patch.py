@@ -197,6 +197,19 @@ def state_patch_contract(
                         if guard not in guards:
                             guards.append(guard)
                 if "add" in path_repairs and _exists(base, _tokens(path)) and isinstance(_lookup(base, _tokens(path)), list):
+                    exact_values = issue.get("allowed_append_values", {}).get(path)
+                    if exact_values is not None:
+                        if not isinstance(exact_values, (list, tuple)) or any(not isinstance(value, str) for value in exact_values):
+                            raise ValidationError("allowed append values must be a finite string list")
+                        current = _lookup(base, _tokens(path))
+                        for value in dict.fromkeys(exact_values):
+                            if value in current:
+                                continue
+                            permission = {"op": "append", "path": path, "descendants": False, "exact_value": value}
+                            if permission not in permissions:
+                                permissions.append(permission)
+                            exact_append_limits.setdefault(path, {})[value] = 1
+                        continue
                     permit("append", path)
                     issue_append_paths.add(path)
             for path in issue.get("permitted_append_paths", ()):

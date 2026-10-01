@@ -150,3 +150,17 @@ Research controller, blind Predictor and case posthoc adapters use the shared
 checker at the exact authored text path. First requests disclose its arithmetic
 contract. Posthoc full parsing and row salvage invoke the same role validator.
 See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).
+
+## Reflection statistics ownership (2026-10-02)
+
+Plan Critic supplies the same runtime-owned statistic handles as the later
+Round/archive index. Critic registers existing metrics, magnitude and completion
+products after building the authoritative case index. Round derives its handles
+from the approved per-Plan model projection, including available cohort metrics.
+The shared initial reflection contract requires citing `runtime_plan_statistics`
+for numeric evaluation claims and naming the owning Plan/cohort/population.
+A case source never establishes aggregate statistics. Round compares per-Plan
+values and cannot call one Plan's combined cohort the pooled round. Legacy
+statistics-unchecked briefs are retrospective material to inspect, not verified
+statistical evidence. Shared repair authority permits exact source/scope and
+text changes; it never permits editing runtime statistics.
