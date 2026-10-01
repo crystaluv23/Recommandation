@@ -86,3 +86,12 @@ title/form/section metadata on cards, envelope counts and pagination,
 title-query catalyst discovery, verbatim-versus-bounded fetch semantics with
 omission markers, exact section fetch, and provenance byte-exactness with
 hash/offset rejection.
+
+### Reusable source read directory (2026-10-01)
+
+`document_card(document, include_sections=True)` is the shared deterministic card
+builder for documents already selected under PIT. It exposes raw size and the first
+readable raw offset, plus bounded section coordinates/counts and visible preview.
+It does not perform corpus selection or confer evidence authority. document_catalog
+and Mining's already-fetched directory use the same source visibility/index rules;
+raw offsets remain addressable and no exact read request is silently relocated.

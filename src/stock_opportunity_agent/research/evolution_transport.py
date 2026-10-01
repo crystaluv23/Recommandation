@@ -198,30 +198,46 @@ class ExactResponseCache:
 class _CaseIdentityProjection:
     """Project one exact request reversibly without touching source records."""
 
-    def __init__(self, aliases: Iterable[str], company_id: str, ticker: str) -> None:
+    def __init__(
+        self, aliases: Iterable[str], company_id: str, ticker: str,
+        *, expand_aliases: bool = True,
+    ) -> None:
         from stock_opportunity_agent.research.evolution_core import (
+            _GENERIC_AGGREGATE_IDENTITY_WORDS,
             _compiled_identity_aliases, _identity_alias_variants,
         )
 
-        inventory = tuple(dict.fromkeys((company_id, *aliases)))
-        self.patterns = [row[1] for row in _compiled_identity_aliases(inventory)]
-        cik = re.fullmatch(r"cik_(\d+)", company_id)
-        self.cik = int(cik.group(1)) if cik else None
-        if cik:
+        inventory = tuple(dict.fromkeys(
+            alias for alias in (company_id, *aliases) if alias.strip()
+        ))
+        matchers = _compiled_identity_aliases(inventory, expand_aliases=expand_aliases)
+        self.patterns = [row[1] for row in matchers]
+        self.url_patterns = [row[2] for row in matchers]
+        self.url_host_prefixes = tuple(
+            alias.casefold() for alias, _, _ in matchers
+            if alias.isalpha() and len(alias) >= 4
+            and alias.casefold() not in _GENERIC_AGGREGATE_IDENTITY_WORDS
+        )
+        cik_digits = {
+            match.group(1) for alias in inventory
+            if (match := re.fullmatch(r"cik_(\d+)", alias))
+        }
+        self.ciks = {int(digits) for digits in cik_digits}
+        for digits in sorted(cik_digits):
             self.patterns.append(re.compile(
-                r"(?<!\d)" + cik.group(1) + r"(?=\d{8}(?!\d)|[^\d]|$)"
+                r"(?<!\d)" + digits + r"(?=\d{8}(?!\d)|[^\d]|$)"
             ))
             self.patterns.append(re.compile(
-                r'(?<=cik\\":)' + str(self.cik) + r"(?!\d)"
+                r'(?<=cik\\":)' + str(int(digits)) + r"(?!\d)"
             ))
             self.patterns.append(re.compile(
-                r'(?<=cik":)' + str(self.cik) + r"(?!\d)"
+                r'(?<=cik":)' + str(int(digits)) + r"(?!\d)"
             ))
         if ticker and ticker.isalnum():
             self.patterns.append(re.compile(
                 r"\b" + re.escape(ticker.lower()) + r"(?=:|[-_]?\d{6,})"
             ))
-        for alias in _identity_alias_variants(inventory):
+        for alias in (_identity_alias_variants(inventory) if expand_aliases else inventory):
             compact_name = "".join(re.findall(r"[A-Za-z]+", alias))
             if compact_name and len(compact_name) >= 4 and not any(c.isdigit() for c in alias):
                 self.patterns.append(re.compile(
@@ -256,12 +272,37 @@ class _CaseIdentityProjection:
                     replacements[sentinel] = token(match.group(0))
                     return sentinel
                 item = pattern.sub(replace, item)
+            def project_host(host: re.Match[str]) -> str:
+                label = host.group("label")
+                if not label.casefold().startswith(self.url_host_prefixes):
+                    return host.group(0)
+                sentinel = f"\ue100{len(replacements)}\ue101"
+                replacements[sentinel] = token(label)
+                return host.group(0)[:-len(label)] + sentinel
+            item = re.sub(
+                r"(?<![A-Za-z0-9])(?P<label>[A-Za-z][A-Za-z0-9-]{3,})(?=\.[A-Za-z]{2,63}(?![A-Za-z]))",
+                project_host, item, flags=re.IGNORECASE,
+            )
+            def project_url(match: re.Match[str]) -> str:
+                url = match.group(0)
+                url = re.sub(
+                    r"(?<=://)(?:www\.)?(?P<label>[A-Za-z][A-Za-z0-9-]*)",
+                    project_host, url, flags=re.IGNORECASE,
+                )
+                for pattern in self.url_patterns:
+                    def replace_url(identity: re.Match[str]) -> str:
+                        sentinel = f"\ue100{len(replacements)}\ue101"
+                        replacements[sentinel] = token(identity.group(0))
+                        return sentinel
+                    url = pattern.sub(replace_url, url)
+                return url
+            item = re.sub(r'https?://[^\s"\\]+', project_url, item, flags=re.IGNORECASE)
             for sentinel, replacement in replacements.items():
                 item = item.replace(sentinel, replacement)
             return item
 
         def visit(item: Any, key: str = "") -> Any:
-            if key == "cik" and type(item) is int and item == self.cik:
+            if key == "cik" and type(item) is int and item in self.ciks:
                 return token(item)
             if isinstance(item, str):
                 return text(item)
@@ -774,11 +815,16 @@ class StructuredRoleClient:
         self._inflight = InFlightRequestCoordinator()
 
     @contextmanager
-    def anonymous_case(self, *, aliases: Iterable[str], company_id: str, ticker: str = ""):
+    def anonymous_case(
+        self, *, aliases: Iterable[str], company_id: str, ticker: str = "",
+        expand_aliases: bool = True,
+    ):
         """Keep all calls in one case blind while retaining local source identities."""
 
         previous = getattr(self._chain_state, "identity_projection", None)
-        self._chain_state.identity_projection = _CaseIdentityProjection(aliases, company_id, ticker)
+        self._chain_state.identity_projection = _CaseIdentityProjection(
+            aliases, company_id, ticker, expand_aliases=expand_aliases,
+        )
         try:
             yield
         finally:

@@ -22,6 +22,7 @@ from stock_opportunity_agent.artifacts import (
     atomic_write_json as _atomic_write_json,
     canonical_json_hash as _canonical_hash,
 )
+from stock_opportunity_agent.data.markup import nonvisible_html_ranges
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.data.resolution import (
     document_has_strong_issuer_match,
@@ -233,12 +234,6 @@ _MODEL_VIEW_METADATA_FIELD = re.compile(
 _HTML_TAG = re.compile(r"<[^>]*>", re.DOTALL)
 
 
-_NONVISIBLE_HTML_BLOCK = re.compile(
-    r"<(?:ix:header|script|style)\b[^>]*>.*?</(?:ix:header|script|style)\s*>",
-    flags=re.IGNORECASE | re.DOTALL,
-)
-
-
 _HTML_PREFIX_FRAGMENT = re.compile(
     r"(?:\b(?:style|class|id|name|contextref|unitref|dimension|colspan|rowspan|scale)\s*=|"
     r"(?:font|background|border|padding|text-align)[-a-z]*\s*:|"
@@ -325,10 +320,7 @@ def _normalized_projection_text(
 ) -> tuple[str, tuple[tuple[int, int, int, int], ...]]:
     """Return readable text plus compact projection-to-raw offset runs."""
 
-    removed: list[tuple[int, int]] = list(
-        (match.start(), match.end())
-        for match in _NONVISIBLE_HTML_BLOCK.finditer(raw_text)
-    )
+    removed: list[tuple[int, int]] = list(nonvisible_html_ranges(raw_text))
     removed.extend(
         (match.start(), match.end()) for match in _HTML_TAG.finditer(raw_text)
     )

@@ -286,3 +286,18 @@ drift diagnostic is retained separately and reported alongside the semantic
 failure, so deterministic recovery and any subsequent feedback keep acting
 on the recoverable obligations while unpermitted drift is never accepted and
 the raw model response never becomes the accepted baseline.
+
+## Availability and source-time predicate scope (2026-10-01)
+
+A market-data absence predicate must be affirmative, attach to market data itself,
+and not cross into a different missing object or denied/conditional claim. Explicit
+"not missing market data but missing projections" is not an absence assertion.
+Typed repair permissions remain limited to the offending brief/detail.
+
+Future expectation vocabulary and source-request intent share estimate/consensus
+and forecast inflections. Fetch/retrieve/inspect/read/check requests remain subject
+to the same PIT guards as questions. Explicit pre-cutoff availability may permit
+future-period estimates, but cannot exempt a separate source publication or
+availability date after cutoff; realized results stay prohibited. These lexical
+guards detect declared violations; the resolver's source availability check remains
+authoritative and no keyword validator claims complete semantic understanding.

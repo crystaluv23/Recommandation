@@ -325,3 +325,21 @@ the actual paginated result in the next view. `scope=memory` supports browsing
 and whole-entry reads by supplied item_refs within the disclosed byte cap; all
 feedback originals remain local and reachable. A raw span is carried once in
 its current action result. Catalog receipts alone are not evidence access.
+
+## Controller egress consistency (2026-10-01)
+
+MiningAgentRoleModel receives the engine's explicit scoped identity inventory and
+uses the shared reversible transport scope on the complete composed request.
+Masking titles or a raw window alone does not establish anonymity: document handles,
+SEC numeric CIKs, namespace/domain text and reflected source receipts also belong to
+this boundary. Exact handles restore before runtime tool dispatch. Mock-only view
+tests are insufficient; verify the persisted provider wire and cached-response
+roundtrip through the production adapter. Raw-window navigation remains explicit;
+a header-only read is a coverage gap, never evidence that business facts are absent.
+
+The fetched-evidence directory reuses data's document card for raw size, first
+readable raw offset and a bounded section index/count. This makes the body beyond
+a hidden XBRL header reachable within the existing raw read API. Duplicate source
+identity/hash rows are indexed once. The model selects a supplied offset; runtime
+never replaces a requested raw range with another range. Directory previews remain
+discovery-only and an omitted section remains accessible through the document handle.

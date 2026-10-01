@@ -787,7 +787,7 @@ _EXPLICIT_CALENDAR_DATE = re.compile(
 
 _FUTURE_SOURCE_CONTENT_INTENT = re.compile(
     r"\b(?:contents?|results?|metrics?|figures?|numbers?|actuals?|guidance|"
-    r"outlook|forecast|findings?|outcomes?|performance|revenue|sales|profit|"
+    r"outlook|forecasts?|estimates?|consensus|findings?|outcomes?|performance|revenue|sales|profit|"
     r"margins?|cash[ -]+flow|users?|subscribers?|updates?|milestones?|"
     r"announcements?|approvals?|partnerships?|agreements?)\b|"
     r"\b(?:what|which|how[ -]+much|how[ -]+many)\b.{0,120}"
@@ -848,7 +848,7 @@ _RELATIVE_FUTURE_SCOPE = re.compile(
 
 _QUESTION_FACT_REQUEST = re.compile(
     r"^\s*(?:what|which|when|where|who|did|does|do|has|have|had|is|are|was|"
-    r"were|how\s+(?:many|much)|summari[sz]e|identify|list|report|provide)\b",
+    r"were|how\s+(?:many|much)|summari[sz]e|identify|list|report|provide|fetch|retrieve|inspect|read|check)\b",
     re.IGNORECASE,
 )
 
@@ -863,9 +863,17 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
     r"\b(?:timing|dates?|schedules?|timelines?|milestones?|expected|anticipated|"
     r"projected|projections?|planned|"
-    r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|"
+    r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|estimates?|estimated|consensus|"
     r"targets?|goals?|openings?|could|might|would|commentary|"
     r"construction\s+plans?)\b",
+    re.IGNORECASE,
+)
+
+
+_SOURCE_AVAILABILITY_DATE_PREFIX = re.compile(
+    r"\b(?:published|released|disclosed|announced|available)\s+"
+    r"(?:(?:on|in|after|since|following|as\s+of)\s+)?$|"
+    r"\breported\s+(?:on|in|after|since|following)\s+$",
     re.IGNORECASE,
 )
 
@@ -965,6 +973,21 @@ def _quarter_match_end(match: re.Match[str]) -> date:
     return date.fromordinal(next_month.toordinal() - 1)
 
 
+def _future_publication_claim(text: str, offset: int) -> bool:
+    """Separate a future publication claim from a disclosed release schedule."""
+
+    prefix = text[max(0, offset - 80):offset]
+    match = _SOURCE_AVAILABILITY_DATE_PREFIX.search(prefix)
+    if match is None:
+        return False
+    if (
+        re.search(r"\b(?:to\s+be|will\s+be)\s*$", prefix[:match.start()], re.IGNORECASE)
+        and re.search(r"\b(?:timing|dates?|schedules?|calendar)\b", text, re.IGNORECASE)
+    ):
+        return False
+    return True
+
+
 def _future_source_date_refs(
     text: str,
     prediction_date: date,
@@ -988,14 +1011,15 @@ def _future_source_date_refs(
         return []
     future: list[str] = []
     covered_year_offsets: set[int] = set()
+    future_source_availability = False
     for match in _EXPLICIT_CALENDAR_DATE.finditer(text):
         referenced = _calendar_match_date(match, month_end=False)
         year_start = match.start("year") if match.group("year") else match.start("iso")
         covered_year_offsets.add(year_start)
-        if referenced is not None and referenced > prediction_date and match.group(
-            "date"
-        ) not in future:
-            future.append(match.group("date"))
+        if referenced is not None and referenced > prediction_date:
+            if match.group("date") not in future:
+                future.append(match.group("date"))
+            future_source_availability |= _future_publication_claim(text, match.start())
     for match in _EXPLICIT_QUARTER.finditer(text):
         year_group = "year" if match.group("year") else "year_first"
         covered_year_offsets.add(match.start(year_group))
@@ -1003,11 +1027,14 @@ def _future_source_date_refs(
             quarter_ref = match.group(0)
             if quarter_ref not in future:
                 future.append(quarter_ref)
+            future_source_availability |= _future_publication_claim(text, match.start())
     for match in re.finditer(r"\b20\d{2}\b", text):
         if match.start() in covered_year_offsets:
             continue
-        if int(match.group(0)) > prediction_date.year and match.group(0) not in future:
-            future.append(match.group(0))
+        if int(match.group(0)) > prediction_date.year:
+            if match.group(0) not in future:
+                future.append(match.group(0))
+            future_source_availability |= _future_publication_claim(text, match.start())
     for match in _OPEN_ENDED_DATE_WINDOW.finditer(text):
         referenced = _calendar_match_date(match, month_end=True)
         if referenced is None or referenced < prediction_date:
@@ -1016,14 +1043,17 @@ def _future_source_date_refs(
         if open_scope not in future:
             future.append(open_scope)
     relative = _RELATIVE_FUTURE_SCOPE.search(text)
-    if relative is not None and relative.group(0) not in future:
-        future.append(relative.group(0))
+    if relative is not None:
+        if relative.group(0) not in future:
+            future.append(relative.group(0))
+        future_source_availability |= _future_publication_claim(text, relative.start())
     if not future:
         return []
     if (
         _has_prediction_bounded_as_of_clause(text, prediction_date)
         and _FUTURE_EXPECTATION_OR_SCHEDULE.search(text)
         and not _FUTURE_REALIZED_RESULT.search(text)
+        and not future_source_availability
     ):
         return []
     return future

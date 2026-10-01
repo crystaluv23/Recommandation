@@ -14,6 +14,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
+from stock_opportunity_agent.data.markup import nonvisible_html_ranges
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.sources.state import (
     DataQuotaDeferred,
@@ -2556,12 +2557,18 @@ def _normalized_visible_text(
         visible.append(character)
         origins.append((start, end))
 
+    removed = [*nonvisible_html_ranges(raw_text), *(
+        (match.start(), match.end()) for match in _HTML_TAG.finditer(raw_text)
+    )]
     cursor = 0
-    for match in _HTML_TAG.finditer(raw_text):
-        for index in range(cursor, match.start()):
+    for start, end in sorted(removed):
+        if start < cursor:
+            cursor = max(cursor, end)
+            continue
+        for index in range(cursor, start):
             append(raw_text[index], index, index + 1)
-        append(" ", match.start(), match.end())
-        cursor = match.end()
+        append(" ", start, end)
+        cursor = end
     for index in range(cursor, len(raw_text)):
         append(raw_text[index], index, index + 1)
     while visible and visible[-1] == " ":

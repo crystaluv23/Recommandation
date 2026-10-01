@@ -355,3 +355,11 @@ an empty response as negative company evidence. It uses the same managed cache,
 request ledger, authorization and per-cycle acquisition ceilings. A successful
 empty fallback remains provider_no_data under the existing ordered fallback
 semantics; the earlier provider quota event remains in the audit.
+
+### Shared hidden markup boundary (2026-10-01)
+
+Readable filing windows exclude source-owned nonvisible ranges before budget and
+head selection. See [markup](markup.md). Research projection and the Raw Info
+library reuse this rule with exact original raw offsets; hidden XBRL taxonomy
+headers cannot consume the readable body allowance. This does not infer external
+CSS visibility or guarantee financial-topic coverage.

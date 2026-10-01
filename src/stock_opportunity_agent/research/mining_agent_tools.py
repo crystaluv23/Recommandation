@@ -21,6 +21,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, Sequence
 
+from stock_opportunity_agent.data.disclosure import document_card
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
@@ -525,10 +526,15 @@ def narrative_catalog(
     event_by_document: dict[str, NarrativeEvent] = {
         event.document_ref: event for event in events
     }
+    seen_documents: set[tuple[str, str]] = set()
     for document in documents:
         family = _evidence_source_family(document.source_type)
         if family not in {"filing", "transcript", "news"}:
             continue
+        identity = (document.document_id, document.content_hash)
+        if identity in seen_documents:
+            continue
+        seen_documents.add(identity)
         window = f"{document.available_at.year}Q{(document.available_at.month - 1) // 3 + 1}"
         bucket = windows.setdefault(family, {}).setdefault(window, {})
         event = event_by_document.get(f"document-{document.document_id}")
@@ -548,6 +554,16 @@ def narrative_catalog(
                 "available_at": document.available_at.isoformat(),
                 "discovery_only": True,
             }
+        else:
+            continue
+        card = document_card(document, include_sections=True)
+        row = bucket[event.event_ref if event is not None else f"document-{document.document_id}"]
+        row.update({
+            "raw_chars": card["raw_chars"],
+            "readable_start": card["readable_start"],
+            "sections": card.get("sections", []),
+            "section_count": card.get("section_count", 0),
+        })
     catalog: list[dict[str, object]] = []
     for family in sorted(windows):
         family_rows = []

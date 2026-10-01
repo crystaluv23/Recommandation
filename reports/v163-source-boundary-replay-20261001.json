@@ -1,0 +1,304 @@
+{
+  "schema_version": "source-boundary-replay-v1",
+  "source_run": "runs/cold_start/minimal_rounds_v162_integrated",
+  "external_calls": 0,
+  "frozen_source_contract_unchanged": true,
+  "filing": {
+    "document_id": "sec:cik_0000895728:000095017025101102",
+    "source_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+    "source_bytes_unchanged": true,
+    "budget": 36000,
+    "old_ranges": [
+      [
+        1328,
+        15828
+      ],
+      [
+        14633,
+        25412
+      ],
+      [
+        24295,
+        35755
+      ],
+      [
+        34641,
+        45462
+      ],
+      [
+        44580,
+        55281
+      ],
+      [
+        54333,
+        65626
+      ],
+      [
+        64319,
+        75901
+      ],
+      [
+        74719,
+        85751
+      ],
+      [
+        84713,
+        95767
+      ],
+      [
+        94963,
+        106102
+      ],
+      [
+        104980,
+        115240
+      ],
+      [
+        114052,
+        125091
+      ],
+      [
+        124107,
+        134776
+      ],
+      [
+        133401,
+        144651
+      ],
+      [
+        143783,
+        155033
+      ],
+      [
+        153922,
+        165300
+      ],
+      [
+        164150,
+        174900
+      ],
+      [
+        173690,
+        184884
+      ]
+    ],
+    "new_ranges": [
+      [
+        512354,
+        541543
+      ],
+      [
+        541091,
+        584676
+      ],
+      [
+        579196,
+        609518
+      ],
+      [
+        609068,
+        612843
+      ],
+      [
+        612643,
+        615145
+      ],
+      [
+        614444,
+        616945
+      ],
+      [
+        616745,
+        621150
+      ],
+      [
+        620950,
+        624275
+      ],
+      [
+        624075,
+        677410
+      ],
+      [
+        666730,
+        784791
+      ],
+      [
+        771372,
+        869300
+      ],
+      [
+        857353,
+        955357
+      ],
+      [
+        945775,
+        1054489
+      ],
+      [
+        1040618,
+        1141348
+      ],
+      [
+        1130496,
+        1233520
+      ],
+      [
+        1222386,
+        1322774
+      ],
+      [
+        1314921,
+        1394273
+      ],
+      [
+        1382275,
+        1482701
+      ]
+    ],
+    "financial_statement_visible": true,
+    "all_raw_spans_exact": true,
+    "actual_visible_chars": 35996
+  },
+  "mining_wires": [
+    {
+      "old_request_hash": "53e46b2589d250683b5aafc5680ba839013a0987410493351843e2a367c6ed39",
+      "new_request_hash": "6b579c2bbfd86030fe95584607ea86ab52984e98771af0489b196593cc00c6c0",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "5fcdc105739f9d631e2df6249be2cd616693e7e40c78fad79c39586509ebd2d8",
+      "new_request_hash": "91f48423b47549dfc83f91c68766e4ab57ba96abf952e4b470159749eafb65fb",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "1a27b9f07769eb6f3c0f933d3f2bac7c54d30369998fd837fdad3c991e18ee80",
+      "new_request_hash": "2d3a981f6553bef6acc5b8bfe1dd041e0cd097113568c68e90ea8da9bb298e3e",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "834387a796b6b5dda1ec7a38c768dc1010ce148fa8a00dc1a764f58d978e0daa",
+      "new_request_hash": "922ccf9d653e7fd87e3738101f3352981e2e1aacd670528b895fa7405b6d902a",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "91b1be43419b0345259969bb5c31cba9e224274a53389d383f21261fdcb6eefa",
+      "new_request_hash": "95c48f00cceb9a6dc101a66478810bcdbabc9b7608dda1f21d5b78c4ca0ee3ab",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "5af38dc79c94b794fab2fad36508a73378f4f3541245825aa54397d75ea317a6",
+      "new_request_hash": "2e2e62c591f0dd90b97ccfe57d230825f9fa9853fe70c94dccd377f48d49beae",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "7ed95ccd696da92a8b0c5e71ac6b9741f0bf7688f36a4654f13509eb1e09ce53",
+      "new_request_hash": "4a006a7bf20314b134087b2fc03f5fcccdc80c2100349cb5c6551da49e0ebe26",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "d56d19556bb613ed1209f45314d0a7b4506edac3d65fff6c4103b74caea98b35",
+      "new_request_hash": "58ffbaaa105b967662e6dedb345a36d1d2494648b077dcd5cd21dd26f299f6a3",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "8f62953301afd1d99fa6a686e35d23d9cc191c38c94d55df7f64841ce94b2577",
+      "new_request_hash": "b6e387dc212c1bb7797edf4d7a6d97f0834ec01ddb36a9bd9c65c125b419e3e1",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "a6a701a57b09435f9a308588566230d9c7753d79a83621775c54e3838b25605f",
+      "new_request_hash": "ebbf4ab7c10e1e96d9b73abe3f18c555d86c06fe89c7ff776ded662dd15a435f",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "3ac43c7a10f072ef24c958cc8815d8d1ba2584c04f911419a331c28abf2b272d",
+      "new_request_hash": "66dc68ee9c0cf0d9912f3367e7b4400219b63c4dccabc93f56e5e3f3d3d9a31f",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "b3b01fe2450adf702e2595085ec2c856bae06b2a8b5b4f4937ee6ac8c7e02c3c",
+      "new_request_hash": "8570ef1e3105e5a6fdf818d9f5b5a6745dc0559e630e2b53d5c42d0c187355e8",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "21a76e9a3c731d332b0c79190eee9ba094efc5a982fdf5dad140396ca52841c3",
+      "new_request_hash": "90474d729caa272b4c8af55f410a3553ac02d93952f99bba8c43be21dbb47bb8",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "fa4347139d5d3d9f833fafabdc0406e43bb9fe34ff97ebcb4041f35d4d6cd5c2",
+      "new_request_hash": "df09f037b0aab7a4cfafbcb96ccd4ba0296bf40c14bf47619446e7a702bf2626",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    },
+    {
+      "old_request_hash": "03838b96f5358c7034c8141ed60d886e9f7cbf76227a43124b1165d9d4859b25",
+      "new_request_hash": "41e002a8f343e66d4450224b7e8dc068252db59ce781c355403419bd430ca3b3",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": true
+    },
+    {
+      "old_request_hash": "9ab53aca00bac943a13bea036b85174127fc96b93a18b83ed7b90db01beab65d",
+      "new_request_hash": "c6851048005eaf82780e5b241a9e0b9ca720f55a502872b22a863affafda20ee",
+      "wire_blind_for_known_issuer_ciks": true,
+      "source_payload_unchanged": true,
+      "handle_roundtrip_verified": false
+    }
+  ],
+  "market_absence": [
+    {
+      "correction_request_hash": "23adc5f046d9590c7d07d463bc7c2bf40bc9bd548fc738414e9482a17590d841",
+      "original_texts_preserved": true,
+      "false_absence_detected": false
+    },
+    {
+      "correction_request_hash": "624f61ae2192c8d710511be08e30376709804745011c12e403be169eb23d5af3",
+      "original_texts_preserved": true,
+      "false_absence_detected": false
+    },
+    {
+      "correction_request_hash": "8b0d5ca890c1300bc16129439b5a9b2fa95d9b8f26afbac7e31b8d81cb2f45c2",
+      "original_texts_preserved": true,
+      "false_absence_detected": false
+    },
+    {
+      "correction_request_hash": "56a86d2851b772dfa0ffac280e3d81d338bc2633a49569a5def51ff642fe465f",
+      "original_texts_preserved": true,
+      "false_absence_detected": false
+    },
+    {
+      "correction_request_hash": "60a630adeea10331408cf87f14eea7643795bc9c0de16f58aee5c22368a4daa0",
+      "original_texts_preserved": true,
+      "false_absence_detected": false
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+{
+  "provenance": {
+    "classification_audit": "reports/signal-modality-migration-v139.json",
+    "numeric_semantics": "spec/src/stock_opportunity_agent/signal_library.md",
+    "replay": "reports/v162-structured-signal-replay-20261001.json",
+    "same_cohort_successor": true,
+    "source_run": "runs/cold_start/minimal_rounds_v162_integrated"
+  },
+  "schema_version": "signal-modality-migration-plan-v1",
+  "signals": [
+    {
+      "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end.",
+      "execution": {
+        "function": "financial.cash_burn_rate_elevated",
+        "type": "deterministic"
+      },
+      "modality": "structured",
+      "parameter_overrides": {
+        "burn_threshold": 0.1,
+        "lookback_days": 550,
+        "max_period_age_days": 550
+      },
+      "replacement_tests": [
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-30},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "burn-high",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "positive",
+          "name": "high_burn_positive"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-5},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "burn-low",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "neutral",
+          "name": "low_burn_neutral"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":10},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "burn-none",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "negative",
+          "name": "cash_generation_negative"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "burn-missing",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "unavailable",
+          "name": "missing_ocf_unavailable"
+        }
+      ],
+      "source_ref": "cash_burn_rate_elevated:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "cash_reserves:v1"
+    },
+    {
+      "description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency.",
+      "execution": {
+        "function": "financial.cash_to_current_liabilities_ratio",
+        "type": "deterministic"
+      },
+      "modality": "structured",
+      "parameter_overrides": {
+        "negative_max": 1.0,
+        "positive_min": 1.0
+      },
+      "replacement_tests": [
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "ratio-negative",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "negative",
+          "name": "matched_ratio_negative"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"LiabilitiesCurrent\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "ratio-positive",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "positive",
+          "name": "matched_ratio_positive"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":50}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "ratio-missing",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "unavailable",
+          "name": "missing_liabilities_unavailable"
+        }
+      ],
+      "source_ref": "cash_to_current_liabilities_ratio:v1"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "commercialization_status:v1"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "customer_concentration:v1"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "financing_listing_action:v2"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "gross_margin_change:v2"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "guidance_acceleration:v1"
+    },
+    {
+      "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance.",
+      "execution": {
+        "function": "financial.liquidity_runway_months",
+        "type": "deterministic"
+      },
+      "modality": "structured",
+      "parameter_overrides": {
+        "max_period_age_days": 365,
+        "negative_runway_min_months": 12,
+        "positive_runway_max_months": 6
+      },
+      "replacement_tests": [
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-60},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":20}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "runway-low",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "positive",
+          "name": "low_runway_positive"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-60},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":180}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "runway-mid",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "neutral",
+          "name": "intermediate_runway_neutral"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-60},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":300}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "runway-long",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "negative",
+          "name": "long_runway_negative"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":10},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "runway-none",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "negative",
+          "name": "cash_generation_negative"
+        },
+        {
+          "as_of": "2025-02-01T00:00:00+00:00",
+          "documents": [
+            {
+              "available_at": "2025-01-20T00:00:00+00:00",
+              "content": "{\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+              "document_id": "runway-missing",
+              "published_at": "2025-01-20T00:00:00+00:00",
+              "source_type": "financials"
+            }
+          ],
+          "expected": "unavailable",
+          "name": "missing_ocf_unavailable"
+        }
+      ],
+      "source_ref": "liquidity_runway_months:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "max_drawdown_1y:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "negative_word_count:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "net_share_retirement_yoy:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "operating_cash_flow_margin:v1"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "order_confirmation_disclosed:v1"
+    },
+    {
+      "modality": "narrative",
+      "source_ref": "order_quality:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "price_momentum_126d:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "revenue_acceleration:v1"
+    },
+    {
+      "modality": "structured",
+      "source_ref": "revenue_growth_yoy:v1"
+    }
+  ],
+  "source_registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+  "source_registry_version": 6
+}

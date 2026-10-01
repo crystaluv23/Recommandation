@@ -6548,7 +6548,12 @@ class SignalEvolutionEngine:
             for card in context.get("stable_signal_cards", ())
             if isinstance(card, Mapping)
         )
-        model = MiningAgentRoleModel(caller)
+        model = MiningAgentRoleModel(
+            caller,
+            identity_aliases=_scoped_slow_identity_guard_inventory(
+                self._discovery_cases_by_id.values()
+            ),
+        )
 
         narrative_documents = [
             document

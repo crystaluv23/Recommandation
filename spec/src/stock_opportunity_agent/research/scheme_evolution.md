@@ -2295,3 +2295,11 @@ recovery tests must prove that an unavailable Random case is replaced before
 snapshot finalization, fixed Anchor identity is never substituted, a shared
 source gap cannot create `round_rejected`, and a retryable shared-data pause
 uses the supervisor's temporary-failure exit status.
+
+### Source visibility consistency (2026-10-01)
+
+Basic Info projection uses data-owned nonvisible HTML intervals, also used before
+resolver context selection. Remove duplicated hidden-block regex semantics; keep
+entity decoding, exact raw/projection runs and original source/PIT metadata at the
+existing projection boundary. Final Predictor assembly still retains all previously
+disclosed typed evidence and explicit state dispositions.

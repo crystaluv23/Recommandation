@@ -329,14 +329,28 @@ _PREDICTOR_BASELINE_MULTIPLE_PREFIX = re.compile(
 
 
 _MARKET_DATA_ABSENCE = re.compile(
-    r"(?:\bno\b[^.;]{0,96}\bmarket data\b\s*"
-    r"(?:(?:is|are|was|were)\s+)?(?:available|provided|supplied)|"
-    r"\bno\s+market data\b(?:\s*[.;]|$)|"
-    r"\bmarket data\b[^.;]{0,32}\b(?:absent|missing|unavailable|"
-    r"not\s+(?:available|provided|supplied)))",
-    re.IGNORECASE,
+    r"\bno\s+(?:(?:[A-Za-z][\w-]*\s+){1,8}(?:or|and)\s+)?"
+    r"(?:(?:historical|current|point[- ]in[- ]time)\s+)?"
+    r"(?:price\s+or\s+)?market\s+data\b(?:\s*[.;]|$|"
+    r"\s+(?:(?:is|are|was|were)\s+)?(?:available|provided|supplied))|"
+    r"\bmarket\s+data\b\s+(?:(?:is|are|was|were)\s+)?"
+    r"(?:absent|missing|unavailable|not\s+(?:available|provided|supplied))",
+    re.I,
 )
-
+_MARKET_ABSENCE_DENIED_OR_CONDITIONAL = re.compile(
+    r"\b(?:if|when|unless)\s*$|"
+    r"\b(?:not|never)(?:\s+that)?(?:\s+all)?\s*$|"
+    r"\b(?:not|no|never)\s+(?:(?:a|the)\s+)?"
+    r"(?:claims?|claimed|claiming|assertion|asserted|assert|state|stated)"
+    r"(?:\s+that)?(?:\s+all)?\s*$", re.I,
+)
+def _affirmative_market_data_absence(text: str) -> bool:
+    """Recognize a direct affirmative absence, not another facet or denied claim."""
+    for match in _MARKET_DATA_ABSENCE.finditer(text):
+        prefix = text[max(0,match.start() - 100):match.start()].rstrip()
+        if not _MARKET_ABSENCE_DENIED_OR_CONDITIONAL.search(prefix):
+            return True
+    return False
 
 _PRICE_OUTCOME_TERM = (
     r"(?:2\s*[x×]|doubl(?:e|es|ed|ing)|repric(?:e|es|ed|ing)|"
@@ -423,7 +437,7 @@ def _market_data_absence_paths(
         f"{field_name}[{index}]"
         for field_name, values in fields
         for index, text in enumerate(values)
-        if _MARKET_DATA_ABSENCE.search(text)
+        if _affirmative_market_data_absence(text)
     ]
 
 

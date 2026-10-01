@@ -10,6 +10,8 @@ enforcement stays entirely in the controller.
 
 from __future__ import annotations
 
+from contextlib import nullcontext
+
 from typing import Any, Mapping
 
 from stock_opportunity_agent.research.evolution_core import AgentUsage
@@ -85,6 +87,11 @@ _MINING_CONTROLLER_PROMPT = (
     "admissible; repeating a heavy action then ends the seed as "
     "deferred_budget. Light actions also stop at light_remaining=0. "
     "Narrative event/document read_span uses browse_remaining, not heavy; "
+    "The evidence directory supplies raw_chars, readable_start and section "
+    "raw_start coordinates. Start at a supplied body/section offset instead "
+    "of zero when the raw document begins with hidden HTML/XBRL metadata; "
+    "read_span length is at most 4000 raw characters. Directory rows are "
+    "discovery_only; only the actual read establishes source evidence. "
     "available_actions lists budget-admissible actions (state prerequisites "
     "still apply). research_axis defines the one comparison represented by "
     "positive/control, and labels arrive only through the runtime-owned label_map; "
@@ -116,25 +123,31 @@ class MiningAgentRoleModel:
         stage: str = MINING_CONTROLLER_STAGE,
         max_output_tokens: int = 4000,
         temperature: float = 0.2,
+        identity_aliases: tuple[str, ...] = (),
     ) -> None:
         self.caller = caller
         self.stage = stage
         self.max_output_tokens = max_output_tokens
         self.temperature = temperature
+        self.identity_aliases = identity_aliases
         self.usage = AgentUsage()
         self.requests: list[str] = []
 
     def next_action(self, view: Mapping[str, Any]) -> dict[str, Any]:
         """Send one controller view and return the model's action object."""
 
-        parsed, usage = self.caller.complete_json(
-            stage=self.stage,
-            system_prompt=_MINING_CONTROLLER_PROMPT,
-            payload=dict(view),
-            allow_outcomes=True,
-            max_output_tokens=self.max_output_tokens,
-            temperature=self.temperature,
-        )
+        scope = getattr(self.caller, "anonymous_case", None)
+        with (scope(aliases=self.identity_aliases, company_id="", expand_aliases=False)
+              if callable(scope) and self.identity_aliases else nullcontext()):
+            parsed, usage = self.caller.complete_json(
+                stage=self.stage,
+                system_prompt=_MINING_CONTROLLER_PROMPT,
+                payload=dict(view),
+                allow_outcomes=True,
+                anonymous_aliases=self.identity_aliases,
+                max_output_tokens=self.max_output_tokens,
+                temperature=self.temperature,
+            )
         self.usage = AgentUsage(
             llm_calls=self.usage.llm_calls + usage.llm_calls,
             tokens=self.usage.tokens + usage.tokens,

@@ -90,3 +90,19 @@ Estimator, request hash, persisted provider body, network body and pre-send cost
 gates all use the effective limit. Binary judge calls never receive the reserve.
 Old contracts without this field retain zero. This reserves reasoning and final
 JSON together; it does not claim the provider reports or enforces separate caps.
+
+## Aggregate source identity scope (2026-10-01)
+
+The existing reversible egress scope also accepts an explicit aggregate identity
+inventory without derived prose aliases. Every explicit `cik_...` issuer supplies
+its padded CIK/accession and typed numeric CIK patterns. Known aliases occurring
+inside URL domains use the existing URL-aware matcher; unrelated source URLs and
+financial amounts remain intact. Compact namespaces use only the authorized
+inventory when expansion is disabled. Source-owned scoped Slow inventories
+exclude generic business words; arbitrary corpus-wide brand expansion is invalid.
+
+The real Mining controller adapter opens this same scope around every request,
+including tool receipts and retry feedback. Tokens restore requested event/document
+handles before execution; original sources and ledger coordinates remain unchanged.
+Scope unwinds on interruption and cannot bleed into another worker. A new scope is
+not an alternative transport or a bypass of stage/label/budget checks.

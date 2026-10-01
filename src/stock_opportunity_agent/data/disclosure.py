@@ -120,11 +120,13 @@ def _filing_sections(
     return sections
 
 
-def _document_card(
+def document_card(
     document: RawInfoDocument,
     *,
     include_sections: bool,
 ) -> dict[str, Any]:
+    """Index one already PIT-selected document without changing evidence authority."""
+
     readable, origins = _readable_text(document)
     card: dict[str, Any] = {
         "document_id": document.document_id,
@@ -132,6 +134,8 @@ def _document_card(
         "source_type": document.source_type,
         "available_at": document.available_at.isoformat(),
         "visible_chars": len(readable),
+        "raw_chars": len(document.content),
+        "readable_start": origins[0][0] if origins else None,
     }
     title = _news_title(document)
     form_match = _FORM_TYPE_PATTERN.search(readable[:20_000])
@@ -204,7 +208,7 @@ def document_catalog(
         "company_id": company_id,
         "as_of": as_of.isoformat(),
         "cards": [
-            _document_card(document, include_sections=True) for document in page
+            document_card(document, include_sections=True) for document in page
         ],
         "counts": {
             "eligible": total,
