@@ -103,6 +103,10 @@ The runtime validates input construction before a model call; domain validators
 retain schema/evidence/PIT authority. Applicable deterministic repairs precede
 LLM correction, retaining partial progress without accepting invalid state.
 Tool results and omitted-context envelopes are actual model-visible data.
+Deterministic numeric Signal products own their value, unit, formula and exact
+reported period; downstream stages reuse that metadata instead of reconstructing
+units or confusing numeric sign with categorical state. Legacy artifacts remain
+immutable and model-authored numeric metadata is inadmissible.
 Existing atomic pointers and domain promotion rules retain commit authority.
 Predictor context is assembled from typed stage products, including explicit
 state supersession/removal; it never consumes retrospective label-bearing memory.

@@ -682,6 +682,65 @@ class SignalEvidence:
 
 
 @dataclass(frozen=True)
+class NumericMeasurement:
+    """Meaning supplied by the deterministic function that computed a value."""
+
+    value: float
+    unit: str
+    formula: str
+    period_end: str | None = None
+    period_start: str | None = None
+
+    def __post_init__(self) -> None:
+        if (isinstance(self.value, bool) or not isinstance(self.value, (int, float))
+                or not math.isfinite(self.value)):
+            raise ValidationError("numeric measurement value must be finite")
+        if not isinstance(self.unit, str) or (
+            self.unit not in {"fraction", "fraction_difference", "ratio", "count", "months"}
+            and re.fullmatch(r"[A-Z]{3}", self.unit) is None
+        ):
+            raise ValidationError("numeric measurement unit is unsupported")
+        if not isinstance(self.formula, str) or not self.formula.strip() or len(self.formula) > 240:
+            raise ValidationError("numeric measurement formula must be bounded text")
+        if self.unit == "count" and (self.value < 0 or self.value != int(self.value)):
+            raise ValidationError("numeric count must be a nonnegative integer")
+        if self.unit == "months" and self.value < 0:
+            raise ValidationError("numeric duration cannot be negative")
+        for value in (self.period_start, self.period_end):
+            if value is not None:
+                try:
+                    if datetime.strptime(value, "%Y-%m-%d").strftime("%Y-%m-%d") != value:
+                        raise ValueError("noncanonical date")
+                except (TypeError, ValueError) as exc:
+                    raise ValidationError("numeric measurement period must use exact ISO dates") from exc
+        if self.period_start and (not self.period_end or self.period_start > self.period_end):
+            raise ValidationError("numeric measurement duration is invalid")
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize without introducing absent fields into legacy artifacts."""
+
+        result = {"value": self.value, "unit": self.unit, "formula": self.formula}
+        if self.period_end is not None:
+            result["period"] = {"end": self.period_end}
+            if self.period_start is not None:
+                result["period"]["start"] = self.period_start
+        return result
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "NumericMeasurement":
+        """Restore strict runtime metadata, never inferred from Signal prose."""
+
+        if not isinstance(value, Mapping) or set(value) - {"value", "unit", "formula", "period"} or not {"value", "unit", "formula"} <= set(value):
+            raise ValidationError("numeric measurement has invalid fields")
+        period = value.get("period", {})
+        if not isinstance(period, Mapping) or (
+            "period" in value and (not isinstance(period.get("end"), str) or set(period) - {"start", "end"})
+        ):
+            raise ValidationError("numeric measurement period has invalid fields")
+        return cls(value["value"], value["unit"], value["formula"], period.get("end"), period.get("start"))
+
+
+@dataclass(frozen=True)
 class SignalResult:
     """Canonical state plus rich interpretation and evidence provenance."""
 
@@ -696,6 +755,7 @@ class SignalResult:
     execution_status: SignalExecutionStatus | None = None
     execution_error_code: str | None = None
     execution_error_message: str | None = None
+    measurement: NumericMeasurement | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.signal_id, "signal_id")
@@ -729,6 +789,12 @@ class SignalResult:
         counter_evidence = tuple(self.counter_evidence)
         object.__setattr__(self, "supporting_evidence", supporting_evidence)
         object.__setattr__(self, "counter_evidence", counter_evidence)
+        if self.measurement is not None:
+            if not isinstance(self.measurement, NumericMeasurement) or self.value is SignalValue.UNAVAILABLE:
+                raise ValidationError("available numeric result required for measurement")
+            number = self.interpretation.partition("=")[2].split(";", 1)[0]
+            if number != f"{self.measurement.value:.6g}":
+                raise ValidationError("numeric measurement disagrees with canonical interpretation")
         if self.value is SignalValue.UNAVAILABLE:
             if self.coverage is not SignalCoverage.UNAVAILABLE:
                 raise ValidationError("unavailable signal requires unavailable coverage")
@@ -787,6 +853,8 @@ class SignalResult:
                     "error_message": self.execution_error_message,
                 }
             )
+        if self.measurement is not None:
+            result["measurement"] = self.measurement.to_dict()
         return result
 
     @classmethod
@@ -850,6 +918,8 @@ class SignalResult:
             value=SignalValue(str(state["value"])),
             confidence=state["confidence"],
             interpretation=interpretation["summary"],
+            measurement=(NumericMeasurement.from_dict(data["measurement"])
+                         if "measurement" in data else None),
             supporting_evidence=tuple(
                 SignalEvidence.from_dict(item)
                 for item in evidence["supporting"]
@@ -915,7 +985,20 @@ def signal_result_model_view(
         measurement_context: dict[str, Any] = {
             "categorical_value_is_not_stock_direction": True,
         }
-        if str(interpretation.get("summary", "")).startswith(
+        if result.get("measurement") is not None:
+            measurement = NumericMeasurement.from_dict(result["measurement"])
+            measurement_context["numeric_measurement"] = {
+                **measurement.to_dict(),
+                "numeric_sign": ("positive" if measurement.value > 0 else
+                                 "negative" if measurement.value < 0 else "zero"),
+                "categorical_state": state.get("value") if isinstance(state, Mapping) else None,
+            }
+            if measurement.unit in {"fraction", "fraction_difference"}:
+                measurement_context["numeric_measurement"]["display"] = {
+                    "value": 100 * measurement.value,
+                    "unit": "%" if measurement.unit == "fraction" else "percentage_points",
+                }
+        if result.get("measurement") is not None or str(interpretation.get("summary", "")).startswith(
             str(result.get("signal_id", "")) + "="
         ):
             observations = _numeric_source_observations(result)
@@ -965,7 +1048,8 @@ def _numeric_source_observations(result: Mapping[str, Any]) -> list[dict[str, An
                     or not math.isfinite(number)
                 ):
                     continue
-                dates = {key: row[key] for key in ("start", date_key) if key in row}
+                dates = {key: row[key] for key in ("start", date_key)
+                         if key in row and row[key] is not None}
                 try:
                     if date_key not in dates:
                         continue
@@ -3018,6 +3102,16 @@ def validate_signal_result(
             "neutral or negative conclusions, or return unavailable with empty "
             "evidence when the visible text cannot support applying the skill"
         )
+    if result.measurement is not None:
+        if spec.execution_type is not SignalExecutionType.DETERMINISTIC:
+            raise ValidationError("numeric measurement is deterministic runtime-owned metadata")
+        measurement = result.measurement
+        if measurement.period_end is not None and not any(
+            row.get("end") == measurement.period_end
+            and row.get("start") == measurement.period_start
+            for row in _numeric_source_observations(result.to_dict())
+        ):
+            raise ValidationError("numeric measurement period is not in its cited source facts")
     documents_by_id = {document.document_id: document for document in documents}
     for group, group_evidence in evidence_groups:
         for index, item in enumerate(group_evidence):
@@ -3241,6 +3335,9 @@ def _revenue_growth_signal(
         current.document,
         as_of,
         label="revenue_growth_yoy",
+        measurement_unit='fraction',
+        measurement_formula='current / comparable prior-year revenue - 1',
+        measurement_period=current,
         evidence=_fact_evidence((current, previous), as_of),
         plausible_abs_max=5.0,
     )
@@ -3290,6 +3387,9 @@ def _revenue_acceleration_signal(
         current_pair[0].document,
         as_of,
         label="revenue_acceleration",
+        measurement_unit='fraction_difference',
+        measurement_formula='latest year-over-year growth - earlier year-over-year growth',
+        measurement_period=current_pair[0],
         evidence=_fact_evidence(facts, as_of),
         plausible_abs_max=5.0,
     )
@@ -3345,6 +3445,9 @@ def _gross_margin_change_signal(
         current[2].document,
         as_of,
         label="gross_margin_change",
+        measurement_unit='fraction_difference',
+        measurement_formula='current gross profit / revenue - previous gross profit / revenue',
+        measurement_period=current[2],
         evidence=_fact_evidence(
             (current[2], current[3], previous[2], previous[3]), as_of
         ),
@@ -3406,6 +3509,9 @@ def _operating_cash_flow_margin_signal(
         latest[2].document,
         as_of,
         label="operating_cash_flow_margin",
+        measurement_unit='fraction',
+        measurement_formula='operating cash flow / same-period revenue',
+        measurement_period=latest[2],
         evidence=_fact_evidence((latest[2], latest[3]), as_of),
         plausible_abs_max=1.5,
     )
@@ -3445,6 +3551,9 @@ def _net_share_retirement_yoy_signal(
         current.document,
         as_of,
         label="net_share_retirement_yoy",
+        measurement_unit='fraction',
+        measurement_formula='1 - current weighted-average shares / prior-year shares',
+        measurement_period=current,
         evidence=_fact_evidence((current, previous), as_of),
         plausible_abs_max=1.0,
     )
@@ -3482,6 +3591,9 @@ def _cash_reserves_signal(
         latest.document,
         as_of,
         label="cash_reserves",
+        measurement_unit=latest.unit.upper(),
+        measurement_formula='latest reported instant cash balance',
+        measurement_period=latest,
         evidence=_fact_evidence((latest,), as_of),
     )
 
@@ -3534,6 +3646,9 @@ def _cash_to_current_liabilities_ratio_signal(
         cash_fact.document,
         as_of,
         label="cash_to_current_liabilities_ratio",
+        measurement_unit='ratio',
+        measurement_formula='cash / same-date current liabilities',
+        measurement_period=cash_fact,
         evidence=_fact_evidence((cash_fact, liabilities_fact), as_of),
     )
 
@@ -3568,6 +3683,9 @@ def _cash_burn_rate_elevated_signal(
         state,
         ratio,
         label="cash_burn_rate_elevated",
+        measurement_unit='ratio',
+        measurement_formula='absolute negative operating cash flow / cash',
+        measurement_period=cash_flow,
         evidence=_fact_evidence((cash_flow, cash), as_of),
     )
 
@@ -3631,6 +3749,9 @@ def _liquidity_runway_months_signal(
         state,
         runway,
         label="liquidity_runway_months",
+        measurement_unit='months',
+        measurement_formula='cash / (absolute negative operating cash flow / reported months)',
+        measurement_period=cash_flow,
         evidence=_fact_evidence((cash_flow, cash), as_of),
     )
 
@@ -4167,6 +4288,8 @@ def _max_drawdown_signal(
             drawdown, drawdown_peak, drawdown_trough = current, peak_index, index
     return _numeric_result(
         spec, drawdown, document, as_of, label="max_drawdown_1y",
+        measurement_unit="fraction",
+        measurement_formula="minimum price / preceding running peak - 1",
         evidence=_price_series_evidence(
             document, values, (0, drawdown_peak, drawdown_trough, len(values) - 1), as_of,
         ),
@@ -4218,6 +4341,8 @@ def _price_momentum_signal(
         document,
         as_of,
         label=f"price_momentum_{raw_lookback}d",
+        measurement_unit="fraction",
+        measurement_formula="last / first supplied price - 1 in the supplied lookback",
         evidence=_price_series_evidence(
             document, values, (len(values) - raw_lookback - 1, len(values) - 1), as_of,
         ),
@@ -4282,6 +4407,7 @@ def _negative_word_count_signal(
         value=(SignalValue.NEGATIVE if count >= threshold else SignalValue.NEUTRAL),
         confidence=1.0,
         interpretation=f"negative_word_count={count}",
+        measurement=NumericMeasurement(count, "count", "literal substring occurrences across input documents"),
         supporting_evidence=tuple(evidence),
         coverage=SignalCoverage.SUFFICIENT,
     )
@@ -4294,6 +4420,9 @@ def _numeric_result(
     as_of: datetime,
     *,
     label: str,
+    measurement_unit: str,
+    measurement_formula: str,
+    measurement_period: _SecFact | None = None,
     evidence: tuple[SignalEvidence, ...] | None = None,
     plausible_abs_max: float | None = None,
 ) -> SignalResult:
@@ -4323,6 +4452,11 @@ def _numeric_result(
         ),
     )
     return SignalResult(
+        measurement=NumericMeasurement(
+            numeric_value, measurement_unit, measurement_formula,
+            measurement_period.end if measurement_period else None,
+            measurement_period.start if measurement_period else None,
+        ),
         signal_id=spec.signal_id,
         version=spec.version,
         value=value,
@@ -4354,11 +4488,19 @@ def _explicit_numeric_result(
     numeric_value: float,
     *,
     label: str,
+    measurement_unit: str,
+    measurement_formula: str,
+    measurement_period: _SecFact | None = None,
     evidence: tuple[SignalEvidence, ...],
 ) -> SignalResult:
     if not math.isfinite(numeric_value):
         raise ValidationError(f"{label} must be finite")
     return SignalResult(
+        measurement=NumericMeasurement(
+            numeric_value, measurement_unit, measurement_formula,
+            measurement_period.end if measurement_period else None,
+            measurement_period.start if measurement_period else None,
+        ),
         signal_id=spec.signal_id,
         version=spec.version,
         value=value,

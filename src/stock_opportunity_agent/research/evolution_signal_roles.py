@@ -4526,6 +4526,7 @@ def _map_projected_signal_evidence(
 
 
 _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
+    "Omit runtime-owned execution and measurement fields. "
     "Apply each versioned extraction skill independently to the one shared "
     "bounded point-in-time source_projection. Each evidence item inside a nested "
     "result must use projection_id and exact_text copied from one visible "
@@ -4902,6 +4903,8 @@ class StructuredLLMSignalRunner:
                         )
                     if raw_result is None:
                         raise ValidationError("batch output omitted requested signal_ref")
+                    if "measurement" in raw_result:
+                        raise ValidationError("Signal numeric measurement is runtime-owned and must be omitted")
                     if "execution" in raw_result:
                         raise ValidationError(
                             "Signal execution status is runtime-owned and must be omitted"

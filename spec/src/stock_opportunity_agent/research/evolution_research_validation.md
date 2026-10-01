@@ -20,6 +20,11 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
 
 ## Invariants
 
+- Shared producer-owned measurement guards run on the fully assembled state,
+  with exact text/claim repair paths. These obligations carry source Signal refs;
+  they authorize replacing/removing only the invalid prose member, never changing
+  measurements, source records, Signal state or valid siblings.
+
 - A canonical numeric Signal claim retains its exact adoption string, plus the
   shared Signal model view's `measurement_context`. Suppressing duplicate raw
   numeric evidence text must not suppress source durations/dated anchors or

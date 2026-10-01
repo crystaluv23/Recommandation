@@ -37,6 +37,30 @@ text remains an auditable explanation and is never parsed as executable logic.
 This module is separate from `signals.py`, whose existing rules measure fixed
 `ResearchPacket` features for the older cold-start path.
 
+## Source-owned numeric measurement contract
+
+A newly computed deterministic numeric result carries an optional `measurement`
+object, owned by its executing function: finite `value`, `unit`, a bounded
+`formula` description, and optional exact reported `period` (`end`, optional
+`start`). Units distinguish fraction (percent display), fraction_difference
+(percentage-point display), dimensionless ratio, count, months, and the reported
+three-letter currency. The calculation, thresholds and canonical adoption string
+are unchanged. This additive field supplies meaning that previously had to be
+reconstructed from prose. It is absent from unavailable/non-numeric results;
+legacy results with no field retain their original serialization and hashes.
+A model must omit this field; the LLM Signal boundary rejects model-authored
+measurements exactly as it rejects model-authored execution status.
+
+The producer supplies units/formula/primary period at its calculation site, never
+through a consumer mapping keyed to Signal id or a name guessed from prose.
+Available views retain the measurement with numeric sign, categorical state,
+and explicit percent versus percentage-point display. Evidence views retain
+exact source dates separately; period labels cannot shorten cumulative duration.
+No missing legacy field is fabricated. Routing remains conclusion-only.
+The result validator checks that any declared period occurs in its cited original
+numeric facts and that numeric metadata agrees with the canonical adoption string.
+The existing execution/evidence/PIT checks remain mandatory.
+
 ## Signal Types
 
 - `deterministic`: calls a registered pure function over point-in-time Raw Info.

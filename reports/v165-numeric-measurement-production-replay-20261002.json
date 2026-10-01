@@ -1,0 +1,214 @@
+{
+  "network_calls": 0,
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "contract_hash": "bdbd8542d1c645abd29251d7caba910783f75dcb3d2d5762346e06e24e5a9176",
+  "rows": [
+    {
+      "plan": "plan_r0001_c01",
+      "case": "cik_0001164727:20250731",
+      "original_trajectory_sha256": "832833a4fdf058a5fdec5475090f30444aa217ae9274868f8c383adcfc12b7d9",
+      "source_files": [
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001164727/sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45.json",
+          "file_sha256": "7acb351f57c503473471bff275854dbab8923267d0943d7ecb792db9c250444d",
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001164727/sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45.json",
+          "file_sha256": "7acb351f57c503473471bff275854dbab8923267d0943d7ecb792db9c250444d",
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001164727/sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45.json",
+          "file_sha256": "7acb351f57c503473471bff275854dbab8923267d0943d7ecb792db9c250444d",
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001164727/sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45.json",
+          "file_sha256": "7acb351f57c503473471bff275854dbab8923267d0943d7ecb792db9c250444d",
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45"
+        }
+      ],
+      "new_source_recomputed_measurements": {
+        "operating_cash_flow_margin:v2": {
+          "value": 0.42752009296020144,
+          "unit": "fraction",
+          "formula": "operating cash flow / same-period revenue",
+          "period": {
+            "end": "2025-06-30",
+            "start": "2025-01-01"
+          }
+        },
+        "cash_to_current_liabilities_ratio:v2": {
+          "value": 1.3244111349036403,
+          "unit": "ratio",
+          "formula": "cash / same-date current liabilities",
+          "period": {
+            "end": "2025-06-30"
+          }
+        },
+        "revenue_growth_yoy:v2": {
+          "value": 0.22575667655786358,
+          "unit": "fraction",
+          "formula": "current / comparable prior-year revenue - 1",
+          "period": {
+            "end": "2025-06-30",
+            "start": "2025-01-01"
+          }
+        },
+        "revenue_acceleration:v2": {
+          "value": -0.019582622472710698,
+          "unit": "fraction_difference",
+          "formula": "latest year-over-year growth - earlier year-over-year growth",
+          "period": {
+            "end": "2025-06-30",
+            "start": "2025-01-01"
+          }
+        }
+      },
+      "original_quantity_state_evidence_preserved": true,
+      "unit_issues": [
+        {
+          "code": "numeric_measurement_unit_invalid",
+          "paths": [
+            "uncertainties[2]"
+          ],
+          "message": "uncertainties[2] displays revenue_acceleration as -1.96%; its deterministic measurement is a difference of ratios, so this scaled value is percentage points, not a relative percent change. Correct only that observed measurement description."
+        }
+      ],
+      "mechanical_unit_repair_before_llm": true,
+      "production_predictor_patch_pass": true,
+      "preserved_siblings_and_scoring_fields": true,
+      "result_persistence_pass": true,
+      "exact_repaired_paths": [
+        "uncertainties[2]"
+      ]
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case": "cik_0000936395:20250930",
+      "original_trajectory_sha256": "c46a926e0099ecc46813d8f80058dbed19dceddc1db2efc4efd61a151cf735cd",
+      "source_files": [
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000936395/sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608.json",
+          "file_sha256": "e116589307061e38be95b44dfcaa2565bd9d61877e88b4c33dab28c3b8eec93c",
+          "document_id": "sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608"
+        }
+      ],
+      "new_source_recomputed_measurements": {
+        "gross_margin_change:v3": {
+          "value": -0.017939754474216474,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2025-08-02",
+            "start": "2024-11-03"
+          }
+        }
+      },
+      "original_quantity_state_evidence_preserved": true,
+      "unit_issues": [
+        {
+          "code": "numeric_measurement_unit_invalid",
+          "paths": [
+            "uncertainties[2]"
+          ],
+          "message": "uncertainties[2] displays gross_margin_change as -1.79%; its deterministic measurement is a difference of ratios, so this scaled value is percentage points, not a relative percent change. Correct only that observed measurement description."
+        }
+      ],
+      "mechanical_unit_repair_before_llm": true,
+      "production_predictor_patch_pass": true,
+      "preserved_siblings_and_scoring_fields": true,
+      "result_persistence_pass": true,
+      "exact_repaired_paths": [
+        "uncertainties[2]"
+      ]
+    },
+    {
+      "plan": "plan_r0001_c01",
+      "case": "cik_0001847409:20250131",
+      "original_trajectory_sha256": "b0697bc181a0f40c98c269bc1be0fecb6dc59293bd14eaa9b379bd0374b82f6d",
+      "source_files": [
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001847409/sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5.json",
+          "file_sha256": "07b38fd39e0673ade8ada82a6d4914d34c97a288c7f4913d783f7ca60ecbefc9",
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001847409/sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5.json",
+          "file_sha256": "07b38fd39e0673ade8ada82a6d4914d34c97a288c7f4913d783f7ca60ecbefc9",
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001847409/sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5.json",
+          "file_sha256": "07b38fd39e0673ade8ada82a6d4914d34c97a288c7f4913d783f7ca60ecbefc9",
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+        },
+        {
+          "path": "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001847409/sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5.json",
+          "file_sha256": "07b38fd39e0673ade8ada82a6d4914d34c97a288c7f4913d783f7ca60ecbefc9",
+          "document_id": "sec_edgar:cik_0001847409:financials:6c4116d3e8785f0b8e61a6b5"
+        }
+      ],
+      "new_source_recomputed_measurements": {
+        "gross_margin_change:v3": {
+          "value": 0.003563696132001748,
+          "unit": "fraction_difference",
+          "formula": "current gross profit / revenue - previous gross profit / revenue",
+          "period": {
+            "end": "2024-10-31",
+            "start": "2023-11-01"
+          }
+        },
+        "revenue_growth_yoy:v2": {
+          "value": 0.07102563419040364,
+          "unit": "fraction",
+          "formula": "current / comparable prior-year revenue - 1",
+          "period": {
+            "end": "2024-10-31",
+            "start": "2023-11-01"
+          }
+        },
+        "operating_cash_flow_margin:v2": {
+          "value": 0.06805589060818754,
+          "unit": "fraction",
+          "formula": "operating cash flow / same-period revenue",
+          "period": {
+            "end": "2024-10-31",
+            "start": "2023-11-01"
+          }
+        },
+        "cash_to_current_liabilities_ratio:v2": {
+          "value": 0.7688191281717631,
+          "unit": "ratio",
+          "formula": "cash / same-date current liabilities",
+          "period": {
+            "end": "2024-10-31"
+          }
+        }
+      },
+      "original_quantity_state_evidence_preserved": true,
+      "unit_issues": [],
+      "sign_categorical_distinction": true,
+      "ambiguity_not_mechanically_rewritten": true
+    }
+  ],
+  "limits": "Original source documents re-executed with the frozen original specs. New measurement metadata is injected only into a copied offline packet; historical requests/results are unchanged. Reusing original answers plus runtime-issued mechanical unit replacements proves actual adapter/guard/serialization wiring, not live compliance or full Slow/content/F1 acceptance.",
+  "verification": {
+    "focused_tests_passed": 239,
+    "full_suite": {
+      "passed": 1309,
+      "elapsed_seconds": 60.296
+    },
+    "network_calls": 0,
+    "final_assembly_metadata_and_posthoc_preservation_test": true,
+    "mixed_mechanical_and_llm_repair_preserves_progress": true,
+    "lint": "20 unchanged historical asset links absent only from isolated worktree; all exist in main checkout"
+  },
+  "remaining_acceptance": [
+    "Original cumulative-period claims require correction and fresh live review",
+    "Cross-Plan statistics and research versus technical completion ownership",
+    "Magnitude prediction collapse",
+    "Integrate isolated fixes and review a full real Fast + Slow cycle with fixed 24-case Binary F1 >= 0.60"
+  ]
+}

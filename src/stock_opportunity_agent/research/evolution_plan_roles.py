@@ -83,6 +83,8 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _UNTRUSTED_DATA_INSTRUCTION,
     _blind_prediction_with_baseline,
     _price_reasoning_issues,
+    _measurement_reasoning_issues,
+    _context_signal_results,
     _compact_posthoc_context,
     _INCREMENTAL_ROLE_INSTRUCTION,
     _emit_runtime_progress,
@@ -378,6 +380,9 @@ class LLMResearchController:
                 "cite that result, copy the field byte-for-byte into the evidence "
                 "claim and every quantitative belief; do not round it, convert it "
                 "to a percentage, or add approximate raw values. "
+                "Respect measurement_context: numeric_sign is separate from categorical "
+                "state, fraction differences use percentage points, and exact reported "
+                "durations cannot become individual-quarter totals. "
                 "Leave a retained Signal ref's prior claim untouched because its "
                 "backing batch is no longer visible. If you adopt new current-batch "
                 "Signal evidence and continue, narrow or replace answered information "
@@ -1739,6 +1744,9 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "keep each computed return with that card's own first/last prices and dates, "
     "rather than attaching an unrelated Basic Info price. Respect Signal "
     "measurement_context: categorical states are not stock-direction forecasts, "
+    "numeric_sign is distinct from the measured predicate's categorical state; "
+    "a fraction_difference display uses percentage points, not percent, "
+    "with the producer's formula and exact reported period, "
     "and dated cumulative financial observations are not individual-quarter totals. "
     "do not call a price change a doubling unless a computed card verifies it. "
     "If the needed computed window is absent, keep that comparison uncertain. This "
@@ -1890,6 +1898,11 @@ class LLMBlindPredictor:
                      for position, item in enumerate(items) for field in ("brief", "detail")),
                     compact_context.get("prediction_baseline"),
                 )
+                issues.extend(_measurement_reasoning_issues(
+                    ((f"reflection_items[{position}].{field}", getattr(item, field))
+                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    _context_signal_results(compact_context),
+                ))
                 for position, item in enumerate(items):
                     paths = tuple(
                         f"reflection_items[{position}].{field}"

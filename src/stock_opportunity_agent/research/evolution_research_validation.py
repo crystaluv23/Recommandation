@@ -43,6 +43,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _normalized_claim_quantities,
     _normalized_claim_quantity_groups,
     _research_state_json_size,
+    _measurement_reasoning_issues,
 )
 
 
@@ -2187,8 +2188,10 @@ def _signal_batch_model_view(batch: SignalBatchResult) -> list[dict[str, Any]]:
         model_result = signal_result_model_view(result)
         use_canonical_interpretation = (
             _signal_result_has_adoptable_evidence(result)
-            and result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
-            and result.interpretation.startswith(result.signal_id + "=")
+            and (result.measurement is not None or (
+                result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
+                and result.interpretation.startswith(result.signal_id + "=")
+            ))
         )
         evidence_view: dict[str, list[dict[str, Any]]] = {
             "supporting": [],
@@ -2731,6 +2734,19 @@ def _validate_research_state_refs(
         for ref, result in results.items()
     }
     structured_issues: list[ValidationIssue] = []
+    measurement_rows = [
+        (f"{field}[{position}]", text)
+        for field in ("hypotheses", "current_beliefs", "contradictions", "resolved_questions", "open_questions", "next_information_needs")
+        for position, text in enumerate(getattr(state, field))
+    ]
+    measurement_rows.extend((f"supporting_evidence[{index}].claim", item.claim)
+                            for index, item in enumerate(refs))
+    structured_issues.extend(
+        replace(issue, allowed_repairs=("replace", "remove"))
+        for issue in _measurement_reasoning_issues(measurement_rows,
+                                                  (item.to_dict() for item in results.values()
+                                                   if isinstance(item, SignalResult)))
+    )
 
     def reference_issue(
         index: int, item: ResearchEvidenceRef, code: str, message: str,
@@ -2912,8 +2928,10 @@ def _validate_research_state_refs(
             (index, evidence[int(item.evidence_index or 0)].exact_span)
         )
         if (
-            result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
-            and result.interpretation.startswith(result.signal_id + "=")
+            getattr(result, "measurement", None) is not None or (
+                result.signal_id in _CANONICAL_NUMERIC_DETERMINISTIC_SIGNALS
+                and result.interpretation.startswith(result.signal_id + "=")
+            )
         ):
             claim_literals.append((index, result.interpretation))
     structured_issues.extend(

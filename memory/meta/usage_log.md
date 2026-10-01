@@ -204,3 +204,7 @@
 2026-10-02：为运行时价格算术跨Research/Predictor/Posthoc的一致检测和局部修复，复查增量修复及收敛验收经验；原始Bumble响应区分baseline与recent close，检查首答/权限/整体验证/行级salvage，不将来源有效等同数值正确。
 
 2026-10-02：供应商missing-id在Mining前终止，复查control-plane与收敛验收经验；统一envelope分类/脱敏结构诊断/未知用量保守计费，验证完成缓存与失败检查点恢复，不把provider异常当作内容纠错，不改冻结历史。
+
+- 2026-10-02: source-owned numeric measurement/consumer guards; consulted experiences/incremental-repair-and-sourced-memory.md to align producer metadata, exact repair and real source replay without claiming live acceptance.
+
+- 2026-10-02: source-owned numeric measurement/consumer guards; consulted experiences/self-evolution-convergence-and-acceptance.md to align producer metadata, exact repair and real source replay without claiming live acceptance.

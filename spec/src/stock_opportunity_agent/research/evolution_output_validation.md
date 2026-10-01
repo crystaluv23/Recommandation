@@ -7,6 +7,22 @@ and apply only explicitly allowed deterministic recovery transforms.
 
 ## Invariants
 
+- Shared numeric measurement checks consume producer-owned Signal metadata.
+  A locally named fraction-difference measurement displayed with its exact
+  rounded percent-scaled value must say percentage points, not percent. Guards
+  do not join unrelated clauses, future scenarios, negated examples or conflicting
+  versions. Ambiguous numeric sign versus qualitative state is disclosed, not
+  silently rewritten. The same checker covers Predictor reasons/uncertainties,
+  ResearchState text/evidence claims and Posthoc brief/detail, with exact member
+  repair paths and whole-output revalidation. Legacy missing metadata creates
+  no inferred measurement authority. Numeric source/metadata are never LLM-editable.
+  When the named observed value uniquely matches the producer's rounded scaled
+  value, the validator issues an exact original/required text representation.
+  The common role boundary applies that unit-only replacement through the existing
+  snapshot-bound patch contract before LLM correction, then fully revalidates.
+  Mixed failures retain this correction while only remaining obligations go to
+  the LLM. The original model response and all unrelated content remain immutable.
+
 - Proposed Plan instructions use the same narrow mandatory-proof gate check as
   authored reflection actions. Quantified valuation analysis may be useful but
   cannot become a requirement for a positive opportunity judgment. Reflection

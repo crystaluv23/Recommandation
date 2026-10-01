@@ -602,6 +602,110 @@ def _price_reasoning_issues(
     return issues
 
 
+def _context_signal_results(context: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    """Read only typed current/final Signal products, never arbitrary memory prose."""
+
+    results = [item for item in context.get("signal_results", ()) if isinstance(item, Mapping)]
+    for round_row in context.get("signal_rounds", ()):
+        if isinstance(round_row, Mapping) and isinstance(round_row.get("batch"), Mapping):
+            results.extend(item for item in round_row["batch"].get("results", ())
+                           if isinstance(item, Mapping))
+    normalized: list[Mapping[str, Any]] = []
+    for item in results:
+        row = dict(item)
+        # Final assembly uses a compact ref-owned card rather than repeating
+        # the canonical identity and evidence envelope. Its context was created
+        # by the runtime, not authored by a research role.
+        if "signal_id" not in row:
+            owner = re.fullmatch(r"([a-z0-9][a-z0-9_:-]*):v([1-9]\d*)", str(row.get("signal_ref", "")))
+            if owner is None:
+                continue
+            row.update(signal_id=owner.group(1), version=int(owner.group(2)))
+            interpretation = row.get("interpretation", {})
+            view = interpretation.get("measurement_context", {}) if isinstance(interpretation, Mapping) else {}
+            measurement = view.get("numeric_measurement") if isinstance(view, Mapping) else None
+            if isinstance(measurement, Mapping):
+                row["measurement"] = {key: measurement[key] for key in ("value", "unit", "formula", "period") if key in measurement}
+        normalized.append(row)
+    return normalized
+
+
+def _measurement_reasoning_issues(
+    rows: Iterable[tuple[str, str]], results: Iterable[Mapping[str, Any]],
+) -> list[ValidationIssue]:
+    """Check explicit observed ratio-difference units against producer metadata.
+
+    This bounded guard leaves future scenarios, ambiguous values and legacy
+    results without metadata for research review; it never guesses a formula.
+    """
+
+    by_name: dict[str, list[Mapping[str, Any]]] = {}
+    for result in results:
+        state = result.get("state", {})
+        measurement = result.get("measurement")
+        if (not isinstance(state, Mapping) or state.get("value") == "unavailable"
+                or not isinstance(measurement, Mapping)
+                or measurement.get("unit") != "fraction_difference"):
+            continue
+        by_name.setdefault(str(result.get("signal_id", "")), []).append(result)
+    issues: list[ValidationIssue] = []
+    for path, text in rows:
+        if not isinstance(text, str):
+            continue
+        for name, candidates in by_name.items():
+            # Repeated unchanged results are safe; differing observations/versions
+            # require a named window rather than a guessed latest value.
+            unique = {(str(item.get("version")), json.dumps(item["measurement"], sort_keys=True))
+                      for item in candidates}
+            if not name or len(unique) != 1:
+                continue
+            result = candidates[0]
+            measurement = result["measurement"]
+            number = measurement.get("value")
+            if isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number):
+                continue
+            alias = r"[\s_]+".join(re.escape(word) for word in name.split("_"))
+            mention = re.compile(r"\b" + alias + r"\b", re.IGNORECASE)
+            for clause in re.split(r"(?<!\d)[.;!?](?!\d)", text):
+                match = mention.search(clause)
+                if match is None:
+                    continue
+                tail = clause[match.end():match.end() + 80]
+                percent = re.search(r"(?P<value>[+-]?\d+(?:\.\d+)?)\s*%", tail)
+                if percent is None:
+                    continue
+                head = clause[max(0, match.start() - 35):match.start()]
+                if (re.search(r"\b(?:may|might|could|would|forecast|expected|scenario|target|hypothetical|not)\b", tail[:percent.start()], re.IGNORECASE)
+                        or re.search(r"\b(?:projected|forecast|expected|hypothetical|incorrect|wrong)\s*$", head, re.IGNORECASE)
+                        or re.match(r"\s*(?:is\s+)?(?:incorrect|wrong)\b", tail[percent.end():], re.IGNORECASE)):
+                    continue
+                literal = percent.group("value")
+                decimals = len(literal.partition(".")[2])
+                tolerance = 0.5 * 10 ** -decimals + abs(number * 100) * 1e-6
+                if abs(float(literal) - number * 100) > tolerance:
+                    continue
+                issues.append(ValidationIssue(
+                    code="numeric_measurement_unit_invalid", paths=(path,),
+                    source_refs=(f"{name}:v{result.get('version')}",),
+                    message=(f"{path} displays {name} as {literal}%; its deterministic "
+                             "measurement is a difference of ratios, so this scaled "
+                             "value is percentage points, not a relative percent change. "
+                             "Correct only that observed measurement description."),
+                    repair_context={"measurement": dict(measurement),
+                                    "expected_display_unit": "percentage_points",
+                                    "mechanical_action": "replace_observed_unit",
+                                    "original_text": text,
+                                    "required_text": text.replace(
+                                        clause,
+                                        clause[:match.end() + percent.end() - 1]
+                                        + " percentage points"
+                                        + clause[match.end() + percent.end():], 1,
+                                    )},
+                ))
+                break
+    return issues
+
+
 def _blind_prediction_with_baseline(
     value: Mapping[str, Any],
     final_context: Mapping[str, Any],
@@ -615,6 +719,12 @@ def _blind_prediction_with_baseline(
          for index, text in enumerate(getattr(prediction, field))),
         final_context.get("prediction_baseline"),
     )
+    arithmetic_issues.extend(_measurement_reasoning_issues(
+        ((f"{field}[{index}]", text)
+         for field in ("key_reasons", "uncertainties")
+         for index, text in enumerate(getattr(prediction, field))),
+        _context_signal_results(final_context),
+    ))
     if arithmetic_issues:
         raise StructuredValidationError(arithmetic_issues)
     if prediction.candidate_judgment.value in _POSITIVE_SURGE_JUDGMENTS and all(
@@ -715,15 +825,13 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
                 if isinstance(request_row.get("data_gap"), Mapping):
                     data_gaps.append(dict(request_row["data_gap"]))
     signal_results: list[dict[str, Any]] = []
-    for round_row in original_context.get("signal_rounds", ()):
-        if not isinstance(round_row, Mapping):
-            continue
-        batch = round_row.get("batch", {})
-        if not isinstance(batch, Mapping):
-            continue
-        for result in batch.get("results", ()):
-            if isinstance(result, Mapping):
-                signal_results.append(signal_result_model_view(result))
+    for result in _context_signal_results(original_context):
+        if "signal_ref" in result:
+            # This is already a runtime-produced model view. Re-projecting a
+            # compact card without raw evidence would erase its source periods.
+            signal_results.append(dict(result))
+        else:
+            signal_results.append(signal_result_model_view(result))
     compact = {
         "prediction_time": original_context.get("prediction_time"),
         "final_research_state": original_context.get("final_research_state", {}),
@@ -2952,6 +3060,35 @@ def _project_scoped_correction(
     return projected, tuple(dict.fromkeys((*paths, *removals)))
 
 
+def _measurement_text_fallback(
+    value: Mapping[str, Any], failure: StructuredValidationError,
+) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
+    """Apply a validator-proved unit rendering through existing snapshot permissions."""
+
+    operations = []
+    seen: set[str] = set()
+    selected = []
+    for issue in failure.issues:
+        if (issue.code != "numeric_measurement_unit_invalid" or len(issue.paths) != 1
+                or "replace" not in issue.allowed_repairs):
+            continue
+        path = issue.paths[0]
+        context = issue.repair_context
+        if (path in seen or context.get("mechanical_action") != "replace_observed_unit"
+                or _validation_path_value(value, path) != context.get("original_text")
+                or not isinstance(context.get("required_text"), str)):
+            continue
+        seen.add(path)
+        selected.append(issue)
+        operations.append({"op": "replace", "path": path, "value": context["required_text"]})
+    if not operations:
+        return None
+    contract = state_patch_contract(value, mode="correction", obligations=
+        _validation_obligations(StructuredValidationError(selected), value)["obligations"])
+    candidate = apply_state_patch(value, {"base_hash": contract["base_hash"], "operations": operations}, contract=contract)
+    return candidate, {"replace_observed_unit": tuple(item["path"] for item in operations)}
+
+
 def _research_need_transition_fallback(
     failed_output: Mapping[str, Any], failure: StructuredValidationError,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
@@ -4102,19 +4239,19 @@ def _complete_parsed_role_impl(
             visited: set[str] = set()
             for _repair_step in range(8):
                 if not (
-                    final_validation_fallback is not None
-                    and isinstance(value, Mapping)
+                    isinstance(value, Mapping)
                     and isinstance(exc, StructuredValidationError)
                 ):
-                    break
-                eligible = [issue for issue in exc.issues if is_mechanical_issue(issue)]
-                if not eligible:
                     break
                 signature = json.dumps(value, ensure_ascii=False, sort_keys=True)
                 if signature in visited:
                     break
                 visited.add(signature)
-                repaired = final_validation_fallback(value, StructuredValidationError(eligible))
+                repaired = _measurement_text_fallback(value, exc)
+                if repaired is None and final_validation_fallback is not None:
+                    eligible = [issue for issue in exc.issues if is_mechanical_issue(issue)]
+                    if eligible:
+                        repaired = final_validation_fallback(value, StructuredValidationError(eligible))
                 if repaired is None:
                     break
                 candidate, actions = repaired

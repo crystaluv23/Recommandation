@@ -61,7 +61,12 @@ immutable backlog, never over only the visible page.
 ## Detection and no progress
 
 The owning validator checks structure, exact source references, numeric/PIT
-constraints, state transitions and complete merged output. A pass proves these
+constraints, state transitions and complete merged output.
+Numeric results carry producer-owned values, units/formulas and exact periods;
+compact ref-owned cards retain that disclosure through final assembly and
+Posthoc. A uniquely observed unit rendering can be repaired mechanically through
+the existing snapshot patch before LLM correction, preserving mixed-error
+progress. Missing legacy metadata creates no guessed measurement authority. A pass proves these
 checks only, not economic truth. Runtime separately checks dependency closure,
 source versions, tool results and remaining budgets. Heavy, light and browse
 caps cannot become negative. Inadmissible-budget actions receive one bounded
