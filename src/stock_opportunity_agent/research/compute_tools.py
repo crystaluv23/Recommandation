@@ -4,9 +4,9 @@ Computation before interpretation, generalized: the model chooses which
 registered metric to compute and supplies bounded parameters, but never
 writes a formula. The runtime computes closed-form statistics over
 point-in-time documents and returns a computed card whose numbers carry
-literal references to the underlying observations. Cards are citable
-verbatim like the evaluation anchor; restated or derived arithmetic stays
-the model's forbidden territory.
+literal references to the underlying observations. Their values and windows
+are runtime control data for reasoning and validation, rather than Raw Info
+exact-text evidence spans; formulas remain owned by the runtime.
 
 Every function here is pure over immutable documents plus the supplied
 cutoff, so results replay deterministically offline.
@@ -94,6 +94,9 @@ def format_computed_card_readable(card: Mapping[str, Any]) -> str:
     for key, value in card.get("labels", {}).items():
         label = _LABEL_LABELS.get(key, key.replace("_", " "))
         parts.append(f"{label} {value}")
+    dates = [row.get("as_of_date") for row in card.get("literal_refs", ()) if isinstance(row, Mapping)]
+    if len(dates) == 2 and all(isinstance(value, str) for value in dates):
+        parts.append(f"observed endpoints {dates[0]} to {dates[1]}")
     param_suffix = ""
     if params:
         param_parts = [

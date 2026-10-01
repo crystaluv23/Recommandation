@@ -84,6 +84,8 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _blind_prediction_with_baseline,
     _price_reasoning_issues,
     _measurement_reasoning_issues,
+    _computed_period_issues,
+    _COMPUTED_PERIOD_INSTRUCTION,
     _context_signal_results,
     _compact_posthoc_context,
     _INCREMENTAL_ROLE_INSTRUCTION,
@@ -131,6 +133,7 @@ class LLMResearchController:
         self.evaluation_context: dict[str, Any] | None = None
         self.evaluation_anchor: dict[str, Any] | None = None
         self.computed_metrics: list[dict[str, Any]] = []
+        self.computed_metric_cards: tuple[Mapping[str, Any], ...] = ()
         self.document_channel: Any = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
@@ -193,6 +196,7 @@ class LLMResearchController:
             format_computed_card_readable,
         )
 
+        self.computed_metric_cards = tuple(deepcopy(card) for card in cards)
         self.computed_metrics = [
             {"readable": format_computed_card_readable(card)}
             for card in cards
@@ -291,6 +295,7 @@ class LLMResearchController:
                 "validation_feedback obligation and keep all previously satisfied "
                 "ones satisfied while repairing the named failure."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _COMPUTED_PERIOD_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
             payload=payload,
@@ -302,6 +307,7 @@ class LLMResearchController:
                         basic_info=basic_info,
                         evaluation_context=evaluation_context,
                         control_texts=tuple(card["readable"] for card in self.computed_metrics),
+                        computed_metric_cards=self.computed_metric_cards,
                     )
                 ),
                 phase="initialize",
@@ -461,6 +467,7 @@ class LLMResearchController:
                 "byte-for-byte. Retained Basic Info provenance stays unchanged "
                 "while its claim may be restated."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _COMPUTED_PERIOD_INSTRUCTION
                 + PATCH_INSTRUCTION
             ),
             payload={
@@ -504,6 +511,8 @@ class LLMResearchController:
                         value,
                         previous_state=state,
                         evaluation_context=evaluation_context,
+                        computed_metric_cards=(self.computed_metric_cards + tuple(reflect_caller.computed_metric_cards)
+                            if isinstance(reflect_caller, _DocumentChannelCaller) else self.computed_metric_cards),
                     )
                 ),
                 phase="reflect",
@@ -524,6 +533,8 @@ class LLMResearchController:
             patch_corrections=True,
             final_validation_fallback=_research_state_evidence_grounding_fallback,
         )
+        if isinstance(reflect_caller, _DocumentChannelCaller) and reflect_caller.computed_metric_cards:
+            self.set_computed_metrics([*self.computed_metric_cards, *reflect_caller.computed_metric_cards])
         return AgentStep(reflected, usage)
 
 
@@ -1741,6 +1752,7 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "threshold define the outcome: being near half that threshold is expected "
     "by construction and is not independent counter-evidence against a surge. "
     "Use supplied computed_metrics for quantitative price-trend statements; "
+    + _COMPUTED_PERIOD_INSTRUCTION +
     "keep each computed return with that card's own first/last prices and dates, "
     "rather than attaching an unrelated Basic Info price. Respect Signal "
     "measurement_context: categorical states are not stock-direction forecasts, "
@@ -1903,6 +1915,11 @@ class LLMBlindPredictor:
                      for position, item in enumerate(items) for field in ("brief", "detail")),
                     _context_signal_results(compact_context),
                 ))
+                issues.extend(_computed_period_issues(
+                    ((f"reflection_items[{position}].{field}", getattr(item, field))
+                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    compact_context.get("computed_metrics", ()),
+                ))
                 for position, item in enumerate(items):
                     paths = tuple(
                         f"reflection_items[{position}].{field}"
@@ -1975,6 +1992,7 @@ class LLMBlindPredictor:
                     "from baseline. Do not copy incorrect saved numerical reasoning "
                     "as a fact; the saved prediction remains immutable."
                     + _UNTRUSTED_DATA_INSTRUCTION
+                    + _COMPUTED_PERIOD_INSTRUCTION
                     + _structured_reflection_contract("case")
                 ),
                 payload={
@@ -2348,6 +2366,7 @@ class _DocumentChannelCaller:
         self.provider = provider
         self.exchanges = 0
         self.fetched_keys: set[tuple[str, str | None]] = set()
+        self.computed_metric_cards: list[dict[str, Any]] = []
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self.caller, name)
@@ -2375,6 +2394,7 @@ class _DocumentChannelCaller:
                     )
                 self.exchanges += 1
                 cards = self.provider.compute(entries)
+                self.computed_metric_cards.extend(deepcopy(cards))
                 existing_metrics = list(payload.get("computed_metrics", ()))
                 payload["computed_metrics"] = existing_metrics + list(cards)
                 continue

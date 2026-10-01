@@ -3085,7 +3085,7 @@ def execute_information_plan(
     _set_computed_metrics_if_capable = getattr(
         controller, "set_computed_metrics", None
     )
-    if callable(_set_computed_metrics_if_capable) and bootstrap_computed:
+    if callable(_set_computed_metrics_if_capable):
         _set_computed_metrics_if_capable(bootstrap_computed)
     document_channel = _DocumentChannelProvider(
         signal_executor.raw_info_store,

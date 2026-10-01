@@ -164,3 +164,16 @@ values and cannot call one Plan's combined cohort the pooled round. Legacy
 statistics-unchecked briefs are retrospective material to inspect, not verified
 statistical evidence. Shared repair authority permits exact source/scope and
 text changes; it never permits editing runtime statistics.
+
+## Computed window visibility (2026-10-02)
+
+Controller keeps the runtime typed compute cards separately from their readable
+model view, for State period validation. Readable summaries include literal
+endpoint dates when supplied, so the required distinction between trading-day
+windows and the calendar-month outcome horizon is visible on the first call.
+Prediction and Posthoc receive the unchanged typed cards. Exact window-label
+repair uses the shared output validator and never changes the metric/window.
+In-loop computed cards join validation before the returned state is parsed and
+remain visible on subsequent reflections in the same case. Initial case setup
+resets this context even when no market metric is available, so a reused
+controller cannot carry another issuer's computed window into validation.

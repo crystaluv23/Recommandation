@@ -1,0 +1,29 @@
+{
+  "scope": "offline production adapters, exact cached outputs; no external model calls",
+  "frozen_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "immutable_input_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json": "e96e3f6449af3d974908ada4d28b4aac6e7536be76a7ba58456a2de54e35eeec",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/b80c0880223d49d853a3fac80ff1c5535b2792a54b0d1703c5992d99831e485f.json": "de0663b91c42f56f3547ff31e4158243a247274d10c1e8adc62852db59174e1d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/b80c0880223d49d853a3fac80ff1c5535b2792a54b0d1703c5992d99831e485f.json": "a987e77bbf65677ce2f8ce5fb5605ad2e9a886f6b5109dd6bc8ded2bc6f9dde9",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json": "5eb204e8e1d3c3be716e9b52324b88b0b84e83130567fb1af4bd98096c0d1407"
+  },
+  "posthoc": {
+    "calls": 1,
+    "all_four_items_retained": true,
+    "old_brief": "The rejection of a 2x surge rested on the supplied price baseline and 180-day price shape, which showed only a 14.35% six-month return and a -9.59% max drawdown — far short of the 99.384 doubling threshold from the 49.692 mean adjusted close.",
+    "new_brief": "The rejection of a 2x surge rested on the supplied price baseline and 180-day price shape, which showed only a 14.35% 180-trading-day return and a -9.59% max drawdown — far short of the 99.384 doubling threshold from the 49.692 mean adjusted close.",
+    "valid_siblings_byte_equal": true,
+    "detail_scope_sources_outcomes_unchanged": true,
+    "prediction_unchanged": true,
+    "save_reload_archive_proposer_source_resolution": true
+  },
+  "predictor": {
+    "calls": 1,
+    "old_reason": "The supplied market data shows a strong six-month uptrend with a computed return_pct of 25.651% from 87.17 on 2024-11-07 to 109.53 on 2025-07-30, and the baseline mean adjusted close of 109.614 sits well below the 219.228 doubling threshold, so the security has positive momentum but would need a further large repricing to reach 2x.",
+    "new_reason": "The supplied market data shows a strong 180-trading-day uptrend with a computed return_pct of 25.651% from 87.17 on 2024-11-07 to 109.53 on 2025-07-30, and the baseline mean adjusted close of 109.614 sits well below the 219.228 doubling threshold, so the security has positive momentum but would need a further large repricing to reach 2x.",
+    "judgment_magnitude_siblings_unchanged": true
+  },
+  "live_acceptance": false,
+  "f1_effect_measured": false,
+  "frozen_run_source_revision": "8c07f383"
+}

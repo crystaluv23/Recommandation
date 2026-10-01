@@ -1,0 +1,16 @@
+{
+  "scope": "offline exact first initialization output through production controller; no external calls",
+  "immutable_input_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/34505577ca8c73cfa929a7e83e07c56ec931afbda2aba074680b591cf2f8a368.json": "92140718865f0a56e3dd65f4a5ea60686747eb0ea93b52c869074113c941dd61",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/34505577ca8c73cfa929a7e83e07c56ec931afbda2aba074680b591cf2f8a368.json": "d9fafb53ae90a6db61c4081aefc462f4be20957cf3d4160cf532c1f4eb442296",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/f30a61c0f35bd83b825c5f11582abec27ead6024dc327543945aa5e1f394c81c.json": "b7377c4d75ed749d929efad3ca0a5f8215d5f2af3a367eab0d4dcc87414f98ee"
+  },
+  "calls": 1,
+  "first_output_accepted_without_rewriting_any_need": true,
+  "debt_need": "What did the company disclose by 2025-09-30 about the status of the $500 million 2027 notes repayment plan and any changes to capital allocation priorities?",
+  "retained_need_count": 6,
+  "live_acceptance": false,
+  "replayed_readable_controls": "exact historical packet; no typed card fabricated",
+  "remaining_checks": "future actuals/later publication/unbounded requests covered by focused tests",
+  "frozen_run_source_revision": "8c07f383"
+}

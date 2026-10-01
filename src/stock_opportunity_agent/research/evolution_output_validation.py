@@ -5,8 +5,10 @@ from __future__ import annotations
 import json
 import math
 import re
+from calendar import monthrange
 from copy import deepcopy
 from dataclasses import field
+from datetime import date
 from decimal import Decimal
 from difflib import SequenceMatcher
 from typing import Any, Callable, Iterable, Mapping
@@ -706,6 +708,107 @@ def _measurement_reasoning_issues(
     return issues
 
 
+_COMPUTED_PERIOD_INSTRUCTION = (
+    "Computed price returns belong to their supplied literal endpoint dates. "
+    "A trading-day window counts trading sessions, not calendar days or months; "
+    "do not relabel it with the six-calendar-month forecast horizon. "
+)
+
+
+def _computed_period_issues(
+    rows: Iterable[tuple[str, str]], cards: Iterable[Mapping[str, Any]],
+) -> list[ValidationIssue]:
+    """Check explicit observed month-return labels against unique runtime dates.
+
+    Only an adjacent rounded return identifies an owner. Forecasts, other
+    business measures, ambiguous windows and cards without dates stay outside
+    this bounded check; no missing period or value is inferred from prose.
+    """
+
+    owners = []
+    for card in cards:
+        if not isinstance(card, Mapping) or card.get("metric") not in {"price_shape", "return_between"}:
+            continue
+        values = card.get("values", {})
+        refs = card.get("literal_refs", ())
+        if not isinstance(values, Mapping) or not isinstance(refs, (list, tuple)) or len(refs) != 2:
+            continue
+        number = values.get("return_pct")
+        if isinstance(number, bool) or not isinstance(number, (int, float)) or not math.isfinite(number):
+            continue
+        try:
+            first, last = (date.fromisoformat(ref["as_of_date"]) for ref in refs)
+        except (KeyError, TypeError, ValueError):
+            continue
+        if first >= last:
+            continue
+        sessions = values.get("window_trading_days")
+        label = (f"{sessions}-trading-day" if isinstance(sessions, int)
+                 and not isinstance(sessions, bool) and sessions > 1
+                 else f"{first.isoformat()} to {last.isoformat()}")
+        owners.append((number, first, last, label, card))
+    words = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
+    month_label = r"\b(?P<period>(?P<months>1[0-2]|[1-9]|" + "|".join(words) + r")[ -]+months?)"
+    percent = r"(?<![\w.+-])(?P<number>[+-]?\d+(?:\.\d+)?)\s*%"
+    returns = r"(?:stock[- ]price\s+|price\s+|share[- ]price\s+)?return"
+    patterns = (
+        re.compile(percent + r"\s+" + month_label + r"\s+" + returns + r"\b", re.I),
+        re.compile(month_label + r"\s+" + returns + r"\s+(?:of\s+|was\s+|is\s+|:\s*)?" + percent, re.I),
+        re.compile(month_label + r"\s+(?:uptrend|downtrend|price[-_ ]shape|price trend)\b"
+                   + r"[^.;!?]{0,80}?\breturn(?:_pct)?\s*(?:(?:of|was|is)\s+|[=:]\s*)?" + percent, re.I),
+    )
+    issues = []
+    for path, text in rows:
+        if not isinstance(text, str):
+            continue
+        edits = {}
+        matched_owners = []
+        for clause in re.finditer(r"(?:\d[.,]\d|[^.;!?])+", text):
+            for pattern in patterns:
+                for match in pattern.finditer(clause.group()):
+                    head = clause.group()[:match.start()]
+                    tail = clause.group()[match.end():]
+                    if (re.search(r"\b(?:may|might|could|would|forecast|expected|projected|target|hypothetical|next|not|incorrect|wrong)\b", head, re.I)
+                            or re.match(r"\s*(?:is\s+|was\s+)?(?:incorrect|wrong|not\b)", tail, re.I)
+                            or re.search(r"\b(?:revenue|earnings|sales|production|operating)\s*$", head, re.I)):
+                        continue
+                    literal = match.group("number")
+                    tolerance = 0.5 * 10 ** -len(literal.partition(".")[2]) + 0.00005
+                    candidates = [owner for owner in owners if abs(owner[0] - float(literal)) <= tolerance]
+                    # Repeated identical cards do not introduce ambiguity; different
+                    # rounded-equal windows do. Never guess which one was meant.
+                    unique = {(owner[1], owner[2], owner[3]) for owner in candidates}
+                    if len(unique) != 1:
+                        continue
+                    number, first, last, label, card = candidates[0]
+                    token = match.group("months").lower()
+                    months = int(token) if token.isdigit() else words.index(token) + 1
+                    month_index = last.year * 12 + last.month - 1 - months
+                    year, month = divmod(month_index, 12)
+                    if year < 1:
+                        continue
+                    expected = date(year, month + 1, min(last.day, monthrange(year, month + 1)[1]))
+                    if abs((first - expected).days) <= 7:
+                        continue
+                    start, end = (clause.start() + match.start("period"), clause.start() + match.end("period"))
+                    edits[(start, end)] = label
+                    matched_owners.append({"metric": card["metric"], "return_pct": number,
+                                           "first_date": first.isoformat(), "last_date": last.isoformat(),
+                                           "window_label": label})
+        if edits:
+            required = text
+            for (start, end), label in sorted(edits.items(), reverse=True):
+                required = required[:start] + label + required[end:]
+            issues.append(ValidationIssue(
+                code="computed_metric_period_invalid", paths=(path,),
+                allowed_repairs=("replace", "remove"), source_refs=("computed_metrics",),
+                message=f"{path} relabels a supplied observed price return with an incompatible calendar-month period; retain the runtime window.",
+                repair_context={"mechanical_action": "replace_observed_period", "original_text": text,
+                                "required_text": required, "computed_periods": matched_owners},
+            ))
+    return issues
+
+
 def _blind_prediction_with_baseline(
     value: Mapping[str, Any],
     final_context: Mapping[str, Any],
@@ -724,6 +827,12 @@ def _blind_prediction_with_baseline(
          for field in ("key_reasons", "uncertainties")
          for index, text in enumerate(getattr(prediction, field))),
         _context_signal_results(final_context),
+    ))
+    arithmetic_issues.extend(_computed_period_issues(
+        ((f"{field}[{index}]", text)
+         for field in ("key_reasons", "uncertainties")
+         for index, text in enumerate(getattr(prediction, field))),
+        final_context.get("computed_metrics", ()),
     ))
     if arithmetic_issues:
         raise StructuredValidationError(arithmetic_issues)
@@ -3063,18 +3172,18 @@ def _project_scoped_correction(
 def _measurement_text_fallback(
     value: Mapping[str, Any], failure: StructuredValidationError,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
-    """Apply a validator-proved unit rendering through existing snapshot permissions."""
+    """Apply validator-proved unit/period text through existing snapshot permissions."""
 
     operations = []
     seen: set[str] = set()
     selected = []
     for issue in failure.issues:
-        if (issue.code != "numeric_measurement_unit_invalid" or len(issue.paths) != 1
+        if (issue.code not in {"numeric_measurement_unit_invalid", "computed_metric_period_invalid"} or len(issue.paths) != 1
                 or "replace" not in issue.allowed_repairs):
             continue
         path = issue.paths[0]
         context = issue.repair_context
-        if (path in seen or context.get("mechanical_action") != "replace_observed_unit"
+        if (path in seen or context.get("mechanical_action") not in {"replace_observed_unit", "replace_observed_period"}
                 or _validation_path_value(value, path) != context.get("original_text")
                 or not isinstance(context.get("required_text"), str)):
             continue
@@ -3086,7 +3195,10 @@ def _measurement_text_fallback(
     contract = state_patch_contract(value, mode="correction", obligations=
         _validation_obligations(StructuredValidationError(selected), value)["obligations"])
     candidate = apply_state_patch(value, {"base_hash": contract["base_hash"], "operations": operations}, contract=contract)
-    return candidate, {"replace_observed_unit": tuple(item["path"] for item in operations)}
+    actions = {}
+    for issue in selected:
+        actions.setdefault(issue.repair_context["mechanical_action"], []).append(issue.paths[0])
+    return candidate, {key: tuple(paths) for key, paths in actions.items()}
 
 
 def _research_need_transition_fallback(

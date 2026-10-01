@@ -23,6 +23,27 @@ AS_OF = datetime(2025, 7, 31, tzinfo=timezone.utc)
 
 
 class SourceBoundaryConsistencyTests(TestCase):
+    def test_cutoff_bounded_future_plans_are_not_future_realized_contents(self):
+        cutoff = date(2025, 9, 30)
+        allowed = (
+            'What did the company disclose by 2025-09-30 about the status of the $500 million 2027 notes repayment plan and any changes to capital allocation priorities?',
+            'What did the company disclose by 2025-09-30 about its capital allocation priorities, including any stated intention to repay or refinance its $500 million 2027 notes at or before maturity?',
+            'What expansion plans for 2027 had been disclosed as of 2025-09-30?',
+        )
+        for need in allowed:
+            with self.subTest(need=need):
+                self.assertEqual(_future_source_date_refs(need, cutoff, field_name='next_information_needs'), [])
+        forbidden = (
+            'What was the actual 2027 repayment result under the plan disclosed by 2025-09-30?',
+            'What refinancing plans published in 2027 had been disclosed by 2025-09-30?',
+            'What repayment plans for the 2027 notes will the company disclose?',
+            'What are the repayment plans for 2027?',
+            'What plan for 2027 and actual 2027 revenue results were disclosed by 2025-09-30?',
+        )
+        for need in forbidden:
+            with self.subTest(need=need):
+                self.assertTrue(_future_source_date_refs(need, cutoff, field_name='next_information_needs'))
+
     def test_exact_raw_read_discloses_hidden_and_mid_tag_windows_without_relocation(self):
         raw = '<html xmlns:issuer="' + 'namespace ' * 600 + '"><head>hidden</head><p>Cash is 1203.</p></html>'
         doc = RawInfoDocument.create(document_id='raw-window', company_id='issuer', source_type='filing',

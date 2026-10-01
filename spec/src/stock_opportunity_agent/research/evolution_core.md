@@ -124,6 +124,8 @@ Fast/Slow engine dependency.
   views keep their PIT provenance; failed or repeated calls never reset them.
   They are included in the same budget estimate, masked at egress and persisted
   in the final context. No controller-authored numerical substitution is used.
+  Case initialization resets optional controller compute context even when the
+  bootstrap has no usable market metric, preventing cross-case window reuse.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or
   Signal engine implementations.
 

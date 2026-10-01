@@ -44,6 +44,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _normalized_claim_quantity_groups,
     _research_state_json_size,
     _measurement_reasoning_issues,
+    _computed_period_issues,
 )
 
 
@@ -864,10 +865,9 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
     r"\b(?:timing|dates?|schedules?|formats?|timelines?|milestones?|expected|anticipated|"
-    r"projected|projections?|planned|"
+    r"projected|projections?|planned|plans?|intentions?|intends?|"
     r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|estimates?|estimated|consensus|"
-    r"targets?|goals?|openings?|could|might|would|commentary|"
-    r"construction\s+plans?)\b",
+    r"targets?|goals?|openings?|could|might|would|commentary)\b",
     re.IGNORECASE,
 )
 
@@ -1528,6 +1528,7 @@ _ANCHOR_STATE_TEXT_FIELDS = (
 def _anchor_restatement_issues(
     normalized: Mapping[str, Any],
     evaluation_context: Mapping[str, Any] | None,
+    computed_metric_cards: tuple[Mapping[str, Any], ...] = (),
 ) -> list[ValidationIssue]:
     """Reject numeric restatements of the runtime evaluation anchor.
 
@@ -1538,7 +1539,7 @@ def _anchor_restatement_issues(
     check runs here, before prediction, on every authored state text field.
     """
 
-    if not isinstance(evaluation_context, Mapping):
+    if not isinstance(evaluation_context, Mapping) and not computed_metric_cards:
         return []
     from stock_opportunity_agent.research.evolution_output_validation import _price_reasoning_issues
 
@@ -1562,9 +1563,10 @@ def _anchor_restatement_issues(
         "predictor_baseline_value_invalid": "research_state_anchor_value_invalid",
         "predictor_baseline_arithmetic_invalid": "research_state_anchor_arithmetic_invalid",
     }
-    return [replace(issue, code=codes.get(issue.code, issue.code),
+    issues = [replace(issue, code=codes.get(issue.code, issue.code),
                     source_refs=("evaluation_anchor",), allowed_repairs=("replace", "remove"))
-            for issue in _price_reasoning_issues(rows, evaluation_context.get("evaluation_anchor"))]
+              for issue in _price_reasoning_issues(rows, (evaluation_context or {}).get("evaluation_anchor"))]
+    return issues + _computed_period_issues(rows, computed_metric_cards)
 
 
 def _initial_basic_grounding_issues(
@@ -1601,6 +1603,7 @@ def _normalize_research_state_output(
     basic_info: Mapping[str, Any] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
     control_texts: tuple[str, ...] = (),
+    computed_metric_cards: tuple[Mapping[str, Any], ...] = (),
 ) -> dict[str, Any]:
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
@@ -1608,7 +1611,7 @@ def _normalize_research_state_output(
     shape_issues = _raw_research_state_shape_issues(normalized)
     if shape_issues:
         raise StructuredValidationError(shape_issues)
-    anchor_issues = _anchor_restatement_issues(normalized, evaluation_context)
+    anchor_issues = _anchor_restatement_issues(normalized, evaluation_context, computed_metric_cards)
     _restore_inherited_need_cutoffs(normalized, previous_state, evaluation_context)
     future_information_issues = _raw_future_information_issues(
         normalized,

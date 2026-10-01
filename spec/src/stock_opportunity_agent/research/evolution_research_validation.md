@@ -240,6 +240,17 @@ authority.
 
 ## Incremental correction authority
 
+The cutoff-bounded expectation/schedule vocabulary includes disclosed plans and
+intentions for future events (including repayment/refinancing). Those events'
+dates are distinct from the publication/availability dates of the disclosure.
+This exception still requires an explicit cutoff bound and refuses realized
+results, actuals, later publications and unbounded future source requests.
+
+State text and evidence claims also run the shared computed-return period check
+against typed runtime cards. Period errors join the initial raw issue frontier,
+including independent time-boundary/source issues; readable prose never supplies
+repair authority. Only the exact proved label replacement is mechanical.
+
 The ResearchState owning parser emits typed field/member obligations for raw
 shape and enum failures, invalid evidence tuples, retained evidence changes,
 research/evaluation boundary violations, cosmetic need updates, and terminal

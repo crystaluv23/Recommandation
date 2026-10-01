@@ -1,0 +1,560 @@
+{
+  "captured_at_utc": "2026-10-01T22:49:16.731768+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "frozen_registry_version": 7,
+  "fixed_cohort_size": 24,
+  "binary_f1_floor": 0.6,
+  "runner_status_snapshot": {
+    "runner_attempt": 2,
+    "runner_pid": 50036,
+    "child_pid": 50403,
+    "status": "running",
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+      "--seed-registry",
+      "/Users/l/Project/Recommandation/runs/cold_start/evolution/signal-registry-successors/v163-modality-v1/signals",
+      "--run"
+    ]
+  },
+  "pointer_state": {
+    "last_completed_round": 0
+  },
+  "last_completed_cycle": 0,
+  "stage_request_counts": {
+    "research_controller_reflect": 60,
+    "signal_retrieval_cards": 43,
+    "research_controller_initialize": 25,
+    "llm_signal_batch_execute": 39,
+    "information_plan_propose": 2,
+    "llm_signal_batch_execute_correction": 12,
+    "blind_predictor_predict": 22,
+    "signal_retrieval_cards_correction": 24,
+    "blind_predictor_posthoc_reflect": 22,
+    "research_controller_initialize_correction": 7,
+    "blind_predictor_posthoc_reflect_correction": 6
+  },
+  "stage_input_samples": {
+    "research_controller_reflect": {
+      "request_ref": "requests/2f43c2986f85f04c2cb5f23fb812a8ad911e787d302cf1ae5eca2f29d098630c.json",
+      "payload_fields": [
+        "computed_metrics",
+        "document_catalog",
+        "evaluation_anchor",
+        "evaluation_context",
+        "executed_selection_intents",
+        "need_transition_contract",
+        "output_patch_contract",
+        "reflection_runtime",
+        "reflection_skill",
+        "research_state",
+        "research_state_capacity",
+        "signal_batch",
+        "signal_evidence_ref_catalog",
+        "validation_feedback"
+      ],
+      "request_sha256": "7083dcb0abd020cd312f63225493ae9735b2476b881e3dcd015298ac224ea46b"
+    },
+    "signal_retrieval_cards": {
+      "request_ref": "requests/aa35b5a5bf670772607be479c9aecb4d94da01285545522e5c7666ed289b2965.json",
+      "payload_fields": [
+        "available_signal_cards",
+        "evaluation_context",
+        "information_needs",
+        "learned_profile_default",
+        "previous_context_tags",
+        "previous_signal_results",
+        "research_context",
+        "selection_caps",
+        "validation_feedback"
+      ],
+      "request_sha256": "19e2a0aa9f2c84c2b6e514a3c72b1c065d24f3439eb27d1f6796ca897e568e3f"
+    },
+    "research_controller_initialize": {
+      "request_ref": "requests/d8173dfef7012bff1a4a1be23edac89739fe5c25262e51c1db89e66e530d23fc.json",
+      "payload_fields": [
+        "basic_info",
+        "computed_metrics",
+        "evaluation_anchor",
+        "evaluation_context",
+        "initial_research_skill",
+        "validation_feedback"
+      ],
+      "request_sha256": "18a604d74bc0b6786279f4e2feaca778717923955d9a667d84ba00aece4be13e"
+    },
+    "llm_signal_batch_execute": {
+      "request_ref": "requests/8ba9b2998a4d0b85f9607460d4a0df51024781457f57fd2a2c8387a223466c2b.json",
+      "payload_fields": [
+        "as_of",
+        "batch_signal_refs",
+        "context_contract",
+        "signals",
+        "source_projection",
+        "target_subject"
+      ],
+      "request_sha256": "842e733eab84121de1dc2d2cce19e4abe8163a1d76669436818d62b8ed2836fb"
+    },
+    "information_plan_propose": {
+      "request_ref": "requests/15c6bb7cc6b1ec191f80b0103f1ae6979b2207691e51566641b34e4e7eada5c4.json",
+      "payload_fields": [
+        "proposal_context",
+        "validation_feedback"
+      ],
+      "request_sha256": "409797bce73f8184a6fef94eec00023a09136d4890726b64ef7f2dcff1a12e3a"
+    },
+    "llm_signal_batch_execute_correction": {
+      "request_ref": "requests/0f54c5eb60d749dace19ebc213aeb4059f9896194db366eacd62afb50d641762.json",
+      "payload_fields": [
+        "as_of",
+        "batch_signal_refs",
+        "context_contract",
+        "signals",
+        "source_projection",
+        "target_subject",
+        "validation_feedback"
+      ],
+      "request_sha256": "e36a4cc9cafd275a91260f1e81f694d666097fc2553dddde0d70024c87772b16"
+    },
+    "blind_predictor_predict": {
+      "request_ref": "requests/52f71fd94416976421243ee1746ffee4c9799dc366b941dd6607dbe0c756da28.json",
+      "payload_fields": [
+        "final_context"
+      ],
+      "request_sha256": "0604bffab4a16e128115224cf74fbfc8bf2bad2b5e9b34987a9c95d9ca0ed909"
+    },
+    "signal_retrieval_cards_correction": {
+      "request_ref": "requests/d55c620a6037ed76d93dac1a8777f869ac62c3084f1b9520d826aa17c6ff01c9.json",
+      "payload_fields": [
+        "available_signal_cards",
+        "evaluation_context",
+        "information_needs",
+        "learned_profile_default",
+        "output_patch_contract",
+        "previous_context_tags",
+        "previous_signal_results",
+        "research_context",
+        "selection_caps",
+        "validation_feedback"
+      ],
+      "request_sha256": "a7c7dff1b206f8d05080a507682ae30c6b83d1fc0dff61406ed1f34befba610d"
+    },
+    "blind_predictor_posthoc_reflect": {
+      "request_ref": "requests/93bff61bb240d38e4fce50363884e4a1ee5bd9538ebcf6363759a791e0a25988.json",
+      "payload_fields": [
+        "candidate_judgment_feedback",
+        "compact_context",
+        "framework_prediction_correct",
+        "magnitude_feedback",
+        "original_prediction",
+        "revealed_ground_truth",
+        "source_catalog"
+      ],
+      "request_sha256": "0d7dba298282b7c93eb61f37423dfb7a64ceb253b428224d955e8a4869ed117d"
+    },
+    "research_controller_initialize_correction": {
+      "request_ref": "requests/568238bcde254cfb580ff730d89c27829d0e96a7b1f99804d12679c688060ba3.json",
+      "payload_fields": [
+        "basic_info",
+        "computed_metrics",
+        "evaluation_anchor",
+        "evaluation_context",
+        "initial_research_skill",
+        "output_patch_contract",
+        "validation_feedback"
+      ],
+      "request_sha256": "e21fb31d8107e8c05f9ce0f3ab21ceeee7831142018913adf3041f86d3f80e47"
+    },
+    "blind_predictor_posthoc_reflect_correction": {
+      "request_ref": "requests/6532feb75f47fc602e95220338bee2fc7bd3d88915fe4f512cd513ae0cc35a37.json",
+      "payload_fields": [
+        "alternative_change_groups",
+        "candidate_judgment_feedback",
+        "compact_context",
+        "completion_check",
+        "framework_prediction_correct",
+        "invalid_output",
+        "magnitude_feedback",
+        "obligation_count",
+        "obligations",
+        "original_prediction",
+        "output_patch_contract",
+        "permitted_dependency_path_count",
+        "permitted_dependency_paths",
+        "required_change_path_count",
+        "required_change_paths",
+        "revealed_ground_truth",
+        "source_catalog",
+        "validation_contract",
+        "validation_error"
+      ],
+      "request_sha256": "728f4725339966740f55e79a6b2c22ff54987f7ade9d578c2a2e31f961402787"
+    }
+  },
+  "trajectory_scan": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+      "sha256": "dab5e38284d20f67c10e88282d970a7b9b733346f9515c6db3256763975ecca6",
+      "judgment": "insufficient_information",
+      "signal_rounds": 0,
+      "technical_exclusion": true,
+      "authored_reflection_items": 0,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000723125:20250731.json",
+      "sha256": "d8c00daab66b8e124143c1deb5995f8e0ccc52b436e2dbaebe4ce74c583e48dd",
+      "judgment": "insufficient_information",
+      "signal_rounds": 0,
+      "technical_exclusion": true,
+      "authored_reflection_items": 0,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000839470:20250731.json",
+      "sha256": "08e348c0cb33b0355a2c3f8b179a750975785b57a2b44fa6fd39995793cdce06",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000860413:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000860413:20250930.json",
+      "sha256": "c816b3ae8264a8453876270171ddb13ab1c2651f394caf2887adfa2c6339d50f",
+      "judgment": "unlikely",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.json",
+      "sha256": "718de7debd8c7f072b3cd76dac5f2a61c28ffa2b47cb24d2dd41c0e75275ea92",
+      "judgment": "unlikely",
+      "signal_rounds": 1,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "sha256": "e96e3f6449af3d974908ada4d28b4aac6e7536be76a7ba58456a2de54e35eeec",
+      "judgment": "unlikely",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0000936395:20250930.json",
+      "sha256": "081c329ac7fb87832c17b9b1a64b7f999ce416574ca1f073cb78bae957851d51",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 2,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001018963:20250930.json",
+      "sha256": "979ed9cc8463f1157c25615adb90b66ce3f2ced8f08a85935e0e96fcf3de0b94",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 3,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001051627:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001051627:20250930.json",
+      "sha256": "c11c9bc94f4976b42407e8b1b178eb03a16b7eef88782ef64ead4c232ffcc80e",
+      "judgment": "possible",
+      "signal_rounds": 3,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001114995:20250331",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001114995:20250331.json",
+      "sha256": "613636fb8bf01eae31f5e00eff9844128aa3f96dc42e7e350378339cac63ef0b",
+      "judgment": "unlikely",
+      "signal_rounds": 1,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001164727:20250731.json",
+      "sha256": "bac9e8086a8154ec7e8ca097f0bdc28a45c3c0e104b78a3209bcb53687dbdb84",
+      "judgment": "unlikely",
+      "signal_rounds": 3,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+      "sha256": "5eb204e8e1d3c3be716e9b52324b88b0b84e83130567fb1af4bd98096c0d1407",
+      "judgment": "possible",
+      "signal_rounds": 1,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001309402:20250530.json",
+      "sha256": "beae9d88e50305f090f66d78c0f6b9e6c912538a3eb8896841a1fd4e197793f5",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 3,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001521036:20250331.json",
+      "sha256": "3089f7eaa965c93041543257f7a2aded6a22032c148e3c353ac7b425af081e31",
+      "judgment": "possible",
+      "signal_rounds": 1,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001576942:20250530.json",
+      "sha256": "e2192f07428e7afbca751ab50d17c25d9bfe0bf2b8535e03dfd576845074e377",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001590364:20250731.json",
+      "sha256": "a35a8820db82d1e5450bd716563b302de4a3267a7243b41a31b926dcd7363173",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001646188:20250530.json",
+      "sha256": "de1f9ebdda1b18de524127cfd2e82691ce32555d9aa2c9e0f7e77ed93b764bee",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001689548:20250930.json",
+      "sha256": "3dbdf94ce2c449129f2d65d3a0f9a62cb2d5979aed804542dae62d9d0e4ffd17",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001801368:20250331.json",
+      "sha256": "1c79896bcda15fa13b5ca9ce7292bd6b87d0d4954d07f58ff8a99e1ceaf110d3",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+      "sha256": "f577d5859da1b5cf7ae03b74a1304cd925afb03bc7acde496fd5438f67001f44",
+      "judgment": "unlikely",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001847409:20250131.json",
+      "sha256": "cc77db2889547790dca7b726725c92feeec1d92021642c55cf736dcb1e48a127",
+      "judgment": "possible",
+      "signal_rounds": 1,
+      "technical_exclusion": false,
+      "authored_reflection_items": 3,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json",
+      "sha256": "0223d172a41a4fbba9e83ee12413bb96856e87425aec4ff90343dce404400e29",
+      "judgment": "unlikely",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0001920294:20250530",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0001920294:20250530.json",
+      "sha256": "24a61888c1225cdbdad6e6db7640b7a2d4d2af23ef15d19a52b9d495c8f99cd7",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 5,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "plan_id": "plan_r0001_c01",
+      "artifact": "experiments/trajectories/plan_r0001_c01/cik_0002023554:20250930.json",
+      "sha256": "12f3608d6e6bc165db05934517587ad25e8e6b0861d26d15d309543ce038167d",
+      "judgment": "possible",
+      "signal_rounds": 2,
+      "technical_exclusion": false,
+      "authored_reflection_items": 4,
+      "scope": "persisted artifact scan; not an all-content correctness approval"
+    }
+  ],
+  "findings": [
+    {
+      "case_id": "cik_0000895728:20250930",
+      "plan_id": "plan_r0001_c01",
+      "trajectory_ref": "experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "kind": "computed_period_invalid",
+      "paths": [
+        "self_reflection.reflection_items[0].brief"
+      ],
+      "repair_context": {
+        "mechanical_action": "replace_observed_period",
+        "original_text": "The rejection of a 2x surge rested on the supplied price baseline and 180-day price shape, which showed only a 14.35% six-month return and a -9.59% max drawdown — far short of the 99.384 doubling threshold from the 49.692 mean adjusted close.",
+        "required_text": "The rejection of a 2x surge rested on the supplied price baseline and 180-day price shape, which showed only a 14.35% 180-trading-day return and a -9.59% max drawdown — far short of the 99.384 doubling threshold from the 49.692 mean adjusted close.",
+        "computed_periods": [
+          {
+            "metric": "price_shape",
+            "return_pct": 14.3514,
+            "first_date": "2025-01-10",
+            "last_date": "2025-09-29",
+            "window_label": "180-trading-day"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "plan_id": "plan_r0001_c01",
+      "trajectory_ref": "experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+      "kind": "computed_period_invalid",
+      "paths": [
+        "prediction.key_reasons[0]"
+      ],
+      "repair_context": {
+        "mechanical_action": "replace_observed_period",
+        "original_text": "The supplied market data shows a strong six-month uptrend with a computed return_pct of 25.651% from 87.17 on 2024-11-07 to 109.53 on 2025-07-30, and the baseline mean adjusted close of 109.614 sits well below the 219.228 doubling threshold, so the security has positive momentum but would need a further large repricing to reach 2x.",
+        "required_text": "The supplied market data shows a strong 180-trading-day uptrend with a computed return_pct of 25.651% from 87.17 on 2024-11-07 to 109.53 on 2025-07-30, and the baseline mean adjusted close of 109.614 sits well below the 219.228 doubling threshold, so the security has positive momentum but would need a further large repricing to reach 2x.",
+        "computed_periods": [
+          {
+            "metric": "price_shape",
+            "return_pct": 25.651,
+            "first_date": "2024-11-07",
+            "last_date": "2025-07-30",
+            "window_label": "180-trading-day"
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "plan_id": "plan_r0001_c01",
+      "kind": "price_gap_direction_invalid",
+      "path": "prediction.key_reasons[0]",
+      "text": "The supplied prediction baseline is a mean adjusted close of $63.444, so the six-month 2x threshold is $126.888; the most recent close was $62.31 on 2025-07-30, leaving the stock roughly 104% below the doubling threshold.",
+      "explanation": "A positive recent close cannot be 104% below a positive threshold. Required gain from close and shortfall as a fraction of target use different denominators; current shared price validator misses this phrasing.",
+      "repaired": false
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "plan_id": "plan_r0001_c01",
+      "kind": "mandatory_price_path_gate",
+      "path": "self_reflection.reflection_items[4].brief",
+      "text": "Before assigning a possible-surge label, require a dated catalyst inside the horizon plus a stated path from the current price to the threshold; otherwise downgrade to non-surge.",
+      "explanation": "The new action requires a stated price path before a possible surge and otherwise mandates a negative judgment. This conflicts with optional quantified-path screening semantics; the existing lexical guard does not recognize stated path.",
+      "repaired": false,
+      "current_guard_rejects": false
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "kind": "technical_case_failure",
+      "failure_artifact": "experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.failure.json",
+      "failure_sha256": "204a035eb315696ae1538856119e758cc28c2ced542595a866c90a9932cbde8c",
+      "stage": "research_controller_initialize",
+      "message": "research_controller_initialize failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[2]', next_information_needs[2]='What did the company disclose by 2025-09-30 about its capital allocation priorities, including any stated intention to repay or refinance its $500 million 2027 notes at or before maturity?', future_source_date_refs=[\"2027\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not",
+      "repaired": false,
+      "next_audit": "Check the PIT guard against source-bounded debt maturity/repayment intent. The displayed need asks what was disclosed by cutoff, not for actual 2027 repayment results.",
+      "repaired_isolated": true,
+      "offline_replay_report": "v167-pit-plan-replay-20261002.json",
+      "remaining": "Frozen v167 failure remains immutable; fixed isolated code accepted the exact first output without rewriting any need."
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "plan_id": "plan_r0001_c01",
+      "kind": "technical_case_failure",
+      "failure_artifact": "experiments/trajectories/plan_r0001_c01/cik_0000723125:20250731.failure.json",
+      "failure_sha256": "b03a12f5e11551220f657b90900d839fea813573695ebd8285fa6bcbd17ccdb7",
+      "stage": "research_controller_initialize",
+      "message": "model guessed target identity outside supplied tokens",
+      "repaired": false,
+      "next_audit": "Inspect the exact identity-inference output and whether a typed field-local correction is available while retaining the blind identity rule."
+    }
+  ],
+  "acceptance": "INCOMPLETE; known accepted content errors, no completed cycle",
+  "limitations": [
+    "Snapshot of reached stages, not completed Fast/Slow.",
+    "Deterministic checks do not establish semantic correctness of arbitrary financial/causal prose.",
+    "Current period fix is isolated; frozen v167 outputs are unchanged."
+  ],
+  "frozen_run_source_revision": "8c07f383"
+}

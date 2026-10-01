@@ -352,3 +352,24 @@ causal attribution, or forecast truth.
 The unused legacy plain-array posthoc authoring parser/contract is removed.
 Production continues to author sourced reflection items; historical record
 loading and derived string projections retain their existing read contracts.
+
+## Observed computed-return periods (2026-10-02)
+
+Runtime computed price cards own their exact endpoint dates and trading-session
+count. A 180-session price-shape return must not be called a six-calendar-month
+return. Model-facing readable cards retain the endpoint dates; State validation
+uses the original typed cards, not dates reconstructed from the readable string.
+Predictor and compact Posthoc reuse the same original cards.
+
+A shared bounded check recognizes an explicit observed percent return with an
+adjacent numeric/English-number month label (or a month-labeled price trend
+explicitly linked to return/return_pct in the same clause), binds a unique rounded matching
+runtime return, and compares its endpoint dates with the claimed calendar span
+(seven days tolerance for trading-day boundaries). Explicit forecasts, denied
+examples, unrelated business gains and ambiguous equal-valued windows are not
+rewritten. If the owner is unique, the validator supplies an exact replacement
+of the period label with its runtime trading-session label or exact date range;
+percentages, prices, source metadata and unrelated text do not change. The shared
+snapshot-bound text repair executes before LLM correction and whole-object
+revalidation, including row salvage. This is a bounded period-label check, not
+verification of arbitrary economic or causal prose.
