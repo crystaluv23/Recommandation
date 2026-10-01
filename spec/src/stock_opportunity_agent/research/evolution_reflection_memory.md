@@ -9,6 +9,16 @@ errors without this action gate. The Plan owning validator uses the same guard
 before accepting an evolvable instruction; a reference alone does not grant rule
 change authority. This deterministic guard is not universal semantic verification.
 
+Explicit/stated/concrete price paths are also optional supporting analysis,
+not mandatory proof for a possible judgment. The same bounded guard rejects
+affirmative absence-of-path instructions that mandate a non-surge downgrade,
+including when another clause merely disclaims a quantified/guaranteed bridge.
+It leaves ordinary business-information requirements and optional investigation
+intact. New raw action briefs/details are checked together at role ingestion,
+so first correction names every detected policy field. Source/scope/outcome
+validation and complete revalidation retain authority; historical items and
+their hashes remain immutable.
+
 ## Purpose
 
 Provide pure, bounded model views and reference resolution over immutable,

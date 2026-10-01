@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-02：隔离统一 runtime 控制/State 证据提示词，允许 typed 无效 evidence 隔离为空后完整重验，补齐无有效采纳时旧需求原文及多重出现恢复；共享价格 shortfall 和 stated-path/absence downgrade 首次纠错规则保留普通商业路径。四个真实生产离线回放及保存/来源解析通过，全量1346测试通过。真实v167 Fast=1、F1 .7586/.7200，Slow=0仍在Mining；收益分母、幅度塌缩、身份排除与新Slow absence依据待审查，未合入冻结main或声明整体验收。
+
 2026-10-02：运行时价格算术统一到ResearchState、Predictor与Case Posthoc；baseline/recent close不混用，精确成员patch与完整重验，反思salvage复用同一语义validator。清理重复基准检查和未使用plain-array反思生成入口，修复机械salvage将运行时dataclass混入JSON的问题。真实46份预测扫描与原始错误响应生产适配器重放、保存/恢复/下游索引通过（零网络）；1,291项全量回归及六项新增专项通过（其中一项在全量后补充）。隔离lint仍是20个缺少历史运行资产的链接，全部主目录目标存在。v165冻结主线Fast 1/Slow 0；本轮末Mining供应商返回包缺少id，恢复attempt2以exit1结束，监督/子进程均退出。该异常发生在供应商响应解析、尚未进入Mining内容校验；先审计适配器故障分类，不修改检查点或自行新建运行。修复尚未进入实测，期间/单位/统计归属与幅度塌缩仍待验证。
 
 2026-10-02：新增Mining有界backlog及快照绑定增量处置；复用完整validator以保存正确独立行，拒绝stale/隐藏/重复need与未知Signal，保留控制终止的staged/pending。生产engine保存不可变处置delta并完整保留rows，统一旧H1/controller/多轴Update建议消费，删除H1专用入口名称。真实276需求目录/原文/hash及独立行重放通过，178专项与1,286全量通过；仅隔离提交，当前冻结实测不混代码。

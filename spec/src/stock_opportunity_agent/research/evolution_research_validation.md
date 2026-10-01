@@ -285,3 +285,12 @@ Anchor restatement validation delegates to the shared checker for authored
 state text and evidence claims; existing state issue codes and replace/remove
 permissions are retained. It never alters accepted source citations.
 See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).
+
+## Revalidation after evidence quarantine
+
+When runtime selections bind prior need occurrences, the transition validator
+also runs with no adopted Signal refs. Every prior occurrence then retains its
+exact text and multiplicity. Quarantining the last invalid answer ref cannot
+leave its prior need closed or narrowed. Existing typed restore obligations
+recover the missing need before any semantic correction; no repair invents an
+answer. Calls without runtime selections keep their existing legacy contract.

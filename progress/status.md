@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：隔离统一 runtime 控制/State 证据提示词；H_init/H_reflect 不再要求数值控制写入 State 证据或断言。删除 fallback-only 非空支持门槛，typed 隔离无效引用及关联数值断言后完整重验；最后无效回答被移除后，旧需求仍按原文及出现次数恢复。共享价格 shortfall 检测不猜数值答案；Plan/反思 action 的 mandatory stated-price-path 与条件降级共同检查，brief/detail 同次局部修复，普通商业路径/可选分析保留。三个真实价格/行动离线回放和一个 c02 初始化隔离回放通过，正确字段/来源/原输入保持；新增12测试，全量1346测试通过。v167主目录仍冻结8c07f383，真实Fast指针1，fixed24 F1 .7586/.7200均满足至少.60；Slow指针0，Mining继续。收益分母归属、身份猜测排除、幅度塌缩、新Slow deferred absence依据及完整后继链仍待审查；未合入live或声明整体完成。详见 reports/v167-followup-stage-audit-20261002.md。
+
 2026-10-02：隔离工作区已落实共享 computed-return 期间校验：State/Predictor/Posthoc 使用原始 runtime price cards，readable 保留实际首尾日期；同条文本只替换唯一归属的错误 month 标签，中途 compute 即时参与 State 校验，后续反思保留，跨案例无 bootstrap 时也清空。9 个新增测试通过；最新全量 1,334 测试通过；lint 在引用主目录既有历史 fixture 后通过。两份 v167 真实缓存输出经过生产 adapter 离线回放，正确 sibling、数值、来源和评分字段保持，保存/重载/归档/Proposer 来源解析通过。真实 v167 主目录仍冻结 8c07f383，首个 Plan 已落盘 24 个案例（含 2 个技术排除），Fast/Slow 指针仍 0/0；当前修复尚未进入 live。实际内容审查另发现目标距离分母/方向误述、mandatory stated-path gate 漏检、2027 debt maturity/repayment-intent 的 PIT 误拒绝和身份推断排除，其中已将 cutoff-bounded plans/intentions 纳入未来披露意图检查；真实首个初始化输出回放六条 need 保持、无需追加纠错。其余精确产物作为后续修复入口。整体目标未达成；固定24案 Binary F1至少.60，仍需完整 Fast/Slow 实际内容验收。
 2026-10-02：已将7个隔离修复检查点快进整合到主目录（截至3ddbcc32），主目录原生全量1,325测试和lint通过。另补齐诊断入口显式--seed-registry：版本/hash写入冻结输入，已准备目录不接受替换种子、无冻结manifest的半成品Registry拒绝继续。v166只准备了默认v6、未调用模型，保留不改；v167显式冻结v7/866d821e，与v165全部40个案例输入/标签、fixed24评分契约和Locked Test hash一致，原3552源文件hash全部保持，另记录已有38份新文档（不是成对增益实验）。v167当前prepared-only，尚无真实Fast/Slow结果。后续按已授权真实链路验收，每环节审查实际内容，Binary F1至少.60；完整目标仍未达成。
 

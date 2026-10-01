@@ -1,0 +1,1119 @@
+{
+  "audited_at_utc": "2026-10-01T23:41:03.552809+00:00",
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "frozen_source_revision": "8c07f38333002db8bcbe639b3a28e3d197c49672",
+  "round_pointer": 1,
+  "cycle_pointer": 0,
+  "fixed_24_metrics": {
+    "plan_r0001_c02": {
+      "binary_f1": 0.7200000000000001,
+      "binary_precision": 0.8181818181818182,
+      "binary_recall": 0.6428571428571429,
+      "confusion": {
+        "false_negative": 5,
+        "false_positive": 2,
+        "true_negative": 8,
+        "true_positive": 9
+      },
+      "magnitude_accuracy": 0.2857142857142857,
+      "magnitude_macro_f1": 0.16666666666666666,
+      "precision_defined": true,
+      "predicted_positive_count": 11,
+      "sample_count": 24,
+      "valid_case_count": 24
+    },
+    "plan_r0001_c01": {
+      "binary_f1": 0.7586206896551724,
+      "binary_precision": 0.7333333333333333,
+      "binary_recall": 0.7857142857142857,
+      "confusion": {
+        "false_negative": 3,
+        "false_positive": 4,
+        "true_negative": 6,
+        "true_positive": 11
+      },
+      "magnitude_accuracy": 0.35714285714285715,
+      "magnitude_macro_f1": 0.1851851851851852,
+      "precision_defined": true,
+      "predicted_positive_count": 15,
+      "sample_count": 24,
+      "valid_case_count": 24
+    }
+  },
+  "whole_goal_accepted": false,
+  "repair_evidence": [
+    "v167-price-policy-replay-20261002.json",
+    "v167-evidence-quarantine-replay-20261002.json"
+  ],
+  "remaining_content_issue": {
+    "plan_id": "plan_r0001_c01",
+    "case_id": "cik_0001521036:20250331",
+    "request_ref": "4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1",
+    "field": "reflection_items[0].detail",
+    "raw_detail": "The saved prediction labeled the setup a possible surge toward the $196.336 doubling threshold, but the revealed ground truth is non_surge with a realized max multiple of 1.0835 (about +8.3% from the recent close of 96.16). The binary direction was wrong, so the failure is a direction error, not a magnitude-class error; magnitude_feedback confirms magnitude_applicable=false and error_kind=not_applicable. The 180-day computed price shape already showed a -4.41% return, -34.68% max drawdown, and 3.34% daily volatility, i.e., a range-bound tape far below the threshold.",
+    "prediction_baseline": {
+      "doubling_threshold": 196.336,
+      "mean_adjusted_close": 98.168,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 96.16,
+      "recent_close_date": "2025-03-28",
+      "status": "available",
+      "trading_dates": [
+        "2025-03-24",
+        "2025-03-25",
+        "2025-03-26",
+        "2025-03-27",
+        "2025-03-28"
+      ]
+    },
+    "diagnosis": "Realized max multiple is defined against runtime baseline mean; describing its percentage as from recent close changes the denominator. Current shortfall guard does not verify outcome denominator ownership.",
+    "fixed": false
+  },
+  "slow_actions_snapshot": [
+    {
+      "request_ref": "f6200aeee7181caf94d6ed533c79d4d0b0a845c8843442ad00013c486c7b71cb",
+      "request_file_sha256": "3eaa0aae15ff13240046ca8487367b2962828e6be12ff155ce625df58fba0116",
+      "action": "fetch_evidence",
+      "scope": null,
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 28,
+        "light_remaining": 4
+      },
+      "last_invalid_action": null,
+      "context_chars": 25501
+    },
+    {
+      "request_ref": "bb493dd79774a934037a851881b38e44391b77729e422a75dbae744391bf17c7",
+      "request_file_sha256": "eea7f5a307421f7a53103acdb31c4ec80cabdc747d4f4825dd6f112229a0d1b1",
+      "action": "inspect_catalog",
+      "scope": "evidence",
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 27,
+        "light_remaining": 4
+      },
+      "last_invalid_action": null,
+      "context_chars": 51802
+    },
+    {
+      "request_ref": "af5f58fe5590ad16c4c5d924a6ef2c2d2b10f7042ab524715742fedd60df9083",
+      "request_file_sha256": "becd53c4523ffd3f7a840fbe4a097e2fe285769fbf74b11e728c889c25d600d2",
+      "action": "read_span",
+      "scope": null,
+      "offset": 912261,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": null,
+      "context_chars": 58293
+    },
+    {
+      "request_ref": "2347636ca0239209b5e8cb021309ca294dda2b9aae95b493d873009c034ec65b",
+      "request_file_sha256": "caefdb7cfd73cc6097af465317126041206ff1c7a64ef903a3dceb5a9cb1e272",
+      "action": "read_span",
+      "scope": null,
+      "offset": 916434,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": null,
+      "context_chars": 53845
+    },
+    {
+      "request_ref": "6306a487b3efe456667113741c1d5264f26dc00de93e9fe961e8e44f88888996",
+      "request_file_sha256": "e597770d8c1c16c919990f2ee7f7773f2d62313ab37419f57477abd93ca1f6af",
+      "action": "record_need_dispositions",
+      "scope": null,
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": null,
+      "context_chars": 53773
+    },
+    {
+      "request_ref": "0705d3d2eb4fc9b72b5f39b9a20eb407af20ff161dd06bb14b91b1004e45bc2a",
+      "request_file_sha256": "a40aad460835276cdfb998673b5144c0a15031563130ea4061724dbbf7321e06",
+      "action": "record_need_dispositions",
+      "scope": null,
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": {
+        "action": "record_need_dispositions",
+        "issue": "no need-disposition progress: need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings; need_dispositions issues: row[0] rationale must be non-empty strings"
+      },
+      "context_chars": 54712
+    },
+    {
+      "request_ref": "d709f09f4e52bcd6b377061b81a3a7627823ffd89531a85f206d59a25c09970b",
+      "request_file_sha256": "e3dbe60763aac7acb5dda165353975c7dc3faca819c26c90ed18665d0c3051fe",
+      "action": "read_span",
+      "scope": null,
+      "offset": 0,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": null,
+      "context_chars": 55853
+    },
+    {
+      "request_ref": "89052e9f9c5ba009822ff27ad7761d0e1f7ec25bc151d913b61cd6a35b0b793a",
+      "request_file_sha256": "3c5e0b62294a0df3fcc3e0848ebda77026db7318151c8fdfa9962563bfecb1f9",
+      "action": "inspect_catalog",
+      "scope": "evidence",
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "last_invalid_action": null,
+      "context_chars": 53306
+    },
+    {
+      "request_ref": "91beb601709bbcc01f9ac41225298b0bcffd89ecb25276ff6be2c711472dd159",
+      "request_file_sha256": "96390cde94a4190ef27941b732cc8f11f463c7a43b8048f5582a46365ed5c2a4",
+      "action": "read_span",
+      "scope": null,
+      "offset": 912261,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 27,
+        "light_remaining": 2
+      },
+      "last_invalid_action": null,
+      "context_chars": 60163
+    },
+    {
+      "request_ref": "3becd659900eda25c6d3b0366c5f1516c7610101c45084e849b3684055f16b59",
+      "request_file_sha256": "92b527e7fb770770ed7ee59de44d45e9f413367f61cb1e8fae1ca17481295cb7",
+      "action": "inspect_catalog",
+      "scope": "evidence",
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 27,
+        "light_remaining": 2
+      },
+      "last_invalid_action": null,
+      "context_chars": 54767
+    },
+    {
+      "request_ref": "dae7b5ab57b8b0d2a8cdeba46404c9478a372bee162ab1897e9613bdc7c75b3b",
+      "request_file_sha256": "b10f02c8c5f56df25d8a8d3b78a089b44d049963ad6e2f252d1b89b90042b225",
+      "action": "read_span",
+      "scope": null,
+      "offset": 912261,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "last_invalid_action": null,
+      "context_chars": 60163
+    },
+    {
+      "request_ref": "bbf0063bc624ba8c04ca53a5cae985c94d214f8519670c35de88391e73575084",
+      "request_file_sha256": "3660d8f965ee2761cb9cca7c2f7dd34577bed38b56191f24ed0ad5fa24cd0df8",
+      "action": "read_span",
+      "scope": null,
+      "offset": 916434,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 19,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "last_invalid_action": null,
+      "context_chars": 54767
+    },
+    {
+      "request_ref": "7f0c94711170599e4f816278b426dc2c7f986992c60eeccbe29f868f5d0f0e67",
+      "request_file_sha256": "2347dfe7a254e20b20dbcd4f1ce343fd11e0d68fff867e98604fc367788da116",
+      "action": "read_span",
+      "scope": null,
+      "offset": 920498,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 18,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "last_invalid_action": null,
+      "context_chars": 54365
+    },
+    {
+      "request_ref": "53d163f5fac17c5c99b587b133b749f50a9042f527d0e88af8818cc13480ac29",
+      "request_file_sha256": "d0685b1e703c26682ae4998e0a942d67ff4c5755126576d7fb2012eb64f603ea",
+      "action": "read_span",
+      "scope": null,
+      "offset": 924596,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 17,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "last_invalid_action": null,
+      "context_chars": 54503
+    },
+    {
+      "request_ref": "82dcacd634c383eedf7a1c53e12ef8290b0fb182aa8bab552e1a5337e14697b5",
+      "request_file_sha256": "6ccf340a7913715a03785d673719518fc81b6f4dbdc88f4d484cac2230a38d18",
+      "action": "inspect_catalog",
+      "scope": "evidence",
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 16,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "last_invalid_action": null,
+      "context_chars": 55425
+    },
+    {
+      "request_ref": "7bb3344974f4af017de05763f871161a8274ddb6941053ed5f2e79dad05e9fad",
+      "request_file_sha256": "410b6d1a4e0dae78920deb6c0ce676738182fb5421d3649c104ffb0d5b721ad6",
+      "action": "read_span",
+      "scope": null,
+      "offset": 928596,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 16,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 61154
+    },
+    {
+      "request_ref": "b3eec1402432ee652c2a1a5559924c7f7ce0bbbc30cf9c9299e550deca2f46f6",
+      "request_file_sha256": "b623dca6edd833e6c721edd3270ce8857b17a47ade70685fe75dd893ab890c89",
+      "action": "read_span",
+      "scope": null,
+      "offset": 932596,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 15,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 57447
+    },
+    {
+      "request_ref": "c8fff1f63d90626d4e61199dabc049a787ecb0d0bca81932fcb6f8053b70b168",
+      "request_file_sha256": "9ec32c904beefef51898dde6fdb90a68139c50c292a4f8860cbf25057cdbaf88",
+      "action": "read_span",
+      "scope": null,
+      "offset": 936655,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 14,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 56265
+    },
+    {
+      "request_ref": "9fe4048fee6615fd14eb596a590825530b6cdb42028e4d7fb9bae094871b6667",
+      "request_file_sha256": "c058ca3a15fdeda862462fcef1477b46546ee7a82320efbc9c33ce001329669e",
+      "action": "fetch_evidence",
+      "scope": null,
+      "offset": null,
+      "event_ref": null,
+      "budget": {
+        "browse_remaining": 13,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 57467
+    },
+    {
+      "request_ref": "8534040512917ee78212011b170fee3ba9e84dbf8d2c7112afdf8ac8474f9916",
+      "request_file_sha256": "7eb95e0a8f877ebada20458ac901d18412d1e8aa8e136c1a7f990a6b4efee014",
+      "action": "read_span",
+      "scope": null,
+      "offset": 940659,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 13,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": {
+        "action": "fetch_evidence",
+        "issue": "rationale must be a non-empty array of short strings"
+      },
+      "context_chars": 57580
+    },
+    {
+      "request_ref": "fc58e0dd2c6b676c4f99839eeb8db70e345fe01e1209791e4ebc206dabdae6ee",
+      "request_file_sha256": "e17558a50e36055362aa5b4940a2ad9ed5819d4339d39c2994ecda7968a55802",
+      "action": "read_span",
+      "scope": null,
+      "offset": 944964,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 12,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 56488
+    },
+    {
+      "request_ref": "35fe779aaffd03d58384613744e677722bfba622df16209f8ba7d7521a019183",
+      "request_file_sha256": "98a2bec3e2e84a8dcd9132ceca0eb1a1a5e342cee086eed2f1801cdc9a58387b",
+      "action": "read_span",
+      "scope": null,
+      "offset": 948964,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 11,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 56573
+    },
+    {
+      "request_ref": "357614262d1ee7fad7be85e1f2cdd0889ef9b09cdaa34137bf2b75c3dbb63aa5",
+      "request_file_sha256": "fd8e21e69dec79e90a5cce47055d2827beeca4fcebab766da6ed86dd44d28498",
+      "action": "read_span",
+      "scope": null,
+      "offset": 952964,
+      "event_ref": "event-b00633b073ad758c",
+      "budget": {
+        "browse_remaining": 10,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 58462
+    },
+    {
+      "request_ref": "a6a21f4812e315e448b8cd3bef0db99ea9e4899c8353ac640b0cf4c766fe1c40",
+      "request_file_sha256": "e924dc1d4ca8ffafee9e5eb2413e0d91df854a893fa328ad39f7f5b406c9bef3",
+      "action": "read_span",
+      "scope": null,
+      "offset": 0,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 9,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 58079
+    },
+    {
+      "request_ref": "bdccc4e75df2c5910d74fe290c85bd519a3a9a19aef0dd8aa3735e50929e4db6",
+      "request_file_sha256": "7f040b8c1b9b0c97a23f5fef06b53b0ab5e42db6fc647d42a4da66884277a147",
+      "action": "read_span",
+      "scope": null,
+      "offset": 4283,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 8,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 56240
+    },
+    {
+      "request_ref": "bee1d788287961cf13c89c32478d7fb2c8d19c3553f5fc46b331650b86147dbd",
+      "request_file_sha256": "c340f0e13d3f14790dd7d90c98f9401242583957c8d7ddf4d61eefcfe52c903f",
+      "action": "read_span",
+      "scope": null,
+      "offset": 8317,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 7,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 56782
+    },
+    {
+      "request_ref": "6d11318d8a3ebdcfa357b198d8c168d76c433947696dfe1f9368b2e691acf91a",
+      "request_file_sha256": "67a84340661ed2f4ee3c8dbef49d0a2d68205b38004952d451234888d4d9e92a",
+      "action": "read_span",
+      "scope": null,
+      "offset": 12363,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 6,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 57368
+    },
+    {
+      "request_ref": "cb4610c2f76b1f647a93880c62e3adea6efb8b5853abb96ee562b4b99283b8c6",
+      "request_file_sha256": "c6c14bfd634954ec8d19d66b91971fb12600146a3dade3d88c512e8dd9d2b655",
+      "action": "read_span",
+      "scope": null,
+      "offset": 16378,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 5,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 57617
+    },
+    {
+      "request_ref": "8e24468b2735e03e94f88ed48e5ae02bd21d342026725810fbb0bd3510b16785",
+      "request_file_sha256": "237f7678c218d66df924bdf7a14593f1f877c515ff3b940ee1a371d05658683d",
+      "action": "read_span",
+      "scope": null,
+      "offset": 21413,
+      "event_ref": "event-00ce9b5472bf2541",
+      "budget": {
+        "browse_remaining": 4,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "last_invalid_action": null,
+      "context_chars": 58161
+    }
+  ],
+  "slow_navigation_snapshots": [
+    {
+      "request_ref": "af5f58fe5590ad16c4c5d924a6ef2c2d2b10f7042ab524715742fedd60df9083",
+      "raw_chars": 1191914,
+      "readable_start": 160442,
+      "sections": [
+        {
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_end": 184115,
+          "raw_start": 183640,
+          "section_id": "sec00"
+        },
+        {
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_end": 184602,
+          "raw_start": 184516,
+          "section_id": "sec01"
+        },
+        {
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_end": 185470,
+          "raw_start": 184996,
+          "section_id": "sec02"
+        },
+        {
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_end": 187105,
+          "raw_start": 185865,
+          "section_id": "sec03"
+        },
+        {
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_end": 188402,
+          "raw_start": 187551,
+          "section_id": "sec04"
+        },
+        {
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_end": 190904,
+          "raw_start": 188811,
+          "section_id": "sec05"
+        },
+        {
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_end": 210430,
+          "raw_start": 209861,
+          "section_id": "sec06"
+        },
+        {
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_end": 215508,
+          "raw_start": 214365,
+          "section_id": "sec07"
+        },
+        {
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_end": 912522,
+          "raw_start": 912261,
+          "section_id": "sec08"
+        },
+        {
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_end": 1148005,
+          "raw_start": 1147325,
+          "section_id": "sec09"
+        },
+        {
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_end": 1149505,
+          "raw_start": 1148801,
+          "section_id": "sec10"
+        },
+        {
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_end": 1156322,
+          "raw_start": 1155063,
+          "section_id": "sec11"
+        },
+        {
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_end": 1158900,
+          "raw_start": 1158223,
+          "section_id": "sec12"
+        },
+        {
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_end": 1160102,
+          "raw_start": 1159422,
+          "section_id": "sec13"
+        },
+        {
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_end": 1162286,
+          "raw_start": 1160835,
+          "section_id": "sec14"
+        },
+        {
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_end": 1163981,
+          "raw_start": 1163299,
+          "section_id": "sec15"
+        },
+        {
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_end": 1169506,
+          "raw_start": 1167485,
+          "section_id": "sec16"
+        }
+      ]
+    },
+    {
+      "request_ref": "91beb601709bbcc01f9ac41225298b0bcffd89ecb25276ff6be2c711472dd159",
+      "raw_chars": 1191914,
+      "readable_start": 160442,
+      "sections": [
+        {
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_end": 184115,
+          "raw_start": 183640,
+          "section_id": "sec00"
+        },
+        {
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_end": 184602,
+          "raw_start": 184516,
+          "section_id": "sec01"
+        },
+        {
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_end": 185470,
+          "raw_start": 184996,
+          "section_id": "sec02"
+        },
+        {
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_end": 187105,
+          "raw_start": 185865,
+          "section_id": "sec03"
+        },
+        {
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_end": 188402,
+          "raw_start": 187551,
+          "section_id": "sec04"
+        },
+        {
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_end": 190904,
+          "raw_start": 188811,
+          "section_id": "sec05"
+        },
+        {
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_end": 210430,
+          "raw_start": 209861,
+          "section_id": "sec06"
+        },
+        {
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_end": 215508,
+          "raw_start": 214365,
+          "section_id": "sec07"
+        },
+        {
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_end": 912522,
+          "raw_start": 912261,
+          "section_id": "sec08"
+        },
+        {
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_end": 1148005,
+          "raw_start": 1147325,
+          "section_id": "sec09"
+        },
+        {
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_end": 1149505,
+          "raw_start": 1148801,
+          "section_id": "sec10"
+        },
+        {
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_end": 1156322,
+          "raw_start": 1155063,
+          "section_id": "sec11"
+        },
+        {
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_end": 1158900,
+          "raw_start": 1158223,
+          "section_id": "sec12"
+        },
+        {
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_end": 1160102,
+          "raw_start": 1159422,
+          "section_id": "sec13"
+        },
+        {
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_end": 1162286,
+          "raw_start": 1160835,
+          "section_id": "sec14"
+        },
+        {
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_end": 1163981,
+          "raw_start": 1163299,
+          "section_id": "sec15"
+        },
+        {
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_end": 1169506,
+          "raw_start": 1167485,
+          "section_id": "sec16"
+        }
+      ]
+    },
+    {
+      "request_ref": "dae7b5ab57b8b0d2a8cdeba46404c9478a372bee162ab1897e9613bdc7c75b3b",
+      "raw_chars": 1191914,
+      "readable_start": 160442,
+      "sections": [
+        {
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_end": 184115,
+          "raw_start": 183640,
+          "section_id": "sec00"
+        },
+        {
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_end": 184602,
+          "raw_start": 184516,
+          "section_id": "sec01"
+        },
+        {
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_end": 185470,
+          "raw_start": 184996,
+          "section_id": "sec02"
+        },
+        {
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_end": 187105,
+          "raw_start": 185865,
+          "section_id": "sec03"
+        },
+        {
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_end": 188402,
+          "raw_start": 187551,
+          "section_id": "sec04"
+        },
+        {
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_end": 190904,
+          "raw_start": 188811,
+          "section_id": "sec05"
+        },
+        {
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_end": 210430,
+          "raw_start": 209861,
+          "section_id": "sec06"
+        },
+        {
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_end": 215508,
+          "raw_start": 214365,
+          "section_id": "sec07"
+        },
+        {
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_end": 912522,
+          "raw_start": 912261,
+          "section_id": "sec08"
+        },
+        {
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_end": 1148005,
+          "raw_start": 1147325,
+          "section_id": "sec09"
+        },
+        {
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_end": 1149505,
+          "raw_start": 1148801,
+          "section_id": "sec10"
+        },
+        {
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_end": 1156322,
+          "raw_start": 1155063,
+          "section_id": "sec11"
+        },
+        {
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_end": 1158900,
+          "raw_start": 1158223,
+          "section_id": "sec12"
+        },
+        {
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_end": 1160102,
+          "raw_start": 1159422,
+          "section_id": "sec13"
+        },
+        {
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_end": 1162286,
+          "raw_start": 1160835,
+          "section_id": "sec14"
+        },
+        {
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_end": 1163981,
+          "raw_start": 1163299,
+          "section_id": "sec15"
+        },
+        {
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_end": 1169506,
+          "raw_start": 1167485,
+          "section_id": "sec16"
+        }
+      ]
+    },
+    {
+      "request_ref": "7bb3344974f4af017de05763f871161a8274ddb6941053ed5f2e79dad05e9fad",
+      "raw_chars": 1191914,
+      "readable_start": 160442,
+      "sections": [
+        {
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_end": 184115,
+          "raw_start": 183640,
+          "section_id": "sec00"
+        },
+        {
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_end": 184602,
+          "raw_start": 184516,
+          "section_id": "sec01"
+        },
+        {
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_end": 185470,
+          "raw_start": 184996,
+          "section_id": "sec02"
+        },
+        {
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_end": 187105,
+          "raw_start": 185865,
+          "section_id": "sec03"
+        },
+        {
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_end": 188402,
+          "raw_start": 187551,
+          "section_id": "sec04"
+        },
+        {
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_end": 190904,
+          "raw_start": 188811,
+          "section_id": "sec05"
+        },
+        {
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_end": 210430,
+          "raw_start": 209861,
+          "section_id": "sec06"
+        },
+        {
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_end": 215508,
+          "raw_start": 214365,
+          "section_id": "sec07"
+        },
+        {
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_end": 912522,
+          "raw_start": 912261,
+          "section_id": "sec08"
+        },
+        {
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_end": 1148005,
+          "raw_start": 1147325,
+          "section_id": "sec09"
+        },
+        {
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_end": 1149505,
+          "raw_start": 1148801,
+          "section_id": "sec10"
+        },
+        {
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_end": 1156322,
+          "raw_start": 1155063,
+          "section_id": "sec11"
+        },
+        {
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_end": 1158900,
+          "raw_start": 1158223,
+          "section_id": "sec12"
+        },
+        {
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_end": 1160102,
+          "raw_start": 1159422,
+          "section_id": "sec13"
+        },
+        {
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_end": 1162286,
+          "raw_start": 1160835,
+          "section_id": "sec14"
+        },
+        {
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_end": 1163981,
+          "raw_start": 1163299,
+          "section_id": "sec15"
+        },
+        {
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_end": 1169506,
+          "raw_start": 1167485,
+          "section_id": "sec16"
+        }
+      ]
+    }
+  ],
+  "slow_navigation_assessment": {
+    "evidence": "Runtime supplied actual MD&A heading offset 912261 and the model used it; subsequent sequential reads covered several accounting-policy windows. Some exact windows were repeated and read_count records them.",
+    "classification": "Research efficiency/coverage concern; whole mining outcome remains incomplete. This snapshot alone does not establish source-navigation implementation failure.",
+    "pending": "Inspect complete Slow closure, candidates, update, validation, promotion, persistence and next-cycle consumption."
+  },
+  "remaining_acceptance": [
+    "Integrate isolated fixes after frozen run terminates, preserving history.",
+    "Fresh live research acceptance must cover technical exclusions and corrected content; fixed24 F1 alone is insufficient.",
+    "Audit all Slow stages on actual persisted inputs/outputs and restored committed state.",
+    "Inspect outcome denominator ownership, guessed-identity fail-closed behavior, and magnitude-band collapse.",
+    "Audit new Slow deferred-measurement absence claims against actual readable source coverage, not only schema or family manifests."
+  ],
+  "verification": {
+    "full_suite_tests": 1346,
+    "result": "PASS",
+    "duration_seconds": 63.044,
+    "source": "isolated current worktree",
+    "fixtures": "unchanged main fixtures",
+    "log_sha256": "31a16a22e010e7ff3852c690a31ff899a7dda8ac9eebe866e4d38a5a95ccde72",
+    "lint": "PASS"
+  },
+  "slow_new_content_review": {
+    "accepted_need_unit_snapshots": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/d600d6b675495a10c9147f8ecbddfcc7c0aa1d6481395d61b91d0eabcdc270b8.json",
+        "file_sha256": "068cf8a863f38c7516dc7edc0942d2224a09678f4a390fe626a1144600fd4edc",
+        "pending_count": 220,
+        "accepted_rows": [
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-d4afaebf55cae3e00454d536"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses indium phosphide substrate shipment timing, customer identity, or revenue magnitude under the August 2025 export permits.",
+              "The narrative and structured families fetched contain no such disclosure, so the measurement cannot be constructed from available evidence."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "new_measurement",
+            "need_refs": [
+              "need-16e39f69f73316c0b1039d50"
+            ],
+            "rationale": [
+              "Free cash flow can be measured as operating cash flow minus capital expenditures using NetCashProvidedByUsedInOperatingActivities and PaymentsToAcquirePropertyPlantAndEquipment, both available for six cases.",
+              "This is a new measurement distinct from existing cash-burn and runway signals."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "new_measurement",
+            "need_refs": [
+              "need-c34017ac236bb5383c8c72e8"
+            ],
+            "rationale": [
+              "Gross margin trend can be measured from GrossProfit and revenue concepts available for three cases.",
+              "This is a new measurement distinct from the existing gross_margin_change signal."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "new_measurement",
+            "need_refs": [
+              "need-f89b087e108f6ea175923dca"
+            ],
+            "rationale": [
+              "Gross margin, operating margin, and operating cash flow trends can be measured from GrossProfit, OperatingIncomeLoss, and NetCashProvidedByUsedInOperatingActivities.",
+              "These concepts are available for multiple cases and support a new combined trend measurement."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-64fdfc3c28e14ae2ee661221"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses antitrust investigations or intellectual property disputes affecting operations within six months.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-642b3ca619606c8efdb09586"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses additional clinical trial results or regulatory submissions for vormatrigine or other product candidates since August 4, 2025.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "new_measurement",
+            "need_refs": [
+              "need-bc06af843cc40d26ef2acdad"
+            ],
+            "rationale": [
+              "Liquidity position can be measured from CashAndCashEquivalentsAtCarryingValue and LiabilitiesCurrent, both available for multiple cases.",
+              "This is a new measurement distinct from existing cash_reserves and cash_to_current_liabilities_ratio signals."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-b90e0abf906c3b21a2583b6b"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses management's pricing and competitive dynamics for optical and interconnect products.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-2dacdf84195eba55719c5106"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses management's expected revenue and margin contribution from Boeing and Airbus agreements or volume/pricing terms.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-4277272e2566d6bb68098835"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses percentage of revenue from Boeing and Airbus individually.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-3acff93db96ace99251176c8"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses a quantified cost-reduction program or SG&A run-rate target sufficient to change the earnings outlook within six months.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          },
+          {
+            "disposition": "deferred_measurement",
+            "need_refs": [
+              "need-b79f7e01eea6432726bd8275"
+            ],
+            "rationale": [
+              "No in-window source in this cohort discloses a scheduled earnings release, guidance update, or material operating milestone expected within six months.",
+              "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+            ],
+            "signal_refs": []
+          }
+        ]
+      }
+    ],
+    "classification": "Deferred rationale claims of no in-window source require further source-coverage audit. Limited fetched/read evidence does not establish absence across available source bodies.",
+    "validated_as_semantically_correct": false
+  }
+}

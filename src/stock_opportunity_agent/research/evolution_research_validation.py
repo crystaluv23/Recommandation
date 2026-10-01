@@ -3068,7 +3068,7 @@ def _validate_research_state_refs(
             "open_questions or next_information_needs rather than inventing a "
             "resolution"),
         ))
-    if phase == "reflect" and adopted_new_signal_evidence:
+    if phase == "reflect":
         for error in targeted_answer_need_errors:
             structured_issues.append(
                 _need_transition_validation_issue(error, state)
@@ -3487,7 +3487,7 @@ def _targeted_answer_need_transition_errors(
 
     if previous is None:
         return []
-    if not adopted_signal_refs or not selections:
+    if not selections:
         return []
     if any(
         selection.reason_code == "answer_need"

@@ -212,3 +212,7 @@
 - 2026-10-02: Cross-Plan reflection statistics repair; consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance to align runtime source ownership, local repair authority, immutable legacy reads and production persistence acceptance.
 
 - 2026-10-02: Audited frozen v167 actual requests/first trajectory and consulted live-evolution-context-audit, incremental-repair-and-sourced-memory and convergence discipline; period-label repair is isolated while main remains frozen, with owner-bound local edits and complete production replay.
+
+- 2026-10-02: v167 price-shortfall and action-proof contract repair; consulted incremental-repair-and-sourced-memory and convergence-and-acceptance to preserve exact scalar authority, expose independent obligations before correction and replay actual cached production outputs without live/gain claims.
+
+- 2026-10-02: Continued v167 production evidence audit; revisited incremental repair and convergence contracts for control/evidence separation, typed empty quarantine, and restoration of unresolved need occurrences after the last invalid answer is removed.

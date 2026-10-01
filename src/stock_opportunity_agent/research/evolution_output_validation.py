@@ -481,6 +481,16 @@ _DENIED_PRICE_CHANGE = re.compile(
     r"\b(?:not|never)(?:\s+(?:a|an))?\s*$|"
     r"^\s*(?:is|was)\s+(?:wrong|incorrect|false|not\s+correct)\b", re.I,
 )
+_PRICE_SHORTFALL = re.compile(
+    r"(?<![\w.+-])(?P<percent>\d+(?:\.\d+)?)%\s+"
+    r"(?:below|short\s+of|less\s+than)\s+(?:(?:the|a)\s+)?"
+    r"(?:(?P<named>doubling\s+threshold)|\$(?P<target>\d[\d,]*(?:\.\d+)?))", re.I,
+)
+_PRICE_SHORTFALL_INSTRUCTION = (
+    "A required gain from a close uses that close as denominator; a percent "
+    "shortfall below a target uses the target as denominator. A positive "
+    "stock price cannot be more than 100% below a positive price target. "
+)
 
 
 def _price_reasoning_issues(
@@ -536,6 +546,38 @@ def _price_reasoning_issues(
             ))
         if not positive_number(expected):
             continue
+        for match in _PRICE_SHORTFALL.finditer(text):
+            boundaries = list(_PRICE_CLAUSE_BOUNDARY.finditer(text))
+            begin = max((b.end() for b in boundaries if b.end() <= match.start()), default=0)
+            end = min((b.start() for b in boundaries if b.start() >= match.end()), default=len(text))
+            before, after = text[begin:match.start()], text[match.end():end]
+            if (_DENIED_PRICE_CHANGE.search(before.rstrip()) or _DENIED_PRICE_CHANGE.search(after)
+                    or re.search(r"\b(?:cannot|can't)(?:\s+be)?\s*$", before, re.I)):
+                continue
+            target = anchor.get("doubling_threshold") if match.group("named") else float(match.group("target").replace(",", ""))
+            if not positive_number(target):
+                continue
+            if not match.group("named"):
+                if (not re.search(r"\b(?:price|baseline|doubling\s+threshold)\b", before + " " + after, re.I)
+                        or not any(positive_number(value) and math.isclose(target, value, rel_tol=0.01, abs_tol=0.005)
+                                   for value in (expected, anchor.get("doubling_threshold"), anchor.get("recent_close")))):
+                    continue
+            literal = match.group("percent")
+            rounding = 0.5 * 10 ** -len(literal.partition(".")[2])
+            if float(literal) <= 100 + rounding:
+                continue
+            issues.append(ValidationIssue(
+                code="price_shortfall_percentage_invalid", paths=(path,), source_refs=("prediction_baseline",),
+                allowed_repairs=("replace", "remove"),
+                message=(f"{path} states {literal}% below a positive price target {target:g}. "
+                         "A positive stock price cannot be more than 100% below that target. "
+                         "Distinguish a required gain from a close (denominator=close) from "
+                         "a shortfall below target (denominator=target); choose one consistent description."),
+                repair_context={"price_target": target, "anchor_mean": expected,
+                                "recent_close": anchor.get("recent_close"),
+                                "required_gain_formula": "(target / close - 1) * 100",
+                                "shortfall_formula": "(1 - close / target) * 100"},
+            ))
         for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
             returned = float(match.group(1))
             prefix = text[max(0, match.start() - 32):match.start()]
@@ -3512,7 +3554,7 @@ def _research_state_evidence_grounding_fallback(
         for index in sorted(indices, reverse=True):
             del items[index]
     evidence = grounded.get("supporting_evidence")
-    if not isinstance(evidence, list) or not evidence:
+    if not isinstance(evidence, list):
         return None
     return grounded, {
         "source_substitution_paths": (),

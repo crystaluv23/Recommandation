@@ -150,6 +150,10 @@ Research controller, blind Predictor and case posthoc adapters use the shared
 checker at the exact authored text path. First requests disclose its arithmetic
 contract. Posthoc full parsing and row salvage invoke the same role validator.
 See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).
+First authoring requests distinguish required gain from a close and shortfall
+relative to a target. Newly authored reflection actions expose independent
+brief/detail policy violations together, using the shared fixed-semantics guard;
+the scoped patch changes those fields and preserves other items and source data.
 
 ## Reflection statistics ownership (2026-10-02)
 
@@ -177,3 +181,10 @@ In-loop computed cards join validation before the returned state is parsed and
 remain visible on subsequent reflections in the same case. Initial case setup
 resets this context even when no market metric is available, so a reused
 controller cannot carry another issuer's computed window into validation.
+Initialization/reflection prompts use runtime anchors and cards to orient
+qualitative judgments and evidence needs. They do not request numerical control
+restatements in current_beliefs, contradictions or supporting_evidence. Literal
+issuer facts still follow existing quote/claim rules. No source metadata/date or
+filing-form identifier is invented inside a quote to justify a numerical claim.
+State need not create a citation for a runtime control: the unchanged control
+and Basic Info blocks are assembled separately for Predictor.

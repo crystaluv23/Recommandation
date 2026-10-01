@@ -1,0 +1,28 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "case_id": "cik_0001801368:20250331",
+  "plan_id": "plan_r0001_c02",
+  "input_request_ref": "793b7cf9a7c1684d8d9bcac47943e6097be38b94b6ddf6f554af9f93244b16e1",
+  "result": "PASS",
+  "mode": "offline production adapter with explicit semantic patch; no external call",
+  "calls": 2,
+  "independently_invalid_evidence_quarantined": 7,
+  "linked_unsupported_beliefs_quarantined": 8,
+  "semantic_patch_paths": [
+    "next_information_needs[0]"
+  ],
+  "semantic_patch_from_cached_paid_response": true,
+  "all_other_fields_equal": true,
+  "basic_info_and_control_blocks_unchanged": true,
+  "reload_equal": true,
+  "initial_prompt_controls_no_longer_request_numeric_state_assertions": true,
+  "input_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/793b7cf9a7c1684d8d9bcac47943e6097be38b94b6ddf6f554af9f93244b16e1.json": "291069f4d65f3738ae641e2fe5a2d4698df300f1dab2072c386e651e27fb5d20",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/793b7cf9a7c1684d8d9bcac47943e6097be38b94b6ddf6f554af9f93244b16e1.json": "fab7007689c0addeca1efa3762b77b9ecf6449c613cf9792526350bf2c3d6031"
+  },
+  "limitations": [
+    "Scripted correction does not establish live LLM compliance or research gain.",
+    "All authored evidence rows were invalid; quarantine preserves original Basic Info for future research and Predictor assembly.",
+    "Persisted readable-only compute context is not promoted to typed window authority."
+  ]
+}

@@ -2,9 +2,24 @@
 
 from tests.evolution_runtime_test_support import *  # noqa: F403
 from stock_opportunity_agent.research.evolution_research_validation import (
+    _normalize_research_state_output,
+    _validate_research_state_refs,
     _reflection_need_transition_contract,
     _targeted_answer_need_transition_errors,
 )
+
+
+def claim_error(value, *, basic_info=None, previous_state=None, batch=None):
+    """Inspect owning rejection before safe programmatic quarantine."""
+    try:
+        normalized = _normalize_research_state_output(value, initialize=batch is None,
+            basic_info=basic_info, previous_state=previous_state)
+        _validate_research_state_refs(ResearchState.from_dict(normalized),
+            phase='initialize' if batch is None else 'reflect', basic_info=basic_info,
+            previous_state=previous_state, batch=batch)
+    except StructuredValidationError as error:
+        return error
+    raise AssertionError('Expected an independently invalid claim.')
 
 
 V117_PRIOR_NEED = (
@@ -810,12 +825,14 @@ class ReflectionRoleAdapterTests(TestCase):
             default_information_plan(), basic_info
         )
 
-        self.assertEqual(len(state.value.supporting_evidence), 2)
-        self.assertIn(
-            "numeric quantities",
-            validation_error(caller.calls[1]),
-        )
-        self.assertIn("2165476", validation_error(caller.calls[1]))
+        error = claim_error(invalid, basic_info=basic_info)
+        self.assertIn("numeric quantities", str(error))
+        self.assertIn("2165476", str(error))
+        self.assertEqual(state.value.supporting_evidence, ())
+        self.assertEqual(len(caller.calls), 1)
+        valid_state = LLMResearchController(ScriptedRoleCaller([corrected])).initialize(
+            default_information_plan(), basic_info)
+        self.assertEqual(len(valid_state.value.supporting_evidence), 2)
 
         market = fixture["multi_span_market_claim"]
         market_output = json.loads(json.dumps(corrected))
@@ -900,14 +917,11 @@ class ReflectionRoleAdapterTests(TestCase):
 
         invalid = output(fixture["unsupported_claim"])
         invalid_caller = ScriptedRoleCaller([invalid, invalid])
-        with self.assertRaises(CandidateExecutionRejected):
-            LLMResearchController(invalid_caller).initialize(
-                default_information_plan(), basic_info
-            )
-        self.assertIn(
-            "1605400000",
-            validation_error(invalid_caller.calls[1]),
-        )
+        self.assertIn("1605400000", str(claim_error(invalid, basic_info=basic_info)))
+        quarantined = LLMResearchController(invalid_caller).initialize(default_information_plan(), basic_info)
+        self.assertEqual(quarantined.value.supporting_evidence, ())
+        self.assertEqual(quarantined.value.current_beliefs, ())
+        self.assertEqual(len(invalid_caller.calls), 1)
 
     def test_v12_reflect_rejects_signal_claim_quantities_absent_from_evidence(self) -> None:
         fixture = json.loads(
@@ -953,23 +967,19 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=results, signal_calls=2),
         )
 
-        error = validation_error(caller.calls[1])
+        error = str(claim_error(invalid_reflection,
+            previous_state=ResearchState(next_information_needs=("Confirm the production outlook.",)),
+            batch=SignalBatchResult(results=results, signal_calls=2)))
         self.assertIn("referenced Signal evidence", error)
         self.assertIn("513000", error)
         self.assertIn("2200", error)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertGreater(feedback["quantity_literal_check_count"], 0)
-        self.assertTrue(
-            all(
-                item["missing_quantity_literals"]
-                for item in feedback["quantity_literal_checks"]
-            )
-        )
-        self.assertIn(
-            "quantity_literal_checks",
-            feedback["completion_check"],
-        )
-        self.assertEqual(len(reflected.value.supporting_evidence), 2)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(reflected.value.supporting_evidence, ())
+        valid = LLMResearchController(ScriptedRoleCaller([corrected_reflection])).reflect(
+            default_information_plan(),
+            ResearchState(next_information_needs=("Confirm the production outlook.",)),
+            SignalBatchResult(results=results, signal_calls=2))
+        self.assertEqual(len(valid.value.supporting_evidence), 2)
         self.assertIn(
             "Every numeric quantity in a new Signal claim",
             caller.calls[0]["system_prompt"],
@@ -1227,10 +1237,9 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=(result,), signal_calls=1),
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("numeric quantities", error)
-        self.assertNotIn("stale_resolved_need_retained", error)
-        self.assertEqual(caller.calls[1]["payload"]["validation_feedback"]["invalid_output"]["resolved_questions"], [])
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(reflected.value.resolved_questions, ())
+        self.assertEqual(reflected.value.supporting_evidence, ())
         self.assertEqual(
             reflected.value.next_information_needs,
             (prior_need,),
@@ -1642,15 +1651,13 @@ class ReflectionRoleAdapterTests(TestCase):
             payload["signal_evidence_ref_catalog"][1]["supporting_evidence_indices"],
             [],
         )
-        error = validation_error(caller.calls[1])
-        self.assertIn("2.07", error)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertNotIn("research_need_transition_invalid", [row["issue_code"] for row in feedback["obligations"]])
-        self.assertEqual(feedback["invalid_output"]["next_information_needs"], [guidance_need, revenue_need])
-        self.assertEqual(feedback["invalid_output"]["open_questions"], [])
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(reflected.value.supporting_evidence, ())
+        self.assertEqual(reflected.value.current_beliefs, ())
+        self.assertEqual(reflected.value.open_questions, ())
         self.assertEqual(
             reflected.value.next_information_needs,
-            (guidance_need, revenue_need),
+            (guidance_need, revenue_need, liquidity_need),
         )
 
     def test_v74_reflect_requires_exact_partial_answer_residual(self) -> None:
@@ -1901,16 +1908,17 @@ class ReflectionRoleAdapterTests(TestCase):
         rounded_caller = ScriptedRoleCaller(
             [reflection(fixture["rounded_claim"]), reflection(fixture["rounded_claim"])]
         )
-        with self.assertRaises(CandidateExecutionRejected):
-            LLMResearchController(rounded_caller).reflect(
+        self.assertIn("Do not round or convert", str(claim_error(reflection(fixture["rounded_claim"]),
+            previous_state=ResearchState(next_information_needs=("Check revenue.",)),
+            batch=SignalBatchResult(results=(result,), signal_calls=1))))
+        quarantined = LLMResearchController(rounded_caller).reflect(
                 default_information_plan(),
                 ResearchState(next_information_needs=("Check revenue.",)),
                 SignalBatchResult(results=(result,), signal_calls=1),
             )
-        self.assertIn(
-            "Do not round or convert",
-            validation_error(rounded_caller.calls[1]),
-        )
+        self.assertEqual(quarantined.value.supporting_evidence, ())
+        self.assertEqual(quarantined.value.current_beliefs, ())
+        self.assertEqual(len(rounded_caller.calls), 1)
 
     def test_v12_reflect_preserves_retained_signal_claim_without_old_batch(self) -> None:
         prior_claim = "Management reaffirmed rather than raised guidance."

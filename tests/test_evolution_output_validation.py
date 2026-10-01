@@ -3082,17 +3082,18 @@ class TemporalQuantityAggregatedFeedbackTests(TestCase):
                 obligation["issue_code"]
                 for obligation in feedback["obligations"]
             ),
-            ["claim_quantity_not_supported", "future_information_unavailable"],
+            ["future_information_unavailable"],
         )
+        self.assertEqual(feedback["invalid_output"]["supporting_evidence"], [])
+        self.assertEqual(feedback["invalid_output"]["current_beliefs"], [])
 
-    def test_removing_all_evidence_stays_rejected(self) -> None:
+    def test_empty_evidence_never_retains_unsupported_belief(self) -> None:
         from stock_opportunity_agent.research.evolution_output_validation import (
             _research_state_evidence_grounding_fallback,
         )
 
         caller = ScriptedRoleCaller([self._value(), self._emptied()])
-        with self.assertRaises(CandidateExecutionRejected):
-            evolution_runtime_module._complete_parsed_role(
+        value, _usage = evolution_runtime_module._complete_parsed_role(
                 caller,
                 stage="research_controller_initialize",
                 system_prompt="Return the fixed contract.",
@@ -3104,6 +3105,9 @@ class TemporalQuantityAggregatedFeedbackTests(TestCase):
                 stable_correction_prefix=True,
                 final_validation_fallback=_research_state_evidence_grounding_fallback,
             )
+        self.assertEqual(value.supporting_evidence, ())
+        self.assertEqual(value.current_beliefs, ())
+        self.assertEqual(value.hypotheses, tuple(self._value()["hypotheses"]))
 
 
 class TemporalSchedulePluralVocabularyTests(TestCase):

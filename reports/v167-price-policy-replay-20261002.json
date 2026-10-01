@@ -1,0 +1,63 @@
+{
+  "scope": "offline exact cached outputs plus explicitly scripted semantic patches; no external calls",
+  "frozen_run_source_revision": "8c07f383",
+  "repair_worktree_base_revision": "d7b01948",
+  "cases": [
+    {
+      "stage": "Predictor",
+      "request_ref": "267b273fe90b95966290b5a4fda3ff87cffb761307a7bef9814e310e38c79997",
+      "calls": 2,
+      "changed_paths": [
+        "key_reasons[0]"
+      ],
+      "old_text": "The supplied prediction baseline is a mean adjusted close of $63.444, so the six-month 2x threshold is $126.888; the most recent close was $62.31 on 2025-07-30, leaving the stock roughly 104% below the doubling threshold.",
+      "new_text": "The supplied prediction baseline is a mean adjusted close of $63.444, so the six-month 2x threshold is $126.888; the most recent close was $62.31 on 2025-07-30, requiring roughly a 104% gain from the most recent close to reach the doubling threshold.",
+      "all_other_fields_equal": true,
+      "mechanical_number_rewrite": false
+    },
+    {
+      "stage": "Posthoc price",
+      "request_ref": "e14ff30638792d5e594c53d617aa7a5dd47be350dae7b69f8ccff5a767719cc2",
+      "calls": 2,
+      "changed_paths": [
+        "reflection_items[1].brief"
+      ],
+      "old_text": "The prediction may have overweighted the mechanical distance to the doubling threshold (~104% below $126.888 from the $63.444 baseline) as if it were a probability statement, rather than treating it as a boundary condition.",
+      "new_text": "The prediction may have overweighted the mechanical distance to the doubling threshold (~104% gain from the recent close to $126.888) as if it were a probability statement, rather than treating it as a boundary condition.",
+      "valid_siblings_sources_outcomes_equal": true,
+      "saved_prediction_immutable": true,
+      "archive_proposer_source_resolution": true
+    },
+    {
+      "stage": "Posthoc action",
+      "request_ref": "4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1",
+      "calls": 2,
+      "first_feedback_paths": [
+        "reflection_items[4].brief",
+        "reflection_items[4].detail"
+      ],
+      "changed_paths": [
+        "reflection_items[4].brief",
+        "reflection_items[4].detail"
+      ],
+      "old_brief": "Before assigning a possible-surge label, require a dated catalyst inside the horizon plus a stated path from the current price to the threshold; otherwise downgrade to non-surge.",
+      "new_brief": "Before assigning a possible-surge label, inspect dated catalysts and optionally analyze the price path, while treating disclosed level improvements and late catalysts as evidence to weigh; a stated or quantified path is not required for a positive judgment.",
+      "all_five_items_retained": true,
+      "valid_siblings_sources_outcomes_equal": true,
+      "archive_proposer_source_resolution": true
+    }
+  ],
+  "immutable_input_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/trajectories/plan_r0001_c01/cik_0001164727:20250731.json": "bac9e8086a8154ec7e8ca097f0bdc28a45c3c0e104b78a3209bcb53687dbdb84",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/267b273fe90b95966290b5a4fda3ff87cffb761307a7bef9814e310e38c79997.json": "c1ca2c7e7f3a39914fa7521f1f287f4dab2fc70a547776d88f3c46febf55e355",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/267b273fe90b95966290b5a4fda3ff87cffb761307a7bef9814e310e38c79997.json": "80f48e36a98f612cbcb28baf84ecd9983c1b997276e1fd94fc6f99a0633f5f29",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/e14ff30638792d5e594c53d617aa7a5dd47be350dae7b69f8ccff5a767719cc2.json": "aaa89889493517b5bf2cc7438fc46f2ea3965d96ff9c6c541edfc2d2bb8b3e80",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/e14ff30638792d5e594c53d617aa7a5dd47be350dae7b69f8ccff5a767719cc2.json": "77a890005b7e8186b9f59cae61c6cac468040c151da14350fc5a13242194f674",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/trajectories/plan_r0001_c01/cik_0001521036:20250331.json": "3089f7eaa965c93041543257f7a2aded6a22032c148e3c353ac7b425af081e31",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1.json": "34ec7eaee8222c8af4ba5aecc4b41478ba96d03f7ece1ce88cef1ea129f00c8a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1.json": "c5c0f523c6be4f6174a927ef626d077406c0f56fba83e6c201400d9e39ed2bb3"
+  },
+  "live_acceptance": false,
+  "quality_gain_measured": false,
+  "limitation": "Scripted patches prove exact repair authority and full production revalidation, not future model compliance."
+}

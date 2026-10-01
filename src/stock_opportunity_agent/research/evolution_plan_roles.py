@@ -14,6 +14,7 @@ from stock_opportunity_agent.research.evolution_dataset import _add_months
 from stock_opportunity_agent.research.evolution_reflection_memory import (
     ReflectionMemoryIndex,
     ReflectionValidationError,
+    violates_opportunity_proof_gate,
 )
 from stock_opportunity_agent.research.evolution_state_patch import (
     PATCH_INSTRUCTION,
@@ -86,6 +87,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _measurement_reasoning_issues,
     _computed_period_issues,
     _COMPUTED_PERIOD_INSTRUCTION,
+    _PRICE_SHORTFALL_INSTRUCTION,
     _context_signal_results,
     _compact_posthoc_context,
     _INCREMENTAL_ROLE_INSTRUCTION,
@@ -262,16 +264,17 @@ class LLMResearchController:
                 "through within-horizon evidence or milestone that could change "
                 "expectations. "
                 "When evaluation_anchor is supplied it is deterministic computed "
-                "control data: copy its numbers (baseline mean, doubling threshold, "
-                "recent close) verbatim whenever referenced and never "
-                "restate, round, or recompute them. Percent changes must keep "
+                "control data retained separately: use it to orient qualitative "
+                "judgments and evidence needs, without numerical restatements in "
+                "current_beliefs, contradictions or supporting_evidence. Percent changes must keep "
                 "their explicit endpoint/target and named denominator consistent: "
                 "baseline uses mean_adjusted_close, recent close uses recent_close. "
                 "Doubling the baseline is a 100% gain from baseline. Computed metric summaries "
-                "in computed_metrics are also control data: reference their "
-                "numbers in beliefs and reasoning, but never write them into "
-                "supporting_evidence exact_text — evidence citations must come "
-                "only from basic_info projections. Interpret time-bound source wording at its "
+                "in computed_metrics are also control data: use their qualitative "
+                "implications for research, but never write them into "
+                "current_beliefs, contradictions or supporting_evidence — evidence citations must come "
+                "only from basic_info projections. Source catalog dates and filing-form "
+                "identifiers are metadata, not literal issuer quotes. Interpret time-bound source wording at its "
                 "available_at: an expired event or an old source saying currently "
                 "does not establish that the condition remains current at prediction_time. "
                 "evaluation_context is control data, not evidence: every need must be "
@@ -296,6 +299,7 @@ class LLMResearchController:
                 "ones satisfied while repairing the named failure."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _COMPUTED_PERIOD_INSTRUCTION
+                + _PRICE_SHORTFALL_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
             ),
             payload=payload,
@@ -429,17 +433,17 @@ class LLMResearchController:
                 "strings; never write an evidence object into one of them — new "
                 "evidence goes to supporting_evidence with its own ref shape. "
                 "When evaluation_anchor is supplied it is deterministic computed "
-                "control data: copy its numbers (baseline mean, doubling threshold, "
-                "recent close) verbatim whenever referenced and never "
-                "restate, round, or recompute them; a belief restating a different "
-                "baseline or threshold value is invalid. Percent changes must keep "
+                "control data retained separately: use it to orient qualitative "
+                "judgments and evidence needs, without numerical restatements in "
+                "current_beliefs, contradictions or supporting_evidence. Percent changes must keep "
                 "their explicit endpoint/target and named denominator consistent: "
                 "baseline uses mean_adjusted_close, recent close uses recent_close. "
                 "Doubling the baseline is a 100% gain from baseline. Computed metric summaries "
-                "in computed_metrics are control data: reference their numbers "
-                "in beliefs, but never write them into supporting_evidence "
-                "exact_text — evidence citations must come only from basic_info "
-                "projections or current-batch Signal refs. Interpret time-bound source wording "
+                "in computed_metrics are control data: use their qualitative "
+                "implications for research, but never write them into current_beliefs, "
+                "contradictions or supporting_evidence — evidence citations must come only from basic_info "
+                "projections or current-batch Signal refs. Source catalog dates and filing-form "
+                "identifiers are metadata, not literal issuer quotes. Interpret time-bound source wording "
                 "at its available_at; do not present an expired event as current at "
                 "prediction_time merely because the source said currently. "
                 "When document_catalog is supplied you may spend bounded mid-call "
@@ -455,8 +459,9 @@ class LLMResearchController:
                 "30-365), return_between(from_offset_days>to_offset_days, "
                 "1-365), distance_to_threshold(multiple 1.0-10.0, anchor "
                 "relative) — the runtime computes it over point-in-time data "
-                "and the computed card arrives in computed_metrics; copy its "
-                "numbers verbatim and never restate or derive them yourself. "
+                "and the computed card arrives in computed_metrics; it remains "
+                "in the final control block. Use qualitative implications in State "
+                "without restating or deriving its numbers. "
                 "open_questions holds only material uncertainty that is not itself "
                 "an actionable retrieval question; put every actionable retrieval "
                 "question only in next_information_needs, never repeat an exact "
@@ -468,6 +473,7 @@ class LLMResearchController:
                 "while its claim may be restated."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _COMPUTED_PERIOD_INSTRUCTION
+                + _PRICE_SHORTFALL_INSTRUCTION
                 + PATCH_INSTRUCTION
             ),
             payload={
@@ -1753,6 +1759,7 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "by construction and is not independent counter-evidence against a surge. "
     "Use supplied computed_metrics for quantitative price-trend statements; "
     + _COMPUTED_PERIOD_INSTRUCTION +
+    _PRICE_SHORTFALL_INSTRUCTION +
     "keep each computed return with that card's own first/last prices and dates, "
     "rather than attaching an unrelated Basic Info price. Respect Signal "
     "measurement_context: categorical states are not stock-direction forecasts, "
@@ -1993,6 +2000,7 @@ class LLMBlindPredictor:
                     "as a fact; the saved prediction remains immutable."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _COMPUTED_PERIOD_INSTRUCTION
+                    + _PRICE_SHORTFALL_INSTRUCTION
                     + _structured_reflection_contract("case")
                 ),
                 payload={
@@ -2130,8 +2138,8 @@ def _structured_reflection_contract(level: str) -> str:
         "A realized return does not establish "
         "why it occurred: label causal explanations as hypotheses and propose "
         "a test. Source references establish provenance, not correctness. "
-        "Opportunity screening does not require a quantified valuation bridge "
-        "or guaranteed 2x path. An authored action may request optional valuation "
+        "Opportunity screening does not require a quantified valuation bridge, "
+        "stated/concrete price path or guaranteed 2x path. An authored action may request optional valuation "
         "analysis but cannot make such proof a condition for a positive judgment. "
         "Higher levels act as a sieve: select useful existing items by ref "
         "without rewriting them; author only new sourced comparisons or actions. "
@@ -2275,6 +2283,17 @@ def _structured_reflection_items(
     ]
     if envelope_issues:
         raise StructuredValidationError(envelope_issues)
+    raw_items = value.get("reflection_items")
+    if isinstance(raw_items, list):
+        policy_issues = [ValidationIssue(
+            code="reflection_action_proof_gate", paths=(f"reflection_items[{position}].{field}",),
+            allowed_repairs=("replace",),
+            message="An action cannot require a quantified/stated price path or mandate a negative judgment solely without a path; keep such analysis optional.",
+        ) for position, item in enumerate(raw_items) if isinstance(item, Mapping) and item.get("kind") == "action"
+          for field in ("brief", "detail") if isinstance(item.get(field), str)
+          and violates_opportunity_proof_gate(item[field])]
+        if policy_issues:
+            raise StructuredValidationError(policy_issues)
     # Retrospective descriptions may discuss probabilities and horizons. They
     # cannot mutate fixed semantics; the eventual Plan proposal is validated at
     # that owning boundary. Applying the Plan instruction word filter here

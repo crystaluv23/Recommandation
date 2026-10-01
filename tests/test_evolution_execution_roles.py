@@ -1607,9 +1607,9 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             default_information_plan(), basic_info
         )
 
-        self.assertEqual(len(caller.calls), 3)
-        self.assertIn("numeric quantities", validation_error(caller.calls[2]))
-        self.assertEqual(caller.calls[2]["payload"]["validation_feedback"]["invalid_output"], shape_corrected)
+        # Shape remains semantic; once fixed, unsupported quantities are
+        # quarantined programmatically without another paid correction.
+        self.assertEqual(len(caller.calls), 2)
         error = validation_error(caller.calls[1])
         self.assertIn("unknown kind None", error)
         self.assertNotIn("numeric quantities", error)
@@ -1636,10 +1636,11 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             feedback["completion_check"],
         )
         self.assertNotIn("quantity_literal_checks", feedback)
-        self.assertEqual(
-            initialized.value.supporting_evidence[0].claim,
-            fixture["corrected_claim"],
-        )
+        self.assertEqual(initialized.value.supporting_evidence, ())
+        self.assertEqual(initialized.value.current_beliefs,
+                         ("The project is making significant construction progress.",))
+        self.assertEqual(initialized.value.next_information_needs,
+                         tuple(shape_corrected["next_information_needs"]))
 
     def test_v95_quantity_feedback_checks_each_linked_retained_path(self) -> None:
         error = ValidationError(
@@ -2410,20 +2411,21 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             },
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("supporting_evidence[0]", error)
-        self.assertIn('missing_quantity_groups=["2025"]', error)
-        self.assertIn("linked_assertions=['current_beliefs[0]']", error)
-        self.assertNotIn("returned invalid JSON fields", error)
-        self.assertIn(
-            "Preserve unrelated valid fields and items byte-for-byte",
-            caller.calls[1]["system_prompt"],
-        )
-        self.assertEqual(initialized.value.current_beliefs, (corrected_claim,))
-        self.assertEqual(
-            initialized.value.supporting_evidence[0].claim,
-            corrected_claim,
-        )
+        from stock_opportunity_agent.models import StructuredValidationError
+        from stock_opportunity_agent.research.evolution_research_validation import _normalize_research_state_output
+        with self.assertRaises(StructuredValidationError) as caught:
+            _normalize_research_state_output(invalid, initialize=True,
+                basic_info=caller.calls[0]["payload"]["basic_info"])
+        issue = caught.exception.issues[0]
+        self.assertEqual(issue.code, "claim_quantity_not_supported")
+        self.assertEqual(issue.paths, ("supporting_evidence[0].claim",))
+        self.assertIn("current_beliefs[0]", issue.dependent_paths)
+        self.assertIn('missing_quantity_groups=["2025"]', issue.message)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(initialized.value.current_beliefs, ())
+        self.assertEqual(initialized.value.supporting_evidence, ())
+        self.assertEqual(initialized.value.hypotheses, tuple(invalid["hypotheses"]))
+        self.assertEqual(initialized.value.next_information_needs, tuple(invalid["next_information_needs"]))
 
     def test_reflect_retains_complete_grounded_long_claim(
         self,
@@ -4725,6 +4727,6 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertIn("price shape", computed["readable"])
         self.assertIn("13.75", computed["readable"])
         self.assertIn(
-            "never write them into supporting_evidence",
+            "without numerical restatements",
             caller.calls[0]["system_prompt"],
         )

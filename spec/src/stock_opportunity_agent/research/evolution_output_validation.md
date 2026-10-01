@@ -349,6 +349,17 @@ accepted by fallback. Selected historical items remain immutable and are not rel
 verified. This check does not verify arbitrary prose, financial-period ownership,
 causal attribution, or forecast truth.
 
+An explicitly stated price shortfall more than 100 percent below a supplied
+positive target is invalid (allowing the stated number's rounding). The target
+must be the named runtime doubling threshold, or one explicit dollar value
+matching a supplied price anchor in price/threshold context. A gain from a close
+uses that close as denominator; a shortfall below a target uses the target.
+This check rejects the impossible description without guessing which valid
+statement the author intended. It grants only field-local semantic correction,
+never a mechanical number/direction rewrite. Denied examples and unavailable
+anchors do not supply an obligation. Every first authored-role prompt states
+the distinction; State, Predictor and Posthoc use the same shared checker.
+
 The unused legacy plain-array posthoc authoring parser/contract is removed.
 Production continues to author sourced reflection items; historical record
 loading and derived string projections retain their existing read contracts.
@@ -373,3 +384,13 @@ percentages, prices, source metadata and unrelated text do not change. The share
 snapshot-bound text repair executes before LLM correction and whole-object
 revalidation, including row salvage. This is a bounded period-label check, not
 verification of arbitrary economic or causal prose.
+
+## Empty evidence after typed quarantine
+
+Dropping every independently invalid authored evidence member and its explicitly
+linked numeric assertions may leave supporting_evidence empty. No repair invents
+a citation or keeps an invalid member to meet a cardinality requirement. The
+original Basic Info and runtime blocks remain outside State and in final assembly.
+Complete State parsing still checks retention, need transitions, timing and
+decision rules; it may refuse the resulting object for those actual obligations.
+This removes a legacy fallback-only nonempty condition and grants no new paths.

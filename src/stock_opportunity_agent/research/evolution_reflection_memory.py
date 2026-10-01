@@ -122,6 +122,8 @@ _MANDATORY_PROOF_CONDITION = re.compile(
     r"(?:\b(?:quantified|numeric|numerical|quantitative)\s+"
     r"(?:[\w-]+\s+){0,5}(?:path|bridge|price\s+target)\b|"
     r"\bquantif(?:y|ies)\s+(?:a\s+)?(?:[\w-]+\s+){0,3}(?:path|bridge)\b|"
+    r"\b(?:stated|explicit|concrete|demonstrated)\s+(?:[\w-]+\s+){0,4}"
+    r"(?:path|bridge)\s+(?:from|to)\b[^.;]{0,100}\b(?:price|threshold|doubling|2x)\b|"
     r"\b(?:guaranteed?|proven|certain)\s+(?:[\w-]+\s+){0,3}"
     r"(?:doubling|2x|price\s+outcome|share[- ]price\s+outcome)\b)",
     re.IGNORECASE,
@@ -129,6 +131,12 @@ _MANDATORY_PROOF_CONDITION = re.compile(
 _OPPORTUNITY_JUDGMENT = re.compile(
     r"\b(?:surge|doubling|2x|positive\s+judgment|candidate\s+judgment|"
     r"positive\s+opportunity)\b", re.IGNORECASE,
+)
+_ABSENT_PROOF_DOWNGRADE = re.compile(
+    r"\b(?:if|when)\s+(?:no|without)\b[^.;]{0,160}\b(?:path|bridge)\b"
+    r"(?P<link>[^.;]{0,100}?)\b(?:record|downgrade|classify|label)\s+"
+    r"(?:(?:the|a|this)\s+)?(?:call|judgment|candidate)?\s*(?:as|to)?\s*"
+    r"(?:non[- ]surge|unlikely|negative)\b", re.I,
 )
 
 
@@ -151,6 +159,18 @@ def violates_opportunity_proof_gate(text: str) -> bool:
         scope = text[sentence_start:sentence_end]
         if _OPPORTUNITY_JUDGMENT.search(scope):
             return True
+    for match in _ABSENT_PROOF_DOWNGRADE.finditer(text):
+        prefix = text[max(0, match.start() - 60):match.start()]
+        link = match.group("link")
+        # A business milestone path is not a mandatory share-price proof.
+        if (re.match(r"\s+(?:to|towards?|for)\b", link, re.I)
+                and not re.search(r"\b(?:price|threshold|doubling|2x)\b", link, re.I)):
+            continue
+        if re.search(r"\b(?:not|never)\s+(?:\w+\s+){0,5}['\"]?\s*$", prefix, re.I):
+            continue
+        if re.search(r"\b(?:not|never|may|might|consider|whether)\b", link, re.I):
+            continue
+        return True
     return False
 
 
@@ -763,7 +783,7 @@ class ReflectionMemoryIndex:
                 for field_name in ("brief", "detail"):
                     if violates_opportunity_proof_gate(value[field_name]):
                         invalid(
-                            "action cannot require a quantified path or guaranteed "
+                            "action cannot require a quantified or stated price path, or guaranteed "
                             "price outcome for a positive opportunity judgment; "
                             "propose optional supporting analysis instead",
                             field_name,
