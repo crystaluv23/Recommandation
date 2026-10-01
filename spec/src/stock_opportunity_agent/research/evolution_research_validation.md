@@ -1,5 +1,11 @@
 # Evolution Research Validation
 
+Temporal detection ignores only a closed, trailing exclusion such as “without
+requiring contents or results published after the prediction time.” The stored
+question remains unchanged. The positive main clause is checked independently;
+a positive future-actual request cannot become valid by appending an exclusion.
+Unknown negation grammar remains subject to the normal fail-closed checks.
+
 An actionable question cannot request complete calendar-quarter actuals at
 the midnight cutoff on that quarter's last day: the period has not completed.
 Explicit requests for facts between the prediction date and the end of the

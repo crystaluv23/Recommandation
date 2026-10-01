@@ -88,10 +88,26 @@ Fast/Slow engine dependency.
 - Scoring and fitness rules remain deterministic.
 - When an already executed, reflectable batch cannot fit an ordinary reflection
   into the adaptive budget, consume any paid usage and attempt that same batch
-  once in terminal mode with the remaining total budget. Reapply the existing
+  once in terminal mode with the remaining budget after protecting the actual
+  Predictor reservation. Reapply the existing
   mandatory-finalize validation; never fabricate a finalized state. A failed
   terminal reservation remains budget-exhausted, without another retry. This
   fallback does not apply when no batch exists or when already in terminal mode.
+- A Predictor with `estimate_prediction_tokens(context)` estimates the same
+  composed, anonymous request used for actual prediction. Recompute this
+  reservation before routing, execution and reflection from the complete current
+  evidence closure. Adaptive research protects that reservation plus the existing
+  finalization floor; terminal reflection protects the Predictor reservation
+  itself. No source is cropped to fit, no limit is increased, and an unsendable
+  terminal reflection preserves the paid batch and records budget exhaustion.
+  Adapters without an estimator retain the existing fixed-floor behavior.
+  A budget-skipped posthoc reflection still consumes any paid usage carried by
+  the exception; its diagnostic fallback cannot erase spent calls or cost.
+- The final assembly also retains bootstrap computed metrics and runtime-acquired
+  document/compute views from the bounded reflection channel. These case-local
+  views keep their PIT provenance; failed or repeated calls never reset them.
+  They are included in the same budget estimate, masked at egress and persisted
+  in the final context. No controller-authored numerical substitution is used.
 - The module may depend on Raw Info and Signal contracts, but not on Plan or
   Signal engine implementations.
 

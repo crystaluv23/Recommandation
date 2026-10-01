@@ -1,5 +1,15 @@
 # Evolution Plan Roles
 
+The blind LLM Predictor exposes an optional exact initial-request token estimator.
+Estimation and execution share one system prompt and payload, including transport
+identity projection and reasoning headroom. It does not estimate research truth
+or guarantee unlimited correction attempts fit the remaining budget.
+
+Price-baseline distance is outcome-definition arithmetic, not independent
+counter-evidence against a surge. Predictor instructions distinguish it from
+source-backed contrary evidence and require computed price-change cards for
+quantitative price-trend claims; an absent computed window remains uncertainty.
+
 ## Purpose
 
 Implement structured adapters for Plan proposal, criticism, adaptive research,

@@ -3095,23 +3095,16 @@ def execute_information_plan(
     )
     if callable(_set_computed_metrics_if_capable) and bootstrap_computed:
         _set_computed_metrics_if_capable(bootstrap_computed)
-    _set_document_channel_if_capable = getattr(
-        controller, "set_document_channel", None
+    document_channel = _DocumentChannelProvider(
+        signal_executor.raw_info_store,
+        company_id=company_id,
+        as_of=prediction_time,
+        market_documents=market_documents_for_anchor,
+        anchor=(evaluation_anchor if evaluation_anchor.get("status") == "available" else None),
     )
+    _set_document_channel_if_capable = getattr(controller, "set_document_channel", None)
     if callable(_set_document_channel_if_capable):
-        _set_document_channel_if_capable(
-            _DocumentChannelProvider(
-                signal_executor.raw_info_store,
-                company_id=company_id,
-                as_of=prediction_time,
-                market_documents=market_documents_for_anchor,
-                anchor=(
-                    evaluation_anchor
-                    if evaluation_anchor.get("status") == "available"
-                    else None
-                ),
-            )
-        )
+        _set_document_channel_if_capable(document_channel)
     initial_step = controller.initialize(plan, basic_info)
     model_usage = _consume_model_step(model_usage, initial_step.usage, limits)
     initial_state = initial_step.value
@@ -3124,7 +3117,41 @@ def execute_information_plan(
     signal_fingerprints: dict[str, tuple[str, ...]] = {}
     prior_signal_results: dict[str, Mapping[str, Any]] = {}
 
+    def current_final_context() -> dict[str, Any]:
+        """Compose the same complete evidence closure for preflight and prediction."""
+
+        return _assemble_final_context(
+            plan=plan,
+            company_id=company_id,
+            additional_identity_aliases=tuple(str(item) for item in source_aliases),
+            basic_info=basic_info,
+            state=state,
+            rounds=rounds,
+            prediction_time=prediction_time,
+            market_documents=market_documents_for_anchor,
+            prediction_baseline=(
+                evaluation_anchor
+                if evaluation_anchor.get("status") == "available"
+                else None
+            ),
+            state_deltas=tuple(state_deltas),
+            computed_metrics=(*bootstrap_computed, *document_channel.computed_metrics),
+            document_views=document_channel.document_views,
+        )
+
+    def predictor_reservation() -> int:
+        estimator = getattr(predictor, "estimate_prediction_tokens", None)
+        if not callable(estimator):
+            return 0
+        required = estimator(current_final_context())
+        if required is None:
+            return 0
+        if isinstance(required, bool) or not isinstance(required, int) or required < 0:
+            raise ValidationError("Predictor reservation must be a nonnegative integer")
+        return required
+
     while state.decision is ResearchDecision.CONTINUE:
+        finalization_reserve = limits.finalization_token_reserve + predictor_reservation()
         if len(rounds) >= limits.max_signal_rounds:
             termination_trigger = RuntimeStopReason.MAX_SIGNAL_ROUNDS
             break
@@ -3134,7 +3161,7 @@ def execute_information_plan(
         if model_usage.llm_calls + 4 > limits.max_llm_calls:
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
-        if model_usage.tokens >= limits.max_tokens - limits.finalization_token_reserve:
+        if model_usage.tokens >= limits.max_tokens - finalization_reserve:
             termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
             break
 
@@ -3149,7 +3176,7 @@ def execute_information_plan(
 
         _set_request_token_budget(
             signal_agent,
-            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
+            limits.max_tokens - model_usage.tokens - finalization_reserve,
         )
         try:
             selection_step = signal_agent.select(
@@ -3220,9 +3247,10 @@ def execute_information_plan(
         remaining_calls = limits.max_signal_calls - signal_calls
         selected = selected[:remaining_calls]
         selections = selections[:remaining_calls]
+        finalization_reserve = limits.finalization_token_reserve + predictor_reservation()
         _set_request_token_budget(
             signal_executor.llm_runner,
-            limits.max_tokens - model_usage.tokens - limits.finalization_token_reserve,
+            limits.max_tokens - model_usage.tokens - finalization_reserve,
         )
         deterministic_refs = tuple(
             ref
@@ -3294,6 +3322,8 @@ def execute_information_plan(
                 jev_routing_decisions=jev_routing_decisions,
             )
         )
+        prediction_reserve = predictor_reservation()
+        finalization_reserve = limits.finalization_token_reserve + prediction_reserve
         reflection_termination_trigger: RuntimeStopReason | None = None
         if soft_budget_exhausted:
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
@@ -3304,7 +3334,7 @@ def execute_information_plan(
         elif model_usage.llm_calls + 5 > limits.max_llm_calls:
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
         elif model_usage.tokens >= (
-            limits.max_tokens - limits.finalization_token_reserve
+            limits.max_tokens - finalization_reserve
         ):
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
         if all(
@@ -3320,7 +3350,9 @@ def execute_information_plan(
         )
         reflection_budget = limits.max_tokens - model_usage.tokens
         if reflection_termination_trigger is None:
-            reflection_budget -= limits.finalization_token_reserve
+            reflection_budget -= finalization_reserve
+        else:
+            reflection_budget -= prediction_reserve
         _set_request_token_budget(controller, reflection_budget)
         try:
             reflection_step = controller.reflect(plan, state, batch)
@@ -3336,7 +3368,9 @@ def execute_information_plan(
                 must_finalize=True,
                 termination_trigger=reflection_termination_trigger,
             )
-            _set_request_token_budget(controller, limits.max_tokens - model_usage.tokens)
+            _set_request_token_budget(
+                controller, limits.max_tokens - model_usage.tokens - predictor_reservation()
+            )
             try:
                 reflection_step = controller.reflect(plan, state, batch)
             except RuntimeBudgetExceeded as terminal_error:
@@ -3374,22 +3408,7 @@ def execute_information_plan(
         else:
             stop_reason = termination_trigger
 
-    final_context = _assemble_final_context(
-        plan=plan,
-        company_id=company_id,
-        additional_identity_aliases=tuple(str(item) for item in source_aliases),
-        basic_info=basic_info,
-        state=state,
-        rounds=rounds,
-        prediction_time=prediction_time,
-        market_documents=market_documents_for_anchor,
-        prediction_baseline=(
-            evaluation_anchor
-            if evaluation_anchor.get("status") == "available"
-            else None
-        ),
-        state_deltas=tuple(state_deltas),
-    )
+    final_context = current_final_context()
     _set_request_token_budget(predictor, limits.max_tokens - model_usage.tokens)
     prediction_step = predictor.predict(final_context)
     model_usage = _consume_model_step(model_usage, prediction_step.usage, limits)
@@ -3408,7 +3427,8 @@ def execute_information_plan(
     try:
         reflection_step = predictor.reflect(final_context, prediction, ground_truth)
         model_usage = _consume_model_step(model_usage, reflection_step.usage, limits)
-    except RuntimeBudgetExceeded:
+    except RuntimeBudgetExceeded as exc:
+        model_usage = _consume_usage(model_usage, exc.usage, limits)
         reflection_step = AgentStep(
             PredictionSelfReflection(
                 correct=(
@@ -3484,6 +3504,8 @@ class _DocumentChannelProvider:
         market_documents: Iterable[RawInfoDocument] = (),
         anchor: Mapping[str, Any] | None = None,
     ) -> None:
+        self.document_views: list[dict[str, Any]] = []
+        self.computed_metrics: list[dict[str, Any]] = []
         self.store = store
         self.company_id = company_id
         self.as_of = as_of
@@ -3500,7 +3522,7 @@ class _DocumentChannelProvider:
     def fetch(self, entries: Any) -> list[dict[str, Any]]:
         from stock_opportunity_agent.data.disclosure import fetch_entry
 
-        return [
+        cards = [
             fetch_entry(
                 self.store,
                 str(entry["document_id"]),
@@ -3513,18 +3535,22 @@ class _DocumentChannelProvider:
             )
             for entry in entries
         ]
+        self.document_views.extend(cards)
+        return cards
 
     def compute(self, entries: Any) -> list[dict[str, Any]]:
         from stock_opportunity_agent.research.compute_tools import (
             compute_metric_requests,
         )
 
-        return compute_metric_requests(
+        cards = compute_metric_requests(
             entries,
             documents=self.market_documents,
             as_of=self.as_of,
             anchor=self.anchor,
         )
+        self.computed_metrics.extend(cards)
+        return cards
 
 
 def _set_reflection_runtime_context(
@@ -3876,6 +3902,8 @@ def _assemble_final_context(
     market_documents: Iterable[RawInfoDocument] = (),
     prediction_baseline: Mapping[str, Any] | None = None,
     state_deltas: Iterable[Mapping[str, Any]] = (),
+    computed_metrics: Iterable[Mapping[str, Any]] = (),
+    document_views: Iterable[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -4009,6 +4037,8 @@ def _assemble_final_context(
             "assembly_blocks": [
                 {"block_type": "basic_info_cards", "provenance": "projection_id"},
                 {"block_type": "computed_anchor", "provenance": "runtime_market_computation"},
+                {"block_type": "computed_metrics", "provenance": "runtime_market_computation"},
+                {"block_type": "document_channel", "provenance": "runtime_pit_disclosure"},
                 {"block_type": "signal_results", "provenance": "signal_ref"},
                 {"block_type": "cited_signal_evidence", "provenance": "signal_evidence_ref"},
                 {"block_type": "state_evolution", "provenance": "per_round_delta"},
@@ -4017,6 +4047,7 @@ def _assemble_final_context(
             ],
             "numeric_decision_inputs_permitted_only_in": [
                 "prediction_baseline",
+                "computed_metrics",
             ],
         },
         "basic_info": {
@@ -4032,6 +4063,8 @@ def _assemble_final_context(
                 market_documents, prediction_time
             )
         ),
+        "computed_metrics": [dict(card) for card in computed_metrics],
+        "document_channel": [dict(view) for view in document_views],
         "signal_rounds": signal_rounds,
         "cited_signal_evidence": cited_signal_evidence,
         "state_evolution": [dict(row) for row in state_deltas],

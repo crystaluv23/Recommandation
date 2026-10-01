@@ -1,0 +1,207 @@
+{
+  "schema_version": "integrated-stage-content-audit-v1",
+  "retrospective": true,
+  "run_root": "runs/cold_start/minimal_rounds_v160_integrated",
+  "code_revision": "5bd36d00502d381df0db2ab2a43ec82b6c9c0bfd",
+  "request_count": 59,
+  "stages": {
+    "blind_predictor_posthoc_reflect": 3,
+    "blind_predictor_posthoc_reflect_correction": 1,
+    "blind_predictor_predict": 4,
+    "information_plan_propose": 2,
+    "llm_signal_batch_execute": 10,
+    "llm_signal_batch_execute_correction": 2,
+    "research_controller_initialize": 5,
+    "research_controller_initialize_correction": 3,
+    "research_controller_reflect": 12,
+    "signal_retrieval_cards": 10,
+    "signal_retrieval_cards_correction": 7
+  },
+  "attempt_count": 56,
+  "attempt_statuses": {
+    "completed": 55,
+    "interrupted": 1
+  },
+  "actual_cost_including_uncertain_interruption_reservation": 0.1926652,
+  "last_completed_round": 0,
+  "last_completed_cycle": 0,
+  "complete_cases": [
+    {
+      "path": "runs/cold_start/minimal_rounds_v160_integrated/experiments/trajectories/plan_r0001_c02/cik_0000701818:20250930.json",
+      "case_id": "cik_0000701818:20250930",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The supplied prediction baseline is a mean adjusted close of 23.982, so the six-month 2x threshold is about 47.96, while the most recent close is 24.37 and the stock has already roughly doubled from around 16.21 in early August 2025, making a further near-term doubling less likely without new evidence of accelerating repricing.",
+          "The earnings call evidence shows strong Q2 production of 513,000 ounces, record free cash flow of almost $650 million, net cash expected in Q3, and capital returns, but these are supportive of a solid operating story rather than a source-backed catalyst for the adjusted share price to double again within six months.",
+          "The cited cash_reserves signal of $611.5 million is positive but does not by itself establish a credible path to the exact 2x adjusted-share-price outcome over the next six months."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The management commentary source is partial_context_budget with 6 omitted projections, so some potentially relevant operating or strategic disclosures may be missing.",
+          "The scoped_news source is partial_context_budget with 2 omitted projections, limiting third-party confirmation or contradiction.",
+          "Guidance acceleration and financing/listing action signals were unavailable, so those potential catalysts could not be assessed.",
+          "Gold price movements, second-half cost increases, permitting timelines, and share repurchase execution could materially change the repricing outlook."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": false,
+        "magnitude": null,
+        "realized_max_multiple": 1.5661875313387934
+      },
+      "usage": {
+        "model": {
+          "cost": 0.03451924,
+          "llm_calls": 10,
+          "tokens": 115293
+        },
+        "signal_calls": 3,
+        "signal_rounds": 1
+      },
+      "stop_reason": "finalized",
+      "computed_metrics_present_in_final_context": false
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v160_integrated/experiments/trajectories/plan_r0001_c02/cik_0001830043:20250930.json",
+      "case_id": "cik_0001830043:20250930",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The supplied prediction baseline is a mean adjusted close of 6.494, so the six-month 2x threshold is 12.988; the most recent close of 6.30 on 2025-09-29 is only about 48.5% of that threshold, requiring a roughly 106% gain from the baseline.",
+          "Source-backed operating evidence points the wrong way: the scoped news reports an 8.7% decrease in total paying users in Q2 2025, analyst concerns that AI features and stricter verification would hurt user and payer growth, and a 15.94% stock drop after the announcement.",
+          "The visible guidance signal is negative, with Q2 2025 revenue guidance of $244-249 million, no full-year 2025 guidance, and a $12 million revenue headwind from discontinuing Frutz and Official operations, which does not support a near-term repricing catalyst.",
+          "The market data shows a sharp drop from 7.65 on 2025-08-06 to 6.43 on 2025-08-07 and a 1-year max drawdown of about -59.8%, consistent with a negative expectation reset rather than an accelerating demand or monetization inflection.",
+          "Although the company has positive operating cash flow margin of about 23.1%, cash reserves of $261.7 million, and a cash-to-current-liabilities ratio of about 2.17, these balance-sheet strengths do not by themselves supply a credible path to a 2x adjusted share price within six months."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The operating report and management commentary projections are truncated or XBRL-only, so segment economics, paying-user trends, and management's substantive remarks are not visible.",
+          "The scoped news source is a law-firm investigation alert and may be non-independent or incomplete, and one scoped-news projection was omitted under the context budget.",
+          "No within-horizon catalyst such as a large buyback, strategic transaction, or AI-driven monetization inflection is visible in the supplied evidence.",
+          "The six-month horizon is fixed by the system instruction, but the supplied market data ends 2025-09-29 and does not include forward projections or a future price target."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": false,
+        "magnitude": null,
+        "realized_max_multiple": 0.9217739451801663
+      },
+      "usage": {
+        "model": {
+          "cost": 0.05879860000000001,
+          "llm_calls": 18,
+          "tokens": 197145
+        },
+        "signal_calls": 15,
+        "signal_rounds": 4
+      },
+      "stop_reason": "finalized",
+      "computed_metrics_present_in_final_context": false
+    }
+  ],
+  "failures": [
+    {
+      "path": "runs/cold_start/minimal_rounds_v160_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.failure.json",
+      "error_type": "RuntimeBudgetExceeded",
+      "message": "blind_predictor_predict was not sent because its exact reservation exceeded the remaining budget: request token reservation exceeds remaining case budget: required=88449, remaining=85953; last_validation_error=None"
+    },
+    {
+      "path": "runs/cold_start/minimal_rounds_v160_integrated/experiments/trajectories/plan_r0001_c02/cik_0000895728:20250930.failure.json",
+      "error_type": "CandidateExecutionRejected",
+      "message": "research_controller_initialize failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[4]', next_information_needs[4]='What did the target issuer disclose by the prediction time about its scheduled third-quarter results event and any preliminary commentary on expected drivers, without requiring contents or results published after the prediction time?', future_source_date_refs=[\"after the prediction time\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not"
+    }
+  ],
+  "findings": [
+    {
+      "kind": "budget_contract",
+      "finding": "Complete carried-over Basic Info exceeded the fixed finalization reservation; terminal reflection could consume the Predictor budget.",
+      "required": 88449,
+      "remaining": 85953
+    },
+    {
+      "kind": "temporal_false_positive",
+      "finding": "A trailing exclusion of post-cutoff results was classified as a positive demand for those results. Stored wording must not be rewritten."
+    },
+    {
+      "kind": "missing_stage_handoff",
+      "finding": "Final Predictor omitted bootstrap computed cards and bounded document/compute channel views. Source-backed price comparisons lost their deterministic computation context."
+    },
+    {
+      "kind": "semantic_content_error",
+      "case_id": "cik_0000701818:20250930",
+      "text": "stock has already roughly doubled from around 16.21 in early August 2025",
+      "latest_close": 24.37,
+      "implied_multiple": 1.5033929673041333,
+      "finding": "About 1.50x is not approximately 2x. The accepted prose claim was not caught by baseline-only validation."
+    },
+    {
+      "kind": "semantic_inference_error",
+      "finding": "Bumble and Kinross reasoning/lessons relied on recent price being near half the 2x threshold. This is largely implied by outcome construction, not independent negative evidence."
+    }
+  ],
+  "acceptance": {
+    "fast_complete": false,
+    "slow_complete": false,
+    "f1_quality_accepted": false,
+    "reason": "Incomplete run; two completed control cases and one explicit technical abstention cannot establish surge recall or research gain."
+  },
+  "technical_exclusion_trajectories": [
+    {
+      "path": "runs/cold_start/minimal_rounds_v160_integrated/experiments/trajectories/plan_r0001_c02/cik_0000895728:20250930.json",
+      "case_id": "cik_0000895728:20250930",
+      "prediction": {
+        "candidate_judgment": "insufficient_information",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "Technical exclusion: bounded corrections exhausted before a compliant research state; abstaining is recorded as a negative prediction."
+        ],
+        "magnitude": null,
+        "session_id": "exclusion_cik_0000895728:20250930",
+        "uncertainties": []
+      },
+      "ground_truth": {
+        "is_surge": false,
+        "magnitude": null,
+        "realized_max_multiple": 1.1216689319988467
+      },
+      "usage": {
+        "model": {
+          "cost": 0.0,
+          "llm_calls": 0,
+          "tokens": 0
+        },
+        "signal_calls": 0,
+        "signal_rounds": 0
+      },
+      "stop_reason": "finalized",
+      "computed_metrics_present_in_final_context": false,
+      "research_attribution_allowed": false
+    }
+  ],
+  "successor_offline_verification": {
+    "full_tests_passed": 1247,
+    "lint": "PASS",
+    "exact_v160_packet_replay": {
+      "old_reservation": 88449,
+      "old_remaining": 85953,
+      "new_estimate": 88839,
+      "new_prepared_wire_reservation": 88839,
+      "external_calls": 0,
+      "final_context_unchanged": true
+    },
+    "input_manifest_hash": "987f3351467ea20ff7807fc947c9d6520ea55755bf49126d26753683d95a0bf7"
+  }
+}

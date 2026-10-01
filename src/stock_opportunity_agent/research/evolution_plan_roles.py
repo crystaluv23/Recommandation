@@ -83,6 +83,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _UNTRUSTED_DATA_INSTRUCTION,
     _blind_prediction_with_baseline,
     _compact_posthoc_context,
+    _INCREMENTAL_ROLE_INSTRUCTION,
     _emit_runtime_progress,
     _market_data_absence_paths,
     _complete_parsed_role,
@@ -1686,6 +1687,68 @@ class LLMSignalRetrievalAgent:
         return AgentStep(selected, usage)
 
 
+_BLIND_PREDICTOR_SYSTEM_PROMPT = (
+    "Using only the anonymous supplied context, predict whether the "
+    "target security's adjusted share price reaches at least 2x over "
+    "the next six calendar months. The prediction-time baseline is the "
+    "mean adjusted close over the last five complete trading days, and "
+    "the future numerator is the maximum mean adjusted close over any "
+    "five complete consecutive trading days inside that horizon. This "
+    "runtime-computed point-in-time mean is supplied as "
+    "final_context.prediction_baseline. When naming the current or "
+    "baseline price or computing target upside, use that supplied mean; "
+    "do not relabel an older cited price observation as current. This "
+    "also means market data is not absent when prediction_baseline has "
+    "status=available; distinguish missing forward projections or other "
+    "specific gaps from the supplied price baseline. The baseline and doubling "
+    "threshold define the outcome: being near half that threshold is expected "
+    "by construction and is not independent counter-evidence against a surge. "
+    "Use supplied computed_metrics for quantitative price-trend statements; "
+    "do not call a price change a doubling unless a computed card verifies it. "
+    "If the needed computed window is absent, keep that comparison uncertain. This "
+    "is a stock-price repricing outcome, not a requirement that revenue, "
+    "earnings, users, production, or another operating metric doubles; "
+    "use those measures only as evidence about possible share-price "
+    "repricing. This is a forecast under uncertainty, not a proof task. "
+    "Do not require a guarantee, certainty, or an explicit future price "
+    "target. Return candidate_judgment=likely or possible when the supplied "
+    "evidence makes the security an evidence-backed opportunity candidate "
+    "for the defined price outcome within the horizon, and express "
+    "residual doubt through confidence and uncertainties. Possible is a "
+    "screening judgment: it does not require a quantified valuation bridge "
+    "or a proven, concrete path to 2x. Source-backed expectation-changing "
+    "acceleration, a material catalyst, or early market confirmation can "
+    "support possible even when the exact financial impact remains "
+    "uncertain. For candidate_judgment=likely or possible, at least one "
+    "key_reasons item must affirmatively connect supplied source-backed "
+    "evidence to a credible candidate for this exact price outcome. "
+    "Counter-evidence may appear in other reasons or uncertainties, but "
+    "do not return a positive judgment when every key reason explicitly "
+    "denies support for 2x, doubling, surge, or repricing. Return "
+    "candidate_judgment=unlikely when contrary evidence "
+    "makes the outcome unlikely, or candidate_judgment="
+    "insufficient_information when the packet lacks source-backed positive "
+    "evidence; do not choose a negative judgment merely because certainty, "
+    "a future price target, "
+    "or a complete valuation bridge is unavailable. These evaluation cases "
+    "are deliberately "
+    "outcome-stratified and do not represent the live-market base rate, "
+    "so do not predict false merely because 2x moves are rare in the "
+    "broad market. Make the independent case-level decision from the "
+    "supplied evidence. This is an opportunity-discovery classifier: "
+    "choose likely or possible when the security looks like a candidate "
+    "for that exact 2x price outcome, even though doubling need not be more "
+    "than 50% probable. Choose unlikely or insufficient_information when "
+    "the corresponding negative condition applies. For likely or possible, "
+    "choose magnitude 2-3x, 3-10x, or 10x+; otherwise magnitude must be "
+    "null. The fixed six-month definition overrides any "
+    "conflicting horizon in the supplied evolvable analysis prompt. Do "
+    "not use web tools."
+    + _UNTRUSTED_DATA_INSTRUCTION
+    + _BLIND_PREDICTION_OUTPUT
+)
+
+
 class LLMBlindPredictor:
     """No-web two-stage Predictor plus explicitly post-hoc reflection adapter."""
 
@@ -1705,65 +1768,25 @@ class LLMBlindPredictor:
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
 
+    def estimate_prediction_tokens(self, final_context: Mapping[str, Any]) -> int | None:
+        """Reserve the same anonymous initial request that predict will send."""
+
+        estimator = getattr(self.caller, "estimate_json_request_tokens", None)
+        if not callable(estimator):
+            return None
+        return estimator(
+            system_prompt=_BLIND_PREDICTOR_SYSTEM_PROMPT + _INCREMENTAL_ROLE_INSTRUCTION,
+            payload={"final_context": dict(final_context)},
+            allow_outcomes=False,
+            anonymous_aliases=self.anonymous_aliases,
+            max_output_tokens=2_000,
+        )
+
     def predict(self, final_context: Mapping[str, Any]) -> AgentStep[BlindPrediction]:
         prediction, usage = _complete_parsed_role(
             self.caller,
             stage="blind_predictor_predict",
-            system_prompt=(
-                "Using only the anonymous supplied context, predict whether the "
-                "target security's adjusted share price reaches at least 2x over "
-                "the next six calendar months. The prediction-time baseline is the "
-                "mean adjusted close over the last five complete trading days, and "
-                "the future numerator is the maximum mean adjusted close over any "
-                "five complete consecutive trading days inside that horizon. This "
-                "runtime-computed point-in-time mean is supplied as "
-                "final_context.prediction_baseline. When naming the current or "
-                "baseline price or computing target upside, use that supplied mean; "
-                "do not relabel an older cited price observation as current. This "
-                "also means market data is not absent when prediction_baseline has "
-                "status=available; distinguish missing forward projections or other "
-                "specific gaps from the supplied price baseline. This "
-                "is a stock-price repricing outcome, not a requirement that revenue, "
-                "earnings, users, production, or another operating metric doubles; "
-                "use those measures only as evidence about possible share-price "
-                "repricing. This is a forecast under uncertainty, not a proof task. "
-                "Do not require a guarantee, certainty, or an explicit future price "
-                "target. Return candidate_judgment=likely or possible when the supplied "
-                "evidence makes the security an evidence-backed opportunity candidate "
-                "for the defined price outcome within the horizon, and express "
-                "residual doubt through confidence and uncertainties. Possible is a "
-                "screening judgment: it does not require a quantified valuation bridge "
-                "or a proven, concrete path to 2x. Source-backed expectation-changing "
-                "acceleration, a material catalyst, or early market confirmation can "
-                "support possible even when the exact financial impact remains "
-                "uncertain. For candidate_judgment=likely or possible, at least one "
-                "key_reasons item must affirmatively connect supplied source-backed "
-                "evidence to a credible candidate for this exact price outcome. "
-                "Counter-evidence may appear in other reasons or uncertainties, but "
-                "do not return a positive judgment when every key reason explicitly "
-                "denies support for 2x, doubling, surge, or repricing. Return "
-                "candidate_judgment=unlikely when contrary evidence "
-                "makes the outcome unlikely, or candidate_judgment="
-                "insufficient_information when the packet lacks source-backed positive "
-                "evidence; do not choose a negative judgment merely because certainty, "
-                "a future price target, "
-                "or a complete valuation bridge is unavailable. These evaluation cases "
-                "are deliberately "
-                "outcome-stratified and do not represent the live-market base rate, "
-                "so do not predict false merely because 2x moves are rare in the "
-                "broad market. Make the independent case-level decision from the "
-                "supplied evidence. This is an opportunity-discovery classifier: "
-                "choose likely or possible when the security looks like a candidate "
-                "for that exact 2x price outcome, even though doubling need not be more "
-                "than 50% probable. Choose unlikely or insufficient_information when "
-                "the corresponding negative condition applies. For likely or possible, "
-                "choose magnitude 2-3x, 3-10x, or 10x+; otherwise magnitude must be "
-                "null. The fixed six-month definition overrides any "
-                "conflicting horizon in the supplied evolvable analysis prompt. Do "
-                "not use web tools."
-                + _UNTRUSTED_DATA_INSTRUCTION
-                + _BLIND_PREDICTION_OUTPUT
-            ),
+            system_prompt=_BLIND_PREDICTOR_SYSTEM_PROMPT,
             payload={"final_context": dict(final_context)},
             parser=lambda value: _blind_prediction_with_baseline(
                 value, final_context

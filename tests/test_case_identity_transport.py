@@ -36,6 +36,58 @@ class CaseIdentityTransportTests(TestCase):
         self.assertFalse(_future_source_date_refs(
             "What Q3 2025 production guidance had management disclosed by 2025-09-30?",
             cutoff, field_name="next_information_needs"))
+    def test_negated_future_results_scope_does_not_reject_pit_event_question(self):
+        from stock_opportunity_agent.research.evolution_research_validation import _future_source_date_refs
+
+        cutoff = datetime(2025, 9, 30, tzinfo=timezone.utc).date()
+        exclusion = ", without requiring contents or results published after the prediction time?"
+        actual = ("What did the target issuer disclose by the prediction time about its scheduled "
+                  "third-quarter results event and any preliminary commentary on expected drivers")
+        self.assertEqual(_future_source_date_refs(actual + exclusion, cutoff,
+                         field_name="next_information_needs"), [])
+        for main in ("What were the Q4 2025 actual results", "What results were published after the prediction time",
+                     "What actual revenue occurred between September 2025 and the end of the six-month horizon"):
+            self.assertTrue(_future_source_date_refs(main + exclusion, cutoff,
+                            field_name="next_information_needs"))
+        self.assertTrue(_future_source_date_refs(
+            actual + exclusion[:-1] + " but provide the next quarter actual results?", cutoff,
+            field_name="next_information_needs"))
+
+    def test_predictor_estimator_shares_actual_prompt_payload_and_output_headroom(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+        from stock_opportunity_agent.research.evolution_output_validation import _INCREMENTAL_ROLE_INSTRUCTION
+        from unittest.mock import Mock
+
+        caller = Mock(registration=None)
+        caller.estimate_json_request_tokens.return_value = 88_449
+        predictor = LLMBlindPredictor(caller)
+        context = {"source": "complete already disclosed source", "state": {"decision": "finalize"}}
+        self.assertEqual(predictor.estimate_prediction_tokens(context), 88_449)
+        with patch("stock_opportunity_agent.research.evolution_plan_roles._complete_parsed_role",
+                   return_value=(None, None)) as complete:
+            predictor.predict(context)
+        estimated = caller.estimate_json_request_tokens.call_args.kwargs
+        sent = complete.call_args.kwargs
+        self.assertEqual(estimated["system_prompt"], sent["system_prompt"] + _INCREMENTAL_ROLE_INSTRUCTION)
+        for field in ("payload", "allow_outcomes", "anonymous_aliases", "max_output_tokens"):
+            self.assertEqual(estimated[field], sent[field])
+
+    def test_predictor_estimate_equals_prepared_wire_with_incremental_instructions(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            predictor = LLMBlindPredictor(client)
+            context = {"source": SOURCE}
+            with client.anonymous_case(aliases=ALIASES, company_id="cik_0000895728", ticker="ENB"):
+                required = predictor.estimate_prediction_tokens(context)
+                predictor.set_request_token_budget(required)
+                with self.assertRaises(ExternalRequestPending) as pending:
+                    predictor.predict(context)
+            recorded = json.loads(Path(pending.exception.request_path).read_text())["request"]
+            self.assertEqual(required, recorded["wire_request"]["body_bytes"] + recorded["max_output_tokens"])
+            self.assertNotIn("Enbridge", recorded["wire_request"]["body_utf8"])
+
     def test_generic_business_words_survive_derived_brand_masking(self):
         projection = _CaseIdentityProjection(("Energy Recovery Inc.", "ERII"), "cik_0001421517", "ERII")
         view, _ = projection.project("Energy Recovery Inc. improves energy efficiency in green travel.")

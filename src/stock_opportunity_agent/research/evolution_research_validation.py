@@ -877,6 +877,16 @@ _FUTURE_REALIZED_RESULT = re.compile(
 )
 
 
+_TRAILING_FUTURE_EXCLUSION = re.compile(
+    r"\s*[,;]?\s*\bwithout\s+(?:requiring|requesting|using)\s+"
+    r"(?:any\s+)?(?:contents?|results?|facts?|information|data)"
+    r"(?:\s+or\s+(?:contents?|results?|facts?|information|data))?\s+"
+    r"(?:(?:published|released|reported|available)\s+)?after\s+"
+    r"(?:the\s+)?(?:prediction|cutoff|as[- ]of)\s+(?:date|time)[.?!]?\s*$",
+    re.IGNORECASE,
+)
+
+
 def _calendar_match_date(match: re.Match[str], *, month_end: bool) -> date | None:
     """Parse one explicit calendar match without inventing a missing day."""
 
@@ -963,7 +973,7 @@ def _future_source_date_refs(
 ) -> list[str]:
     """Return future or cutoff-open date scopes for requested realized facts."""
 
-    text = text.replace("_", " ")
+    text = _TRAILING_FUTURE_EXCLUSION.sub("", text.replace("_", " "))
     fact_request = bool(
         _FUTURE_SOURCE_CONTENT_INTENT.search(text)
         or _QUESTION_FACT_REQUEST.search(text)

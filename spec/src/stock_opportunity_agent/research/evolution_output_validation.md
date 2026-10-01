@@ -7,6 +7,8 @@ and apply only explicitly allowed deterministic recovery transforms.
 
 ## Invariants
 
+- The compact posthoc view retains runtime-computed metric cards from the original
+  Predictor packet, so numerical price-shape reasoning remains checkable.
 - Validation never infers write authority from diagnostic prose.
 - Scoped correction preserves unrelated valid siblings byte-for-byte.
 - A recovery transform must be generic to the declared schema; it must not

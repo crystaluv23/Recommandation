@@ -7,6 +7,31 @@ from stock_opportunity_agent.research.evolution_core import (
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_budget_skipped_posthoc_retains_paid_usage(self) -> None:
+        class PaidPosthocPredictor(FixedPredictor):
+            def reflect(self, *args):
+                raise RuntimeBudgetExceeded(
+                    "correction could not fit after a paid response",
+                    usage=AgentUsage(llm_calls=1, tokens=123, cost=0.02),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            kwargs = dict(
+                plan=default_information_plan(), company_id="winner_1",
+                company_basic_source={}, prediction_time=NOW,
+                signal_registry=registry.freeze(), signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=OneBatchController(), signal_agent=OneSignalSelector(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+            )
+            ordinary = execute_information_plan(**kwargs, predictor=FixedPredictor())
+            skipped = execute_information_plan(**kwargs, predictor=PaidPosthocPredictor())
+        self.assertEqual(skipped.self_reflection.plan_issues, ("budget_skipped",))
+        # Replace the ordinary posthoc's 15-token/0.01-cost response with the paid failure.
+        self.assertEqual(skipped.usage.model.tokens - ordinary.usage.model.tokens, 123 - 15)
+        self.assertAlmostEqual(skipped.usage.model.cost - ordinary.usage.model.cost, 0.02 - 0.01)
+
     def test_reflection_budget_fallback_uses_reserve_once_without_forcing_success(self) -> None:
         for paid_tokens, outcome in ((0, "finalize"), (7000, "finalize"),
                                      (7000, "exhausted"), (0, "continue")):
@@ -69,6 +94,110 @@ class InformationPlanRuntimeTests(TestCase):
                 self.assertEqual(trajectory.final_state.decision is ResearchDecision.FINALIZE,
                                  outcome == "finalize")
                 self.assertGreaterEqual(trajectory.usage.model.tokens, 150_000 + paid_tokens)
+
+    def test_terminal_reflection_protects_composed_predictor_reservation(self) -> None:
+        for max_rounds in (1, 3):
+            with self.subTest(max_rounds=max_rounds):
+                class ReservedPredictor(FixedPredictor):
+                    def __init__(self):
+                        super().__init__()
+                        self.views = []
+
+                    def estimate_prediction_tokens(self, context):
+                        self.views.append(context)
+                        return 85_000 if context["final_research_state"]["decision"] == "finalize" else 80_000
+
+                    def set_request_token_budget(self, value):
+                        self.budget = value
+
+                    def predict(self, context):
+                        self.prediction_budget = self.budget
+                        self.asserted_context = context
+                        if self.budget < self.estimate_prediction_tokens(context):
+                            raise RuntimeBudgetExceeded("final Predictor was starved")
+                        return super().predict(context)
+
+                class ReservedController(OneBatchController):
+                    def __init__(self):
+                        super().__init__()
+                        self.budgets = []
+
+                    def initialize(self, plan, basic_info):
+                        step = super().initialize(plan, basic_info)
+                        return AgentStep(step.value, AgentUsage(llm_calls=1, tokens=150_000))
+
+                    def set_request_token_budget(self, value):
+                        self.budget = value
+
+                    def reflect(self, plan, state, batch):
+                        self.budgets.append(self.budget)
+                        if self.budget < 60_000:
+                            raise RuntimeBudgetExceeded("ordinary reflection cannot fit")
+                        step = super().reflect(plan, state, batch)
+                        return AgentStep(step.value, AgentUsage(llm_calls=1, tokens=60_000))
+
+                with tempfile.TemporaryDirectory() as directory:
+                    registry, store = self._registry_and_store(directory)
+                    controller, predictor = ReservedController(), ReservedPredictor()
+                    trajectory = execute_information_plan(
+                        plan=default_information_plan(), company_id="winner_1",
+                        company_basic_source={}, prediction_time=NOW,
+                        signal_registry=registry.freeze(), signal_executor=SignalExecutor(registry.freeze(), store),
+                        controller=controller, signal_agent=OneSignalSelector(), predictor=predictor,
+                        prediction_sink=lambda *args: "pred",
+                        ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                        limits=RuntimeLimits(max_tokens=300_000, max_signal_rounds=max_rounds),
+                    )
+                self.assertEqual(len(controller.budgets), 1 if max_rounds == 1 else 2)
+                self.assertLessEqual(controller.budgets[-1], 70_000)
+                self.assertGreaterEqual(predictor.prediction_budget, 85_000)
+                self.assertEqual(predictor.asserted_context, trajectory.final_context)
+                self.assertTrue(any(view["signal_rounds"] for view in predictor.views))
+                self.assertEqual(len(trajectory.signal_rounds), 1)
+                self.assertEqual(trajectory.final_state.decision, ResearchDecision.FINALIZE)
+
+    def test_final_context_retains_runtime_fetch_and_computation_views(self) -> None:
+        class FetchController(OneBatchController):
+            def set_document_channel(self, provider):
+                self.channel = provider
+
+            def set_computed_metrics(self, cards):
+                self.bootstrap = cards
+
+            def reflect(self, plan, state, batch):
+                self.views = self.channel.fetch([{"document_id": "financial_1"}])
+                self.metrics = self.channel.compute([{"metric": "price_shape", "params": {"window_days": 30}}])
+                return super().reflect(plan, state, batch)
+
+        with tempfile.TemporaryDirectory() as directory:
+            registry, store = self._registry_and_store(directory)
+            market = RawInfoDocument.create(
+                document_id="market_1", company_id="winner_1", source_type="market_data",
+                published_at=NOW - timedelta(days=1), available_at=NOW - timedelta(days=1),
+                content=json.dumps({"rows": [
+                    {"as_of_date": f"2025-01-{day:02d}", "adjusted_close": 10 + day}
+                    for day in range(2, 15)
+                ]}),
+            )
+            store.append(market)
+            controller = FetchController()
+            trajectory = execute_information_plan(
+                plan=default_information_plan(), company_id="winner_1",
+                company_basic_source={}, prediction_time=NOW,
+                signal_registry=registry.freeze(), signal_executor=SignalExecutor(registry.freeze(), store),
+                controller=controller, signal_agent=OneSignalSelector(), predictor=FixedPredictor(),
+                prediction_sink=lambda *args: "pred",
+                ground_truth_provider=lambda company_id: GroundTruth(2.5),
+            )
+        context = trajectory.final_context
+        self.assertEqual(context["computed_metrics"], controller.bootstrap + controller.metrics)
+        self.assertEqual(len(context["document_channel"]), len(controller.views))
+        self.assertEqual(context["document_channel"], controller.views)
+        self.assertEqual(context["document_channel"][0]["reference"]["document_id"], "financial_1")
+        self.assertEqual(context["computed_metrics"][0]["values"]["last_close"], 24)
+        self.assertEqual(context["computed_metrics"][0]["literal_refs"][-1]["as_of_date"], "2025-01-14")
+        from stock_opportunity_agent.research.evolution_output_validation import _compact_posthoc_context
+        self.assertEqual(_compact_posthoc_context(context)["computed_metrics"], context["computed_metrics"])
 
     def test_predictor_preserves_complete_evidence_above_display_target(self) -> None:
         literal = "Complete source sentence with a qualifier. " * 700

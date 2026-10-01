@@ -678,6 +678,7 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
         "basic_info_source_index": source_index,
         "data_gaps": data_gaps,
         "prediction_baseline": original_context.get("prediction_baseline", {}),
+        "computed_metrics": original_context.get("computed_metrics", []),
     }
     compact["cited_signal_evidence"] = original_context.get("cited_signal_evidence", [])
     compact["context_contract"] = {
@@ -3375,6 +3376,15 @@ def _structured_revalidation_paths(
 _SCOPED_PROJECTION_EXTENSION_ROUNDS = 6
 
 
+_INCREMENTAL_ROLE_INSTRUCTION = (
+    " Valid parseable outputs are repaired by incremental operations "
+    "under typed validator permissions, never by repeating the full "
+    "object. If no output_patch_contract is supplied, return the "
+    "normal full role object (no parseable correction base exists)."
+    + PATCH_INSTRUCTION
+)
+
+
 def _complete_parsed_role(
     caller: JSONRoleCaller,
     /,
@@ -3385,9 +3395,6 @@ def _complete_parsed_role(
     ``repair_resolver`` in ``kwargs`` optionally supplies a ref-resolution
     callable enabling the index-aware L2 repairs (scope narrowing) before
     any LLM correction round is spent.
-    """
-    """Apply the caller's bounded semantic corrections around a structured role.
-
     When the caller supports chain-scoped no-progress rejection, the whole
     initial-plus-correction sequence runs inside one correction chain so a
     byte-identical corrected request fails closed instead of replaying the
@@ -3533,13 +3540,7 @@ def _complete_parsed_role_impl(
                 )
                 prompt += correction_instruction
         if incremental:
-            prompt += (
-                " Valid parseable outputs are repaired by incremental operations "
-                "under typed validator permissions, never by repeating the full "
-                "object. If no output_patch_contract is supplied, return the "
-                "normal full role object (no parseable correction base exists)."
-                + PATCH_INSTRUCTION
-            )
+            prompt += _INCREMENTAL_ROLE_INSTRUCTION
             if patch_contract is not None:
                 request_payload["output_patch_contract"] = patch_contract
                 if initial_patch_pending:
