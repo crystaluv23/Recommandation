@@ -235,3 +235,33 @@ Predictor packet，新估算与实际预发 wire 预留同为 88,839；修复层
 引用链能程序验证，因果归因和研究价值仍需真实内容审查/独立评价；不能再加一条
 关键词就宣称处理所有 corner case。全 Slow materialization/validation/Update/
 commit 与后继 F1/幅度质量仍待真实测试，当前目标没有验收完成。
+
+### 2026-10-02：v163 终态审查与共同边界补齐
+
+用户明确小规模验收的 Binary F1 下限为 0.60；固定样本、标签、分母和晋升规则不变。
+[v163 实际内容审查](v163-live-stage-content-audit-20261002.json)记录 Fast=1、Slow=0，
+505 次外部尝试、501 完成、4 失败，结算费用 1.91115288。进程因 SSL EOF 自行退出。
+Plan 1 完整 24 案、Binary F1=.64、幅度 macro-F1=.133；Plan 2 只完成 21/24，
+metrics=null，不能将部分样本分数作为验收。Round reflection 因只有一个完整 Plan 合法跳过。
+
+本次按机制而非 issuer 分支补齐六处边界：
+
+| 边界 | 共同规则与落点 | 验证与局限 |
+| --- | --- | --- |
+| 身份出站 | StructuredRoleClient 在没有 case scope 时使用显式 guard inventory；预估与实际发送相同，响应只还原本次给出的 token；删除 Mining 单独包装 | 两份真实 Slow 反思 wire 原先含 padded SEC CIK，新的零网络预发均遮蔽；原件/hash 不改写 |
+| 跨行路由 | 校验器按精确行和 Signal 身份授权冲突恢复；唯一 full owner 保留，其余保留为 context；无唯一 full 时全部冲突行只作 context | 精确 corrected 输出零修正通过；混合缺陷只修融资行，保留已完成机械修复及全部四项选择 |
+| 预算终止 | 下一次路由预发无法容纳时，用已反思的付费 batch 尝试一次 terminal reflect；清空过期 selection intents，保护真实 Predictor 预留 | 原 Impinj state/源文档重放：剩余 74593、请求 70065，可发送；离线 decision patch 仅证明完整校验/状态保留，未证明 live 成功 |
+| 反思工作单元 | 默认至多三条完整反馈，lesson slots 随工作单元规模限制；未处理条目保留 pending，沿用既有 immutable slow_memory | 避免只按输入 64KB 判定能否输出；5000-token 语义质量仍需真实审查，不保证所有复杂响应均无错 |
+| 原始读取 | 数据层共同可见性区间与 exact raw window 求交；报告可读性和下一处正文坐标；头部不计已探索叙事 | 不自动改 offset，不改 raw hash；控制器内按 document id/hash 缓存索引/cards；去掉重复全动作菜单 |
+| 事件主体 | Signal batch 显式给出同一目标 issuer 的可逆共指 aliases，预估和执行共用 constructor | retrieval owner 不等于事件 actor；客户/顾问/承销商关系按 skill 判断；引用可校验不能替代经济语义判断 |
+
+[共同边界重放](v164-shared-boundary-replay-20261002.json)和
+[实际预算重放](v164-terminal-budget-replay-20261002.json)均零外部调用。
+尚未解决的 live 质量问题保持显式：基准距离被当成独立负面证据、禁止未来观察与
+已有历史价格确认混淆、融资主体归属、正例幅度均落在 2-3x。最终 Predictor 仍按结构
+组合 Basic Info、运行时基准与计算、Signal 证据、state deltas 和 effective state，
+不能只用最后 state；披露规则保证未读/省略条目可追溯，不能把省略当作不存在。
+后继测试必须在新代码 checkpoint 上冻结相同 cohort 与 Registry v7，完整检查真实
+Fast/Slow 内容和指针，不能把离线重放、pending 保存或 F1 单项达标当成整体完成。
+
+1,267 项全量回归及 lint PASS。v164 已准备逐字相同 input_manifest（sha256 f0261bf21ab1bc21cde69e9ca8e5cdf88f13ca055bd2aa453bc703222980b694），初始 Registry v7/hash 866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0；实际原始 filing header read 重放均为空可读窗口，下一正文坐标 138838。完整 live 验收尚未完成。

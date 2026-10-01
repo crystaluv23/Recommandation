@@ -109,6 +109,12 @@ Fast/Slow engine dependency.
   itself. No source is cropped to fit, no limit is increased, and an unsendable
   terminal reflection preserves the paid batch and records budget exhaustion.
   Adapters without an estimator retain the existing fixed-floor behavior.
+  If a later routing preflight or loop limit stops a still-continuing collection
+  after a completed ordinary reflection, attempt the retained batch once in
+  terminal mode. No stale selection owns the current needs: this closure uses
+  empty selection intents and preserves unresolved needs. An already attempted
+  terminal reflection is never repeated. Complete ordinary validators still
+  require a real finalized model state; failure remains unfinalized.
   A budget-skipped posthoc reflection still consumes any paid usage carried by
   the exception; its diagnostic fallback cannot erase spent calls or cost.
 - The final assembly also retains bootstrap computed metrics and runtime-acquired

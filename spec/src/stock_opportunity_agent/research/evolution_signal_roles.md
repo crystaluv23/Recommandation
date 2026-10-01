@@ -8,6 +8,14 @@ literal-source validation. Source IDs, hashes and original case labels remain
 local. A batch cannot mix multiple bound owners. Nested Fast scopes unwind to
 their previous context; control failures propagate as before.
 
+For a bound source owner, the shared batch payload includes a reversible
+`target_subject` co-reference inventory from that case's known issuer aliases.
+Estimation and execution use the same payload. Retrieval ownership establishes
+PIT/source scope, not event subject: an issuer appearing as customer, adviser or
+underwriter does not itself undergo the cited transaction. The skill's declared
+measurement decides which actor or relationship qualifies. Literal citations
+still prove provenance only; fixture and live content review assess semantics.
+
 H1 capacity deferral is valid only when its hypothesis portfolio fills the frozen
 slot limit. An empty or underfilled portfolio cannot classify measurable demand
 as deferred for lack of slots. This cross-field invariant joins the existing

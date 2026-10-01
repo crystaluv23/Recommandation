@@ -21,6 +21,13 @@ window selection and research projection use these same intervals. All readable
 characters remain mapped to literal original offsets. No issuer/date exceptions.
 Existing exact raw reads remain addressable and are not silently relocated.
 
+`visible_html_ranges` returns the complement of nonvisible blocks and markup
+tags in original coordinates. Source disclosure may intersect these intervals
+with an exact requested raw window, including windows starting inside a tag or
+hidden block. It must report empty readable content and the next readable raw
+coordinate, without moving the requested window. A readable projection is not
+a new verbatim source or a replacement for the raw document hash.
+
 ## Validation
 
 Exercise nested, incomplete, mixed-case and inline styles; preserve ordinary

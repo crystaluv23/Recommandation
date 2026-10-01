@@ -343,3 +343,13 @@ a hidden XBRL header reachable within the existing raw read API. Duplicate sourc
 identity/hash rows are indexed once. The model selects a supplied offset; runtime
 never replaces a requested raw range with another range. Directory previews remain
 discovery-only and an omitted section remains accessible through the document handle.
+
+Raw read receipts disclose `has_readable_text`, readable character count and the
+next readable raw offset, using the same data-owned visibility intervals as
+source selection. The model sees readable text from that exact window; raw
+coordinates and its verbatim hash remain authoritative. Hidden/tag-only windows
+consume browse budget but do not satisfy narrative exploration. Immutable
+visibility indexes and document cards are cached only within the controller,
+keyed by document identity and hash. The model sees one budget-admissible action
+list, with separate heavy/light/browse dimensions; exhausted light budget does
+not imply exhausted heavy or browse budget.

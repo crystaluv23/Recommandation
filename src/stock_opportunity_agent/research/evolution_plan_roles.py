@@ -1478,25 +1478,35 @@ class LLMSignalRetrievalAgent:
                 )
                 if len(diagnostic_items) == 4:
                     break
-            direct_target_paths: dict[int, list[str]] = {}
+            direct_targets: dict[int, list[dict[str, Any]]] = {}
             for item in diagnostic_items:
                 if (
                     item["reason_code"] == "answer_need"
                     and item["target_shape_valid"]
                     and len(item["target_need_indices"]) == 1
                 ):
-                    direct_target_paths.setdefault(
+                    direct_targets.setdefault(
                         item["target_need_indices"][0], []
-                    ).append(f"selections[{item['index']}]")
-            for target_index, paths in direct_target_paths.items():
-                if len(paths) > 1:
-                    validation_errors.bind(tuple(paths), path_policy="any")
+                    ).append(item)
+            for target_index, owners in direct_targets.items():
+                if len(owners) < 2:
+                    continue
+                full_owners = [item for item in owners if item["answer_scope"] == "full"]
+                retained = full_owners[0] if len(full_owners) == 1 else None
+                for item in owners:
+                    if item is retained:
+                        continue
+                    validation_errors.code = "routing_answer_conflict"
+                    validation_errors.bind(
+                        f"selections[{item['index']}]", item_id=item["signal_ref"],
+                        repair_context={"mechanical_action": "context_only_selection"},
+                    )
                     validation_errors.append(
                         "one routing round permits at most one direct answer for "
-                        f"information_needs[{target_index}], conflicting_paths={paths}. "
-                        "Keep the smallest direct answer and classify other useful "
-                        "Signals as contextual"
+                        f"information_needs[{target_index}]. Retain this selected "
+                        "Signal for context only; no alternative answer is inferred"
                     )
+            validation_errors.code = "routing_selection_invalid"
             selector_case_tags = {
                 *normalized_prior_tags,
                 *(

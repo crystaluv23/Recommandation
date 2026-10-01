@@ -3321,7 +3321,11 @@ def _routing_context_only_fallback(
         return None
     indices: set[int] = set()
     for issue in failure.issues:
-        if issue.code != "routing_answer_ownership_invalid" or not issue.paths:
+        conflict = (
+            issue.code == "routing_answer_conflict"
+            and issue.repair_context.get("mechanical_action") == "context_only_selection"
+        )
+        if (issue.code != "routing_answer_ownership_invalid" and not conflict) or not issue.paths:
             return quarantine(failed_output, failure)
         for path in issue.paths:
             match = re.match(r"^selections\[(\d+)\](?:\.|$)", path)

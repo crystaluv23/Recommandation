@@ -867,6 +867,20 @@ class StructuredRoleClient:
             return base
         return base + int(self.contract.limits.get("structured_reasoning_token_reserve", 0))
 
+    def _request_identity_projection(
+        self, aliases: Iterable[str],
+    ) -> _CaseIdentityProjection | None:
+        """Select the common reversible scope for previews and actual calls."""
+
+        projection = getattr(self._chain_state, "identity_projection", None)
+        if projection is not None:
+            return projection
+        inventory = tuple(aliases)
+        return (
+            _CaseIdentityProjection(inventory, "", "", expand_aliases=False)
+            if inventory else None
+        )
+
     def estimate_json_request_tokens(
         self,
         *,
@@ -879,7 +893,8 @@ class StructuredRoleClient:
     ) -> int:
         """Return the exact conservative byte-plus-output reservation for JSON."""
 
-        projection = getattr(self._chain_state, "identity_projection", None)
+        anonymous_aliases = tuple(anonymous_aliases)
+        projection = self._request_identity_projection(anonymous_aliases)
         if projection is not None:
             view, _ = projection.project({"system_prompt": system_prompt, "payload": payload})
             system_prompt, payload = view["system_prompt"], view["payload"]
@@ -1034,7 +1049,8 @@ class StructuredRoleClient:
     def _complete_json(self, **kwargs: Any):
         """Project at egress and restore response tokens before domain validation."""
 
-        projection = getattr(self._chain_state, "identity_projection", None)
+        kwargs["anonymous_aliases"] = tuple(kwargs.get("anonymous_aliases", ()))
+        projection = self._request_identity_projection(kwargs["anonymous_aliases"])
         if projection is None:
             return self._complete_json_request(**kwargs)
         view, tokens = projection.project({

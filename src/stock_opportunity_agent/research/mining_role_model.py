@@ -10,8 +10,6 @@ enforcement stays entirely in the controller.
 
 from __future__ import annotations
 
-from contextlib import nullcontext
-
 from typing import Any, Mapping
 
 from stock_opportunity_agent.research.evolution_core import AgentUsage
@@ -82,9 +80,11 @@ _MINING_CONTROLLER_PROMPT = (
     "last_action_result reports what your previous action returned; use them "
     "instead of re-fetching families that are already covered, and spend "
     "remaining budget on compute_statistic, compare_groups, or your terminal "
-    "action. Once heavy_remaining reaches 0, only inspect_manifest, "
-    "inspect_catalog, record_no_pattern, and record_deferred remain "
-    "admissible; repeating a heavy action then ends the seed as "
+    "action. Once heavy_remaining reaches 0, fetches, statistics, comparisons, "
+    "proposals and fact reads are inadmissible. Narrative event/document reads "
+    "remain admissible while browse_remaining is positive; light inspections "
+    "require light_remaining to be positive. Repeating a budget-inadmissible "
+    "action then ends the seed as "
     "deferred_budget. Light actions also stop at light_remaining=0. "
     "Narrative event/document read_span uses browse_remaining, not heavy; "
     "The evidence directory supplies raw_chars, readable_start and section "
@@ -92,6 +92,9 @@ _MINING_CONTROLLER_PROMPT = (
     "of zero when the raw document begins with hidden HTML/XBRL metadata; "
     "read_span length is at most 4000 raw characters. Directory rows are "
     "discovery_only; only the actual read establishes source evidence. "
+    "A read with has_readable_text=false has not explored narrative evidence. "
+    "Use its next_readable_start for a new exact raw read; do not repeat the empty range. "
+    "light_remaining=0 only exhausts light actions, not heavy or browse actions. "
     "available_actions lists budget-admissible actions (state prerequisites "
     "still apply). research_axis defines the one comparison represented by "
     "positive/control, and labels arrive only through the runtime-owned label_map; "
@@ -136,18 +139,15 @@ class MiningAgentRoleModel:
     def next_action(self, view: Mapping[str, Any]) -> dict[str, Any]:
         """Send one controller view and return the model's action object."""
 
-        scope = getattr(self.caller, "anonymous_case", None)
-        with (scope(aliases=self.identity_aliases, company_id="", expand_aliases=False)
-              if callable(scope) and self.identity_aliases else nullcontext()):
-            parsed, usage = self.caller.complete_json(
-                stage=self.stage,
-                system_prompt=_MINING_CONTROLLER_PROMPT,
-                payload=dict(view),
-                allow_outcomes=True,
-                anonymous_aliases=self.identity_aliases,
-                max_output_tokens=self.max_output_tokens,
-                temperature=self.temperature,
-            )
+        parsed, usage = self.caller.complete_json(
+            stage=self.stage,
+            system_prompt=_MINING_CONTROLLER_PROMPT,
+            payload=dict(view),
+            allow_outcomes=True,
+            anonymous_aliases=self.identity_aliases,
+            max_output_tokens=self.max_output_tokens,
+            temperature=self.temperature,
+        )
         self.usage = AgentUsage(
             llm_calls=self.usage.llm_calls + usage.llm_calls,
             tokens=self.usage.tokens + usage.tokens,

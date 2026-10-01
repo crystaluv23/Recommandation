@@ -513,6 +513,7 @@ def narrative_catalog(
     events: Iterable[NarrativeEvent],
     *,
     max_per_family: int = 8,
+    document_cards: dict[tuple[str, str], dict[str, Any]] | None = None,
 ) -> list[dict[str, object]]:
     """Build the discovery-only fetched-evidence directory.
 
@@ -556,7 +557,11 @@ def narrative_catalog(
             }
         else:
             continue
-        card = document_card(document, include_sections=True)
+        card = document_cards.get(identity) if document_cards is not None else None
+        if card is None:
+            card = document_card(document, include_sections=True)
+            if document_cards is not None:
+                document_cards[identity] = card
         row = bucket[event.event_ref if event is not None else f"document-{document.document_id}"]
         row.update({
             "raw_chars": card["raw_chars"],

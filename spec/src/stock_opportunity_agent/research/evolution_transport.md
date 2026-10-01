@@ -101,8 +101,13 @@ financial amounts remain intact. Compact namespaces use only the authorized
 inventory when expansion is disabled. Source-owned scoped Slow inventories
 exclude generic business words; arbitrary corpus-wide brand expansion is invalid.
 
-The real Mining controller adapter opens this same scope around every request,
-including tool receipts and retry feedback. Tokens restore requested event/document
+The shared transport applies this same projection to every request carrying an
+explicit `anonymous_aliases` inventory, even outside a case context. An active
+case context takes precedence; otherwise the aggregate inventory is used without
+derived prose aliases. Estimation and transmission select the identical scope.
+Role adapters do not need their own aggregate context wrappers. This covers
+Slow feedback reflection, Mining, Update, tool receipts and retry feedback.
+Tokens restore requested event/document
 handles before execution; original sources and ledger coordinates remain unchanged.
 Scope unwinds on interruption and cannot bleed into another worker. A new scope is
 not an alternative transport or a bypass of stage/label/budget checks.

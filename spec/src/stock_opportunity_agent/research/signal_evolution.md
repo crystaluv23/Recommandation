@@ -69,6 +69,13 @@ memory delta. Successful coverage alone advances
 `processed_feedback_refs`; omitted or failed units remain pending. Raw episodes,
 specific reflections, and evidence-linked method lessons coexist append-only.
 Challenges qualify prior lessons through explicit refs and never overwrite them.
+The default work unit contains at most three complete feedback units under the
+reflector's 5000-token output budget; input byte fit alone cannot justify a larger
+output obligation. Lesson slots are bounded by selected units (maximum four),
+and the prompt requests concise complete findings with specific conditions and
+limitations. This is a work-unit limit, not truncation of originals: remaining
+units keep their stable pending refs for later cycles. Explicit limit overrides
+remain part of the frozen configuration and require output-capacity validation.
 When the default complete-entry view defers sources, the role may make one typed
 opaque-ref selection. Runtime validates scope and budget, combines that selection
 with the runtime-required recent frontier, resolves the combined complete-entry

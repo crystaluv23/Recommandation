@@ -1650,7 +1650,7 @@ class RunControlTests(TestCase):
                     payload={"ground_truth": 4.0},
                     allow_outcomes=False,
                 )
-            with self.assertRaisesRegex(ValidationError, "identity alias"):
+            with self.assertRaisesRegex(ExternalRequestPending, "requires approval") as projected:
                 client.complete_json(
                     stage="predict",
                     system_prompt="Return JSON.",
@@ -1658,6 +1658,8 @@ class RunControlTests(TestCase):
                     allow_outcomes=False,
                     anonymous_aliases=("AAA",),
                 )
+            wire = json.dumps(json.loads(Path(projected.exception.request_path).read_text())["request"]["messages"])
+            self.assertNotIn("AAA", wire)
             with self.assertRaisesRegex(ExternalRequestPending, "requires approval"):
                 client.complete_json(
                     stage="predict",
@@ -1666,7 +1668,7 @@ class RunControlTests(TestCase):
                     allow_outcomes=False,
                     anonymous_aliases=("AN", "LOW"),
                 )
-            with self.assertRaisesRegex(ValidationError, "identity alias"):
+            with self.assertRaisesRegex(ExternalRequestPending, "requires approval") as projected:
                 client.complete_json(
                     stage="predict",
                     system_prompt="Return JSON.",
@@ -1674,6 +1676,8 @@ class RunControlTests(TestCase):
                     allow_outcomes=False,
                     anonymous_aliases=("AN",),
                 )
+            wire = json.dumps(json.loads(Path(projected.exception.request_path).read_text())["request"]["messages"])
+            self.assertNotIn("ticker AN", wire)
             try:
                 client.complete_json(
                     stage="predict",

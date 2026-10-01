@@ -793,6 +793,33 @@ class NarrativeInterfaceTests(unittest.TestCase):
         self.assertIn("purchase agreement", event.excerpt)
         self.assertTrue(event.exact_span)
 
+    def test_header_only_read_preserves_raw_hash_but_not_narrative_exploration(self):
+        from stock_opportunity_agent.research.mining_controller import _ledger_text_hash
+
+        cases, _store = self._fixture()
+        raw = '<html xmlns:issuer="' + 'namespace ' * 700 + '"><head>hidden</head><p>Order received.</p></html>'
+        document = RawInfoDocument.create(document_id='hidden-header', company_id=cases[0].company_id,
+            source_type='filing', published_at=NOW, available_at=NOW, content=raw)
+        model = ScriptedMiningDecisionModel([
+            {'action': 'fetch_evidence', 'case_refs': ['case-001'], 'source_families': ['filing'],
+             'max_documents': 1, 'rationale': ['Fetch filing.']},
+            lambda view: {'action': 'read_span', 'event_ref': view['known_event_refs'][0],
+                          'offset': 0, 'length': 4000, 'rationale': ['Inspect exact raw header.']},
+            {'action': 'record_deferred', 'rationale': ['Stop.']},
+        ])
+        controller = self._controller(model, cases, RawInfoStore(documents=(document,)), seed='discovery')
+        result = controller.run()
+        receipt = model.views[-1]['last_action_result']
+        self.assertFalse(receipt['has_readable_text'])
+        self.assertEqual(receipt['masked'], '')
+        self.assertEqual(receipt['offset'], 0)
+        self.assertEqual(receipt['verbatim_hash'], _ledger_text_hash(raw[:4000]))
+        self.assertEqual(receipt['next_readable_start'], raw.index('Order'))
+        self.assertFalse(result.modality_coverage['narrative']['explored'])
+        self.assertEqual(len(controller._visible_ranges), 1)
+        self.assertNotIn('actions', model.views[-1])
+
+
     def test_read_span_supports_event_and_document_with_browse_budget(self):
         cases, store = self._fixture()
         seen = {}

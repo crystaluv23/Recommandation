@@ -24,6 +24,43 @@ SOURCE = ('Enbridge Inc. reports Enbridge growth. enb:RevenueMember '
 
 
 class CaseIdentityTransportTests(TestCase):
+    def test_unscoped_guard_inventory_projects_sec_handles_at_common_boundary(self):
+        handle = "secfacts:0001309402:0001309402-22-000072:" + "a" * 64
+        aliases = ("cik_0001309402",)
+        payload = {"feedback_units": [{"result": {"document_fingerprint": handle}}],
+                   "cash": 1309402, "snapshot_hash": "b" * 64}
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            kwargs = dict(stage="guarded_extension_role", system_prompt="Return supplied handle.",
+                          payload=payload, allow_outcomes=True, anonymous_aliases=aliases,
+                          max_output_tokens=5000)
+            estimate = client.estimate_json_request_tokens(
+                **{key: value for key, value in kwargs.items() if key != "stage"})
+            with self.assertRaises(ExternalRequestPending) as pending:
+                client.complete_json(**kwargs)
+            request = json.loads(Path(pending.exception.request_path).read_text())
+            recorded = request["request"]
+            self.assertNotIn("0001309402", recorded["wire_request"]["body_utf8"])
+            self.assertEqual(estimate, recorded["wire_request"]["body_bytes"] + recorded["max_output_tokens"])
+            anonymous = json.loads(recorded["messages"][-1]["content"])
+            self.assertEqual(anonymous["cash"], 1309402)
+            self.assertEqual(anonymous["snapshot_hash"], "b" * 64)
+            client.cache.store(request["request_hash"], {
+                "json_output": anonymous, "model": "deepseek-v4-flash",
+                "usage": {"tokens": 10, "cost": 0},
+            })
+            self.assertEqual(client.complete_json(**kwargs)[0], payload)
+            self.assertIsNone(getattr(client._chain_state, "identity_projection", None))
+
+    def test_active_case_scope_takes_precedence_over_aggregate_guard(self):
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            with client.anonymous_case(aliases=ALIASES, company_id="cik_0000895728", ticker="ENB"):
+                projection = client._request_identity_projection(("other issuer",))
+                self.assertIs(projection, client._chain_state.identity_projection)
+                view, _ = projection.project(SOURCE)
+                self.assertNotIn("0000895728", view)
+
     def test_real_terminal_needs_cannot_request_post_cutoff_actuals(self):
         from stock_opportunity_agent.research.evolution_research_validation import _future_source_date_refs
 
@@ -253,4 +290,8 @@ class CaseIdentityTransportTests(TestCase):
             self.assertEqual(request["stage"], "llm_signal_batch_execute")
             self.assertNotIn("Enbridge", request["wire_request"]["body_utf8"])
             self.assertNotIn("0000895728", request["wire_request"]["body_utf8"])
+            payload = json.loads(request["messages"][-1]["content"])
+            self.assertTrue(payload["target_subject"]["known_aliases"])
+            self.assertTrue(payload["target_subject"]["source_scope_is_not_event_subject"])
+            self.assertIn("underwriter", request["messages"][0]["content"])
             self.assertIsNone(client._chain_state.identity_projection)

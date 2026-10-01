@@ -19,6 +19,9 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.raw_info import RawInfoStore
+from stock_opportunity_agent.data.disclosure import raw_span_view
+from stock_opportunity_agent.data.markup import visible_html_ranges
+from stock_opportunity_agent.data.resolution import _MARKUP_SOURCE_TYPES
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
@@ -289,6 +292,8 @@ class LabelAwareMiningController:
         self._events: dict[str, Any] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
+        self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
+        self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -386,7 +391,6 @@ class LabelAwareMiningController:
                 "light_remaining": self.light_action_limit - self._light_used,
                 "browse_remaining": self.browse_limit - self._browse_used,
             },
-            "actions": list(ACTIONS),
             "available_source_families": list(self.available_source_families),
             "measurable_evidence_manifest": self.manifest,
             "signal_catalog": [dict(card) for card in self.signal_catalog],
@@ -951,10 +955,19 @@ class LabelAwareMiningController:
                 "read_span window is empty; adjust offset/length within the "
                 "document bounds"
             )
+        identity = (document.document_id, document.content_hash)
+        if identity not in self._visible_ranges:
+            self._visible_ranges[identity] = (
+                visible_html_ranges(document.content)
+                if document.source_type.casefold() in _MARKUP_SOURCE_TYPES
+                else ((0, len(document.content)),)
+            )
+        disclosure = raw_span_view(document, offset, length, visible_ranges=self._visible_ranges[identity])
+        readable = disclosure.pop("readable_text")
         masked = strip_document_artifacts(
             str(
                 _mask_identity_values(
-                    window, self.identity_aliases, expand_aliases=False
+                    readable, self.identity_aliases, expand_aliases=False
                 )
             )
         )
@@ -966,6 +979,7 @@ class LabelAwareMiningController:
             "length": length,
             "masked": masked,
             "verbatim_hash": _ledger_text_hash(window),
+            **disclosure,
         }
         if event is not None:
             entry["title"] = event.title
@@ -982,6 +996,7 @@ class LabelAwareMiningController:
         )
         if (
             _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
+            and disclosure["has_readable_text"]
         ):
             self._narrative_explored = True
         self._narrative_reads += 1
@@ -1515,7 +1530,8 @@ class LabelAwareMiningController:
     def _evidence_catalog_view(self, *, cursor: int = 0) -> dict[str, Any]:
         """Return a titled fetched-evidence page with reachable omitted entries."""
         documents = [document for result in self._documents.values() for document in result.documents]
-        families = narrative_catalog(documents, self._events.values(), max_per_family=max(1, len(documents)))
+        families = narrative_catalog(documents, self._events.values(), max_per_family=max(1, len(documents)),
+                                     document_cards=self._document_cards)
         cards = []
         for family in families:
             for window in family["windows"]:

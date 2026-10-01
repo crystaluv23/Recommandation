@@ -8,6 +8,22 @@ import re
 _VOID = frozenset("area base br col embed hr img input link meta param source track wbr".split())
 _HIDDEN_TAGS = frozenset(("head", "script", "style", "template", "ix:header", "ix:hidden"))
 _INLINE_HIDDEN = re.compile(r"(?:^|;)\s*(?:display\s*:\s*none|visibility\s*:\s*hidden)\s*(?:!important)?\s*(?:;|$)", re.I)
+_TAG = re.compile(r"<[^>]*>", re.DOTALL)
+
+
+def visible_html_ranges(raw: str) -> tuple[tuple[int, int], ...]:
+    """Index visible text in raw coordinates, including reads inside large tags."""
+
+    removed = sorted((*nonvisible_html_ranges(raw), *((m.start(), m.end()) for m in _TAG.finditer(raw))))
+    visible = []
+    cursor = 0
+    for start, end in removed:
+        if cursor < start:
+            visible.append((cursor, start))
+        cursor = max(cursor, end)
+    if cursor < len(raw):
+        visible.append((cursor, len(raw)))
+    return tuple(visible)
 
 def nonvisible_html_ranges(raw: str) -> tuple[tuple[int, int], ...]:
     """Return unchanged raw intervals; malformed open hidden blocks close at EOF."""

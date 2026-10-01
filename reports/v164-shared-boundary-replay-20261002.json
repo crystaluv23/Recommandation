@@ -1,0 +1,90 @@
+{
+  "external_calls": 0,
+  "guarded_slow_reflection": [
+    {
+      "old_request": "063a6f04a72e5a42eba2333c060d54bb788de4d1f77111fdee002ae6bc992b94",
+      "stage": "signal_mining_reflect",
+      "old_issuer_cik_leak": true,
+      "new_issuer_cik_leak": false,
+      "estimated_and_wire_reservation": 34502
+    },
+    {
+      "old_request": "8c699bcbcdab65d0d678004c14b620129d8356a888566b5cc605db8c7f95046f",
+      "stage": "signal_mining_reflect_correction",
+      "old_issuer_cik_leak": true,
+      "new_issuer_cik_leak": false,
+      "estimated_and_wire_reservation": 35456
+    }
+  ],
+  "routing": {
+    "initial": {
+      "calls": 2,
+      "signals_preserved": [
+        "financing_listing_action:v3",
+        "cash_reserves:v2",
+        "liquidity_runway_months:v2",
+        "order_confirmation_disclosed:v2"
+      ],
+      "correction_mode": "recorded financing row applied to latest mechanical base; other rows untouched",
+      "answer_scopes": [
+        null,
+        null,
+        "full",
+        null
+      ],
+      "reason_codes": [
+        "combine_evidence",
+        "assess_applicability",
+        "answer_need",
+        "confirm_hypothesis"
+      ]
+    },
+    "corrected": {
+      "calls": 1,
+      "signals_preserved": [
+        "financing_listing_action:v3",
+        "cash_reserves:v2",
+        "liquidity_runway_months:v2",
+        "order_confirmation_disclosed:v2"
+      ],
+      "correction_mode": "exact recorded complete corrected output",
+      "answer_scopes": [
+        null,
+        null,
+        "full",
+        null
+      ],
+      "reason_codes": [
+        "combine_evidence",
+        "assess_applicability",
+        "answer_need",
+        "confirm_hypothesis"
+      ]
+    }
+  },
+  "historical_wire_audit": {
+    "requests": 546,
+    "stages": {
+      "research_controller_reflect": 114,
+      "signal_retrieval_cards_correction": 54,
+      "llm_signal_batch_execute": 69,
+      "signal_retrieval_cards": 85,
+      "blind_predictor_predict": 41,
+      "llm_signal_batch_execute_correction": 30,
+      "research_controller_initialize": 45,
+      "research_controller_initialize_correction": 16,
+      "signal_mining_reflect": 1,
+      "mining_controller_step": 28,
+      "blind_predictor_posthoc_reflect": 41,
+      "blind_predictor_posthoc_reflect_correction": 16,
+      "slow_source_read": 2,
+      "information_plan_propose": 2,
+      "signal_mining_reflect_correction": 1,
+      "plan_critic": 1
+    },
+    "issuer_cik_0001309402_leaks": [
+      "063a6f04a72e5a42eba2333c060d54bb788de4d1f77111fdee002ae6bc992b94",
+      "8c699bcbcdab65d0d678004c14b620129d8356a888566b5cc605db8c7f95046f"
+    ]
+  }
+}

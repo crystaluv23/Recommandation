@@ -125,6 +125,11 @@ from research errors. At least two complete Plans are needed to exercise actual
 Round reflection. A stage that legitimately skips needs an explicit reason;
 synthetic/mock outputs cannot be presented as live content acceptance. Inspect
 saved requests, exact quotes, tool results, state changes, reflections, candidate
-fixtures, independently checked outcomes and commit pointers. F1 improvement is
+fixtures, independently checked outcomes and commit pointers.
+The user-set diagnostic acceptance floor is Binary F1 >= 0.60 (2026-10-02).
+It applies to complete scored Plans with the frozen denominator; partial cases
+cannot pass. It does not replace source, stage-content or Fast/Slow commit checks,
+change promotion semantics, or establish independent learning benefit.
+F1 improvement is
 reported separately from execution completion; never tune labels/cohorts to
 manufacture a passing result.

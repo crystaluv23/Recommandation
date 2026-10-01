@@ -7,6 +7,51 @@ from stock_opportunity_agent.research.evolution_core import (
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_later_routing_budget_stop_closes_paid_state_once_without_stale_need_ownership(self):
+        for outcome in ("finalize", "continue", "budget"):
+            with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as directory:
+                class BudgetSelector(OneSignalSelector):
+                    def __init__(self):
+                        self.calls = 0
+
+                    def select(self, *args, **kwargs):
+                        self.calls += 1
+                        if self.calls == 2:
+                            raise RuntimeBudgetExceeded("next routing cannot fit", usage=AgentUsage(tokens=12))
+                        return super().select(*args, **kwargs)
+
+                class ClosingController(OneBatchController):
+                    def __init__(self):
+                        super().__init__()
+                        self.contexts = []
+
+                    def set_reflection_runtime_context(self, **context):
+                        self.contexts.append(context)
+
+                    def reflect(self, plan, state, batch):
+                        if not self.contexts[-1]["must_finalize"]:
+                            return AgentStep(ResearchState(next_information_needs=("unanswered catalyst timing",)), AgentUsage(tokens=20))
+                        if outcome == "budget":
+                            raise RuntimeBudgetExceeded("terminal request cannot fit")
+                        from dataclasses import replace
+                        decision = ResearchDecision.FINALIZE if outcome == "finalize" else ResearchDecision.CONTINUE
+                        return AgentStep(replace(state, decision=decision), AgentUsage(tokens=25))
+
+                registry, store = self._registry_and_store(directory)
+                controller = ClosingController()
+                trajectory = execute_information_plan(
+                    plan=default_information_plan(), company_id="winner_1", company_basic_source={},
+                    prediction_time=NOW, signal_registry=registry.freeze(), signal_executor=SignalExecutor(registry.freeze(), store),
+                    controller=controller, signal_agent=BudgetSelector(), predictor=FixedPredictor(),
+                    prediction_sink=lambda *args: "pred", ground_truth_provider=lambda company_id: GroundTruth(2.5),
+                )
+                self.assertEqual([c["must_finalize"] for c in controller.contexts], [False, True])
+                self.assertEqual(controller.contexts[-1]["selections"], ())
+                self.assertEqual(trajectory.final_state.next_information_needs, ("unanswered catalyst timing",))
+                self.assertEqual(trajectory.termination_trigger, RuntimeStopReason.BUDGET_EXHAUSTED)
+                self.assertEqual(trajectory.final_state.decision is ResearchDecision.FINALIZE, outcome == "finalize")
+                self.assertEqual(trajectory.stop_reason is RuntimeStopReason.FINALIZED, outcome == "finalize")
+
     def test_final_projection_preserves_source_time_without_fabricating_legacy_metadata(self) -> None:
         dated = {"projection_id": "projection_dated", "document_id": "document_dated",
                  "available_at": "2025-01-02T00:00:00+00:00", "exact_text": "Comments close January 10."}

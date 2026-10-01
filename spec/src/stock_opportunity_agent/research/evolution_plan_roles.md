@@ -39,6 +39,14 @@ Signal retrieval, blind prediction, and Plan reflection.
 - After bounded correction, typed answer-ownership failures may retain the same
   selected Signal as context only, with full revalidation and unresolved needs.
   This removes an unverified routing claim without inventing research evidence.
+- Duplicate direct ownership is detected across the complete selection set.
+  The validator authorizes context-only conversion per exact conflicting row
+  and Signal identity. If exactly one full-answer claim exists, it is retained
+  unchanged and partial claims become context only; otherwise every conflicting
+  direct claim becomes context only. This preserves selected Signals and target
+  indices, never chooses an ambiguous owner, and runs complete validation.
+  Typed mechanical conflict repair precedes LLM correction; other ownership
+  failures retain their existing bounded semantic correction policy.
 - ResearchState summary counts, text lengths, and summary bytes are advisory
   compression targets. Transport token budgets remain hard limits; evidence,
   provenance, PIT boundaries, and need ownership remain validated.

@@ -3106,6 +3106,7 @@ def execute_information_plan(
     signal_calls = 0
     stop_reason = RuntimeStopReason.FINALIZED
     termination_trigger: RuntimeStopReason | None = None
+    terminal_reflection_attempted = False
     signal_fingerprints: dict[str, tuple[str, ...]] = {}
     prior_signal_results: dict[str, Mapping[str, Any]] = {}
 
@@ -3346,6 +3347,7 @@ def execute_information_plan(
         else:
             reflection_budget -= prediction_reserve
         _set_request_token_budget(controller, reflection_budget)
+        terminal_reflection_attempted = reflection_termination_trigger is not None
         try:
             reflection_step = controller.reflect(plan, state, batch)
         except RuntimeBudgetExceeded as exc:
@@ -3354,6 +3356,7 @@ def execute_information_plan(
             if reflection_termination_trigger is not None:
                 break
             reflection_termination_trigger = RuntimeStopReason.BUDGET_EXHAUSTED
+            terminal_reflection_attempted = True
             _set_reflection_runtime_context(
                 controller,
                 selections=rounds[-1].selections,
@@ -3390,6 +3393,34 @@ def execute_information_plan(
             break
         if state.decision is ResearchDecision.FINALIZE:
             stop_reason = RuntimeStopReason.FINALIZED
+
+    if (
+        state.decision is ResearchDecision.CONTINUE
+        and rounds
+        and not terminal_reflection_attempted
+        and termination_trigger in {
+            RuntimeStopReason.BUDGET_EXHAUSTED,
+            RuntimeStopReason.MAX_SIGNAL_ROUNDS,
+            RuntimeStopReason.MAX_SIGNAL_CALLS,
+        }
+    ):
+        _set_reflection_runtime_context(
+            controller, selections=(), must_finalize=True,
+            termination_trigger=termination_trigger,
+        )
+        _set_request_token_budget(
+            controller, limits.max_tokens - model_usage.tokens - predictor_reservation()
+        )
+        try:
+            closure_step = controller.reflect(plan, state, rounds[-1].batch)
+        except RuntimeBudgetExceeded as exc:
+            model_usage = _consume_usage(model_usage, exc.usage, limits)
+        else:
+            model_usage = _consume_model_step(model_usage, closure_step.usage, limits)
+            state_deltas.append({"round": len(rounds), "delta": _research_state_delta(state, closure_step.value)})
+            state = closure_step.value
+            if state.decision is ResearchDecision.FINALIZE:
+                stop_reason = RuntimeStopReason.FINALIZED
 
     if state.decision is ResearchDecision.CONTINUE:
         if termination_trigger is None:

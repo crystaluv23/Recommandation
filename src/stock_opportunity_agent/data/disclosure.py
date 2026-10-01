@@ -20,6 +20,7 @@ import re
 from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.markup import visible_html_ranges
 from stock_opportunity_agent.data.resolution import (
     _MARKUP_SOURCE_TYPES,
     _HTML_TAG,
@@ -51,6 +52,41 @@ _SECTION_HEADING_PATTERN = re.compile(
     re.IGNORECASE,
 )
 _NEWS_TITLE_KEYS = ("title", "headline")
+
+
+def raw_span_view(
+    document: RawInfoDocument, offset: int, length: int,
+    *, visible_ranges: tuple[tuple[int, int], ...] | None = None,
+) -> dict[str, Any]:
+    """Disclose readable content from an exact raw window without relocating it.
+
+    Optional immutable visibility intervals let repeated reads reuse one index.
+    ``raw_span_view(doc, 0, 4000)`` reports a hidden header as unreadable and
+    supplies the next body coordinate, rather than silently reading that body.
+    """
+
+    if offset < 0 or length < 1:
+        raise ValidationError("raw span offset/length is invalid")
+    raw = document.content
+    ranges = visible_ranges
+    if ranges is None:
+        ranges = (visible_html_ranges(raw) if document.source_type.casefold() in _MARKUP_SOURCE_TYPES
+                  else ((0, len(raw)),))
+    end = min(len(raw), offset + length)
+    parts = [raw[max(offset, start):min(end, stop)]
+             for start, stop in ranges if start < end and stop > offset]
+    readable = " ".join(" ".join(parts).split())
+    next_start = None
+    for start, stop in ranges:
+        candidate = max(end, start)
+        while candidate < stop and raw[candidate].isspace():
+            candidate += 1
+        if candidate < stop:
+            next_start = candidate
+            break
+    return {"readable_text": readable, "has_readable_text": bool(readable),
+            "readable_chars": len(readable), "raw_window_chars": max(0, end - offset),
+            "next_readable_start": next_start}
 
 
 def _decode_entities(text: str) -> str:

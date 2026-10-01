@@ -1,0 +1,11 @@
+{
+  "external_calls": 0,
+  "case_id": "cik_0001114995:20250331",
+  "old_stop_reason": "budget_exhausted",
+  "spent_tokens_before_prediction": 77538,
+  "predictor_reservation": 103869,
+  "terminal_reflection_available": 74593,
+  "terminal_reflection_required": 70065,
+  "state_preserved_except_model_authored_decision": true,
+  "model_output": "offline supplied decision-only patch; this is validator/wiring proof, not live completion"
+}

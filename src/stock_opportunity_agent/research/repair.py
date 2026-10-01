@@ -60,6 +60,8 @@ def is_mechanical_issue(issue: Any) -> bool:
         }
     if issue.code == "stale_resolved_need_retained":
         return issue.repair_context.get("mechanical_action") == "remove_unsupported_resolution"
+    if issue.code == "routing_answer_conflict":
+        return issue.repair_context.get("mechanical_action") == "context_only_selection"
     return False
 
 

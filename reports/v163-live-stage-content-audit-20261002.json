@@ -1,0 +1,183 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated",
+  "code_revision": "b74f6a76eb5878a455466db88fd38aab2a910753",
+  "contract_hash": "19f81b20be6e931839b78157e65c33814ba6da86e83c71c96593e95f211f3556",
+  "terminal": {
+    "exit_code": 1,
+    "cause": "RetryableOpenAIClientError: SSL UNEXPECTED_EOF_WHILE_READING",
+    "assistant_interrupt": false
+  },
+  "committed": {
+    "fast_round": 1,
+    "slow_cycle": 0
+  },
+  "attempts": 505,
+  "attempt_status_counts": {
+    "completed": 501,
+    "failed": 4
+  },
+  "accounted_cost": 1.9111528800000002,
+  "plans": {
+    "plan_r0001_c01": {
+      "metrics": {
+        "binary_f1": 0.64,
+        "binary_precision": 0.7272727272727273,
+        "binary_recall": 0.5714285714285714,
+        "confusion": {
+          "false_negative": 6,
+          "false_positive": 3,
+          "true_negative": 7,
+          "true_positive": 8
+        },
+        "magnitude_accuracy": 0.21428571428571427,
+        "magnitude_macro_f1": 0.13333333333333333,
+        "precision_defined": true,
+        "predicted_positive_count": 11,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "fitness": {
+        "eligible": true,
+        "evidence_covered_count": 21,
+        "expected_case_count": 24,
+        "predicted_positive_count": 11,
+        "reasons": [],
+        "status": "eligible",
+        "true_positive_count": 8,
+        "valid_case_count": 24
+      },
+      "technical_exclusion_case_ids": [
+        "cik_0000723125:20250731",
+        "cik_0001174922:20250731",
+        "cik_0001646188:20250530"
+      ],
+      "failures": [
+        {
+          "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.failure.json",
+          "case_id": "cik_0001174922:20250731",
+          "error_type": "CandidateExecutionRejected",
+          "message": "model guessed target identity outside supplied tokens",
+          "stage": "research_controller_reflect"
+        },
+        {
+          "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/experiments/trajectories/plan_r0001_c01/cik_0000723125:20250731.failure.json",
+          "case_id": "cik_0000723125:20250731",
+          "error_type": "CandidateExecutionRejected",
+          "message": "model guessed target identity outside supplied tokens",
+          "stage": "research_controller_initialize"
+        },
+        {
+          "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/experiments/trajectories/plan_r0001_c01/cik_0001646188:20250530.failure.json",
+          "case_id": "cik_0001646188:20250530",
+          "error_type": "CandidateExecutionRejected",
+          "message": "signal_retrieval_cards failed validation after one correction: selections[1].selection_reason claims a facet retained by residual_need via shared phrase 'cash balance runway', remove_terms_from_selection_reason=[\"cash\",\"balance\",\"runway\"]. Remove every listed residual-only term from selection_reason and name only the answered facet, leaving unresolved facets only in residual_need. If that distinction cannot be stated exactly, change selections[1] to a contextual reason with answer_scope=null and residual_need=null, or remove that complete selection; one routing round permits at most one direct answer for information_needs[4], conflicting_paths=['selections[1]', 'selections[2]']. Keep the smallest direct answer and classify other useful Signals as contextual",
+          "stage": "signal_retrieval_cards"
+        }
+      ],
+      "completed_case_count": 24,
+      "expected_case_count": 24
+    },
+    "plan_r0001_c02": {
+      "metrics": null,
+      "fitness": {
+        "eligible": false,
+        "evidence_covered_count": 20,
+        "expected_case_count": 24,
+        "predicted_positive_count": 14,
+        "reasons": [
+          "incomplete_case_set",
+          "unfinalized_case",
+          "missing_source_evidence"
+        ],
+        "status": "diagnostic_only",
+        "true_positive_count": 9,
+        "valid_case_count": 20
+      },
+      "technical_exclusion_case_ids": [],
+      "failures": [
+        {
+          "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v163_integrated/experiments/trajectories/plan_r0001_c02/cik_0001309402:20250530.failure.json",
+          "case_id": "cik_0001309402:20250530",
+          "error_type": "CandidateExecutionRejected",
+          "message": "research_controller_initialize failed validation after one correction: supporting_evidence[0] basic_info exact_text is not one contiguous literal substring unique to projection 'projection_e4277db0e0865b5916fc40e6'; invalid_exact_text='price shape (window days 180): window trading days 171; first close $12.93; last close $4.14; high $13.55; low $3.30; return -67.98%; max drawdown -75.65%; daily volatility 4.67%; trend downtrend.'; occurrences_in_named_projection=0. Copy one byte-for-byte span without ellipses, JSON-field reordering, non-contiguous joins, or paraphrase, or remove this evidence item",
+          "stage": "research_controller_initialize"
+        }
+      ],
+      "completed_case_count": 21,
+      "expected_case_count": 24
+    }
+  },
+  "round_reflection": {
+    "reason": "round_reflection_skipped_single_complete_plan",
+    "actual_call_exercised": false
+  },
+  "slow_memory": {
+    "status": "failed",
+    "processed_feedback_count": 0,
+    "pending_feedback_count": 121,
+    "failure_ref": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: provider returned invalid structured output: Unterminated string starting at: line 1 column 17225 (char 17224); provider output reached max_output_tokens=5000 and ended before one complete JSON object. Treat this as output-ceiling truncation: return the compact decision frontier only, obey every field/item/byte ceiling, and do not enumerate the input projections"
+  },
+  "confirmed_design_gaps": [
+    "explicit guard inventories were not reversible egress scopes outside anonymous_case; two actual Slow reflection wires exposed padded SEC issuer CIK",
+    "cross-row routing ownership conflict had no row-bound typed mechanical authority",
+    "next routing budget preflight exited an already reflected continuing state without terminal closure",
+    "12 detailed reflection episodes plus lesson slots exceeded 5000 output tokens",
+    "tag-only raw reads counted as narrative exploration; duplicate inadmissible action menus and repeated expensive source indexing",
+    "retrieval owner and event subject were not explicitly co-referenced in Signal batch context"
+  ],
+  "semantic_findings": [
+    "predictor treated near-half-threshold baseline arithmetic as independent counterevidence in Newmont case",
+    "Bumble uncertainty conflated forbidden post-cutoff price observations with availability of pre-cutoff confirmation",
+    "Morgan Stanley retrieved IonQ financing event as underwriter: literal provenance did not establish target issuer financing",
+    "all 11 positive Plan-1 predictions used 2-3x: magnitude class collapse remains a live quality concern"
+  ],
+  "raw_read_replay": [
+    {
+      "old_request": "8142aa6250ca8e5c532de3a51eae627ca43bba4c60f2b7b7c9dd25e7c464f3bf",
+      "document_id": "sec:cik_0001285819:000143774925010216",
+      "content_hash": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+      "raw_offset_preserved": 0,
+      "old_window_has_readable_text": false,
+      "next_readable_start": 138838,
+      "body_has_readable_text": true,
+      "body_preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM &#160; 10-K"
+    },
+    {
+      "old_request": "8e2b036ac564826cbaf5a4152a3f712ddbc9f4a548344871b0fded520c070f70",
+      "document_id": "sec:cik_0001285819:000143774925010216",
+      "content_hash": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+      "raw_offset_preserved": 0,
+      "old_window_has_readable_text": false,
+      "next_readable_start": 138838,
+      "body_has_readable_text": true,
+      "body_preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM &#160; 10-K"
+    },
+    {
+      "old_request": "5324ddfcb7e32c9c92ca310c3641a522b2f2848f0d96a3a05986cc9b1f18c87a",
+      "document_id": "sec:cik_0001285819:000143774925010216",
+      "content_hash": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+      "raw_offset_preserved": 0,
+      "old_window_has_readable_text": false,
+      "next_readable_start": 138838,
+      "body_has_readable_text": true,
+      "body_preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM &#160; 10-K"
+    },
+    {
+      "old_request": "eeb8ed8227f9b4473040fb28e5067142c35dc79994dfc6b39d9bd97549b01578",
+      "document_id": "sec:cik_0001285819:000143774925010216",
+      "content_hash": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+      "raw_offset_preserved": 0,
+      "old_window_has_readable_text": false,
+      "next_readable_start": 138838,
+      "body_has_readable_text": true,
+      "body_preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM &#160; 10-K"
+    }
+  ],
+  "binary_f1_floor": 0.6,
+  "complete_acceptance": false,
+  "fix_replays": [
+    "reports/v164-shared-boundary-replay-20261002.json",
+    "reports/v164-terminal-budget-replay-20261002.json"
+  ],
+  "limits": "Offline supplied response patches prove boundary wiring and preservation only; future live results and research gain remain unproven."
+}

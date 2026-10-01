@@ -524,7 +524,7 @@ class SignalEvolutionTests(TestCase):
     def test_signal_mining_production_defaults_bound_reflection_and_induction(self) -> None:
         config = SignalMiningConfig()
 
-        self.assertEqual(config.reflection_feedback_limit, 12)
+        self.assertEqual(config.reflection_feedback_limit, 3)
         self.assertEqual(config.induction_cases_per_class, 4)
         self.assertEqual(config.validation_cases_per_class, 8)
 
@@ -1740,7 +1740,7 @@ class SignalEvolutionTests(TestCase):
                 prior_cycle_refs,
             )
             self.assertEqual(
-                second_memory["model_view_manifest"]["max_items"], 12
+                second_memory["model_view_manifest"]["max_items"], 3
             )
             self.assertEqual(
                 second_memory["model_view_manifest"][

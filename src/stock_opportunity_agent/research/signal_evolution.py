@@ -1462,7 +1462,7 @@ class SignalMiningConfig:
     evidence_documents_per_case: int = 4
     evidence_lookback_days: int = 365
     exploration_microbatch_size: int = 4
-    reflection_feedback_limit: int = 12
+    reflection_feedback_limit: int = 3
 
     def __post_init__(self) -> None:
         positive_fields = (
@@ -4512,7 +4512,7 @@ class SignalEvolutionEngine:
                 ]
                 lesson_slots = [
                     f"lesson-c{cycle_id:04d}-{index:03d}"
-                    for index in range(1, 5)
+                    for index in range(1, min(4, len(selected_refs)) + 1)
                 ]
                 try:
                     prior_deltas = [item["slow_memory"] for item in prior[-3:]]

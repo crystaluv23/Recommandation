@@ -6,8 +6,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from unittest import TestCase
 
-from stock_opportunity_agent.data.disclosure import document_catalog
-from stock_opportunity_agent.data.markup import nonvisible_html_ranges
+from stock_opportunity_agent.data.disclosure import document_catalog, raw_span_view
+from stock_opportunity_agent.data.markup import nonvisible_html_ranges, visible_html_ranges
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import RawInfoRequest, _normalized_visible_text, _select_context_spans
 from stock_opportunity_agent.research.evolution_core import _normalized_projection_text
@@ -23,6 +23,21 @@ AS_OF = datetime(2025, 7, 31, tzinfo=timezone.utc)
 
 
 class SourceBoundaryConsistencyTests(TestCase):
+    def test_exact_raw_read_discloses_hidden_and_mid_tag_windows_without_relocation(self):
+        raw = '<html xmlns:issuer="' + 'namespace ' * 600 + '"><head>hidden</head><p>Cash is 1203.</p></html>'
+        doc = RawInfoDocument.create(document_id='raw-window', company_id='issuer', source_type='filing',
+                                     published_at=AS_OF, available_at=AS_OF, content=raw)
+        ranges = visible_html_ranges(raw)
+        for offset in (0, 100):
+            view = raw_span_view(doc, offset, 4000, visible_ranges=ranges)
+            self.assertFalse(view['has_readable_text'])
+            self.assertEqual(view['readable_text'], '')
+            self.assertEqual(view['next_readable_start'], raw.index('Cash'))
+            body = raw_span_view(doc, view['next_readable_start'], 100, visible_ranges=ranges)
+            self.assertEqual(body['readable_text'], 'Cash is 1203.')
+            self.assertTrue(body['has_readable_text'])
+        self.assertEqual(doc.content, raw)
+
     def test_visibility_excludes_nested_and_incomplete_hidden_content_across_consumers(self):
         examples = (
             ('alpha<div hidden>secret<span>nested</span>tail</div>omega', 'alpha omega'),

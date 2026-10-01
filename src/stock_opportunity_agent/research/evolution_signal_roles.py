@@ -1750,6 +1750,11 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "inside a feedback unit are audit content and are not valid output "
                 "citations. One episode may cite multiple supplied feedback refs; "
                 "never emit more episodes than supplied episode slots."
+                " Keep each complete reflection or guidance concise (about 120 "
+                "words), each brief about 50 words, and at most two material "
+                "unresolved questions per episode. Lesson slots are optional: "
+                "emit only supported reusable lessons. Preserve specific "
+                "conditions and limitations within this output budget."
                 + _UNTRUSTED_DATA_INSTRUCTION
             ),
             payload=provider_payload,
@@ -4527,6 +4532,12 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "projection; runtime maps it to the original raw span. Each Signal may cite "
     "only projection ids listed in its own eligible_projection_ids, even though "
     "peer Signal projections are visible in the shared batch. Do not cite text "
+    "as an issuer event merely because retrieval supplied it. When target_subject "
+    "is present, its known_aliases refer to the same target issuer. Identify the "
+    "event's actor and the target's role: a customer, adviser or underwriter "
+    "mention does not mean the target received the order or raised the financing. "
+    "Apply the skill's declared subject or relationship condition; describe "
+    "non-qualifying third-party events as such. Do not cite text "
     "that starts or ends at an internal projection edge; use the overlapping "
     "projection containing the complete clause, and when quoting a "
     "non-qualifying passage as counter evidence quote one or more complete "
@@ -4568,8 +4579,8 @@ class StructuredLLMSignalRunner:
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
 
-    @staticmethod
     def _batch_payload(
+        self,
         inputs: tuple[LLMSignalBatchInput, ...],
         documents: list[dict[str, Any]],
         lineage: Mapping[str, _SignalProjectionLineage],
@@ -4592,7 +4603,7 @@ class StructuredLLMSignalRunner:
                 )
                 in document_identities
             )
-        return {
+        payload = {
             "batch_signal_refs": sorted(item.spec.ref for item in inputs),
             "signals": [
                 {
@@ -4620,6 +4631,18 @@ class StructuredLLMSignalRunner:
                 "structured_facts": "fact_context binds each literal record to its source taxonomy, concept and unit; record_selection distinguishes latest from comparable_prior. Cite exact_text, not metadata. Selected records are not exhaustive.",
             },
         }
+        owners = {document.company_id for item in inputs for document in item.documents
+                  if document.company_id in self.identity_cases}
+        if len(owners) == 1:
+            from stock_opportunity_agent.research.evolution_core import _case_identity_alias_inventory
+
+            case = self.identity_cases[next(iter(owners))]
+            payload["target_subject"] = {
+                "company_id": case.company_id,
+                "known_aliases": list(_case_identity_alias_inventory((case,))),
+                "source_scope_is_not_event_subject": True,
+            }
+        return payload
 
     def _fit_projection_to_budget(
         self,

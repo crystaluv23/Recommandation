@@ -315,6 +315,76 @@ class RoutingSymbolicCutoffTemporalScopeTests(TestCase):
 
 
 class RoutingAndPlanRoleTests(TestCase):
+    def test_direct_ownership_conflicts_preserve_selected_signals_and_unique_full_owner(self):
+        need = "What cash reserves and liquidity runway were disclosed?"
+        for scopes in (("partial", "full"), ("partial", "partial"), ("full", "full")):
+            with self.subTest(scopes=scopes), tempfile.TemporaryDirectory() as directory:
+                registry = SignalRegistry(Path(directory) / "signals")
+                registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+                rows = []
+                for ref, scope in zip(("cash_reserves:v1", "financing_listing_action:v1"), scopes):
+                    row = signal_selection(ref)["selections"][0]
+                    row.update(answer_scope=scope, residual_need=("What liquidity runway was disclosed?" if scope == "partial" else None),
+                               selection_reason="Measures disclosed cash reserves.")
+                    rows.append(row)
+                caller = ScriptedRoleCaller([{"selections": rows}])
+                result = LLMSignalRetrievalAgent(caller).select((need,), registry.freeze(), {})
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(tuple(item.signal_ref for item in result.value), tuple(row["signal_ref"] for row in rows))
+                self.assertEqual(tuple(item.target_need_indices for item in result.value), ((0,), (0,)))
+                if scopes == ("partial", "full"):
+                    self.assertEqual(result.value[1].reason_code, "answer_need")
+                    self.assertEqual(result.value[1].selection_reason, rows[1]["selection_reason"])
+                    self.assertEqual(result.value[1].answer_scope, "full")
+                else:
+                    self.assertTrue(all(item.reason_code == "assess_applicability" for item in result.value))
+                self.assertEqual(result.value[0].reason_code, "assess_applicability")
+
+    def test_conflict_repair_requires_typed_row_and_identity_authority(self):
+        from stock_opportunity_agent.research.repair import is_mechanical_issue
+
+        row = signal_selection("cash_reserves:v1")["selections"][0]
+        for context, item_id, expected in (({}, row["signal_ref"], False),
+                ({"mechanical_action": "context_only_selection"}, "wrong:v1", False),
+                ({"mechanical_action": "context_only_selection"}, row["signal_ref"], True)):
+            issue = ValidationIssue(code="routing_answer_conflict", message="arbitrary prose",
+                paths=("selections[0]",), item_id=item_id, item_id_field="signal_ref", repair_context=context)
+            self.assertEqual(is_mechanical_issue(issue), bool(context))
+            result = _routing_context_only_fallback({"selections": [row]}, StructuredValidationError([issue]))
+            self.assertEqual(result is not None, expected)
+
+    def test_mixed_routing_correction_uses_latest_mechanical_base(self):
+        need = "What cash reserves and liquidity runway were disclosed?"
+        invalid = signal_selection("guidance_acceleration:v1")["selections"][0]
+        invalid.update(reason_code="assess_applicability", expected_role="coverage",
+                       answer_scope=None, selection_reason="")
+        partial = signal_selection("cash_reserves:v1")["selections"][0]
+        partial.update(answer_scope="partial", residual_need="What liquidity runway was disclosed?",
+                       selection_reason="Measures disclosed cash reserves.")
+        full = signal_selection("financing_listing_action:v1")["selections"][0]
+
+        def correct_one_row(kwargs):
+            contract = kwargs["payload"]["output_patch_contract"]
+            base = kwargs["payload"]
+            for part in contract["base_location"].split("."):
+                base = base[part]
+            self.assertEqual(base["selections"][1]["reason_code"], "assess_applicability")
+            self.assertIsNone(base["selections"][1]["residual_need"])
+            self.assertEqual(base["selections"][2], full)
+            corrected = json.loads(json.dumps(base))
+            corrected["selections"][0]["selection_reason"] = "Inspect disclosed management guidance."
+            return corrected
+
+        caller = ScriptedRoleCaller([{"selections": [invalid, partial, full]}, correct_one_row])
+        with tempfile.TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(PROJECT_ROOT / "configs/signals_v1.json")
+            result = LLMSignalRetrievalAgent(caller).select((need,), registry.freeze(), {})
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(len(result.value), 3)
+        self.assertEqual(result.value[1].reason_code, "assess_applicability")
+        self.assertEqual(result.value[2].answer_scope, "full")
+
     def test_routing_context_fallback_uses_typed_issues_not_diagnostic_words(self):
         row = signal_selection("guidance_acceleration:v1")["selections"][0]
         original = {"selections": [row]}
