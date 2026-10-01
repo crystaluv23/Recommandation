@@ -117,3 +117,11 @@ files, calls models, or grants access to Raw Info or blind execution.
 Only canonical hashing and shared ValidationError. Core records may persist
 items and build views; role adapters own prompts, authorized source construction,
 model output validation, and outgoing identity masking.
+
+## Runtime price arithmetic
+
+Case-role arithmetic validation runs after source/outcome validation and again
+during row salvage, including mechanically repaired rows. Runtime ReflectionItem
+objects never replace authored JSON in a retry snapshot. Legacy archives remain
+immutable; source membership does not make numerical prose true.
+See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).

@@ -309,3 +309,30 @@ future-period estimates, but cannot exempt a separate source publication or
 availability date after cutoff; realized results stay prohibited. These lexical
 guards detect declared violations; the resolver's source availability check remains
 authoritative and no keyword validator claims complete semantic understanding.
+
+## Shared runtime price arithmetic (2026-10-02)
+
+Research-state text/claims, Predictor reasons/uncertainties, and authored case
+reflection briefs/details use one arithmetic checker against the same available
+runtime anchor. Existing baseline-value and multiple checks retain their codes
+and tolerances. Explicit endpoint changes retain signed-decline and rounding
+handling. A stated percent gain from the baseline or recent close to one explicit
+numeric target (or the runtime doubling threshold) is checked using that named
+denominator, never a substituted close. The target/source must be unambiguous in
+the same clause; unavailable/nonfinite/zero anchors, separate clauses, denied
+claims and unsupported grammar do not create an inferred arithmetic obligation.
+
+Issues identify the exact text member with the supplied anchor and computed
+expectation. Numeric corrections are semantic choices: no program silently
+changes a denominator, target, or judgment. Shared typed patches preserve siblings
+and revalidate the whole assembled object. Initial prompts disclose these checks.
+Case reflection row salvage runs the same role arithmetic validator after normal
+source/outcome checks, including after mechanical repair; an unrepairable row can
+be dropped while valid rows survive. A detected arithmetic violation cannot be
+accepted by fallback. Selected historical items remain immutable and are not relabeled as
+verified. This check does not verify arbitrary prose, financial-period ownership,
+causal attribution, or forecast truth.
+
+The unused legacy plain-array posthoc authoring parser/contract is removed.
+Production continues to author sourced reflection items; historical record
+loading and derived string projections retain their existing read contracts.

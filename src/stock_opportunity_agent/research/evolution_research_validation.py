@@ -1539,18 +1539,8 @@ def _anchor_restatement_issues(
 
     if not isinstance(evaluation_context, Mapping):
         return []
-    anchor = evaluation_context.get("evaluation_anchor")
-    if not isinstance(anchor, Mapping) or anchor.get("status") != "available":
-        return []
-    expected = anchor.get("mean_adjusted_close")
-    if isinstance(expected, bool) or not isinstance(expected, (int, float)):
-        return []
-    from stock_opportunity_agent.research.evolution_output_validation import (
-        _PREDICTOR_BASELINE_MULTIPLE_PREFIX,
-        _PREDICTOR_CURRENT_PRICE,
-    )
+    from stock_opportunity_agent.research.evolution_output_validation import _price_reasoning_issues
 
-    issues: list[ValidationIssue] = []
     rows: list[tuple[str, str]] = []
     for field_name in _ANCHOR_STATE_TEXT_FIELDS:
         values = normalized.get(field_name)
@@ -1567,59 +1557,13 @@ def _anchor_restatement_issues(
                 rows.append(
                     (f"supporting_evidence[{index}].claim", str(item["claim"]))
                 )
-    for path, text in rows:
-        for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
-            returned = float(match.group(1))
-            if math.isclose(
-                returned, float(expected), rel_tol=0.01, abs_tol=0.05
-            ):
-                continue
-            prefix = text[max(0, match.start() - 32) : match.start()]
-            multiple_match = _PREDICTOR_BASELINE_MULTIPLE_PREFIX.search(prefix)
-            if multiple_match is not None:
-                multiple = (
-                    float(multiple_match.group("numeric"))
-                    if multiple_match.group("numeric") is not None
-                    else 2.0
-                )
-                derived_threshold = multiple * float(expected)
-                if math.isclose(
-                    returned, derived_threshold, rel_tol=0.01, abs_tol=0.1
-                ):
-                    continue
-                issues.append(
-                    ValidationIssue(
-                        code="research_state_anchor_arithmetic_invalid",
-                        message=(
-                            f"{path} gives {returned:g} for a {multiple:g}x "
-                            "baseline threshold, but the runtime evaluation "
-                            f"anchor implies {derived_threshold:g}"
-                        ),
-                        paths=(path,),
-                        source_refs=("evaluation_anchor",),
-                        allowed_repairs=("replace", "remove"),
-                        repair_context={
-                            "anchor_derived_threshold": derived_threshold,
-                        },
-                    )
-                )
-                continue
-            issues.append(
-                ValidationIssue(
-                    code="research_state_anchor_value_invalid",
-                    message=(
-                        f"{path} labels {returned:g} as the current or "
-                        "prediction-time baseline price, but the runtime "
-                        "evaluation anchor mean is "
-                        f"{float(expected):g}"
-                    ),
-                    paths=(path,),
-                    source_refs=("evaluation_anchor",),
-                    allowed_repairs=("replace", "remove"),
-                    repair_context={"anchor_mean": float(expected)},
-                )
-            )
-    return issues
+    codes = {
+        "predictor_baseline_value_invalid": "research_state_anchor_value_invalid",
+        "predictor_baseline_arithmetic_invalid": "research_state_anchor_arithmetic_invalid",
+    }
+    return [replace(issue, code=codes.get(issue.code, issue.code),
+                    source_refs=("evaluation_anchor",), allowed_repairs=("replace", "remove"))
+            for issue in _price_reasoning_issues(rows, evaluation_context.get("evaluation_anchor"))]
 
 
 def _initial_basic_grounding_issues(

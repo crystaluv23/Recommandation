@@ -1,0 +1,294 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "network_calls": 0,
+  "frozen_revision": "6e3ae1c323b4d023e62958187ae17bac5f0ce002",
+  "saved_prediction_scan": [
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000701818:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000723125:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000839470:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000860413:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000895728:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0000936395:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001018963:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001051627:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001114995:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001164727:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001174922:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001309402:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001521036:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001576942:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001590364:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001646188:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001801368:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001830043:20250930",
+      "issues": [
+        {
+          "code": "price_anchor_percent_change_invalid",
+          "paths": [
+            "key_reasons[1]"
+          ],
+          "message": "key_reasons[1] gives 106% gain from baseline to 12.988; the runtime evaluation anchor supplies that denominator as 6.494, implying 100%. Keep the named denominator, target and percent consistent; do not substitute another close."
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001847409:20250131",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001869198:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0001920294:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c01",
+      "case_id": "cik_0002023554:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000701818:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000723125:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000839470:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000860413:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000895421:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000895728:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0000936395:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001018963:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001051627:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001114995:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001164727:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001174922:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001309402:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001521036:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001576942:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001590364:20250731",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001646188:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001689548:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001801368:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001830043:20250930",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001847409:20250131",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001869198:20250331",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0001920294:20250530",
+      "issues": []
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "case_id": "cik_0002023554:20250930",
+      "issues": []
+    }
+  ],
+  "prediction_count": 46,
+  "predictions_with_detected_numeric_issues": 1,
+  "production_predictor_exact_member_patch_pass": true,
+  "production_posthoc_exact_detail_patch_pass": true,
+  "actual_posthoc_siblings_preserved": true,
+  "production_posthoc_invalid_row_salvage_pass": true,
+  "posthoc_response_hash": "77a6aca475e774ddc0614a542fb78d8d36b5a52673cfffd7e961e0b7c3612e04",
+  "reflection_persistence_and_next_consumer_pass": true,
+  "status": "pass",
+  "limits": "Original v165 content plus explicitly scripted offline member patches. No new-format live model compliance, financial-period ownership, causal truth, magnitude quality or full Slow completion is claimed.",
+  "verification": {
+    "full_suite": {
+      "tests": 1291,
+      "pass": true
+    },
+    "new_price_contract_suite": {
+      "tests": 6,
+      "pass": true,
+      "one_additional_regression_after_full_suite": true
+    },
+    "lint": {
+      "status": "environment_limited",
+      "preexisting_missing_historical_links": 20,
+      "same_as_previous_isolated_lint": true,
+      "all_main_checkout_targets_exist": true
+    },
+    "frozen_live_state": {
+      "supervisor_pid": 15842,
+      "active_child_pid": 22204,
+      "confirmed_live": true,
+      "last_completed_round": 1,
+      "last_completed_cycle": 0,
+      "mining_requests": 24,
+      "mining_responses": 23,
+      "observation": "Confirmed live during arithmetic verification; superseded by terminal_update below."
+    },
+    "terminal_update": {
+      "provider_resume_attempt": 2,
+      "exit_code": 1,
+      "supervisor_pid": 15842,
+      "supervisor_and_child_handles_missing": true,
+      "failure_stage": "mining_controller_step",
+      "exception": "OpenAIClientError: OpenAI response missing id",
+      "last_completed_round": 1,
+      "last_completed_cycle": 0,
+      "classification": "provider response envelope failed before Mining content validation; raw root cause unknown",
+      "recovery": "not restarted; preserve exact contract and caches while auditing adapter fault classification"
+    }
+  }
+}

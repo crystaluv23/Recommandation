@@ -82,6 +82,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _RESEARCH_STATE_OUTPUT,
     _UNTRUSTED_DATA_INSTRUCTION,
     _blind_prediction_with_baseline,
+    _price_reasoning_issues,
     _compact_posthoc_context,
     _INCREMENTAL_ROLE_INSTRUCTION,
     _emit_runtime_progress,
@@ -257,7 +258,10 @@ class LLMResearchController:
                 "When evaluation_anchor is supplied it is deterministic computed "
                 "control data: copy its numbers (baseline mean, doubling threshold, "
                 "recent close) verbatim whenever referenced and never "
-                "restate, round, or recompute them. Computed metric summaries "
+                "restate, round, or recompute them. Percent changes must keep "
+                "their explicit endpoint/target and named denominator consistent: "
+                "baseline uses mean_adjusted_close, recent close uses recent_close. "
+                "Doubling the baseline is a 100% gain from baseline. Computed metric summaries "
                 "in computed_metrics are also control data: reference their "
                 "numbers in beliefs and reasoning, but never write them into "
                 "supporting_evidence exact_text — evidence citations must come "
@@ -417,7 +421,10 @@ class LLMResearchController:
                 "control data: copy its numbers (baseline mean, doubling threshold, "
                 "recent close) verbatim whenever referenced and never "
                 "restate, round, or recompute them; a belief restating a different "
-                "baseline or threshold value is invalid. Computed metric summaries "
+                "baseline or threshold value is invalid. Percent changes must keep "
+                "their explicit endpoint/target and named denominator consistent: "
+                "baseline uses mean_adjusted_close, recent close uses recent_close. "
+                "Doubling the baseline is a 100% gain from baseline. Computed metric summaries "
                 "in computed_metrics are control data: reference their numbers "
                 "in beliefs, but never write them into supporting_evidence "
                 "exact_text — evidence citations must come only from basic_info "
@@ -1718,7 +1725,11 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "runtime-computed point-in-time mean is supplied as "
     "final_context.prediction_baseline. When naming the current or "
     "baseline price or computing target upside, use that supplied mean; "
-    "do not relabel an older cited price observation as current. This "
+    "do not relabel an older cited price observation as current. Any percent "
+    "gain to a numeric target or doubling threshold must use its explicitly "
+    "named denominator: baseline means mean_adjusted_close, recent close means "
+    "recent_close. These are distinct anchors; doubling the baseline is a 100% "
+    "gain from that baseline. This "
     "also means market data is not absent when prediction_baseline has "
     "status=available; distinguish missing forward projections or other "
     "specific gaps from the supplied price baseline. The baseline and doubling "
@@ -1873,11 +1884,12 @@ class LLMBlindPredictor:
                 [source_snapshot], owner_ref=source_identity,
             )
 
-            def parse_reflection(value: Mapping[str, Any]) -> PredictionSelfReflection:
-                items, _selected, projection = _structured_reflection_items(
-                    value, index=source_index, level="case", owner_ref=source_identity,
+            def validate_case_text(items: tuple[Any, ...]) -> None:
+                issues = _price_reasoning_issues(
+                    ((f"reflection_items[{position}].{field}", getattr(item, field))
+                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    compact_context.get("prediction_baseline"),
                 )
-                absence_issues = []
                 for position, item in enumerate(items):
                     paths = tuple(
                         f"reflection_items[{position}].{field}"
@@ -1888,12 +1900,18 @@ class LLMBlindPredictor:
                         )
                     )
                     if paths:
-                        absence_issues.append(ValidationIssue(
+                        issues.append(ValidationIssue(
                             code="reflection_market_data_available", paths=paths,
                             message="Market data was supplied: compact_context.prediction_baseline.status='available'; narrow the gap to missing forward projections or other absent evidence",
                         ))
-                if absence_issues:
-                    raise StructuredValidationError(tuple(absence_issues))
+                if issues:
+                    raise StructuredValidationError(issues)
+
+            def parse_reflection(value: Mapping[str, Any]) -> PredictionSelfReflection:
+                items, _selected, projection = _structured_reflection_items(
+                    value, index=source_index, level="case", owner_ref=source_identity,
+                )
+                validate_case_text(items)
                 return PredictionSelfReflection(
                     correct=framework_correct,
                     **projection,
@@ -1936,7 +1954,13 @@ class LLMBlindPredictor:
                     "When compact_context.prediction_baseline "
                     "has status=available, do not claim market data is absent or was "
                     "not provided; distinguish missing forward projections or other "
-                    "specific gaps from the supplied price baseline."
+                    "specific gaps from the supplied price baseline. Check numeric "
+                    "claims in every brief and detail against the supplied runtime "
+                    "anchor, including linked endpoints/percent changes. A gain "
+                    "from baseline uses mean_adjusted_close; a gain from recent "
+                    "close uses recent_close. Doubling the baseline is a 100% gain "
+                    "from baseline. Do not copy incorrect saved numerical reasoning "
+                    "as a fact; the saved prediction remains immutable."
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _structured_reflection_contract("case")
                 ),
@@ -1963,7 +1987,7 @@ class LLMBlindPredictor:
                 max_request_tokens=self.request_token_budget,
                 patch_corrections=True,
                 final_validation_fallback=_reflection_salvage_fallback(
-                    source_index, "case", source_identity,
+                    source_index, "case", source_identity, item_validator=validate_case_text,
                 ),
                 repair_resolver=source_index.citation_closure,
             )
@@ -2084,6 +2108,7 @@ def _repair_reflection_row(
     *,
     level: str,
     owner_ref: str,
+    item_validator: Callable[[tuple[Any, ...]], None] | None = None,
 ) -> Any | None:
     """Mechanically repair one invalid reflection row before dropping it."""
 
@@ -2098,11 +2123,14 @@ def _repair_reflection_row(
     level_categories = _CATEGORIES.get(level)
 
     def salvage_parse(package):
-        return index.create_items(
-            package["reflection_items"],
-            level=level,
-            owner_ref=owner_ref,
+        items = index.create_items(
+            package["reflection_items"], level=level, owner_ref=owner_ref,
         )
+        if item_validator is not None:
+            item_validator(items)
+        # Keep authored JSON shape, rather than inserting a runtime dataclass
+        # into the next full parse and correction snapshot.
+        return package["reflection_items"]
 
     result = apply_mechanical_repairs(
         {"reflection_items": [raw]},
@@ -2120,6 +2148,7 @@ def _reflection_salvage_fallback(
     index: "ReflectionMemoryIndex",
     level: str,
     owner_ref: str,
+    *, item_validator: Callable[[tuple[Any, ...]], None] | None = None,
 ) -> Callable[
     [Mapping[str, Any], ValidationError],
     tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None,
@@ -2144,10 +2173,13 @@ def _reflection_salvage_fallback(
         repaired_rows: dict[int, Any] = {}
         for position, raw in enumerate(raw_items):
             try:
-                index.create_items((raw,), level=level, owner_ref=owner_ref)
+                items = index.create_items((raw,), level=level, owner_ref=owner_ref)
+                if item_validator is not None:
+                    item_validator(items)
             except ValidationError:
                 repaired_row = _repair_reflection_row(
-                    raw, index, level=level, owner_ref=owner_ref
+                    raw, index, level=level, owner_ref=owner_ref,
+                    item_validator=item_validator,
                 )
                 if repaired_row is not None:
                     repaired_rows[position] = repaired_row

@@ -143,3 +143,10 @@ question conflicting with an unanswered retained need publishes both correction
 paths. Exact runtime restoration of that need may remove only the explicitly
 identified unsupported newly resolved question. The final Predictor input is
 the typed assembled stage products, not only the final state or full raw prompts.
+
+## Runtime price arithmetic
+
+Research controller, blind Predictor and case posthoc adapters use the shared
+checker at the exact authored text path. First requests disclose its arithmetic
+contract. Posthoc full parsing and row salvage invoke the same role validator.
+See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).

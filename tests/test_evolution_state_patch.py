@@ -527,3 +527,156 @@ class IncrementalRoleTests(TestCase):
             caller = PatchCaller(invalid, error)
             with self.subTest(error=error), self.assertRaises(type(error)):
                 self.run_role(caller, parse)
+
+
+class RuntimePriceContractTests(TestCase):
+    """Exercise numeric guard, typed patches and production reflection salvage."""
+
+    anchor = {"status": "available", "mean_adjusted_close": 6.494,
+              "doubling_threshold": 12.988, "recent_close": 6.3}
+    wrong = "Reaching 12.988 requires roughly a 106% gain from the baseline."
+    correct = "Reaching 12.988 requires a 100% gain from the baseline."
+
+    def test_named_anchors_and_unambiguous_targets_share_one_arithmetic_guard(self):
+        from stock_opportunity_agent.research.evolution_output_validation import _price_reasoning_issues
+        valid = (
+            self.correct,
+            "Reaching 12.988 requires a 106.16% gain from the most recent close.",
+            "A 100% gain from baseline to the doubling threshold is definition arithmetic.",
+            "A 106% gain from baseline is an uncertain scenario without a target.",
+            "Reaching 12.988 is one scenario. A 106% gain from baseline is another.",
+            "Reaching 12.988 or reaching 15.0 involves a 106% gain from baseline.",
+            "Reaching 12.988 requires not a 106% gain from baseline.",
+            "Reaching 12.988 requires a 106% gain from baseline is incorrect.",
+        )
+        self.assertEqual(_price_reasoning_issues(enumerate_text(valid), self.anchor), [])
+        bad = _price_reasoning_issues((("reflection_items[2].brief", self.wrong),), self.anchor)
+        self.assertEqual(bad[0].paths, ("reflection_items[2].brief",))
+        self.assertEqual(bad[0].repair_context["expected_percent_change"], 100)
+        for anchor in ({"status": "unavailable"}, {**self.anchor, "mean_adjusted_close": 0},
+                       {**self.anchor, "mean_adjusted_close": float("nan")},
+                       {**self.anchor, "mean_adjusted_close": True}):
+            self.assertEqual(_price_reasoning_issues((("text", self.wrong),), anchor), [])
+        decline = {"status": "available", "mean_adjusted_close": 10}
+        self.assertEqual(_price_reasoning_issues((("text", "To 8 requires a 20% decline from baseline."),), decline), [])
+
+    def test_baseline_multiple_is_checked_before_ordinary_value_and_state_codes_survive(self):
+        from stock_opportunity_agent.research.evolution_research_validation import _anchor_restatement_issues
+        issues = _anchor_restatement_issues(
+            {"current_beliefs": ["Twice the baseline price is 6.494.", self.wrong]},
+            {"evaluation_anchor": self.anchor},
+        )
+        self.assertEqual([i.code for i in issues],
+                         ["research_state_anchor_arithmetic_invalid", "price_anchor_percent_change_invalid"])
+        self.assertEqual([i.paths for i in issues], [("current_beliefs[0]",), ("current_beliefs[1]",)])
+        self.assertTrue(all(i.allowed_repairs == ("replace", "remove") for i in issues))
+        self.assertTrue(all(i.source_refs == ("evaluation_anchor",) for i in issues))
+
+    def prediction(self):
+        return {"candidate_judgment": "unlikely", "magnitude": None,
+                "confidence": {"level": "medium"}, "session_id": "anonymous",
+                "key_reasons": [self.wrong, "Source-backed operating deterioration."],
+                "uncertainties": ["Unchanged coverage uncertainty."]}
+
+    def test_predictor_patch_preserves_judgment_and_other_fields(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+        original = self.prediction()
+        def repair(call):
+            self.assertEqual(call["payload"]["required_change_paths"], ["key_reasons[0]"])
+            return patch(call["payload"]["output_patch_contract"],
+                         {"op": "replace", "path": "key_reasons[0]", "value": self.correct})
+        caller = PatchCaller(original, repair)
+        result = LLMBlindPredictor(caller).predict({"prediction_baseline": self.anchor}).value
+        self.assertEqual(result.key_reasons, (self.correct, original["key_reasons"][1]))
+        self.assertEqual(result.uncertainties, tuple(original["uncertainties"]))
+        self.assertEqual(result.candidate_judgment.value, original["candidate_judgment"])
+        self.assertIn("named denominator", caller.calls[0]["system_prompt"])
+
+    def reflection_inputs(self):
+        from stock_opportunity_agent.research.evolution_core import GroundTruth
+        original = self.prediction()
+        original["key_reasons"][0] = self.correct
+        return {"prediction_baseline": self.anchor}, _blind_prediction_from_role(original), GroundTruth(1.1)
+
+    def reflection_package(self, call):
+        source = call["payload"]["source_catalog"][0]
+        row = {"category": "missing_information", "kind": "hypothesis",
+               "brief": self.wrong, "detail": self.wrong,
+               "scope": {"case_refs": source["case_refs"], "plan_refs": source["plan_refs"],
+                         "conditions": "The runtime anchor is available."},
+               "limitations": ["Not a causal conclusion."], "source_refs": [source["source_ref"]],
+               "counter_refs": [], "outcome_claims": []}
+        sibling = {**deepcopy(row), "brief": "Source coverage needs review.",
+                   "detail": "The original packet may omit relevant disclosures."}
+        return {"reflection_items": [row, sibling], "selected_reflection_refs": [], "no_findings_reason": None}
+
+    def test_posthoc_brief_and_detail_receive_incremental_checks_not_copied_facts(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+        saved = {}
+        def initial(call):
+            saved.update(self.reflection_package(call))
+            return saved
+        def repair_brief(call):
+            self.assertEqual(call["payload"]["required_change_paths"],
+                             ["reflection_items[0].brief", "reflection_items[0].detail"])
+            return patch(call["payload"]["output_patch_contract"],
+                         {"op": "replace", "path": "reflection_items[0].brief", "value": self.correct})
+        def repair_detail(call):
+            failed = call["payload"]["invalid_output"]
+            self.assertEqual(failed["reflection_items"][0]["brief"], self.correct)
+            self.assertEqual(failed["reflection_items"][1], saved["reflection_items"][1])
+            self.assertEqual(call["payload"]["required_change_paths"], ["reflection_items[0].detail"])
+            return patch(call["payload"]["output_patch_contract"],
+                         {"op": "replace", "path": "reflection_items[0].detail", "value": self.correct})
+        caller = PatchCaller(initial, repair_brief, repair_detail)
+        context, prediction, truth = self.reflection_inputs()
+        result = LLMBlindPredictor(caller).reflect(context, prediction, truth).value
+        self.assertEqual(result.reflection_items[0].detail, self.correct)
+        self.assertEqual(result.reflection_items[1].detail, saved["reflection_items"][1]["detail"])
+        self.assertEqual(result.missing_information, (self.correct, saved["reflection_items"][1]["detail"]))
+        self.assertIn("Do not copy incorrect saved numerical reasoning", caller.calls[0]["system_prompt"])
+        self.assertEqual(prediction.key_reasons[0], self.correct)
+
+    def test_posthoc_salvage_revalidates_role_arithmetic_and_retains_valid_sibling(self):
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor
+        caller = PatchCaller(self.reflection_package, lambda call: patch(
+            call["payload"]["output_patch_contract"],
+            {"op": "replace", "path": "reflection_items[0].brief",
+             "value": self.wrong.replace("106%", "107%")},
+        ))
+        caller.max_structured_corrections = 1
+        context, prediction, truth = self.reflection_inputs()
+        result = LLMBlindPredictor(caller).reflect(context, prediction, truth).value
+        self.assertEqual(len(result.reflection_items), 1)
+        self.assertEqual(result.reflection_items[0].brief, "Source coverage needs review.")
+        self.assertEqual(len(caller.calls), 2)
+
+    def test_mechanical_scope_repair_cannot_bypass_role_numeric_check(self):
+        from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
+        from stock_opportunity_agent.research.evolution_plan_roles import _reflection_salvage_fallback
+        from stock_opportunity_agent.research.evolution_output_validation import _price_reasoning_issues
+        index = ReflectionMemoryIndex.from_case_rows(
+            [{"source_identity": "case:price", "candidate_judgment_feedback": {"binary_correct": True}}],
+            owner_ref="case:price",
+        )
+        call = {"payload": {"source_catalog": index.source_catalog()}}
+        package = self.reflection_package(call)
+        package["reflection_items"][0]["scope"]["case_refs"] = ["case:unknown"]
+        def validate(items):
+            issues = _price_reasoning_issues(
+                ((f"reflection_items[{i}].{field}", getattr(item, field))
+                 for i, item in enumerate(items) for field in ("brief", "detail")), self.anchor,
+            )
+            if issues:
+                raise StructuredValidationError(issues)
+        next_output, _actions = _reflection_salvage_fallback(
+            index, "case", "case:price", item_validator=validate,
+        )(package, ValidationError("source scope and arithmetic are invalid"))
+        self.assertEqual(next_output["reflection_items"], [package["reflection_items"][1]])
+        restored = index.create_items(next_output["reflection_items"], level="case", owner_ref="case:price")
+        validate(restored)
+
+
+def enumerate_text(values):
+    """Bind standalone numeric guard fixtures to exact source text positions."""
+    return ((f"text[{index}]", text) for index, text in enumerate(values))

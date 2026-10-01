@@ -1,5 +1,7 @@
 # Changelog
 
+2026-10-02：运行时价格算术统一到ResearchState、Predictor与Case Posthoc；baseline/recent close不混用，精确成员patch与完整重验，反思salvage复用同一语义validator。清理重复基准检查和未使用plain-array反思生成入口，修复机械salvage将运行时dataclass混入JSON的问题。真实46份预测扫描与原始错误响应生产适配器重放、保存/恢复/下游索引通过（零网络）；1,291项全量回归及六项新增专项通过（其中一项在全量后补充）。隔离lint仍是20个缺少历史运行资产的链接，全部主目录目标存在。v165冻结主线Fast 1/Slow 0；本轮末Mining供应商返回包缺少id，恢复attempt2以exit1结束，监督/子进程均退出。该异常发生在供应商响应解析、尚未进入Mining内容校验；先审计适配器故障分类，不修改检查点或自行新建运行。修复尚未进入实测，期间/单位/统计归属与幅度塌缩仍待验证。
+
 2026-10-02：新增Mining有界backlog及快照绑定增量处置；复用完整validator以保存正确独立行，拒绝stale/隐藏/重复need与未知Signal，保留控制终止的staged/pending。生产engine保存不可变处置delta并完整保留rows，统一旧H1/controller/多轴Update建议消费，删除H1专用入口名称。真实276需求目录/原文/hash及独立行重放通过，178专项与1,286全量通过；仅隔离提交，当前冻结实测不混代码。
 
 2026-10-02：保存Mining跨动作的有界原文读取receipt；相同文档/hash/坐标合并计数、目录附已读范围、原文只保留在当前工具结果及来源中，预算语义不改。真实7条付费Mining动作零网络回放及45专项/1,279全量测试通过；记录Round合计统计归属错误与full completion误称、Critic因果假设混入fact为剩余验收缺口。

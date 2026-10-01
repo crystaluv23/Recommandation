@@ -370,6 +370,9 @@ class UnifiedLadderWiringTests(unittest.TestCase):
         self.assertEqual(len(next_output["reflection_items"]), 1)
         self.assertEqual(actions["removed_paths"], ())
         self.assertTrue(actions["normalized_paths"])
+        self.assertIsInstance(next_output["reflection_items"][0], dict)
+        restored = index.create_items(next_output["reflection_items"], level="case", owner_ref="case:salv")
+        self.assertEqual(restored[0].detail, row["detail"])
 
     def test_v148_complete_json_repaired_rescues_truncation(self):
         import json as _json

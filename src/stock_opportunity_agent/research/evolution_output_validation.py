@@ -23,7 +23,6 @@ from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     CandidateExecutionRejected,
     InformationPlan,
-    PredictionSelfReflection,
     RuntimeBudgetExceeded,
     _mask_identity_values,
 )
@@ -458,43 +457,148 @@ def _explicit_percent_change_issues(
 ) -> list[ValidationIssue]:
     """Check explicitly linked endpoints and percent changes, allowing rounding."""
 
+    return _price_reasoning_issues(
+        ((f"{field}[{index}]", text) for field, values in fields
+         for index, text in enumerate(values)), None,
+    )
+
+
+_ANCHOR_PERCENT_CHANGE = re.compile(
+    r"(?P<percent>[+-]?\d+(?:\.\d+)?)%\s*"
+    r"(?P<kind>gain|return|increase|rise|upside|decline|decrease|loss)\s+"
+    r"from\s+(?:the\s+)?(?P<anchor>baseline|"
+    r"(?:(?:most\s+)?recent|latest)\s+(?:adjusted\s+)?close)\b",
+    re.I,
+)
+_PRICE_TARGET = re.compile(
+    r"\b(?:reach(?:ing)?|to|target(?:\s+price)?(?:\s+(?:is|of))?)\s+"
+    r"\$?(?P<target>\d[\d,]*(?:\.\d+)?)\b", re.I,
+)
+_PRICE_CLAUSE_BOUNDARY = re.compile(r"[;!?\n]|\.(?=\s|$)")
+_DENIED_PRICE_CHANGE = re.compile(
+    r"\b(?:not|never)(?:\s+(?:a|an))?\s*$|"
+    r"^\s*(?:is|was)\s+(?:wrong|incorrect|false|not\s+correct)\b", re.I,
+)
+
+
+def _price_reasoning_issues(
+    rows: Iterable[tuple[str, str]], baseline: Any,
+) -> list[ValidationIssue]:
+    """Validate explicitly linked price arithmetic at exact scalar text paths.
+
+    Runtime anchors resolve only explicitly named denominators. No inference
+    joins separate clauses, chooses between targets, or repairs numeric prose.
+    """
+
     issues: list[ValidationIssue] = []
-    for field, values in fields:
-        for index, text in enumerate(values):
-            for match in _EXPLICIT_PERCENT_CHANGE.finditer(text):
-                first, last = (
-                    float(match.group(name).replace(",", ""))
-                    for name in ("first", "last")
-                )
-                if first <= 0 or not all(math.isfinite(x) for x in (first, last)):
-                    continue
-                expected = (last / first - 1) * 100
-                if not math.isfinite(expected):
-                    continue
-                reported = float(match.group("percent"))
-                if match.group("kind").lower() in {"decline", "decrease", "loss"}:
-                    reported = -abs(reported)
-                rounding = []
-                for name in ("first", "last"):
-                    literal = match.group(name)
-                    decimals = len(literal.split(".", 1)[1]) if "." in literal else 0
-                    rounding.append(0.5 * 10 ** -decimals)
-                tolerance = max(
-                    0.5, 100 * (rounding[1] / first + (last / first) * (rounding[0] / first))
-                )
-                if math.isclose(reported, expected, rel_tol=0.01, abs_tol=tolerance):
-                    continue
-                path = f"{field}[{index}]"
-                issues.append(ValidationIssue(
-                    code="predictor_percent_change_arithmetic_invalid",
-                    message=(
-                        f"{path} links {first:g} to {last:g} with {reported:g}% "
-                        f"change, but those endpoints imply {expected:g}%. "
-                        "Correct this item using one consistent dated computed "
-                        "window; do not attach a different window's return."
-                    ),
-                    paths=(path,),
-                ))
+    anchor = baseline if isinstance(baseline, Mapping) and baseline.get("status") == "available" else {}
+
+    def positive_number(value: Any) -> bool:
+        return (not isinstance(value, bool) and isinstance(value, (int, float))
+                and math.isfinite(value) and value > 0)
+
+    expected = anchor.get("mean_adjusted_close")
+    for path, text in rows:
+        for match in _EXPLICIT_PERCENT_CHANGE.finditer(text):
+            first, last = (
+                float(match.group(name).replace(",", ""))
+                for name in ("first", "last")
+            )
+            if first <= 0 or not all(math.isfinite(x) for x in (first, last)):
+                continue
+            computed_change = (last / first - 1) * 100
+            if not math.isfinite(computed_change):
+                continue
+            reported = float(match.group("percent"))
+            if match.group("kind").lower() in {"decline", "decrease", "loss"}:
+                reported = -abs(reported)
+            rounding = []
+            for name in ("first", "last"):
+                literal = match.group(name)
+                decimals = len(literal.split(".", 1)[1]) if "." in literal else 0
+                rounding.append(0.5 * 10 ** -decimals)
+            tolerance = max(
+                0.5, 100 * (rounding[1] / first + (last / first) * (rounding[0] / first))
+            )
+            if math.isclose(reported, computed_change, rel_tol=0.01, abs_tol=tolerance):
+                continue
+            issues.append(ValidationIssue(
+                code="predictor_percent_change_arithmetic_invalid",
+                message=(
+                    f"{path} links {first:g} to {last:g} with {reported:g}% "
+                    f"change, but those endpoints imply {computed_change:g}%. "
+                    "Correct this item using one consistent dated computed "
+                    "window; do not attach a different window's return."
+                ),
+                paths=(path,),
+            ))
+        if not positive_number(expected):
+            continue
+        for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
+            returned = float(match.group(1))
+            prefix = text[max(0, match.start() - 32):match.start()]
+            multiple_match = _PREDICTOR_BASELINE_MULTIPLE_PREFIX.search(prefix)
+            # A multiple labels its threshold even when the number equals the
+            # baseline itself; do not let the ordinary baseline check bypass it.
+            multiple = (
+                float(multiple_match.group("numeric"))
+                if multiple_match and multiple_match.group("numeric") is not None
+                else 2.0 if multiple_match else 1.0
+            )
+            derived = multiple * float(expected)
+            if math.isclose(returned, derived, rel_tol=0.01,
+                            abs_tol=0.1 if multiple_match else 0.05):
+                continue
+            issues.append(ValidationIssue(
+                code="predictor_baseline_arithmetic_invalid" if multiple_match else "predictor_baseline_value_invalid",
+                message=(
+                    f"{path} gives {returned:g} for a {multiple:g}x baseline threshold, "
+                    f"but the runtime evaluation anchor implies {derived:g}"
+                    if multiple_match else
+                    f"{path} labels {returned:g} as the current or prediction-time "
+                    f"baseline price, but the runtime evaluation anchor mean is {expected:g}"
+                ),
+                paths=(path,), source_refs=("prediction_baseline",),
+                repair_context={"anchor_derived_threshold": derived} if multiple_match else {"anchor_mean": expected},
+            ))
+        for match in _ANCHOR_PERCENT_CHANGE.finditer(text):
+            boundaries = list(_PRICE_CLAUSE_BOUNDARY.finditer(text))
+            begin = max((b.end() for b in boundaries if b.end() <= match.start()), default=0)
+            end = min((b.start() for b in boundaries if b.start() >= match.end()), default=len(text))
+            before, after = text[begin:match.start()], text[match.end():end]
+            if (_DENIED_PRICE_CHANGE.search(before.rstrip())
+                    or _DENIED_PRICE_CHANGE.search(after)):
+                continue
+            targets = {float(m.group("target").replace(",", ""))
+                       for m in _PRICE_TARGET.finditer(before + " " + after)}
+            if not targets and re.search(r"\bdoubling threshold\b", before + " " + after, re.I):
+                if positive_number(anchor.get("doubling_threshold")):
+                    targets.add(float(anchor["doubling_threshold"]))
+            denominator = expected if match.group("anchor").lower() == "baseline" else anchor.get("recent_close")
+            if len(targets) != 1 or not positive_number(denominator):
+                continue
+            target = next(iter(targets))
+            if not positive_number(target):
+                continue
+            computed = (target / denominator - 1) * 100
+            if not math.isfinite(computed):
+                continue
+            reported = float(match.group("percent"))
+            if match.group("kind").lower() in {"decline", "decrease", "loss"}:
+                reported = -abs(reported)
+            if math.isclose(reported, computed, rel_tol=0.01, abs_tol=0.5):
+                continue
+            issues.append(ValidationIssue(
+                code="price_anchor_percent_change_invalid",
+                message=(f"{path} gives {reported:g}% {match.group('kind')} from "
+                         f"{match.group('anchor')} to {target:g}; the runtime "
+                         f"evaluation anchor supplies that denominator as {denominator:g}, "
+                         f"implying {computed:g}%. Keep the named denominator, "
+                         "target and percent consistent; do not substitute another close."),
+                paths=(path,), source_refs=("prediction_baseline",),
+                repair_context={"anchor_denominator": denominator,
+                                "price_target": target, "expected_percent_change": computed},
+            ))
     return issues
 
 
@@ -505,10 +609,12 @@ def _blind_prediction_with_baseline(
     """Reject a historical observation mislabeled as the runtime baseline."""
 
     prediction = _blind_prediction_from_role(value)
-    arithmetic_issues = _explicit_percent_change_issues((
-        ("key_reasons", prediction.key_reasons),
-        ("uncertainties", prediction.uncertainties),
-    ))
+    arithmetic_issues = _price_reasoning_issues(
+        ((f"{field}[{index}]", text)
+         for field in ("key_reasons", "uncertainties")
+         for index, text in enumerate(getattr(prediction, field))),
+        final_context.get("prediction_baseline"),
+    )
     if arithmetic_issues:
         raise StructuredValidationError(arithmetic_issues)
     if prediction.candidate_judgment.value in _POSITIVE_SURGE_JUDGMENTS and all(
@@ -555,141 +661,7 @@ def _blind_prediction_with_baseline(
                 for path in absence_paths
             ]
         )
-    if not isinstance(baseline, Mapping) or baseline.get("status") != "available":
-        return prediction
-    expected = baseline.get("mean_adjusted_close")
-    if isinstance(expected, bool) or not isinstance(expected, (int, float)):
-        return prediction
-    for field_name in ("key_reasons", "uncertainties"):
-        for index, text in enumerate(getattr(prediction, field_name)):
-            for match in _PREDICTOR_CURRENT_PRICE.finditer(text):
-                returned = float(match.group(1))
-                if math.isclose(
-                    returned,
-                    float(expected),
-                    rel_tol=0.01,
-                    abs_tol=0.05,
-                ):
-                    continue
-                prefix = text[max(0, match.start() - 32) : match.start()]
-                multiple_match = _PREDICTOR_BASELINE_MULTIPLE_PREFIX.search(prefix)
-                if multiple_match is not None:
-                    multiple = (
-                        float(multiple_match.group("numeric"))
-                        if multiple_match.group("numeric") is not None
-                        else 2.0
-                    )
-                    derived_threshold = multiple * float(expected)
-                    if math.isclose(
-                        returned,
-                        derived_threshold,
-                        rel_tol=0.01,
-                        abs_tol=0.1,
-                    ):
-                        continue
-                    raise StructuredValidationError(
-                        [
-                            ValidationIssue(
-                                code="predictor_baseline_arithmetic_invalid",
-                                message=(
-                                    f"{field_name}[{index}] gives {returned:g} for "
-                                    f"a {multiple:g}x baseline threshold, but the "
-                                    "runtime-supplied five-day baseline mean implies "
-                                    f"{derived_threshold:g}"
-                                ),
-                                paths=(f"{field_name}[{index}]",),
-                                source_refs=("prediction_baseline",),
-                            )
-                        ]
-                    )
-                raise StructuredValidationError(
-                    [
-                        ValidationIssue(
-                            code="predictor_baseline_value_invalid",
-                            message=(
-                                f"{field_name}[{index}] labels {returned:g} as the "
-                                "current or prediction-time baseline price, but the "
-                                "runtime-supplied five-day baseline mean is "
-                                f"{float(expected):g}"
-                            ),
-                            paths=(f"{field_name}[{index}]",),
-                            source_refs=("prediction_baseline",),
-                        )
-                    ]
-                )
     return prediction
-
-
-_PREDICTION_REFLECTION_OUTPUT = _output_contract(
-    "PredictionSelfReflection",
-    {
-        "prediction_outcome": {"correct": False},
-        "decision_drivers": [],
-        "why_prediction_failed": [],
-        "misleading_signals": [],
-        "ignored_evidence": [],
-        "missing_information": [],
-        "plan_issues": [],
-    },
-)
-
-
-def _prediction_reflection_from_role(
-    value: Mapping[str, Any],
-    *,
-    framework_correct: bool,
-    compact_context: Mapping[str, Any] | None = None,
-) -> PredictionSelfReflection:
-    """Validate that every case retains concrete original-layer learning."""
-
-    reflection = PredictionSelfReflection.from_dict(
-        _reject_fixed_semantics_redefinition(value)
-    )
-    baseline = (
-        compact_context.get("prediction_baseline")
-        if isinstance(compact_context, Mapping)
-        else None
-    )
-    absence_paths = _market_data_absence_paths(
-        (
-            ("decision_drivers", reflection.decision_drivers),
-            ("why_prediction_failed", reflection.why_prediction_failed),
-            ("misleading_signals", reflection.misleading_signals),
-            ("ignored_evidence", reflection.ignored_evidence),
-            ("missing_information", reflection.missing_information),
-            ("plan_issues", reflection.plan_issues),
-        ),
-        baseline,
-    )
-    if absence_paths:
-        raise ValidationError(
-            "PredictionSelfReflection claimed market data was absent even though "
-            "compact_context.prediction_baseline.status='available', "
-            f"invalid_fields={absence_paths}. Acknowledge the supplied price "
-            "baseline and narrow any remaining gap to forward projections or "
-            "another genuinely absent input"
-        )
-    if framework_correct and not reflection.decision_drivers:
-        raise ValidationError(
-            "a framework-correct post-hoc reflection requires at least one specific "
-            "source-backed decision_drivers item; do not return an all-empty correct "
-            "reflection"
-        )
-    failure_attribution = (
-        *reflection.why_prediction_failed,
-        *reflection.misleading_signals,
-        *reflection.ignored_evidence,
-        *reflection.missing_information,
-        *reflection.plan_issues,
-    )
-    if not framework_correct and not failure_attribution:
-        raise ValidationError(
-            "a framework-incorrect post-hoc reflection requires at least one "
-            "specific failure-attribution item in why_prediction_failed, "
-            "misleading_signals, ignored_evidence, missing_information, or "
-            "plan_issues; do not return an all-empty incorrect reflection"
-        )
-    return reflection
 
 
 MAX_POSTHOC_MODEL_CHARS = 24_000

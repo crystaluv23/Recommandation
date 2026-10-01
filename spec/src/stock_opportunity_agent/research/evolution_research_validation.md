@@ -262,3 +262,10 @@ normalize-to-omitted behavior; other wrong types cannot be coerced into validity
 The existing canonical forbidden-outcome-field predicate is reused on original
 request coordinates, so outcome-data rejection remains exact and correctable
 without diagnostic-text parsing or a second definition of the rule.
+
+## Runtime price arithmetic
+
+Anchor restatement validation delegates to the shared checker for authored
+state text and evidence claims; existing state issue codes and replace/remove
+permissions are retained. It never alters accepted source citations.
+See the owning [shared arithmetic contract](evolution_output_validation.md#shared-runtime-price-arithmetic-2026-10-02).
