@@ -50,6 +50,14 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   results, actuals, or other post-cutoff contents are still rejected —
   projected wording never converts realized-future results into admissible
   evidence.
+- A cutoff-bounded question about the timing, date, schedule, format or expected
+  scope of a future results presentation/release requests already disclosed
+  event metadata. In that grammatical object, `results` modifies the event and
+  is not a request for its realized findings. The shared temporal predicate
+  recognizes only that local metadata relationship; another request for actual
+  results, later publication, or an unbounded future event still rejects.
+  The original question and its evidence obligations remain unchanged. Initial
+  validation and inherited-need restoration use the same distinction.
 - A partial-answer residual must retain the temporal scope of the need it
   narrows. When a persisted routing residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of
@@ -204,6 +212,19 @@ issues first so existing error ordering and contracts are preserved.
 Aggregation changes feedback only; it never accepts a future fact, never
 relaxes grounding or empty-state rules, and falls back to the temporal-only
 rejection when the returned evidence shape is not decidable.
+
+At initialize, when tagged refs are constructible and Basic Info is visible,
+the same production reference validator also contributes its independently
+decidable `basic_literal_not_grounded` obligations to that first feedback.
+An invalid runtime-summary-as-source citation must not remain hidden until
+the sole temporal correction has been spent. Reuse its exact member/dependency
+permissions; do not infer new source text or change valid siblings. Malformed
+refs still defer this semantic check to their existing shape correction.
+The controller supplies exact runtime control summaries separately. Only a
+failed Basic Info literal that exactly equals such a summary receives typed
+`remove_runtime_control_citation` authority. Mechanical repair removes that
+miscited member and explicitly linked assertions; the computed card remains
+in the final assembly. Other invalid literals retain ordinary LLM correction.
 
 Occurrence-aware need-transition issues carry the exact runtime-issued
 occurrence count of their required text (`required_need_occurrences`) in

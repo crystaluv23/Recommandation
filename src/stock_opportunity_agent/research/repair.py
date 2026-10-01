@@ -62,6 +62,8 @@ def is_mechanical_issue(issue: Any) -> bool:
         return issue.repair_context.get("mechanical_action") == "remove_unsupported_resolution"
     if issue.code == "routing_answer_conflict":
         return issue.repair_context.get("mechanical_action") == "context_only_selection"
+    if issue.code == "basic_literal_not_grounded":
+        return issue.repair_context.get("mechanical_action") == "remove_runtime_control_citation"
     return False
 
 

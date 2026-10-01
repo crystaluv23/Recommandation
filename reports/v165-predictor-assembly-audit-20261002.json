@@ -1,0 +1,383 @@
+{
+  "prefix_only": true,
+  "network_calls": 0,
+  "saved_predictions": 46,
+  "predictor_requests": 46,
+  "full_assembly_matches": 46,
+  "unmatched": [],
+  "all_HTTP_user_inputs_match_stage_messages": true,
+  "all_wire_hashes_valid": true,
+  "all_wire_byte_counts_valid": true,
+  "matches": [
+    {
+      "case": "cik_0001646188:20250530",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "ec19bf7095a6fdd91c02c7d196846d6d0a4d8fb44870603a3a07f873cf7d4efa"
+      ],
+      "production_projected_context_hash": "3492c6a27529e16871c8d2533a2786b77e6545f6db2f3fc700795775bd39635b"
+    },
+    {
+      "case": "cik_0000895728:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "43ebfb2153adcc0e7ccb43e1721108a2c0aaf7dd472cc1eef7f731b7f720a2c3"
+      ],
+      "production_projected_context_hash": "a47f510025dab6694e59caea7b0fac17b9256d35b1c4c5371019e46a39a31962"
+    },
+    {
+      "case": "cik_0001869198:20250331",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "88094630d7e1d086899a2c823db9f8541794ce4a50a4a1af931031933b0ef7d0"
+      ],
+      "production_projected_context_hash": "24bf68b625fd185bb70cf5c3c1c097a5e99e6327f45465bac918538d9055fc35"
+    },
+    {
+      "case": "cik_0000839470:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "805c8fcd446b439ff0f67d3a08e3c4ee52c7fdc10b2b0385cf2c4ade3396d2d2"
+      ],
+      "production_projected_context_hash": "f6345fd112b976594034ceb5f6ab4e24b48bd5c68b75ba80c5aa8942510b38fc"
+    },
+    {
+      "case": "cik_0001689548:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "a376ba10a60641ab56a46b72856aef4b6c5011674dd72f5a6823562eb90b21b9"
+      ],
+      "production_projected_context_hash": "2ef90e88778f9c817e5b52b0fefefd488b599a04b90f5db482746fec9d011da5"
+    },
+    {
+      "case": "cik_0001590364:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "3176dcfaf73a520cb5c393b6c33f6f88a0a3e9b2161ee6215e27e6bd7a3428c0"
+      ],
+      "production_projected_context_hash": "fe6993a29f643eda75c2614518480fdd8ecac83586e2758217e8b6db6e0aa2c6"
+    },
+    {
+      "case": "cik_0001114995:20250331",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "dfd3c677c7caef86ce9ea0c0dd03896bfdfde4d513fe6ae4ee93013795030a35"
+      ],
+      "production_projected_context_hash": "9b3ec9e3ea6e63840879c1dc3a5cfb059533f01369f33301c13966386c39d263"
+    },
+    {
+      "case": "cik_0001847409:20250131",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "73e932da87ce23598819f8a6de5eea4a239af6b22422483cdd6fa717f66a05f3"
+      ],
+      "production_projected_context_hash": "b73fff4a76f23731bf18608cfa76b636a0b752589dfea893eff86c67f3d8f938"
+    },
+    {
+      "case": "cik_0002023554:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "b02b46d4fa9e90850aa30b674f38e2d010d85a8c0528d79ffaba6e74d3be2ea9"
+      ],
+      "production_projected_context_hash": "f030aaaa159a4f981d0f9b1f2875f39c2255b7addef1745c9de4681a98610c55"
+    },
+    {
+      "case": "cik_0000936395:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "f6374c4d32788ce4b186680379b1394dcc4e6c418d63bd0445fa71a85de9fae3"
+      ],
+      "production_projected_context_hash": "e3555635d45d9eea91440660670ff1cd88134d56a3efb5e14fd56173ab19938e"
+    },
+    {
+      "case": "cik_0001920294:20250530",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "246990d52db4606d510c131e54ca3b71310082d5b1ace4f19230b1458faea141"
+      ],
+      "production_projected_context_hash": "8934df69444659eb4f4ece21142e4b7689ef4632174ccc6135be605040d794f8"
+    },
+    {
+      "case": "cik_0000701818:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "4bf1a51f60ece15912fcb59887124481657595f4e250477e52b91f964ba0a356"
+      ],
+      "production_projected_context_hash": "5b2b1df4d69a3d81baa3c519cf5ffe11077cbf414b309c40619c569b04d2c613"
+    },
+    {
+      "case": "cik_0001174922:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "d9bd8aacf294955ae1e9cab18f0825e9ff36971cc973c5475731ca7f06b16c25"
+      ],
+      "production_projected_context_hash": "146954173b9c6ff87895b355621f4c6a7c7175b98ea105c2fd5aa7a76c859c1a"
+    },
+    {
+      "case": "cik_0001576942:20250530",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "0039dcb3dcdfa3ff1f7991d5928894a40892345031e24a3e7807da5845265bae"
+      ],
+      "production_projected_context_hash": "5894d2a6efadcfb6e6afa1f84a528b1d770bd1738e5b8c73b367d110775915b5"
+    },
+    {
+      "case": "cik_0001051627:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "5399e1874f03e97e0d6de24044554d75a472c960cfe4a98cbb12db3fb8d70964"
+      ],
+      "production_projected_context_hash": "47c728657ea2e8aa2e03aedfa1e0b5a39577b830e8fbb3db082e1036c1f99a67"
+    },
+    {
+      "case": "cik_0001801368:20250331",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "37d0ee5d14c2d7717e5829369567d4220b54ed9f8588af0861228385cbe866bf"
+      ],
+      "production_projected_context_hash": "7ef94acafd2685e637920ba0c62b78020b9f275ceb074011b4a8dbb252f73323"
+    },
+    {
+      "case": "cik_0001830043:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "f52dd2ef84ca7508ee2e74de96104552f21e0620e6533da09351779479832a55"
+      ],
+      "production_projected_context_hash": "45662b53ae0c96474345bbffccc2995dc767a521fbee69d1559e6ca2d0e158e9"
+    },
+    {
+      "case": "cik_0000860413:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "1303cc5e0b80f2cf66c2e2a1076928898509b9b061aac2ecce1a64a237185887"
+      ],
+      "production_projected_context_hash": "fb953fc03a99682e9e54e3ee441655f9a40b7e586403ad9519d088984ef66474"
+    },
+    {
+      "case": "cik_0001521036:20250331",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "4174e286ee99fb911ee63aa67e59d71ec845e4f3fe1c8941925694c60e258585"
+      ],
+      "production_projected_context_hash": "ca7be39a49222d1578a2d8e2e6dc9e7c4e9af779ba5bc867eaeb809968bb9191"
+    },
+    {
+      "case": "cik_0001018963:20250930",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "b4372d4a4fbe7fdeee82795fad24c8a5bbd900b1a0b26abed3c123a6c57b0e58"
+      ],
+      "production_projected_context_hash": "ea2f590ea83203331befe56401fbaf3e521e55d76d3e44eea671cab301c6a940"
+    },
+    {
+      "case": "cik_0001309402:20250530",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "25f1bac459d280c85d5a5f0400f79c1d864b770fb12c2e31eded20efc78b9304"
+      ],
+      "production_projected_context_hash": "696d117823dbb0886c7d4d044b5daee08c0b209974c071688b0557bdeb7fcdf6"
+    },
+    {
+      "case": "cik_0000723125:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "842d4b1be34d7f9743ba354339a5d2418a5c269f4b4be49a13e39ad2b7735131"
+      ],
+      "production_projected_context_hash": "6000e52abbe6e1e47e63ea6b6b9ef7b6a40da778eb1e9a003dced2af5313a1ac"
+    },
+    {
+      "case": "cik_0000895421:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "fa4340168ffe1b363811363792353cde0578f87088063a238911c780d26d62f6"
+      ],
+      "production_projected_context_hash": "f45a07f7ae9e576fde54726b41fdff4f0e945e0bd594d3816e379f12c5c884d8"
+    },
+    {
+      "case": "cik_0001164727:20250731",
+      "plan": "plan_r0001_c02",
+      "request_hashes": [
+        "07ee35c98919ccdbb2028f825d8af4e8bf0fe21237952dd35d82662ad250dd0b"
+      ],
+      "production_projected_context_hash": "9c168bc789b8efbfd9ff667c54400805045f859650a36f4589095c92a487cb83"
+    },
+    {
+      "case": "cik_0001646188:20250530",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "f0425a713b23e20398a8028854a5b39f52aa27dd541d4f3f9cdebb0c8442adc2"
+      ],
+      "production_projected_context_hash": "988dd0f9a3e18c3da1947aaac805e1f04eedfce75d39d82ee700b1918c2c78cc"
+    },
+    {
+      "case": "cik_0000895728:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "3f3d2ef9bc3aeed6529f0aa0935912a2966e56a3acd07fe86deaa0f9f805d58b"
+      ],
+      "production_projected_context_hash": "d8b74e2c34a1d3d1828aadd140d0bcfb2d71dfe9df47925afee4e8d6b1b34e21"
+    },
+    {
+      "case": "cik_0001869198:20250331",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "de8e39a267ae9566c4d61b83813ff936682f586fd174a019c05d8374e22e5f28"
+      ],
+      "production_projected_context_hash": "36caa9177e3e1b294975b36f72c9928d66ffa7219ae43c3f746abe94d5be9b56"
+    },
+    {
+      "case": "cik_0000839470:20250731",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "b6dd705af3d30277fb12dc14133c7bfe63b5617968ffcc0e4181554f25aaf382"
+      ],
+      "production_projected_context_hash": "e85687e02ffca2a909086451ff53c3a0a5dd8144f0b57a99cdd360cc52ec9f08"
+    },
+    {
+      "case": "cik_0001590364:20250731",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "2695d8e9e8fe4702f9e0ce27d5f4c8bd905de850e47127ac9ce79c0f52a52966"
+      ],
+      "production_projected_context_hash": "58120c547a3c3243aa1b0269b774f583e579ad5f4df883c2a16f64ccdb5e6c4f"
+    },
+    {
+      "case": "cik_0001114995:20250331",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "77aa88085d5f9709fcdf40007df952697e294c250758ce1fc3a226bac6ed7001"
+      ],
+      "production_projected_context_hash": "652b2f4ee1db0f3e70398086fe717e5bc7a841a0e0eb4db1cda52a88f816f2db"
+    },
+    {
+      "case": "cik_0001847409:20250131",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "bc02032e5d962f41e14d32acac1e80e8d8e447d894090a551f142969969632f2"
+      ],
+      "production_projected_context_hash": "b5d009f81b71e054bc08d721564c7d452dec992a7c7e8df465bbb1af2c532f19"
+    },
+    {
+      "case": "cik_0002023554:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "1d47d00e95b83e2462312b78086bd1fb67e8acf6d1f6c197e3f3f455948368ff"
+      ],
+      "production_projected_context_hash": "1ae2b43f138008192d847839b4deee8ad729128f776c21701c1e99a1b27c9e04"
+    },
+    {
+      "case": "cik_0000936395:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "72f753d77855bf77f88b3828be6a9ce4ce268e137e533d79e2e963670792bfb8"
+      ],
+      "production_projected_context_hash": "78062020e68750a6618650d340c8e6bb98e430c1ff9d8173da42e88357c6e8e7"
+    },
+    {
+      "case": "cik_0001920294:20250530",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "2bb7ae89c57b255b0bcf54336a57a6bcf72ea32b51168d558fa5fee6be85c396"
+      ],
+      "production_projected_context_hash": "9227d79c20598bd73b5c9864eea4385ec657303a183b00d327fc1406521de6b8"
+    },
+    {
+      "case": "cik_0000701818:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "1488199d68f3f3b811df9df01433238a569e69845e9e6e741a839469b805021e"
+      ],
+      "production_projected_context_hash": "24ac8c4302a83d5609b8d6faf02ce9654353a6378cecb924c9d99ed33598a53f"
+    },
+    {
+      "case": "cik_0001174922:20250731",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "6e048430fa6ba6ede98e2df8a088a1c0bf9394e8f1b07cd33f62defe7c0c7466"
+      ],
+      "production_projected_context_hash": "9ee28d39b6a9175125ff076672c21597220d0739231cee60e9af3cbc296bd851"
+    },
+    {
+      "case": "cik_0001576942:20250530",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "0cd90d350c4dbeb4033763b100cea823c4e672b7d661724e83d08dee8fc143e0"
+      ],
+      "production_projected_context_hash": "178bcf089516dedb3d28546e6b1e228771797f6f1618406df2bb7840152686b4"
+    },
+    {
+      "case": "cik_0001051627:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "d6f4a229f3316352a3b3f0bcb3d1cb1b06b73ce7a5103fee38c995dfcc0177a1"
+      ],
+      "production_projected_context_hash": "be5e06b9e7c37328afd8fac2d4c4edaea6f3f6bf5a0f1a3725bc3e2d059b0d22"
+    },
+    {
+      "case": "cik_0001801368:20250331",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "a9dfc8140e6ad30bde944dffde2f75e6c16d951307c0448d7d48a76ed3d64c86"
+      ],
+      "production_projected_context_hash": "e0b06385f04d85d5daccf7402314e23a3bf30fd34fe88b480eb50245b1fbec11"
+    },
+    {
+      "case": "cik_0001830043:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "fac8a3b5b031ab883f11acc31ed107589ea8f578442fbbfbd44e39eeb73e6b78"
+      ],
+      "production_projected_context_hash": "b88f7876516cbaa2283f7eae3c410c6cdf751bfa2a0344f600783ac0966396aa"
+    },
+    {
+      "case": "cik_0000860413:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "fd8b848feb29ed3001624f9be5ac537cf2bce08ed1152f33dee0c9506d5398a1"
+      ],
+      "production_projected_context_hash": "9cb93787b3c5c8717b4621631c8c4a5985e22cfd771381193672b09075247960"
+    },
+    {
+      "case": "cik_0001521036:20250331",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "4ff7513f931ddd6c3f3324521ddc6869db851d60c7097f2af051140296086dd9"
+      ],
+      "production_projected_context_hash": "dfe410df9054748a76995c77969608af4e1b6d20fa105f179adc690bac87ddd7"
+    },
+    {
+      "case": "cik_0001018963:20250930",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "15aee1afee02d0a5da7d78f479c1a8fa742b56d0e4ded702e733658c4b0c5384"
+      ],
+      "production_projected_context_hash": "b8e695ed7a865d33b4e2ad1fcbce1abbb919d6249b68fc33ff49e4aa32fc3d0e"
+    },
+    {
+      "case": "cik_0001309402:20250530",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "397a3f68485a2566241689b5af496ee0578e031f37dfdc4db438966b71abb57f"
+      ],
+      "production_projected_context_hash": "eecfe0312c9435b7e86e0d67c2675e66773652b7724791f36d58f4dc90b0b47f"
+    },
+    {
+      "case": "cik_0000723125:20250731",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "7e53f037afc8dc250beb9e5e9fe75462197c54b7113513a46048d8656b16304b"
+      ],
+      "production_projected_context_hash": "97a67b3c8275431950bf904b1f71dab7b3c6cdad831e380e4abf6116dc179632"
+    },
+    {
+      "case": "cik_0001164727:20250731",
+      "plan": "plan_r0001_c01",
+      "request_hashes": [
+        "6f320aeabcc0a0e645bbdfc7635ee3941b7dcdb8bdec64cab17340734f765f8f"
+      ],
+      "production_projected_context_hash": "424a40ee4b9612e654c6e4643ffa3d2a09f559997369ff82b78d9b218582cc6e"
+    }
+  ],
+  "method": "Rebuild production _CaseIdentityProjection from each frozen case inventory, compare complete normalized opaque-context JSON, then compare actual UTF8 HTTP user input byte-for-byte to stage message. No custom financial/date masking.",
+  "limits": "Typed assembly transmission and preservation only; does not prove source semantic truth, complete Fast/Slow or learning benefit."
+}

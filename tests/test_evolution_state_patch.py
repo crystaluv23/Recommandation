@@ -241,6 +241,60 @@ class StatePatchTests(TestCase):
 
 
 class IncrementalRoleTests(TestCase):
+    def test_initial_temporal_and_source_errors_share_the_first_repair_frontier(self):
+        from datetime import datetime
+        from stock_opportunity_agent.research.compute_tools import format_computed_card_readable
+        from stock_opportunity_agent.research.evolution_core import default_information_plan
+        from stock_opportunity_agent.research.evolution_plan_roles import LLMResearchController
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+        )
+
+        basic = {'requests': [{'projections': [
+            {'projection_id': 'p', 'exact_text': 'The issuer develops products.'},
+        ]}]}
+        good = {'kind': 'basic_info', 'claim': 'The issuer develops products.',
+                'projection_id': 'p', 'exact_text': 'The issuer develops products.'}
+        metric = {'metric': 'price_shape', 'params': {'window_days': 180},
+                  'values': {'return_pct': 22.4}, 'labels': {'trend': 'uptrend'}}
+        bad = {'kind': 'basic_info', 'claim': 'Market momentum is favourable.',
+               'projection_id': 'p', 'exact_text': format_computed_card_readable(metric)}
+        invalid = ResearchState(
+            current_beliefs=(good['claim'],),
+            next_information_needs=(
+                'What actual revenue results will be reported in 2026?',
+                'Which customer contracts were disclosed by 2025-09-30?',
+            ),
+        ).to_dict()
+        invalid['supporting_evidence'] = [good, bad]
+        context = {'prediction_time': '2025-09-30T00:00:00+00:00'}
+        with self.assertRaises(StructuredValidationError) as caught:
+            _normalize_research_state_output(invalid, initialize=True,
+                basic_info=basic, evaluation_context=context)
+        self.assertEqual([issue.code for issue in caught.exception.issues],
+                         ['future_information_unavailable', 'basic_literal_not_grounded'])
+        self.assertEqual(caught.exception.issues[1].paths, ('supporting_evidence[1]',))
+
+        corrected = 'Which delivery schedules for 2026 were disclosed by 2025-09-30?'
+        def repair(call):
+            feedback = call['payload']['validation_feedback']
+            base = feedback['invalid_output']
+            self.assertEqual(base['supporting_evidence'], [good])
+            self.assertEqual(base['current_beliefs'], invalid['current_beliefs'])
+            self.assertEqual(base['next_information_needs'][1], invalid['next_information_needs'][1])
+            return patch(call['payload']['output_patch_contract'],
+                         {'op': 'replace', 'path': 'next_information_needs[0]', 'value': corrected})
+        caller = PatchCaller(invalid, repair)
+        controller = LLMResearchController(caller)
+        controller.set_evaluation_context(datetime.fromisoformat(context['prediction_time']))
+        controller.set_computed_metrics([metric])
+        plan = default_information_plan()
+        state = controller.initialize(plan, basic).value
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(state.next_information_needs, (corrected, invalid['next_information_needs'][1]))
+        self.assertEqual(state.current_beliefs, tuple(invalid['current_beliefs']))
+        self.assertEqual([ref.to_dict() for ref in state.supporting_evidence], [good])
+
     def test_explicit_percent_change_checks_signed_changes_without_joining_windows(self):
         from stock_opportunity_agent.research.evolution_output_validation import _explicit_percent_change_issues
 

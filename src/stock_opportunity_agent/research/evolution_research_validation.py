@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import re
+from dataclasses import replace
 from datetime import date, datetime
 from difflib import SequenceMatcher
 from typing import Any, Iterable, Mapping
@@ -861,7 +862,7 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 
 
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
-    r"\b(?:timing|dates?|schedules?|timelines?|milestones?|expected|anticipated|"
+    r"\b(?:timing|dates?|schedules?|formats?|timelines?|milestones?|expected|anticipated|"
     r"projected|projections?|planned|"
     r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|estimates?|estimated|consensus|"
     r"targets?|goals?|openings?|could|might|would|commentary|"
@@ -883,6 +884,32 @@ _FUTURE_REALIZED_RESULT = re.compile(
     r"\bhow\s+(?:many|much)\b",
     re.IGNORECASE,
 )
+
+
+_RESULTS_EVENT_METADATA = re.compile(
+    r"\b(?:timing|dates?|schedules?|formats?|"
+    r"(?:expected|anticipated|planned)\s+scope)\s+(?:of|for)\s+"
+    r"(?:[A-Za-z0-9'_-]+\s+){0,12}(?P<before>results?)\s+"
+    r"(?:presentations?|releases?|publications?)\b|"
+    r"\b(?P<after>results?)\s+(?:presentations?|releases?|publications?)\s+"
+    r"(?:timing|dates?|schedules?|formats?)\b",
+    re.IGNORECASE,
+)
+
+
+def _requests_realized_results(text: str) -> bool:
+    """Distinguish realized findings from a results-event metadata object.
+
+    Mask only the modifier in that local noun phrase for intent detection.
+    Actual-result markers elsewhere in a mixed question remain detectable.
+    The caller still requires a valid cutoff and checks publication dates.
+    """
+
+    words = list(text)
+    for match in _RESULTS_EVENT_METADATA.finditer(text):
+        start, end = match.span("before" if match.group("before") else "after")
+        words[start:end] = " " * (end - start)
+    return bool(_FUTURE_REALIZED_RESULT.search("".join(words)))
 
 
 _TRAILING_FUTURE_EXCLUSION = re.compile(
@@ -1052,7 +1079,7 @@ def _future_source_date_refs(
     if (
         _has_prediction_bounded_as_of_clause(text, prediction_date)
         and _FUTURE_EXPECTATION_OR_SCHEDULE.search(text)
-        and not _FUTURE_REALIZED_RESULT.search(text)
+        and not _requests_realized_results(text)
         and not future_source_availability
     ):
         return []
@@ -1422,7 +1449,7 @@ def _restore_inherited_need_cutoffs(
                 item, cutoff, field_name=field
             ):
                 continue
-            if _FUTURE_REALIZED_RESULT.search(item):
+            if _requests_realized_results(item):
                 continue
             topic = re.sub(
                 r"\s+(?:remain(?:s)?|is|are)\s+unresolved[.?!]?\s*$", "", item,
@@ -1595,6 +1622,32 @@ def _anchor_restatement_issues(
     return issues
 
 
+def _initial_basic_grounding_issues(
+    value: Mapping[str, Any], basic_info: Mapping[str, Any],
+    control_texts: tuple[str, ...] = (),
+) -> list[ValidationIssue]:
+    """Reuse exact source checks in first feedback when refs are constructible."""
+
+    try:
+        state = ResearchState.from_dict(value)
+    except ValidationError:
+        # Existing raw shape checks retain authority over malformed refs.
+        return []
+    try:
+        _validate_research_state_refs(state, phase="initialize", basic_info=basic_info)
+    except StructuredValidationError as exc:
+        issues = [issue for issue in exc.issues if issue.code == "basic_literal_not_grounded"]
+        for index, issue in enumerate(issues):
+            match = re.fullmatch(r"supporting_evidence\[(\d+)\]", issue.paths[0])
+            if match is not None and state.supporting_evidence[int(match.group(1))].exact_text in control_texts:
+                issues[index] = replace(issue, repair_context={
+                    **issue.repair_context,
+                    "mechanical_action": "remove_runtime_control_citation",
+                })
+        return issues
+    return []
+
+
 def _normalize_research_state_output(
     value: Mapping[str, Any],
     *,
@@ -1602,6 +1655,7 @@ def _normalize_research_state_output(
     initialize: bool = False,
     basic_info: Mapping[str, Any] | None = None,
     evaluation_context: Mapping[str, Any] | None = None,
+    control_texts: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """Validate tagged-ref shapes and drop only allowed legacy Signal fields."""
 
@@ -1614,6 +1668,10 @@ def _normalize_research_state_output(
     future_information_issues = _raw_future_information_issues(
         normalized,
         evaluation_context,
+    )
+    basic_grounding_issues = (
+        _initial_basic_grounding_issues(normalized, basic_info, control_texts)
+        if initialize and basic_info is not None else []
     )
     if future_information_issues or anchor_issues:
         # A temporal rejection still surfaces every other independently
@@ -1633,6 +1691,7 @@ def _normalize_research_state_output(
             future_information_issues.extend(
                 _raw_basic_literal_identity_issues(normalized, previous_state)
             )
+            future_information_issues.extend(basic_grounding_issues)
         future_information_issues.extend(anchor_issues)
         raise StructuredValidationError(future_information_issues)
     evidence = normalized.get("supporting_evidence")
@@ -1643,7 +1702,7 @@ def _normalize_research_state_output(
         basic_info=basic_info,
         evaluation_context=evaluation_context,
     )
-    structured_preissues = list(issues)
+    structured_preissues = [*issues, *basic_grounding_issues]
     issues = []
     if not isinstance(evidence, list):
         if structured_preissues:

@@ -20,6 +20,13 @@ with `mechanical_action=context_only_selection`, an exact row path and matching
 Signal identity. It removes an unsupported ownership claim while preserving the
 selected capability and unresolved need; it cannot invent a replacement answer.
 
+An invalid Basic Info citation is mechanically removable before correction only
+when its owning validator marks `mechanical_action=remove_runtime_control_citation`
+after an exact match to a separately supplied runtime summary. This does not
+make all ungrounded literals mechanical; ambiguous source corrections retain
+their existing bounded LLM opportunity. Complete merged validation still owns
+acceptance and the underlying computed card remains available.
+
 ## Verification
 
 Test typed permission rejection, correct sibling preservation, full merged

@@ -273,9 +273,9 @@ class LLMResearchController:
                 "you return. Source "
                 "status is not projection visibility; partial_context_budget, "
                 "omitted_context_budget, and no_context_spans prove neither presence "
-                "nor absence. The downstream Predictor receives this compact "
-                "ResearchState rather than full Basic "
-                "projections, so retain the smallest material direct support or "
+                "nor absence. The final Predictor assembly retains Basic Info "
+                "projections, this ResearchState, and later stage products. In "
+                "this state retain the smallest material direct support or "
                 "counter-evidence without enumerating requests or sources. "
                 "Corrections must satisfy every prior obligation simultaneously: a "
                 "hypothesis reframed to respect the six-month horizon whose "
@@ -295,6 +295,7 @@ class LLMResearchController:
                         initialize=True,
                         basic_info=basic_info,
                         evaluation_context=evaluation_context,
+                        control_texts=tuple(card["readable"] for card in self.computed_metrics),
                     )
                 ),
                 phase="initialize",

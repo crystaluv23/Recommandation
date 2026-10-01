@@ -1,0 +1,17 @@
+{
+  "network_calls": 0,
+  "source_request_hash": "8929edc9001207ca29523005f6a112224b5a6755aa89e7c26abc4a5fd9c07767",
+  "mechanically_removed_paths": [
+    "supporting_evidence[6]"
+  ],
+  "LLM_patch_paths": [
+    "next_information_needs[0]"
+  ],
+  "corrected_need": "What did the issuer disclose by 2025-09-30 about the schedule, format, or expected scope of the full RADIANT study results presentation at the American Epilepsy Society Annual Meeting in December 2025?",
+  "valid_sibling_evidence_preserved": true,
+  "other_state_fields_preserved": true,
+  "complete_production_initialize_parser_passed": true,
+  "replay_calls": 2,
+  "method": "Production LLMResearchController receives actual anonymous raw response and emitted control summaries. It removes only the explicitly typed runtime-summary citation, revalidates, then applies the actual paid need-only correction rebound to the new snapshot.",
+  "limits": "Offline reconstruction of actual saved content and correction; no live completion or quality-gain claim."
+}

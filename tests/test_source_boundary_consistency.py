@@ -133,6 +133,73 @@ class SourceBoundaryConsistencyTests(TestCase):
                 self.assertEqual(bool(_future_source_date_refs(text, date(2025, 7, 31),
                                  field_name='next_information_needs')), text in prohibited)
 
+    def test_disclosed_results_event_metadata_is_not_a_future_result_request(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_future_information_issues,
+        )
+
+        context = {'prediction_time': '2025-09-30T00:00:00+00:00'}
+        live_question = (
+            'What did the issuer disclose by 2025-09-30 about the schedule, '
+            'format, or expected scope of the full RADIANT study results '
+            'presentation at the American Epilepsy Society Annual Meeting '
+            'in December 2025?'
+        )
+        allowed = (
+            live_question,
+            'What format of the results release in December 2025 was disclosed by 2025-09-30?',
+            'Which results presentation dates for 2026 were available as of the prediction time?',
+            'What expected scope of the phase 2 results publication in 2026 was disclosed by 2025-09-30?',
+        )
+        for field in ('next_information_needs', 'open_questions'):
+            for question in allowed:
+                with self.subTest(field=field, question=question):
+                    value = {field: [question]}
+                    self.assertEqual(_raw_future_information_issues(value, context), [])
+                    self.assertEqual(value[field], [question])
+
+    def test_results_event_metadata_does_not_admit_actuals_or_later_sources(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _raw_future_information_issues,
+        )
+
+        context = {'prediction_time': '2025-09-30T00:00:00+00:00'}
+        prohibited = (
+            'What results were presented in December 2025, as of 2025-09-30?',
+            'What actual results and the schedule of the results presentation in December 2025 were disclosed by 2025-09-30?',
+            'What was the schedule of the results presentation and its realized findings in December 2025, as of 2025-09-30?',
+            'What contents of the scheduled results presentation in December 2025 were available by 2025-09-30?',
+            'What schedule of the results presentation was published in December 2025 compared with information available as of 2025-09-30?',
+            'What schedule of the results presentation in December 2025 will be disclosed?',
+            'What format of the results release in December 2025 was disclosed by 2025-11-30?',
+        )
+        for question in prohibited:
+            with self.subTest(question=question):
+                issues = _raw_future_information_issues(
+                    {'next_information_needs': [question]}, context,
+                )
+                self.assertTrue(issues)
+                self.assertEqual(issues[0].paths, ('next_information_needs[0]',))
+                self.assertEqual(issues[0].allowed_repairs, ('replace', 'remove'))
+
+    def test_results_event_residual_inherits_only_the_existing_cutoff(self):
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _bounded_residual_need,
+        )
+
+        cutoff = date(2025, 9, 30)
+        parent = 'What schedule of the results presentation in December 2025 was disclosed by 2025-09-30?'
+        residual = 'The format of the results presentation in December 2025 remains unresolved.'
+        restored = _bounded_residual_need(residual, parent, cutoff)
+        self.assertIsNotNone(restored)
+        self.assertIn('by 2025-09-30', restored)
+        self.assertFalse(_future_source_date_refs(restored, cutoff,
+                         field_name='next_information_needs'))
+        self.assertIsNone(_bounded_residual_need(
+            'Actual results from the December 2025 presentation remain unresolved.',
+            parent, cutoff,
+        ))
+
     def test_multiple_explicit_issuer_ciks_and_domains_restore_without_masking_financial_values(self):
         aliases = ('cik_0002009312', 'cik_0000895728', 'Aureus', 'Enbridge', 'Enbridge Inc.')
         projection = _CaseIdentityProjection(aliases, '', '', expand_aliases=False)

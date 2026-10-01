@@ -1,0 +1,914 @@
+{
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v165_integrated",
+  "frozen_code_revision": "6e3ae1c323b4d023e62958187ae17bac5f0ce002",
+  "retrospective_only": true,
+  "network_calls": 0,
+  "observed_pointers": {
+    "last_completed_round": 1,
+    "last_completed_cycle": 0
+  },
+  "plans": [
+    {
+      "plan_id": "plan_r0001_c01",
+      "metrics": {
+        "binary_f1": 0.7333333333333334,
+        "binary_precision": 0.6875,
+        "binary_recall": 0.7857142857142857,
+        "confusion": {
+          "false_negative": 3,
+          "false_positive": 5,
+          "true_negative": 5,
+          "true_positive": 11
+        },
+        "magnitude_accuracy": 0.35714285714285715,
+        "magnitude_macro_f1": 0.1851851851851852,
+        "precision_defined": true,
+        "predicted_positive_count": 16,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "fitness": {
+        "eligible": true,
+        "evidence_covered_count": 22,
+        "expected_case_count": 24,
+        "predicted_positive_count": 16,
+        "reasons": [],
+        "status": "eligible",
+        "true_positive_count": 11,
+        "valid_case_count": 24
+      },
+      "magnitude_diagnostics": {
+        "conditional_accuracy_on_tp": 0.45454545454545453,
+        "confusion_matrix": {
+          "10x+": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 2,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "2-3x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 5,
+            "predicted_3-10x": 0,
+            "predicted_negative": 2
+          },
+          "3-10x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 4,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "non_surge": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 5,
+            "predicted_3-10x": 0,
+            "predicted_negative": 4
+          }
+        },
+        "diagnostic_population": "research_completed",
+        "excluded_technical_case_count": 2,
+        "magnitude_correct_count": 5,
+        "missed_surge_count": 2,
+        "overestimate_count": 0,
+        "per_class_support": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 4
+        },
+        "prediction_distribution": {
+          "predicted_10x+": 0,
+          "predicted_2-3x": 16,
+          "predicted_3-10x": 0
+        },
+        "research_completed_case_count": 22,
+        "scored_case_count": 24,
+        "surge_case_count": 13,
+        "tp_denominator": 11,
+        "truth_distribution": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 4,
+          "non_surge": 9
+        },
+        "undefined_reason": null,
+        "underestimate_count": 6
+      }
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "metrics": {
+        "binary_f1": 0.6666666666666666,
+        "binary_precision": 0.625,
+        "binary_recall": 0.7142857142857143,
+        "confusion": {
+          "false_negative": 4,
+          "false_positive": 6,
+          "true_negative": 4,
+          "true_positive": 10
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.1568627450980392,
+        "precision_defined": true,
+        "predicted_positive_count": 16,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "fitness": {
+        "eligible": true,
+        "evidence_covered_count": 24,
+        "expected_case_count": 24,
+        "predicted_positive_count": 16,
+        "reasons": [],
+        "status": "eligible",
+        "true_positive_count": 10,
+        "valid_case_count": 24
+      },
+      "magnitude_diagnostics": {
+        "conditional_accuracy_on_tp": 0.4,
+        "confusion_matrix": {
+          "10x+": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 2,
+            "predicted_3-10x": 0,
+            "predicted_negative": 0
+          },
+          "2-3x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 4,
+            "predicted_3-10x": 0,
+            "predicted_negative": 3
+          },
+          "3-10x": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 4,
+            "predicted_3-10x": 0,
+            "predicted_negative": 1
+          },
+          "non_surge": {
+            "predicted_10x+": 0,
+            "predicted_2-3x": 6,
+            "predicted_3-10x": 0,
+            "predicted_negative": 4
+          }
+        },
+        "diagnostic_population": "research_completed",
+        "excluded_technical_case_count": 0,
+        "magnitude_correct_count": 4,
+        "missed_surge_count": 4,
+        "overestimate_count": 0,
+        "per_class_support": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5
+        },
+        "prediction_distribution": {
+          "predicted_10x+": 0,
+          "predicted_2-3x": 16,
+          "predicted_3-10x": 0
+        },
+        "research_completed_case_count": 24,
+        "scored_case_count": 24,
+        "surge_case_count": 14,
+        "tp_denominator": 10,
+        "truth_distribution": {
+          "10x+": 2,
+          "2-3x": 7,
+          "3-10x": 5,
+          "non_surge": 10
+        },
+        "undefined_reason": null,
+        "underestimate_count": 6
+      }
+    }
+  ],
+  "request_stage_counts": {
+    "research_controller_reflect": 135,
+    "llm_signal_batch_execute": 85,
+    "mining_controller_step": 10,
+    "signal_retrieval_cards": 91,
+    "blind_predictor_posthoc_reflect": 46,
+    "blind_predictor_predict": 46,
+    "blind_predictor_posthoc_reflect_correction": 20,
+    "llm_signal_batch_execute_correction": 38,
+    "research_controller_initialize": 48,
+    "research_controller_initialize_correction": 18,
+    "signal_retrieval_cards_correction": 54,
+    "plan_critic": 2,
+    "research_controller_reflect_correction": 2,
+    "slow_source_read": 3,
+    "round_reflect_correction": 1,
+    "information_plan_propose": 2,
+    "signal_mining_reflect": 1,
+    "plan_critic_correction": 1,
+    "round_reflect": 1
+  },
+  "mining_prefix_requests": [
+    {
+      "request_hash": "bf415d61eeef2b9889caf718455dce477ca903f973e7af50696e23e01a3191db",
+      "input_tokens": 83122,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 194,
+        "known_event_refs": 2,
+        "known_fact_refs": 2,
+        "known_relation_refs": 2,
+        "label_map": 188,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 151,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 7
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 28,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "max_documents": 40,
+        "query": null,
+        "rationale": [
+          "No evidence fetched yet; need broad structured and narrative coverage across all 8 cases before any proposal.",
+          "company_facts/financials give the structured concepts (revenue, cash flow, margins) the manifest confirms are comparable across 7 cases.",
+          "filing/10-k/news supply the narrative spans needed for grounded narrative exploration and the order/backlog/contract needs."
+        ],
+        "source_families": [
+          "company_facts",
+          "financials",
+          "filing",
+          "10-k",
+          "news"
+        ]
+      },
+      "last_read_receipt": {},
+      "prior_result_action": null,
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "f9fdd7904d6b9f4e74475efaf025889a0bfafc6311754665834b842d7c90cfad",
+      "input_tokens": 92344,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 568,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 150,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 27,
+        "light_remaining": 4
+      },
+      "action": {
+        "action": "inspect_catalog",
+        "rationale": [
+          "Narrative modality is unexplored and required; I need the titled document directory to pick a bounded raw span.",
+          "Structured evidence is already fetched and covered; spend light budget on discovery of narrative documents.",
+          "This is a light action and light_remaining=4, so it is admissible."
+        ],
+        "scope": "evidence"
+      },
+      "last_read_receipt": {
+        "action": "fetch_evidence"
+      },
+      "prior_result_action": "fetch_evidence",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "e72c9fe016c510f6a54a313dba6228dccdca07009f8fef9f6cf2b023a4d43039",
+      "input_tokens": 94046,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 5737,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 150,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "action": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "max_documents": 24,
+        "query": "order contract award backlog capacity utilization demand surge customer commitment",
+        "source_families": [
+          "news",
+          "filing"
+        ]
+      },
+      "last_read_receipt": {
+        "action": "inspect_catalog"
+      },
+      "prior_result_action": "inspect_catalog",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "440218cbcf2f932f56ca5476d1d69f1ef9284535369f498248a148bd0ea3b253",
+      "input_tokens": 94072,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 5737,
+        "last_invalid_action": 93,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 150,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "action": {
+        "action": "read_span",
+        "event_ref": "event-56d9b40bbba0b9a9",
+        "length": 4000,
+        "offset": 20972,
+        "rationale": [
+          "Narrative modality is required and unexplored; structured is already explored.",
+          "Read the 8-K results-of-operations span to ground narrative evidence before any proposal.",
+          "This is the earliest in-window filing with a results section, useful for demand/backlog commentary."
+        ]
+      },
+      "last_read_receipt": {
+        "action": "inspect_catalog"
+      },
+      "prior_result_action": "inspect_catalog",
+      "last_invalid_action": {
+        "action": "fetch_evidence",
+        "issue": "rationale must be a non-empty array of short strings"
+      }
+    },
+    {
+      "request_hash": "20206a54c76ce84fe7b74030f5d4cffdef6da5ecb11da2cba233c8e1f56a83b2",
+      "input_tokens": 92700,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 1828,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 27,
+        "light_remaining": 3
+      },
+      "action": {
+        "action": "inspect_catalog",
+        "rationale": [
+          "Need to see the evidence directory to locate narrative documents with order/backlog/capacity content for the demand-surge axis.",
+          "Budget: heavy=27, browse=23, light=3; a light inspection is affordable and will guide the next fetch/read.",
+          "Prior fetch already covered structured families; directory will show which narrative docs remain unread."
+        ],
+        "scope": "evidence"
+      },
+      "last_read_receipt": {
+        "action": "read_span",
+        "ref": "event-56d9b40bbba0b9a9",
+        "offset": 20972,
+        "length": 4000,
+        "verbatim_hash": "65a3c123f1750fe3c56a40e24d925e1b6d75ffd22251003d8b0fb38d5dccd277",
+        "has_readable_text": true,
+        "next_readable_start": 25083
+      },
+      "prior_result_action": "read_span",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "63aa71bdb538048da978e6b764b03130bdc81afa0f7331e85654b7564daf0bb7",
+      "input_tokens": 94047,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 5737,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 27,
+        "light_remaining": 2
+      },
+      "action": {
+        "action": "read_span",
+        "event_ref": "event-56d9b40bbba0b9a9",
+        "length": 4000,
+        "offset": 20972,
+        "rationale": [
+          "Narrative modality is flagged explored but I have not yet read any verbatim narrative span; grounding requires at least one bounded raw read.",
+          "This 8-K (2025-07-17) is a results/Reg FD filing with a readable section at raw_start 20972, likely containing management commentary on demand, backlog, or guidance.",
+          "Reading it tests whether a positive-vs-control narrative contrast (e.g., order confirmations, capacity/backlog language) exists before I spend heavy budget on compute_statistic or compare_groups."
+        ]
+      },
+      "last_read_receipt": {
+        "action": "inspect_catalog"
+      },
+      "prior_result_action": "inspect_catalog",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "3f925819ae0f3dc8d0a2064b87ab52f4294258480a4ae0435ca316cd250b9b83",
+      "input_tokens": 92700,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 1828,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 27,
+        "light_remaining": 2
+      },
+      "action": {
+        "action": "inspect_catalog",
+        "rationale": [
+          "Need to see the titled document directory before spending browse budget on raw narrative reads.",
+          "Evidence digest shows narrative families filing/news are available and explored at index level, but I still need concrete document refs to ground a narrative predicate.",
+          "Light budget is 2; this is a light inspection and the cheapest way to locate the most relevant earnings-call or press-release spans."
+        ],
+        "scope": "evidence"
+      },
+      "last_read_receipt": {
+        "action": "read_span",
+        "ref": "event-56d9b40bbba0b9a9",
+        "offset": 20972,
+        "length": 4000,
+        "verbatim_hash": "65a3c123f1750fe3c56a40e24d925e1b6d75ffd22251003d8b0fb38d5dccd277",
+        "has_readable_text": true,
+        "next_readable_start": 25083
+      },
+      "prior_result_action": "read_span",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "a10d52c0e98f8669d130ee9e8511a1012ec83646f130b7ad5958d53085c4b34f",
+      "input_tokens": 94047,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 5737,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "action": {
+        "action": "read_span",
+        "event_ref": "event-56d9b40bbba0b9a9",
+        "length": 4000,
+        "offset": 20972,
+        "rationale": [
+          "Evidence directory shows a 2025-07-17 8-K with Item 2.02 results and Item 7.01 Reg FD disclosure; this is a point-in-time operating update likely containing forward demand/backlog commentary relevant to the surge_direction axis.",
+          "Reading the section body rather than the raw start avoids hidden HTML/XBRL metadata and grounds narrative evidence for the order_confirmation_disclosed predicate.",
+          "Budget: browse_remaining=22, heavy_remaining=27; a bounded narrative read is the cheapest way to ground a first-class narrative candidate before proposing."
+        ]
+      },
+      "last_read_receipt": {
+        "action": "inspect_catalog"
+      },
+      "prior_result_action": "inspect_catalog",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "c4b7974b8f777a590db2499dd3fc1c9a0584cb44093a87b25a12ccd05a90dd6b",
+      "input_tokens": 92700,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 1828,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "action": {
+        "action": "read_span",
+        "event_ref": "event-56d9b40bbba0b9a9",
+        "length": 4000,
+        "offset": 25083,
+        "rationale": [
+          "Continue bounded narrative read of the 8-K earnings release body; prior read only reached the cover/exhibit boilerplate.",
+          "The next_readable_start points to the substantive results-of-operations text, which is where demand, backlog, or capacity commentary would appear.",
+          "Narrative exploration is required before any domain terminal and browse budget remains ample."
+        ]
+      },
+      "last_read_receipt": {
+        "action": "read_span",
+        "ref": "event-56d9b40bbba0b9a9",
+        "offset": 20972,
+        "length": 4000,
+        "verbatim_hash": "65a3c123f1750fe3c56a40e24d925e1b6d75ffd22251003d8b0fb38d5dccd277",
+        "has_readable_text": true,
+        "next_readable_start": 25083
+      },
+      "prior_result_action": "read_span",
+      "last_invalid_action": null
+    },
+    {
+      "request_hash": "7c9e378555f8845ce0a2be04281591bfbf87869e8f15dc1328580c0c0215950b",
+      "input_tokens": 92423,
+      "field_utf8_bytes": {
+        "available_actions": 170,
+        "available_source_families": 163,
+        "backlog_needs": 248343,
+        "budget": 69,
+        "case_refs": 96,
+        "evidence_digest": 8132,
+        "known_event_refs": 2002,
+        "known_fact_refs": 8275,
+        "known_relation_refs": 4785,
+        "label_map": 188,
+        "last_action_result": 711,
+        "measurable_evidence_manifest": 5259,
+        "meta_info": 11524,
+        "meta_memory_disclosures": 2,
+        "modality_coverage": 149,
+        "prior_modality_footprints": 2,
+        "research_axis": 158,
+        "seed": 12,
+        "signal_catalog": 3130,
+        "state": 16
+      },
+      "backlog_count": 276,
+      "budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 27,
+        "light_remaining": 1
+      },
+      "action": {
+        "action": "read_span",
+        "event_ref": "event-56d9b40bbba0b9a9",
+        "length": 4000,
+        "offset": 29084,
+        "rationale": [
+          "The last read of this 8-K exhibit window returned only 229 readable characters (exhibit list and signature block), so the substantive press release and Q2 investor presentation content lies further into the document.",
+          "Continuing at next_readable_start=29084 explores the actual narrative body rather than repeating the empty range.",
+          "This is a filing-family narrative read, admissible under browse_remaining=20, and it advances grounded narrative exploration before any terminal action."
+        ],
+        "target": "event_ref"
+      },
+      "last_read_receipt": {
+        "action": "read_span",
+        "ref": "event-56d9b40bbba0b9a9",
+        "offset": 25083,
+        "length": 4000,
+        "verbatim_hash": "dcbb4ca0485a9f905d628e731d4d9b69f031b477e817fa6a1b3401e8d2d0b9e9",
+        "has_readable_text": true,
+        "next_readable_start": 29084
+      },
+      "prior_result_action": "read_span",
+      "last_invalid_action": null
+    }
+  ],
+  "verified_isolated_repair": {
+    "report": "v165-initialize-frontier-replay-20261002.json",
+    "full_suite_tests": 1278,
+    "status": "pass",
+    "real_live_application": false
+  },
+  "content_findings": [
+    {
+      "scope": "Initialize",
+      "issue": "False temporal rejection of as-of-disclosed results-event metadata and delayed runtime-summary citation error.",
+      "status": "isolated production replay passed; successor live acceptance pending"
+    },
+    {
+      "scope": "Predictor/Posthoc",
+      "issue": "Bumble: 106% belongs to recent 6.30, not baseline 6.494; baseline to threshold 12.988 is 100%. Incorrect denominator propagated into sources_checked fact.",
+      "status": "pending shared numeric-relation validation"
+    },
+    {
+      "scope": "Predictor",
+      "issue": "Newmont: Q2 phrase used for H1 metrics; High Tide: positive ratio called negative; Ciena: margin difference written as percent rather than percentage points.",
+      "status": "pending source-period and metric-unit/sign checks"
+    },
+    {
+      "scope": "Signal/Predictor",
+      "issue": "Micron: March fiscal Q3 guidance treated as current beside June realized Q3; source dates already visible.",
+      "status": "pending temporal comparison semantics"
+    },
+    {
+      "scope": "Mining context",
+      "issue": "276 full backlog rows including provenance repeated in every decision; backlog approximately 248KB dominates 83k-94k input tokens. Existing bounded feedback memory does not bound backlog.",
+      "status": "requires dependency-based backlog view with complete, reachable disposition contract"
+    },
+    {
+      "scope": "Mining incremental progress",
+      "issue": "At least three requests repeat same event/offset/length; intervening catalog action replaces previous read receipt and no durable read-progress summary is supplied. Raw source read succeeded; replaying it adds no evidence.",
+      "status": "requires persistent read progress and no-op semantics without replacing exact source evidence"
+    }
+  ],
+  "acceptance": {
+    "binary_floor": 0.6,
+    "both_complete_plan_F1_pass": true,
+    "all_stage_content_correct": false,
+    "complete_fast_slow_commit": false,
+    "benefit_confirmed": false
+  },
+  "limits": "Current live prefix, not a terminal cycle. Exact assembly transport audit covers all 46 persisted real predictions, not semantic truth. Pending source content defects prevent overall acceptance.",
+  "verification": {
+    "full_suite": {
+      "tests": 1278,
+      "result": "pass",
+      "implementation_root": "/Users/l/.codex/worktrees/shared-stage-content/Recommandation/src",
+      "readonly_historical_fixture_root": "/Users/l/Project/Recommandation",
+      "method": "Discover frozen primary tests, replace only the updated final-assembly prompt assertion, append four new regression methods; all imports use isolated source."
+    },
+    "lint": {
+      "result": "environment_failure",
+      "issues": 20,
+      "all_failures_preexisting_historical_links": true,
+      "missing_isolated_fixtures": [
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v112/experiments/round-0001/attempts/plan_r0001_c01.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cycle_state.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/experiments/cycles/cycle-0001/slow_loop_result.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/requests/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-action-plan-2026-09-06.md",
+          "link": "../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/a6e8e3409d3ee826aaeadc34a4b66d795780a5cf598505a2e97dcd58ec97a745.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-t7-live-audit-2026-09-08.md",
+          "link": "../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/f25b6ff6b7e1bc2cb400fc48e548ab1b52c471625b3cfeee27f0867b2b9051ad.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "progress/self-evolution-t7-live-audit-2026-09-08.md",
+          "link": "../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/6d1fa230117e5cd1d955173acdda14caa9d78cdc15de694ed6ae85a464ab37ef.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/fast-slow-magnitude-evolution-action-plan-20260920.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/plans/plan_r0001_c01/record.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/fast-slow-magnitude-evolution-action-plan-20260920.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/requests/6c582cd79203f0d8cdc7164e558064753bec9e0c06d4082733a30183ac07ba50.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/fast-slow-magnitude-evolution-action-plan-20260920.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/meta/round-0001.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/fast-slow-magnitude-evolution-action-plan-20260920.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/state.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/fast-slow-magnitude-evolution-action-plan-20260920.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cycle_state.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md",
+          "link": "../runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/evolution_validation.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/8119a7cd98bc613f53f553b7de7bd90b2c8d5d5b2d31aa15788983ec75573d4b.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/3665caa109d0634830bf5ba520bc9dae2c3e9aa050c8caf06e7a436969c09d1d.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        },
+        {
+          "file": "reports/v130-v138-prompt-flow-audit-20260922.md",
+          "link": "../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/05595c87267a74a8bc6e038ba1e901276b2d9426c70fbb575a5da86973e270f4.json",
+          "primary_fixture_exists": true,
+          "isolated_fixture_exists": false
+        }
+      ],
+      "current_task_text_and_git_checks": "pass"
+    }
+  }
+}

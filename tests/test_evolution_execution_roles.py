@@ -2828,7 +2828,11 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(initialized.value.next_information_needs, (need,))
         self.assertIn(
-            "downstream Predictor receives this compact ResearchState",
+            "final Predictor assembly retains Basic Info projections, this ResearchState, and later stage products",
+            caller.calls[0]["system_prompt"],
+        )
+        self.assertIn(
+            "retain the smallest material direct support or counter-evidence",
             caller.calls[0]["system_prompt"],
         )
 

@@ -29,6 +29,11 @@ Signal retrieval, blind prediction, and Plan reflection.
 
 ## Invariants
 
+- H_init describes the actual final Predictor visibility: the final assembly
+  includes Basic Info cards, accepted state and later stage products. Its
+  instructions must not claim that only the compact state is forwarded.
+  Initialize still retains a bounded set of material sourced claims.
+
 - Adapters translate model output into core protocols; they do not own engine
   state or commit pointers.
 - Prediction-time roles never receive labels or target identity.
