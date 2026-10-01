@@ -2,11 +2,24 @@
 
 from tests.scheme_evolution_test_support import *  # noqa: F403
 from stock_opportunity_agent.research.evolution_core import (
-    _prediction_baseline_from_market_documents,
+    _prediction_baseline_from_market_documents, _basic_info_projection_cards,
 )
 
 
 class InformationPlanRuntimeTests(TestCase):
+    def test_final_projection_preserves_source_time_without_fabricating_legacy_metadata(self) -> None:
+        dated = {"projection_id": "projection_dated", "document_id": "document_dated",
+                 "available_at": "2025-01-02T00:00:00+00:00", "exact_text": "Comments close January 10."}
+        legacy = {"projection_id": "projection_legacy", "exact_text": "Legacy source excerpt."}
+        cards, counts = _basic_info_projection_cards({"requests": [{
+            "request": {"request_id": "request_dated"}, "projections": [dated, legacy],
+        }]})
+        for key in ("document_id", "available_at", "exact_text"):
+            self.assertEqual(cards[0][key], dated[key])
+        self.assertNotIn("available_at", cards[1])
+        self.assertNotIn("document_id", cards[1])
+        self.assertEqual(counts["deferred_projections"], 0)
+
     def test_budget_skipped_posthoc_retains_paid_usage(self) -> None:
         class PaidPosthocPredictor(FixedPredictor):
             def reflect(self, *args):
@@ -190,6 +203,7 @@ class InformationPlanRuntimeTests(TestCase):
                 ground_truth_provider=lambda company_id: GroundTruth(2.5),
             )
         context = trajectory.final_context
+        self.assertEqual(context["prediction_time"], NOW.isoformat())
         self.assertEqual(context["computed_metrics"], controller.bootstrap + controller.metrics)
         self.assertEqual(len(context["document_channel"]), len(controller.views))
         self.assertEqual(context["document_channel"], controller.views)
@@ -198,6 +212,7 @@ class InformationPlanRuntimeTests(TestCase):
         self.assertEqual(context["computed_metrics"][0]["literal_refs"][-1]["as_of_date"], "2025-01-14")
         from stock_opportunity_agent.research.evolution_output_validation import _compact_posthoc_context
         self.assertEqual(_compact_posthoc_context(context)["computed_metrics"], context["computed_metrics"])
+        self.assertEqual(_compact_posthoc_context(context)["prediction_time"], NOW.isoformat())
 
     def test_predictor_preserves_complete_evidence_above_display_target(self) -> None:
         literal = "Complete source sentence with a qualifier. " * 700
@@ -1211,9 +1226,6 @@ class InformationPlanRuntimeTests(TestCase):
                 "doubling_threshold": 206.0,
                 "recent_close": 105.0,
                 "recent_close_date": "2025-07-30",
-                "recent_close_ratio_to_doubling_threshold": (
-                    105.0 / 206.0
-                ),
             },
         )
 

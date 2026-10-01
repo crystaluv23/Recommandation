@@ -7,6 +7,18 @@ and apply only explicitly allowed deterministic recovery transforms.
 
 ## Invariants
 
+- Proposed Plan instructions use the same narrow mandatory-proof gate check as
+  authored reflection actions. Quantified valuation analysis may be useful but
+  cannot become a requirement for a positive opportunity judgment. Reflection
+  correction changes only the named brief/detail; citations and sibling lessons
+  remain unchanged. Ordinary retrospective probability analysis remains permitted.
+  Detection recognizes explicit mandatory price-proof wording within a sentence;
+  ordinary business quantification, negated gates and optional analysis remain
+  permitted. It is a bounded contract guard, not a semantic quality oracle.
+  Offline memory-protocol fixtures may compose a new proposal using the current
+  default analysis instruction when an archived parent contains a prohibited
+  proof gate. Keep the original parent and evidence immutable and disclose that
+  the proposal is scripted; this does not prove historical research quality.
 - The compact posthoc view retains runtime-computed metric cards from the original
   Predictor packet, so numerical price-shape reasoning remains checkable.
 - Validation never infers write authority from diagnostic prose.

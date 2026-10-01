@@ -55,9 +55,6 @@ _VALUE_LABELS = {
     "recent_close": "recent close",
     "recent_close_date": "recent close date",
     "gap_pct": "gap to threshold",
-    "recent_close_ratio_to_doubling_threshold": (
-        "recent close ratio to threshold"
-    ),
 }
 _LABEL_LABELS = {
     "trend": "trend",

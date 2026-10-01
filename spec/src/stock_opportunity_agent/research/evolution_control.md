@@ -1,5 +1,10 @@
 # Evolution Control
 
+Frozen contract loading preserves the JSON representation of an accepted numeric
+cost ceiling (integer or float). Loading and re-freezing must reproduce its exact
+canonical hash without rewriting the original file. Booleans, nonnumbers and
+nonfinite/nonpositive values still fail the existing constructor validation.
+
 ## V8 finite slow-only control
 
 The run contract supports `fast_then_slow`, one-cycle `slow_bootstrap`, and

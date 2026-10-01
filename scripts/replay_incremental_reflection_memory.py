@@ -475,6 +475,7 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
     from dataclasses import replace as _dc_replace
 
     from stock_opportunity_agent.data.resolution import RawInfoRequest
+    from stock_opportunity_agent.research.evolution_core import default_information_plan
 
     parent = _dc_replace(
         parent,
@@ -519,7 +520,9 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
                     "B": parent.basic_info_policy.to_dict(),
                     "H_init": parent.initial_research_skill + " Preserve the applicability conditions and limitations of a retrieved lesson when forming information needs.",
                     "H_reflect": parent.reflection_skill,
-                    "H_analyse": parent.analysis_prompt,
+                    # A scripted proposal must honor today's fixed screening
+                    # contract. The archived parent remains an unchanged input.
+                    "H_analyse": default_information_plan().analysis_prompt,
                 }
             else:
                 raise AssertionError("offline proposer fixture unexpectedly requested correction")
@@ -548,6 +551,7 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
         "retained_round_ids": [entry.round_id for entry in entries],
         "retained_case_count": len(original_cases),
         "scripted_model_calls": len(caller.calls),
+        "scripted_analysis_uses_current_default": True,
         "production_stages": [call["stage"] for call in caller.calls],
         "directory_then_exact_case_read_then_plan": True,
         "source_references_chosen_only_from_model_visible_directory": True,

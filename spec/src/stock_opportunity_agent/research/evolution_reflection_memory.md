@@ -1,5 +1,14 @@
 # Sourced Reflection Memory
 
+New authored actions cannot turn the opportunity-screening classifier into a
+mandatory quantified-path/valuation-bridge or guaranteed-price proof task. A
+narrow shared text guard checks affirmative hard-gate wording, permits explicit
+negative guardrails and optional valuation investigation, and names only the
+invalid brief/detail path. Facts and causal hypotheses may describe retrospective
+errors without this action gate. The Plan owning validator uses the same guard
+before accepting an evolvable instruction; a reference alone does not grant rule
+change authority. This deterministic guard is not universal semantic verification.
+
 ## Purpose
 
 Provide pure, bounded model views and reference resolution over immutable,

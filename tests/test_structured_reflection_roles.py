@@ -17,7 +17,10 @@ from stock_opportunity_agent.research.evolution_plan_roles import (
     LLMBlindPredictor, LLMInformationPlanProposer, LLMPlanCritic, LLMRoundReflector,
     _structured_reflection_items,
 )
-from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
+from stock_opportunity_agent.research.evolution_reflection_memory import (
+    ReflectionMemoryIndex, violates_opportunity_proof_gate,
+)
+from stock_opportunity_agent.research.evolution_output_validation import _validate_fixed_plan_semantics
 from stock_opportunity_agent.research.evolution_signal_roles import LLMSignalMiningModel
 from stock_opportunity_agent.research.signal_evolution import (
     SignalEvolutionEngine, project_slow_method_memory, read_slow_sources,
@@ -66,6 +69,57 @@ def authored(sources, *, category, text, outcome=False):
 
 
 class StructuredReflectionRoleLifecycleTests(unittest.TestCase):
+    def test_plan_consumer_uses_the_same_proof_gate_for_each_instruction(self):
+        from stock_opportunity_agent.research.evolution_core import default_information_plan
+        for field, path in (("initial_research_skill", "H_init"),
+                            ("reflection_skill", "H_reflect"), ("analysis_prompt", "H_analyse")):
+            plan = replace(default_information_plan(), **{
+                field: "A positive judgment requires a numerical valuation bridge.",
+            })
+            with self.subTest(field=field), self.assertRaises(StructuredValidationError) as caught:
+                _validate_fixed_plan_semantics(plan)
+            self.assertIn((path,), [issue.paths for issue in caught.exception.issues])
+            _validate_fixed_plan_semantics(replace(default_information_plan(), **{
+                field: "A surge judgment does not require a quantified valuation bridge.",
+            }))
+
+    def test_screening_guard_distinguishes_mandatory_proof_from_analysis(self):
+        prohibited = (
+            "Before making a surge call, require a forward catalyst that quantifies a path to the threshold.",
+            "A positive judgment requires a numerical valuation bridge.",
+            "Call doubling possible only if there is a proven share-price outcome.",
+            "Do not require proof of revenue; a surge judgment requires a quantified price path.",
+        )
+        permitted = (
+            "A surge judgment does not require a quantified valuation bridge.",
+            "Never require a guaranteed doubling outcome.",
+            "For a possible surge, optionally compare a quantified valuation bridge.",
+            "Require a numerical demand path to support likely revenue growth.",
+            "Assess a possible surge. Require a quantified revenue bridge when comparing accounting scenarios.",
+            "Require a source-backed catalyst for a surge judgment; compare optional price scenarios.",
+        )
+        for text in prohibited + permitted:
+            with self.subTest(text=text):
+                self.assertEqual(violates_opportunity_proof_gate(text), text in prohibited)
+
+    def test_action_proof_gate_has_exact_repair_path_and_preserves_facts(self):
+        index = ReflectionMemoryIndex.from_case_rows([{
+            "source_identity": "case:original", "candidate_judgment_feedback": {"binary_correct": False},
+        }], owner_ref="plan:owner")
+        valid = authored([index.source_catalog()[0]], category="next_explorations",
+                         text="Compare optional catalyst scenarios using dated source evidence.")
+        bad_text = "A positive judgment requires a numerical valuation bridge."
+        for field in ("brief", "detail"):
+            invalid = {**deepcopy(valid), field: bad_text}
+            with self.subTest(field=field), self.assertRaises(StructuredValidationError) as caught:
+                _structured_reflection_items({"reflection_items": [valid, invalid],
+                                              "selected_reflection_refs": []},
+                                             index=index, level="plan", owner_ref="plan:owner")
+            self.assertEqual(caught.exception.issues[0].paths, (f"reflection_items[1].{field}",))
+            for kind in ("fact", "hypothesis"):
+                result = index.create_items([{**invalid, "kind": kind}], level="plan", owner_ref="plan:owner")
+                self.assertEqual(getattr(result[0], field), bad_text)
+
     def test_retry_cannot_select_a_new_same_level_item_as_lower_evidence(self):
         index = ReflectionMemoryIndex.from_case_rows([{
             "source_identity": "case:original", "candidate_judgment_feedback": {"binary_correct": False},

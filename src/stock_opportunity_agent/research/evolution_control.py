@@ -624,7 +624,7 @@ class EvolutionRunContract:
             python_runtime=str(value["python_runtime"]),
             limits=dict(value["limits"]),
             max_external_attempts=int(value["max_external_attempts"]),
-            max_total_cost=float(value["max_total_cost"]),
+            max_total_cost=value["max_total_cost"],
             predictor_semantics_hash=str(
                 value.get("predictor_semantics_hash", FIXED_PREDICTOR_SEMANTICS_HASH)
             ),

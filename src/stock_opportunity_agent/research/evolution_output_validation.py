@@ -16,6 +16,9 @@ from stock_opportunity_agent.models import (
     ValidationError,
     ValidationIssue,
 )
+from stock_opportunity_agent.research.evolution_reflection_memory import (
+    violates_opportunity_proof_gate,
+)
 from stock_opportunity_agent.research.scheme_evolution import (
     BlindPrediction,
     CandidateExecutionRejected,
@@ -673,6 +676,7 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
             if isinstance(result, Mapping):
                 signal_results.append(signal_result_model_view(result))
     compact = {
+        "prediction_time": original_context.get("prediction_time"),
         "final_research_state": original_context.get("final_research_state", {}),
         "signal_results": signal_results,
         "basic_info_source_index": source_index,
@@ -1163,6 +1167,18 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
     """Keep evolvable Plan instructions below the fixed Predictor boundary."""
 
     issues: list[ValidationIssue] = []
+    for field_name, text_value in (
+        ("H_init", plan.initial_research_skill),
+        ("H_reflect", plan.reflection_skill),
+        ("H_analyse", plan.analysis_prompt),
+    ):
+        if violates_opportunity_proof_gate(text_value):
+            issues.append(ValidationIssue(
+                code="plan_fixed_semantics_redefined", paths=(field_name,),
+                message=(f"invalid_field={field_name!r}, a positive opportunity judgment "
+                         "cannot require a quantified path, valuation bridge or guaranteed "
+                         "price outcome; request optional supporting analysis instead"),
+            ))
     if _fixed_semantics_violation(plan.analysis_prompt):
         issues.append(ValidationIssue(
             code="plan_fixed_semantics_redefined", paths=("H_analyse",),

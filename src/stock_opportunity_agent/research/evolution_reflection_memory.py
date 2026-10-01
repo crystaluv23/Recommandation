@@ -33,6 +33,43 @@ _PIT_INEXECUTABLE_ACTION = re.compile(
     re.IGNORECASE,
 )
 
+_MANDATORY_PROOF_CONDITION = re.compile(
+    r"\b(?:requires?|required|must\s+(?:have|provide|show|demonstrate)|"
+    r"only\s+(?:if|when)|unless)\b[^.;]{0,320}?"
+    r"(?:\b(?:quantified|numeric|numerical|quantitative)\s+"
+    r"(?:[\w-]+\s+){0,5}(?:path|bridge|price\s+target)\b|"
+    r"\bquantif(?:y|ies)\s+(?:a\s+)?(?:[\w-]+\s+){0,3}(?:path|bridge)\b|"
+    r"\b(?:guaranteed?|proven|certain)\s+(?:[\w-]+\s+){0,3}"
+    r"(?:doubling|2x|price\s+outcome|share[- ]price\s+outcome)\b)",
+    re.IGNORECASE,
+)
+_OPPORTUNITY_JUDGMENT = re.compile(
+    r"\b(?:surge|doubling|2x|positive\s+judgment|candidate\s+judgment|"
+    r"positive\s+opportunity)\b", re.IGNORECASE,
+)
+
+
+def violates_opportunity_proof_gate(text: str) -> bool:
+    """Recognize affirmative mandatory-proof gates, not optional analysis.
+
+    The narrow policy is shared by new action ingestion and Plan validation;
+    it does not claim to decide arbitrary economic reasoning correctness.
+    """
+
+    for match in _MANDATORY_PROOF_CONDITION.finditer(text):
+        prefix = text[max(0, match.start() - 40):match.start()]
+        if re.search(r"\b(?:not|never|without)\s*$", prefix, re.IGNORECASE):
+            continue
+        # Ordinary quantified business analysis in a neighboring sentence is
+        # not a condition on the fixed screening judgment.
+        sentence_start = max(text.rfind(mark, 0, match.start()) for mark in ".!?") + 1
+        endings = [text.find(mark, match.end()) for mark in ".!?"]
+        sentence_end = min((end for end in endings if end >= 0), default=len(text))
+        scope = text[sentence_start:sentence_end]
+        if _OPPORTUNITY_JUDGMENT.search(scope):
+            return True
+    return False
+
 
 def _reject_pit_inexecutable_action(
     value: Mapping[str, Any],
@@ -516,6 +553,14 @@ class ReflectionMemoryIndex:
             if value["category"] in _OUTCOME_CATEGORIES and not set(scope["plan_refs"]) <= outcome_plans:
                 invalid("outcome claims do not cover the declared Plan scope", "outcome_claims", ("scope.plan_refs", "source_refs", "category"))
             if value["kind"] == "action":
+                for field_name in ("brief", "detail"):
+                    if violates_opportunity_proof_gate(value[field_name]):
+                        invalid(
+                            "action cannot require a quantified path or guaranteed "
+                            "price outcome for a positive opportunity judgment; "
+                            "propose optional supporting analysis instead",
+                            field_name,
+                        )
                 _reject_pit_inexecutable_action(
                     value, invalid, ("brief", "detail")
                 )

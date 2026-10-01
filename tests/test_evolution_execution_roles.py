@@ -4413,11 +4413,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertAlmostEqual(anchor["doubling_threshold"], 2 * mean, places=10)
         self.assertAlmostEqual(anchor["recent_close"], 1.62, places=10)
         self.assertEqual(anchor["recent_close_date"], "2025-03-14")
-        self.assertAlmostEqual(
-            anchor["recent_close_ratio_to_doubling_threshold"],
-            1.62 / (2 * mean),
-            places=10,
-        )
+        self.assertNotIn("recent_close_ratio_to_doubling_threshold", anchor)
 
     def test_v145_research_state_cannot_restate_wrong_anchor_values(self) -> None:
         from stock_opportunity_agent.research.evolution_research_validation import (

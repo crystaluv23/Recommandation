@@ -1,5 +1,10 @@
 # Evolution Plan Roles
 
+Source wording describes its own availability time. Initialize/Reflect must not
+promote an expired dated event or an old source's “currently” into a claim that
+it remains current at prediction_time. Predictor receives the cutoff explicitly
+and retains per-card availability dates; posthoc uses that same cutoff.
+
 The blind LLM Predictor exposes an optional exact initial-request token estimator.
 Estimation and execution share one system prompt and payload, including transport
 identity projection and reasoning headroom. It does not estimate research truth

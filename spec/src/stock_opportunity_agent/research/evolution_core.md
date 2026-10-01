@@ -1,5 +1,13 @@
 # Evolution Core
 
+Final Basic Info cards retain the upstream `document_id` and `available_at` beside
+the complete literal and stable projection id. Final context explicitly includes
+the actual `prediction_time`; consumers must not infer it from optional price
+cards. Missing legacy metadata stays missing, never invented. The near-tautological
+recent-close/doubling-threshold ratio is omitted from newly computed baseline
+blocks; mean, threshold and the dated recent close remain unchanged. This does
+not change outcome labels or the registered distance computation tool.
+
 The fixed Predictor price baseline is computed from complete, hash-verified,
 point-in-time market documents selected by Basic Info resolution. Source excerpts
 and model projection budgets affect presentation only, never its five-row window.

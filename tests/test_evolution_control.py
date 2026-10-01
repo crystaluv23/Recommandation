@@ -29,6 +29,24 @@ from stock_opportunity_agent.signal_library import SignalLearningEvent
 
 
 class RunControlTests(TestCase):
+    def test_frozen_cost_representation_survives_restart(self) -> None:
+        for cost in (100, 100.0, 100.25):
+            with self.subTest(cost=repr(cost)), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "contract.json"
+                original = replace(make_contract(), max_total_cost=cost)
+                original.freeze(path)
+                frozen_bytes = path.read_bytes()
+                restored = EvolutionRunContract.load_frozen(path)
+                self.assertIs(type(restored.max_total_cost), type(cost))
+                self.assertEqual(restored.contract_hash, original.contract_hash)
+                restored.freeze(path)
+                self.assertEqual(path.read_bytes(), frozen_bytes)
+
+    def test_frozen_cost_loader_does_not_coerce_invalid_types(self) -> None:
+        for cost in (True, "100", 0, -1, float("inf"), float("nan")):
+            with self.subTest(cost=repr(cost)), self.assertRaises(ValidationError):
+                EvolutionRunContract.from_dict({**make_contract().to_dict(), "max_total_cost": cost})
+
     def test_reasoning_headroom_is_frozen_and_shared_by_preview_and_wire(self) -> None:
         original = make_contract()
         contract = replace(original, limits={

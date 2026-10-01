@@ -3785,9 +3785,6 @@ def _prediction_baseline_from_market_documents(
         "doubling_threshold": doubling_threshold,
         "recent_close": recent_close,
         "recent_close_date": recent_close_date,
-        "recent_close_ratio_to_doubling_threshold": (
-            recent_close / doubling_threshold
-        ),
     }
 
 
@@ -3879,6 +3876,7 @@ def _basic_info_projection_cards(
             cards.append({
                 "request_id": request.get("request_id") if isinstance(request, Mapping) else None,
                 "projection_id": item.get("projection_id"),
+                **{key: item[key] for key in ("document_id", "available_at") if key in item},
                 "exact_text": text,
                 "truncated": False,
             })
@@ -4026,6 +4024,7 @@ def _assemble_final_context(
         basic_info
     )
     context = {
+        "prediction_time": prediction_time.isoformat(),
         "context_contract": {
             "kind": "typed_append_only_assembly",
             "target_utf8_bytes": MAX_PREDICTOR_CONTEXT_UTF8_BYTES,
