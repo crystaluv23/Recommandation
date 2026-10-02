@@ -636,3 +636,5 @@
 - 2026-10-02：v176冻结bcef98cd真实后继已进入Fast；前4份canonical案例checkpoint完成、技术排除0、技术FN0。两已发布unverified版本已真实进入Reflect/Predictor，此前deepcopy入口通过；指针0/0、固定24完整评分/Slow双轴新因子验收待完成，运行中未热改。见reports/v176-live-frontier-20261002.md。
 
 - 2026-10-02：v176因第8案例Signal retrieval HTTP402余额不足退出1；7完成/0技术排除/0技术FN、指针0/0。86request与85response hash、70blind payload outcome-key、144全Basic卡/状态增量/预测存储核验通过。禁网隔离实际入口复用2proposal/7trajectory及第8案2cache，精确到原402 request frontier；原指针/ledger/contract不改。完整评分/Slow双轴新因子仍待余额恢复；已向用户询问，不将资金失败计研究FN。见reports/v176-402-and-resume-audit-20261002.md。
+
+- 2026-10-02：审计两案例v168→v170反转的真实输入、原patch和Slow经验trace；保存四请求/85卡/10经验消费证据与复用现有ReflectionItem的成对诊断建议，区分输入变化、语义风险和同输入不稳定；无生产代码/评分变更。

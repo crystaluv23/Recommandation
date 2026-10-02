@@ -1,0 +1,1461 @@
+{
+  "schema_version": "case-reversal-audit-v1",
+  "audit_external_calls": 0,
+  "historical_artifacts_unchanged": true,
+  "cases": [
+    {
+      "run": 168,
+      "case_id": "cik_0001164727:20250731",
+      "code_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+      "contract_hash": "fc6daad9484e959f3c8b0113024f9e1d99f4924d589e593410f31c6569957a75",
+      "predictor_request_hash": "304eb19a3a836882595cf3586906782fdcf9bbc8ca1b6c71fbb2942608a042c4",
+      "request_hash_checked": true,
+      "response_hash_checked": true,
+      "exact_http_body_hash_and_messages_checked": true,
+      "actual_identity_projection_and_inverse_exact": true,
+      "selected_basic_cards_retained": 21,
+      "final_state_and_deltas_retained": true,
+      "outcome_key_findings": [],
+      "visible_card_pit_checked": true,
+      "model_alias": "deepseek-v4-flash",
+      "temperature": 0.0,
+      "max_output_tokens": 2000,
+      "system_hash": "d6e1da1ad1cb46fdbfeff529ae5c51ff18480ad8e17c90ba563ca05b3eea2e58",
+      "actual_payload_hash": "0e1a161cd7b0d1cfee43a73669eaaca6ffa2ef2c2acf963aa4df0c3e12e99456",
+      "actual_payload_utf8_bytes": 64218,
+      "prediction": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": true,
+        "key_reasons": [
+          "The company reported strong operating momentum at the prediction time: Q2 2025 sales of $5,317 million versus $4,402 million a year earlier, net income from continuing operations attributable to stockholders of $2,061 million or $1.85 per diluted share, and Adjusted EBITDA of $2,997 million, up 52% year over year, which supports a credible repricing candidate even though the exact path to a 2x adjusted share price is not established.",
+          "The balance sheet and capital-return actions provide a source-backed catalyst base: $6.2 billion of consolidated cash, $10.2 billion of total liquidity, net debt of $1.4 billion, $2,915 million of free cash flow for the six months ended June 30, 2025, and an additional $3 billion stock repurchase authorization, all of which can support share-price repricing.",
+          "Third-party market confirmation is present: Raymond James raised its price target from $66 to $67 while maintaining Outperform, and the news card states the share price had increased over 60% year-to-date, indicating the market was already repricing the equity upward before the prediction time."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The supplied prediction baseline is a mean adjusted close of $63.444, so the 2x threshold is $126.888; the recent close of $62.31 on 2025-07-30 is far below that threshold, and no supplied source provides a forward price target or projection reaching it.",
+          "The visible earnings call commentary is dominated by a fatal-access incident at Red Chris with operations suspended, creating uncertainty about production impact, costs, and timing that could weigh on the share price.",
+          "Reported growth is heavily tied to higher realized gold prices and divestiture gains rather than clearly identified new customer adoption, order flow, or pricing power, so the durability of the earnings acceleration is uncertain.",
+          "The visible financial-facts projection does not provide a current share count or a clean adoption metric, and the operating report source is marked partial_context_budget, so some relevant disclosures may be omitted.",
+          "No new customer order, contract, offtake agreement, or binding award within the 180-day lookback is visible, and guidance is described as reaffirmed rather than raised or accelerated."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": true,
+        "magnitude": "2-3x",
+        "realized_max_multiple": 2.0177998156447665
+      },
+      "selected_basic_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001164727:earnings_transcript:407f311833386ededdacf8da",
+          "content_hash": "407f311833386ededdacf8da3e67bbf2f4f6e8dbe3e0c40e723d9187867e01cf"
+        },
+        {
+          "document_id": "avnews_09fbac5799f957eac0b68668",
+          "content_hash": "d1f6ad215dc2ddd2cfebf9d6af8b768378d62a714c05d362bbfee5eb7bcf6627"
+        },
+        {
+          "document_id": "avnews_d46c10c62e96221b2a873e68",
+          "content_hash": "3c49abe62ba3859986cdabc5db089944a607d86cc54b06b1242461a124a92116"
+        },
+        {
+          "document_id": "avnews_ea8f7783375fbc87eb2de6bb",
+          "content_hash": "abc32a0f790a5fc1e8bc4385853632fee8b40fdfd746c6b884ed4e708306bddb"
+        },
+        {
+          "document_id": "avnews_f7025f86236f01899fb57d49",
+          "content_hash": "7c79400b1edb853a7cf3051d84cbdaaf742abab9f554dc0d95cc1431cd8df8a8"
+        },
+        {
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "content_hash": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5"
+        },
+        {
+          "document_id": "sec:cik_0001164727:000116472725000035",
+          "content_hash": "c7589d4d2c28cc1a6289fa0879d7e9e5680d98fa1b29a086f498e404ed5bd5a5"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "content_hash": "e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+        }
+      ],
+      "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Separate evidence into: (a) direct quantitative indicators of real commercial adoption (bookings, backlog, unit economics, retention, pricing); (b) management narrative and forward-looking statements; (c) third-party reporting and target-scoped news; (d) market and price-volume context; (e) reported financial facts and their consistency with claims. For each category, assign relative weight based on directness, recency, and corroboration, and explicitly note counter-evidence, contradictions, and unresolved uncertainties. Expose data gaps and any reliance on unverified or legacy-unreviewed text. Do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate a prediction; only organize and weight evidence and highlight uncertainty and counter-evidence.",
+      "prediction_baseline": {
+        "doubling_threshold": 126.888,
+        "mean_adjusted_close": 63.444,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 62.31,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "computed_metrics": [
+        {
+          "as_of": "2025-07-31T00:00:00+00:00",
+          "labels": {
+            "trend": "uptrend"
+          },
+          "literal_refs": [
+            {
+              "adjusted_close": 45.16,
+              "as_of_date": "2024-11-07"
+            },
+            {
+              "adjusted_close": 62.31,
+              "as_of_date": "2025-07-30"
+            }
+          ],
+          "metric": "price_shape",
+          "params": {
+            "window_days": 180
+          },
+          "schema_version": "computed-metric-card-v1",
+          "values": {
+            "daily_volatility_pct": 2.4242,
+            "first_close": 45.16,
+            "high": 65.75,
+            "last_close": 62.31,
+            "low": 37.0,
+            "max_drawdown_pct": -18.0691,
+            "return_pct": 37.9761,
+            "window_trading_days": 180
+          }
+        }
+      ],
+      "signal_measurements": [
+        [
+          {
+            "ref": "cash_reserves:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "customer_concentration:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "ref": "financing_listing_action:v3",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          }
+        ],
+        [
+          {
+            "ref": "revenue_growth_yoy:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "operating_cash_flow_margin:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "guidance_acceleration:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "ref": "order_confirmation_disclosed:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          }
+        ]
+      ],
+      "reflection_items": [
+        {
+          "item_ref": "reflection:02f5ee6ae430bf20fb2417448b1fef6d14ff2ba79f70e2cb836643e3b3421500",
+          "kind": "fact",
+          "category": "decision_drivers",
+          "brief": "The binary surge call was correct and the 2-3x magnitude band matched the realized 2.0178x multiple, so the positive operating momentum, balance-sheet strength, and third-party repricing evidence cited at prediction time were directionally and ordinally consistent with the outcome."
+        },
+        {
+          "item_ref": "reflection:2149824a50734ab713ed28c2c39be7f2d2b7826991dcdf533abd6cf98f276618",
+          "kind": "hypothesis",
+          "category": "decision_drivers",
+          "brief": "The possible/low-confidence judgment was conservative relative to the realized surge; a testable explanation is that the prediction underweighted the combination of strong reported operating momentum, large cash and liquidity, an expanded buyback authorization, and third-party repricing already visible before the prediction time."
+        },
+        {
+          "item_ref": "reflection:29c63dd8caa3387f1609c5db62c9d4b8610a9d8285654387275d7b2576b13d69",
+          "kind": "action",
+          "category": "missing_information",
+          "brief": "For future surge assessments, explicitly separate the binary direction question from the magnitude-band question and record which supplied evidence supports each axis, because the prediction-time record contained strong positive operating and capital-return evidence but no visible forward price path to the $126.888 doubling threshold."
+        }
+      ],
+      "context_metadata_ambiguity": [
+        "prediction_baseline",
+        "computed_metrics"
+      ]
+    },
+    {
+      "run": 168,
+      "case_id": "cik_0001018963:20250930",
+      "code_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+      "contract_hash": "fc6daad9484e959f3c8b0113024f9e1d99f4924d589e593410f31c6569957a75",
+      "predictor_request_hash": "ac803ce7c2e28b81db24cff6b974ee6adde5359df29846f47f555e54ab520bd5",
+      "request_hash_checked": true,
+      "response_hash_checked": true,
+      "exact_http_body_hash_and_messages_checked": true,
+      "actual_identity_projection_and_inverse_exact": true,
+      "selected_basic_cards_retained": 20,
+      "final_state_and_deltas_retained": true,
+      "outcome_key_findings": [],
+      "visible_card_pit_checked": true,
+      "model_alias": "deepseek-v4-flash",
+      "temperature": 0.0,
+      "max_output_tokens": 2000,
+      "system_hash": "d6e1da1ad1cb46fdbfeff529ae5c51ff18480ad8e17c90ba563ca05b3eea2e58",
+      "actual_payload_hash": "43c9e8d322d9f7609094ddba980c5636abfd9397e7085f95e0fe1a0afc7df349",
+      "actual_payload_utf8_bytes": 59338,
+      "prediction": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": true,
+        "key_reasons": [
+          "Management disclosed new long-term guaranteed volume agreements with Boeing and an expanded agreement positioning the company as Airbus' top titanium flat-rolled and long-products source, which are source-backed commercial adoption catalysts that could support share-price repricing toward the 2x threshold.",
+          "Commercial jet engine sales grew 27% in Q2 and 31% year-to-date, with management guiding full-year jet engine growth above 20% and raising the midpoint of full-year adjusted EBITDA, EPS, and free cash flow guidance, indicating accelerating operating momentum.",
+          "The stock has shown strong market confirmation, with a 43.87% return over the 180-trading-day window ending 2025-09-29 and a recent 7.39% surge tied to expansion plans and reiterated guidance, suggesting the market is already responding to the adoption narrative."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The baseline mean adjusted close of 78.916 implies a doubling threshold of 157.832, requiring a 100% gain from baseline; the stock is currently near half that threshold, and no forward projection or explicit price target supports reaching it within six months.",
+          "Airframe revenue remains flat year-over-year due to customer inventory destocking, and non-A&D markets are expected to decline 5% to 7%, which could limit the pace of overall revenue and earnings acceleration.",
+          "The 180-trading-day computed window is not the six-calendar-month forecast horizon, and no computed card verifies a doubling or a five-day mean close approaching the threshold.",
+          "Customer concentration is assessed as neutral with partial coverage, and the exact financial impact of the Boeing and Airbus agreements on volumes, pricing, and margins remains unquantified.",
+          "The stock trades at elevated valuation multiples (P/E 29, price-to-book 6.34) after a 50.45% year-to-date return, which may already discount much of the positive adoption narrative."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": true,
+        "magnitude": "2-3x",
+        "realized_max_multiple": 2.0645243043235846
+      },
+      "selected_basic_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+          "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee"
+        },
+        {
+          "document_id": "avnews_51d9532d7af97cb4a934cd08",
+          "content_hash": "df02ad46c018aafb1740541a835315d3657f8174dc62d8e78ee44a72eeb79625"
+        },
+        {
+          "document_id": "avnews_dd6c1a2d847a5a5d6e7e0a63",
+          "content_hash": "25b8672fa16b47a3649a55f4de802fe6022cf2dfeda36baf50fcacc756ba52bb"
+        },
+        {
+          "document_id": "avnews_df2c5acb671a6ecef2e9ecba",
+          "content_hash": "c00afb62015a126445b5daa5c7f101a9b932313a8f7e4e64b8da95f4f4efd654"
+        },
+        {
+          "document_id": "avnews_eb833d3efc5f42b5aa9cbe17",
+          "content_hash": "d04dcfc0acbb6fe23df41efb63d2a9a9c4e195fa62ec3385be91b5a2025a7a2c"
+        },
+        {
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "content_hash": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76"
+        },
+        {
+          "document_id": "sec:cik_0001018963:000119312525217804",
+          "content_hash": "46c8cb745c18a8a8d9211fa1123303763c192e2a3370ffdeacbbe26fed83fa91"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "content_hash": "4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+        }
+      ],
+      "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Separate evidence into: (a) direct quantitative indicators of real commercial adoption (bookings, backlog, unit economics, retention, pricing); (b) management narrative and forward-looking statements; (c) third-party reporting and target-scoped news; (d) market and price-volume context; (e) reported financial facts and their consistency with claims. For each category, assign relative weight based on directness, recency, and corroboration, and explicitly note counter-evidence, contradictions, and unresolved uncertainties. Expose data gaps and any reliance on unverified or legacy-unreviewed text. Do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate a prediction; only organize and weight evidence and highlight uncertainty and counter-evidence.",
+      "prediction_baseline": {
+        "doubling_threshold": 157.83200000000002,
+        "mean_adjusted_close": 78.91600000000001,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 79.26,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "computed_metrics": [
+        {
+          "as_of": "2025-09-30T00:00:00+00:00",
+          "labels": {
+            "trend": "uptrend"
+          },
+          "literal_refs": [
+            {
+              "adjusted_close": 55.09,
+              "as_of_date": "2025-01-10"
+            },
+            {
+              "adjusted_close": 79.26,
+              "as_of_date": "2025-09-29"
+            }
+          ],
+          "metric": "price_shape",
+          "params": {
+            "window_days": 180
+          },
+          "schema_version": "computed-metric-card-v1",
+          "values": {
+            "daily_volatility_pct": 3.3376,
+            "first_close": 55.09,
+            "high": 95.52,
+            "last_close": 79.26,
+            "low": 41.97,
+            "max_drawdown_pct": -36.2739,
+            "return_pct": 43.8737,
+            "window_trading_days": 180
+          }
+        }
+      ],
+      "signal_measurements": [
+        [
+          {
+            "ref": "order_confirmation_disclosed:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "customer_concentration:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "ref": "revenue_growth_yoy:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "sufficient"
+            }
+          }
+        ],
+        [
+          {
+            "ref": "guidance_acceleration:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "financing_listing_action:v3",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "cash_reserves:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "negative_word_count:v2",
+            "state": "negative",
+            "status": {
+              "coverage": "sufficient"
+            }
+          }
+        ]
+      ],
+      "reflection_items": [
+        {
+          "item_ref": "reflection:58f7a958372fc1b33912171c1012ab76d7e0abf5f6dec2eee16645f5c8413432",
+          "kind": "fact",
+          "category": "decision_drivers",
+          "brief": "The binary surge call was correct and the 2-3x magnitude band matched the realized 2.06x multiple, so the positive commercial-adoption evidence was sufficient for the realized class."
+        },
+        {
+          "item_ref": "reflection:4692d6693684ca0e284ce3d27c8afe703ca7f9cf4c7ae4ef6ae5062ec24ba671",
+          "kind": "action",
+          "category": "plan_issues",
+          "brief": "When source-backed positive catalysts (named long-term customer agreements, accelerating segment growth, raised guidance midpoints) are present and the binary call is already correct, test whether the probability category should be upgraded from 'possible' rather than left conservative."
+        },
+        {
+          "item_ref": "reflection:679965a049e77f5e907515e372a87a50cbde934b1b33340da5e667e5233ebaed",
+          "kind": "hypothesis",
+          "category": "missing_information",
+          "brief": "The saved prediction lacked a quantified bridge from the Boeing/Airbus agreements to revenue, margin, or price-path impact, and that gap is a candidate explanation for the conservative 'possible' category rather than a proven cause."
+        }
+      ],
+      "context_metadata_ambiguity": [
+        "prediction_baseline",
+        "computed_metrics"
+      ]
+    },
+    {
+      "run": 170,
+      "case_id": "cik_0001164727:20250731",
+      "code_revision": "ab63de3b1258659cec6613dfcc0c0bd720505ae0",
+      "contract_hash": "342a0fa7a73df518c086a96bf0ea56dc8828025c7f8c9726bc035a7d4de38928",
+      "predictor_request_hash": "e6a7c124bd42b2b7d52a6944178ce735ee1620b92c7864272304a30bbace0238",
+      "request_hash_checked": true,
+      "response_hash_checked": true,
+      "exact_http_body_hash_and_messages_checked": true,
+      "actual_identity_projection_and_inverse_exact": true,
+      "selected_basic_cards_retained": 22,
+      "final_state_and_deltas_retained": true,
+      "outcome_key_findings": [],
+      "visible_card_pit_checked": true,
+      "model_alias": "deepseek-v4-flash",
+      "temperature": 0.0,
+      "max_output_tokens": 2000,
+      "system_hash": "ec237c02ffc0b59f816bd3587b79e2d21605fd27e465e529ea314870b9308dfa",
+      "actual_payload_hash": "1d8420b62c6233dcf9eb9380948af70530e3a5f068c87f067388165014e2a147",
+      "actual_payload_utf8_bytes": 58934,
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The supplied prediction baseline is a mean adjusted close of 63.444, so the 2x threshold is 126.888; the most recent close of 62.31 on 2025-07-30 is only about 1.8% below that baseline, and the 180-trading-day computed price_shape shows a 37.98% return from 45.16 on 2024-11-07 to 62.31 on 2025-07-30, which is far short of the 100% gain from baseline needed for 2x.",
+          "The issuer's Q2 2025 10-Q shows strong but not transformative operating momentum: sales of $5,317 million versus $4,402 million, net income from continuing operations attributable to stockholders of $2,061 million or $1.85 per diluted share, adjusted EBITDA of $2,997 million, and six-month operating cash flow of $4,415 million, while management reaffirmed rather than raised full-year guidance.",
+          "The only third-party price-target evidence in the packet is Raymond James raising its target from $66 to $67 while maintaining Outperform, which is roughly 5.6% above the 63.444 baseline and far below the 126.888 doubling threshold, so it does not support a 2x outcome.",
+          "The Red Chris fall-of-ground incident and suspended operations introduce a material operational overhang, and the packet lacks any source-backed catalyst, guidance raise, or market confirmation that credibly points to a doubling within the six-month horizon."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The packet does not include full-year 2025 production, cost, or capital-expenditure guidance revisions after Q2, so the durability of the earnings and cash-flow strength is uncertain.",
+          "The expected uses of divestiture proceeds and the financial impact of the Red Chris incident are not fully disclosed in the supplied context.",
+          "Commodity-price sensitivity and hedging details are not provided, so a sharp gold-price move could alter the outlook.",
+          "The six-month horizon is fixed by the task, but the supplied market data ends 2025-07-30 and does not include forward projections."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": true,
+        "magnitude": "2-3x",
+        "realized_max_multiple": 2.0177998156447665
+      },
+      "selected_basic_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001164727:earnings_transcript:407f311833386ededdacf8da",
+          "content_hash": "407f311833386ededdacf8da3e67bbf2f4f6e8dbe3e0c40e723d9187867e01cf"
+        },
+        {
+          "document_id": "alpha_vantage:cik_0001164727:earnings_transcript:f0ab50276af25b2dd79d86c6",
+          "content_hash": "f0ab50276af25b2dd79d86c6960267f3696fe2cc83221d26e39d1b5a63f254b7"
+        },
+        {
+          "document_id": "avnews_09fbac5799f957eac0b68668",
+          "content_hash": "d1f6ad215dc2ddd2cfebf9d6af8b768378d62a714c05d362bbfee5eb7bcf6627"
+        },
+        {
+          "document_id": "avnews_9244b1cd38aedabd6be5dc75",
+          "content_hash": "7e5f39b322e832d174129877e676555d91d9306c2902f17169c09fa135153f83"
+        },
+        {
+          "document_id": "avnews_d46c10c62e96221b2a873e68",
+          "content_hash": "3c49abe62ba3859986cdabc5db089944a607d86cc54b06b1242461a124a92116"
+        },
+        {
+          "document_id": "avnews_ea8f7783375fbc87eb2de6bb",
+          "content_hash": "abc32a0f790a5fc1e8bc4385853632fee8b40fdfd746c6b884ed4e708306bddb"
+        },
+        {
+          "document_id": "avnews_f7025f86236f01899fb57d49",
+          "content_hash": "7c79400b1edb853a7cf3051d84cbdaaf742abab9f554dc0d95cc1431cd8df8a8"
+        },
+        {
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "content_hash": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5"
+        },
+        {
+          "document_id": "sec:cik_0001164727:000116472725000033",
+          "content_hash": "fc6fd4cbc64ba4e0c42f51a5823d43d58e9ae10848438a0e5f97a20bf1f4ec31"
+        },
+        {
+          "document_id": "sec:cik_0001164727:000116472725000035",
+          "content_hash": "c7589d4d2c28cc1a6289fa0879d7e9e5680d98fa1b29a086f498e404ed5bd5a5"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45",
+          "content_hash": "e29f812f4564ce5b82c8bb45c9d466ce8e76715ed8a913ebfa4f226f7b93a01a"
+        }
+      ],
+      "analysis_prompt": "Organize and weight only source-backed evidence into: commercial/fundamental support, expectation or narrative context, price-volume and market backdrop, counter-evidence and uncertainty, and known limitations (staleness, single-source, third-party reporting, missing temporal alignment). Weight primary issuer disclosures above third-party news and management-forward language above unsourced narrative; never count repeated versions of one case as independent support; flag legacy or unreviewed text as unverified. Expose uncertainty qualitatively and do not compute probabilities, classify the final Signal, alter the horizon/label/four-way judgment, or generate a prediction; the fixed Predictor shell owns final candidate judgment and conditional magnitude classification.",
+      "prediction_baseline": {
+        "doubling_threshold": 126.888,
+        "mean_adjusted_close": 63.444,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 62.31,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "computed_metrics": [
+        {
+          "as_of": "2025-07-31T00:00:00+00:00",
+          "labels": {
+            "trend": "uptrend"
+          },
+          "literal_refs": [
+            {
+              "adjusted_close": 45.16,
+              "as_of_date": "2024-11-07"
+            },
+            {
+              "adjusted_close": 62.31,
+              "as_of_date": "2025-07-30"
+            }
+          ],
+          "metric": "price_shape",
+          "params": {
+            "window_days": 180
+          },
+          "schema_version": "computed-metric-card-v1",
+          "values": {
+            "daily_volatility_pct": 2.4242,
+            "first_close": 45.16,
+            "high": 65.75,
+            "last_close": 62.31,
+            "low": 37.0,
+            "max_drawdown_pct": -18.0691,
+            "return_pct": 37.9761,
+            "window_trading_days": 180
+          }
+        }
+      ],
+      "signal_measurements": [
+        [
+          {
+            "ref": "financing_listing_action:v3",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "ref": "cash_reserves:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "guidance_acceleration:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "partial"
+            }
+          }
+        ],
+        [
+          {
+            "ref": "operating_cash_flow_margin:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "revenue_growth_yoy:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "gross_margin_change:v3",
+            "state": "unavailable",
+            "status": {
+              "coverage": "unavailable"
+            }
+          },
+          {
+            "ref": "order_confirmation_disclosed:v2",
+            "state": "unavailable",
+            "status": {
+              "coverage": "unavailable"
+            }
+          }
+        ]
+      ],
+      "reflection_items": [
+        {
+          "item_ref": "reflection:57585e192e1d39b1cd35c593f87c8cb25f46ac6223bb882d28e73625b16d10da",
+          "kind": "fact",
+          "category": "why_prediction_failed",
+          "brief": "The prediction was a binary miss: it called a surge unlikely, but the realized outcome was a surge with a 2-3x magnitude."
+        },
+        {
+          "item_ref": "reflection:6d7c5576112c8987a20ca6dcc42ffc9714a02961aab961cab2173824cb411de7",
+          "kind": "hypothesis",
+          "category": "misleading_signals",
+          "brief": "The prediction treated the Raymond James $66-to-$67 price target as a ceiling-like anchor far below the doubling threshold, but that target was a sell-side valuation input, not a forecast of the maximum six-month price path."
+        },
+        {
+          "item_ref": "reflection:468cbe0d9e812313c87c11d23fc98b9ab998412e8f991afcbf8e0bbf1d691cd4",
+          "kind": "hypothesis",
+          "category": "ignored_evidence",
+          "brief": "The prediction acknowledged strong Q2 operating momentum but discounted it as 'not transformative,' while the realized outcome was a 2-3x surge; the positive cash-flow, liquidity, and capital-return signals may have been underweighted relative to the doubling threshold."
+        },
+        {
+          "item_ref": "reflection:acfaccaec2b291b2071732f90d2ca28310f5dc28074eb337ae7b4e5c3175b35b",
+          "kind": "fact",
+          "category": "missing_information",
+          "brief": "The prediction noted that the packet lacked forward projections and full-year guidance revisions, but the supplied prediction_baseline was available and provided the mean adjusted close and doubling threshold used in the analysis."
+        },
+        {
+          "item_ref": "reflection:1f01d8e8c8bdfc13f195d57ca30d7d362095538e11739878cf5fa63cb94c1db4",
+          "kind": "action",
+          "category": "plan_issues",
+          "brief": "For future surge predictions, separate the binary direction judgment from the magnitude class judgment and record the specific evidence that would move the probability of a 2x-plus outcome, rather than treating a sub-threshold price target or a 'not transformative' characterization as sufficient to call a surge unlikely."
+        }
+      ],
+      "context_metadata_ambiguity": [
+        "prediction_baseline",
+        "computed_metrics"
+      ]
+    },
+    {
+      "run": 170,
+      "case_id": "cik_0001018963:20250930",
+      "code_revision": "ab63de3b1258659cec6613dfcc0c0bd720505ae0",
+      "contract_hash": "342a0fa7a73df518c086a96bf0ea56dc8828025c7f8c9726bc035a7d4de38928",
+      "predictor_request_hash": "3283ebab681142d6578a756321ea2032642102dcf93987624e2bd0c41c656b1d",
+      "request_hash_checked": true,
+      "response_hash_checked": true,
+      "exact_http_body_hash_and_messages_checked": true,
+      "actual_identity_projection_and_inverse_exact": true,
+      "selected_basic_cards_retained": 22,
+      "final_state_and_deltas_retained": true,
+      "outcome_key_findings": [],
+      "visible_card_pit_checked": true,
+      "model_alias": "deepseek-v4-flash",
+      "temperature": 0.0,
+      "max_output_tokens": 2000,
+      "system_hash": "ec237c02ffc0b59f816bd3587b79e2d21605fd27e465e529ea314870b9308dfa",
+      "actual_payload_hash": "373363013592bfcb958ef363d7d96db552bcc74057dacc49c7027a83bd6ede72",
+      "actual_payload_utf8_bytes": 69484,
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "low"
+        },
+        "is_surge": false,
+        "key_reasons": [
+          "The supplied prediction_baseline mean_adjusted_close is 78.916 with a doubling_threshold of 157.832, and the computed_metrics 180-trading-day window shows a last_close of 79.26 versus a high of 95.52, so the stock has not demonstrated the sustained acceleration needed to approach the 2x threshold within six calendar months.",
+          "Source-backed operating momentum is real but moderate: Q2 2025 revenue grew 4% year-over-year, adjusted EBITDA margin reached 18.2%, and full-year jet engine growth is expected to exceed 20%, which supports a constructive fundamental backdrop but does not by itself imply a doubling of the adjusted share price.",
+          "New long-term Boeing and expanded Airbus agreements plus raised full-year guidance midpoints are positive expectation-changing catalysts, but the disclosed financial magnitudes (e.g., ~$1 billion Airbus agreement over five years, $3.7 billion backlog) are not large enough relative to the current market capitalization to credibly bridge to a 2x price outcome within the horizon."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The exact market capitalization and share count are not supplied, so the relative size of the new contracts versus the equity value cannot be precisely assessed.",
+          "The CFO retirement and successor search introduce execution uncertainty that could weigh on the stock.",
+          "Aerospace supply-chain volatility and airframer inventory balancing could offset demand strength.",
+          "The six-calendar-month horizon is fixed, but the supplied market data ends 2025-09-29 and does not include forward projections."
+        ]
+      },
+      "ground_truth": {
+        "is_surge": true,
+        "magnitude": "2-3x",
+        "realized_max_multiple": 2.0645243043235846
+      },
+      "selected_basic_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a",
+          "content_hash": "7e2a69eede1c1b4c9695b46ae7d80b9f29fce02ff8bdf141aa47d04dad9cac55"
+        },
+        {
+          "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+          "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee"
+        },
+        {
+          "document_id": "avnews_51d9532d7af97cb4a934cd08",
+          "content_hash": "df02ad46c018aafb1740541a835315d3657f8174dc62d8e78ee44a72eeb79625"
+        },
+        {
+          "document_id": "avnews_b054e54cc8282fbb88cf0359",
+          "content_hash": "a6e9515c1897434685f923d7c366698fd7e7a11172434a52c25cb54cb9e3caf7"
+        },
+        {
+          "document_id": "avnews_dd6c1a2d847a5a5d6e7e0a63",
+          "content_hash": "25b8672fa16b47a3649a55f4de802fe6022cf2dfeda36baf50fcacc756ba52bb"
+        },
+        {
+          "document_id": "avnews_df2c5acb671a6ecef2e9ecba",
+          "content_hash": "c00afb62015a126445b5daa5c7f101a9b932313a8f7e4e64b8da95f4f4efd654"
+        },
+        {
+          "document_id": "avnews_eb833d3efc5f42b5aa9cbe17",
+          "content_hash": "d04dcfc0acbb6fe23df41efb63d2a9a9c4e195fa62ec3385be91b5a2025a7a2c"
+        },
+        {
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "content_hash": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76"
+        },
+        {
+          "document_id": "sec:cik_0001018963:000119312525199688",
+          "content_hash": "a894168b22676d4ab07914a8939eedbb6598ac3a31a30c2bbc837dd3fa094093"
+        },
+        {
+          "document_id": "sec:cik_0001018963:000119312525217804",
+          "content_hash": "46c8cb745c18a8a8d9211fa1123303763c192e2a3370ffdeacbbe26fed83fa91"
+        },
+        {
+          "document_id": "sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a",
+          "content_hash": "4206eeb51c29cd13cdfffd1a38775427bd24cb687b1e975759bf885e1421b57a"
+        }
+      ],
+      "analysis_prompt": "Organize and weight only source-backed evidence into: commercial/fundamental support, expectation or narrative context, price-volume and market backdrop, counter-evidence and uncertainty, and known limitations (staleness, single-source, third-party reporting, missing temporal alignment). Weight primary issuer disclosures above third-party news and management-forward language above unsourced narrative; never count repeated versions of one case as independent support; flag legacy or unreviewed text as unverified. Expose uncertainty qualitatively and do not compute probabilities, classify the final Signal, alter the horizon/label/four-way judgment, or generate a prediction; the fixed Predictor shell owns final candidate judgment and conditional magnitude classification.",
+      "prediction_baseline": {
+        "doubling_threshold": 157.83200000000002,
+        "mean_adjusted_close": 78.91600000000001,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 79.26,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "computed_metrics": [
+        {
+          "as_of": "2025-09-30T00:00:00+00:00",
+          "labels": {
+            "trend": "uptrend"
+          },
+          "literal_refs": [
+            {
+              "adjusted_close": 55.09,
+              "as_of_date": "2025-01-10"
+            },
+            {
+              "adjusted_close": 79.26,
+              "as_of_date": "2025-09-29"
+            }
+          ],
+          "metric": "price_shape",
+          "params": {
+            "window_days": 180
+          },
+          "schema_version": "computed-metric-card-v1",
+          "values": {
+            "daily_volatility_pct": 3.3376,
+            "first_close": 55.09,
+            "high": 95.52,
+            "last_close": 79.26,
+            "low": 41.97,
+            "max_drawdown_pct": -36.2739,
+            "return_pct": 43.8737,
+            "window_trading_days": 180
+          }
+        }
+      ],
+      "signal_measurements": [
+        [
+          {
+            "ref": "guidance_acceleration:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "order_confirmation_disclosed:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "cash_reserves:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          }
+        ],
+        [
+          {
+            "ref": "customer_concentration:v2",
+            "state": "positive",
+            "status": {
+              "coverage": "partial"
+            }
+          },
+          {
+            "ref": "financing_listing_action:v3",
+            "state": "positive",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "liquidity_runway_months:v2",
+            "state": "negative",
+            "status": {
+              "coverage": "sufficient"
+            }
+          },
+          {
+            "ref": "revenue_growth_yoy:v2",
+            "state": "neutral",
+            "status": {
+              "coverage": "sufficient"
+            }
+          }
+        ]
+      ],
+      "reflection_items": [
+        {
+          "item_ref": "reflection:e53ea0ad7e0b4c4dead4b87e784ce411f49e05de36392f851d263ccc4fd16d42",
+          "kind": "fact",
+          "category": "why_prediction_failed",
+          "brief": "The saved prediction called a surge unlikely, but the realized outcome was a surge with a 2.06x maximum five-day adjusted-close multiple, so the binary direction was wrong."
+        },
+        {
+          "item_ref": "reflection:b0c1fcda7851c5b53f6d4683f5fe54ecfb62200c946e474c24c79cfd2fc4225f",
+          "kind": "fact",
+          "category": "why_prediction_failed",
+          "brief": "The saved prediction also missed on magnitude: it predicted no surge magnitude, while the realized class was 2-3x with a 2.06x multiple."
+        },
+        {
+          "item_ref": "reflection:7a756e885c66ba3380753d92966846787589edf17f4452fd9a3fabe08a049a10",
+          "kind": "hypothesis",
+          "category": "misleading_signals",
+          "brief": "The saved prediction's reliance on the 180-trading-day price window's high of 95.52 versus last_close of 79.26 as evidence against sustained acceleration may have been a misleading anchor for a six-calendar-month forward surge call."
+        },
+        {
+          "item_ref": "reflection:f1c996252881c2982e718afdc4cdd6a5fce1e5d921c0eb9b688f938ce98f1788",
+          "kind": "hypothesis",
+          "category": "ignored_evidence",
+          "brief": "Positive operating and contract evidence supplied at prediction time — raised guidance midpoints, >20% expected jet engine growth, and new Boeing/Airbus agreements — was treated as insufficient to bridge to a 2x outcome, but the realized surge shows that bridge assessment was wrong."
+        },
+        {
+          "item_ref": "reflection:c0709109b67637140eba63075cc8bc909c71749a75492f85feb56d0d6110f38b",
+          "kind": "action",
+          "category": "plan_issues",
+          "brief": "For future surge assessments, separate the binary direction call from the magnitude call and record which supplied signals support each, rather than letting a missing valuation bridge drive both to 'unlikely'."
+        }
+      ],
+      "context_metadata_ambiguity": [
+        "prediction_baseline",
+        "computed_metrics"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "case_id": "cik_0001164727:20250731",
+      "same_outcome": true,
+      "same_price_anchor_and_computation": true,
+      "same_plan": false,
+      "same_actual_predictor_payload": false,
+      "same_system_prompt": false,
+      "classification": "changed_input_prediction_reversal; attribution_unresolved",
+      "old_judgment": "possible",
+      "new_judgment": "unlikely",
+      "new_selected_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001164727:earnings_transcript:f0ab50276af25b2dd79d86c6",
+          "content_hash": "f0ab50276af25b2dd79d86c6960267f3696fe2cc83221d26e39d1b5a63f254b7"
+        },
+        {
+          "document_id": "avnews_9244b1cd38aedabd6be5dc75",
+          "content_hash": "7e5f39b322e832d174129877e676555d91d9306c2902f17169c09fa135153f83"
+        },
+        {
+          "document_id": "sec:cik_0001164727:000116472725000033",
+          "content_hash": "fc6fd4cbc64ba4e0c42f51a5823d43d58e9ae10848438a0e5f97a20bf1f4ec31"
+        }
+      ],
+      "removed_selected_documents": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "same_outcome": true,
+      "same_price_anchor_and_computation": true,
+      "same_plan": false,
+      "same_actual_predictor_payload": false,
+      "same_system_prompt": false,
+      "classification": "changed_input_prediction_reversal; attribution_unresolved",
+      "old_judgment": "possible",
+      "new_judgment": "unlikely",
+      "new_selected_documents": [
+        {
+          "document_id": "alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a",
+          "content_hash": "7e2a69eede1c1b4c9695b46ae7d80b9f29fce02ff8bdf141aa47d04dad9cac55"
+        },
+        {
+          "document_id": "avnews_b054e54cc8282fbb88cf0359",
+          "content_hash": "a6e9515c1897434685f923d7c366698fd7e7a11172434a52c25cb54cb9e3caf7"
+        },
+        {
+          "document_id": "sec:cik_0001018963:000119312525199688",
+          "content_hash": "a894168b22676d4ab07914a8939eedbb6598ac3a31a30c2bbc837dd3fa094093"
+        }
+      ],
+      "removed_selected_documents": []
+    }
+  ],
+  "fixed_system_prompt_diff": [
+    {
+      "operation": "insert",
+      "old": "",
+      "new": "Signal research_status=admitted with effect_status=unverified authorizes measurement use, not a claim of prediction benefit. A magnitude research purpose never mechanically selects a larger magnitude class. H_analyse guides evidence organization and weighting. The fixed Predictor shell owns final candidate_judgment and conditional magnitude classification. The shell's required output overrides any Plan instruction to omit classification or prediction; leaving classification to the shell does not remove that system capability. "
+    }
+  ],
+  "ati_quantitative_repair_replay": {
+    "request_hash": "d5fdc79499732461f0d9dd9180ee961f72939a7be6010d91d251e665f8bc4a38",
+    "actual_patch_applied": true,
+    "issue_code": "assertion_without_support",
+    "issue_paths": [
+      "current_beliefs[0]",
+      "current_beliefs[1]",
+      "current_beliefs[2]"
+    ],
+    "description": "model replacements combined numerical facts without an exact matching accepted evidence claim; fallback removed these invalid replacements, original evidence cards and citations retained",
+    "scope": "exact snapshot/operations and quantitative claim-link validator, not a rerun of the full case or causal gain study"
+  },
+  "slow_experience_trace": {
+    "bootstrap_source": "v170 committed round",
+    "archived_target_item_count": 10,
+    "controller_requests_checked": 24,
+    "target_item_request_counts": {
+      "reflection:57585e192e1d39b1cd35c593f87c8cb25f46ac6223bb882d28e73625b16d10da": 0,
+      "reflection:6d7c5576112c8987a20ca6dcc42ffc9714a02961aab961cab2173824cb411de7": 0,
+      "reflection:468cbe0d9e812313c87c11d23fc98b9ab998412e8f991afcbf8e0bbf1d691cd4": 0,
+      "reflection:acfaccaec2b291b2071732f90d2ca28310f5dc28074eb337ae7b4e5c3175b35b": 0,
+      "reflection:1f01d8e8c8bdfc13f195d57ca30d7d362095538e11739878cf5fa63cb94c1db4": 0,
+      "reflection:e53ea0ad7e0b4c4dead4b87e784ce411f49e05de36392f851d263ccc4fd16d42": 0,
+      "reflection:b0c1fcda7851c5b53f6d4683f5fe54ecfb62200c946e474c24c79cfd2fc4225f": 0,
+      "reflection:7a756e885c66ba3380753d92966846787589edf17f4452fd9a3fabe08a049a10": 0,
+      "reflection:f1c996252881c2982e718afdc4cdd6a5fce1e5d921c0eb9b688f938ce98f1788": 0,
+      "reflection:c0709109b67637140eba63075cc8bc909c71749a75492f85feb56d0d6110f38b": 0
+    },
+    "requests": [
+      {
+        "request_hash": "c933d7f72be2a7b9dcdcb904549288a4d0ec88eabcd52a8ffc447557358835b4",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "97523747392e8ae2f58421674f6a838ccc7b2f58bcd29f3fd2f027935b437305",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "42bfdc3c9e8b0f2f5bbaed716f1120f5da9e41c4192b42cb155df069ca586347",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "0fc87fba9c2a6d74fe361e25e7d70844885d3a9687bdef79ed869d14fbd765cb",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "989daf1aada0940afecf4f13d231076258771211b65f42c10a306c573fe478cc",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "bdbcf9f2728bbdaa506d987f26a3b038b2aa1c2b98b4006e6a202cb54d2e3317",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "50f5ec1d8c342cc68860a295d612115d8da685bb2c297e430faf72258662714c",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "d3b336e56d61661f8c502dd3662b4c3b4a666008515c882309a25e44d22b621a",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "64a55d4258c76618678df7342fbe39a1198a4f01b61de9fe240ad797f7697742",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "eb9765d78718085ac2cd3474e98605e52d475d1af7c9f4b139ed464fc579cca8",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "f1a09167cddbd170b8a438c23d911783775ccf8d206afec14c981f8318ecd96c",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "424f8a8cf9ad5471a072577d73767207bcc68261f996e942dd073c542a23fe04",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "0e9d34d757341e02dcd2e54b857da0c694adb0bf2c6cad4f4548c59477515a32",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "d15ed70f1434b0b6bf0247a04a9c152db7d901c46aa4d1db39ed5d01a28b66f7",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "64e4bcc041118c40d1f1e4b930dcc4f68c93cd9da1bea0423999053f2f5bd2e7",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "946f77ff7a7e53d92522329b9ee25dacd04fe5b6cece1ef62b8549ecb42f8848",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "6cb6c7f7a01a9c48230342bea4bae5c8f858809da214048f9e47f5c105725f47",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "6a8f445429e6e5712c3719068527b475a1b7cc15e3f3c142910043392a67160c",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "4e730bf449724a915b026a51b151f9766f04e1e5cdeda6907f40c2a55de9d02e",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "bd2724e9e9ea091df44d1a3e3d9def5fb1e4e4ec82f9ae395ca50eb04768b4b9",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "e9103d61978ac84525fa6ca25710b6b8370fb16e22474f50215c8775e6971a1e",
+        "axis_id": "surge_direction",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "929befbe31dd6757c04c1812afbdbbe6dd89fad3f15b0b4e7e538dee87be432f",
+        "axis_id": "surge_direction",
+        "seed": "discovery",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "35d2497249d79dbf551a2ec75b464077dfa5dc9f70fe0405401f969d7bce6550",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      },
+      {
+        "request_hash": "829255217721361d026e31067964124adb998bacbdfc245f678eab57d7b86c99",
+        "axis_id": "magnitude_ge3_v1",
+        "seed": "hypothesis",
+        "included_item_count": 5,
+        "memory_counts": {
+          "available": 21,
+          "included": 5,
+          "omitted_after": 16,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "upstream_counts": {
+          "available": 100,
+          "deferred": 79,
+          "included": 21
+        },
+        "disclosed_original_count": 0
+      }
+    ],
+    "boundary": "individual feedback is stored; these ten exact items were not present in the inspected controller payloads. Does not prove all retrospective information absent from summary/tool responses."
+  },
+  "scope_limits": [
+    "visible selected-card retention is not proof that all available raw information was selected or all prose is semantically true",
+    "case input and fixed/Plan prompts changed; no isolated prompt ablation or identical-request repeated sample",
+    "PIT audit covers visible Basic cards; no universal semantic-period proof for every Signal observation",
+    "no new factor candidate, live cycle, score, canonical experience or Registry publication"
+  ],
+  "source_file_sha256": {
+    "runs/cold_start/minimal_rounds_v168_integrated/plans/plan_r0001_c02/record.json": "633ad74b421f246ff917d0ae6f3d47be27e815d44ca6ce586f940d2b87ccf448",
+    "runs/cold_start/minimal_rounds_v168_integrated/run_contract.json": "fb59eb3d26a761083d17ce7a3efc48b7323fdf911e78b070f9565928a00bd01e",
+    "runs/cold_start/minimal_rounds_v168_integrated/meta/round-0001.json": "2126ec7b012addbbc2ecc4588a17aa47ed260ef34dc109ffd589bc57208a0e6c",
+    "runs/cold_start/minimal_rounds_v168_integrated/requests/304eb19a3a836882595cf3586906782fdcf9bbc8ca1b6c71fbb2942608a042c4.json": "be84652cc3b721381f65748b6fca2d4dc562275bbfe26efb5e051af967ea7dc2",
+    "runs/cold_start/minimal_rounds_v168_integrated/cache/responses/304eb19a3a836882595cf3586906782fdcf9bbc8ca1b6c71fbb2942608a042c4.json": "eacd464b32069330bff0e432d1c2ea793eae96d057ff1b675ddbf88a97d4d9c0",
+    "runs/cold_start/minimal_rounds_v168_integrated/requests/ac803ce7c2e28b81db24cff6b974ee6adde5359df29846f47f555e54ab520bd5.json": "33d2ba8f79ab7d246d28213186b61549166a10c8980985f40d05bb2b3e7a00b8",
+    "runs/cold_start/minimal_rounds_v168_integrated/cache/responses/ac803ce7c2e28b81db24cff6b974ee6adde5359df29846f47f555e54ab520bd5.json": "771aecc786a95775bc74e4dc06fbfe0b70c9c18ff1ff5a67071097ddebf09746",
+    "runs/cold_start/minimal_rounds_v170_integrated/plans/plan_r0001_c02/record.json": "35fde3f8edf2106429e7f941b84a690ebb50018b1df530de6dd5793661d0b7b2",
+    "runs/cold_start/minimal_rounds_v170_integrated/run_contract.json": "448140d7bc5e49944b3acc7d9f4d85f0c283eb68301f5707bbd3ea1314b44ab4",
+    "runs/cold_start/minimal_rounds_v170_integrated/meta/round-0001.json": "f0ceef86613a45885d8370062562f234d10460d862e4a057d81b6305dd210dec",
+    "runs/cold_start/minimal_rounds_v170_integrated/requests/e6a7c124bd42b2b7d52a6944178ce735ee1620b92c7864272304a30bbace0238.json": "70849c2aeef26d33f2b3e4b817fe7bde0a39579fdab7fa92bd3868c92fd6b5b9",
+    "runs/cold_start/minimal_rounds_v170_integrated/cache/responses/e6a7c124bd42b2b7d52a6944178ce735ee1620b92c7864272304a30bbace0238.json": "d281968c7f140b51f79283890d4ed279c89e7c80ed9bbf7bcf51bec4abe184d8",
+    "runs/cold_start/minimal_rounds_v170_integrated/requests/3283ebab681142d6578a756321ea2032642102dcf93987624e2bd0c41c656b1d.json": "5d0aa327310c29bf2827aa6dc3fae0e2185a07f3476386d1f0c9ee41f2ae8ccd",
+    "runs/cold_start/minimal_rounds_v170_integrated/cache/responses/3283ebab681142d6578a756321ea2032642102dcf93987624e2bd0c41c656b1d.json": "d2bc597ce245b679eac851a64fe7aac4ef6c31d15a96f2deb09b402827bd483c"
+  }
+}

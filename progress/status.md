@@ -3674,3 +3674,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 - 2026-10-02：v176冻结bcef98cd真实后继已进入Fast；前4份canonical案例checkpoint完成、技术排除0、技术FN0。两已发布unverified版本已真实进入Reflect/Predictor，此前deepcopy入口通过；指针0/0、固定24完整评分/Slow双轴新因子验收待完成，运行中未热改。见reports/v176-live-frontier-20261002.md。
 
 - 2026-10-02：v176因第8案例Signal retrieval HTTP402余额不足退出1；7完成/0技术排除/0技术FN、指针0/0。86request与85response hash、70blind payload outcome-key、144全Basic卡/状态增量/预测存储核验通过。禁网隔离实际入口复用2proposal/7trajectory及第8案2cache，精确到原402 request frontier；原指针/ledger/contract不改。完整评分/Slow双轴新因子仍待余额恢复；已向用户询问，不将资金失败计研究FN。见reports/v176-402-and-resume-audit-20261002.md。
+
+- 2026-10-02：v168/v170 Newmont与ATI反转审计：4实际Predictor请求/响应hash、85已选Basic卡、完整state/delta和生产匿名投影逆恢复通过；固定prompt/Plan/证据包均不同，不能称同输入摇摆。ATI原patch量化belief三处错链准确重放，支持来源保留；市值比较无交付依据、numeric_decision_inputs范围歧义及need全解语义仍待处理。两案10经验已归档导入v171，24实际Mining payload目标项0可见；现有链存在，跨运行pair/选择消费闭包待设计实现。0外部，不改原评分/运行代码；整体目标仍受余额阻塞。见reports/v168-v170-case-reversal-audit-20261002.md。

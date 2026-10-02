@@ -258,3 +258,5 @@
 - 2026-10-02：准备committed-Fast诊断后继；咨询signal-learning-profile-cycle-freeze、self-evolution-convergence-and-acceptance、incremental-repair-and-sourced-memory，保持原40案/来源清单和源指针，只导入hash绑定的已提交范围，核验生产入口与出版后恢复，不将局部重放称为新Slow完成。
 
 - 2026-10-02：v171已提交Slow出版后准备完整Fast/Slow后继；咨询signal-learning-profile-cycle-freeze、self-evolution-convergence-and-acceptance、incremental-repair-and-sourced-memory，保留已发布unverified版本、原40案与hash绑定学习/历史，验证真实producer/consumer和本地独立指针，不把v174组件stage当作生产publication。
+
+2026-10-02：两案跨冻结运行反转审计，consulted experiences/incremental-repair-and-sourced-memory.md, experiences/self-evolution-convergence-and-acceptance.md, experiences/paired-llm-comparison-noise.md, experiences/technical-failure-before-quality-attribution.md, experiences/nonvisible-source-content-consumes-readable-budget.md；核对真实wire与修复、同输入条件、证据覆盖和下游经验实际消费，禁止将保留hash或FN标签升级为语义正确/因果解释。

@@ -1,6 +1,6 @@
 # Nonvisible Source Content Consumes the Readable Budget
 
-visit_times: 0
+visit_times: 1
 
 ## Trigger
 
