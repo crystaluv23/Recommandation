@@ -35,6 +35,7 @@ from stock_opportunity_agent.signal_library import (
 )
 
 from stock_opportunity_agent.llm.agent import AgentUsage
+from stock_opportunity_agent.research.signal_tracking import record_committed_signal_use
 from stock_opportunity_agent.research.evolution_core import (
     BlindPrediction,
     BlindPredictor,
@@ -2694,6 +2695,4 @@ class PlanEvolutionEngine:
                         result,
                         is_surge=trajectory.ground_truth.is_surge,
                     )
-        self.signal_registry.record_learning_events(
-            _signal_learning_events_from_record(record)
-        )
+        record_committed_signal_use(self.signal_registry, _signal_learning_events_from_record(record))

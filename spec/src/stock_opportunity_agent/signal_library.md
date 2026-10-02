@@ -780,3 +780,16 @@ target's records and returns None — unknown, never zero — when a Signal has
 none. Direction statistics and surge_rate are untouched, and recording
 evaluations never mutates SignalStats. Other targets remain unimplemented
 until their own gate records pass; see `signal_evolution.md`.
+
+
+### Committed-use target persistence
+
+The tracking bridge appends `committed-use-observation-v1` protocol records for
+committed exact-version executions. `inconclusive` describes observed use without
+validated benefit; unavailable is `insufficient_evidence`. Independent paired
+`supported` records are a separate protocol and keep their own meaning.
+Batch target writes validate all types/refs and exact duplicate-id contents before
+an atomic JSONL replacement preserving original rows. A late invalid item or an
+interruption cannot leave a partial batch or silently replace an earlier verdict.
+Learning-event duplicate ids likewise require exact content; duplicate physical
+outcomes include realized multiple in conflict detection.

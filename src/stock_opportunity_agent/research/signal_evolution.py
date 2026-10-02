@@ -11,6 +11,8 @@ from datetime import datetime
 from math import comb
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence
+from stock_opportunity_agent.research.signal_tracking import target_use_profiles
+
 from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
 )
@@ -292,6 +294,7 @@ _H1_MANIFEST_PROJECTION_CHARS = 12_000
 
 
 _SLOW_FEEDBACK_KINDS = {
+    "signal_target_observation",
     "signal_usage",
     "candidate_result",
     "search_result",
@@ -730,6 +733,19 @@ def validate_slow_experiments(value: Mapping[str, Any]) -> dict[str, Any]:
             raise ValidationError(f"Slow experiment {index} outcome is required")
         work_ids.add(work_id)
     return payload
+
+
+def _slow_feedback_source_catalog(rows: Iterable[Mapping[str, Any]], source_manifest: Iterable[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Preserve validated producer disclosure scopes at every source consumer."""
+
+    scopes = {str(item["ref"]): list(item["visible_to"]) for item in source_manifest}
+    rows = tuple(row for row in rows if isinstance(row, Mapping) and row.get("feedback_ref"))
+    if any(row.get("kind") == "signal_target_observation" and str(row["feedback_ref"]) not in scopes for row in rows):
+        raise ValidationError("target observation source lacks explicit disclosure scope")
+    return {str(row["feedback_ref"]): {
+        "visible_to": scopes.get(str(row["feedback_ref"]), sorted(_SLOW_SOURCE_ROLES)),
+        "content": dict(row),
+    } for row in rows}
 
 
 def read_slow_sources(
@@ -3954,6 +3970,15 @@ class SignalEvolutionEngine:
                         "visible_to": sorted(_SLOW_SOURCE_ROLES),
                     }
                 )
+        for card in self.registry.list_signal_cards():
+            for target_id, profile in target_use_profiles(self.registry, card.ref,
+                round_cutoff=self.workspace.last_completed_round).items():
+                feedback_ref = f"target-use:{card.ref}:{target_id}:{profile['source_hash']}"
+                rows.append({"feedback_ref": feedback_ref, "kind": "signal_target_observation",
+                    "subject_ref": card.ref, "source_refs": [feedback_ref],
+                    "limitations": profile["limitations"], "artifact": profile})
+                manifest.append({"ref": feedback_ref, "content_hash": _canonical_hash(profile),
+                    "visible_to": ["E2", "H3", "Update", "reflection"]})
         magnitude_rows, magnitude_manifest = magnitude_feedback_rows(
             self.meta_memory.entries,
             last_completed_round=self.workspace.last_completed_round,
@@ -4350,13 +4375,7 @@ class SignalEvolutionEngine:
             for lesson in item["slow_memory"].get("lesson_additions", ())
             if isinstance(lesson, Mapping)
         }
-        source_catalog = {
-            str(row["feedback_ref"]): {
-                "visible_to": sorted(_SLOW_SOURCE_ROLES),
-                "content": row,
-            }
-            for row in pending_rows
-        }
+        source_catalog = _slow_feedback_source_catalog(pending_rows, slow_input.get("source_manifest", ()))
         selected, view = read_slow_sources(
             source_catalog,
             role_scope="reflection",
@@ -5587,6 +5606,7 @@ class SignalEvolutionEngine:
                 "stable_spec": spec.to_dict(),
                 "stable_skill": skill,
                 "learned_profile": self.registry.load_learning_profile(signal_ref),
+                "target_use_profiles": target_use_profiles(self.registry, signal_ref, round_cutoff=self.workspace.last_completed_round),
             },
             "induction_cases": induction_packets,
             "slow_method_memory": self._slow_method_view("Update"),
@@ -8677,16 +8697,10 @@ class SignalEvolutionEngine:
                 "processed_feedback_refs", ()
             )
         )
-        source_catalog = {
-            str(row["feedback_ref"]): {
-                "visible_to": sorted(_SLOW_SOURCE_ROLES),
-                "content": dict(row),
-            }
-            for row in self._active_slow_input.get("feedback_rows", ())
-            if isinstance(row, Mapping) and row.get("feedback_ref")
-        }
+        source_catalog = _slow_feedback_source_catalog(self._active_slow_input.get("feedback_rows", ()),
+            self._active_slow_input.get("source_manifest", ()))
         sources, manifest = read_slow_sources(
-            processed,
+            (ref for ref in processed if ref not in source_catalog or role_scope in source_catalog[ref]["visible_to"]),
             role_scope=role_scope,
             source_catalog=source_catalog,
             budget_bytes=64_000,

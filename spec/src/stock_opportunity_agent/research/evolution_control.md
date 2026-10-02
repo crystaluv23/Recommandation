@@ -89,3 +89,11 @@ Vantage, matching the existing news capability catalog. The fallback uses the
 same managed transport, cache, ledger and frozen authorization ceilings. A new
 code checkpoint requires a successor contract; an interrupted workspace is not
 retroactively run against changed adapter wiring.
+
+
+## Imported committed Signal tracking
+
+Hash-verified committed Slow-history and Fast-bootstrap learning events use the
+same tracking bridge as local round commits. It derives only the purposes declared
+by exact version metadata, preserves imported event identities, and never imports
+staged/unbound rows as target effectiveness.

@@ -32,8 +32,10 @@ prevent technical publication. Provider/control flow in required technical work
 still propagates. New cycles never write
 fake promoted effects or rewrite old v2/v3 records. Historical effect and admission
 source units remain separately discoverable for Slow feedback.
-Committed-use target producers and independent benefit studies are the next
-tracking frontier; admission alone is not evidence that tracking is complete.
+Committed-use tracking derives target observations from committed local/imported
+learning events and provides cutoff-bound source summaries to reflection/H3/E2/Update.
+H1 cannot read outcome groups. Independent benefit studies remain a separate
+frontier; observed use and admission alone are not validated benefit.
 
 Provider projections preserve source identity before anonymizing prose: hash each
 original backlog source ref before masking its row, and retain an opaque
@@ -747,3 +749,10 @@ try/failure boundary before staging. The default retains historical readability
 and all reference-graph checks. The bounded method view discloses flagged old
 facts as `legacy_inference_unchecked`, retaining exact originals, hashes and
 read-by-reference. No schema, research weighting or promotion rule changes.
+
+
+Source catalog construction preserves each frozen input source_manifest's disclosure
+scopes at reflection and every method-view consumer. A processed feedback ref does
+not confer new disclosure authority. Method views omit role-hidden processed units;
+explicit source reads still reject hidden refs. Legacy units without a manifest
+retain their existing scope; new target summaries require explicit scopes.

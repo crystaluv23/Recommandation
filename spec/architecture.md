@@ -319,6 +319,13 @@ their distinct reasons for the same case/input, while effectiveness summaries
 deduplicate that observation. A bounded, identity-free learned profile is
 frozen beside the definitions and may guide later Signal selection; the full
 ledger never enters blind model context.
+`research/signal_tracking.py` derives target-scoped use observations from those
+committed events, including imported committed derivatives. Signal Library owns
+crash-safe target persistence; research target contracts own outcome projections.
+Target matrices are observational and do not promote effect to supported.
+Slow receives cutoff-bound, identity-free summaries with resolvable usage sources;
+comparison and reflection roles may read them, while H1 hypothesis and blind
+prediction cannot receive target outcome groups.
 At its Slow-Loop boundary, a durably staged and fully validated candidate batch
 may advance it exactly once; the cycle marker records both input and output
 Registry version/hash. A restart completes that same transition idempotently

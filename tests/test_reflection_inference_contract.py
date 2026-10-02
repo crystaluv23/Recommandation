@@ -257,7 +257,7 @@ class SlowReflectionInferenceTests(TestCase):
         memory = engine._prepare_slow_memory(cycle_id=1, slow_input={
             'contract_hash': 'contract', 'previous_memory_head': None,
             'feedback_rows': [{'feedback_ref': 'feedback-1', 'result': 'A completed evaluation.'}],
-            'source_manifest': [{'ref': 'feedback-1'}],
+            'source_manifest': [{'ref': 'feedback-1', 'visible_to': ['reflection', 'H1', 'H3', 'E2', 'Update']}],
         })
         self.assertEqual(memory['status'], 'failed')
         self.assertEqual(memory['processed_feedback_refs'], [])

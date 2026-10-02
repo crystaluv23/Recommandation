@@ -338,7 +338,7 @@ class SlowAuthoredBriefTests(unittest.TestCase):
         prepared = engine._prepare_slow_memory(cycle_id=2, slow_input={
             "contract_hash": "offline-contract", "previous_memory_head": 1,
             "feedback_rows": [{"feedback_ref": "feedback-2", "result": "A fresh paired evaluation has completed."}],
-            "source_manifest": [{"ref": "feedback-2"}],
+            "source_manifest": [{"ref": "feedback-2", "visible_to": ["reflection", "H1", "H3", "E2", "Update"]}],
         })
         self.assertEqual(prepared["status"], "appended")
         self.assertEqual(prepared["processed_feedback_refs"], ["feedback-2"])

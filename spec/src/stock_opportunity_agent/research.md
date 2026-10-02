@@ -160,3 +160,9 @@ Tests should cover prompt assembly, schema validation, missing evidence
 behavior, deterministic fixtures, version stamping, validation-contract
 presence, incremental research behavior, coverage-gate behavior, web/no-web role
 boundaries, and refusal to accept ungrounded high-confidence claims.
+
+
+Committed Signal-use tracking lives in `research/signal_tracking.py`. It bridges
+Fast commit/import derivatives to Signal Library target records and provides
+bounded retrospective observations to Slow, without candidate admission authority
+or outcome disclosure to blind prediction.

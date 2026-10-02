@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：research/signal_tracking已接本地提交/恢复及核验导入，目标记录原子幂等、Slow真实source/Update摘要；修复source catalog展开scope，H1隐蔽source不可读。真实v168 274事件→209目标记录/193物理观察、16状态覆盖冲突保留并不计明确关联，重启新增0/原hash不改/0外部。最终1430全量、4新回归及lint PASS。16冲突内容审查、最新完整周期近零技术排除、真实新双轴候选及独立幅度增益仍待验收。报告：reports/committed-signal-target-tracking-20261002.md。
+
 2026-10-02：Slow生产主循环迁移到独立技术准入：方向/magnitude/vNext完整技术检查后入库、无入库前effect调用；删除旧池化晋升，exact检查点、历史来源、原子中断恢复及实际Fast各role效果待验证披露已接通。实际v168 v3副本生产partial重放1/1 fixture+发布/重启/后续执行通过，0外部、旧effect及原件不改。最新专项7 PASS、1426全量PASS及lint PASS；持续target评价生产写入、真实新Mining、完整新周期近零排除率及magnitude独立增益仍待验收，目标继续。报告：reports/slow-production-admission-20261002.md。
 
 2026-10-02：Slow技术准入基础已实现：独立exact-content/Registry/policy/target/contract记录，沿现有原子transition发布/恢复，版本proof及Frozen/cards效果待验证状态；旧效果记录不伪造。实际v168 revenue_growth_yoy:v3零外部调用在临时副本技术测试/发布/重启通过，源文件hash不改。223专项、最终1421全量PASS。生产Slow主循环仍旧效果门；Fast实际消费与持续目标追踪尚待迁移，不宣称目标完成。报告：reports/slow-technical-admission-foundation-20261002.md。

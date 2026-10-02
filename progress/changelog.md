@@ -596,3 +596,5 @@
 2026-10-02：实现独立技术准入Registry基础，保持legacy效果记录不可变；原子版本发布/恢复、proof缺失/篡改拒绝、冻结效果待验证status及vNext旧proof保存。实际v168 revenue_growth_yoy:v3原fixture零外部副本重放入库/重启通过，源hash不变。1421全量及lint PASS；生产Slow gate/Fast实际消费/持续target追踪仍待迁移，完整目标保持进行中。
 
 - 2026-10-02：按已批准设计迁移生产Slow方向/magnitude/vNext技术准入，移除旧池化晋升，绑定原authoring lineage、独立effect存储、Fast实际unverified披露；真实v168候选副本生产重放通过，持续target写入及真实完整周期验收继续。
+
+- 2026-10-02：接通提交/恢复/导入的版本target使用追踪与Slow消费，原子exact目标记录，source manifest权限贯穿消费者；v168真实274事件重放/重启及1430全量通过，16物理观察冲突明确保留，目标继续验收。

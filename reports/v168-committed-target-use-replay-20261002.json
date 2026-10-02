@@ -1,0 +1,2857 @@
+{
+  "boundary": "Real committed Plan records/learning events; current tracking in a disposable Registry only. Legacy versions have direction observations, magnitude remains unknown without declared version metadata. Not a new live cycle or predictive gain.",
+  "committed_plan_count": 2,
+  "external_calls": 0,
+  "learning_event_count": 274,
+  "new_target_rows": 209,
+  "policy_sources": {
+    "src/stock_opportunity_agent/research/signal_tracking.py": "5bc29e58e0b66abc675c3dffc49957951219bfe430487b6a3321bf3bf23ffbd5",
+    "src/stock_opportunity_agent/signal_library.py": "313629898f4176049a555f3e7ff4719e36aed076426dfc0c8bb6c9f05c3acf78"
+  },
+  "profiles": {
+    "cash_burn_rate_elevated:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 7,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 0.9678995512064352,
+          "neutral": 1.3136446886446886,
+          "positive": 5.0200178442158165,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 7,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 9,
+        "signal_ref": "cash_burn_rate_elevated:v2",
+        "source_hash": "7d36f129304e3166e868e922aae7e66a7d62d41a460a152079973ca29ff8d148",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 2,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 0
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 4
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 7
+      }
+    },
+    "cash_reserves:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 23,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 3.277136466547924,
+          "neutral": 5.6637786760469,
+          "positive": 2.462884988411728,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 23,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 36,
+        "signal_ref": "cash_reserves:v2",
+        "source_hash": "329dc0e2719cec83d0c19bd6f97afe3a13c98d15c3d5d6193cf1c48ae75c3dfd",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 2
+          },
+          "neutral": {
+            "non_surge": 2,
+            "surge": 3
+          },
+          "positive": {
+            "non_surge": 8,
+            "surge": 8
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 23
+      }
+    },
+    "cash_to_current_liabilities_ratio:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 6,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 2.0755055440401495,
+          "neutral": null,
+          "positive": 1.0026317366679904,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 6,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 7,
+        "signal_ref": "cash_to_current_liabilities_ratio:v2",
+        "source_hash": "dd8335a752a3e162779c887b1aaae0f35c50ca31091f7721601875429d1168bd",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 1,
+            "surge": 2
+          },
+          "neutral": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "positive": {
+            "non_surge": 2,
+            "surge": 0
+          },
+          "unavailable": {
+            "non_surge": 1,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 1,
+        "unique_issuers": 6
+      }
+    },
+    "commercialization_status:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 13,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 6.795183595612781,
+          "neutral": 2.130379816865228,
+          "positive": 6.286488392399016,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 13,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 14,
+        "signal_ref": "commercialization_status:v2",
+        "source_hash": "0f07453269a0799c6f17f594addfd2a8b6fc6122a72472bcc9cc879e5865eca7",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 1
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 1
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 3
+          },
+          "unavailable": {
+            "non_surge": 3,
+            "surge": 4
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 7,
+        "unique_issuers": 13
+      }
+    },
+    "customer_concentration:v2": {
+      "surge_direction": {
+        "disputed_observations": 4,
+        "effect_status": "unverified",
+        "eligible_observations": 14,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 3.963706835446222,
+          "neutral": 1.4605133346171713,
+          "positive": 2.8112718393477794,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 18,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 28,
+        "signal_ref": "customer_concentration:v2",
+        "source_hash": "65988ac2e5b724874fadb121f1240be0b3d86e5241e720b9c7b4a16951923a07",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 7
+          },
+          "neutral": {
+            "non_surge": 2,
+            "surge": 1
+          },
+          "positive": {
+            "non_surge": 2,
+            "surge": 2
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 18
+      }
+    },
+    "financing_listing_action:v3": {
+      "surge_direction": {
+        "disputed_observations": 4,
+        "effect_status": "unverified",
+        "eligible_observations": 17,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 4.248159729711914,
+          "positive": 2.0251720267138764,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 21,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 34,
+        "signal_ref": "financing_listing_action:v3",
+        "source_hash": "1f9cd28507cd499cfd21fd38fb38dfaf0ac5297ce87c5c47f0c71237fc1ffaed",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 3,
+            "surge": 6
+          },
+          "positive": {
+            "non_surge": 4,
+            "surge": 4
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 21
+      }
+    },
+    "gross_margin_change:v3": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 7,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 1.8418868802322814,
+          "positive": 3.9879600047757067,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 7,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 7,
+        "signal_ref": "gross_margin_change:v3",
+        "source_hash": "5ed5c72838f569763105bfae86846a7eac56d184d785ccb87d7fc81e1f633a56",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 2,
+            "surge": 2
+          },
+          "positive": {
+            "non_surge": 1,
+            "surge": 2
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 7
+      }
+    },
+    "guidance_acceleration:v2": {
+      "surge_direction": {
+        "disputed_observations": 6,
+        "effect_status": "unverified",
+        "eligible_observations": 10,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 3.2128015474317397,
+          "positive": 1.464064716733659,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 16,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 27,
+        "signal_ref": "guidance_acceleration:v2",
+        "source_hash": "8b2f599f8830f81a2f1581318fa42b3e017d67d7340cff7c9491f53950a491c0",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 5
+          },
+          "positive": {
+            "non_surge": 2,
+            "surge": 1
+          },
+          "unavailable": {
+            "non_surge": 1,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 1,
+        "unique_issuers": 16
+      }
+    },
+    "liquidity_runway_months:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 12,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 1.3539856010631102,
+          "neutral": 8.827313449596643,
+          "positive": 3.073542691094255,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 12,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 14,
+        "signal_ref": "liquidity_runway_months:v2",
+        "source_hash": "5e954578bad9d0f4aa8bd54944442e4d338d414ab5d8681678c126118489ce34",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 6,
+            "surge": 1
+          },
+          "neutral": {
+            "non_surge": 0,
+            "surge": 2
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 3
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 12
+      }
+    },
+    "max_drawdown_1y:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 4,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 2.11469350371808,
+          "neutral": 1.6666291554784547,
+          "positive": 1.5661875313387934,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 4,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 5,
+        "signal_ref": "max_drawdown_1y:v2",
+        "source_hash": "428e2c2a466a1ff45956d791c0aa4793dbdba3456f640f851809c47fa6aed19d",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 1
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 1
+          },
+          "positive": {
+            "non_surge": 1,
+            "surge": 0
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 4
+      }
+    },
+    "negative_word_count:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 5,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 5.452414122401247,
+          "neutral": null,
+          "positive": null,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 5,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 5,
+        "signal_ref": "negative_word_count:v2",
+        "source_hash": "c80d6084479349ca0e3dcd13052c4947eb3912f39818ccf7f9e2401873ba028f",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 1,
+            "surge": 4
+          },
+          "neutral": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 5
+      }
+    },
+    "net_share_retirement_yoy:v2": {},
+    "operating_cash_flow_margin:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 15,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 3.538046562991398,
+          "neutral": 4.071899006795268,
+          "positive": 1.6951191385090205,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 15,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 22,
+        "signal_ref": "operating_cash_flow_margin:v2",
+        "source_hash": "382fea8de5f3e77cfe005cd094e300ef7da3175a66a1eee6e124c590f2daa426",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 1,
+            "surge": 3
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 1
+          },
+          "positive": {
+            "non_surge": 5,
+            "surge": 3
+          },
+          "unavailable": {
+            "non_surge": 1,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 1,
+        "unique_issuers": 15
+      }
+    },
+    "order_confirmation_disclosed:v2": {
+      "surge_direction": {
+        "disputed_observations": 2,
+        "effect_status": "unverified",
+        "eligible_observations": 14,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 3.8789804512020094,
+          "positive": 3.4583280524316335,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 16,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 23,
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "source_hash": "850f930c4a30a3a72027d8dd4bfcef7360e3f9259dd0a45e2420cdb56ecee4bc",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 2,
+            "surge": 4
+          },
+          "positive": {
+            "non_surge": 2,
+            "surge": 4
+          },
+          "unavailable": {
+            "non_surge": 2,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 2,
+        "unique_issuers": 16
+      }
+    },
+    "order_quality:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 4,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 7.880979675668418,
+          "positive": 6.90696520496232,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 4,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 5,
+        "signal_ref": "order_quality:v2",
+        "source_hash": "f3e4bc818465af39729de4cdc0752d870e74c05e5e7deb102bd777fd50af04ee",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 0,
+            "surge": 2
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 2
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 4
+      }
+    },
+    "price_momentum_126d:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 3,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": null,
+          "neutral": 1.2554026314206128,
+          "positive": 13.346009193480988,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 3,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 4,
+        "signal_ref": "price_momentum_126d:v2",
+        "source_hash": "0494861d745777dc0b3c1cc03f1f5db6091d6c3d31df97ecf6f2879e8225f432",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "neutral": {
+            "non_surge": 2,
+            "surge": 0
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 1
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 3
+      }
+    },
+    "revenue_acceleration:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 2,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 13.346009193480988,
+          "neutral": 1.0834895281558146,
+          "positive": null,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 2,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 2,
+        "signal_ref": "revenue_acceleration:v2",
+        "source_hash": "8ab1fb79e777353a73e62aeac2c39e75d087b715df296f27a41910c55193aade",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 0,
+            "surge": 1
+          },
+          "neutral": {
+            "non_surge": 1,
+            "surge": 0
+          },
+          "positive": {
+            "non_surge": 0,
+            "surge": 0
+          },
+          "unavailable": {
+            "non_surge": 0,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 0,
+        "unique_issuers": 2
+      }
+    },
+    "revenue_growth_yoy:v2": {
+      "surge_direction": {
+        "disputed_observations": 0,
+        "effect_status": "unverified",
+        "eligible_observations": 21,
+        "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+        "limitations": [
+          "selected-use association, not independent causal benefit",
+          "technical execution failures excluded from research effect counts"
+        ],
+        "mean_realized_multiple_by_state": {
+          "negative": 5.044742453289553,
+          "neutral": 2.505171594193971,
+          "positive": 3.7772361841478514,
+          "unavailable": null
+        },
+        "outside_population": 0,
+        "physical_observations": 21,
+        "round_cutoff": 1,
+        "schema_version": "signal-target-use-profile-v1",
+        "selection_events": 32,
+        "signal_ref": "revenue_growth_yoy:v2",
+        "source_hash": "13843a5a50c16759833947595128ea0cbded98b28de8aa0c0ff3fc25f9955595",
+        "state_outcome_matrix": {
+          "negative": {
+            "non_surge": 2,
+            "surge": 3
+          },
+          "neutral": {
+            "non_surge": 3,
+            "surge": 5
+          },
+          "positive": {
+            "non_surge": 2,
+            "surge": 4
+          },
+          "unavailable": {
+            "non_surge": 2,
+            "surge": 0
+          }
+        },
+        "target_id": "surge_direction",
+        "unavailable_observations": 2,
+        "unique_issuers": 21
+      }
+    }
+  },
+  "registry_definition_hash_unchanged": true,
+  "restart_new_rows": 0,
+  "schema_version": "committed-target-use-replay-v1",
+  "source_contract_hash": "fc6daad9484e959f3c8b0113024f9e1d99f4924d589e593410f31c6569957a75",
+  "source_files": {
+    "experiments/round-0001/checkpoint.json": "6f88956f14e5b855ff8bd3e957dc6d66600d212208f5a9fe2b32bf2171dcf2bc",
+    "plans/plan_r0001_c01/record.json": "eb1554c16d4a17ce39fa690267e5b94477ac72790bec83268a24971aaef808c9",
+    "plans/plan_r0001_c02/record.json": "633ad74b421f246ff917d0ae6f3d47be27e815d44ca6ce586f940d2b87ccf448",
+    "run_contract.json": "fb59eb3d26a761083d17ce7a3efc48b7323fdf911e78b070f9565928a00bd01e",
+    "signals/.transitions/cycle-0001.json": "2fb9d4289b9192c784d987ec0490fd14586b2815ff2cc7322b9611da35649698",
+    "signals/catalysts/financing_listing_action/manifest.json": "c3181d9c9d9eeda5ba8766111b8dcaef6b4c68d7b86eb397be386c40822c89f4",
+    "signals/catalysts/financing_listing_action/stats.json": "25c2ccc0cb5544c4ddd38f0db13666bbaf3c0cf1ab9827cdfdf04d0a7b6e1f46",
+    "signals/catalysts/financing_listing_action/versions/v1/skill.md": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b",
+    "signals/catalysts/financing_listing_action/versions/v1/spec.json": "b25b2202ce7d8a4735a340e25abb3d3e3e03dce0cf230a3f474ea0f1014e4d83",
+    "signals/catalysts/financing_listing_action/versions/v1/tests.json": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb",
+    "signals/catalysts/financing_listing_action/versions/v2/skill.md": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b",
+    "signals/catalysts/financing_listing_action/versions/v2/spec.json": "e3c042a80ecc155c1a7f9d5815302dcb060ba9e99962de7a5aa71d8f8a7aa2e8",
+    "signals/catalysts/financing_listing_action/versions/v2/tests.json": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb",
+    "signals/catalysts/financing_listing_action/versions/v3/learning/events.jsonl": "63cccf4b5ad5d5de2c2d84778040be3beecb5e4d823d10ad6baa76eba506d4d5",
+    "signals/catalysts/financing_listing_action/versions/v3/learning/profile.json": "0365a901f2ff254bc4bee6ddd69674f886c0d650c10332645a7a975b3e01c2b8",
+    "signals/catalysts/financing_listing_action/versions/v3/skill.md": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b",
+    "signals/catalysts/financing_listing_action/versions/v3/spec.json": "2a6860372a426404e2f9a6f44ba1cf808bf26d21d0efa1004d55abcf42f6c684",
+    "signals/catalysts/financing_listing_action/versions/v3/tests.json": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb",
+    "signals/financial/cash_burn_rate_elevated/manifest.json": "10f10404891bae1cebc4b44a374e673dd9c4f6c1055e947a714232934a1c9741",
+    "signals/financial/cash_burn_rate_elevated/stats.json": "32d8844981b43595545ebfb5f04eb099ded64cbb20d7062d1b5bfc8e7461a082",
+    "signals/financial/cash_burn_rate_elevated/versions/v1/skill.md": "9709939ebefbe292d77ac134db92023bc8a9a60eb73816743083104e313fc43e",
+    "signals/financial/cash_burn_rate_elevated/versions/v1/spec.json": "1e2135f31ce4083c35de982949f5b97472972ca07fceeb1106fe29cb34a4c516",
+    "signals/financial/cash_burn_rate_elevated/versions/v1/tests.json": "94de97061ec63daaefa67efd7d19abd777467dcc0567012788ea0eb365be966f",
+    "signals/financial/cash_burn_rate_elevated/versions/v2/learning/events.jsonl": "7bc546ec2ab9ecd9111220afb723769cad59faf1ff519cbaeeac88b654fcc534",
+    "signals/financial/cash_burn_rate_elevated/versions/v2/learning/profile.json": "533e9b50bf1065a4cb29d3f21deccc1876e63971615b0326ac582b859a291167",
+    "signals/financial/cash_burn_rate_elevated/versions/v2/spec.json": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb",
+    "signals/financial/cash_burn_rate_elevated/versions/v2/tests.json": "13f2f7635409303dfec032955292945345b435b498e1e742cc4d394b650f3bc5",
+    "signals/financial/cash_reserves/manifest.json": "9b74d18e29a24eb0658f1d1b858055c00c94c7991a4e19cde777cba88d66b41d",
+    "signals/financial/cash_reserves/stats.json": "8fae5b48bd73ef9bff419afda36583316e5cf4f4128d8ed41efa77ce459e5d50",
+    "signals/financial/cash_reserves/versions/v1/spec.json": "c8b50f0dfb0025bddec6d0bc5b766c20dcad2f9048e749f68048ff1d9e489d04",
+    "signals/financial/cash_reserves/versions/v1/tests.json": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e",
+    "signals/financial/cash_reserves/versions/v2/learning/events.jsonl": "41dee1a3afdecba0eb4145e42399a294a194ade83f615f109f81064c07677efc",
+    "signals/financial/cash_reserves/versions/v2/learning/profile.json": "57b886ce809c7cde8e3ed9d17833a591985cf73b36b92d7b05a6b39e03bb742d",
+    "signals/financial/cash_reserves/versions/v2/spec.json": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da",
+    "signals/financial/cash_reserves/versions/v2/tests.json": "2e937d5ccacb56308d87b5b4f92b53bbd24e6b6c42341cf44819325a7244464e",
+    "signals/financial/cash_to_current_liabilities_ratio/manifest.json": "77e04b28c47e0091f7e435c4daab62c87bbdd4bdf8737c14fb545af941af8389",
+    "signals/financial/cash_to_current_liabilities_ratio/stats.json": "46ded1724e8766795d7f823d3fb538a5b88767f99428f088e5acf2321384ff4d",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v1/tests.json": "e9e2aee78367cbd41a723a419caf83ed70e06d23f77aee309bfb2c085186aedf",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v2/learning/events.jsonl": "2b43417995343867deed6c3204d2119e5faaa0d79a531b43c545cd780dbf1153",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v2/learning/profile.json": "6b0acfbfb9b0841e399259b3b024bd3dca57ad67afb82df4459828a7bc325879",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885",
+    "signals/financial/cash_to_current_liabilities_ratio/versions/v2/tests.json": "734a6014d3b28834d67f7e923b4cdb10ea8cbd6caa591a4e580c1fb487bc50e6",
+    "signals/financial/gross_margin_change/manifest.json": "0580a2fd679384ec3ba9f8315bcfec6b2b2bab219a3d089d9e2d9dd3d5d38478",
+    "signals/financial/gross_margin_change/stats.json": "27de90e3b4b680c4ef6a7bb49d5723e2431ecb67447de129c7058f0c7fbaf174",
+    "signals/financial/gross_margin_change/versions/v1/spec.json": "a48ea30c8f4d4cab1788bcd7766f8da21cfbd20e5164c9be211ecc146479040b",
+    "signals/financial/gross_margin_change/versions/v1/tests.json": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c",
+    "signals/financial/gross_margin_change/versions/v2/spec.json": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737",
+    "signals/financial/gross_margin_change/versions/v2/tests.json": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c",
+    "signals/financial/gross_margin_change/versions/v3/learning/events.jsonl": "ecbb2d28a00a08e7c9d241266dbf305bb4cc16d15065f335be2c56dd8aa6c307",
+    "signals/financial/gross_margin_change/versions/v3/learning/profile.json": "824a35c827120f2fec92e147764d3dce2793fa812331235fd7d7da662c7dc79b",
+    "signals/financial/gross_margin_change/versions/v3/spec.json": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60",
+    "signals/financial/gross_margin_change/versions/v3/tests.json": "2e8e776e595d8de360bf0a9a78f1ad479efe1b45e0a60af839452f45dc23169c",
+    "signals/financial/liquidity_runway_months/manifest.json": "6e5bb335f34a8bdb69adfae8b09e4e7a4f66b07a59e350776c1c0bae23abf1de",
+    "signals/financial/liquidity_runway_months/stats.json": "c474eb748e79a96febece0c94ef8e7733687230b36e628b0390bcf08457b076a",
+    "signals/financial/liquidity_runway_months/versions/v1/skill.md": "ddf825d33a0eb1dcba2aad2a257af6a79b169c0dea254a7ab223e4b7e6da2e57",
+    "signals/financial/liquidity_runway_months/versions/v1/spec.json": "d20f90fd5638bfd4df9c1aaa9e4c75b6c8a40b74c76ccc8147aa8383db1757f9",
+    "signals/financial/liquidity_runway_months/versions/v1/tests.json": "20e35880d45ced4fa999b5ab038dc39fdcb9120f9eaa282ba006390428aa5ed6",
+    "signals/financial/liquidity_runway_months/versions/v2/learning/events.jsonl": "2c619e9a0a3c55b57d87393e2068f579d1bbeb101238dc55b8649e118f9aae4b",
+    "signals/financial/liquidity_runway_months/versions/v2/learning/profile.json": "59cd0ca14a7608f555df2170992c99fad8f6914f160fb3acc2c5ee787ba8ea60",
+    "signals/financial/liquidity_runway_months/versions/v2/spec.json": "6c73913d30ca36b63becd11e6016ad01c73a361a2fb1eca34de5ea88b65e32fa",
+    "signals/financial/liquidity_runway_months/versions/v2/tests.json": "676494226654bd500c9944ccfc1cb8907e7c35de80fbcaab0334008d3480a1f8",
+    "signals/financial/net_share_retirement_yoy/manifest.json": "e46c2b2b4ff130e2e5fd7f57764ee399bbe7314d27590c7309b1a4878c7bb0e3",
+    "signals/financial/net_share_retirement_yoy/stats.json": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+    "signals/financial/net_share_retirement_yoy/versions/v1/spec.json": "8cc58efd464289626e404bfdc024ec0f4926e0af66872e39bf385ef9210f9c27",
+    "signals/financial/net_share_retirement_yoy/versions/v1/tests.json": "a7413ab492ff444c1a9a022ff88c34ec8806918929dff27621872a0fd229d070",
+    "signals/financial/net_share_retirement_yoy/versions/v2/spec.json": "ccb42fbb56426fcdfe68b3ae0d6b1a8ef6b36ae7ef7f3036a8a16dbe9abf2f12",
+    "signals/financial/net_share_retirement_yoy/versions/v2/tests.json": "a7413ab492ff444c1a9a022ff88c34ec8806918929dff27621872a0fd229d070",
+    "signals/financial/operating_cash_flow_margin/manifest.json": "eab48141105411350f1b188d2b2fffcec30d970ef0693755e15f2fc641fb8ad1",
+    "signals/financial/operating_cash_flow_margin/stats.json": "994eb66a8ac9d3214d66248b2f2d1a38466c124bf2e488024f02b1cc755eabee",
+    "signals/financial/operating_cash_flow_margin/versions/v1/spec.json": "2089b166c9a4d88ed8663beaebdb3c535716123a486beadbe75ba4230cd6b668",
+    "signals/financial/operating_cash_flow_margin/versions/v1/tests.json": "e684e16678dca2a81b4743fb1bee5f7e369062fcaeb8162822e8a9c7c8be75a4",
+    "signals/financial/operating_cash_flow_margin/versions/v2/learning/events.jsonl": "a3465c90c6d985ddc361897301d597a974a81555dde950f12047f79fc34fe18c",
+    "signals/financial/operating_cash_flow_margin/versions/v2/learning/profile.json": "b3af0a8fe7b483faa693622655fb9cbf66856f39388cf4816a6adee156607699",
+    "signals/financial/operating_cash_flow_margin/versions/v2/spec.json": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276",
+    "signals/financial/operating_cash_flow_margin/versions/v2/tests.json": "e684e16678dca2a81b4743fb1bee5f7e369062fcaeb8162822e8a9c7c8be75a4",
+    "signals/financial/revenue_acceleration/manifest.json": "7a2a8d5811732bc0a0c651876b84d50563863a114170ca34e434682f72488703",
+    "signals/financial/revenue_acceleration/stats.json": "9be3b81481b8d8b906d752ea81745a145891f7c826d77e6369e15896ea7ecb6d",
+    "signals/financial/revenue_acceleration/versions/v1/spec.json": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620",
+    "signals/financial/revenue_acceleration/versions/v1/tests.json": "601ee1eb6e868ba9b65e0de5a7c5df9ae7af5bda21b48578d0062b59748b12be",
+    "signals/financial/revenue_acceleration/versions/v2/learning/events.jsonl": "c3689c863406aff5542674a0c5d4ff314ddd8a63394f6b553f38f49f21b23030",
+    "signals/financial/revenue_acceleration/versions/v2/learning/profile.json": "cba0b4786664daded71e52c4268418d1752ba8b24c10b8300c81c4e388cdfd1b",
+    "signals/financial/revenue_acceleration/versions/v2/spec.json": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a",
+    "signals/financial/revenue_acceleration/versions/v2/tests.json": "601ee1eb6e868ba9b65e0de5a7c5df9ae7af5bda21b48578d0062b59748b12be",
+    "signals/financial/revenue_growth_yoy/manifest.json": "05100318e5eff80a6ed2c0c2508eccf376c3724d784c0a05608195634c9b5706",
+    "signals/financial/revenue_growth_yoy/stats.json": "4e2d156ee57ab37f4811979dabf9b53dcf7c85c226b9614dad93c5b8c5801b9b",
+    "signals/financial/revenue_growth_yoy/versions/v1/spec.json": "0512ff73942e998e3fb445783f71e4ba2b7c4340d64d99a550833df3cf1f9d70",
+    "signals/financial/revenue_growth_yoy/versions/v1/tests.json": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7",
+    "signals/financial/revenue_growth_yoy/versions/v2/learning/events.jsonl": "f4bf5eb4b486b93f6ed39ea055c22f8e08785a2a2ab7d09df9207e7415628bbb",
+    "signals/financial/revenue_growth_yoy/versions/v2/learning/profile.json": "b0eae777f648d2f921bb83ec91976c5aa590d47c5439293fe08f407fef03f8ad",
+    "signals/financial/revenue_growth_yoy/versions/v2/spec.json": "00175663162b75b19654d0abb7df98ca66421867647d2fba57096b60748bb011",
+    "signals/financial/revenue_growth_yoy/versions/v2/tests.json": "d9864cc33471659b1de65828bbdb6aa57b1bec2b4056a5f798d8c4739e4517b7",
+    "signals/management/guidance_acceleration/manifest.json": "925e4d2e213f96a1b72ed9b99d082bb0b78807f3233b35ae24da8fe1e47c5fa0",
+    "signals/management/guidance_acceleration/stats.json": "b5c42031c2c7e862a9904f766852502fe640be48f0d7360035b2cec244a724d2",
+    "signals/management/guidance_acceleration/versions/v1/skill.md": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833",
+    "signals/management/guidance_acceleration/versions/v1/spec.json": "9d4dff4e973f32a0d338d4d9548a6f54c6e9980ecbde65d9d7834d389d4a8861",
+    "signals/management/guidance_acceleration/versions/v1/tests.json": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022",
+    "signals/management/guidance_acceleration/versions/v2/learning/events.jsonl": "6c450898296a97e2dc5a9c0c37c34fc8999fc362fb8919253d2eb41fe68a483d",
+    "signals/management/guidance_acceleration/versions/v2/learning/profile.json": "0e94758b26877e28d929010bf4376eaf106717ee67f939e7a28433bc320d03de",
+    "signals/management/guidance_acceleration/versions/v2/skill.md": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833",
+    "signals/management/guidance_acceleration/versions/v2/spec.json": "45539fda4df6f595ea5fc2d9222122e7dd01ec0ff9242df3ca79994532abe706",
+    "signals/management/guidance_acceleration/versions/v2/tests.json": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022",
+    "signals/market/max_drawdown_1y/manifest.json": "2b804865a67917ef2d629d9d69cdc88603725742b4844f546952a3e0ff4bacf4",
+    "signals/market/max_drawdown_1y/stats.json": "065cbc775fa996dac0d236eeb73fddfa1e522b93568c2c53786c24ab28f8a7e6",
+    "signals/market/max_drawdown_1y/versions/v1/spec.json": "46d0b7b6f79e4a1319d2e82b333e17c8b597b0fe2ca37526dea286e7a1d0449e",
+    "signals/market/max_drawdown_1y/versions/v1/tests.json": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14",
+    "signals/market/max_drawdown_1y/versions/v2/learning/events.jsonl": "5ce8a349c0177e05987f892438d1762ebbcc31238b5f61b7b2b058d90511c35e",
+    "signals/market/max_drawdown_1y/versions/v2/learning/profile.json": "be7067966a02836ef34bc3aaed532890e9b7e50d10f13f8f3f47db8069f837cc",
+    "signals/market/max_drawdown_1y/versions/v2/spec.json": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786",
+    "signals/market/max_drawdown_1y/versions/v2/tests.json": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14",
+    "signals/market/price_momentum_126d/manifest.json": "ece9671f6a208f7bdb6d18c46c7183eba02312fefd1c9051a6b2e7c6e024f7d0",
+    "signals/market/price_momentum_126d/stats.json": "b68eadd0d701f886dd329ddfeb775e8d1b8ebc6b6641854ff9a3fe80c750f962",
+    "signals/market/price_momentum_126d/versions/v1/spec.json": "298186290b11e7f49faa0808515d6d96bd96fb756410494ef4347d33099a0df3",
+    "signals/market/price_momentum_126d/versions/v1/tests.json": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c",
+    "signals/market/price_momentum_126d/versions/v2/learning/events.jsonl": "db6259e2a6e9c133d6c38190e8bca469ea393c75378301967ad58d05f5e388a9",
+    "signals/market/price_momentum_126d/versions/v2/learning/profile.json": "a3e935bda541238b95a8bed79aa5165e2eda7f31ec07f5798fb150583ee86f47",
+    "signals/market/price_momentum_126d/versions/v2/spec.json": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b",
+    "signals/market/price_momentum_126d/versions/v2/tests.json": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c",
+    "signals/news/negative_word_count/manifest.json": "b6da592313ea25ea0d574bd3c28e0622702abe1cd75a5bb13d1a0483596d5e30",
+    "signals/news/negative_word_count/stats.json": "baa402ba7b6c6594535ac05f1af88fa9736cdf32978e042cf6252782801b8b94",
+    "signals/news/negative_word_count/versions/v1/spec.json": "379ba9d739b968bf24c0bed621743fec4e14964cc7311c1870e688f355ef1042",
+    "signals/news/negative_word_count/versions/v1/tests.json": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567",
+    "signals/news/negative_word_count/versions/v2/learning/events.jsonl": "d1f3af0ac38b9a7ebf322748575a72ecb390d7a0b79f1eace58bec6a696ae445",
+    "signals/news/negative_word_count/versions/v2/learning/profile.json": "13ee9508fea09904255f3d19a3198736758d2dae7b8c3cc6b2ff48855b02eb10",
+    "signals/news/negative_word_count/versions/v2/spec.json": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025",
+    "signals/news/negative_word_count/versions/v2/tests.json": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567",
+    "signals/order_confirmation/order_confirmation_disclosed/manifest.json": "5b5baae43b53cf47298f808c4f1a94b75c73ad244ddf1844689c2950539c5f4f",
+    "signals/order_confirmation/order_confirmation_disclosed/stats.json": "a91b6532165925cdf09db580797f5f04d3eb2aa84f19c90c651a60db45e8fe42",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v1/skill.md": "e23b21416e25f2ece3b95374dd33d5f9105a089f2b2fabcfcc9a5f7ae2844d2e",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v1/spec.json": "546290c063ce9cbb5a273a15bcb2533dff57da674409f05050f2f1f98809704a",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v1/tests.json": "7d59cb694caa8454b6387cdc140c25e0279ad4932f0de3ca0608e4c36406200b",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v2/learning/events.jsonl": "b82d429808b59cbdd62ef2ca87ea2f2290251537a40bf5bcb2706f3521aed5ba",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v2/learning/profile.json": "b1d42de60ac00504f47d2c986dae3fc9827273b1e74296cacfd2685da6411c02",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v2/skill.md": "e23b21416e25f2ece3b95374dd33d5f9105a089f2b2fabcfcc9a5f7ae2844d2e",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v2/spec.json": "4a4870daeafa254ee01de79413a943a68077a6e77f611671a7090b61786d535b",
+    "signals/order_confirmation/order_confirmation_disclosed/versions/v2/tests.json": "7d59cb694caa8454b6387cdc140c25e0279ad4932f0de3ca0608e4c36406200b",
+    "signals/orders/order_quality/manifest.json": "be636ca0c8425768b9ffee0167c65f2e14828bf30a0bf649c8108810579975a7",
+    "signals/orders/order_quality/stats.json": "76f799f20da8b426c9756baa33e1bee2a1e30cceabeb2f8d89fd43201eb7d574",
+    "signals/orders/order_quality/versions/v1/skill.md": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5",
+    "signals/orders/order_quality/versions/v1/spec.json": "4f7558e09a221d883613d0741e6e4b6fca5937066ce6abd224af00ac722715fe",
+    "signals/orders/order_quality/versions/v1/tests.json": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3",
+    "signals/orders/order_quality/versions/v2/learning/events.jsonl": "3469d083b061c329eec8db112867e0c112e3870c79644d6264f4570f462a81e4",
+    "signals/orders/order_quality/versions/v2/learning/profile.json": "1d64996987692d96a994a92beac9fe893970471c3590680c722a885c07702013",
+    "signals/orders/order_quality/versions/v2/skill.md": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5",
+    "signals/orders/order_quality/versions/v2/spec.json": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70",
+    "signals/orders/order_quality/versions/v2/tests.json": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3",
+    "signals/product/commercialization_status/manifest.json": "56adf38dfa9b21ffbce593df532470e8a2a7898f144d99e44221f672be4d31f8",
+    "signals/product/commercialization_status/stats.json": "639b6bbfb6b072b2e558228bec17f13645309498cb366bcdf1f50bef7eac8502",
+    "signals/product/commercialization_status/versions/v1/skill.md": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a",
+    "signals/product/commercialization_status/versions/v1/spec.json": "60e259b41af3c85e902bc3169b55ed660d01bf5557f4c2c45549839cc54bc3df",
+    "signals/product/commercialization_status/versions/v1/tests.json": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e",
+    "signals/product/commercialization_status/versions/v2/learning/events.jsonl": "38e63edd621e1444c53503b727bd30ce3ddfbdb01e2c2c9eadb8f45d2bdd302b",
+    "signals/product/commercialization_status/versions/v2/learning/profile.json": "836be3d1204c8ed6edd123a53cbe5027f953239077182133faf89987b3b23f14",
+    "signals/product/commercialization_status/versions/v2/skill.md": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a",
+    "signals/product/commercialization_status/versions/v2/spec.json": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b",
+    "signals/product/commercialization_status/versions/v2/tests.json": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e",
+    "signals/registry.json": "b5d864d511d2fea7ade77acaa0c65e00933a0c731b9309804ba3fce36fc1a902",
+    "signals/risks/customer_concentration/manifest.json": "1cea9ab92ad3dd40fc23bb7cf5a9b7a8d087a2cb32e784fe54a4bec3571ffbfc",
+    "signals/risks/customer_concentration/stats.json": "7d7218bc64f2e934b6b7f70ec4ede1f6b80a4d3c1f8557cc9669d8d3e29453b7",
+    "signals/risks/customer_concentration/versions/v1/skill.md": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04",
+    "signals/risks/customer_concentration/versions/v1/spec.json": "805e1a3a5c4a564c8410f958abdd9e39ea64ef1b46b7df77d8a5b158134f8c11",
+    "signals/risks/customer_concentration/versions/v1/tests.json": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f",
+    "signals/risks/customer_concentration/versions/v2/learning/events.jsonl": "3b838206f9bf27c88b10ba0e5d638bb61394680c5293f2502d56378fbec0fe83",
+    "signals/risks/customer_concentration/versions/v2/learning/profile.json": "a59e2f31333a3b16d7e85462708734256b07dfce95e04d4be06a16854f0a74e0",
+    "signals/risks/customer_concentration/versions/v2/skill.md": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04",
+    "signals/risks/customer_concentration/versions/v2/spec.json": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32",
+    "signals/risks/customer_concentration/versions/v2/tests.json": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f",
+    "state.json": "90b4c5ae534cfacf4efecdb00273db9daae5c0e1c3175dba9c9b31ec82491a1d"
+  },
+  "source_files_unchanged": true,
+  "source_round_pointer": 1,
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated",
+  "target_evaluations": [
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3abe52c3792f1b5534cedaaf6b09b0102bbec26e958daeb851674b5608fe31f3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7e07b25394657828174d4b2bacc22fa6cfc81b16a209c426c3119d249963a8ce",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ce6e70a32cf186d5260d49820809828988bbc0b6b953b83f78c3aa4ce34bec33",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b81ea896961f0e6e33b3f2e50b3d14b37d3b1d573e3c400c2908e2c52645d53b",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "49cfb16ef4996599d3edb7f8f29279c02f77c24137dfc5546490b357c7c339fc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ceb25a4a6a3d48672f7c9fdeb776f00cab17152d096dd7d5c85debbd3b01eb1c",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "84e25b4029b8c12b1c1f8872266ad67b314e8364de0afa05799d8926515d3be8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f8b83176c7f08cfb95e97d42163a449c1aed5956861c1ac5612a80e0fbac4a96",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dbe7e206e254e6503807ab8c88edb7a31137e4fa83edc16864885741acfb0b2b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "dfc1f17dc638427a6ef14d3704d49ea2c981d0bc2c11a386378dfd63a469d865",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ea6c605411a933f436155e0af8c706ba3b2ff62b5b8079257f74283ad4d8441c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "de309aa7d07e5c8cea80c774524dd383b1f16afc4521f4c944ef48db1913de69",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "01eed3c1469a697ece2f255f3cc2f77531f73b50d59856ddba66186e1c68dbf0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e442833a96eec9cc9a07679a441c83ccc10aac65763f3d36fb275d9011738422",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8405b4c5da7fc0867a6a88bcc0135ed55c1cf22b04510a7106bf7456f57dbce8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "bb94df6e6d48295e5df07a27a1ba93b620e23b4a79c6a1f6bb2164ee8bd7659e",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8e39c474a47eda1d65bb8d0b2fdecd4c5f32cd57d5c8974bd7297bf93731c28c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e0e572f2a8c3ebd8f8c1e9231b71349872797023260d57e247c798af5d5de3d3",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "406c82f6f14f1bad2b05a8c6bdc0adfba7d4640b915ab53b0c887817c362d8c8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5d48fb17b23c86e21bfe0c9e4656d2e62fe104738309b0502ea333014eaab467",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4b66133dbd0c3e8b6df41dadfb8aa510dbf0d911fe79087e81d61ea7a8bde629",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "294e087431419edb761bf5f9921716f67bb1e1c38bae47567e84d6152b36492d",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dd1972a4d4a73f6e2eecd9ed2a00b8921db7055691e7244a601972fcc47a1543",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b5d895689347ed24e5391a24831013d4673e4a115ab31d4e1fa633b0bee720f0",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3df0ab00e1f6f61e47643a6e52fd7d83c71da0eaaa4e77bbc3af6923696356f7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9265a5d52e7c24a4604c0f8734041b1bb48e668f6d2cb887fb9eb0c91772f3c3",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "1a9643a0ba2235cb6ad9acfb63beadc7925a71770a4a0500a2a0561fbf0102a0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "cd6a5da01383bc2f5646ba3d2d7119f30d74d0444158a3f9ce0212d3a7877f24",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f8ea2b26264b56abb5c26bb787ece490f34971da5261625f1313edd31b64a03b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ea002dcdbaf5747a6f262705c7d8e538cb63d790b387e16cd8aa6b5061e8ec87",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5f49d3db97bb216b8cf90d01b503040245f9b6147bf9b91c47a33d12fa598d2d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "de6ac6e6175fd9a4d1acf7f84ed458edd670c79058424c760198d219b3700fda",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "104cc632d7c25931dfe9af7e458198b26c571e5438a3fa47ffee2bf0a026735f",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "97b539d60e8001f481369a05a2d50cca684dc63f5142db2b6d653316d7b79ad9",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d3c4bbe46252daa99505f1ce4619ea526523ecf7e5c3ad89374b589cbb98da75",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "bb1bac22ba943f36a5b3723548866c9d845b42b5ce8d600e3a6da6959aa324a9",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "32697a7c12baa1d8509cefc909126e49ea86c2273789bbcde3da3055caa54978",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9c49fff719e49303305a21bb96efee8c3393a336b4fd09df1d05e0ea220506e5",
+      "result": "insufficient_evidence",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2599e640529cd5a31782d6b0cf6e617cbf08de5c42b9ec005851b61b5691732a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "68e5de849b4645546cb2f2d0514a54aa4012ef6235bfcae7f3f0df1d7df6812f",
+      "result": "inconclusive",
+      "signal_ref": "max_drawdown_1y:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c1130c1a1a2d0de2cdcb95c7ccdee8813e58867388c9c61bef3e7ca2e438af9c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "2bc45cb43a546295582d3f6edbb5dca102e02b3a78f071c45627b136f85d3647",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5ef1aec0db60c1165eec2ed8cc6f6ac1bc0f13a30ed55a39e752ee27675a2838",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c3a2ad093a54c47599bbb6ea81475dc4640e45d5e2a0ae762ec6abbe0a0900aa",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2e70df1775e4a142af3c3b4d5ac6f46db798fdb3a6008698a9768c079995232c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9d881b053776fc635832e38ab1c3925aa7890c021dfe1bfda0c426652e0b9cb1",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ec9c9900e30f63959f345274104a9b219a765f731f727f16032caec276888ed1",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c7cbc76e34fac19dddbb048c9402a1b52cd748f6e62003603d06e85a9fb90607",
+      "result": "insufficient_evidence",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b94749388d2039607ae03faaa5e28fa22143e84d4af175b9e35b1cf328dbb278",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7c2a1b1720546def7dfa9bb9e47805cee170cd158950c3e708ab2c3e2e427c12",
+      "result": "inconclusive",
+      "signal_ref": "price_momentum_126d:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2a429bf40880914d387cdacee9d79afedabbfe2d520ee6da7a7038970c7a0dbf",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f50fa42ce620c888f5f8ac56334c15a9044918a5c9a55493d0769607cc06414e",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9400469e98c3401f7f553f4f957b443a82e56a2db1be596ad560056bdef2e75a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8c3c86d0ffb577b1f71c9f4b9e8663822856d84178254728e108c87498b4284a",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "fb2f3897039ef702c930bc391d50db03b5ee95d58c3d228e704f9e06d137b0b2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ff5460198c62f2e9f802ea126b4fb7cb4c480a8364dd4fa5ba279eb10f24cfaa",
+      "result": "inconclusive",
+      "signal_ref": "max_drawdown_1y:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "32efdd36c93e4b2302511e483aeb97193711ee70a33711ae16e3226d84e89a39",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8a6eb5f71ad0c8520d15450c3a2a7df41890218a58d77da4f1acf94f4f969618",
+      "result": "inconclusive",
+      "signal_ref": "negative_word_count:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6c73ab27b2e746418299a7b4f986000cece672ee0f553c7be8adce52cfa601cb",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "105ad8340fd34b58daf65aba0e2b9c37ecc388f383a9332937e4143e82214872",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f99e79e9b46a60e1df80a12829c9dd6f550fa3e1e146ba7c96fc627ddfe93184",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "6f7db4b919d5e8a1469312a14eb8c0dc9c3ed6e86bdbc32384544b495f99e407",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "15fb09f7c2dad72992e7e0602659dc3a7c4cd4ffcdbe8ea28fae20f3d4a90b5c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "58f0f040da6c35015c9949f4d026492da0eba26fe1bbc488a5f6b2fb2ba6419f",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "532eb75e99ceacda9f78ac6ba13855777277e4033fc4129ac8df1d183f60c8f0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ca3bf10fa6caa93162c7a84eacfa90be49dbed6180ffca9e1e37625b6421f2b3",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dce9089efab03a63100a0e9c765d1cb6246d486832f966038f9098c5a43fb536",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "91a9fc83ea0237c73be65e67ef8a187e6a06b7588f335e07f0b5d38839657f43",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "40c6a19a767b08bf189d94946afb765062d3fc62837ca69e07d61b00469a34fb",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "2eff585ff2f7a0f580a0926297429953ef485d4fb6e8ea5e5b7d904913f452b0",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9764f463c615ce2a3ef860c4cf04115f4df6397baedf09565a3c7b71b3180bc8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "cabab926517db86dd494f0f420c4a4c7561d1aeecea24045c9aa05a4b7aeef1c",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5c20b80103c2ab4a4338e8fddb35346414e6626bb967a66b09126c70464eed2d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b45a5df8e92fb773f5942080a7649445cbc54d0ea1774f1cf5b1bf7e411a977b",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "683a1ab041f2bb957fd1834d5153fbcae970bfdb4483d8d1aaaee6e6e467c4c9",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ee3a96ee504209c816a77c8ecab987d160b3c67931b45a6bc8ebe3e427dcabb4",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b7652aba561fb4f9c8cf88e2f1815e53c89cc3576cfd5a9e04de71a93fea5de2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "41ce6d26eb223b6e1d05b34054dc9e80e9cba9b4ce2a2465ca871349cc336045",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c3915ab5f28f11d1915a6052e8bb93aa2c9477672ee88ff59899620d9b29b9b8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ee4b2c7d65d41f510f40a7b188621dff52f2526c8fff470ed54cf577f2c151fb",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9ada378d443633d882a5cdd84a6fa0515f78d42cf293bea66dd7bb1846ae71b1",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d37485086338120ad27f89cf67f4c0b4109da2c1178c4351333cb98439b00b5c",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "0c4e69e23f180902dc96d745eeeca8ab216e22f5fa9a408c33daf98ebd4af26b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "07e5506e77b62d22e0a31bbcc641211d9b6425f1c667bbd8cfbb0496db792077",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dd3eef9f4dc1353ef4dd9f1b15058ace961e1282f6c3a77d3d1c2da6ef81e8ca",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "86556d742c79f7e880632b0aae0277d12317e035b6dacd8640f0d8dafb4766c6",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8dcbb7c4b0b942acc4e99ea95fd084f06c7d7cf0de2e148b8394f89946ad8cdc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b039fb0b7143039f7f8ab3c21dbec4eb91acdb3167a683e7df951e09b359ddb9",
+      "result": "inconclusive",
+      "signal_ref": "order_quality:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "939485f2f1f16102b30464cce82b41a248d457714df527180967f8c8ce96920c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4a557b5ea9e3f9227b0387ed82919174b25a71b90b2dcf58a4ffae7fd1b014be",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4efc0fafb3111c68471db309e4f926636eff321e44391d72c856758e7ebdd425",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "957b7dd933c58a73b3a8ea078d7d7eac14846c1184a3e8f37607d39ae376e07f",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4f61cd03acea56a0c27e3fb29c0ec5a64546b103f90733064e127a8c4a6ef454",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ae2d4ab3afdcf1f24a6a996549232f7d6c6655096703bb65cb56e70d13710636",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "12ffe88963e037d7e16d5c9144c50d5323f828dcd3a36824a004e728d90f5e5b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "be2df0ba7365c1d355a296c2dbac23bbfd016ffc2205ddc820279df842ddde28",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f5c0dd827ec05af816f18e22ca50cbe27ccef6d7426ab7eaa59fd7fd80e22966",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b7b2ff038657e8ea0d6bd6836b1250c6dd2e237a8d929eba3adfb94a21e2b89f",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5dd7e332d2b8c3f8933ca408408f99cf384b4701f1198b7519971257b2e82fea",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "0301c6baff0655f6163adfcddf3df77978cde6b59fb5acd94a74524878b7c688",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b506a7972b6b81f73baa257dccdb67b5a5b1bae5b961449bd09022ed5513368b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e15420bfc7df00c35686cd68f8fa11565b71b13e3e65b38502d9f03a90d85a1e",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6c60e55e8e4550d042d1e71428c01f123b3885ce58ede7729a6b14586d380370",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d72e8acfd5371596190d0b9bffa9ea0b4f3dc23b18e219bdf9aede4be7c58612",
+      "result": "inconclusive",
+      "signal_ref": "order_quality:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5aba58f2e5c6120f9547bdacad26246abdbd77eb315cd98f804a658984cb3960",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5fd0403eb9a43b0070b69912230ec80b1a1aeb35ea66d67555c4558e42ca27fd",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9098da76871f3bf08a27a69521d4fc9af6957564c4b534219640bf30c6625d98",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "eb5eff6271e25ad955968430cc16e2c35ecf7e1889426f039e21cef3d1f0ec95",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b4e1a04ca250491207c2105206dbc4b252bc5c12e5ce7695f41dfe4d009f6109",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3fabc550a9364c5e67616e7fc425043bc2b15547c0396b9363cdf880ab865cec",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5baa49d2a8d8ccef2fdf4168e115e2841c483866af3657032bd6b11200ebd4a6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "67bb5b3343128d7532f223727c7ee3fc255bd4d0201fc1129d8ab2ea5d377916",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "7fc7a1518b9051f6a7b8f2ad75a16e16a7d5a80c687b0b9389c010bf011e1841",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "aecd4fbb3c0f1ce1d0ac43ade473121909caf951709b02d2be014e37818746e4",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "27f4bafef2f6856543140800d2c26fba4ecfe6ee51b76a01d054164d9c046b13",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c5e8953b6905f7867c5531e6f384254c9c1e387ddccbd87be72638e6d2830b23",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "e5bf2983ea7acbfe5ebb6a89018da908ba880a0f602930fe3e269f7034fb332a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "934b4de1d67a630cc5364f71f228726c1cb60df04e199fa10538fe5e64cb1efc",
+      "result": "inconclusive",
+      "signal_ref": "max_drawdown_1y:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "435959d4f9e775b25346ab052b9400e5736a0b845f2e8a4047842f1604db1f93",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "0cbe46e3c0253d5b3fa93e90750bab4a2e7aa605618411f00c1bcb6c2cd08bd1",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8819fa551f4bc656ed68ed41c884c4b35b40decc69fbf36fa55014ce6f51024d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7645ffc3f0cd671210728d3276f85512273a6eb5d504055486e90bc7ac088b6c",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "27b4edf9342c54e58d015fccff1918dee918cba34b42f49bd17816bc8f09251c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "2cf42c602c19d04a8e7154d91c89081c0c7ad7a35e259780f2ed2f8041f3eb23",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "7c048ed9c9654492aaad6155d885590974f3c310debed4d95646c93d4b7e83dc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9c401589ed879fc58321462dc335d7fcedc3c736330e3426c0f14d6f18664005",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "0f1c30daa1af1ba06684c97aad4a0452f6308a145c72622a48bf7b2969d4cca0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "1081ba9dc6586ed4195c1ecb195e0c4340c2138b3d8613f33ed39f6019ee7822",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "aa6d5d4ad90c0966cb498248018a9d0898dfadd5116669e1c2eaf5cd4c9f4d54",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "15557f5d4ee5375a99057af3f669318e1cd7d2b06d73e2825b72bf3c12b08a34",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ae7a3a810b5742181ed5b565edcad9583b337b55a25d41c20fbd2ac21b9eec81",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "fe3e22f3a556e036a6cfdcebb6472815068d5f6a334c23740488d6bac8a367fb",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "213a6265940858f933f9fc5ad92a3f9a85325b7e6ada1dd4a042fa5c407e2ee5",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3cd46ef5da5950080e2a48bb9d6cae7c92f1b1989cb1f67cf48d204e7ea90c31",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4deb8864a1868f7255c34a782cd680707e731885c771222e2a0826f3da81ea02",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e57152355c00ad105229aaacab4e9591193dd9ee0df8c1ad8685310451575429",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d653e5df975fd5e6eb3de96732525c97181d6014a1ffc9a829248c3c5915e1c6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "78591250269e854c0881df77f5f7cf4768366c0c6014c059b0a51dc40c98ef3e",
+      "result": "inconclusive",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6eb87ea70708efe216ce15d1b9a4d1c72daa4bbd3df12c2a3b03637fe1ec652d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4d3e1775c1c056ceac4b34c07def08547e125c6061231df910aa89d8f1d76782",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "eea004cbfda6167623b42e2dd6f1634b5ea34cf5a188604d7be5128664214b53",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a5db35e065105ff5fc44c7d2da61557ac9673f2688ab1e0d7924c246f13d883e",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c35f8396f9e415543a98b60b8aebe34ffc82ff3f2dd1e1bdc7755bfe788450b0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "306bad125de224ad62bdcdbc2bb0462deefaa75cee13441277c91560be7ef877",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "0f10ca5a84a339c0536f4ee7b78848e55cbccad809c190881e4157d6b84bf0d7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4311fb778709fa99ed88675f9dd093191e24b7a6bbb9dd5fa5ed98035842eab4",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "44c6573f76618645f49b42d0c09b1548ab5f9d8cb2ee35bca231f8e691735cf7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "cf8a90f3f9688434d224c23b4531e6320ab219c8877226ffd6a5ea359d2fe23d",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6ee0965693f3c73dc7a7528b6b267061113e1a963dd97d2a16499d3a15a84fb1",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "64994633a0d27e41a99b6d191a5a15da29254ca6f82d0c8e1f9646117ddc42d7",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5a16118afcf1df097c6c4338acdde75cba2d40595cca0b2f1ef454fbc6eff1a8",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5e78ef794e9db113a77a4a57bfef8a1f462cdd5f2660aee3e0f5608059df11ba",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ce588cc7efe09f9b0e9f750ca1cb4f797e162a2806b4454be99833ca7a7bb2eb",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "be324a108ec3197655e5ba3681d844925c2520342ecfe7262619f3f398393350",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "0ac6e7d0a2f1d4426f9ed0933ca9452d28faf92d4e5c321014eaa2030d6189ce",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "eb13242f128d525b0ad4fd382d8fcd244c4b7dbc4802e5e7a830f16f954c6dd9",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6de4c2193dc8e80fa16f5cd7cafaeb80f066c9ca34546b5220a6bd9170a9282e",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "15149f032253dd94edae058544f38278b729a670aac6212fe6877351c7de874f",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8a97c90d521831aa230f5b2d44dbe119fd39dc4abb47d625289fdefd81042b30",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4fd3692a5599a2662cfcec77ddf4556f546cccc1cfd6ba9ce1dc32bb91e50574",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2b78a6f35ac7c4c6576b88e3973de6b82c241c2975815a799841bd79151e4578",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "994a7d7384b63666b07b1425ee0ab29c029898a7c5f5ab4839cb2c3a1818449a",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "901ab19c76b3a206b3464b7cc8c0bdf6e2a930df7e41b65ffb9c14f487684e46",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "32e4d49ba97669e41ad0670921b5e7f0cc3d5ad74d6da27c6ecdc992f5bc6121",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "09584baa62188553983e115681f90f4d6cbe0722fd414bc4c591fea26b61cfe6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "0b1de057d6b03f36d963c8b727f70820327d21ec5fa2325dc28f5f537197c567",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ab26be4f79f764f7a84991c3f54909f9c88c82cf095458203a341db0654ba683",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e4506625cf05e45ab7e7004a3c2205bfc61e9ef6ee7a1c75e0c5e5891481a3f6",
+      "result": "inconclusive",
+      "signal_ref": "negative_word_count:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "0b67497c9d782c913530ec944c5b3b8b2e9d323da4b3672e004047ba0969eacc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7c1c4fdbc5b8224ce672030512654ba6b69d6366bb6892115f4b20ff88e4dba9",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "7631bc912d9d1c29b80ab84caf14c66dbdf089173bcdcb035439351544cc9e79",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "da448e5903bb4b13fadc6bf94527d83409d001a532cc5542210207d10ace2033",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9322261a7265f925a9fa0657c1813723eefe1ffa4a92666fa757bd533e192960",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5805170b213a4f3c2e270c2461dad9800df8e210cdf9a00d74ca3eb5a68fbb87",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "241d94132b0e55b52ca67e070eb338653bdc4bac1356a76f2d0e5eee711a199d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "72b4da006993a6a9d8cb8a4a7c1ff6c144787248f6ed22be990d984edb74defe",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dcb6c4f1684092e85cd79e4e6802dcae52b92c4da870068c3a19bb3737e1f84d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8aafe6c3114d7cf161122dbe1b570d1b73f6b6d19502c21b228f8e005af8226c",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "e22110c1d60c4aaec7351a4b797611ae172096988372f8637cc469b7b036c092",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "afb67fe23f420306598e3575810e3ccbd53ace3a2cbaffe5e8dc27267752c40c",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "bbe163b4f597a3f29912d5abc30b7fda273311cd31c76bc61ad81f5647e3a296",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ca586256431be2194f9b648aa4e63fa78cae14d8d9ce6a57aa6b5bc7652e52d9",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "1b5c39c5fa13c671d0138b51b0b3fa5d7b74dc6830224a8616418852c17796d3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "24c6dbac4bf12a77df06b389c0402eea73277adf2611680a936586641cb44908",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c70d3a96d9d89b0075330867efa134fe0d84f867859435ffc28af828e35db74d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a87c3c648541249e2e13281b914eed85da57b7835d41981a2e5446486877f1ed",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f2380aaf07ea8c3cdbafaee9f0d06abee6420a4978aa81e6195e6b309299367b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e73f37ab0d283e99c252af045012ac5bf988068552a5c9be4b8510246c30fec2",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "cc67c112174fe9fd017a5800158870b0028df8235e847f54906785d3393709ff",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "161d61ab1120aa4c05bd3dc9bd27f6edc56f20da79634776e842dc2930cbecf6",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3a7d13a62f310ecef5b293205f230963ab0b1b7714afc31de212febe8455f39d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b16bc156fc40c633723b6a30421ad22f337c8f1ea3af2e2141c1cf13ef8dbaf1",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "25bfd5e782ad83048d6f0c8bab780721717e14f9f9e8da9ab2869dff00b823cb",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5d53974a53e674a4d7a6b586dce179106e5952be1a1bb3948bc141515b87360f",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9fdef5b9b5a9c89a419b3666cbdd3518225bf528e5a26522c1914abd7ff93fa0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3431531f19fda09a308a0e1b7134c1468a58811a6898eb9c4cdc491b50ab73b9",
+      "result": "inconclusive",
+      "signal_ref": "order_quality:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "76ebf264f3654ec51ddb58df2ed2cbbfadbabcd7811549799f18bf856a0285d6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4b76dac272542cd060545a960803656575b5a901299f63aa92c1dfd19bbfd210",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b5c1c8f42beafadfa37cc081afabe890695405bc6eb7a03f3b0735ef7e63b779",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7df971fe11c9b9d868f857995bfb962e96593fc93534f47ca85c217358cb9f2a",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3e3366ea61075a236efac256552ac4f63cba9ab69fbb6cd1ca46a49b1962ae81",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a1dfa81fb99b6034e40f73a3fd7c8f45396a7c182e9a660a4d220b514711565e",
+      "result": "insufficient_evidence",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d9e9aaca7651c0727751da9d43ed87463aba27126bd5ae2bf6220e9a97ee77c9",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "29db869fd22ba12620747754a35794d1534a116b7454487dad6cb4b6f661a512",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4b128368daed20f47f272fb11d9e73ec7b13d75332dd404ccccd3e46656a34cc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e8936667a0db5353f6c01e3a74c7bd43b6aa92f6fb923eb557c14e64ad544286",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "794d2ded40f662f50c161a1d2dcaf38cf45e5a76c207cc5dfddd275b523d4102",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8891d5cf2e2450e9b7a8a603f85a4b1262097e5838812fbe96bad26259ed256a",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "15447015292c14284df59e5c3c537a79703260e7401a456ac1d41c002121bbf9",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "83808e635b7be80515f0b9309567bef5196ceaf8a2b5fb7667aec37c0d8f6c9d",
+      "result": "insufficient_evidence",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c9b27b8ab7b9162474532ddba81f11455b0e4e187db0689ef3abe40b70d80b0a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9f32bdaf3c14ef1d2db644ba3156a693912d356f6b8743bb1c24b342623a1595",
+      "result": "insufficient_evidence",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d96c2fa94a8d0e0083745eca35a5e7c98126f6a175e991875c026d4669eb3936",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5289e73847425bcd97dc2293282e4b0235efcb488963b547e06a33fe71395e8e",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6a32d674c5f13c5e3782c02e486310dd5a2627ccc641ec4f9fcbff5624da0b04",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5b46e942fc032490b1949f804f6b7d6d23204c27b6400365b2b2bc00e5e1f6f0",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9134a57f16254d56d544acb9c95a5dcc1d097cadd2779379559661b813fb9d16",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e385a51ab7aa9b1850c45b3f440d6dd3b5cc0f33f494b85ffb650088ef2e512f",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "73d479fd307c078b066a4ffb15b01ba4842706872afe5cd914fdfaae5cc8b050",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7128d67a92f079638d67dd142b186d9d8c4865d2d3aa35e7b7b7c91d4f6a26ba",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "359f11ddbc03c2016ac6e1dbfe53bf0030dd5596ca595b08b1703065823e54a4",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "78543879390fc2dcea12a7caf886fda9351f5457fc8fd5db8c03158b078be2a4",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8b67ed4ed9c421f49847e975f509b24126b34b0ed4b7f63c84eae0cff7d7bfac",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c4d7a995f8789cd8c06063c92d402541e32190ed394e605b7beb88513458e097",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "35631e7af85c6bda2d2d1828082f86ed4cc1f1a481509d31aecc57bd2f7c4f8f",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b95eaceb27c804b6a729961470604048d550e85ddcb2310f49ea37a1578eb676",
+      "result": "inconclusive",
+      "signal_ref": "revenue_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "bd67939662fa3adf7347fc0f83b63d384e7e011a27e105c22c3b0d14b862bcf2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "99f3da5620175f839fcd8b848315280b96aea63f99da21f3efcfcb7954bdc88a",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9017d1a7f1f82cb1ff4a61e659fad08747774e36caafc444ef287b167888e791",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "bbc8f49f38bf23b319345121e57625e8ff6113a2799a840b69abf1a1c1b721f6",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "bd3c6037b88b54707817f4a5e578862b6b40089240b33ceee214985c97d314f7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "cf9651b608ed11dd9cf12b40b1a697018f6ba8103a1318890aeab6b8b0d3a951",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "512ee0366261fdc237fa2d300cded16f78e559917cde2543d18aa3d73b811c21",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d0ec6084a809e22189190563ffc1a454606afd5f4da82e926c5c7b913069074b",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "1b48fd003ed2bf6f68343dae1613558615a92540488b9848672ddbdb81b85bf2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4ee820df0b366413931e8a2bcba7f2184e8220fc3ce168fae5446a19ff5897c5",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "7562a51faa363f64933f17969b7031bb359156284fed622248e3a46c0b78a3c0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ba84558371635ce5453403103ed7da14e17813713573500efd2c6f7e985f81cd",
+      "result": "inconclusive",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3834d9e68c18c2cb23951f2d2b8703da3b9ea09390228b35cb4cc93defdaa161",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ac6dd59f9410dbf28493b0a1117ab88637223070b00acb8406d0e47bcb8c251a",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "21252636fc554f7513ddbd2a0d02d47fa5809f69d0125ea529ae9179de510e22",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "de0795ba2d38bb89cc69a5ae554b94be0874b8853f4247c7b29060ddf87601fe",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9a8c21ad1441fc1c086eb7a2601c59ae31021df8ca7447e772fead3975c03499",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f628d176111bb23a6a2c164ae57f49a6fca4cb20bf12caea67589eedbeec850b",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b28035830d69bb91e6d4657dab2ec7fecb36ac26e44d0f73b39cad707f1ef442",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "0c42d856d7d4cb8bd9233fe3a9726611974301a2c10df1e21c4338f548753e7f",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "14f02f4f8e4201750c1ef64406b4e22c8e92aa6c426b03154a7961ddb420910d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8cb47a8cfa9f8871bd204d7c296cb7c9d81706dc97ac97f557364055e47591f7",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "403b1b929587febd78b5ac0e763f5bbd9c764f6516bcf4d52d1b057018d92a39",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4b12a81831cbb4b91502f875e852dabb2def067227ed4f1a6e3c9e0e1b8003a8",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f95b7114c674e93eb7c84f91e95a02f863d82029db8b8568ca0d5dfcd4c6b2cc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "58dfe84e281411e5c2bf5a95d485720912f2aa8b1776aa550446dbf8a60949b6",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2085614050f9b6dde6cf4733fbfb98d2460ad9d549bdb15cb7e5e475a58026d1",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a7491f2783ce86445577fd467f33929d940c046a3c83c2724badec1f49bac0ed",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "61294ca7cc526980e8857416b8ec44f647ae542ee5d28aaee74491339f71730a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5c981bea2e23a9505fa9eeb07bfa73e9afde3ab7b8801c9f4db65dff9fb181ba",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ffbf0d0e5f88dbdbc103656b9ba79899adedb6ad1399bdc885ae759ad3b87e5a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d931fed3111554a116a0ea50cc61722c1b368f92dd3df510a744995aea1d5219",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "992e16d038ea9c17bf110b45be8e16a97be2055ff3bb7c8049d2550ac9f4fbd3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c6777ef1a2c9a52ad37ef066a64607bc76e852c4bfb74b566767f5a7e5d75d2f",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "dadf9a50a4a1966027fb3338cca24413dee1a2a08dd55d42815eab7575baaba3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b1010a3f3efd628ec76aa5edd70a0e78595dad9b9c524291dad291ad460f1bcf",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "396282ea9bc707aa7b9338acde4b55963f46ad7aa50842c36865950e14bfcf8b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9724bf5e56cccf85e1d9f5a2b855e8b2f45baeb3450f74fc5eb302197004efda",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "50bd9abb99f9383b7cafb2e6bcddb1c04a6dccd4fdc106ad3a93f3d279de8186",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b7f3b2a081fa9e29149746f2915108a58048ad298a90298c29348f7270aef3ed",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "a7d18089965293c4d6b92e533f16991ac81b4f5152da4dbe4c216b5b45d341f3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f2cfc087febd7b7dd2b7638f60d1c138885b2f55ca5031d0971e57b33312316b",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d1daf81ee877e933991dc7724d8b3b475a643ff04b51785c52afa45a4d802446",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8965e4022dfd394057a4850d43171eed2f4c684d4a017efa59edb3ebd9cbc843",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3249fee286807b70768db639427a238fc7fc0122e75f5014989ea34937876e8a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "691f5ac91d7e89a4004052af0bf0ebc6f5682b6696a01bf8ea919d4de95f20d8",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "fa625bd468042bd80034acfc1bb0a23883f9e0eaf153373bf2603837c777e4b2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b155e7e3d9b61bd15886bcedc744fcc3d165c4c2770786c501acd553b17bb5a4",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9e2e13c05aa206baad2cdeafb0bdf3dcb1a9617f42f5f3642c8c71ba9e973fd7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4c6ee095bad533ca4e7a357a1f24c0fca63207d2c5aadb7cd63f60a048d850d9",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "54ec44a40911294fbed707bfe2c35ba0883239498997de637f77444f67974f87",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "74d82a97bcc6b102d1a51bc6a2221c8b66633688e9ffd1620041b1c91a916bfb",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "531f88de0df2b0d259efc97ef0c1e71b96740ec934e51aa263679fbd57924439",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "53f739363060feb2dcd25c5c546c629c39a09422e98db40ca414b09603d7971f",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "7a19f42b3df2554453fde61ad9e392c5e887c949dbbf3bf4167d1e8dc24e29aa",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "52f258ca33aac6f071fc7f9c2ccc94b438d7a9a25cf91635762fb0431bc51f88",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "15a3f4f66c744f7d1bae01289fe08858027685c008fb019e5b8de002b353ae40",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a9d42143094171562eb60f6ae4b48accaabc2f91a4c006f9227b066ea0b2f40b",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ee719170a6dfbf560d0866dc53acd9c5cd51030b9ba34449003b32886e4166ac",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "af32dd93320de6b534b3f66cbbf045538e3d8c04a67310fdcf859069eb9b207e",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "063d7e07a293467cc5e952b087cbee1d3469c903125fa26c39fb4dfe6f18d6e0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "533013e520aaff632360981e6e5cce9c9859f1b9c4727d55995015134e6a4e2f",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b5fed9a9fc746b513dcfa5e409bca57c3e507d6b8cbe04f45c7e8640e8db98b6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9973b66e4e431314cb622e83498b7a60072eaa4f2ea3731d5471e2c21ef137e8",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "34add1e4c46aded869cc3ca633d4e31a6142d5ff7e58d20cae932ca9cab48800",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "81b3d0ed65f0b748d73e46204aabb64c7d783ce53bb6b55941970f7b4a676665",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "e5d82b7e5fb1cf8c5113df0b22af7099043e802a1651aaaff57ea04eb756c669",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e283f6cc5dcd3e81a46358508bcd9495cf7ac606b864b3c748a64bdea082fbcf",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "e9cccefee579c2323140887a446c88b0ba785b075ab967f3dc9da867a4b5926d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9cc276acd08f1a38c2cf4d94b3f47be7a06de0e306b28c41ca44a2f7b6885d33",
+      "result": "inconclusive",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "65b180910952dc7401d05935085b1f689633dae652818d22a6cf6f5c79a84785",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "97aa0b95f3d8265746c55eeff8af7adf040988464b22934ebae5fda749930191",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3c50675cf83da7bf6405682b7de0b389a1c2ea20b6dc027315ed6d8ea11d53cd",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "76ee0ec889008130a3bb3679da2007dd42fd5ae4f04cbcc8a1e271b1509fe4b0",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "4318b52e50d9465a8992eb89b38fb117e5b4be2899f8d99f1646c9869d212e53",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3fddcc0913fb84d193ff1940acbd350b1223c9fade5d10119dfbc32b3a6f5779",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "1a3b91f83ebfd6aa36209f24aad0f62aab74df9de53d60d22b99e29e36d76dc3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ccebd5845e9ecd446b9a8577e0291c392bc1cb35e017a5e8df4932c543e9e532",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "cfbbfd87f3f80eab4f5724c34e99cbf671f21f46f6eb08fdad5a5c8f3ae35ef1",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a4faea52359e8a513944ddf3a7010bf74369d6abf40f677159749fb732a54637",
+      "result": "inconclusive",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5af7cb6b18b508b1bdbbaa0a8491f00392eac8fdb0abb66d7d1971f844c9d709",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4f9313e0a4916cb1a64d09b6f67725ad2e316a320060ceb01554a8e411248ab2",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "a7dec89c45e56b6edf6283bd7fb561fdefbf64e1c9968a5fccc6513c744e559e",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e8a5f0a38e5c5a08076601476bf8ea041dabf5ab09767a38eba4730ecd5bb3d4",
+      "result": "inconclusive",
+      "signal_ref": "cash_reserves:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "227bc70b7e883fb99b470cb50ca1e745b4b53987f5d38b31ed96938547528620",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "bb94df6e6d48295e5df07a27a1ba93b620e23b4a79c6a1f6bb2164ee8bd7659e",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "15ef0db5970d81cd452c0385359cc0b55b8d00e87ff6eddd0c469709f535aa11",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "2dcb34a3898113b819e03add6c3455b1da0c521bab823b403242a672b6666464",
+      "result": "inconclusive",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "920fd888130247bd54ea676eb6a70d469bab77445f8b5f152f1f4d356290d3b2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ab485b2d870e48bd24cc8a0eeb924d7217b945a94139553303dacdff0d3bf891",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "833a47fdcbf7a896c149c3878c1e65d1c13f4718ba4f163c7783819fefc4fbc6",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "841ff7ce2180b59cf354398046cdbed49f98865bab8c5736f599cc0dde0c2342",
+      "result": "insufficient_evidence",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b17b0bb9957b815c4897fbae5f9f395cb2f7d145410e432a0891918454176747",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "81596408fafc592e1f57e0229d19a8c3683fd239692ecbe8407b648ea77740f5",
+      "result": "inconclusive",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6f66330b7be586f76afa90ef0c5fc00bccc3b903a81f730e07e381aaf02385cc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "86556d742c79f7e880632b0aae0277d12317e035b6dacd8640f0d8dafb4766c6",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "a0cae1c35cd0324519a86e1d1181fa8b269d58d22743383d3846ecb5efb6653d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3c7e59a767032a495604238ec01a3f3e3f07b8a716c79649cb9667ad6b88deec",
+      "result": "insufficient_evidence",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9d4128064ed72ce262343ba5595e6669a3f145c19af8f300c961730713fc5154",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "20542089633245957f7cf96337ce5255ac2ba43d6d04f36e22db0596c91acf12",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8488901754c9c75b4f3ffb9f578f53e678c6ee2c0372288be059fbe742545c42",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c225eaf401a4c66ea75baa37ff5ea8b8a91362055f4dc8c421269b677f98d5ab",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "44156dafa6891135ff8315f81069cfefc6f8729be5629c875e200f77e2769cd7",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a8e1ce6addf2da0c633d00417683408ef27c2fe10684beff18c8335859a1659e",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "981ca1d25a9b8762bfbde7b30ccd31a3fa615ba88a9c38a583a981d606dd4c8c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f9098588076a4f5231b6df51ac1ce8df1879da8d4c744c3bd7db13cfe8df4f6c",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "aa8d6a5f1d176b9226cbc46a367a2f6fd2e24ee28d86be8f2a9754000cf4912a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "953b7e0c055619d7b9cfaed8262bee4e8a264884cab47944bed72add1490115c",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "11e2596e9fa21cdccca41e9d23cea08dec5eb47ac9e1c46357b1bd5bb7e3cf00",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "0cbe46e3c0253d5b3fa93e90750bab4a2e7aa605618411f00c1bcb6c2cd08bd1",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "a37cefc5ed3bdc56bb72bd2c14438f5c0a0475d95632101485df6a50845bd44d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f307ccdfbf07220b0f0a5f5fe9a50979cb7b97698e10a1e6358133c1466242f9",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "adf329e7d75b0d662e7ddf82cc64132fd94e3c9bd3d1a488c9e9cf00d32bf53b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "de1c2a2bee64d97c66584bc04a892fb343ef404c5039997d9682a489e1ee70fc",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "1d85ae9384213b05fa3a44912239f7df316b19a007f3646e97b0000426771812",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "16d9c741b24287ce5bd200f9d260ea5a674d1595547334e0dd17bd1a4e26fa3a",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2b600281e6fddfb9313b1289c42b2f6050f175d1e8f1b2a33357f0dd3e866e5b",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "ea2a046389a7d9faa2a9d2b820ccdf2c9e8f500e5ea3844a0823655ac0b7b52d",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3ab46bd4cd29585541971a48bd182a96dbf630a502580d7d399f8a1cc6d6b01f",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "becca12c3aaa36c94f035058b532dde660271fdb68d5448d9ab50b70ae409733",
+      "result": "inconclusive",
+      "signal_ref": "negative_word_count:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "3d2977a09a387e0599db54ba8f02c9bfd76aecb6ebda7341501b6c3dc1765352",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "a5db35e065105ff5fc44c7d2da61557ac9673f2688ab1e0d7924c246f13d883e",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "575205becce881327cb51adc403963f2cb8aeadd89b5e27c9f134d134b480d54",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "15149f032253dd94edae058544f38278b729a670aac6212fe6877351c7de874f",
+      "result": "insufficient_evidence",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "a2dc07ffb572babe08cda2795027a9da716ef015c643d0b2285c53020dc0ce7c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4fd3692a5599a2662cfcec77ddf4556f546cccc1cfd6ba9ce1dc32bb91e50574",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5f7636d2dc883dfdd68e27567a4291c6295ecd29737b1d24d74cb08dccce8b7c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d8aa2b601607126ea491b673dc8990a6f43adb3b8ae1ab6713520fd9c277e514",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ed72c9f309572489e0c5cc47735838aa7b7f1b6253f02b6a241939bcb0196f70",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5805170b213a4f3c2e270c2461dad9800df8e210cdf9a00d74ca3eb5a68fbb87",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ae0e992012ce1e177aa4f765226e1cc1cfdbe640c87eeb34c4df597bf05b6cbc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "9c051a1277e20d43298a28be251159c9411581c5918b6dac022e1065efde0dfc",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "415860eb3505e3ec4ca0f9480b7f9b622ff53ba823a591f815eca215d0c38331",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "e8936667a0db5353f6c01e3a74c7bd43b6aa92f6fb923eb557c14e64ad544286",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "8016cc63a9fbfbf675d95600030f7ce2b48ba68df8db5cbc3e156e3a264a8c86",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8891d5cf2e2450e9b7a8a603f85a4b1262097e5838812fbe96bad26259ed256a",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "cf48635709015e34752078d5f9e1772b3b206865daf5c37d136b5a1ca89649f2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "87ffc189e5f422814cbe0788fe6c6723adedc232dd7348c8f1a611318d0511e3",
+      "result": "inconclusive",
+      "signal_ref": "price_momentum_126d:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "ebe936617986f4d5b86924c56906d18564db67751f061756665f5a1c5649384f",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "88dc6c20c5014b2c4a6e444294fb0d3de31c47138a253f839c79981561c91658",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "e1580eb49616ead924b70dd670e6185310143cc893f559d4bd77ab1d8e6f8243",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "7128d67a92f079638d67dd142b186d9d8c4865d2d3aa35e7b7b7c91d4f6a26ba",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d5d7b1dcfc07353f5c910715c559f52c872e59b39509a15e1e79367ca7cf441a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "67c22358623d097435a5d571fcc4d3584c132721667abc42c4de7d8f18a3cdd6",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "f6282d51825d5c388e1abd034df1971409737dd62434779bc75303847506fbc5",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "01c566e67b10981d765877909b43910a8c9e5f83a94491c81ec40a92d50bb808",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "07844f866be4d51c70079da9f07e080abf5bfa153f8e05c492524c088a077638",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "80741bc1a8198995f49c79a921578863a0bf93994c81e371ad2f7905d55ce41b",
+      "result": "inconclusive",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5d23e5a4a2341872492d9fedde6588f5b3b96d9938fa22f5972a618fed36a0b2",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "45c1c11cca24bc1b030bfc0c789c1e90eb66b44b38f1744a25ce8a749f95692b",
+      "result": "inconclusive",
+      "signal_ref": "gross_margin_change:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5569b28594a2396211db90c5749eaaf38f017b0407b33deb920f6366c791d778",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "92195fd5fc6dbd68170f9df59229293523afe64a758f2a194cd551aff86eac20",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "33d7d78a59cada72ca58e9e31bde70c9588a4e89e8dcc6539b33a76854540ddf",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "85a1b6fd835d9b49499f3928fee14ca333c6a114001096d28837ee3729e0772d",
+      "result": "insufficient_evidence",
+      "signal_ref": "commercialization_status:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "414245edac1865d9917b5080bcd213e913424b599328d7c590c73fa9d8121dae",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "23f09d121fca2e9c04d02d2c1e88495bd0b05fef927532f7586df757ade80b06",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5887321c480ee0788798bbcc9bc6d1d3f7d846b5cd5946c675c1e2a2494b42c9",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "58dfe84e281411e5c2bf5a95d485720912f2aa8b1776aa550446dbf8a60949b6",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c780f2e5e4b26f5b818a410424eec39c26b15e564b90e992c2329f0861b8ec5d",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5773b7796f9a4d4b296b7a03ebf34e97e7988c0040b87b72a40de5da5386e6eb",
+      "result": "inconclusive",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "19f69f662d670a1c71fd55e953f5e4531863aa719eb24b549a72fe59b412b3e9",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c2d00396677051d8d6e7d062864cbaddfc035e9b9d1b37aa840554aa9e8d9f9a",
+      "result": "inconclusive",
+      "signal_ref": "liquidity_runway_months:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "c83cbce4be8e471d5f34c5141ae99b8245351253f543da1f308007a4ced27628",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "8965e4022dfd394057a4850d43171eed2f4c684d4a017efa59edb3ebd9cbc843",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "fd8e012a1c76011a0c592815431839169f73ecdd1881117e06c99c91bd008c98",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c6777ef1a2c9a52ad37ef066a64607bc76e852c4bfb74b566767f5a7e5d75d2f",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "9f89da90133feda60ed2f6a47079836364254d472c73cc229ea0bee9e3e52f24",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "b29f15ad13102aec19126e8fd95f97d546c94e5ebcfafed55a6feca94b3d0a70",
+      "result": "inconclusive",
+      "signal_ref": "max_drawdown_1y:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "553c47ffecc600670420c4f3c0c5ad3e65fe08c810f05dd47a5b8dc362fc9cfa",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "f0d0e1a4c3bdf602528d09249436a975139add6f609ecb508bdeb47f1dd8169b",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d9a6b4f288caa91a7c0d9a8e57a829bc16ccd982f6cdf6db7c69b5f9b74fffa3",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "d2fa59e8311ee6580acada90ff4c6d3648239eeae32fb755747ccc25af7a2fa5",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "eb34677671551838420e598d328dd7a2d2573f73cd37cd3a1a906a4dea096e1a",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4feea395347c43fb7c4c9307ec5cd6f004c0ea46101c2a007ce19012043b3660",
+      "result": "inconclusive",
+      "signal_ref": "negative_word_count:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "97eb8ff3f0feaa1fb768a2e2e645dd0087cf7ee93e87300d7c59d4069954e943",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "81b3d0ed65f0b748d73e46204aabb64c7d783ce53bb6b55941970f7b4a676665",
+      "result": "inconclusive",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "872d81265e2489b2a6c5ec937c4c3353ba719c03b75df992806f262400cc6345",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "4f9313e0a4916cb1a64d09b6f67725ad2e316a320060ceb01554a8e411248ab2",
+      "result": "inconclusive",
+      "signal_ref": "customer_concentration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "6c1cf601f0f5f64fc898b1218a8db1899739b6e7efa6e722cb101fefd4b4097c",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5d51273333c33514bb3bee21508def459f18da3071989926f81dd539a55b5fc7",
+      "result": "inconclusive",
+      "signal_ref": "order_quality:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "819d0b165fc120e8995bb012b6518e260e4604f7c2757ff2ab8c8ede269a276e",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "6ded6bcf0876b693f3b8f1e6f5b5f45ac0895b512106ec7c87beecc2a156961d",
+      "result": "inconclusive",
+      "signal_ref": "financing_listing_action:v3",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "440446f4a2b1003604663dac49ea09387bd2677ddae4c9e04f42dcdd257927fc",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "c26189cc5dfbe038f47ab6d677e67e36d392bb890a4399ecca94a3220d89fa43",
+      "result": "inconclusive",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "2514fab69e7ddda45de3f838bf5a72b54a4996a085d716b4d322cf2b715c1d16",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "3fddcc0913fb84d193ff1940acbd350b1223c9fade5d10119dfbc32b3a6f5779",
+      "result": "inconclusive",
+      "signal_ref": "guidance_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "d52d170aef5ccd7940a5bf7d5e581ccdb39dcde4bc0d2a3fbbf6ae68e14177ec",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5b4f47b8a4fa7d3262e4f913e09b5adb8595c710ce5a26c8840f025f8d405b21",
+      "result": "inconclusive",
+      "signal_ref": "revenue_acceleration:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "b3328781f067ec4fe09f29958c63bb6e049a99c0e842c11996c210f7796530e0",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "5e17127a9cc31ef1b74d491198b462622b40ed07ccf61e51da753d052d424a31",
+      "result": "inconclusive",
+      "signal_ref": "price_momentum_126d:v2",
+      "target_id": "surge_direction"
+    },
+    {
+      "created_at": "2026-10-02T08:36:11.320924+00:00",
+      "evaluation_id": "5b34bb43e7a760253beed5064a357509acc0c7e0fdd91c7fdb6c897891a8e841",
+      "evaluation_protocol": "committed-use-observation-v1:167b16cb38231eae075573ba4c69ebce206ed7209fbe8ca27ac992218a657751",
+      "observation_key": "828b3a7c917a510e7f687b226b28709039f036c66b28ff8641530117398be00e",
+      "result": "inconclusive",
+      "signal_ref": "negative_word_count:v2",
+      "target_id": "surge_direction"
+    }
+  ]
+}

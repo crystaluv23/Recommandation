@@ -12,6 +12,8 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
+from stock_opportunity_agent.research.signal_tracking import record_committed_signal_use
+
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import LocalEvolutionInventory
 from stock_opportunity_agent.config import load_config
@@ -1913,7 +1915,7 @@ def apply_slow_history_manifest(
         SignalLearningEvent.from_dict(dict(item))
         for item in manifest.get("learning_events", ())
     )
-    registry.record_learning_events(events)
+    record_committed_signal_use(registry, events)
     snapshot = registry.freeze()
     if (
         snapshot.version != int(manifest["registry_version"])
@@ -2457,7 +2459,7 @@ def apply_slow_bootstrap_derivatives(
         SignalLearningEvent.from_dict(dict(value))
         for value in manifest.get("signal_learning_events", ())
     )
-    registry.record_learning_events(events)
+    record_committed_signal_use(registry, events)
     return tuple(
         RoundMetaEntry.from_dict(dict(value))
         for value in manifest.get("meta_entries", ())

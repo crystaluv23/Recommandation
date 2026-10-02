@@ -1950,24 +1950,26 @@ class SignalRegistry:
     ) -> int:
         """Append target evaluations idempotently by exact evaluation id."""
 
-        existing = {
-            record.evaluation_id
-            for record in self._load_target_evaluation_rows()
-        }
-        appended = 0
-        for evaluation in evaluations:
-            if not isinstance(evaluation, SignalTargetEvaluation):
-                raise ValidationError("target evaluation must be a SignalTargetEvaluation")
+        records = list(self._load_target_evaluation_rows())
+        existing = {record.evaluation_id: record for record in records}
+        missing = []
+        materialized = tuple(evaluations)
+        if any(not isinstance(item, SignalTargetEvaluation) for item in materialized):
+            raise ValidationError("target evaluation must be a SignalTargetEvaluation")
+        for ref in sorted({item.signal_ref for item in materialized}):
+            self.load_spec(ref)
+        for evaluation in materialized:
             if evaluation.evaluation_id in existing:
+                if existing[evaluation.evaluation_id] != evaluation:
+                    raise ValidationError("conflicting Signal target evaluation id")
                 continue
-            existing.add(evaluation.evaluation_id)
-            appended += 1
-            self._target_evaluations_path().parent.mkdir(parents=True, exist_ok=True)
-            with self._target_evaluations_path().open("a", encoding="utf-8") as handle:
-                handle.write(
-                    json.dumps(evaluation.to_dict(), sort_keys=True) + "\n"
-                )
-        return appended
+            existing[evaluation.evaluation_id] = evaluation
+            missing.append(evaluation)
+        if missing:
+            _atomic_write_text(self._target_evaluations_path(), "".join(
+                json.dumps(row.to_dict(), sort_keys=True) + "\n" for row in (*records, *missing)
+            ))
+        return len(missing)
 
     def load_target_evaluations(
         self,
@@ -2064,12 +2066,14 @@ class SignalRegistry:
             learning_dir = self._learning_dir(signal_ref)
             learning_dir.mkdir(parents=True, exist_ok=True)
             existing = list(self.load_learning_events(signal_ref))
-            known_ids = {item.event_id for item in existing}
+            known_ids = {item.event_id: item for item in existing}
             missing: list[SignalLearningEvent] = []
             for event in new_events:
                 if event.event_id in known_ids:
+                    if known_ids[event.event_id] != event:
+                        raise ValidationError("conflicting Signal learning event id")
                     continue
-                known_ids.add(event.event_id)
+                known_ids[event.event_id] = event
                 missing.append(event)
             profile = _build_signal_learning_profile(signal_ref, (*existing, *missing))
             path = learning_dir / "events.jsonl"
@@ -4846,6 +4850,7 @@ def _build_signal_learning_profile(
         prior = observations.get(event.observation_key)
         if prior is not None and (
             prior.is_surge != event.is_surge
+            or prior.realized_max_multiple != event.realized_max_multiple
             or prior.company_id != event.company_id
             or prior.case_id != event.case_id
             or prior.prediction_time != event.prediction_time

@@ -121,3 +121,12 @@ thread-safe cache/ledger boundaries. Runtime progress is serialized through one
 coordinator-owned event writer so sequence numbers and JSONL records cannot
 race. `max_parallel_plans=1` stays on the original direct sequential evaluator
 path rather than introducing a worker thread.
+
+
+## Committed Signal target tracking
+
+After round commit, and on rebuilding committed archive derivatives at restart,
+`_record_signal_statistics` routes learning events through `signal_tracking`.
+Target observations are derived after existing physical statistics and remain
+separate from them. Missing derivatives recover from committed records; staged
+attempts never create target evidence. Existing canonical records stay unchanged.
