@@ -167,10 +167,16 @@ follow [stage contracts](stage_contracts.md).
   remaining signatures pass the full parser again and carry quarantine metadata.
 - Shared soft-Signal source projections rank chunks by each Signal's versioned
   retrieval query and declared evidence phrases, not extraction-instruction prose.
-  Selection alternates between Signals and prefers an unseen eligible document
-  before another chunk from the same document. The shared character budget,
-  deterministic ordering, exact raw-span lineage and per-Signal citation scope
-  remain unchanged. A bounded view cannot prove absent data; unavailable results
+  Each Signal selects its bounded canonical view independently of batch peers,
+  preferring an unseen eligible document before another chunk from the same one.
+  A shared request deduplicates the union of these views, preserving each Signal's
+  own eligible projection ids. If their union or complete request cannot fit,
+  execute separate requests rather than competing for a smaller shared view.
+  Every request retains the existing character and token ceilings. Split work
+  accounts actual usage, preserves successful siblings when a remaining case
+  token budget blocks later work, and does not catch provider/authorization stops.
+  Individual-budget trimming stays explicit; correction may consume only the
+  remaining budget and cannot re-execute accepted siblings. A bounded view cannot prove absent data; unavailable results
   must remain distinct from technical failures and negative domain observations.
   Neutral and negative conclusions are available results: the executor cites the
   examined non-qualifying spans as counter evidence instead of abstaining, and
@@ -584,3 +590,15 @@ kind paths; valid siblings, slots, source refs and feedback coverage remain
 unchanged. The initial authoring request exposes this rule. Canonical fresh
 memory also validates it before staging inside the ordinary failure boundary,
 so a rejected result retains feedback as pending rather than consuming it.
+
+
+Fixed extraction instructions distinguish the scope of document-publication windows
+from event-time rules specified by a skill. They require explicit comparator evidence
+for a claim of upward/downward change; a current number alone is not a prior baseline.
+This clarifies producer obligations without adding a new semantic rejection gate or
+changing a stored Signal's research definition.
+
+Existing version-owned result_required_evidence_phrases are explicitly disclosed
+in the initial fixed prompt as applying to every available state, not just positive.
+The hard validator remains unchanged; a correction must not discover this obligation
+for the first time. No hidden lexical requirement is added or old Signal rewritten.

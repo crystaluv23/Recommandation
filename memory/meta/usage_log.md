@@ -238,3 +238,5 @@
 - 2026-10-02：生产Slow准入迁移咨询 incremental-repair-and-sourced-memory / self-evolution-convergence-and-acceptance；对齐准入/观察/实际Fast输入、exact检查点与历史来源，零调用重放真实候选并区分测试接线、live执行及收益。
 
 - 2026-10-02：目标持续追踪前咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；验证提交/导入/恢复、真实 source scope 与实际方法视图，重放物理观察冲突，保持观测与独立收益分离。
+
+- 2026-10-02：Signal 物理观察冲突审计咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；逐项核对实际可见来源、修复提示及版本规则，保持自身证据视图并按实际预算拆分，区分接线重放与真实技术失败率。

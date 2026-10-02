@@ -897,8 +897,10 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         results, usage = runner.execute_many(inputs, as_of)
 
         self.assertEqual(set(results), {"guidance_change:v1", "customer_order:v1"})
-        self.assertEqual(usage.llm_calls, 1)
+        self.assertEqual(usage.llm_calls, 2)
         payload = caller.calls[0]["payload"]
+        self.assertEqual(len(caller.calls), 2)
+        self.assertTrue(all(len(call["payload"]["signals"]) == 1 for call in caller.calls))
         self.assertTrue(payload["context_contract"]["budget_trimmed"])
         self.assertLess(
             payload["context_contract"]["visible_source_characters"],
@@ -908,7 +910,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             all(item["eligible_projection_ids"] for item in payload["signals"])
         )
         visible = "\n".join(
-            item["exact_text"] for item in payload["source_projection"]
+            item["exact_text"] for call in caller.calls for item in call["payload"]["source_projection"]
         )
         self.assertIn("Management raised annual guidance.", visible)
         self.assertIn("A customer signed a repeat production order.", visible)
@@ -1088,7 +1090,7 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
             SignalExecutionStatus.DOMAIN_UNAVAILABLE,
         )
 
-    def test_llm_signal_unavailable_uses_one_changed_comparison_supplement(self) -> None:
+    def test_llm_signal_comparison_view_survives_peer_overflow_partition(self) -> None:
         from stock_opportunity_agent.signal_library import SignalRetrievalPolicy
 
         as_of = datetime(2025, 1, 1, tzinfo=timezone.utc)
@@ -1159,18 +1161,17 @@ class SignalExecutionAndInitializeRoleTests(TestCase):
         self.assertEqual(usage.llm_calls, 2)
         self.assertEqual(len(caller.calls), 2)
         self.assertEqual(
-            caller.calls[1]["payload"]["batch_signal_refs"], [comparison.ref]
+            caller.calls[0]["payload"]["batch_signal_refs"], [comparison.ref]
         )
         first_ids = {
             item["projection_id"]
             for item in caller.calls[0]["payload"]["source_projection"]
             if item["document_id"] == "comparison-long"
         }
-        second_ids = {
-            item["projection_id"]
-            for item in caller.calls[1]["payload"]["source_projection"]
-        }
-        self.assertTrue(second_ids - first_ids)
+        from stock_opportunity_agent.research.evolution_signal_roles import _shared_llm_signal_projection
+        canonical, _lineage = _shared_llm_signal_projection((LLMSignalBatchInput(comparison, documents, "Compare periods."),))
+        self.assertEqual(first_ids, {item["projection_id"] for item in canonical})
+        self.assertEqual(caller.calls[1]["payload"]["batch_signal_refs"], [sibling.ref])
         self.assertEqual(
             results[sibling.ref].execution_status,
             SignalExecutionStatus.DOMAIN_UNAVAILABLE,

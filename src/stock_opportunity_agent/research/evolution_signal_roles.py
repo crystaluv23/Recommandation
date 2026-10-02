@@ -4180,6 +4180,7 @@ class _SignalProjectionLineage:
     normalized_start: int
     normalized_end: int
     normalized_source_length: int
+    eligible_signal_refs: tuple[str, ...] = ()
 
 
 def _slice_projection_offset_runs(
@@ -4216,10 +4217,12 @@ def _slice_projection_offset_runs(
     return tuple(clipped)
 
 
-def _shared_llm_signal_projection(
-    inputs: tuple[LLMSignalBatchInput, ...],
+def _single_llm_signal_projection(
+    item: LLMSignalBatchInput,
 ) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage]]:
-    """Build one deduplicated readable projection for up to two soft Signals."""
+    """Select the version-owned bounded evidence view independently of peers."""
+
+    inputs = (item,)
 
     documents_by_identity: dict[tuple[str, str], RawInfoDocument] = {}
     for item in inputs:
@@ -4383,9 +4386,29 @@ def _shared_llm_signal_projection(
             normalized_start=0 if fact_context is not None else start,
             normalized_end=len(text_value) if fact_context is not None else end,
             normalized_source_length=len(text_value) if fact_context is not None else len(normalized),
+            eligible_signal_refs=(item.spec.ref,),
         )
         used += len(text_value)
     return payload, lineage
+
+
+def _shared_llm_signal_projection(
+    inputs: tuple[LLMSignalBatchInput, ...],
+) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage]]:
+    """Plan a deduplicated union; the executor splits an over-budget union."""
+
+    payload: dict[str, dict[str, Any]] = {}
+    lineage: dict[str, _SignalProjectionLineage] = {}
+    for item in sorted(inputs, key=lambda item: item.spec.ref):
+        rows, local = _single_llm_signal_projection(item)
+        for row in rows:
+            key = str(row["projection_id"])
+            payload.setdefault(key, row)
+            prior = lineage.get(key)
+            lineage[key] = replace(local[key], eligible_signal_refs=tuple(sorted({
+                item.spec.ref, *(prior.eligible_signal_refs if prior is not None else ())
+            })))
+    return list(payload.values()), lineage
 
 
 def _bounded_projection_interior_candidate(
@@ -4717,8 +4740,12 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "Apply each versioned extraction skill independently to the one shared "
     "bounded point-in-time source_projection. Each evidence item inside a nested "
     "result must use projection_id and exact_text copied from one visible "
-    "projection; runtime maps it to the original raw span. Each Signal may cite "
-    "only projection ids listed in its own eligible_projection_ids, even though "
+    "projection; runtime maps it to the original raw span. "
+    "For every available state, if signal_spec.parameters declares "
+    "result_required_evidence_phrases, at least one cited complete literal must "
+    "contain a declared phrase (case-insensitive), including neutral and negative "
+    "results. Description or interpretation alone cannot satisfy that contract. "
+    "Each Signal may cite only projection ids listed in its own eligible_projection_ids, even though "
     "peer Signal projections are visible in the shared batch. Do not cite text "
     "as an issuer event merely because retrieval supplied it. When target_subject "
     "is present, its known_aliases refer to the same target issuer. Identify the "
@@ -4733,6 +4760,12 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "window. Edge validation feedback may give "
     "bounded byte-exact overlapping_projection_interior_candidates; copy one "
     "exactly, choose another complete visible literal, or return unavailable. "
+    "Apply publication and event-time windows only to the scope specified by the skill; "
+    "a document-publication lookback is not automatically an event-occurrence window. "
+    "For a claimed upward or downward revision, cite an explicit applicable comparator "
+    "or an explicit revision statement; a current numeric level alone does not establish "
+    "the prior baseline or direction of change. Describe uncertain comparisons in the "
+    "interpretation and return only the defined enum values. "
     "Never infer omitted source text "
     "is absent. A neutral or negative conclusion is an available result: cite "
     "the examined non-qualifying spans as counter evidence, and never return "
@@ -4790,6 +4823,7 @@ class StructuredLLMSignalRunner:
                     projection.document.content_hash,
                 )
                 in document_identities
+                and (not projection.eligible_signal_refs or item.spec.ref in projection.eligible_signal_refs)
             )
         payload = {
             "batch_signal_refs": sorted(item.spec.ref for item in inputs),
@@ -4892,7 +4926,7 @@ class StructuredLLMSignalRunner:
                 if (
                     projection.document.document_id,
                     projection.document.content_hash,
-                ) in identities:
+                ) in identities and (not projection.eligible_signal_refs or item.spec.ref in projection.eligible_signal_refs):
                     essential_ids.add(projection_id)
                     break
         selected = [
@@ -4976,6 +5010,8 @@ class StructuredLLMSignalRunner:
         self,
         inputs: tuple[LLMSignalBatchInput, ...],
         as_of: datetime,
+        *,
+        request_token_budget: int | None = None,
     ) -> tuple[Mapping[str, SignalResult], AgentUsage]:
         """Execute and validate against original source coordinates inside egress scope."""
 
@@ -4983,6 +5019,30 @@ class StructuredLLMSignalRunner:
             raise ValidationError("LLM Signal batch requires one or two inputs")
         if len({item.spec.ref for item in inputs}) != len(inputs):
             raise ValidationError("LLM Signal batch refs must be unique")
+        budget = self.request_token_budget if request_token_budget is None else request_token_budget
+        if len(inputs) > 1:
+            planned, planned_lineage = _shared_llm_signal_projection(inputs)
+            split = sum(len(row["exact_text"]) for row in planned) > MAX_LLM_SIGNAL_CONTEXT_CHARS
+            if not split:
+                _fitted, _lineage, split = self._fit_projection_to_budget(inputs, planned,
+                    planned_lineage, as_of, request_token_budget=budget)
+            if split:
+                retained: dict[str, SignalResult] = {}
+                consumed = AgentUsage()
+                for index, item in enumerate(inputs):
+                    try:
+                        results, used = self._execute_many((item,), as_of,
+                            request_token_budget=max(0, budget - consumed.tokens) if budget is not None else None)
+                    except RuntimeBudgetExceeded as exc:
+                        consumed = consumed + exc.usage
+                        for remaining in inputs[index:]:
+                            retained[remaining.spec.ref] = signal_execution_failure_result(remaining.spec,
+                                status=SignalExecutionStatus.BUDGET_BLOCKED,
+                                error_code="signal_partition_budget_blocked", error_message=str(exc))
+                        return retained, consumed
+                    retained.update(results)
+                    consumed = consumed + used
+                return retained, consumed
         usage = AgentUsage()
         pending = {item.spec.ref: item for item in inputs}
         accepted: dict[str, SignalResult] = {}
@@ -4994,8 +5054,8 @@ class StructuredLLMSignalRunner:
             attempt_inputs = tuple(pending.values())
             documents, lineage = _shared_llm_signal_projection(attempt_inputs)
             remaining_budget = (
-                self.request_token_budget - usage.tokens
-                if self.request_token_budget is not None
+                budget - usage.tokens
+                if budget is not None
                 else None
             )
             documents, lineage, budget_trimmed = self._fit_projection_to_budget(
@@ -5036,8 +5096,8 @@ class StructuredLLMSignalRunner:
                     allow_outcomes=False,
                     max_output_tokens=4_000,
                     max_request_tokens=(
-                        self.request_token_budget - usage.tokens
-                        if self.request_token_budget is not None
+                        budget - usage.tokens
+                        if budget is not None
                         else None
                     ),
                 )

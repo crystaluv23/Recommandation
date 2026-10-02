@@ -793,3 +793,11 @@ an atomic JSONL replacement preserving original rows. A late invalid item or an
 interruption cannot leave a partial batch or silently replace an earlier verdict.
 Learning-event duplicate ids likewise require exact content; duplicate physical
 outcomes include realized multiple in conflict detection.
+
+
+Shared soft-Signal batching preserves independently selected per-Signal evidence
+views and citation scopes. Overflow splits retain single-Signal coverage; each
+result and call has actual usage accounting. Unavailable after explicit limited
+visibility remains distinct from a negative measurement. Whole-document fingerprints
+remain the within-case no-op identity; cross-Plan observational conflicts do not prove
+identical model-facing views or technical failures.
