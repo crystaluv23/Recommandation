@@ -1,0 +1,86 @@
+{
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "case_id": "cik_0001051627:20250930",
+  "replays": [
+    {
+      "request_ref": "09007b7141ffec7468358f1a86d230e7a6065880f2f8db04f7a7146f5fa7577d",
+      "stage": "research_controller_reflect",
+      "native_operations_unchanged": true,
+      "programmatic_grounding_baseline_from_request": "6bdb9a68b3d2d97c0a712b8222053ff0a59b3367ddeaf692e7a9bea9ed847f36",
+      "model_view_base_hash_rebound_for_offline_replay": "446937314a2b43f9577ed9d78bbffc113406296363295c06ba68625846c11e2b",
+      "native_patch_sha256": "af6dd141bb28527edc2df5850567c7416384b7bb06c595314178c25c3b612dfd",
+      "original_base_hash": "66790cc5f617f5d932d564c69a0d3ba6c24c73e3837568b8b7115e28be64480e",
+      "old_errors": [
+        {
+          "returned_path": "next_information_needs[0]",
+          "prior_state_path": "next_information_needs[1]",
+          "value": "Did the issuer provide updated quantitative guidance for third quarter or full year 2025 revenue, gross margin, or indium phosphide revenue growth in any disclosure available by the prediction time, and what were the specific figures?",
+          "signal_refs": [
+            "guidance_acceleration:v2"
+          ],
+          "issue": "targeted need changed only cosmetically",
+          "required_action": "remove_or_genuinely_narrow",
+          "returned_need": "What quantitative revenue, gross margin, or indium phosphide revenue growth guidance for the third quarter or full year 2025 had the issuer disclosed as of the prediction time, and what specific figures were stated in any disclosure available by then?"
+        }
+      ],
+      "new_need_errors": [],
+      "untargeted_need_preserved_exactly": true,
+      "targeted_need_removed": true,
+      "state_shape_anchor_temporal_normalization_passed": true,
+      "signal_evidence_counts_before_after": [
+        4,
+        6
+      ]
+    },
+    {
+      "request_ref": "1992efb39b40ffd1ffc09852d1189217b05b6500d77e8d98fd815741302c04d7",
+      "stage": "research_controller_reflect",
+      "native_operations_unchanged": true,
+      "programmatic_grounding_baseline_from_request": "ace1153f94da6a5f3ac5ae3bbf5183bbe43b8c938132995e9554cfeb2ebed7e1",
+      "model_view_base_hash_rebound_for_offline_replay": "446937314a2b43f9577ed9d78bbffc113406296363295c06ba68625846c11e2b",
+      "native_patch_sha256": "2992f706241027f6f77ec147d6a4683117a7bfcd1aed378d1dcdf0b352161f5c",
+      "original_base_hash": "66790cc5f617f5d932d564c69a0d3ba6c24c73e3837568b8b7115e28be64480e",
+      "old_errors": [
+        {
+          "returned_path": "next_information_needs[0]",
+          "prior_state_path": "next_information_needs[1]",
+          "value": "Did the issuer provide updated quantitative guidance for third quarter or full year 2025 revenue, gross margin, or indium phosphide revenue growth in any disclosure available by the prediction time, and what were the specific figures?",
+          "signal_refs": [
+            "guidance_acceleration:v2"
+          ],
+          "issue": "targeted need changed only cosmetically",
+          "required_action": "remove_or_genuinely_narrow",
+          "returned_need": "What quantitative revenue, gross margin, or indium phosphide revenue growth guidance for the third quarter or full year 2025 had the issuer disclosed as of the prediction time, and what specific figures were stated in any disclosure available by then?"
+        }
+      ],
+      "new_need_errors": [],
+      "untargeted_need_preserved_exactly": true,
+      "targeted_need_removed": true,
+      "state_shape_anchor_temporal_normalization_passed": true,
+      "signal_evidence_counts_before_after": [
+        4,
+        13
+      ]
+    }
+  ],
+  "paid_destructive_correction_still_rejected": true,
+  "external_calls": 0,
+  "source_file_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/requests/09007b7141ffec7468358f1a86d230e7a6065880f2f8db04f7a7146f5fa7577d.json": "dab7d0de4409d7948d0c1fff2ebc45aef026eb3117bd40fc3e17351d9b26079b",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/responses/09007b7141ffec7468358f1a86d230e7a6065880f2f8db04f7a7146f5fa7577d.json": "d691e92ce08ec02ab0c0e110a1b6c1651264e3a9dc734f6146b98296b639fcb3",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/requests/6bdb9a68b3d2d97c0a712b8222053ff0a59b3367ddeaf692e7a9bea9ed847f36.json": "f5c77bd5dff56d2012ea1b624e78476da4ff03857cedc97ea9e50204ccbeec0d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/requests/1992efb39b40ffd1ffc09852d1189217b05b6500d77e8d98fd815741302c04d7.json": "8e54461a6e6fba114c15d4ab91c7cdf7536846ac8b8d396dddeadfc5fdbc861b",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/responses/1992efb39b40ffd1ffc09852d1189217b05b6500d77e8d98fd815741302c04d7.json": "28e9d777d2e5fcff83cb1ccab905035bc631c02973a4dce0a38a8e68dddb491a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/requests/ace1153f94da6a5f3ac5ae3bbf5183bbe43b8c938132995e9554cfeb2ebed7e1.json": "5b739e0f3c80b5e4b0a5515ea9d01d74889966a91cca0825da31d53f7a8c8503",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cache/responses/ace1153f94da6a5f3ac5ae3bbf5183bbe43b8c938132995e9554cfeb2ebed7e1.json": "c11053552b3cc0417a24993a4ae2f717a59330f0c129adc631808f0b5cf6f359",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/experiments/trajectories/plan_r0001_c02/cik_0001051627:20250930.failure.json": "e749096cad7be8933191e0914a2e257d302f474790bb23a88476992b515e2f88",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/state.json": "cb7f8ac9f4ae6fa479721cfc0b876c8e19c6785424e52fc978debe35322e3585",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated/cycle_state.json": "5f9cc44eac82e76066f06914f388d4301d10ba4ee650464f1b72b35207bd3841"
+  },
+  "limits": [
+    "exact paid native operations and actual transmitted model-view inputs; only snapshot hash rebound to that view for offline replay",
+    "need-occurrence guard and state shape/PIT/anchor replay using the actual persisted programmatically grounded baseline; not accepting the original raw numeric assertion or reconstructing full canonical Raw Info evidence validation",
+    "production Controller whole-validation separately tested with a source-backed synthetic fixture",
+    "no new full case, changed score, or guarantee that restored research predicts the true label"
+  ]
+}

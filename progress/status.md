@@ -3650,3 +3650,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：v170真实终态patch原无失败操作上下文、目录占22285字符；新增共享机械patch-on-patch精确冲突权限/正确兄弟保存，完整Controller canonical重放接受两种脚本化纠正（不选赢家）。HTTP预留67299→26090，原paid后预算下限51305内preview通过，0外部。越权留原语义纠错，203专项及1454最终全量通过。v170终止，Fast/Slow=1/0；唯一提交c02 F1=.6923、2技术排除/1技术FN；134学习事件7项与导入v168同ID异内容，阻断提交后tracking/Slow，身份命名空间待修。目标继续。见reports/v170-patch-mechanics-repair-20261002.md。
 
 2026-10-02：修复提交后跨workspace Signal使用ID冲突；v2源记录绑定、旧v1原样导入、执行统计同步，真实274+134事件生产恢复/Slow bootstrap=408条、0身份冲突，218物理/29争议观察保留，原hash不变/0外部。88专项、1458全量及lint PASS。下一技术FN前沿为untargeted相似需求被cosmetic guard误拒，完整零排除/Slow双轴新候选仍未验收。见reports/v170-signal-use-identity-repair-20261002.md。
+
+2026-10-02：v170 AXT技术FN的need0 preserve与need1 cosmetic检测互斥已修；仅检查unassigned occurrences，surplus坐标准确。真实两付费操作+已保存grounding模型视图重放误拒清零、删除untargeted仍拒；完整Controller首答回归/130专项及1461全量通过，完整新live零排除仍待验收。见reports/v170-need-cosmetic-repair-20261002.md。

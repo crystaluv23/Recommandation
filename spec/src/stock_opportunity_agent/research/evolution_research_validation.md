@@ -141,6 +141,12 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   per prior index, and the deterministic need fallback likewise transitions
   exactly one occurrence per runtime-issued instruction so an untargeted
   duplicate survives its own preserve obligation.
+  Cosmetic checks reserve exact required occurrences first and examine only
+  surplus returned positions. A preserved untargeted need or required exact
+  partial residual may resemble a removed full-answer target without becoming
+  that target's invalid rewrite. An extra copy or newly added paraphrase remains
+  invalid and feedback reports the actual surplus index. No semantic
+  deduplication or forced deletion is authorized.
 - A runtime-owned evaluation input (the baseline, its date or price, the
   current or prediction-time price, the outcome definition) is rejected
   unless its anchor mention is clearly identified as reference use. Mention

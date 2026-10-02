@@ -3682,11 +3682,15 @@ def _targeted_answer_need_transition_errors(
                 )
             continue
         prior_tokens = _normalized_need_tokens(need)
+        unassigned_positions = {
+            position for remaining in surplus_positions.values() for position in remaining
+        }
         cosmetic = next(
             (
-                candidate
-                for candidate in current_needs
-                if candidate != need
+                (position, candidate)
+                for position, candidate in enumerate(current_needs)
+                if position in unassigned_positions
+                and candidate != need
                 and prior_tokens
                 and len(
                     prior_tokens & _normalized_need_tokens(candidate)
@@ -3701,14 +3705,14 @@ def _targeted_answer_need_transition_errors(
                 {
                     "returned_path": (
                         "next_information_needs["
-                        f"{current_needs.index(cosmetic)}]"
+                        f"{cosmetic[0]}]"
                     ),
                     "prior_state_path": prior_state_path,
                     "value": need,
                     "signal_refs": signal_refs,
                     "issue": "targeted need changed only cosmetically",
                     "required_action": "remove_or_genuinely_narrow",
-                    "returned_need": cosmetic,
+                    "returned_need": cosmetic[1],
                 }
             )
     return errors

@@ -252,3 +252,5 @@
 - 2026-10-02：v170终态native patch重叠/纠错超预算，咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；只让机械性语法/冲突进入最小上下文，越权仍保留原语义纠错义务，操作兄弟不可重写。真实canonical状态/批次/Plan/付费patch完整生产Controller重放和请求预留核验，不伪造live修正或改旧分数；同时确认提交后学习事件跨工作区ID冲突，待独立恢复修复。
 
 - 2026-10-02：提交后Signal事件跨工作区碰撞修复；咨询signal-learning-profile-cycle-freeze及self-evolution-convergence-and-acceptance，保持事件/物理观察身份分离、原Fast指针和冻结历史，验证生产导出/导入/恢复而非单点hash。
+
+- 2026-10-02：真实v170正类Reflect误拒；咨询incremental-repair-and-sourced-memory，证明preserve义务与cosmetic删除诊断互斥，保留正确occurrence和数字grounding，不靠改写/删反证换取零排除。
