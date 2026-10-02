@@ -1,0 +1,30 @@
+{
+  "boundary": "Exact frozen request/cache/failure. Input table ticker was exposed; named-symbol restatement then fails guessing guard. No new response, historical repair, FN attribution or final quality claim.",
+  "claim_projection_tokens": {
+    "[ANON_ID_0000]": "symbol MS"
+  },
+  "claim_triggers_guess_detection": true,
+  "external_calls": 0,
+  "failure": {
+    "artifact_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.failure.json",
+    "case_id": "cik_0000895421:20250731",
+    "error_type": "CandidateExecutionRejected",
+    "input_hash": "2940d23745f26c997d00a56ccdb4359938e673e7fb6e8b722ceef41fd97f6041",
+    "message": "model guessed target identity outside supplied tokens",
+    "schema_version": "case-evaluation-failure-v1",
+    "stage": "research_controller_initialize"
+  },
+  "literal_from_supplied_model_view": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock, $0.01 par value MS New York Stock Exchange",
+  "literal_is_in_supplied_view": true,
+  "literal_not_masked_by_short_ticker_matcher": true,
+  "request_hash": "87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b",
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated",
+  "same_ticker_in_authored_claim": "The target is a large diversified financial institution with common stock and multiple preferred series listed on the New York Stock Exchange, with the common stock symbol MS.",
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/responses/87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b.json": "c12e7c4d3a56448479492b531048efda7b677c49e4096969d610c6d2df3ec86f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.failure.json": "2b0090970ad4a2773bf45fd8534f90d1e3e291f438576c02e18453627b42c6ec",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/requests/87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b.json": "50cc74301e8e7c04e0be106fd4d923f251fdf14a1b921bea0ee0528d1d1e0d76"
+  },
+  "source_supplied_ticker_occurrences": 14,
+  "stage": "research_controller_initialize"
+}

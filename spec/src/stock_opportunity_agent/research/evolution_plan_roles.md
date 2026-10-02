@@ -13,6 +13,12 @@ Legacy versions without a new admission record receive no invented status.
 
 ## Fixed Predictor role authority (2026-10-02)
 
+Plan proposal participates in the shared mechanical repair registry. After
+snapshot-bound patch application and scope checks, exact duplicate source-family
+members may be removed without changing membership or research content. The
+normal raw request, closed family menu and complete Plan validators then run.
+Original responses remain immutable and typed repair operations are reported.
+
 H_analyse evolves evidence organization/weighting, while the fixed Predictor
 always owns the final direction and conditional magnitude output. Its fixed
 shell overrides a conflicting Plan instruction to omit classification or the

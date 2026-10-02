@@ -240,3 +240,5 @@
 - 2026-10-02：目标持续追踪前咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；验证提交/导入/恢复、真实 source scope 与实际方法视图，重放物理观察冲突，保持观测与独立收益分离。
 
 - 2026-10-02：Signal 物理观察冲突审计咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；逐项核对实际可见来源、修复提示及版本规则，保持自身证据视图并按实际预算拆分，区分接线重放与真实技术失败率。
+
+- 2026-10-02：v169真实Plan纠正后来源重复咨询 incremental-repair-and-sourced-memory / self-evolution-convergence-and-acceptance；核对原生patch、scope及完整消费者验证，以集合去重消除机械失败，供应商中断与研究失败分开，隔离补丁不改冻结运行。

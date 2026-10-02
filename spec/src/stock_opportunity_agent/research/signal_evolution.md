@@ -9,6 +9,10 @@ New Slow decisions authorize publication from complete technical validation, not
 paired/provisional effect disposition. Historical gate descriptions below apply
 only to frozen records and old staged transition recovery.
 No frozen run or historical accepted/rejected record is rewritten.
+The default `SlowLoopResult.magnitude_contribution` states only that independent
+Fast-consumption effect has not been assessed. It must not claim that current
+admission is governed by directional effect gates. Existing explicit historical
+reasons are retained on read; only an absent default receives current wording.
 See [the approved lifecycle design](../../../../reports/slow-signal-system-design-20261002.md).
 
 The candidate loop persists a `signal-candidate-admission-v1`; it performs no

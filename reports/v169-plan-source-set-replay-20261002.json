@@ -1,0 +1,39 @@
+{
+  "boundary": "Exact initial paid response and native correction through production proposer, existing patch/scope and full validators. No original edit, new model compliance, F1 or whole-cycle claim.",
+  "external_calls": 0,
+  "frozen_revision": "1f26845df7a0f747a08133e46c5be6be92c2c6b9",
+  "native_patch_reused": true,
+  "patch_base_hash_matches": true,
+  "policy_hashes": {
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "7e49a20c9e18392eb5fd0a24e63c42a6d1dff35f4dcaf829b97850f7ea32415d",
+    "src/stock_opportunity_agent/research/repair.py": "585a09e0ee266844004fcdb24d259dca06343cbf185785420ebf47b76cc874dd"
+  },
+  "preserved_all_other_fields": true,
+  "production_proposer_accepted": true,
+  "repairs": [
+    {
+      "action": "deduplicate_plan_source_types",
+      "after": [
+        "filing",
+        "filing_body",
+        "sec_filing"
+      ],
+      "before": [
+        "filing",
+        "filing_body",
+        "sec_filing",
+        "filing"
+      ],
+      "level": "L2_mechanical",
+      "path": "B.requests[1].source_types"
+    }
+  ],
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/responses/2eecc4e8ac2bf6a89b83847935fda3369659908cfdb91e885a94ca433989bcfa.json": "4ef3c99b9784ac4e6a67ed70c044bbbc11dc4bfbe66608389c1d034188c6fe6d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/responses/df89c1f926ec695dd5c772e8218436bd16c63ef33d24637aac5c13e0bf0f52c8.json": "1d59b5c359480c457e6d50408c9a8a60fb166302cb949481d92c7fda6a51bcff",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/requests/2eecc4e8ac2bf6a89b83847935fda3369659908cfdb91e885a94ca433989bcfa.json": "23777145a910b7a50d4e167135988332912b9e184c09c7d6bf8ca5676a1b8f55",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/requests/df89c1f926ec695dd5c772e8218436bd16c63ef33d24637aac5c13e0bf0f52c8.json": "abddfbf19d30d430763d19e75783d5e7fa839d5baf8573c0e47cc1ff49183f4a"
+  },
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated",
+  "source_unchanged": true
+}

@@ -234,7 +234,8 @@ class SlowLoopResultMagnitudeTest(unittest.TestCase):
             output_registry_hash="hash",
         )
         self.assertFalse(result.magnitude_contribution["assessed"])
-        self.assertIn("directional", result.magnitude_contribution["reason"])
+        self.assertIn("Fast-consumption", result.magnitude_contribution["reason"])
+        self.assertNotIn("directional only", result.magnitude_contribution["reason"])
 
     def test_roundtrip_preserves_default_and_custom(self):
         result = SlowLoopResult(
@@ -259,6 +260,16 @@ class SlowLoopResultMagnitudeTest(unittest.TestCase):
         }
         restored_custom = SlowLoopResult.from_dict(custom)
         self.assertTrue(restored_custom.magnitude_contribution["assessed"])
+        historical = dict(result.to_dict())
+        historical["magnitude_contribution"] = {
+            "assessed": False,
+            "reason": "historical directional-only promotion policy",
+        }
+        self.assertEqual(SlowLoopResult.from_dict(historical).magnitude_contribution,
+                         historical["magnitude_contribution"])
+        historical.pop("magnitude_contribution")
+        self.assertEqual(SlowLoopResult.from_dict(historical).magnitude_contribution,
+                         result.magnitude_contribution)
 
 
 if __name__ == "__main__":

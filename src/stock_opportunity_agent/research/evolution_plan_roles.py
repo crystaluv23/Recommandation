@@ -2954,6 +2954,15 @@ class LLMInformationPlanProposer:
                                     "every unrelated B request and H_* field "
                                     "byte-for-byte"
                                 )
+                    from stock_opportunity_agent.research.repair import mechanical_repair_candidate
+
+                    value, repair_ops = mechanical_repair_candidate(value)
+                    if repair_ops:
+                        _emit_runtime_progress(
+                            getattr(self.caller, "on_progress", None),
+                            "mechanical_repair_progress", stage=stage,
+                            repairs=[op.__dict__ for op in repair_ops],
+                        )
                     _validate_raw_information_plan_request_fields(value)
                     normalized = _normalize_information_plan_output(
                         value,

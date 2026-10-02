@@ -35,6 +35,16 @@ acceptance and the underlying computed card remains available.
 
 ## Verification
 
+Plan proposal `B.requests[*].source_types` is an ordered source-family set.
+Exact repeated nonblank string members may be removed mechanically, retaining
+the first occurrence and every distinct value in original order. No casefold,
+alias mapping, unsupported-value removal or missing-value invention is allowed.
+The transform applies to initial responses and fully composed scoped corrections
+through the same registered family, logs exact paths/before/after, and preserves
+all sibling requests and H_* text. Patch/scope validation precedes this transform;
+complete owning validation follows it, so unique unsupported types, malformed
+members and unrelated semantic defects still reject or receive typed correction.
+
 Whole JSON source citations may be restored before LLM correction only when
 strict decoding finds one distinct original in the owning case/document scope.
 The complete object or array must match, including field sets, array order and

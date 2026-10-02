@@ -1429,7 +1429,8 @@ class LabelAwareMiningController:
 
         Existence, family intersection, and raw-narrative citation are
         runtime-checkable here; semantic satisfaction is judged only
-        downstream by fixtures, holdout, and the paired gates.
+        downstream by executable fixtures and the technical admission validator.
+        Independent effect observations follow admission.
         """
 
         required = {"modality", "source_families", "semantic_condition"}

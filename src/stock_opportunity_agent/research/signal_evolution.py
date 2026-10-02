@@ -312,8 +312,8 @@ _SLOW_SOURCE_ROLES = {"reflection", "H1", "H3", "E2", "Update"}
 _UNASSESSED_MAGNITUDE_CONTRIBUTION: dict[str, Any] = {
     "assessed": False,
     "reason": (
-        "first-version promotion gates are directional only; magnitude-only "
-        "improvement is not separately evaluated"
+        "independent Fast-consumption effect has not been assessed; technical "
+        "admission does not establish magnitude benefit"
     ),
 }
 

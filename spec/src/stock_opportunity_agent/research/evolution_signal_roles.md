@@ -293,11 +293,12 @@ follow [stage contracts](stage_contracts.md).
   this same disposition contract unchanged: magnitude judgment strategy,
   evidence weighting, and class calibration are `fast_plan_action`, while a
   need for a prediction-time measurable fact, normalization, or applicability
-  condition routes to ordinary Mining/Update. The existing promotion gates are
-  unchanged for the first version; a signal that improves only magnitude while
-  direction metrics are flat may still be rejected, and Slow reports must state
-  that magnitude contribution was not separately assessed rather than claiming
-  an unmeasured gain.
+  condition routes to ordinary Mining/Update. Under the approved 2026-10-02
+  policy, complete technical validation admits both direction and magnitude
+  measurements with effect unverified. Flat directional metrics do not block
+  admission of a technically valid magnitude measurement. Reports distinguish
+  target discovery and technical admission from independent Fast-consumption
+  assessment; neither admission nor broader prediction spread proves gain.
 - H1 projects every runtime need ref to a deterministic compact alias before it
   crosses the model boundary. The outgoing backlog and every correction use only
   those aliases; after validation, the adapter maps the disposition ledger,

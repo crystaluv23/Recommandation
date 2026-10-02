@@ -607,6 +607,33 @@ register_repair_chain(_repairable_reflection_package, _reflection_chain)
 register_repair_chain(_repairable_research_state, _research_state_chain)
 
 
+def deduplicate_plan_source_types(value: Mapping[str, Any]) -> tuple[dict[str, Any], list[RepairOp]]:
+    """Remove exact repeated source-set members, preserving order and siblings."""
+    from copy import deepcopy
+
+    result = deepcopy(dict(value))
+    operations: list[RepairOp] = []
+    for index, request in enumerate(result["B"]["requests"]):
+        if not isinstance(request, Mapping):
+            continue
+        sources = request.get("source_types")
+        if not isinstance(sources, list) or not all(isinstance(source, str) and source.strip() for source in sources):
+            continue
+        unique = list(dict.fromkeys(sources))
+        if unique != sources:
+            request["source_types"] = unique
+            operations.append(RepairOp(level=L2_MECHANICAL, action="deduplicate_plan_source_types",
+                path=f"B.requests[{index}].source_types", before=sources, after=unique))
+    return result, operations
+
+
+register_repair_chain(
+    lambda value: isinstance(value, Mapping) and isinstance(value.get("B"), Mapping)
+    and isinstance(value["B"].get("requests"), list),
+    lambda value, resolver, level_categories=None: [deduplicate_plan_source_types],
+)
+
+
 def normalize_action_rationale(value: Mapping[str, Any]) -> tuple[dict[str, Any], list[RepairOp]]:
     """Wrap one existing scalar reason without inventing action semantics."""
     result = dict(value)
