@@ -42,6 +42,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     signal_execution_failure_result,
     validate_signal_result,
+    _OPERATING_CASH_FLOW_TAGS,
 )
 from stock_opportunity_agent.research.evolution_settings import (
     LLM_SIGNAL_CONTEXT_CHUNK_CHARS,
@@ -70,6 +71,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
 from stock_opportunity_agent.research.evolution_research_validation import (
     _normalize_signal_result_output,
 )
+from stock_opportunity_agent.research.repair import unique_json_source_literal
 
 
 _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT = (
@@ -753,7 +755,12 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "changed_paths are arrays of strings. changed_paths must exactly declare the "
     "effective mutable spec or skill fields changed from the supplied vNext template; "
     "it is empty unless disposition is update. Copy changed_paths only from "
-    "candidate_contract.changed_paths_allowed. Copy candidate.tests byte-for-byte "
+    "candidate_contract.changed_paths_allowed. For deterministic descriptions, "
+    "the disclosed "
+    "deterministic_description_concepts lists normalized substring alternatives; "
+    "one complete alternative must match, and the actual function formula must "
+    "still agree. Keep the stable definition immutable. Copy candidate.tests "
+    "byte-for-byte "
     "from candidate_contract.vnext_template.tests. Never include spec.version, "
     "spec.definition, tests, or whole-section aliases. "
     "The unchanged fixtures must still execute to their expected values under the "
@@ -768,6 +775,109 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "outcome_relation is aligned, misaligned, or not_assessable. disposition is "
     "no_change, defer, or update; only update may carry the supplied candidate."
 )
+
+
+def _update_visible_comparisons(packet: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Expose only source-proved, case-local exact prior-year duration pairs."""
+
+    observation = packet.get("evidence_observation", {})
+    if not isinstance(observation, Mapping):
+        return []
+    try:
+        cutoff = datetime.fromisoformat(str(observation["prediction_time"])).date()
+    except (KeyError, TypeError, ValueError):
+        return []
+    executed = {(item["document_ref"], item["exact_span"])
+                for item in observation.get("executed_evidence", ())
+                if isinstance(item, Mapping) and isinstance(item.get("document_ref"), str)
+                and isinstance(item.get("exact_span"), str)}
+    comparisons = []
+    for document in observation.get("evidence", ()):
+        if not isinstance(document, Mapping):
+            continue
+        document_ref = document.get("document_ref")
+        structured = document.get("structured_context", {})
+        if not isinstance(structured, Mapping):
+            continue
+        for concept in structured.get("concepts", ()):
+            if not isinstance(concept, Mapping) or not all(concept.get(key) for key in ("taxonomy", "concept", "unit")):
+                continue
+            records = []
+            for record_index, record in enumerate(concept.get("records", ())):
+                if not isinstance(record, Mapping):
+                    continue
+                span = record.get("exact_span")
+                if not isinstance(span, str) or unique_json_source_literal(span, [span]) != span:
+                    continue
+                raw = json.loads(span)
+                try:
+                    start = datetime.fromisoformat(raw["start"]).date()
+                    end = datetime.fromisoformat(raw["end"]).date()
+                    filed = datetime.fromisoformat(raw["filed"]).date()
+                except (KeyError, TypeError, ValueError):
+                    continue
+                if start > end or end > cutoff or filed > cutoff:
+                    continue
+                records.append((start, end, span, record_index))
+            for start, end, span, current_index in records:
+                if (document_ref, span) not in executed:
+                    continue
+                try:
+                    prior_start, prior_end = start.replace(year=start.year - 1), end.replace(year=end.year - 1)
+                except ValueError:
+                    continue
+                for other_start, other_end, _other_span, prior_index in records:
+                    if (other_start, other_end) != (prior_start, prior_end):
+                        continue
+                    item = {"document_ref": document_ref,
+                            **{key: concept[key] for key in ("taxonomy", "concept", "unit")},
+                            "current": {"start": start.isoformat(), "end": end.isoformat(), "record_index": current_index},
+                            "prior": {"start": other_start.isoformat(), "end": other_end.isoformat(), "record_index": prior_index}}
+                    if item not in comparisons:
+                        comparisons.append(item)
+    return comparisons
+
+
+def _update_comparison_gap_issues(
+    gaps: list[Any], comparisons: list[dict[str, Any]], *, path: str,
+) -> list[ValidationIssue]:
+    """Reject explicit missing-prior claims contradicted by visible named pairs."""
+
+    issues = []
+    for index, text in enumerate(gaps):
+        if not isinstance(text, str):
+            continue
+        normalized = re.sub(r"[-_]", " ", text.casefold())
+        for comparison in comparisons:
+            concept = str(comparison["concept"])
+            phrase = ("operating cash flow" if concept in _OPERATING_CASH_FLOW_TAGS
+                      else re.sub(r"(?<=[a-z])(?=[A-Z])", " ", concept).casefold())
+            if concept.endswith("ContinuingOperations"):
+                phrase = "operating cash flow from continuing operations"
+            pattern = (r"\b(?P<absence>no|without|missing|does not show|do not show|not supplied|not provided)\b"
+                       r"[^.;!?]{0,100}\b(?:prior year|previous year)\b"
+                       r"[^.;!?]{0,60}" + re.escape(phrase) + r"\b")
+            match = re.search(pattern, normalized)
+            if match is None:
+                continue
+            if match.group("absence") in {"no", "without", "missing"} and not re.match(
+                r"\s*(?:(?:duration|record|fact|observation|data)s?\s+)?(?:(?:is|are|was|were)\s+)?"
+                r"(?:visible|supplied|provided|available|present|exists?\b)", normalized[match.end():],
+            ):
+                continue
+            prefix = re.split(r"[.;!?]", normalized[:match.start()])[-1]
+            if re.search(r"\b(?:if|unless|whether|incorrect|false|not true)\b", prefix):
+                continue
+            issues.append(ValidationIssue(
+                code="signal_update_visible_prior_claim_invalid",
+                message="This prior-year source record is visible; remove the false absence claim or state a supported specific limitation",
+                paths=(f"{path}.evidence_gaps[{index}]",),
+                allowed_repairs=("replace", "remove"),
+                source_refs=(str(comparison["document_ref"]),),
+                repair_context={"visible_comparison": comparison},
+            ))
+            break
+    return issues
 
 
 class LLMSignalUpdateModel(SignalUpdateModel):
@@ -840,6 +950,12 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         packet_by_ref = {str(item["case_ref"]): item for item in packets}
         if len(packet_by_ref) != len(packets):
             raise ValidationError("Signal Update v2 case_ref values must be unique")
+        comparisons_by_ref = {ref: _update_visible_comparisons(packet)
+                              for ref, packet in packet_by_ref.items()}
+        provider_payload = deepcopy(dict(payload))
+        for packet in provider_payload.get("induction_cases", ()):
+            if isinstance(packet, dict) and comparisons_by_ref.get(str(packet.get("case_ref"))):
+                packet["evidence_observation"]["visible_prior_year_comparisons"] = comparisons_by_ref[str(packet["case_ref"])]
 
         def evidence_by_ref(packet: Mapping[str, Any]) -> dict[str, tuple[str, ...]]:
             observation = packet.get("evidence_observation", {})
@@ -893,8 +1009,29 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         "disposition, problem_type, rationale, case_diagnostics, "
                         "changed_paths, and candidate"
                     )
+                diagnostics = value.get("case_diagnostics")
+                if not isinstance(diagnostics, list):
+                    raise StructuredValidationError([ValidationIssue(
+                        code="signal_update_diagnostics_container_invalid", message="case_diagnostics must be an array",
+                        paths=("case_diagnostics",), allowed_repairs=("replace",),
+                        repair_context={"invalid_container_paths": ["case_diagnostics"]},
+                    )])
+                invalid_rows = [ValidationIssue(
+                    code="signal_update_case_diagnostic_shape_invalid", message="case diagnostic must be an object",
+                    paths=(f"case_diagnostics[{index}]",), allowed_repairs=("replace", "remove"),
+                ) for index, row in enumerate(diagnostics) if not isinstance(row, Mapping)]
+                if invalid_rows:
+                    raise StructuredValidationError(invalid_rows)
                 decision = SignalUpdateDecision.from_dict(value)
+            except StructuredValidationError:
+                raise
             except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                if isinstance(value.get("rationale"), list) and not value["rationale"]:
+                    raise StructuredValidationError([ValidationIssue(
+                        code="signal_update_rationale_missing", message="Signal Update requires non-empty rationale",
+                        paths=("rationale",), allowed_repairs=("replace",),
+                        repair_context={"invalid_container_paths": ["rationale"]},
+                    )]) from exc
                 raise StructuredValidationError(
                     [
                         ValidationIssue(
@@ -956,7 +1093,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             paths=(path,),
                             item_id=(case_ref if case_ref in packet_by_ref else None),
                             item_id_field="case_ref",
-                            allowed_repairs=("replace",),
+                            allowed_repairs=("replace", "remove"),
                         )
                     )
                     continue
@@ -1024,14 +1161,23 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                     )
                     continue
                 visible = evidence_by_ref(packet_by_ref[case_ref])
+                gap_issues = _update_comparison_gap_issues(
+                    gaps, comparisons_by_ref[case_ref], path=path,
+                )
+                if verdict == "insufficient" and gaps and len(gap_issues) == len(gaps):
+                    gap_issues = [replace(issue, dependent_paths=(f"{path}.evidence_verdict",),
+                        repair_context={**issue.repair_context,
+                            "dependency_allowed_repairs": {f"{path}.evidence_verdict": ["replace"]}})
+                        for issue in gap_issues]
+                issues.extend(gap_issues)
                 fact_invalid = False
-                for fact in facts:
+                for fact_index, fact in enumerate(facts):
                     if not isinstance(fact, Mapping) or set(fact) != {
                         "document_ref",
                         "exact_span",
                     }:
                         fact_invalid = True
-                        break
+                        continue
                     document_ref = str(fact.get("document_ref", ""))
                     exact_span = str(fact.get("exact_span", ""))
                     if (
@@ -1041,8 +1187,24 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             for literal in visible.get(document_ref, ())
                         )
                     ):
-                        fact_invalid = True
-                        break
+                        original = unique_json_source_literal(
+                            exact_span, visible.get(document_ref, ())
+                        )
+                        if original is None:
+                            fact_invalid = True
+                        else:
+                            issues.append(ValidationIssue(
+                                code="source_json_literal_not_exact",
+                                message="Copy the unique complete JSON source literal exactly",
+                                paths=(f"{path}.facts[{fact_index}].exact_span",),
+                                allowed_repairs=("replace",),
+                                source_refs=(document_ref,),
+                                repair_context={
+                                    "mechanical_action": "restore_source_json_literal",
+                                    "original_text": exact_span,
+                                    "required_text": original,
+                                },
+                            ))
                 if fact_invalid or (verdict != "insufficient" and not facts):
                     issues.append(
                         ValidationIssue(
@@ -1071,7 +1233,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         )
                     )
             missing = sorted(set(packet_by_ref) - set(diagnostics_by_ref))
-            for offset, case_ref in enumerate(missing):
+            for case_ref in missing:
                 issues.append(
                     ValidationIssue(
                         code="signal_update_case_diagnostics_missing",
@@ -1079,13 +1241,12 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             "Signal Update omitted the required case diagnostic for "
                             f"{case_ref}"
                         ),
-                        paths=(
-                            f"case_diagnostics[{len(decision.case_diagnostics) + offset}]",
-                        ),
+                        paths=("case_diagnostics",),
                         item_id=case_ref,
                         item_id_field="case_ref",
                         allowed_repairs=("add",),
                         source_refs=(case_ref,),
+                        repair_context={"missing_case_refs": [case_ref]},
                     )
                 )
             if decision.candidate is not None:
@@ -1119,26 +1280,38 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                             changed_paths=decision.changed_paths,
                         )
                     except (KeyError, TypeError, ValueError, ValidationError) as exc:
-                        issues.append(
-                            ValidationIssue(
-                                code="signal_update_candidate_invalid",
-                                message=str(exc),
-                                paths=("candidate", "changed_paths"),
-                                path_policy="any",
-                                allowed_repairs=("replace",),
-                                repair_context={
-                                    "changed_paths_allowed": list(
-                                        SIGNAL_UPDATE_MUTABLE_PATHS
-                                    ),
-                                    "changed_paths_excluded": [
-                                        "spec.version",
-                                        "spec.definition",
-                                        "tests",
-                                        "whole-section aliases",
-                                    ],
-                                },
+                        normalization = normalized_changed_paths(value)
+                        if normalization is not None:
+                            issues.append(ValidationIssue(
+                                code="signal_update_diff_metadata_invalid",
+                                message="Copy the exact runtime-derived candidate diff",
+                                paths=("changed_paths",), allowed_repairs=("replace",),
+                                repair_context={"mechanical_action": "restore_signal_changed_paths",
+                                                "invalid_container_paths": ["changed_paths"],
+                                                "original_value": deepcopy(value.get("changed_paths")),
+                                                "required_value": normalization},
+                            ))
+                        else:
+                            issues.append(
+                                ValidationIssue(
+                                    code="signal_update_candidate_invalid",
+                                    message=str(exc),
+                                    paths=("candidate", "changed_paths"),
+                                    path_policy="any",
+                                    allowed_repairs=("replace",),
+                                    repair_context={
+                                        "changed_paths_allowed": list(
+                                            SIGNAL_UPDATE_MUTABLE_PATHS
+                                        ),
+                                        "changed_paths_excluded": [
+                                            "spec.version",
+                                            "spec.definition",
+                                            "tests",
+                                            "whole-section aliases",
+                                        ],
+                                    },
+                                )
                             )
-                        )
                     else:
                         if self.candidate_validator is not None:
                             try:
@@ -1161,12 +1334,9 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 raise StructuredValidationError(issues)
             return decision
 
-        def normalize_changed_paths(
-            failed_output: Mapping[str, Any], failure: ValidationError
-        ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
-            """Repair only deterministic diff metadata after model corrections."""
+        def normalized_changed_paths(failed_output: Mapping[str, Any]) -> list[str] | None:
+            """Repair only metadata derived from an otherwise valid candidate."""
 
-            del failure
             candidate = failed_output.get("candidate")
             stable_spec = target.get("stable_spec")
             if not isinstance(candidate, Mapping) or not isinstance(
@@ -1214,13 +1384,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             declared = failed_output.get("changed_paths")
             if isinstance(declared, list) and tuple(declared) == effective:
                 return None
-            normalized = deepcopy(dict(failed_output))
-            normalized["changed_paths"] = list(effective)
-            return normalized, {
-                "source_substitution_paths": (),
-                "removed_paths": (),
-                "normalized_paths": ("changed_paths",),
-            }
+            return list(effective)
 
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,
@@ -1232,12 +1396,19 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 "assess association. The supplied label cannot establish that financing, "
                 "a clinical result, an order, guidance, or any other source fact exists. "
                 "Use insufficient when the visible source cannot support or contradict "
-                "the result. Then choose no_change, defer, or one complete vNext update; "
+                "the result. visible_prior_year_comparisons identifies source records "
+                "already supplied in this case; do not call them missing. If a visible "
+                "pair is cited, copy exact_span from the named concept.records at "
+                "record_index; the inventory's period metadata is not a source quote. "
+                "If a visible "
+                "prior does not resolve the research question, name the specific "
+                "remaining limitation; the bounded inventory is not exhaustive. "
+                "Then choose no_change, defer, or one complete vNext update; "
                 "keep holdout and identities hidden."
                 + _UNTRUSTED_DATA_INSTRUCTION
                 + _SIGNAL_UPDATE_V2_OUTPUT
             ),
-            payload=payload,
+            payload=provider_payload,
             parser=parse,
             allow_outcomes=True,
             anonymous_aliases=(),
@@ -1245,8 +1416,8 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             reject_output_aliases=self.identity_guard_aliases,
             max_output_tokens=8_000,
             enforce_scoped_correction=True,
+            patch_corrections=True,
             stable_correction_prefix=True,
-            final_validation_fallback=normalize_changed_paths,
         )
         return AgentStep(value, usage, metadata={"request_refs": request_refs})
 

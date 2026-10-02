@@ -47,6 +47,7 @@ MECHANICAL_FALLBACK_CODES = frozenset(
         "assertion_without_support",
         "claim_quantity_not_supported",
         "evidence_claim_empty",
+        "signal_update_diff_metadata_invalid",
     }
 )
 
@@ -64,7 +65,48 @@ def is_mechanical_issue(issue: Any) -> bool:
         return issue.repair_context.get("mechanical_action") == "context_only_selection"
     if issue.code == "basic_literal_not_grounded":
         return issue.repair_context.get("mechanical_action") == "remove_runtime_control_citation"
+    if issue.code == "source_json_literal_not_exact":
+        return issue.repair_context.get("mechanical_action") == "restore_source_json_literal"
     return False
+
+
+def unique_json_source_literal(text: str, sources: Any) -> str | None:
+    """Return one complete, strictly equivalent original from an owning scope.
+
+    Example: ``unique_json_source_literal('{"b":2,"a":1}', ['{"a":1,"b":2}'])``.
+    Owners supply only visible originals from the same case/document. Distinct
+    byte originals with equal structures are ambiguous; identical repeats are not.
+    """
+
+    def keys(pairs: list[tuple[str, Any]], *, repeated_identical: bool) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                if not repeated_identical or json.dumps(result[key], sort_keys=True, allow_nan=False) != json.dumps(value, sort_keys=True, allow_nan=False):
+                    raise ValueError("ambiguous duplicate JSON key")
+            result[key] = value
+        return result
+
+    def reject_constant(value: str) -> Any:
+        raise ValueError(f"non-finite JSON number: {value}")
+
+    def canonical(value: str, *, repeated_identical: bool = False) -> str | None:
+        try:
+            decoded = json.loads(value, object_pairs_hook=lambda pairs: keys(pairs, repeated_identical=repeated_identical),
+                                 parse_constant=reject_constant)
+            if not isinstance(decoded, (dict, list)):
+                return None
+            return json.dumps(decoded, sort_keys=True, ensure_ascii=False,
+                              separators=(",", ":"), allow_nan=False)
+        except (TypeError, ValueError, OverflowError, RecursionError):
+            return None
+
+    expected = canonical(text, repeated_identical=True)
+    if expected is None:
+        return None
+    matches = {source for source in sources
+               if isinstance(source, str) and canonical(source) == expected}
+    return next(iter(matches)) if len(matches) == 1 else None
 
 
 _SUCCESS_COUNTERPART = {

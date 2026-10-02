@@ -1,6 +1,6 @@
 # Incremental Repair and Sourced Reflection Memory
 
-visit_times: 19
+visit_times: 20
 
 ## Trigger
 
@@ -63,6 +63,16 @@ levels. Tests of individual view helpers had not covered either composition.
 - Preserve legacy originals with explicit unreviewed status. Test fixture
   translations are offline adapters, never production compatibility that lets
   a live model bypass the new protocol.
+
+- Whole-JSON citation equality needs duplicate-key and type checks; ordinary
+  JSON decoding silently hid repeated `fy` keys in real Update outputs. Restore
+  only a unique complete original in the same case/document scope, never a
+  subset that requires invented fields. Keep unrelated semantic/fixture failures.
+- Typed corrections need existing coordinates: missing rows grant bounded append
+  on the existing array, not authority over a future index. Validate raw member
+  types before legacy canonical readers can drop rows and shift patch indices.
+  A false sole gap may require explicit replace-only verdict dependency; never
+  force another invented gap just to satisfy preservation.
 
 ## Limits
 

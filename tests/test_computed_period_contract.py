@@ -12,7 +12,7 @@ from stock_opportunity_agent.research.evolution_core import (
     GroundTruth, ResearchState, _DocumentChannelProvider, default_information_plan,
 )
 from stock_opportunity_agent.research.evolution_output_validation import (
-    _blind_prediction_from_role, _computed_period_issues, _measurement_text_fallback,
+    _blind_prediction_from_role, _computed_period_issues, _exact_value_fallback,
 )
 from stock_opportunity_agent.research.evolution_plan_roles import LLMBlindPredictor, LLMResearchController
 from stock_opportunity_agent.research.evolution_research_validation import _normalize_research_state_output
@@ -67,7 +67,7 @@ class ComputedPeriodContractTests(TestCase):
                 self.assertEqual(len(issues), 1)
                 issue = issues[0]
                 self.assertEqual(issue.paths, ('key_reasons[0]',))
-                repaired, actions = _measurement_text_fallback(
+                repaired, actions = _exact_value_fallback(
                     {'key_reasons': [text, 'unchanged']}, StructuredValidationError(issues))
                 self.assertEqual(repaired['key_reasons'][1], 'unchanged')
                 self.assertIn('180-trading-day', repaired['key_reasons'][0])

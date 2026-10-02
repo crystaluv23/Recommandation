@@ -372,7 +372,29 @@ def _recorded_output_patch(base, output, contract):
     )
 
     if set(base) != {"selections"} or set(output) != {"selections"}:
-        return recorded_response_patch(base, output)
+        if not {"signal_ref", "candidate", "case_diagnostics"} <= set(base):
+            return recorded_response_patch(base, output)
+        # A typed invalid module replacement is an atomic operation. This
+        # fixture-only translation keeps unauthorized drift as rejected ops.
+        from stock_opportunity_agent.research.evolution_state_patch import _lookup, _tokens
+        delta = recorded_response_patch(base, output)
+        replacements = {}
+        permissions = contract["allowed_operations"]
+        for operation in delta["operations"]:
+            tokens = _tokens(operation["path"])
+            if any(p["op"] == operation["op"] and
+                   (tokens == _tokens(p["path"]) or p.get("descendants") and tokens[:len(_tokens(p["path"]))] == _tokens(p["path"])) for p in permissions):
+                continue
+            parents = [p for p in permissions if p["op"] == "replace"
+                       and tokens[:len(_tokens(p["path"]))] == _tokens(p["path"])
+                       and (p.get("invalid_container") or isinstance(_lookup(base, _tokens(p["path"])), Mapping))]
+            if parents:
+                parent = max(parents, key=lambda p: len(_tokens(p["path"])))
+                replacements[parent["path"]] = _lookup(output, _tokens(parent["path"]))
+        delta["operations"] = [op for op in delta["operations"] if not any(
+            op["path"] == path or op["path"].startswith(path + ".") or op["path"].startswith(path + "[")
+            for path in replacements)] + [{"op": "replace", "path": path, "value": value} for path, value in replacements.items()]
+        return delta
     old_rows, new_rows = base["selections"], output["selections"]
     if not isinstance(old_rows, list) or not isinstance(new_rows, list) or any(
         not isinstance(row, Mapping) or not isinstance(row.get("signal_ref"), str)

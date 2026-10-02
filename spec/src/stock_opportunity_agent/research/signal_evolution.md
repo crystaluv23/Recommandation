@@ -277,6 +277,14 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   and staging. Deterministic candidates may omit the optional null skill; LLM
   candidates still require a complete skill. Target identity, vNext and immutable
   definition constraints remain mandatory and visible in the request contract.
+  Known deterministic description-concept token alternatives are owned by one
+  shared table and disclosed in both Update and Mining candidate contracts.
+  The validator uses that same table as a bounded mislabel screen, not proof of
+  semantic truth. Correct cash-burn formula wording (negative operating cash
+  flow divided by cash balance) is an admitted alternative to naming cash burn;
+  no exact incidental word such as "rate" is required. The runtime never adds
+  keywords to a model's description to make a candidate pass. Actual callable
+  formula documentation and immutable fixture checks remain separately required.
   The candidate schema exposes the complete version-owned retrieval policy rather
   than the legacy singular query alias. Update requests include a runtime-built
   complete vNext template copied from the stable spec, skill, and immutable

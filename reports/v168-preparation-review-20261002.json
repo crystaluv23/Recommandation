@@ -1,0 +1,84 @@
+{
+  "acceptance_requirement": "Latest-code full Fast/Slow actual content audit, fixed24 Binary F1 >=0.60, sealed Locked Test, correct repair/persistence and later consumer boundaries.",
+  "added_market_snapshots": [
+    {
+      "available_at": "2025-03-29T00:00:00+00:00",
+      "bar_count": 123,
+      "company_id": "cik_0001114995",
+      "document_id": "massive:cik_0001114995:market_data:14a22531a625c29ca08a2cb8",
+      "first_bar_date": "2024-10-01",
+      "last_bar_date": "2025-03-28",
+      "sha256": "978d463164cd47a6f69ebfc6960847a46ee96b1ebbd0e55cf3bf397e14e3d515",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001114995/massive:cik_0001114995:market_data:14a22531a625c29ca08a2cb8.json",
+      "source_type": "market_data"
+    },
+    {
+      "available_at": "2025-03-29T00:00:00+00:00",
+      "bar_count": 123,
+      "company_id": "cik_0001114995",
+      "document_id": "massive:cik_0001114995:market_data:70b67686cafaf82195b982b7",
+      "first_bar_date": "2024-10-01",
+      "last_bar_date": "2025-03-28",
+      "sha256": "5d0f4a61d3ff1cab3e12761c8a43f190f73b213d14c7ac004d0e19b617a20783",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001114995/massive:cik_0001114995:market_data:70b67686cafaf82195b982b7.json",
+      "source_type": "market_data"
+    },
+    {
+      "available_at": "2025-01-31T00:00:00+00:00",
+      "bar_count": 83,
+      "company_id": "cik_0001847409",
+      "document_id": "massive:cik_0001847409:market_data:087244730370836ae231feea",
+      "first_bar_date": "2024-10-01",
+      "last_bar_date": "2025-01-30",
+      "sha256": "c5f682b97807933199e9a7a822439d9072eed41388dcec0c9690060ccfc60dd0",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001847409/massive:cik_0001847409:market_data:087244730370836ae231feea.json",
+      "source_type": "market_data"
+    },
+    {
+      "available_at": "2025-01-31T00:00:00+00:00",
+      "bar_count": 83,
+      "company_id": "cik_0001847409",
+      "document_id": "massive:cik_0001847409:market_data:cb5a5af068bb9a6fbe4307db",
+      "first_bar_date": "2024-10-01",
+      "last_bar_date": "2025-01-30",
+      "sha256": "63a245d9957ff233bacaefc1e8dad3cb47ea29a68efb925b8e2e2953478011b5",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001847409/massive:cik_0001847409:market_data:cb5a5af068bb9a6fbe4307db.json",
+      "source_type": "market_data"
+    }
+  ],
+  "base_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "exact_frozen_field_equality": {
+    "approved_manifest_hash": true,
+    "baseline_comparisons": true,
+    "evaluation": true,
+    "exclusions": true,
+    "initial_registry_hash": true,
+    "initial_registry_version": true,
+    "label_manifest_hash": true,
+    "label_records_hash": true,
+    "locked_test_accessed": true,
+    "locked_test_hash": true,
+    "paired_with_v154": true,
+    "registry_source": true,
+    "schema_version": true,
+    "selection_before_model_calls": true,
+    "selection_seed": true,
+    "source_integrity_review_hash": true,
+    "splits": true
+  },
+  "gain_claim_permitted": false,
+  "input_manifest_hash": "fd7d918577c71006fd844c098ae16a2599fd53ee768ed5a86ed68438cd4bb2a7",
+  "model_calls_during_preparation": 0,
+  "new_source_count": 3594,
+  "original_source_count": 3590,
+  "original_source_files_unchanged": true,
+  "preparation_only": true,
+  "same_full_source_snapshot": false,
+  "source_revision_frozen_at_live_start": true,
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "successor_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated"
+}

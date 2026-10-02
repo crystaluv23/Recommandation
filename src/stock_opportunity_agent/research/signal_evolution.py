@@ -113,6 +113,46 @@ from stock_opportunity_agent.research.plan_evolution import (
 )
 
 
+_FUNCTION_DESCRIPTION_CONCEPTS = {
+    "financial.revenue_growth_yoy": (("revenue", "growth"),),
+    "financial.revenue_acceleration": (("revenue", "accelerat"),),
+    "financial.gross_margin_change": (("gross", "margin"),),
+    "financial.operating_cash_flow_margin": (
+        ("operating", "cash", "flow", "margin"),
+    ),
+    "financial.net_share_retirement_yoy": (
+        ("share", "retirement"),
+        ("share", "dilution"),
+    ),
+    "financial.cash_to_current_liabilities_ratio": (
+        ("cash", "current", "liabilit", "ratio"),
+    ),
+    "financial.cash_burn_rate_elevated": (
+        ("cash", "burn"),
+        ("negative", "operating", "cash", "flow", "divid", "balance"),
+    ),
+    "financial.liquidity_runway_months": (
+        ("liquidity", "runway", "month"),
+    ),
+    "market.max_drawdown_1y": (("drawdown",),),
+    "market.price_momentum_126d": (("momentum",), ("total", "return")),
+    "company.market_cap": (("market", "capital"), ("market", "cap")),
+    "financial.cash_reserves": (("cash",),),
+    "news.negative_word_count": (("negative", "word"),),
+}
+
+
+def signal_description_concept_contracts(functions: Mapping[str, Any]) -> dict[str, list[list[str]]]:
+    """Disclose the exact bounded description screen used for known functions.
+
+    Each function admits one complete alternative of normalized substrings;
+    matching names is not proof that the authored formula is semantically true.
+    """
+
+    return {name: [list(group) for group in _FUNCTION_DESCRIPTION_CONCEPTS[name]]
+            for name in sorted(functions) if name in _FUNCTION_DESCRIPTION_CONCEPTS}
+
+
 def signal_research_objective() -> dict[str, Any]:  # noqa: PLR0911
     """Expose fixed task semantics without individual case identities or outcomes."""
 
@@ -1279,33 +1319,7 @@ class SignalCandidateValidator:
     def _measurement_semantic_reasons(spec: SignalSpec) -> tuple[str, ...]:
         """Reject known deterministic functions mislabeled as another concept."""
 
-        concepts = {
-            "financial.revenue_growth_yoy": (("revenue", "growth"),),
-            "financial.revenue_acceleration": (("revenue", "accelerat"),),
-            "financial.gross_margin_change": (("gross", "margin"),),
-            "financial.operating_cash_flow_margin": (
-                ("operating", "cash", "flow", "margin"),
-            ),
-            "financial.net_share_retirement_yoy": (
-                ("share", "retirement"),
-                ("share", "dilution"),
-            ),
-            "financial.cash_to_current_liabilities_ratio": (
-                ("cash", "current", "liabilit", "ratio"),
-            ),
-            "financial.cash_burn_rate_elevated": (
-                ("cash", "burn", "rate"),
-            ),
-            "financial.liquidity_runway_months": (
-                ("liquidity", "runway", "month"),
-            ),
-            "market.max_drawdown_1y": (("drawdown",),),
-            "market.price_momentum_126d": (("momentum",), ("total", "return")),
-            "company.market_cap": (("market", "capital"), ("market", "cap")),
-            "financial.cash_reserves": (("cash",),),
-            "news.negative_word_count": (("negative", "word"),),
-        }
-        alternatives = concepts.get(str(spec.function))
+        alternatives = _FUNCTION_DESCRIPTION_CONCEPTS.get(str(spec.function))
         if alternatives is None:
             return ()
         description = _normalize_semantics(spec.description)
@@ -5975,6 +5989,9 @@ class SignalEvolutionEngine:
                 "deterministic_function_contracts": deterministic_signal_function_contracts(
                     self.validator.deterministic_functions
                 ),
+                "deterministic_description_concepts": signal_description_concept_contracts(
+                    self.validator.deterministic_functions
+                ),
                 "changed_paths_allowed": list(SIGNAL_UPDATE_MUTABLE_PATHS),
                 "changed_paths_excluded": [
                     "spec.version",
@@ -10130,9 +10147,14 @@ class SignalEvolutionEngine:
             "deterministic_function_contracts": deterministic_signal_function_contracts(
                 self.validator.deterministic_functions
             ),
+            "deterministic_description_concepts": signal_description_concept_contracts(
+                self.validator.deterministic_functions
+            ),
             "constraints": [
                 "new signal_id only; existing stable identities belong to Update",
                 "non-empty point-in-time fixtures required",
+                "description must contain every normalized substring in one disclosed "
+                "deterministic_description_concepts alternative for its function",
                 "choose a deterministic function only when its documented measurement "
                 "matches the definition; parameters do not replace its formula",
                 "structured modality requires an exact registered deterministic "

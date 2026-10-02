@@ -448,7 +448,7 @@ class SignalRoleAdapterTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "preserve description"):
             signal_roles_module.validate_signal_update_candidate(stable.ref, changed, stable)
 
-    def test_update_candidate_correction_can_repair_changed_paths(self) -> None:
+    def test_update_program_repairs_changed_paths_before_correction(self) -> None:
         stable = SignalSpec(
             signal_id="revenue_growth_yoy", version=1, category="financial",
             description="Measure year-over-year revenue growth.",
@@ -490,14 +490,11 @@ class SignalRoleAdapterTests(TestCase):
 
         self.assertEqual(step.value.changed_paths, ("spec.parameters",))
         self.assertEqual(step.value.candidate, candidate)
-        feedback = caller.calls[1]["payload"]["validation_feedback"]
-        self.assertEqual(
-            feedback["obligations"][0]["must_change_any_of_paths"],
-            ["candidate", "changed_paths"],
-        )
+        self.assertEqual(step.usage.llm_calls, 1)
+        self.assertEqual(len(caller.calls), 1)
         self.assertIn("changed_paths_allowed", caller.calls[0]["system_prompt"])
 
-    def test_update_final_fallback_normalizes_only_effective_changed_paths(self) -> None:
+    def test_update_program_normalizes_only_effective_changed_paths(self) -> None:
         stable = SignalSpec(
             signal_id="revenue_growth_yoy", version=1, category="financial",
             description="Measure year-over-year revenue growth.",
@@ -537,7 +534,7 @@ class SignalRoleAdapterTests(TestCase):
             "induction_cases": [],
         })
 
-        self.assertEqual(step.usage.llm_calls, 2)
+        self.assertEqual(step.usage.llm_calls, 1)
         self.assertEqual(
             step.value.changed_paths,
             ("spec.raw_retrieval.minimum_observations",),
@@ -576,7 +573,7 @@ class SignalRoleAdapterTests(TestCase):
             "problem_type": "retrieval",
             "rationale": ["Keep the fixture executable."],
             "case_diagnostics": [],
-            "changed_paths": ["spec.raw_retrieval.minimum_observations"],
+            "changed_paths": ["spec.parameters"],
             "candidate": bad_candidate,
         }
         corrected = {**response, "candidate": good_candidate}
@@ -607,6 +604,7 @@ class SignalRoleAdapterTests(TestCase):
             step.value.candidate["spec"]["raw_retrieval"]["minimum_observations"],
             1,
         )
+        self.assertEqual(caller.calls[1]["payload"]["validation_feedback"]["invalid_output"]["changed_paths"], ["spec.raw_retrieval.minimum_observations"])
         self.assertEqual(
             caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
                 "issue_code"
@@ -2793,15 +2791,9 @@ class SignalRoleAdapterTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {**base, "case_diagnostics": [valid_first]},
-                {
-                    **base,
-                    "case_diagnostics": [
-                        {
-                            **valid_first,
-                            "outcome_explanation": "Unrelated rewrite.",
-                        },
-                        missing_second,
-                    ],
+                lambda kwargs: {
+                    "base_hash": kwargs["payload"]["output_patch_contract"]["base_hash"],
+                    "operations": [{"op": "append", "path": "case_diagnostics", "value": missing_second}],
                 },
             ]
         )

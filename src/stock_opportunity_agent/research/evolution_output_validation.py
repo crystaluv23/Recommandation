@@ -36,6 +36,8 @@ from stock_opportunity_agent.research.repair import (
 from stock_opportunity_agent.signal_library import signal_result_model_view
 from stock_opportunity_agent.research.evolution_state_patch import (
     PATCH_INSTRUCTION,
+    _lookup as _patch_lookup,
+    _tokens as _patch_tokens,
     apply_state_patch,
     state_patch_contract,
 )
@@ -2610,25 +2612,14 @@ def _validation_path_value(
     value: Mapping[str, Any] | None,
     path: str,
 ) -> Any | None:
-    """Read one top-level indexed validation path without interpreting content."""
+    """Read an exact validation path with the patch engine's field/index grammar."""
 
     if not isinstance(value, Mapping):
         return None
-    match = re.fullmatch(
-        r"([A-Za-z_]+)\[(\d+)\](?:\.([A-Za-z_]+))?",
-        path,
-    )
-    if match is None:
+    try:
+        return _patch_lookup(value, _patch_tokens(path))
+    except ValidationError:
         return None
-    items = value.get(match.group(1))
-    index = int(match.group(2))
-    if not isinstance(items, list) or index >= len(items):
-        return None
-    item = items[index]
-    child = match.group(3)
-    if child is None:
-        return item
-    return item.get(child) if isinstance(item, Mapping) else None
 
 
 def _missing_quantity_mentions(
@@ -3282,27 +3273,30 @@ def _project_scoped_correction(
     return projected, tuple(dict.fromkeys((*paths, *removals)))
 
 
-def _measurement_text_fallback(
+def _exact_value_fallback(
     value: Mapping[str, Any], failure: StructuredValidationError,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
-    """Apply validator-proved unit/period text through existing snapshot permissions."""
+    """Apply validator-proved exact values through existing snapshot permissions."""
 
     operations = []
     seen: set[str] = set()
     selected = []
     for issue in failure.issues:
-        if (issue.code not in {"numeric_measurement_unit_invalid", "computed_metric_period_invalid"} or len(issue.paths) != 1
+        if (issue.code not in {"numeric_measurement_unit_invalid", "computed_metric_period_invalid", "source_json_literal_not_exact", "signal_update_diff_metadata_invalid"} or len(issue.paths) != 1
                 or "replace" not in issue.allowed_repairs):
             continue
         path = issue.paths[0]
         context = issue.repair_context
-        if (path in seen or context.get("mechanical_action") not in {"replace_observed_unit", "replace_observed_period"}
-                or _validation_path_value(value, path) != context.get("original_text")
-                or not isinstance(context.get("required_text"), str)):
+        diff_metadata = issue.code == "signal_update_diff_metadata_invalid"
+        original = context.get("original_value" if diff_metadata else "original_text")
+        required = context.get("required_value" if diff_metadata else "required_text")
+        if (path in seen or context.get("mechanical_action") not in {"replace_observed_unit", "replace_observed_period", "restore_source_json_literal", "restore_signal_changed_paths"}
+                or _validation_path_value(value, path) != original
+                or not isinstance(required, list if diff_metadata else str)):
             continue
         seen.add(path)
         selected.append(issue)
-        operations.append({"op": "replace", "path": path, "value": context["required_text"]})
+        operations.append({"op": "replace", "path": path, "value": required})
     if not operations:
         return None
     contract = state_patch_contract(value, mode="correction", obligations=
@@ -4472,7 +4466,7 @@ def _complete_parsed_role_impl(
                 if signature in visited:
                     break
                 visited.add(signature)
-                repaired = _measurement_text_fallback(value, exc)
+                repaired = _exact_value_fallback(value, exc)
                 if repaired is None and final_validation_fallback is not None:
                     eligible = [issue for issue in exc.issues if is_mechanical_issue(issue)]
                     if eligible:

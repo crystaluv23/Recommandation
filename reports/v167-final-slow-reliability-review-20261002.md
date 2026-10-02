@@ -65,3 +65,14 @@ case-001和case-003的失败引用解码后与唯一原始JSON记录完全相同
 这个程序性修复尚未实现。另有case-001的“未看到prior”声明与可见2023年度现金流
 记录冲突，以及函数文档和description关键词守卫未对齐的问题，须分别解决，
 不能由修正引用格式推定整个诊断正确。
+
+## Update frontier 更正与后续修复
+
+原先的普通JSON解码掩盖了重复key：两个cash引用都重复了一次相同数值/类型的`fy`，
+并非只有字段顺序。现已严格验证重复值一致和唯一完整原文，按typed leaf权限在LLM前
+复原两个引用，并重算多报的changed_paths；完整parser/生产fixture继续执行。
+真实输出重放现在到达三份不可变fixtures的coverage失败，并未接受候选。
+三案的可见源都含对应上年同概念、同USD、同日历起止的现金流记录；
+原诊断三处absence声明均不成立，已接入来源绑定的可见对照与typed gap检测；
+仍需LLM完成语义纠错，不能靠literal修复通过验收。
+详见[v167 Update 修复审查](v167-update-reliability-review-20261002.md)。

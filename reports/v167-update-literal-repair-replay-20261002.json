@@ -1,0 +1,118 @@
+{
+  "candidate_and_nonliteral_diagnostics_preserved": true,
+  "first_correction_error": "This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; updated deterministic Signal must preserve executable fixture behavior: fixture 1 failed: expected positive, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.; fixture 2 failed: expected neutral, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.; fixture 3 failed: expected negative, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.",
+  "first_correction_issue_codes": [
+    "signal_update_visible_prior_claim_invalid",
+    "signal_update_visible_prior_claim_invalid",
+    "signal_update_visible_prior_claim_invalid",
+    "signal_update_candidate_fixture_invalid"
+  ],
+  "full_role_accepted": false,
+  "normalized_changed_paths": [
+    "spec.raw_retrieval.comparison_requirement",
+    "spec.raw_retrieval.minimum_distinct_periods",
+    "spec.raw_retrieval.minimum_period_span_days"
+  ],
+  "original_changed_paths": [
+    "spec.raw_retrieval.comparison_requirement",
+    "spec.raw_retrieval.minimum_distinct_periods",
+    "spec.raw_retrieval.minimum_period_span_days",
+    "spec.raw_retrieval.minimum_observations",
+    "spec.parameters"
+  ],
+  "repair_events": [
+    {
+      "actions": {
+        "restore_signal_changed_paths": [
+          "changed_paths"
+        ],
+        "restore_source_json_literal": [
+          "case_diagnostics[0].facts[1].exact_span",
+          "case_diagnostics[2].facts[1].exact_span"
+        ]
+      },
+      "event_type": "mechanical_repair_progress",
+      "request_stage": "signal_update_decision",
+      "stage": "signal_update_decision"
+    }
+  ],
+  "request_ref": "5f8b916b1c7d6c15c36afeba5d048ce993bb8cae58e956fa3a00ba77f7f20248",
+  "restored_literals": [
+    {
+      "after": "{\"accn\":\"0001213900-25-033933\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-22\",\"form\":\"20-F\",\"fp\":\"FY\",\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":4148279}",
+      "before": "{\"accn\":\"0001213900-25-033933\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-22\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":4148279}",
+      "case_ref": "update-case-001",
+      "path": "case_diagnostics[0].facts[1].exact_span"
+    },
+    {
+      "after": "{\"accn\":\"0001438133-25-000157\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-06\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":64112000}",
+      "before": "{\"accn\":\"0001438133-25-000157\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-06\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":64112000}",
+      "case_ref": "update-case-003",
+      "path": "case_diagnostics[2].facts[1].exact_span"
+    }
+  ],
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "scope": "offline exact role parsing and production deterministic fixture checks; no new model calls",
+  "source_file_hashes": {
+    "runs/cold_start/minimal_rounds_v167_integrated/cache/responses/5f8b916b1c7d6c15c36afeba5d048ce993bb8cae58e956fa3a00ba77f7f20248.json": "3844e623a8e26a3bc446e0287ed20531f3e0955812cebe8c6e2b85b25d3fefd5",
+    "runs/cold_start/minimal_rounds_v167_integrated/requests/5f8b916b1c7d6c15c36afeba5d048ce993bb8cae58e956fa3a00ba77f7f20248.json": "2ab7f2868483132ca46982c8e6781d55f5f0546deac3c0c1c78268c67b251b5b"
+  },
+  "source_files_preserved": true,
+  "terminal_frontier_with_ineffective_scripted_correction": "signal_update_decision failed validation after one correction: This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; This prior-year source record is visible; remove the false absence claim or state a supported specific limitation; updated deterministic Signal must preserve executable fixture behavior: fixture 1 failed: expected positive, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.; fixture 2 failed: expected neutral, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.; fixture 3 failed: expected negative, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: distinct_periods=1/2; period_span_days=0/365; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract.",
+  "visible_prior_year_comparisons": {
+    "update-case-001": [
+      {
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "current": {
+          "end": "2024-12-31",
+          "record_index": 0,
+          "start": "2024-01-01"
+        },
+        "document_ref": "document-01",
+        "prior": {
+          "end": "2023-12-31",
+          "record_index": 1,
+          "start": "2023-01-01"
+        },
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      }
+    ],
+    "update-case-002": [
+      {
+        "concept": "CashFlowsFromUsedInOperatingActivities",
+        "current": {
+          "end": "2024-12-31",
+          "record_index": 0,
+          "start": "2024-07-01"
+        },
+        "document_ref": "document-01",
+        "prior": {
+          "end": "2023-12-31",
+          "record_index": 1,
+          "start": "2023-07-01"
+        },
+        "taxonomy": "ifrs-full",
+        "unit": "USD"
+      }
+    ],
+    "update-case-003": [
+      {
+        "concept": "NetCashProvidedByUsedInOperatingActivities",
+        "current": {
+          "end": "2025-06-30",
+          "record_index": 0,
+          "start": "2025-01-01"
+        },
+        "document_ref": "document-01",
+        "prior": {
+          "end": "2024-06-30",
+          "record_index": 1,
+          "start": "2024-01-01"
+        },
+        "taxonomy": "us-gaap",
+        "unit": "USD"
+      }
+    ]
+  }
+}

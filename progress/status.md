@@ -1,5 +1,8 @@
 # Status
 
+2026-10-02：Update已接入共享typed/snapshot增量机制：唯一完整JSON原文复原（两份真实引用含相同fy重复key）和实际changed_paths重算均在LLM前，删除旧单独末尾diff兜底；LLM纠错使用有界patch，补缺case走现有数组append，空必需rationale及非对象/重复case显式检测。Mining/Update披露与validator共用description概念表，接受正确现金流公式。真实cash-burn响应生产fixture零网络重放：两literal及diff先修复，三处错误prior absence与三fixture coverage失败仍拒绝；可见同case/document/concept/unit上年日历记录通过records下标提供，typed gap只授权语义局部修复，原候选/其他诊断/来源保持。新增13回归，1384全量测试PASS，12专项PASS，lint PASS。v168只完成输入准备：16+8固定评分案例及16Discovery、标签/Registry/Locked Test全部逐字一致；原3590源未改，新4份历史market快照已披露，因此不作paired gain主张。尚未启动模型，后继完整实测及幅度塌缩等内容验收仍待完成。报告：reports/v167-update-reliability-review-20261002.md、reports/v168-preparation-review-20261002.json。
+
+
 2026-10-02：确认v167 runner exit0/指针1-1后，已将隔离累计58文件修复快进整合到主目录0ee86a83；主目录原生1371测试通过，lint PASS，用户已有v151两份修改及冻结v167产物保持。进一步定位cash-burn Update两个literal引用：原文已提供，解码结构/数值完全相同但字段顺序改变，unique source JSON匹配可复原；该程序性修复尚未实现，另有已可见prior被称不存在及description关键词/函数文档不兼容，作为下一条真实frontier处理。最新代码尚未开始后继live，不将旧F1或提交cycle作为整体验收。
 
 2026-10-02：真实v167进程退出0，Fast/Slow指针1/1；固定24案F1 .7586/.7200，Registry v7不变、0晋升。实际Slow三种子technical_failure被固定status=completed、幅度无候选却target_mining_assessed=true；隔离按terminal传播completed/failed/deferred及partial，legacy读取同样解释且不改历史；Update保留独立完整有效种子，拒绝技术/partial intents，modality分母不缩减。三份实际median运算输出缺少输入rule枚举，已共享工具真实enum/操作数作用域及read参数契约；零除/非有限运算typed拒绝，预算数值及positive/available声明核验，预算禁用优先于该动作错误理由，免费合法终态仍可用。新增8回归、206专项及1371全量通过，lint PASS。Update两候选paired无增益拒绝，cash-burn literal/description校验失败；后者输入/validator兼容及最新代码完整真实链路、幅度塌缩/旧proxy/absence仍待验收。报告：reports/v167-final-slow-reliability-review-20261002.md。

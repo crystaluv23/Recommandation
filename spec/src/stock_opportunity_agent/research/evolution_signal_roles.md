@@ -449,23 +449,63 @@ follow [stage contracts](stage_contracts.md).
   every rationale and candidate to use only its own nested evidence.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
+  Before transport the adapter derives a case-local visible prior-year comparison
+  inventory from executed source anchors and bounded structured records. A pair
+  must share document, taxonomy, concept and unit, have exact calendar year-shifted
+  duration endpoints, and be filed by the prediction cutoff. The inventory
+  references existing concept.records indices without repeating source quotes.
+  It makes period metadata and availability readable but does not establish
+  economic comparability, source
+  exhaustiveness, or the need for a new measurement. Explicit gaps claiming that
+  an identified visible prior-year measurement is missing receive typed leaf
+  correction authority. Known operating-cash-flow names use the calculator's
+  owned tag vocabulary; other concepts use literal source names. Conditional,
+  negated and unspecified absence reasoning remains outside this bounded guard.
+  No program invents or deletes a semantic gap: the LLM must remove the false
+  statement or name a specific supported remaining limitation. Correct facts,
+  sibling cases and outcome relations remain frozen for this issue. A verdict
+  also stays frozen unless it is `insufficient` and every current gap is diagnosed
+  as false: then `evidence_verdict` is an explicit replace-only dependency, so
+  removing the invalid gaps need not manufacture another limitation. The LLM
+  chooses any revised verdict; source facts and complete validation still apply.
+  Update corrections use the shared snapshot-bound delta contract, including
+  nested gap-array member removals. The initial output and canonical persisted
+  decision keep the complete v2 schema; correction transport sends only permitted
+  operations and the runtime validates the complete merged result. Offline
+  full-output fixtures are translated only by the test replay adapter.
+  A missing case diagnostic grants bounded append authority on the existing
+  diagnostic array, never a nonexistent future index. Full validation requires
+  exactly the supplied missing identities. Empty required rationale grants
+  replacement of that invalid container; it does not make other empty arrays
+  replaceable. Replay conversion may encode an explicitly authorized invalid
+  module replacement atomically, but cannot discard unauthorized fixture drift.
+  New production diagnostics are type-checked before canonical record parsing,
+  so legacy readers cannot silently drop a non-object and shift patch indices.
+  An invalid extra member or duplicate/unknown case row can be removed under its
+  exact row authority; existing valid case identities remain protected.
   Facts contain only a supplied `document_ref` and literal `exact_span`; the
-  runtime does not treat a model-authored paraphrase as source fact. A label is
-  never accepted as evidence that an event or source fact exists. New Update
+  runtime does not treat a model-authored paraphrase as source fact. A complete JSON quote whose
+  decoded structure exactly matches one distinct visible original under the
+  same case/document ref gets typed authority to replace only that exact_span
+  leaf before LLM correction. Other defects remain unresolved; the restored
+  candidate becomes the correction base and complete validation still applies.
+  No partial, changed-value or ambiguous JSON quote is mechanically restored.
+  A label is never accepted as evidence that an event or source fact exists. New Update
   output also declares `changed_paths`: the exact mutable execution fields that
   differ from the supplied stable baseline. The runtime supplies both a complete
   vNext template and the exhaustive allowed path vocabulary. `spec.version`,
   `spec.definition`, whole-section aliases, and `tests` are never declared as
-  changes. A candidate/diff validation failure grants the bounded correction
+  changes. A candidate validation failure grants the bounded correction
   authority over both `candidate` and `changed_paths`, because either side of
   the assertion may be wrong; all unrelated output remains frozen. The runtime
   overlays partial `raw_retrieval` edits on the stable policy and uses one shared
   validator during bounded correction and staging. Unknown, missing, or surplus
   path declarations and candidates whose only changes are version or tests are
-  invalid update decisions. After the bounded model corrections are exhausted,
-  runtime may replace only `changed_paths` with the exact diff deterministically
-  recomputed from the otherwise valid stable/candidate pair. It then reruns the
-  complete parser and fixture validator. This final bookkeeping normalization
+  invalid update decisions. When the candidate passes baseline checks without
+  its declared diff, the owning validator grants exact `changed_paths` replacement
+  authority. Before model correction, runtime replaces that bookkeeping field
+  with the exact diff recomputed from the stable/candidate pair. It then reruns the
+  complete parser and fixture validator. This bookkeeping normalization
   cannot alter the candidate, evidence diagnostics, fixtures, disposition, or
   rationale; any other invalidity still fails closed. The complete vNext template also carries the stable
   version's non-empty executable fixtures. Update output must preserve those

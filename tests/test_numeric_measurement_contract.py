@@ -112,12 +112,12 @@ class NumericMeasurementContractTests(TestCase):
         bad = _measurement_reasoning_issues((("uncertainties[2]", "Gross margin change was -10.0% (negative), so execution may be constrained."),), (raw,))
         self.assertEqual(bad[0].paths, ("uncertainties[2]",))
         self.assertEqual(bad[0].source_refs, (result.ref,))
-        from stock_opportunity_agent.research.evolution_output_validation import _measurement_text_fallback
+        from stock_opportunity_agent.research.evolution_output_validation import _exact_value_fallback
         stale = {"uncertainties": ["one", "two", "Different text."]}
-        self.assertIsNone(_measurement_text_fallback(stale, StructuredValidationError(bad)))
+        self.assertIsNone(_exact_value_fallback(stale, StructuredValidationError(bad)))
         matching = {"uncertainties": ["one", "two", bad[0].repair_context["original_text"]]}
-        self.assertIsNone(_measurement_text_fallback(matching, StructuredValidationError([replace(bad[0], allowed_repairs=("remove",))])))
-        fixed, _ = _measurement_text_fallback(matching, StructuredValidationError(bad))
+        self.assertIsNone(_exact_value_fallback(matching, StructuredValidationError([replace(bad[0], allowed_repairs=("remove",))])))
+        fixed, _ = _exact_value_fallback(matching, StructuredValidationError(bad))
         self.assertEqual(fixed["uncertainties"][:2], matching["uncertainties"][:2])
         self.assertIn("-10.0 percentage points", fixed["uncertainties"][2])
         for text in ("Gross margin change was -10.0 percentage points.", "Gross margin change=-0.1.",

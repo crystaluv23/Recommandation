@@ -14,6 +14,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     signal_effectiveness_measurement_contract,
     signal_research_objective,
     signal_candidate_execution_contract,
+    signal_description_concept_contracts,
     build_slow_sampling_manifest,
     project_slow_method_memory,
     read_slow_sources,
@@ -1892,6 +1893,16 @@ class SignalEvolutionTests(TestCase):
                 available_feedback_refs=("feedback-1",),
                 available_source_refs=("feedback-1",),
             )
+
+    def test_description_guard_accepts_formula_and_keeps_mislabel_rejection(self) -> None:
+        stable = SignalSpec(signal_id="cash_burn_rate_elevated", version=1,
+            category="financial", execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED, source_types=("sec_company_facts",),
+            function="financial.cash_burn_rate_elevated",
+            description="Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end.")
+        self.assertEqual(SignalCandidateValidator._measurement_semantic_reasons(stable), ())
+        self.assertEqual(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description="Measure cash burn.")), ())
+        self.assertTrue(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description="Measure breadth across reported business segments.")))
 
     def test_validator_rejects_definition_implementation_mismatch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -6035,6 +6046,10 @@ class SignalEvolutionTests(TestCase):
             expected_functions = deterministic_signal_function_contracts(
                 engine.validator.deterministic_functions
             )
+            expected_concepts = signal_description_concept_contracts(engine.validator.deterministic_functions)
+            self.assertEqual(engine._mining_candidate_contract()["deterministic_description_concepts"], expected_concepts)
+            self.assertEqual(update_model.requests[0]["candidate_contract"]["deterministic_description_concepts"], expected_concepts)
+
             self.assertEqual(
                 engine._mining_candidate_contract()["deterministic_function_contracts"],
                 expected_functions,

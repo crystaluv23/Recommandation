@@ -433,8 +433,9 @@
         "unique_whole_source_match_count": 1,
         "source_span": "{\"accn\":\"0001213900-25-033933\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-22\",\"form\":\"20-F\",\"fp\":\"FY\",\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":4148279}",
         "omitted_fields": [],
-        "difference": "JSON object key order only",
-        "canonical_json_equal": true
+        "difference": "JSON object key order and repeated identical fy field",
+        "canonical_json_equal": true,
+        "ordinary_json_equality_was_insufficient": "Ordinary decoder hides repeated keys; repair now separately verifies identical duplicate value/types and a duplicate-free unique original."
       },
       {
         "case_ref": "update-case-003",
@@ -443,11 +444,14 @@
         "unique_whole_source_match_count": 1,
         "source_span": "{\"accn\":\"0001438133-25-000157\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-06\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":64112000}",
         "omitted_fields": [],
-        "difference": "JSON object key order only",
-        "canonical_json_equal": true
+        "difference": "JSON object key order and repeated identical fy field",
+        "canonical_json_equal": true,
+        "ordinary_json_equality_was_insufficient": "Ordinary decoder hides repeated keys; repair now separately verifies identical duplicate value/types and a duplicate-free unique original."
       }
     ],
-    "deterministic_repair_implemented": false,
-    "other_known_problem": "Some diagnostics claim a comparable prior is not visible while a prior operating-cash-flow record is present; this needs separate content verification."
+    "deterministic_repair_implemented": true,
+    "other_known_problem": "All three prior-year absence claims are now detected against a source-bound case-local visible comparison inventory. After safe literal/diff repair, the real candidate still fails three immutable fixtures and requires semantic model correction; no latest-code live cycle has been accepted.",
+    "current_replay_report": "reports/v167-update-literal-repair-replay-20261002.json",
+    "current_prior_absence_guard_implemented": true
   }
 }

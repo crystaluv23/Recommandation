@@ -7,6 +7,13 @@ and apply only explicitly allowed deterministic recovery transforms.
 
 ## Invariants
 
+- Unique whole JSON literal restoration uses the same exact-text transform and
+  snapshot patch permissions as producer-owned numeric text repairs. Validation
+  path reads use the patch engine's complete field/index grammar, including
+  nested fact arrays. A stale baseline or missing replace permission blocks the
+  transform. Every transform emits its exact paths and reruns full parsing;
+  unresolved semantic errors remain in the updated correction base.
+
 - Shared numeric measurement checks consume producer-owned Signal metadata.
   A locally named fraction-difference measurement displayed with its exact
   rounded percent-scaled value must say percentage points, not percent. Guards
