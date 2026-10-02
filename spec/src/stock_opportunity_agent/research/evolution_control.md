@@ -105,3 +105,21 @@ Hash-verified committed Slow-history and Fast-bootstrap learning events use the
 same tracking bridge as local round commits. It derives only the purposes declared
 by exact version metadata, preserves imported event identities, and never imports
 staged/unbound rows as target effectiveness.
+
+## Diagnostic committed-Fast succession
+
+`scripts/run_minimal_rounds.py --slow-bootstrap-from SOURCE` extends the existing
+diagnostic entry point through the production committed-Fast manifest builder,
+validator and derivative bridge. It reuses SOURCE's hash-verified diagnostic
+case/label/source manifest exactly; it does not resample or rerun its committed
+Fast cases. Only stable definitions are copied, excluding stats, learning ledgers,
+derived profiles and candidates. The new input manifest binds source input hash,
+bootstrap manifest hash and ordered initial definition refs; Registry's exact-ref
+definition snapshot must reproduce the initial version/hash even after a valid
+publication on recovery. The new contract has zero Fast rounds, one Slow cycle,
+and existing finite attempt/token/cost/data limits. Source pointers are not copied.
+Imported meta uses the reserved negative range; imported events keep source ids.
+The entry point uses the existing workspace lock, exact requests, stage validators,
+technical admission and atomic cycle commit. A changed source/mode/seed or partially
+prepared target cannot silently overwrite a frozen target. Tests distinguish this
+entry wiring from authored research quality; live artifacts remain required.

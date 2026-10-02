@@ -53,6 +53,15 @@ atomic Signal promotion, Locked-Test sealing, and next-Fast snapshot visibility
 remain identical to the ordinary Slow Loop. This is an approved orchestration
 trigger, not a weaker Signal-promotion path.
 
+The user-confirmed incremental preservation rule also applies when Fast has
+already committed its complete bounded range but Slow has not started. A repaired
+successor may freeze that exact committed pre-Slow range as its Slow input rather
+than rerun correct Fast work. Source pointers/scores remain unchanged; the new
+workspace keeps its Fast pointer zero and imports only hash-bound committed
+learning/meta derivatives. Retrospective feedback remains Slow-only and never
+enters blind prediction. Rejected diagnostics still obey the narrower pre-label
+exception above; neither path treats staged work as committed progress.
+
 The resulting information plan remains a proposal until it succeeds on
 label-hidden evolution validation and later passes a separately locked test.
 Only after the information layer reaches a stable validation plateau should the

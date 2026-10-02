@@ -2995,7 +2995,7 @@ class SignalRegistry:
     ) -> None:
         if self.version not in {input_version, input_version + 1}:
             raise ValidationError("Signal transition Registry version is inconsistent")
-        if self._snapshot_from_refs(input_version, input_refs).registry_hash != input_hash:
+        if self.snapshot_from_refs(input_version, input_refs).registry_hash != input_hash:
             raise ValidationError("Signal transition input snapshot changed")
         input_by_id = {_parse_ref(ref)[0]: ref for ref in input_refs}
         candidate_by_id = {
@@ -3020,11 +3020,16 @@ class SignalRegistry:
             validated_evaluations=validated_evaluations,
         )
 
-    def _snapshot_from_refs(
+    def snapshot_from_refs(
         self,
         version: int,
         signal_refs: tuple[str, ...],
     ) -> FrozenSignalRegistry:
+        """Recompute an ordered immutable definition snapshot for lineage checks.
+
+        Callers compare the returned hash with their frozen input authority.
+        This reconstructs definitions only, never committed learned profiles.
+        """
         specs = tuple(self.load_spec(signal_ref) for signal_ref in signal_refs)
         skills = {
             spec.ref: skill

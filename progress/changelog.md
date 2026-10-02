@@ -618,3 +618,5 @@
 - 2026-10-02：主fast-forward整合五项v170可靠性检查点，1462原生全量及lint PASS、既有v151diff hash保留；实际production bootstrap consumer复现导入事件被本地0轮指针过滤，保存0外部证据，保持源指针和历史分数，不把派生持久化当消费成功。
 
 - 2026-10-02：统一contract-bound已提交导入事件选择，Slow/Update/Fast冻结与传递性history导出接共同源权限，Update去重含反馈hash；真实134条使用和17份目标摘要恢复、未授权274隔离，新增6回归/1468全量及lint PASS，旧运行不改、整体验收继续。
+
+- 2026-10-02：诊断committed-Fast bootstrap入口接生产manifest/导入/DualLoop，原40案与来源保留、源指针不拷贝，明确有序定义重建和出版后输入核验；新增3入口回归、1471全量/lint PASS，v171仅prepare待实际Slow，祖先spec同步现有增量恢复分支。

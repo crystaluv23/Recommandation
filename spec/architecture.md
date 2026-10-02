@@ -330,7 +330,7 @@ At its Slow-Loop boundary, a durably staged and fully validated candidate batch
 may advance it exactly once; the cycle marker records both input and output
 Registry version/hash. A restart completes that same transition idempotently
 before advancing the cycle pointer. The next group uses the output snapshot.
-An explicitly frozen `slow_bootstrap` cycle is allowed only to break the
+An explicitly frozen rejected-gap `slow_bootstrap` cycle may break the
 cold-start dependency in which a rejected Fast diagnostic needs a Signal that
 does not yet exist. It has zero committed Fast rounds and reads an immutable
 manifest derived from rejected-round trajectories: only label-hidden
@@ -340,6 +340,17 @@ rejected Fast round remains outside history and parent selection. Bootstrap
 uses the active Mining path, candidate executor, technical admission,
 atomic transition, and Locked-Test boundary, then exposes any committed Registry
 output only to a fresh subsequent Fast run.
+
+The same zero-Fast, single-Slow-cycle mode also supports incremental recovery of
+exactly one committed Fast source at its pre-Slow boundary. Its frozen manifest
+binds the full completed bounded Fast range, source contract/pointers, every
+contributing checkpoint/Plan/meta hash and the unchanged initial Registry. No
+Slow output may already exist in that range's active source cycle. The successor
+derives committed learning and rebased meta from this immutable source; it does
+not copy its Fast pointer or mutate source scores. This is the existing committed
+producer/consumer path, not authority to import arbitrary mutable ledgers or
+post-outcome data into blind roles. Rejected-gap manifests keep their pre-label
+restriction separately. Technical admission and atomic publication are shared.
 
 `slow_only` is a separate v8 execution mode for a finite sequence of Signal
 development cycles with zero Fast rounds. It never resets or reuses the

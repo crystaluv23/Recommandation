@@ -1,0 +1,23 @@
+{
+  "source_workspace": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "target_workspace": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap",
+  "source_contract_hash": "342a0fa7a73df518c086a96bf0ea56dc8828025c7f8c9726bc035a7d4de38928",
+  "source_input_sha256": "746a1111524c824f7624616210b3fb6c3851e6b3af504acc5c7131898c65745c",
+  "bootstrap_manifest_hash": "6ac4aa5e896ee45edc59b200e9a20d0ea386a43184b3119ddff62d2c3006a72b",
+  "source_kind": "committed_fast",
+  "source_event_count": 134,
+  "source_fast_pointer": 1,
+  "target_fast_pointer": 0,
+  "source_cases_preserved": true,
+  "source_files_preserved": true,
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "mutable_ledgers_copied": false,
+  "prepared_input_sha256": "366b83b5d3cb0b0824e0b3ebcfbcff9566ac83ad6514dbbae0d991832efc273f",
+  "external_calls": 0,
+  "run_contract_frozen": false,
+  "execution_started": false
+}

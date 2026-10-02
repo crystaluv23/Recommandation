@@ -233,6 +233,10 @@ are supplied by the contract-bound tracking reader, not inferred from ledgers.
 `load_committed_learning_profile` rebuilds the routing derivative from that same
 selection for Update and bounded freezing; mutable full-ledger profiles are not
 the committed-input contract.
+`snapshot_from_refs(version, refs)` reconstructs only immutable definitions and
+skills in their explicit order, recomputing the definition hash. It is used to
+verify prior inputs after valid publication; callers must compare with their
+frozen contract and cannot use it to invent commit authority or learned profiles.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 11 enabled definitions.

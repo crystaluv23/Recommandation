@@ -1,7 +1,8 @@
-"""Prepare or run a diagnostic Fast+Slow cycle using production components.
+"""Prepare or run a diagnostic Fast+Slow or committed-Fast bootstrap cycle.
 
 Usage: PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --prepare-only
        PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --run
+       Add --slow-bootstrap-from SOURCE to reuse an exact committed Fast range.
 
 The first command freezes source-derived inputs without model calls. The second
 requires authorization for external execution and a committed source checkout.
@@ -28,9 +29,11 @@ from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_control import (
     ApprovedDevelopmentDataset, EvolutionRunContract, _build_evidence_resolver,
     _default_priors_dict, build_run_contract, load_approved_development_dataset,
+    _rebased_history_meta_entries, apply_slow_bootstrap_derivatives,
+    build_slow_bootstrap_manifest, validate_slow_bootstrap_manifest,
 )
 from stock_opportunity_agent.research.evolution_core import (
-    EVALUATION_LABELS, EvolutionCase, GroundTruth, PlanEvaluationConfig,
+    EVALUATION_LABELS, EvolutionCase, GroundTruth, PlanEvaluationConfig, PlanMetaMemory,
     RuntimeLimits, _prediction_baseline_from_market_documents,
     default_information_plan, evaluation_label,
 )
@@ -117,14 +120,27 @@ def _verify_inputs(root):
     return frozen
 
 
-def prepare(root, *, seed_registry: Path | None = None):
+def _development_dataset(frozen):
+    """Restore the previously frozen approved subset, never resample on resume."""
+    return ApprovedDevelopmentDataset(**{key: tuple(_restore_case(row) for row in rows)
+        for key, rows in frozen['splits'].items()}, locked_test_hash=frozen['locked_test_hash'],
+        approved_manifest_hash=frozen['approved_manifest_hash'])
+
+
+def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Path | None = None):
     """Freeze stratified development cases before any model observation."""
-    registry_source = (seed_registry or HISTORY / 'signals').resolve()
+    if seed_registry is not None and slow_bootstrap_from is not None:
+        raise ValidationError('bootstrap source owns the Registry seed; do not supply another seed')
+    bootstrap_source = None if slow_bootstrap_from is None else slow_bootstrap_from.resolve()
+    registry_source = ((bootstrap_source / 'signals') if bootstrap_source is not None
+                       else (seed_registry or HISTORY / 'signals')).resolve()
     root.mkdir(parents=True, exist_ok=True)
     if (root / 'input_manifest.json').is_file():
         frozen = _verify_inputs(root)
         if seed_registry is not None and registry_source != Path(frozen['registry_source']).resolve():
             raise ValidationError('requested Registry seed differs from prepared inputs; use a successor workspace')
+        if bootstrap_source is not None and str(bootstrap_source) != frozen.get('slow_bootstrap_source'):
+            raise ValidationError('requested bootstrap source differs from prepared inputs; use a successor workspace')
         return frozen
     if (root / 'run_contract.json').exists() or (root / 'state.json').exists():
         raise ValidationError('cannot retrofit inputs into an existing run')
@@ -132,6 +148,23 @@ def prepare(root, *, seed_registry: Path | None = None):
         raise ValidationError('diagnostic Registry seed requires existing registry.json')
     if (root / 'signals').exists():
         raise ValidationError('partial diagnostic Registry exists without frozen inputs; use a successor workspace')
+    if bootstrap_source is not None:
+        source = _verify_inputs(bootstrap_source)
+        if EvolutionWorkspace(bootstrap_source).last_completed_round < 1:
+            raise ValidationError('diagnostic bootstrap requires committed Fast input')
+        shutil.copytree(registry_source, root / 'signals',
+            ignore=shutil.ignore_patterns('learning', 'stats.json', 'events.jsonl', 'profile.json', '.transitions'))
+        snapshot = SignalRegistry(root / 'signals', candidate_root=root / 'signals_candidates').freeze()
+        manifest_hash = build_slow_bootstrap_manifest(workspace=root,
+            source_workspaces=(bootstrap_source,), dataset=_development_dataset(source),
+            signal_snapshot=snapshot, evaluation_contract=source['evaluation'])
+        frozen = {**source, 'registry_source': str(registry_source),
+            'initial_registry_version': snapshot.version, 'initial_registry_hash': snapshot.registry_hash,
+            'initial_registry_refs': [spec.ref for spec in snapshot.specs],
+            'slow_bootstrap_source': str(bootstrap_source), 'slow_bootstrap_manifest_hash': manifest_hash,
+            'source_input_manifest_sha256': _hash_file(bootstrap_source / 'input_manifest.json')}
+        atomic_write_json(root / 'input_manifest.json', frozen)
+        return frozen
     approved = load_approved_development_dataset(APPROVED)
     labels = LabelStore.load(LABELS)
     review = _read(SOURCE_REVIEW)
@@ -258,6 +291,10 @@ def run(root, frozen):
         return
     registry = SignalRegistry(root / 'signals', candidate_root=root / 'signals_candidates')
     initial = registry.freeze()
+    dataset = _development_dataset(frozen)
+    bootstrap_hash = frozen.get('slow_bootstrap_manifest_hash')
+    cycle_mode = 'slow_bootstrap' if bootstrap_hash is not None else 'fast_then_slow'
+    target_plan_rounds = 0 if bootstrap_hash is not None else 1
     oracle = RawInfoOracle.load_or_create(ORACLE)
     contract_path = root / 'run_contract.json'
     if contract_path.exists():
@@ -266,6 +303,8 @@ def run(root, frozen):
             raise ValidationError('run source revision changed; use a successor workspace')
         if contract.raw_info_inventory_hash != canonical_json_hash(frozen):
             raise ValidationError('run diagnostic inputs changed')
+        if contract.cycle_mode != cycle_mode or contract.slow_bootstrap_manifest_hash != bootstrap_hash:
+            raise ValidationError('run diagnostic mode changed')
         contract.freeze(contract_path)
     else:
         if (initial.version, initial.registry_hash) != (
@@ -273,7 +312,8 @@ def run(root, frozen):
             raise ValidationError('prepared Registry changed before run freeze')
         limits = dict(_read(HISTORY / 'run_contract.json')['contract']['limits'])
         limits.update(evaluation=_evaluation().to_dict(), candidates_per_round=2,
-                      max_parallel_plans=1, max_structured_corrections=1)
+                      max_parallel_plans=1, max_structured_corrections=1,
+                      plan_rounds_per_signal_cycle=target_plan_rounds)
         # Model registries and exact-request transport own wire settings and cost.
         contract = build_run_contract(
             run_id=root.name, dataset_manifest_path=APPROVED, inventory=None,
@@ -284,10 +324,11 @@ def run(root, frozen):
                 ('judge', 'proposer', 'mining', 'update')}, project_root=REPO,
             limits=limits, max_external_attempts=1200, max_total_cost=100,
             data_acquisition=broad_research_data_policy_v1(),
+            cycle_mode=cycle_mode, slow_bootstrap_manifest_hash=bootstrap_hash,
         )
         contract.freeze(contract_path)
     cycle = workspace.start_or_resume_cycle(
-        run_contract_hash=contract.contract_hash, target_plan_rounds=1,
+        run_contract_hash=contract.contract_hash, target_plan_rounds=target_plan_rounds,
         cycle_mode=contract.cycle_mode, max_slow_cycles=contract.max_slow_cycles,
         initial_signal_registry_version=contract.initial_signal_registry_version,
         initial_signal_registry_hash=contract.initial_signal_registry_hash,
@@ -300,6 +341,14 @@ def run(root, frozen):
                                  observed_signal_registry_hash=initial.registry_hash)
         print('Reused staged Slow result and committed its pointer.', flush=True)
         return
+    bootstrap_entries = ()
+    if bootstrap_hash is not None:
+        seed_snapshot = registry.snapshot_from_refs(frozen['initial_registry_version'],
+            tuple(frozen['initial_registry_refs']))
+        manifest = validate_slow_bootstrap_manifest(workspace=root, contract=contract,
+            signal_snapshot=seed_snapshot)
+        bootstrap_entries = _rebased_history_meta_entries(
+            apply_slow_bootstrap_derivatives(manifest, registry=registry))
     def emit(event):
         event = dict(event)
         event_type = event.pop('event_type', 'runtime_progress')
@@ -334,6 +383,8 @@ def run(root, frozen):
         on_progress=emit,
     )
     meta = workspace.restore_meta()
+    if bootstrap_entries:
+        meta = PlanMetaMemory(maxlen=meta.maxlen, entries=bootstrap_entries + meta.entries)
     proposer = LLMInformationPlanProposer(caller, available_source_types=resolver.available_source_types)
     proposer.set_request_token_budget(runtime_limits.max_tokens)
     plan_engine = PlanEvolutionEngine(
@@ -345,10 +396,6 @@ def run(root, frozen):
         case_readiness=evaluator.check_case_readiness, run_contract_hash=contract.contract_hash,
         parent_selection_seed=42, on_progress=emit,
     )
-    dataset = ApprovedDevelopmentDataset(**{key: tuple(_restore_case(row) for row in rows)
-                                           for key, rows in frozen['splits'].items()},
-                                         locked_test_hash=frozen['locked_test_hash'],
-                                         approved_manifest_hash=frozen['approved_manifest_hash'])
     mining = LLMSignalMiningModel(caller)
     mining.set_request_token_budget(runtime_limits.max_tokens)
     signal_engine = SignalEvolutionEngine(
@@ -364,7 +411,8 @@ def run(root, frozen):
     )
     result = DualLoopEvolutionEngine(
         plan_engine=plan_engine, signal_engine=signal_engine, signal_registry=registry,
-        dataset=dataset, plan_rounds_per_signal_cycle=1, on_progress=emit,
+        dataset=dataset, plan_rounds_per_signal_cycle=target_plan_rounds,
+        cycle_mode=cycle_mode, on_progress=emit,
     ).run_cycle(cycle_id=cycle['cycle_id'], completed_plan_rounds=cycle['completed_plan_rounds'])
     slow = result.signal_evolution.to_dict()
     workspace.stage_slow_result(cycle_id=cycle['cycle_id'], result=slow)
@@ -385,6 +433,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', required=True)
     parser.add_argument('--seed-registry', type=Path, help='Stable Registry directory to freeze into a new diagnostic workspace')
+    parser.add_argument('--slow-bootstrap-from', type=Path, help='Reuse a committed Fast diagnostic range without rerunning its cases')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--prepare-only', action='store_true')
     mode.add_argument('--run', action='store_true')
@@ -392,7 +441,7 @@ def main():
     root = Path(args.root).resolve()
     root.mkdir(parents=True, exist_ok=True)
     with EvolutionWorkspace.execution_lock_at(root):
-        frozen = prepare(root, seed_registry=args.seed_registry)
+        frozen = prepare(root, seed_registry=args.seed_registry, slow_bootstrap_from=args.slow_bootstrap_from)
         print(f'Frozen diagnostic inputs: {canonical_json_hash(frozen)}', flush=True)
         if args.run:
             run(root, frozen)
