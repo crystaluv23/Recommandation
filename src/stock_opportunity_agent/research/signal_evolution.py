@@ -6558,6 +6558,11 @@ class SignalEvolutionEngine:
             for card in context.get("stable_signal_cards", ())
             if isinstance(card, Mapping)
         )
+        signal_originals = {
+            card["signal_ref"]: {"spec": self.registry.load_spec(card["signal_ref"]).to_dict(),
+                                 "skill": self.registry.load_skill(card["signal_ref"])}
+            for card in catalog
+        }
         model = MiningAgentRoleModel(
             caller,
             identity_aliases=_scoped_slow_identity_guard_inventory(
@@ -6609,6 +6614,7 @@ class SignalEvolutionEngine:
                     case_pairs=case_pairs,
                     measurable_evidence_manifest=evidence_manifest,
                     signal_catalog=catalog,
+                    signal_originals=signal_originals,
                     seed=seed,
                     cycle_id=cycle_id,
                     backlog_needs=backlog_needs if seed == "hypothesis" else (),
@@ -9239,6 +9245,8 @@ class SignalEvolutionEngine:
                     "source_ref": "source-" + _canonical_hash(source_ref)[:16],
                     **({"source_case_ref": _opaque_slow_case_ref(candidate)}
                        if candidate in self._discovery_cases_by_id else {}),
+                    **({"source_prediction_time": self._discovery_cases_by_id[candidate].prediction_time.isoformat()}
+                       if candidate in self._discovery_cases_by_id else {}),
                 })
             cases = tuple(
                 self._discovery_cases_by_id[case_id]
@@ -9335,6 +9343,8 @@ class SignalEvolutionEngine:
                     )[:16],
                     **({"source_case_ref": source["source_case_ref"]}
                        if source.get("source_case_ref") else {}),
+                    **({"source_prediction_time": source["source_prediction_time"]}
+                       if source.get("source_prediction_time") else {}),
                     "source_round": source.get("source_round"),
                     "source_fingerprint": source.get("source_fingerprint"),
                     "original_need": source.get("original_need"),

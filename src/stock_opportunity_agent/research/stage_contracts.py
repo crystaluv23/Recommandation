@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
@@ -28,7 +29,8 @@ _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
     "round_reflect": ("records", "parent_comparisons_by_plan_id"),
     "signal_mining_reflect": ("feedback_units", "measurement_contract"),
     "slow_source_read": ("role_scope", "available_sources"),
-    "mining_controller_step": ("research_axis", "label_map", "budget", "measurable_evidence_manifest", "signal_catalog"),
+    "mining_controller_step": ("research_axis", "label_map", "budget", "measurable_evidence_manifest",
+                               "signal_catalog", "signal_catalog_disclosure", "case_refs", "case_prediction_times"),
     "mining_candidate_materialize_spec": ("candidate", "candidate_contract", "cited_evidence"),
     "mining_candidate_materialize_skill": ("candidate", "spec", "cited_evidence"),
     "mining_candidate_materialize_tests": ("candidate", "spec", "skill", "cited_evidence"),
@@ -44,6 +46,27 @@ _BLIND_STAGES = frozenset({
 def json_bytes(value: Any) -> int:
     """Measure canonical compact UTF-8 JSON bytes, not estimated tokens."""
     return len(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+
+
+def read_whole_entries(
+    entries: Mapping[str, Mapping[str, Any]], item_refs: Any, *, max_bytes: int,
+) -> dict[str, Any]:
+    """Select known complete originals within a byte cap, without clipping.
+
+    Example: ``read_whole_entries({'n1': row}, ['n1'], max_bytes=16000)``.
+    Duplicate supplied refs select one original; unknown refs fail closed.
+    """
+    if (not isinstance(item_refs, list) or not item_refs
+        or any(not isinstance(ref, str) or ref not in entries for ref in item_refs)):
+        raise ValidationError("whole read requires non-empty known item_refs")
+    refs = list(dict.fromkeys(item_refs))
+    selected = [deepcopy(dict(entries[ref])) for ref in refs]
+    size = json_bytes(selected)
+    if size > max_bytes:
+        raise ValidationError(f"whole read requires {size} bytes, exceeding {max_bytes}; select fewer complete entries")
+    return {"items": selected, "included_refs": refs, "read_bytes": size,
+            "read_byte_limit": max_bytes,
+            "counts": {"available": len(entries), "included": len(refs)}}
 
 
 def budget_claim_issues(

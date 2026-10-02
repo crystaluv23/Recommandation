@@ -165,6 +165,7 @@ def _facts_from_document(
                         concept["unit"],
                         record.get("start"),
                         record.get("end"),
+                        case_ref,
                     ),
                     case_ref=case_ref,
                     concept=str(concept["concept"]),
@@ -398,7 +399,7 @@ def fetch_case_evidence(
         events.append(
             NarrativeEvent(
                 event_ref="event-" + _opaque_ref(
-                    document.document_id, document.content_hash, len(excerpt)
+                    document.document_id, document.content_hash, ref
                 ),
                 case_ref=ref,
                 document_ref=f"document-{document.document_id}",
@@ -508,12 +509,23 @@ def _verbatim_window(content: str, excerpt: str, radius: int = 80) -> str:
     return content[: 2 * radius]
 
 
+def _events_by_document(
+    events: Iterable[NarrativeEvent],
+) -> dict[tuple[str, str], dict[str, NarrativeEvent]]:
+    """Group the latest case-scoped orientation by immutable document."""
+    grouped: dict[tuple[str, str], dict[str, NarrativeEvent]] = {}
+    for event in events:
+        grouped.setdefault((event.document_ref, event.content_hash), {})[event.case_ref] = event
+    return grouped
+
+
 def narrative_catalog(
     documents: Iterable[RawInfoDocument],
     events: Iterable[NarrativeEvent],
     *,
     max_per_family: int = 8,
     document_cards: dict[tuple[str, str], dict[str, Any]] | None = None,
+    case_refs_by_document: Mapping[tuple[str, str], Iterable[str]] | None = None,
 ) -> list[dict[str, object]]:
     """Build the discovery-only fetched-evidence directory.
 
@@ -524,9 +536,7 @@ def narrative_catalog(
     """
 
     windows: dict[str, dict[str, dict[str, object]]] = {}
-    event_by_document: dict[str, NarrativeEvent] = {
-        event.document_ref: event for event in events
-    }
+    grouped_events = _events_by_document(events)
     seen_documents: set[tuple[str, str]] = set()
     for document in documents:
         family = _evidence_source_family(document.source_type)
@@ -538,7 +548,11 @@ def narrative_catalog(
         seen_documents.add(identity)
         window = f"{document.available_at.year}Q{(document.available_at.month - 1) // 3 + 1}"
         bucket = windows.setdefault(family, {}).setdefault(window, {})
-        event = event_by_document.get(f"document-{document.document_id}")
+        case_events = grouped_events.get((f"document-{document.document_id}", document.content_hash), {})
+        event = next(reversed(case_events.values()), None)
+        case_refs = set((case_refs_by_document or {}).get(identity, ())) | set(case_events)
+        bindings = [{"case_ref": ref, "event_ref": case_events[ref].event_ref if ref in case_events else None}
+                    for ref in sorted(case_refs)]
         if event is not None:
             bucket[event.event_ref] = {
                 "event_ref": event.event_ref,
@@ -546,6 +560,7 @@ def narrative_catalog(
                 "title": event.title,
                 "available_at": event.available_at,
                 "discovery_only": True,
+                "case_bindings": bindings,
             }
         elif len(bucket) < max_per_family:
             bucket[f"document-{document.document_id}"] = {
@@ -554,6 +569,7 @@ def narrative_catalog(
                 "title": _narrative_title(document),
                 "available_at": document.available_at.isoformat(),
                 "discovery_only": True,
+                "case_bindings": bindings,
             }
         else:
             continue
@@ -649,7 +665,7 @@ def derive_attribute_vocabulary(
     below support stay discoverable through the raw read path regardless.
     """
 
-    corpus = list(documents)
+    corpus = list({(document.document_id, document.content_hash): document for document in documents}.values())
     pattern_hits = 0
     for document in corpus:
         if _ATTRIBUTE_PATTERN.search(document.content):
@@ -699,7 +715,7 @@ def project_attributes(
     wanted_names = {str(entry.get("name")) for entry in attributes}
     if _ATTRIBUTE_NAME not in wanted_names:
         return rows
-    event_by_document = {event.document_ref: event for event in events}
+    grouped_events = _events_by_document(events)
     narrative_documents = [
         document
         for document in documents
@@ -712,19 +728,19 @@ def project_attributes(
         if identity in seen_documents:
             continue
         seen_documents.add(identity)
-        event = event_by_document.get(f"document-{document.document_id}")
-        case_ref = event.case_ref if event is not None else ""
+        case_refs = sorted(grouped_events.get((f"document-{document.document_id}", document.content_hash), {})) or [""]
         for match in _ATTRIBUTE_PATTERN.finditer(document.content):
             money = re.search(_MONEY, document.content[match.end():match.end() + 160])
             amount = _money_to_usd(money.group(1)) if money else None
             start = match.start()
-            rows.setdefault(_ATTRIBUTE_NAME, []).append(
-                {
+            for case_ref in case_refs:
+                rows.setdefault(_ATTRIBUTE_NAME, []).append({
                     "attribute_ref": "attr-"
                     + _opaque_ref(
                         document.document_id,
                         document.content_hash,
                         start,
+                        case_ref,
                     ),
                     "name": _ATTRIBUTE_NAME,
                     "case_ref": case_ref,
@@ -740,6 +756,5 @@ def project_attributes(
                         if amount is None
                         else "projected_positive"
                     ),
-                }
-            )
+                })
     return rows

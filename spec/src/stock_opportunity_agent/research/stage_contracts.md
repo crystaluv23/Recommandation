@@ -19,6 +19,13 @@ An exact offending text path receives feedback; no mechanical rewrite chooses
 a research reason, changes budgets or forces further exploration. Consumers
 retain their existing action/row correction units and complete revalidation.
 
+Whole-entry content reads share one deterministic selector: supplied references
+must resolve in the owning local corpus, duplicates select one original, and the
+complete selected JSON must fit the declared byte cap. It returns whole entries,
+included refs and coverage counts or rejects before disclosure; no clipping or
+silent substitution. Owning modules retain source hashes, identity projection,
+tool budgets and domain validation. Backlog and Signal content use this helper.
+
 | Stage | Required input | Excluded input / preserved boundary |
 | --- | --- | --- |
 | Plan proposal | proposal context: prior, parents, bounded experience and constraints | Original company identities; experience never forwards into blind execution |
@@ -71,6 +78,10 @@ immutable backlog, never over only the visible page.
 
 The owning validator checks structure, exact source references, numeric/PIT
 constraints, state transitions and complete merged output.
+Mining input construction requires its anonymous case refs, actual prediction
+times and Signal catalog disclosure envelope alongside the existing comparison,
+labels and budgets, before transport. The controller supplies these dependencies;
+the shared check does not replace domain evidence validation.
 Numeric results carry producer-owned values, units/formulas and exact periods;
 compact ref-owned cards retain that disclosure through final assembly and
 Posthoc. A uniquely observed unit rendering can be repaired mechanically through

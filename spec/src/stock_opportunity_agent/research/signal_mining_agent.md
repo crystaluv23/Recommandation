@@ -27,6 +27,11 @@ observation cycle.
   a verbatim exact span, the content hash, and availability time as one
   indivisible unit. A character window may never present a number detached
   from its concept/unit/period binding.
+  New fact identity includes the case scope. New narrative event identity binds
+  document id/hash and case scope, independent of excerpt length/query. Shared
+  documents at different cutoffs therefore retain separate case observations;
+  fetch replay within the same case reuses identity. Historical ledger refs and
+  authored artifacts remain original rather than rehashed in place.
 - Relation nodes are constructed only by deterministic code within three
   bounded scopes: same-concept record pairs under the existing
   comparable-period rule; numerator/denominator pairs computed only when
@@ -69,6 +74,14 @@ observation cycle.
   unmasked inside the runtime-owned ledger), `content_hash`, `available_at`,
   and `published_at`. `event_ref` identity is stable across paginated reads so
   ledger replay keys never break.
+  Directory rows expose all current `(case_ref,event_ref)` bindings for the
+  unique document/hash. Event reads expose the selected case; document reads
+  expose every fetched case binding. Structured fact reads expose their selected
+  case, document ref, content hash and source availability; their ledger scope
+  retains the same case. Read receipts retain that scope after
+  later actions. Labels stay in the already-authorized Slow label map and are
+  never added to blind-stage sources. Attribute rows also bind case scope while
+  scanning each immutable document once, including shared-case observations.
 - `read_span` accepts exactly one of `fact_ref`, `event_ref`, or
   `document_ref`; narrative/document reads take bounded `offset`/`length` and
   return masked windows of the verbatim source text. Budget dimension is
@@ -84,6 +97,16 @@ observation cycle.
   `discovery_only`: it may steer search but can never be cited as candidate
   evidence; only raw spans (facts, events, documents read through
   `read_span`, or relations) are evidence-usable.
+  Signal working cards include the source-authored definition, output schema,
+  execution descriptor, retrieval/time/comparison rules and parameters, plus
+  original hash/read size. Cards are whole-entry paginated; omitted cards remain
+  addressable. `inspect_catalog(scope=signals,item_refs=[versioned refs])` reads
+  whole immutable `{spec,skill}` bundles within the same 16KB byte cap used for
+  backlog content. There is no arbitrary path/tool or version guessing. Runtime
+  verifies original identity/hash before masking only the model view. Missing
+  content is disclosed as unavailable. Source specs/skills are not corpus facts
+  and their presence does not prove semantic need coverage. Inspection retains
+  the existing light budget charge; budgets and promotion gates do not change.
 - No-match never equals negative: a read or query without a match yields
   unavailable or coverage insufficiency, never a domain claim.
 
@@ -260,17 +283,17 @@ observation cycle.
 
 The existing schema/ref guards do not prove semantic need coverage. Actual staged
 intent replaced forecast deviations with actual revenue, same-store measures with
-consolidated margin, and future capital plans with historical burn. Current
-controller Signal cards expose ref/description without an original spec/skill
-read branch. Need cards omit original case/time scope; the sampled Fast origins
-are disjoint from the current dev cohort. Narrative event/directory/read views
-also omit the case association needed to join source evidence to the disclosed
-group map, and the event identity currently omits case scope. These remain
-implementation/acceptance gaps, not permission to relax need or provenance rules.
-Follow the existing catalog/content/provenance interface, preserve case-scoped
-source identity including shared documents at multiple cutoffs, provide the
-necessary anonymous scope, and distinguish partial coverage and unestablished
-absence. Concrete evidence and pending design requirements are recorded in
+consolidated margin, and future capital plans with historical burn. Isolated
+implementation now supplies capability cards, exact-version spec/skill reads,
+anonymous source/current-cohort relation and actual known prediction times.
+Facts/events bind case scope; directory/read/receipt views retain shared-case
+associations. Production factory tests and actual-source offline replay verify
+these input/provenance paths. Frozen live v167 still uses its original revision
+and has not tested these changes. Existing staged semantic substitutions and
+unsupported absence claims remain unreviewed; input fixes do not rewrite them.
+Preserve the catalog/content/provenance interface and distinguish partial
+coverage and unestablished absence during new actual model validation.
+Concrete evidence and pending acceptance requirements are recorded in
 [the v167 review](../../../../reports/v167-mining-reliability-review-20261002.md).
 No-pattern may remain a valid result; a staged row or passing schema does not
 prove that its research rationale is correct. Full live acceptance remains open.
@@ -297,6 +320,17 @@ prove that its research rationale is correct. Full live acceptance remains open.
   `inspect_catalog(scope=backlog)` pages the complete directory; supplied
   `item_refs` resolve full original rows within the existing 16KB whole-read cap.
   Neither clipping nor hidden full-source provenance is a default dependency.
+  Source rows additionally disclose anonymous source-case identity and the actual
+  source prediction time when known. Working cards summarize known/unknown
+  source counts, relation to current dev cases, matching local case refs and a
+  bounded list of source prediction times with omitted count. Current dev case
+  prediction times are disclosed separately. An outside-cohort example remains
+  an unresolved source need; generalized capability research preserves its
+  metric/time qualifiers and uses each dev case's own PIT cutoff. Partial proxy
+  coverage must name the unsupported remainder; actual-only data cannot establish
+  a forecast deviation, consolidated margin cannot establish same-store sales,
+  and historical burn cannot establish future plans. Partial reading establishes
+  only unestablished/deferred evidence, never universal corpus absence.
 - `record_need_dispositions` accepts only currently disclosed unresolved refs
   and requires the issued need-state `base_hash`. Each row is validated using
   the same disposition schema, unique-owner, rationale and existing-Signal

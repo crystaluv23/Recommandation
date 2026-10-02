@@ -27,8 +27,9 @@ from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
     _evidence_source_family,
     _mask_identity_values,
+    _opaque_slow_case_ref,
 )
-from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, budget_claim_issues, json_bytes
+from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, budget_claim_issues, json_bytes, read_whole_entries
 from stock_opportunity_agent.research.mining_agent_tools import (
     EvidenceFact,
     EvidenceRelation,
@@ -39,6 +40,7 @@ from stock_opportunity_agent.research.mining_agent_tools import (
     fetch_case_evidence,
     narrative_catalog,
     project_attributes,
+    _events_by_document,
     strip_document_artifacts,
 )
 
@@ -241,6 +243,7 @@ class LabelAwareMiningController:
         meta_memory_briefs: Mapping[str, Any] | None = None,
         meta_memory_disclosures: Sequence[Mapping[str, Any]] = (),
         need_progress_sink: Callable[[Mapping[str, Any]], None] | None = None,
+        signal_originals: Mapping[str, Mapping[str, Any]] | None = None,
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -248,8 +251,47 @@ class LabelAwareMiningController:
         self.model = model
         self.case_pairs = tuple(case_pairs)
         self.case_by_ref = {ref: case for ref, case in self.case_pairs}
+        self._source_case_refs = {_opaque_slow_case_ref(case.case_id): ref for ref, case in self.case_pairs}
         self.manifest = dict(measurable_evidence_manifest)
         self.signal_catalog = tuple(signal_catalog)
+        self._signal_originals = deepcopy(dict(signal_originals or {}))
+        self._signal_hashes = {ref: canonical_json_hash(original) for ref, original in self._signal_originals.items()}
+        self._signal_read_entries: dict[str, dict[str, Any]] = {}
+        known_signals = {str(card.get("signal_ref", "")) for card in self.signal_catalog}
+        if not set(self._signal_originals) <= known_signals:
+            raise ValidationError("Signal originals must belong to the supplied catalog")
+        enriched = []
+        for card in self.signal_catalog:
+            ref = str(card.get("signal_ref", ""))
+            original = self._signal_originals.get(ref)
+            projected = dict(card)
+            projected["original_available"] = original is not None
+            if original is not None:
+                spec, skill = original.get("spec"), original.get("skill")
+                if (not isinstance(spec, Mapping)
+                    or f"{spec.get('signal_id')}:v{spec.get('version')}" != ref
+                    or (skill is not None and not isinstance(skill, str))):
+                    raise ValidationError("Signal original identity or skill is invalid")
+                projected["source_hash"] = self._signal_hashes[ref]
+                self._signal_read_entries[ref] = {
+                    "source_ref": ref, "source_hash": self._signal_hashes[ref],
+                    "content": _mask_identity_values(original, tuple(identity_aliases), expand_aliases=False),
+                    "content_is_masked": True,
+                }
+                projected["read_bytes"] = json_bytes(self._signal_read_entries[ref])
+                if not isinstance(spec.get("definition", {}), Mapping):
+                    raise ValidationError("Signal original definition must be an object")
+                definition = dict(spec.get("definition") or {})
+                if "description" in definition:
+                    projected["description"] = definition.pop("description")
+                projected["capability_contract"] = {
+                    **({"definition": definition} if definition else {}),
+                    **{key: deepcopy(spec[key]) for key in (
+                        "schema", "execution", "raw_retrieval", "parameters", "modality", "evidence_policy",
+                    ) if key in spec},
+                }
+            enriched.append(_mask_identity_values(projected, tuple(identity_aliases), expand_aliases=False))
+        self.signal_catalog = tuple(enriched)
         self.seed = seed
         if any(not isinstance(row, Mapping) or not isinstance(row.get("need_ref"), str)
                or not row["need_ref"].strip() for row in backlog_needs):
@@ -305,6 +347,7 @@ class LabelAwareMiningController:
         self._events: dict[str, Any] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
+        self._document_case_refs: dict[tuple[str, str], set[str]] = {}
         self._attribute_rows: dict[tuple[str, ...], dict[str, list[dict[str, object]]]] = {}
         self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
@@ -400,14 +443,20 @@ class LabelAwareMiningController:
         return dict(raw)
 
     def _model_view(self) -> dict[str, Any]:
+        signal_page = self._signal_view()
         view: dict[str, Any] = {
             "seed": self.seed,
             "state": self._state,
             "budget": self._remaining_budget(),
             "available_source_families": list(self.available_source_families),
             "measurable_evidence_manifest": self.manifest,
-            "signal_catalog": [dict(card) for card in self.signal_catalog],
+            "signal_catalog": signal_page["items"],
+            "signal_catalog_disclosure": {
+                key: value for key, value in signal_page.items()
+                if key != "items"
+            },
             "case_refs": [ref for ref, _case in self.case_pairs],
+            "case_prediction_times": {ref: case.prediction_time.isoformat() for ref, case in self.case_pairs},
             "known_fact_refs": sorted(self._facts),
             "known_event_refs": sorted(self._events),
             "known_relation_refs": sorted(self._relations),
@@ -542,7 +591,7 @@ class LabelAwareMiningController:
         """Reuse immutable document projections, retaining current case ownership."""
 
         vocabulary_hash = canonical_json_hash(self.attribute_vocabulary)
-        event_by_document = {event.document_ref: event for event in self._events.values()}
+        grouped_events = _events_by_document(self._events.values())
         seen: set[tuple[str, str]] = set()
         projected: dict[str, list[dict[str, object]]] = {}
         for result in self._documents.values():
@@ -551,12 +600,12 @@ class LabelAwareMiningController:
                 if identity in seen:
                     continue
                 seen.add(identity)
-                event = event_by_document.get(f"document-{document.document_id}")
+                case_events = grouped_events.get((f"document-{document.document_id}", document.content_hash), {})
                 key = (*identity, document.source_type, document.available_at.isoformat(),
-                       event.case_ref if event is not None else "", vocabulary_hash)
+                       canonical_json_hash(sorted(case_events)), vocabulary_hash)
                 if key not in self._attribute_rows:
                     self._attribute_rows[key] = project_attributes(
-                        (document,), (event,) if event is not None else (),
+                        (document,), case_events.values(),
                         vocabulary=self.attribute_vocabulary,
                     )
                 for name, rows in self._attribute_rows[key].items():
@@ -742,7 +791,7 @@ class LabelAwareMiningController:
                 if scope == "evidence":
                     payload = self._evidence_catalog_view(cursor=cursor)
                 elif scope == "signals":
-                    payload = bounded_entry_page(self.signal_catalog, cursor=cursor)
+                    payload = self._signal_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 elif scope == "memory":
                     payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 elif scope == "backlog":
@@ -840,6 +889,7 @@ class LabelAwareMiningController:
                 self._documents[event.event_ref] = result
             for document in result.documents:
                 self._documents[f"document-{document.document_id}"] = result
+                self._document_case_refs.setdefault((document.document_id, document.content_hash), set()).add(str(ref))
         evidence_refs: list[str] = []
         source_types: set[str] = set()
         coverage: dict[str, Any] = {}
@@ -1043,6 +1093,8 @@ class LabelAwareMiningController:
             "masked": masked,
             "verbatim_hash": _ledger_text_hash(window),
             **disclosure,
+            "case_refs": ([event.case_ref] if event is not None else
+                          sorted(self._document_case_refs.get(identity, ()))),
         }
         if event is not None:
             entry["title"] = event.title
@@ -1058,6 +1110,7 @@ class LabelAwareMiningController:
                 "next_readable_start",
             )},
             "read_count": previous_receipt.get("read_count", 0) + 1,
+            "case_refs": sorted(set(entry["case_refs"]) | set(previous_receipt.get("case_refs", ()))),
         }
         self._last_action_result = {"action": "read_span", **dict(entry)}
         self._append(
@@ -1067,6 +1120,7 @@ class LabelAwareMiningController:
             evidence_refs=(
                 (target_ref,) if target_key == "event_ref" else (document_ref,)
             ),
+            case_refs=tuple(entry["case_refs"]),
         )
         if (
             _evidence_source_family(document.source_type) in _NARRATIVE_FAMILIES
@@ -1107,13 +1161,16 @@ class LabelAwareMiningController:
         masked = _mask_identity_values(
             context, self.identity_aliases, expand_aliases=False
         )
-        entry = {"fact_ref": fact_ref, "context_chars": len(masked), "masked": masked}
+        entry = {"fact_ref": fact_ref, "context_chars": len(masked), "masked": masked,
+                 "case_refs": [fact.case_ref], "document_ref": fact.document_ref,
+                 "content_hash": fact.content_hash, "available_at": fact.available_at}
         self._last_action_result = {"action": "read_span", **entry}
         self._append(
             "read_span",
             raw,
             payload=entry,
             evidence_refs=(fact_ref,),
+            case_refs=(fact.case_ref,),
         )
         self._heavy_used += 1
         return "running", [], ()
@@ -1509,16 +1566,14 @@ class LabelAwareMiningController:
                       item_refs: Any = None) -> dict[str, Any]:
         """Page exact semantic cards; supplied refs resolve whole original rows."""
         if item_refs is not None:
-            if not isinstance(item_refs, list) or not item_refs or any(not isinstance(ref, str) or ref not in self._backlog_by_ref for ref in item_refs):
-                raise InvalidMiningAction("backlog read requires known item_refs")
-            originals = [self._backlog_by_ref[ref] for ref in item_refs]
-            if json_bytes(originals) > 16_000:
-                raise InvalidMiningAction("backlog read exceeds 16000 whole-entry bytes")
-            return {"items": deepcopy(originals), "included_refs": list(item_refs),
-                    "counts": {"available": len(self._backlog_by_ref), "included": len(originals)}}
+            try:
+                return read_whole_entries(self._backlog_by_ref, item_refs, max_bytes=16_000)
+            except ValidationError as exc:
+                raise InvalidMiningAction(f"backlog read: {exc}") from exc
         refs = self._pending_need_refs() if pending_only else list(self._backlog_by_ref)
         cards = [{"need_ref": ref,
                   **{key: self._backlog_by_ref[ref][key] for key in ("need", "kind", "status") if key in self._backlog_by_ref[ref]},
+                  "source_scope": self._need_source_scope(self._backlog_by_ref[ref]),
                   "source_hash": canonical_json_hash(self._backlog_by_ref[ref]),
                   "read_bytes": json_bytes(self._backlog_by_ref[ref])} for ref in refs]
         page = bounded_entry_page(cards, cursor=cursor)
@@ -1527,6 +1582,38 @@ class LabelAwareMiningController:
         return {**page, "backlog_hash": self._backlog_hash,
                 "total_backlog_count": len(self._backlog_by_ref),
                 "read_action": "inspect_catalog scope=backlog item_refs", "read_byte_limit": 16_000}
+
+    def _need_source_scope(self, row: Mapping[str, Any]) -> dict[str, Any]:
+        """Disclose source/current-cohort relation without case identities."""
+        local = self._source_case_refs
+        sources = [source for source in row.get("sources", ()) if isinstance(source, Mapping)]
+        known = {source["source_case_ref"] for source in sources if source.get("source_case_ref")}
+        matching = sorted(local[ref] for ref in known if ref in local)
+        times = sorted({str(source["source_prediction_time"]) for source in sources if source.get("source_prediction_time")})
+        unknown = sum(not source.get("source_case_ref") for source in sources)
+        relation = ("plan_action" if row.get("kind") == "meta_reflection_action" else
+                    "unknown" if not known else "outside_current_dev" if not matching else
+                    "overlapping" if len(matching) == len(known) and not unknown else "mixed")
+        return {"relation": relation, "known_source_case_count": len(known),
+                "unknown_source_count": unknown, "current_dev_case_refs": matching,
+                "unknown_source_time_count": sum(not source.get("source_prediction_time") for source in sources),
+                "source_prediction_times": times[:4], "omitted_prediction_times": max(0, len(times) - 4)}
+
+    def _signal_view(self, *, cursor: int = 0, item_refs: Any = None) -> dict[str, Any]:
+        """Read hash-bound Signal originals or page capability cards."""
+        if item_refs is None:
+            page = bounded_entry_page(self.signal_catalog, cursor=cursor)
+            for row in page["oversized_entries"]:
+                row["signal_ref"] = self.signal_catalog[row["index"]]["signal_ref"]
+            return {**page, "read_action": "inspect_catalog scope=signals item_refs", "read_byte_limit": 16_000}
+        for ref, original in self._signal_originals.items():
+            if canonical_json_hash(original) != self._signal_hashes[ref]:
+                raise InvalidMiningAction(f"Signal original snapshot changed: {ref}")
+        try:
+            view = read_whole_entries(self._signal_read_entries, item_refs, max_bytes=16_000)
+        except ValidationError as exc:
+            raise InvalidMiningAction(f"Signal read: {exc}") from exc
+        return view
 
     def _record_need_dispositions(self, raw: Mapping[str, Any]) -> tuple[str, list[Mapping[str, Any]], tuple[Mapping[str, Any], ...]]:
         """Save valid independent intent rows and leave rejected siblings pending."""
@@ -1700,7 +1787,8 @@ class LabelAwareMiningController:
         """Return a titled fetched-evidence page with reachable omitted entries."""
         documents = [document for result in self._documents.values() for document in result.documents]
         families = narrative_catalog(documents, self._events.values(), max_per_family=max(1, len(documents)),
-                                     document_cards=self._document_cards)
+                                     document_cards=self._document_cards,
+                                     case_refs_by_document=self._document_case_refs)
         cards = []
         for family in families:
             for window in family["windows"]:

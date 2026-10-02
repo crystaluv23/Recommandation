@@ -242,6 +242,8 @@ class SourceBoundaryConsistencyTests(TestCase):
         handle = 'document-sec:cik_0002009312:000149315225011966'
         view = {'research_axis': {'axis': 'direction'}, 'label_map': {'case-001': 'positive'},
                 'budget': {}, 'measurable_evidence_manifest': {}, 'signal_catalog': [],
+                'signal_catalog_disclosure': {'counts': {'available': 0, 'included': 0}},
+                'case_refs': ['case-001'], 'case_prediction_times': {'case-001': '2025-09-30T00:00:00+00:00'},
                 'last_action_result': {'document_ref': handle,
                                       'masked': 'CIK 0002009312 http://aureusgreenway.com/20250630'}}
         with tempfile.TemporaryDirectory() as directory:

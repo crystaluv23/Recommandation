@@ -607,6 +607,15 @@ or technical-failure conclusions remain readable under the same policy.
 
 ## Mining controller replacement path (gated)
 
+Controller dependency construction supplies exact-version immutable Signal
+spec/skill bundles behind its existing Signal catalog read action. Compact
+capability cards are runtime projections of those originals, with hash/read size;
+fixtures, learning profiles and other versions are not default content inputs.
+Backlog source projection retains anonymous case identity and actual source
+prediction time from the owning case record, so the controller can disclose its
+relation to the current dev cohort. Unknown owners stay unknown. Canonical
+backlog, Registry files, scoring semantics and frozen prior runs are untouched.
+
 The production H1/H2/H3 and E1/E2 mining chain is scheduled for replacement by
 the `LabelAwareMiningController` over the shared lazy PIT Evidence Graph
 specified in `signal_mining_agent.md`. Until the shadow-acceptance gate in the

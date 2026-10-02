@@ -30,12 +30,18 @@ from stock_opportunity_agent.research.research_targets import (
 
 class SignalEvolutionTests(TestCase):
     def test_controller_need_units_persist_and_complete_intents_reach_update(self) -> None:
+        transmitted = []
         class Caller:
             def complete_json(self, *, stage, payload, **_kwargs):
+                transmitted.append(payload)
                 self_stage = payload.get("seed")
                 if self_stage == "discovery":
                     return ({"action": "record_deferred", "rationale": ["No synthetic discovery verdict."]}, AgentUsage())
                 contract = payload["need_disposition_contract"]
+                if not payload.get("last_action_result"):
+                    return ({"action": "inspect_catalog", "scope": "signals",
+                             "item_refs": [payload["signal_catalog"][0]["signal_ref"]],
+                             "rationale": ["Inspect exact source rules before routing needs."]}, AgentUsage())
                 if contract["pending_count"]:
                     ref = payload["signal_catalog"][0]["signal_ref"]
                     return ({"action": "record_need_dispositions", "base_hash": contract["base_hash"],
@@ -69,17 +75,27 @@ class SignalEvolutionTests(TestCase):
             needs = [{"need_ref": "n0", "need": "Improve existing extraction?"},
                      {"need_ref": "n1", "need": "Improve coverage of the same concept?"}]
             context = {"capability_backlog": {"signal_need_items": needs},
-                       "stable_signal_cards": [{"signal_ref": "annual_revenue_growth:v1", "description": "Revenue growth."}]}
+                       "stable_signal_cards": [{"signal_ref": "revenue_growth_yoy:v1", "description": "Revenue growth."}]}
             engine._mining_context = types.MethodType(lambda self, **kwargs: context, engine)
             kwargs = {"cycle_id": 1, "axis_id": "surge_direction", "research_axis": {"axis_id": "surge_direction"},
                       "dev_cases": cases[:2], "check_cases": cases[2:],
                       "labels_by_case_id": {case.case_id: "positive" if case.ground_truth.is_surge else "control" for case in cases}}
             output = engine._run_controller_mining_axis(**kwargs)
+            hypothesis_payloads = [row for row in transmitted if row["seed"] == "hypothesis"]
+            first = hypothesis_payloads[0]
+            original = {"spec": registry.load_spec("revenue_growth_yoy:v1").to_dict(),
+                        "skill": registry.load_skill("revenue_growth_yoy:v1")}
+            self.assertEqual(first["signal_catalog"][0]["source_hash"], canonical_json_hash(original))
+            self.assertEqual(first["signal_catalog"][0]["capability_contract"]["raw_retrieval"],
+                             original["spec"]["raw_retrieval"])
+            selected = hypothesis_payloads[1]["last_action_result"]["result"]["items"][0]
+            self.assertEqual(selected["content"], original)
+            self.assertEqual(first["case_prediction_times"]["case-001"], cases[0].prediction_time.isoformat())
             seed = output["audit"]["seeds"][0]
             self.assertEqual(seed["terminal_kind"], "no_pattern_with_coverage")
             self.assertEqual(seed["pending_need_refs"], [])
             self.assertEqual(seed["need_disposition_rows"][0]["need_refs"], ["n0", "n1"])
-            self.assertEqual(engine._mining_update_refs(output["audit"]), ("annual_revenue_growth:v1",))
+            self.assertEqual(engine._mining_update_refs(output["audit"]), ("revenue_growth_yoy:v1",))
             paths = list((root / "workspace/experiments/cycles/cycle-0001/mining_need_units").rglob("*.json"))
             self.assertEqual(len(paths), 1)
             original = paths[0].read_bytes()

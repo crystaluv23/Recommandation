@@ -1,0 +1,433 @@
+{
+  "scope": "Offline actual v167 source reconstruction through new production tools, with fresh case-scoped identities; no historical artifact rewriting.",
+  "network_calls": 0,
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "input_manifest_file_hash": "ba40438d11358aa96a2f3d8bb512ce494be89a00ead5493f70ff0745441515de",
+  "backlog_hash": "83d672c3d127b4789077abd591ef389ccb19e91695287fe6d5fd1f4cfa5cfcbf",
+  "source_docs": 99,
+  "original_source_hashes_preserved": true,
+  "initial_model_view_bytes": 22502,
+  "old_initial_model_view_bytes": 25501,
+  "signal_catalog_disclosure": {
+    "counts": {
+      "available": 18,
+      "included": 7,
+      "omitted_before": 0,
+      "omitted_after": 11,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "next_cursor": 7,
+    "oversized_entries": [],
+    "max_entry_bytes": 8000,
+    "selection_is_exhaustive": false,
+    "read_action": "inspect_catalog scope=signals item_refs",
+    "read_byte_limit": 16000
+  },
+  "exact_signal_reads": [
+    {
+      "signal_ref": "financing_listing_action:v3",
+      "source_hash": "066aa267ae016a69653e08f8c90ecf3f4bff9b6d2bee4a257f2e385eec6da2cc",
+      "entry_bytes": 1925,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "source_hash": "d0fb9b98b6a12c9502543d01d9f0972d826283a5de4207771d387c52eed0ff8c",
+      "entry_bytes": 1085,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.cash_burn_rate_elevated"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "source_hash": "68daabb511383937741863ed77fa8c53aeeb4a0b4e5471c8a9062e75590525d5",
+      "entry_bytes": 1028,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.cash_reserves"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "source_hash": "650c604c2eb897f88f636997901a835cd8922270ad9330439f8079843cddf40f",
+      "entry_bytes": 1197,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.cash_to_current_liabilities_ratio"
+      },
+      "comparison_requirement": "latest point-in-time CashAndCashEquivalentsAtCarryingValue and LiabilitiesCurrent for the same company_id"
+    },
+    {
+      "signal_ref": "gross_margin_change:v3",
+      "source_hash": "c958cacf6d34c2408753398d3cde5e220d35d672d2ff06066bb52f9241b1addd",
+      "entry_bytes": 946,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.gross_margin_change"
+      },
+      "comparison_requirement": "Latest gross margin versus prior comparable period."
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v2",
+      "source_hash": "1cadc68ebbad0c09b59982526e415a13ada55e1164487139bf7c640b02943b8e",
+      "entry_bytes": 1342,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.liquidity_runway_months"
+      },
+      "comparison_requirement": "Use the latest point-in-time CashAndCashEquivalentsAtCarryingValue and NetCashProvidedByUsedInOperatingActivities for the same reporting entity and period; when multiple facts conflict, prefer the most recent available_at."
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v2",
+      "source_hash": "16a018930dff97dc10d8dc225eb1671a5ad4a359a33ed2bd953adde75ba9fd66",
+      "entry_bytes": 1034,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.net_share_retirement_yoy"
+      },
+      "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period."
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "source_hash": "828ce230b6d441b27c3998dd6c8c74c04ae15fbdb4bf2e30049b31b0c6a0952e",
+      "entry_bytes": 1035,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.operating_cash_flow_margin"
+      },
+      "comparison_requirement": "Operating cash flow and revenue for the same period."
+    },
+    {
+      "signal_ref": "revenue_acceleration:v2",
+      "source_hash": "b1cdead2c864ecadcaaa061c46ed5900578e56e8b88404022041bb99b7569fe1",
+      "entry_bytes": 976,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.revenue_acceleration"
+      },
+      "comparison_requirement": "Current and prior comparable growth periods."
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v2",
+      "source_hash": "b1135960b5656d3761f24ba268973ed1d6e553532b6ac150d7a9b3692a93b65f",
+      "entry_bytes": 1052,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "financial.revenue_growth_yoy"
+      },
+      "comparison_requirement": "Latest period versus prior-year comparable period."
+    },
+    {
+      "signal_ref": "guidance_acceleration:v2",
+      "source_hash": "3aecf2abbad201193f3d7b312e70711bb175a6c87a0d4cae71a6f53e4089464e",
+      "entry_bytes": 1644,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "comparison_requirement": "Current guidance versus explicit prior guidance."
+    },
+    {
+      "signal_ref": "max_drawdown_1y:v2",
+      "source_hash": "718b2545f0d0d291b5b4a0478223a0afdcd401ce281b649252bba787e1727d36",
+      "entry_bytes": 831,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "market.max_drawdown_1y"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "price_momentum_126d:v2",
+      "source_hash": "035f8b19948ad41683f3f9bf039c33e3cbc378dfb3cc61357a10a8f4deb017a6",
+      "entry_bytes": 923,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "market.price_momentum_126d"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "negative_word_count:v2",
+      "source_hash": "009b1e0b21ce6bcfd58b74c102eafe2dbfe991918ffdac7d250532d20a19e3f0",
+      "entry_bytes": 904,
+      "modality": "structured",
+      "execution": {
+        "type": "deterministic",
+        "function": "news.negative_word_count"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "source_hash": "eb08b06653fe2d11a291289a34a2fb5fbeadc43c6fe341e1c6c68c9eff6b0100",
+      "entry_bytes": 4514,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "order_confirmation_disclosed.md"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "order_quality:v2",
+      "source_hash": "7d054cafc32ddf2d4080451745d58c742a64d2afd2409b1c97b07522ebb0a946",
+      "entry_bytes": 1324,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "commercialization_status:v2",
+      "source_hash": "16ed86d1f824a0f596e49a5d5848e413b2e5c4fd86058bdcb90b6c95454372ba",
+      "entry_bytes": 1761,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "comparison_requirement": null
+    },
+    {
+      "signal_ref": "customer_concentration:v2",
+      "source_hash": "ee242b80fc0c72ac3d535962b3c92faad5c7f8ab363c70764bc0135d7bb75410",
+      "entry_bytes": 1709,
+      "modality": "narrative",
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "comparison_requirement": null
+    }
+  ],
+  "backlog_count": 233,
+  "selected_need_cards": [
+    {
+      "need_ref": "need-238060885155a819ba2a8807",
+      "need": "What are the issuer's actual revenue and sales results for the first fiscal quarter of 2025 compared to its forecasted projections?",
+      "source_scope": {
+        "relation": "outside_current_dev",
+        "known_source_case_count": 1,
+        "unknown_source_count": 0,
+        "current_dev_case_refs": [],
+        "unknown_source_time_count": 0,
+        "source_prediction_times": [
+          "2025-01-31T00:00:00+00:00"
+        ],
+        "omitted_prediction_times": 0
+      },
+      "sources": [
+        {
+          "source_ref": "source-809e6cd08450df65",
+          "source_case_ref": "anon-case-78e032661400b5a31abb",
+          "source_prediction_time": "2025-01-31T00:00:00+00:00",
+          "source_round": 1,
+          "source_fingerprint": "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7",
+          "original_need": "What are the issuer's actual revenue and sales results for the first fiscal quarter of 2025 compared to its forecasted projections?",
+          "stop_reason": "finalized"
+        }
+      ]
+    },
+    {
+      "need_ref": "need-9d389b44315909db75d595dc",
+      "need": "What are the issuer's actual same-store sales and consolidated gross margin trends for the first fiscal quarter of 2025 compared to the prior-year period?",
+      "source_scope": {
+        "relation": "outside_current_dev",
+        "known_source_case_count": 1,
+        "unknown_source_count": 0,
+        "current_dev_case_refs": [],
+        "unknown_source_time_count": 0,
+        "source_prediction_times": [
+          "2025-01-31T00:00:00+00:00"
+        ],
+        "omitted_prediction_times": 0
+      },
+      "sources": [
+        {
+          "source_ref": "source-809e6cd08450df65",
+          "source_case_ref": "anon-case-78e032661400b5a31abb",
+          "source_prediction_time": "2025-01-31T00:00:00+00:00",
+          "source_round": 1,
+          "source_fingerprint": "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7",
+          "original_need": "What are the issuer's actual same-store sales and consolidated gross margin trends for the first fiscal quarter of 2025 compared to the prior-year period?",
+          "stop_reason": "finalized"
+        }
+      ]
+    },
+    {
+      "need_ref": "need-7ea271d98e3ae1697d10d6ab",
+      "need": "Capital expenditure plans for the remainder of 2025 disclosed by prediction_time.",
+      "source_scope": {
+        "relation": "outside_current_dev",
+        "known_source_case_count": 1,
+        "unknown_source_count": 0,
+        "current_dev_case_refs": [],
+        "unknown_source_time_count": 0,
+        "source_prediction_times": [
+          "2025-09-30T00:00:00+00:00"
+        ],
+        "omitted_prediction_times": 0
+      },
+      "sources": [
+        {
+          "source_ref": "source-a781db0c39edf0dc",
+          "source_case_ref": "anon-case-b0646715e63e09b6e2de",
+          "source_prediction_time": "2025-09-30T00:00:00+00:00",
+          "source_round": 1,
+          "source_fingerprint": "66ece076561eb5389458d87969bcc8ab560feaf96beead15e053f0450e1dbda5",
+          "original_need": "Capital expenditure plans for the remainder of 2025 disclosed by prediction_time.",
+          "stop_reason": "finalized"
+        }
+      ]
+    },
+    {
+      "need_ref": "need-c14fce863442da2667caa0e2",
+      "need": "Debt structure and capital expenditure commitments as of the most recent balance sheet date remain unresolved.",
+      "source_scope": {
+        "relation": "outside_current_dev",
+        "known_source_case_count": 1,
+        "unknown_source_count": 0,
+        "current_dev_case_refs": [],
+        "unknown_source_time_count": 0,
+        "source_prediction_times": [
+          "2025-03-31T00:00:00+00:00"
+        ],
+        "omitted_prediction_times": 0
+      },
+      "sources": [
+        {
+          "source_ref": "source-2ecaf0235929abb5",
+          "source_case_ref": "anon-case-8c638d4e07f431b3bd69",
+          "source_prediction_time": "2025-03-31T00:00:00+00:00",
+          "source_round": 1,
+          "source_fingerprint": "e86a1e793cf7a3c5cd3cf138600ce9ac9f859b448dd6bff9497e95ceb51e959d",
+          "original_need": "Debt structure and capital expenditure commitments as of the most recent balance sheet date remain unresolved.",
+          "stop_reason": "finalized"
+        }
+      ]
+    }
+  ],
+  "current_dev_prediction_times": {
+    "case-001": "2025-05-30T00:00:00+00:00",
+    "case-002": "2025-07-31T00:00:00+00:00",
+    "case-003": "2025-09-30T00:00:00+00:00",
+    "case-004": "2025-05-30T00:00:00+00:00",
+    "case-005": "2025-01-31T00:00:00+00:00",
+    "case-006": "2025-07-31T00:00:00+00:00",
+    "case-007": "2025-09-30T00:00:00+00:00",
+    "case-008": "2025-07-31T00:00:00+00:00"
+  },
+  "fetched_directory_rows": 66,
+  "all_directory_bindings_resolve": true,
+  "selected_case_reads": [
+    {
+      "ref": "event-95dbe6fb9fc2a01a",
+      "document_ref": "document-sec:cik_0002009312:000149315225011966",
+      "offset": 0,
+      "length": 1200,
+      "case_refs": [
+        "case-007"
+      ],
+      "verbatim_hash": "12d925c43ac0267df9ae9eec64ca31a373a2e73edc6182c9267469f4dd7228fa"
+    },
+    {
+      "ref": "event-eba8bcf5b4f8b933",
+      "document_ref": "document-sec:cik_0001746129:000114036125026134",
+      "offset": 0,
+      "length": 1200,
+      "case_refs": [
+        "case-008"
+      ],
+      "verbatim_hash": "45e66f88d2a82c965fc74c0fb3e16e5591375a1a29b49b05fa3dd172f5200480"
+    },
+    {
+      "ref": "event-b9fc8b0ef7a82f1c",
+      "document_ref": "document-sec:cik_0001951089:000121390025031098",
+      "offset": 0,
+      "length": 1200,
+      "case_refs": [
+        "case-001"
+      ],
+      "verbatim_hash": "3ffa94f311ee379b4352d8310cc153be98a6133978f4e0fc589b1c51de320832"
+    }
+  ],
+  "selected_fact_read": {
+    "fact_ref": "fact-93f650ecfb711ff1",
+    "case_refs": [
+      "case-001"
+    ],
+    "document_ref": "document-sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+    "content_hash": "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d",
+    "available_at": "2025-03-19T00:00:00+00:00"
+  },
+  "projection_seconds": 2.652722917002393,
+  "attribute_case_coverage": {
+    "order_confirmation_disclosed": {
+      "positive_cases": 2,
+      "control_cases": 1,
+      "hits": 15,
+      "amount_usd_median": null,
+      "discovery_only": true,
+      "note": "index only; never sole evidence; a miss never asserts absence"
+    }
+  },
+  "bounded_signal_read_batches": [
+    [
+      "financing_listing_action:v3",
+      "cash_burn_rate_elevated:v2",
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3",
+      "liquidity_runway_months:v2",
+      "net_share_retirement_yoy:v2",
+      "operating_cash_flow_margin:v2",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v2",
+      "guidance_acceleration:v2",
+      "max_drawdown_1y:v2",
+      "price_momentum_126d:v2",
+      "negative_word_count:v2"
+    ],
+    [
+      "order_confirmation_disclosed:v2",
+      "order_quality:v2",
+      "commercialization_status:v2",
+      "customer_concentration:v2"
+    ]
+  ],
+  "budgets": {
+    "heavy_remaining": 25,
+    "light_remaining": 1,
+    "browse_remaining": 21
+  },
+  "limits": [
+    "This is source/protocol verification, not actual model semantic correctness or live completion.",
+    "The historical staged coverage/proxy claims remain unreviewed; new input does not retroactively correct them.",
+    "Historical and reconstructed initial views have different memory/backlog dependencies; total byte counts are descriptive, not a matched-input reduction measurement.",
+    "The production factory/transmitted payload is separately covered by test_signal_evolution_engine; this replay directly exercises its ownership projector and tools."
+  ]
+}
