@@ -706,7 +706,12 @@ def project_attributes(
         if _evidence_source_family(document.source_type)
         in {"filing", "transcript", "news"}
     ]
+    seen_documents: set[tuple[str, str]] = set()
     for document in narrative_documents:
+        identity = (document.document_id, document.content_hash)
+        if identity in seen_documents:
+            continue
+        seen_documents.add(identity)
         event = event_by_document.get(f"document-{document.document_id}")
         case_ref = event.case_ref if event is not None else ""
         for match in _ATTRIBUTE_PATTERN.finditer(document.content):

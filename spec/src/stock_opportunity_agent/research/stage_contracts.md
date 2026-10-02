@@ -10,6 +10,15 @@ The user authorized the integrated design and implementation on 2026-10-01.
 
 ## Stage dependencies and boundaries
 
+Runtime-owned named remaining-action counters also own any explicit authored
+counter or exhaustion claim. A shared bounded text check compares named
+`*_remaining` counts and dimension-specific exhausted/zero-budget statements to
+the supplied integer counters. It excludes conditional, historical and denied
+examples and does not infer the affordability of unspecified future work.
+An exact offending text path receives feedback; no mechanical rewrite chooses
+a research reason, changes budgets or forces further exploration. Consumers
+retain their existing action/row correction units and complete revalidation.
+
 | Stage | Required input | Excluded input / preserved boundary |
 | --- | --- | --- |
 | Plan proposal | proposal context: prior, parents, bounded experience and constraints | Original company identities; experience never forwards into blind execution |

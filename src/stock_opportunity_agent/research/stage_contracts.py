@@ -8,10 +8,11 @@ omissions. They never rewrite model judgments or relax evidence constraints.
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Mapping, Sequence
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import ValidationError, ValidationIssue
 
 # Required top-level dependencies; each owning role validates their contents.
 _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
@@ -43,6 +44,52 @@ _BLIND_STAGES = frozenset({
 def json_bytes(value: Any) -> int:
     """Measure canonical compact UTF-8 JSON bytes, not estimated tokens."""
     return len(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+
+
+def budget_claim_issues(
+    text_rows: Sequence[tuple[str, str]], budget: Mapping[str, Any],
+) -> list[ValidationIssue]:
+    """Check explicit current remaining-action facts against runtime counters.
+
+    Example: a claim of ``heavy_remaining=0`` conflicts with
+    ``{'heavy_remaining': 26}``; a conditional future cost is not inferred.
+    """
+
+    issues: list[ValidationIssue] = []
+    for key, remaining in budget.items():
+        if not key.endswith("_remaining") or type(remaining) is not int:
+            continue
+        dimension = re.escape(key.removesuffix("_remaining"))
+        named = re.compile(
+            rf"\b{dimension}[ _-]+remaining\s*(?:=|:|is|are)\s*(?P<count>[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?!\w|\.\d)", re.I,
+        )
+        exhausted = re.compile(
+            rf"\b(?:no|zero)\s+(?:(?:remaining|admissible|available)\s+)?{dimension}\s+(?:action\s+)?budget\b"
+            rf"(?=\s*(?:$|[.;,!?]|(?:for|left|remaining|available|remains|and)\b|(?:is|was)\s+(?:left|remaining|available)\b))"
+            rf"|\b(?:out\s+of|exhausted|depleted)\s+(?:the\s+)?{dimension}\s+budget\b"
+            rf"|\b{dimension}\s+(?:action\s+)?budget\s+(?:(?:is|was|has\s+been)\s+)?(?:exhausted|depleted|used\s+up)\b", re.I,
+        )
+        for path, text in text_rows:
+            found = False
+            for pattern in (named, exhausted):
+                for match in pattern.finditer(text):
+                    prefix = re.split(r"[.;!?]", text[:match.start()])[-1][-80:]
+                    if re.search(r"\b(?:if|when|unless|assuming|suppose|hypothetical|next|future|previous|prior|not|never|false|incorrect|denied)\b", prefix, re.I):
+                        continue
+                    invalid = (float(match.group("count")) != remaining
+                               if pattern is named else remaining > 0)
+                    if invalid:
+                        issues.append(ValidationIssue(
+                            code="runtime_budget_claim_invalid", paths=(path,),
+                            message=f"{path}: current runtime {key}={remaining}; correct or remove the conflicting budget claim without changing the runtime counter or inventing a research reason.",
+                            repair_context={"budget": dict(budget), "counter": key,
+                                            "matched_text": match.group(), "source": "runtime_budget"},
+                        ))
+                        found = True
+                        break
+                if found:
+                    break
+    return issues
 
 
 def validate_stage_input(

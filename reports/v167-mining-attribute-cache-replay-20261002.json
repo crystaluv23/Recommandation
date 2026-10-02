@@ -1,0 +1,105 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "dev_case_ids": [
+    "cik_0001951089:20250530",
+    "cik_0001946703:20250731",
+    "cik_0001438133:20250930",
+    "cik_0001681459:20250530",
+    "cik_0001065059:20250131",
+    "cik_0001097362:20250731",
+    "cik_0002009312:20250930",
+    "cik_0001746129:20250731"
+  ],
+  "network_calls": 0,
+  "source_files": 99,
+  "attribute_vocabulary": {
+    "schema_version": "attribute-vocabulary-v1",
+    "attributes": [
+      {
+        "name": "order_confirmation_disclosed",
+        "pattern_sha256": "b11e2587b0a22ba7fc3a37aab1ddb7c670ba6c403c4689a0342e0b37269095a6",
+        "support": 8
+      }
+    ],
+    "min_support": 2,
+    "corpus_sha256": "64c30b1b42e4662bd9ec18d9cf3e8fb030a46d8f53cb1fde855fc849a954ae8a"
+  },
+  "source_manifest_hash": "ba40438d11358aa96a2f3d8bb512ce494be89a00ead5493f70ff0745441515de",
+  "scope": "Exact dev-issuer local corpus and shape-valid paid fetch actions through production controller tools.",
+  "paid_fetches": [
+    {
+      "request_ref": "f6200aeee7181caf94d6ed533c79d4d0b0a845c8843442ad00013c486c7b71cb",
+      "seconds": 19.64443050000409
+    },
+    {
+      "request_ref": "9354ae4d5a632a3dac6030fc63c6b4905ec27593b137e71ddff9beb832019756",
+      "seconds": 21.51668308400258
+    }
+  ],
+  "expanded_documents": 1821,
+  "unique_documents": 86,
+  "expanded_chars": 1107612099,
+  "unique_chars": 50870686,
+  "prior_production_projection": {
+    "unique": {
+      "seconds": 2.6404670829942916,
+      "hits": 15,
+      "hash": "de9b3498296d470aeb72b6aa7d77134ed35d0279a15551648c389abdf19f1f54"
+    },
+    "expanded": {
+      "seconds": 64.78827879099117,
+      "hits": 403,
+      "hash": "82b17160174ca1457da20cf84f26094ee58195ff2c807bc2d255db367f4b53f5"
+    }
+  },
+  "new_production_digest": {
+    "cold": {
+      "seconds": 2.611602833989309,
+      "attribute_case_coverage": {
+        "order_confirmation_disclosed": {
+          "positive_cases": 2,
+          "control_cases": 1,
+          "hits": 15,
+          "amount_usd_median": null,
+          "discovery_only": true,
+          "note": "index only; never sole evidence; a miss never asserts absence"
+        }
+      }
+    },
+    "cached": {
+      "seconds": 0.0005532499926630408,
+      "attribute_case_coverage": {
+        "order_confirmation_disclosed": {
+          "positive_cases": 2,
+          "control_cases": 1,
+          "hits": 15,
+          "amount_usd_median": null,
+          "discovery_only": true,
+          "note": "index only; never sole evidence; a miss never asserts absence"
+        }
+      }
+    },
+    "recovered": {
+      "seconds": 2.6419642079999903,
+      "attribute_case_coverage": {
+        "order_confirmation_disclosed": {
+          "positive_cases": 2,
+          "control_cases": 1,
+          "hits": 15,
+          "amount_usd_median": null,
+          "discovery_only": true,
+          "note": "index only; never sole evidence; a miss never asserts absence"
+        }
+      }
+    }
+  },
+  "authoritative_rows_equal": true,
+  "ledger_budget_facts_events_unchanged": true,
+  "resolvable_document_refs": true,
+  "cache_rebuild_equal": true,
+  "limits": [
+    "Offline profile proves this specific repeated-work cause and inflated diagnostic hits, not all live CPU work.",
+    "Main live source is frozen and remains unchanged; historical requests are not rewritten.",
+    "This verifies indexing, budget and source preservation; it is not live Slow completion or research gain."
+  ]
+}

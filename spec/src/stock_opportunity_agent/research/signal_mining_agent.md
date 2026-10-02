@@ -139,6 +139,17 @@ observation cycle.
   `projection_unavailable`, and a disagreement between a projection and a raw
   span keeps the raw evidence and disables the projection, never the
   candidate. A new projection kind is an explicit spec/contract extension.
+- Repeated fetch/document/event handles must not multiply attribute hits: one
+  immutable document identity and content hash contributes once to a digest.
+  Within a controller, cache only the pure per-document attribute rows, keyed by
+  document identity/hash, source family metadata, availability, the current
+  event-to-case association and frozen vocabulary hash. New documents, changed
+  associations or vocabulary cannot reuse stale rows. Reassemble case/label
+  aggregates for every view; label changes do not require another raw scan.
+  This cache is disposable and is rebuilt on recovery. It changes no fetch/read
+  charge, ledger, evidence span, PIT filter, candidate authority or raw read
+  accessibility. A cached miss still cannot establish absence. Duplicate hits
+  in older diagnostic views remain immutable rather than rewritten.
 - Known interim property (until the projection lands): narrative proposals
   ground in qualitative raw reading with no cheap cross-group contrast
   instrument before the paired gate; the gate remains the arbiter, and
@@ -235,6 +246,34 @@ observation cycle.
   was never shown. Ledger-existence alone never proves grounding.
 - Free-form thoughts are not persisted. Auditable reasons exist only as
   structured action rationales, evidence refs, and terminal dispositions.
+- All action rationales and coverage notes, and each independent need-disposition
+  rationale, reuse the shared named-budget check. For example, exhausted browse
+  or light budgets do not justify claiming that a positive heavy counter is
+  exhausted. An invalid action remains uncommitted; a valid independent
+  disposition row still survives its invalid sibling. The feedback names the
+  text path and actual counter. No-pattern remains a legitimate research choice
+  with available budget; this check validates its stated facts, not its choice.
+  Previously accepted row facts retain their authoring action's budget scope;
+  later counter consumption does not rewrite or retroactively reject those rows.
+
+### Open stage-content acceptance gaps (v167, 2026-10-02)
+
+The existing schema/ref guards do not prove semantic need coverage. Actual staged
+intent replaced forecast deviations with actual revenue, same-store measures with
+consolidated margin, and future capital plans with historical burn. Current
+controller Signal cards expose ref/description without an original spec/skill
+read branch. Need cards omit original case/time scope; the sampled Fast origins
+are disjoint from the current dev cohort. Narrative event/directory/read views
+also omit the case association needed to join source evidence to the disclosed
+group map, and the event identity currently omits case scope. These remain
+implementation/acceptance gaps, not permission to relax need or provenance rules.
+Follow the existing catalog/content/provenance interface, preserve case-scoped
+source identity including shared documents at multiple cutoffs, provide the
+necessary anonymous scope, and distinguish partial coverage and unestablished
+absence. Concrete evidence and pending design requirements are recorded in
+[the v167 review](../../../../reports/v167-mining-reliability-review-20261002.md).
+No-pattern may remain a valid result; a staged row or passing schema does not
+prove that its research rationale is correct. Full live acceptance remains open.
 
 ### Seed A: hypothesis validation
 

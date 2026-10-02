@@ -28,7 +28,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _evidence_source_family,
     _mask_identity_values,
 )
-from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, json_bytes
+from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, budget_claim_issues, json_bytes
 from stock_opportunity_agent.research.mining_agent_tools import (
     EvidenceFact,
     EvidenceRelation,
@@ -305,6 +305,7 @@ class LabelAwareMiningController:
         self._events: dict[str, Any] = {}
         self._relations: dict[str, EvidenceRelation] = {}
         self._documents: dict[str, Any] = {}
+        self._attribute_rows: dict[tuple[str, ...], dict[str, list[dict[str, object]]]] = {}
         self._document_cards: dict[tuple[str, str], dict[str, Any]] = {}
         self._visible_ranges: dict[tuple[str, str], tuple[tuple[int, int], ...]] = {}
         self._read_progress: dict[tuple[str, str, int, int], dict[str, Any]] = {}
@@ -402,11 +403,7 @@ class LabelAwareMiningController:
         view: dict[str, Any] = {
             "seed": self.seed,
             "state": self._state,
-            "budget": {
-                "heavy_remaining": self.heavy_action_limit - self._heavy_used,
-                "light_remaining": self.light_action_limit - self._light_used,
-                "browse_remaining": self.browse_limit - self._browse_used,
-            },
+            "budget": self._remaining_budget(),
             "available_source_families": list(self.available_source_families),
             "measurable_evidence_manifest": self.manifest,
             "signal_catalog": [dict(card) for card in self.signal_catalog],
@@ -456,6 +453,12 @@ class LabelAwareMiningController:
             }
         return view
 
+    def _remaining_budget(self) -> dict[str, int]:
+        """One runtime source for disclosed counters and authored-claim checks."""
+        return {"heavy_remaining": self.heavy_action_limit - self._heavy_used,
+                "light_remaining": self.light_action_limit - self._light_used,
+                "browse_remaining": self.browse_limit - self._browse_used}
+
     def _evidence_digest(self) -> dict[str, Any]:
         """Runtime-owned summary of what fetches have already collected."""
 
@@ -479,16 +482,7 @@ class LabelAwareMiningController:
         narrative_summary = self._narrative_summary()
         attribute_index: dict[str, Any] = {}
         if self.attribute_vocabulary:
-            documents = [
-                document
-                for result in self._documents.values()
-                for document in result.documents
-            ]
-            projected = project_attributes(
-                documents,
-                self._events.values(),
-                vocabulary=self.attribute_vocabulary,
-            )
+            projected = self._projected_attributes()
             for name, rows in projected.items():
                 by_case: dict[str, dict[str, set[str]]] = {}
                 for row in rows:
@@ -543,6 +537,31 @@ class LabelAwareMiningController:
                 else {}
             ),
         }
+
+    def _projected_attributes(self) -> dict[str, list[dict[str, object]]]:
+        """Reuse immutable document projections, retaining current case ownership."""
+
+        vocabulary_hash = canonical_json_hash(self.attribute_vocabulary)
+        event_by_document = {event.document_ref: event for event in self._events.values()}
+        seen: set[tuple[str, str]] = set()
+        projected: dict[str, list[dict[str, object]]] = {}
+        for result in self._documents.values():
+            for document in result.documents:
+                identity = (document.document_id, document.content_hash)
+                if identity in seen:
+                    continue
+                seen.add(identity)
+                event = event_by_document.get(f"document-{document.document_id}")
+                key = (*identity, document.source_type, document.available_at.isoformat(),
+                       event.case_ref if event is not None else "", vocabulary_hash)
+                if key not in self._attribute_rows:
+                    self._attribute_rows[key] = project_attributes(
+                        (document,), (event,) if event is not None else (),
+                        vocabulary=self.attribute_vocabulary,
+                    )
+                for name, rows in self._attribute_rows[key].items():
+                    projected.setdefault(name, []).extend(rows)
+        return projected
 
     def _narrative_summary(self) -> dict[str, Any]:
         """Semantic surface for fetched narrative evidence.
@@ -688,6 +707,13 @@ class LabelAwareMiningController:
             raise InvalidMiningAction(
                 "rationale must be a non-empty array of short strings"
             )
+        texts = [(f"rationale[{i}]", text) for i, text in enumerate(rationale)]
+        coverage = raw.get("coverage")
+        if isinstance(coverage, Mapping) and isinstance(coverage.get("note"), str):
+            texts.append(("coverage.note", coverage["note"]))
+        issues = budget_claim_issues(texts, self._remaining_budget())
+        if issues:
+            raise InvalidMiningAction("; ".join(issue.message for issue in issues))
         if action in LIGHT_ACTIONS and self._light_used >= self.light_action_limit:
             raise BudgetInadmissibleAction("light action budget exhausted")
         narrative_read = action == "read_span" and any(key in raw for key in ("event_ref", "document_ref"))
@@ -1423,6 +1449,13 @@ class LabelAwareMiningController:
             rationale = row["rationale"]
             if not isinstance(rationale, list) or not rationale or any(not isinstance(text, str) or not text.strip() for text in rationale):
                 row_issues.append(f"row[{index}] rationale must be non-empty strings")
+                continue
+            issues = budget_claim_issues(
+                [(f"row[{index}].rationale[{i}]", text) for i, text in enumerate(rationale)],
+                self._remaining_budget(),
+            )
+            if issues:
+                row_issues.extend(issue.message for issue in issues)
                 continue
             duplicates = sorted(
                 {str(ref) for ref in refs if str(ref) in seen}

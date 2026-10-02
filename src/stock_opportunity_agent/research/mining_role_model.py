@@ -127,7 +127,12 @@ _MINING_CONTROLLER_PROMPT = (
     "explored_families actually present in your own prior fetches. When "
     "last_invalid_action is present, fix exactly that issue. Never request "
     "facts after the prediction time, never use identities or file ordering "
-    "as features, and never exceed the remaining budgets shown in the view."
+    "as features, and never exceed the remaining budgets shown in the view. "
+    "Named remaining counters and exhaustion claims in any rationale or coverage "
+    "note must match the current runtime budget. Light/browse exhaustion does not "
+    "exhaust heavy actions; available heavy budget does not oblige a candidate. "
+    "For a no-pattern result, give the supported research reason instead of "
+    "inventing budget exhaustion."
 )
 
 

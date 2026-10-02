@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-02：Mining按immutable文档去重并缓存纯属性投影，真实材料1821→86次扫描、403→15唯一命中；共享runtime预算声明核验并保留已接受行历史scope。生产离线回放、47专项及1358全量通过；新增真实Slow语义前沿报告，明确来源cohort不重合、Signal原件读取缺口、4个覆盖错误及51条未证实absence。冻结live仍Fast=1/Slow=0，整体验收未完成。
+
 - 2026-10-02：Posthoc 统一运行时已实现倍数及五日均价/recent close分母检测，价格规则与数值义务首次聚合、salvage完整重验。42份实际缓存扫描及Lantheus生产局部回放/保存/来源解析通过，1351项全量测试通过；v167真实Fast=1、Slow=0，F1 .7586/.7200，完整实测验收未完成，冻结main未合入本批修复。
 
 - 2026-10-02：隔离统一 runtime 控制/State 证据提示词，允许 typed 无效 evidence 隔离为空后完整重验，补齐无有效采纳时旧需求原文及多重出现恢复；共享价格 shortfall 和 stated-path/absence downgrade 首次纠错规则保留普通商业路径。四个真实生产离线回放及保存/来源解析通过，全量1346测试通过。真实v167 Fast=1、F1 .7586/.7200，Slow=0仍在Mining；收益分母、幅度塌缩、身份排除与新Slow absence依据待审查，未合入冻结main或声明整体验收。

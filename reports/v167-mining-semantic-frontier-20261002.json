@@ -1,0 +1,1073 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "snapshot_local_time": "2026-10-02 08:39:23 +0800",
+  "frozen_revision": "8c07f38333002db8bcbe639b3a28e3d197c49672",
+  "committed_fast_round": 1,
+  "committed_slow_cycle": 0,
+  "dev_case_ids": [
+    "cik_0001065059:20250131",
+    "cik_0001097362:20250731",
+    "cik_0001438133:20250930",
+    "cik_0001681459:20250530",
+    "cik_0001746129:20250731",
+    "cik_0001946703:20250731",
+    "cik_0001951089:20250530",
+    "cik_0002009312:20250930"
+  ],
+  "backlog_source_case_count": 24,
+  "backlog_source_cases_in_current_dev": [],
+  "need_unit_files": [
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/05832d9ab5c28c194ab8d830d0da04a19844ba4a79bf31fea404eb70f19128a6.json",
+      "sha256": "6cf6af004ee5a963ae38c1a30be4f439380c73a29d34d41234e58dd49c4034a7",
+      "pending_count": 100
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/42f5c3853855c89abacdb82fd9182d396530fbdee982c35f8bda2165f75e5b65.json",
+      "sha256": "526ac58b4f7559af53ac58059bc2970fe2449f3cb5325a8d8993faaeec2de1a0",
+      "pending_count": 88
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/4369b1fd930700d542e80b46282d16a8ccb586c5212367d01f1bea9aa4fb97a3.json",
+      "sha256": "19e8812788f6047e61429f3fd755318552a05b42abc359facd10dfcec866b099",
+      "pending_count": 196
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/467ec303939b669653e99b9a7e4f374aadceb5453a354641a124b2361cda00bf.json",
+      "sha256": "fe96f50528b0504743a422214f72aab72ae6bb46c8b89fab86cde83477bcecce",
+      "pending_count": 76
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/565da502948f84b99dac19496c6cbbe754e9e9e6344538d3ac78e36a646a76a4.json",
+      "sha256": "fb1007e8c7ec2adad32335f6e75df335b4e6d23e5c57667945bcf2d564e4cdad",
+      "pending_count": 232
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/612002e52ed1cfc4dea6c8d0ccf3e767173295a5fe4ae66835019476109bfc19.json",
+      "sha256": "b0dc6d6cd4b7be6591e6e70f342fd444af08059dcde5716870bfe1b5a244e615",
+      "pending_count": 184
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/749784f92408f345b0ebf6e2d013669dcd60dc1e563e8fcac6230dd4c1ceed97.json",
+      "sha256": "95095d21947b8939c58d8e2f41bbdb8a2de4017eb9a6f150f74af1ec5cfc0aae",
+      "pending_count": 4
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/7620a9145b4cd24665b343078f5e49abbc86b6fd01ec14295c80dabc0e4ed7c8.json",
+      "sha256": "51e2321ff0f074fc7992d1d77801d58aba821459b49bad8642debc57ac8ae177",
+      "pending_count": 52
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/7d328038499c09aa5c2d369f1f0168b67102915aebb6ca0c52d411cbfb11fddb.json",
+      "sha256": "9ba47deb8256c06dc23c08e0ae71d6a4b4b33b0e89e2194c68997f540822fbb2",
+      "pending_count": 16
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/80eab962fe8d6c6b700a344494f19b8412103cdc402d1cacfec2e6f3bb493fc1.json",
+      "sha256": "bddacfc99f898f5f2df53cb0db697fbfaaf161bada3bc8318000287488872455",
+      "pending_count": 136
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/95edb64c701be83b7b071f9460e148955e91e974b14823ae382bd9cb3be11172.json",
+      "sha256": "63cbdb9620aa187c2fd37ec8a293af439159e1f99d38e6c6b7d866e9e6b77c3b",
+      "pending_count": 0
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/9863cb0fa5ecd6f2f599627944771ab478cb3d774518c6a07513be75695af3e1.json",
+      "sha256": "b77ec12c737a5de15339fe38ffaa2279da0392d91b54ad59fca3edd6a5f6c592",
+      "pending_count": 112
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/9cd7041c6e2dc24b09318233ccff76d8443c05be8d6d7a0fc813eb5c4a1a4be3.json",
+      "sha256": "40bda3fdc041c310a0cd14f634c461de0aab1764453e330ad3555864f14895f4",
+      "pending_count": 148
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/a11113b5a95af56aa4b2295dfd02bff6d53a913de4e922567855351818f7c4ea.json",
+      "sha256": "dc423235081405110b3f435e8c519f1b80783184b185e1cc61bb0a013663ffe5",
+      "pending_count": 28
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/a296480ca67a44801491c2292c20efe778498b83867edb521cd73011c1d5d4a0.json",
+      "sha256": "a21af1319b191cf035200ee5327dac2219936a9c7a6849c3c330749ba714fa67",
+      "pending_count": 124
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/aa5e6100ff083fe0dafbd87e6262e29822b51342bd80c2a77df8167652f80dee.json",
+      "sha256": "c9de368e7f5f6d29cdd091b232620a58c179133f85a3272c7b0602df80a902d5",
+      "pending_count": 172
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/b78bffcdc13c17478ca70ba8f4f19bfc43023cb3640e2dc5066c8ac1c804dde4.json",
+      "sha256": "992eaa5b00b8d4afd1aecbdcd42211d41f860ceffad8f314c9b3110487ed6b17",
+      "pending_count": 208
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/bade383cf01c25cab76517c1ecf60e2f1a07500478673fac3781b24627fa7e0c.json",
+      "sha256": "41252b6f42b03036e6f13db81d37623bcdeb029010b92342e28d958155a6e363",
+      "pending_count": 64
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/d600d6b675495a10c9147f8ecbddfcc7c0aa1d6481395d61b91d0eabcdc270b8.json",
+      "sha256": "068cf8a863f38c7516dc7edc0942d2224a09678f4a390fe626a1144600fd4edc",
+      "pending_count": 220
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/e1e17157b7d9b171262af0092710fccaededccadd046b446cc8030d8aee0873b.json",
+      "sha256": "db19442195640debe4481e30f6174d7ed238f6bdafd02c89d4539a22e3a396f7",
+      "pending_count": 40
+    },
+    {
+      "path": "experiments/cycles/cycle-0001/mining_need_units/8b2dc8d5f9b8c3e1ccf25affaadb87093ef3d5732f320e2b1a66a167bde1881e/f3b2aa94e6235e93ac0a1361b081a3a6376bbc2ceff748b473e5777589f21fa3.json",
+      "sha256": "a4910297950111bce97e6646db0321288ff7dbbb01c187053b9a929eed42d3a0",
+      "pending_count": 160
+    }
+  ],
+  "staged_rows": 242,
+  "staged_need_refs": 244,
+  "dispositions": {
+    "deferred_measurement": 215,
+    "update_existing": 7,
+    "fast_plan_action": 11,
+    "new_measurement": 9
+  },
+  "last_mining_request": {
+    "request_ref": "df42daa8e3a06fdaec5c7f24a2eb5774e34863ceaeb0f74dad25f591b7d1847b",
+    "axis": {
+      "axis_id": "surge_direction",
+      "control": "realized_max_multiple < 2.0",
+      "population": "eligible_discovery_cases",
+      "positive": "realized_max_multiple >= 2.0"
+    },
+    "seed": "discovery",
+    "budget": {
+      "browse_remaining": 13,
+      "heavy_remaining": 24,
+      "light_remaining": 0
+    },
+    "action": "inspect_catalog"
+  },
+  "semantic_findings": [
+    {
+      "need_ref": "need-238060885155a819ba2a8807",
+      "original_backlog": {
+        "kind": "unmatched_signal_need",
+        "need": "What are the issuer's actual revenue and sales results for the first fiscal quarter of 2025 compared to its forecasted projections?",
+        "need_ref": "need-238060885155a819ba2a8807",
+        "occurrences": 1,
+        "source_count": 1,
+        "source_fingerprints": [
+          "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7"
+        ],
+        "source_rounds": [
+          1
+        ],
+        "sources": [
+          {
+            "original_need": "What are the issuer's actual revenue and sales results for the first fiscal quarter of 2025 compared to its forecasted projections?",
+            "source_fingerprint": "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7",
+            "source_ref": "plan_r0001_c01:cik_0001847409:20250131",
+            "source_round": 1,
+            "stop_reason": "finalized"
+          }
+        ],
+        "status": "open",
+        "stop_reasons": [
+          "finalized"
+        ]
+      },
+      "accepted_staged_intent": {
+        "disposition": "new_measurement",
+        "need_refs": [
+          "need-238060885155a819ba2a8807"
+        ],
+        "rationale": [
+          "Actual revenue versus forecast can be measured as RevenueFromContractWithCustomerExcludingAssessedTax or Revenues, available for three cases.",
+          "This is a new measurement distinct from existing revenue_growth_yoy and revenue_acceleration signals."
+        ],
+        "signal_refs": []
+      },
+      "finding": "Actual revenue does not supply the forecast required to measure actual-versus-forecast deviation.",
+      "status": "semantic_contract_gap_not_repaired"
+    },
+    {
+      "need_ref": "need-9d389b44315909db75d595dc",
+      "original_backlog": {
+        "kind": "unmatched_signal_need",
+        "need": "What are the issuer's actual same-store sales and consolidated gross margin trends for the first fiscal quarter of 2025 compared to the prior-year period?",
+        "need_ref": "need-9d389b44315909db75d595dc",
+        "occurrences": 1,
+        "source_count": 1,
+        "source_fingerprints": [
+          "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7"
+        ],
+        "source_rounds": [
+          1
+        ],
+        "sources": [
+          {
+            "original_need": "What are the issuer's actual same-store sales and consolidated gross margin trends for the first fiscal quarter of 2025 compared to the prior-year period?",
+            "source_fingerprint": "8ab2a2507445dec918139d938e3f12207390fcaa7cc9b92941389ffc2ce1c1c7",
+            "source_ref": "plan_r0001_c01:cik_0001847409:20250131",
+            "source_round": 1,
+            "stop_reason": "finalized"
+          }
+        ],
+        "status": "open",
+        "stop_reasons": [
+          "finalized"
+        ]
+      },
+      "accepted_staged_intent": {
+        "disposition": "new_measurement",
+        "need_refs": [
+          "need-9d389b44315909db75d595dc"
+        ],
+        "rationale": [
+          "Same-store sales and gross margin trends can be measured from GrossProfit and revenue concepts available for three cases.",
+          "This is a new measurement distinct from the existing gross_margin_change signal."
+        ],
+        "signal_refs": []
+      },
+      "finding": "Gross profit and revenue may support gross margin, but do not provide same-store sales.",
+      "status": "semantic_contract_gap_not_repaired"
+    },
+    {
+      "need_ref": "need-7ea271d98e3ae1697d10d6ab",
+      "original_backlog": {
+        "kind": "unmatched_signal_need",
+        "need": "Capital expenditure plans for the remainder of 2025 disclosed by prediction_time.",
+        "need_ref": "need-7ea271d98e3ae1697d10d6ab",
+        "occurrences": 1,
+        "source_count": 1,
+        "source_fingerprints": [
+          "66ece076561eb5389458d87969bcc8ab560feaf96beead15e053f0450e1dbda5"
+        ],
+        "source_rounds": [
+          1
+        ],
+        "sources": [
+          {
+            "original_need": "Capital expenditure plans for the remainder of 2025 disclosed by prediction_time.",
+            "source_fingerprint": "66ece076561eb5389458d87969bcc8ab560feaf96beead15e053f0450e1dbda5",
+            "source_ref": "plan_r0001_c02:cik_0001018963:20250930",
+            "source_round": 1,
+            "stop_reason": "finalized"
+          }
+        ],
+        "status": "open",
+        "stop_reasons": [
+          "finalized"
+        ]
+      },
+      "accepted_staged_intent": {
+        "disposition": "update_existing",
+        "need_refs": [
+          "need-7ea271d98e3ae1697d10d6ab"
+        ],
+        "rationale": [
+          "Capex plans are a component of cash burn and are covered by the existing cash burn rate signal."
+        ],
+        "signal_refs": [
+          "cash_burn_rate_elevated:v2"
+        ]
+      },
+      "finding": "Historical operating cash burn does not answer forward capex plans; existing Signal definition excludes planned CapEx.",
+      "status": "semantic_contract_gap_not_repaired"
+    },
+    {
+      "need_ref": "need-c14fce863442da2667caa0e2",
+      "original_backlog": {
+        "kind": "unmatched_signal_need",
+        "need": "Debt structure and capital expenditure commitments as of the most recent balance sheet date remain unresolved.",
+        "need_ref": "need-c14fce863442da2667caa0e2",
+        "occurrences": 1,
+        "source_count": 1,
+        "source_fingerprints": [
+          "e86a1e793cf7a3c5cd3cf138600ce9ac9f859b448dd6bff9497e95ceb51e959d"
+        ],
+        "source_rounds": [
+          1
+        ],
+        "sources": [
+          {
+            "original_need": "Debt structure and capital expenditure commitments as of the most recent balance sheet date remain unresolved.",
+            "source_fingerprint": "e86a1e793cf7a3c5cd3cf138600ce9ac9f859b448dd6bff9497e95ceb51e959d",
+            "source_ref": "plan_r0001_c01:cik_0001801368:20250331",
+            "source_round": 1,
+            "stop_reason": "finalized"
+          }
+        ],
+        "status": "open",
+        "stop_reasons": [
+          "finalized"
+        ]
+      },
+      "accepted_staged_intent": {
+        "disposition": "update_existing",
+        "need_refs": [
+          "need-c14fce863442da2667caa0e2"
+        ],
+        "rationale": [
+          "Debt structure and capex commitments against the balance sheet are covered by the existing cash-to-current-liabilities ratio signal."
+        ],
+        "signal_refs": [
+          "cash_to_current_liabilities_ratio:v2"
+        ]
+      },
+      "finding": "Cash/current-liabilities ratio does not encode debt structure and capex commitments.",
+      "status": "semantic_contract_gap_not_repaired"
+    }
+  ],
+  "unverified_corpus_absence_rows": [
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-9b747414795c0a87522a339d"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses analyst estimates or consensus expectations for earnings or revenue.",
+        "Fetched narrative and structured families contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-c150dbac41db5c8ec89b7139"
+      ],
+      "rationale": [
+        "No in-window source in this cohort reports health and fitness industry competitive or regulatory developments affecting pricing power or cost structure.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-a6817a132d13cb446c343215"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses coding, coverage, or reimbursement developments for Pylarify and DEFINITY.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-c445e0d09cd1a3e2fab124a2"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses customer contracts, design wins, or commercial milestones supporting revenue growth within the six-month horizon.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-633d5f5424d15203e014d454"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses use of proceeds or lock-up arrangements for the secondary offering of 23,000,000 shares.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-216c54a2c63d0db7bf2ecf08"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses regulatory status or expected approval timing for OCTEVY.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-d3c87baa8107e6a5875a52fe"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses expected use or timing of the resale shelf or Selling Holder selling intentions.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-e6282f81bba587bb22626e2c"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses expected timing or proceeds from remaining divestitures under the $3 billion program.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-46bf332f9f32485a4268d126"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses operational status or restart timeline for the Red Chris mine.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-d7a6ce28482ef34495caf8b9"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses cash position, burn rate, or expected impact of the 2025 Sales Agreement on runway into 2028.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-2df174711356126553b742cb"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses other late-stage assets or expected timing of the 5 clinical readouts.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-199ed740a029aea39b1b3751"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses expected timing or design of the POWER1 and POWER2 studies for vormatrigine.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-5ad5ec088995dfb39cfd310c"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses RADIANT study results, discontinuation causes, or additional analyses.",
+        "Fetched narrative and structured families contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-594f96f75026acc8dc439d23"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses the ReCode Therapeutics collaboration or its pipeline/cash impact.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-4c5cce2e52f09c3f0389446b"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses the Schall Law Firm investigation or related regulatory inquiries.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-4fc1c491c00fc9a1848061da"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses active client counts, retention rates, or order frequency trends.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-314a81ffb365d43f8a8de604"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses new commercial partnerships, product launches, or near-term revenue initiatives.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-bdd02680e602a9d640f88d21"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses regulatory, legal, or litigation developments material to operations or financial condition.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-5e9382395a27ceed646bf4b4"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses competitive pressures, pricing changes, or promotional activity in online personal styling.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-e19057634779a92ddd7bc66c"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses SG&A reduction plans or restructuring actions.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-d43408f285c7843c5bb6b321"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses Las Vegas or Macau demand trends, booking windows, or group convention activity.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-1d0536afdb2d279ce9c238c2"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses Macau concession CapEx commitments or required government approvals.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-567f39d0167a93755f7e2f20"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses Al Marjan Island opening timing, cost, or revenue contribution.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-4bdfb48ff76e2baffbf84d30"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses tariff cost impact or alternative sourcing arrangements.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-cbc8c4060a7065d2eaffd6e4"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses share repurchase pace or dividend payments under a capital return program."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-59b121b1b61f31cd7debe83e"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses the delayed $375M CapEx projects, Encore Tower remodel, or revised timeline."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-feaf3d87dc5c702ad9bb882c"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses scheduled catalysts such as earnings dates, conferences, or strategic reviews."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-891355824cfd39131f1fef1c"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses competitive capacity additions, plant outages, or export demand for ethanol."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-4571238bda74b8074b670e53"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses revolver availability, covenant compliance, or six-month CapEx funding expectations."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-8e2f0088bc640c06992af5e4"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses Q2 2025 crush margins, distillers grains pricing, UHP volumes, or corn oil realizations."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-e7e69257415836448b90233d"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses RFS volume changes, small refinery exemptions, or LCFS program developments."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-af9a46ab80faf146cc31d868"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses vormatrigine or RADIANT data presentations at medical meetings."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-2926ec85b41b0dfbe1cb68f2"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses AI product launches, verification measures, or engagement/payer conversion impact."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-e75c6b8d0b8f01de8b55cc44"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses fiscal 2025 revenue, profitability, or adjusted EBITDA guidance."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-16c2aac1ed1f0097570d80cc"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses guidance revisions, backlog, or bookings clarifying margin expansion."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-2a3c3810b96bf413736fcb95"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses regulatory or environmental proceedings affecting operations or costs."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-272f21cc1ba811f8b9238d00"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses indium phosphide substrate shipment volumes following the August 2025 export permits.",
+        "Fetched narrative and structured families contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-cdf6acacff5bddbe0c845397"
+      ],
+      "rationale": [
+        "No in-window source in this cohort states assumptions about PYLARIFY and DEFINITY demand and pricing.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-9577a7dedd78d653fb1d83e6"
+      ],
+      "rationale": [
+        "No in-window source in this cohort provides analyst or market commentary on valuation or catalysts toward the doubling threshold.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-1727b671aa2e2049de43e9f8"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses closing conditions or expected timeline for the Evergreen Theragnostics acquisition.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-3cccfdfdb793deaaa1e80fee"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses closing conditions or expected timeline for the Life Molecular Imaging acquisition.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-dc385879831a97aa32572619"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses capital allocation priorities including planned share repurchases, dividend changes, or debt reduction.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-1988278a7c976638e4ee11a4"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses key risks or contingencies such as litigation, regulatory issues, or supply chain disruptions that could materially affect the six-month price path.",
+        "Fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-d4afaebf55cae3e00454d536"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses indium phosphide substrate shipment timing, customer identity, or revenue magnitude under the August 2025 export permits.",
+        "The narrative and structured families fetched contain no such disclosure, so the measurement cannot be constructed from available evidence."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-64fdfc3c28e14ae2ee661221"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses antitrust investigations or intellectual property disputes affecting operations within six months.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-642b3ca619606c8efdb09586"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses additional clinical trial results or regulatory submissions for vormatrigine or other product candidates since August 4, 2025.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-b90e0abf906c3b21a2583b6b"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses management's pricing and competitive dynamics for optical and interconnect products.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-2dacdf84195eba55719c5106"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses management's expected revenue and margin contribution from Boeing and Airbus agreements or volume/pricing terms.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-4277272e2566d6bb68098835"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses percentage of revenue from Boeing and Airbus individually.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-3acff93db96ace99251176c8"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses a quantified cost-reduction program or SG&A run-rate target sufficient to change the earnings outlook within six months.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    },
+    {
+      "disposition": "deferred_measurement",
+      "need_refs": [
+        "need-b79f7e01eea6432726bd8275"
+      ],
+      "rationale": [
+        "No in-window source in this cohort discloses a scheduled earnings release, guidance update, or material operating milestone expected within six months.",
+        "The fetched narrative and structured evidence contain no such disclosure, so the measurement cannot be constructed."
+      ],
+      "signal_refs": []
+    }
+  ],
+  "input_gap": {
+    "current_catalog_card_fields": [
+      "description",
+      "signal_ref"
+    ],
+    "signal_original_read_path": "Controller signals catalog branch pages cards only; engine supplies only signal_ref/description. No full spec/skill read branch exists in this controller.",
+    "need_card_scope": "Working cards omit original source-case/cutoff scope. Whole original backlog rows are addressable, but were not read during the sampled hypothesis actions.",
+    "narrative_case_bindings": {
+      "sample_count": 57,
+      "samples": [
+        {
+          "request_ref": "1e4abf7dfb9d02348132f870765660323cbc9193f1b782cafeeb2999241e0535",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "af5f58fe5590ad16c4c5d924a6ef2c2d2b10f7042ab524715742fedd60df9083",
+          "kind": "catalog",
+          "keys": [
+            "available_at",
+            "discovery_only",
+            "document_ref",
+            "event_ref",
+            "family",
+            "raw_chars",
+            "readable_start",
+            "section_count",
+            "sections",
+            "title",
+            "window"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "269f96d59ba82a1bf58d453e0804ff7c7a631255be4321cd5bbaf5cd0936561a",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "bd4168b2fe0b22c97b7051dbec8f64245a594c13e3a84cf87a99ebf2d3b206ce",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "43388222637348326081a2d5f0105cf2c5d9a6f8236546d548b7349b954c2c47",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "02f4fc54751f0fd3f557f9e510cd09f9ae9e21faba8ebeface128460e327c30f",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "3becd659900eda25c6d3b0366c5f1516c7610101c45084e849b3684055f16b59",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        },
+        {
+          "request_ref": "35fe779aaffd03d58384613744e677722bfba622df16209f8ba7d7521a019183",
+          "kind": "read",
+          "keys": [
+            "action",
+            "available_at",
+            "document_ref",
+            "has_readable_text",
+            "length",
+            "masked",
+            "next_readable_start",
+            "offset",
+            "raw_window_chars",
+            "readable_chars",
+            "ref",
+            "source_family",
+            "target",
+            "title",
+            "verbatim_hash"
+          ],
+          "case_binding_present": false
+        }
+      ],
+      "any_binding_disclosed": false,
+      "runtime_fact": "NarrativeEvent has case_ref but event/document directory rows and read payloads omit it. Label_map cannot be joined to these narrative handles. Event identity currently also omits case_ref, so shared-document case ownership can be overwritten."
+    }
+  },
+  "next_design_requirements": [
+    "Expose bounded Signal capability contracts plus hash-bound, whole-original reads through the existing catalog/content/provenance discipline.",
+    "Preserve source-case and time scope in need cards without disclosing identities.",
+    "Validate complete versus partial semantic coverage, preserving unresolved sub-needs and preventing forecasts, store-level measures and future plans from being replaced by nearby historical proxies.",
+    "Tie absence claims to actually read/retrieved coverage; partial exploration permits deferred/unestablished, not a blanket corpus absence claim.",
+    "Preserve case-scoped narrative event identity and disclose case associations through directory/read provenance, including documents shared by multiple cutoff cases; keep blind stages outcome-free."
+  ],
+  "limits": [
+    "Staged intent is not a resolved capability, promoted Signal or live cycle commit.",
+    "The listed semantic contradictions are specifically inspected; unverified absence claims are not all classified as false.",
+    "Performance/budget repairs are isolated and not yet used by this frozen live process.",
+    "This report does not claim full stage-content acceptance or independent research gain."
+  ]
+}
