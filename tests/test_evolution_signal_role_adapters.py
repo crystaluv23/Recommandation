@@ -450,6 +450,38 @@ class SignalRoleAdapterTests(TestCase):
         with self.assertRaisesRegex(ValidationError, "preserve description"):
             signal_roles_module.validate_signal_update_candidate(stable.ref, changed, stable)
 
+    def test_update_no_effective_change_can_exit_without_rewriting_case_evidence(self) -> None:
+        stable = SignalSpec(signal_id="revenue_growth_yoy", version=1, category="financial",
+            description="Measure year-over-year revenue growth.",
+            execution_type=SignalExecutionType.DETERMINISTIC, modality=SignalModality.STRUCTURED,
+            source_types=("financials",), function="financial.revenue_growth_yoy")
+        row = {"case_ref": "update-case-001", "evidence_verdict": "supported",
+               "facts": [{"document_ref": "document-01", "exact_span": "Revenue grew 20%."}],
+               "evidence_gaps": [], "outcome_relation": "aligned",
+               "outcome_explanation": "The source result agrees with the supplied association."}
+        invalid = {"signal_ref": stable.ref, "disposition": "update", "problem_type": "threshold_calibration",
+                   "rationale": ["Update calibration."], "case_diagnostics": [row],
+                   "changed_paths": ["spec.parameters"], "candidate": {"signal_ref": stable.ref,
+                       "spec": {**stable.to_dict(), "version": 2}, "tests": [{"name": "unchanged"}]}}
+        corrected = {**invalid, "disposition": "no_change", "candidate": None,
+                     "changed_paths": [], "rationale": ["No supported mutable change was established."]}
+        caller = ScriptedRoleCaller([invalid, corrected])
+        result = LLMSignalUpdateModel(caller).update({
+            "target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()},
+            "induction_cases": [{"case_ref": row["case_ref"],
+                "evidence_observation": {"executed_evidence": [row["facts"][0]]},
+                "outcome_relation": {"current_signal_relation": "aligned"}}],
+        })
+        self.assertEqual(result.value.disposition, "no_change")
+        self.assertIsNone(result.value.candidate)
+        self.assertEqual(result.value.case_diagnostics, (row,))
+        self.assertEqual(result.usage.llm_calls, 2)
+        feedback = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertEqual(feedback["obligations"][0]["issue_code"], "signal_update_no_effective_change")
+        self.assertEqual(feedback["obligations"][0]["must_change_any_of_paths"],
+                         ["candidate", "changed_paths", "disposition", "rationale"])
+        self.assertNotIn("case_diagnostics", str(caller.calls[1]["payload"]["output_patch_contract"]["allowed_operations"]))
+
     def test_update_program_repairs_changed_paths_before_correction(self) -> None:
         stable = SignalSpec(
             signal_id="revenue_growth_yoy", version=1, category="financial",

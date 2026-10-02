@@ -622,3 +622,5 @@
 - 2026-10-02：诊断committed-Fast bootstrap入口接生产manifest/导入/DualLoop，原40案与来源保留、源指针不拷贝，明确有序定义重建和出版后输入核验；新增3入口回归、1471全量/lint PASS，v171仅prepare待实际Slow，祖先spec同步现有增量恢复分支。
 
 - 2026-10-02: 审计v171已提交Slow真实终态；Mining按typed权限选择唯一输出grammar，复用共同patch定义；Update以源范围绑定citation refs恢复长HTML原文，保留canonical schema和完整校验。1474全量/306最终相关/lint通过，实际局部外部验证与新因子/零技术排除验收继续。
+
+- 2026-10-02: v172真实两Mining native patch与短引用完整JSON验证；发现并修复Update零实际变化时disposition纠错权限互斥，共享typed义务保留所有正确case证据，允许模型选择有效update或no_change/defer。组件费用$0.02673524，原失败/冻结源不改，目标继续。

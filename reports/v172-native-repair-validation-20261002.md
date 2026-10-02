@@ -1,0 +1,9 @@
+# 实际native patch与Update纠错权限前沿
+
+2026-10-02。独立组件诊断 `runs/cold_start/live_stage_validation_v172` 使用冻结d2f824e6与单独12 attempts/$5上限；不是完整周期，不提交Fast/Slow pointer。原v171已提交两更新和所有源记录不修改。
+
+实际4次外部调用：direction与magnitude的原缺rationale请求分别返回native patch，仅增加rationale，原case/query/source/max_documents不变；现有snapshot/权限应用通过。Update原263118字符请求经可读source span/ref投影后实际input tokens 31629，输出1668 tokens（原两次均8000截断），JSON完整；纠错465 tokens也是合法native patch。四次费用合计$0.02673524。引用传输修复有了真实模型证据，但Update完整parser仍拒绝，原因是candidate没有实际变化；不能宣称已完成Update或候选入库。
+
+新前沿：初答与纠错都复制原skill，声明changed_paths=[skill]。共享validator要求真正变化或no_change；旧权限只允许candidate/changed_paths，禁止变更disposition，构成“校验建议与修复权限不一致”。修复为typed `signal_update_no_effective_change`：允许修改candidate/diff/disposition/rationale，且已证实全部paths为无效diff时可整体替换changed_paths。模型自行决定真实有效更新或no_change/defer；已有case diagnostics、target和problem_type固定，不制造语义改动、不用空candidate假装update。
+
+250相关测试通过，包括从零差异update回退no_change保留全部原文证据以及修复权限反例；1475全量及lint通过；付费局部纠错重放继续。组件诊断的原失败留存，不重写旧缓存或冻结代码。完整Fast零排除、双轴新因子挖掘/入库、后继消费与magnitude独立效果仍待验收。

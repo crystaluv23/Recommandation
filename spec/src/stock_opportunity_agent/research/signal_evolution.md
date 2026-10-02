@@ -324,6 +324,10 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   Candidate/diff correction may edit both coupled fields while preserving every
   unrelated decision field. Version and fixture changes are not substantive
   Signal changes and cannot create a staged candidate.
+  No effective mutable change emits a typed shared validation obligation with
+  the coupled disposition/candidate/diff/rationale correction authority. A
+  complete corrected decision still passes both role and staging validators;
+  case evidence stays fixed and a non-update cannot stage any candidate.
   The bounded correction path executes deterministic candidates against the
   immutable stable fixtures and reports all fixture failures as one candidate
   obligation. Soft-signal fixtures are not executed inside parsing because their

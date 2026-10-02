@@ -530,7 +530,13 @@ follow [stage contracts](stage_contracts.md).
   overlays partial `raw_retrieval` edits on the stable policy and uses one shared
   validator during bounded correction and staging. Unknown, missing, or surplus
   path declarations and candidates whose only changes are version or tests are
-  invalid update decisions. When the candidate passes baseline checks without
+  invalid update decisions. An otherwise valid candidate with no effective
+  mutable change grants replace authority over `candidate`, `changed_paths`,
+  `disposition` and `rationale`: the model may supply an actual valid update or
+  choose `no_change`/`defer` with null candidate, empty paths and a coherent
+  explanation. Correct case diagnostics, target and problem type stay fixed.
+  The runtime never invents an update or chooses the research disposition.
+  When the candidate passes baseline checks without
   its declared diff, the owning validator grants exact `changed_paths` replacement
   authority. Before model correction, runtime replaces that bookkeeping field
   with the exact diff recomputed from the stable/candidate pair. It then reruns the

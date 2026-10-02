@@ -25,7 +25,7 @@ from stock_opportunity_agent.data.resolution import (
 )
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import OpenAIClientError
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import StructuredValidationError, ValidationError, ValidationIssue
 from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex, reflection_fact_inference_fields
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -3396,9 +3396,16 @@ def validate_signal_update_candidate(
         )
     )
     if not actual_paths:
-        raise ValidationError(
-            "Signal Update candidate has no effective change; use no_change"
-        )
+        raise StructuredValidationError([ValidationIssue(
+            code="signal_update_no_effective_change",
+            message=("Signal Update candidate has no effective change; supply an actual valid "
+                     "update or choose no_change/defer with candidate=null, changed_paths=[] "
+                     "and a consistent rationale. Preserve all case diagnostics."),
+            paths=("candidate", "changed_paths", "disposition", "rationale"),
+            path_policy="any",
+            allowed_repairs=("replace",),
+            repair_context={"invalid_container_paths": ["changed_paths"]},
+        )])
     if changed_paths is not None:
         declared = tuple(str(item) for item in changed_paths)
         allowed_paths = set(SIGNAL_UPDATE_MUTABLE_PATHS)

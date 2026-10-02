@@ -1346,7 +1346,9 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         )
                     except (KeyError, TypeError, ValueError, ValidationError) as exc:
                         normalization = normalized_changed_paths(value)
-                        if normalization is not None:
+                        if isinstance(exc, StructuredValidationError):
+                            issues.extend(exc.issues)
+                        elif normalization is not None:
                             issues.append(ValidationIssue(
                                 code="signal_update_diff_metadata_invalid",
                                 message="Copy the exact runtime-derived candidate diff",
