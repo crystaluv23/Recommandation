@@ -16,6 +16,7 @@ from typing import Any, Callable, Iterable, Mapping, Protocol
 from stock_opportunity_agent.artifacts import (
     atomic_write_json as _atomic_write_json,
     atomic_write_text as _atomic_write_text,
+    canonical_json_hash as _canonical_hash,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
 from stock_opportunity_agent.data.resolution import (
@@ -95,11 +96,14 @@ def _validate_admission_record(record: Mapping[str, Any], *, signal_ref: str) ->
     """Reject corrupt admission identities and inconsistent technical decisions."""
 
     identity = record.get("admission_identity")
-    if not isinstance(identity, Mapping) or set(identity) != {
+    required = {
         "schema_version", "signal_ref", "candidate_hash", "input_registry_hash",
         "validator_hash", "research_targets", "contract_validation",
-    }:
+    }
+    if not isinstance(identity, Mapping) or not required <= set(identity) or set(identity) - required - {"research_provenance"}:
         raise ValidationError("Signal admission identity is incomplete")
+    if "research_provenance" in identity:
+        _validate_research_provenance(identity["research_provenance"])
     targets = identity["research_targets"]
     contract = identity["contract_validation"]
     if (
@@ -127,6 +131,25 @@ def _validate_admission_record(record: Mapping[str, Any], *, signal_ref: str) ->
         or (not contract["accepted"] and not contract["reasons"])
     ):
         raise ValidationError("Signal admission record does not match its identity")
+
+
+def _validate_research_provenance(value: Any) -> None:
+    """Keep lineage explicit and label-free; never infer independence from absence."""
+
+    if not isinstance(value, Mapping) or set(value) != {"generation_case_ids", "induction_case_ids", "origin", "source_input_hash"}:
+        raise ValidationError("Signal research provenance is invalid")
+    for name in ("generation_case_ids", "induction_case_ids"):
+        refs = value[name]
+        if not isinstance(refs, list) or any(not isinstance(ref, str) or not ref.strip() for ref in refs) or refs != sorted(set(refs)):
+            raise ValidationError("Signal research provenance refs are invalid")
+    if value["origin"] not in {"current_cycle", "legacy_effect_records", "unknown"} or (
+        value["source_input_hash"] is not None and (
+            not isinstance(value["source_input_hash"], str) or not _SHA256.fullmatch(value["source_input_hash"])
+        )
+    ):
+        raise ValidationError("Signal research provenance origin is invalid")
+    if value["origin"] != "unknown" and value["source_input_hash"] is None:
+        raise ValidationError("known research provenance requires its source hash")
 
 
 class _FrozenDict(dict[Any, Any]):
@@ -2275,6 +2298,7 @@ class SignalRegistry:
         validator_hash: str,
         research_targets: Iterable[str],
         contract_validation: Mapping[str, Any],
+        research_provenance: Mapping[str, Any] | None = None,
     ) -> str:
         """Bind a technical decision to content without claiming predictive effect."""
 
@@ -2309,6 +2333,9 @@ class SignalRegistry:
             "research_targets": list(targets),
             "contract_validation": contract,
         }
+        if research_provenance is not None:
+            _validate_research_provenance(research_provenance)
+            identity["research_provenance"] = dict(research_provenance)
         key = _admission_identity_key(identity)
         record = {
             "schema_version": "signal-candidate-admission-v1",
@@ -2369,6 +2396,78 @@ class SignalRegistry:
             "research_targets": list(record["admission_identity"]["research_targets"]),
             "admission_key": record["evaluation_key"],
         }
+
+    def record_candidate_effectiveness(
+        self,
+        signal_ref: str,
+        *,
+        admission_key: str,
+        evaluation_identity: Mapping[str, Any] | None,
+        effectiveness: Mapping[str, Any],
+        observation_status: str = "completed",
+    ) -> str:
+        """Save independent effect evidence or a failure without changing admission."""
+
+        admission = self.load_candidate_validation(signal_ref, evaluation_key=admission_key)
+        if admission is None or admission.get("schema_version") != "signal-candidate-admission-v1" or admission.get("accepted") is not True:
+            raise ValidationError("effect observation requires exact successful technical admission")
+        if observation_status not in {"completed", "failed"} or (
+            evaluation_identity is None and observation_status != "failed"
+        ):
+            raise ValidationError("effect observation status/identity is invalid")
+        if evaluation_identity is None:
+            evaluation_key, identity = None, None
+        else:
+            evaluation_key, identity = self.candidate_evaluation_key(
+                signal_ref, candidate_hash=self.candidate_hash(signal_ref), evaluation_identity=evaluation_identity,
+            )
+        record = {
+            "schema_version": "signal-candidate-effect-observation-v1",
+            "signal_ref": signal_ref,
+            "candidate_hash": self.candidate_hash(signal_ref),
+            "admission_key": admission_key,
+            "evaluation_key": evaluation_key,
+            "evaluation_identity": identity,
+            "observation_status": observation_status,
+            "effectiveness": dict(effectiveness),
+        }
+        key = _canonical_hash(record)
+        _write_or_verify_json(self._candidate_spec_path(signal_ref).parent / "effects" / f"{key}.json", {**record, "effect_key": key})
+        return key
+
+    def list_candidate_effectiveness(self, signal_ref: str) -> tuple[Mapping[str, Any], ...]:
+        """Load independently hash-bound effect observations, including failures."""
+
+        rows = []
+        candidate_hash = self.candidate_hash(signal_ref)
+        for path in sorted((self._candidate_spec_path(signal_ref).parent / "effects").glob("*.json")):
+            row = _read_json(path)
+            key = row.get("effect_key")
+            identity = row.get("evaluation_identity")
+            if (
+                row.get("schema_version") != "signal-candidate-effect-observation-v1"
+                or row.get("signal_ref") != signal_ref or row.get("candidate_hash") != candidate_hash
+                or key != path.stem or key != _canonical_hash({name: value for name, value in row.items() if name != "effect_key"})
+                or row.get("observation_status") not in {"completed", "failed"}
+            ):
+                raise ValidationError("candidate effect observation identity is invalid")
+            if identity is None:
+                if row["observation_status"] != "failed" or row.get("evaluation_key") is not None:
+                    raise ValidationError("effect observation lacks its evaluation identity")
+            else:
+                if not isinstance(identity, Mapping) or not set(_CANDIDATE_EVALUATION_HASH_FIELDS).issubset(identity):
+                    raise ValidationError("candidate effect evaluation identity is invalid")
+                evaluation_key, expected_identity = self.candidate_evaluation_key(
+                    signal_ref, candidate_hash=candidate_hash,
+                    evaluation_identity={name: identity[name] for name in _CANDIDATE_EVALUATION_HASH_FIELDS},
+                )
+                if identity != expected_identity or row.get("evaluation_key") != evaluation_key:
+                    raise ValidationError("candidate effect evaluation identity is invalid")
+            admission = self.load_candidate_validation(signal_ref, evaluation_key=str(row.get("admission_key", "")))
+            if admission is None or admission.get("schema_version") != "signal-candidate-admission-v1" or admission.get("accepted") is not True:
+                raise ValidationError("effect observation admission is invalid")
+            rows.append(row)
+        return tuple(rows)
 
     def record_candidate_validation(
         self,

@@ -370,92 +370,6 @@ class SignalEvolutionTests(TestCase):
                 & {groups[item] for item in manifest["check_case_ids"]}
             )
 
-    def test_pooled_provisional_decision_zones(self) -> None:
-        from stock_opportunity_agent.research.signal_evolution import (
-            pooled_provisional_decision,
-        )
-
-        def record(decisive, correct, wrong, tp=None, fn=None):
-            confusion = {}
-            if tp is not None and fn is not None:
-                confusion = {"tp": tp, "fn": fn}
-            return {
-                # Production effectiveness records serialize the counts
-                # under the nested candidate mapping, not flat keys.
-                "candidate": {
-                    "decisive": decisive,
-                    "directional_correct": correct,
-                    "directional_wrong": wrong,
-                },
-                "candidate_confusion": confusion,
-            }
-
-        promote = pooled_provisional_decision(
-            [
-                record(4, 3, 1, tp=2, fn=0),
-                record(4, 4, 0, tp=2, fn=0),
-                record(5, 5, 0, tp=2, fn=0),
-            ]
-        )
-        self.assertEqual(promote["action"], "promote")
-        self.assertEqual(
-            promote["counts"],
-            {"cycles": 3, "decisive": 13, "correct": 12, "wrong": 1, "tp": 6, "fn": 0},
-        )
-
-        legacy_flat = pooled_provisional_decision(
-            [
-                {
-                    "candidate_decisive": 4,
-                    "candidate_directional_correct": 4,
-                    "candidate_directional_wrong": 0,
-                    "candidate_confusion": {"tp": 2, "fn": 0},
-                }
-            ]
-        )
-        self.assertEqual(legacy_flat["counts"]["decisive"], 4)
-
-        recall_starved = pooled_provisional_decision(
-            [
-                record(4, 3, 1, tp=1, fn=3),
-                record(4, 4, 0, tp=1, fn=3),
-                record(5, 5, 0, tp=2, fn=2),
-            ]
-        )
-        self.assertEqual(recall_starved["action"], "continue")
-
-        tie_keep = pooled_provisional_decision(
-            [record(4, 2, 2), record(4, 3, 1)]
-        )
-        self.assertEqual(tie_keep["action"], "continue")
-
-        eliminate = pooled_provisional_decision(
-            [
-                record(4, 2, 2),
-                record(4, 2, 2),
-                record(4, 1, 3),
-                record(4, 1, 3),
-                record(4, 2, 2),
-            ]
-        )
-        self.assertEqual(eliminate["action"], "eliminate")
-
-        recall_eliminate = pooled_provisional_decision(
-            [
-                record(4, 4, 0, tp=1, fn=3),
-                record(4, 4, 0, tp=1, fn=3),
-                record(4, 4, 0, tp=1, fn=3),
-                record(4, 4, 0, tp=1, fn=3),
-                record(4, 4, 0, tp=1, fn=3),
-            ]
-        )
-        self.assertEqual(recall_eliminate["action"], "eliminate")
-
-        starved = pooled_provisional_decision(
-            [record(0, 0, 0)] * 5
-        )
-        self.assertEqual(starved["action"], "eliminate")
-
     def test_candidate_evaluation_exclusions_pool_generation_and_prior_cases(
         self,
     ) -> None:
@@ -2203,7 +2117,7 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(domain["audit"]["disposition"], "defer")
             self.assertEqual(
                 domain["audit"]["defer_reason"],
-                "insufficient_local_induction_or_holdout",
+                "insufficient_local_induction",
             )
             self.assertEqual(
                 domain_selection["available_bucket_counts"]["unavailable"], 11
@@ -6135,11 +6049,9 @@ class SignalEvolutionTests(TestCase):
             self.assertFalse(induction_ids & holdout_ids)
             self.assertTrue(update_audit["model_called"])
             effectiveness = result.candidate_effectiveness[updated.ref]
-            self.assertEqual(effectiveness["disposition"], "promoted")
-            self.assertLess(
-                effectiveness["candidate"]["directional_wrong"],
-                effectiveness["current"]["directional_wrong"],
-            )
+            self.assertEqual(effectiveness["technical_admission"], "admitted")
+            self.assertEqual(effectiveness["status"], "pending_use")
+            self.assertNotIn("candidate", effectiveness)
 
     def test_mining_tool_rejects_existing_stable_signal_identity(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -6903,7 +6815,7 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(result["candidate_refs"], (candidate.ref,))
             self.assertEqual(
                 result["audit"]["disposition"],
-                "reused_provisional_new_evaluation",
+                "reused_technical_candidate",
             )
 
     def test_slow_loop_validates_and_auto_promotes_exact_batch_idempotently(self) -> None:
@@ -7024,6 +6936,10 @@ class SignalEvolutionTests(TestCase):
                 run_contract_hash="contract-hash",
             )
             original_bump_version = registry.bump_version
+            def fail_if_effect_gate_runs(*_args, **_kwargs):
+                raise AssertionError("Effect observation cannot block technical admission")
+            engine.effectiveness_evaluator.evaluation_identity = fail_if_effect_gate_runs
+            engine.effectiveness_evaluator.evaluate = fail_if_effect_gate_runs
 
             def interrupt_before_version_commit():
                 registry.bump_version = original_bump_version
@@ -7077,6 +6993,9 @@ class SignalEvolutionTests(TestCase):
             self.assertEqual(len(mining_model.requests), mining_request_count)
             self.assertEqual(registry.latest_spec("revenue_growth_yoy").version, 1)
             self.assertEqual(registry.latest_spec("discovery_growth_quality").version, 1)
+            self.assertEqual(registry.freeze().research_status[new_spec.ref]["effect_status"], "unverified")
+            self.assertEqual(result.candidate_effectiveness[new_spec.ref]["status"], "pending_use")
+            self.assertNotIn("candidate", result.candidate_effectiveness[new_spec.ref])
 
             class PromotedSignalSelector:
                 def __init__(self) -> None:
@@ -7115,6 +7034,11 @@ class SignalEvolutionTests(TestCase):
                     )
 
             selector = PromotedSignalSelector()
+            class CapturingPredictor(FixedPredictor):
+                def predict(self, final_context):
+                    self.final_context = final_context
+                    return super().predict(final_context)
+            captured_predictor = CapturingPredictor()
             next_fast_case = discovery_cases[0]
             trajectory = execute_information_plan(
                 plan=default_information_plan(),
@@ -7126,11 +7050,12 @@ class SignalEvolutionTests(TestCase):
                 signal_executor=SignalExecutor(registry.freeze(), raw_store),
                 controller=OneBatchController(),
                 signal_agent=selector,
-                predictor=FixedPredictor(),
+                predictor=captured_predictor,
                 prediction_sink=lambda *_args: "next-fast-prediction.json",
                 ground_truth_provider=lambda _company_id: next_fast_case.ground_truth,
             )
             self.assertIn(new_spec.ref, selector.asserted_registry_refs)
+            self.assertEqual(captured_predictor.final_context["signal_rounds"][0]["batch"]["results"][0]["research_status"]["effect_status"], "unverified")
             self.assertEqual(selector.selected_refs, [new_spec.ref])
             self.assertEqual(
                 trajectory.signal_rounds[0].selections[0].signal_ref,

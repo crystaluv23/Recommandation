@@ -231,20 +231,18 @@ class C8FullChainIntegrationTest(unittest.TestCase):
             )
             result = engine.run_cycle(cycle_id=1, input_snapshot=snapshot)
 
-            # The ge3-classed comparison supports the factor, but magnitude
-            # research cannot silently use the direction promotion gate.
-            self.assertEqual(result.promoted, ())
-            self.assertEqual(registry.version, snapshot.version)
-            self.assertIn(
-                "discovery_growth_quality:v1", result.provisional_candidates
-            )
+            # Technical admission permits use; it supplies no effect verdict.
+            self.assertEqual(result.promoted, ("discovery_growth_quality:v1",))
+            self.assertEqual(registry.version, snapshot.version + 1)
+            self.assertEqual(result.provisional_candidates, {})
             effectiveness = result.candidate_effectiveness[
                 "discovery_growth_quality:v1"
             ]
-            self.assertTrue(effectiveness["target_supported"])
+            self.assertEqual(effectiveness["status"], "pending_use")
+            self.assertEqual(effectiveness["effect_status"], "unverified")
             self.assertEqual(
-                effectiveness["research_axis"]["target_id"],
-                MAGNITUDE_GE3_TARGET_ID,
+                effectiveness["research_targets"],
+                [MAGNITUDE_GE3_TARGET_ID],
             )
             h3_sample_basis = result.agent_audits["mining_pipeline"]["stages"][
                 "H3"
@@ -291,12 +289,13 @@ class C8FullChainIntegrationTest(unittest.TestCase):
                 result.magnitude_contribution[
                     "target_supported_candidate_refs"
                 ],
-                ["discovery_growth_quality:v1"],
+                [],
             )
-            with self.assertRaises(ValidationError):
+            self.assertIsNone(
                 registry.target_support(
                     "discovery_growth_quality:v1", MAGNITUDE_GE3_TARGET_ID
                 )
+            )
 
             # --- Commit-barrier interrupted state, then control-layer recovery ---
             self.assertEqual(workspace.last_completed_cycle, 0)
@@ -309,8 +308,8 @@ class C8FullChainIntegrationTest(unittest.TestCase):
             )
             self.assertEqual(workspace.last_completed_cycle, 1)
 
-            # --- Next Fast remains byte-stable until the guarded candidate is
-            # admitted by a separate Fast consumption experiment. ---
+            # --- Next Fast may use the admitted factor; earlier records stay
+            # byte-stable and benefit remains unassessed. ---
             fast_engine().run_round(
                 round_id=2,
                 validation_cases=make_evaluation_pool(),

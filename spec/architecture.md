@@ -111,9 +111,9 @@ Existing atomic pointers and domain promotion rules retain commit authority.
 Predictor context is assembled from typed stage products, including explicit
 state supersession/removal; it never consumes retrospective label-bearing memory.
 
-## Approved next Signal admission and tracking boundary
+## Signal technical admission and tracking boundary
 
-2026-10-02 user decision; runtime implementation pending. A technically valid,
+2026-10-02 user decision. A technically valid,
 traceable, PIT-safe Signal may enter the callable Registry with explicit
 unverified effect, for both direction and magnitude. Technical admission and
 empirical effectiveness have distinct immutable, version-bound identities.
@@ -125,18 +125,21 @@ evidence or duplicate Plan use as independent observations. Magnitude consumptio
 evaluation follows admission; it cannot be a prerequisite blocking all admission.
 Update produces a new version and cannot inherit proven effect automatically.
 
-The paired-effectiveness promotion clauses below describe the currently deployed
-legacy policy, including frozen runs. They are superseded for the next migrated
-admission protocol only after Registry records, recovery, model views and owning
-module contracts implement this approved separation. This document does not
-authorize rewriting historical evaluations or changing labels/fitness.
+Paired-effectiveness promotion clauses below describe historical policy. For new
+production Slow work, technical admission supersedes paired/provisional effects
+as commit authority. Effect evaluations remain independent immutable observations,
+never fabricated passing gates. Previously staged transitions recover from their
+original keys; frozen runs require their original code/contract. This policy does
+not authorize rewriting historical evaluations or changing labels/fitness.
 See the [full lifecycle and migration design](../reports/slow-signal-system-design-20261002.md).
 
-Registry admission records, atomic publication/recovery and frozen version
-status are implemented as the migration foundation. The production Slow main
-loop still uses its legacy effect gate; Fast prompt consumption and continuous
-target tracking remain pending. The foundation does not supersede historical
-policy or assert that the complete runtime migration has occurred.
+Registry admission records, atomic publication/recovery and frozen version status
+provide the migration foundation. New decisions apply the same technical check
+to direction, magnitude and vNext. Effect observation failures keep effect unknown;
+control-plane failures still propagate after preserving technical progress. No
+candidate is blocked waiting for a Fast benefit experiment that requires admission.
+Fast sees version-bound unverified status alongside the measurement. Continuous
+tracking and benefit confirmation are independently verified lifecycle obligations.
 
 ## Constrained Basic Info
 
@@ -327,7 +330,7 @@ manifest derived from rejected-round trajectories: only label-hidden
 `no_signal_match` information needs survive, issuer aliases are masked, and
 source contract/rejection hashes plus the exact input Registry are bound. The
 rejected Fast round remains outside history and parent selection. Bootstrap
-uses the unchanged H1/H2/H3, candidate executor, paired effectiveness gate,
+uses the active Mining path, candidate executor, technical admission,
 atomic transition, and Locked-Test boundary, then exposes any committed Registry
 output only to a fresh subsequent Fast run.
 
@@ -683,7 +686,7 @@ Reports are human-readable artifacts. Memory is structured state used by future 
 
 ### Meta-learning vs Self-modification
 
-Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. The explicitly defined Slow-Loop Signal validator may automatically promote exact passing candidate hashes at a cycle boundary only after both executable contract validation and a fixed paired effectiveness gate. Changing that validator, its gates, datasets, priors, score semantics, or promotion policy remains a framework change; medium and high-risk framework changes require human approval.
+Meta-learning may propose changes, generate experiments, and recommend version upgrades. It must not silently overwrite prompts, scoring weights, schemas, or modules. The explicitly defined Slow-Loop Signal validator may automatically promote exact passing candidate hashes at a cycle boundary after complete executable contract validation, with effect explicitly unverified. The user-approved 2026-10-02 policy separates continuous effect observation and independent paired studies from admission; neither study interruption nor insufficient demonstrated gain blocks technical publication. Changing that validator, its gates, datasets, priors, score semantics, or promotion policy remains a framework change; medium and high-risk framework changes require human approval.
 
 ## Scoring Shape
 

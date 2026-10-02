@@ -1,14 +1,39 @@
 # Signal and Dual-Loop Evolution
 
-## Approved next admission policy; not yet implemented
+## Technical admission and independent effect observations
 
 The 2026-10-02 user decision admits technically valid direction and magnitude
 Signals for Fast use with explicitly unverified effect. Admission and effect
 records must be separate; the magnitude Fast-consumption check follows admission.
-Current paired/provisional gates below remain the deployed legacy protocol until
-the full Registry, recovery, consumer and tracking migration is implemented.
+New Slow decisions authorize publication from complete technical validation, not
+paired/provisional effect disposition. Historical gate descriptions below apply
+only to frozen records and old staged transition recovery.
 No frozen run or historical accepted/rejected record is rewritten.
 See [the approved lifecycle design](../../../../reports/slow-signal-system-design-20261002.md).
+
+The candidate loop persists a `signal-candidate-admission-v1`; it performs no
+paired effect calls before publication. Accepted technical records may be reused only for exact candidate,
+input Registry, validator/model policy and targets. Semantic/behavior duplicates
+inside the current batch are technical rejections. All original valid modules
+and legacy effect records remain immutable. Previously committed provisional
+residents are rechecked technically in bounded batches, preserving original
+generation/induction exclusions; pooled effect promotion is no longer an active
+decision path. New versions inherit their prior measurement's declared research
+purposes, but never inherit supported effect.
+
+Effect starts at `pending_use`, never invented zero counts. Standalone paired
+measurements retain their own full cohort/source/model identity and are
+stored as `signal-candidate-effect-observation-v1` in a separate namespace.
+`accepted`/`disposition` inside their legacy measurement payload describes that
+measurement, not Registry admission. Lack of gain, sparse samples or a failed
+effect observation cannot change a valid technical decision. These studies are
+independent of the admission loop; their provider/budget interruption cannot
+prevent technical publication. Provider/control flow in required technical work
+still propagates. New cycles never write
+fake promoted effects or rewrite old v2/v3 records. Historical effect and admission
+source units remain separately discoverable for Slow feedback.
+Committed-use target producers and independent benefit studies are the next
+tracking frontier; admission alone is not evidence that tracking is complete.
 
 Provider projections preserve source identity before anonymizing prose: hash each
 original backlog source ref before masking its row, and retain an opaque
@@ -187,8 +212,9 @@ H, E, Update, and effectiveness evaluation. The default check cohort holds 16
 cases (`validation_cases_per_class` 8, effectiveness `case_limit` 16): a
 one-shot majority gate at n=16 separates a 60%-accurate signal from noise
 about as well as any affordable single cycle can (0.72 vs 0.40 pass rate),
-and the remaining discrimination comes from pooled accumulation across
-cycles, not from ever-larger per-cycle cohorts. Missing evidence does not
+These historical gate statistics explain frozen evaluation records;
+new admission uses executable contract validation. Future independent studies
+may accumulate observations across cycles without gating candidate publication. Missing evidence does not
 substitute another case. Candidate authoring and semantic review finish
 before candidate hash and shared check corpus freeze. Validation adds
 definition-to-implementation consistency, independent
@@ -208,42 +234,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
 
 ## Invariants
 
-- Signal candidates validate before promotion. Paired effectiveness applies
-  tiered admission to new Signals with two directional floors, both derived
-  from the per-arm confusion matrix over available cases (TP/FP/FN/TN keyed
-  by the positive label): the directional floor (decisive correct must
-  exceed wrong — "do not misfire") and the positive-recall floor (at least
-  half of the positive-label check cases must receive a POSITIVE call — "do
-  not abstain on the class that matters"). The recall floor exists because
-  accuracy among decisive calls rewards cowardice: a signal firing only on
-  easy controls scores perfectly while missing nearly every surge. A
-  candidate that passes every correctness, availability, and decisiveness
-  floor but fails only one or both directional floors at the check cohort's
-  small n is not disproved — with or without an incumbent counterpart — and
-  becomes a `provisional` resident. Comparative regressions against an
-  incumbent stay hard: an update that reduces availability or directional
-  correct count, increases wrong count, or shows no strict paired gain over
-  the existing version remains rejected, and reducing errors only by
-  abstaining does not turn a still-wrong candidate into an effective
-  Registry version. Admission is recall-first for the mining loop: an
-  under-sampled candidate (too few Discovery cases, decisive support below
-  the paired minimum, or executor-contained technical failures that leave
-  no decisive calls) is unproven rather than disproved and stays a
-  provisional resident for later pooled cohorts; a paired-run execution
-  error is likewise recorded as provisional with its technical reason, not
-  as a research verdict.
-- Provisional residents accumulate pooled paired evidence: each cycle the
-  runtime re-evaluates surviving residents on that cycle's fresh check cohort
-  and applies the three-zone rule over their pooled records — promote when
-  pooled decisive evidence reaches the promotion significance (decisive >= 12
-  and one-sided binomial tail <= 0.10) together with pooled positive recall
-  at the floor; eliminate when the accumulation horizon (5 records) passed
-  with pooled evidence at or below chance (correct < wrong, decisive < 4, or
-  recall below the floor); otherwise continue. At most 2 provisional
-  residents may be pending at once; a floor failure arriving with the cap
-  occupied is rejected with an explicit reason instead of admitting a third
-  resident. Basic correctness stays hard at every tier: PIT, contract
-  fixtures, availability, and decisiveness are never waived.
+- Technical admission governs new production publication for all research targets
+  and vNext. Fixtures, PIT, lineage, semantics and uniqueness remain hard checks.
+  Effects start unverified; availability, decisiveness, directional recall and
+  paired gain are independent observations, never candidate admission floors.
+  Legacy provisional records remain immutable and may enter bounded technical
+  revalidation; their former pooled promotion engine is removed.
 - The production mining entry is capability-dispatched: with a frozen v8
   sampling manifest and a mining model exposing a JSON role caller, the
   LabelAwareMiningController (Seeds A and B) mines and its grounded
@@ -251,7 +247,7 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   spec first, skill for narrative predicates second, tests last — where an
   accepted module is cached across retries so a failing stage never
   re-renders valid siblings. After staging, the unchanged contract
-  validator and paired gates judge them. H/E role-protocol models keep their
+  validator and independent admission judge them; effect observations follow use. H/E role-protocol models keep their
   tracks for read-only replay, and manifest-free workspaces keep the v7
   cadence. Every outgoing controller model view carries the composed Fast
   reflection memory — the masked bounded `meta_info` brief view plus the
@@ -272,7 +268,7 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   population afresh each cycle from a seed that includes the cycle id: a case
   may serve a mining role in one cycle and an evaluation role in any other,
   and within each cycle dev and check stay issuer-disjoint and label-balanced.
-  Evaluation hygiene is enforced per candidate at the effectiveness gate: a
+  Independent evaluation hygiene is enforced per candidate: a
   candidate is never evaluated on its proposal cycle's dev cohort (recorded as
   its immutable `generation_case_ids`) or on any case it was already evaluated
   on, so pooled paired evidence counts each case at most once and never scores
@@ -540,7 +536,8 @@ implementation; when none exists it is retained as a capability gap and cannot
 be silently recast as an LLM Signal. A narrative predicate may use only a
 source-grounded LLM skill. A proposal that combines a numeric formula with
 narrative fallback rules must be split before materialization. Fixtures and all
-existing semantic and paired gates remain mandatory.
+existing semantic, source and point-in-time gates remain mandatory. Effect
+observations are independent of technical admission.
 
 The runtime classifies modality before materialization. A narrative predicate
 with `value_kind=numeric` whose evidence refs mix structured facts with
@@ -655,8 +652,9 @@ zero-call historical replay and a controlled candidate closed loop, then one
 live shadow cycle on identical frozen inputs. Cutover changes the production
 mining entry only after that gate, keeps H/E readable for history parsing and
 replay, and archives the legacy specs under repository removal discipline.
-Candidate validation, holdout, paired effectiveness, and promotion gates are
-identical for both paths and are never weakened for yield. The controller's
+Both paths use the same technical candidate validation and admission contract.
+Independent effect studies retain holdout isolation and paired measurement
+semantics; research yield never permits invalid or nonexecutable publication. The controller's
 mining ledger is a new feedback unit type whose reflection consumption follows
 the existing append-only memory rules.
 
@@ -708,8 +706,9 @@ both groups for paired validation. When a `SignalEvolutionEngine` runs with
 `research_target_reveal` plus `research_target_sampling`, comparison
 induction draws a class-balanced prefix from the target dev side, comparison
 packets carry positive/control labels from the frozen reveal only, and
-candidate paired validation uses the balanced target check ids; direction
-bookkeeping and the direction-only path are unchanged. Target evaluations persist through the
+independent paired studies use the balanced target check ids; technical
+admission itself makes no effect calls. Direction bookkeeping and the
+direction-only path remain target-bound. Target evaluations persist through the
 SignalRegistry namespace described in `signal_library.md`.
 
 Production activation additionally builds the target group and issuer-disjoint

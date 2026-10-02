@@ -3048,6 +3048,9 @@ def execute_information_plan(
     _set_request_token_budget(controller, limits.max_tokens)
     _set_evaluation_context(controller, prediction_time)
     _set_evaluation_context(signal_agent, prediction_time)
+    status_setter = getattr(controller, "set_signal_research_status", None)
+    if callable(status_setter):
+        status_setter(signal_registry.research_status)
     # Computation before interpretation: the anchor block is derived once
     # from complete PIT market documents and disclosed verbatim at every
     # stage; the state validator rejects numeric restatements of it.
@@ -3130,6 +3133,7 @@ def execute_information_plan(
             state_deltas=tuple(state_deltas),
             computed_metrics=(*bootstrap_computed, *document_channel.computed_metrics),
             document_views=document_channel.document_views,
+            signal_research_status=signal_registry.research_status,
         )
 
     def predictor_reservation() -> int:
@@ -3925,6 +3929,7 @@ def _assemble_final_context(
     state_deltas: Iterable[Mapping[str, Any]] = (),
     computed_metrics: Iterable[Mapping[str, Any]] = (),
     document_views: Iterable[Mapping[str, Any]] = (),
+    signal_research_status: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     identity_keys = {"company_id", "company_name", "ticker", "symbol"}
     identity_aliases = [
@@ -3984,6 +3989,9 @@ def _assemble_final_context(
         ref: signal_result_model_view(result)
         for ref, result in signal_results.items()
     }
+    for ref, result in model_signal_results.items():
+        if ref in (signal_research_status or {}):
+            result["research_status"] = dict(signal_research_status[ref])
     signal_rounds = [
         {
             "selected_signals": list(round_row.selected_signals),
@@ -3996,6 +4004,8 @@ def _assemble_final_context(
                             "interpretation"
                         ],
                         "status": model_signal_results[result.ref]["status"],
+                        **({"research_status": model_signal_results[result.ref]["research_status"]}
+                           if "research_status" in model_signal_results[result.ref] else {}),
                     }
                     for result in round_row.batch.results
                 ],

@@ -177,6 +177,10 @@ def signal_research_objective() -> dict[str, Any]:  # noqa: PLR0911
             contract.descriptor()
             for contract in active_research_targets()
         ],
+        "admission_policy": {
+            "technical": "Require correct measurement semantics, PIT sources, version identity, uniqueness and genuinely executed fixtures.",
+            "effect": "Admit technically valid direction/magnitude measurements with effect unverified; observe effect continuously. Sparse holdout, absent strict paired gain or unassessed Fast benefit is not a production barrier.",
+        },
     }
 
 
@@ -2194,10 +2198,7 @@ class SignalCandidateEffectiveness:
         }
 
 
-_PROVISIONAL_RESIDENT_LIMIT = 2
-_PROVISIONAL_ACCUMULATION_HORIZON = 5
-_POOLED_PROMOTION_DECISIVE_MINIMUM = 12
-_POOLED_PROMOTION_SIGNIFICANCE = 0.10
+_LEGACY_CANDIDATE_RECHECK_LIMIT = 2
 _RECALL_FLOOR = 0.5
 _DIRECTIONAL_FLOOR_REASON = (
     "candidate lacks positive directional evidence over controls"
@@ -2250,101 +2251,6 @@ def _binomial_tail_at_least(count: int, trials: int) -> float:
     if trials <= 0 or count <= 0:
         return 1.0 if count <= 0 else 0.0
     return sum(comb(trials, i) for i in range(count, trials + 1)) / 2**trials
-
-
-def _pooled_candidate_count(row: Mapping[str, Any], key: str) -> int:
-    """Read one candidate count from either record shape.
-
-    Effectiveness records serialize candidate counts under the nested
-    ``candidate`` mapping (``decisive``, ``directional_correct``,
-    ``directional_wrong``); a legacy flat ``candidate_*`` key is honored as
-    a fallback so old rows never silently pool as zeros.
-    """
-
-    candidate = row.get("candidate")
-    if isinstance(candidate, Mapping):
-        return int(candidate.get(key, 0) or 0)
-    return int(row.get(f"candidate_{key}", 0) or 0)
-
-
-def pooled_provisional_decision(
-    records: Iterable[Mapping[str, Any]],
-) -> dict[str, Any]:
-    """Apply the pooled three-zone rule to one provisional resident.
-
-    ``records`` are the resident's per-cycle paired-effectiveness records (its
-    current cycle included). Zones: promote when pooled decisive evidence
-    reaches the promotion significance and the pooled positive recall meets
-    the recall floor; eliminate when the accumulation horizon passed with
-    pooled evidence at or below chance, starved, or never covering the
-    positive class; otherwise continue as a provisional resident.
-    """
-
-    rows = [dict(row) for row in records]
-    decisive = sum(_pooled_candidate_count(row, "decisive") for row in rows)
-    correct = sum(
-        _pooled_candidate_count(row, "directional_correct") for row in rows
-    )
-    wrong = sum(
-        _pooled_candidate_count(row, "directional_wrong") for row in rows
-    )
-    tp = sum(
-        int(row.get("candidate_confusion", {}).get("tp", 0))
-        for row in rows
-        if isinstance(row.get("candidate_confusion"), Mapping)
-    )
-    fn = sum(
-        int(row.get("candidate_confusion", {}).get("fn", 0))
-        for row in rows
-        if isinstance(row.get("candidate_confusion"), Mapping)
-    )
-    cycles = len(rows)
-    counts = {
-        "cycles": cycles,
-        "decisive": decisive,
-        "correct": correct,
-        "wrong": wrong,
-        "tp": tp,
-        "fn": fn,
-    }
-    recall = tp / (tp + fn) if tp + fn > 0 else None
-    if (
-        decisive >= _POOLED_PROMOTION_DECISIVE_MINIMUM
-        and _binomial_tail_at_least(correct, decisive)
-        <= _POOLED_PROMOTION_SIGNIFICANCE
-        and recall is not None
-        and recall >= _RECALL_FLOOR
-    ):
-        return {
-            "action": "promote",
-            "reason": (
-                f"pooled paired evidence reached promotion significance: "
-                f"{correct}/{decisive} decisive correct over {cycles} cycles "
-                f"with positive recall {recall:.0%}"
-            ),
-            "counts": counts,
-        }
-    if cycles >= _PROVISIONAL_ACCUMULATION_HORIZON and (
-        correct < wrong
-        or decisive < 4
-        or (recall is not None and recall < _RECALL_FLOOR)
-    ):
-        return {
-            "action": "eliminate",
-            "reason": (
-                f"pooled paired evidence stayed at or below chance over "
-                f"{cycles} cycles: {correct} correct vs {wrong} wrong "
-                f"({decisive} decisive"
-                + (
-                    f", positive recall {recall:.0%}"
-                    if recall is not None
-                    else ""
-                )
-                + ")"
-            ),
-            "counts": counts,
-        }
-    return {"action": "continue", "reason": "accumulating", "counts": counts}
 
 
 class SignalCandidateEffectivenessEvaluator:
@@ -4952,12 +4858,6 @@ class SignalEvolutionEngine:
             updated = list(update_output["candidate_refs"])
             induction_case_ids.update(update_output["induction_case_ids"])
             validation_case_ids.update(update_output["validation_case_ids"])
-            candidate_research_targets.update(
-                {
-                    ref: "surge_direction"
-                    for ref in update_output["candidate_refs"]
-                }
-            )
             agent_failures.update(update_output["failures"])
             agent_audits["update_pipeline"] = dict(update_output["audit"])
         except (EvolutionControlFlow, OpenAIClientError):
@@ -4990,284 +4890,74 @@ class SignalEvolutionEngine:
                     getattr(exc, "usage", AgentUsage())
                 ),
             }
-        all_refs = _ordered_unique([*mined, *updated])
-
+        legacy_pending = [ref for ref in self._provisional_resident_refs() if ref not in {*mined, *updated}]
+        legacy_refs = legacy_pending[:_LEGACY_CANDIDATE_RECHECK_LIMIT]
+        agent_audits["legacy_candidate_recheck"] = {
+            "schema_version": "legacy-candidate-recheck-v1",
+            "selected": legacy_refs,
+            "pending": legacy_pending[_LEGACY_CANDIDATE_RECHECK_LIMIT:],
+            "policy": "technical_revalidation_without_effect_gate",
+        }
+        all_refs = _ordered_unique([*mined, *updated, *legacy_refs])
         validations: dict[str, SignalCandidateValidation] = {}
         accepted_hashes: dict[str, str] = {}
         accepted_evaluations: dict[str, str] = {}
         semantic_seen: dict[str, str] = {}
+        behavior_seen: dict[str, str] = {}
         effectiveness_by_ref: dict[str, Mapping[str, Any]] = {}
+        validator_hash = self._technical_validator_hash()
         for signal_ref in all_refs:
             spec, skill = self.registry.load_candidate(signal_ref)
             tests = self.registry.load_candidate_tests(signal_ref)
             candidate_hash = self.registry.candidate_hash(signal_ref)
-            try:
-                stable_ref = self.registry.latest_spec(spec.signal_id).ref
-            except ValidationError:
-                stable_ref = None
-            target_id = candidate_research_targets.get(
-                signal_ref, "surge_direction"
-            )
-            target_labels: dict[str, bool] | None = None
-            research_axis: dict[str, Any] = {
-                "axis_id": "surge_direction",
-                "population": "eligible_discovery_cases",
-                "positive": "realized_max_multiple >= 2.0",
-                "control": "realized_max_multiple < 2.0",
-            }
-            if target_id != "surge_direction":
-                target_groups = (
-                    self.research_target_reveal.get("groups", {})
-                    if isinstance(self.research_target_reveal, Mapping)
-                    else {}
-                )
-                target_labels = {
-                    str(case_id): str(group) == "ge3_high"
-                    for case_id, group in dict(target_groups).items()
-                    if str(group) in {"ge3_high", "ge3_low"}
-                }
-                contract = next(
-                    (
-                        item
-                        for item in active_research_targets()
-                        if item.target_id == target_id
-                    ),
-                    None,
-                )
-                if contract is None:
-                    raise ValidationError(
-                        "candidate references an unknown research target"
-                    )
-                research_axis = contract.descriptor()
-            evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
-                spec,
-                candidate_hash=candidate_hash,
-                preferred_case_ids=validation_case_ids.get(signal_ref, ()),
-                excluded_case_ids=tuple(
-                    _ordered_unique(
-                        [
-                            *induction_case_ids.get(signal_ref, ()),
-                            *self._candidate_evaluation_exclusions(signal_ref),
-                        ]
-                    )
-                ),
-                induction_supported=signal_ref in induction_case_ids,
-                strict_preferred=self._active_sampling_manifest is not None,
-                labels_by_case_id=target_labels,
-                research_axis=research_axis,
-            )
-            evaluation_key, _identity = self.registry.candidate_evaluation_key(
-                signal_ref,
-                candidate_hash=candidate_hash,
-                evaluation_identity=evaluation_identity,
-            )
-            prior_validation = self.registry.load_candidate_validation(
-                signal_ref,
-                evaluation_key=evaluation_key,
-            )
-            reusable_prior = (
-                prior_validation is not None
-                and prior_validation.get("schema_version")
-                == "signal-candidate-evaluation-v3"
-                and isinstance(prior_validation.get("effectiveness"), Mapping)
-            )
-            contract_validation: Mapping[str, Any]
-            if stable_ref == signal_ref:
-                validation = SignalCandidateValidation(
-                    signal_ref=signal_ref,
-                    accepted=False,
-                    reasons=("candidate version is already stable",),
-                    candidate_hash=candidate_hash,
-                )
-                effectiveness = {
-                    "accepted": False,
-                    "disposition": "rejected",
-                    "status": "not_run",
-                    "reasons": ["candidate version is already stable"],
-                }
-                contract_validation = {
-                    "accepted": False,
-                    "reasons": ["candidate version is already stable"],
-                    "executed_tests": 0,
-                }
-            elif reusable_prior:
-                assert prior_validation is not None
-                validation = SignalCandidateValidation(
-                    signal_ref=signal_ref,
-                    accepted=bool(prior_validation.get("accepted")),
-                    reasons=tuple(
-                        str(item) for item in prior_validation.get("reasons", ())
-                    ),
-                    candidate_hash=candidate_hash,
-                )
-                effectiveness = dict(prior_validation["effectiveness"])
-                contract_validation = dict(
-                    prior_validation.get("contract_validation", {})
-                )
-            else:
-                checked = self.validator.validate(spec, skill=skill, tests=tests)
-                contract_validation = {
-                    "accepted": checked.accepted,
-                    "reasons": list(checked.reasons),
-                    "executed_tests": checked.executed_tests,
-                }
-                if checked.accepted:
-                    paired = self.effectiveness_evaluator.evaluate(
-                        spec,
-                        skill=skill,
-                        preferred_case_ids=validation_case_ids.get(signal_ref, ()),
-                        excluded_case_ids=tuple(
-                            _ordered_unique(
-                                [
-                                    *induction_case_ids.get(signal_ref, ()),
-                                    *self._candidate_evaluation_exclusions(
-                                        signal_ref
-                                    ),
-                                ]
-                            )
-                        ),
-                        induction_supported=signal_ref in induction_case_ids,
-                        strict_preferred=self._active_sampling_manifest is not None,
-                        labels_by_case_id=target_labels,
-                        research_axis=research_axis,
-                    )
-                    effectiveness = paired.to_dict()
-                    effectiveness = self._attach_generation_case_ids(
-                        signal_ref, effectiveness
-                    )
-                    if target_id != "surge_direction" and paired.accepted:
-                        target_reason = (
-                            "magnitude target evidence passed its frozen "
-                            "high/low check, but Fast absent/present consumption "
-                            "and Binary-F1 protection are not assessed"
-                        )
-                        effectiveness = {
-                            **effectiveness,
-                            "accepted": False,
-                            "disposition": "provisional",
-                            "target_supported": True,
-                            "promotion_blocked": "fast_consumption_unassessed",
-                            "reasons": [target_reason],
-                        }
-                        reasons = (target_reason,)
-                        accepted = False
-                    else:
-                        effectiveness = {
-                            **effectiveness,
-                            "target_supported": (
-                                paired.accepted
-                                if target_id != "surge_direction"
-                                else None
-                            ),
-                        }
-                        reasons = paired.reasons
-                        accepted = paired.accepted
-                else:
-                    effectiveness = {
-                        "schema_version": "signal-candidate-effectiveness-v4",
-                        "signal_ref": signal_ref,
-                        "accepted": False,
-                        "disposition": "rejected",
-                        "status": "not_run",
-                        "reasons": ["contract validation failed"],
-                    }
-                    reasons = checked.reasons
-                    accepted = False
-                validation = SignalCandidateValidation(
-                    signal_ref=checked.signal_ref,
-                    accepted=accepted,
-                    reasons=tuple(reasons),
-                    candidate_hash=candidate_hash,
-                    executed_tests=checked.executed_tests,
-                )
-            if (
-                target_id == "surge_direction"
-                and stable_ref is None
-                and effectiveness.get("disposition") == "provisional"
-            ):
-                effectiveness = self._apply_pooled_provisional_decision(
-                    signal_ref, effectiveness, is_new_signal=True
-                )
-                if effectiveness.get("disposition") == "promoted":
-                    validation = SignalCandidateValidation(
-                        signal_ref=signal_ref,
-                        accepted=True,
-                        reasons=tuple(
-                            str(item)
-                            for item in effectiveness.get("reasons", ())
-                        ),
-                        candidate_hash=candidate_hash,
-                        executed_tests=validation.executed_tests,
-                    )
+            stable = next((item for item in input_snapshot.specs if item.signal_id == spec.signal_id), None)
+            targets = tuple(input_snapshot.research_status.get(stable.ref, {}).get("research_targets", ())) if stable is not None else ()
+            if not targets or signal_ref in candidate_research_targets:
+                target_id = candidate_research_targets.get(signal_ref, "surge_direction")
+                if signal_ref in legacy_refs:
+                    legacy = self.registry.load_candidate_validation(signal_ref) or {}
+                    axis = dict(legacy.get("effectiveness", {}).get("research_axis", {}))
+                    target_id = str(axis.get("target_id", axis.get("axis_id", target_id)))
+                targets = (target_id,)
+            if not set(targets) <= {"surge_direction", *(item.target_id for item in active_research_targets())}:
+                raise ValidationError("candidate references an unknown research target")
+            target_id = "surge_direction" if "surge_direction" in targets else targets[0]
+            candidate_research_targets[signal_ref] = target_id
+            if stable is not None and stable.ref == signal_ref:
+                validations[signal_ref] = SignalCandidateValidation(signal_ref=signal_ref, accepted=False,
+                    reasons=("candidate version is already stable",), candidate_hash=candidate_hash)
+                continue
+            checked = self._technical_candidate_validation(spec, skill=skill, tests=tests,
+                input_registry_hash=input_snapshot.registry_hash, validator_hash=validator_hash, targets=targets)
             semantic = _normalize_semantics(spec.description)
-            prior_ref = semantic_seen.get(semantic)
-            if validation.accepted and prior_ref is not None:
-                duplicate_reason = f"semantic duplicate of candidate {prior_ref}"
-                validation = SignalCandidateValidation(
-                    signal_ref=signal_ref,
-                    accepted=False,
-                    reasons=(duplicate_reason,),
-                    candidate_hash=candidate_hash,
-                    executed_tests=validation.executed_tests,
-                )
-                contract_validation = {
-                    **dict(contract_validation),
-                    "accepted": False,
-                    "reasons": [
-                        *list(contract_validation.get("reasons", ())),
-                        duplicate_reason,
-                    ],
-                }
-                effectiveness = {
-                    **dict(effectiveness),
-                    "accepted": False,
-                    "disposition": "rejected",
-                    "reasons": [
-                        *list(effectiveness.get("reasons", ())),
-                        duplicate_reason,
-                    ],
-                }
-            effectiveness_by_ref[signal_ref] = effectiveness
-            if validation.accepted:
-                semantic_seen[semantic] = signal_ref
-                accepted_hashes[signal_ref] = candidate_hash
-                accepted_evaluations[signal_ref] = evaluation_key
+            behavior = self.validator._behavior_identity(spec, skill)
+            duplicate = semantic_seen.get(semantic) or behavior_seen.get(behavior)
+            if checked.accepted and duplicate is not None:
+                checked = replace(checked, accepted=False, reasons=(f"semantic duplicate of candidate {duplicate}",))
+            validation = replace(checked, candidate_hash=candidate_hash)
+            contract_validation = {"accepted": checked.accepted, "reasons": list(checked.reasons), "executed_tests": checked.executed_tests}
+            admission_key = self.registry.record_candidate_admission(signal_ref,
+                input_registry_hash=input_snapshot.registry_hash, validator_hash=validator_hash,
+                research_targets=targets, contract_validation=contract_validation,
+                research_provenance=self._candidate_research_provenance(signal_ref, target_id=target_id,
+                    induction_case_ids=induction_case_ids.get(signal_ref, ())))
             validations[signal_ref] = validation
-            if not reusable_prior and stable_ref != signal_ref:
-                recorded_key = self.registry.record_candidate_validation(
-                    signal_ref,
-                    candidate_hash=candidate_hash,
-                    evaluation_identity=evaluation_identity,
-                    accepted=validation.accepted,
-                    reasons=validation.reasons,
-                    contract_validation=contract_validation,
-                    effectiveness=effectiveness,
-                )
-                if validation.accepted:
-                    accepted_evaluations[signal_ref] = recorded_key
-        self._revisit_provisional_residents(
-            proposed_refs=set(all_refs),
-            validations=validations,
-            effectiveness_by_ref=effectiveness_by_ref,
-            accepted_hashes=accepted_hashes,
-            accepted_evaluations=accepted_evaluations,
-            agent_audits=agent_audits,
-        )
-        rejected = dict(agent_failures)
-        provisional = {
-            signal_ref: tuple(
-                str(reason) for reason in effectiveness.get("reasons", ())
-            )
-            for signal_ref, effectiveness in effectiveness_by_ref.items()
-            if effectiveness.get("disposition") == "provisional"
-        }
-        rejected.update(
-            {
-                signal_ref: validation.reasons
-                for signal_ref, validation in validations.items()
-                if not validation.accepted and signal_ref not in provisional
+            if not validation.accepted:
+                effectiveness_by_ref[signal_ref] = {"status": "not_run", "reasons": ["technical validation failed"], "effect_status": "unverified"}
+                continue
+            semantic_seen[semantic] = signal_ref
+            behavior_seen[behavior] = signal_ref
+            accepted_hashes[signal_ref] = candidate_hash
+            accepted_evaluations[signal_ref] = admission_key
+            effectiveness_by_ref[signal_ref] = {
+                "status": "pending_use", "technical_admission": "admitted", "effect_status": "unverified",
+                "research_targets": list(targets),
+                "reasons": ["Effect is observed after committed use; technical admission does not assert benefit."],
             }
-        )
+        rejected = {**agent_failures, **{ref: item.reasons for ref, item in validations.items() if not item.accepted}}
+        # Provisional effects remain observations of callable admitted measurements.
+        # They never designate an uncallable candidate residence in new cycles.
+        provisional: dict[str, tuple[str, ...]] = {}
         return SlowLoopValidation(
             mined_candidates=tuple(mined),
             updated_candidates=tuple(updated),
@@ -5308,7 +4998,64 @@ class SignalEvolutionEngine:
             ),
         )
 
-    def _candidate_evaluation_exclusions(self, signal_ref: str) -> tuple[str, ...]:
+    def _technical_validator_hash(self) -> str:
+        """Bind reusable fixture validation to the actual implementation and model policy."""
+
+        caller = getattr(self.validator.llm_runner, "caller", None)
+        registration = getattr(caller, "registration", None)
+        contract = getattr(caller, "contract", None)
+        return _canonical_hash({
+            "policy": "signal-technical-admission-v1",
+            "validator_source": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "executor_source": hashlib.sha256((Path(__file__).parent.parent / "signal_library.py").read_bytes()).hexdigest(),
+            "functions": deterministic_signal_function_contracts(self.validator.deterministic_functions),
+            "forbidden_identity_terms": self.validator.forbidden_identity_terms,
+            "runner": self._role_work_identity(self.validator.llm_runner),
+            "registration": registration.to_public_dict() if callable(getattr(registration, "to_public_dict", None)) else None,
+            "contract_hash": getattr(contract, "contract_hash", None),
+        })
+
+    def _technical_candidate_validation(self, spec: SignalSpec, *, skill: str | None,
+        tests: tuple[Mapping[str, Any], ...], input_registry_hash: str,
+        validator_hash: str, targets: tuple[str, ...]) -> SignalCandidateValidation:
+        """Reuse only an exact passing technical checkpoint; recheck rejected work."""
+
+        for row in self.registry.list_candidate_evaluations(spec.ref):
+            if row.get("schema_version") != "signal-candidate-admission-v1" or row.get("accepted") is not True:
+                continue
+            identity = dict(row.get("admission_identity", {}))
+            if (identity.get("input_registry_hash") != input_registry_hash
+                or identity.get("validator_hash") != validator_hash
+                or identity.get("research_targets") != sorted(targets)):
+                continue
+            checked = self.registry.load_candidate_validation(spec.ref, evaluation_key=str(row.get("evaluation_key", "")))
+            assert checked is not None
+            if checked["contract_validation"]["executed_tests"] == len(tests):
+                return SignalCandidateValidation(signal_ref=spec.ref, accepted=True, reasons=(), executed_tests=len(tests))
+        return self.validator.validate(spec, skill=skill, tests=tests)
+
+    def _candidate_research_provenance(self, signal_ref: str, *, target_id: str,
+        induction_case_ids: tuple[str, ...]) -> dict[str, Any]:
+        """Preserve original generation scope before admission removes an effect gate."""
+
+        rows = self.registry.list_candidate_evaluations(signal_ref)
+        for row in rows:
+            provenance = row.get("admission_identity", {}).get("research_provenance")
+            if isinstance(provenance, Mapping):
+                checked = self.registry.load_candidate_validation(signal_ref, evaluation_key=str(row["evaluation_key"]))
+                assert checked is not None
+                return dict(checked["admission_identity"]["research_provenance"])
+        for row in rows:
+            generation = row.get("effectiveness", {}).get("generation_case_ids")
+            if isinstance(generation, list):
+                return {"generation_case_ids": sorted(set(str(item) for item in generation)),
+                    "induction_case_ids": [], "origin": "legacy_effect_records", "source_input_hash": _canonical_hash(row)}
+        generation = self._current_generation_case_ids(target_id=target_id)
+        return {"generation_case_ids": sorted(set(generation)), "induction_case_ids": sorted(set(induction_case_ids)),
+            "origin": "current_cycle" if self._active_slow_input is not None else "unknown",
+            "source_input_hash": _canonical_hash(dict(self._active_slow_input)) if self._active_slow_input is not None else None}
+
+    def _candidate_evaluation_exclusions(self, signal_ref: str, *, target_id: str | None = None) -> tuple[str, ...]:
         """Cases a candidate must never be (re-)evaluated on.
 
         Per-candidate holdout hygiene: the proposal cycle's dev cohort (whose
@@ -5320,53 +5067,35 @@ class SignalEvolutionEngine:
         """
 
         excluded: set[str] = set()
-        records = self.registry.list_candidate_evaluations(signal_ref)
+        records = (*self.registry.list_candidate_evaluations(signal_ref), *self.registry.list_candidate_effectiveness(signal_ref))
         for record in records:
             effectiveness = record.get("effectiveness", {})
+            axis = dict(effectiveness.get("research_axis", {}))
+            observed_target = effectiveness.get("research_target", axis.get("target_id", axis.get("axis_id", "surge_direction")))
+            if target_id is not None and observed_target != target_id:
+                continue
             excluded.update(
                 str(case_id) for case_id in effectiveness.get("case_ids", ())
             )
         for record in records:
+            provenance = record.get("admission_identity", {}).get("research_provenance", {})
+            excluded.update(provenance.get("generation_case_ids", ()))
+            excluded.update(provenance.get("induction_case_ids", ()))
             generation = record.get("effectiveness", {}).get("generation_case_ids")
             if isinstance(generation, list):
                 excluded.update(str(case_id) for case_id in generation)
                 break
         return tuple(sorted(excluded))
 
-    def _current_generation_case_ids(self) -> tuple[str, ...]:
+    def _current_generation_case_ids(self, *, target_id: str = "surge_direction") -> tuple[str, ...]:
         """The proposal-cycle dev cohort for candidates staged this cycle."""
 
+        if target_id != "surge_direction" and isinstance(self.research_target_sampling, Mapping):
+            if self.research_target_sampling.get("target_id") == target_id:
+                return tuple(str(item) for item in self.research_target_sampling.get("sampling", {}).get("dev_case_ids", ()))
         return tuple(
             case.case_id for case in self._manifest_cases("dev_case_ids")
         )
-
-    def _attach_generation_case_ids(
-        self, signal_ref: str, effectiveness: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Carry the candidate's original proposal-cycle dev cohort forward.
-
-        A re-proposed or revisited candidate inherits the generation context
-        of its first evaluation; only a genuinely first evaluation records
-        the current cycle's dev cohort.
-        """
-
-        prior_generation = next(
-            (
-                record.get("effectiveness", {}).get("generation_case_ids")
-                for record in self.registry.list_candidate_evaluations(signal_ref)
-                if isinstance(
-                    record.get("effectiveness", {}).get("generation_case_ids"),
-                    list,
-                )
-            ),
-            None,
-        )
-        effectiveness["generation_case_ids"] = (
-            list(prior_generation)
-            if isinstance(prior_generation, list)
-            else list(self._current_generation_case_ids())
-        )
-        return effectiveness
 
     def _provisional_resident_refs(self) -> tuple[str, ...]:
         """New-signal candidates whose latest stored evaluation is provisional.
@@ -5375,8 +5104,8 @@ class SignalEvolutionEngine:
         provisional — as a new attempt or as a revisited resident whose
         committed evaluation still says provisional — whose signal base is
         not yet stable, and whose latest immutable evaluation still says
-        provisional (promotions and pooled eliminations overwrite that
-        pointer, so they drop out naturally).
+        provisional or has an exact successful technical checkpoint awaiting
+        publication. Stable bases drop out naturally; no pooled effect gate runs.
         """
 
         refs: list[str] = []
@@ -5404,7 +5133,9 @@ class SignalEvolutionEngine:
             latest = self.registry.load_candidate_validation(ref)
             if latest is None:
                 continue
-            if latest.get("effectiveness", {}).get("disposition") == "provisional":
+            if latest.get("effectiveness", {}).get("disposition") == "provisional" or (
+                latest.get("schema_version") == "signal-candidate-admission-v1" and latest.get("accepted") is True
+            ):
                 residents.append(ref)
         return tuple(residents)
 
@@ -5483,149 +5214,6 @@ class SignalEvolutionEngine:
                 and record.get("disposition") == "provisional"
             )
         return refs
-
-    def _apply_pooled_provisional_decision(
-        self,
-        signal_ref: str,
-        effectiveness: Mapping[str, Any],
-        *,
-        is_new_signal: bool,
-    ) -> dict[str, Any]:
-        """Resolve one provisional new-signal outcome through pooled evidence.
-
-        The resident limit is enforced before pooling: with the cap occupied,
-        a fresh directional tie is rejected with an explicit reason instead of
-        admitting a third resident.
-        """
-
-        payload = dict(effectiveness)
-        if not is_new_signal or payload.get("disposition") != "provisional":
-            return payload
-        other_residents = [
-            ref for ref in self._provisional_resident_refs() if ref != signal_ref
-        ]
-        if len(other_residents) >= _PROVISIONAL_RESIDENT_LIMIT:
-            return {
-                **payload,
-                "disposition": "rejected",
-                "reasons": [
-                    *list(payload.get("reasons", ())),
-                    "provisional resident limit "
-                    f"({_PROVISIONAL_RESIDENT_LIMIT}) reached; re-propose after "
-                    "a resident resolves",
-                ],
-            }
-        prior_rows = [
-            dict(record.get("effectiveness", {}))
-            for record in self.registry.list_candidate_evaluations(signal_ref)
-            if record.get("effectiveness", {}).get("disposition") == "provisional"
-        ]
-        decision = pooled_provisional_decision([*prior_rows, payload])
-        payload["pooled"] = decision["counts"]
-        if decision["action"] == "promote":
-            return {
-                **payload,
-                "disposition": "promoted",
-                "accepted": True,
-                "reasons": [
-                    *list(payload.get("reasons", ())),
-                    decision["reason"],
-                ],
-            }
-        if decision["action"] == "eliminate":
-            return {
-                **payload,
-                "disposition": "rejected",
-                "reasons": [
-                    *list(payload.get("reasons", ())),
-                    decision["reason"],
-                ],
-            }
-        return payload
-
-    def _revisit_provisional_residents(
-        self,
-        *,
-        proposed_refs: set[str],
-        validations: dict[str, Any],
-        effectiveness_by_ref: dict[str, Mapping[str, Any]],
-        accepted_hashes: dict[str, str],
-        accepted_evaluations: dict[str, str],
-        agent_audits: dict[str, Any],
-    ) -> None:
-        """Re-evaluate surviving residents on this cycle's fresh check cohort."""
-
-        pending = [
-            ref for ref in self._provisional_resident_refs() if ref not in proposed_refs
-        ]
-        audit: dict[str, Any] = {
-            "schema_version": "provisional-revisit-audit-v1",
-            "residents": list(pending),
-            "evaluated": [],
-            "skipped": pending[_PROVISIONAL_RESIDENT_LIMIT:],
-        }
-        check_cases = self._manifest_cases("check_case_ids")
-        for ref in pending[:_PROVISIONAL_RESIDENT_LIMIT]:
-            spec, skill = self.registry.load_candidate(ref)
-            candidate_hash = self.registry.candidate_hash(ref)
-            preferred = tuple(case.case_id for case in check_cases)
-            excluded = self._candidate_evaluation_exclusions(ref)
-            paired = self.effectiveness_evaluator.evaluate(
-                spec,
-                skill=skill,
-                preferred_case_ids=preferred,
-                excluded_case_ids=excluded,
-                induction_supported=True,
-                strict_preferred=bool(check_cases),
-            )
-            effectiveness = self._apply_pooled_provisional_decision(
-                ref, paired.to_dict(), is_new_signal=True
-            )
-            effectiveness = self._attach_generation_case_ids(ref, effectiveness)
-            accepted = effectiveness.get("disposition") == "promoted"
-            evaluation_identity = self.effectiveness_evaluator.evaluation_identity(
-                spec,
-                candidate_hash=candidate_hash,
-                preferred_case_ids=preferred,
-                excluded_case_ids=excluded,
-                induction_supported=True,
-                strict_preferred=bool(check_cases),
-            )
-            recorded_key = self.registry.record_candidate_validation(
-                ref,
-                candidate_hash=candidate_hash,
-                evaluation_identity=evaluation_identity,
-                accepted=accepted,
-                reasons=tuple(
-                    str(item) for item in effectiveness.get("reasons", ())
-                ),
-                contract_validation={
-                    "accepted": accepted,
-                    "reasons": [
-                        "provisional resident re-evaluated on the fresh check cohort"
-                    ],
-                    "executed_tests": 0,
-                },
-                effectiveness=effectiveness,
-            )
-            validations[ref] = SignalCandidateValidation(
-                signal_ref=ref,
-                accepted=accepted,
-                reasons=tuple(str(item) for item in effectiveness.get("reasons", ())),
-                candidate_hash=candidate_hash,
-            )
-            effectiveness_by_ref[ref] = effectiveness
-            if accepted:
-                accepted_hashes[ref] = candidate_hash
-                accepted_evaluations[ref] = recorded_key
-            audit["evaluated"].append(
-                {
-                    "signal_ref": ref,
-                    "disposition": effectiveness.get("disposition"),
-                    "pooled": effectiveness.get("pooled"),
-                }
-            )
-        agent_audits["provisional_revisit"] = audit
 
     def _run_signal_update(
         self,
@@ -5897,7 +5485,10 @@ class SignalEvolutionEngine:
                     if validation is not None
                     else {}
                 )
-                if effectiveness.get("disposition") == "provisional":
+                if validation is not None and (
+                    dict(validation.get("contract_validation", {})).get("accepted") is True
+                    or effectiveness.get("disposition") == "provisional"
+                ):
                     return self._signal_update_output(
                         candidate_refs=(staged_ref,),
                         induction_case_ids={
@@ -5908,7 +5499,7 @@ class SignalEvolutionEngine:
                         },
                         audit={
                             **base_audit,
-                            "disposition": "reused_provisional",
+                            "disposition": "reused_technical_candidate",
                             "staged_ref": staged_ref,
                             "local_selection": local_selection,
                         },
@@ -5923,13 +5514,12 @@ class SignalEvolutionEngine:
         if (
             not primary
             or not boundary
-            or len(holdout) < self.effectiveness_evaluator.minimum_cases
         ):
             return self._signal_update_output(
                 audit={
                     **base_audit,
                     "disposition": "defer",
-                    "defer_reason": "insufficient_local_induction_or_holdout",
+                    "defer_reason": "insufficient_local_induction",
                     "local_selection": local_selection,
                     "execution_usage": _usage_to_dict(execution_usage),
                     "technical_failures": technical_failures,
@@ -5950,7 +5540,10 @@ class SignalEvolutionEngine:
             and prior_candidate.signal_id == spec.signal_id
             and prior_candidate.version == spec.version + 1
             and prior_candidate_validation is not None
-            and prior_candidate_validation.get("status") == "provisional"
+            and (
+                dict(prior_candidate_validation.get("contract_validation", {})).get("accepted") is True
+                or prior_candidate_validation.get("status") == "provisional"
+            )
         ):
             return self._signal_update_output(
                 candidate_refs=(next_ref,),
@@ -5962,7 +5555,7 @@ class SignalEvolutionEngine:
                 },
                 audit={
                     **base_audit,
-                    "disposition": "reused_provisional_new_evaluation",
+                    "disposition": "reused_technical_candidate",
                     "staged_ref": next_ref,
                     "local_selection": local_selection,
                     "execution_usage": _usage_to_dict(execution_usage),
@@ -8993,7 +8586,9 @@ class SignalEvolutionEngine:
                 ).items():
                     if not isinstance(record, Mapping) or len(outcomes) >= 4:
                         continue
-                    counts = dict(record.get("candidate", {}) or {})
+                    if not isinstance(record.get("candidate"), Mapping):
+                        continue  # Pending use is unknown effect, not zero empirical counts.
+                    counts = dict(record["candidate"])
                     confusion = dict(
                         record.get("candidate_confusion", {}) or {}
                     )

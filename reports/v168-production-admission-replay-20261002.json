@@ -1,0 +1,89 @@
+{
+  "admission": {
+    "accepted": true,
+    "admission_identity": {
+      "candidate_hash": "bdaaf8a8705f4497d7ad088a06dca8779dcfed7c2e56a22e9e2d49ce5f24754c",
+      "contract_validation": {
+        "accepted": true,
+        "executed_tests": 1,
+        "reasons": []
+      },
+      "input_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+      "research_provenance": {
+        "generation_case_ids": [
+          "cik_0000878518:20250930",
+          "cik_0001285819:20250930",
+          "cik_0001361658:20250131",
+          "cik_0001681459:20250530",
+          "cik_0001746129:20250731",
+          "cik_0001814215:20250530",
+          "cik_0001946703:20250731",
+          "cik_0002009312:20250930"
+        ],
+        "induction_case_ids": [],
+        "origin": "legacy_effect_records",
+        "source_input_hash": "f56e4699f5085f21cdbc833c4ab6449208ebca1826f2fe8cb3752a1d8020b950"
+      },
+      "research_targets": [
+        "surge_direction"
+      ],
+      "schema_version": "signal-candidate-admission-identity-v1",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "validator_hash": "3bd18fe47126c093c31104de25e9fd0b3f07ed816739ee42d7a7a2bbe255f68e"
+    },
+    "candidate_hash": "bdaaf8a8705f4497d7ad088a06dca8779dcfed7c2e56a22e9e2d49ce5f24754c",
+    "contract_validation": {
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": []
+    },
+    "evaluation_key": "a75216f0f09ab955a0e3084cac7b6636265e023fe5726490e71cec01f4cd5610",
+    "reasons": [],
+    "schema_version": "signal-candidate-admission-v1",
+    "signal_ref": "revenue_growth_yoy:v3",
+    "status": "admitted"
+  },
+  "boundary": "Actual persisted Update candidate, production _validate_cycle, atomic publication/reload and real fixture execution. Upstream completed collection is injected; no new LLM mining, full live cycle or predictive benefit claimed.",
+  "candidate_hash": "bdaaf8a8705f4497d7ad088a06dca8779dcfed7c2e56a22e9e2d49ce5f24754c",
+  "external_calls": 0,
+  "frozen_status": {
+    "admission_key": "a75216f0f09ab955a0e3084cac7b6636265e023fe5726490e71cec01f4cd5610",
+    "effect_status": "unverified",
+    "research_targets": [
+      "surge_direction"
+    ],
+    "technical_status": "admitted"
+  },
+  "input_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+  "original_effect_reasons": [
+    "candidate shows no strict paired effectiveness gain"
+  ],
+  "original_effect_record_unchanged": true,
+  "output_registry_hash": "ddf916c21e2f5172c3eef932cce8ac6c1151980a9a2bd2b94c0d3b46d16bc313",
+  "policy_sources": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "58b6aa7fbbd334f67af12d4e50f8139d23ecbd9bb89f14c531722e889365674c",
+    "src/stock_opportunity_agent/signal_library.py": "bc0b1461e5eb9baf381b2951fb4bc946502644509f6e7ceda108120099bcf5e7"
+  },
+  "postpublication_fixture_state": "positive",
+  "published": [
+    "revenue_growth_yoy:v3"
+  ],
+  "schema_version": "production-admission-replay-v1",
+  "signal_ref": "revenue_growth_yoy:v3",
+  "source_file_count": 169,
+  "source_file_manifest_hash": "680cfd8d20f847d8b3e0f1ba439348a57f8fda3d594a0c3253920b8761d00180",
+  "source_files_unchanged": true,
+  "source_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated",
+  "technical_result": {
+    "effect_status": "unverified",
+    "reasons": [
+      "Effect is observed after committed use; technical admission does not assert benefit."
+    ],
+    "research_targets": [
+      "surge_direction"
+    ],
+    "status": "pending_use",
+    "technical_admission": "admitted"
+  }
+}

@@ -130,7 +130,7 @@ These thresholds are starting defaults, not permanent beliefs.
 
 ## Operating Principles
 
-### Approved next Slow admission contract (2026-10-02; implementation pending)
+### Slow technical admission contract (2026-10-02 user decision)
 
 The user approved admitting technically valid research Signals for Fast
 retrieval/use while their predictive effect remains explicitly unverified.
@@ -138,13 +138,13 @@ Schema, executable fixtures, evidence, point-in-time safety, version identity
 and semantic uniqueness remain admission requirements. Independent effect
 evaluation becomes continuing evidence, separate from technical admission;
 admission never asserts benefit. Direction and magnitude use this same policy.
-The deployed legacy paired-promotion contract and frozen historical runs remain
-unchanged until the owning Registry/runtime migration is implemented and tested.
+New production Slow work uses independent technical admission. Frozen historical
+runs and staged transitions retain their original exact evaluations; they are
+not resumed with different code or rewritten as new-policy successes.
 See the [approved Slow lifecycle design](../reports/slow-signal-system-design-20261002.md).
-The Registry record/publication/recovery foundation now exists, with explicit
-unverified status. Production Slow admission decisions, Fast consumption and
-continuous target tracking still need migration; the full policy change has
-not yet been activated in the main loop.
+Registry publication/recovery and production admission use explicit unverified
+status. Independent effect evaluation is continuing evidence, not an admission
+gate; consumer and continuous tracking completion require their own verification.
 
 ### LLM as Researcher
 

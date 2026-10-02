@@ -1,5 +1,13 @@
 # Evolution Core
 
+Runtime passes the exact frozen Signal research status to controllers that expose
+`set_signal_research_status`. Current-batch Reflect and actual-result Predictor
+views carry version-bound technical/effect status, with no retrospective labels
+or effect examples. The final-context assembler accepts optional status metadata
+and includes it only for actually executed refs; preflight and transmission use
+the same assembled view. Existing canonical SignalResult and ResearchState stay
+unchanged. Generic controllers without this optional interface remain valid.
+
 Final Basic Info cards retain the upstream `document_id` and `available_at` beside
 the complete literal and stable projection id. Final context explicitly includes
 the actual `prediction_time`; consumers must not infer it from optional price

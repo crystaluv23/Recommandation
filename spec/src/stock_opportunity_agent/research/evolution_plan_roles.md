@@ -1,5 +1,16 @@
 # Evolution Plan Roles
 
+## Admitted measurements and unverified effect
+
+Selector cards disclose frozen `research_status` for admitted versions. Technical
+admission authorizes use, not effect claims; choose by actual information need
+and data applicability. H_reflect receives status only for its current batch via
+the controller's optional frozen-status setter. Predictor receives status beside
+each actual measured result in its existing evidence assembly. Fixed prompts
+distinguish a valid measurement from demonstrated contribution and never force
+higher magnitude classes merely because a measurement targets magnitude.
+Legacy versions without a new admission record receive no invented status.
+
 ## Fixed Predictor role authority (2026-10-02)
 
 H_analyse evolves evidence organization/weighting, while the fixed Predictor

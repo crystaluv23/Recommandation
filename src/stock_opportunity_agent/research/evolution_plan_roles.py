@@ -139,6 +139,7 @@ class LLMResearchController:
         self.evaluation_anchor: dict[str, Any] | None = None
         self.computed_metrics: list[dict[str, Any]] = []
         self.computed_metric_cards: tuple[Mapping[str, Any], ...] = ()
+        self.signal_research_status: dict[str, Mapping[str, Any]] = {}
         self.document_channel: Any = None
         self.reflection_selections: tuple[SignalSelectionDecision, ...] = ()
         self.reflection_must_finalize = False
@@ -220,6 +221,11 @@ class LLMResearchController:
         """
 
         self.document_channel = provider
+
+    def set_signal_research_status(self, status: Mapping[str, Mapping[str, Any]]) -> None:
+        """Bind status from one frozen Registry; expose only current-batch refs."""
+
+        self.signal_research_status = {ref: dict(value) for ref, value in status.items()}
 
     def set_reflection_runtime_context(
         self,
@@ -372,6 +378,9 @@ class LLMResearchController:
             stage="research_controller_reflect",
             system_prompt=(
                 "Apply H_reflect to the complete Signal batch in logical steps: "
+                "signal_research_status describes technical admission and unverified "
+                "effect, not proof of contribution. Adopt actual measurement evidence "
+                "without claiming that admission establishes prediction benefit. "
                 "identify evidence to adopt, update only the affected judgments, "
                 "then update answered needs and the continue/finalize decision. "
                 "Return only snapshot-bound operations under output_patch_contract. "
@@ -493,6 +502,8 @@ class LLMResearchController:
                 ),
                 "research_state": state.to_dict(),
                 "signal_batch": _signal_batch_model_view(batch),
+                "signal_research_status": {result.ref: self.signal_research_status[result.ref]
+                    for result in batch.results if result.ref in self.signal_research_status},
                 "signal_evidence_ref_catalog": _signal_evidence_ref_catalog(batch),
                 "executed_selection_intents": _reflection_selection_intents(
                     selections,
@@ -782,6 +793,9 @@ class LLMSignalRetrievalAgent:
                 "execution_type": spec.execution_type.value,
             }
             profile = dict(signal_registry.learned_profiles.get(spec.ref, {}))
+            status = dict(signal_registry.research_status.get(spec.ref, {}))
+            if status:
+                card["research_status"] = status
             if int(profile.get("unique_observations", 0) or 0) > 0:
                 card["learned_profile"] = profile
             routing_phrases = spec.parameters.get("routing_need_phrases", ())
@@ -1665,6 +1679,9 @@ class LLMSignalRetrievalAgent:
             stage="signal_retrieval_cards",
             system_prompt=(
                 "Choose the smallest unique batch from available_signal_cards. The "
+                "research_status authorizes a technically admitted measurement's use "
+                "while its effect remains unverified. Select by need and applicability; "
+                "admission does not establish predictive benefit. "
                 "cards are already versioned, eligible, and unexecuted; never recreate "
                 "omitted refs. Check previous_signal_results: a Signal whose prior "
                 "result was 'unavailable' could not find its required data for this "
@@ -1738,6 +1755,9 @@ class LLMSignalRetrievalAgent:
 
 
 _PREDICTOR_ROLE_AUTHORITY = (
+    "Signal research_status=admitted with effect_status=unverified authorizes "
+    "measurement use, not a claim of prediction benefit. A magnitude research "
+    "purpose never mechanically selects a larger magnitude class. "
     "H_analyse guides evidence organization and weighting. The fixed Predictor "
     "shell owns final candidate_judgment and conditional magnitude classification. "
     "The shell's required output overrides any Plan instruction to omit "

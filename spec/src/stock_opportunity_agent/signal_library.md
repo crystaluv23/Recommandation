@@ -12,8 +12,8 @@ original paired-admission semantics; setting effectiveness.accepted=true to
 simulate technical admission is forbidden.
 See [the approved Slow design](../../../reports/slow-signal-system-design-20261002.md).
 Registry records, atomic publication/recovery and frozen status now exist.
-Production Slow decisions, model consumption and continuous target tracking
-remain pending; the full migration is not claimed complete.
+Production Slow decisions now use this independent authority. Continuous target
+tracking requires separate producer/consumer verification; no benefit is asserted.
 
 ### Technical admission record and atomic publication
 
@@ -24,6 +24,12 @@ contract validation result. An admitted result requires literal accepted=true,
 no reasons and every non-empty staged fixture actually executed. Rejected
 technical records remain diagnostic; they cannot authorize publication.
 The record contains no effectiveness acceptance or assertion of benefit.
+New production records also hash-bind optional `research_provenance` in their
+identity: generation/induction case ids, origin and source-input hash. This is
+research lineage, not effect evidence; old v1 identities without it stay valid.
+Published admission carries the same lineage, while model status never discloses
+case ids. Subsequent studies must exclude generation/induction cases and retain
+unknown provenance explicitly rather than inventing an independent cohort.
 
 The existing keyed evaluation directory/pointer and atomic transition carry
 this record, preserving old v2/v3 evaluations unchanged. Transition prepare,
@@ -37,8 +43,11 @@ pointer can change the status of a published version.
 exact-version technical status, research targets and effect_status=unverified.
 This metadata is bound into learning_hash independently of definition hash;
 historical snapshots without admission records preserve their prior identity.
-Consumer and continuous-target wiring remain migration work until separately
-implemented; this foundation alone does not change the production Slow gate.
+`record_candidate_effectiveness` writes independent keyed observations under
+`effects/` with exact candidate/evaluation identity; a separate effect pointer
+never changes `validation.json` or a published admission. Observation payloads
+remain retrospective and may include failure diagnostics. Legacy evaluation
+readers continue to read original v2/v3 records without translation.
 
 ## V8 Slow feedback use
 
@@ -683,16 +692,17 @@ promotion recovery path, after verifying the same transition identity, may read
 that intermediate state and reconcile the remaining files, Registry version,
 output hash, and applied marker.
 
-Candidate validation has three durable dispositions. `promoted` means both the
-candidate contract and the independent paired effectiveness gate pass.
+Historical v2/v3 validation had three durable dispositions. `promoted` meant both the
+candidate contract and the independent paired effectiveness gate passed.
 `provisional` means the contract passes and induction evidence is directionally
 supportive, but independent point-in-time availability or decisive support is
 below the existing promotion floor; the draft remains isolated under
 `signals_candidates/` and may be re-ranked or re-evaluated in a later Slow
 cycle. `rejected` means the contract fails, independent evidence contradicts
 the expected direction, or an update regresses/fails to improve once evidence
-is sufficient. Provisional never mutates the stable Registry and never weakens
-the promotion threshold.
+is sufficient. Those historical provisional records remain unchanged. New publication uses
+independent technical admission and explicit unverified effect; bounded legacy
+revalidation produces a new admission record rather than revising old verdicts.
 
 The effectiveness audit records induction case refs separately from evaluation
 case refs. The two sets must be issuer-disjoint. Case relevance ranking is
