@@ -1,0 +1,113 @@
+{
+  "schema_version": "v171-role-repair-audit-v1",
+  "source_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap",
+  "source_code_revision": "41d2c3937affb87013e566073c3f67d26914124c",
+  "source_files": {
+    "run_contract.json": "c7227819cbd2206dbd8122c2e0c75613878f1e1e3e585a88d0a8f61fe0d28ebd",
+    "cycle_state.json": "9f6a07f7efc06446eeba544d76a893dfe92e0e175733f5636b35ce82176002b8",
+    "experiments/cycles/cycle-0001/slow_loop_result.json": "92b810292d319195e1ac44f10ca9ba8717bfd2452e31b6411045fcec95baf634",
+    "experiments/cycles/cycle-0001/slow_loop_validation.json": "c632c796b88ff05b7960741198e55b89e2e904848580db1ce190c1e1f7087e6b"
+  },
+  "completed_cycle_state": {
+    "active_cycle": null,
+    "current_signal_registry_hash": "180814422ea72ce91eff4afddde022644c5fba10b5eff4cab6723e4e373dce62",
+    "current_signal_registry_version": 8,
+    "initial_signal_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+    "initial_signal_registry_version": 7,
+    "last_completed_cycle": 1,
+    "last_completed_round": 0,
+    "last_cycle_ref": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap/experiments/cycles/cycle-0001/slow_loop_result.json",
+    "run_contract_hash": "175e61eae26433b3c1a8e1eec68c1c2f3a4191494056e2ab6b41857c585d204f",
+    "schema_version": "dual-loop-cycle-state-v2"
+  },
+  "mining_seeds": [
+    {
+      "axis": "magnitude_ge3_v1",
+      "seed": "hypothesis",
+      "status": "failed",
+      "terminal_kind": "technical_failure",
+      "model_calls": 4,
+      "ledger_actions": 4,
+      "fetched_case_refs": []
+    },
+    {
+      "axis": "magnitude_ge3_v1",
+      "seed": "discovery",
+      "status": "failed",
+      "terminal_kind": "technical_failure",
+      "model_calls": 4,
+      "ledger_actions": 4,
+      "fetched_case_refs": []
+    },
+    {
+      "axis": "surge_direction",
+      "seed": "hypothesis",
+      "status": "failed",
+      "terminal_kind": "technical_failure",
+      "model_calls": 7,
+      "ledger_actions": 7,
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004",
+        "case-005",
+        "case-006",
+        "case-007",
+        "case-008"
+      ]
+    },
+    {
+      "axis": "surge_direction",
+      "seed": "discovery",
+      "status": "failed",
+      "terminal_kind": "technical_failure",
+      "model_calls": 6,
+      "ledger_actions": 6,
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004",
+        "case-005",
+        "case-006",
+        "case-007",
+        "case-008"
+      ]
+    }
+  ],
+  "mining_replay": {
+    "request_hash": "4e730bf449724a915b026a51b151f9766f04e1e5cdeda6907f40c2a55de9d02e",
+    "correction_grammar_only": true,
+    "native_scripted_patch_merged": true,
+    "other_arguments_unchanged": true,
+    "external_calls": 0,
+    "boundary": "scripted rationale; does not prove native model patch generation or full mining success"
+  },
+  "update_frontier": {
+    "request_hash": "b798c035740e7e97ac5a75f66cdbd664434475dfcb9a14bc4358c888030773fa",
+    "failed_output_tokens": 8000,
+    "failed_raw_bytes": 25837,
+    "stable_fixture_json_chars": 166,
+    "input_json_chars_before": 263118,
+    "input_json_chars_after": 112771,
+    "source_binding_count": 46,
+    "source_ref_raw_bytes_total": 118506,
+    "clipped_source_spans": 0,
+    "external_calls": 0,
+    "root_cause": "long raw HTML citations, not immutable fixture duplication",
+    "boundary": "view/provenance replay; truncated semantic output was not reconstructed"
+  },
+  "tests": {
+    "full_count": 1474,
+    "full_pass": true,
+    "source_log": "/tmp/v171-role-fixes-full.log"
+  },
+  "open_acceptance": [
+    "native paid patch generation",
+    "paid compact Update and complete candidate fixture validation",
+    "new direction and magnitude mining/publication",
+    "cross-cycle consumption and independent magnitude contribution",
+    "complete new Fast fixed denominator zero technical exclusions"
+  ]
+}

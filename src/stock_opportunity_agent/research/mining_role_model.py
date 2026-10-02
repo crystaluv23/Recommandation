@@ -13,6 +13,7 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 from stock_opportunity_agent.research.evolution_core import AgentUsage
+from stock_opportunity_agent.research.evolution_state_patch import PATCH_INSTRUCTION
 
 MINING_CONTROLLER_STAGE = "mining_controller_step"
 
@@ -25,9 +26,8 @@ _MINING_CONTROLLER_PROMPT = (
     "uniqueness and executable fixtures govern admission; effect stays unverified "
     "and is tracked after admission. Do not withhold a concrete measurable "
     "candidate merely because strict paired benefit is unproved; never fabricate "
-    "support. Return exactly one JSON object with keys action and rationale "
-    "plus the action's own fields. rationale is a non-empty array of short "
-    "strings. Allowed actions and their required fields: "
+    "support. Every assembled action requires rationale as a non-empty array "
+    "of short strings. Allowed actions and their required fields: "
     "inspect_manifest {}; inspect_catalog {}; "
     "fetch_evidence {case_refs, source_families, max_documents, query|null} "
     "where source_families may list several families in one call and every "
@@ -156,13 +156,7 @@ _MINING_CONTROLLER_PROMPT = (
     "admissible. Exploration creates no candidate "
     "quota: propose only a recurring supported factor, regardless of modality. "
     "record_no_pattern must cite "
-    "explored_families actually present in your own prior fetches. When "
-    "last_invalid_action is present, fix exactly that issue. If it contains "
-    "output_patch_contract, return only {base_hash,operations} under that "
-    "contract, editing its invalid_output at the authorized paths. Preserve "
-    "the failed action and all correct arguments; full objects or changed "
-    "actions are invalid for this correction. Otherwise choose one admissible "
-    "action object. Never request "
+    "explored_families actually present in your own prior fetches. Never request "
     "facts after the prediction time, never use identities or file ordering "
     "as features, and never exceed the remaining budgets shown in the view. "
     "Named remaining counters and exhaustion claims in any rationale or coverage "
@@ -196,9 +190,28 @@ class MiningAgentRoleModel:
     def next_action(self, view: Mapping[str, Any]) -> dict[str, Any]:
         """Send one controller view and return the model's action object."""
 
+        invalid = view.get("last_invalid_action")
+        if isinstance(invalid, Mapping) and isinstance(
+            invalid.get("output_patch_contract"), Mapping
+        ):
+            output_instruction = (
+                "Output only a JSON object with exactly base_hash and operations. "
+                "Use last_invalid_action.output_patch_contract to edit its "
+                "invalid_output at the authorized paths. Preserve the failed "
+                "action and every correct argument. A full action object or a "
+                "changed action is invalid. Fix the reported patch_error within "
+                "the same base and permissions when present. "
+            ) + PATCH_INSTRUCTION
+        else:
+            output_instruction = (
+                "Return exactly one JSON object with keys action and rationale "
+                "plus the action's own fields. rationale is a non-empty array "
+                "of short strings. When last_invalid_action is present, fix "
+                "the reported issue by choosing one admissible action. "
+            )
         parsed, usage = self.caller.complete_json(
             stage=self.stage,
-            system_prompt=_MINING_CONTROLLER_PROMPT,
+            system_prompt=output_instruction + _MINING_CONTROLLER_PROMPT,
             payload=dict(view),
             allow_outcomes=True,
             anonymous_aliases=self.identity_aliases,

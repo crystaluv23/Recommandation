@@ -1,5 +1,7 @@
 """Signal Mining, Update, and exploration role-adapter tests."""
 
+from copy import deepcopy
+
 from tests.evolution_runtime_test_support import *  # noqa: F403
 from stock_opportunity_agent.research import (
     evolution_core as core_module,
@@ -2760,6 +2762,94 @@ class SignalRoleAdapterTests(TestCase):
 
         self.assertEqual(result.value.case_diagnostics, tuple(output["case_diagnostics"]))
         self.assertEqual(result.usage.llm_calls, 1)
+
+    def test_update_compact_source_refs_restore_exact_html_without_clipping(self) -> None:
+        literal = '<span style="' + ('padding-left:1px;' * 700) + '">Revenue 72% in 2024.</span>'
+        payload = {
+            "target": {"signal_ref": "customer_concentration:v1"},
+            "induction_cases": [{
+                "case_ref": "update-case-001",
+                "evidence_observation": {"executed_evidence": [{
+                    "document_ref": "document-01", "exact_span": literal,
+                }]},
+                "outcome_relation": {"current_signal_relation": "not_assessable"},
+            }],
+        }
+        original = deepcopy(payload)
+        wire_output = {}
+
+        def response(call):
+            source = call["payload"]["induction_cases"][0]["evidence_observation"]["executed_evidence"][0]
+            self.assertEqual(source["exact_span"], "Revenue 72% in 2024.")
+            self.assertEqual(source["source_span_raw_chars"], len(literal))
+            wire_output.update({
+                "signal_ref": "customer_concentration:v1", "disposition": "defer",
+                "problem_type": "insufficient_evidence", "rationale": ["No comparable period."],
+                "changed_paths": [], "candidate": None,
+                "case_diagnostics": [{
+                    "case_ref": "update-case-001", "evidence_verdict": "insufficient",
+                    "facts": [{"document_ref": "document-01", "source_span_ref": source["source_span_ref"]}],
+                    "evidence_gaps": ["Only one period is available."],
+                    "outcome_relation": "not_assessable", "outcome_explanation": "No result.",
+                }],
+            })
+            return wire_output
+
+        caller = ScriptedRoleCaller([response])
+        result = LLMSignalUpdateModel(caller).update(payload)
+        self.assertEqual(result.value.case_diagnostics[0]["facts"], [
+            {"document_ref": "document-01", "exact_span": literal},
+        ])
+        self.assertEqual(payload, original)
+        self.assertNotIn("exact_span", wire_output["case_diagnostics"][0]["facts"][0])
+        self.assertEqual(result.usage.llm_calls, 1)
+
+    def test_update_source_refs_reject_cross_case_document_unknown_and_mixed_forms(self) -> None:
+        payload = {
+            "target": {"signal_ref": "guidance_acceleration:v1"},
+            "induction_cases": [{
+                "case_ref": f"update-case-{index:03d}",
+                "evidence_observation": {"executed_evidence": [{
+                    "document_ref": "document-01", "exact_span": "The outlook is unchanged.",
+                }]},
+                "outcome_relation": {"current_signal_relation": "not_assessable"},
+            } for index in (1, 2)],
+        }
+        for variant in ("cross_case", "wrong_document", "unknown", "mixed"):
+            with self.subTest(variant=variant):
+                good = {}
+
+                def first(call):
+                    packets = call["payload"]["induction_cases"]
+                    rows = [{
+                        "case_ref": packet["case_ref"], "evidence_verdict": "insufficient",
+                        "facts": [{"document_ref": "document-01", "source_span_ref":
+                                   packet["evidence_observation"]["executed_evidence"][0]["source_span_ref"]}],
+                        "evidence_gaps": ["No comparable outlook."],
+                        "outcome_relation": "not_assessable", "outcome_explanation": "No result.",
+                    } for packet in packets]
+                    good.update({"signal_ref": "guidance_acceleration:v1", "disposition": "defer",
+                                 "problem_type": "insufficient_evidence", "rationale": ["Wait for comparable outlook."],
+                                 "changed_paths": [], "candidate": None, "case_diagnostics": rows})
+                    bad = deepcopy(good)
+                    fact = bad["case_diagnostics"][0]["facts"][0]
+                    if variant == "cross_case":
+                        fact["source_span_ref"] = rows[1]["facts"][0]["source_span_ref"]
+                    elif variant == "wrong_document":
+                        fact["document_ref"] = "document-02"
+                    elif variant == "unknown":
+                        fact["source_span_ref"] = "not-issued"
+                    else:
+                        fact["exact_span"] = "The outlook is unchanged."
+                    return bad
+
+                caller = ScriptedRoleCaller([first, lambda _call: good])
+                result = LLMSignalUpdateModel(caller).update(payload)
+                self.assertEqual(result.usage.llm_calls, 2)
+                self.assertIn("source_span_ref", validation_error(caller.calls[1]))
+                self.assertEqual(result.value.case_diagnostics[1]["facts"], [{
+                    "document_ref": "document-01", "exact_span": "The outlook is unchanged.",
+                }])
 
     def test_signal_update_v2_adds_missing_case_without_rewriting_valid_sibling(
         self,

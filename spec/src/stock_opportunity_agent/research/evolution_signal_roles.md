@@ -467,6 +467,17 @@ follow [stage contracts](stage_contracts.md).
   every rationale and candidate to use only its own nested evidence.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
+  Model-facing source spans carry a case/document/content-bound `source_span_ref`.
+  HTML spans use the shared readable projection without clipping source text;
+  the complete original literal remains local. A wire fact may select exactly
+  `{document_ref,source_span_ref}` instead of copying `exact_span`. The adapter
+  restores only that exact case-local literal before the existing full parser,
+  candidate checks and canonical decision persistence. Unknown, cross-case,
+  wrong-document and mixed-form refs fail with typed row correction; they never
+  introduce evidence. Readable text is a view, not an authoritative raw quote.
+  Ordinary short literal facts remain accepted. Original model replies and
+  source hashes remain auditable, and correction patches target the original
+  wire output rather than an implicitly expanded correction base.
   Before transport the adapter derives a case-local visible prior-year comparison
   inventory from executed source anchors and bounded structured records. A pair
   must share document, taxonomy, concept and unit, have exact calendar year-shifted

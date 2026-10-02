@@ -48,6 +48,26 @@ class MiningRoleModelTests(unittest.TestCase):
 
         self.assertEqual(model.usage.llm_calls, 2)
 
+    def test_correction_selects_only_patch_grammar_and_keeps_permissions(self) -> None:
+        patch = {"base_hash": "snapshot", "operations": [{
+            "op": "add", "path": "rationale", "value": ["Inspect PIT sources."],
+        }]}
+        caller = ScriptedRoleCaller([patch, {"action": "inspect_manifest", "rationale": ["Inspect."]}])
+        model = MiningAgentRoleModel(caller)
+        invalid = {"invalid_output": {"action": "inspect_manifest"},
+                   "output_patch_contract": {"base_hash": "snapshot"},
+                   "patch_error": "Full action is invalid"}
+        self.assertEqual(model.next_action({"last_invalid_action": invalid}), patch)
+        correction = caller.calls[0]
+        self.assertTrue(correction["system_prompt"].startswith(
+            "Output only a JSON object with exactly base_hash and operations."))
+        self.assertNotIn("Return exactly one JSON object with keys action", correction["system_prompt"])
+        self.assertEqual(correction["payload"]["last_invalid_action"], invalid)
+        self.assertIn("point-in-time", correction["system_prompt"])
+        model.next_action({"last_invalid_action": {"issue": "unknown action"}})
+        self.assertTrue(caller.calls[1]["system_prompt"].startswith(
+            "Return exactly one JSON object with keys action and rationale"))
+
 
 if __name__ == "__main__":
     unittest.main()

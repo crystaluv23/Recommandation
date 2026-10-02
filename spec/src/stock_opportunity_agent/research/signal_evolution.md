@@ -305,6 +305,11 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   no exact incidental word such as "rate" is required. The runtime never adds
   keywords to a model's description to make a candidate pass. Actual callable
   formula documentation and immutable fixture checks remain separately required.
+  The role adapter may resolve a model-selected case/document/content-bound
+  source span ref to its complete local literal before source validation.
+  Canonical case diagnostics retain the original `document_ref,exact_span`
+  schema; HTML readability projection and compact wire references cannot weaken
+  point-in-time checks, replace source values or infer a research conclusion.
   The candidate schema exposes the complete version-owned retrieval policy rather
   than the legacy singular query alias. Update requests include a runtime-built
   complete vNext template copied from the stable spec, skill, and immutable

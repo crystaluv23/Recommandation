@@ -31,6 +31,12 @@ Controller repair operations are journaled without charging successful tool
 budget. Original model replies are preserved by the ordinary response ledger.
 Invalid fetch attempts remain diagnostic ledger entries; they never count as
 completed fetches or satisfy the proposal/no-pattern exploration prerequisite.
+The role adapter selects one output grammar before sending the request: an
+ordinary step emits an action with a non-empty rationale array; a step with an
+issued `output_patch_contract` emits only `base_hash` and `operations`. The
+correction system prompt must not simultaneously require a full action object.
+Domain/tool rules remain visible, and the controller still rejects full-object
+corrections and validates the assembled action before any tool executes.
 
 ### Shared Evidence Graph
 

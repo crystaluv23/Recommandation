@@ -772,11 +772,51 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "exactly one object per supplied case_ref, with exactly case_ref, "
     "evidence_verdict, facts, evidence_gaps, outcome_relation, and "
     "outcome_explanation. evidence_verdict is supported, contradicted, or "
-    "insufficient. Every fact has exactly document_ref and exact_span; "
-    "document_ref and exact_span must be copied from that case's source evidence. "
+    "insufficient. Prefer compact facts with exactly document_ref and source_span_ref "
+    "copied from that case's source evidence; runtime restores the complete original "
+    "literal. Readable HTML projections are views, not exact raw quotes. Never copy "
+    "long HTML spans into the response. A short literal fact may instead have exactly "
+    "document_ref and exact_span copied from that case's original source evidence. "
     "outcome_relation is aligned, misaligned, or not_assessable. disposition is "
     "no_change, defer, or update; only update may carry the supplied candidate."
 )
+
+
+def _update_source_span_view(
+    packets: Iterable[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[tuple[str, str], tuple[str, str]]]:
+    """Project source markup and bind compact citations to exact local literals."""
+
+    bindings: dict[tuple[str, str], tuple[str, str]] = {}
+    projected = deepcopy(list(packets))
+
+    def visit(value: Any, case_ref: str, document_ref: str = "") -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item, case_ref, document_ref)
+        elif isinstance(value, dict):
+            document_ref = str(value.get("document_ref", value.get("document_id", document_ref)))
+            for key in ("exact_span", "content_excerpt"):
+                literal = value.get(key)
+                if document_ref and isinstance(literal, str) and literal.strip():
+                    digest = hashlib.sha256(json.dumps(
+                        [case_ref, document_ref, literal], ensure_ascii=False,
+                        separators=(",", ":"),
+                    ).encode("utf-8")).hexdigest()
+                    ref = "source-span-" + digest
+                    bindings[(case_ref, ref)] = (document_ref, literal)
+                    value["source_span_ref"] = ref
+                    if re.search(r"</?[A-Za-z][\w:-]*(?:\s|/?>)", literal):
+                        value[key] = _normalized_projection_text(literal)[0]
+                        value["source_span_projection"] = "readable_html_not_raw_quote"
+                        value["source_span_raw_chars"] = len(literal)
+            for key, item in list(value.items()):
+                if isinstance(item, (dict, list)):
+                    visit(item, case_ref, document_ref)
+
+    for packet in projected:
+        visit(packet.get("evidence_observation", {}), str(packet["case_ref"]))
+    return projected, bindings
 
 
 def _update_visible_comparisons(packet: Mapping[str, Any]) -> list[dict[str, Any]]:
@@ -955,6 +995,8 @@ class LLMSignalUpdateModel(SignalUpdateModel):
         comparisons_by_ref = {ref: _update_visible_comparisons(packet)
                               for ref, packet in packet_by_ref.items()}
         provider_payload = deepcopy(dict(payload))
+        source_packets, source_bindings = _update_source_span_view(packets)
+        provider_payload["induction_cases"] = source_packets
         for packet in provider_payload.get("induction_cases", ()):
             if isinstance(packet, dict) and comparisons_by_ref.get(str(packet.get("case_ref"))):
                 packet["evidence_observation"]["visible_prior_year_comparisons"] = comparisons_by_ref[str(packet["case_ref"])]
@@ -996,6 +1038,27 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             return {key: tuple(values) for key, values in literals.items()}
 
         def parse(value: Mapping[str, Any]) -> SignalUpdateDecision:
+            # Expand a separate parsing view; correction bases stay native wire JSON.
+            value = deepcopy(dict(value))
+            wire_rows = value.get("case_diagnostics")
+            for row_index, row in enumerate(wire_rows if isinstance(wire_rows, list) else ()):
+                if not isinstance(row, dict) or not isinstance(row.get("facts"), list):
+                    continue
+                for fact_index, fact in enumerate(row["facts"]):
+                    if not isinstance(fact, Mapping) or "source_span_ref" not in fact:
+                        continue
+                    binding = source_bindings.get((str(row.get("case_ref", "")),
+                                                   str(fact["source_span_ref"])))
+                    if (set(fact) != {"document_ref", "source_span_ref"}
+                            or binding is None or binding[0] != fact["document_ref"]):
+                        raise StructuredValidationError([ValidationIssue(
+                            code="signal_update_source_span_ref_invalid",
+                            message="Select one supplied source_span_ref from this case and document",
+                            paths=(f"case_diagnostics[{row_index}].facts[{fact_index}]",),
+                            allowed_repairs=("replace", "remove"),
+                        )])
+                    row["facts"][fact_index] = {"document_ref": binding[0],
+                                               "exact_span": binding[1]}
             try:
                 if set(value) != {
                     "signal_ref",

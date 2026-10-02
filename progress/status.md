@@ -3658,3 +3658,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：共同contract-bound导入选择接Slow usage/targets、Update画像与work identity、Fast cycle-start freeze及history转出，删除Control重复读取分支。真实生产bootstrap消费134/17（原0/0），清单外274隔离、源hash/本地0指针不变、0外部；189专项及最终1468全量/lint PASS。新Slow双轴挖掘/入库和完整新Fast零技术排除仍待实际验收，目标继续。见reports/v170-bootstrap-consumer-repair-20261002.md。
 
 2026-10-02：诊断入口接committed-Fast bootstrap（源v170→v171），祖先文档补齐现有增量恢复路径；definition-only种子、原40案/来源清单和134事件manifest保持，不重跑源Fast，旧内部定义snapshot共用公开重建核验。193相关/1471全量及lint PASS，0外部prepare已完成，实际Slow启动与双轴publication/消费继续。见reports/v171-bootstrap-preparation-20261002.md。
+
+2026-10-02：v171实际Slow已提交0/1，Registry7→8，两已有Signal更新技术入库/效果unverified；四Mining seeds均漏rationale后full-object纠错失败，零新候选。适配器唯一grammar复用共同typed patch；Update实际8000截断来自HTML引用（fixtures仅166字符），新增case/document/content绑定source_span_ref与可读投影，parser完整原文还原/原wire patch base保留，越界引用仍拒绝。实际输入263118→112771字符、0外部重放，1474全量、最后306相关与lint PASS。付费局部验证及双轴新挖掘/完整Fast零排除继续，目标未完成。见reports/v171-role-correction-and-citation-repair-20261002.md。
