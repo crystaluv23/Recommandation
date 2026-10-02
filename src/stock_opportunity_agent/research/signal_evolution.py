@@ -3400,11 +3400,18 @@ def validate_signal_update_candidate(
             code="signal_update_no_effective_change",
             message=("Signal Update candidate has no effective change; supply an actual valid "
                      "update or choose no_change/defer with candidate=null, changed_paths=[] "
-                     "and a consistent rationale. Preserve all case diagnostics."),
-            paths=("candidate", "changed_paths", "disposition", "rationale"),
+                     "and a consistent rationale. The candidate's mutable values equal the "
+                     "stable baseline: changing path labels alone is not an edit. Preserve "
+                     "all case diagnostics."),
+            paths=("candidate", "disposition", "rationale"),
             path_policy="any",
             allowed_repairs=("replace",),
-            repair_context={"invalid_container_paths": ["changed_paths"]},
+            dependent_paths=("changed_paths",),
+            repair_context={
+                "runtime_effective_changed_paths": [],
+                "dependency_allowed_repairs": {"changed_paths": ["replace", "remove", "add"]},
+                "allowed_append_values": {"changed_paths": list(SIGNAL_UPDATE_MUTABLE_PATHS)},
+            },
         )])
     if changed_paths is not None:
         declared = tuple(str(item) for item in changed_paths)

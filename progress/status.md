@@ -3662,3 +3662,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：v171实际Slow已提交0/1，Registry7→8，两已有Signal更新技术入库/效果unverified；四Mining seeds均漏rationale后full-object纠错失败，零新候选。适配器唯一grammar复用共同typed patch；Update实际8000截断来自HTML引用（fixtures仅166字符），新增case/document/content绑定source_span_ref与可读投影，parser完整原文还原/原wire patch base保留，越界引用仍拒绝。实际输入263118→112771字符、0外部重放，1474全量、最后306相关与lint PASS。付费局部验证及双轴新挖掘/完整Fast零排除继续，目标未完成。见reports/v171-role-correction-and-citation-repair-20261002.md。
 
 2026-10-02：冻结d2f824e6下v172实际组件验证：direction/magnitude两native patch均通过；Update JSON1668 tokens、纠错465（原8000截断）保留原文，4次$0.02673524。但candidate零实际diff仍技术失败，旧权限不允许validator建议的no_change。共享typed no-effective-change义务开放coupled candidate/diff/disposition/rationale，已无效diff可整段置空，case证据固定/完整再验；250专项、1475最终全量及lint通过，付费纠错续验继续。源v171两发布更新保留、组件不提交cycle。见reports/v172-native-repair-validation-20261002.md。
+
+2026-10-02：v173仅重放v172真实初答+一次paid纠错$0.00971572，模型得到disposition权限仍复制原candidate／只改path labels，正确拒绝、未入库。静态Update prompt移除supplied-candidate歧义，要求实际改值或no_change/defer；diff权限收窄为成员操作/枚举有界append，与祖先typed列表契约一致，共同prompt明确已有形状例外。250相关通过，最终全量和新初答实际验证继续；不将合法JSON等同于完整正确内容。

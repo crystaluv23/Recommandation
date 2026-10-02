@@ -778,7 +778,12 @@ _SIGNAL_UPDATE_V2_OUTPUT = (
     "long HTML spans into the response. A short literal fact may instead have exactly "
     "document_ref and exact_span copied from that case's original source evidence. "
     "outcome_relation is aligned, misaligned, or not_assessable. disposition is "
-    "no_change, defer, or update; only update may carry the supplied candidate."
+    "no_change, defer, or update; only update may carry an edited candidate. "
+    "vnext_template is the baseline, never return it unchanged as an update. "
+    "Write the actual new skill/spec values; listing changed_paths without changing "
+    "those values is invalid. If no supported change preserves the immutable "
+    "definition and fixtures, choose no_change or defer with candidate=null and "
+    "changed_paths=[] and explain the limitation."
 )
 
 

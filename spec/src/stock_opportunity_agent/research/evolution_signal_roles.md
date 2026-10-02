@@ -530,9 +530,12 @@ follow [stage contracts](stage_contracts.md).
   overlays partial `raw_retrieval` edits on the stable policy and uses one shared
   validator during bounded correction and staging. Unknown, missing, or surplus
   path declarations and candidates whose only changes are version or tests are
-  invalid update decisions. An otherwise valid candidate with no effective
-  mutable change grants replace authority over `candidate`, `changed_paths`,
-  `disposition` and `rationale`: the model may supply an actual valid update or
+  invalid update decisions. The vNext template is an immutable baseline, not an
+  edited proposal; declaring path names without editing their values is invalid.
+  An otherwise valid candidate with no effective mutable change grants replace
+  authority over `candidate`, `disposition` and `rationale`, with explicit
+  `changed_paths` member replace/remove and bounded allowed-value append
+  dependency permissions: the model may supply an actual valid update or
   choose `no_change`/`defer` with null candidate, empty paths and a coherent
   explanation. Correct case diagnostics, target and problem type stay fixed.
   The runtime never invents an update or chooses the research disposition.

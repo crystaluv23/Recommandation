@@ -17,6 +17,8 @@ or `add` with `path` and `value`, `remove` with `path`, and `append` with a list
 member. An existing list cannot be replaced wholesale. The response never
 repeats unchanged fields. A stale hash, unknown field, invalid operation, or
 unauthorized scope fails closed before any mutation.
+The shared prompt states the exact typed `invalid_container=true` exception
+alongside its normal list prohibition; it never contradicts issued permissions.
 
 The sole list-replacement exception is an owning shape validator's explicit
 `invalid_container_paths`: a container supplied where a different type is

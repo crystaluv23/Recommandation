@@ -20,7 +20,8 @@ PATCH_INSTRUCTION = (
     "Use only issued permissions. All indices address the same base snapshot, "
     "not a progressively shortened list. replace changes one value, remove "
     "deletes one authorized member, add creates a missing dictionary key, and "
-    "append adds one new list member. Do not replace a whole existing list. "
+    "append adds one new list member. Do not replace a whole existing list "
+    "unless the exact path's allowed operation explicitly has invalid_container=true. "
     "Omitted fields are preserved by the runtime. The merged full object must "
     "still satisfy every original contract and validation obligation."
 )

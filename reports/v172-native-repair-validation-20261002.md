@@ -7,3 +7,5 @@
 新前沿：初答与纠错都复制原skill，声明changed_paths=[skill]。共享validator要求真正变化或no_change；旧权限只允许candidate/changed_paths，禁止变更disposition，构成“校验建议与修复权限不一致”。修复为typed `signal_update_no_effective_change`：允许修改candidate/diff/disposition/rationale，且已证实全部paths为无效diff时可整体替换changed_paths。模型自行决定真实有效更新或no_change/defer；已有case diagnostics、target和problem_type固定，不制造语义改动、不用空candidate假装update。
 
 250相关测试通过，包括从零差异update回退no_change保留全部原文证据以及修复权限反例；1475全量及lint通过；付费局部纠错重放继续。组件诊断的原失败留存，不重写旧缓存或冻结代码。完整Fast零排除、双轴新因子挖掘/入库、后继消费与magnitude独立效果仍待验收。
+
+续验v173（冻结5d8598fe）只重放v172真实初答、付费一次纠错$0.00971572；正确case facts在wire中原样保留。模型确实得到disposition/rationale权限，但仍返回原candidate、只扩大changed_paths声明，再被正确拒绝。无效候选未入库，不能称Update验收通过。进一步删除固定prompt“only update may carry the supplied candidate”的歧义，明确vNext只是baseline，必须修改对应值或no_change/defer；反馈披露runtime_effective_changed_paths=[]。最终将changed_paths权限收窄为成员替换/删除与枚举内有界append，避免把正确类型的list借作invalid_container；共同prompt明确仅已存在的typed形状例外可整段替换。原诊断5d源码/缓存不改，新的完整测试与必要真实初答验证继续。

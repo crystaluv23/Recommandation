@@ -479,7 +479,12 @@ class SignalRoleAdapterTests(TestCase):
         feedback = caller.calls[1]["payload"]["validation_feedback"]
         self.assertEqual(feedback["obligations"][0]["issue_code"], "signal_update_no_effective_change")
         self.assertEqual(feedback["obligations"][0]["must_change_any_of_paths"],
-                         ["candidate", "changed_paths", "disposition", "rationale"])
+                         ["candidate", "disposition", "rationale"])
+        self.assertEqual(feedback["obligations"][0]["permitted_dependency_paths"], ["changed_paths"])
+        self.assertIn("never return it unchanged", caller.calls[0]["system_prompt"])
+        permissions = caller.calls[1]["payload"]["output_patch_contract"]["allowed_operations"]
+        self.assertIn({"op": "remove", "path": "changed_paths[0]", "descendants": False}, permissions)
+        self.assertFalse(any(p["op"] == "replace" and p["path"] == "changed_paths" for p in permissions))
         self.assertNotIn("case_diagnostics", str(caller.calls[1]["payload"]["output_patch_contract"]["allowed_operations"]))
 
     def test_update_program_repairs_changed_paths_before_correction(self) -> None:
