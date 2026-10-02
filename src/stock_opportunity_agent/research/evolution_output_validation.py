@@ -479,6 +479,10 @@ _PRICE_TARGET = re.compile(
     r"\$?(?P<target>\d[\d,]*(?:\.\d+)?)\b", re.I,
 )
 _PRICE_CLAUSE_BOUNDARY = re.compile(r"[;!?\n]|\.(?=\s|$)")
+_PRICE_PERCENT_LINK = re.compile(
+    r"\s+(?:requires?|needs?|would\s+require|implies?|involves?)\s+"
+    r"(?:(?:roughly|about|approximately)\s+)?(?:a\s+)?$", re.I,
+)
 _DENIED_PRICE_CHANGE = re.compile(
     r"\b(?:not|never)(?:\s+(?:a|an))?\s*$|"
     r"^\s*(?:is|was)\s+(?:wrong|incorrect|false|not\s+correct)\b", re.I,
@@ -686,9 +690,18 @@ def _price_reasoning_issues(
             if (_DENIED_PRICE_CHANGE.search(before.rstrip())
                     or _DENIED_PRICE_CHANGE.search(after)):
                 continue
-            targets = {float(m.group("target").replace(",", ""))
-                       for m in _PRICE_TARGET.finditer(before + " " + after)}
-            if not targets and re.search(r"\bdoubling threshold\b", before + " " + after, re.I):
+            # Bind an endpoint to this percentage, never to another numeric
+            # relationship in the same sentence (such as a historical window).
+            suffix_target = _PRICE_TARGET.match(after.lstrip())
+            prefix_targets = list(_PRICE_TARGET.finditer(before))
+            targets = set()
+            if suffix_target is not None:
+                targets.add(float(suffix_target.group("target").replace(",", "")))
+            elif len(prefix_targets) == 1:
+                candidate = prefix_targets[0]
+                if _PRICE_PERCENT_LINK.fullmatch(before[candidate.end():]):
+                    targets.add(float(candidate.group("target").replace(",", "")))
+            if not targets and re.match(r"\s+to\s+(?:the\s+)?doubling\s+threshold\b", after, re.I):
                 if positive_number(anchor.get("doubling_threshold")):
                     targets.add(float(anchor["doubling_threshold"]))
             denominator = expected if match.group("anchor").lower() == "baseline" else anchor.get("recent_close")

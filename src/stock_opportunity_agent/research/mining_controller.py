@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
@@ -22,7 +22,10 @@ from stock_opportunity_agent.data.raw_info import RawInfoStore
 from stock_opportunity_agent.data.disclosure import raw_span_view
 from stock_opportunity_agent.data.markup import visible_html_ranges
 from stock_opportunity_agent.data.resolution import _MARKUP_SOURCE_TYPES
-from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.models import StructuredValidationError, ValidationError, ValidationIssue
+from stock_opportunity_agent.research.evolution_output_validation import _validation_obligations
+from stock_opportunity_agent.research.evolution_state_patch import apply_state_patch, state_patch_contract
+from stock_opportunity_agent.research.repair import mechanical_repair_candidate
 from stock_opportunity_agent.research.evolution_core import (
     EvolutionCase,
     _evidence_source_family,
@@ -208,7 +211,9 @@ class MiningLedger:
         return tuple(sorted(families))
 
     def fetch_count(self) -> int:
-        return sum(1 for entry in self._entries if entry.action == "fetch_evidence")
+        """Count executed fetches, excluding historical invalid-action rows."""
+        return sum(1 for entry in self._entries if entry.action == "fetch_evidence"
+                   and not str(entry.note or "").startswith("invalid_action:"))
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -414,7 +419,17 @@ class LabelAwareMiningController:
                     terminal_kind = "deferred_budget"
             except (InvalidMiningAction, ValidationError) as exc:
                 self._record_invalid(action, raw, str(exc))
-                self._last_invalid = {"action": action, "issue": str(exc)}
+                if not raw and self._last_invalid and "output_patch_contract" in self._last_invalid:
+                    self._last_invalid = {**self._last_invalid, "patch_error": str(exc)}
+                else:
+                    self._last_invalid = {"action": action, "issue": str(exc)}
+                    if isinstance(exc, StructuredValidationError):
+                        feedback = _validation_obligations(exc, raw)
+                        self._last_invalid.update(
+                            invalid_output=deepcopy(raw), validation_feedback=feedback,
+                            output_patch_contract=state_patch_contract(
+                                raw, mode="correction", obligations=feedback["obligations"]),
+                        )
                 budget_inadmissible_streak = 0
                 self._corrections += 1
                 if self._corrections > _MAX_STRUCTURED_CORRECTIONS:
@@ -441,7 +456,19 @@ class LabelAwareMiningController:
         raw = self.model.next_action(dict(view))
         if not isinstance(raw, Mapping):
             raise InvalidMiningAction("model action must be a JSON object")
-        return dict(raw)
+        if self._last_invalid and "output_patch_contract" in self._last_invalid:
+            raw = apply_state_patch(self._last_invalid["invalid_output"], raw,
+                                    contract=self._last_invalid["output_patch_contract"])
+        original = deepcopy(dict(raw))
+        repaired, operations = mechanical_repair_candidate(raw)
+        if operations:
+            self.ledger.append(LedgerEntry(
+                action_id=len(self.ledger.entries) + 1, action="mechanical_repair",
+                input_hash=canonical_json_hash(original), output_hash=canonical_json_hash(repaired),
+                coverage={"repairs": [asdict(operation) for operation in operations]},
+                note="shape-only action repair; full validation precedes execution",
+            ))
+        return repaired
 
     def _model_view(self) -> dict[str, Any]:
         signal_page = self._signal_view()
@@ -763,9 +790,21 @@ class LabelAwareMiningController:
             or not rationale
             or any(not isinstance(item, str) or not item.strip() for item in rationale)
         ):
-            raise InvalidMiningAction(
-                "rationale must be a non-empty array of short strings"
-            )
+            message = "rationale must be a non-empty array of short strings"
+            if "rationale" not in raw or rationale == []:
+                issues = [ValidationIssue(code="mining_rationale_missing", message=message,
+                                          paths=("rationale",), allowed_repairs=("add",))]
+            elif not isinstance(rationale, list):
+                issues = [ValidationIssue(code="mining_rationale_shape", message=message,
+                                          paths=("rationale",), allowed_repairs=("replace",),
+                                          repair_context={"invalid_container_paths": ["rationale"]})]
+            else:
+                issues = [ValidationIssue(code="mining_rationale_member", message=message,
+                          paths=(f"rationale[{index}]",), allowed_repairs=("replace",),
+                          repair_context={"invalid_container_paths": [f"rationale[{index}]"]})
+                          for index, item in enumerate(rationale)
+                          if not isinstance(item, str) or not item.strip()]
+            raise StructuredValidationError(issues)
         texts = [(f"rationale[{i}]", text) for i, text in enumerate(rationale)]
         coverage = raw.get("coverage")
         if isinstance(coverage, Mapping) and isinstance(coverage.get("note"), str):

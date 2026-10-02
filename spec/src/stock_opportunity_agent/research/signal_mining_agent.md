@@ -16,6 +16,22 @@ observation cycle.
 
 ## Invariants
 
+### Incremental action-shape correction
+
+Missing/empty/malformed rationale issues use the shared snapshot-bound patch
+protocol at the controller's next decision, within its existing correction
+budget. The failed action and valid arguments remain fixed; only typed rationale
+fields/members can change. Illegal patches keep the same base and permissions.
+A nonblank scalar rationale can be uniquely wrapped into one string-array item
+by the shared mechanical repair chain, before model correction. No missing
+research rationale is invented. Full action, tool/PIT/evidence/state and budget
+validation runs again before execution. Unknown action/tool/semantic failures
+retain their ordinary correction path until they have owning typed authority.
+Controller repair operations are journaled without charging successful tool
+budget. Original model replies are preserved by the ordinary response ledger.
+Invalid fetch attempts remain diagnostic ledger entries; they never count as
+completed fetches or satisfy the proposal/no-pattern exploration prerequisite.
+
 ### Shared Evidence Graph
 
 - The graph is virtual and lazy. Facts project only from documents already

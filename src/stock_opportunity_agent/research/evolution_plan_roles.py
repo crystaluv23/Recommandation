@@ -1737,6 +1737,15 @@ class LLMSignalRetrievalAgent:
         return AgentStep(selected, usage)
 
 
+_PREDICTOR_ROLE_AUTHORITY = (
+    "H_analyse guides evidence organization and weighting. The fixed Predictor "
+    "shell owns final candidate_judgment and conditional magnitude classification. "
+    "The shell's required output overrides any Plan instruction to omit "
+    "classification or prediction; leaving classification to the shell does "
+    "not remove that system capability. "
+)
+
+
 _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "Use final_context.prediction_time as the exact forecast boundary and "
     "each source card available_at to distinguish historical source wording "
@@ -1810,6 +1819,7 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "null. The fixed six-month definition overrides any "
     "conflicting horizon in the supplied evolvable analysis prompt. Do "
     "not use web tools."
+    + _PREDICTOR_ROLE_AUTHORITY
     + _UNTRUSTED_DATA_INSTRUCTION
     + _BLIND_PREDICTION_OUTPUT
 )
@@ -2676,6 +2686,7 @@ class LLMInformationPlanProposer:
             "proposal_attempt": proposal_attempt,
         }
         system_prompt = (
+            _PREDICTOR_ROLE_AUTHORITY +
             "Apply the fixed H_P prior. Return only evolvable Plan content: "
             "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
             "retrieval plan, not a fixed company profile or computed Signal. "
@@ -3208,6 +3219,7 @@ class LLMPlanCritic:
                 ),
                 stage="plan_critic",
                 system_prompt=(
+                    _PREDICTOR_ROLE_AUTHORITY +
                     "Ground reflection in this batch's deterministic outcome "
                     "diagnostics and sourced briefs. Read registered original case "
                     "reflections when post-hoc detail and its canonical outcome "

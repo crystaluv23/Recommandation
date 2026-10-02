@@ -590,3 +590,5 @@
 - 2026-10-02: Audited live v168 and repaired shared threshold-bound projection policy plus uppercase-derived short brand masking in isolation; exact cached Posthoc replay preserves all valid fields, actual Ciena canonical context removes 80 leaked mentions and reverses exactly. Four new regressions, 1,388 full tests PASS, 74 focused tests and lint PASS. Resumed provider-interrupted v168 on unchanged frozen code; full live content/F1 and causal-fact boundaries remain open.
 
 2026-10-02：最终只读复核v168 runner退出0/指针1-1；c02四技术排除中1FN，原文经当前检测复现为两runtime查价意图误判、一future否定误判、一跨价格关系算式误判。记录attempt恢复丢failures明细、Mining两technical_failure/两deferred_budget及Update一候选效果拒绝/两技术失败，0入库；更新审计和降低技术FN的分层实施方案，未修改冻结运行和评分分母。
+
+2026-10-02：修复v168实际四技术误拒家族及checkpoint failure恢复；Mining action接共享shape机械修复与snapshot-bound typed rationale纠错，invalid fetch不算完成探索；统一固定Predictor职责。真实付费响应0外部重放四项通过，1411全量/215 Fast-recovery/54 Mining专项PASS及lint PASS；完整Slow技术准入/入库/追踪目标仍在推进。

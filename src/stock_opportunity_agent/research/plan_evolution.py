@@ -80,6 +80,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _trajectory_is_fitness_finalized,
     _write_or_verify_json,
     assess_fitness_eligibility,
+    is_technical_exclusion_trajectory,
     build_parent_plan_comparison,
     collect_signal_usage,
     cosine_similarity,
@@ -347,6 +348,23 @@ class RuntimePlanEvaluator:
                 )
                 if trajectory.case_id != case.case_id:
                     raise ValidationError("staged execution trajectory case mismatch")
+                if is_technical_exclusion_trajectory(trajectory):
+                    failure_path = trajectory_path.with_suffix(".failure.json")
+                    if not failure_path.exists():
+                        raise ValidationError("technical trajectory missing failure checkpoint")
+                    failure_record = _read_json(failure_path)
+                    if (failure_record.get("schema_version") != "case-evaluation-failure-v1"
+                            or failure_record.get("input_hash") != input_hash
+                            or failure_record.get("case_id") != case.case_id):
+                        raise ValidationError("conflicting technical failure checkpoint")
+                    fields = ("stage", "error_type", "message", "artifact_ref")
+                    if any(not isinstance(failure_record.get(key), str)
+                           or not failure_record[key].strip() for key in fields):
+                        raise ValidationError("technical failure checkpoint lacks diagnosis")
+                    failures.append(CaseEvaluationFailure(
+                        case_id=case.case_id,
+                        **{key: failure_record[key] for key in fields},
+                    ))
                 trajectories.append(trajectory)
                 _emit_progress(
                     self.on_progress,

@@ -607,6 +607,23 @@ register_repair_chain(_repairable_reflection_package, _reflection_chain)
 register_repair_chain(_repairable_research_state, _research_state_chain)
 
 
+def normalize_action_rationale(value: Mapping[str, Any]) -> tuple[dict[str, Any], list[RepairOp]]:
+    """Wrap one existing scalar reason without inventing action semantics."""
+    result = dict(value)
+    reason = value.get("rationale")
+    if isinstance(reason, str) and reason.strip():
+        result["rationale"] = [reason]
+        return result, [RepairOp(level=L2_MECHANICAL, action="wrap_action_rationale", path="rationale",
+                                 before=reason, after=[reason])]
+    return result, []
+
+
+register_repair_chain(
+    lambda value: isinstance(value, Mapping) and isinstance(value.get("action"), str),
+    lambda value, resolver, level_categories=None: [normalize_action_rationale],
+)
+
+
 def mechanical_repairs_for(
     value: Any,
     resolver: Callable[[str], Mapping[str, Any] | None] | None = None,

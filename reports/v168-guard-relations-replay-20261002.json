@@ -1,0 +1,54 @@
+{
+  "scope": "Offline exact paid output replay through production role parsers; no external calls or frozen live mutations. Initialize computed period cards are not reconstructed: exact paid readable metric/control input retained; period-specific regressions are tested independently. The one paid patch is mechanically re-bound to its persisted model-facing masked snapshot (hash only, same operations/permissions), because the original runtime snapshot hash precedes egress masking. No replay is a new case prediction or an effectiveness result.",
+  "results": [
+    {
+      "request_ref": "73d1bb966d435c0fa1d7416a525b6453b338cf8cf3838920cf9e4eb89b8055a6",
+      "role": "initialize",
+      "paid_correction_ref": "f1c74cd8caed773d3722e9d1cb5feebb77fa741a0d29e0e70d9f9e881f2bb6fa",
+      "calls": 1,
+      "unchanged_output": true,
+      "accepted": true,
+      "exact_paid_input": true
+    },
+    {
+      "request_ref": "921e52a7f6f961546658fb515fc8b88ef4ebc016df43508c2267fde1489c5a48",
+      "role": "initialize",
+      "paid_correction_ref": "2351e0eb2fb4992021da76c5b3de4e4d59024ab7a2015c8681694aa818f094fb",
+      "calls": 1,
+      "unchanged_output": true,
+      "accepted": true,
+      "exact_paid_input": true
+    },
+    {
+      "request_ref": "ba7ea56cd66dbb43a1e3b917f7dcf60fe61d3dfcd5aa14c7551e371a5dc288d9",
+      "role": "initialize",
+      "paid_correction_ref": null,
+      "calls": 1,
+      "unchanged_output": true,
+      "accepted": true,
+      "exact_paid_input": true
+    },
+    {
+      "request_ref": "d258092849d26fd1f5427f372dcdb208bb5264d37934d09060ef103d2b42d24b",
+      "role": "predictor",
+      "calls": 1,
+      "unchanged_output": true,
+      "accepted": true,
+      "exact_paid_input": true
+    }
+  ],
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/73d1bb966d435c0fa1d7416a525b6453b338cf8cf3838920cf9e4eb89b8055a6.json": "84eff9a9eee3beb78b2c1470e115d4657074bbe6c26034a8c5542e5a7f223db4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/73d1bb966d435c0fa1d7416a525b6453b338cf8cf3838920cf9e4eb89b8055a6.json": "5032e109c544a2f0e5a84a16c18258adef49d54332553f54833c271e9efcaa5f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/f1c74cd8caed773d3722e9d1cb5feebb77fa741a0d29e0e70d9f9e881f2bb6fa.json": "a8bc06956526ab2db3fc15302785159d88d43bf69b1ff8a4844d12370d701ad0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/f1c74cd8caed773d3722e9d1cb5feebb77fa741a0d29e0e70d9f9e881f2bb6fa.json": "f6d154d2a8c5d65cf2e1ee69551a7fbe791b7433ed2705707a85b5cda3dca3b5",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/921e52a7f6f961546658fb515fc8b88ef4ebc016df43508c2267fde1489c5a48.json": "0d0f634c03b603a447ce69de3a0ae9a336d76a31374b444aa37fcddde436fd22",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/921e52a7f6f961546658fb515fc8b88ef4ebc016df43508c2267fde1489c5a48.json": "190c9f2725b60d1605d8725e531465f36d4b30dde33149c60c60cdc6fccecfb0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/2351e0eb2fb4992021da76c5b3de4e4d59024ab7a2015c8681694aa818f094fb.json": "2890959d3647eae236f2c1ae63eb9103c0a700a32ba410714bda3e9195576e63",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/2351e0eb2fb4992021da76c5b3de4e4d59024ab7a2015c8681694aa818f094fb.json": "13387601c5333c22604835041dfd688c99caf8d2eacea2223999b446c8c3c8c8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/ba7ea56cd66dbb43a1e3b917f7dcf60fe61d3dfcd5aa14c7551e371a5dc288d9.json": "825ce978742f439a4e7a7412c289f5acefbf6732a2e2f549ef6ba168491d7fe8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/ba7ea56cd66dbb43a1e3b917f7dcf60fe61d3dfcd5aa14c7551e371a5dc288d9.json": "56cb9d60f7494b7d259861d80f34bc3af004b2158e4e601d11d6ca7899af2d04",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/d258092849d26fd1f5427f372dcdb208bb5264d37934d09060ef103d2b42d24b.json": "089a8be3150fd24924fc52a59aed08dc1ac8c2b4ca8f5ec89aab26c0d0a0524d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/d258092849d26fd1f5427f372dcdb208bb5264d37934d09060ef103d2b42d24b.json": "33dcf03fd4234bc6b1daa7f6521c6f5a03e8e96d6badded0a85932fe81acbc82"
+  }
+}

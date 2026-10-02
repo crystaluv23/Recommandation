@@ -8,6 +8,12 @@ promotion or commit pointers. See [stage contracts](stage_contracts.md).
 
 ## Contract
 
+An action envelope's existing nonblank scalar `rationale` can be normalized to
+one string-array item. This is a shape-only registered repair family, shared by
+all controller actions. Missing, blank or semantically ambiguous rationale stays
+with typed LLM correction. The original text, other arguments and source content
+are preserved; the owning controller fully revalidates before any execution.
+
 JSON text repair and shape-specific transforms retain originals and return
 auditable operations. Acceptance always requires the owning complete validator.
 Applicable mechanical progress survives into the next correction base even when

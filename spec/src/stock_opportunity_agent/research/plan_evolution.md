@@ -1,5 +1,14 @@
 # Plan Evolution
 
+## Restored technical failure provenance (2026-10-02)
+
+Reusing a checkpointed technical-exclusion trajectory also restores its
+`CaseEvaluationFailure` from the adjacent immutable failure checkpoint, bound to
+the same input hash, schema and case. Restored and fresh failures have identical
+attempt diagnostics and scoring. Missing/conflicting failure provenance fails
+closed instead of producing an apparently clean `failures=[]` attempt. Restore
+does not rerun research, rewrite history, or fabricate a replacement diagnosis.
+
 Backlog refresh in a slow-only workspace consumes the hash-verified Fast context
 seed in its v2 Slow-history manifest when the local Fast archive is empty. The
 zero local pointer must not erase imported unmet needs. Refresh remains derived

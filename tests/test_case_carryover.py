@@ -7,6 +7,7 @@ MAX_TECHNICAL_CASE_EXCLUSIONS cases are excluded. Control-plane errors and
 cap overflow keep the previous rejection semantics.
 """
 
+import json
 import tempfile
 import threading
 import unittest
@@ -246,6 +247,25 @@ class EvaluatorCarryOverTest(unittest.TestCase):
             metrics = attempt.metrics
             self.assertIsNotNone(metrics)
             self.assertEqual(metrics.false_negative, 1)
+            resumed = evaluator.evaluate(
+                default_information_plan(), cases, registry.freeze()
+            )
+            self.assertEqual(resumed.failures, attempt.failures)
+            self.assertEqual(resumed.metrics, metrics)
+            self.assertEqual(evaluator.controller.calls, 2)
+            failure_path = Path(attempt.failures[0].artifact_ref)
+            original = failure_path.read_text()
+            for field, value in (("input_hash", "wrong"), ("case_id", cases[1].case_id),
+                                 ("message", "")):
+                record = json.loads(original)
+                record[field] = value
+                failure_path.write_text(json.dumps(record))
+                with self.subTest(field=field), self.assertRaises(ValidationError):
+                    evaluator.evaluate(default_information_plan(), cases, registry.freeze())
+            failure_path.write_text(original)
+            failure_path.unlink()
+            with self.assertRaisesRegex(ValidationError, "missing failure checkpoint"):
+                evaluator.evaluate(default_information_plan(), cases, registry.freeze())
 
     def test_cancel_stops_before_the_next_case_starts(self):
         from stock_opportunity_agent.research.plan_evolution import (
@@ -426,7 +446,8 @@ class CumulativeCapAcrossRestartTest(unittest.TestCase):
             # them); a third fresh failure pushes the cumulative total to
             # 3 > 2, so metrics stay None (rejection semantics preserved
             # across restart).
-            self.assertEqual(len(restarted.failures), 1)
+            self.assertEqual(restarted.failures[:-1], first.failures)
+            self.assertEqual(len(restarted.failures), MAX_TECHNICAL_CASE_EXCLUSIONS + 1)
             self.assertEqual(len(restarted.technical_exclusion_case_ids), 0)
             self.assertIsNone(restarted.metrics)
 

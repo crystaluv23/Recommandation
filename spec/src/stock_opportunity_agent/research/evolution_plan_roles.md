@@ -1,5 +1,14 @@
 # Evolution Plan Roles
 
+## Fixed Predictor role authority (2026-10-02)
+
+H_analyse evolves evidence organization/weighting, while the fixed Predictor
+always owns the final direction and conditional magnitude output. Its fixed
+shell overrides a conflicting Plan instruction to omit classification or the
+mandatory output. Proposer and Critic disclose the same division of authority;
+the absence of classification inside H_analyse is not proof that the system
+lacks magnitude prediction. Any causal quality attribution still needs evidence.
+
 Source wording describes its own availability time. Initialize/Reflect must not
 promote an expired dated event or an old source's “currently” into a claim that
 it remains current at prediction_time. Predictor receives the cutoff explicitly

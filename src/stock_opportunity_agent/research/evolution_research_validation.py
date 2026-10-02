@@ -597,6 +597,16 @@ _RUNTIME_ANCHOR_CURRENT_WORD = re.compile(
 )
 
 
+_CURRENT_PRICE_EXPECTATIONS_QUESTION = re.compile(
+    r"\b(?:is|does|whether)\s+(?:the\s+)?"
+    r"(?P<anchor>current|prediction[- ]time)\s+"
+    r"(?:adjusted\s+)?(?:share|stock|closing|market)\s+price\s+"
+    r"(?:(?:already|fully|partially)\s+)?"
+    r"(?:discount(?:ing|s)?|reflect(?:ing|s)?|price(?:d|s)?\s+in|embed(?:ding|s)?)\b",
+    re.IGNORECASE,
+)
+
+
 _RUNTIME_ANCHOR_OUTCOME_NOUNS = frozenset(
     "2x double doubled doubles doubling reprice reprices repriced repricing".split()
 )
@@ -656,6 +666,9 @@ def _anchor_occurrence_reference_use(text: str, anchor_start: int) -> bool:
     granting permission.
     """
 
+    if any(match.start("anchor") == anchor_start
+           for match in _CURRENT_PRICE_EXPECTATIONS_QUESTION.finditer(text)):
+        return True
     left = text[:anchor_start].casefold()
     for phrase in _RUNTIME_ANCHOR_REFERENCE_PHRASES:
         left = left.replace(phrase.replace("_", " "), phrase)
@@ -914,7 +927,8 @@ def _requests_realized_results(text: str) -> bool:
 
 
 _TRAILING_FUTURE_EXCLUSION = re.compile(
-    r"\s*[,;]?\s*\bwithout\s+(?:requiring|requesting|using)\s+"
+    r"\s*[,;]?\s*\bwithout\s+(?:requiring|requesting|using|"
+    r"(?:any\s+)?reference\s+to|referring\s+to)\s+"
     r"(?:any\s+)?(?:contents?|results?|facts?|information|data)"
     r"(?:\s+or\s+(?:contents?|results?|facts?|information|data))?\s+"
     r"(?:(?:published|released|reported|available)\s+)?after\s+"

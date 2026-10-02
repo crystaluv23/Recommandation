@@ -1,5 +1,19 @@
 # Evolution Research Validation
 
+## Requested object and local exclusion scope (2026-10-02)
+
+Runtime input detection distinguishes a lookup from an analysis of the supplied
+price. A question whose current-price subject immediately predicates whether
+expectations are discounted/reflected/priced in is analytical reference use;
+it does not request the scalar price. This does not waive question-placement,
+source or PIT checks. Each anchor occurrence remains independent: appending
+a direct price/baseline lookup still rejects.
+
+Trailing source exclusions accept equivalent requiring/requesting/using and
+reference-to/referring-to constructs. Only the terminal negative clause is
+excluded from intent detection. The positive clause remains checked, including
+mixed requests for actual future findings. Original text stays immutable.
+
 Temporal detection ignores only a closed, trailing exclusion such as “without
 requiring contents or results published after the prediction time.” The stored
 question remains unchanged. The positive main clause is checked independently;

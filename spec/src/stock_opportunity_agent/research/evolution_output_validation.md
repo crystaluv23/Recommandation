@@ -1,5 +1,15 @@
 # Evolution Output Validation
 
+## Explicit arithmetic relation binding (2026-10-02)
+
+Anchor-percent arithmetic checks bind a target only through the same explicit
+relation: a following `from baseline to <target>` or a preceding `<target>
+requires <percent> gain from baseline` construction. A nearby historical window,
+unrelated target or another clause cannot supply the target. A named doubling
+threshold must also be grammatically linked. Ambiguous prose supplies no
+deterministic numeric verdict; explicit wrong endpoints and wrong anchor
+restatements remain rejected. No numeric value is rewritten by this detector.
+
 ## Purpose
 
 Parse and validate structured role output, produce machine-readable issues,

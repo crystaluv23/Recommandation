@@ -232,3 +232,5 @@
 - 2026-10-02 | v168 factual weighting/sufficiency in actual Posthoc items | incremental-repair-and-sourced-memory.md + self-evolution-convergence-and-acceptance.md | Align initial classification, local text/kind repair, full ingestion, salvage and immutable historical disclosure; source checks do not establish an explanatory fact.
 
 - 2026-10-02: consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance for full stage audit, immutable legacy reload, technical scoring attribution and user-approved admission/effect separation; replay exact persisted runs and distinguish source integrity from model judgment.
+
+- 2026-10-02：继续目标修复时咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；从v168实际误拒/恢复/Slow终态出发，验证原始响应、typed权限、复验及失败保存，区分离线修复与真实新周期。
