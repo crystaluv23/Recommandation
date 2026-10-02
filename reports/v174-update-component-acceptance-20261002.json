@@ -1,0 +1,88 @@
+{
+  "schema_version": "v174-update-component-acceptance-v1",
+  "root": "/Users/l/Project/Recommandation/runs/cold_start/live_stage_validation_v174",
+  "code_revision": "fec68554c27f47fc93293af405d47b9d5531a11f",
+  "contract_hash": "95656553fd7f8372614e50f7b75d232685c448c4131153a499a528d2f7ed56b5",
+  "source_files": {
+    "run_contract.json": "0c5c4a85cdabbd0a66254422c6293a270dc5d287f2bd6c05bbc7ef017e32a0ca",
+    "update-decision.json": "32bb9665c97b2b75df27e66abff8bb7df8241e63629ff64c6958e73aa93c5880",
+    "fixture-validation.json": "70709ed0542ed98c41c0ebd61294713f2329146fbd8bc761d97c8aff12b61f00",
+    "validation-summary.json": "31f874c521bf12c8589e3ca053d9b56834e7ccd05b12298eb3e9e64a2eb1bade"
+  },
+  "attempts": [
+    {
+      "attempt_id": 1,
+      "request_hash": "a3cf65417262d71db9424dd7197a5c96310dcac28f0a3f4460f0aa0672c4585d",
+      "stage": "signal_update_decision",
+      "status": "completed",
+      "usage": {
+        "cost": 0.010003560000000002,
+        "cost_basis": "provider_usage",
+        "input_tokens": 31707,
+        "output_tokens": 2010,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 31323
+      }
+    },
+    {
+      "attempt_id": 2,
+      "request_hash": "70bc594a6ffdad25232bbe6444dca0ec68e7bb78534fd80cd0dde9dcfbcbe7cc",
+      "stage": "llm_signal_batch_execute",
+      "status": "completed",
+      "usage": {
+        "cost": 0.0005549600000000001,
+        "cost_basis": "provider_usage",
+        "input_tokens": 1680,
+        "output_tokens": 151,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 912
+      }
+    }
+  ],
+  "total_actual_cost": 0.010558520000000002,
+  "changed_paths": [
+    "spec.raw_retrieval.query_terms",
+    "skill"
+  ],
+  "mechanical_only_metadata_repair": true,
+  "candidate_fixture": {
+    "actual_fixture_request_refs": [
+      "70bc594a6ffdad25232bbe6444dca0ec68e7bb78534fd80cd0dde9dcfbcbe7cc"
+    ],
+    "boundary": "actual production fixture executor plus complete source/version/semantic checks; staged diagnostic, not published factor",
+    "candidate_hash": "c52f319ef5ebf3e3eded620c130cc42bd784641f96bf38cfb0f991748c2b0450",
+    "code_revision": "fec68554c27f47fc93293af405d47b9d5531a11f",
+    "contract_hash": "95656553fd7f8372614e50f7b75d232685c448c4131153a499a528d2f7ed56b5",
+    "cycle_committed": false,
+    "immutable_tests_preserved": false,
+    "published": false,
+    "staged_ref": "customer_concentration:v3",
+    "validation": {
+      "accepted": true,
+      "candidate_hash": "",
+      "executed_tests": 1,
+      "reasons": [],
+      "signal_ref": "customer_concentration:v3"
+    }
+  },
+  "published": false,
+  "cycle_committed": false,
+  "source_v171_published_updates": [
+    "financing_listing_action:v4",
+    "guidance_acceleration:v3"
+  ],
+  "tests": {
+    "focused_count": 250,
+    "full_count": 1475,
+    "full_pass": true,
+    "full_log": "/tmp/v173-final-permissions-full.log",
+    "lint_pass": true,
+    "lint_log": "/tmp/v173-final-permissions-lint.log"
+  },
+  "open_acceptance": [
+    "complete repaired Fast fixed24 zero technical exclusions",
+    "new direction and magnitude mining/publication",
+    "preserve committed v171 updates in production successor",
+    "cross-cycle factor performance tracking and independent magnitude contribution"
+  ]
+}
