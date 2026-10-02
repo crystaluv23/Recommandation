@@ -3654,3 +3654,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：v170 AXT技术FN的need0 preserve与need1 cosmetic检测互斥已修；仅检查unassigned occurrences，surplus坐标准确。真实两付费操作+已保存grounding模型视图重放误拒清零、删除untargeted仍拒；完整Controller首答回归/130专项及1461全量通过，完整新live零排除仍待验收。见reports/v170-need-cosmetic-repair-20261002.md。
 
 2026-10-02：整合到539e4e5d，主原生1462全量及lint PASS，v151既有diff hash不变。真实committed-Fast bootstrap源134事件持久化/恢复正确，但生产Slow消费者在本地Fast指针0下usage/target均0，源/local轮次过滤缺口已复现；下一步共同授权精确导入事件并检查target/Update/Fast profile冻结，再执行继任验收。目标继续。见reports/v170-bootstrap-consumer-frontier-20261002.md。
+
+2026-10-02：共同contract-bound导入选择接Slow usage/targets、Update画像与work identity、Fast cycle-start freeze及history转出，删除Control重复读取分支。真实生产bootstrap消费134/17（原0/0），清单外274隔离、源hash/本地0指针不变、0外部；189专项及最终1468全量/lint PASS。新Slow双轴挖掘/入库和完整新Fast零技术排除仍待实际验收，目标继续。见reports/v170-bootstrap-consumer-repair-20261002.md。

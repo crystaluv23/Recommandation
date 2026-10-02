@@ -12,7 +12,7 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
-from stock_opportunity_agent.research.signal_tracking import record_committed_signal_use
+from stock_opportunity_agent.research.signal_tracking import imported_learning_events, record_committed_signal_use
 
 from stock_opportunity_agent.artifacts import canonical_json_hash as _canonical_hash
 from stock_opportunity_agent.research.evolution_dataset import LocalEvolutionInventory
@@ -1453,50 +1453,8 @@ def _contract_bound_import_learning_events(
 ) -> dict[str, SignalLearningEvent]:
     """Load learning events explicitly inherited by the source contract."""
 
-    manifest_path: Path | None = None
-    expected_hash: str | None = None
-    event_field: str | None = None
-    allowed_schemas: set[str] = set()
-    if contract.cycle_mode == "slow_bootstrap":
-        manifest_path = source_root / "slow_bootstrap" / "manifest.json"
-        expected_hash = contract.slow_bootstrap_manifest_hash
-        event_field = "signal_learning_events"
-        allowed_schemas = {
-            "slow-bootstrap-manifest-v1",
-            "slow-bootstrap-manifest-v2",
-        }
-    elif contract.cycle_mode == "slow_only":
-        manifest_path = source_root / "slow_history" / "manifest.json"
-        expected_hash = contract.slow_history_manifest_hash
-        event_field = "learning_events"
-        allowed_schemas = {"slow-history-manifest-v1", "slow-history-manifest-v2"}
-    if manifest_path is None or expected_hash is None or event_field is None:
-        return {}
-    envelope = _read_json(manifest_path)
-    manifest = envelope.get("manifest")
-    if (
-        not isinstance(manifest, Mapping)
-        or manifest.get("schema_version") not in allowed_schemas
-        or envelope.get("manifest_hash") != expected_hash
-        or envelope.get("manifest_hash") != _canonical_hash(manifest)
-    ):
-        raise ValidationError("source imported learning-event manifest is invalid")
-    raw_events = manifest.get(event_field, ())
-    if not isinstance(raw_events, list):
-        raise ValidationError("source imported learning events must be an array")
-    imported: dict[str, SignalLearningEvent] = {}
-    try:
-        for raw_event in raw_events:
-            if not isinstance(raw_event, Mapping):
-                raise TypeError("learning event must be an object")
-            event = SignalLearningEvent.from_dict(dict(raw_event))
-            prior = imported.get(event.event_id)
-            if prior is not None and prior.to_dict() != event.to_dict():
-                raise ValidationError("source imported learning event id conflicts")
-            imported[event.event_id] = event
-    except (KeyError, TypeError, ValueError) as exc:
-        raise ValidationError("source imported learning event is invalid") from exc
-    return imported
+    return {event.event_id: event for event in imported_learning_events(
+        source_root, contract=contract.to_dict())}
 
 
 def _validate_slow_fast_context(value: Any) -> Mapping[str, Any]:

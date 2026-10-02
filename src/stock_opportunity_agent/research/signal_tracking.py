@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Any, Iterable
+import json
+from pathlib import Path
+from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
@@ -13,6 +15,82 @@ from stock_opportunity_agent.signal_library import (
 from stock_opportunity_agent.research.research_targets import (
     active_research_targets, project_magnitude_ge3_group, MAGNITUDE_GE3_TARGET_ID,
 )
+
+
+def imported_learning_events(
+    root: Path, *, contract: Mapping[str, Any] | None = None,
+    registry: SignalRegistry | None = None,
+) -> tuple[SignalLearningEvent, ...]:
+    """Read exact event authority from contract-bound local import manifests.
+
+    With no imports or contract (unit/offline workspaces), return an empty tuple.
+    A persisted import without a frozen contract is never execution authority.
+    """
+
+    root = Path(root)
+    locations = (("slow_bootstrap", "signal_learning_events", "slow-bootstrap-manifest"),
+                 ("slow_history", "learning_events", "slow-history-manifest"))
+    if contract is None:
+        path = root / "run_contract.json"
+        if not path.is_file():
+            if any((root / directory / "manifest.json").is_file() for directory, _, _ in locations):
+                raise ValidationError("imported learning events require a frozen run contract")
+            return ()
+        envelope = _import_object(path)
+        contract = envelope.get("contract")
+        if not isinstance(contract, Mapping) or envelope.get("contract_hash") != canonical_json_hash(contract):
+            raise ValidationError("imported learning-event contract hash mismatch")
+    imported: dict[str, SignalLearningEvent] = {}
+    for directory, field, schema in locations:
+        expected_hash = contract.get(f"{directory}_manifest_hash")
+        if expected_hash is None:
+            if contract.get("cycle_mode") == {"slow_bootstrap": "slow_bootstrap", "slow_history": "slow_only"}[directory]:
+                raise ValidationError("imported learning-event manifest binding is missing")
+            continue
+        path = root / directory / "manifest.json"
+        if not path.is_file():
+            raise ValidationError("contract-bound learning-event manifest is missing")
+        envelope = _import_object(path)
+        manifest = envelope.get("manifest")
+        if (not isinstance(manifest, Mapping)
+            or manifest.get("schema_version") not in {f"{schema}-v1", f"{schema}-v2"}
+            or envelope.get("manifest_hash") != expected_hash
+            or expected_hash != canonical_json_hash(manifest)):
+            raise ValidationError("source imported learning-event manifest is invalid")
+        values = manifest.get(field, ())
+        if not isinstance(values, list):
+            raise ValidationError("source imported learning events must be an array")
+        try:
+            for value in values:
+                if not isinstance(value, Mapping):
+                    raise TypeError("learning event must be an object")
+                event = SignalLearningEvent.from_dict(dict(value))
+                prior = imported.get(event.event_id)
+                if prior is not None and prior.to_dict() != event.to_dict():
+                    raise ValidationError("source imported learning event id conflicts")
+                imported[event.event_id] = event
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValidationError("source imported learning event is invalid") from exc
+    events = tuple(imported.values())
+    if registry is not None:
+        known_refs = {card.ref for card in registry.list_signal_cards()}
+        for ref in {event.signal_ref for event in events}:
+            if ref not in known_refs:
+                raise ValidationError("imported learning event references an unknown Signal")
+            registry.committed_learning_events(ref, round_cutoff=0, imported_events=events)
+    return events
+
+
+def _import_object(path: Path) -> Mapping[str, Any]:
+    """Normalize corrupt local import envelopes to a validation failure."""
+
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (ValueError, UnicodeError) as exc:
+        raise ValidationError("imported learning-event envelope is invalid JSON") from exc
+    if not isinstance(value, Mapping):
+        raise ValidationError("imported learning-event envelope must be an object")
+    return value
 
 
 def _protocol(target_id: str) -> str:
@@ -71,12 +149,14 @@ def record_committed_signal_use(registry: SignalRegistry, events: Iterable[Signa
     return registry.record_target_evaluations(rows.values())
 
 
-def target_use_profiles(registry: SignalRegistry, signal_ref: str, *, round_cutoff: int) -> dict[str, Any]:
+def target_use_profiles(registry: SignalRegistry, signal_ref: str, *, round_cutoff: int,
+    imported_events: Iterable[SignalLearningEvent] = ()) -> dict[str, Any]:
     """Return bounded source-bound selected-use associations, never effect support."""
 
     if round_cutoff < 0:
         raise ValidationError("target tracking round cutoff cannot be negative")
-    events = tuple(event for event in registry.load_learning_events(signal_ref) if event.round_id <= round_cutoff)
+    events = registry.committed_learning_events(signal_ref, round_cutoff=round_cutoff,
+        imported_events=imported_events)
     evaluations = {row.evaluation_id: row for row in registry.load_target_evaluations(signal_ref)}
     profiles = {}
     for target_id in _targets(registry, signal_ref):

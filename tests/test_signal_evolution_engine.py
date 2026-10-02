@@ -195,6 +195,7 @@ class SignalEvolutionTests(TestCase):
                 "schema_version": "slow-history-manifest-v1",
                 "source_namespace": namespace,
                 "committed_slow_cycle": 1,
+                "learning_events": [],
                 "cycle_artifacts": [
                     {
                         "cycle_id": "1",
@@ -217,6 +218,10 @@ class SignalEvolutionTests(TestCase):
             )
             registry = SignalRegistry(root / "signals")
             registry.install_catalog(SEED_CATALOG)
+            # Imported feedback requires the same frozen binding as production.
+            import_contract = {"cycle_mode": "slow_only", "slow_history_manifest_hash": canonical_json_hash(manifest)}
+            (workspace.root / "run_contract.json").write_text(json.dumps({
+                "contract": import_contract, "contract_hash": canonical_json_hash(import_contract)}))
             engine = SignalEvolutionEngine(
                 registry=registry,
                 raw_info_store=RawInfoStore(),

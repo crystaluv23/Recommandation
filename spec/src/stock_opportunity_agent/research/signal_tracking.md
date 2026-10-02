@@ -31,6 +31,18 @@ and never expose issuer/case ids. They are observational selected-use evidence,
 not an independent holdout or causal attribution; no-effect-observation stays
 unknown rather than zero-filled supported effect.
 
+Cross-workspace round numbers are independent. `imported_learning_events(root)`
+reads only manifests bound by the hash-verified frozen run contract (bootstrap
+or history, including history attached to a Fast/Slow successor). A manifest
+without its contract is not authority. Imports retain exact event identity and
+source round; conflicting ids, malformed envelopes or changed manifest bytes
+fail closed. Evolution Control uses this same reader for transitive export.
+Consumers pass these exact events to Registry's committed-event selection and
+`target_use_profiles(..., imported_events=...)`. Selection unions local cutoff
+events with explicitly imported events only after exact Registry content checks.
+The target local pointer remains unchanged. Unknown ledger events beyond that
+pointer remain excluded; source round maxima never enlarge local authority.
+
 Slow publishes these summaries as `signal_target_observation` source units visible
 to reflection/H3/E2/Update. H1 and blind prediction do not read target outcome
 summaries. Existing individual usage source units remain available for audit.

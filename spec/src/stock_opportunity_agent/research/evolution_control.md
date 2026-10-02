@@ -48,6 +48,10 @@ Imports preserve exact v1/v2 event identity and source metadata. A new committed
 Fast bootstrap derives v2 identities from its hash-verified source records;
 existing frozen import manifests remain unchanged and resume with their original
 events. No import promotes repeated case/input use into independent evidence.
+Contract-bound learning import parsing is shared with Signal tracking consumers,
+including `fast_then_slow` contracts carrying a history manifest. Export and
+consumption must agree on exact inherited event identities. Source round numbers
+never serve as the successor's local Fast cutoff.
 An unfinished higher-numbered active cycle does not invalidate the committed
 prefix: its staged files are ignored. Import is allowed only when the live
 Registry still equals the version/hash recorded at the committed pointer, the

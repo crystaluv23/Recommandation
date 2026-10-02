@@ -11,7 +11,7 @@ from datetime import datetime
 from math import comb
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Protocol, Sequence
-from stock_opportunity_agent.research.signal_tracking import target_use_profiles
+from stock_opportunity_agent.research.signal_tracking import imported_learning_events, target_use_profiles
 
 from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
@@ -3946,10 +3946,11 @@ class SignalEvolutionEngine:
 
         rows: list[dict[str, Any]] = []
         manifest: list[dict[str, Any]] = []
+        imported_events = imported_learning_events(self.workspace.root, registry=self.registry)
         for card in self.registry.list_signal_cards():
-            for event in self.registry.load_learning_events(card.ref):
-                if event.round_id > self.workspace.last_completed_round:
-                    continue
+            for event in self.registry.committed_learning_events(card.ref,
+                round_cutoff=self.workspace.last_completed_round,
+                imported_events=imported_events):
                 raw = event.to_dict()
                 feedback_ref = f"usage:{event.event_id}"
                 row = {
@@ -3972,7 +3973,8 @@ class SignalEvolutionEngine:
                 )
         for card in self.registry.list_signal_cards():
             for target_id, profile in target_use_profiles(self.registry, card.ref,
-                round_cutoff=self.workspace.last_completed_round).items():
+                round_cutoff=self.workspace.last_completed_round,
+                imported_events=imported_events).items():
                 feedback_ref = f"target-use:{card.ref}:{target_id}:{profile['source_hash']}"
                 rows.append({"feedback_ref": feedback_ref, "kind": "signal_target_observation",
                     "subject_ref": card.ref, "source_refs": [feedback_ref],
@@ -5483,6 +5485,11 @@ class SignalEvolutionEngine:
             ),
             key=lambda item: item["case_id"],
         )
+        imported_events = imported_learning_events(self.workspace.root, registry=self.registry)
+        learned_profile = self.registry.load_committed_learning_profile(signal_ref,
+            round_cutoff=self.workspace.last_completed_round, imported_events=imported_events)
+        use_profiles = target_use_profiles(self.registry, signal_ref,
+            round_cutoff=self.workspace.last_completed_round, imported_events=imported_events)
         work_fingerprint = _canonical_hash(
             {
                 "schema_version": "signal-update-work-v1",
@@ -5491,6 +5498,8 @@ class SignalEvolutionEngine:
                 "execution_inputs": execution_inputs,
                 "update_model": self._role_work_identity(self.update_model),
                 "projection_protocol": "signal-update-evidence-packet-v2",
+                "committed_feedback_hash": _canonical_hash({
+                    "learned_profile": learned_profile, "target_use_profiles": use_profiles}),
             }
         )
         base_audit["work_fingerprint"] = work_fingerprint
@@ -5605,8 +5614,8 @@ class SignalEvolutionEngine:
                 "problem_type": target["problem_type"],
                 "stable_spec": spec.to_dict(),
                 "stable_skill": skill,
-                "learned_profile": self.registry.load_learning_profile(signal_ref),
-                "target_use_profiles": target_use_profiles(self.registry, signal_ref, round_cutoff=self.workspace.last_completed_round),
+                "learned_profile": learned_profile,
+                "target_use_profiles": use_profiles,
             },
             "induction_cases": induction_packets,
             "slow_method_memory": self._slow_method_view("Update"),
@@ -10268,7 +10277,8 @@ class DualLoopEvolutionEngine:
             None
             if staged_validation is not None
             else self.signal_registry.freeze(
-                learning_round_cutoff=learning_round_cutoff
+                learning_round_cutoff=learning_round_cutoff,
+                imported_events=imported_learning_events(self.plan_engine.workspace.root, registry=self.signal_registry),
             )
         )
         rounds: list[PlanRoundResult] = []

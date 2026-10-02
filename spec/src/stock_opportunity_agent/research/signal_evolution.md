@@ -40,6 +40,14 @@ Committed-use tracking derives target observations from committed local/imported
 learning events and provides cutoff-bound source summaries to reflection/H3/E2/Update.
 H1 cannot read outcome groups. Independent benefit studies remain a separate
 frontier; observed use and admission alone are not validated benefit.
+Slow usage, target summaries and Update use one contract-bound import selection
+alongside the local Fast pointer. Dual-loop Fast profile freezing uses that same
+selection at the cycle-start local cutoff, including on partial-cycle restart.
+A zero-Fast successor must consume exact committed imports without changing its
+own pointer; unrelated source-ledger rows and pending local events are excluded.
+Update's routing profile and target summaries share this selection, and their
+combined identity enters its work fingerprint. A previous no-change decision
+cannot suppress new committed feedback merely because its induction inputs match.
 
 Provider projections preserve source identity before anonymizing prose: hash each
 original backlog source ref before masking its row, and retain an opaque

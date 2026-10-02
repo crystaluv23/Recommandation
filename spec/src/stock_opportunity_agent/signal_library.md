@@ -224,6 +224,15 @@ stable Signal version, but changing a profile changes the exact Fast execution
 input and prevents stale trajectory reuse. Stats and learning events may keep
 accumulating after a snapshot is frozen; that Fast group continues to see its
 original profile snapshot, and stable definitions cannot change until it ends.
+`committed_learning_events(ref, round_cutoff=..., imported_events=...)` selects
+local cutoff events plus exact imported events, rejecting missing or changed
+Registry copies of any authorized import for that version. `freeze` accepts
+the same explicit imports alongside its local cutoff; it never rebases source
+rounds or uses an imported maximum as local commit authority. Imported events
+are supplied by the contract-bound tracking reader, not inferred from ledgers.
+`load_committed_learning_profile` rebuilds the routing derivative from that same
+selection for Update and bounded freezing; mutable full-ledger profiles are not
+the committed-input contract.
 Freezing an empty Registry is invalid: a v4 run must contain at least one
 enabled, capability-audited stable Signal and the normal seed initialization
 contains all 11 enabled definitions.

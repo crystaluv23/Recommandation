@@ -2133,13 +2133,52 @@ class SignalRegistry:
             recorded += len(missing)
         return recorded
 
+    def committed_learning_events(
+        self, signal_ref: str, *, round_cutoff: int,
+        imported_events: Iterable[SignalLearningEvent] = (),
+    ) -> tuple[SignalLearningEvent, ...]:
+        """Select local committed uses plus exact authorized imported uses.
+
+        Source rounds retain their identity and never enlarge the local cutoff.
+        Missing or changed copies of authorized imports fail closed.
+        """
+
+        if round_cutoff < 0:
+            raise ValidationError("Signal learning round cutoff cannot be negative")
+        events = self.load_learning_events(signal_ref)
+        known = {event.event_id: event for event in events}
+        imported_ids = set()
+        for imported in imported_events:
+            if imported.signal_ref != signal_ref:
+                continue
+            stored = known.get(imported.event_id)
+            if stored is None or stored.to_dict() != imported.to_dict():
+                raise ValidationError("imported learning event differs from its Registry copy")
+            imported_ids.add(imported.event_id)
+        return tuple(event for event in events
+            if event.round_id <= round_cutoff or event.event_id in imported_ids)
+
+    def load_committed_learning_profile(
+        self, signal_ref: str, *, round_cutoff: int,
+        imported_events: Iterable[SignalLearningEvent] = (),
+    ) -> dict[str, Any]:
+        """Build a routing profile using the same committed use selection."""
+
+        return _build_signal_learning_profile(signal_ref,
+            self.committed_learning_events(signal_ref, round_cutoff=round_cutoff,
+                imported_events=imported_events))
+
     def freeze(
-        self, *, learning_round_cutoff: int | None = None
+        self, *, learning_round_cutoff: int | None = None,
+        imported_events: Iterable[SignalLearningEvent] = (),
     ) -> FrozenSignalRegistry:
         """Freeze definitions plus profiles committed by an optional round cutoff."""
 
         if learning_round_cutoff is not None and learning_round_cutoff < 0:
             raise ValidationError("Signal learning round cutoff cannot be negative")
+        imported_events = tuple(imported_events)
+        if imported_events and learning_round_cutoff is None:
+            raise ValidationError("explicit Signal imports require a local learning cutoff")
 
         cards = self.list_signal_cards()
         if not cards:
@@ -2151,6 +2190,9 @@ class SignalRegistry:
                 + json.dumps(audit.to_dict(), sort_keys=True)
             )
         specs = tuple(self.load_spec(card.ref) for card in cards)
+        known_refs = {spec.ref for spec in specs}
+        if any(event.signal_ref not in known_refs for event in imported_events):
+            raise ValidationError("imported learning event references an unknown Signal")
         skills = {
             spec.ref: skill
             for spec in specs
@@ -2170,14 +2212,8 @@ class SignalRegistry:
             if learning_round_cutoff is None:
                 profile = self.load_learning_profile(spec.ref)
             else:
-                profile = _build_signal_learning_profile(
-                    spec.ref,
-                    (
-                        event
-                        for event in self.load_learning_events(spec.ref)
-                        if event.round_id <= learning_round_cutoff
-                    ),
-                )
+                profile = self.load_committed_learning_profile(spec.ref,
+                    round_cutoff=learning_round_cutoff, imported_events=imported_events)
             learned_profiles[spec.ref] = profile
         research_status = {card.ref: dict(card.research_status) for card in cards if card.research_status}
         learning_canonical = json.dumps(
