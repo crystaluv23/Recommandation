@@ -28,6 +28,17 @@ audit retains full complete rows, staged rows and pending refs separately rather
 than only counts. The existing Update target-ordering consumer reads catalog-
 validated `update_existing` rows from complete controller and multi-axis ledgers
 as well as historical H1 audits; no staged row implies capability resolution.
+Controller seed status derives from its actual terminal kind: candidate and
+supported no-pattern are completed, technical failure is failed, and budget or
+evidence deferral is deferred. Axis/multi-axis summaries retain mixed partial
+completion instead of marking every finished invocation completed. Update may
+consume an independently completed seed's full validated intents even when a
+sibling fails, but never partial/staged intents or technical-failure rows.
+Magnitude mining assessment derives the same status from legacy seed terminal
+metadata when available; old artifacts remain unchanged. Without a validated
+target candidate or a completed target track, technical termination is not an
+assessed research result. Observed fetch/read coverage remains separately
+auditable and does not prove successful conclusion or research gain.
 
 The engine freezes `slow_input.json`, then appends or reuses one
 `slow_memory.json`, then seals `slow_experiments.json` before staging validation.

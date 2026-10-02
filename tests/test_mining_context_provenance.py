@@ -42,7 +42,7 @@ class MiningContextProvenanceTests(unittest.TestCase):
                               signal_originals={ref: bundle}, identity_aliases=('IssuerPrivateName',))
             view = tool._model_view()
             validate_stage_input('mining_controller_step', view, allow_outcomes=True)
-            for key in ('case_refs', 'case_prediction_times', 'signal_catalog_disclosure'):
+            for key in ('case_refs', 'case_prediction_times', 'signal_catalog_disclosure', 'tool_contracts'):
                 incomplete = dict(view); incomplete.pop(key)
                 with self.assertRaisesRegex(ValidationError, 'dependency missing'):
                     validate_stage_input('mining_controller_step', incomplete, allow_outcomes=True)

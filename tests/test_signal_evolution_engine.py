@@ -8,6 +8,7 @@ from stock_opportunity_agent.research.signal_evolution import (
     SlowLoopValidation,
     _exploration_comparison_concepts,
     _magnitude_mining_track_statuses,
+    _mining_execution_status,
     _prioritize_reflection_feedback,
     _signal_effectiveness_counts,
     signal_effectiveness_measurement_contract,
@@ -91,7 +92,11 @@ class SignalEvolutionTests(TestCase):
             selected = hypothesis_payloads[1]["last_action_result"]["result"]["items"][0]
             self.assertEqual(selected["content"], original)
             self.assertEqual(first["case_prediction_times"]["case-001"], cases[0].prediction_time.isoformat())
+            self.assertEqual(first["tool_contracts"]["compute_statistic"]["operand_count"], 2)
+            self.assertNotIn("median", first["tool_contracts"]["compute_statistic"]["rules"])
             seed = output["audit"]["seeds"][0]
+            self.assertEqual(output["audit"]["status"], "partial")
+            self.assertEqual(output["audit"]["seeds"][1]["status"], "deferred")
             self.assertEqual(seed["terminal_kind"], "no_pattern_with_coverage")
             self.assertEqual(seed["pending_need_refs"], [])
             self.assertEqual(seed["need_disposition_rows"][0]["need_refs"], ["n0", "n1"])
@@ -135,6 +140,26 @@ class SignalEvolutionTests(TestCase):
             }
         )
         self.assertEqual(statuses, {"magnitude_ge3_v1": "completed"})
+
+    def test_mining_technical_terminals_override_legacy_completed_assessment(self) -> None:
+        seeds = [{"status": "completed", "terminal_kind": "technical_failure"},
+                 {"status": "completed", "terminal_kind": "technical_failure"}]
+        audit = {"mining_pipeline": {"axes": {"magnitude_ge3_v1": {
+            "status": "completed", "seeds": seeds}}}}
+        before = json.dumps(audit, sort_keys=True)
+        self.assertEqual(_magnitude_mining_track_statuses(audit), {"magnitude_ge3_v1": "failed"})
+        self.assertEqual(json.dumps(audit, sort_keys=True), before)
+        self.assertEqual(_mining_execution_status([seeds[0], {"terminal_kind": "no_pattern_with_coverage"}]), "partial")
+        self.assertEqual(_mining_execution_status([{"terminal_kind": "deferred_budget"},
+                                                 {"terminal_kind": "evidence_unavailable"}]), "deferred")
+
+    def test_complete_independent_seed_intents_survive_failed_sibling(self) -> None:
+        valid = {"status": "completed", "terminal_kind": "no_pattern_with_coverage",
+                 "pending_need_refs": [], "need_disposition_rows": [{"disposition": "update_existing", "signal_refs": ["cash:v1"]}]}
+        invalid = {"status": "completed", "terminal_kind": "technical_failure", "pending_need_refs": [],
+                   "need_disposition_rows": [{"disposition": "update_existing", "signal_refs": ["wrong:v1"]}]}
+        audit = {"track": "controller", "status": "partial", "seeds": [valid, invalid]}
+        self.assertEqual(SignalEvolutionEngine._mining_update_refs(audit), ("cash:v1",))
 
     def test_effectiveness_contract_explains_available_neutral_results(self) -> None:
         counts = _signal_effectiveness_counts((
@@ -1083,7 +1108,7 @@ class SignalEvolutionTests(TestCase):
 
             audit = output["audit"]
             self.assertEqual(audit["track"], "controller")
-            self.assertEqual(audit["status"], "completed")
+            self.assertEqual(audit["status"], "partial")
             terminals = {
                 row["seed"]: row.get("terminal_kind")
                 for row in audit["seeds"]
@@ -1610,7 +1635,7 @@ class SignalEvolutionTests(TestCase):
 
             audit = output["audit"]
             self.assertEqual(audit["track"], "controller")
-            self.assertEqual(audit["status"], "completed")
+            self.assertEqual(audit["status"], "partial")
             metrics = audit["modality_metrics"]
             self.assertEqual(metrics["eligible_structured_seed_count"], 2)
             self.assertLessEqual(

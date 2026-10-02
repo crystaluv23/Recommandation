@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, Sequence
@@ -34,7 +35,7 @@ from stock_opportunity_agent.research.evolution_core import (
 _FACT_PROJECTION_CHARS = 12_000
 _NARRATIVE_EXCERPT_CHARS = 600
 
-_COMPUTE_RULES = frozenset(
+COMPUTE_RULES = frozenset(
     {
         "latest_over_comparable_prior",
         "latest_minus_comparable_prior",
@@ -251,8 +252,8 @@ def compute_statistic(
 ) -> EvidenceRelation:
     """Compute one frozen-rule numeric relation with explicit fact lineage."""
 
-    if rule not in _COMPUTE_RULES:
-        raise ValidationError(f"unknown compute_statistic rule: {rule}")
+    if rule not in COMPUTE_RULES:
+        raise ValidationError(f"unknown compute_statistic rule: {rule}; allowed: {sorted(COMPUTE_RULES)}")
     if len(fact_refs) != 2:
         raise ValidationError("compute_statistic requires exactly two fact refs")
     by_ref = {fact.fact_ref: fact for fact in facts}
@@ -270,16 +271,20 @@ def compute_statistic(
     try:
         left = float(numerator.value)
         right = float(denominator.value)
-    except ValueError as exc:
+    except (ValueError, OverflowError) as exc:
         raise ValidationError(
             "compute_statistic operands must be numeric facts"
         ) from exc
+    if not math.isfinite(left) or not math.isfinite(right):
+        raise ValidationError("compute_statistic operands must be finite numeric facts")
     if rule == "latest_minus_comparable_prior":
         value: float = left - right
-    elif rule == "latest_over_latest":
-        value = left / right
     else:
+        if right == 0:
+            raise ValidationError("compute_statistic ratio denominator must be non-zero")
         value = left / right
+    if not math.isfinite(value):
+        raise ValidationError("compute_statistic result must be finite")
     return EvidenceRelation(
         relation_ref="relation-" + _opaque_ref(
             "computed", rule, numerator.fact_ref, denominator.fact_ref

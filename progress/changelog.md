@@ -578,3 +578,5 @@
 - 2026-10-02：隔离实现 runtime 日期归属的 computed-return 期间校验和 snapshot-bound 标签修复，贯穿 State/Predictor/Posthoc、in-loop compute 与 case reset；真实 v167 两份输出离线回放/持久化来源解析通过，另修复截止日已披露未来计划/意图的PIT误拒绝，真实初始化回放六条need保持；新增9测试及全量1334测试通过，历史fixture引用下lint通过。v167保持冻结；24案阶段审查发现4类后续内容/边界缺口，未声明完整Fast/Slow或F1验收。
 
 - 2026-10-02: Integrated exact-version Mining Signal capability/original reads, anonymous need origin/time scope and shared-case fact/event/directory/read identities; shared whole-entry and input construction contracts, production factory/transport regressions and actual v167 source replay preserve sources and bounded budgets. Frozen live v167 remains unchanged; full latest-code semantic/lifecycle acceptance is pending.
+
+- 2026-10-02: Audited completed v167 Fast/Slow artifacts; propagated real seed/axis terminal status without losing independent valid intents, exposed exact compute/read tool contracts, contained invalid arithmetic and preserved action-budget defer precedence. Historical magnitude assessment was falsely completed; no Registry promotion. Latest-code live and Update compatibility acceptance remain open.

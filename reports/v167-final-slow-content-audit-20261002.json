@@ -1,0 +1,425 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "frozen_revision": "8c07f38333002db8bcbe639b3a28e3d197c49672",
+  "source_result_file_hash": "31e8162fe008dca696b157b2dcf2508737ad54554c71585f9dd211d30715a2bc",
+  "committed_round": 1,
+  "committed_cycle": 1,
+  "runner_status": {
+    "runner_attempt": 2,
+    "runner_pid": 50036,
+    "child_pid": 50403,
+    "status": "complete",
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+      "--seed-registry",
+      "/Users/l/Project/Recommandation/runs/cold_start/evolution/signal-registry-successors/v163-modality-v1/signals",
+      "--run"
+    ],
+    "exit_code": 0
+  },
+  "axis_review": [
+    {
+      "axis_id": "magnitude_ge3_v1",
+      "stored_status": "completed",
+      "normalized_status": "failed",
+      "seeds": [
+        {
+          "seed": "hypothesis",
+          "stored_status": "completed",
+          "terminal_kind": "technical_failure",
+          "normalized_status": "failed",
+          "model_calls": 54,
+          "narrative_reads": 24,
+          "pending_need_count": 96,
+          "staged_need_count": 137,
+          "complete_need_rows": 0
+        },
+        {
+          "seed": "discovery",
+          "stored_status": "completed",
+          "terminal_kind": "technical_failure",
+          "normalized_status": "failed",
+          "model_calls": 40,
+          "narrative_reads": 24,
+          "pending_need_count": 0,
+          "staged_need_count": 0,
+          "complete_need_rows": 0
+        }
+      ]
+    },
+    {
+      "axis_id": "surge_direction",
+      "stored_status": "completed",
+      "normalized_status": "partial",
+      "seeds": [
+        {
+          "seed": "hypothesis",
+          "stored_status": "completed",
+          "terminal_kind": "no_pattern_with_coverage",
+          "normalized_status": "completed",
+          "model_calls": 63,
+          "narrative_reads": 24,
+          "pending_need_count": 0,
+          "staged_need_count": 242,
+          "complete_need_rows": 242
+        },
+        {
+          "seed": "discovery",
+          "stored_status": "completed",
+          "terminal_kind": "technical_failure",
+          "normalized_status": "failed",
+          "model_calls": 53,
+          "narrative_reads": 24,
+          "pending_need_count": 0,
+          "staged_need_count": 0,
+          "complete_need_rows": 0
+        }
+      ]
+    }
+  ],
+  "stored_magnitude_assessment": {
+    "assessed": false,
+    "fast_consumption_assessed": false,
+    "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+    "target_candidate_refs": [],
+    "target_mining_assessed": true,
+    "target_supported_candidate_refs": [],
+    "target_track_statuses": {
+      "magnitude_ge3_v1": "completed"
+    }
+  },
+  "normalized_magnitude_track_statuses": {
+    "magnitude_ge3_v1": "failed"
+  },
+  "normalized_target_mining_assessed": false,
+  "request_counts": {
+    "research_controller_reflect": 124,
+    "round_reflect_correction": 1,
+    "mining_controller_step": 198,
+    "llm_signal_batch_execute": 73,
+    "llm_signal_batch_execute_correction": 21,
+    "blind_predictor_predict": 42,
+    "signal_retrieval_cards": 88,
+    "signal_retrieval_cards_correction": 57,
+    "blind_predictor_posthoc_reflect": 42,
+    "research_controller_initialize_correction": 17,
+    "research_controller_initialize": 48,
+    "blind_predictor_posthoc_reflect_correction": 12,
+    "information_plan_propose": 2,
+    "signal_mining_reflect": 1,
+    "plan_critic": 2,
+    "plan_critic_correction": 2,
+    "slow_source_read": 4,
+    "signal_update_decision": 3,
+    "signal_update_decision_correction": 3,
+    "round_reflect": 1,
+    "research_controller_reflect_correction": 1
+  },
+  "explicit_runtime_fact_issues": [
+    {
+      "request_ref": "6761f6579d50690e33a0d80ff4bfdbff2109aa09483e79577f5d414f597270e0",
+      "action": "record_no_pattern",
+      "budget": {
+        "browse_remaining": 0,
+        "heavy_remaining": 26,
+        "light_remaining": 0
+      },
+      "issues": [
+        {
+          "path": [
+            "rationale[0]"
+          ],
+          "matched_text": "no admissible heavy budget",
+          "counter": "heavy_remaining"
+        }
+      ]
+    },
+    {
+      "request_ref": "6f3619d8535a66d32f8138e581f4ca167d7651a9ffaa716556c00991f5731d0c",
+      "action": "read_span",
+      "budget": {
+        "browse_remaining": 0,
+        "heavy_remaining": 26,
+        "light_remaining": 0
+      },
+      "issues": [
+        {
+          "path": [
+            "rationale[2]"
+          ],
+          "matched_text": "Browse budget is positive",
+          "counter": "browse_remaining"
+        }
+      ]
+    }
+  ],
+  "unsupported_compute_rule_outputs": [
+    {
+      "request_ref": "4579ae345234067e802c9e92d6a475a953430ee5e8d0942551e99a82f97df095",
+      "rule": "median",
+      "initial_prompt_exposes_enum": false,
+      "payload_exposes_tool_contract": false
+    },
+    {
+      "request_ref": "8f6a8d16ad8f88bd3d50e281fa0812fd2d206ff11bb95430457072f4adada1ec",
+      "rule": "median",
+      "initial_prompt_exposes_enum": false,
+      "payload_exposes_tool_contract": false
+    },
+    {
+      "request_ref": "8f919a8b9473166d1542f9d80549092834efc194cebcbd50abb2d5872e82f212",
+      "rule": "median",
+      "initial_prompt_exposes_enum": false,
+      "payload_exposes_tool_contract": false
+    }
+  ],
+  "update_response_review": [
+    {
+      "request_ref": "5eb421fd84d1d635dbfbf42cc574dedc3ae198e2b21a3cabb3bbedc7a6408811",
+      "stage": "signal_update_decision",
+      "target": "cash_to_current_liabilities_ratio:v2",
+      "candidate_signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.source_types",
+        "spec.raw_retrieval.query_terms",
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.parameters"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-004",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        }
+      ]
+    },
+    {
+      "request_ref": "5f8b916b1c7d6c15c36afeba5d048ce993bb8cae58e956fa3a00ba77f7f20248",
+      "stage": "signal_update_decision",
+      "target": "cash_burn_rate_elevated:v2",
+      "candidate_signal_ref": "cash_burn_rate_elevated:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.raw_retrieval.minimum_distinct_periods",
+        "spec.raw_retrieval.minimum_period_span_days",
+        "spec.raw_retrieval.minimum_observations",
+        "spec.parameters"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        }
+      ]
+    },
+    {
+      "request_ref": "63f622002c846ccefa72143310960d00f906ad2306b676b88276ac300371ca5a",
+      "stage": "signal_update_decision_correction",
+      "target": "cash_to_current_liabilities_ratio:v2",
+      "candidate_signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.comparison_requirement"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-004",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        }
+      ]
+    },
+    {
+      "request_ref": "64a257050a74d4c6e31e9584e41beadb141fc9156441fc62aafcdbeb0f23e7af",
+      "stage": "signal_update_decision_correction",
+      "target": "cash_burn_rate_elevated:v2",
+      "candidate_signal_ref": "cash_burn_rate_elevated:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.raw_retrieval.minimum_distinct_periods",
+        "spec.raw_retrieval.minimum_period_span_days"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 2,
+          "outcome_relation": "aligned"
+        }
+      ]
+    },
+    {
+      "request_ref": "687379302b3c6d1a6514586613de4932e7dcfbad3455227c7afc90287012dd76",
+      "stage": "signal_update_decision_correction",
+      "target": "cash_reserves:v2",
+      "candidate_signal_ref": "cash_reserves:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.query_terms"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-004",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "aligned"
+        }
+      ]
+    },
+    {
+      "request_ref": "fff4e2e01fcb940a010f035a77a0c827bbc4de4cf858e56b3dfb39b639925d8c",
+      "stage": "signal_update_decision",
+      "target": "cash_reserves:v2",
+      "candidate_signal_ref": "cash_reserves:v2",
+      "decision": null,
+      "changed_paths": [
+        "spec.raw_retrieval.source_types",
+        "spec.raw_retrieval.query_terms",
+        "spec.parameters"
+      ],
+      "case_diagnostics": [
+        {
+          "case_ref": "update-case-001",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-002",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "misaligned"
+        },
+        {
+          "case_ref": "update-case-003",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "aligned"
+        },
+        {
+          "case_ref": "update-case-004",
+          "verdict": "supported",
+          "fact_count": 1,
+          "outcome_relation": "aligned"
+        }
+      ]
+    }
+  ],
+  "update_candidates": [
+    "cash_reserves:v3",
+    "cash_to_current_liabilities_ratio:v3"
+  ],
+  "promoted": [],
+  "rejected": {
+    "cash_reserves:v3": [
+      "candidate lacks positive directional evidence over controls",
+      "candidate leaves over half of the positive-label check cases unflagged",
+      "candidate shows no strict paired effectiveness gain"
+    ],
+    "cash_to_current_liabilities_ratio:v3": [
+      "candidate lacks positive directional evidence over controls",
+      "candidate leaves over half of the positive-label check cases unflagged",
+      "candidate shows no strict paired effectiveness gain"
+    ],
+    "update:cash_burn_rate_elevated:v2": [
+      "structured_output_failed: signal_update_decision failed validation after one correction: case_diagnostics[0] requires source-cited literal facts before outcome association; case_diagnostics[2] requires source-cited literal facts before outcome association; updated deterministic Signal must preserve executable fixture behavior: definition-to-implementation mismatch: description does not name the concept measured by financial.cash_burn_rate_elevated"
+    ]
+  },
+  "input_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+  "output_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+  "artifact_preserved": true,
+  "network_calls": 0,
+  "remaining_acceptance": [
+    "Actual latest-code Fast/Slow output and next-cycle consumption unverified.",
+    "Existing proxy coverage and absence claims are not retroactively validated.",
+    "Update cash-burn failed literal-fact and definition validators; input/validator compatibility remains to audit."
+  ]
+}

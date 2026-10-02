@@ -41,6 +41,13 @@ observation cycle.
   all-pairs relation construction, and no precomputation of unrequested
   combinations. Graph extent therefore equals requested extent and inherits
   the frozen budgets.
+  Every model view also carries runtime-owned tool contracts: the exact frozen
+  compute rule enum, two numeric operands from one case in supplied order, and
+  read target fields/exclusive selection/window limits with their budget class.
+  Numeric computation rejects non-finite operands/results and a zero ratio
+  denominator with a typed validation error before adding a relation or charging
+  a successful action. It does not substitute an aggregate, change operands or
+  choose a research conclusion. Existing accepted work remains intact.
 - Narrative evidence enters as bounded event views with exact spans and
   source lineage; it never synthesizes numeric facts. Narrative events
   project only from the narrative source families (`filing`, `transcript`,
@@ -276,6 +283,14 @@ observation cycle.
   disposition row still survives its invalid sibling. The feedback names the
   text path and actual counter. No-pattern remains a legitimate research choice
   with available budget; this check validates its stated facts, not its choice.
+  Action-budget inadmissibility takes precedence over a contradictory rationale
+  for that same inadmissible action, preserving the bounded budget-defer policy
+  instead of consuming generic content corrections. The invalid attempt remains
+  in the ledger; no incorrect rationale is accepted as a domain conclusion.
+  Explicit dimension-budget counts and direct positive/available-budget claims
+  are also checked against that dimension's remaining counter. Historical,
+  hypothetical and negated statements retain the existing exclusions; this
+  bounded check does not prove every natural-language control-flow inference.
   Previously accepted row facts retain their authoring action's budget scope;
   later counter consumption does not rewrite or retroactively reject those rows.
 

@@ -244,6 +244,7 @@ class SourceBoundaryConsistencyTests(TestCase):
                 'budget': {}, 'measurable_evidence_manifest': {}, 'signal_catalog': [],
                 'signal_catalog_disclosure': {'counts': {'available': 0, 'included': 0}},
                 'case_refs': ['case-001'], 'case_prediction_times': {'case-001': '2025-09-30T00:00:00+00:00'},
+                'tool_contracts': {},
                 'last_action_result': {'document_ref': handle,
                                       'masked': 'CIK 0002009312 http://aureusgreenway.com/20250630'}}
         with tempfile.TemporaryDirectory() as directory:

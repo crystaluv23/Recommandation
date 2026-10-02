@@ -79,7 +79,7 @@ immutable backlog, never over only the visible page.
 The owning validator checks structure, exact source references, numeric/PIT
 constraints, state transitions and complete merged output.
 Mining input construction requires its anonymous case refs, actual prediction
-times and Signal catalog disclosure envelope alongside the existing comparison,
+times, tool argument contracts and Signal catalog disclosure envelope alongside the existing comparison,
 labels and budgets, before transport. The controller supplies these dependencies;
 the shared check does not replace domain evidence validation.
 Numeric results carry producer-owned values, units/formulas and exact periods;

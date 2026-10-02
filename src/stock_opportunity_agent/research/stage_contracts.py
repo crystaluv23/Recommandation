@@ -30,7 +30,7 @@ _STAGE_INPUTS: dict[str, tuple[str, ...]] = {
     "signal_mining_reflect": ("feedback_units", "measurement_contract"),
     "slow_source_read": ("role_scope", "available_sources"),
     "mining_controller_step": ("research_axis", "label_map", "budget", "measurable_evidence_manifest",
-                               "signal_catalog", "signal_catalog_disclosure", "case_refs", "case_prediction_times"),
+                               "signal_catalog", "signal_catalog_disclosure", "case_refs", "case_prediction_times", "tool_contracts"),
     "mining_candidate_materialize_spec": ("candidate", "candidate_contract", "cited_evidence"),
     "mining_candidate_materialize_skill": ("candidate", "spec", "cited_evidence"),
     "mining_candidate_materialize_tests": ("candidate", "spec", "skill", "cited_evidence"),
@@ -86,6 +86,12 @@ def budget_claim_issues(
         named = re.compile(
             rf"\b{dimension}[ _-]+remaining\s*(?:=|:|is|are)\s*(?P<count>[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?!\w|\.\d)", re.I,
         )
+        literal_count = re.compile(
+            rf"\b{dimension}\s+(?:action\s+)?budget\s*(?:=|:|is|are)\s*(?P<count>[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?!\w|\.\d)", re.I,
+        )
+        available = re.compile(
+            rf"\b{dimension}\s+(?:action\s+)?budget\s+(?:is|remains)\s+(?:positive|available)\b", re.I,
+        )
         exhausted = re.compile(
             rf"\b(?:no|zero)\s+(?:(?:remaining|admissible|available)\s+)?{dimension}\s+(?:action\s+)?budget\b"
             rf"(?=\s*(?:$|[.;,!?]|(?:for|left|remaining|available|remains|and)\b|(?:is|was)\s+(?:left|remaining|available)\b))"
@@ -94,13 +100,14 @@ def budget_claim_issues(
         )
         for path, text in text_rows:
             found = False
-            for pattern in (named, exhausted):
+            for pattern in (named, literal_count, exhausted, available):
                 for match in pattern.finditer(text):
                     prefix = re.split(r"[.;!?]", text[:match.start()])[-1][-80:]
                     if re.search(r"\b(?:if|when|unless|assuming|suppose|hypothetical|next|future|previous|prior|not|never|false|incorrect|denied)\b", prefix, re.I):
                         continue
                     invalid = (float(match.group("count")) != remaining
-                               if pattern is named else remaining > 0)
+                               if pattern in (named, literal_count) else
+                               remaining <= 0 if pattern is available else remaining > 0)
                     if invalid:
                         issues.append(ValidationIssue(
                             code="runtime_budget_claim_invalid", paths=(path,),

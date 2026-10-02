@@ -3293,6 +3293,24 @@ def candidate_signal_spec_from_dict(spec: Mapping[str, Any]) -> SignalSpec:
         ) from exc
 
 
+def _mining_execution_status(rows: Sequence[Mapping[str, Any]]) -> str:
+    """Propagate actual terminals while retaining independently completed work."""
+    terminal_status = {"candidate": "completed", "no_pattern_with_coverage": "completed",
+                       "technical_failure": "failed", "deferred_budget": "deferred",
+                       "evidence_unavailable": "deferred"}
+    statuses = []
+    for row in rows:
+        if row.get("terminal_kind") in terminal_status:
+            statuses.append(terminal_status[row["terminal_kind"]])
+        elif isinstance(row.get("seeds"), (list, tuple)) and row["seeds"]:
+            statuses.append(_mining_execution_status(row["seeds"]))
+        else:
+            statuses.append(str(row.get("status", "unknown")))
+    if not statuses:
+        return "unknown"
+    return statuses[0] if len(set(statuses)) == 1 else "partial"
+
+
 def _magnitude_mining_track_statuses(
     agent_audits: Mapping[str, Mapping[str, Any]],
 ) -> dict[str, str]:
@@ -3309,10 +3327,10 @@ def _magnitude_mining_track_statuses(
                 axis_audit, Mapping
             ):
                 continue
-            statuses[str(axis_id)] = str(axis_audit.get("status", "unknown"))
+            statuses[str(axis_id)] = _mining_execution_status([axis_audit])
     axis_id = str(mining.get("axis_id", ""))
     if axis_id and axis_id != "surge_direction":
-        statuses.setdefault(axis_id, str(mining.get("status", "unknown")))
+        statuses.setdefault(axis_id, _mining_execution_status([mining]))
     return statuses
 
 
@@ -6157,7 +6175,7 @@ class SignalEvolutionEngine:
             return tuple(_ordered_unique(ref for axis in dict(audit.get("axes", {})).values()
                                    for ref in SignalEvolutionEngine._mining_update_refs(axis)))
         if audit.get("track") == "controller":
-            return tuple(_ordered_unique(str(ref) for seed in audit.get("seeds", ()) if seed.get("status") == "completed"
+            return tuple(_ordered_unique(str(ref) for seed in audit.get("seeds", ()) if _mining_execution_status([seed]) == "completed"
                 for row in seed.get("need_disposition_rows", ())
                 if not seed.get("pending_need_refs") and row.get("disposition") == "update_existing"
                 for ref in row.get("signal_refs", ())))
@@ -6487,7 +6505,7 @@ class SignalEvolutionEngine:
                 "schema_version": "signal-mining-multi-axis-audit-v1",
                 "cycle_id": cycle_id,
                 "track": "controller_multi_axis",
-                "status": "completed",
+                "status": _mining_execution_status([output["audit"] for output in outputs]),
                 "axes": {
                     str(output["audit"].get("axis_id", "surge_direction")): dict(
                         output["audit"]
@@ -6672,7 +6690,7 @@ class SignalEvolutionEngine:
                 {
                     "seed": seed,
                     "axis_id": axis_id,
-                    "status": "completed",
+                    "status": _mining_execution_status([{"terminal_kind": result.terminal_kind}]),
                     "terminal_kind": result.terminal_kind,
                     "model_calls": result.model_calls,
                     "ledger_actions": len(result.ledger),
@@ -6785,7 +6803,6 @@ class SignalEvolutionEngine:
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and report.get("status") == "completed"
                 and dict(report.get("modality_coverage", {}))
                 .get("structured", {})
                 .get("available")
@@ -6810,7 +6827,6 @@ class SignalEvolutionEngine:
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and report.get("status") == "completed"
                 and dict(report.get("modality_coverage", {}))
                 .get("narrative", {})
                 .get("available")
@@ -6825,7 +6841,6 @@ class SignalEvolutionEngine:
                 1
                 for report in seed_reports
                 if isinstance(report, Mapping)
-                and report.get("status") == "completed"
                 and not dict(report.get("modality_coverage", {}))
                 .get("narrative", {})
                 .get("available")
@@ -6849,7 +6864,7 @@ class SignalEvolutionEngine:
             "track": "controller",
             "axis_id": axis_id,
             "research_axis": dict(research_axis),
-            "status": "completed",
+            "status": _mining_execution_status(seed_reports),
             "limits": self.mining_config.to_dict(),
             "seeds": seed_reports,
             "modality_metrics": modality_metrics,

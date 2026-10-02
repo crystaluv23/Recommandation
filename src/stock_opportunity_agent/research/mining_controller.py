@@ -31,6 +31,7 @@ from stock_opportunity_agent.research.evolution_core import (
 )
 from stock_opportunity_agent.research.stage_contracts import bounded_entry_page, budget_claim_issues, json_bytes, read_whole_entries
 from stock_opportunity_agent.research.mining_agent_tools import (
+    COMPUTE_RULES,
     EvidenceFact,
     EvidenceRelation,
     FetchResult,
@@ -457,6 +458,15 @@ class LabelAwareMiningController:
             },
             "case_refs": [ref for ref, _case in self.case_pairs],
             "case_prediction_times": {ref: case.prediction_time.isoformat() for ref, case in self.case_pairs},
+            "tool_contracts": {
+                "compute_statistic": {"rules": sorted(COMPUTE_RULES), "operand_count": 2,
+                    "operand_scope": "same_case", "operand_order": "numerator_then_denominator_or_latest_then_prior",
+                    "numeric_requirements": "finite operands and result; non-zero denominator for ratios"},
+                "read_span": {"target_fields": ["fact_ref", "event_ref", "document_ref"],
+                    "target_count": 1, "offset_min": 0, "length_min": 1, "length_max": _READ_BYTE_LIMIT,
+                    "window_applies_to": ["event_ref", "document_ref"],
+                    "budget_by_target": {"fact_ref": "heavy", "event_ref": "browse", "document_ref": "browse"}},
+            },
             "known_fact_refs": sorted(self._facts),
             "known_event_refs": sorted(self._events),
             "known_relation_refs": sorted(self._relations),
@@ -760,9 +770,6 @@ class LabelAwareMiningController:
         coverage = raw.get("coverage")
         if isinstance(coverage, Mapping) and isinstance(coverage.get("note"), str):
             texts.append(("coverage.note", coverage["note"]))
-        issues = budget_claim_issues(texts, self._remaining_budget())
-        if issues:
-            raise InvalidMiningAction("; ".join(issue.message for issue in issues))
         if action in LIGHT_ACTIONS and self._light_used >= self.light_action_limit:
             raise BudgetInadmissibleAction("light action budget exhausted")
         narrative_read = action == "read_span" and any(key in raw for key in ("event_ref", "document_ref"))
@@ -770,6 +777,9 @@ class LabelAwareMiningController:
             raise BudgetInadmissibleAction("browse budget exhausted")
         if action in HEAVY_ACTIONS and not narrative_read and self._heavy_used >= self.heavy_action_limit:
             raise BudgetInadmissibleAction("heavy action budget exhausted")
+        issues = budget_claim_issues(texts, self._remaining_budget())
+        if issues:
+            raise InvalidMiningAction("; ".join(issue.message for issue in issues))
 
     def _require_state_at_least(self, minimum: str, action: str) -> None:
         if _STATE_ORDER[self._state] < _STATE_ORDER[minimum]:
