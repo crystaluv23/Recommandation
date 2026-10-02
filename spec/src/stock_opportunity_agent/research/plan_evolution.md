@@ -130,3 +130,6 @@ After round commit, and on rebuilding committed archive derivatives at restart,
 Target observations are derived after existing physical statistics and remain
 separate from them. Missing derivatives recover from committed records; staged
 attempts never create target evidence. Existing canonical records stay unchanged.
+Both event and execution-statistics ids bind the same immutable Plan record hash;
+local round/Plan names alone cannot suppress or collide with successor work.
+Physical selected-use effect observations retain their existing deduplication.

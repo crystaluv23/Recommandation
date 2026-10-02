@@ -1,5 +1,15 @@
 # Evolution Core
 
+## Committed Signal use identity
+
+The shared producer derives v2 learning events from the canonical serialized
+immutable Plan record hash and original case/Signal/result positions. It records
+source binding separately from the unchanged physical observation key. Hashing
+JSON formatting is irrelevant; canonical record reload must reproduce identities.
+Only pointer-reachable records are eligible for production publication. Import
+of existing events preserves their version and bytes; a new read-only committed
+Fast bootstrap derives source-bound events without rewriting the source ledger.
+
 Runtime passes the exact frozen Signal research status to controllers that expose
 `set_signal_research_status`. Current-batch Reflect and actual-result Predictor
 views carry version-bound technical/effect status, with no retrospective labels

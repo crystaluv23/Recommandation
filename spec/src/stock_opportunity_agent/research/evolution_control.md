@@ -44,6 +44,10 @@ manifest carries the exact events already imported through its source's frozen
 byte-for-byte in the source Registry before they may be re-exported. Events found
 only in mutable Registry ledgers, and not reachable from either the committed Fast
 pointer or a contract-bound import manifest, remain excluded.
+Imports preserve exact v1/v2 event identity and source metadata. A new committed
+Fast bootstrap derives v2 identities from its hash-verified source records;
+existing frozen import manifests remain unchanged and resume with their original
+events. No import promotes repeated case/input use into independent evidence.
 An unfinished higher-numbered active cycle does not invalidate the committed
 prefix: its staged files are ignored. Import is allowed only when the live
 Registry still equals the version/hash recorded at the committed pointer, the

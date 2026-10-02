@@ -1345,6 +1345,14 @@ class SignalStats:
         )
 
 
+def signal_use_event_id(*, source_record_hash: str, case_id: str, signal_ref: str,
+                        signal_round: int, result_index: int) -> str:
+    """Bind one use slot to its immutable Plan execution, independent of run names."""
+
+    return _canonical_hash({"source_record_hash": source_record_hash, "case_id": case_id,
+        "signal_ref": signal_ref, "signal_round": signal_round, "result_index": result_index})
+
+
 @dataclass(frozen=True)
 class SignalLearningEvent:
     """One committed Plan selection joined to result and revealed outcome."""
@@ -1365,8 +1373,23 @@ class SignalLearningEvent:
     realized_max_multiple: float
     prediction_correct: bool
     reflection_attribution: tuple[str, ...] = ()
+    source_record_hash: str = ""
+    source_position: tuple[int, ...] = ()
 
     def __post_init__(self) -> None:
+        if self.source_record_hash or self.source_position:
+            if (not isinstance(self.source_record_hash, str)
+                or re.fullmatch(r"[0-9a-f]{64}", self.source_record_hash) is None
+                or not isinstance(self.source_position, (list, tuple))
+                or len(self.source_position) != 2
+                or any(type(index) is not int or index < 0 for index in self.source_position)):
+                raise ValidationError("Signal learning source binding is invalid")
+            expected_id = signal_use_event_id(source_record_hash=self.source_record_hash,
+                case_id=self.case_id, signal_ref=self.signal_ref,
+                signal_round=self.source_position[0], result_index=self.source_position[1])
+            if self.event_id != expected_id:
+                raise ValidationError("Signal learning event id differs from source binding")
+            object.__setattr__(self, "source_position", tuple(self.source_position))
         for value, name in (
             (self.event_id, "event_id"),
             (self.observation_key, "observation_key"),
@@ -1438,7 +1461,11 @@ class SignalLearningEvent:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": "signal-learning-event-v1",
+            "schema_version": ("signal-learning-event-v2" if self.source_record_hash
+                               else "signal-learning-event-v1"),
+            **({"source": {"record_hash": self.source_record_hash,
+                "signal_round": self.source_position[0], "result_index": self.source_position[1]}}
+               if self.source_record_hash else {}),
             "event_id": self.event_id,
             "observation_key": self.observation_key,
             "signal_ref": self.signal_ref,
@@ -1463,8 +1490,15 @@ class SignalLearningEvent:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SignalLearningEvent":
-        if data.get("schema_version") != "signal-learning-event-v1":
+        schema = data.get("schema_version")
+        if schema not in {"signal-learning-event-v1", "signal-learning-event-v2"}:
             raise ValidationError("unsupported Signal learning event schema")
+        source = data.get("source")
+        if schema == "signal-learning-event-v2":
+            if not isinstance(source, Mapping) or set(source) != {"record_hash", "signal_round", "result_index"}:
+                raise ValidationError("Signal learning source binding is missing or malformed")
+        elif "source" in data:
+            raise ValidationError("legacy Signal learning event cannot carry a v2 source")
         result = dict(data.get("result", {}))
         outcome = dict(data.get("outcome", {}))
         if type(outcome.get("is_surge")) is not bool or type(
@@ -1492,6 +1526,9 @@ class SignalLearningEvent:
             reflection_attribution=tuple(
                 str(item) for item in data.get("reflection_attribution", ())
             ),
+            source_record_hash=source["record_hash"] if schema == "signal-learning-event-v2" else "",
+            source_position=(source["signal_round"], source["result_index"])
+                if schema == "signal-learning-event-v2" else (),
         )
 
 

@@ -45,6 +45,7 @@ from stock_opportunity_agent.signal_library import (
     SignalExecutionType,
     SignalExecutor,
     SignalLearningEvent,
+    signal_use_event_id,
     SignalResult,
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
@@ -6445,8 +6446,9 @@ class PlanEvaluator(Protocol):
 def _signal_learning_events_from_record(
     record: PlanRecord,
 ) -> tuple[SignalLearningEvent, ...]:
-    """Derive stable learning events from one authoritative Plan record."""
+    """Derive source-bound learning events from one authoritative Plan record."""
 
+    source_record_hash = _canonical_hash(record.to_dict())
     learning_events: list[SignalLearningEvent] = []
     for trajectory in record.trajectories:
         for round_index, signal_round in enumerate(trajectory.signal_rounds):
@@ -6471,16 +6473,9 @@ def _signal_learning_events_from_record(
                         "document_fingerprint": list(fingerprint),
                     }
                 )
-                event_id = _canonical_hash(
-                    {
-                        "round_id": record.round_id,
-                        "plan_id": record.plan_id,
-                        "case_id": trajectory.case_id,
-                        "signal_round": round_index,
-                        "result_index": result_index,
-                        "signal_ref": result.ref,
-                    }
-                )
+                event_id = signal_use_event_id(source_record_hash=source_record_hash,
+                    case_id=trajectory.case_id, signal_ref=result.ref,
+                    signal_round=round_index, result_index=result_index)
                 learning_events.append(
                     SignalLearningEvent(
                         event_id=event_id,
@@ -6503,6 +6498,8 @@ def _signal_learning_events_from_record(
                         reflection_attribution=_signal_reflection_attribution(
                             result.ref, trajectory.self_reflection
                         ),
+                        source_record_hash=source_record_hash,
+                        source_position=(round_index, result_index),
                     )
                 )
     return tuple(learning_events)

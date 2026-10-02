@@ -51,6 +51,18 @@ readers continue to read original v2/v3 records without translation.
 
 ## V8 Slow feedback use
 
+New `signal-learning-event-v2` use identities bind the canonical immutable
+`PlanRecord` hash, case, exact Signal version and original round/result positions.
+The event stores that source hash and position; the constructor verifies its id.
+Different records may reuse round/Plan names without colliding. Canonical reload,
+exact copying and restart reproduce the same identity; paths are not relocated
+inside authoritative records. Version 1 events retain their exact serialization
+and ids on import and multi-hop export. Frozen old runs stay read-only under new
+code; this is not an in-place rewrite or duplicate re-derivation of their ledgers.
+New source-bound events preserve selection history while physical observation
+keys and target evaluation identities retain their existing deduplication.
+Same-id/different-content rejection remains mandatory.
+
 Slow method learning reads the append-only `SignalLearningEvent` ledger by exact
 Signal version and committed cutoff. `event_id` preserves distinct Plan routing
 reasons while `(case_id, signal_ref, input_fingerprint)` defines independent

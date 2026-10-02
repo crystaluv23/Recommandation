@@ -610,3 +610,5 @@
 - 2026-10-02：通用身份输出quarantine拒绝接Signal成员级纠错，保留正确结果、证据和使用量，猜名不进入纠错输入/授权逆表；实际边界重放及115专项/1448全量通过。另记录v170终态patch重叠+纠错预算和SSL恢复前沿，未热改冻结源。
 
 - 2026-10-02：共享native patch机械纠错只修改准确冲突操作，正确兄弟/原base不重写，原完整validator再验；机械phase不重复目录，越权保持原语义路径，非法非object操作不再静默丢弃。真实canonical Controller与HTTP预算零网络重放、203专项/1454全量通过；另保存v170提交后7项跨workspace学习ID冲突，未改旧历史。
+
+- 2026-10-02：Signal use v2绑定不可变canonical PlanRecord和slot，旧v1不改，统计同步来源命名空间，避免重名工作区碰撞；真实v168/v170生产派生、导入、中断恢复和committed-Fast bootstrap重放通过，88专项/1458全量及lint PASS，未改旧run或重跑Fast。

@@ -2678,11 +2678,13 @@ class PlanEvolutionEngine:
         return [results[index] for index in range(1, len(candidate_plans) + 1)]
 
     def _record_signal_statistics(self, record: PlanRecord) -> None:
+        source_record_hash = _canonical_hash(record.to_dict())
         for trajectory in record.trajectories:
             for round_index, signal_round in enumerate(trajectory.signal_rounds):
                 for result_index, result in enumerate(signal_round.batch.results):
                     observation_id = ":".join(
                         (
+                            source_record_hash,
                             record.plan_id,
                             trajectory.case_id,
                             str(round_index),
