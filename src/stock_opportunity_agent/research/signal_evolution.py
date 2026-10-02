@@ -3961,8 +3961,9 @@ class SignalEvolutionEngine:
         rows: list[dict[str, Any]] = []
         manifest: list[dict[str, Any]] = []
         imported_events = imported_learning_events(self.workspace.root, registry=self.registry)
-        for card in self.registry.list_signal_cards():
-            for event in self.registry.committed_learning_events(card.ref,
+        version_refs = self.registry.list_version_refs()
+        for signal_ref in version_refs:
+            for event in self.registry.committed_learning_events(signal_ref,
                 round_cutoff=self.workspace.last_completed_round,
                 imported_events=imported_events):
                 raw = event.to_dict()
@@ -3985,13 +3986,13 @@ class SignalEvolutionEngine:
                         "visible_to": sorted(_SLOW_SOURCE_ROLES),
                     }
                 )
-        for card in self.registry.list_signal_cards():
-            for target_id, profile in target_use_profiles(self.registry, card.ref,
+        for signal_ref in version_refs:
+            for target_id, profile in target_use_profiles(self.registry, signal_ref,
                 round_cutoff=self.workspace.last_completed_round,
                 imported_events=imported_events).items():
-                feedback_ref = f"target-use:{card.ref}:{target_id}:{profile['source_hash']}"
+                feedback_ref = f"target-use:{signal_ref}:{target_id}:{profile['source_hash']}"
                 rows.append({"feedback_ref": feedback_ref, "kind": "signal_target_observation",
-                    "subject_ref": card.ref, "source_refs": [feedback_ref],
+                    "subject_ref": signal_ref, "source_refs": [feedback_ref],
                     "limitations": profile["limitations"], "artifact": profile})
                 manifest.append({"ref": feedback_ref, "content_hash": _canonical_hash(profile),
                     "visible_to": ["E2", "H3", "Update", "reflection"]})

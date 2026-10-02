@@ -73,10 +73,7 @@ def imported_learning_events(
             raise ValidationError("source imported learning event is invalid") from exc
     events = tuple(imported.values())
     if registry is not None:
-        known_refs = {card.ref for card in registry.list_signal_cards()}
         for ref in {event.signal_ref for event in events}:
-            if ref not in known_refs:
-                raise ValidationError("imported learning event references an unknown Signal")
             registry.committed_learning_events(ref, round_cutoff=0, imported_events=events)
     return events
 

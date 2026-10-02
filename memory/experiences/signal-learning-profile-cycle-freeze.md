@@ -1,6 +1,6 @@
 # Signal Learning Profile Cycle Freeze
 
-visit_times: 8
+visit_times: 9
 
 ## Trigger
 
@@ -37,6 +37,14 @@ restart would have included the newly appended events. Rebuilding profiles from
 events whose `round_id` is no later than the cycle's starting committed round
 restored equivalence without delaying the audit ledger or hiding new evidence
 from the following Slow Update.
+
+Publication changes the current card menu, not the existence of prior immutable
+versions. A latest-card membership check falsely rejected 31 authorized v171
+historical events after two updates, and the same latest-only iteration silently
+removed their Slow feedback. Validate imports against exact definitions and
+ledger copies, enumerate versions for retrospective feedback, and keep vNext
+profiles isolated. Exercise the actual reader/freezer and Slow consumer after
+production publication; an entry test stopped before those consumers misses it.
 
 ## How to Apply
 

@@ -4,6 +4,7 @@ import json
 from dataclasses import replace
 from types import SimpleNamespace
 from unittest import TestCase
+from unittest.mock import patch
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
@@ -20,6 +21,25 @@ from tests.scheme_evolution_test_support import NOW, sec_company_facts_content
 class ImportedSignalFeedbackTests(TestCase):
     setUp = tracking_fixture.SignalTrackingTests.setUp
     event = tracking_fixture.SignalTrackingTests.event
+
+    def publish_next_version(self):
+        """Use production admission/publication, preserving prior admission identity."""
+        prior = self.registry.load_spec(self.ref)
+        current = replace(prior, version=prior.version + 1,
+            parameters={**prior.parameters, "positive_min": .18})
+        self.registry.stage_candidate(current, skill=None, tests=self.registry.load_tests(prior.ref),
+            origin="fixture:historical-feedback-update")
+        empty = {"candidate_refs": (), "induction_case_ids": {}, "validation_case_ids": {},
+            "failures": {}, "audit": {}}
+        with patch.object(self.engine, "_run_signal_mining", return_value=empty), \
+             patch.object(self.engine, "_run_signal_update", return_value={**empty, "candidate_refs": (current.ref,)}):
+            result = self.engine._validate_cycle(self.registry.freeze(), cycle_id=2)
+        self.assertIn(current.ref, result.validated_candidates)
+        self.registry.promote_validated_batch(result.validated_candidates,
+            validated_evaluations=result.candidate_evaluations, transition_id="historical-feedback-update",
+            input_version=result.input_registry_version, input_hash=result.input_registry_hash,
+            input_refs=result.input_signal_refs)
+        return current
 
     def bind(self, events, *, history=False, mode=None):
         root = self.engine.workspace.root
@@ -93,10 +113,58 @@ class ImportedSignalFeedbackTests(TestCase):
             imported_learning_events(self.engine.workspace.root)
         self.assertTrue(contract.contract_hash)
 
+    def test_historical_imports_survive_publication_without_becoming_vnext_feedback(self):
+        source = self.event("prior-version", 4.0, round_id=11)
+        record_committed_signal_use(self.registry, (source,))
+        prior = self.registry.load_spec(self.ref)
+        current = self.publish_next_version()
+        self.bind((source,), history=True, mode="fast_then_slow")
+        loaded = imported_learning_events(self.engine.workspace.root, registry=self.registry)
+        self.assertEqual(loaded, (source,))
+        frozen = self.registry.freeze(learning_round_cutoff=0, imported_events=loaded)
+        self.assertNotIn(prior.ref, frozen.learned_profiles)
+        self.assertEqual(frozen.learned_profiles[current.ref]["selection_events"], 0)
+        self.assertEqual(self.registry.load_committed_learning_profile(prior.ref,
+            round_cutoff=0, imported_events=loaded)["selection_events"], 1)
+        rows, _manifest = self.engine._committed_slow_feedback()
+        self.assertEqual([row["event"] for row in rows if row["kind"] == "signal_usage"], [source.to_dict()])
+
+    def test_freeze_validates_old_version_import_copies_and_unknown_versions(self):
+        source = self.event("prior-copy", 4.0, round_id=11)
+        prior = self.registry.load_spec(self.ref)
+        with self.assertRaisesRegex(ValidationError, "Registry copy"):
+            self.registry.freeze(learning_round_cutoff=0, imported_events=(source,))
+        record_committed_signal_use(self.registry, (source,))
+        self.publish_next_version()
+        with self.assertRaisesRegex(ValidationError, "Registry copy"):
+            self.registry.freeze(learning_round_cutoff=0,
+                imported_events=(replace(source, prediction_correct=False),))
+        unknown = self.event("missing-version", 4.0, round_id=11, ref=f"{prior.signal_id}:v99")
+        self.bind((unknown,), history=True, mode="fast_then_slow")
+        with self.assertRaisesRegex(ValidationError, "unknown stable signal ref"):
+            imported_learning_events(self.engine.workspace.root, registry=self.registry)
+        with self.assertRaisesRegex(ValidationError, "unknown stable signal ref"):
+            self.registry.freeze(learning_round_cutoff=0, imported_events=(unknown,))
+
+    def test_local_historical_feedback_keeps_committed_cutoff_after_publication(self):
+        source = self.event("local-prior", 4.0, round_id=1)
+        pending = self.event("local-uncommitted", 7.0, round_id=2)
+        record_committed_signal_use(self.registry, (source, pending))
+        current = self.publish_next_version()
+        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        rows, _manifest = self.engine._committed_slow_feedback()
+        self.assertEqual([row["event"] for row in rows if row["kind"] == "signal_usage"], [source.to_dict()])
+        profiles = [row for row in rows if row["kind"] == "signal_target_observation"]
+        self.assertEqual([row["subject_ref"] for row in profiles], [self.ref])
+        self.assertEqual(profiles[0]["artifact"]["selection_events"], 1)
+        self.assertEqual(self.registry.freeze(learning_round_cutoff=1).learned_profiles[current.ref]["selection_events"], 0)
+
     def test_fast_cycle_restart_freezes_imports_and_excludes_own_cycle_events(self):
         source = self.event("source", 3.4, round_id=8)
         pending = self.event("local", 4.5, round_id=1)
         record_committed_signal_use(self.registry, (source, pending))
+        prior = self.registry.load_spec(self.ref)
+        current = self.publish_next_version()
         self.bind((source,), history=True, mode="fast_then_slow")
         workspace = self.engine.workspace
         captured = []
@@ -116,10 +184,13 @@ class ImportedSignalFeedbackTests(TestCase):
         with self.assertRaises(ReachedSlow):
             engine.run_cycle(cycle_id=1, completed_plan_rounds=1)
         self.assertEqual(captured[0].learning_hash, captured[1].learning_hash)
-        self.assertEqual(captured[0].learned_profiles[self.ref]["selection_events"], 1)
+        self.assertEqual(captured[0].learned_profiles[current.ref]["selection_events"], 0)
+        self.assertNotIn(self.ref, captured[0].learned_profiles)
         imports = imported_learning_events(workspace.root, registry=self.registry)
+        record_committed_signal_use(self.registry, (self.event("current-version", 3.7,
+            round_id=1, ref=current.ref),))
         next_cycle = self.registry.freeze(learning_round_cutoff=1, imported_events=imports)
-        self.assertEqual(next_cycle.learned_profiles[self.ref]["selection_events"], 2)
+        self.assertEqual(next_cycle.learned_profiles[current.ref]["selection_events"], 1)
         self.assertNotEqual(next_cycle.learning_hash, captured[0].learning_hash)
 
     def test_corrupt_envelopes_are_validation_failures(self):

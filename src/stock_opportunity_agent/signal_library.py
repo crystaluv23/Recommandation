@@ -1877,6 +1877,22 @@ class SignalRegistry:
             raise ValidationError("signal path and spec identity disagree")
         return spec
 
+    def list_version_refs(self) -> tuple[str, ...]:
+        """Enumerate immutable versions for history, not current routing eligibility."""
+
+        refs: list[str] = []
+        for path in sorted(self.root.glob("*/*/versions/v*/spec.json")):
+            relative = path.relative_to(self.root)
+            if re.fullmatch(r"v[1-9][0-9]*", relative.parts[3]) is None:
+                raise ValidationError("Registry version path is invalid")
+            ref = f"{relative.parts[1]}:{relative.parts[3]}"
+            if self.load_spec(ref).category != relative.parts[0]:
+                raise ValidationError("Registry version category differs from path")
+            refs.append(ref)
+        if len(refs) != len(set(refs)):
+            raise ValidationError("Registry contains duplicate Signal versions")
+        return tuple(refs)
+
     def load_skill(self, signal_ref: str) -> str | None:
         spec = self.load_spec(signal_ref)
         if spec.execution_type is SignalExecutionType.DETERMINISTIC:
@@ -2190,9 +2206,9 @@ class SignalRegistry:
                 + json.dumps(audit.to_dict(), sort_keys=True)
             )
         specs = tuple(self.load_spec(card.ref) for card in cards)
-        known_refs = {spec.ref for spec in specs}
-        if any(event.signal_ref not in known_refs for event in imported_events):
-            raise ValidationError("imported learning event references an unknown Signal")
+        for ref in {event.signal_ref for event in imported_events}:
+            self.committed_learning_events(ref, round_cutoff=learning_round_cutoff,
+                imported_events=imported_events)
         skills = {
             spec.ref: skill
             for spec in specs

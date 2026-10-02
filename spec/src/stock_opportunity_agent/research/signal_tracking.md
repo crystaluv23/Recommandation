@@ -40,6 +40,14 @@ fail closed. Evolution Control uses this same reader for transitive export.
 Consumers pass these exact events to Registry's committed-event selection and
 `target_use_profiles(..., imported_events=...)`. Selection unions local cutoff
 events with explicitly imported events only after exact Registry content checks.
+Imports may refer to immutable prior versions after a newer version is published;
+existence means the exact version definition is readable, not that it appears in
+the current stable-card menu. Every imported version's ledger copy is verified.
+Older observations remain attached to that version and never become a new
+version's routing profile or evidence of effect.
+Slow feedback enumerates immutable versions, including historical local versions,
+and applies the committed cutoff/import checks to each. Publication does not
+erase prior usage or target observations from retrospective research.
 The target local pointer remains unchanged. Unknown ledger events beyond that
 pointer remain excluded; source round maxima never enlarge local authority.
 

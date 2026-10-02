@@ -3,6 +3,7 @@
 Usage: PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --prepare-only
        PYTHONPATH=src python scripts/run_minimal_rounds.py --root RUN --run
        Add --slow-bootstrap-from SOURCE to reuse an exact committed Fast range.
+       Add --slow-history-from SOURCE to continue a committed Slow publication.
 
 The first command freezes source-derived inputs without model calls. The second
 requires authorization for external execution and a committed source checkout.
@@ -31,9 +32,11 @@ from stock_opportunity_agent.research.evolution_control import (
     _default_priors_dict, build_run_contract, load_approved_development_dataset,
     _rebased_history_meta_entries, apply_slow_bootstrap_derivatives,
     build_slow_bootstrap_manifest, validate_slow_bootstrap_manifest,
+    build_slow_history_manifest, validate_slow_history_manifest, apply_slow_history_manifest,
+    _registry_matches_committed_history,
 )
 from stock_opportunity_agent.research.evolution_core import (
-    EVALUATION_LABELS, EvolutionCase, GroundTruth, PlanEvaluationConfig, PlanMetaMemory,
+    EVALUATION_LABELS, EvolutionCase, GroundTruth, PlanEvaluationConfig, PlanMetaMemory, RoundMetaEntry,
     RuntimeLimits, _prediction_baseline_from_market_documents,
     default_information_plan, evaluation_label,
 )
@@ -127,12 +130,15 @@ def _development_dataset(frozen):
         approved_manifest_hash=frozen['approved_manifest_hash'])
 
 
-def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Path | None = None):
+def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Path | None = None,
+            slow_history_from: Path | None = None):
     """Freeze stratified development cases before any model observation."""
-    if seed_registry is not None and slow_bootstrap_from is not None:
-        raise ValidationError('bootstrap source owns the Registry seed; do not supply another seed')
+    if sum(item is not None for item in (seed_registry, slow_bootstrap_from, slow_history_from)) > 1:
+        raise ValidationError('seed, bootstrap and committed history sources are mutually exclusive')
     bootstrap_source = None if slow_bootstrap_from is None else slow_bootstrap_from.resolve()
-    registry_source = ((bootstrap_source / 'signals') if bootstrap_source is not None
+    history_source = None if slow_history_from is None else slow_history_from.resolve()
+    source_root = bootstrap_source or history_source
+    registry_source = ((source_root / 'signals') if source_root is not None
                        else (seed_registry or HISTORY / 'signals')).resolve()
     root.mkdir(parents=True, exist_ok=True)
     if (root / 'input_manifest.json').is_file():
@@ -141,6 +147,8 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
             raise ValidationError('requested Registry seed differs from prepared inputs; use a successor workspace')
         if bootstrap_source is not None and str(bootstrap_source) != frozen.get('slow_bootstrap_source'):
             raise ValidationError('requested bootstrap source differs from prepared inputs; use a successor workspace')
+        if history_source is not None and str(history_source) != frozen.get('slow_history_source'):
+            raise ValidationError('requested history source differs from prepared inputs; use a successor workspace')
         return frozen
     if (root / 'run_contract.json').exists() or (root / 'state.json').exists():
         raise ValidationError('cannot retrofit inputs into an existing run')
@@ -148,6 +156,22 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
         raise ValidationError('diagnostic Registry seed requires existing registry.json')
     if (root / 'signals').exists():
         raise ValidationError('partial diagnostic Registry exists without frozen inputs; use a successor workspace')
+    if history_source is not None:
+        source = _verify_inputs(history_source)
+        manifest_hash = build_slow_history_manifest(workspace=root, source_workspace=history_source,
+            dataset_manifest_hash=source['approved_manifest_hash'])
+        manifest = _read(root / 'slow_history' / 'manifest.json')['manifest']
+        apply_slow_history_manifest(workspace=root, manifest=manifest)
+        snapshot = SignalRegistry(root / 'signals', candidate_root=root / 'signals_candidates').freeze()
+        frozen = {key: value for key, value in source.items() if key not in (
+            'slow_bootstrap_source', 'slow_bootstrap_manifest_hash', 'slow_history_source',
+            'slow_history_manifest_hash', 'source_input_manifest_sha256')}
+        frozen.update(registry_source=str(registry_source), initial_registry_version=snapshot.version,
+            initial_registry_hash=snapshot.registry_hash, initial_registry_refs=[spec.ref for spec in snapshot.specs],
+            slow_history_source=str(history_source), slow_history_manifest_hash=manifest_hash,
+            source_input_manifest_sha256=_hash_file(history_source / 'input_manifest.json'))
+        atomic_write_json(root / 'input_manifest.json', frozen)
+        return frozen
     if bootstrap_source is not None:
         source = _verify_inputs(bootstrap_source)
         if EvolutionWorkspace(bootstrap_source).last_completed_round < 1:
@@ -293,6 +317,7 @@ def run(root, frozen):
     initial = registry.freeze()
     dataset = _development_dataset(frozen)
     bootstrap_hash = frozen.get('slow_bootstrap_manifest_hash')
+    history_hash = frozen.get('slow_history_manifest_hash')
     cycle_mode = 'slow_bootstrap' if bootstrap_hash is not None else 'fast_then_slow'
     target_plan_rounds = 0 if bootstrap_hash is not None else 1
     oracle = RawInfoOracle.load_or_create(ORACLE)
@@ -303,7 +328,8 @@ def run(root, frozen):
             raise ValidationError('run source revision changed; use a successor workspace')
         if contract.raw_info_inventory_hash != canonical_json_hash(frozen):
             raise ValidationError('run diagnostic inputs changed')
-        if contract.cycle_mode != cycle_mode or contract.slow_bootstrap_manifest_hash != bootstrap_hash:
+        if (contract.cycle_mode != cycle_mode or contract.slow_bootstrap_manifest_hash != bootstrap_hash
+                or contract.slow_history_manifest_hash != history_hash):
             raise ValidationError('run diagnostic mode changed')
         contract.freeze(contract_path)
     else:
@@ -325,6 +351,7 @@ def run(root, frozen):
             limits=limits, max_external_attempts=1200, max_total_cost=100,
             data_acquisition=broad_research_data_policy_v1(),
             cycle_mode=cycle_mode, slow_bootstrap_manifest_hash=bootstrap_hash,
+            slow_history_manifest_hash=history_hash,
         )
         contract.freeze(contract_path)
     cycle = workspace.start_or_resume_cycle(
@@ -349,6 +376,14 @@ def run(root, frozen):
             signal_snapshot=seed_snapshot)
         bootstrap_entries = _rebased_history_meta_entries(
             apply_slow_bootstrap_derivatives(manifest, registry=registry))
+    elif history_hash is not None:
+        manifest = validate_slow_history_manifest(workspace=root, contract=contract)
+        if not _registry_matches_committed_history(snapshot_version=initial.version,
+                snapshot_hash=initial.registry_hash, history_registry_version=int(manifest['registry_version']),
+                history_registry_hash=str(manifest['registry_hash']), workspace_root=root):
+            raise ValidationError('diagnostic Registry differs from committed history chain')
+        bootstrap_entries = _rebased_history_meta_entries(
+            RoundMetaEntry.from_dict(dict(row)) for row in manifest['fast_context']['meta_entries'])
     def emit(event):
         event = dict(event)
         event_type = event.pop('event_type', 'runtime_progress')
@@ -434,6 +469,7 @@ def main():
     parser.add_argument('--root', required=True)
     parser.add_argument('--seed-registry', type=Path, help='Stable Registry directory to freeze into a new diagnostic workspace')
     parser.add_argument('--slow-bootstrap-from', type=Path, help='Reuse a committed Fast diagnostic range without rerunning its cases')
+    parser.add_argument('--slow-history-from', type=Path, help='Continue a committed Slow publication in an ordinary Fast/Slow cycle')
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--prepare-only', action='store_true')
     mode.add_argument('--run', action='store_true')
@@ -441,7 +477,8 @@ def main():
     root = Path(args.root).resolve()
     root.mkdir(parents=True, exist_ok=True)
     with EvolutionWorkspace.execution_lock_at(root):
-        frozen = prepare(root, seed_registry=args.seed_registry, slow_bootstrap_from=args.slow_bootstrap_from)
+        frozen = prepare(root, seed_registry=args.seed_registry, slow_bootstrap_from=args.slow_bootstrap_from,
+                         slow_history_from=args.slow_history_from)
         print(f'Frozen diagnostic inputs: {canonical_json_hash(frozen)}', flush=True)
         if args.run:
             run(root, frozen)

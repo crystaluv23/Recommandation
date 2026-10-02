@@ -12,6 +12,8 @@ from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.resolution import EvidenceResolver
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_core import _signal_learning_events_from_record
+from stock_opportunity_agent.research.signal_tracking import imported_learning_events, record_committed_signal_use
 from tests.evolution_runtime_test_support import make_contract
 from tests.scheme_evolution_test_support import (
     EvolutionWorkspace, MagnitudeClass, RoundMetaEntry, SEED_CATALOG, SignalRegistry,
@@ -91,6 +93,113 @@ class CommittedFastDiagnosticTests(TestCase):
                 'anchor': [], 'evolution_validation': []}, 'source_files': [], 'registry_source': str(source / 'signals')}
         (source / 'input_manifest.json').write_text(json.dumps(frozen))
         return source, contract, frozen
+
+    def committed_slow_source(self, root):
+        """Produce a real pointer-reachable source, with a stable vNext fixture."""
+        source, contract, frozen = self.source(root)
+        registry = SignalRegistry(source / 'signals')
+        workspace = EvolutionWorkspace(source)
+        archive = workspace.restore_archive(expected_run_contract_hash=contract.contract_hash)
+        record_committed_signal_use(registry, _signal_learning_events_from_record(archive.records[0]))
+        stable = registry.load_spec('revenue_growth_yoy:v1')
+        registry.register_stable(replace(stable, version=2, parameters={'positive_min': 0.3}),
+            tests=registry.load_tests(stable.ref))
+        snapshot = registry.freeze()
+        workspace.stage_slow_result(cycle_id=1, result={
+            'input_registry_version': contract.initial_signal_registry_version,
+            'input_registry_hash': contract.initial_signal_registry_hash,
+            'output_registry_version': snapshot.version, 'output_registry_hash': snapshot.registry_hash})
+        workspace.complete_cycle(cycle_id=1, observed_signal_registry_version=snapshot.version,
+            observed_signal_registry_hash=snapshot.registry_hash)
+        # These opaque fixture artifacts test the history copier, not research quality.
+        cycle = source / 'experiments/cycles/cycle-0001'
+        for name in ('slow_input.json', 'slow_memory.json', 'slow_experiments.json', 'slow_loop_validation.json'):
+            (cycle / name).write_text(json.dumps({'fixture': name}))
+        staged = source / 'signals_candidates/financial/uncommitted/v1/spec.json'
+        staged.parent.mkdir(parents=True); staged.write_text('{"not_committed": true}')
+        return source, contract, frozen
+
+    def test_history_prepare_preserves_stable_versions_events_subset_and_local_pointers(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp); source, _contract, frozen = self.committed_slow_source(root)
+            before = {str(path): path.read_bytes() for path in source.rglob('*') if path.is_file()}
+            target = root / 'target'
+            # An inherited source mode must not accidentally make this a zero-Fast bootstrap.
+            inherited = {**frozen, 'slow_bootstrap_source': 'ancestor', 'slow_bootstrap_manifest_hash': 'a' * 64}
+            with patch.object(entry, '_verify_inputs', return_value=inherited):
+                prepared = prepare(target, slow_history_from=source)
+            registry = SignalRegistry(target / 'signals')
+            self.assertEqual(registry.latest_spec('revenue_growth_yoy').version, 2)
+            self.assertEqual(len(registry.load_learning_events('revenue_growth_yoy:v1')), 1)
+            self.assertEqual(prepared['splits'], frozen['splits'])
+            self.assertEqual(prepared['source_files'], frozen['source_files'])
+            self.assertNotIn('slow_bootstrap_manifest_hash', prepared)
+            self.assertEqual(EvolutionWorkspace(target).last_completed_round, 0)
+            self.assertEqual(EvolutionWorkspace(target).last_completed_cycle, 0)
+            self.assertFalse((target / 'signals_candidates/financial/uncommitted').exists())
+            envelope = json.loads((target / 'slow_history/manifest.json').read_text())
+            self.assertEqual(prepared['slow_history_manifest_hash'], envelope['manifest_hash'])
+            self.assertEqual(before, {str(path): path.read_bytes() for path in source.rglob('*') if path.is_file()})
+            with patch.object(entry, '_verify_inputs', return_value=prepared):
+                self.assertEqual(prepare(target, slow_history_from=source), prepared)
+                with self.assertRaises(ValidationError):
+                    prepare(target, slow_history_from=root / 'different')
+            with self.assertRaises(ValidationError):
+                prepare(root / 'other', seed_registry=source / 'signals', slow_history_from=source)
+
+    def test_history_requires_a_committed_cycle_and_cannot_mix_bootstrap(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp); source, _contract, frozen = self.source(root)
+            with patch.object(entry, '_verify_inputs', return_value=frozen):
+                with self.assertRaisesRegex(ValidationError, 'fully committed'):
+                    prepare(root / 'target', slow_history_from=source)
+            with self.assertRaises(ValidationError):
+                prepare(root / 'other', slow_history_from=source, slow_bootstrap_from=source)
+
+    def test_history_run_wires_positive_fast_and_preserved_meta_into_actual_engines(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp); source, source_contract, source_inputs = self.committed_slow_source(root)
+            target = root / 'target'
+            with patch.object(entry, '_verify_inputs', return_value=source_inputs):
+                frozen = prepare(target, slow_history_from=source)
+            RawInfoOracle.load_or_create(root / 'raw')
+            RawInfoStore(root / 'raw').append(RawInfoDocument.create(
+                document_id='history-entry', company_id='diagnostic-0', source_type='financials',
+                published_at=NOW, available_at=NOW, content='Fixture reported source.'))
+            built = []
+            def build(**kwargs):
+                built.append(kwargs)
+                return replace(source_contract, run_id=target.name,
+                    initial_signal_registry_version=frozen['initial_registry_version'],
+                    initial_signal_registry_hash=frozen['initial_registry_hash'],
+                    raw_info_inventory_hash=canonical_json_hash(frozen), limits=kwargs['limits'],
+                    cycle_mode=kwargs['cycle_mode'], slow_history_manifest_hash=kwargs['slow_history_manifest_hash'])
+            class ReachedCycle(Exception):
+                pass
+            def cycle(engine, **_kwargs):
+                self.assertEqual(engine.plan_rounds_per_signal_cycle, 1)
+                self.assertEqual(engine.cycle_mode, 'fast_then_slow')
+                self.assertEqual(engine.plan_engine.archive.records, ())
+                self.assertEqual([row.round_id for row in engine.signal_engine.meta_memory.entries], [-1])
+                self.assertEqual(engine.signal_registry.latest_spec('revenue_growth_yoy').version, 2)
+                self.assertEqual(len(engine.signal_registry.load_learning_events('revenue_growth_yoy:v1')), 1)
+                imports = imported_learning_events(target, registry=engine.signal_registry)
+                snapshot = engine.signal_registry.freeze(learning_round_cutoff=0, imported_events=imports)
+                self.assertEqual([event.signal_ref for event in imports], ['revenue_growth_yoy:v1'])
+                self.assertEqual(snapshot.learned_profiles['revenue_growth_yoy:v2']['selection_events'], 0)
+                self.assertNotIn('revenue_growth_yoy:v1', snapshot.learned_profiles)
+                raise ReachedCycle
+            with patch.object(entry, 'HISTORY', source), patch.object(entry, 'ORACLE', root / 'raw'), \
+                 patch.object(entry, '_load_env'), patch.object(entry, 'build_run_contract', side_effect=build), \
+                 patch.object(entry, 'StructuredRoleClient', return_value=object()), \
+                 patch.object(entry, '_build_evidence_resolver', side_effect=lambda _root, store, **_kwargs: EvidenceResolver(store)), \
+                 patch.object(entry.DualLoopEvolutionEngine, 'run_cycle', autospec=True, side_effect=cycle):
+                with self.assertRaises(ReachedCycle):
+                    entry.run(target, frozen)
+            self.assertEqual(built[0]['limits']['plan_rounds_per_signal_cycle'], 1)
+            self.assertIsNone(built[0]['slow_bootstrap_manifest_hash'])
+            self.assertEqual(built[0]['slow_history_manifest_hash'], frozen['slow_history_manifest_hash'])
+            self.assertEqual(EvolutionWorkspace(target).last_completed_cycle, 0)
 
     def test_prepare_keeps_exact_subset_and_excludes_mutable_registry_derivatives(self):
         with TemporaryDirectory() as temp:

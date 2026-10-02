@@ -123,3 +123,18 @@ The entry point uses the existing workspace lock, exact requests, stage validato
 technical admission and atomic cycle commit. A changed source/mode/seed or partially
 prepared target cannot silently overwrite a frozen target. Tests distinguish this
 entry wiring from authored research quality; live artifacts remain required.
+
+`--slow-history-from SOURCE` uses the same diagnostic entry for an ordinary
+Fast→Slow successor after SOURCE has committed a Slow cycle. It preserves the
+verified diagnostic case/label/source manifest without resampling, imports the
+production committed-only history manifest and its exact published Registry,
+namespaced artifacts, candidates and authorized learning events, and freezes a
+`fast_then_slow` contract with one local Fast round and one Slow cycle. The input
+binds the source input hash, history hash and initial ordered version refs. Seed,
+bootstrap and history options are mutually exclusive. A history source's old
+bootstrap/mode fields do not become the successor's mode. Imported Fast-context
+meta uses the shared negative numbering and stays outside blind prediction.
+Runtime source validation and committed Registry-chain validation use the
+production functions; neither imported source pointers nor a diagnostic staged
+candidate advance the successor's local pointers. Applying history again after
+own publication is forbidden; staged-result recovery remains authoritative.

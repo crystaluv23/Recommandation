@@ -230,6 +230,14 @@ Registry copies of any authorized import for that version. `freeze` accepts
 the same explicit imports alongside its local cutoff; it never rebases source
 rounds or uses an imported maximum as local commit authority. Imported events
 are supplied by the contract-bound tracking reader, not inferred from ledgers.
+Freezing validates all imported exact versions and their ledger copies, including
+immutable historical versions absent from the current stable-card menu. Only
+current stable definitions enter the snapshot, with each profile selected from
+that exact version's events; prior-version uses never transfer to vNext.
+`list_version_refs()` enumerates readable immutable versions with path/identity
+and uniqueness checks. Slow feedback and committed history export share this
+inventory, then apply the same committed-event selection; enumeration itself
+grants neither event authority nor Fast routing eligibility.
 `load_committed_learning_profile` rebuilds the routing derivative from that same
 selection for Update and bounded freezing; mutable full-ledger profiles are not
 the committed-input contract.

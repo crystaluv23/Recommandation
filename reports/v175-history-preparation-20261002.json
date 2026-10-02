@@ -1,0 +1,94 @@
+{
+  "schema_version": "v175-history-preparation-audit-v1",
+  "source_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v171_slow_bootstrap",
+  "target_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated",
+  "input_manifest_hash": "1f8edbfc648e839ae5de6c352d9458f6053d97a9ffda5958ae661c5273dc38d5",
+  "input_manifest_sha256": "c1626d01d9d0a280c2a2537c841cded480472d0f16ce430ff1dfd791a20d779f",
+  "history_manifest_hash": "6e0f2ebcef3bd39d52fdfbd3acd15b4ebfe68e876156fe612b82154450535e70",
+  "source_input_manifest_sha256": "366b83b5d3cb0b0824e0b3ebcfbcff9566ac83ad6514dbbae0d991832efc273f",
+  "source_cycle_state_sha256": "9f6a07f7efc06446eeba544d76a893dfe92e0e175733f5636b35ce82176002b8",
+  "source_files_equal": true,
+  "splits_equal": true,
+  "evaluation_equal": true,
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "registry_version": 8,
+  "registry_hash": "180814422ea72ce91eff4afddde022644c5fba10b5eff4cab6723e4e373dce62",
+  "preserved_published_versions": [
+    "financing_listing_action:v4",
+    "guidance_acceleration:v3"
+  ],
+  "uncommitted_component_candidate_imported": false,
+  "imported_learning_event_count": 134,
+  "profile_counts": {
+    "financing_listing_action:v4": 0,
+    "cash_burn_rate_elevated:v2": 5,
+    "cash_reserves:v2": 20,
+    "cash_to_current_liabilities_ratio:v2": 4,
+    "gross_margin_change:v3": 8,
+    "liquidity_runway_months:v2": 11,
+    "net_share_retirement_yoy:v2": 3,
+    "operating_cash_flow_margin:v2": 8,
+    "revenue_acceleration:v2": 2,
+    "revenue_growth_yoy:v2": 14,
+    "guidance_acceleration:v3": 0,
+    "max_drawdown_1y:v2": 0,
+    "price_momentum_126d:v2": 2,
+    "negative_word_count:v2": 2,
+    "order_confirmation_disclosed:v2": 10,
+    "order_quality:v2": 1,
+    "commercialization_status:v2": 3,
+    "customer_concentration:v2": 10
+  },
+  "research_status": {
+    "financing_listing_action:v4": {
+      "technical_status": "admitted",
+      "effect_status": "unverified",
+      "research_targets": [
+        "surge_direction"
+      ],
+      "admission_key": "b6b3796615278189fbd26385971ecd2d1f4db19b1755f4521c3e63c1ed9bd1ed"
+    },
+    "guidance_acceleration:v3": {
+      "technical_status": "admitted",
+      "effect_status": "unverified",
+      "research_targets": [
+        "surge_direction"
+      ],
+      "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c"
+    }
+  },
+  "local_fast_pointer": 0,
+  "local_slow_pointer": 0,
+  "external_calls": 0,
+  "executable_contract_frozen": false,
+  "tests": {
+    "entry_count": 10,
+    "focused_count": 203,
+    "focused_pass": true,
+    "historical_feedback_count": 9,
+    "historical_feedback_pass": true,
+    "full_pending": false,
+    "lint_pass": true,
+    "full_count": 1481,
+    "full_pass": true,
+    "full_seconds": 105.587
+  },
+  "boundary": "prepared history and explicit-bound offline Fast-profile consumer; no executable freeze or live cycle acceptance",
+  "historical_event_counts": {
+    "financing_listing_action:v3": 17,
+    "guidance_acceleration:v2": 14
+  },
+  "defects_reproduced": [
+    "latest-card membership rejected immutable historical imports",
+    "latest-card iteration omitted prior-version Slow usage and target feedback"
+  ],
+  "repairs": [
+    "shared exact definition/ledger validation",
+    "shared immutable version inventory for Slow feedback and history export",
+    "current-version Fast profiles remain isolated"
+  ]
+}
