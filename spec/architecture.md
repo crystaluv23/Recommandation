@@ -132,6 +132,12 @@ module contracts implement this approved separation. This document does not
 authorize rewriting historical evaluations or changing labels/fitness.
 See the [full lifecycle and migration design](../reports/slow-signal-system-design-20261002.md).
 
+Registry admission records, atomic publication/recovery and frozen version
+status are implemented as the migration foundation. The production Slow main
+loop still uses its legacy effect gate; Fast prompt consumption and continuous
+target tracking remain pending. The foundation does not supersede historical
+policy or assert that the complete runtime migration has occurred.
+
 ## Constrained Basic Info
 
 The bootstrap stage of an Information Plan is expressed as a composition of

@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：Slow技术准入基础已实现：独立exact-content/Registry/policy/target/contract记录，沿现有原子transition发布/恢复，版本proof及Frozen/cards效果待验证状态；旧效果记录不伪造。实际v168 revenue_growth_yoy:v3零外部调用在临时副本技术测试/发布/重启通过，源文件hash不改。223专项、最终1421全量PASS。生产Slow主循环仍旧效果门；Fast实际消费与持续目标追踪尚待迁移，不宣称目标完成。报告：reports/slow-technical-admission-foundation-20261002.md。
+
 2026-10-02：完整目标继续：隔离修复v168四技术误拒家族（否定范围/市场预期分析与查价/跨价格关系）、技术排除恢复丢failure明细；四份原付费最终答生产角色重放通过且原件不改/0外部调用。Mining rationale接共享机械优先与typed局部patch，非法patch保留base、参数/兄弟及完整预算校验；invalid fetch不再算completed探索。Predictor/Proposer/Critic固定职责提示统一。215 Fast/recovery、54 Mining专项及1411全量PASS，lint PASS。尚未实测最新完整周期和接近零排除率；技术准入/入库/持续目标评价与后继消费仍待实现。报告：reports/v168-runtime-reliability-repair-20261002.md。
 
 2026-10-02：按用户明确边界完成一轮逐环节审计及Slow贯通设计。v167/v168真实attempt重算固定24案F1分别.7586/.7200和.7879/.7857，10个技术排除0技术FP，实际Critic均隔离synthetic research feedback；v168最终runner退出0、指针1/1，但Mining两技术失败/两预算延期、0新候选；Update一物化后效果拒绝/两技术失败、0入库。96份trajectory恢复可读；发现tightened proof guard破坏三份历史experience索引，已隔离修复为原文/hash不改、derived review标记。Fast/Slow事实解释共享检测、typed kind/text增量权限、独立category首次前沿及failed memory保留pending已补齐；三份真实初答生产重放通过（新增语义delta明确脚本化）。最新1399全量与25专项通过；lint PASS。用户批准技术正确即入可调用Registry、效果待观察；vision/architecture/module specs标为下一协议待实现，不改冻结live。审计确认H_analyse禁分类与固定Predictor职责冲突、magnitude消费循环门与target评价未接生产写入；逐条实际复现v168 c02四技术排除（16.7%）均涉及校验误拒，其中1FN/3负类占位；恢复attempt failures空而四failure原件保留。上述检测/失败范围/恢复诊断修复、新入库追踪实现及成功Slow/后继消费仍待完成。报告：reports/fast-slow-system-audit-20261002.md、reports/slow-signal-system-design-20261002.md。

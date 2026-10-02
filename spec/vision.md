@@ -141,6 +141,10 @@ admission never asserts benefit. Direction and magnitude use this same policy.
 The deployed legacy paired-promotion contract and frozen historical runs remain
 unchanged until the owning Registry/runtime migration is implemented and tested.
 See the [approved Slow lifecycle design](../reports/slow-signal-system-design-20261002.md).
+The Registry record/publication/recovery foundation now exists, with explicit
+unverified status. Production Slow admission decisions, Fast consumption and
+continuous target tracking still need migration; the full policy change has
+not yet been activated in the main loop.
 
 ### LLM as Researcher
 

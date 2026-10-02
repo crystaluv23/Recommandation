@@ -1,16 +1,44 @@
 # Signal Library
 
-## Approved next admission/tracking separation; implementation pending
+## Admission/tracking migration: Registry foundation implemented
 
 Technically valid research Signals may enter the callable Registry while effect
 remains unverified, per the 2026-10-02 user decision. The owning migration must
-introduce independent exact-version admission identity/status, preserve all
+use the independent exact-version admission identity/status described below, preserve all
 effect evaluations and existing atomic transition/recovery invariants, disclose
 status in frozen model views, and connect target evaluation producers to actual
 committed observations. Legacy evaluation v2/v3 and frozen runs retain their
 original paired-admission semantics; setting effectiveness.accepted=true to
 simulate technical admission is forbidden.
 See [the approved Slow design](../../../reports/slow-signal-system-design-20261002.md).
+Registry records, atomic publication/recovery and frozen status now exist.
+Production Slow decisions, model consumption and continuous target tracking
+remain pending; the full migration is not claimed complete.
+
+### Technical admission record and atomic publication
+
+The first migration step adds `signal-candidate-admission-v1`, independently of
+legacy effectiveness evaluations. Its key hashes the exact candidate content,
+input Registry hash, validator policy hash, sorted research targets and complete
+contract validation result. An admitted result requires literal accepted=true,
+no reasons and every non-empty staged fixture actually executed. Rejected
+technical records remain diagnostic; they cannot authorize publication.
+The record contains no effectiveness acceptance or assertion of benefit.
+
+The existing keyed evaluation directory/pointer and atomic transition carry
+this record, preserving old v2/v3 evaluations unchanged. Transition prepare,
+apply and recovery recheck the admission identity, candidate bytes and exact
+input Registry hash, then repeat the stable executable-surface audit. Publication
+copies the exact admission record into the immutable version before freezing the
+output. Missing/corrupt admission metadata fails closed; no mutable candidate
+pointer can change the status of a published version.
+
+`FrozenSignalRegistry.research_status` and current compact cards expose only
+exact-version technical status, research targets and effect_status=unverified.
+This metadata is bound into learning_hash independently of definition hash;
+historical snapshots without admission records preserve their prior identity.
+Consumer and continuous-target wiring remain migration work until separately
+implemented; this foundation alone does not change the production Slow gate.
 
 ## V8 Slow feedback use
 

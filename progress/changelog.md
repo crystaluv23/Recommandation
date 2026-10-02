@@ -592,3 +592,5 @@
 2026-10-02：最终只读复核v168 runner退出0/指针1-1；c02四技术排除中1FN，原文经当前检测复现为两runtime查价意图误判、一future否定误判、一跨价格关系算式误判。记录attempt恢复丢failures明细、Mining两technical_failure/两deferred_budget及Update一候选效果拒绝/两技术失败，0入库；更新审计和降低技术FN的分层实施方案，未修改冻结运行和评分分母。
 
 2026-10-02：修复v168实际四技术误拒家族及checkpoint failure恢复；Mining action接共享shape机械修复与snapshot-bound typed rationale纠错，invalid fetch不算完成探索；统一固定Predictor职责。真实付费响应0外部重放四项通过，1411全量/215 Fast-recovery/54 Mining专项PASS及lint PASS；完整Slow技术准入/入库/追踪目标仍在推进。
+
+2026-10-02：实现独立技术准入Registry基础，保持legacy效果记录不可变；原子版本发布/恢复、proof缺失/篡改拒绝、冻结效果待验证status及vNext旧proof保存。实际v168 revenue_growth_yoy:v3原fixture零外部副本重放入库/重启通过，源hash不变。1421全量及lint PASS；生产Slow gate/Fast实际消费/持续target追踪仍待迁移，完整目标保持进行中。

@@ -85,6 +85,50 @@ SIGNAL_CONTEXT_TAGS = frozenset(
 )
 
 
+def _admission_identity_key(identity: Mapping[str, Any]) -> str:
+    """Hash only the complete technical admission identity, never effect data."""
+
+    return hashlib.sha256(json.dumps(dict(identity), sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def _validate_admission_record(record: Mapping[str, Any], *, signal_ref: str) -> None:
+    """Reject corrupt admission identities and inconsistent technical decisions."""
+
+    identity = record.get("admission_identity")
+    if not isinstance(identity, Mapping) or set(identity) != {
+        "schema_version", "signal_ref", "candidate_hash", "input_registry_hash",
+        "validator_hash", "research_targets", "contract_validation",
+    }:
+        raise ValidationError("Signal admission identity is incomplete")
+    targets = identity["research_targets"]
+    contract = identity["contract_validation"]
+    if (
+        record.get("schema_version") != "signal-candidate-admission-v1"
+        or identity["schema_version"] != "signal-candidate-admission-identity-v1"
+        or identity["signal_ref"] != signal_ref
+        or record.get("signal_ref") != signal_ref
+        or any(not isinstance(identity[field], str) or not _SHA256.fullmatch(identity[field]) for field in ("candidate_hash", "input_registry_hash", "validator_hash"))
+        or record.get("candidate_hash") != identity["candidate_hash"]
+        or record.get("evaluation_key") != _admission_identity_key(identity)
+        or not isinstance(targets, list) or not targets
+        or any(not isinstance(item, str) or not _SAFE_ID.fullmatch(item) for item in targets)
+        or targets != sorted(set(targets))
+        or not isinstance(contract, Mapping)
+        or type(contract.get("accepted")) is not bool
+        or not isinstance(contract.get("reasons"), list)
+        or any(not isinstance(reason, str) or not reason.strip() for reason in contract.get("reasons", ()))
+        or type(contract.get("executed_tests")) is not int
+        or contract["executed_tests"] < 0
+        or record.get("contract_validation") != contract
+        or record.get("accepted") is not contract["accepted"]
+        or record.get("reasons") != contract["reasons"]
+        or record.get("status") != ("admitted" if contract["accepted"] else "rejected")
+        or (contract["accepted"] and (contract["reasons"] or contract["executed_tests"] == 0))
+        or (not contract["accepted"] and not contract["reasons"])
+    ):
+        raise ValidationError("Signal admission record does not match its identity")
+
+
 class _FrozenDict(dict[Any, Any]):
     """JSON-compatible mapping that rejects every in-place mutation."""
 
@@ -1136,9 +1180,11 @@ class SignalCard:
     description: str
     execution_type: SignalExecutionType
     learned_profile: Mapping[str, Any] = field(default_factory=dict)
+    research_status: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "learned_profile", dict(self.learned_profile))
+        object.__setattr__(self, "research_status", _freeze_json(self.research_status))
 
     @property
     def ref(self) -> str:
@@ -1153,6 +1199,7 @@ class SignalCard:
             "description": self.description,
             "execution_type": self.execution_type.value,
             "learned_profile": dict(self.learned_profile),
+            **({"research_status": dict(self.research_status)} if self.research_status else {}),
         }
 
 
@@ -1435,6 +1482,7 @@ class FrozenSignalRegistry:
     skills: Mapping[str, str]
     learned_profiles: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
     learning_hash: str = ""
+    research_status: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "specs", tuple(self.specs))
@@ -1447,6 +1495,7 @@ class FrozenSignalRegistry:
                 for ref, profile in self.learned_profiles.items()
             }),
         )
+        object.__setattr__(self, "research_status", _freeze_json(self.research_status))
 
     def load_spec(self, signal_ref: str) -> SignalSpec:
         for spec in self.specs:
@@ -1732,6 +1781,7 @@ class SignalRegistry:
                     description=spec.description,
                     execution_type=spec.execution_type,
                     learned_profile=self.load_learning_profile(spec.ref),
+                    research_status=self.load_research_status(spec.ref),
                 )
             )
         return tuple(sorted(cards, key=lambda card: (card.category, card.signal_id)))
@@ -2065,8 +2115,9 @@ class SignalRegistry:
                     ),
                 )
             learned_profiles[spec.ref] = profile
+        research_status = {card.ref: dict(card.research_status) for card in cards if card.research_status}
         learning_canonical = json.dumps(
-            learned_profiles,
+            {"profiles": learned_profiles, "research_status": research_status} if research_status else learned_profiles,
             sort_keys=True,
             separators=(",", ":"),
         )
@@ -2076,6 +2127,7 @@ class SignalRegistry:
             specs=specs,
             skills=skills,
             learned_profiles=learned_profiles,
+            research_status=research_status,
             learning_hash=hashlib.sha256(
                 learning_canonical.encode("utf-8")
             ).hexdigest(),
@@ -2215,6 +2267,109 @@ class SignalRegistry:
         canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
+    def record_candidate_admission(
+        self,
+        signal_ref: str,
+        *,
+        input_registry_hash: str,
+        validator_hash: str,
+        research_targets: Iterable[str],
+        contract_validation: Mapping[str, Any],
+    ) -> str:
+        """Bind a technical decision to content without claiming predictive effect."""
+
+        candidate_hash = self.candidate_hash(signal_ref)
+        supplied_targets = tuple(research_targets)
+        contract = dict(contract_validation)
+        if not supplied_targets or any(not isinstance(item, str) or not _SAFE_ID.fullmatch(item) for item in supplied_targets):
+            raise ValidationError("admission research targets must be non-empty safe ids")
+        targets = tuple(sorted(set(supplied_targets)))
+        if any(not isinstance(value, str) or not _SHA256.fullmatch(value) for value in (input_registry_hash, validator_hash)):
+            raise ValidationError("admission Registry and validator hashes are invalid")
+        accepted = contract.get("accepted")
+        reasons = contract.get("reasons")
+        executed_tests = contract.get("executed_tests")
+        fixture_count = len(self.load_candidate_tests(signal_ref))
+        if (
+            type(accepted) is not bool
+            or not isinstance(reasons, list)
+            or any(not isinstance(reason, str) or not reason.strip() for reason in reasons)
+            or type(executed_tests) is not int
+            or not 0 <= executed_tests <= fixture_count
+            or (accepted and (reasons or fixture_count == 0 or executed_tests != fixture_count))
+            or (not accepted and not reasons)
+        ):
+            raise ValidationError("admission requires a complete technical validation result")
+        identity = {
+            "schema_version": "signal-candidate-admission-identity-v1",
+            "signal_ref": signal_ref,
+            "candidate_hash": candidate_hash,
+            "input_registry_hash": input_registry_hash,
+            "validator_hash": validator_hash,
+            "research_targets": list(targets),
+            "contract_validation": contract,
+        }
+        key = _admission_identity_key(identity)
+        record = {
+            "schema_version": "signal-candidate-admission-v1",
+            "evaluation_key": key,
+            "admission_identity": identity,
+            "signal_ref": signal_ref,
+            "candidate_hash": candidate_hash,
+            "accepted": accepted,
+            "status": "admitted" if accepted else "rejected",
+            "reasons": reasons,
+            "contract_validation": contract,
+        }
+        candidate_dir = self._candidate_spec_path(signal_ref).parent
+        _write_or_verify_json(candidate_dir / "evaluations" / f"{key}.json", record)
+        _atomic_write_json(candidate_dir / "validation.json", {
+            "schema_version": "signal-candidate-validation-pointer-v1",
+            "signal_ref": signal_ref,
+            "candidate_hash": candidate_hash,
+            "latest_evaluation_key": key,
+            "status": record["status"],
+        })
+        return key
+
+    def load_research_status(self, signal_ref: str) -> dict[str, Any]:
+        """Read published version-bound admission; legacy versions have no new status."""
+
+        spec = self.load_spec(signal_ref)
+        version_dir = self._manifest_for(spec.signal_id).parent / "versions" / f"v{spec.version}"
+        manifest = _read_json(version_dir.parent.parent / "manifest.json")
+        admission_keys = manifest.get("admission_keys", {})
+        if not isinstance(admission_keys, Mapping) or any(
+            not isinstance(version, str) or not re.fullmatch(r"[1-9][0-9]*", version)
+            or not isinstance(key, str) or not _SHA256.fullmatch(key)
+            for version, key in admission_keys.items()
+        ):
+            raise ValidationError("published Signal admission key map is invalid")
+        path = version_dir / "admission.json"
+        if not path.exists():
+            # A manifest explicitly declaring admission cannot silently lose its proof.
+            if str(spec.version) in admission_keys:
+                raise ValidationError("published Signal admission record is missing")
+            return {}
+        record = _read_json(path)
+        _validate_admission_record(record, signal_ref=signal_ref)
+        if admission_keys.get(str(spec.version)) != record["evaluation_key"]:
+            raise ValidationError("published Signal admission key differs from manifest")
+        skill = self.load_skill(signal_ref)
+        stable_hash = hashlib.sha256(json.dumps({
+            "spec": spec.to_dict(),
+            "skill": skill.rstrip() if skill is not None else None,
+            "tests": list(self.load_tests(signal_ref)),
+        }, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+        if record["candidate_hash"] != stable_hash or record["accepted"] is not True:
+            raise ValidationError("published Signal admission differs from version content")
+        return {
+            "technical_status": "admitted",
+            "effect_status": "unverified",
+            "research_targets": list(record["admission_identity"]["research_targets"]),
+            "admission_key": record["evaluation_key"],
+        }
+
     def record_candidate_validation(
         self,
         signal_ref: str,
@@ -2340,9 +2495,12 @@ class SignalRegistry:
             validation = _read_json(
                 candidate_dir / "evaluations" / f"{pointed_key}.json"
             )
+            evaluation_key = pointed_key
         if validation.get("candidate_hash") != self.candidate_hash(signal_ref):
             raise ValidationError("candidate validation hash differs from staged content")
-        if validation.get("schema_version") == "signal-candidate-evaluation-v3":
+        if validation.get("schema_version") == "signal-candidate-admission-v1":
+            _validate_admission_record(validation, signal_ref=signal_ref)
+        if validation.get("schema_version") in {"signal-candidate-evaluation-v3", "signal-candidate-admission-v1"}:
             stored_key = str(validation.get("evaluation_key", ""))
             if evaluation_key is not None and stored_key != evaluation_key:
                 raise ValidationError("candidate evaluation path and identity differ")
@@ -2421,6 +2579,7 @@ class SignalRegistry:
             self._validate_promotion_candidates(
                 ordered_candidates,
                 input_refs=ordered_input_refs,
+                input_hash=input_hash,
                 validated_evaluations=(
                     dict(ordered_evaluations)
                     if validated_evaluations is not None
@@ -2476,6 +2635,19 @@ class SignalRegistry:
                     f"validated candidate changed before promotion: {signal_ref}"
                 )
             self._materialize_candidate_version(spec, skill=skill)
+            validation = self.load_candidate_validation(
+                signal_ref,
+                evaluation_key=validated_evaluations[signal_ref] if validated_evaluations is not None else None,
+            )
+            if validation is not None and validation.get("schema_version") == "signal-candidate-admission-v1":
+                version_dir = self.root / spec.category / spec.signal_id / "versions" / f"v{spec.version}"
+                _write_or_verify_json(version_dir / "admission.json", validation)
+                manifest_path = version_dir.parent.parent / "manifest.json"
+                manifest = _read_json(manifest_path)
+                _atomic_write_json(manifest_path, {**manifest, "admission_keys": {
+                    **manifest.get("admission_keys", {}), str(spec.version): validation["evaluation_key"],
+                }})
+                self._fault_checkpoint("after_stable_admission", signal_ref)
             promoted_specs.append(spec)
 
         if ordered_candidates:
@@ -2543,6 +2715,7 @@ class SignalRegistry:
         candidates: tuple[tuple[str, str], ...],
         *,
         input_refs: tuple[str, ...],
+        input_hash: str,
         validated_evaluations: Mapping[str, str] | None = None,
     ) -> None:
         input_by_id = {
@@ -2574,6 +2747,9 @@ class SignalRegistry:
                 raise ValidationError(
                     f"candidate requires matching successful validation: {signal_ref}"
                 )
+            is_admission = validation.get("schema_version") == "signal-candidate-admission-v1"
+            if is_admission:
+                _validate_admission_record(validation, signal_ref=signal_ref)
             if (
                 not validation.get("accepted")
                 or validation.get("candidate_hash") != expected_hash
@@ -2581,9 +2757,13 @@ class SignalRegistry:
                 not in {
                     "signal-candidate-validation-v2",
                     "signal-candidate-evaluation-v3",
+                    "signal-candidate-admission-v1",
                 }
-                or dict(validation.get("effectiveness", {})).get("accepted")
-                is not True
+                or (not is_admission and dict(validation.get("effectiveness", {})).get("accepted") is not True)
+                or (is_admission and (
+                    validation["admission_identity"]["input_registry_hash"] != input_hash
+                    or validation["contract_validation"]["executed_tests"] != len(self.load_candidate_tests(signal_ref))
+                ))
             ):
                 raise ValidationError(
                     f"candidate requires matching successful validation: {signal_ref}"
@@ -2660,6 +2840,7 @@ class SignalRegistry:
         self._validate_promotion_candidates(
             validated_candidates,
             input_refs=input_refs,
+            input_hash=input_hash,
             validated_evaluations=validated_evaluations,
         )
 
@@ -2720,6 +2901,8 @@ class SignalRegistry:
         if manifest_path.exists():
             manifest = _read_json(manifest_path)
             stable_version = int(manifest["stable_version"])
+            if "admission_keys" in manifest:
+                expected_manifest["admission_keys"] = dict(manifest["admission_keys"])
             if stable_version not in {spec.version - 1, spec.version}:
                 raise ValidationError("stable Signal manifest changed during promotion")
             if manifest.get("signal_id") != spec.signal_id or manifest.get("category") != spec.category:
