@@ -308,6 +308,31 @@ _SLOW_MEMORY_STATUSES = {
     "failed",
 }
 _SLOW_SOURCE_ROLES = {"reflection", "H1", "H3", "E2", "Update"}
+_TARGET_OBSERVATION_ROLES = {"reflection", "H3", "E2", "Update"}
+
+
+def _slow_feedback_roles(kind: str) -> list[str]:
+    """Return the disclosure ceiling for a complete Slow feedback unit."""
+
+    return sorted(_TARGET_OBSERVATION_ROLES if kind == "signal_target_observation" else _SLOW_SOURCE_ROLES)
+
+
+def _projected_feedback_roles(filename: str, raw: Mapping[str, Any], kind: str,
+    unit: Mapping[str, Any]) -> list[str]:
+    """Preserve a prior input's scope without widening its current disclosure ceiling."""
+
+    ceiling = set(_slow_feedback_roles(kind))
+    if filename != "slow_input.json":
+        return sorted(ceiling)
+    scopes = {str(row["ref"]): set(row["visible_to"]) for row in raw.get("source_manifest", ())}
+    original = scopes.get(str(unit.get("feedback_ref", "")))
+    if original is None:
+        if kind == "signal_target_observation":
+            raise ValidationError("target observation source lacks explicit disclosure scope")
+        return sorted(ceiling)
+    if not original or not original <= _SLOW_SOURCE_ROLES or not original & ceiling:
+        raise ValidationError("projected Slow source disclosure scope is invalid")
+    return sorted(original & ceiling)
 
 _UNASSESSED_MAGNITUDE_CONTRIBUTION: dict[str, Any] = {
     "assessed": False,
@@ -742,6 +767,9 @@ def _slow_feedback_source_catalog(rows: Iterable[Mapping[str, Any]], source_mani
     rows = tuple(row for row in rows if isinstance(row, Mapping) and row.get("feedback_ref"))
     if any(row.get("kind") == "signal_target_observation" and str(row["feedback_ref"]) not in scopes for row in rows):
         raise ValidationError("target observation source lacks explicit disclosure scope")
+    if any(row.get("kind") == "signal_target_observation"
+        and not set(scopes[str(row["feedback_ref"])]) <= _TARGET_OBSERVATION_ROLES for row in rows):
+        raise ValidationError("target observation source disclosure scope is widened")
     return {str(row["feedback_ref"]): {
         "visible_to": scopes.get(str(row["feedback_ref"]), sorted(_SLOW_SOURCE_ROLES)),
         "content": dict(row),
@@ -3995,7 +4023,7 @@ class SignalEvolutionEngine:
                     "subject_ref": signal_ref, "source_refs": [feedback_ref],
                     "limitations": profile["limitations"], "artifact": profile})
                 manifest.append({"ref": feedback_ref, "content_hash": _canonical_hash(profile),
-                    "visible_to": ["E2", "H3", "Update", "reflection"]})
+                    "visible_to": _slow_feedback_roles("signal_target_observation")})
         magnitude_rows, magnitude_manifest = magnitude_feedback_rows(
             self.meta_memory.entries,
             last_completed_round=self.workspace.last_completed_round,
@@ -4039,7 +4067,7 @@ class SignalEvolutionEngine:
                         {
                             "ref": feedback_ref,
                             "content_hash": _canonical_hash(unit),
-                            "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                            "visible_to": _projected_feedback_roles(filename, raw, unit_kind or kind, unit),
                         }
                     )
         imported_rows, imported_manifest = self._imported_slow_feedback()
@@ -4151,7 +4179,7 @@ class SignalEvolutionEngine:
                     {
                         "ref": feedback_ref,
                         "content_hash": _canonical_hash(unit),
-                        "visible_to": sorted(_SLOW_SOURCE_ROLES),
+                        "visible_to": _projected_feedback_roles(filename, raw, kind, unit),
                     }
                 )
         return rows, source_manifest

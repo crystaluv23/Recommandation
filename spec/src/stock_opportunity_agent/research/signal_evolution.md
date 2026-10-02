@@ -40,6 +40,12 @@ Committed-use tracking derives target observations from committed local/imported
 learning events and provides cutoff-bound source summaries to reflection/H3/E2/Update.
 H1 cannot read outcome groups. Independent benefit studies remain a separate
 frontier; observed use and admission alone are not validated benefit.
+Importing or projecting a committed `slow_input` must preserve its source
+disclosure scope, intersected with the current kind-specific ceiling. Namespacing
+and nesting do not grant additional roles: target observations remain limited to
+reflection/H3/E2/Update at every generation. Missing target scope, unknown roles
+or a widened target scope in a consumer catalog fail closed. Historical artifacts
+and their hashes remain unchanged; only the derived role-scoped view changes.
 Slow usage, target summaries and Update use one contract-bound import selection
 alongside the local Fast pointer. Dual-loop Fast profile freezing uses that same
 selection at the cycle-start local cutoff, including on partial-cycle restart.

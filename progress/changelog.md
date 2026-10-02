@@ -630,3 +630,5 @@
 - 2026-10-02: 冻结fec68554的v174真实Update候选2010 tokens通过完整parser、stage与原immutable negative fixture实际执行；source-ref原文恢复、仅机械diff metadata修复，两次$0.01055852。独立组件不发布/不提交cycle，1475全量/lint PASS，完整生产目标继续。
 
 - 2026-10-02：v175 committed-Slow诊断后继接生产history，原40案/来源/Registry v8与134授权事件保留；真实reader/freeze复现31旧版事件误拒，Slow亦漏历史usage/target。共同exact-version/ledger校验与immutable版本inventory替代latest-card历史过滤，当前新版本画像仍0、未授权/改写copy拒绝；新增5回归、203相关/1481全量及lint PASS。v175仅prepare本地0/0，冻结完整Fast→Slow与双轴新因子验收继续。见reports/v175-history-preparation-20261002.md。
+
+- 2026-10-02：v175冻结6edc74a6首案Reflect因research_status冻结list/deepcopy崩溃，8 completed paid/$0.03275748、指针0/0，未生成评分。共同_thaw_json展开Card/selector/controller/Predictor出站状态，原snapshot仍冻结；历史input projection按source scope与kind ceiling交集，真实target H1暴露17→0、134usage/17target/learning_hash不变。0外部边界重放/323相关/1483全量/lint PASS，原冻结源不改，v176后继真实验收继续，整体目标未完成。见reports/v175-copy-and-history-disclosure-repair-20261002.md。

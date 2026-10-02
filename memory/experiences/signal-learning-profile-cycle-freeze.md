@@ -68,3 +68,10 @@ production publication; an entry test stopped before those consumers misses it.
 The profile remains observational routing evidence, not causal Signal credit.
 Its cutoff does not freeze the global Raw Info oracle, relax point-in-time
 rules, or permit uncommitted artifacts to enter learning.
+
+Deeply immutable metadata needs recursively plain JSON views before model
+channels copy it: a shallow dict retains frozen target arrays and breaks
+document-channel deepcopy. Test a published admitted Signal through the actual
+channel, not only a direct scripted role call. History namespacing also must
+preserve original disclosure scopes; it never authorizes H1 to read target
+observations withheld by the original producer.

@@ -109,3 +109,5 @@ class SignalTrackingTests(TestCase):
                 source_catalog=_slow_feedback_source_catalog(rows, manifest), budget_bytes=64000)
         with self.assertRaises(ValidationError):
             _slow_feedback_source_catalog(units, ())
+        with self.assertRaisesRegex(ValidationError, "widened"):
+            _slow_feedback_source_catalog(units, [{"ref": units[0]["feedback_ref"], "visible_to": ["H1", "Update"]}])

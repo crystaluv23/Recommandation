@@ -1,0 +1,14 @@
+{
+  "schema_version": "v175-status-copy-replay-v1",
+  "audit_code_label": "working-copy-fix",
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated",
+  "exact_ref": "financing_listing_action:v4",
+  "admission_key": "b6b3796615278189fbd26385971ecd2d1f4db19b1755f4521c3e63c1ed9bd1ed",
+  "result": "passed",
+  "error": null,
+  "scripted_boundary_calls": 1,
+  "external_calls": 0,
+  "canonical_snapshot_unchanged": true,
+  "canonical_mutation_rejected": true,
+  "boundary": "actual published metadata and actual document-channel copier, scripted downstream transport; no full live case completion"
+}

@@ -224,6 +224,11 @@ stable Signal version, but changing a profile changes the exact Fast execution
 input and prevents stale trajectory reuse. Stats and learning events may keep
 accumulating after a snapshot is frozen; that Fast group continues to see its
 original profile snapshot, and stable definitions cannot change until it ends.
+Model-facing card, routing, reflection and Predictor views recursively unfold
+frozen JSON into independent plain dictionaries/lists using the existing JSON
+projection helper. A shallow `dict(status)` retains frozen target lists and
+breaks document-channel deepcopy. The canonical snapshot remains deeply
+immutable; mutating an outgoing view cannot alter its hashes or metadata.
 `committed_learning_events(ref, round_cutoff=..., imported_events=...)` selects
 local cutoff events plus exact imported events, rejecting missing or changed
 Registry copies of any authorized import for that version. `freeze` accepts

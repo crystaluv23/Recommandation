@@ -1,6 +1,7 @@
 """Imported event authority across Slow consumption, Fast freeze and restart."""
 
 import json
+import hashlib
 from dataclasses import replace
 from types import SimpleNamespace
 from unittest import TestCase
@@ -41,14 +42,14 @@ class ImportedSignalFeedbackTests(TestCase):
             input_refs=result.input_signal_refs)
         return current
 
-    def bind(self, events, *, history=False, mode=None):
+    def bind(self, events, *, history=False, mode=None, cycle_artifacts=()):
         root = self.engine.workspace.root
         directory = "slow_history" if history else "slow_bootstrap"
         field = "learning_events" if history else "signal_learning_events"
         manifest = {"schema_version": "slow-history-manifest-v2" if history else "slow-bootstrap-manifest-v2",
             field: [event.to_dict() for event in events]}
         if history:
-            manifest.update(source_namespace="source-test", committed_slow_cycle=1, cycle_artifacts=[])
+            manifest.update(source_namespace="source-test", committed_slow_cycle=1, cycle_artifacts=list(cycle_artifacts))
         digest = canonical_json_hash(manifest)
         path = root / directory / "manifest.json"
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -60,6 +61,53 @@ class ImportedSignalFeedbackTests(TestCase):
             **{f"{directory}_manifest_hash": digest})
         contract.freeze(root / "run_contract.json")
         return contract, path
+
+    def bind_target_history(self, source, row, scope):
+        """Copy one complete input unit with its recorded disclosure and hash."""
+        root = self.engine.workspace.root
+        relative = "experiments/cycles/cycle-0001/slow_input.json"
+        path = root / "slow_history/source-test" / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        raw = {"feedback_rows": [row], "source_manifest": [] if scope is None else [
+            {"ref": row["feedback_ref"], "content_hash": canonical_json_hash(row), "visible_to": scope}]}
+        path.write_text(json.dumps(raw))
+        (root / "run_contract.json").unlink(missing_ok=True)
+        self.bind((source,), history=True, mode="fast_then_slow", cycle_artifacts=[
+            {"cycle_id": 1, "path": relative, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}])
+        return path.read_bytes()
+
+    def test_imported_target_scope_ceiling_survives_nested_history(self):
+        source = self.event("history-target", 4.0, round_id=1)
+        record_committed_signal_use(self.registry, (source,))
+        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        rows, _manifest = self.engine._committed_slow_feedback()
+        row = next(row for row in rows if row["kind"] == "signal_target_observation")
+        original = self.bind_target_history(source, row, ["H1", "H3", "E2", "Update", "reflection"])
+        rows, manifest = self.engine._committed_slow_feedback()
+        imported = next(row for row in rows if row["kind"] == "signal_target_observation" and row["feedback_ref"].startswith("slow-history:"))
+        scope = next(item["visible_to"] for item in manifest if item["ref"] == imported["feedback_ref"])
+        self.assertNotIn("H1", scope)
+        self.assertEqual((self.engine.workspace.root / "slow_history/source-test/experiments/cycles/cycle-0001/slow_input.json").read_bytes(), original)
+        self.bind_target_history(source, imported, scope)
+        rows, manifest = self.engine._committed_slow_feedback()
+        self.engine._active_slow_input = {"feedback_rows": rows, "source_manifest": manifest}
+        self.engine._active_slow_memory = {"processed_feedback_refs": [row["feedback_ref"] for row in rows if row["kind"] == "signal_target_observation"]}
+        self.assertEqual(self.engine._slow_method_view("H1")["source_entries"], [])
+        self.assertTrue(self.engine._slow_method_view("Update")["source_entries"])
+
+    def test_imported_target_scope_preserves_narrower_roles_and_requires_scope(self):
+        source = self.event("narrow-history", 4.0, round_id=1)
+        record_committed_signal_use(self.registry, (source,))
+        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        rows, _manifest = self.engine._committed_slow_feedback()
+        row = next(row for row in rows if row["kind"] == "signal_target_observation")
+        self.bind_target_history(source, row, ["Update"])
+        rows, manifest = self.engine._committed_slow_feedback()
+        imported = next(row for row in rows if row["kind"] == "signal_target_observation" and row["feedback_ref"].startswith("slow-history:"))
+        self.assertEqual(next(item["visible_to"] for item in manifest if item["ref"] == imported["feedback_ref"]), ["Update"])
+        self.bind_target_history(source, row, None)
+        with self.assertRaisesRegex(ValidationError, "explicit disclosure scope"):
+            self.engine._committed_slow_feedback()
 
     def test_zero_local_pointer_consumes_only_exact_imports_and_targets(self):
         source = self.event("imported-high", 4.1, round_id=7)

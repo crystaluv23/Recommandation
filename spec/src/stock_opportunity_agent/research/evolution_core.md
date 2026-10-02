@@ -17,6 +17,8 @@ or effect examples. The final-context assembler accepts optional status metadata
 and includes it only for actually executed refs; preflight and transmission use
 the same assembled view. Existing canonical SignalResult and ResearchState stay
 unchanged. Generic controllers without this optional interface remain valid.
+Actual-result status is recursively projected to independent plain JSON before
+Predictor assembly, preserving the deep immutability of its Registry source.
 
 Final Basic Info cards retain the upstream `document_id` and `available_at` beside
 the complete literal and stable projection id. Final context explicitly includes

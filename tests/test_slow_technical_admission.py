@@ -1,10 +1,12 @@
 """Production Slow admission with upstream staged-output fixtures, not effect gates."""
 
 from dataclasses import replace
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 import tempfile
 from unittest import TestCase
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
@@ -146,6 +148,7 @@ class SlowTechnicalAdmissionTests(TestCase):
         selector = LLMSignalRetrievalAgent(caller)
         selector.select((need,), snapshot, {}, eligible_signal_refs=(self.magnitude.ref,))
         card = caller.calls[0]["payload"]["available_signal_cards"][0]
+        deepcopy(caller.calls[0]["payload"])
         self.assertEqual(card["research_status"]["effect_status"], "unverified")
         self.assertEqual(card["research_status"]["research_targets"], ["magnitude_ge3_v1"])
         fixture = candidate_growth_fixture()
@@ -161,7 +164,13 @@ class SlowTechnicalAdmissionTests(TestCase):
         reflect_caller = ScriptedRoleCaller([finalize])
         controller = LLMResearchController(reflect_caller)
         controller.set_signal_research_status(snapshot.research_status)
+        controller.set_document_channel(SimpleNamespace(catalog_view=lambda: {}))
         controller.reflect(default_information_plan(), ResearchState(hypotheses=("Measure reported growth.",), next_information_needs=(need,)), batch)
         sent = reflect_caller.calls[0]["payload"]["signal_research_status"]
         self.assertEqual(set(sent), {self.magnitude.ref})
         self.assertEqual(sent[self.magnitude.ref]["effect_status"], "unverified")
+        sent[self.magnitude.ref]["research_targets"].append("view-only")
+        card["research_status"]["research_targets"].append("view-only")
+        self.assertEqual(snapshot.research_status[self.magnitude.ref]["research_targets"], ["magnitude_ge3_v1"])
+        with self.assertRaises(TypeError):
+            snapshot.research_status[self.magnitude.ref]["research_targets"].append("immutable")

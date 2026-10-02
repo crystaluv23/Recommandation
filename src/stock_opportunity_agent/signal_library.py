@@ -1221,8 +1221,8 @@ class SignalCard:
             "category": self.category,
             "description": self.description,
             "execution_type": self.execution_type.value,
-            "learned_profile": dict(self.learned_profile),
-            **({"research_status": dict(self.research_status)} if self.research_status else {}),
+            "learned_profile": _thaw_json(self.learned_profile),
+            **({"research_status": _thaw_json(self.research_status)} if self.research_status else {}),
         }
 
 

@@ -65,6 +65,7 @@ from stock_opportunity_agent.signal_library import (
     SignalSpec,
     SIGNAL_CONTEXT_TAGS,
     signal_result_model_view,
+    _thaw_json,
 )
 from stock_opportunity_agent.research.evolution_settings import (
     REGISTERED_SOURCE_TYPE_CATALOG,
@@ -225,7 +226,7 @@ class LLMResearchController:
     def set_signal_research_status(self, status: Mapping[str, Mapping[str, Any]]) -> None:
         """Bind status from one frozen Registry; expose only current-batch refs."""
 
-        self.signal_research_status = {ref: dict(value) for ref, value in status.items()}
+        self.signal_research_status = _thaw_json(status)
 
     def set_reflection_runtime_context(
         self,
@@ -792,8 +793,8 @@ class LLMSignalRetrievalAgent:
                 "description": spec.description,
                 "execution_type": spec.execution_type.value,
             }
-            profile = dict(signal_registry.learned_profiles.get(spec.ref, {}))
-            status = dict(signal_registry.research_status.get(spec.ref, {}))
+            profile = _thaw_json(signal_registry.learned_profiles.get(spec.ref, {}))
+            status = _thaw_json(signal_registry.research_status.get(spec.ref, {}))
             if status:
                 card["research_status"] = status
             if int(profile.get("unique_observations", 0) or 0) > 0:

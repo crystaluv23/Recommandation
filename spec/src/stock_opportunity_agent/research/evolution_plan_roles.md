@@ -10,6 +10,9 @@ each actual measured result in its existing evidence assembly. Fixed prompts
 distinguish a valid measurement from demonstrated contribution and never force
 higher magnitude classes merely because a measurement targets magnitude.
 Legacy versions without a new admission record receive no invented status.
+Cards, profiles and controller status use the Registry's recursive plain-JSON
+projection before document/read channels copy requests. Outgoing mutations cannot
+change the frozen source; shallow copies of frozen nested lists are insufficient.
 
 ## Fixed Predictor role authority (2026-10-02)
 

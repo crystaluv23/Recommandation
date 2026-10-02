@@ -1,0 +1,45 @@
+{
+  "schema_version": "v175-live-frontier-v1",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v175_integrated",
+  "contract_hash": "7752f9f127bfb017abc9c928f1e8e6c9df421d81af484ab2772643e94291aa2f",
+  "frozen_code": "6edc74a653e6e2c263f7fa4ae3aa11ae5a11a700",
+  "executor_exit": 1,
+  "fast_pointer": 0,
+  "slow_pointer": 0,
+  "external_attempt_count": 8,
+  "external_attempt_statuses": {
+    "completed": 8
+  },
+  "actual_external_cost": 0.032757480000000005,
+  "ledger_sha256": "3ed5f7a4c3f48e0602e79f3dfad3bec521d12f6e283389f082d7a844ea841574",
+  "log_sha256": "3f7bfdfa5e687ac3a2f5ec03d00ff4f7f0612503899af9c7d62e623c33843284",
+  "failure": "TypeError in document-channel deepcopy before Reflect request persistence",
+  "scored_case_count": 0,
+  "f1": null,
+  "technical_exclusion_rate": null,
+  "repair_validation_external_calls": 0,
+  "copy_replay": {
+    "before": "failed",
+    "after": "passed",
+    "same_admission_key": true,
+    "canonical_snapshot_unchanged": true
+  },
+  "history_scope_replay": {
+    "before_h1_exposure": 17,
+    "after_h1_exposure": 0,
+    "same_contract": true,
+    "same_learning_hash": true,
+    "preserved_uses": 134,
+    "preserved_targets": 17
+  },
+  "tests": {
+    "focused_pending": false,
+    "full_count": 1483,
+    "full_seconds": 109.34,
+    "full_pass": true,
+    "lint_pass": true,
+    "focused_count": 323,
+    "focused_pass": true
+  },
+  "boundary": "early uncommitted live crash; repaired offline boundaries and integration tests are not completed Fast/Slow acceptance"
+}

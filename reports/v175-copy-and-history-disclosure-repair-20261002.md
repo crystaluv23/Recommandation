@@ -1,0 +1,9 @@
+# v175 出站复制与历史披露边界
+
+2026-10-02，冻结6edc74a6，contract7752f9f1。真实Fast进入首案例，完成两Plan proposal、Initialize及其局部修复、Signal routing及修复、两LLM Signal执行后，在Reflect文档通道的deepcopy崩溃；8次paid均completed，Fast/Slow仍0/0。完整评分尚未生成，不能报F1或技术排除率0，也不能把这个程序崩溃归因于模型预测错误。原attempts/requests/cache/source/pointers不改。
+
+[实际费用、hash及验收边界](v175-copy-and-history-disclosure-repair-20261002.json)：research_status浅层dict保留FrozenList；通道deepcopy重建时调用被禁止的append。已有递归_thaw_json用于Card输出、selector画像/状态、controller状态和Predictor状态，出站为独立plain JSON，canonical snapshot仍深冻结。实际已发布financing_listing_action:v4相同admission metadata在旧通道复现TypeError，修复后复制通过且原snapshot/hash不变，0外部；这是边界重放，最终transport为脚本化。既有完整selector/reflect测试补真实DocumentChannelCaller和deepcopy，修改返回视图不影响snapshot。
+
+另一个跨轮次问题：导入slow_input时把全部role权限重新开放，真实17份target summary对H1可见。导入/本地投影共享kind ceiling与原source_scope交集，保留更窄权限，缺失target scope/未知role拒绝；consumer catalog拒绝target权限扩大。原冻结6ed与当前修复分别读取同一source/contract：H1暴露17→0，134授权usage/17当前target profile和learning_hash保留，原history artifacts/hash未改。新增两历史嵌套/窄权限回归，以及catalog/出站复制反例。
+
+最终1483全量（109.340秒）及lint PASS，323相关专项通过。v175执行已退出1，没有热改冻结checkout，没有将未评分首案转成研究FN。后继仍应从v171真实已提交Registry v8/历史开始，保持原40案例、来源、标签与分母，验证完整Fast近零/零技术排除、Slow双轴新因子入库及跨轮次消费。整体目标未完成。

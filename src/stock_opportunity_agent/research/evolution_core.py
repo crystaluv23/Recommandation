@@ -50,6 +50,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     SIGNAL_CONTEXT_TAGS,
     signal_result_model_view,
+    _thaw_json,
 )
 
 from typing import TYPE_CHECKING
@@ -3992,7 +3993,7 @@ def _assemble_final_context(
     }
     for ref, result in model_signal_results.items():
         if ref in (signal_research_status or {}):
-            result["research_status"] = dict(signal_research_status[ref])
+            result["research_status"] = _thaw_json(signal_research_status[ref])
     signal_rounds = [
         {
             "selected_signals": list(round_row.selected_signals),

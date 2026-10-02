@@ -3668,3 +3668,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：v174冻结fec68554真实Update初答2010 tokens/parser通过，程序仅恢复精确diff，两次paid $0.01055852；candidate customer_concentration:v3在独立组件区stage，原72%单客户negative fixture真实执行通过（1 test），immutable tests/schema/PIT/version/uniqueness不放宽，未发布/未提交cycle。250相关/1475最终全量/lint PASS；v171已有两更新保留，生产后继固定24 Fast零技术排除与双轴新因子/消费验收继续。见reports/v174-update-component-acceptance-20261002.md。
 
 - 2026-10-02：v175 committed-Slow诊断后继接生产history，原40案/来源/Registry v8与134授权事件保留；真实reader/freeze复现31旧版事件误拒，Slow亦漏历史usage/target。共同exact-version/ledger校验与immutable版本inventory替代latest-card历史过滤，当前新版本画像仍0、未授权/改写copy拒绝；新增5回归、203相关/1481全量及lint PASS。v175仅prepare本地0/0，冻结完整Fast→Slow与双轴新因子验收继续。见reports/v175-history-preparation-20261002.md。
+
+- 2026-10-02：v175冻结6edc74a6首案Reflect因research_status冻结list/deepcopy崩溃，8 completed paid/$0.03275748、指针0/0，未生成评分。共同_thaw_json展开Card/selector/controller/Predictor出站状态，原snapshot仍冻结；历史input projection按source scope与kind ceiling交集，真实target H1暴露17→0、134usage/17target/learning_hash不变。0外部边界重放/323相关/1483全量/lint PASS，原冻结源不改，v176后继真实验收继续，整体目标未完成。见reports/v175-copy-and-history-disclosure-repair-20261002.md。
