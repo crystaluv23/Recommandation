@@ -1,0 +1,124 @@
+{
+  "schema_version": "v176-artifact-audit-v1",
+  "captured_at": "2026-10-02T14:39:41.338347+00:00",
+  "contract_hash": "758f91592fc2eb243e96d6f723a9eaacc397888af070422868cff469e22ab8c5",
+  "frozen_code": "bcef98cd05cabe2710869535ca28bb240347b543",
+  "request_hashes_checked": 86,
+  "completed_response_hashes_checked": 85,
+  "blind_requests_checked": 70,
+  "case_outcome_field_findings": [],
+  "stage_counts": {
+    "information_plan_propose": 3,
+    "information_plan_propose_correction": 2,
+    "research_controller_initialize": 8,
+    "research_controller_initialize_correction": 2,
+    "signal_retrieval_cards": 12,
+    "llm_signal_batch_execute": 20,
+    "research_controller_reflect": 11,
+    "blind_predictor_predict": 7,
+    "blind_predictor_posthoc_reflect": 7,
+    "blind_predictor_posthoc_reflect_correction": 4,
+    "signal_retrieval_cards_correction": 5,
+    "llm_signal_batch_execute_correction": 5
+  },
+  "case_checkpoints": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 21,
+      "state_deltas_preserved": 2,
+      "prediction_artifact_matches": true,
+      "binary_correct": false,
+      "reflection_item_count": 4,
+      "trajectory_sha256": "5556619dc47b77a79a13c51a88166aaf66363e7b09c8806edd6501195482828c"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 19,
+      "state_deltas_preserved": 2,
+      "prediction_artifact_matches": true,
+      "binary_correct": true,
+      "reflection_item_count": 3,
+      "trajectory_sha256": "8d25022c4d3c02be83a0addcef562c11c1481c5297f49cce4a161db909411a91"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 23,
+      "state_deltas_preserved": 2,
+      "prediction_artifact_matches": true,
+      "binary_correct": true,
+      "reflection_item_count": 4,
+      "trajectory_sha256": "7068333106c2ccdd3de9963ad06ae9b37b8c02f25385a1f24389e6fcce4c5e1d"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 20,
+      "state_deltas_preserved": 1,
+      "prediction_artifact_matches": true,
+      "binary_correct": false,
+      "reflection_item_count": 4,
+      "trajectory_sha256": "2dc5b9a390302c465fb6076e2aa9a38f561b59e54622226c5d2a185bf7c31e67"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 21,
+      "state_deltas_preserved": 1,
+      "prediction_artifact_matches": true,
+      "binary_correct": false,
+      "reflection_item_count": 5,
+      "trajectory_sha256": "a057197d2bffde3207b8cb939d61ac046cab2f57b701d5165b77cc80b0700b79"
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 20,
+      "state_deltas_preserved": 2,
+      "prediction_artifact_matches": true,
+      "binary_correct": true,
+      "reflection_item_count": 5,
+      "trajectory_sha256": "c9ee1114060ff740268620c21eb0f86b494c645b1dfd48cd33ecca9769137252"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "plan_id": "plan_r0001_c01",
+      "projection_cards_preserved": 20,
+      "state_deltas_preserved": 1,
+      "prediction_artifact_matches": true,
+      "binary_correct": true,
+      "reflection_item_count": 3,
+      "trajectory_sha256": "4dd2426d3823abef09203a99b8d23dbcc80b88223a94e5af1aaa62c634ace6af"
+    }
+  ],
+  "checkpoint_technical_diagnostics": {
+    "scored_case_count": 7,
+    "research_completed_case_count": 7,
+    "technical_exclusion_count": 0,
+    "technical_completion_rate": 1.0,
+    "failure_class_counts": {},
+    "scoring_effect_counts": {
+      "false_negative": 0,
+      "technical_negative_abstention_not_true_negative": 0
+    }
+  },
+  "published_effect_status_consumed": true,
+  "deterministic_fallback_events": 12,
+  "comparison_includes_expected_identity_projection": true,
+  "projection_card_total_preserved": 144,
+  "source_pointer": 0,
+  "cycle_pointer": 0,
+  "completed_provider_usage_cost": 0.30134076000000004,
+  "failed_reserved_accounting_cost": 0.00886984,
+  "failure": {
+    "stage": "signal_retrieval_cards",
+    "attempt_id": 86,
+    "error_type": "OpenAIClientError",
+    "http_status": 402,
+    "request_hash": "a55eb99348875a829b603d80a9e83d5b2f5ccfc615baa922df6c0f14bc3e1c4b"
+  },
+  "audit_external_calls": 0,
+  "boundary": "hash/structural retention and leakage-key audit plus sampled content review; seven staged negative cases are not fixed-cohort F1 or whole-pipeline acceptance; arbitrary prose truth not established by hashes"
+}

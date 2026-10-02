@@ -1,0 +1,38 @@
+{
+  "status": "expected_uncached_frontier",
+  "request_hash": "a55eb99348875a829b603d80a9e83d5b2f5ccfc615baa922df6c0f14bc3e1c4b",
+  "schema_version": "v176-offline-resume-audit-v1",
+  "source": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v176_integrated",
+  "copy": "/tmp/v176-offline-resume-copy-02",
+  "source_unchanged": true,
+  "audit_external_calls": 0,
+  "contract_hash": "758f91592fc2eb243e96d6f723a9eaacc397888af070422868cff469e22ab8c5",
+  "audit_code_revision": "bcef98cd05cabe2710869535ca28bb240347b543",
+  "reused_trajectory_events": 7,
+  "new_event_counts": {
+    "case_trajectory_reused": 7,
+    "mechanical_repair_progress": 1,
+    "fast_loop_started": 1,
+    "candidate_proposal_reused": 2,
+    "request_ready": 3,
+    "parents_selected": 1,
+    "candidate_proposed": 2,
+    "candidate_evaluation_started": 1,
+    "request_cache_hit": 2,
+    "case_started": 1,
+    "request_pending_external_approval": 1,
+    "evaluation_case_data_ready": 24,
+    "round_started": 1
+  },
+  "boundary": "actual entry/DualLoop/roles/validators in copied workspace; all model/data networking prohibited; stop before first unfilled response",
+  "source_checkpoint_copies_unchanged": {
+    "experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0001576942:20250530.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json": true,
+    "experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.json": true
+  },
+  "copied_ledger_unchanged": true
+}

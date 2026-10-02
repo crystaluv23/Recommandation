@@ -634,3 +634,5 @@
 - 2026-10-02：v175冻结6edc74a6首案Reflect因research_status冻结list/deepcopy崩溃，8 completed paid/$0.03275748、指针0/0，未生成评分。共同_thaw_json展开Card/selector/controller/Predictor出站状态，原snapshot仍冻结；历史input projection按source scope与kind ceiling交集，真实target H1暴露17→0、134usage/17target/learning_hash不变。0外部边界重放/323相关/1483全量/lint PASS，原冻结源不改，v176后继真实验收继续，整体目标未完成。见reports/v175-copy-and-history-disclosure-repair-20261002.md。
 
 - 2026-10-02：v176冻结bcef98cd真实后继已进入Fast；前4份canonical案例checkpoint完成、技术排除0、技术FN0。两已发布unverified版本已真实进入Reflect/Predictor，此前deepcopy入口通过；指针0/0、固定24完整评分/Slow双轴新因子验收待完成，运行中未热改。见reports/v176-live-frontier-20261002.md。
+
+- 2026-10-02：v176因第8案例Signal retrieval HTTP402余额不足退出1；7完成/0技术排除/0技术FN、指针0/0。86request与85response hash、70blind payload outcome-key、144全Basic卡/状态增量/预测存储核验通过。禁网隔离实际入口复用2proposal/7trajectory及第8案2cache，精确到原402 request frontier；原指针/ledger/contract不改。完整评分/Slow双轴新因子仍待余额恢复；已向用户询问，不将资金失败计研究FN。见reports/v176-402-and-resume-audit-20261002.md。
