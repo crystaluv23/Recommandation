@@ -1,0 +1,54 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "scope": "offline production adapter plus explicitly scripted semantic patch; no external calls",
+  "case_id": "cik_0001521036:20250331",
+  "plan_id": "plan_r0001_c01",
+  "request_ref": "4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1",
+  "result": "PASS",
+  "calls": 2,
+  "first_feedback_paths": [
+    "reflection_items[4].brief",
+    "reflection_items[4].detail",
+    "reflection_items[0].detail"
+  ],
+  "changed_paths": [
+    "reflection_items[4].brief",
+    "reflection_items[4].detail",
+    "reflection_items[0].detail"
+  ],
+  "old_outcome_text": "The saved prediction labeled the setup a possible surge toward the $196.336 doubling threshold, but the revealed ground truth is non_surge with a realized max multiple of 1.0835 (about +8.3% from the recent close of 96.16). The binary direction was wrong, so the failure is a direction error, not a magnitude-class error; magnitude_feedback confirms magnitude_applicable=false and error_kind=not_applicable. The 180-day computed price shape already showed a -4.41% return, -34.68% max drawdown, and 3.34% daily volatility, i.e., a range-bound tape far below the threshold.",
+  "new_outcome_text": "The saved prediction labeled the setup a possible surge toward the $196.336 doubling threshold, but the revealed ground truth is non_surge with a realized max multiple of 1.0835 (about +8.3% from the baseline mean of 98.168). The binary direction was wrong, so the failure is a direction error, not a magnitude-class error; magnitude_feedback confirms magnitude_applicable=false and error_kind=not_applicable. The 180-day computed price shape already showed a -4.41% return, -34.68% max drawdown, and 3.34% daily volatility, i.e., a range-bound tape far below the threshold.",
+  "baseline": {
+    "doubling_threshold": 196.336,
+    "mean_adjusted_close": 98.168,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 96.16,
+    "recent_close_date": "2025-03-28",
+    "status": "available",
+    "trading_dates": [
+      "2025-03-24",
+      "2025-03-25",
+      "2025-03-26",
+      "2025-03-27",
+      "2025-03-28"
+    ]
+  },
+  "ground_truth": {
+    "is_surge": false,
+    "magnitude": null,
+    "realized_max_multiple": 1.0834895281558146
+  },
+  "all_five_items_retained": true,
+  "valid_siblings_sources_outcomes_equal": true,
+  "saved_prediction_immutable": true,
+  "source_snapshot_immutable": true,
+  "archive_proposer_source_resolution": true,
+  "immutable_input_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/experiments/trajectories/plan_r0001_c01/cik_0001521036:20250331.json": "3089f7eaa965c93041543257f7a2aded6a22032c148e3c353ac7b425af081e31",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/requests/4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1.json": "34ec7eaee8222c8af4ba5aecc4b41478ba96d03f7ece1ce88cef1ea129f00c8a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated/cache/responses/4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1.json": "c5c0f523c6be4f6174a927ef626d077406c0f56fba83e6c201400d9e39ed2bb3"
+  },
+  "live_acceptance": false,
+  "quality_gain_measured": false,
+  "limitation": "Scripted patches prove first-frontier authority, complete revalidation and persistence, not future model compliance."
+}

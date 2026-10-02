@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-02：Posthoc 统一运行时已实现倍数及五日均价/recent close分母检测，价格规则与数值义务首次聚合、salvage完整重验。42份实际缓存扫描及Lantheus生产局部回放/保存/来源解析通过，1351项全量测试通过；v167真实Fast=1、Slow=0，F1 .7586/.7200，完整实测验收未完成，冻结main未合入本批修复。
+
 - 2026-10-02：隔离统一 runtime 控制/State 证据提示词，允许 typed 无效 evidence 隔离为空后完整重验，补齐无有效采纳时旧需求原文及多重出现恢复；共享价格 shortfall 和 stated-path/absence downgrade 首次纠错规则保留普通商业路径。四个真实生产离线回放及保存/来源解析通过，全量1346测试通过。真实v167 Fast=1、F1 .7586/.7200，Slow=0仍在Mining；收益分母、幅度塌缩、身份排除与新Slow absence依据待审查，未合入冻结main或声明整体验收。
 
 2026-10-02：运行时价格算术统一到ResearchState、Predictor与Case Posthoc；baseline/recent close不混用，精确成员patch与完整重验，反思salvage复用同一语义validator。清理重复基准检查和未使用plain-array反思生成入口，修复机械salvage将运行时dataclass混入JSON的问题。真实46份预测扫描与原始错误响应生产适配器重放、保存/恢复/下游索引通过（零网络）；1,291项全量回归及六项新增专项通过（其中一项在全量后补充）。隔离lint仍是20个缺少历史运行资产的链接，全部主目录目标存在。v165冻结主线Fast 1/Slow 0；本轮末Mining供应商返回包缺少id，恢复attempt2以exit1结束，监督/子进程均退出。该异常发生在供应商响应解析、尚未进入Mining内容校验；先审计适配器故障分类，不修改检查点或自行新建运行。修复尚未进入实测，期间/单位/统计归属与幅度塌缩仍待验证。

@@ -394,3 +394,24 @@ original Basic Info and runtime blocks remain outside State and in final assembl
 Complete State parsing still checks retention, need transitions, timing and
 decision rules; it may refuse the resulting object for those actual obligations.
 This removes a legacy fallback-only nonempty condition and grants no new paths.
+
+## Realized outcome measurement ownership
+
+Case posthoc receives the existing immutable realized_max_multiple and the
+original price anchor. A named realized max multiple must match that supplied
+outcome within its literal rounding. A nearby percent return explicitly attached
+to that multiple uses the runtime numerator: the maximum five-complete-trading-day
+adjusted-close mean within the fixed six-calendar-month horizon. A single daily
+peak is not this outcome. Its named denominator determines the check: baseline mean uses
+`(multiple - 1) * 100`; recent close uses
+`(multiple * mean_adjusted_close / recent_close - 1) * 100`. This is a bounded
+same-clause check, not verification of arbitrary outcome prose. Denied examples,
+forecasts, business quantities and unrelated price clauses do not create an
+inferred obligation. Unavailable or invalid anchors cannot supply a denominator.
+
+The exact brief/detail path gets a semantic replace/remove permission with
+runtime outcome/anchor context. No program chooses whether the author intended
+to change the percent, denominator or wording. Initial instructions disclose the
+definition. Complete reflection parsing and salvage use the same check; original
+prediction, outcome, source snapshots, score and historical authored items stay
+immutable. Independent text/policy issues share the first correction frontier.

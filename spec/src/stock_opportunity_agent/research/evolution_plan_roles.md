@@ -188,3 +188,15 @@ issuer facts still follow existing quote/claim rules. No source metadata/date or
 filing-form identifier is invented inside a quote to justify a numerical claim.
 State need not create a citation for a runtime control: the unchanged control
 and Basic Info blocks are assembled separately for Predictor.
+
+## Posthoc realized-return boundary
+
+Posthoc names the fixed runtime outcome denominator on its first request. Its
+shared content check binds explicit realized max multiples/nearby percentages
+to the revealed outcome and original anchor; different named denominators need
+their own arithmetic. This contract is post-label only and is never added to
+blind Predictor context. The reflection envelope combines independently detected
+raw text issues with action-policy issues before source/item construction, then
+validates the full assembled result. Salvage invokes the same role check and
+cannot keep a rejected quantitative statement. Field-local semantic repairs keep
+all other items, sources, saved predictions and outcome records unchanged.

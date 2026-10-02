@@ -88,6 +88,8 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _computed_period_issues,
     _COMPUTED_PERIOD_INSTRUCTION,
     _PRICE_SHORTFALL_INSTRUCTION,
+    _realized_outcome_issues,
+    _REALIZED_OUTCOME_INSTRUCTION,
     _context_signal_results,
     _compact_posthoc_context,
     _INCREMENTAL_ROLE_INSTRUCTION,
@@ -1912,33 +1914,30 @@ class LLMBlindPredictor:
             )
 
             def validate_case_text(items: tuple[Any, ...]) -> None:
+                rows = tuple(
+                    (f"reflection_items[{position}].{field}", text)
+                    for position, item in enumerate(items) for field in ("brief", "detail")
+                    if isinstance(text := (item.get(field) if isinstance(item, Mapping)
+                                          else getattr(item, field, None)), str)
+                )
                 issues = _price_reasoning_issues(
-                    ((f"reflection_items[{position}].{field}", getattr(item, field))
-                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    rows,
                     compact_context.get("prediction_baseline"),
                 )
                 issues.extend(_measurement_reasoning_issues(
-                    ((f"reflection_items[{position}].{field}", getattr(item, field))
-                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    rows,
                     _context_signal_results(compact_context),
                 ))
                 issues.extend(_computed_period_issues(
-                    ((f"reflection_items[{position}].{field}", getattr(item, field))
-                     for position, item in enumerate(items) for field in ("brief", "detail")),
+                    rows,
                     compact_context.get("computed_metrics", ()),
                 ))
-                for position, item in enumerate(items):
-                    paths = tuple(
-                        f"reflection_items[{position}].{field}"
-                        for field in ("brief", "detail")
-                        if _market_data_absence_paths(
-                            ((field, (getattr(item, field),)),),
-                            compact_context.get("prediction_baseline"),
-                        )
-                    )
-                    if paths:
+                issues.extend(_realized_outcome_issues(rows,
+                    compact_context.get("prediction_baseline"), ground_truth.to_dict()))
+                for path, text in rows:
+                    if _market_data_absence_paths(((path, (text,)),), compact_context.get("prediction_baseline")):
                         issues.append(ValidationIssue(
-                            code="reflection_market_data_available", paths=paths,
+                            code="reflection_market_data_available", paths=(path,),
                             message="Market data was supplied: compact_context.prediction_baseline.status='available'; narrow the gap to missing forward projections or other absent evidence",
                         ))
                 if issues:
@@ -1947,8 +1946,8 @@ class LLMBlindPredictor:
             def parse_reflection(value: Mapping[str, Any]) -> PredictionSelfReflection:
                 items, _selected, projection = _structured_reflection_items(
                     value, index=source_index, level="case", owner_ref=source_identity,
+                    item_validator=validate_case_text,
                 )
-                validate_case_text(items)
                 return PredictionSelfReflection(
                     correct=framework_correct,
                     **projection,
@@ -2001,6 +2000,7 @@ class LLMBlindPredictor:
                     + _UNTRUSTED_DATA_INSTRUCTION
                     + _COMPUTED_PERIOD_INSTRUCTION
                     + _PRICE_SHORTFALL_INSTRUCTION
+                    + _REALIZED_OUTCOME_INSTRUCTION
                     + _structured_reflection_contract("case")
                 ),
                 payload={
@@ -2266,6 +2266,7 @@ def _reflection_salvage_fallback(
 def _structured_reflection_items(
     value: Mapping[str, Any], *, index: ReflectionMemoryIndex,
     level: str, owner_ref: str,
+    item_validator: Callable[[tuple[Any, ...]], None] | None = None,
 ) -> tuple[tuple[Any, ...], tuple[str, ...], dict[str, Any]]:
     """Validate new authored items and derive the legacy category projection."""
 
@@ -2292,6 +2293,11 @@ def _structured_reflection_items(
         ) for position, item in enumerate(raw_items) if isinstance(item, Mapping) and item.get("kind") == "action"
           for field in ("brief", "detail") if isinstance(item.get(field), str)
           and violates_opportunity_proof_gate(item[field])]
+        if item_validator is not None:
+            try:
+                item_validator(tuple(raw_items))
+            except StructuredValidationError as exc:
+                policy_issues.extend(exc.issues)
         if policy_issues:
             raise StructuredValidationError(policy_issues)
     # Retrospective descriptions may discuss probabilities and horizons. They

@@ -1,0 +1,280 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v167_integrated",
+  "scope": "All recorded initial Posthoc cached outputs, not corrected accepted artifacts.",
+  "requests_with_responses": 42,
+  "missing_responses": [],
+  "outputs_with_detected_issues": 1,
+  "rows": [
+    {
+      "request_ref": "08065f3a71f71578910bb61cf4c527356767fa11e7e8ee01188a8e7bc09f5ccc",
+      "request_sha256": "efbb4bb1baefbd7affbb80bd46b2334da86a85f3a05785089a07c69c642451b2",
+      "response_sha256": "d07923c9876ec8168726be7040f5be2d50c94bd9bf148881af3b8a1b57fac8de",
+      "issues": []
+    },
+    {
+      "request_ref": "0b792e63ac7787855868d0a69deeea65087670a02daec5d5f89d91c7ebb32490",
+      "request_sha256": "c6d4d4b11236765355ff87a1e7a5e26c7c2753ad274c40b28a2c5bf7fb21bee9",
+      "response_sha256": "45c287310185e7ba5898f81a7c17681d127e1f44ad02d1952cc612389cb6aab9",
+      "issues": []
+    },
+    {
+      "request_ref": "0de2df166d14269215c698d669aff45ce057ee2a88ccd34e584f9b053803b382",
+      "request_sha256": "226a2b42ca00cc64a7112a4348b4e2c9f5956ae506b2007204aae23697cf883b",
+      "response_sha256": "024df207a82a4d261f09efe24fc9b267efaf2ac5783eca82125d4a88adcc6e71",
+      "issues": []
+    },
+    {
+      "request_ref": "22e861a67299061471fd24ed65058f3d603109270a19b98d548dec4ef581f538",
+      "request_sha256": "fa575414eb36aa9d0b9cc663d408a7f0a6aa1dbe4240475f74742fc3d0031b61",
+      "response_sha256": "c0f3e69da201d8eab93407f248f06922bf5f0934124b68f38404b0d4f6b6484f",
+      "issues": []
+    },
+    {
+      "request_ref": "2413fd6c759fdf3dc8d54fc549f56c0eb1bdfa6926c341a6835bfd07cd7e9d56",
+      "request_sha256": "f68f55e12c2bb8024881e39b97b144f33c5e1a817203aed39de820ffb8648fe8",
+      "response_sha256": "575d9a7ad12d64a4b8f81d76fbf7f20f964e11c11a914201e6dd5deed8ea5001",
+      "issues": []
+    },
+    {
+      "request_ref": "2d2e021dc3014236d50e2b7fdf5b95a4fb458c8ee605e0c22ba91b189797cdab",
+      "request_sha256": "64deff61c51d05549d2836f8626157f180daa37b93fbc532f63b342518856ba6",
+      "response_sha256": "a6a17981c142befecc086878eb4f762d6fe10e31212ce6774f6a886b4346641f",
+      "issues": []
+    },
+    {
+      "request_ref": "34a5c42c97e3391383d3384096254a1a4a8b7fa709edbbcbd3f68820fd6fe1e2",
+      "request_sha256": "3c4fa74fe71bc027629d2a890457b489b05aee845abb3368f332219aea40eb36",
+      "response_sha256": "2266d8fe94c04fc2e0e47c1bfda9d6034042a81701fc85b11715e1315ef3fe2c",
+      "issues": []
+    },
+    {
+      "request_ref": "3ba887623190af1cbc1d4844dcfe18a9b87a7b2ade8adaeb77fdcc5f3e378f29",
+      "request_sha256": "80248cded2a134d7b57bed1f926297b16ddf3aa198973443184c702d520f4564",
+      "response_sha256": "fa23be5fb195af1f275bcfac370941900a030bb97dc3021f52807d8721ce04e6",
+      "issues": []
+    },
+    {
+      "request_ref": "3e47ec82e4460e84896143784a8c78980f25ae9b3e046827a9887a8f4a9fd7bc",
+      "request_sha256": "2a25507cf63ad1b4c4f3f3142c0ee2c7ace6828b482e526e2aed1bb3b12c37a1",
+      "response_sha256": "1d5a0b6d9419a932b7c658a261155ff437648425c2cd1737c39e6aa6bb69dd41",
+      "issues": []
+    },
+    {
+      "request_ref": "41a04a63bfdaacb282ec8ad1b748c583f72458af086d0e9f67d90a19e3fcf513",
+      "request_sha256": "cc1c46ec7df7b618b720d504f41cd3d715a8078aefb13e62715b2389b50fb383",
+      "response_sha256": "9b480e6fef0d637067ed2420ec92932b35b0db20869ce10ad45cb870bad1fc80",
+      "issues": []
+    },
+    {
+      "request_ref": "4248765a85512cff650586626cbbc9d535f6b247031fa1dbce660b4dd182033f",
+      "request_sha256": "e9cbacaec1580513ed98fa935b3ef2a674d0ce57d04a50bfcd3e1038f6c53431",
+      "response_sha256": "00e2861e2828e51a27b2476cd933f0778979325534e25c1bd5353ddb872041b4",
+      "issues": []
+    },
+    {
+      "request_ref": "42e02834e5a1e9dbb181d78d80288a9df26a47b11e86cbf56a6709305cb473ae",
+      "request_sha256": "d2a4d22579a3b40af9f1ac952dbd64ddd27b3e82aea85c25c86c5e2c05279a24",
+      "response_sha256": "8b6dd31e40e31609352a2d98d2934f8ff094725fa998359c6b73fec749d1df0b",
+      "issues": []
+    },
+    {
+      "request_ref": "48256709a0b7fd88045813a0e3326cbf372585471273f7ad92c21b7e39c02763",
+      "request_sha256": "7a2135b27455efe2ca888f3223b21bbbcc7101c88b93bf14ee82c8153e3e767c",
+      "response_sha256": "6fd698f08738c84be2adb995c481cebbeaee349d3cda1eba489ea86d3e5998fc",
+      "issues": []
+    },
+    {
+      "request_ref": "4ef9163532fb9ac204be3ab558e1b11d996b3a32e2a56d5654c2eb0d4d30f5c1",
+      "request_sha256": "34ec7eaee8222c8af4ba5aecc4b41478ba96d03f7ece1ce88cef1ea129f00c8a",
+      "response_sha256": "c5c0f523c6be4f6174a927ef626d077406c0f56fba83e6c201400d9e39ed2bb3",
+      "issues": [
+        {
+          "code": "realized_outcome_measurement_invalid",
+          "paths": [
+            "reflection_items[0].detail"
+          ],
+          "context": {
+            "realized_max_multiple": 1.0834895281558146,
+            "baseline_mean": 98.168,
+            "recent_close": 96.16,
+            "named_denominator": "recent close",
+            "expected_percentage": 10.611480865224632
+          },
+          "text": "The saved prediction labeled the setup a possible surge toward the $196.336 doubling threshold, but the revealed ground truth is non_surge with a realized max multiple of 1.0835 (about +8.3% from the recent close of 96.16). The binary direction was wrong, so the failure is a direction error, not a magnitude-class error; magnitude_feedback confirms magnitude_applicable=false and error_kind=not_applicable. The 180-day computed price shape already showed a -4.41% return, -34.68% max drawdown, and 3.34% daily volatility, i.e., a range-bound tape far below the threshold."
+        }
+      ]
+    },
+    {
+      "request_ref": "4ffe9b99b903f4cec5dd05350b75c34a1c81576dba0df92f22b091286b9623b6",
+      "request_sha256": "090c2c545304c5141d76c11d74b2c00fa45cd17079a9270f2495d1325bcb013b",
+      "response_sha256": "0220924edf536b45180c4ed777bff113e6bf4600a683fc25cb96f7281a07c876",
+      "issues": []
+    },
+    {
+      "request_ref": "5d1885a6a72cf9ce6235c695e315dc5e4af2b2ed3f6d966774be42778c512d4c",
+      "request_sha256": "0a01a80f65bbbd6ef6bb377d59e8a54738c503b3e05b616910b308541e16f985",
+      "response_sha256": "84beb8472be818eb947947dc89f4a717262fe7a5119784e06b8c03b6087a2f7a",
+      "issues": []
+    },
+    {
+      "request_ref": "5f4d05dd044b96d161c65b56069d0c1bafb15dfb4a208db042240eb4da35a7a2",
+      "request_sha256": "bf0790133c4dbb9aec62cc324d10855cbd530c66ba69cb57ef8207a08d7c427d",
+      "response_sha256": "8b81130380adc92793076cf2f82d0ef17b80805ba88f2a1e378e32e19ea79ec0",
+      "issues": []
+    },
+    {
+      "request_ref": "60d7a6e005fe4e8dc5c30fcdbe2451e0309e04d701460b9a7dae37f507609a06",
+      "request_sha256": "5036730c3891059d4541805f349b865ab734687d177f64b5687edef4d00fa433",
+      "response_sha256": "e2ab7101ad76a0546575b421366128c714d9c9fbef2beb781436b91261a2ceda",
+      "issues": []
+    },
+    {
+      "request_ref": "7da3a185b8f9a156886842a661325c935ec2e5e510dd664b394ff557bb943ec7",
+      "request_sha256": "1fd095760cc7db22d07033841c871f16bc11a54379782c797243521f347ddca5",
+      "response_sha256": "132951adc6a6c9c19edb843427725db3ab74972d8df59cf7c83bbdf71c3eff9a",
+      "issues": []
+    },
+    {
+      "request_ref": "86fc4fdc388a1a13dd686911f7f662eef9312de1c51466bf59ec79eed975b907",
+      "request_sha256": "1a8ede60c5813aae5a0905a9e26b2ef99eaa265d5ca182929db608cfe4f9a832",
+      "response_sha256": "de3daf31c33194e36afe152848762644688053ec48c0e32296cadab39de21167",
+      "issues": []
+    },
+    {
+      "request_ref": "872ec692b03a41f5522244fdb86efa1a14c842f68d991b9c0b6c945cf9a33da6",
+      "request_sha256": "cb739fc614a685916fcd97995ddb7e2eb19db7fac5da14d9ffc7894ab365798d",
+      "response_sha256": "922e981ac6a50fc4db3a99823ab098822ad0150b19cbb9e5ce4e45f5395b0d50",
+      "issues": []
+    },
+    {
+      "request_ref": "8b9b44abf7535bb9a651c7ee8a6d249e980b1f864a3325c914666cf8b3663fb2",
+      "request_sha256": "6fd1ed9bae83202b8945465f8cee634adcc56773c98a0d3101fabb786fee6b3e",
+      "response_sha256": "74e087837420b7fca20c7acfc3cd0d1f047de3ae6986c3c68b0aa45360dd3758",
+      "issues": []
+    },
+    {
+      "request_ref": "8f1593ea671917836024a8ae0c9614075acb9b3a8651bc392514dc2a917b4f40",
+      "request_sha256": "144c67bcd72c3c7c748286e1358a3d9e8041c1bdcf9144baafce74bf3795b64e",
+      "response_sha256": "b6f440d39a96bdde8e5da86a46fd0aabee156b76dfd1d65fe995ade5484299ef",
+      "issues": []
+    },
+    {
+      "request_ref": "93bff61bb240d38e4fce50363884e4a1ee5bd9538ebcf6363759a791e0a25988",
+      "request_sha256": "0d7dba298282b7c93eb61f37423dfb7a64ceb253b428224d955e8a4869ed117d",
+      "response_sha256": "7b215ea6ce74c8d2b5dc66985aedb11aa07c46c95b41e7ade20a053c94d9ff4a",
+      "issues": []
+    },
+    {
+      "request_ref": "958d6d7a4739ebb47608ee0ca72f4b5f05e88fd89c5309a07a3628c7a476ef88",
+      "request_sha256": "f4c7382e542f0e9203615f8371fd9c28a58f0cc3f2120a87886b2d63b553bd20",
+      "response_sha256": "2beb20ebbdde3362f6000635c23d9fa041f245d130ac485a15f94eee1d49aa6b",
+      "issues": []
+    },
+    {
+      "request_ref": "9747c9383818d48239dbaa68b88303aedc5bcde97da651e3d437e388b135a069",
+      "request_sha256": "a91caf852ac6f66f55e3942930d7e24e06a062f5d7f32500e50c00d88b69c31a",
+      "response_sha256": "0a2e7c6c8077eb80fc867725200eac742a91124af8a2e1d441e0cd93e22bf6a7",
+      "issues": []
+    },
+    {
+      "request_ref": "9df33748acf9f41bdad31a379340e7d884d5a049c2c73d9cdadb229648f26580",
+      "request_sha256": "a754586fac90c6bd2d54aa1e2aaf881a43ca33a0570d2a513ea5f08230eec77d",
+      "response_sha256": "f7eda6180ab98a2c83c7130562d9c70e493e485e7152ac761839fd25b92b5312",
+      "issues": []
+    },
+    {
+      "request_ref": "a39e9fc8edbee195c44f37009b8c5eab558231189689a8058b427443b9a79209",
+      "request_sha256": "27482d1c3915a956b545c3a2680ae8922eb24e56d84dbc85f2b4b32e67339220",
+      "response_sha256": "bd7f5bd98e4f095e343bd7c53121ba8a85b32aa099f95e84d9b1dc43eb04ac02",
+      "issues": []
+    },
+    {
+      "request_ref": "a831adbbf991df6a5219a49fd507b2332406a6fd3de45042cfb935f9bbe77fcc",
+      "request_sha256": "0e4dc649fe435d61284b7cf7f1e7834561990a5d1d36b2e34c3302e4dae4ba8e",
+      "response_sha256": "9033e5f7690c60bacc84e9bb8a54b99564c408ae87c00a208f3d6bd85918d818",
+      "issues": []
+    },
+    {
+      "request_ref": "af5d582655be7822703f7d8de12bd13f4ae357b94dc8e1f0d08a8fb850cc72a6",
+      "request_sha256": "2717dad89517abf20240f191bb3e7c6399fb87296c5c37684bc6eca1a8f53660",
+      "response_sha256": "66c17eb6693cc1a5ac68b795b3db58bf044fe2ab89a37e4c78d1ba9ca8879c7e",
+      "issues": []
+    },
+    {
+      "request_ref": "b80c0880223d49d853a3fac80ff1c5535b2792a54b0d1703c5992d99831e485f",
+      "request_sha256": "de0663b91c42f56f3547ff31e4158243a247274d10c1e8adc62852db59174e1d",
+      "response_sha256": "a987e77bbf65677ce2f8ce5fb5605ad2e9a886f6b5109dd6bc8ded2bc6f9dde9",
+      "issues": []
+    },
+    {
+      "request_ref": "b9c47c963509d617d96fac794214e6b2bc21f6b0c291eb928dd57d8596798ef0",
+      "request_sha256": "5b8f651863a630d4c529fdd4e9443ef46ab36f0db79ce9a1060785e4fec24c82",
+      "response_sha256": "4c8951af64fa39c3253696a13c1e0c78cef4ed001bf3b2916471bc6dc0da6d7e",
+      "issues": []
+    },
+    {
+      "request_ref": "bb6238894ef889733ef372b886236fd3323aa4b56cfcabf301ab8f0dcec3840e",
+      "request_sha256": "1b9e5dcb75b2ac4238fdfe128fba5e6a2b578224ab28525217374c699ac9e626",
+      "response_sha256": "92cb93cf1318cd2a50674f596617390b4fa347e6a8c6e91fa80a85535c13baae",
+      "issues": []
+    },
+    {
+      "request_ref": "c09d3d48707db99b9680c659cbd321b86ed1d86929d2e7a846571dedf4dcec87",
+      "request_sha256": "9d88eea460ab7caf781f0f02ab6aec93fee7cb2f6cb1fe1e095cc1bf9f4b2599",
+      "response_sha256": "0efe7f22a34b7d57b3f9836781b60a034c3ce910effc56ef9dd633015adef176",
+      "issues": []
+    },
+    {
+      "request_ref": "c14f3328a261b467d953360dc61dcb6b47c22591a38b1137eaa43c48c82ca735",
+      "request_sha256": "68f298336d0a25928b1bb87a900cd2340f7282b0d49de7bc66bebfd265b3e135",
+      "response_sha256": "2369d92f130b67a65b7e10dd71424e6a4f4493401135caa3cfbdbdb420904084",
+      "issues": []
+    },
+    {
+      "request_ref": "c24eaaab58c6f44cb9753b7c23ea68c489c0ccba79f71ef9c3f76309baeda2ce",
+      "request_sha256": "2838c72f22b64b7c417679f0c89bff1071bd2ee0d52d3aef8158705ffa469667",
+      "response_sha256": "e4e62e20964059fbdf7d5c039ec8fcad09649af0b23575499cd90a3dd9bb0b14",
+      "issues": []
+    },
+    {
+      "request_ref": "d0f9ec06b338b34747bf1ad24b43231dff24f539d9f1ba032ee559398248ba3d",
+      "request_sha256": "d70c672742af5a4fe9718201961f8e6227cf3c91c2efaaaa50b1be78db1c0559",
+      "response_sha256": "08db74abe23139cbeaac9aa3e22af1ec61ff981975a7870d267f34ec5bc78056",
+      "issues": []
+    },
+    {
+      "request_ref": "d7937b76c4b03bba8484b851348b299e95874f07f460d086bed102cea217dcc9",
+      "request_sha256": "04e926daf6a1e0b8dec0cdff4614b769b41cca7c7f4ecd1245d99b30dd270afc",
+      "response_sha256": "42cf3900b635471a4b2b5d52b7a6e1254a1db30cffa21bcbb57497bb822d2d96",
+      "issues": []
+    },
+    {
+      "request_ref": "e14ff30638792d5e594c53d617aa7a5dd47be350dae7b69f8ccff5a767719cc2",
+      "request_sha256": "aaa89889493517b5bf2cc7438fc46f2ea3965d96ff9c6c541edfc2d2bb8b3e80",
+      "response_sha256": "77a890005b7e8186b9f59cae61c6cac468040c151da14350fc5a13242194f674",
+      "issues": []
+    },
+    {
+      "request_ref": "f0d27aa465c86d17070e7b7f4c5b8a3c5963370398a6ff737cd64f980f4fd3c2",
+      "request_sha256": "6d3c8305d933700773a4fc6bf857d4dc049cf5abb22f1ccedb922922889ba872",
+      "response_sha256": "f8b2eedad51a155a6bfbb3d06c519003417419d9e8c1a7b7aa0671bdbc28180c",
+      "issues": []
+    },
+    {
+      "request_ref": "f87007e4925bfbf2beeca713d3e6cd37381e1ddae8aff6687fc3c41cdb85e87f",
+      "request_sha256": "966c8b4bc190f4a5c87b775a5ff6cc4b658bc011273ac79afb575cc6b6722bb2",
+      "response_sha256": "d23ce2fb96372ec25a7abd951cdaf8dace0e27ffb7a6b0e653efa9177e6553a5",
+      "issues": []
+    },
+    {
+      "request_ref": "fe643e35c77907fa39c26cf88b0d51f330d0c7d04b8a331f17e97f7a1714d6b1",
+      "request_sha256": "94f3c7bfdf7b6a94f98ad4abd364f1d4f068691d7bc95f6716caaa5a64aa0db1",
+      "response_sha256": "905edd76e8d602262c596edc395ef1203f3a2d3bea4eca31699ed94adbe88561",
+      "issues": []
+    }
+  ],
+  "limitations": [
+    "This bounded numeric-owner check does not verify arbitrary prose, causal reasoning or all reflection semantics.",
+    "Source records and original outputs remain unchanged; passing this scan is not live acceptance."
+  ]
+}

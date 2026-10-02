@@ -492,6 +492,77 @@ _PRICE_SHORTFALL_INSTRUCTION = (
     "stock price cannot be more than 100% below a positive price target. "
 )
 
+_REALIZED_MULTIPLE = re.compile(
+    r"\brealized[\s_]+(?:max(?:imum)?[\s_]+)?multiple\s*(?:of|is|=|:)?\s*"
+    r"(?P<value>\d+(?:\.\d+)?)(?:x)?(?![\w.])", re.I,
+)
+_OUTCOME_PERCENT = re.compile(
+    r"(?<![\w.])(?P<value>[+-]?\d+(?:\.\d+)?)\s*%\s*"
+    r"(?:(?:gain|increase|return)\s+)?(?:from|above|versus|relative\s+to)\s+"
+    r"(?:the\s+)?(?P<anchor>baseline(?:\s+mean)?|mean_adjusted_close|"
+    r"(?:(?:most\s+)?recent|latest)\s+(?:adjusted\s+)?close)\b", re.I,
+)
+_REALIZED_OUTCOME_INSTRUCTION = (
+    "realized_max_multiple is the maximum five-complete-trading-day adjusted-close "
+    "mean within the six-calendar-month outcome horizon divided by the "
+    "prediction-time baseline mean, not by recent_close. Its percentage gain "
+    "from baseline is (multiple - 1) * 100. A percentage from recent close "
+    "instead uses (multiple * mean_adjusted_close / recent_close - 1) * 100. "
+)
+
+
+def _realized_outcome_issues(
+    rows: Iterable[tuple[str, str]], baseline: Any, outcome: Mapping[str, Any],
+) -> list[ValidationIssue]:
+    """Bind explicit realized multiples and nearby returns to runtime ownership.
+
+    Only one observed owner in a clause is used; no repair chooses new numbers,
+    a denominator, or a judgment. Unrelated forecasts remain outside this check.
+    """
+    actual = outcome.get("realized_max_multiple")
+    if isinstance(actual, bool) or not isinstance(actual, (int, float)) or not math.isfinite(actual) or actual < 0:
+        return []
+    anchor = baseline if isinstance(baseline, Mapping) and baseline.get("status") == "available" else {}
+    mean, close = anchor.get("mean_adjusted_close"), anchor.get("recent_close")
+    issues = []
+    for path, text in rows:
+        for clause in re.split(_PRICE_CLAUSE_BOUNDARY, text):
+            owners = list(_REALIZED_MULTIPLE.finditer(clause))
+            if len(owners) != 1:
+                continue
+            owner = owners[0]
+            head = clause[max(0, owner.start() - 45):owner.start()]
+            if (re.search(r"\b(?:not|never|may|might|could|would|hypothetical|forecast)\b", head, re.I)
+                    or _DENIED_PRICE_CHANGE.search(clause[owner.end():])):
+                continue
+            literal = owner.group("value")
+            wrong = abs(float(literal) - actual) > 0.5 * 10 ** -len(literal.partition(".")[2]) + 1e-9
+            context = {"realized_max_multiple": actual, "baseline_mean": mean, "recent_close": close}
+            for percent in _OUTCOME_PERCENT.finditer(clause, owner.end(), owner.end() + 160):
+                link = clause[owner.end():percent.start()]
+                if (re.search(r"\b(?:may|might|could|would|forecast|expected|scenario|hypothetical|different|another)\b", link, re.I)
+                        or _DENIED_PRICE_CHANGE.search(link.rstrip())
+                        or _DENIED_PRICE_CHANGE.search(clause[percent.end():])):
+                    continue
+                denominator = mean if percent.group("anchor").lower().startswith(("baseline", "mean_")) else close
+                if any(isinstance(number, bool) or not isinstance(number, (int, float))
+                       or not math.isfinite(number) or number <= 0 for number in (mean, denominator)):
+                    continue
+                expected = (actual * mean / denominator - 1) * 100
+                number = percent.group("value")
+                if abs(float(number) - expected) > 0.5 * 10 ** -len(number.partition(".")[2]) + 1e-7:
+                    wrong = True
+                    context.update(named_denominator=percent.group("anchor"), expected_percentage=expected)
+            if wrong:
+                issues.append(ValidationIssue(
+                    code="realized_outcome_measurement_invalid", paths=(path,),
+                    source_refs=("revealed_ground_truth", "prediction_baseline"),
+                    allowed_repairs=("replace", "remove"), repair_context=context,
+                    message=(f"{path} misstates the supplied realized outcome or its named percentage denominator. "
+                             + _REALIZED_OUTCOME_INSTRUCTION + "Repair only this authored description; runtime values stay immutable."),
+                ))
+    return issues
+
 
 def _price_reasoning_issues(
     rows: Iterable[tuple[str, str]], baseline: Any,
