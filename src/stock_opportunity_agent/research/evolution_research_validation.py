@@ -878,7 +878,7 @@ _HYPOTHETICAL_FUTURE_ANALYSIS = re.compile(
 
 _FUTURE_EXPECTATION_OR_SCHEDULE = re.compile(
     r"\b(?:timing|dates?|schedules?|formats?|timelines?|milestones?|expected|anticipated|"
-    r"projected|projections?|planned|plans?|intentions?|intends?|"
+    r"projected|projections?|scheduled|planned|plans?|intentions?|intends?|"
     r"upcoming|future|releases?|reports?|guidance|outlook|forecasts?|estimates?|estimated|consensus|"
     r"targets?|goals?|openings?|could|might|would|commentary)\b",
     re.IGNORECASE,
@@ -900,13 +900,23 @@ _FUTURE_REALIZED_RESULT = re.compile(
 )
 
 
+_RESULTS_EVENT_NOUN = r"(?:presentations?|releases?|publications?|webcasts?|calls?|conferences?)"
+
+
 _RESULTS_EVENT_METADATA = re.compile(
     r"\b(?:timing|dates?|schedules?|formats?|"
     r"(?:expected|anticipated|planned)\s+scope)\s+(?:of|for)\s+"
-    r"(?:[A-Za-z0-9'_-]+\s+){0,12}(?P<before>results?)\s+"
-    r"(?:presentations?|releases?|publications?)\b|"
-    r"\b(?P<after>results?)\s+(?:presentations?|releases?|publications?)\s+"
-    r"(?:timing|dates?|schedules?|formats?)\b",
+    r"(?:[A-Za-z0-9',._-]+\s+){0,12}(?P<before>results?)\s+"
+    rf"{_RESULTS_EVENT_NOUN}\b|"
+    rf"\b(?P<after>results?)\s+{_RESULTS_EVENT_NOUN}\s+"
+    r"(?:timing|dates?|schedules?|formats?)\b|"
+    r"\b(?:about|regarding)\s+(?:the\s+)?(?:scheduled|planned|announced)\s+"
+    r"(?:[A-Za-z0-9',._-]+\s+){0,12}(?P<scheduled>results?)\s+"
+    rf"{_RESULTS_EVENT_NOUN}\b"
+    r"(?=[^?;]{0,160}\b(?:stated\s+(?:expectations?|guidance)|"
+    r"(?:planned|expected|anticipated|announced)\s+(?:agenda|topics?|scope)|"
+    r"(?:topics?|agenda)\s+(?:[A-Za-z]+\s+){0,4}(?:planned|expected|anticipated)|"
+    r"timing|dates?|schedules?|formats?)\b)",
     re.IGNORECASE,
 )
 
@@ -921,7 +931,8 @@ def _requests_realized_results(text: str) -> bool:
 
     words = list(text)
     for match in _RESULTS_EVENT_METADATA.finditer(text):
-        start, end = match.span("before" if match.group("before") else "after")
+        group = next(name for name, value in match.groupdict().items() if value is not None)
+        start, end = match.span(group)
         words[start:end] = " " * (end - start)
     return bool(_FUTURE_REALIZED_RESULT.search("".join(words)))
 

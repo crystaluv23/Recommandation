@@ -1,0 +1,49 @@
+{
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "frozen_revision": "ab63de3b1258659cec6613dfcc0c0bd720505ae0",
+  "external_calls": 0,
+  "temporal": {
+    "request_hash": "3359c355c43c75c98871d7f64ddb37497aa86295b6b55fe934fa79b8e1119ae4",
+    "request_sha256": "b56b5cf774f78cf7a86252784ed85a05ecbd16ba4b7756bbb89f362dc81b0f77",
+    "response_sha256": "925778233aff533f7bc2f9444b9e382d4e71cb0f94ac1d61d1877eca36b26e94",
+    "original_need": "What specific third-quarter 2025 financial results and business update did the issuer disclose on November 7, 2025, including revenue, earnings, and any changes to full-year guidance?",
+    "corrected_need": "What did the issuer disclose by the prediction time about the scheduled November 7, 2025 third-quarter results webcast, including any stated expectations, guidance ranges, or business-update topics it planned to address?",
+    "old_original_issue_count": 1,
+    "old_corrected_issue_count": 1,
+    "new_original_issue_count": 1,
+    "new_corrected_issue_count": 0,
+    "changed_paths": [
+      "next_information_needs[0]"
+    ],
+    "evaluation_context": {
+      "evaluation_anchor": {
+        "doubling_threshold": 99.384,
+        "mean_adjusted_close": 49.692,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 49.72,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "horizon": "six_calendar_months",
+      "horizon_end": "2026-03-30",
+      "prediction_time": "2025-09-30T00:00:00+00:00"
+    },
+    "scope": "Full patched model-view temporal gate only; no canonical inverse-token reconstruction or new model generation."
+  },
+  "identity_frontier": {
+    "request_hash": "f154874739dad7dbd159711c7593c7ac1f4427a41ad3b6d3a7cac2f9a1476b88",
+    "request_sha256": "30805725cd037091ec6d3d000dd35d59ca1e90b24881c91954b3d32cba4a0e13",
+    "response_sha256": "8c7fb44120bf7fbb052c5dc50614c9a8afc12710707b9f0b6d84036d049c22ed",
+    "stage": "llm_signal_batch_execute",
+    "output_name": "Wynn Resorts, Limited",
+    "literal_wynn_in_messages": false,
+    "status": "Confirmed raw identity in output absent from supplied messages; rejection is justified, local repair/isolation still unresolved."
+  }
+}

@@ -77,6 +77,15 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
   results, later publication, or an unbounded future event still rejects.
   The original question and its evidence obligations remain unchanged. Initial
   validation and inherited-need restoration use the same distinction.
+  A scheduled/planned/announced results webcast, call or conference is the
+  same event-metadata noun phrase as a results presentation. Its local results
+  modifier is not a request for actual financial findings. In the scheduled
+  event form, the question must ask about/regarding that event and explicitly
+  identify stated expectations/guidance, planned agenda/topics, timing, date,
+  schedule or format. The allowance still requires a prediction-bounded
+  disclosure question and expectation/schedule framing; separate realized results or later publication claims in the same
+  question remain detectable and rejected. "Scheduled" shares the existing
+  schedule/plan framing, without removing any future date from persisted text.
 - A partial-answer residual must retain the temporal scope of the need it
   narrows. When a persisted routing residual dropped the parent need's cutoff,
   the exact required residual representation restores the inherited as-of
