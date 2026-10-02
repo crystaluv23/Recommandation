@@ -19,3 +19,5 @@ AXT正类案例cik_0001051627:20250930，v170 c02在Reflect技术退出。实际
 此专项只为模型视图重新绑定snapshot hash；原操作和原请求/cache/failure/pointer文件不改。没有重建完整canonical Raw Info/旧匿名逆表，不将need前沿或synthetic Controller fixture视为AXT完整新预测成功。原数字改写仍需要既有grounding，不因本修复被接受。原F1、技术FN计分不改。
 
 当前代码1461项全量PASS（86.101秒）；随后新增的完整Controller回归连同其余129项专项PASS。repository lint PASS，完整输出已读取。已确认v170监督器及子进程不存在，不重启旧冻结代码或把旧技术排除改成TP。下一步整合已验收修复，冻结继任执行，验证实际完整案例和Slow候选、技术准入、入库及后继消费；可靠性零排除与新双轴因子真实产出尚未验收。
+
+后续主工作区整合到539e4e5d，1462项原生全量PASS（86.356秒）及lint PASS。新增真实bootstrap消费检查发现源事件被本地0轮指针过滤，见[v170消费前沿](v170-bootstrap-consumer-frontier-20261002.md)；未据局部通过启动新Slow或宣称目标完成。

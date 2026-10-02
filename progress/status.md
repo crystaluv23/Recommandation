@@ -3652,3 +3652,5 @@ v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，�
 2026-10-02：修复提交后跨workspace Signal使用ID冲突；v2源记录绑定、旧v1原样导入、执行统计同步，真实274+134事件生产恢复/Slow bootstrap=408条、0身份冲突，218物理/29争议观察保留，原hash不变/0外部。88专项、1458全量及lint PASS。下一技术FN前沿为untargeted相似需求被cosmetic guard误拒，完整零排除/Slow双轴新候选仍未验收。见reports/v170-signal-use-identity-repair-20261002.md。
 
 2026-10-02：v170 AXT技术FN的need0 preserve与need1 cosmetic检测互斥已修；仅检查unassigned occurrences，surplus坐标准确。真实两付费操作+已保存grounding模型视图重放误拒清零、删除untargeted仍拒；完整Controller首答回归/130专项及1461全量通过，完整新live零排除仍待验收。见reports/v170-need-cosmetic-repair-20261002.md。
+
+2026-10-02：整合到539e4e5d，主原生1462全量及lint PASS，v151既有diff hash不变。真实committed-Fast bootstrap源134事件持久化/恢复正确，但生产Slow消费者在本地Fast指针0下usage/target均0，源/local轮次过滤缺口已复现；下一步共同授权精确导入事件并检查target/Update/Fast profile冻结，再执行继任验收。目标继续。见reports/v170-bootstrap-consumer-frontier-20261002.md。

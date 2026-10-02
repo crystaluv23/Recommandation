@@ -614,3 +614,5 @@
 - 2026-10-02：Signal use v2绑定不可变canonical PlanRecord和slot，旧v1不改，统计同步来源命名空间，避免重名工作区碰撞；真实v168/v170生产派生、导入、中断恢复和committed-Fast bootstrap重放通过，88专项/1458全量及lint PASS，未改旧run或重跑Fast。
 
 - 2026-10-02：need cosmetic校验沿用preserve/residual occurrence分配，仅扫描剩余位置，避免正确相似untargeted需求误拒和错误纠错；保留真正伪装/重复/缺失拒绝、来源数字检查。真实模型视图前沿与完整Controller回归通过，原v170评分不改，目标继续。
+
+- 2026-10-02：主fast-forward整合五项v170可靠性检查点，1462原生全量及lint PASS、既有v151diff hash保留；实际production bootstrap consumer复现导入事件被本地0轮指针过滤，保存0外部证据，保持源指针和历史分数，不把派生持久化当消费成功。
