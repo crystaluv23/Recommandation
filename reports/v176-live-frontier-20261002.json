@@ -1,0 +1,78 @@
+{
+  "schema_version": "v176-live-frontier-v1",
+  "captured_at": "2026-10-02T14:24:40.802923+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v176_integrated",
+  "frozen_code": "bcef98cd05cabe2710869535ca28bb240347b543",
+  "contract_hash": "758f91592fc2eb243e96d6f723a9eaacc397888af070422868cff469e22ab8c5",
+  "input_manifest_hash": "c1626d01d9d0a280c2a2537c841cded480472d0f16ce430ff1dfd791a20d779f",
+  "case_label_source_input_equal_v175": true,
+  "checkpoint_diagnostics": {
+    "scored_case_count": 4,
+    "research_completed_case_count": 4,
+    "technical_exclusion_count": 0,
+    "technical_completion_rate": 1.0,
+    "failure_class_counts": {},
+    "scoring_effect_counts": {
+      "false_negative": 0,
+      "technical_negative_abstention_not_true_negative": 0
+    }
+  },
+  "checkpoint_files": [
+    {
+      "path": "experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+      "sha256": "5556619dc47b77a79a13c51a88166aaf66363e7b09c8806edd6501195482828c",
+      "case_id": "cik_0000701818:20250930",
+      "plan_id": "plan_r0001_c01",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "actual_admitted_result_refs": [
+        "financing_listing_action:v4",
+        "guidance_acceleration:v3"
+      ]
+    },
+    {
+      "path": "experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "sha256": "7068333106c2ccdd3de9963ad06ae9b37b8c02f25385a1f24389e6fcce4c5e1d",
+      "case_id": "cik_0000895728:20250930",
+      "plan_id": "plan_r0001_c01",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "actual_admitted_result_refs": [
+        "financing_listing_action:v4",
+        "guidance_acceleration:v3"
+      ]
+    },
+    {
+      "path": "experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+      "sha256": "2dc5b9a390302c465fb6076e2aa9a38f561b59e54622226c5d2a185bf7c31e67",
+      "case_id": "cik_0001174922:20250731",
+      "plan_id": "plan_r0001_c01",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "actual_admitted_result_refs": [
+        "financing_listing_action:v4"
+      ]
+    },
+    {
+      "path": "experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+      "sha256": "c9ee1114060ff740268620c21eb0f86b494c645b1dfd48cd33ecca9769137252",
+      "case_id": "cik_0001830043:20250930",
+      "plan_id": "plan_r0001_c01",
+      "stop_reason": "finalized",
+      "termination_trigger": "budget_exhausted",
+      "actual_admitted_result_refs": [
+        "financing_listing_action:v4",
+        "guidance_acceleration:v3"
+      ]
+    }
+  ],
+  "fast_pointer": 0,
+  "slow_pointer": 0,
+  "external_attempts": 51,
+  "external_statuses": {
+    "completed": 51
+  },
+  "actual_external_cost": 0.18524184000000002,
+  "complete_round_f1": null,
+  "boundary": "staged case checkpoint content validated and real published factor consumption; no committed Fast round/Slow cycle or whole-cohort reliability claim"
+}
