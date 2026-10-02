@@ -40,6 +40,7 @@ from stock_opportunity_agent.research.evolution_state_patch import (
     _tokens as _patch_tokens,
     apply_state_patch,
     state_patch_contract,
+    state_patch_mechanics_contract,
 )
 from stock_opportunity_agent.research.evolution_transport import (
     JSONRoleCaller,
@@ -3895,6 +3896,7 @@ def _complete_parsed_role_impl(
     initial_patch_pending = output_patch_base is not None
     parsed_object_available = False
     patch_error_note: str | None = None
+    mechanics_repair: dict[str, Any] | None = None
     max_corrections = getattr(caller, "max_structured_corrections", 1)
     if type(max_corrections) is not int or not 1 <= max_corrections <= 2:
         raise ValidationError("structured role correction budget must be 1 or 2")
@@ -3994,6 +3996,33 @@ def _complete_parsed_role_impl(
                     )
             if patch_error_note is not None:
                 request_payload["patch_validation_error"] = patch_error_note
+        repairing_mechanics = mechanics_repair is not None
+        if repairing_mechanics:
+            patch_base = mechanics_repair["invalid_patch"]
+            patch_contract = deepcopy(mechanics_repair["repair"]["output_patch_contract"])
+            patch_contract["base_location"] = "invalid_patch"
+            request_stage = f"{stage}_patch_mechanics_correction"
+            request_payload = {
+                "invalid_patch": patch_base,
+                "original_patch_base": mechanics_repair["original_base"],
+                "original_patch_contract": mechanics_repair["original_contract"],
+                "patch_mechanics_repair": {
+                    key: value for key, value in mechanics_repair["repair"].items()
+                    if key != "output_patch_contract"
+                },
+                "output_patch_contract": patch_contract,
+            }
+            prompt = (
+                "Repair only the named mechanical errors in invalid_patch. Return a delta "
+                "against invalid_patch, not a new research state or a new native patch. "
+                "Preserve all unnamed operations byte-for-byte. A conflict identifies all "
+                "participating operations; do not infer that either is the correct winner. "
+                "Native operation indices address original_patch_base, never a shortened list. "
+                "Choose a consistent authorized encoding of the supplied changes; do not "
+                "invent research text, evidence, identities, paths or data requests. "
+                "The repaired native patch must still obey original_patch_contract and "
+                "the original complete role validation. " + PATCH_INSTRUCTION
+            )
         try:
             value, step_usage = _complete_json_with_invalid_value(
                 caller,
@@ -4080,13 +4109,23 @@ def _complete_parsed_role_impl(
         if patch_contract is not None:
             try:
                 value = apply_state_patch(patch_base, value, contract=patch_contract)
+                if repairing_mechanics:
+                    value = apply_state_patch(mechanics_repair["original_base"], value,
+                                              contract=mechanics_repair["original_contract"])
             except ValidationError as patch_exc:
                 patch_error_note = str(patch_exc)
                 if failure is None:
                     failure = patch_exc
+                if not repairing_mechanics:
+                    repair = state_patch_mechanics_contract(patch_base, value, contract=patch_contract)
+                    if repair is not None:
+                        mechanics_repair = {"invalid_patch": deepcopy(value),
+                            "original_base": deepcopy(patch_base),
+                            "original_contract": deepcopy(patch_contract), "repair": repair}
                 continue
             initial_patch_pending = False
             patch_error_note = None
+            mechanics_repair = None
         parsed_object_available = True
         if tuple(sanitize_output_aliases):
             value = _mask_identity_values(value, sanitize_output_aliases)

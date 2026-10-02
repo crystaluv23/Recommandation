@@ -88,3 +88,24 @@ mechanical deduplication; merged reference uniqueness remains domain-validated.
 The metadata cannot grant an
 unnamed path or bypass the existing add permission. Other obligation append
 semantics, indexed writes and full merged-object validation remain unchanged.
+
+## Mechanical patch correction (2026-10-02)
+
+A parseable, finite native patch with the correct issued snapshot hash may receive
+`state-patch-mechanics-repair-v1` when individual operation shape,
+conflicting writes, or grouped append budgets make it invalid. The patch helper
+identifies every participating operation index, including both sides of an
+ambiguous conflict. It never selects a winning semantic value. Stale hashes or
+failed identity guards cannot receive this repair contract. Out-of-authority
+operations retain the original owning semantic correction context; a mechanics-
+only view cannot reconstruct their research intent.
+
+The correction is another standard snapshot-bound delta, this time against the
+exact invalid patch object. It may only replace/remove named bad operation
+members; other operations and the native base_hash remain immutable. It cannot
+append unrelated operations, replace the entire operation list, or bypass the
+original state contract. The runtime composes the repaired native patch, applies
+its original authority against its original base, then runs the complete original
+role parser. No intermediate patch or partial state is accepted. Exact duplicate
+operations retain existing deterministic deduplication. Non-object operations
+must reject instead of silently disappearing during deduplication.

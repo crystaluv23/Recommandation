@@ -1,0 +1,54 @@
+{
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "frozen_source_revision": "ab63de3b1258659cec6613dfcc0c0bd720505ae0",
+  "external_calls": 0,
+  "source_sha256": {
+    "requests/9700a03128b3512571406e96c7d00eb36033647aef4c50546b70b3f70b3c7d4f.json": "1652ab20be91622a91f833d4aac2a2233d331b039acda458dd40a8790850cabb",
+    "cache/responses/9700a03128b3512571406e96c7d00eb36033647aef4c50546b70b3f70b3c7d4f.json": "669a3a2dd48af704f3b74e2d175e62343d536da9a18bc4d15b26c8da2e626519",
+    "experiments/trajectories/plan_r0001_c01/cik_0001114995:20250331.json": "7131a1b0ea844bcf81ab8b4ca322c128a9afe1e01c6980bc4adb8373f230eca0",
+    "experiments/round-0001/candidates/slot-01.json": "cd9076f104d8372b675faffc10e56a4d93ff59b5602b40e978280ae27e523ca9",
+    "requests/8e2850a21290e50ce3a3fa5e93dcf7fa0e0cfbfd7f8576b90ebc46ab6ce5509d.json": "dd14a1a8a338c78f7651922f5843c13cc156cc0778e11b565b5ddab4bcb77a97"
+  },
+  "scripted_correction_checks": [
+    {
+      "scripted_removed_operation_index": 9,
+      "production_controller_complete_validation": "accepted",
+      "correction_count": 1,
+      "canonical_native_base_hash_exact_match": true,
+      "other_native_operations_preserved": true
+    },
+    {
+      "scripted_removed_operation_index": 12,
+      "production_controller_complete_validation": "accepted",
+      "correction_count": 1,
+      "canonical_native_base_hash_exact_match": true,
+      "other_native_operations_preserved": true
+    }
+  ],
+  "original_blocked_reservation": 67299,
+  "wire_preflight": {
+    "new_mechanics_body_bytes": 18090,
+    "new_output_reserve": 8000,
+    "new_request_reservation": 26090,
+    "lower_bound_after_paid_initial": 51305,
+    "actual_initial_paid_tokens": 15679,
+    "stage_audit": {
+      "allow_outcomes": false,
+      "payload_hash": "fc79d9d5ea6358c0205541c0cd023f279068962cd4099354b7be845a56c0ff76",
+      "payload_utf8_bytes": 15369,
+      "phase": "patch_mechanics",
+      "registered": true,
+      "required_fields": [
+        "invalid_patch",
+        "original_patch_base",
+        "original_patch_contract",
+        "patch_mechanics_repair",
+        "output_patch_contract"
+      ],
+      "schema_version": "research-stage-input-v1",
+      "stage": "research_controller_reflect"
+    },
+    "preview_only_no_external_calls": true
+  },
+  "scope": "Canonical persisted state/batch/Plan and actual paid initial patch restored through production Controller; nested patch correction is explicitly scripted, not new model output. Lower-bound arithmetic uses the sent initial request reservation and measured paid usage; preview checks the new complete HTTP reservation against that bound. No original trajectory, score, pointer or source file is modified."
+}

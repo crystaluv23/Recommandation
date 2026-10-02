@@ -179,3 +179,14 @@ cannot be accepted as the new seed. Invalid/missing seed metadata fails before
 copying. Existing prepared or executed workspaces are not rewritten to fix a
 seed mistake: use a fresh workspace. Cohort selection, labels, strata, score
 denominators, Locked Test sealing and live authorization stay unchanged.
+
+## Patch mechanics phase (2026-10-02)
+
+A registered role's `*_patch_mechanics_correction` request has its own dependency
+view: invalid_patch, original_patch_base, original_patch_contract,
+patch_mechanics_repair and output_patch_contract. Its runtime-issued mechanics
+schema and phase are recorded in request audit metadata. It retains the original
+role's blind/outcome boundary; it cannot masquerade as an ordinary role input
+missing evidence. The two hashes/permission layers are validated by the patch
+consumer against canonical local snapshots, since egress anonymity transforms
+model-facing strings. Ordinary stage inputs and checks remain unchanged.

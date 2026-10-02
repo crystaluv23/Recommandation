@@ -1,0 +1,104 @@
+{
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "committed_round": 1,
+  "committed_cycle": 0,
+  "derived_event_count": 134,
+  "conflicts": [
+    {
+      "event_id": "fe2478e19d4450eb9780f350a5a88d7ac13f507d1f9798c48903cf160c97adac",
+      "signal_ref": "cash_reserves:v2",
+      "case_id": "cik_0000701818:20250930",
+      "changed_fields": [
+        "selection",
+        "reflection_attribution"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "0f747eff58e2d4c0a9a075673022657b64de8a017924bdc6a2c8df0f39e5f115",
+      "signal_ref": "financing_listing_action:v3",
+      "case_id": "cik_0001018963:20250930",
+      "changed_fields": [
+        "selection",
+        "outcome"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "6771bc3ac358792a1ed84bb79037edea56456e1ffdf968912b142765ccaa3743",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "case_id": "cik_0002023554:20250930",
+      "changed_fields": [
+        "selection"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "c41aedc5b5afc81df948d43db52541356405c34237cc4eb6d53d3a14057016cb",
+      "signal_ref": "revenue_growth_yoy:v2",
+      "case_id": "cik_0000723125:20250731",
+      "changed_fields": [
+        "selection"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "a6189cd2a8ddef6ef636ac23aa713e6f78ee40dadc562dbc06a3ace451c4b4de",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "case_id": "cik_0001646188:20250530",
+      "changed_fields": [
+        "selection"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "2ee2600f8649aa485e130a6a6cb22ae913ed2ed6e51429fc31c563ee143b8bbd",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "case_id": "cik_0001521036:20250331",
+      "changed_fields": [
+        "selection"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    },
+    {
+      "event_id": "2c63663b00399ce69d1b95e665963c22c8b9287ef14099675b9c19290b3024e3",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "case_id": "cik_0001521036:20250331",
+      "changed_fields": [
+        "selection",
+        "result"
+      ],
+      "old_plan_id": "plan_r0001_c02",
+      "new_plan_id": "plan_r0001_c02"
+    }
+  ],
+  "committed_record_sha256": "35fde3f8edf2106429e7f941b84a690ebb50018b1df530de6dd5793661d0b7b2",
+  "committed_metrics": {
+    "binary_precision": 0.75,
+    "binary_recall": 0.6428571428571429,
+    "binary_f1": 0.6923076923076924,
+    "magnitude_accuracy": 0.21428571428571427,
+    "magnitude_macro_f1": 0.125,
+    "confusion": {
+      "true_positive": 9,
+      "false_positive": 3,
+      "true_negative": 7,
+      "false_negative": 5
+    },
+    "sample_count": 24,
+    "predicted_positive_count": 12,
+    "precision_defined": true,
+    "valid_case_count": 24
+  },
+  "technical_exclusions": 2,
+  "technical_positive_exclusions": 1,
+  "external_calls": 0,
+  "v168_legacy_source_match_count": 7,
+  "v168_record_sha256": "633ad74b421f246ff917d0ae6f3d47be27e815d44ca6ce586f940d2b87ccf448"
+}

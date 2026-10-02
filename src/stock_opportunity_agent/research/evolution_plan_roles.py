@@ -2465,6 +2465,8 @@ class _DocumentChannelCaller:
     def complete_json(self, **kwargs: Any) -> tuple[Mapping[str, Any], AgentUsage]:
         usage = AgentUsage()
         payload = dict(kwargs["payload"])
+        if kwargs["stage"].endswith("_patch_mechanics_correction"):
+            return _complete_json_with_invalid_value(self.caller, **kwargs)
         payload["document_catalog"] = self.provider.catalog_view()
         while True:
             request = dict(kwargs)

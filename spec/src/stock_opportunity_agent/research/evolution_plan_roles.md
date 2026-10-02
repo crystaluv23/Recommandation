@@ -244,3 +244,13 @@ against canonical source/category/outcome rules before issuing the first
 correction. Those obligations join the same frontier; a new interpretation
 guard must not conceal an already-detectable category error behind another
 round of model correction. These diagnostic rows never register new evidence.
+
+## Mechanical-only correction channel (2026-10-02)
+
+The document-channel wrapper passes a runtime-issued
+`state-patch-mechanics-repair-v1` request through without adding a document catalog
+or exposing fetch/compute exchanges. This request repairs only supplied patch
+operations; its complete original role validation still executes locally.
+Ordinary research and semantic corrections retain the existing PIT data channel
+and complete evidence inputs. A model cannot promote a document-read answer into
+a mechanical repair: the nested patch contract rejects that output shape.

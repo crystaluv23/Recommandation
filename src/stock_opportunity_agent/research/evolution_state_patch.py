@@ -246,6 +246,7 @@ def apply_state_patch(
 
     if set(patch) != {"base_hash", "operations"}:
         raise ValidationError("return a delta with exactly base_hash and operations; not a full object")
+    state_patch_hash(patch)
     if contract.get("schema_version") != PATCH_SCHEMA or (
         patch["base_hash"] != contract.get("base_hash")
         or patch["base_hash"] != state_patch_hash(base)
@@ -262,7 +263,7 @@ def apply_state_patch(
     seen_exact: set[tuple[str, str, str]] = set()
     for raw in operations:
         if not isinstance(raw, Mapping):
-            continue
+            raise ValidationError("patch operations must be objects")
         value_key = json.dumps(raw.get("value"), sort_keys=True, default=str) if "value" in raw else ""
         exact_key = (str(raw.get("op", "")), str(raw.get("path", "")), value_key)
         if exact_key in seen_exact:
@@ -286,19 +287,10 @@ def apply_state_patch(
             raise ValidationError("patch operation has an invalid shape")
         path = raw["path"]
         tokens = _tokens(path)
-        authorized = False
-        invalid_container = False
-        for permission in contract.get("allowed_operations", ()):
-            if permission["op"] != op:
-                continue
-            prefix = _tokens(permission["path"])
-            if tokens == prefix or (permission.get("descendants") and tokens[:len(prefix)] == prefix):
-                if "exact_value" not in permission or raw.get("value") == permission["exact_value"]:
-                    authorized = True
-                    invalid_container = bool(permission.get("invalid_container")) and tokens == prefix
-                    break
-        if not authorized:
+        permission = _operation_permission(op, tokens, raw.get("value"), contract)
+        if permission is None:
             raise ValidationError(f"patch operation is outside typed authority: {op} {path}")
+        invalid_container = bool(permission.get("invalid_container")) and tokens == _tokens(permission["path"])
         if op == "add":
             parent = _lookup(base, tokens[:-1])
             if not isinstance(tokens[-1], str) or not isinstance(parent, Mapping) or tokens[-1] in parent:
@@ -322,14 +314,7 @@ def apply_state_patch(
             elif op == "replace" and isinstance(old, list) and not invalid_container:
                 raise ValidationError("replace individual list members, not the complete list")
         for prior_op, prior_tokens, _ in edits:
-            if op == prior_op == "append" and tokens == prior_tokens:
-                continue
-            # Appending to a list and editing its old members are independent.
-            if op == "append" and prior_tokens[:len(tokens)] == tokens and len(prior_tokens) > len(tokens):
-                continue
-            if prior_op == "append" and tokens[:len(prior_tokens)] == prior_tokens and len(tokens) > len(prior_tokens):
-                continue
-            if tokens[:len(prior_tokens)] == prior_tokens or prior_tokens[:len(tokens)] == tokens:
+            if _operation_overlap(op, tokens, prior_op, prior_tokens):
                 raise ValidationError("patch operations overlap or repeat a write")
         edits.append((op, tokens, raw))
     result = deepcopy(dict(base))
@@ -346,6 +331,104 @@ def apply_state_patch(
         if op == "append":
             parent[key].append(deepcopy(raw["value"]))
     return result
+
+
+def _operation_permission(op: str, tokens: tuple[str | int, ...], value: Any,
+                          contract: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    """Resolve the single shared typed path/value authority check."""
+
+    for permission in contract.get("allowed_operations", ()):
+        if permission["op"] != op:
+            continue
+        prefix = _tokens(permission["path"])
+        if tokens == prefix or permission.get("descendants") and tokens[:len(prefix)] == prefix:
+            if "exact_value" not in permission or value == permission["exact_value"]:
+                return permission
+    return None
+
+
+def _operation_overlap(op: str, tokens: tuple[str | int, ...],
+                       prior_op: str, prior_tokens: tuple[str | int, ...]) -> bool:
+    """Compare base-snapshot writes, retaining independent appends/member edits."""
+
+    if op == prior_op == "append" and tokens == prior_tokens:
+        return False
+    if op == "append" and prior_tokens[:len(tokens)] == tokens and len(prior_tokens) > len(tokens):
+        return False
+    if prior_op == "append" and tokens[:len(prior_tokens)] == prior_tokens and len(tokens) > len(prior_tokens):
+        return False
+    return tokens[:len(prior_tokens)] == prior_tokens or prior_tokens[:len(tokens)] == tokens
+
+
+def state_patch_mechanics_contract(base: Mapping[str, Any], patch: Mapping[str, Any],
+                                   *, contract: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Authorize edits only to mechanically invalid operations in the exact patch.
+
+    The caller applies the returned nested delta to ``patch``, then validates the
+    resulting native patch against ``base`` and its original ``contract``.
+    """
+
+    try:
+        if set(patch) != {"base_hash", "operations"} or not isinstance(patch["operations"], list):
+            return None
+        state_patch_hash(patch)
+        apply_state_patch(base, {"base_hash": patch["base_hash"], "operations": []}, contract=contract)
+    except ValidationError:
+        return None
+    operations = patch["operations"]
+    errors: dict[int, list[str]] = {}
+    valid: list[tuple[int, Mapping[str, Any]]] = []
+
+    def reject(indices: Iterable[int], message: str) -> None:
+        for index in indices:
+            errors.setdefault(index, []).append(message)
+
+    for index, raw in enumerate(operations):
+        try:
+            apply_state_patch(base, {"base_hash": patch["base_hash"], "operations": [raw]}, contract=contract)
+        except ValidationError as exc:
+            # Scope failures need the original owning semantic obligations;
+            # a grammar-only request cannot reconstruct their research intent.
+            if isinstance(raw, Mapping) and raw.get("op") in {"replace", "remove", "add", "append"}:
+                try:
+                    tokens = _tokens(raw.get("path"))
+                except ValidationError:
+                    pass
+                else:
+                    if _operation_permission(raw["op"], tokens, raw.get("value"), contract) is None:
+                        return None
+            reject((index,), str(exc))
+        else:
+            valid.append((index, raw))
+    for offset, (index, raw) in enumerate(valid):
+        for prior_index, prior in valid[:offset]:
+            if raw != prior and _operation_overlap(raw["op"], _tokens(raw["path"]),
+                                                   prior["op"], _tokens(prior["path"])):
+                reject((prior_index, index), "patch operations overlap or repeat a write")
+    appends: dict[str, list[tuple[int, Mapping[str, Any]]]] = {}
+    for index, raw in valid:
+        if raw["op"] == "append":
+            appends.setdefault(raw["path"], []).append((index, raw))
+    for path, entries in appends.items():
+        unique = [raw for offset, (_, raw) in enumerate(entries)
+                  if raw not in [other for _, other in entries[:offset]]]
+        limit = contract.get("append_limits", {}).get(path)
+        if limit is not None and len(unique) > limit:
+            reject((index for index, _ in entries), "patch exceeds the authorized append budget")
+        for value, exact_limit in contract.get("exact_append_limits", {}).get(path, {}).items():
+            if sum(raw["value"] == value for raw in unique) > exact_limit:
+                reject((index for index, raw in entries if raw["value"] == value),
+                       "patch exceeds the required literal occurrence count")
+    if not errors:
+        return None
+    obligations = [{"issue_code": "patch_operation_invalid",
+        "must_change_paths": [f"operations[{index}]"], "allowed_repairs": ["replace", "remove"],
+        "invalid_container_paths": [f"operations[{index}]"] if isinstance(operations[index], list) else []}
+        for index in sorted(errors)]
+    return {"schema_version": "state-patch-mechanics-repair-v1",
+        "issues": [{"operation_index": index, "validation_errors": list(dict.fromkeys(errors[index]))}
+                   for index in sorted(errors)],
+        "output_patch_contract": state_patch_contract(patch, mode="correction", obligations=obligations)}
 
 
 def recorded_response_patch(base: Mapping[str, Any], response: Mapping[str, Any]) -> dict[str, Any]:

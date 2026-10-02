@@ -248,3 +248,5 @@
 - 2026-10-02：技术FN澄清与v170未来业绩日程误拒，咨询 incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance、evolution-confirmation-failure-denominators；保留历史分母与研究归因分离，原始结果请求仍拒绝，精确付费局部修正只通过时间门重放，冻结运行不热改。
 
 - 2026-10-02：v170身份输出运输层直接终止Signal批次，咨询 incremental-repair-and-sourced-memory / self-evolution-convergence-and-acceptance / signal-result-evidence-invariants；显式隔离诊断交接，未知token与猜名不变成授权证据，正确兄弟完整重验，唯一纠错/预算耗尽保留技术状态，原付费响应仅边界重放，不冒充最新live或收益。
+
+- 2026-10-02：v170终态native patch重叠/纠错超预算，咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；只让机械性语法/冲突进入最小上下文，越权仍保留原语义纠错义务，操作兄弟不可重写。真实canonical状态/批次/Plan/付费patch完整生产Controller重放和请求预留核验，不伪造live修正或改旧分数；同时确认提交后学习事件跨工作区ID冲突，待独立恢复修复。

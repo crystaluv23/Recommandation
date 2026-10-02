@@ -432,3 +432,16 @@ to change the percent, denominator or wording. Initial instructions disclose the
 definition. Complete reflection parsing and salvage use the same check; original
 prediction, outcome, source snapshots, score and historical authored items stay
 immutable. Independent text/policy issues share the first correction frontier.
+
+## Necessary context for mechanical patch correction (2026-10-02)
+
+A supported native-patch mechanics failure uses the existing bounded correction
+slot with the invalid patch, original base/authority, exact mechanics issues and
+scoped patch-on-patch permissions. Correct operation siblings are preserved.
+It does not resend research skills, evidence catalogs, new data tools or the
+whole ordinary role context: repairing operation coordinates/shape does not
+require regenerating research. The original complete parser and semantic
+obligations remain local and run after both patch layers merge. A semantic
+failure of that merged object remains invalid and may use only a remaining
+ordinary correction slot; no additional slot or budget is created. Unsupported
+patch envelopes preserve the existing fallback path and immutable baseline.

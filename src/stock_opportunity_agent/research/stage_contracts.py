@@ -131,8 +131,15 @@ def validate_stage_input(
     {'final_context': context}, allow_outcomes=False)``. Unknown extension
     stages are labeled unregistered; their owning interface remains responsible.
     """
-    base = stage.removesuffix("_correction")
+    mechanics = stage.endswith("_patch_mechanics_correction")
+    base = stage.removesuffix("_patch_mechanics_correction") if mechanics else stage.removesuffix("_correction")
     required = _STAGE_INPUTS.get(base)
+    if mechanics:
+        required = ("invalid_patch", "original_patch_base", "original_patch_contract",
+                    "patch_mechanics_repair", "output_patch_contract")
+        view = payload.get("patch_mechanics_repair")
+        if not isinstance(view, Mapping) or view.get("schema_version") != "state-patch-mechanics-repair-v1":
+            raise ValidationError("patch mechanics correction requires its runtime schema")
     if required is not None:
         missing = [key for key in required if key not in payload]
         if missing:
@@ -142,11 +149,12 @@ def validate_stage_input(
     return {
         "schema_version": "research-stage-input-v1",
         "stage": base,
-        "registered": required is not None,
+        "registered": base in _STAGE_INPUTS,
         "required_fields": list(required or ()),
         "payload_hash": canonical_json_hash(dict(payload)),
         "payload_utf8_bytes": json_bytes(payload),
         "allow_outcomes": allow_outcomes,
+        **({"phase": "patch_mechanics"} if mechanics else {}),
     }
 
 
