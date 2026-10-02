@@ -1,0 +1,59 @@
+{
+  "scope": "Local shared reflection repair and immutable legacy read compatibility. Four validator false rejections and new technically-admitted callable Registry remain unimplemented; completed frozen live uses 7e6be2e3, not this worktree.",
+  "full_tests": 1399,
+  "focused_tests": 25,
+  "lint": "PASS",
+  "logs": {
+    "full_tests": {
+      "log_path": "/tmp/fast-slow-audit-final-tests.log",
+      "sha256": "7a77d27b9c3a4c238caf8c57b5f01034ab8dd8151b855caf056bf04d5d258ca3",
+      "final_lines": [
+        ".[04:50:43] cycle_paused · committed round=0 · committed cycle=0",
+        ".[04:50:43] [round 4] cycle_paused · committed round=0 · committed cycle=0",
+        ".....................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 1399 tests in 67.280s",
+        "",
+        "OK"
+      ]
+    },
+    "focused_tests": {
+      "log_path": "/tmp/v168-inference-final-focused.log",
+      "sha256": "40f9c18014c39ead7f40c6fc5c1af900934acfcce1dd530069ac1f675a8883b8",
+      "final_lines": [
+        ".........................",
+        "----------------------------------------------------------------------",
+        "Ran 25 tests in 1.692s",
+        "",
+        "OK"
+      ]
+    },
+    "lint": {
+      "log_path": "/tmp/fast-slow-system-audit-final-lint.log",
+      "sha256": "068f9fe87e3c5df21a6c1f2de212705e8ad2168bb2322ba3b4b4db41df46db6b",
+      "final_lines": [
+        "PASS: git core.hooksPath is .githooks",
+        "PASS: no merge conflict markers",
+        "PASS: no trailing whitespace",
+        "PASS: no hand-written outcome label constants",
+        "PASS: local markdown links resolve",
+        "",
+        "Lint result: PASS"
+      ]
+    }
+  },
+  "source_hashes": {
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "a6b970a97af1578aa40c577d981ba9de416f23c6ccf3663fa02b5cf19dd25da8",
+    "src/stock_opportunity_agent/research/evolution_jev_roles.py": "ce5590803f9374a7600aeb738400a4afa72d7f2059fbf3c8eb00f67a059130a3",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "08ae6c08f4b1cb23f020e800e9c645f435c97bd73e7f65f89f19a4f12f471901",
+    "src/stock_opportunity_agent/research/evolution_reflection_memory.py": "cf83dec21639c350ecd1c05409ad3a4c0cf9f05ffb0b076c5ef77fd219730f81",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "a644062cfafb244df6c643ff1f3a703b426fbbb329a46fa87163e3e9587f5712",
+    "tests/test_reflection_inference_contract.py": "01b78d557212a31af12d93199ff8b2fcf469deca88bd68bc2ebd04ab3df18b3d"
+  },
+  "frozen_live_fast_slow_pointers": [
+    1,
+    1
+  ],
+  "frozen_live_registry_changed": false,
+  "paid_additional_calls_by_offline_replay": 0
+}

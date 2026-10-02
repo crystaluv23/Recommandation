@@ -111,6 +111,27 @@ Existing atomic pointers and domain promotion rules retain commit authority.
 Predictor context is assembled from typed stage products, including explicit
 state supersession/removal; it never consumes retrospective label-bearing memory.
 
+## Approved next Signal admission and tracking boundary
+
+2026-10-02 user decision; runtime implementation pending. A technically valid,
+traceable, PIT-safe Signal may enter the callable Registry with explicit
+unverified effect, for both direction and magnitude. Technical admission and
+empirical effectiveness have distinct immutable, version-bound identities.
+Atomic transition and cycle/group snapshot freezing remain authoritative.
+Fast retrieves the admitted measurement plus bounded status/evidence metadata;
+it never receives retrospective case labels. Committed usage feeds independent
+direction and magnitude tracking, without counting technical failure as research
+evidence or duplicate Plan use as independent observations. Magnitude consumption
+evaluation follows admission; it cannot be a prerequisite blocking all admission.
+Update produces a new version and cannot inherit proven effect automatically.
+
+The paired-effectiveness promotion clauses below describe the currently deployed
+legacy policy, including frozen runs. They are superseded for the next migrated
+admission protocol only after Registry records, recovery, model views and owning
+module contracts implement this approved separation. This document does not
+authorize rewriting historical evaluations or changing labels/fitness.
+See the [full lifecycle and migration design](../reports/slow-signal-system-design-20261002.md).
+
 ## Constrained Basic Info
 
 The bootstrap stage of an Information Plan is expressed as a composition of

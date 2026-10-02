@@ -44,6 +44,7 @@ from stock_opportunity_agent.signal_library import (
     validate_signal_result,
     _OPERATING_CASH_FLOW_TAGS,
 )
+from stock_opportunity_agent.research.evolution_reflection_memory import reflection_fact_inference_fields
 from stock_opportunity_agent.research.evolution_settings import (
     LLM_SIGNAL_CONTEXT_CHUNK_CHARS,
     LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP,
@@ -1607,6 +1608,18 @@ class LLMSignalMiningModel(SignalMiningModel):
             issues: list[ValidationIssue] = []
             seen_episodes: set[str] = set()
             covered_feedback_refs: set[str] = set()
+            for collection, text_field, rows in (
+                ("episode_reflections", "reflection", episodes),
+                ("lesson_additions", "guidance", lessons),
+            ):
+                issues.extend(ValidationIssue(
+                    code="reflection_fact_inference",
+                    paths=(f"{collection}[{position}].{field}",),
+                    dependent_paths=(f"{collection}[{position}].kind",),
+                    allowed_repairs=("replace",),
+                    message="Retain observable facts without weighting/sufficiency attribution, or classify the explanation as a testable hypothesis; keep source and feedback coverage unchanged.",
+                ) for position, raw in enumerate(rows) if isinstance(raw, Mapping)
+                  for field in reflection_fact_inference_fields(raw, detail_field=text_field))
             for index, raw in enumerate(episodes):
                 path = f"episode_reflections[{index}]"
                 if not isinstance(raw, Mapping) or set(raw) != {
@@ -1909,7 +1922,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "specific finding or action, counterevidence and material limitation. "
                 "A heading or generic improvement slogan is insufficient. Citation "
                 "validity establishes provenance, not verified truth; uncertain causal "
-                "explanations remain hypotheses. Use only runtime-provided slots and refs."
+                "explanations remain hypotheses. Fact briefs/full texts cannot assert "
+                "under/overweighting or signal/reason sufficiency for an outcome. "
+                "Legacy_inference_unchecked entries require review, not causal credit. "
+                "Use only runtime-provided slots and refs."
                 " Slots reserve names only: they are not evidence until a valid "
                 "entry is actually emitted. Lesson support_refs may cite selected "
                 "feedback, valid episodes emitted now, or existing prior lessons. "

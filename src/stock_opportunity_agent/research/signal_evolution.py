@@ -24,7 +24,7 @@ from stock_opportunity_agent.data.resolution import (
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import OpenAIClientError
 from stock_opportunity_agent.models import ValidationError
-from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
+from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex, reflection_fact_inference_fields
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
     LLMSignalRunner,
@@ -589,6 +589,7 @@ def validate_slow_memory(
     available_feedback_refs: Iterable[str],
     available_source_refs: Iterable[str],
     available_lesson_refs: Iterable[str] = (),
+    check_inferences: bool = False,
 ) -> dict[str, Any]:
     """Validate one append-only memory delta and its complete reference graph."""
 
@@ -641,6 +642,8 @@ def validate_slow_memory(
         if not isinstance(raw, Mapping):
             raise ValidationError(f"Slow episode {index} must be an object")
         episode = dict(raw)
+        if check_inferences and reflection_fact_inference_fields(episode, detail_field="reflection"):
+            raise ValidationError(f"Slow episode {index} misclassifies an explanation as fact")
         if "brief" in episode or "kind" in episode:
             if not isinstance(episode.get("kind"), str) or episode.get("kind") not in {"fact", "hypothesis", "action"} or not isinstance(episode.get("brief"), str) or not episode["brief"].strip():
                 raise ValidationError(f"Slow episode {index} authored brief is invalid")
@@ -665,6 +668,8 @@ def validate_slow_memory(
         if not isinstance(raw, Mapping):
             raise ValidationError(f"Slow lesson {index} must be an object")
         lesson = dict(raw)
+        if check_inferences and reflection_fact_inference_fields(lesson, detail_field="guidance"):
+            raise ValidationError(f"Slow lesson {index} misclassifies an explanation as fact")
         if "brief" in lesson or "kind" in lesson:
             if not isinstance(lesson.get("kind"), str) or lesson.get("kind") not in {"fact", "hypothesis", "action"} or not isinstance(lesson.get("brief"), str) or not lesson["brief"].strip():
                 raise ValidationError(f"Slow lesson {index} authored brief is invalid")
@@ -915,6 +920,8 @@ def project_slow_method_memory(
             projected.pop("reflection" if kind == "episode" else "guidance", None)
             projected["original_ref"] = ref
             projected["original_hash"] = _canonical_hash(value)
+            if reflection_fact_inference_fields(value, detail_field="reflection" if kind == "episode" else "guidance"):
+                projected["inference_status"] = "legacy_inference_unchecked"
         return projected
 
     def render(refs: Iterable[str]) -> dict[str, Any]:
@@ -4628,6 +4635,13 @@ class SignalEvolutionEngine:
                             ),
                         },
                     }
+                    memory = validate_slow_memory(
+                        memory,
+                        available_feedback_refs=[row["feedback_ref"] for row in feedback_rows],
+                        available_source_refs=[row["ref"] for row in slow_input["source_manifest"]],
+                        available_lesson_refs=known_lessons,
+                        check_inferences=True,
+                    )
                 except (EvolutionControlFlow, OpenAIClientError):
                     raise
                 except Exception as exc:

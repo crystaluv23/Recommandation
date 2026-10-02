@@ -574,3 +574,13 @@ alone do not redefine the fixed test target. Alternate-outcome detection require
 an explicitly forward horizon paired with an outcome measure, or an explicit
 fixed-target replacement. This avoids serial correction discovery and preserves
 legitimate point-in-time early-market-confirmation measurements.
+
+## Shared fact inference boundary
+
+Slow episode reflection and lesson guidance reuse the shared fact inference
+detector from sourced reflection memory. Brief/full text are checked together
+on the first validation frontier with exact replace-only text and dependent
+kind paths; valid siblings, slots, source refs and feedback coverage remain
+unchanged. The initial authoring request exposes this rule. Canonical fresh
+memory also validates it before staging inside the ordinary failure boundary,
+so a rejected result retains feedback as pending rather than consuming it.

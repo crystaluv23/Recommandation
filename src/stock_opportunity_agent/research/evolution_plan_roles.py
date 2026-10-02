@@ -14,6 +14,7 @@ from stock_opportunity_agent.research.evolution_dataset import _add_months
 from stock_opportunity_agent.research.evolution_reflection_memory import (
     ReflectionMemoryIndex,
     ReflectionValidationError,
+    reflection_fact_inference_fields,
     violates_opportunity_proof_gate,
 )
 from stock_opportunity_agent.research.evolution_state_patch import (
@@ -2137,7 +2138,14 @@ def _structured_reflection_contract(level: str) -> str:
         "a complete response with fewer items beats a truncated one. "
         "A realized return does not establish "
         "why it occurred: label causal explanations as hypotheses and propose "
-        "a test. Source references establish provenance, not correctness. "
+        "a test. Fact briefs/details cannot assert under/overweighting or that "
+        "signals/reasons were sufficient to explain or identify the outcome; "
+        "record the observed outcome separately from a testable interpretation. "
+        "Legacy_inference_unchecked items retain old text and require review; "
+        "their source membership and fact tag do not verify the explanation. "
+        "Legacy_proof_policy_unchecked actions retain historical text; do not "
+        "adopt their mandatory price-proof gate in a new action or Plan. "
+        "Source references establish provenance, not correctness. "
         "Opportunity screening does not require a quantified valuation bridge, "
         "stated/concrete price path, threshold-bound projection or guaranteed 2x path. "
         "Do not make a missing forward projection a binding evidence gap that caps "
@@ -2295,6 +2303,32 @@ def _structured_reflection_items(
         ) for position, item in enumerate(raw_items) if isinstance(item, Mapping) and item.get("kind") == "action"
           for field in ("brief", "detail") if isinstance(item.get(field), str)
           and violates_opportunity_proof_gate(item[field])]
+        policy_issues.extend(ValidationIssue(
+            code="reflection_fact_inference", paths=(f"reflection_items[{position}].{field}",),
+            dependent_paths=(f"reflection_items[{position}].kind",),
+            allowed_repairs=("replace",),
+            message="Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts.",
+        ) for position, item in enumerate(raw_items) if isinstance(item, Mapping)
+          for field in reflection_fact_inference_fields(item))
+        if policy_issues:
+            for position, item in enumerate(raw_items):
+                try:
+                    index._create_items((item,), level=level, owner_ref=owner_ref, check_inferences=False)
+                except ReflectionValidationError as exc:
+                    prefix = f"reflection_items[{position}]"
+                    def located(path: str) -> str:
+                        return prefix + ("." + path if path else "")
+                    if any(issue.paths == (located(exc.path),) for issue in policy_issues):
+                        continue
+                    policy_issues.append(ValidationIssue(
+                        code="reflection_item", paths=(located(exc.path),), message=str(exc),
+                        dependent_paths=tuple(located(path) for path in exc.dependency_paths),
+                        allowed_repairs=("replace", "add", "remove"),
+                        repair_context={
+                            "invalid_container_paths": [located(path) for path in exc.invalid_container_paths],
+                            "allowed_append_values": {located(path): values for path, values in exc.allowed_append_values.items()},
+                        },
+                    ))
         if item_validator is not None:
             try:
                 item_validator(tuple(raw_items))
@@ -2658,7 +2692,12 @@ class LLMInformationPlanProposer:
             "Meta-info is a bounded brief view of committed retrospective memory. "
             "Complete originals remain stored. A brief retains its applicability, "
             "limitations, source handles and validation status; legacy_unreviewed "
-            "text is unverified history, not an established lesson. Higher layers "
+            "text is unverified history, not an established lesson. A fact marked "
+            "legacy_inference_unchecked contains an unreviewed weighting or "
+            "sufficiency explanation; its sources_checked status verifies "
+            "provenance only. Review the explanation before relying on it. "
+            "Do not adopt price-proof gates from legacy_proof_policy_unchecked "
+            "actions. Higher layers "
             "select important lower items or add sourced comparisons. Do not count "
             "repeated versions of one case as independent evidence. Before relying "
             "on a lesson, inspect its original support and counterexamples when "

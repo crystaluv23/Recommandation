@@ -147,6 +147,46 @@ _ABSENT_PROJECTION_CAP = re.compile(
     r"(?P<link>[^.;]{0,240}?)\bcap\s+(?:(?:the|a|this)\s+)?"
     r"(?:surge|positive|candidate)\s+judgment\b", re.I,
 )
+_FACT_WEIGHT_INFERENCE = re.compile(
+    r"\b(?:under|over)[- ]?weight(?:ed|ing)\b|"
+    r"\bdid\s+not\s+reflect\s+(?:the\s+)?weight\b", re.I,
+)
+_FACT_SUFFICIENCY_INFERENCE = re.compile(
+    r"\b(?:evidence|signals?|reasons?|guidance|financing|momentum|catalysts?)\b"
+    r"[^;.!?]{0,200}\b(?:was|were|is|are|proved)\s+(?:already\s+)?sufficient\s+"
+    r"(?:to\s+)?(?:identify|explain|predict|support|cause|justify|establish)\b"
+    r"[^;.!?]{0,80}\b(?:outcome|surge|judgment|prediction)\b", re.I,
+)
+_INFERENCE_NOT_ESTABLISHED = re.compile(
+    r"\b(?:does|do|did)\s+not\s+(?:prove|show|establish|demonstrate)\b|"
+    r"\b(?:cannot|can't|could\s+not)\s+(?:prove|show|establish|demonstrate)\b|"
+    r"\b(?:not|never)\s+(?:established|proven)\b|"
+    r"\b(?:unproven|unverified)\b", re.I,
+)
+
+
+def reflection_fact_inference_fields(item: Mapping[str, Any], *, detail_field: str = "detail") -> tuple[str, ...]:
+    """Locate narrow explanatory claims misclassified as observable facts.
+
+    Outcome correctness and provenance do not establish normative weighting or
+    signal sufficiency. No economic interpretation is mechanically substituted.
+    """
+
+    if item.get("kind") != "fact":
+        return ()
+    invalid = []
+    for field in ("brief", detail_field):
+        text = item.get(field)
+        if not isinstance(text, str):
+            continue
+        clauses = re.split(r"[;!?]|\.(?=\s|$)|\b(?:but|yet|however|although)\b", text, flags=re.I)
+        if any(
+            (_FACT_WEIGHT_INFERENCE.search(clause) or _FACT_SUFFICIENCY_INFERENCE.search(clause))
+            and not _INFERENCE_NOT_ESTABLISHED.search(clause)
+            for clause in clauses
+        ):
+            invalid.append(field)
+    return tuple(invalid)
 
 
 def violates_opportunity_proof_gate(text: str) -> bool:
@@ -382,7 +422,8 @@ class ReflectionMemoryIndex:
                         authored.pop(field)
                     # Immutable pre-contract items retain their original
                     # provenance checks; their new-view status is explicit.
-                    self._create_items((authored,), level=level, owner_ref=item.owner_ref, check_statistics=False)
+                    self._create_items((authored,), level=level, owner_ref=item.owner_ref,
+                                       check_statistics=False, check_inferences=False, check_proof_policy=False)
                 self._item(item)
             selected = _strings(value.get("selected_reflection_refs", ()), "selected_reflection_refs")
             for ref in selected:
@@ -561,6 +602,10 @@ class ReflectionMemoryIndex:
             status = self._statistics_status(self._items[source["source_ref"]])
             if status:
                 value["statistics_status"] = status
+            if reflection_fact_inference_fields(self._items[source["source_ref"]].to_dict()):
+                value["inference_status"] = "legacy_inference_unchecked"
+            if self._proof_policy_status(self._items[source["source_ref"]]):
+                value["policy_status"] = "legacy_proof_policy_unchecked"
         packet = {"sources": [source], "requested_refs": [source["source_ref"]], "byte_count": 0}
         while packet["byte_count"] != _bytes(packet):
             packet["byte_count"] = _bytes(packet)
@@ -637,7 +682,19 @@ class ReflectionMemoryIndex:
         status = self._statistics_status(item)
         if status:
             value["statistics_status"] = status
+        if reflection_fact_inference_fields(item.to_dict()):
+            value["inference_status"] = "legacy_inference_unchecked"
+        if self._proof_policy_status(item):
+            value["policy_status"] = "legacy_proof_policy_unchecked"
         return value
+
+    @staticmethod
+    def _proof_policy_status(item: ReflectionItem) -> bool:
+        """Identify legacy actions requiring review without changing their hash."""
+
+        return item.kind == "action" and any(
+            violates_opportunity_proof_gate(text) for text in (item.brief, item.detail)
+        )
 
     def _validate_statistics(self, value: Mapping[str, Any], supporting: tuple[dict[str, Any], ...]) -> None:
         statistics = [source["content"] for source in supporting if source.get("runtime_statistics")]
@@ -699,7 +756,9 @@ class ReflectionMemoryIndex:
                 if not matched or (universal and not expected_owners <= matched):
                     statistical_invalid(f"{key}={token} is not supported by the cited runtime statistics; preserve its Plan/cohort/population instead of changing the scoring denominator", path, dependencies)
 
-    def _create_items(self, raw_items: Iterable[Mapping[str, Any]], *, level: str, owner_ref: str, check_statistics: bool = True) -> tuple[ReflectionItem, ...]:
+    def _create_items(self, raw_items: Iterable[Mapping[str, Any]], *, level: str, owner_ref: str,
+                      check_statistics: bool = True, check_inferences: bool = True,
+                      check_proof_policy: bool = True) -> tuple[ReflectionItem, ...]:
         """Validate authored content and issue paths at the owning rule boundary."""
 
         def invalid(message: str, path: str, dependencies: tuple[str, ...] = (), *, container: bool = False) -> None:
@@ -734,6 +793,13 @@ class ReflectionMemoryIndex:
                 invalid("reflection item level/category is invalid", "category")
             if value["kind"] not in {"fact", "hypothesis", "action"}:
                 invalid("reflection item kind is invalid", "kind")
+            if check_inferences:
+                for field_name in reflection_fact_inference_fields(value):
+                    invalid(
+                        "fact cannot establish signal weighting or outcome sufficiency from "
+                        "correctness; retain observable facts or author a testable hypothesis",
+                        field_name, ("kind",),
+                    )
             for name in ("limitations", "source_refs", "counter_refs"):
                 strings(value[name], name)
             scope = value["scope"]
@@ -800,7 +866,7 @@ class ReflectionMemoryIndex:
                 self._validate_statistics(value, supporting)
             if value["kind"] == "action":
                 for field_name in ("brief", "detail"):
-                    if violates_opportunity_proof_gate(value[field_name]):
+                    if check_proof_policy and violates_opportunity_proof_gate(value[field_name]):
                         invalid(
                             "action cannot require a quantified or stated price path, threshold-bound projection, or guaranteed "
                             "price outcome for a positive opportunity judgment; "

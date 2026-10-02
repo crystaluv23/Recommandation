@@ -1,5 +1,15 @@
 # Signal and Dual-Loop Evolution
 
+## Approved next admission policy; not yet implemented
+
+The 2026-10-02 user decision admits technically valid direction and magnitude
+Signals for Fast use with explicitly unverified effect. Admission and effect
+records must be separate; the magnitude Fast-consumption check follows admission.
+Current paired/provisional gates below remain the deployed legacy protocol until
+the full Registry, recovery, consumer and tracking migration is implemented.
+No frozen run or historical accepted/rejected record is rewritten.
+See [the approved lifecycle design](../../../../reports/slow-signal-system-design-20261002.md).
+
 Provider projections preserve source identity before anonymizing prose: hash each
 original backlog source ref before masking its row, and retain an opaque
 source-case ref when the case owner is known. Repeated origins map consistently;
@@ -728,3 +738,13 @@ lifecycle as the direction target; magnitude is a comparison namespace, not a
 structured-feature-only path. This verifies that Slow can observe and compare
 high- versus low-magnitude evidence without creating the still-blocked
 ge10/extremes target or claiming a 10x-specific promotion gate.
+
+## Slow fact inference preservation
+
+`validate_slow_memory` optionally checks the shared authored fact-inference
+contract (`check_inferences=True`) for fresh episode/lesson brief and original
+reflection/guidance. New engine memory validates inside the ordinary reflection
+try/failure boundary before staging. The default retains historical readability
+and all reference-graph checks. The bounded method view discloses flagged old
+facts as `legacy_inference_unchecked`, retaining exact originals, hashes and
+read-by-reference. No schema, research weighting or promotion rule changes.

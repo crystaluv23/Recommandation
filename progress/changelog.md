@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-02：完成v167/v168逐环节系统审计及用户批准的Slow技术准入/效果追踪分离设计；验证10个技术排除未作FP/研究归因，96份canonical恢复；隔离修复历史proof policy索引误拒，补齐Fast/Slow事实解释局部权限和首次混合前沿，保留原文/hash/正确兄弟及pending。1399全量、25专项及三份真实响应离线重放通过。新准入/追踪仍仅设计批准、未实现；真实v168 Fast=1/Slow=0，不宣称两个目标入库或幅度收益。
+
 - 2026-10-02：Mining按immutable文档去重并缓存纯属性投影，真实材料1821→86次扫描、403→15唯一命中；共享runtime预算声明核验并保留已接受行历史scope。生产离线回放、47专项及1358全量通过；新增真实Slow语义前沿报告，明确来源cohort不重合、Signal原件读取缺口、4个覆盖错误及51条未证实absence。冻结live仍Fast=1/Slow=0，整体验收未完成。
 
 - 2026-10-02：Posthoc 统一运行时已实现倍数及五日均价/recent close分母检测，价格规则与数值义务首次聚合、salvage完整重验。42份实际缓存扫描及Lantheus生产局部回放/保存/来源解析通过，1351项全量测试通过；v167真实Fast=1、Slow=0，F1 .7586/.7200，完整实测验收未完成，冻结main未合入本批修复。
@@ -586,3 +588,5 @@
 - 2026-10-02: Unified Update exact-source JSON/diff repairs ahead of model correction, snapshot delta permissions and case-local visible prior comparisons; disclosed deterministic description requirements from one validator table. Real v167 replay preserves originals and reaches three false absence claims plus immutable fixture failures. Added 13 regressions; 1,384 native tests and lint pass. Prepared v168 unchanged 40-case/labels/Registry/Locked Test scope, disclosing four added historical market snapshots; latest live acceptance remains pending.
 
 - 2026-10-02: Audited live v168 and repaired shared threshold-bound projection policy plus uppercase-derived short brand masking in isolation; exact cached Posthoc replay preserves all valid fields, actual Ciena canonical context removes 80 leaked mentions and reverses exactly. Four new regressions, 1,388 full tests PASS, 74 focused tests and lint PASS. Resumed provider-interrupted v168 on unchanged frozen code; full live content/F1 and causal-fact boundaries remain open.
+
+2026-10-02：最终只读复核v168 runner退出0/指针1-1；c02四技术排除中1FN，原文经当前检测复现为两runtime查价意图误判、一future否定误判、一跨价格关系算式误判。记录attempt恢复丢failures明细、Mining两technical_failure/两deferred_budget及Update一候选效果拒绝/两技术失败，0入库；更新审计和降低技术FN的分层实施方案，未修改冻结运行和评分分母。

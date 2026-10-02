@@ -1,5 +1,17 @@
 # Signal Library
 
+## Approved next admission/tracking separation; implementation pending
+
+Technically valid research Signals may enter the callable Registry while effect
+remains unverified, per the 2026-10-02 user decision. The owning migration must
+introduce independent exact-version admission identity/status, preserve all
+effect evaluations and existing atomic transition/recovery invariants, disclose
+status in frozen model views, and connect target evaluation producers to actual
+committed observations. Legacy evaluation v2/v3 and frozen runs retain their
+original paired-admission semantics; setting effectiveness.accepted=true to
+simulate technical admission is forbidden.
+See [the approved Slow design](../../../reports/slow-signal-system-design-20261002.md).
+
 ## V8 Slow feedback use
 
 Slow method learning reads the append-only `SignalLearningEvent` ledger by exact

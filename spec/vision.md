@@ -130,6 +130,18 @@ These thresholds are starting defaults, not permanent beliefs.
 
 ## Operating Principles
 
+### Approved next Slow admission contract (2026-10-02; implementation pending)
+
+The user approved admitting technically valid research Signals for Fast
+retrieval/use while their predictive effect remains explicitly unverified.
+Schema, executable fixtures, evidence, point-in-time safety, version identity
+and semantic uniqueness remain admission requirements. Independent effect
+evaluation becomes continuing evidence, separate from technical admission;
+admission never asserts benefit. Direction and magnitude use this same policy.
+The deployed legacy paired-promotion contract and frozen historical runs remain
+unchanged until the owning Registry/runtime migration is implemented and tested.
+See the [approved Slow lifecycle design](../reports/slow-signal-system-design-20261002.md).
+
 ### LLM as Researcher
 
 The LLM reads, compares, summarizes, critiques, and generates theses. It is strongest on filings, transcripts, news, narrative migration, management tone, supply-chain clues, and cross-company resonance. It is not the final judge of price, probability, valuation, or risk.

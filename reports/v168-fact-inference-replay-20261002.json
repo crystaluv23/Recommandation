@@ -1,0 +1,121 @@
+{
+  "scope": "Three actual paid initial responses through production Posthoc adapter with scripted native kind corrections; zero external calls, no live/source mutation, no gain or latest live completion claim",
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated",
+  "frozen_live_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+  "cases": [
+    {
+      "case_id": "cik_0001018963:20250930",
+      "initial_request_ref": "8d17d6c24ffa85c847be2585e17cd3ad3fae666061af02c03d86fd8dac3ccf81",
+      "source_file_hashes": {
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/8d17d6c24ffa85c847be2585e17cd3ad3fae666061af02c03d86fd8dac3ccf81.json": "417e27022eca8fcae3bc3f2fc949155d06c3919cd0bf610d01d3d68504ced0d7",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/8d17d6c24ffa85c847be2585e17cd3ad3fae666061af02c03d86fd8dac3ccf81.json": "44f7ff065e8bfe6e366ca19c105f9e36545932c0a81369d332a733715dd705d7",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/experiments/trajectories/plan_r0001_c01/cik_0001018963:20250930.json": "9014976ef5c33fc128ac151311b61e52f0a2509352b4ae5016d459186e1457db",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/a58f2c9fd2ade9a5e2ea914983983d22d177d4137295fca814d949c38bf40894.json": "4384878e4ff8a46f1ae40dc91185905bb14979dc5f360e239e96ce3a6a2a3e76"
+      },
+      "original_prompt_already_separated_causality": true,
+      "first_required_change_paths": [
+        "reflection_items[0].brief",
+        "reflection_items[1].category"
+      ],
+      "new_inference_fields": [
+        "reflection_items[0].brief"
+      ],
+      "existing_paid_correction_ref": "a58f2c9fd2ade9a5e2ea914983983d22d177d4137295fca814d949c38bf40894",
+      "existing_paid_operations_reused": [
+        {
+          "op": "replace",
+          "path": "reflection_items[1].category",
+          "value": "decision_drivers"
+        }
+      ],
+      "scripted_kind_operations": [
+        {
+          "op": "replace",
+          "path": "reflection_items[0].kind",
+          "value": "hypothesis"
+        }
+      ],
+      "all_fields_except_scripted_kind_and_exact_existing_paid_operations_preserved": true,
+      "source_snapshot_and_catalog_match_exactly": true,
+      "legacy_flagged_refs": [
+        "reflection:2e846533af527f52fd1e9013f9bb89c416af88239145388c9333ab52b4c7f9bc"
+      ],
+      "historical_originals_preserved": true,
+      "production_posthoc_parser_accepted_offline_delta": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "initial_request_ref": "1fb9dcafaa4f8a1ca4654f29a933735eeb8b371ad3fe7e23ae42321cee636af9",
+      "source_file_hashes": {
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/1fb9dcafaa4f8a1ca4654f29a933735eeb8b371ad3fe7e23ae42321cee636af9.json": "21963a407759e5acc9954c1e82711d5a46805b34f1828d23297b604e51fbbd53",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/1fb9dcafaa4f8a1ca4654f29a933735eeb8b371ad3fe7e23ae42321cee636af9.json": "b0a9a474e240a95b72e6d90029ab2a76b807d178132f8b293e9b13619fb1b184",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/experiments/trajectories/plan_r0001_c01/cik_0001164727:20250731.json": "df193dfbc074369ebc87b15a12e8ff970a1e6adfea8c7af22de54a1f90f6b4a9"
+      },
+      "original_prompt_already_separated_causality": true,
+      "first_required_change_paths": [
+        "reflection_items[0].brief",
+        "reflection_items[0].detail"
+      ],
+      "new_inference_fields": [
+        "reflection_items[0].brief",
+        "reflection_items[0].detail"
+      ],
+      "existing_paid_correction_ref": null,
+      "existing_paid_operations_reused": [],
+      "scripted_kind_operations": [
+        {
+          "op": "replace",
+          "path": "reflection_items[0].kind",
+          "value": "hypothesis"
+        }
+      ],
+      "all_fields_except_scripted_kind_and_exact_existing_paid_operations_preserved": true,
+      "source_snapshot_and_catalog_match_exactly": true,
+      "legacy_flagged_refs": [
+        "reflection:1c2df6e3de691a23b1e5bbb61dcee391c1605eb14fece1ffe7f0f61c473a1370"
+      ],
+      "historical_originals_preserved": true,
+      "production_posthoc_parser_accepted_offline_delta": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "initial_request_ref": "188785c7cfb5f169a783b37fc6896ec20e7c2b388f1ede0cb19205955bc3a0ab",
+      "source_file_hashes": {
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/188785c7cfb5f169a783b37fc6896ec20e7c2b388f1ede0cb19205955bc3a0ab.json": "cd376cd0314c082bff87becaa07bbfb6a29c1919f09010a785bc0f77e8dbeb74",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/188785c7cfb5f169a783b37fc6896ec20e7c2b388f1ede0cb19205955bc3a0ab.json": "46ff187ab798eb9f632b2d0ad6c23cff00dca4683014cca1d27b82c319e2ed3d",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/experiments/trajectories/plan_r0001_c01/cik_0001576942:20250530.json": "a364dfb1094617c256fbf43bfedde1f7100a7cfd732d8c76fce758ea947d9f53",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/77504b495855d8a0d66c997c7ef022330882044cba019b4bab859709a0bee504.json": "191db16938b42d8051514374a863156e52b1dbb10f8672826ab42d2de4d0d316"
+      },
+      "original_prompt_already_separated_causality": true,
+      "first_required_change_paths": [
+        "reflection_items[3].brief",
+        "reflection_items[2].brief"
+      ],
+      "new_inference_fields": [
+        "reflection_items[2].brief"
+      ],
+      "existing_paid_correction_ref": "77504b495855d8a0d66c997c7ef022330882044cba019b4bab859709a0bee504",
+      "existing_paid_operations_reused": [
+        {
+          "op": "replace",
+          "path": "reflection_items[3].brief",
+          "value": "Before making a future surge call on this issuer, optionally gather a dated catalyst and updated client metrics to strengthen the case, but do not treat the absence of a quantified bridge to the doubling threshold as disqualifying."
+        }
+      ],
+      "scripted_kind_operations": [
+        {
+          "op": "replace",
+          "path": "reflection_items[2].kind",
+          "value": "hypothesis"
+        }
+      ],
+      "all_fields_except_scripted_kind_and_exact_existing_paid_operations_preserved": true,
+      "source_snapshot_and_catalog_match_exactly": true,
+      "legacy_flagged_refs": [
+        "reflection:30974fb584fc54b72c86cc1ff36d10446be572174d085a69142af7fa4fd27a8d"
+      ],
+      "historical_originals_preserved": true,
+      "production_posthoc_parser_accepted_offline_delta": true
+    }
+  ]
+}

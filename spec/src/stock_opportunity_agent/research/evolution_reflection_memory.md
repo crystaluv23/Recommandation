@@ -24,6 +24,12 @@ so first correction names every detected policy field. Source/scope/outcome
 validation and complete revalidation retain authority; historical items and
 their hashes remain immutable.
 
+Historical authored actions retain original provenance/outcome checks on reload,
+but a newly tightened price-proof policy does not reject or rewrite their old
+content. Model-facing brief/directory/catalog views disclose such actions as
+`legacy_proof_policy_unchecked`; readers must not adopt a mandatory price-proof
+rule from them. Newly authored actions still pass the full current policy.
+
 ## Purpose
 
 Provide pure, bounded model views and reference resolution over immutable,
@@ -183,3 +189,24 @@ model brief/catalog views. Archive ingestion still checks their original
 provenance/outcome contract rather than retroactively applying a new authored
 statistics requirement. New items citing runtime sources are rechecked on reload.
 Selecting old items does not upgrade their statistical support.
+
+## Authored fact versus explanation
+
+A canonical outcome proves direction/magnitude correctness, not that a signal
+was appropriately weighted or sufficient to explain/predict the outcome. New
+fact briefs/details cannot assert under/overweighting or explicit signal/reason
+sufficiency for the outcome. A bounded clause-level shared detector names the
+text fields and permits replacing the row kind as a dependent leaf. The author
+may retain an observable fact by removing the explanation, or classify a
+testable explanation as a hypothesis. The runtime does not select economic
+weights or automatically rewrite the kind. Negated/non-establishment statements,
+observable outcome/coverage facts and ordinary business sufficiency remain valid.
+This is a narrow detection contract, not universal causal/prose verification.
+
+Initial reflection instructions, first-frontier raw checks, canonical item
+ingestion and row salvage use the same detector. Legacy items load with their
+original content/hash and provenance checks; flagged fact items receive
+`inference_status=legacy_inference_unchecked` in brief/directory/source-catalog
+views. This is derived disclosure metadata, never a canonical schema change or
+a retrospective kind rewrite. Higher readers must review the inference instead
+of treating source membership or the old fact tag as verification.

@@ -228,3 +228,7 @@
 - 2026-10-02: Update literal repair frontier; consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance to bind exact source restoration to typed leaf permissions and preserve real-run acceptance scope.
 
 - 2026-10-02 | v168 actual Posthoc threshold-bound projection gate; isolated repair | incremental-repair-and-sourced-memory.md + self-evolution-convergence-and-acceptance.md | Inspect original prompt, cached response, exact field permissions, salvage and shared Plan consumer; live v168 stays frozen.
+
+- 2026-10-02 | v168 factual weighting/sufficiency in actual Posthoc items | incremental-repair-and-sourced-memory.md + self-evolution-convergence-and-acceptance.md | Align initial classification, local text/kind repair, full ingestion, salvage and immutable historical disclosure; source checks do not establish an explanatory fact.
+
+- 2026-10-02: consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance for full stage audit, immutable legacy reload, technical scoring attribution and user-approved admission/effect separation; replay exact persisted runs and distinguish source integrity from model judgment.

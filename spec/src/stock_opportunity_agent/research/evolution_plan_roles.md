@@ -203,3 +203,18 @@ raw text issues with action-policy issues before source/item construction, then
 validates the full assembled result. Salvage invokes the same role check and
 cannot keep a rejected quantitative statement. Field-local semantic repairs keep
 all other items, sources, saved predictions and outcome records unchanged.
+
+## Fact inference correction
+
+Shared reflection authoring explicitly separates observed outcomes from claimed
+weighting/signal sufficiency. The first correction frontier includes every
+invalid fact brief/detail and replace-only dependent kind authority for the same
+row; unrelated items, sources and outcome claims remain immutable. Canonical
+ingestion and salvage revalidate the same boundary. Historical model views
+disclose `legacy_inference_unchecked` without modifying archived originals.
+
+When raw text policy/inference issues exist, independently validate each row
+against canonical source/category/outcome rules before issuing the first
+correction. Those obligations join the same frontier; a new interpretation
+guard must not conceal an already-detectable category error behind another
+round of model correction. These diagnostic rows never register new evidence.
