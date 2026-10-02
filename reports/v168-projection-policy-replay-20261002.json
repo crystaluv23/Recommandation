@@ -1,0 +1,71 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated",
+  "frozen_live_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+  "request_ref": "52a3ae4f02220214b56282211cf69b943410432c001f0ce94dc164ed652c0ebc",
+  "case_id": "cik_0000701818:20250930",
+  "scope": "Offline cached paid initial response through production LLMBlindPredictor.reflect with a scripted native delta; no external calls, no live-artifact writes, no research gain claim",
+  "source_file_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/requests/52a3ae4f02220214b56282211cf69b943410432c001f0ce94dc164ed652c0ebc.json": "9a9a8f83d04f9f590b61adb09d4817b5880b72a888d9c0a76436e28576293a4d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/cache/responses/52a3ae4f02220214b56282211cf69b943410432c001f0ce94dc164ed652c0ebc.json": "8b64329818de4921203535838428d676ed353af317d91fc68406724d25814abd",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json": "4ca4d6c6efd3e3727dacc98d49882266ff9cafc81a0838b9d3ac00c132583acc"
+  },
+  "original_prompt_policy": "Opportunity screening does not require a quantified valuation bridge, stated/concrete price path or guaranteed 2x path. An authored action may request optional valuation analysis but cannot make such proof a condition for a positive judgment. Higher levels act as a sieve: selec",
+  "original_action": {
+    "brief": "Before labeling a surge, require at least one forward-looking catalyst or projection tied to the doubling threshold, and explicitly state the gap when none exists.",
+    "category": "plan_issues",
+    "counter_refs": [],
+    "detail": "For this case the doubling threshold was 47.964 versus a 23.982 baseline, and the evidence base contained only trailing performance, reaffirmed guidance, and balance-sheet strength, with guidance_acceleration and financing_listing_action unavailable. Action: when no forward projection or dated catalyst within the horizon is supplied, record that as a binding evidence gap and cap the surge judgment accordingly rather than inferring a doubling from trailing momentum.",
+    "kind": "action",
+    "limitations": [
+      "This is a process recommendation, not a claim that the outcome would have differed.",
+      "A forward projection, if present, would still not guarantee the outcome."
+    ],
+    "outcome_claims": [
+      {
+        "axis": "binary",
+        "correct": false,
+        "source_ref": "reflection_source:b72e7033f961b5607ee8dceea695dc66791a08708ea741ed67f3c39c0bb94b65"
+      }
+    ],
+    "scope": {
+      "case_refs": [
+        "case:eb3bce7a197f5cd3afa79f3c561b156861620b8ffa893e22b3dbc9bc9016973c"
+      ],
+      "conditions": "Applies to surge judgments requiring a 2x move from the prediction baseline.",
+      "plan_refs": []
+    },
+    "source_refs": [
+      "reflection_source:b72e7033f961b5607ee8dceea695dc66791a08708ea741ed67f3c39c0bb94b65"
+    ]
+  },
+  "old_shared_guard": [
+    false,
+    false
+  ],
+  "new_shared_guard": [
+    true,
+    true
+  ],
+  "first_required_change_paths": [
+    "reflection_items[3].brief",
+    "reflection_items[3].detail"
+  ],
+  "scripted_operations": [
+    {
+      "op": "replace",
+      "path": "reflection_items[3].brief",
+      "value": "For a surge assessment, optionally examine a dated catalyst or projection alongside trailing momentum; missing forward projections are an uncertainty, not a mandatory price-proof condition."
+    },
+    {
+      "op": "replace",
+      "path": "reflection_items[3].detail",
+      "value": "The baseline was 23.982 and the doubling threshold was 47.964. Optionally investigate forward expectations using facts available at prediction time; retain the uncertainty without making a projection a prerequisite for a positive judgment."
+    }
+  ],
+  "all_other_authored_fields_preserved": true,
+  "original_source_catalog_reconstructed_exactly": true,
+  "immutable_source_snapshot_preserved": true,
+  "raw_request_response_and_trajectory_files_preserved": true,
+  "full_role_parser_accepted_offline_correction": true,
+  "new_live_correction_verified": false
+}

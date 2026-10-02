@@ -226,3 +226,5 @@
 - 2026-10-02: Consulted incremental repair, convergence and retrospective technical-feedback discipline for completed v167 Slow terminal audit, tool enum/input compatibility, numeric typed failures, independent intent preservation and accurate legacy/current mining assessment.
 
 - 2026-10-02: Update literal repair frontier; consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance to bind exact source restoration to typed leaf permissions and preserve real-run acceptance scope.
+
+- 2026-10-02 | v168 actual Posthoc threshold-bound projection gate; isolated repair | incremental-repair-and-sourced-memory.md + self-evolution-convergence-and-acceptance.md | Inspect original prompt, cached response, exact field permissions, salvage and shared Plan consumer; live v168 stays frozen.

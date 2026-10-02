@@ -130,3 +130,12 @@ still hit cache for zero new usage; only the unfulfilled request may reserve a
 new attempt under unchanged ceilings. Provider exceptions propagate without
 advancing case/cycle pointers or being converted into research findings.
 See the owning [provider-envelope contract](../llm.md#provider-response-envelope-and-diagnostics).
+
+## Derived brand casing
+
+Case egress uses the shared formal-name matcher: a derived brand is prose, not
+a ticker. Mixed-case mentions of an all-caps legal name are masked in source
+quotes, state, signal cards and final Predictor input. Reversible projection
+restores exact local strings; persisted sources and evidence hashes remain
+unchanged. Request estimation, preparation, cache lookup and transmission use
+the same projection. Strict aggregate guards retain their exact inventory.

@@ -89,6 +89,10 @@ Fast/Slow engine dependency.
   Shared masking/projection helpers accept an explicit strict-inventory mode
   for aggregate Slow roles, avoiding repeated brand derivation. A bounded cache
   reuses compiled patterns for identical inventory/mode pairs.
+  In expanded case scope, brands derived from multi-token formal company names
+  match prose case-insensitively even when the source name is all caps and the
+  brand is five letters or fewer. Exact ticker-only aliases keep their existing
+  case-sensitive prose rules; strict aggregate inventories do not derive brands.
 - Each execution injects the actual timezone-aware prediction time into both
   controller and Signal retrieval adapters that expose the optional
   `set_evaluation_context` hook, before any role call. Reusing adapters across

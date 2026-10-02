@@ -154,6 +154,9 @@ First authoring requests distinguish required gain from a close and shortfall
 relative to a target. Newly authored reflection actions expose independent
 brief/detail policy violations together, using the shared fixed-semantics guard;
 the scoped patch changes those fields and preserves other items and source data.
+The initial reflection contract also names threshold-bound projections and
+missing-projection caps as mandatory price-proof gates. An optional business
+catalyst assessment does not authorize a new screening prerequisite.
 
 ## Reflection statistics ownership (2026-10-02)
 

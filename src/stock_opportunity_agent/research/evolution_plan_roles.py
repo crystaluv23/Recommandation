@@ -2139,7 +2139,9 @@ def _structured_reflection_contract(level: str) -> str:
         "why it occurred: label causal explanations as hypotheses and propose "
         "a test. Source references establish provenance, not correctness. "
         "Opportunity screening does not require a quantified valuation bridge, "
-        "stated/concrete price path or guaranteed 2x path. An authored action may request optional valuation "
+        "stated/concrete price path, threshold-bound projection or guaranteed 2x path. "
+        "Do not make a missing forward projection a binding evidence gap that caps "
+        "the surge judgment. An authored action may request optional valuation "
         "analysis but cannot make such proof a condition for a positive judgment. "
         "Higher levels act as a sieve: select useful existing items by ref "
         "without rewriting them; author only new sourced comparisons or actions. "
@@ -2289,7 +2291,7 @@ def _structured_reflection_items(
         policy_issues = [ValidationIssue(
             code="reflection_action_proof_gate", paths=(f"reflection_items[{position}].{field}",),
             allowed_repairs=("replace",),
-            message="An action cannot require a quantified/stated price path or mandate a negative judgment solely without a path; keep such analysis optional.",
+            message="An action cannot require a quantified/stated price path or threshold-bound projection, or cap/downgrade the judgment solely without that proof; keep such analysis optional.",
         ) for position, item in enumerate(raw_items) if isinstance(item, Mapping) and item.get("kind") == "action"
           for field in ("brief", "detail") if isinstance(item.get(field), str)
           and violates_opportunity_proof_gate(item[field])]

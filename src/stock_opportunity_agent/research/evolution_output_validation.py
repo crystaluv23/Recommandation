@@ -1557,7 +1557,7 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
             issues.append(ValidationIssue(
                 code="plan_fixed_semantics_redefined", paths=(field_name,),
                 message=(f"invalid_field={field_name!r}, a positive opportunity judgment "
-                         "cannot require a quantified path, valuation bridge or guaranteed "
+                         "cannot require a quantified path, valuation bridge, threshold-bound projection or guaranteed "
                          "price outcome; request optional supporting analysis instead"),
             ))
     if _fixed_semantics_violation(plan.analysis_prompt):

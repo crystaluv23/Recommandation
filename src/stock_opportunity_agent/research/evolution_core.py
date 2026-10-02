@@ -7871,6 +7871,13 @@ def _cached_identity_matchers(
 
     compiled: list[tuple[str, re.Pattern[str], re.Pattern[str]]] = []
     resolved = _identity_alias_variants(aliases) if expand_aliases else aliases
+    derived_names = {
+        variant.casefold()
+        for name in aliases if expand_aliases and len(re.findall(r"[A-Za-z0-9]+", name)) >= 2
+        for variant in _identity_alias_variants((name,))
+        if variant.casefold() != name.casefold()
+        and variant.casefold() not in _GENERIC_IDENTITY_LEADING_WORDS
+    }
     for alias in resolved:
         escaped = _identity_alias_pattern(alias)
         pattern = (
@@ -7881,6 +7888,7 @@ def _cached_identity_matchers(
         prose_flags = (
             0
             if alias.isalnum() and alias.isupper() and len(alias) <= 5
+            and alias.casefold() not in derived_names
             else re.IGNORECASE
         )
         url_pattern = (

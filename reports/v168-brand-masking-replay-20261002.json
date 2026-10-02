@@ -1,0 +1,20 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v168_integrated",
+  "request_ref": "9a542facaabecf1e8e7031c787e379c83bdb7750f473f2b3b3e24ced4a75be83",
+  "case_id": "cik_0000936395:20250930",
+  "frozen_live_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+  "scope": "Offline actual persisted canonical final context through shared case projection, compared with its original transmitted Predictor request; no external calls, no source writes, no new score",
+  "original_request_sha256": "10e9dce5e5860a42d3b599d6413fdaf9bac703baf4f9d8d383bd8ef97d5b8bca",
+  "trajectory_sha256": "8fb3247e391a5b73d9a5c26c9a513d07a3467c06030d6715f17818b7eef16a36",
+  "explicit_identity_aliases": [
+    "CIEN",
+    "CIENA Corp / CIENA CORP"
+  ],
+  "brand_occurrences_in_original_request": 80,
+  "brand_occurrences_in_canonical_context": 80,
+  "brand_occurrences_after_old_projection": 80,
+  "brand_occurrences_after_new_projection": 0,
+  "entire_original_payload_restored_exactly": true,
+  "source_request_bytes_preserved": true,
+  "new_live_blind_request_verified": false
+}

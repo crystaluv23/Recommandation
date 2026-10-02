@@ -13,6 +13,11 @@ Explicit/stated/concrete price paths are also optional supporting analysis,
 not mandatory proof for a possible judgment. The same bounded guard rejects
 affirmative absence-of-path instructions that mandate a non-surge downgrade,
 including when another clause merely disclaims a quantified/guaranteed bridge.
+The same boundary includes mandatory projections explicitly tied to the
+doubling/share-price threshold, and absence-of-forward-projection instructions
+that make the missing proof a binding gap and cap the surge judgment. A source-
+backed catalyst requirement by itself remains ordinary business research;
+optional projections, confidence caveats and negated gates remain admissible.
 It leaves ordinary business-information requirements and optional investigation
 intact. New raw action briefs/details are checked together at role ingestion,
 so first correction names every detected policy field. Source/scope/outcome

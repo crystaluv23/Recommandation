@@ -124,6 +124,9 @@ _MANDATORY_PROOF_CONDITION = re.compile(
     r"\bquantif(?:y|ies)\s+(?:a\s+)?(?:[\w-]+\s+){0,3}(?:path|bridge)\b|"
     r"\b(?:stated|explicit|concrete|demonstrated)\s+(?:[\w-]+\s+){0,4}"
     r"(?:path|bridge)\s+(?:from|to)\b[^.;]{0,100}\b(?:price|threshold|doubling|2x)\b|"
+    r"\b(?:projection|forecast|price\s+target)\b[^.;]{0,100}"
+    r"\b(?:tied|linked|connected)\s+to\b[^.;]{0,60}"
+    r"\b(?:doubling|2x|share[- ]price|price\s+threshold)\b|"
     r"\b(?:guaranteed?|proven|certain)\s+(?:[\w-]+\s+){0,3}"
     r"(?:doubling|2x|price\s+outcome|share[- ]price\s+outcome)\b)",
     re.IGNORECASE,
@@ -137,6 +140,12 @@ _ABSENT_PROOF_DOWNGRADE = re.compile(
     r"(?P<link>[^.;]{0,100}?)\b(?:record|downgrade|classify|label)\s+"
     r"(?:(?:the|a|this)\s+)?(?:call|judgment|candidate)?\s*(?:as|to)?\s*"
     r"(?:non[- ]surge|unlikely|negative)\b", re.I,
+)
+_ABSENT_PROJECTION_CAP = re.compile(
+    r"\b(?:if|when)\s+(?:no|without)\b[^.;]{0,60}"
+    r"\b(?:forward\s+projection|price\s+(?:projection|forecast|target))\b"
+    r"(?P<link>[^.;]{0,240}?)\bcap\s+(?:(?:the|a|this)\s+)?"
+    r"(?:surge|positive|candidate)\s+judgment\b", re.I,
 )
 
 
@@ -165,6 +174,16 @@ def violates_opportunity_proof_gate(text: str) -> bool:
         # A business milestone path is not a mandatory share-price proof.
         if (re.match(r"\s+(?:to|towards?|for)\b", link, re.I)
                 and not re.search(r"\b(?:price|threshold|doubling|2x)\b", link, re.I)):
+            continue
+        if re.search(r"\b(?:not|never)\s+(?:\w+\s+){0,5}['\"]?\s*$", prefix, re.I):
+            continue
+        if re.search(r"\b(?:not|never|may|might|consider|whether)\b", link, re.I):
+            continue
+        return True
+    for match in _ABSENT_PROJECTION_CAP.finditer(text):
+        prefix = text[max(0, match.start() - 60):match.start()]
+        link = match.group("link")
+        if not re.search(r"\bbinding\s+evidence\s+gap\b", link, re.I):
             continue
         if re.search(r"\b(?:not|never)\s+(?:\w+\s+){0,5}['\"]?\s*$", prefix, re.I):
             continue
@@ -783,7 +802,7 @@ class ReflectionMemoryIndex:
                 for field_name in ("brief", "detail"):
                     if violates_opportunity_proof_gate(value[field_name]):
                         invalid(
-                            "action cannot require a quantified or stated price path, or guaranteed "
+                            "action cannot require a quantified or stated price path, threshold-bound projection, or guaranteed "
                             "price outcome for a positive opportunity judgment; "
                             "propose optional supporting analysis instead",
                             field_name,

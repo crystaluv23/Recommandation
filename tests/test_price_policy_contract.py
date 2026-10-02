@@ -24,6 +24,8 @@ CORRECT = 'Reaching 20.00 requires a 108.33% gain from the most recent close.'
 GATE = 'Before assigning a possible-surge label, require a dated catalyst plus a stated path from the current price to the threshold; otherwise downgrade to non-surge.'
 CONDITIONAL = 'If no in-horizon catalyst and no path are identified, record the call as non-surge rather than possible-surge. This is not a requirement for a quantified valuation bridge.'
 OPTIONAL = 'Before assigning a possible-surge label, inspect the catalyst timing and optionally analyze the price path; no quantified path is required for a positive judgment.'
+PROJECTION_GATE = 'Before labeling a surge, require at least one forward-looking catalyst or projection tied to the doubling threshold, and explicitly state the gap when none exists.'
+PROJECTION_CAP = 'Action: when no forward projection or dated catalyst within the horizon is supplied, record that as a binding evidence gap and cap the surge judgment accordingly rather than inferring a doubling from trailing momentum.'
 
 
 def prediction():
@@ -130,6 +132,50 @@ class PricePolicyContractTests(TestCase):
             _validate_fixed_plan_semantics(replace(default_information_plan(), analysis_prompt=GATE))
         self.assertEqual(caught.exception.issues[0].paths, ('H_analyse',))
         _validate_fixed_plan_semantics(replace(default_information_plan(), analysis_prompt=OPTIONAL))
+
+    def test_threshold_projection_gates_do_not_reject_business_requirements_or_optional_caps(self):
+        prohibited = (
+            PROJECTION_GATE, PROJECTION_CAP,
+            'A positive judgment requires a price forecast linked to the 2x threshold.',
+        )
+        permitted = (
+            'For a surge judgment require a source-backed forward-looking catalyst.',
+            'Require a revenue projection tied to the production capacity for the surge analysis.',
+            'A surge judgment does not require a projection tied to the doubling threshold.',
+            'Never require a forecast linked to the doubling threshold.',
+            'When no forward projection is supplied, record a gap and cap confidence.',
+            'When no forward projection is supplied, consider a binding evidence gap and cap the surge judgment.',
+            'When no forward projection is supplied, do not record a binding evidence gap and cap the surge judgment.',
+            "Do not say 'when no forward projection is supplied, record a binding evidence gap and cap the surge judgment'.",
+            'A forecast tied to the doubling threshold may be useful optional analysis.',
+        )
+        for text in prohibited + permitted:
+            with self.subTest(text=text):
+                self.assertEqual(violates_opportunity_proof_gate(text), text in prohibited)
+
+    def test_projection_gate_correction_and_plan_consumer_preserve_other_work(self):
+        from dataclasses import replace
+        for field in ('initial_research_skill', 'reflection_skill', 'analysis_prompt'):
+            with self.subTest(field=field), self.assertRaises(StructuredValidationError):
+                _validate_fixed_plan_semantics(replace(default_information_plan(), **{field: PROJECTION_GATE}))
+        saved = {}
+        def initial(call):
+            saved.update(package(call, PROJECTION_GATE, PROJECTION_CAP)); return saved
+        def repair(call):
+            self.assertIn('threshold-bound projection', caller.calls[0]['system_prompt'])
+            self.assertEqual(call['payload']['required_change_paths'],
+                             ['reflection_items[0].brief', 'reflection_items[0].detail'])
+            return patch(call['payload']['output_patch_contract'],
+                         {'op': 'replace', 'path': 'reflection_items[0].brief', 'value': OPTIONAL},
+                         {'op': 'replace', 'path': 'reflection_items[0].detail', 'value': OPTIONAL})
+        caller = PatchCaller(initial, repair)
+        raw = prediction(); raw['key_reasons'][0] = CORRECT
+        result = LLMBlindPredictor(caller).reflect({'prediction_baseline': ANCHOR},
+                 _blind_prediction_from_role(raw), GroundTruth(1.1)).value
+        self.assertEqual(result.reflection_items[0].brief, OPTIONAL)
+        self.assertEqual(result.reflection_items[0].detail, OPTIONAL)
+        self.assertEqual(result.reflection_items[0].source_refs, tuple(saved['reflection_items'][0]['source_refs']))
+        self.assertEqual(result.reflection_items[1].detail, saved['reflection_items'][1]['detail'])
 
     def test_all_action_fields_join_first_frontier_and_one_patch_preserves_sibling(self):
         saved = {}

@@ -24,6 +24,51 @@ SOURCE = ('Enbridge Inc. reports Enbridge growth. enb:RevenueMember '
 
 
 class CaseIdentityTransportTests(TestCase):
+    def test_all_caps_formal_name_brand_masks_mixed_case_prose_without_folding_tickers(self):
+        from stock_opportunity_agent.research.evolution_core import (
+            _mask_identity_values, _assert_identity_values_masked,
+        )
+        aliases = ("CIEN", "CIENA Corp / CIENA CORP")
+        original = {"quote": "Ciena Corporation (Ciena) reported Ciena's guidance. CIEN traded; cien is unrelated.",
+                    "cash": 1203, "peer": "Nubis Communications"}
+        masked = _mask_identity_values(original, aliases)
+        self.assertNotIn("Ciena", masked['quote'])
+        self.assertNotIn("CIEN", masked['quote'])
+        self.assertIn("cien is unrelated", masked['quote'])
+        self.assertEqual(masked['cash'], original['cash'])
+        self.assertEqual(masked['peer'], original['peer'])
+        with self.assertRaises(ValidationError):
+            _assert_identity_values_masked(original, aliases)
+        _assert_identity_values_masked(masked, aliases)
+        projection = _CaseIdentityProjection(aliases, "issuer", "CIEN")
+        view, inverse = projection.project(original)
+        self.assertNotIn("Ciena", view['quote'])
+        self.assertIn("cien is unrelated", view['quote'])
+        self.assertEqual(projection.restore(view, inverse), original)
+        strict = _CaseIdentityProjection(aliases, "issuer", "CIEN", expand_aliases=False)
+        self.assertIn("Ciena", strict.project(original)[0]['quote'])
+
+    def test_derived_brand_estimation_wire_cache_and_original_restore_agree(self):
+        aliases = ("CIEN", "CIENA Corp / CIENA CORP")
+        payload = {"final_context": {"source_quote": "Ciena reported Q3 revenue of $1.22 billion.", "cash": 1203}}
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            with client.anonymous_case(aliases=aliases, company_id="issuer", ticker="CIEN"):
+                kwargs = dict(stage="blind_predictor_predict", system_prompt="Return supplied fields.",
+                              payload=payload, allow_outcomes=False, max_output_tokens=4000)
+                estimate = client.estimate_json_request_tokens(
+                    **{k:v for k,v in kwargs.items() if k != "stage"})
+                with self.assertRaises(ExternalRequestPending) as pending:
+                    client.complete_json(**kwargs)
+                recorded = json.loads(Path(pending.exception.request_path).read_text())
+                request = recorded['request']
+                self.assertNotIn("Ciena", request['wire_request']['body_utf8'])
+                self.assertEqual(estimate, request['wire_request']['body_bytes']+request['max_output_tokens'])
+                anonymous = json.loads(request['messages'][-1]['content'])
+                client.cache.store(recorded['request_hash'], {'json_output': anonymous,
+                                   'model': 'deepseek-v4-flash', 'usage': {'tokens': 10, 'cost': 0}})
+                self.assertEqual(client.complete_json(**kwargs)[0], payload)
+
     def test_explicit_short_identity_fields_do_not_use_prose_exception(self):
         aliases = ("Acme Bank", "MS", "AI", "Z")
         original = {

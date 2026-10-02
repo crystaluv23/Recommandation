@@ -1,0 +1,29 @@
+{
+  "scope": "isolated local verification; full latest-code live Fast/Slow is pending",
+  "base_revision": "7e6be2e377bcae719f3611bd55e7117473841396",
+  "worktree": "/Users/l/.codex/worktrees/shared-stage-content/Recommandation",
+  "results": {
+    "full_tests": {
+      "log": "/tmp/v168-boundary-native-tests.log",
+      "sha256": "a3f1b918b40a901ee39e04e9db5d72a60dc98f2b332fc7d4ceb74e7ee347062d",
+      "summary": "1388 tests in 64.651s; OK, no skips"
+    },
+    "focused_tests": {
+      "log": "/tmp/v168-boundary-focused.log",
+      "sha256": "dd27de1918c518c5a9c7a1bea835ec309003f30283819777bd3b4cf30932a064",
+      "summary": "74 tests; OK"
+    },
+    "historical_fixture_replay": {
+      "log": "/tmp/v168-historical-memory-tests.log",
+      "sha256": "a2fd8d2d192df4fe16395e4557b417a7c78d95f38740a1c41cc9a38e688673e7",
+      "summary": "4 tests; OK"
+    },
+    "lint": {
+      "log": "/tmp/v168-boundary-final-lint.log",
+      "sha256": "068f9fe87e3c5df21a6c1f2de212705e8ad2168bb2322ba3b4b4db41df46db6b",
+      "summary": "PASS"
+    }
+  },
+  "historical_fixture_limitation_resolved": "Worktree had missing untracked historical artifacts; supplied original local historical fixtures and reran all 1388 tests without skips",
+  "external_model_calls_in_offline_replays": 0
+}

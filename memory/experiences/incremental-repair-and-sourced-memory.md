@@ -1,6 +1,6 @@
 # Incremental Repair and Sourced Reflection Memory
 
-visit_times: 20
+visit_times: 21
 
 ## Trigger
 
@@ -73,6 +73,12 @@ levels. Tests of individual view helpers had not covered either composition.
   types before legacy canonical readers can drop rows and shift patch indices.
   A false sole gap may require explicit replace-only verdict dependency; never
   force another invented gap just to satisfy preservation.
+
+- Blindness requires testing actual outgoing prose, not only ticker fields, URL
+  and XBRL handles. A short brand derived from an all-caps legal name can be
+  mistaken for a case-sensitive ticker; preserve the provenance of derived
+  name matching and verify estimation, wire, inverse restoration and source
+  immutability together.
 
 ## Limits
 

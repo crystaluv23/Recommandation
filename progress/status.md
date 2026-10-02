@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：v168实际内容审查定位两处共享边界缺陷并隔离修复：Posthoc threshold-bound projection及缺预测binding cap偷改机会判断条件；大写法定名称派生CIENA短品牌被当作case-sensitive ticker，真实Predictor漏入80处Ciena。初始提示/共享action与Plan guard/typed两个文本路径一致，源与其他行保持；shared matcher区分正式名称派生prose与独立ticker，strict aggregate策略不变。原付费响应经生产Posthoc adapter重放、实际canonical context可逆投影及wire预算/cache/restore验证通过；原始请求/trajectory未改。新增4回归，1388全量测试全部PASS，74专项PASS，lint PASS。v168冻结主目录7e6be2e3，保存14案后provider连接异常exit1；同root原代码已续跑，Fast/Slow指针0/0，无新完整F1。新修复尚未进入live；fact/hypothesis权重归因、路由规模tag依据、幅度塌缩及完整Critic/Round/Slow/下游消费仍待验收。报告：reports/v168-stage-boundary-review-20261002.md。
+
 2026-10-02：Update已接入共享typed/snapshot增量机制：唯一完整JSON原文复原（两份真实引用含相同fy重复key）和实际changed_paths重算均在LLM前，删除旧单独末尾diff兜底；LLM纠错使用有界patch，补缺case走现有数组append，空必需rationale及非对象/重复case显式检测。Mining/Update披露与validator共用description概念表，接受正确现金流公式。真实cash-burn响应生产fixture零网络重放：两literal及diff先修复，三处错误prior absence与三fixture coverage失败仍拒绝；可见同case/document/concept/unit上年日历记录通过records下标提供，typed gap只授权语义局部修复，原候选/其他诊断/来源保持。新增13回归，1384全量测试PASS，12专项PASS，lint PASS。v168只完成输入准备：16+8固定评分案例及16Discovery、标签/Registry/Locked Test全部逐字一致；原3590源未改，新4份历史market快照已披露，因此不作paired gain主张。尚未启动模型，后继完整实测及幅度塌缩等内容验收仍待完成。报告：reports/v167-update-reliability-review-20261002.md、reports/v168-preparation-review-20261002.json。
 
 
