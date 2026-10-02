@@ -7924,8 +7924,12 @@ def _identity_alias_pattern(alias: str) -> str:
         if len(alias) <= 2:
             return (
                 rf"(?:\${re.escape(alias)}(?![A-Za-z0-9])|"
-                rf"(?i:\b(?:ticker|symbol|nasdaq|nyse|amex)\b)"
-                rf"\s*(?::|=)?\s*{re.escape(alias)}(?![A-Za-z0-9]))"
+                rf"(?i:\b(?:ticker|symbols?|nasdaq|nyse|amex)\b(?:\s*\(s\))?)"
+                rf"\s*(?::|=)?\s*{re.escape(alias)}(?![A-Za-z0-9])|"
+                rf"{re.escape(alias)}(?=(?:/[A-Z0-9]+)?\s+"
+                rf"(?i:New\s+York\s+Stock\s+Exchange|Nasdaq|NYSE|AMEX)\b)|"
+                rf'(?i:\\?"(?:ticker|symbol|company_id)\\?")\s*:\s*\\?"'
+                rf'(?P<identity_literal>(?i:{re.escape(alias)}))\\?")'
             )
         return re.escape(alias)
     tokens = re.findall(r"[A-Za-z0-9]+", alias.replace("&", " and "))
@@ -7938,6 +7942,18 @@ def _identity_alias_pattern(alias: str) -> str:
     if len(tokens) == 1 and len(tokens[0]) >= 6 and tokens[0].casefold().endswith("s"):
         return re.escape(tokens[0][:-1]) + r"[’']?s"
     return re.escape(alias)
+
+
+def _identity_match_parts(match: re.Match[str]) -> tuple[str, str, str]:
+    """Retain structured metadata syntax around a matched identity value."""
+
+    text = match.group(0)
+    if match.groupdict().get("identity_literal") is None:
+        return "", text, ""
+    start, end = match.span("identity_literal")
+    start -= match.start()
+    end -= match.start()
+    return text[:start], text[start:end], text[end:]
 
 
 def _opaque_slow_case_ref(value: str) -> str:
@@ -7981,7 +7997,10 @@ def _mask_identity_values(
     def mask_text(item: str) -> str:
         result = item
         for _alias, prose_matcher, _url_matcher in matchers:
-            result = prose_matcher.sub(_IDENTITY_MASK_SENTINEL, result)
+            result = prose_matcher.sub(
+                lambda match: _identity_match_parts(match)[0] + _IDENTITY_MASK_SENTINEL
+                + _identity_match_parts(match)[2], result,
+            )
         result = _URL_VALUE.sub(mask_url, result)
         return result.replace(_IDENTITY_MASK_SENTINEL, _MASKED_IDENTITY_VALUE)
 

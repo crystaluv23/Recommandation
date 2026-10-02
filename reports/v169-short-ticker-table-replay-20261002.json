@@ -1,0 +1,18 @@
+{
+  "actual_quote_restores_exactly": true,
+  "actual_sent_payload_short_ticker_occurrences_after_current_mask": 0,
+  "actual_sent_payload_short_ticker_occurrences_before": 14,
+  "boundary": "Actual old sent payload gets additional shared deterministic masking; real quoted span round-trips. Existing old opaque tokens are not reconstructed. No regenerated full Initialize or new model response, no changed original failure or F1.",
+  "external_calls": 0,
+  "financial_values_and_projection_id_preserved": true,
+  "ordinary_prose_preserved": true,
+  "request_hash": "87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b",
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/cache/responses/87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b.json": "c12e7c4d3a56448479492b531048efda7b677c49e4096969d610c6d2df3ec86f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.failure.json": "2b0090970ad4a2773bf45fd8534f90d1e3e291f438576c02e18453627b42c6ec",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated/requests/87737711d0691a4fe0c9331e6dfcfa8edba46435b3ac182994ef7932157cc79b.json": "50cc74301e8e7c04e0be106fd4d923f251fdf14a1b921bea0ee0528d1d1e0d76"
+  },
+  "source_policy_hash": "403456ec7688d4d5f84635b8cba94787cff188725aed7f6ff8027eef6084661b",
+  "source_run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v169_integrated",
+  "source_unchanged": true
+}

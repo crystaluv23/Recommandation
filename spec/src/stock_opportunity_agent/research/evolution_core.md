@@ -84,12 +84,21 @@ Fast/Slow engine dependency.
 
 - Point-in-time and identity masking rules remain fail closed.
   One- and two-character ticker aliases in prose require an explicit dollar,
-  ticker, symbol, or exchange marker. This matches the outgoing transport guard
+  ticker, symbol, or exchange marker. Securities-table order also qualifies:
+  a known short code immediately before a named US exchange (optionally with
+  a /preferred-series suffix) and Trading Symbol(s) labels are explicit identity
+  positions. Only the identity literal is projected in table order; surrounding
+  security terms and exchange wording retain their meaning. Unmarked ordinary
+  abbreviations remain untouched. This matches the outgoing transport guard
   and preserves ordinary text such as Gen Z, Q2, and AI. Full names and longer
   ticker aliases retain their existing identity handling.
   Explicit identity fields and `known_aliases` array members always project exact
   known identities, including short tickers; the exception is limited to prose.
   URL path/query identity matching remains case-insensitive for short tickers;
+  JSON metadata embedded in a source string is also explicit: known short values
+  of ticker/symbol/company_id project case-insensitively. Preserve the surrounding
+  key, delimiters, whitespace and numbers rather than parsing or rewriting source
+  JSON. Non-identity fields with the same abbreviation remain ordinary text.
   the prose exception does not expose identities in source links.
   Derived single-word brands do not erase ordinary business vocabulary such
   as energy, green, life, travel or critical; complete company names and explicit

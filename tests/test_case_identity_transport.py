@@ -24,6 +24,81 @@ SOURCE = ('Enbridge Inc. reports Enbridge growth. enb:RevenueMember '
 
 
 class CaseIdentityTransportTests(TestCase):
+    def test_short_ticker_security_table_positions_share_mask_and_guard(self):
+        from stock_opportunity_agent.research.evolution_core import (
+            _mask_identity_values, _assert_identity_values_masked,
+        )
+
+        aliases = ("MS", "AI", "Q2", "Z")
+        projection = _CaseIdentityProjection(aliases, "issuer", "MS")
+        for text in ("Common Stock, $0.01 par value MS New York Stock Exchange",
+                     "Series A MS/PA New York Stock Exchange",
+                     "AI Nasdaq Global Select Market", "Z NYSE American",
+                     "Q2 AMEX", "Trading Symbol(s): MS", "Symbols = AI"):
+            with self.subTest(text=text):
+                with self.assertRaises(ValidationError):
+                    _assert_identity_values_masked(text, aliases)
+                masked = _mask_identity_values(text, aliases)
+                _assert_identity_values_masked(masked, aliases)
+                view, inverse = projection.project(text)
+                self.assertNotEqual(view, text)
+                self.assertEqual(projection.restore(view, inverse), text)
+        ordinary = "MS symptoms, AI services, Gen Z, Q2 revenue, MSFT NYSE and ms Nasdaq."
+        self.assertEqual(_mask_identity_values(ordinary, aliases), ordinary)
+        self.assertEqual(projection.project(ordinary), (ordinary, {}))
+
+    def test_security_table_estimate_wire_and_token_copy_restore_agree(self):
+        aliases = ("MS", "Morgan Stanley")
+        quote = "Common Stock, $0.01 par value MS New York Stock Exchange"
+        payload = {"initial_research_skill": "Inspect supplied source.",
+                   "basic_info": {"quote": quote,
+                                  "metadata": '{"symbol":"MS","quarter":"2025Q2","value":1203}'},
+                   "cash": 1203}
+        with tempfile.TemporaryDirectory() as directory:
+            client = _client(Path(directory))
+            with client.anonymous_case(aliases=aliases, company_id="issuer", ticker="MS"):
+                kwargs = dict(stage="research_controller_initialize", system_prompt="Copy supplied quote.",
+                              payload=payload, allow_outcomes=False, max_output_tokens=4000)
+                estimate = client.estimate_json_request_tokens(
+                    **{key: value for key, value in kwargs.items() if key != "stage"})
+                with self.assertRaises(ExternalRequestPending) as pending:
+                    client.complete_json(**kwargs)
+                recorded = json.loads(Path(pending.exception.request_path).read_text())
+                request = recorded["request"]
+                self.assertNotIn(" MS ", request["wire_request"]["body_utf8"])
+                self.assertEqual(estimate, request["wire_request"]["body_bytes"] + request["max_output_tokens"])
+                anonymous = json.loads(request["messages"][-1]["content"])
+                token = anonymous["basic_info"]["quote"].split("par value ")[1].split()[0]
+                client.cache.store(recorded["request_hash"], {"json_output": {
+                    "quote": anonymous["basic_info"]["quote"], "claim": "The stock symbol is " + token,
+                    "metadata": anonymous["basic_info"]["metadata"]},
+                    "model": "deepseek-v4-flash", "usage": {"tokens": 10, "cost": 0}})
+                output, _usage = client.complete_json(**kwargs)
+                self.assertEqual(output, {"quote": quote, "claim": "The stock symbol is MS",
+                                          "metadata": payload["basic_info"]["metadata"]})
+                self.assertEqual(payload["basic_info"]["quote"], quote)
+                self.assertEqual(payload["cash"], 1203)
+
+    def test_short_identity_json_metadata_preserves_syntax_and_nonidentity_values(self):
+        from stock_opportunity_agent.research.evolution_core import _mask_identity_values
+
+        original = '{"symbol":"MS", "ticker" : "ai", "company_id":"Z", "value":0.01, "diagnosis":"MS"}'
+        projection = _CaseIdentityProjection(("MS", "AI", "Z"), "issuer", "MS")
+        view, inverse = projection.project(original)
+        decoded = json.loads(view)
+        for key in ("symbol", "ticker", "company_id"):
+            self.assertTrue(decoded[key].startswith("[ANON_ID_"))
+        self.assertEqual(decoded["value"], 0.01)
+        self.assertEqual(decoded["diagnosis"], "MS")
+        self.assertEqual(projection.restore(view, inverse), original)
+        masked = json.loads(_mask_identity_values(original, ("MS", "AI", "Z")))
+        self.assertEqual(masked["symbol"], "[MASKED_COMPANY]")
+        self.assertEqual(masked["diagnosis"], "MS")
+        escaped = json.dumps(original)
+        escaped_view, escaped_inverse = projection.project(escaped)
+        self.assertNotEqual(escaped_view, escaped)
+        self.assertEqual(projection.restore(escaped_view, escaped_inverse), escaped)
+
     def test_all_caps_formal_name_brand_masks_mixed_case_prose_without_folding_tickers(self):
         from stock_opportunity_agent.research.evolution_core import (
             _mask_identity_values, _assert_identity_values_masked,

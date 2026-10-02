@@ -3638,3 +3638,7 @@ v162 Fast 指针 1、Slow 指针 0；两 Plan F1 .64、幅度 macro-F1 .089/.133
 v169当前新身份前沿：MS证券表14处未盲化，合法原文复制的claim补写symbol MS后被当猜名拒绝；实际request/cache/failure及matcher复现已保存。下一步修复短ticker证券位置家族，普通缩写仍须保留。此问题尚未修复，不宣称近零技术排除。
 
 v169恢复进程二次SSL退出1；70 completed/2 failed、费用$0.22800092，六案例一技术排除、指针0/0。已确认短ticker输入遗漏，暂不在原冻结源继续发送，修复后继继续目标；没有把传输失败算研究FN，也没有标记目标完成。
+
+2026-10-02：短ticker证券表顺序/优先股/Trading Symbol(s)及正文JSON身份元数据接共同matcher，保持JSON语法与普通缩写，真实v169 MS十四处输入残留清零、原引用与数字/hash保留，0外部重放；专项151通过。v170同完整case/label/初始Registry准备，新增四数据快照不作paired收益主张；最终全量/lint及后继实际验证继续。
+
+短ticker本轮最终1439全量（86.666秒）与repository lint PASS；本地重放不代表live验收，整体目标继续。

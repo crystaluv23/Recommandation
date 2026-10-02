@@ -251,6 +251,8 @@ class _CaseIdentityProjection:
     def project(self, value: Any, *, allow_tokens: bool = False) -> tuple[Any, dict[str, Any]]:
         """Return the opaque view and a request-local inverse token table."""
 
+        from stock_opportunity_agent.research.evolution_core import _identity_match_parts
+
         restore: dict[str, Any] = {}
         tokens: dict[tuple[type, Any], str] = {}
 
@@ -269,9 +271,10 @@ class _CaseIdentityProjection:
             replacements: dict[str, str] = {}
             for pattern in self.patterns:
                 def replace(match: re.Match[str]) -> str:
+                    prefix, identity, suffix = _identity_match_parts(match)
                     sentinel = f"\ue100{len(replacements)}\ue101"
-                    replacements[sentinel] = token(match.group(0))
-                    return sentinel
+                    replacements[sentinel] = token(identity)
+                    return prefix + sentinel + suffix
                 item = pattern.sub(replace, item)
             def project_host(host: re.Match[str]) -> str:
                 label = host.group("label")

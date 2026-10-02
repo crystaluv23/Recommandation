@@ -27,6 +27,15 @@ ledgers, exact-response caching, and the structured model-client boundary.
   projected, including a one/two-character ticker. The short-ticker prose
   exception does not apply to these fields or their array members. Ordinary
   unmarked abbreviations in source prose keep the existing matching rules.
+  The shared matcher recognizes the reverse securities-table order, where a
+  known short ticker precedes a US exchange name, including preferred-series
+  suffixes and Trading Symbol(s) labels. Estimation, wire masking, response
+  identity checking and inverse citation restoration use the same inventory
+  and matcher; ordinary unmarked MS/AI/Q2/Z remain research text. A copied
+  opaque table code restores byte-exactly only through its supplied token.
+  The same rule covers explicit ticker/symbol/company_id JSON string metadata
+  embedded in source literals. Replace only the known identity value, preserving
+  surrounding syntax (including escaped quotes), numbers and raw source hashes.
 - Cache reuse requires the exact canonical request hash.
 - Attempt, token, and cost ceilings fail closed before network I/O.
 - The attempt ledger admits a new request against settled cost: finalized
