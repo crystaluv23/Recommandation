@@ -177,6 +177,18 @@ class StructuredOutputInvalid(ValidationError):
         super().__init__(message)
 
 
+class IdentityOutputRejected(CandidateExecutionRejected):
+    """Quarantine invalid identity leaves without accepting or repairing output."""
+
+    def __init__(self, stage: str, message: str, usage: AgentUsage,
+                 quarantined_output: Any, violation_paths: tuple[str, ...]) -> None:
+        self.quarantined_output = quarantined_output
+        self.violation_paths = violation_paths
+        super().__init__(stage, message, usage, details={
+            "identity_violation_paths": list(violation_paths),
+        })
+
+
 class ExactResponseCache:
     """Exact response reuse keyed only by canonical request hash."""
 
@@ -322,6 +334,41 @@ class _CaseIdentityProjection:
             return item
 
         return visit(value), restore
+
+    def quarantine_output(self, value: Any, tokens: Mapping[str, Any]) -> tuple[Any, tuple[str, ...]]:
+        """Return a diagnostic view with unsafe leaves null and supplied tokens restored."""
+
+        paths: list[str] = []
+
+        def visit(item: Any, path: str = "", key: str = "") -> Any:
+            if isinstance(item, Mapping):
+                for name in item:
+                    _view, guessed = self.project(str(name), allow_tokens=True)
+                    try:
+                        self.restore(str(name), tokens)
+                    except ValidationError:
+                        guessed = {"invalid": True}
+                    if guessed:
+                        paths.append(path or "$root")
+                        return None
+                return {self.restore(str(name), tokens): visit(child,
+                    f"{path}.{name}" if path else str(name), str(name))
+                    for name, child in item.items()}
+            if isinstance(item, (list, tuple)):
+                return [visit(child, f"{path}[{index}]", key)
+                        for index, child in enumerate(item)]
+            _view, guessed = self.project({key: item}, allow_tokens=True)
+            try:
+                restored = self.restore(item, tokens)
+            except ValidationError:
+                guessed = {"invalid": True}
+                restored = None
+            if guessed:
+                paths.append(path or "$root")
+                return None
+            return restored
+
+        return visit(value), tuple(paths)
 
     @staticmethod
     def restore(value: Any, tokens: Mapping[str, Any]) -> Any:
@@ -1077,13 +1124,17 @@ class StructuredRoleClient:
         # model to guess an issuer. Check raw names before the inverse step.
         _masked, guessed_tokens = projection.project(value, allow_tokens=True)
         if guessed_tokens:
-            raise CandidateExecutionRejected(
-                kwargs["stage"], "model guessed target identity outside supplied tokens", usage
+            quarantined, paths = projection.quarantine_output(value, tokens)
+            raise IdentityOutputRejected(
+                kwargs["stage"], "model guessed target identity outside supplied tokens", usage,
+                quarantined, paths,
             )
         try:
             restored = projection.restore(value, tokens)
         except ValidationError as exc:
-            raise CandidateExecutionRejected(kwargs["stage"], str(exc), usage) from exc
+            quarantined, paths = projection.quarantine_output(value, tokens)
+            raise IdentityOutputRejected(kwargs["stage"], str(exc), usage,
+                quarantined, paths) from exc
         return restored, usage, scores
 
     def _complete_json_request(

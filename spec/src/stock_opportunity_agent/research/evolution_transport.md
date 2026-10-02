@@ -148,3 +148,18 @@ quotes, state, signal cards and final Predictor input. Reversible projection
 restores exact local strings; persisted sources and evidence hashes remain
 unchanged. Request estimation, preparation, cache lookup and transmission use
 the same projection. Strict aggregate guards retain their exact inventory.
+
+## Quarantined identity output (2026-10-02)
+
+An otherwise parseable response that invents a raw target identity or an
+undisclosed opaque token still rejects at the shared egress boundary. A typed
+`IdentityOutputRejected`, compatible with existing candidate rejection, carries
+only a noncanonical quarantine view and exact violation paths: offending string
+or identity scalar leaves become null, and an offending mapping key quarantines
+its whole mapping. It never adds guessed names to the supplied inverse table.
+Safe siblings restore only request-supplied tokens. Raw provider/cache bytes are
+immutable and remain local audit evidence. This view is diagnostic, not a valid
+role result or a mechanical repair. Only an explicitly supporting role may
+isolate dependent units, fully validate safe siblings, and use its existing
+bounded correction; other roles continue to reject. Unknown-token errors in
+keys must also fail closed. Provider/control-plane errors are unaffected.

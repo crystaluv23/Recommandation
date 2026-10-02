@@ -246,3 +246,5 @@
 - 2026-10-02：v169短股票代码证券表/嵌入JSON身份修复咨询 incremental-repair-and-sourced-memory 与 self-evolution-convergence-and-acceptance；沿共同matcher核对实际输入14处、合法引用逆映射、wire/estimate及普通缩写反例，源不改，后继和独立收益待实际证明。
 
 - 2026-10-02：技术FN澄清与v170未来业绩日程误拒，咨询 incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance、evolution-confirmation-failure-denominators；保留历史分母与研究归因分离，原始结果请求仍拒绝，精确付费局部修正只通过时间门重放，冻结运行不热改。
+
+- 2026-10-02：v170身份输出运输层直接终止Signal批次，咨询 incremental-repair-and-sourced-memory / self-evolution-convergence-and-acceptance / signal-result-evidence-invariants；显式隔离诊断交接，未知token与猜名不变成授权证据，正确兄弟完整重验，唯一纠错/预算耗尽保留技术状态，原付费响应仅边界重放，不冒充最新live或收益。

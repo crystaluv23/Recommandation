@@ -1,0 +1,16 @@
+{
+  "run": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v170_integrated",
+  "request_hash": "f154874739dad7dbd159711c7593c7ac1f4427a41ad3b6d3a7cac2f9a1476b88",
+  "request_sha256": "30805725cd037091ec6d3d000dd35d59ca1e90b24881c91954b3d32cba4a0e13",
+  "cache_sha256": "8c7fb44120bf7fbb052c5dc50614c9a8afc12710707b9f0b6d84036d049c22ed",
+  "external_calls": 0,
+  "violation_paths": [
+    "results[0].result.interpretation.summary"
+  ],
+  "unsafe_leaf_quarantined": true,
+  "all_other_model_view_fields_unchanged": true,
+  "supplied_token_count": 8,
+  "scope": "Shared identity quarantine replay only; supplied opaque tokens retained because historical canonical inverse table is unavailable. No research-text repair, full canonical result validation or new model compliance claim.",
+  "contract_hash": "342a0fa7a73df518c086a96bf0ea56dc8828025c7f8c9726bc035a7d4de38928",
+  "frozen_revision": "ab63de3b1258659cec6613dfcc0c0bd720505ae0"
+}

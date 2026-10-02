@@ -184,6 +184,17 @@ follow [stage contracts](stage_contracts.md).
   all state that unavailable is reserved for text that cannot support applying
   the skill at all — never for the mere absence of a span satisfying a positive
   semantic condition.
+- A shared transport identity-output rejection is handled as a per-result
+  technical validation failure, never as semantic unavailable. If every violation
+  lies inside a unique requested `results[i].result`, only those dependent Signal
+  members are quarantined; safe siblings undergo the full original validation.
+  A violation in batch keys, routing refs or an unassignable shape quarantines
+  all pending Signals. The existing sole correction receives only failed Signals,
+  original eligible evidence and identity-rule/path feedback, without offending
+  identities or invented replacement text. It may regenerate the failed result
+  unit but may not replay accepted siblings. Repeated violations end in explicit
+  technical execution status. Usage, source/identity/PIT checks, budget and
+  provider exception propagation are retained.
 - Supported SEC Company Facts use the shared structured fact selector rather
   than character windows: each complete literal record retains its source
   taxonomy, concept, label and unit, with latest / comparable-prior selection

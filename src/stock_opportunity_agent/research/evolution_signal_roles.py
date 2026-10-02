@@ -58,6 +58,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _project_slow_case_refs,
 )
 from stock_opportunity_agent.research.evolution_transport import (
+    IdentityOutputRejected,
     ExternalBudgetExhausted,
     JSONRoleCaller,
     _complete_json_with_invalid_value,
@@ -4737,6 +4738,8 @@ def _map_projected_signal_evidence(
 
 _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "Omit runtime-owned execution and measurement fields. "
+    "Use issuer-neutral wording in interpretations; never guess a company name "
+    "or invent an opaque identity token. Copy identity tokens only when supplied. "
     "Apply each versioned extraction skill independently to the one shared "
     "bounded point-in-time source_projection. Each evidence item inside a nested "
     "result must use projection_id and exact_text copied from one visible "
@@ -5083,6 +5086,7 @@ class StructuredLLMSignalRunner:
                     for item in validation_feedback
                     if item.get("signal_ref") in pending_refs
                 ]
+            identity_failures: dict[str, tuple[str, ...]] = {}
             try:
                 value, step_usage = _complete_json_with_invalid_value(
                     self.caller,
@@ -5101,6 +5105,28 @@ class StructuredLLMSignalRunner:
                         else None
                     ),
                 )
+            except IdentityOutputRejected as exc:
+                value = exc.quarantined_output
+                step_usage = exc.usage
+                if not isinstance(value, Mapping):
+                    value = {}
+                rows = value.get("results")
+                paths_by_ref: dict[str, list[str]] = {}
+                for path in exc.violation_paths:
+                    match = re.fullmatch(r"results\[(\d+)\]\.result(?:\..+|\[.+\])?", path)
+                    index = int(match.group(1)) if match else -1
+                    row = rows[index] if isinstance(rows, list) and 0 <= index < len(rows) else None
+                    ref = row.get("signal_ref") if isinstance(row, Mapping) else None
+                    if not isinstance(ref, str) or ref not in pending or sum(
+                        isinstance(item, Mapping) and item.get("signal_ref") == ref
+                        for item in rows or ()
+                    ) != 1:
+                        paths_by_ref = {ref: list(exc.violation_paths) for ref in pending}
+                        break
+                    paths_by_ref.setdefault(ref, []).append(path)
+                identity_failures = {ref: tuple(paths) for ref, paths in paths_by_ref.items()}
+                if not identity_failures:
+                    identity_failures = {ref: ("$root",) for ref in pending}
             except RuntimeBudgetExceeded as exc:
                 if attempt == 0:
                     raise RuntimeBudgetExceeded(
@@ -5144,6 +5170,13 @@ class StructuredLLMSignalRunner:
             for signal_ref, item in tuple(pending.items()):
                 raw_result = row_by_ref.get(signal_ref)
                 try:
+                    if signal_ref in identity_failures:
+                        raise ValidationError(
+                            "output invented a target identity or undisclosed identity token; "
+                            "quarantined paths=" + repr(identity_failures[signal_ref]) + "; "
+                            "use only issuer-neutral wording or unchanged identity tokens "
+                            "actually supplied in this request; never infer or name the issuer"
+                        )
                     if signal_ref in duplicate_refs:
                         raise ValidationError(
                             "batch output duplicated requested signal_ref"

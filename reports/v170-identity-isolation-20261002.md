@@ -1,0 +1,23 @@
+# v170 身份输出隔离与 Signal 局部恢复
+
+2026-10-02。继续共同可靠性及Slow双轴因子目标，不宣称完整目标达成。
+
+## 实际失败与共同契约
+
+实际v170请求f154874739dad7dbd159711c7593c7ac1f4427a41ad3b6d3a7cac2f9a1476b88在Signal批次summary写出未提供的Wynn Resorts, Limited。运输层身份guard拒绝有依据，但直接抛整案CandidateExecutionRejected，使已有Signal成员级保存/唯一纠错机制无法运行。固定prompt原来缺少这一明确中性措辞，现补齐不得猜公司名或token、只复制提供token的约束。
+
+通用运输层新增IdentityOutputRejected，仍兼容原拒绝；局部诊断将猜名/未提供token的叶置null、违规key所在mapping整体隔离，附准确路径，安全兄弟仅恢复本请求提供的token。原响应/cache不改，也不把猜出的名字加入授权逆表。该对象明确不是有效业务产物，更不是程序修好的研究结论；未支持隔离的角色继续拒绝。
+
+Signal层显式接收此诊断：可唯一定位到results[i].result时仅拒该Signal，安全兄弟完整经历原结构/PIT/literal/来源检查；routing/key/无法归属问题拒所有pending成员。原有一次纠错只发失败成员、原可用证据和规则/路径反馈，不复制猜名或编造替代文字。重复违规变为validation_failed技术状态，无证据，不伪装为DOMAIN_UNAVAILABLE。既有成功成员和实际使用量保留；provider/control-plane错误不被此catch吞掉。分拆请求与预算逻辑保持既有协议。
+
+## 验证及边界
+
+[实际边界重放](v170-identity-isolation-replay-20261002.json)为0外部调用：原付费响应仅results[0].result.interpretation.summary被隔离，其他全部模型视图字段不变，源request/cache SHA记录且原件不改。旧逆表不持久化，此重放只保留原请求中实际提供的8个opaque token，不声称完整canonical Signal验证或新模型已纠错成功。
+
+六项新增回归覆盖：字面猜名/未知token/坏key隔离，合法供应token逆映射，正确兄弟不重发，真实available正类字面证据兄弟保留，重复失败独立技术状态，无法归属整批拒绝，以及不支持隔离的角色仍拒绝。测试实际使用共同运输层投影及生产StructuredLLMSignalRunner，mock仅供应商返回。专项115通过；全量1448通过（87.893秒）。repository lint PASS（已读取本轮完整输出）。
+
+## 另一个运行中前沿
+
+v170 c01在21/24案后被unfinalized_case拒绝。0001114995末案stop_reason=budget_exhausted，最终研究decision=continue，已有unlikely预测不能代替研究终态。实际普通reflect请求未发送，terminal首答9700a03128b3512571406e96c7d00eb36033647aef4c50546b70b3f70b3c7d4f已发送，native patch同时remove和replace next_information_needs[2]，被overlap规则拒绝；纠错8e2850a21290e50ce3a3fa5e93dcf7fa0e0cfbfd7f8576b90ebc46ab6ce5509d未发送。该纠错body59299字节+8000输出预留，包含22285字符document_catalog；预算/终态输入及native patch纠错上下文衔接需下一步审计，不增加预算或程序制造finalized。
+
+运行随后出现可重试供应商SSL EOF，监督器按同工作区/同冻结代码既定预算恢复。v170仍冻结ab63de3b，隔离worktree补丁未热改；历史排除/FN/labels/分母不改。完整近零技术排除、Slow新direction/magnitude因子真实入库、后继Fast消费与独立幅度帮助仍需实际验收。
