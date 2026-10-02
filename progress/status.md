@@ -1,5 +1,7 @@
 # Status
 
+2026-10-02：确认v167 runner exit0/指针1-1后，已将隔离累计58文件修复快进整合到主目录0ee86a83；主目录原生1371测试通过，lint PASS，用户已有v151两份修改及冻结v167产物保持。进一步定位cash-burn Update两个literal引用：原文已提供，解码结构/数值完全相同但字段顺序改变，unique source JSON匹配可复原；该程序性修复尚未实现，另有已可见prior被称不存在及description关键词/函数文档不兼容，作为下一条真实frontier处理。最新代码尚未开始后继live，不将旧F1或提交cycle作为整体验收。
+
 2026-10-02：真实v167进程退出0，Fast/Slow指针1/1；固定24案F1 .7586/.7200，Registry v7不变、0晋升。实际Slow三种子technical_failure被固定status=completed、幅度无候选却target_mining_assessed=true；隔离按terminal传播completed/failed/deferred及partial，legacy读取同样解释且不改历史；Update保留独立完整有效种子，拒绝技术/partial intents，modality分母不缩减。三份实际median运算输出缺少输入rule枚举，已共享工具真实enum/操作数作用域及read参数契约；零除/非有限运算typed拒绝，预算数值及positive/available声明核验，预算禁用优先于该动作错误理由，免费合法终态仍可用。新增8回归、206专项及1371全量通过，lint PASS。Update两候选paired无增益拒绝，cash-burn literal/description校验失败；后者输入/validator兼容及最新代码完整真实链路、幅度塌缩/旧proxy/absence仍待验收。报告：reports/v167-final-slow-reliability-review-20261002.md。
 
 2026-10-02：隔离打通Mining必要context与来源关联：Signal卡由精确spec投影能力契约，原spec/skill通过既有signals目录动作按16KB完整读取；与backlog共用whole-entry选择器，保持原始hash/掩码及既有预算。需求卡披露来源匿名案例与当前dev的关系及实际预测时点；输入构建前检查refs/times/disclosure依赖。fact/event新增case作用域、event身份独立于查询摘要，叙事目录/read/receipt保留多案例绑定，属性按文档唯一扫描并逐案例投影。99份v167原始材料、18个精确Signal（两批有界读取）、四个语义问题需求、66个目录条目、三次叙事及一次结构化读取零网络回放通过；预算非负、来源/hash保持。新增5项回归，198专项、1363全量及lint PASS。v167仍冻结8c07f383，已进入magnitude Discovery，Fast=1/Slow=0，固定24案F1 .7586/.7200；最新修复的模型语义和完整后继实测仍待验收。报告：reports/v167-mining-context-provenance-review-20261002.md。

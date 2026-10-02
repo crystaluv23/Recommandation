@@ -421,5 +421,33 @@
     "Actual latest-code Fast/Slow output and next-cycle consumption unverified.",
     "Existing proxy coverage and absence claims are not retroactively validated.",
     "Update cash-burn failed literal-fact and definition validators; input/validator compatibility remains to audit."
-  ]
+  ],
+  "cash_burn_literal_frontier": {
+    "request_ref": "5f8b916b1c7d6c15c36afeba5d048ce993bb8cae58e956fa3a00ba77f7f20248",
+    "source_literals_were_visible": true,
+    "subset_matches": [
+      {
+        "case_ref": "update-case-001",
+        "document_ref": "document-01",
+        "supplied_span": "{\"accn\":\"0001213900-25-033933\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-22\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":4148279}",
+        "unique_whole_source_match_count": 1,
+        "source_span": "{\"accn\":\"0001213900-25-033933\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-22\",\"form\":\"20-F\",\"fp\":\"FY\",\"frame\":\"CY2024Q4I\",\"fy\":2024,\"val\":4148279}",
+        "omitted_fields": [],
+        "difference": "JSON object key order only",
+        "canonical_json_equal": true
+      },
+      {
+        "case_ref": "update-case-003",
+        "document_ref": "document-01",
+        "supplied_span": "{\"accn\":\"0001438133-25-000157\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-06\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":64112000}",
+        "unique_whole_source_match_count": 1,
+        "source_span": "{\"accn\":\"0001438133-25-000157\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-06\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":64112000}",
+        "omitted_fields": [],
+        "difference": "JSON object key order only",
+        "canonical_json_equal": true
+      }
+    ],
+    "deterministic_repair_implemented": false,
+    "other_known_problem": "Some diagnostics claim a comparable prior is not visible while a prior operating-cash-flow record is present; this needs separate content verification."
+  }
 }
