@@ -638,3 +638,5 @@
 - 2026-10-02：v176因第8案例Signal retrieval HTTP402余额不足退出1；7完成/0技术排除/0技术FN、指针0/0。86request与85response hash、70blind payload outcome-key、144全Basic卡/状态增量/预测存储核验通过。禁网隔离实际入口复用2proposal/7trajectory及第8案2cache，精确到原402 request frontier；原指针/ledger/contract不改。完整评分/Slow双轴新因子仍待余额恢复；已向用户询问，不将资金失败计研究FN。见reports/v176-402-and-resume-audit-20261002.md。
 
 - 2026-10-02：审计两案例v168→v170反转的真实输入、原patch和Slow经验trace；保存四请求/85卡/10经验消费证据与复用现有ReflectionItem的成对诊断建议，区分输入变化、语义风险和同输入不稳定；无生产代码/评分变更。
+
+- 2026-10-04：评审项目目标与系统设计，结合BlackRock Systematic、Man Numeric、Robeco、Two Sigma公开方法作对照；核验真实提交指针和未实现产品模块，记录研究代理、预期差及独立验证缺口；仅更新进度与经验咨询记录，无运行代码或研究合同变更。
