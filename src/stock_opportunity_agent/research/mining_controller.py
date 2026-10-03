@@ -330,6 +330,7 @@ class LabelAwareMiningController:
         self.memory_index = memory_index
         self.slow_method_memory = deepcopy(dict(slow_method_memory or {}))
         self._memory_read_refs: set[str] = set()
+        self._memory_shown_refs: set[str] = set()
         self._browse_used = 0
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
@@ -856,7 +857,7 @@ class LabelAwareMiningController:
                 elif scope == "signals":
                     payload = self._signal_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 elif scope == "memory":
-                    payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"), level=raw.get("level"))
+                    payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"), level=raw.get("level"), signal_ref=raw.get("signal_ref"))
                 elif scope == "backlog":
                     payload = self._backlog_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 else:
@@ -1319,6 +1320,15 @@ class LabelAwareMiningController:
         candidate = raw.get("candidate")
         if not isinstance(candidate, Mapping):
             raise InvalidMiningAction("candidate must be an object")
+        if "usage_context" in candidate:
+            from stock_opportunity_agent.memory.knowledge import usage_context
+
+            try:
+                context = usage_context(candidate["usage_context"])
+            except ValidationError as exc:
+                raise InvalidMiningAction(str(exc)) from exc
+            if set(context["related_refs"]) - (self._memory_shown_refs | self._memory_read_refs):
+                raise InvalidMiningAction("candidate usage context references undisclosed Experience")
         measurement = candidate.get("measurement")
         allowed_keys = {"observable", "value_kind", "normalization"}
         if (
@@ -1817,7 +1827,8 @@ class LabelAwareMiningController:
         if _STATE_ORDER[target] > _STATE_ORDER[self._state]:
             self._state = target
 
-    def _memory_view(self, *, cursor: int = 0, item_refs: Any = None, level: str | None = None) -> dict[str, Any]:
+    def _memory_view(self, *, cursor: int = 0, item_refs: Any = None, level: str | None = None,
+                     signal_ref: str | None = None) -> dict[str, Any]:
         """Expose whole brief pages and resolve selected immutable local entries."""
         if self.memory_index is not None:
             if item_refs is not None:
@@ -1840,15 +1851,18 @@ class LabelAwareMiningController:
                 self._memory_read_refs.update(item_refs)
                 return packet
             try:
-                directory = self.memory_index.directory(cursor=cursor, level=level, max_bytes=5_000)
+                directory = self.memory_index.directory(cursor=cursor, level=level, signal_ref=signal_ref, max_bytes=5_000)
                 initial = self.memory_index.brief_view(max_bytes=6_000, max_items=6)
+                self._memory_shown_refs.update(row["item_ref"] for row in [*directory["items"], *initial["items"]])
             except ValidationError as exc:
                 raise InvalidMiningAction(str(exc)) from exc
             view = {**initial, "directory": directory,
-                    "read_action": "inspect_catalog scope=memory cursor/level, or item_refs for item/source originals",
+                    "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
                     "read_byte_limit": 48_000, "budget_class": "browse"}
             return _mask_identity_values(view, self.identity_aliases, expand_aliases=False)
         items = self.meta_memory_briefs.get("items")
+        if signal_ref is not None:
+            raise InvalidMiningAction("Signal-filtered Experience browsing requires sourced indexed memory")
         if not isinstance(items, list):
             if json_bytes(self.meta_memory_briefs) > 8_000:
                 raise ValidationError("mining memory requires indexed entries above 8000 bytes")
@@ -1863,6 +1877,7 @@ class LabelAwareMiningController:
             selected = [by_ref[ref] for ref in item_refs]
             if json_bytes(selected) > 16_000:
                 raise InvalidMiningAction("memory read exceeds 16000 whole-entry bytes")
+            self._memory_read_refs.update(item_refs)
             return {"items": deepcopy(selected), "included_refs": list(item_refs),
                     "counts": {"available": len(entries), "included": len(selected),
                                "omitted": len(entries) - len(selected)}}
@@ -1874,6 +1889,8 @@ class LabelAwareMiningController:
              "preview_truncated": len(str(row.get("brief", ""))) > 160,
              "read_bytes": json_bytes(row)} for row in entries
         ], cursor=cursor, max_items=12, max_bytes=5_000)
+        self._memory_shown_refs.update(row["item_ref"] for row in [*page["items"], *directory["items"]]
+                                       if isinstance(row.get("item_ref"), str))
         return {**page, "included_refs": [row.get("item_ref") for row in page["items"]],
                 "directory": directory, "read_action": "inspect_catalog scope=memory item_refs",
                 "read_byte_limit": 16_000,

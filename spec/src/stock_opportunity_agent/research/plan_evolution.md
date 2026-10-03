@@ -131,6 +131,15 @@ path rather than introducing a worker thread.
 
 ## Committed Signal target tracking
 
+The same post-commit/restart path publishes source-bound knowledge-use rows for
+Experience and Signal via the memory-owned `KnowledgeUseStore`. A new PlanRecord
+retains its exact frozen `knowledge_signal_refs` menu, enabling known non-use
+controls without reconstructing historical menus from today's Registry.
+Absent legacy menus are unknown. Explicit Experience adoption is retained with
+the staged Plan. At round start the proposer receives a frozen performance
+overlay; next-round/Slow consumers see updated committed observations. Complete
+history derivatives survive FIFO eviction and hash-bound successor imports.
+
 After round commit, and on rebuilding committed archive derivatives at restart,
 `_record_signal_statistics` routes learning events through `signal_tracking`.
 Target observations are derived after existing physical statistics and remain

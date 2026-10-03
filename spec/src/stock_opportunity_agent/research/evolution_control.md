@@ -1,5 +1,12 @@
 # Evolution Control
 
+New Fast bootstrap and Slow-history manifests carry `knowledge_observations`
+derived from complete pointer-reachable records and authorized transitive imports.
+Rows preserve their original opaque case/scope and event identities. Old manifests
+without this optional array remain immutable and authorize no inferred Experience
+adoption. Pre-contract definition materialization does not expose imported
+performance; only the published hash-bound run contract grants read authority.
+
 New committed-history/bootstrap manifests may carry immutable
 `prediction_observations` built from their authorized committed Fast records.
 Imports verify observation content identity and retain origin contract/record/

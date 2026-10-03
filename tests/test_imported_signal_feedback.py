@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
 
-from stock_opportunity_agent.artifacts import canonical_json_hash
+from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.signal_library import SignalExecutor
@@ -16,12 +16,22 @@ from stock_opportunity_agent.research.signal_evolution import DualLoopEvolutionE
 from stock_opportunity_agent.research.signal_tracking import imported_learning_events, record_committed_signal_use
 from tests import test_signal_tracking as tracking_fixture
 from tests.evolution_runtime_test_support import make_contract
-from tests.scheme_evolution_test_support import NOW, sec_company_facts_content
+from tests.scheme_evolution_test_support import NOW, sec_company_facts_content, make_record
 
 
 class ImportedSignalFeedbackTests(TestCase):
     setUp = tracking_fixture.SignalTrackingTests.setUp
     event = tracking_fixture.SignalTrackingTests.event
+
+    def commit_fixture_round(self):
+        """Publish canonical round records as well as the ledger test's pointer."""
+        workspace = self.engine.workspace
+        record = make_record("fixture_plan", 1.0, (1.0,))
+        atomic_write_json(workspace.root / "plans" / record.plan_id / "record.json", record.to_dict())
+        checkpoint = workspace.root / "experiments" / "round-0001" / "checkpoint.json"
+        atomic_write_json(checkpoint, {"round_id": 1, "plan_ids": [record.plan_id],
+                                     "run_contract_hash": "fixture"})
+        atomic_write_json(workspace.state_path, {"last_completed_round": 1, "checkpoint_ref": str(checkpoint)})
 
     def publish_next_version(self):
         """Use production admission/publication, preserving prior admission identity."""
@@ -79,7 +89,7 @@ class ImportedSignalFeedbackTests(TestCase):
     def test_imported_target_scope_ceiling_survives_nested_history(self):
         source = self.event("history-target", 4.0, round_id=1)
         record_committed_signal_use(self.registry, (source,))
-        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        self.commit_fixture_round()
         rows, _manifest = self.engine._committed_slow_feedback()
         row = next(row for row in rows if row["kind"] == "signal_target_observation")
         original = self.bind_target_history(source, row, ["H1", "H3", "E2", "Update", "reflection"])
@@ -98,7 +108,7 @@ class ImportedSignalFeedbackTests(TestCase):
     def test_imported_target_scope_preserves_narrower_roles_and_requires_scope(self):
         source = self.event("narrow-history", 4.0, round_id=1)
         record_committed_signal_use(self.registry, (source,))
-        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        self.commit_fixture_round()
         rows, _manifest = self.engine._committed_slow_feedback()
         row = next(row for row in rows if row["kind"] == "signal_target_observation")
         self.bind_target_history(source, row, ["Update"])
@@ -199,7 +209,7 @@ class ImportedSignalFeedbackTests(TestCase):
         pending = self.event("local-uncommitted", 7.0, round_id=2)
         record_committed_signal_use(self.registry, (source, pending))
         current = self.publish_next_version()
-        self.engine.workspace.state_path.write_text('{"last_completed_round":1}')
+        self.commit_fixture_round()
         rows, _manifest = self.engine._committed_slow_feedback()
         self.assertEqual([row["event"] for row in rows if row["kind"] == "signal_usage"], [source.to_dict()])
         profiles = [row for row in rows if row["kind"] == "signal_target_observation"]
@@ -228,7 +238,7 @@ class ImportedSignalFeedbackTests(TestCase):
             plan_rounds_per_signal_cycle=1)
         with self.assertRaises(ReachedSlow):
             engine.run_cycle(cycle_id=1)
-        workspace.state_path.write_text('{"last_completed_round":1}')
+        self.commit_fixture_round()
         with self.assertRaises(ReachedSlow):
             engine.run_cycle(cycle_id=1, completed_plan_rounds=1)
         self.assertEqual(captured[0].learning_hash, captured[1].learning_hash)

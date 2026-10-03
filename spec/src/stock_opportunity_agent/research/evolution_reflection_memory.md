@@ -38,6 +38,22 @@ files, calls models, or grants access to Raw Info or blind execution.
 
 ## Contract
 
+- Every brief includes shared `usage_context` and a runtime `performance` view.
+  The existing scope conditions explain when to retrieve/apply the item;
+  limitations describe economic/research conditions in which its interpretation
+  weakens or fails. Optional `related_signal_refs` index exact versions supported
+  by the cited source closure. Legacy empty boundaries stay unknown.
+  Runtime profile overlays do not enter the immutable item's content hash or its
+  original-source read result. Directory and initial brief use the same overlay.
+  Missing observations have a complete zero-count/null-rate evaluation view.
+  `directory(signal_ref=...)` filters by explicit exact-version associations;
+  pagination counts/cursors refer to that filtered population. The optional
+  filter is supported by proposer/reflection browsing and Mining memory catalog.
+- New Plan proposals explicitly list `used_experience_refs` from actually
+  disclosed briefs/original items. Empty means no adoption; legacy absent
+  metadata means unknown. Runtime binds the exact disclosed-view snapshot,
+  validates refs and keeps the metadata outside blind role instructions.
+
 - `cross_round` is an additive level above case/Plan/round. It registers complete
   same-case paired observation originals and runtime change facts, and projects
   source-linked Slow comparison episodes without inventing explanations.

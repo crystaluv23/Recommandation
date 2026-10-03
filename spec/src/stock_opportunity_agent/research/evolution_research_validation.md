@@ -29,6 +29,11 @@ future actuals are corrected by typed local LLM edits, never silently rewritten.
 
 ## Purpose
 
+Plan output validation admits optional `used_experience_refs` alongside the four
+strategy keys. The owning proposer validates actual disclosure/adoption and
+binds runtime metadata; this optional audit field never changes research-state
+evidence or the fixed Predictor output.
+
 Validate point-in-time research state, evidence references, Signal results,
 reflection transitions, and Predictor inputs after generic JSON parsing.
 

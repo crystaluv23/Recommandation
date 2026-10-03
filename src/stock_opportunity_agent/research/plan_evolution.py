@@ -35,6 +35,7 @@ from stock_opportunity_agent.signal_library import (
 )
 
 from stock_opportunity_agent.llm.agent import AgentUsage
+from stock_opportunity_agent.memory.knowledge import KnowledgeUseStore
 from stock_opportunity_agent.research.signal_tracking import record_committed_signal_use
 from stock_opportunity_agent.research.evolution_core import (
     BlindPrediction,
@@ -1792,7 +1793,9 @@ class EvolutionWorkspace:
             )
             for round_id in range(1, self.last_completed_round + 1)
         ]
-        return PlanMetaMemory(maxlen=maxlen, entries=entries)
+        memory = PlanMetaMemory(maxlen=maxlen, entries=entries)
+        memory.experience_profiles = KnowledgeUseStore(self.root).profiles(publish=False)
+        return memory
 
     def load_experiment_records(self, *, limit: int = 100) -> list[dict[str, Any]]:
         """Return committed summaries for the Signal Update Agent."""
@@ -2066,8 +2069,11 @@ class PlanEvolutionEngine:
         self.case_readiness = case_readiness
         self.run_contract_hash = run_contract_hash
         self.on_progress = on_progress
+        self.knowledge_store = KnowledgeUseStore(self.workspace.root)
+        self.signal_registry.knowledge_workspace_root = self.workspace.root
         for committed_record in self.archive.records:
             self._record_signal_statistics(committed_record)
+        self.meta_memory.experience_profiles = self.knowledge_store.profiles()
 
     def run_round(
         self,
@@ -2081,6 +2087,9 @@ class PlanEvolutionEngine:
 
         if round_id != self.workspace.last_completed_round + 1:
             raise ValidationError("fast-loop round id does not follow committed state")
+        set_profiles = getattr(self.proposer, "set_experience_profiles", None)
+        if callable(set_profiles):
+            set_profiles(self.meta_memory.experience_profiles)
         rejected = self.workspace.load_round_rejection(round_id)
         if rejected is not None:
             checkpoint = (
@@ -2528,6 +2537,7 @@ class PlanEvolutionEngine:
                         metrics_by_cohort=result.metrics_by_cohort,
                     ),
                     fitness=result.fitness,
+                    knowledge_signal_refs=tuple(spec.ref for spec in signal_snapshot.specs),
                 )
             )
 
@@ -2593,6 +2603,7 @@ class PlanEvolutionEngine:
             self.archive.add(record)
             self._record_signal_statistics(record)
         self.meta_memory.append(meta_entry)
+        self.meta_memory.experience_profiles = self.knowledge_store.profiles()
         self.workspace.refresh_capability_backlog(
             available_source_types=self.capability_source_types
         )
@@ -2765,3 +2776,6 @@ class PlanEvolutionEngine:
                         is_surge=trajectory.ground_truth.is_surge,
                     )
         record_committed_signal_use(self.signal_registry, _signal_learning_events_from_record(record))
+        record_path = self.workspace.plans_root / record.plan_id / "record.json"
+        if record_path.is_file():
+            self.knowledge_store.record(_read_json(record_path), contract_hash=self.run_contract_hash)

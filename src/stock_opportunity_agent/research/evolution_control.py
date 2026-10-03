@@ -52,6 +52,7 @@ from stock_opportunity_agent.data.sources.state import (
 )
 from stock_opportunity_agent.data.sources.stooq import StooqClient
 from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.memory.knowledge import KnowledgeUseStore
 from stock_opportunity_agent.llm.openrouter_jev import (
     DEFAULT_JEV_MODEL,
     DEFAULT_JEV_URL,
@@ -1741,6 +1742,7 @@ def build_slow_history_manifest(
         "registry_hash": snapshot.registry_hash,
         "registry_definition_files": definition_files,
         "learning_events": learning_events,
+        "knowledge_observations": list(KnowledgeUseStore(source_root).committed_rows()),
         "cycle_artifacts": cycle_artifacts,
         "candidate_files": candidate_files,
     }
@@ -2290,6 +2292,7 @@ def _build_committed_fast_bootstrap_manifest(
         "prediction_observations": [*source_workspace.imported_prediction_observations(),
                                     *source_workspace.committed_prediction_observations(round_ids=expected_round_ids)],
         "signal_learning_events": [event.to_dict() for event in learning_events],
+        "knowledge_observations": list(KnowledgeUseStore(source_root).committed_rows()),
         "capability_backlog_seed": aggregate_capability_gaps(
             trajectories,
             signal_need_items=signal_need_items,

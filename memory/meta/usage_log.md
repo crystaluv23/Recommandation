@@ -264,3 +264,11 @@
 - 2026-10-04：系统设计与机构公开方法对照评审；咨询 experiences/self-evolution-convergence-and-acceptance.md，区分工程执行、实际反馈消费与独立研究收益，并重新核验v171/v176提交指针；历史报告只作有日期的证据，不代替当前状态。
 
 - 2026-10-04：跨轮反思与experience→Mining消费修复；咨询incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance、additive-reflection-fifo、python-runtime-for-tests。保留正式提交/授权导入的双侧原件，未知反转原因不变成研究因果结论；完整本地目录与有界实际请求分离，重放证明消费链路，不冒充live经验或因子增益。
+
+- 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/signal-learning-profile-cycle-freeze.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.
+
+- 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/self-evolution-convergence-and-acceptance.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.
+
+- 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/incremental-repair-and-sourced-memory.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.
+
+- 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/python-runtime-for-tests.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.

@@ -161,7 +161,7 @@ def _validate_raw_information_plan_request_fields(
     required = {"B", "H_init", "H_reflect", "H_analyse"}
     for name in sorted(required - set(value)):
         issue(name, f"information_plan_propose is missing {name}", ("add",))
-    for name in sorted(set(value) - required):
+    for name in sorted(set(value) - required - {"used_experience_refs"}):
         issue(name, f"information_plan_propose has unexpected field {name}", ("remove",), invalid_container=True)
     for name in ("H_init", "H_reflect", "H_analyse"):
         if name in value and (not isinstance(value[name], str) or not value[name].strip()):

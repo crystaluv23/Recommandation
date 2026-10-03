@@ -97,6 +97,17 @@ loss is a structural defect rather than a modeled risk.
 
 ## Shared stage reliability contract
 
+Experience and Signal brief cards share the deterministic knowledge-use summary
+contract in [knowledge summaries](src/stock_opportunity_agent/memory/knowledge.md).
+Both expose applicable/invalidating contexts, related stable references and
+committed observational performance. Signal indexes related Experience; Experience
+retains exact Signal references without inheriting their success automatically.
+Outcome-aware Experience summaries remain in retrospective learning roles.
+Explicit Plan adoption is audit metadata, separate from its four evolvable
+instructions; blind execution receives those instructions without retrospective
+performance or Experience originals. Dynamic summaries never rewrite source
+content, labels, Plan fitness or Signal admission policy.
+
 Cross-round same-case reflection is an additive retrospective layer at the
 Fast-to-Slow boundary. It compares only committed, contract-authorized
 observations for the same issuer, prediction time and outcome contract. Runtime

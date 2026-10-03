@@ -11,6 +11,7 @@ from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.memory.knowledge import empty_performance, source_signal_refs
 from stock_opportunity_agent.research.cross_round_reflection import validate_prediction_comparison
 
 
@@ -318,6 +319,7 @@ class ReflectionItem:
     counter_refs: tuple[str, ...] = ()
     outcome_claims: tuple[Mapping[str, Any], ...] = ()
     evidence_status: str = "sources_checked"
+    related_signal_refs: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if self.level not in _CATEGORIES or self.category not in _CATEGORIES[self.level]:
@@ -341,6 +343,10 @@ class ReflectionItem:
         if not self.source_refs:
             raise ValidationError("reflection item requires supporting sources")
         object.__setattr__(self, "outcome_claims", tuple(deepcopy(dict(x)) for x in self.outcome_claims))
+        related = _strings(self.related_signal_refs, "related_signal_refs")
+        if len(related) > 12 or any(re.fullmatch(r"[a-z0-9_:-]+:v[1-9][0-9]*", ref) is None for ref in related):
+            raise ValidationError("related_signal_refs must name bounded exact versions")
+        object.__setattr__(self, "related_signal_refs", related)
         _approved(self._content())
         if self.item_ref != _ref("reflection", self._content()):
             raise ValidationError("reflection item content hash mismatch")
@@ -354,6 +360,7 @@ class ReflectionItem:
             "source_refs": list(self.source_refs), "counter_refs": list(self.counter_refs),
             "outcome_claims": [deepcopy(dict(x)) for x in self.outcome_claims],
             "evidence_status": self.evidence_status,
+            **({"related_signal_refs": list(self.related_signal_refs)} if self.related_signal_refs else {}),
         }
 
     def to_dict(self) -> dict[str, Any]:
@@ -387,10 +394,12 @@ class ReflectionMemoryIndex:
     Caller-owned role projections must already be anonymous and committed.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, performance_profiles: Mapping[str, Mapping[str, Any]] | None = None) -> None:
         self._sources: dict[str, dict[str, Any]] = {}
         self._items: dict[str, ReflectionItem] = {}
         self._preferred: list[str] = []
+        self._performance_profiles = deepcopy(dict(performance_profiles or {}))
+        _approved(self._performance_profiles)
 
     def _source(self, value: Mapping[str, Any], *, level: str, case_refs: Iterable[str] = (), plan_refs: Iterable[str] = (), canonical_outcomes: Mapping[str, Any] | None = None) -> str:
         content = deepcopy(dict(value))
@@ -561,8 +570,9 @@ class ReflectionMemoryIndex:
         return result
 
     @classmethod
-    def from_entries(cls, entries: Iterable[Mapping[str, Any]]) -> "ReflectionMemoryIndex":
-        result = cls()
+    def from_entries(cls, entries: Iterable[Mapping[str, Any]], *,
+                     performance_profiles: Mapping[str, Mapping[str, Any]] | None = None) -> "ReflectionMemoryIndex":
+        result = cls(performance_profiles=performance_profiles)
         for raw in entries:
             row = deepcopy(dict(raw))
             row.pop("round_id", None)
@@ -642,6 +652,10 @@ class ReflectionMemoryIndex:
 
     def _catalog_row(self, source: Mapping[str, Any]) -> dict[str, Any]:
         value = {key: deepcopy(item) for key, item in source.items() if key != "content"}
+        signals = sorted(source_signal_refs(source["content"]))
+        if signals:
+            value["signal_refs"] = signals[:12]
+            value["signal_refs_omitted"] = max(0, len(signals) - 12)
         value["source_kind"] = (
             "runtime_plan_statistics" if source.get("runtime_statistics") else
             "item" if source["source_ref"] in self._items else
@@ -732,6 +746,13 @@ class ReflectionMemoryIndex:
 
     def _brief(self, item: ReflectionItem) -> dict[str, Any]:
         value = item.brief_dict()
+        # These are projections; originals and their content-addressed refs stay intact.
+        value["usage_context"] = {
+            "when_to_use": item.scope["conditions"] or None,
+            "failure_conditions": list(item.limitations),
+            "related_refs": list(item.related_signal_refs),
+        }
+        value["performance"] = deepcopy(self._performance_profiles.get(item.item_ref, empty_performance()))
         status = self._statistics_status(item)
         if status:
             value["statistics_status"] = status
@@ -836,9 +857,10 @@ class ReflectionMemoryIndex:
         allowed = {"category", "kind", "brief", "detail", "scope", "limitations", "source_refs", "counter_refs", "outcome_claims"}
         ranks = {level: rank for rank, level in enumerate(_CATEGORIES)}
         for raw in raw_items:
-            if not isinstance(raw, Mapping) or set(raw) != allowed:
+            if not isinstance(raw, Mapping) or not allowed <= set(raw) or set(raw) - allowed - {"related_signal_refs"}:
                 invalid("reflection item fields differ from the authored contract", "", container=True)
             value = deepcopy(dict(raw))
+            related = strings(value.get("related_signal_refs", ()), "related_signal_refs")
             for name in ("category", "kind", "brief", "detail"):
                 if not isinstance(value[name], str) or not value[name].strip():
                     invalid(f"reflection item {name} must be nonempty text", name, container=True)
@@ -929,6 +951,12 @@ class ReflectionMemoryIndex:
                 _reject_pit_inexecutable_action(
                     value, invalid, ("brief", "detail")
                 )
+            if related:
+                known_signals = source_signal_refs([source["content"] for source in supporting])
+                if set(related) - known_signals:
+                    invalid("related Signal version is absent from supporting sources", "related_signal_refs", ("source_refs",))
+            else:
+                value.pop("related_signal_refs", None)
             content = {**value, "level": level, "owner_ref": owner_ref, "evidence_status": "sources_checked"}
             item = ReflectionItem.from_dict({"item_ref": _ref("reflection", content), **content})
             result.append(item)
@@ -1010,14 +1038,21 @@ class ReflectionMemoryIndex:
             raise ValidationError("reflection brief budget cannot fit its manifest")
         return result
 
-    def directory(self, *, cursor: int = 0, max_bytes: int = 8_000, level: str | None = None) -> dict[str, Any]:
+    def directory(self, *, cursor: int = 0, max_bytes: int = 8_000, level: str | None = None,
+                  signal_ref: str | None = None) -> dict[str, Any]:
         """Page complete briefs under a full-envelope budget for deferred discovery."""
         if level is not None and (not isinstance(level, str) or level not in _CATEGORIES):
             raise ValidationError("reflection directory level is invalid")
-        catalog = [self._brief(item) for item in reversed(tuple(self._items.values())) if level is None or item.level == level]
+        if signal_ref is not None and (not isinstance(signal_ref, str) or re.fullmatch(r"[a-z0-9_:-]+:v[1-9][0-9]*", signal_ref) is None):
+            raise ValidationError("reflection Signal index requires an exact version")
+        catalog = [self._brief(item) for item in reversed(tuple(self._items.values()))
+                   if (level is None or item.level == level)
+                   and (signal_ref is None or signal_ref in item.related_signal_refs)]
         if type(cursor) is not int or not 0 <= cursor <= len(catalog):
             raise ValidationError("reflection directory cursor is invalid")
         result: dict[str, Any] = {"items": [], "total": len(catalog), "level": level, "next_cursor": cursor if cursor < len(catalog) else None, "oversized_refs": []}
+        if signal_ref is not None:
+            result["signal_ref"] = signal_ref
         for position in range(cursor, len(catalog)):
             next_cursor = position + 1 if position + 1 < len(catalog) else None
             trial = {**result, "items": [*result["items"], catalog[position]], "next_cursor": next_cursor}

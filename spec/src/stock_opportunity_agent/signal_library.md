@@ -628,6 +628,15 @@ coercion. The only conservative normalization remains the documented
 
 ## Version-Bound Learning Ledger
 
+Signal brief cards expose shared `usage_context` and `performance` summaries.
+Optional versioned `parameters.usage_context` contains `when_to_use`,
+`failure_conditions`, and Experience `related_refs`; these are economic/research
+interpretation boundaries, not changes to the executable measurement definition.
+Missing legacy context is explicitly unknown. Performance derives from committed
+valid execution records, preserves unique issuer/time counts and technical
+limitations, and makes no causal-effect claim. Exact versions never inherit
+one another's statistics. Frozen group profiles and hashes include the summaries.
+
 Every valid Signal selection returns the exact ref, a bounded reason code, a
 short selection reason, an applicability hypothesis, an expected role, and
 up to four coarse context tags from a fixed identity-free taxonomy covering

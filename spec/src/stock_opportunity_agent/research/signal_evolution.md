@@ -1,5 +1,12 @@
 # Signal and Dual-Loop Evolution
 
+Mining receives the same committed Experience performance overlays as the next
+Fast proposer. Its Signal/Experience cards expose shared usage context and
+observational performance; all original-source reads remain unchanged. Candidate
+usage context is validated against actually disclosed Experience refs, then
+preserved deterministically inside the materialized Signal parameters. It does
+not change admission, research labels or causal-effect status.
+
 ## Technical admission and independent effect observations
 
 The 2026-10-02 user decision admits technically valid direction and magnitude

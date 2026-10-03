@@ -522,6 +522,13 @@ class SignalSpec:
                 "LLM signal requires skill_file and cannot use deterministic function"
             )
         parameters = dict(self.parameters)
+        if "usage_context" in parameters:
+            from stock_opportunity_agent.memory.knowledge import usage_context
+
+            context = usage_context(parameters["usage_context"])
+            if any(not ref.startswith("reflection:") for ref in context["related_refs"]):
+                raise ValidationError("Signal usage context must index Experience refs")
+            parameters["usage_context"] = context
         routing_phrases = parameters.get("routing_need_phrases")
         if routing_phrases is not None and (
             not isinstance(routing_phrases, list)
@@ -1204,6 +1211,7 @@ class SignalCard:
     execution_type: SignalExecutionType
     learned_profile: Mapping[str, Any] = field(default_factory=dict)
     research_status: Mapping[str, Any] = field(default_factory=dict)
+    usage_context: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "learned_profile", dict(self.learned_profile))
@@ -1214,6 +1222,8 @@ class SignalCard:
         return f"{self.signal_id}:v{self.version}"
 
     def to_dict(self) -> dict[str, Any]:
+        from stock_opportunity_agent.memory.knowledge import empty_performance, usage_context
+
         return {
             "signal_ref": self.ref,
             "signal_id": self.signal_id,
@@ -1222,6 +1232,8 @@ class SignalCard:
             "description": self.description,
             "execution_type": self.execution_type.value,
             "learned_profile": _thaw_json(self.learned_profile),
+            "usage_context": usage_context(_thaw_json(self.usage_context)),
+            "performance": _thaw_json(self.learned_profile.get("performance", empty_performance())),
             **({"research_status": _thaw_json(self.research_status)} if self.research_status else {}),
         }
 
@@ -1682,6 +1694,7 @@ class SignalRegistry:
         candidate_root: str | Path | None = None,
     ) -> None:
         self.root = Path(root)
+        self.knowledge_workspace_root = self.root.parent
         self.candidate_root = (
             Path(candidate_root)
             if candidate_root is not None
@@ -1825,6 +1838,9 @@ class SignalRegistry:
         """Return compact cards for the current stable versions."""
 
         self._assert_registry_readable()
+        from stock_opportunity_agent.memory.knowledge import KnowledgeUseStore
+
+        performance = KnowledgeUseStore(self.knowledge_workspace_root).profiles(publish=False)
         cards: list[SignalCard] = []
         for manifest_path in sorted(self.root.glob("*/*/manifest.json")):
             manifest = _read_json(manifest_path)
@@ -1840,8 +1856,10 @@ class SignalRegistry:
                     category=spec.category,
                     description=spec.description,
                     execution_type=spec.execution_type,
-                    learned_profile=self.load_learning_profile(spec.ref),
+                    learned_profile={**self.load_learning_profile(spec.ref),
+                        **({"performance": performance[spec.ref]} if spec.ref in performance else {})},
                     research_status=self.load_research_status(spec.ref),
+                    usage_context=_thaw_json(spec.parameters.get("usage_context")),
                 )
             )
         return tuple(sorted(cards, key=lambda card: (card.category, card.signal_id)))
@@ -2224,12 +2242,17 @@ class SignalRegistry:
             separators=(",", ":"),
         )
         learned_profiles = {}
+        from stock_opportunity_agent.memory.knowledge import KnowledgeUseStore, empty_performance
+
+        performance = KnowledgeUseStore(self.knowledge_workspace_root).profiles(
+            round_cutoff=learning_round_cutoff, publish=False)
         for spec in specs:
             if learning_round_cutoff is None:
                 profile = self.load_learning_profile(spec.ref)
             else:
                 profile = self.load_committed_learning_profile(spec.ref,
                     round_cutoff=learning_round_cutoff, imported_events=imported_events)
+            profile["performance"] = performance.get(spec.ref, empty_performance())
             learned_profiles[spec.ref] = profile
         research_status = {card.ref: dict(card.research_status) for card in cards if card.research_status}
         learning_canonical = json.dumps(

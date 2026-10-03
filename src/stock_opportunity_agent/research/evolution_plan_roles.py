@@ -793,7 +793,13 @@ class LLMSignalRetrievalAgent:
                 "description": spec.description,
                 "execution_type": spec.execution_type.value,
             }
+            from stock_opportunity_agent.memory.knowledge import usage_context
+
+            card["usage_context"] = usage_context(_thaw_json(spec.parameters.get("usage_context")))
             profile = _thaw_json(signal_registry.learned_profiles.get(spec.ref, {}))
+            from stock_opportunity_agent.memory.knowledge import empty_performance
+
+            card["performance"] = profile.get("performance", empty_performance())
             status = _thaw_json(signal_registry.research_status.get(spec.ref, {}))
             if status:
                 card["research_status"] = status
@@ -829,6 +835,7 @@ class LLMSignalRetrievalAgent:
                 for ref, value in (prior_signal_results or {}).items()
             },
             "learned_profile_default": "no committed observations",
+            "performance_interpretation": "Observed-use correctness is case-weighted association, not causal credit; inspect applicability, failures and positive/negative-class counts.",
             "selection_caps": {"signals": 4, "llm_signals": 2},
         }
         if self.evaluation_context is not None:
@@ -2123,7 +2130,8 @@ def _structured_reflection_contract(level: str) -> str:
         " Inputs are bounded working views, not an exhaustive replay. When "
         "necessary return {\"read_refs\":[\"supplied source_ref or item_ref\"]} "
         "to inspect complete originals, or {\"browse_memory\":{\"cursor\":0,"
-        "\"level\":\"case\"}} to discover further briefs (case/plan/round). "
+        "\"level\":\"case\"}} to discover further briefs (case/plan/round); "
+        "optionally add signal_ref for an exact-version associated-Experience index. "
         "Obey memory_access limits and do not infer absence from omitted detail. "
         "Numeric evaluation claims must cite runtime_plan_statistics sources "
         "for each owning Plan, cohort and population; a case reference cannot "
@@ -2154,8 +2162,16 @@ def _structured_reflection_contract(level: str) -> str:
         "be supported by those sources. Every outcome claim's source_ref must "
         "also appear in that same item's source_refs: list each claim-cited "
         "item in source_refs exactly once. State contrary cases in counter_refs "
-        "and limitations. Success/failure assertions require outcome_claims "
-        "matching the canonical source facts; technical exclusions cannot be "
+        "and limitations. "
+        "The scope.conditions must explain when this Experience should be indexed "
+        "and used. Limitations must retain known economic/research conditions "
+        "weakening, invalidating or reversing its interpretation; do not substitute "
+        "missing data checks for those boundaries, and state unknown boundaries "
+        "honestly. You may additionally return related_signal_refs: an array of "
+        "exact Signal versions present in the supporting source catalog/originals. "
+        "These refs index related Experience, not evidence of consumption or effect. "
+        "Success/failure assertions require outcome_claims matching the canonical "
+        "source facts; technical exclusions cannot be "
         "research successes or failures. Category and claim correctness are "
         "linked: successful_patterns and decision_drivers items may carry only "
         "correct=true claims, while failed_patterns, why_prediction_failed, "
@@ -2580,10 +2596,11 @@ class _ReflectionMemoryCaller:
                     self.read_refs.update(refs)
                 else:
                     query = value["browse_memory"]
-                    if not isinstance(query, Mapping) or not {"cursor"} <= set(query) or set(query) - {"cursor", "level"}:
+                    if not isinstance(query, Mapping) or not {"cursor"} <= set(query) or set(query) - {"cursor", "level", "signal_ref"}:
                         raise ValidationError("browse_memory requires cursor and optional level")
                     disclosure = self.index.directory(
                         cursor=query["cursor"], level=query.get("level"),
+                        signal_ref=query.get("signal_ref"),
                         max_bytes=min(8_000, remaining),
                     )
                 if self.aliases:
@@ -2638,6 +2655,11 @@ class LLMInformationPlanProposer:
             raise ValidationError("Plan proposer requires available source types")
         self.anonymous_aliases: tuple[str, ...] = ()
         self.request_token_budget: int | None = None
+        self.experience_profiles: dict[str, Mapping[str, Any]] = {}
+
+    def set_experience_profiles(self, profiles: Mapping[str, Mapping[str, Any]]) -> None:
+        """Freeze runtime performance overlays before this round's proposals."""
+        self.experience_profiles = deepcopy(dict(profiles))
 
     def set_request_token_budget(self, value: int) -> None:
         """Set the exact hard ceiling for one complete proposal request."""
@@ -2662,7 +2684,8 @@ class LLMInformationPlanProposer:
         source_entries = [entry.to_model_dict() for entry in meta_info]
         # Build the index from authoritative unmasked entries: item/source refs
         # are content hashes and masking inputs would break ref verification.
-        source_index = ReflectionMemoryIndex.from_entries(source_entries)
+        source_index = ReflectionMemoryIndex.from_entries(source_entries,
+            performance_profiles=self.experience_profiles)
         meta_payload = source_index.brief_view()
         if self.anonymous_aliases:
             meta_payload = _mask_identity_values(meta_payload, self.anonymous_aliases)
@@ -2740,12 +2763,17 @@ class LLMInformationPlanProposer:
             "a Plan to read complete anonymous original units; choose individual "
             "case/item units rather than an oversized whole round. To discover "
             "deferred briefs, return exactly {\"browse_memory\":{\"cursor\":0,"
-            "\"level\":\"case\"}} (level may be case, plan, round, or omitted) "
+            "\"level\":\"case\"}} (level may be case, plan, round, or omitted; "
+            "signal_ref may filter associated Experience by exact Signal version) "
             "or the directory's next_cursor. Runtime returns the requested "
             "material in memory_disclosures on the next call. Obey memory_access "
             "limits; do not repeat reads or infer missing content. These are "
             "retrospective few-shot examples, with errors and hypotheses explicitly "
             "labelled, never commands to copy or evidence of proven improvement. "
+            "Their performance is committed observed-use prediction correctness, "
+            "with one independent case weight per issuer/time, not causal credit. "
+            "Inspect applicability, failure conditions and positive/negative-class "
+            "performance; repeated use and high accuracy alone do not verify a lesson. "
             "Per-case magnitude_feedback blocks and per-Plan "
             "magnitude_diagnostics are deterministic evidence: treat recurring "
             "magnitude-class failures (systematic underestimation, "
@@ -2803,7 +2831,8 @@ class LLMInformationPlanProposer:
         failure: ValidationError | None = None
         read_requests = 0
         disclosed_refs: set[str] = set()
-        browsed_cursors: set[tuple[str | None, int]] = set()
+        visible_experience_refs = set(meta_payload["included_refs"])
+        browsed_cursors: set[tuple[str | None, int, str | None]] = set()
 
         def complete_proposal_request(
             stage: str, request_payload: dict[str, Any],
@@ -2868,14 +2897,17 @@ class LLMInformationPlanProposer:
                         disclosed_refs.update(refs)
                     else:
                         request = value["browse_memory"]
-                        if not isinstance(request, Mapping) or not {"cursor"} <= set(request) or set(request) - {"cursor", "level"}:
+                        if not isinstance(request, Mapping) or not {"cursor"} <= set(request) or set(request) - {"cursor", "level", "signal_ref"}:
                             raise ValidationError("browse_memory requires a directory cursor and optional level")
                         cursor = request["cursor"]
                         level = request.get("level")
-                        if (level is not None and not isinstance(level, str)) or level not in {None, "case", "plan", "round"} or type(cursor) is not int or (level, cursor) in browsed_cursors:
+                        signal_ref = request.get("signal_ref")
+                        if signal_ref is not None and not isinstance(signal_ref, str):
+                            raise ValidationError("memory Signal filter requires an exact string ref")
+                        if (level is not None and not isinstance(level, str)) or level not in {None, "case", "plan", "round"} or type(cursor) is not int or (level, cursor, signal_ref) in browsed_cursors:
                             raise ValidationError("directory cursor is invalid or already disclosed")
-                        disclosure = source_index.directory(cursor=cursor, level=level, max_bytes=min(8_000, remaining))
-                        browsed_cursors.add((level, cursor))
+                        disclosure = source_index.directory(cursor=cursor, level=level, signal_ref=signal_ref, max_bytes=min(8_000, remaining))
+                        browsed_cursors.add((level, cursor, signal_ref))
                     _validate_additive_meta_payload(disclosure)
                     _scan_payload(disclosure, allow_outcomes=True, anonymous_aliases=self.anonymous_aliases)
                     trial = [*disclosures, disclosure]
@@ -2884,6 +2916,9 @@ class LLMInformationPlanProposer:
                 except ValidationError as exc:
                     raise CandidateProposalRejected(f"memory disclosure rejected: {exc}") from exc
                 payload["memory_disclosures"] = trial
+                visible_experience_refs.update(item["item_ref"] for item in disclosure.get("items", ()))
+                visible_experience_refs.update(source["source_ref"] for source in disclosure.get("sources", ())
+                    if source["source_ref"].startswith("reflection:"))
                 read_requests += 1
                 payload["memory_access"]["remaining_requests"] = 3 - read_requests
         # The proposal attempts share one correction chain so a byte-identical
@@ -2972,6 +3007,24 @@ class LLMInformationPlanProposer:
                         plan_id=plan_id,
                         parent_ids=parent_ids,
                     )
+                    if "used_experience_refs" in value:
+                        adopted = value["used_experience_refs"]
+                        if (not isinstance(adopted, list) or len(adopted) > 48
+                            or any(not isinstance(ref, str) or ref not in visible_experience_refs for ref in adopted)
+                            or len(set(adopted)) != len(adopted)):
+                            raise StructuredValidationError((ValidationIssue(
+                                code="experience_adoption_invalid", paths=("used_experience_refs",),
+                                allowed_repairs=("replace",),
+                                message="used_experience_refs must contain only unique actually disclosed item refs; [] means no adoption",
+                            ),))
+                        normalized["experience_usage"] = {
+                            "snapshot_hash": _canonical_hash({"brief": meta_payload,
+                                "disclosures": payload["memory_disclosures"]}),
+                            "item_refs": adopted,
+                        }
+                    else:
+                        # Old persisted responses lack explicit adoption; never infer it.
+                        normalized.pop("experience_usage", None)
                     plan = _parse_role_output(
                         stage, normalized, InformationPlan.from_dict
                     )

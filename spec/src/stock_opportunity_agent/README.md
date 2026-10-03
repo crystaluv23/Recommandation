@@ -26,6 +26,7 @@ src/stock_opportunity_agent/
   llm
     agent
   memory
+    knowledge
     signals
     themes
     playbooks
@@ -81,6 +82,7 @@ spec/src/stock_opportunity_agent/
   data/backfill.md
   llm.md
   memory.md
+  memory/knowledge.md
   memory/signals.md
   memory/themes.md
   memory/playbooks.md

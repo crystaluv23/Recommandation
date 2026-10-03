@@ -665,6 +665,7 @@ class InformationPlan:
     initial_research_skill: str
     reflection_skill: str
     analysis_prompt: str
+    experience_usage: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         _validate_id(self.plan_id, "plan_id")
@@ -680,6 +681,20 @@ class InformationPlan:
             if not str(getattr(self, name)).strip():
                 raise ValidationError(f"information plan {name} must not be empty")
         object.__setattr__(self, "parent_ids", tuple(self.parent_ids))
+        if self.experience_usage is not None:
+            usage = self.experience_usage
+            if not isinstance(usage, Mapping) or set(usage) != {"snapshot_hash", "item_refs"}:
+                raise ValidationError("Plan experience_usage fields are invalid")
+            refs = usage["item_refs"]
+            if (not isinstance(usage["snapshot_hash"], str)
+                or re.fullmatch(r"[0-9a-f]{64}", usage["snapshot_hash"]) is None
+                or not isinstance(refs, (list, tuple)) or len(refs) > 48
+                or any(not isinstance(ref, str) or re.fullmatch(r"reflection:[0-9a-f]{64}", ref) is None for ref in refs)
+                or len(set(refs)) != len(refs)):
+                raise ValidationError("Plan experience_usage identity or refs are invalid")
+            object.__setattr__(self, "experience_usage", {
+                "snapshot_hash": usage["snapshot_hash"], "item_refs": tuple(refs),
+            })
 
     def canonical_dict(self) -> dict[str, Any]:
         """Return stable content for embedding and identity checks."""
@@ -701,6 +716,9 @@ class InformationPlan:
             "initial_research_skill": self.initial_research_skill,
             "reflection_skill": self.reflection_skill,
             "analysis_prompt": self.analysis_prompt,
+            **({"experience_usage": {"snapshot_hash": self.experience_usage["snapshot_hash"],
+                                      "item_refs": list(self.experience_usage["item_refs"])}}
+               if self.experience_usage is not None else {}),
         }
 
     @classmethod
@@ -714,6 +732,7 @@ class InformationPlan:
             initial_research_skill=str(data["initial_research_skill"]),
             reflection_skill=str(data["reflection_skill"]),
             analysis_prompt=str(data["analysis_prompt"]),
+            experience_usage=data.get("experience_usage"),
         )
 
 
@@ -5403,6 +5422,7 @@ class PlanRecord:
     trajectories: tuple[ExecutionTrajectory, ...]
     evaluation: PlanEvaluationSummary | None = None
     fitness: FitnessEligibility | None = None
+    knowledge_signal_refs: tuple[str, ...] | None = None
 
     def __post_init__(self) -> None:
         if self.round_id < 1:
@@ -5421,6 +5441,11 @@ class PlanRecord:
             },
         )
         object.__setattr__(self, "trajectories", tuple(self.trajectories))
+        if self.knowledge_signal_refs is not None:
+            refs = self.knowledge_signal_refs
+            if len(set(refs)) != len(refs) or any(not isinstance(ref, str) or re.fullmatch(r"[a-z0-9_:-]+:v[1-9][0-9]*", ref) is None for ref in refs):
+                raise ValidationError("Plan knowledge Signal menu is invalid")
+            object.__setattr__(self, "knowledge_signal_refs", tuple(refs))
         if self.evaluation is None:
             object.__setattr__(
                 self,
@@ -5480,6 +5505,8 @@ class PlanRecord:
             "trajectories": [item.to_dict() for item in self.trajectories],
             "fitness": self.fitness.to_dict(),
             **self.evaluation.to_dict(),
+            **({"knowledge_signal_refs": list(self.knowledge_signal_refs)}
+               if self.knowledge_signal_refs is not None else {}),
         }
 
     @classmethod
@@ -5508,6 +5535,7 @@ class PlanRecord:
                 if isinstance(data.get("fitness"), Mapping)
                 else None
             ),
+            knowledge_signal_refs=tuple(data["knowledge_signal_refs"]) if data.get("knowledge_signal_refs") is not None else None,
         )
 
 
@@ -6284,6 +6312,7 @@ class PlanMetaMemory:
             raise ValidationError("meta memory maxlen must be positive")
         self.maxlen = maxlen
         self._entries: list[RoundMetaEntry] = []
+        self.experience_profiles: dict[str, Mapping[str, Any]] = {}
         for entry in entries:
             self.append(entry)
 
@@ -6307,7 +6336,10 @@ class PlanMetaMemory:
 
     def reflection_index(self) -> ReflectionMemoryIndex:
         """Build an exact retrospective catalog without mutating archived entries."""
-        return ReflectionMemoryIndex.from_entries(entry.to_model_dict() for entry in self._entries)
+        return ReflectionMemoryIndex.from_entries(
+            (entry.to_model_dict() for entry in self._entries),
+            performance_profiles=self.experience_profiles,
+        )
 
     def brief_view(self, *, max_bytes: int = 48_000, max_items: int = 48) -> dict[str, Any]:
         """Return a bounded working view, separate from the full archival view."""

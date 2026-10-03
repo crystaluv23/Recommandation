@@ -29,6 +29,8 @@ The module should expose repository-style interfaces for reading, writing, query
 
 Active child specs:
 
+- [`memory/knowledge.md`](memory/knowledge.md): shared Experience/Signal use
+  contexts and deterministic committed-history performance summaries.
 - [`memory/signals.md`](memory/signals.md): file-backed local signal library
   for cold-start promoted signal definitions and learned signal logic.
 - [`memory/themes.md`](memory/themes.md): file-backed local theme library for
@@ -63,6 +65,8 @@ Active child specs:
 - Store current ticker state, including last analysis date, latest score, thesis summary, changed information, and whether reanalysis is needed.
 - Store active and archived theses separately by status.
 - Track signal performance and false-positive patterns.
+- Track Experience performance after explicit Plan adoption, and expose the same
+  bounded applicability/failure/performance vocabulary on both knowledge briefs.
 - Track theme and segment stage histories.
 - Track reusable research playbooks that can later inform prompt proposals.
 - Track Ralph Loop information-scheme proposals separately from production

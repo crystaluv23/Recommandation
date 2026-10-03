@@ -34,6 +34,17 @@ and model projection budgets affect presentation only, never its five-row window
 
 ## Purpose
 
+`InformationPlan.experience_usage` is optional runtime audit metadata containing
+the exact disclosed-view `snapshot_hash` and explicitly adopted `item_refs`.
+It is persisted with staged proposals, Plan records and additive meta, but is
+excluded from the four-part canonical strategy/embedding. Absent legacy metadata
+is unknown consumption; an explicit empty list is known non-adoption. Refs are
+bounded content-addressed Experience identities and never contain outcome prose.
+
+Optional `PlanRecord.knowledge_signal_refs` is the exact frozen callable version
+menu for the evaluation. Runtime owns it; legacy absent menus stay unknown and
+cannot be treated as unused controls. It is audit metadata, not a fitness term.
+
 Own immutable evolution records, validation, scoring, evaluation-dataset
 selection, role protocols, and pure research helpers. It has no workspace or
 Fast/Slow engine dependency.

@@ -1157,7 +1157,12 @@ _SIGNAL_BATCH_RESULT_OUTPUT = _output_contract(
 
 _INFORMATION_PLAN_OUTPUT = (
     " Output contract for InformationPlanContent: return exactly one JSON object "
-    "with exactly four top-level keys: B, H_init, H_reflect, and H_analyse. "
+    "with strategy keys B, H_init, H_reflect, and H_analyse, plus "
+    "used_experience_refs: an array of at most 48 unique Experience item refs "
+    "actually adopted into this Plan from disclosed briefs or item reads. "
+    "Return [] when none were adopted. Mere visibility, a deferred ref or a "
+    "parent's use does not establish adoption; do not copy outcome conclusions "
+    "into blind research instructions. "
     "B must be an object with exactly one requests array containing one to eight "
     "request objects. Every request requires string request_id and description, "
     "a non-empty array of string source_types, and integer max_documents; optional "

@@ -1,5 +1,13 @@
 # Signal Mining Agent (LabelAwareMiningController)
 
+Experience memory catalogs additionally support an optional exact `signal_ref`
+filter on `inspect_catalog(scope=memory)`. Runtime filters the authoritative
+association index before pagination; cards retain current committed performance
+and applicable/invalidating conditions. Association is not adoption credit.
+New candidate `parameters.usage_context` carries economic/research applicability,
+interpretation failure conditions and supplied Experience `related_refs`; unknown
+boundaries remain unknown and references must resolve to the authorized index.
+
 ## Purpose
 
 Define the controlled, label-aware Signal-mining controller and its shared PIT

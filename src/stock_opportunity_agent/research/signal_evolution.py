@@ -26,6 +26,7 @@ from stock_opportunity_agent.data.resolution import (
 from stock_opportunity_agent.llm.agent import AgentUsage
 from stock_opportunity_agent.llm.openai import OpenAIClientError
 from stock_opportunity_agent.models import StructuredValidationError, ValidationError, ValidationIssue
+from stock_opportunity_agent.memory.knowledge import KnowledgeUseStore
 from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex, reflection_fact_inference_fields
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -3512,6 +3513,8 @@ class SignalEvolutionEngine:
         self.research_target_reveal = research_target_reveal
         self.research_target_sampling = research_target_sampling
         self.workspace = workspace
+        self.registry.knowledge_workspace_root = workspace.root
+        self.meta_memory.experience_profiles = KnowledgeUseStore(workspace.root).profiles(publish=False)
         self.on_progress = on_progress
         self.mining_model = mining_model
         self.update_model = update_model
@@ -3615,6 +3618,7 @@ class SignalEvolutionEngine:
                 "relevant_raw_info": relevant_documents,
                 "capability_backlog": backlog,
                 "meta_info": list(self.meta_memory.archive_view()),
+                "knowledge_profiles_hash": _canonical_hash(self.meta_memory.experience_profiles),
                 "mining_config": self.mining_config.to_dict(),
                 "mining_model": self._role_work_identity(self.mining_model),
                 "update_model": self._role_work_identity(self.update_model),
@@ -7014,6 +7018,11 @@ class SignalEvolutionEngine:
         spec_dict["signal_id"] = self._controller_signal_id_slug(
             candidate, spec_dict
         )
+        if "usage_context" in candidate:
+            from stock_opportunity_agent.memory.knowledge import usage_context
+
+            spec_dict["parameters"] = {**dict(spec_dict.get("parameters", {})),
+                "usage_context": usage_context(candidate["usage_context"])}
         try:
             spec = candidate_signal_spec_from_dict(spec_dict)
         except (EvolutionControlFlow, OpenAIClientError):
@@ -8608,7 +8617,8 @@ class SignalEvolutionEngine:
         # removed only from the model-facing views below and from the originals
         # staged for on-demand reads.
         meta_entries = list(self.meta_memory.archive_view())
-        meta_index = ReflectionMemoryIndex.from_entries(meta_entries)
+        meta_index = ReflectionMemoryIndex.from_entries(meta_entries,
+            performance_profiles=self.meta_memory.experience_profiles)
         from stock_opportunity_agent.research.cross_round_reflection import comparison_original
         active_input = self._active_slow_input or {}
         scopes = {row["ref"]: row["visible_to"] for row in active_input.get("source_manifest", ())}
