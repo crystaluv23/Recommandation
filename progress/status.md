@@ -1,5 +1,7 @@
 # Status
 
+2026-10-04：新增research/cross_round_reflection及Slow入口cross_round反思层：正式提交/冻结授权观察按同公司/时点/语义/结果合同相邻配对，双侧原件/hash完整，技术诊断与未知因果分开。修复experience完整本地索引→Controller分页/原文持续消费和Slow方法memory实际请求缺口；保留browse/48KB上限，重复读取去重。真实v168/v170零外部调用重放72观察/11对照（8技术、3输入变化），脚本化反思生成2条cross_round，10/10审计目标经验可读且进入后续请求，历史原件不改。最终1489全量回归及lint PASS；未启动live、未新增入库因子或证明增益。报告：reports/cross-round-experience-mining-repair-20261004.md。
+
 2026-10-04：完成目标、架构、核心模块与机构公开方法的设计评审（结论在本次聊天）。核验v171 Fast/Slow=0/1、Registry7→8，v176=0/0；scanner/scoring/ranking/monitoring/review仍未实现。建议重点检验产品目标与六个月2x/F1代理的衔接、预期差测量、独立时间/自然分布验证及经验实际消费。检索BlackRock Systematic、Man Numeric、Robeco及Two Sigma官方资料；公开文本/主题/特征研究支持方向相近，不能证明我们的自主进化有效。未修改运行逻辑、研究合同、评分、冻结产物或启动外部模型实验。
 
 2026-10-02：research/signal_tracking已接本地提交/恢复及核验导入，目标记录原子幂等、Slow真实source/Update摘要；修复source catalog展开scope，H1隐蔽source不可读。真实v168 274事件→209目标记录/193物理观察、16状态覆盖冲突保留并不计明确关联，重启新增0/原hash不改/0外部。最终1430全量、4新回归及lint PASS。16冲突内容审查、最新完整周期近零技术排除、真实新双轴候选及独立幅度增益仍待验收。报告：reports/committed-signal-target-tracking-20261002.md。

@@ -81,6 +81,15 @@ corrections and validates the assembled action before any tool executes.
 
 ### Tool surface
 
+- `inspect_catalog(scope=memory)` browses the complete runtime-supplied experience
+  index, with optional `level` filtering and cursor pagination; `item_refs` reads
+  1-3 authorized item or source originals. The 48KB whole-read/cumulative original
+  disclosure ceiling is explicit. Accepted reads survive subsequent decisions.
+  Both browsing and reads charge the existing browse budget, so the four light
+  evidence-directory actions cannot make omitted experience unreachable. This
+  adds no arbitrary file access or new evidence tool. The controller also receives
+  bounded Slow method memory, including the new cross-round reflection layer.
+
 - Exactly three runtime-owned tools exist in the first version:
   `fetch_evidence`, `compute_statistic`, and `read_span`. General search,
   arbitrary code execution, arbitrary file reads, and candidate mutation are

@@ -97,6 +97,26 @@ loss is a structural defect rather than a modeled risk.
 
 ## Shared stage reliability contract
 
+Cross-round same-case reflection is an additive retrospective layer at the
+Fast-to-Slow boundary. It compares only committed, contract-authorized
+observations for the same issuer, prediction time and outcome contract. Runtime
+derives immutable paired facts and source identities; the Slow reflection role
+authors bounded, sourced hypotheses/actions. Technical exclusions remain
+engineering diagnostics, and equal canonical contexts do not establish equal
+provider requests or a model-only cause. This layer feeds the existing experience
+index and Mining, without altering scores or exposing outcomes to blind Fast.
+New history imports carry self-contained, hash-bound prediction observations;
+old manifests remain immutable and do not authorize scanning other workspaces.
+See [cross-round reflection](src/stock_opportunity_agent/research/cross_round_reflection.md).
+
+Mining's bounded initial experience view is a projection of the complete
+authorized index, never its replacement. Controller memory browsing resolves
+all authorized indexed items and their original sources, supports level-filtered
+pagination, and preserves successfully read originals in subsequent requests.
+Slow method/cross-round reflections join that same scoped consumer view.
+Memory browsing uses the existing browse budget, separate from evidence-heavy
+actions; omissions and reads remain explicit and do not prove research benefit.
+
 Fast and Slow use the same dependency, disclosure, detection, incremental repair
 and checkpoint discipline, specified in [stage contracts](src/stock_opportunity_agent/research/stage_contracts.md).
 The runtime validates input construction before a model call; domain validators

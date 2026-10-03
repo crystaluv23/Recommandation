@@ -30,6 +30,12 @@ pointer advances after the result is durable and never from artifact presence.
 
 ## Purpose
 
+The workspace derives opaque prediction observations from exact pointer-reachable
+Plan records and loads inherited derivatives only from its hash-bound frozen
+history/bootstrap manifests. These pure derivatives support the additive
+cross-round reflection layer at the Slow boundary; they never affect Fast scores
+or edit existing meta. Original source hashes and trajectory locators are retained.
+
 Own crash-safe evolution workspace state, runtime Plan evaluation, and the Fast
 Plan-evolution engine. It depends on `evolution_core.py` and has no dependency
 on the Slow Signal engine.

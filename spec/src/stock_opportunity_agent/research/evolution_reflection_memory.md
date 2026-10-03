@@ -38,6 +38,16 @@ files, calls models, or grants access to Raw Info or blind execution.
 
 ## Contract
 
+- `cross_round` is an additive level above case/Plan/round. It registers complete
+  same-case paired observation originals and runtime change facts, and projects
+  source-linked Slow comparison episodes without inventing explanations.
+  Technical pairs carry diagnostic limitations and never canonical economic
+  outcome credit. Existing original references and hashes remain unchanged.
+- The complete authorized index remains local to the Mining controller. Its
+  bounded initial brief does not restrict later discovery or read permissions.
+  Level-filtered directories and read-by-ref resolve originals, including sources
+  cited by an item. Reads preserve complete units and explicitly reject overflow.
+
 - Original case, Plan and round reflections remain archived in full. Optional
   structured items contain one fact, hypothesis or action, a model-authored
   brief and detail, applicability conditions, limitations, supporting and

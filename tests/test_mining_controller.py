@@ -1402,7 +1402,9 @@ class SharedStageBoundaryTests(unittest.TestCase):
         result = controller.run()
         self.assertEqual(result.terminal_kind, "deferred_budget")
         self.assertEqual([v["budget"]["light_remaining"] for v in model.views], [1, 0, 0])
-        self.assertNotIn("inspect_catalog", model.views[-1]["available_actions"])
+        # Memory browsing remains available through its distinct browse budget;
+        # another signal-directory action still exhausts the light budget.
+        self.assertIn("inspect_catalog", model.views[-1]["available_actions"])
         self.assertEqual(model.views[1]["last_action_result"]["result"]["items"][0]["signal_ref"], "cash_reserves:v1")
 
     def test_feedback_omissions_have_resolvable_whole_entry_reads(self):

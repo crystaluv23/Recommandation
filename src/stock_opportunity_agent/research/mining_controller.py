@@ -23,6 +23,7 @@ from stock_opportunity_agent.data.disclosure import raw_span_view
 from stock_opportunity_agent.data.markup import visible_html_ranges
 from stock_opportunity_agent.data.resolution import _MARKUP_SOURCE_TYPES
 from stock_opportunity_agent.models import StructuredValidationError, ValidationError, ValidationIssue
+from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
 from stock_opportunity_agent.research.evolution_output_validation import _validation_obligations
 from stock_opportunity_agent.research.evolution_state_patch import apply_state_patch, state_patch_contract
 from stock_opportunity_agent.research.repair import mechanical_repair_candidate
@@ -250,6 +251,8 @@ class LabelAwareMiningController:
         meta_memory_disclosures: Sequence[Mapping[str, Any]] = (),
         need_progress_sink: Callable[[Mapping[str, Any]], None] | None = None,
         signal_originals: Mapping[str, Mapping[str, Any]] | None = None,
+        memory_index: ReflectionMemoryIndex | None = None,
+        slow_method_memory: Mapping[str, Any] | None = None,
     ) -> None:
         if seed not in {"hypothesis", "discovery"}:
             raise ValidationError("seed must be hypothesis or discovery")
@@ -324,6 +327,9 @@ class LabelAwareMiningController:
         self.meta_memory_disclosures = tuple(
             dict(row) for row in meta_memory_disclosures
         )
+        self.memory_index = memory_index
+        self.slow_method_memory = deepcopy(dict(slow_method_memory or {}))
+        self._memory_read_refs: set[str] = set()
         self._browse_used = 0
         self.validation_sink = validation_sink
         self.identity_aliases = tuple(identity_aliases)
@@ -508,6 +514,10 @@ class LabelAwareMiningController:
             "meta_memory_disclosures": [
                 dict(row) for row in self.meta_memory_disclosures
             ],
+            "slow_method_memory": deepcopy(self.slow_method_memory),
+            "memory_consumption": {"read_refs": sorted(self._memory_read_refs),
+                "original_disclosure_bytes": json_bytes(self.meta_memory_disclosures),
+                "original_disclosure_limit": 48_000},
         }
         if self._last_action_result is not None:
             view["last_action_result"] = dict(self._last_action_result)
@@ -518,7 +528,8 @@ class LabelAwareMiningController:
             )
         view["available_actions"] = [
             action for action in ACTIONS
-            if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit)
+            if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit
+                or (action == "inspect_catalog" and self._browse_used < self.browse_limit))
             and (action not in HEAVY_ACTIONS or self._heavy_used < self.heavy_action_limit
                  or (action == "read_span" and self._browse_used < self.browse_limit))
             and (action != "record_need_dispositions"
@@ -809,8 +820,11 @@ class LabelAwareMiningController:
         coverage = raw.get("coverage")
         if isinstance(coverage, Mapping) and isinstance(coverage.get("note"), str):
             texts.append(("coverage.note", coverage["note"]))
-        if action in LIGHT_ACTIONS and self._light_used >= self.light_action_limit:
+        memory_read = action == "inspect_catalog" and raw.get("scope") == "memory"
+        if action in LIGHT_ACTIONS and not memory_read and self._light_used >= self.light_action_limit:
             raise BudgetInadmissibleAction("light action budget exhausted")
+        if memory_read and self._browse_used >= self.browse_limit:
+            raise BudgetInadmissibleAction("browse budget exhausted")
         narrative_read = action == "read_span" and any(key in raw for key in ("event_ref", "document_ref"))
         if narrative_read and self._browse_used >= self.browse_limit:
             raise BudgetInadmissibleAction("browse budget exhausted")
@@ -842,12 +856,15 @@ class LabelAwareMiningController:
                 elif scope == "signals":
                     payload = self._signal_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 elif scope == "memory":
-                    payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"))
+                    payload = self._memory_view(cursor=cursor, item_refs=raw.get("item_refs"), level=raw.get("level"))
                 elif scope == "backlog":
                     payload = self._backlog_view(cursor=cursor, item_refs=raw.get("item_refs"))
                 else:
                     raise InvalidMiningAction("inspect_catalog scope must be signals, evidence, memory or backlog")
-            self._light_used += 1
+            if action == "inspect_catalog" and raw.get("scope") == "memory":
+                self._browse_used += 1
+            else:
+                self._light_used += 1
             self._last_action_result = {
                 "action": action, "scope": raw.get("scope"), "result": deepcopy(payload),
             }
@@ -1800,8 +1817,37 @@ class LabelAwareMiningController:
         if _STATE_ORDER[target] > _STATE_ORDER[self._state]:
             self._state = target
 
-    def _memory_view(self, *, cursor: int = 0, item_refs: Any = None) -> dict[str, Any]:
+    def _memory_view(self, *, cursor: int = 0, item_refs: Any = None, level: str | None = None) -> dict[str, Any]:
         """Expose whole brief pages and resolve selected immutable local entries."""
+        if self.memory_index is not None:
+            if item_refs is not None:
+                if (not isinstance(item_refs, list) or not 1 <= len(item_refs) <= 3
+                    or any(not isinstance(ref, str) for ref in item_refs)
+                    or len(set(item_refs)) != len(item_refs)):
+                    raise InvalidMiningAction("memory read requires 1-3 unique supplied item_refs")
+                try:
+                    packet = self.memory_index.read_refs(item_refs, role="signal_mining", max_bytes=48_000)
+                except ValidationError as exc:
+                    raise InvalidMiningAction(str(exc)) from exc
+                packet = _mask_identity_values(packet, self.identity_aliases, expand_aliases=False)
+                known_sources = {row.get("ref") for row in self.meta_memory_disclosures}
+                additions = [{"ref": source["source_ref"], "content": source}
+                             for source in packet["sources"] if source["source_ref"] not in known_sources]
+                disclosures = (*self.meta_memory_disclosures, *additions)
+                if json_bytes(disclosures) > 48_000:
+                    raise InvalidMiningAction("memory originals exceed the 48000 cumulative disclosure bytes")
+                self.meta_memory_disclosures = disclosures
+                self._memory_read_refs.update(item_refs)
+                return packet
+            try:
+                directory = self.memory_index.directory(cursor=cursor, level=level, max_bytes=5_000)
+                initial = self.memory_index.brief_view(max_bytes=6_000, max_items=6)
+            except ValidationError as exc:
+                raise InvalidMiningAction(str(exc)) from exc
+            view = {**initial, "directory": directory,
+                    "read_action": "inspect_catalog scope=memory cursor/level, or item_refs for item/source originals",
+                    "read_byte_limit": 48_000, "budget_class": "browse"}
+            return _mask_identity_values(view, self.identity_aliases, expand_aliases=False)
         items = self.meta_memory_briefs.get("items")
         if not isinstance(items, list):
             if json_bytes(self.meta_memory_briefs) > 8_000:

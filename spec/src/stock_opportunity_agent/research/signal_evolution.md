@@ -76,6 +76,15 @@ track must not hide an earlier H1 input-budget or validation failure until commi
 
 ## V8 Slow Round self-evolution contract
 
+Cross-round same-case comparisons are runtime-derived committed feedback units,
+under the owning `cross_round_reflection` contract. The Slow entry reflection
+reserves one pending comparison slot when possible, binds validated episodes to
+the `cross_round` layer, and preserves unknown causes and technical diagnostics.
+The complete Fast experience index plus paired sources and completed cross-round
+episodes reach the production controller locally. Selected originals and method
+memory are retained in actual requests; a bounded brief is never the whole
+authorized pool. Restart and imported history preserve observation identities.
+
 Controller Mining persists immutable accepted need-disposition deltas under the
 cycle's `mining_need_units/`, bound to backlog, axis, seed and prior/result state
 hashes. These are staged diagnostic units, not cycle commit pointers. The seed

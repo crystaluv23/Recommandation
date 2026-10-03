@@ -95,7 +95,13 @@ from stock_opportunity_agent.research.evolution_core import (
     RuntimeUsage,
     ResearchDecision,
     ResearchState,
+    CaseReflectionEvidence,
 )
+from stock_opportunity_agent.research.cross_round_reflection import (
+    prediction_observation,
+    validate_prediction_observation,
+)
+from stock_opportunity_agent.research.evolution_settings import FIXED_PREDICTOR_SEMANTICS_HASH
 
 
 class RuntimePlanEvaluator:
@@ -1717,6 +1723,67 @@ class EvolutionWorkspace:
                     )
                 records.append(record)
         return PlanArchive(records)
+
+    def committed_prediction_observations(self, *, round_ids: Iterable[int] | None = None) -> list[dict[str, Any]]:
+        """Derive opaque comparisons only from pointer-reachable exact records."""
+
+        contract_path = self.root / "run_contract.json"
+        envelope = _read_json(contract_path) if contract_path.is_file() else {}
+        contract = dict(envelope.get("contract", envelope))
+        if envelope and envelope.get("contract_hash") != _canonical_hash(contract):
+            raise ValidationError("prediction observation contract hash mismatch")
+        state = _read_json(self.state_path)
+        origin_hash = str(envelope.get("contract_hash") or state.get("run_contract_hash") or _canonical_hash(contract))
+        permitted_rounds = None if round_ids is None else set(round_ids)
+        result = []
+        for record in self.restore_archive(expected_run_contract_hash=envelope.get("contract_hash")).records:
+            if permitted_rounds is not None and record.round_id not in permitted_rounds:
+                continue
+            raw = _read_json(self.plans_root / record.plan_id / "record.json")
+            record_hash = _canonical_hash(raw)
+            for index, trajectory in enumerate(record.trajectories):
+                result.append(prediction_observation(
+                    raw["trajectories"][index],
+                    case_reflection=CaseReflectionEvidence.from_trajectory(
+                        trajectory, case_index=index + 1,
+                    ).to_model_dict(),
+                    plan_hash=_canonical_hash(record.plan.canonical_dict()),
+                    origin_contract_hash=origin_hash, record_hash=record_hash,
+                    locator=f"/trajectories/{index}",
+                    prediction_semantics_hash=str(contract.get("predictor_semantics_hash")
+                                                 or FIXED_PREDICTOR_SEMANTICS_HASH),
+                ))
+        return result
+
+    def imported_prediction_observations(self) -> list[dict[str, Any]]:
+        """Read only self-contained derivatives in this run's frozen imports."""
+
+        contract_path = self.root / "run_contract.json"
+        envelope = _read_json(contract_path) if contract_path.is_file() else {}
+        contract = dict(envelope.get("contract", envelope))
+        if envelope and envelope.get("contract_hash") != _canonical_hash(contract):
+            raise ValidationError("prediction observation import contract hash mismatch")
+        result = []
+        for kind in ("slow_bootstrap", "slow_history"):
+            path = self.root / kind / "manifest.json"
+            if not path.is_file():
+                continue
+            envelope = _read_json(path)
+            manifest = envelope.get("manifest", {})
+            if not isinstance(manifest, Mapping):
+                raise ValidationError("prediction observation import manifest must be an object")
+            digest = _canonical_hash(manifest)
+            if (envelope.get("manifest_hash") != digest
+                or not contract or contract.get(kind + "_manifest_hash") != digest):
+                raise ValidationError("prediction observation import manifest identity mismatch")
+            context = manifest.get("fast_context", {}) if kind == "slow_history" else manifest
+            if not isinstance(context, Mapping):
+                raise ValidationError("prediction observation import context must be an object")
+            observations = context.get("prediction_observations", [])
+            if not isinstance(observations, list):
+                raise ValidationError("imported prediction observations must be an array")
+            result.extend(validate_prediction_observation(row) for row in observations)
+        return result
 
     def restore_meta(self, *, maxlen: int = 10) -> PlanMetaMemory:
         entries = [

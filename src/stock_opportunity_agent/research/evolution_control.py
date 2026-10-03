@@ -1474,6 +1474,12 @@ def _validate_slow_fast_context(value: Any) -> Mapping[str, Any]:
         raise ValidationError("Slow history Fast meta entries are invalid") from exc
     if len({entry.round_id for entry in entries}) != len(entries):
         raise ValidationError("Slow history Fast meta rounds conflict")
+    from stock_opportunity_agent.research.cross_round_reflection import validate_prediction_observation
+    observations = value.get("prediction_observations", [])
+    if not isinstance(observations, list):
+        raise ValidationError("Slow history prediction observations must be an array")
+    for row in observations:
+        validate_prediction_observation(row)
     return value
 
 
@@ -1527,6 +1533,7 @@ def _load_slow_fast_context(
             "origin_manifest_hash": expected_hash,
             "meta_entries": manifest.get("meta_entries", []),
             "capability_backlog_seed": manifest.get("capability_backlog_seed", {}),
+            "prediction_observations": manifest.get("prediction_observations", []),
         })
 
     workspace = EvolutionWorkspace(source_root)
@@ -1549,6 +1556,8 @@ def _load_slow_fast_context(
         "origin_contract_hash": contract.contract_hash,
         "origin_manifest_hash": None,
         "meta_entries": [entry.to_dict() for entry in meta.entries],
+        "prediction_observations": [*workspace.imported_prediction_observations(),
+                                    *workspace.committed_prediction_observations()],
         "capability_backlog_seed": aggregate_capability_gaps(
             trajectories, signal_need_items=extract_unresolved_signal_needs(need_sources),
         ),
@@ -2278,6 +2287,8 @@ def _build_committed_fast_bootstrap_manifest(
             }
         ],
         "meta_entries": [entry.to_dict() for entry in meta_entries],
+        "prediction_observations": [*source_workspace.imported_prediction_observations(),
+                                    *source_workspace.committed_prediction_observations(round_ids=expected_round_ids)],
         "signal_learning_events": [event.to_dict() for event in learning_events],
         "capability_backlog_seed": aggregate_capability_gaps(
             trajectories,

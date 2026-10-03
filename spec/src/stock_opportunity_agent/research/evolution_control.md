@@ -1,5 +1,12 @@
 # Evolution Control
 
+New committed-history/bootstrap manifests may carry immutable
+`prediction_observations` built from their authorized committed Fast records.
+Imports verify observation content identity and retain origin contract/record/
+trajectory provenance. Local Fast history and inherited observations compose
+without changing historical meta, scores, source pointers or manifests. Legacy
+imports without observations grant no implicit access to another workspace.
+
 Frozen contract loading preserves the JSON representation of an accepted numeric
 cost ceiling (integer or float). Loading and re-freezing must reproduce its exact
 canonical hash without rewriting the original file. Booleans, nonnumbers and

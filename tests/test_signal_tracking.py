@@ -19,6 +19,10 @@ class SignalTrackingTests(TestCase):
         self.addCleanup(fixture.doCleanups)
         self.registry = fixture.registry
         self.engine = fixture.engine
+        # These fixtures isolate committed Signal events, without Fast records.
+        observations = patch.object(self.engine.workspace, "committed_prediction_observations", return_value=[])
+        observations.start()
+        self.addCleanup(observations.stop)
         initial = fixture.validate()
         self.registry.promote_validated_batch(initial.validated_candidates,
             validated_evaluations=initial.candidate_evaluations, transition_id="tracking-fixture",

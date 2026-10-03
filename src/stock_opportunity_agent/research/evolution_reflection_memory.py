@@ -11,6 +11,7 @@ from typing import Any, Iterable, Mapping
 
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.cross_round_reflection import validate_prediction_comparison
 
 
 _ROLES = frozenset({"proposer", "plan_critic", "round_reflector", "slow_reflection", "signal_mining", "signal_update"})
@@ -19,6 +20,7 @@ _CATEGORIES = {
     "case": frozenset({"decision_drivers", "why_prediction_failed", "misleading_signals", "ignored_evidence", "missing_information", "plan_issues"}),
     "plan": frozenset({"successful_patterns", "failed_patterns", "repeated_failure_modes", "misleading_signals", "missing_information_needs", "next_explorations"}),
     "round": frozenset({"successful_patterns", "failed_patterns", "false_positive_patterns", "false_negative_patterns", "useful_signals", "suspicious_signals", "missing_capabilities", "search_implications"}),
+    "cross_round": frozenset({"prediction_changes", "comparison_analysis", "technical_diagnostics"}),
 }
 _OUTCOME_CATEGORIES = frozenset({"successful_patterns", "failed_patterns", "why_prediction_failed", "decision_drivers", "false_positive_patterns", "false_negative_patterns"})
 _FACT_FIELDS = ("candidate_judgment_feedback", "magnitude_feedback", "jev_decision_feedback", "technical_exclusion")
@@ -587,6 +589,57 @@ class ReflectionMemoryIndex:
         """Return opaque source handles, scope and runtime facts, without originals."""
         return [self._catalog_row(source) for source in self._sources.values()]
 
+    def add_comparisons(self, comparisons: Iterable[Mapping[str, Any]], *, episodes: Iterable[Mapping[str, Any]] = (), source_aliases: Mapping[str, str] | None = None) -> None:
+        """Add paired originals and completed comparison reflections to one index."""
+
+        for raw in comparisons:
+            pair = validate_prediction_comparison(raw)
+            owner = pair["comparison_ref"]
+            cases = (pair["case_key"],)
+            plans = tuple(sorted({"reflection_plan:" + pair[side]["plan_hash"] for side in ("left", "right")}))
+            sources = tuple(self._source(pair[side], level="case", case_refs=cases,
+                                         plan_refs=plans) for side in ("left", "right"))
+            self._sources[owner] = {"source_ref": owner, "level": "case", "content": pair,
+                "case_refs": list(cases), "plan_refs": list(plans),
+                "canonical_outcomes": {"technical_exclusion": not pair["research_attribution_allowed"]}}
+            changes = ", ".join(pair["changed_outputs"]) or "technical execution"
+            item = self.create_items([{
+                "category": "prediction_changes" if pair["research_attribution_allowed"] else "technical_diagnostics",
+                "kind": "fact", "brief": f"Same-case {changes} change; {pair['classification']}; cause unestablished.",
+                "detail": json.dumps({"changed_outputs": pair["changed_outputs"],
+                    "classification": pair["classification"], "cause_status": pair["cause_status"],
+                    "left_prediction": {key: pair["left"]["prediction"].get(key) for key in ("is_surge", "magnitude", "candidate_judgment")},
+                    "right_prediction": {key: pair["right"]["prediction"].get(key) for key in ("is_surge", "magnitude", "candidate_judgment")}},
+                    ensure_ascii=False, sort_keys=True),
+                "scope": {"case_refs": list(cases), "plan_refs": list(plans),
+                          "conditions": "Same issuer, prediction time and outcome contract; retrospective comparison."},
+                "limitations": pair["limitations"], "source_refs": list(sources),
+                "counter_refs": [], "outcome_claims": [],
+            }], level="cross_round", owner_ref=owner)[0]
+            if not any(self._items[ref].level == "cross_round" for ref in self._preferred):
+                self._preferred.append(item.item_ref)
+        for alias, original in (source_aliases or {}).items():
+            if original not in self._sources or not alias:
+                raise ValidationError("comparison alias lacks its canonical paired source")
+            self._sources[alias] = {**deepcopy(self._sources[original]), "source_ref": alias}
+        for episode in episodes:
+            if episode.get("reflection_layer") != "cross_round":
+                continue
+            refs = tuple(episode.get("source_refs", ()))
+            if not refs or any(ref not in self._sources for ref in refs):
+                raise ValidationError("cross-round episode lacks its complete paired sources")
+            supporting = self._resolve(refs)
+            self.create_items([{
+                "category": "comparison_analysis", "kind": episode["kind"],
+                "brief": episode["brief"], "detail": episode["reflection"],
+                "scope": {"case_refs": sorted({ref for source in supporting for ref in source["case_refs"]}),
+                          "plan_refs": sorted({ref for source in supporting for ref in source["plan_refs"]}),
+                          "conditions": "Retrospective paired-case analysis; causal explanations remain unverified."},
+                "limitations": ["Paired provenance is not causal verification.",
+                                *episode.get("unresolved_questions", ())],
+                "source_refs": list(refs), "counter_refs": [], "outcome_claims": [],
+            }], level="cross_round", owner_ref=str(episode["episode_ref"]))
+
     def _catalog_row(self, source: Mapping[str, Any]) -> dict[str, Any]:
         value = {key: deepcopy(item) for key, item in source.items() if key != "content"}
         value["source_kind"] = (
@@ -781,7 +834,7 @@ class ReflectionMemoryIndex:
 
         result = []
         allowed = {"category", "kind", "brief", "detail", "scope", "limitations", "source_refs", "counter_refs", "outcome_claims"}
-        ranks = {"case": 0, "plan": 1, "round": 2}
+        ranks = {level: rank for rank, level in enumerate(_CATEGORIES)}
         for raw in raw_items:
             if not isinstance(raw, Mapping) or set(raw) != allowed:
                 invalid("reflection item fields differ from the authored contract", "", container=True)

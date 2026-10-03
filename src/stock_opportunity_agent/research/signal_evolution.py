@@ -294,6 +294,7 @@ _H1_MANIFEST_PROJECTION_CHARS = 12_000
 
 
 _SLOW_FEEDBACK_KINDS = {
+    "prediction_comparison",
     "signal_target_observation",
     "signal_usage",
     "candidate_result",
@@ -570,6 +571,9 @@ def validate_slow_input(value: Mapping[str, Any]) -> dict[str, Any]:
         content = row.get("event", row.get("artifact"))
         if content is None:
             raise ValidationError(f"Slow feedback row {index} content is missing")
+        if row.get("kind") == "prediction_comparison":
+            from stock_opportunity_agent.research.cross_round_reflection import comparison_original
+            comparison_original(row)
         content_hashes[feedback_ref] = _canonical_hash(content)
     source_rows = payload.get("source_manifest")
     if not isinstance(source_rows, list):
@@ -3989,6 +3993,16 @@ class SignalEvolutionEngine:
         rows: list[dict[str, Any]] = []
         manifest: list[dict[str, Any]] = []
         imported_events = imported_learning_events(self.workspace.root, registry=self.registry)
+        from stock_opportunity_agent.research.cross_round_reflection import prediction_comparisons
+        observations = [*self.workspace.imported_prediction_observations(),
+                        *self.workspace.committed_prediction_observations()]
+        for pair in prediction_comparisons(observations):
+            ref = pair["comparison_ref"]
+            rows.append({"feedback_ref": ref, "kind": "prediction_comparison",
+                "subject_ref": pair["case_key"], "source_refs": [ref],
+                "limitations": pair["limitations"], "artifact": pair})
+            manifest.append({"ref": ref, "content_hash": _canonical_hash(pair),
+                             "visible_to": sorted(_SLOW_SOURCE_ROLES)})
         version_refs = self.registry.list_version_refs()
         for signal_ref in version_refs:
             for event in self.registry.committed_learning_events(signal_ref,
@@ -4413,6 +4427,10 @@ class SignalEvolutionEngine:
                 ],
             ]
         pending_rows = _prioritize_reflection_feedback(pending_rows)
+        comparisons = [row for row in pending_rows if row.get("kind") == "prediction_comparison"]
+        if comparisons:
+            first = comparisons[0]
+            pending_rows = [first, *(row for row in pending_rows if row is not first)]
         prior_memory = prior[-1]["slow_memory"] if prior else None
         known_lessons = {
             str(lesson.get("lesson_id"))
@@ -4558,11 +4576,17 @@ class SignalEvolutionEngine:
                             "rules": {
                                 "append_only": True,
                                 "complete_source_coverage": True,
+                                "cross_round_reflection": "Compare both originals; separate observed changes, unknown causes, Plan/prompt hypotheses and PIT-measurable factor hypotheses. Technical exclusions are engineering diagnostics only.",
                             },
                         }
                     )
                     result = dict(step.value)
                     episodes = list(result.get("episode_reflections", ()))
+                    comparison_refs = {row["feedback_ref"] for row in feedback_rows
+                                       if row.get("kind") == "prediction_comparison"}
+                    episodes = [{**episode, "reflection_layer": "cross_round"}
+                                if episode.get("source_refs") and set(episode["source_refs"]) <= comparison_refs else episode
+                                for episode in episodes]
                     lessons = list(result.get("lesson_additions", ()))
                     if any(
                         str(item.get("episode_ref", "")) not in episode_slots
@@ -6347,6 +6371,8 @@ class SignalEvolutionEngine:
                     # dropping them here severed the learning loop while the
                     # reads were still billed.
                     meta_memory_briefs=dict(context.get("meta_info") or {}),
+                    memory_index=getattr(self, "_mining_memory_index", None),
+                    slow_method_memory=dict(context.get("slow_method_memory") or {}),
                     meta_memory_disclosures=tuple(
                         context.get("meta_memory_disclosures", ())
                     ),
@@ -8583,6 +8609,24 @@ class SignalEvolutionEngine:
         # staged for on-demand reads.
         meta_entries = list(self.meta_memory.archive_view())
         meta_index = ReflectionMemoryIndex.from_entries(meta_entries)
+        from stock_opportunity_agent.research.cross_round_reflection import comparison_original
+        active_input = self._active_slow_input or {}
+        scopes = {row["ref"]: row["visible_to"] for row in active_input.get("source_manifest", ())}
+        comparison_sources = {row["feedback_ref"]: comparison_original(row)
+            for row in active_input.get("feedback_rows", ())
+            if row.get("kind") == "prediction_comparison" and "H1" in scopes.get(row["feedback_ref"], ())}
+        comparison_rows = list({pair["comparison_ref"]: pair for pair in comparison_sources.values()}.values())
+        comparison_episodes = [episode for artifact in self.workspace.committed_slow_artifacts()
+                              for episode in artifact["slow_memory"].get("episode_reflections", ())]
+        comparison_episodes.extend((self._active_slow_memory or {}).get("episode_reflections", ()))
+        comparison_episodes.extend(row["artifact"] for row in active_input.get("feedback_rows", ())
+            if isinstance(row.get("artifact"), Mapping) and row["artifact"].get("reflection_layer") == "cross_round"
+            and "H1" in scopes.get(row["feedback_ref"], ()))
+        pair_refs = {row["comparison_ref"] for row in comparison_rows} | set(comparison_sources)
+        meta_index.add_comparisons(comparison_rows, episodes=(episode for episode in comparison_episodes
+            if set(episode.get("source_refs", ())) <= pair_refs),
+            source_aliases={ref: pair["comparison_ref"] for ref, pair in comparison_sources.items()})
+        self._mining_memory_index = meta_index
         meta_view = _mask_identity_values(
             meta_index.brief_view(max_bytes=32_000),
             self.slow_role_identity_guards,

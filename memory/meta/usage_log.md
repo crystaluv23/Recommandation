@@ -262,3 +262,5 @@
 2026-10-02：两案跨冻结运行反转审计，consulted experiences/incremental-repair-and-sourced-memory.md, experiences/self-evolution-convergence-and-acceptance.md, experiences/paired-llm-comparison-noise.md, experiences/technical-failure-before-quality-attribution.md, experiences/nonvisible-source-content-consumes-readable-budget.md；核对真实wire与修复、同输入条件、证据覆盖和下游经验实际消费，禁止将保留hash或FN标签升级为语义正确/因果解释。
 
 - 2026-10-04：系统设计与机构公开方法对照评审；咨询 experiences/self-evolution-convergence-and-acceptance.md，区分工程执行、实际反馈消费与独立研究收益，并重新核验v171/v176提交指针；历史报告只作有日期的证据，不代替当前状态。
+
+- 2026-10-04：跨轮反思与experience→Mining消费修复；咨询incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance、additive-reflection-fifo、python-runtime-for-tests。保留正式提交/授权导入的双侧原件，未知反转原因不变成研究因果结论；完整本地目录与有界实际请求分离，重放证明消费链路，不冒充live经验或因子增益。

@@ -44,7 +44,10 @@ from stock_opportunity_agent.signal_library import (
     validate_signal_result,
     _OPERATING_CASH_FLOW_TAGS,
 )
-from stock_opportunity_agent.research.evolution_reflection_memory import reflection_fact_inference_fields
+from stock_opportunity_agent.research.evolution_reflection_memory import (
+    ReflectionMemoryIndex, ReflectionValidationError, reflection_fact_inference_fields,
+)
+from stock_opportunity_agent.research.cross_round_reflection import comparison_original
 from stock_opportunity_agent.research.evolution_settings import (
     LLM_SIGNAL_CONTEXT_CHUNK_CHARS,
     LLM_SIGNAL_CONTEXT_CHUNK_OVERLAP,
@@ -1575,6 +1578,9 @@ class LLMSignalMiningModel(SignalMiningModel):
             for lesson in memory.get("lesson_additions", ())
             if isinstance(lesson, Mapping) and lesson.get("lesson_id")
         }
+        comparison_sources = {str(unit["feedback_ref"]): comparison_original(unit)
+            for unit in payload.get("feedback_units", ())
+            if isinstance(unit, Mapping) and unit.get("kind") == "prediction_comparison"}
         prior_lesson_refs.update(
             str(item["content"]["lesson_id"])
             for item in payload.get("prior_memory_disclosures", ())
@@ -1743,6 +1749,25 @@ class LLMSignalMiningModel(SignalMiningModel):
                     continue
                 seen_episodes.add(episode_ref)
                 covered_feedback_refs.update(str(item) for item in source_refs)
+                comparison_refs = set(source_refs) & set(comparison_sources)
+                if comparison_refs:
+                    if not set(source_refs) <= set(comparison_sources):
+                        issues.append(ValidationIssue(code="cross_round_mixed_sources",
+                            paths=(path,), allowed_repairs=("replace",),
+                            message="Keep paired comparison episodes separate from other feedback; retain coverage in a separate supplied episode slot."))
+                    else:
+                        index_view = ReflectionMemoryIndex()
+                        try:
+                            index_view.add_comparisons(comparison_sources.values(),
+                                source_aliases={ref: pair["comparison_ref"] for ref, pair in comparison_sources.items()},
+                                episodes=({**raw, "reflection_layer": "cross_round"},))
+                        except ReflectionValidationError as exc:
+                            field = exc.path.removeprefix("reflection_items[0].")
+                            field = "reflection" if field == "detail" else field
+                            target = path + "." + field if field in {"brief", "reflection", "kind", "source_refs"} else path
+                            issues.append(ValidationIssue(code="cross_round_reflection_invalid",
+                                paths=(target,), dependent_paths=(path + ".kind",) if target != path else (),
+                                allowed_repairs=("replace",), message=str(exc)))
             missing_feedback_refs = sorted(
                 feedback_refs - covered_feedback_refs
             )
@@ -1997,6 +2022,14 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "under/overweighting or signal/reason sufficiency for an outcome. "
                 "Legacy_inference_unchecked entries require review, not causal credit. "
                 "Use only runtime-provided slots and refs."
+                " Same-case prediction comparisons form the cross_round reflection "
+                "layer: compare both supplied originals and retain their input changes "
+                "and unknown cause. Do not equate equal canonical contexts with equal "
+                "provider requests or certify model-only instability. Keep comparison "
+                "episodes separate from unrelated feedback. Technical execution changes "
+                "support engineering diagnostics only. Route context/prompt sensitivity "
+                "to Plan research; economic factor hypotheses must be measurable from "
+                "prediction-time evidence and tested across independent cases."
                 " Slots reserve names only: they are not evidence until a valid "
                 "entry is actually emitted. Lesson support_refs may cite selected "
                 "feedback, valid episodes emitted now, or existing prior lessons. "

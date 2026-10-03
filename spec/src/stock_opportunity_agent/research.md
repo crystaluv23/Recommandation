@@ -79,6 +79,8 @@ Active child specs:
   snapshot-bound state deltas and typed local repair permissions.
 - [`research/evolution_reflection_memory.md`](research/evolution_reflection_memory.md):
   indexed original reflections, same-generation briefs, and bounded source reads.
+- [`research/cross_round_reflection.md`](research/cross_round_reflection.md):
+  committed same-case prediction comparisons and a source-bound Slow reflection layer.
 - [`research/evolution_benefit.md`](research/evolution_benefit.md): offline,
   immutable four-arm confirmation of Signal capability, downstream lifecycle,
   and paired Plan/Registry system benefit.
