@@ -1,0 +1,1302 @@
+{
+  "acceptance": {
+    "goal_complete": false,
+    "independent_benefit": "not_confirmed",
+    "new_magnitude_signal_and_higher_band_effectiveness": "not_met",
+    "zero_technical_failures": false
+  },
+  "attempt_count": 111,
+  "child_process_observed": true,
+  "cost_limit_note": "Recorded settled cost plus conservative unresolved reservations; not provider billing.",
+  "created_at": "2026-10-06T17:22:20.755803+00:00",
+  "feedback_consumption": {
+    "adopted_disclosures": [
+      {
+        "brief": "For future correct-direction surge calls, record a separate magnitude-class rationale and a falsifiable test for whether the class should be raised.",
+        "category": "plan_issues",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:7a9b9444d3b0b02c42373de912c790ae0666c78ed55d5aa11b7f194afff89c6f",
+        "kind": "action",
+        "level": "case",
+        "limitations": [
+          "A documented rationale does not guarantee better magnitude calibration.",
+          "Momentum-based class upgrades can increase false positives in non-surge cases."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f"
+          ],
+          "conditions": "Index when preparing surge predictions where direction is supported but the magnitude class is a judgment call.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:2e0b6ec0b7c0b96802a8f6ef77a2b38ae401c89c1635abaf1c77c72e7a345cb3"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "A documented rationale does not guarantee better magnitude calibration.",
+            "Momentum-based class upgrades can increase false positives in non-surge cases."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when preparing surge predictions where direction is supported but the magnitude class is a judgment call."
+        }
+      },
+      {
+        "brief": "When a surge direction is judged possible and the doubling threshold is within the recent observed range, widen the magnitude class rather than defaulting to the lowest plausible band.",
+        "category": "plan_issues",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:b0a68dab96c31bfba9dfe9b451b44a0c46c2c5d0e7ae7abed53d401f3a0653d6",
+        "kind": "action",
+        "level": "case",
+        "limitations": [
+          "Widening the magnitude class increases the risk of overestimating in cases where the surge stalls.",
+          "The recent-range proximity heuristic is not a validated rule and may not generalize.",
+          "Thin liquidity and dilution can still cap upside in other cases."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:ce2ba14f8a3dc6ff24ed3e67802861e8fda4af30b0b485dfe83431780b93e737",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:ce2ba14f8a3dc6ff24ed3e67802861e8fda4af30b0b485dfe83431780b93e737"
+          ],
+          "conditions": "Index when the doubling threshold is within about 2x of the recent close and recent realized volatility is high.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:3cc989e17ac80d83603b90a083742982a3c89d18032087c512e6ad0b5388ad4e"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "Widening the magnitude class increases the risk of overestimating in cases where the surge stalls.",
+            "The recent-range proximity heuristic is not a validated rule and may not generalize.",
+            "Thin liquidity and dilution can still cap upside in other cases."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when the doubling threshold is within about 2x of the recent close and recent realized volatility is high."
+        }
+      },
+      {
+        "brief": "The Plan's analysis_prompt emphasizes capital-structure pressure and dilution as falsification conditions, which may anchor the magnitude class downward when the binary direction is correctly positive.",
+        "category": "misleading_signals",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:0778079053cb5600dc5afce9599ca18067580d41804c9b404e8e2c879fd156eb",
+        "kind": "hypothesis",
+        "level": "plan",
+        "limitations": [
+          "This is a hypothesis about prompt-induced anchoring, not an established cause.",
+          "The parent comparison has same_evaluation_snapshot=false, so no metric delta can be attributed to the prompt change.",
+          "The 2-3x concentration may reflect genuine evidence limitations rather than prompt anchoring.",
+          "A single cohort cannot establish that the prompt structure causes magnitude underestimation."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [],
+          "conditions": "Index when the magnitude-class distribution is degenerate toward the lowest positive class and the analysis_prompt emphasizes downside falsification conditions.",
+          "plan_refs": [
+            "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:fb5a0f45e23f6595da3dc32dd145fa9ec483f811d79b155bf6d9e2b5ecac1a3e"
+        ],
+        "statistics_status": "runtime_source_checked",
+        "usage_context": {
+          "failure_conditions": [
+            "This is a hypothesis about prompt-induced anchoring, not an established cause.",
+            "The parent comparison has same_evaluation_snapshot=false, so no metric delta can be attributed to the prompt change.",
+            "The 2-3x concentration may reflect genuine evidence limitations rather than prompt anchoring.",
+            "A single cohort cannot establish that the prompt structure causes magnitude underestimation."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when the magnitude-class distribution is degenerate toward the lowest positive class and the analysis_prompt emphasizes downside falsification conditions."
+        }
+      },
+      {
+        "brief": "The saved reasoning lacked a quantified bridge from the disclosed catalyst to a large multiple, which may explain the low magnitude class.",
+        "category": "missing_information",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:5fd635ca0d3d4fcf78fc4dd73b92a13c18145209e7f599d24d36af0f43708499",
+        "kind": "hypothesis",
+        "level": "case",
+        "limitations": [
+          "The absence of a quantified bridge is a reasoning gap, not proof that a bridge would have predicted 10x+.",
+          "Optionality and momentum re-rating are not directly measured in the supplied evidence."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f"
+          ],
+          "conditions": "Index when magnitude classes are set conservatively because no quantified valuation bridge is available, and the realized outcome is a large multiple.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:2e0b6ec0b7c0b96802a8f6ef77a2b38ae401c89c1635abaf1c77c72e7a345cb3"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "The absence of a quantified bridge is a reasoning gap, not proof that a bridge would have predicted 10x+.",
+            "Optionality and momentum re-rating are not directly measured in the supplied evidence."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when magnitude classes are set conservatively because no quantified valuation bridge is available, and the realized outcome is a large multiple."
+        }
+      },
+      {
+        "brief": "Negative fundamental signals may have anchored the magnitude class too low despite the correct direction; test whether they were overweighted.",
+        "category": "misleading_signals",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:eea5e1a189c7acb99fea7466495605087e0f3ea083900484be823def288342c8",
+        "kind": "hypothesis",
+        "level": "case",
+        "limitations": [
+          "Causal attribution is unverified; the surge may have been driven by factors not in the supplied evidence.",
+          "The negative fundamentals were factually accurate as of their reporting periods and may still matter for other horizons."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f"
+          ],
+          "conditions": "Index when a correct-direction surge call is paired with a low magnitude class and backward-looking negative fundamentals are prominent in the reasoning.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:2e0b6ec0b7c0b96802a8f6ef77a2b38ae401c89c1635abaf1c77c72e7a345cb3"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "Causal attribution is unverified; the surge may have been driven by factors not in the supplied evidence.",
+            "The negative fundamentals were factually accurate as of their reporting periods and may still matter for other horizons."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when a correct-direction surge call is paired with a low magnitude class and backward-looking negative fundamentals are prominent in the reasoning."
+        }
+      },
+      {
+        "brief": "Add a magnitude-class escalation test to the reflection_skill: when binary direction is judged surge and the evidence includes a dated catalyst plus commercial adoption, explicitly evaluate whether the 3-10x or 10x+ class is supportable before defaulting to 2-3x.",
+        "category": "next_explorations",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:de8bbd837786248fc321d2f00d33e5520a6a3b5a2e5396a2ab81f1f721329d2a",
+        "kind": "action",
+        "level": "plan",
+        "limitations": [
+          "The causal link between evidence completeness and magnitude class is not established; this is a testable hypothesis.",
+          "Adding an escalation test may increase false positives if the shell over-weights the flag.",
+          "The magnitude macro-F1 is the secondary ordering metric only at exactly equal Combined Binary F1; improving it does not guarantee better primary fitness."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [],
+          "conditions": "Index when revising the reflection_skill or analysis_prompt for this Plan or its descendants, specifically to address the degenerate magnitude-class distribution.",
+          "plan_refs": [
+            "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:fb5a0f45e23f6595da3dc32dd145fa9ec483f811d79b155bf6d9e2b5ecac1a3e",
+          "reflection_source:07c78540c9e49a1efaa409f9c1779e83508590fdc1d9b82abdd2fd772e1adc25"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "The causal link between evidence completeness and magnitude class is not established; this is a testable hypothesis.",
+            "Adding an escalation test may increase false positives if the shell over-weights the flag.",
+            "The magnitude macro-F1 is the secondary ordering metric only at exactly equal Combined Binary F1; improving it does not guarantee better primary fitness."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when revising the reflection_skill or analysis_prompt for this Plan or its descendants, specifically to address the degenerate magnitude-class distribution."
+        }
+      },
+      {
+        "brief": "The Plan achieved binary_precision=0.9 with only 1 false positive across 24 scored cases, and 9 of 10 positive calls were correct surges.",
+        "category": "successful_patterns",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:69ad1c44fb3e934cee801a732244c9de8a4f6a95bd50482a9a9c9b8ceb88ec6e",
+        "kind": "fact",
+        "level": "plan",
+        "limitations": [
+          "Precision on 24 cases has wide uncertainty.",
+          "The false positive case had a technical signal failure that may have contributed to the error, but this is not established as causal.",
+          "High precision with low recall may reflect a conservative threshold rather than superior evidence weighting."
+        ],
+        "outcome_claims": [
+          {
+            "axis": "binary",
+            "correct": true,
+            "source_ref": "reflection_source:2e0b6ec0b7c0b96802a8f6ef77a2b38ae401c89c1635abaf1c77c72e7a345cb3"
+          }
+        ],
+        "owner_ref": "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:dcfbf2d2829dcf58972300445d44b8b10c838a1ebc06d28b595f691e7ed0ea5f"
+          ],
+          "conditions": "Index when assessing whether the Plan's positive surge calls are trustworthy, or when comparing precision-recall tradeoffs across Plan versions.",
+          "plan_refs": [
+            "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:07c78540c9e49a1efaa409f9c1779e83508590fdc1d9b82abdd2fd772e1adc25",
+          "reflection_source:06d8379b061f43e809dadd5cc761981e4c03d0ba17980416d83a953ef46f7545",
+          "reflection_source:2e0b6ec0b7c0b96802a8f6ef77a2b38ae401c89c1635abaf1c77c72e7a345cb3"
+        ],
+        "statistics_status": "runtime_source_checked",
+        "usage_context": {
+          "failure_conditions": [
+            "Precision on 24 cases has wide uncertainty.",
+            "The false positive case had a technical signal failure that may have contributed to the error, but this is not established as causal.",
+            "High precision with low recall may reflect a conservative threshold rather than superior evidence weighting."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when assessing whether the Plan's positive surge calls are trustworthy, or when comparing precision-recall tradeoffs across Plan versions."
+        }
+      },
+      {
+        "brief": "Binary direction was correct in 9 of 14 surge cases but the Plan missed 5 surges entirely, and every missed surge was a non-surge call with no magnitude class assigned.",
+        "category": "failed_patterns",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:a4905b7425546c79ad915516e33d0e84eef42738eb0f87aca791c7c621b736be",
+        "kind": "fact",
+        "level": "plan",
+        "limitations": [
+          "The realized outcome does not establish which cause produced each surge.",
+          "Binary recall on 24 cases has wide uncertainty.",
+          "The false-negative cases may share unobserved characteristics not captured in the supplied evidence."
+        ],
+        "outcome_claims": [
+          {
+            "axis": "binary",
+            "correct": false,
+            "source_ref": "reflection_source:08e09fe9e839ad6d4ad0dd6921500bde1b6a9dfb88f63a8f218fdd7a9b3dfd68"
+          }
+        ],
+        "owner_ref": "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:f6e9799411ec2a140630af80b2ad8a3c150c25c63cac5487559cbd98db46cd8c"
+          ],
+          "conditions": "Index when reviewing binary recall for this Plan, particularly when non-surge calls are made on cases that later realized a surge.",
+          "plan_refs": [
+            "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:07c78540c9e49a1efaa409f9c1779e83508590fdc1d9b82abdd2fd772e1adc25",
+          "reflection_source:08e09fe9e839ad6d4ad0dd6921500bde1b6a9dfb88f63a8f218fdd7a9b3dfd68"
+        ],
+        "statistics_status": "runtime_source_checked",
+        "usage_context": {
+          "failure_conditions": [
+            "The realized outcome does not establish which cause produced each surge.",
+            "Binary recall on 24 cases has wide uncertainty.",
+            "The false-negative cases may share unobserved characteristics not captured in the supplied evidence."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when reviewing binary recall for this Plan, particularly when non-surge calls are made on cases that later realized a surge."
+        }
+      },
+      {
+        "brief": "Magnitude classification collapsed to a single class: all 10 positive predictions were 2-3x, while the truth distribution spanned 2-3x (7), 3-10x (5), and 10x+ (2), producing 6 underestimates and 0 overestimates.",
+        "category": "repeated_failure_modes",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:d40d17a58b9406c9002a485e64a3797baedabd3187335eec66dfcc9d57eda1da",
+        "kind": "fact",
+        "level": "plan",
+        "limitations": [
+          "The magnitude diagnostics are descriptive of this frozen 24-case cohort and do not establish a general rule.",
+          "The realized maximum multiple does not identify timing or cause of the peak.",
+          "A single cohort cannot establish that widening the class would improve macro-F1."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [],
+          "conditions": "Index when reviewing magnitude-class calibration for this Plan or its descendants, especially when the predicted class distribution is degenerate relative to the truth distribution.",
+          "plan_refs": [
+            "reflection_plan:e44dacfe8b332df7803d3a8fa1da41a1274b118faf41e582f2f94c6ed02d7a5e"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:fb5a0f45e23f6595da3dc32dd145fa9ec483f811d79b155bf6d9e2b5ecac1a3e",
+          "reflection_source:07c78540c9e49a1efaa409f9c1779e83508590fdc1d9b82abdd2fd772e1adc25",
+          "reflection_source:06d8379b061f43e809dadd5cc761981e4c03d0ba17980416d83a953ef46f7545"
+        ],
+        "statistics_status": "runtime_source_checked",
+        "usage_context": {
+          "failure_conditions": [
+            "The magnitude diagnostics are descriptive of this frozen 24-case cohort and do not establish a general rule.",
+            "The realized maximum multiple does not identify timing or cause of the peak.",
+            "A single cohort cannot establish that widening the class would improve macro-F1."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when reviewing magnitude-class calibration for this Plan or its descendants, especially when the predicted class distribution is degenerate relative to the truth distribution."
+        }
+      },
+      {
+        "brief": "Test whether the source-backed offtake disclosures and the observed violent repricing were underweighted relative to the going-concern and dilution concerns.",
+        "category": "why_prediction_failed",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:a024915cbd3e9ad9da7b0d191bd6f4128b5929403cf3ad44739d6128c16686eb",
+        "kind": "hypothesis",
+        "level": "case",
+        "limitations": [
+          "This is a hypothesis, not an established cause; the realized outcome alone does not prove the weighting was the reason.",
+          "The offtake agreements may not have converted to shipments or revenue within the horizon.",
+          "The going-concern and dilution concerns remain valid economic boundaries that could reverse the interpretation in other cases."
+        ],
+        "outcome_claims": [
+          {
+            "axis": "magnitude",
+            "correct": false,
+            "source_ref": "reflection_source:3cc989e17ac80d83603b90a083742982a3c89d18032087c512e6ad0b5388ad4e"
+          }
+        ],
+        "owner_ref": "case:ce2ba14f8a3dc6ff24ed3e67802861e8fda4af30b0b485dfe83431780b93e737",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:ce2ba14f8a3dc6ff24ed3e67802861e8fda4af30b0b485dfe83431780b93e737"
+          ],
+          "conditions": "Index when assigning magnitude classes for pre-revenue issuers with disclosed offtakes and recent high-volatility repricing.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:3cc989e17ac80d83603b90a083742982a3c89d18032087c512e6ad0b5388ad4e"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "This is a hypothesis, not an established cause; the realized outcome alone does not prove the weighting was the reason.",
+            "The offtake agreements may not have converted to shipments or revenue within the horizon.",
+            "The going-concern and dilution concerns remain valid economic boundaries that could reverse the interpretation in other cases."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when assigning magnitude classes for pre-revenue issuers with disclosed offtakes and recent high-volatility repricing."
+        }
+      },
+      {
+        "brief": "For future surge assessments of recently public, low-float issuers, explicitly gather and record float size, short interest, borrow availability, and any scheduled catalysts before finalizing a non-surge call, because these can materially affect surge probability.",
+        "category": "missing_information",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:46eac6b365565b73780a8d71409af11c5d01b9d596df8bdd4fc26afc50737ea1",
+        "kind": "action",
+        "level": "case",
+        "limitations": [
+          "Float, short interest, and borrow data may not be available in the authorized data sources for all issuers.",
+          "This action does not assert that any specific missing datum caused the realized surge.",
+          "The action is a research-process improvement, not a condition for a positive surge judgment."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:48f8e6f40e4d82168c4ee351c51a0622a6befeb736d4943d81ad4b59a7e0bb61",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:48f8e6f40e4d82168c4ee351c51a0622a6befeb736d4943d81ad4b59a7e0bb61"
+          ],
+          "conditions": "Index this item when preparing a surge prediction for a recently public or small-cap issuer where float, short interest, or borrow data are not already in the evidence set.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:998e2152330097dd031e154b3907bbb5eec48dcc4615e7be2f605a4e6da7b555"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "Float, short interest, and borrow data may not be available in the authorized data sources for all issuers.",
+            "This action does not assert that any specific missing datum caused the realized surge.",
+            "The action is a research-process improvement, not a condition for a positive surge judgment."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index this item when preparing a surge prediction for a recently public or small-cap issuer where float, short interest, or borrow data are not already in the evidence set."
+        }
+      },
+      {
+        "brief": "Add a pre-commitment step that, before finalizing a non-surge call, requires writing down the specific dated catalyst that would falsify it and checking the omitted operating_report and management_commentary projections for that catalyst.",
+        "category": "plan_issues",
+        "counter_refs": [],
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:aefb8ade0de732ecda193a8a682c18caa10291ae3384c016048725a55b3ba664",
+        "kind": "action",
+        "level": "case",
+        "limitations": [
+          "Retrieving omitted projections may not be possible within the context budget.",
+          "Finding a catalyst would not prove it caused a surge; it would only weaken the non-surge rationale.",
+          "This action must not be converted into a required valuation or price-path proof for a positive judgment."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:f6e9799411ec2a140630af80b2ad8a3c150c25c63cac5487559cbd98db46cd8c",
+        "performance": {
+          "basis": "observational_use",
+          "confusion": {
+            "fn": 0,
+            "fp": 0,
+            "tn": 0,
+            "tp": 0
+          },
+          "confusion_weighting": "one_case_one_weight",
+          "correct_rate": null,
+          "disputed_cases": 0,
+          "evaluated_cases": 0,
+          "evaluated_predictions": 0,
+          "independent_cases": 0,
+          "negative_case_correct_rate": null,
+          "paired_cases": 0,
+          "paired_correct_rate_gain": null,
+          "positive_case_correct_rate": null,
+          "technical_cases": 0,
+          "unavailable_cases": 0,
+          "unique_issuers": 0
+        },
+        "scope": {
+          "case_refs": [
+            "case:f6e9799411ec2a140630af80b2ad8a3c150c25c63cac5487559cbd98db46cd8c"
+          ],
+          "conditions": "Index when a prediction is finalized with partial_context_budget omissions in operating_report or management_commentary and the call is non-surge.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:08e09fe9e839ad6d4ad0dd6921500bde1b6a9dfb88f63a8f218fdd7a9b3dfd68"
+        ],
+        "usage_context": {
+          "failure_conditions": [
+            "Retrieving omitted projections may not be possible within the context budget.",
+            "Finding a catalyst would not prove it caused a surge; it would only weaken the non-surge rationale.",
+            "This action must not be converted into a required valuation or price-path proof for a positive judgment."
+          ],
+          "related_refs": [],
+          "when_to_use": "Index when a prediction is finalized with partial_context_budget omissions in operating_report or management_commentary and the call is non-surge."
+        }
+      }
+    ],
+    "first_initialize_request_hash": "d9eebe28dbbae0d48b1eecf45f50cb0671fa26f0727d7603888f326cf4fb4fb9",
+    "first_initialize_skill_exactly_matches_candidate": true,
+    "limits": [
+      "Candidate checkpoints and per-case execution are not a committed Fast round.",
+      "Declared adoption, transmitted strategy and changed research needs are not an independently measured benefit.",
+      "Historical bad prose remains immutable; accurate brief transmission does not validate every cited detail."
+    ],
+    "persisted_usage_snapshot_hash": "db67b1f2c9afb07b8f613679375aef543a6a787b8433713f9dda3df13e7bb42f",
+    "plans": [
+      {
+        "actual_strategy_transmission": [
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "d9eebe28dbbae0d48b1eecf45f50cb0671fa26f0727d7603888f326cf4fb4fb9",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "6d189fd7aefedb631478b03e50af1b11df9f849408a6edad04369ca2d4bdefc2",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "75ff412dc28136389ab1ae361ae203c4dfbe13052a7be3a2097cb2ff35845207",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "608cad7d31e0626581a17728a2f82a80e8147574243ab2fc071e621dc12f38ae",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "6d76b4d0d35f7962e42c9d7141ffd315554a0447f4ce3ee6f019cfbff0040094",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "4de6de1fd4e6fa5502b513c3bd59ff81033492fd96d27e863847956049287ddf",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "d560b96a5abe70d72c7082ef1b528b7bc01c723ecb137ab39d9955c0baf4031c",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "ec8ce107c8fb347b589e083a8d52260802b24ec83071056aa85d4301b979c07e",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "d65c389a9153dc3c68e9939b905fca1c192207f6cd939495beaae0c13fc44e8e",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "52161591c5e7b243e6cc25caeb0ed76b77f8d24423943a95460f981df57ef65d",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "0004f273e9877bb46a5d54e6f1bc78c3546a169b3f7fdf0c7265e2622f8c7b6b",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "4746e7f3f2074cd562b7734a912c97b2eb5337a23e91aa71f49943aef9367c90",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "b62614528b6862ca0567c5908ca624bd554f93570f93e18b7136d248b76c7cae",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "859f3f64f58dd7303b83e5ee68ccb3e325fb6709d36b779889635e8ec24da095",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "e0b4f48da2dbf232549f5c94c1570632a03f7d9d63ec626b68c1e0da4cd42b61",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "bd9ee958066fc6b29c5c181de17392e7d65e5d5cde0182aefaf4326030a6ca81",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "4618f54e79db57553a65586a6a73d5cdd560f59ef9e8a4e9116e843a292d6e07",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "d10e0ec48acf324e405f573b1958ce8a86e0712baf579b5b17084c7f0ec9da37",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "8066378762727298217b0554c066cdbcda999c5a60dbf7a1f6dfaa8ffa0ab19b",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "f252a862f4b36be286b7050a4137504caea005b877dd6c6c0b2a9a8a4eaf657e",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "dbbfc7894aba2efc4ff720e262c3c35c0357609601049bb54e163474bc887175",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "0ecc4b6530920be58f011e7dd7200d518164c6300c74fa4f36d9e2544ac3626a",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "3d2c745efa6910c5f18c547237805cc287ae585744ff13378c1da47c6589719b",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "01336c18eaa18749e66e3cbceb72bd5fefb7e0a4c508580a196478695919e746",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "603611ceaf9dd483d2b5bab5fed8dff199e70a7de001ac2d4c0b3a05fc2c307f",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "83b67d9f828769eb3fe798a098c79aae9ac0e582793fb6e6daa82449df9f6ea4",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "1317ac4ee849efe243fb18945046aec118202bc6ea936a304283111b1d631d11",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "a334f58d32260b7de296babf9f00db79d26d4c1520587c9307e2a99467893a0c",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "d4d0a2ab00d0fe96021bd529eaf8ce2fe89aa2d4054fa93e702ec858da5f7804",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "30efaff5f0e3fb3c23ea6e7b157e2fd9787b4b2a11da8f6d3ce0ba2a77e76f2e",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "e1d5c00c05fea2e022b77e6a2fcc414e2aecbf55a35c7eb71978fdafa6fb5c49",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "2ea5aae681ecac8a1e57266ce10f2a08b83da699fe3098641c62aa06120334b9",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "0ea4d60252eeb30002db942d54e59f2b753ec1159fdba90b4c65c7db83074cc0",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "eace8a0f22ccc6baf9c3c3d78cd30f98ef0a66ec3887a80542c78a0228b97873",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "3520882f7b6a4dadb76d295411d208901c079de933fdfb5c19cc9bd24aca71bd",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "394606183ff3501b4072dc18897390b71db632dbc2b4023783275bc2c25f9e5b",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "7a93a362daa39279fe43c6a1bc557f08b2ddcb2f27783e96fd48f3d0ecbb0c21",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "29962265ba743e274d386584ddb3f5996df7aab28c0d18952567c4e026ae0079",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "a0a243b39d7dd76f95a400171469c88c267e8db89f3cfbb4c2fa024b6f73d984",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "8e7bacb2ed5680c9acd829550df560ea27967b83e36434c49c9445c21b8f2daa",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "e09d1176d26ae3e4175b7c9c42622707a91350bafa029a0b6090eac90c98ed21",
+            "stage": "research_controller_initialize"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "0ad958ea739b9ccb792e17be60d75b1b804b9b10038c2b8dc0d5acf33728b9c3",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "reflection_skill",
+            "payload_path": "reflection_skill",
+            "request_hash": "c58133bfac5341ecc1d5be4e05d6f0aa94fb2b683a1fc81228f34f0df49fdaf7",
+            "stage": "research_controller_reflect"
+          },
+          {
+            "field": "analysis_prompt",
+            "payload_path": "final_context.analysis_prompt",
+            "request_hash": "b55592337a31d77084d0a9a7201538b915fa65dba164b1790eaf414b88aaf26d",
+            "stage": "blind_predictor_predict"
+          },
+          {
+            "field": "initial_research_skill",
+            "payload_path": "initial_research_skill",
+            "request_hash": "a610dde23ce9a5f3b417d23f8289eb5614c0ab8c2b8f40134c16dae4a383c89c",
+            "stage": "research_controller_initialize"
+          }
+        ],
+        "adopted_refs": [
+          "reflection:d40d17a58b9406c9002a485e64a3797baedabd3187335eec66dfcc9d57eda1da",
+          "reflection:a4905b7425546c79ad915516e33d0e84eef42738eb0f87aca791c7c621b736be",
+          "reflection:de8bbd837786248fc321d2f00d33e5520a6a3b5a2e5396a2ab81f1f721329d2a",
+          "reflection:b0a68dab96c31bfba9dfe9b451b44a0c46c2c5d0e7ae7abed53d401f3a0653d6",
+          "reflection:0778079053cb5600dc5afce9599ca18067580d41804c9b404e8e2c879fd156eb",
+          "reflection:5fd635ca0d3d4fcf78fc4dd73b92a13c18145209e7f599d24d36af0f43708499",
+          "reflection:eea5e1a189c7acb99fea7466495605087e0f3ea083900484be823def288342c8",
+          "reflection:46eac6b365565b73780a8d71409af11c5d01b9d596df8bdd4fc26afc50737ea1",
+          "reflection:aefb8ade0de732ecda193a8a682c18caa10291ae3384c016048725a55b3ba664",
+          "reflection:a024915cbd3e9ad9da7b0d191bd6f4128b5929403cf3ad44739d6128c16686eb",
+          "reflection:7a9b9444d3b0b02c42373de912c790ae0666c78ed55d5aa11b7f194afff89c6f"
+        ],
+        "adoption_count": 11,
+        "all_refs_disclosed": true,
+        "artifact": {
+          "file_sha256": "080cfd710be6e78e25dc6b8e135d6c82858fd2ce79e7c1bfaaa4833e6d313486",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/candidates/slot-01.json"
+        },
+        "correction_request_hash": "af27e0be4d30d1a746159de7b38926b57959607e49b5b3a7027348cd834b7db8",
+        "parent_ids": [
+          "plan_manual_v1"
+        ],
+        "plan_id": "plan_r0001_c01",
+        "source_request_hash": "d7ed75b83b6dc7b5c92d8a89cf5550b2e5e3d876481af07db26ce98546f1d810",
+        "strategy_fields_identical_to_original_response": true,
+        "usage_snapshot_hash": "db67b1f2c9afb07b8f613679375aef543a6a787b8433713f9dda3df13e7bb42f"
+      },
+      {
+        "actual_strategy_transmission": [],
+        "adopted_refs": [
+          "reflection:69ad1c44fb3e934cee801a732244c9de8a4f6a95bd50482a9a9c9b8ceb88ec6e",
+          "reflection:a4905b7425546c79ad915516e33d0e84eef42738eb0f87aca791c7c621b736be",
+          "reflection:d40d17a58b9406c9002a485e64a3797baedabd3187335eec66dfcc9d57eda1da",
+          "reflection:7a9b9444d3b0b02c42373de912c790ae0666c78ed55d5aa11b7f194afff89c6f",
+          "reflection:b0a68dab96c31bfba9dfe9b451b44a0c46c2c5d0e7ae7abed53d401f3a0653d6",
+          "reflection:0778079053cb5600dc5afce9599ca18067580d41804c9b404e8e2c879fd156eb",
+          "reflection:5fd635ca0d3d4fcf78fc4dd73b92a13c18145209e7f599d24d36af0f43708499",
+          "reflection:eea5e1a189c7acb99fea7466495605087e0f3ea083900484be823def288342c8",
+          "reflection:aefb8ade0de732ecda193a8a682c18caa10291ae3384c016048725a55b3ba664",
+          "reflection:46eac6b365565b73780a8d71409af11c5d01b9d596df8bdd4fc26afc50737ea1",
+          "reflection:a024915cbd3e9ad9da7b0d191bd6f4128b5929403cf3ad44739d6128c16686eb"
+        ],
+        "adoption_count": 11,
+        "all_refs_disclosed": true,
+        "artifact": {
+          "file_sha256": "906ac108d6dc4a565e5e3735557f380994f19082583f0643dd671120aa47b202",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/candidates/slot-02.json"
+        },
+        "correction_request_hash": null,
+        "parent_ids": [
+          "plan_manual_v1"
+        ],
+        "plan_id": "plan_r0001_c02",
+        "source_request_hash": "a79842e9d475eb9a2f1ac68120b03fd0c161587ad15c80f1ef8f10116ad8f06f",
+        "strategy_fields_identical_to_original_response": true,
+        "usage_snapshot_hash": "db67b1f2c9afb07b8f613679375aef543a6a787b8433713f9dda3df13e7bb42f"
+      }
+    ],
+    "proposal_brief_snapshot_hash": "10b3fadeacaa3e53e621179f722e6226d06e86acd37d10d1464a27e3566b939d",
+    "snapshot_meaning": "The first hashes meta_info alone; persisted usage hashes {brief:meta_info,disclosures:memory_disclosures}. Both recomputed from actual payload.",
+    "status": "observed_in_live_execution"
+  },
+  "formal_pointers": {
+    "active_cycle": {
+      "completed_plan_rounds": 0,
+      "cycle_id": 1,
+      "cycle_mode": "fast_then_slow",
+      "input_signal_registry_hash": "4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311",
+      "input_signal_registry_version": 10,
+      "phase": "fast_loop",
+      "start_round": 0,
+      "target_plan_rounds": 1
+    },
+    "cycle": 0,
+    "round": 0
+  },
+  "human_content_findings": [
+    {
+      "artifact": {
+        "file_sha256": "d650fc4d11bd86a5d5ffc9dd3103297903256f1f5f6a04fc185e5af7c53ac654",
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json"
+      },
+      "case_id": "cik_0000895728:20250930",
+      "claim": "Management commentary from the second-quarter 2025 earnings call indicates progress across all segments and a growing list of AI and data center-related customers.",
+      "finding": "The quoted call opening ends before the claimed AI/data-center customer disclosure. This nonnumeric claim remains in the persisted initial state. Later independent Signal retrieval does expose relevant text, but does not retroactively ground the initial claim.",
+      "literal": "{\"quarter\":\"2025Q2\",\"symbol\":\"ENB\",\"transcript\":[{\"content\":\"Good morning, and welcome to the Enbridge Inc. Second Quarter 2025 Financial Results Conference Call. My name is Rebecca Morley, and I'm the Vice President of Investor Relations and Insurance. Joining me this morning are Greg Ebel, President and CEO; Pat Murray, Executive Vice President and Chief Financial Officer; and the heads of each of our business units: Colin Gruending, Liquids Pipelines; Cynthia Hansen, Gas Transmission; Michele Harradence, Gas Distribution and Storage; and Matthew Akman, Renewable Power. Please note, this conference is being recorded. As per usual, this call is being webcast, and I encourage those listening on the phone to follow along with the supporting slides. We'll try to keep the call to roughly 1 hour. In order to answer as many questions as possible, we will be limiting questions to one plus a single follow-up, if necessary. We'll be prioritizing questions from the investment community. So if you are a member of the media, please direct your inquiries to our communications team, who will be happy to respond. Our Investor Relations team will be available following the call for any follow-up questions. On to Slide 2, where I will remind you that we will be referring to forward-looking information on today's presentation and Q&A. By its nature, this information contains forecast assumptions and expectations about future outcomes, which are subject to the risks and uncertainties outlined here and discussed more fully in our public disclosure filings. We'll also be referring to non-GAAP measures summarized below. And with that, I'll turn it over to Greg Ebel.\",\"sentiment\":\"0.6\",\"speaker\":\"Rebecca Morley\",\"title\":\"Vice President of Investor Relations and Insurance\"},{\"content\":\"Well, thanks very much, Rebecca, and good morning, and thank you all for joining us on the call today. I'm excited to share another strong quarter and highlight the progress we've made across all segments o",
+      "projection_id": "projection_630eceed585af76d1648a3b2",
+      "stage": "initialize",
+      "status": "failed_content_acceptance"
+    },
+    {
+      "finding": "The raw market claim joins Aug18 46.67 to Sep29 49.72 but cites only the Aug18-Aug28 projection. Sep29 appears in another visible projection. Persisted initial state removes the unsupported composite; source support must be same-claim, not anywhere in the payload.",
+      "source_request_hash": "d9eebe28dbbae0d48b1eecf45f50cb0671fa26f0727d7603888f326cf4fb4fb9",
+      "stage": "initialize",
+      "status": "recovered_numeric_source_mismatch"
+    },
+    {
+      "artifact": {
+        "file_sha256": "0c514e42fdd7cb35d02622341497c454391b0f08237c70f14c15926cda264887",
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/failed_responses/000027_8723d34e46b82e30603683c700be3d3c95dc2c0239a3003daf2630a482af5b78.json"
+      },
+      "case_id": "cik_0000701818:20250930",
+      "error": "Expecting ',' delimiter: line 1 column 1924 (char 1923)",
+      "finding": "Malformed paid correction is persisted as failed provider text; downstream final result reports omitted signal_ref instead of the original JSON boundary. No unavailable or successful result is invented.",
+      "raw_output": "{\"results\":[{\"result\":{\"evidence\":{\"counter\":[{\"projection_id\":\"projection_2d38f031b9b4e80f7dbb6ce4\",\"exact_text\":\"This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.\"},{\"projection_id\":\"projection_296e8bd1e746dfc896b0e0fc\",\"exact_text\":\"This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.\"},{\"projection_id\":\"projection_c0c474aab1c5f4290ba873f0\",\"exact_text\":\"This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.\"}],\"interpretation\":{\"summary\":\"The visible filings describe the target issuer's dispositions of equity stakes in third parties (Asante Gold Corporation and White Gold Corp.) via press releases and Early Warning Reports, and routine quarterly results, dividend, and sustainability-report announcements. These are share sale events by the target as seller, not a financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing action by the target, and no visible span establishes a within-horizon change in the target's runway, dilution, or tradability. The examined non-qualifying spans are cited as counter evidence; the capital-structure events are neutral with respect to the fixed surge target.\"},\"signal_id\":\"financing_listing_action\",\"state\":{\"confidence\":0.55,\"value\":\"neutral\"},\"status\":{\"coverage\":\"partial\"},\"version\":5},\"signal_ref\":\"financing_listing_action:v5\"}]}",
+      "request_hash": "8723d34e46b82e30603683c700be3d3c95dc2c0239a3003daf2630a482af5b78",
+      "stage": "llm_signal_batch_execute_correction",
+      "status": "terminal_technical_failure"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "finding": "Repair of one edge citation also removes spaces around the quoted New Term Loan Facility string in an unrelated retained citation, creating a nonliteral span. Strict rejection is correct; no fuzzy source acceptance.",
+      "request_hash": "ccc35d87dcc1f4f00f2e65777687878d44880566821a5856e66f29d1a930362c",
+      "stage": "llm_signal_batch_execute_correction",
+      "status": "terminal_technical_failure"
+    }
+  ],
+  "inspection_scope": "Two actual Proposer responses, original add-only correction, all twelve distinct adopted briefs/limitations, first Initialize fixed prompt and visible projection mapping, first persisted initial state and prediction, two failed Signal corrections, and exact runway-v3 persisted results. Inventory does not imply personal semantic review of all cases.",
+  "partial_execution_inventory": {
+    "magnitude_prediction_counts": {
+      "2-3x": 3,
+      "None": 7
+    },
+    "runway_v3_actual_results": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "execution": {
+          "status": "success"
+        },
+        "state": {
+          "confidence": 1.0,
+          "value": "negative"
+        }
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "execution": {
+          "status": "success"
+        },
+        "state": {
+          "confidence": 1.0,
+          "value": "negative"
+        }
+      }
+    ],
+    "saved_case_count": 10,
+    "signal_status_counts": {
+      "domain_unavailable": 6,
+      "success": 36,
+      "validation_failed": 4
+    },
+    "technical_signal_failures": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "batch output omitted requested signal_ref",
+          "status": "validation_failed"
+        },
+        "signal_ref": "financing_listing_action:v5"
+      },
+      {
+        "case_id": "cik_0000936395:20250930",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] on projection 'projection_4fc6a8ff218a8d26102167c5' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_4fc6a8ff218a8d26102167c5\": \"With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      },
+      {
+        "case_id": "cik_0001590364:20250731",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] on projection 'projection_fc830dec11dfa723722d6fc7' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_fc830dec11dfa723722d6fc7\": \"For the strategic capital initiative or SCI, it was great to announce one investment management as an equity investor to the partnership.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] exact_text does not map uniquely: supplied_projection_id='projection_b4d4b824d4fbccf36ad9d5d4', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. Copy one case- and punctuation-exact literal from an eligible projection or return unavailable",
+          "status": "validation_failed"
+        },
+        "signal_ref": "financing_listing_action:v5"
+      }
+    ],
+    "trajectories": [
+      {
+        "artifact": {
+          "file_sha256": "284e754c304979ad19351de4094f1f252ab4277584a096d7479bf42822cbfe31",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json"
+        },
+        "case_id": "cik_0000701818:20250930",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "a999e6a9a077904c8b1f80d73dce70ebc1aeab53c83cda93cb4e48822ff4a424",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.json"
+        },
+        "case_id": "cik_0000895421:20250731",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "d650fc4d11bd86a5d5ffc9dd3103297903256f1f5f6a04fc185e5af7c53ac654",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json"
+        },
+        "case_id": "cik_0000895728:20250930",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "61e542d602a6aa59b5d9014cd74269a223b46dfa23ebb90ab8d2241bbfd03d52",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0000936395:20250930.json"
+        },
+        "case_id": "cik_0000936395:20250930",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "d6d3f55581f916a2099f7a6b6f24119a6899727bc33f5feed91b003658ebebfd",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001164727:20250731.json"
+        },
+        "case_id": "cik_0001164727:20250731",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "0e39b1a8b868ec90554a1a45edcd618d1e30e9d2c3cd471b799d24fae3279650",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json"
+        },
+        "case_id": "cik_0001174922:20250731",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "4b97136547fa5a2492c9874cddaf0397331e05dd08aeddf617a3b0203248b89a",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001576942:20250530.json"
+        },
+        "case_id": "cik_0001576942:20250530",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "2e1f651f7697558f8b13597b63c1f95def1c1de18af6b5823632971ef69832ba",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001590364:20250731.json"
+        },
+        "case_id": "cik_0001590364:20250731",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "fffc35652ac451eac01f02b74a9c69de5e16cf6b85fdec38eb3a0cc7d57439c3",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json"
+        },
+        "case_id": "cik_0001830043:20250930",
+        "plan_id": "plan_r0001_c01"
+      },
+      {
+        "artifact": {
+          "file_sha256": "943bbcf59b47d774b4b0841ee5521004ac508a15cd81c23a0f71cbfa60fa046f",
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json"
+        },
+        "case_id": "cik_0001869198:20250331",
+        "plan_id": "plan_r0001_c01"
+      }
+    ]
+  },
+  "process_snapshot": {
+    "automatic_resumes": 1,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v179/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+      "--run"
+    ],
+    "last_exit_code": 1,
+    "pid": 68475,
+    "source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+    "started_at": "2026-10-06T17:17:09.432068+00:00",
+    "status": "running",
+    "wrapper_pid": 64736
+  },
+  "recorded_cost": 0.42448980000000003,
+  "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "schema_version": "human-live-stage-audit-v1",
+  "source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb"
+}

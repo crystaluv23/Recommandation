@@ -290,3 +290,5 @@
 - 2026-10-06: v177 Signal证据失败家族审计；consulted `experiences/incremental-repair-and-sourced-memory.md`，逐份检查初答/纠错/可见投影/硬要求的一致性，修复neutral提示与强制证据要求的冲突，禁止无依据量纲比较；不改原阈值或将无关literal自动替换成经济依据。
 
 - 2026-10-06: v177完整纠错预算家族；consulted `experiences/self-evolution-convergence-and-acceptance.md`和`experiences/incremental-repair-and-sourced-memory.md`，确认feedback在预算拟合后追加造成估算/实际请求不一致，沿既有投影/校验合同修复生产组合边界并保留真实失败分母。
+
+- 2026-10-07: v179实际反馈消费与Signal技术失败审计；consulted `experiences/signal-result-evidence-invariants.md`和`experiences/structured-role-boundary-exactness.md`，区分损坏JSON/非literal/内部edge与正常domain_unavailable，核对真实生产payload、付费纠错和落盘，不用来源hash代替内容正确性或采用代替独立gain。

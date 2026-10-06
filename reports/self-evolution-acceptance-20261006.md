@@ -17,6 +17,15 @@
 - 初始wrapper64736/child64741，process.json时间2026-10-06T17:07:55.477302+00:00。已核对两个真实进程命令，child初始86.6%CPU做来源/合同验证，ledger0，并非挂起。同冻结monitor独占执行，原10分钟heartbeat `automation`已更新v179坐标和内容验收/泛化约束；后续必须重查PID/exit，不凭启动即宣称任何完成。v177/v178已完成作业不重启。
 - 待亲自确认真实新Proposer的初/纠错prompt、实际采纳记录、历史新runway v3及融资v5检索执行、全部失败家族和跨周期反思消费；magnitude新因子/扩展预测及独立效益仍未验收。统计/覆盖/对象误路由的现有语义问题不因本地格式修复被视为已解决。
 
+## v179 实际反馈消费与早期失败（2026-10-07 01:24）
+
+- 两个真实新Plan各声明采用11条已披露ref，全部在同一实际Proposer的19条included_refs中。c01首答只缺采纳字段；唯一付费patch为add used_experience_refs，四个策略字段与首答逐值相同。c02首答已声明11条，没有纠错。生产checkpoint与实际请求核对见 `reports/v179-feedback-consumption-audit-20261007.json`，不把candidate checkpoint当正式Fast提交。
+- 首案Initialize实际传输c01 H_init，后续Reflect与Predictor也逐值传输其reflection_skill和analysis_prompt；有真实消费证据。meta_info单独hash为 `10b3fadeacaa3e53e621179f722e6226d06e86acd37d10d1464a27e3566b939d`，持久化采用snapshot对 `{brief,disclosures}` hash为 `db67b1f2c9afb07b8f613679375aef543a6a787b8433713f9dda3df13e7bb42f`，二者均从原payload重算，含义不同而非错误变更。c02还未进入逐案执行。反馈声称采用和实际技能传输不能证明独立增益。
+- 审计快照正式round/cycle仍0/0，10份已保存案例；46次Signal结果为success36/validation_failed4/domain_unavailable6。新runway v3已在两案真实执行成功，仍是已有方向因子的后继消费，不是新magnitude能力。仅两个非空预测均2–3x，余八个null；这只是部分库存，不是完整评分或亲自审阅所有案例的声明。
+- 首案Initialize把call开头作为“AI/data-center客户增长”声称的引文，实际该可见投影止于开场，未包含该内容；非数值声称仍落盘，内容验收失败。后续Signal另行检索到相关文本不追溯修正初始依据。原market复合声称引用仅Aug18–Aug28、却加入另一投影的Sep29值；该数值错误已被机械移除，不能把同payload别处可见当同claim支持。
+- 已亲自读两项初期Signal付费纠错：Kinross融资v5纠错返回损坏JSON，failed_responses保留完整文本而最终Signal只报omitted signal_ref；Life Time融资v5修复一项edge引用时又删去另一处引号周围原空格，严格literal拒绝正确。库存另有两项guidance内部edge失败，实际付费答仍保留截断增长句或旧年份片段，已读完整反馈与回答；不作模糊引文接受，不将失败改成unavailable或研究阴性。
+- 一次新鲜SSL EOF由冻结monitor按原合同恢复同一运行，当前child PID必须重查。本次保留事实和失败，不热改运行源码、不依据单条引文立刻重开一轮；完整Slow及上下游内容审计继续，最终零技术失败、新magnitude入库/高档有效预测、独立收益均未验收。
+
 ## v178 历史冻结后继（2026-10-07 00:04:43启动）
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。
