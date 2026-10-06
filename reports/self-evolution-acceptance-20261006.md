@@ -2,13 +2,22 @@
 
 ## 当前结论与要求
 
-状态：v178已于2026-10-07 00:57:34完整提交Fast/Slow1/1并exit0，尚未通过总体验收；v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v179于2026-10-07 01:07:55真实启动，尚未验收；v178已完整Fast/Slow1/1并exit0，v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
 3. 追踪源反馈→诊断/Experience→后续实际prompt→改变的Plan/Signal/研究动作。有效性另用现有独立固定cohort、失败分母和四臂协议；没有预先冻结的协议及足够结果，状态为未验证。入库、使用、productive reuse、观察正确率与独立增益保持分开。
 
-## 当前 v178 冻结后继（2026-10-07 00:04:43启动）
+## 当前 v179 冻结后继（2026-10-07 01:07:55启动）
+
+- Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v179`；冻结源码：`/Users/l/.codex/worktrees/evolution-acceptance-v179/Recommandation`，HEAD `482a5e1ecdd57d160b60c44c732157f3f62cd4bb`，tracked clean。包含ad9f1804的Plan/reflection整体契约修复及内部引用首尾空白边界修复。1550全量/59.848s与lint PASS；无关未提交设计和v151文件未进入运行源码。
+- 已验证v178正式Fast/Slow1/1、Registry10/hash `4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311`及admission/原候选/周期来源后继承；生产validate_slow_history_manifest通过，fast_context含一份真正提交的Round meta，不把旧错误改成成功记录。
+- Input canonical hash `983e431c91a7c81f0c9df7c716ede6adb6f654d7b09517aaf2ebd9ad61c41eb3`，文件sha256 `37950cefc87fa8596b9c4ad0fc56a6fed28787a1f49ff194aaea75e321d6848c`；history hash `ec0e5f3bb5a25be474da0520f466774dd0c063c0937a540d806027d7ec03f444`；contract hash `2dab8b3e898e49376486e824a5d797fadb7dc5d5a69039130bd57b6e6253ef04`，合同文件sha256 `a97a512565af68ce34743965ffd9dc024e8ca5e39e1e4a2c5a929c5f5860c03c`。
+- 准备0外部调用。逐值验证仅7个Registry/历史出处字段变化，splits/evaluation/Locked Test/source_files完全相同、3606源文件重新校验；16 Anchor+8 evolution_validation+16 Discovery/同40案不变。仍deepseek-v4-flash、1200attempts/$100、一个Fast→Slow诊断周期，不启动待审批独立效果实验。
+- 初始wrapper64736/child64741，process.json时间2026-10-06T17:07:55.477302+00:00。已核对两个真实进程命令，child初始86.6%CPU做来源/合同验证，ledger0，并非挂起。同冻结monitor独占执行，原10分钟heartbeat `automation`已更新v179坐标和内容验收/泛化约束；后续必须重查PID/exit，不凭启动即宣称任何完成。v177/v178已完成作业不重启。
+- 待亲自确认真实新Proposer的初/纠错prompt、实际采纳记录、历史新runway v3及融资v5检索执行、全部失败家族和跨周期反思消费；magnitude新因子/扩展预测及独立效益仍未验收。统计/覆盖/对象误路由的现有语义问题不因本地格式修复被视为已解决。
+
+## v178 历史冻结后继（2026-10-07 00:04:43启动）
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。
 - 冻结源码：`/Users/l/.codex/worktrees/evolution-acceptance-v178/Recommandation`，HEAD `a95ee0c23ab72cfc90f31b5ea52b172ffd89005c`，包含本次及此前主源码验收修复；tracked clean。主checkout文档更新和无关未提交规格不改变运行源码。
