@@ -226,7 +226,7 @@ class StructuredReflectionRoleLifecycleTests(unittest.TestCase):
             source = context["memory_disclosures"][0]["sources"][0]
             self.assertIn("detail", source["content"])
             parent = records[0].plan
-            return {"B": parent.basic_info_policy.to_dict(), "H_init": parent.initial_research_skill + " Compare magnitude scenarios with explicit counterevidence.", "H_reflect": parent.reflection_skill, "H_analyse": parent.analysis_prompt}
+            return {"used_experience_refs": [], "B": parent.basic_info_policy.to_dict(), "H_init": parent.initial_research_skill + " Compare magnitude scenarios with explicit counterevidence.", "H_reflect": parent.reflection_skill, "H_analyse": parent.analysis_prompt}
 
         proposer = CatalogCaller(propose_output)
         proposed = LLMInformationPlanProposer(proposer).propose(

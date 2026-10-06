@@ -58,8 +58,11 @@ New proposal output contains the four strategy fields plus
 an actual initial brief, directory page or item read in this proposal. Parent
 metadata and undisclosed/deferred handles do not grant adoption authority.
 Runtime binds the complete final disclosed working-view snapshot and persists
-the adoption metadata. Invalid lists/unknown refs receive typed local repair
-authority for this field alone. Legacy no-memory responses remain readable.
+the adoption metadata. A new proposal that omits `used_experience_refs` receives
+typed add-only repair authority for this field; omission cannot mean no adoption.
+Invalid lists/unknown refs receive typed local repair authority for this field
+alone. Persisted legacy Plans remain readable with unknown adoption; the legacy
+record loader is separate from validation of newly authored role responses.
 
 Implement structured adapters for Plan proposal, criticism, adaptive research,
 Signal retrieval, blind prediction, and Plan reflection.

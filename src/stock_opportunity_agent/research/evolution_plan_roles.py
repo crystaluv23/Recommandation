@@ -3023,8 +3023,14 @@ class LLMInformationPlanProposer:
                             "item_refs": adopted,
                         }
                     else:
-                        # Old persisted responses lack explicit adoption; never infer it.
-                        normalized.pop("experience_usage", None)
+                        raise StructuredValidationError((ValidationIssue(
+                            code="experience_adoption_missing", paths=("used_experience_refs",),
+                            allowed_repairs=("add",),
+                            message=("New proposal output requires used_experience_refs: "
+                                "add only actually adopted disclosed refs, or [] for no adoption. "
+                                "Missing metadata is unknown, not an empty adoption list; "
+                                "preserve B and every H_* field"),
+                        ),))
                     plan = _parse_role_output(
                         stage, normalized, InformationPlan.from_dict
                     )

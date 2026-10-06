@@ -272,3 +272,13 @@
 - 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/incremental-repair-and-sourced-memory.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.
 
 - 2026-10-04: Trigger "shared Experience/Signal continuous-use evaluations and brief contexts"; read `memory/experiences/python-runtime-for-tests.md` to preserve committed authority, frozen feedback, sourced bounded consumer views and compatible local verification.
+
+- 2026-10-06: 启动端到端自进化实测及magnitude/有效性监控；consulted `experiences/self-evolution-convergence-and-acceptance.md`，用于冻结当前基线、实际请求检查、失败分层及正确Python运行边界。
+
+- 2026-10-06: 启动端到端自进化实测及magnitude/有效性监控；consulted `experiences/incremental-repair-and-sourced-memory.md`，用于冻结当前基线、实际请求检查、失败分层及正确Python运行边界。
+
+- 2026-10-06: 启动端到端自进化实测及magnitude/有效性监控；consulted `experiences/python-runtime-for-tests.md`，用于冻结当前基线、实际请求检查、失败分层及正确Python运行边界。
+
+- 2026-10-06: 启动端到端自进化实测及magnitude/有效性监控；consulted `experiences/formal-cold-start-blind-boundaries.md`，用于冻结当前基线、实际请求检查、失败分层及正确Python运行边界。
+
+- 2026-10-06: 接续被中断的v177端到端goal；再次consulted `experiences/self-evolution-convergence-and-acceptance.md`和`experiences/incremental-repair-and-sourced-memory.md`，核对实际Proposer字段缺口及Signal技术失败的全生命周期归因，旧运行保持冻结、局部patch保留策略。

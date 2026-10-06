@@ -2744,6 +2744,7 @@ class ReflectionRoleAdapterTests(TestCase):
     def test_proposer_corrects_unsupported_source_then_rejects_stale_probability(self) -> None:
         parent = default_information_plan()
         unsupported = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -2800,6 +2801,7 @@ class ReflectionRoleAdapterTests(TestCase):
     def test_v30_proposer_rejects_controller_owned_prediction_ontology(self) -> None:
         parent = default_information_plan()
         invalid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {

@@ -12,7 +12,7 @@ from stock_opportunity_agent.research.repair import mechanical_repair_candidate
 class PlanSourceSetRepairTests(TestCase):
     def output(self):
         parent = default_information_plan()
-        return {"B": parent.basic_info_policy.to_dict(), "H_init": parent.initial_research_skill,
+        return {"used_experience_refs": [], "B": parent.basic_info_policy.to_dict(), "H_init": parent.initial_research_skill,
                 "H_reflect": parent.reflection_skill, "H_analyse": parent.analysis_prompt}
 
     def propose(self, outputs):

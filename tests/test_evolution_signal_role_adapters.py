@@ -2330,6 +2330,7 @@ class SignalRoleAdapterTests(TestCase):
                     )
                 return (
                     {
+                        "used_experience_refs": [],
                         "B": {
                             "requests": [
                                 {
@@ -2384,6 +2385,7 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_plan_proposer_corrects_missing_market_backbone(self) -> None:
         missing = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -2443,6 +2445,7 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_v91_plan_proposer_confines_query_correction_scope(self) -> None:
         invalid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -2538,6 +2541,7 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_v91_plan_proposer_omits_empty_optional_query_without_call(self) -> None:
         output = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -2581,6 +2585,7 @@ class SignalRoleAdapterTests(TestCase):
 
     def test_v81_plan_proposer_corrects_cross_issuer_request_scope(self) -> None:
         invalid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {

@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "request_hash": "b55c1921612de031198c71007d36e7423d82e44871cb270d74db1479857c44a0",
+      "original_sha256": "56b60c7d24e0955a6488320ec722a7561b2d74ad5d98dd36f0ffaf214193f034",
+      "role_calls": 2,
+      "patch_authority": [
+        {
+          "op": "add",
+          "path": "used_experience_refs",
+          "descendants": false
+        }
+      ],
+      "strategy_preserved": true,
+      "original_unchanged": true,
+      "explicit_nonuse": true,
+      "external_calls": 0,
+      "scope": "actual paid original plus scripted metadata-only patch; not live model compliance or adoption proof"
+    },
+    {
+      "request_hash": "6b472ebe83a748394ddd434f17dbf50242ba55f2fcd9c0e2fff293464748fe0d",
+      "original_sha256": "cc04ab64e5d6e64a7898ce4d5e8c40b132a97a70b64a4f5209554ce14f67fe91",
+      "role_calls": 2,
+      "patch_authority": [
+        {
+          "op": "add",
+          "path": "used_experience_refs",
+          "descendants": false
+        }
+      ],
+      "strategy_preserved": true,
+      "original_unchanged": true,
+      "explicit_nonuse": true,
+      "external_calls": 0,
+      "scope": "actual paid original plus scripted metadata-only patch; not live model compliance or adoption proof"
+    }
+  ]
+}

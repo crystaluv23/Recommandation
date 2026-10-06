@@ -517,6 +517,7 @@ def _production_proposer_replay(sources: HistoricalSources, meta: Mapping[str, A
                 if self.original_case not in original_cases:
                     raise AssertionError("production proposer did not receive an exact persisted case view")
                 output = {
+                    "used_experience_refs": [],
                     "B": parent.basic_info_policy.to_dict(),
                     "H_init": parent.initial_research_skill + " Preserve the applicability conditions and limitations of a retrieved lesson when forming information needs.",
                     "H_reflect": parent.reflection_skill,

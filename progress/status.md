@@ -1,5 +1,9 @@
 # Status
 
+2026-10-06：v177恢复SSL临时中断后已保存7案、Fast/Slow指针0/0；亲自检查发现新Plan缺采纳字段被legacy兼容、Signal两个校验失败及一个预算阻断、技术诊断未到Posthoc、订单容量与数量量纲混淆。先修spec及新Proposer add-only字段权限；两份真实付费原答0外部重放保持策略/原件，5新/250相关/1510全量PASS。未热改冻结v177，零技术问题/幅度新入库/独立增益尚未验收。
+
+2026-10-06：已启动v177端到端自进化验收，冻结a7d8a057源码、v171已提交Registry v8及同40案/PIT/Locked Test边界；两个Plan Fast→Slow与后继消费/双轴入库/独立增益分别验收。启动前1505全量测试PASS，10分钟持续监控已启用；当前未声明完整周期、magnitude入库或研究增益。主checkout既有未提交规格/v151改动保留。见reports/self-evolution-acceptance-20261006.md。
+
 2026-10-04：Experience/Signal共用usage_context与performance brief已接通：明确Plan采纳/有效Signal执行后按公司+预测时点等权计算正确率、正负类与TP/FP/TN/FN；技术排除、unavailable及同输入冲突单列，不改正式评分。统计沿提交指针累积，完整历史不受FIFO淘汰影响；恢复与hash绑定导入幂等，源工作区只读。Signal exact-version索引Experience、作者适用/经济失效条件及后续Proposer/selector/Mining请求均已贯通；旧无采纳记录保持未知，未启用因果或配对增益指标。16新回归、152相关及1505全量测试与lint PASS；真实v168读取48观察/17Signal画像，16冲突单列、48旧Experience采纳未知，全部源hash不变、0模型调用；新作者协议live行为及独立增益未验证。
 
 2026-10-04：新增research/cross_round_reflection及Slow入口cross_round反思层：正式提交/冻结授权观察按同公司/时点/语义/结果合同相邻配对，双侧原件/hash完整，技术诊断与未知因果分开。修复experience完整本地索引→Controller分页/原文持续消费和Slow方法memory实际请求缺口；保留browse/48KB上限，重复读取去重。真实v168/v170零外部调用重放72观察/11对照（8技术、3输入变化），脚本化反思生成2条cross_round，10/10审计目标经验可读且进入后续请求，历史原件不改。最终1489全量回归及lint PASS；未启动live、未新增入库因子或证明增益。报告：reports/cross-round-experience-mining-repair-20261004.md。

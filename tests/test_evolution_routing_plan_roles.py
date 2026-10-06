@@ -3187,12 +3187,14 @@ class RoutingAndPlanRoleTests(TestCase):
         }
         caller = ScriptedRoleCaller([
             {
+                "used_experience_refs": [],
                 "B": policy,
                 "H_init": "Form a falsifiable hypothesis and list unresolved information needs.",
                 "H_reflect": "Track support and contradiction, then continue for the next need or finalize.",
                 "H_analyse": "Weigh supporting and counter evidence while exposing uncertainty.",
             },
             {
+                "used_experience_refs": [],
                 "B": policy,
                 "H_init": "Test a distinct hypothesis and list unresolved information needs.",
                 "H_reflect": "Track disconfirming evidence first, then continue for the next need or finalize.",
@@ -3268,6 +3270,7 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_plan_proposer_repairs_exact_parent_copy_with_change_focus(self) -> None:
         parent = default_information_plan()
         duplicate = {
+            "used_experience_refs": [],
             "B": parent.basic_info_policy.to_dict(),
             "H_init": parent.initial_research_skill,
             "H_reflect": parent.reflection_skill,
@@ -3313,6 +3316,7 @@ class RoutingAndPlanRoleTests(TestCase):
 
         parent = default_information_plan()
         valid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -3378,6 +3382,7 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_v111_plan_proposer_does780_relabels_news_as_issuer_owned(self) -> None:
         parent = default_information_plan()
         invalid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -3439,6 +3444,7 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_plan_proposer_repairs_unsupported_ownership_in_role_skill(self) -> None:
         parent = default_information_plan()
         invalid = {
+            "used_experience_refs": [],
             "B": {
                 "requests": [
                     {
@@ -3498,6 +3504,7 @@ class RoutingAndPlanRoleTests(TestCase):
         parent = default_information_plan()
         for analysis_prompt in fixture["false_positive_analysis_prompts"]:
             output = {
+                "used_experience_refs": [],
                 "B": parent.basic_info_policy.to_dict(),
                 "H_init": parent.initial_research_skill,
                 "H_reflect": parent.reflection_skill,
@@ -3522,6 +3529,7 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_v95_proposer_allows_operating_event_probability_in_h_init(self) -> None:
         parent = default_information_plan()
         output = {
+            "used_experience_refs": [],
             "B": parent.basic_info_policy.to_dict(),
             "H_init": (
                 "Form falsifiable hypotheses from source-backed evidence about "
@@ -3550,6 +3558,7 @@ class RoutingAndPlanRoleTests(TestCase):
     def test_v95_proposer_scopes_direction_decision_repair_to_h_reflect(self) -> None:
         parent = default_information_plan()
         invalid = {
+            "used_experience_refs": [],
             "B": parent.basic_info_policy.to_dict(),
             "H_init": parent.initial_research_skill,
             "H_reflect": (
@@ -3632,6 +3641,7 @@ class RoutingAndPlanRoleTests(TestCase):
             }
         )
         wrong_focus = {
+            "used_experience_refs": [],
             "B": unchanged["B"],
             "H_init": unchanged["H_init"],
             "H_reflect": parent.reflection_skill,
@@ -3664,6 +3674,7 @@ class RoutingAndPlanRoleTests(TestCase):
         caller = ScriptedRoleCaller(
             [
                 {
+                    "used_experience_refs": [],
                     "B": {
                         "requests": [
                             {
@@ -3835,6 +3846,7 @@ class RoutingAndPlanRoleTests(TestCase):
             }]
         }
         plan_output = {
+            "used_experience_refs": [],
             "B": policy,
             "H_init": "Form a falsifiable hypothesis and list unresolved information needs.",
             "H_reflect": "Track support and contradiction, then continue for the next need or finalize.",

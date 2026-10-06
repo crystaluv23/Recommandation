@@ -1,0 +1,125 @@
+{
+  "audited_at": "2026-10-06T13:52:16.540974+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated",
+  "code_revision": "a7d8a057",
+  "committed_fast_round": 0,
+  "committed_slow_cycle": 0,
+  "request_count": 95,
+  "attempt_count": 88,
+  "recorded_cost": 0.3278632,
+  "cases": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+      "sha256": "b15f4aab205fc51e568ad991613dde21756e1a4abc65c432bb2b02bf8c22dc33",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      "technical_signal_failures": [
+        {
+          "round": 1,
+          "signal_ref": "guidance_acceleration:v3",
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_46292dbb0dc0dfa21966dffc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_46292dbb0dc0dfa21966dffc\": \"As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          }
+        },
+        {
+          "round": 1,
+          "signal_ref": "financing_listing_action:v4",
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal financing_listing_action:v4 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          }
+        },
+        {
+          "round": 2,
+          "signal_ref": "order_confirmation_disclosed:v2",
+          "execution": {
+            "error_code": "signal_execution_budget_blocked",
+            "error_message": "correction request was not sent because its exact reservation exceeded the remaining budget: request token reservation exceeds remaining case budget: required=31524, remaining=30663",
+            "status": "budget_blocked"
+          }
+        }
+      ],
+      "manual_review": "prediction, technical failure records and posthoc"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895421:20250731.json",
+      "sha256": "caf8c626e51f6dd792ef08e177e04bcd380a784496e05fe3150d21af87df86b0",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      "technical_signal_failures": [],
+      "manual_review": "pending; counts are not content acceptance"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "sha256": "e4bfddebbff0676fa1aacbe59415c8f332b10945aa2659d2b3991487895265bd",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      "technical_signal_failures": [],
+      "manual_review": "initial/final state, prediction, signal results and posthoc"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+      "sha256": "7a21a7d0d116706a553926032a47cfb89b85b2a102876fd03714e0ca625fdd13",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      "technical_signal_failures": [],
+      "manual_review": "pending; counts are not content acceptance"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0001576942:20250530.json",
+      "sha256": "b859dbec800024b22c2d93b294f63bc5a76a1efc510045c2bec5b8d6e2aa231a",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      "technical_signal_failures": [],
+      "manual_review": "pending; counts are not content acceptance"
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+      "sha256": "ecfefdba5002e46d18515e2dcca529ba0d798bf27d6fc6904d9506fad1086801",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      "technical_signal_failures": [],
+      "manual_review": "pending; counts are not content acceptance"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/experiments/trajectories/plan_r0001_c01/cik_0001869198:20250331.json",
+      "sha256": "1016b4a67e1ef600ee0ea927e3c1a2c10f26308403575d0c097e56d6ce9b187d",
+      "stop_reason": "finalized",
+      "prediction": {
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      "technical_signal_failures": [],
+      "manual_review": "prediction and posthoc"
+    }
+  ],
+  "limitations": "automated inventory preserves failures; only explicitly named manual_review scopes have been personally inspected; not all stages accepted"
+}
