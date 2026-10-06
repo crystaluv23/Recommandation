@@ -15,6 +15,16 @@ restatements remain rejected. No numeric value is rewritten by this detector.
 Parse and validate structured role output, produce machine-readable issues,
 and apply only explicitly allowed deterministic recovery transforms.
 
+Shared source-fact instructions preserve the stated object, unit, currency,
+period and event identity through extraction, research, prediction and
+retrospective authoring. Project construction cost is not a source-stated
+contract price; inferred relationships remain explicit inferences. Multiple
+attributes or disclosures of one event do not create independent events.
+New numerical totals/conversions require a supplied source quantity or
+deterministic result; prose does not become a second computation channel.
+These are authoring requirements, not a new semantic validator or authority to
+rewrite records, Signal materiality, classifications or repair permissions.
+
 ## Invariants
 
 - Fixed Plan role guards recognize explicit do-not/does-not prohibitions. Their

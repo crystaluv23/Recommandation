@@ -708,6 +708,14 @@ authority to replace the measured claim with an unrelated sentence. Numerical
 materiality comparisons require compatible units and source-backed conversions;
 the fixed instructions do not redefine any stored Signal's threshold.
 
+Every fixed source-consuming role request also shares the object/unit/period/event
+instruction used by the Fast roles. Extraction and Update distinguish project
+cost from disclosed contract consideration and preserve the versioned skill's
+existing materiality semantics. Slow reflection and Mining do not turn multiple
+attributes or repeated disclosures of one project into independent observations.
+Any inferred relationship is labelled as such; literal evidence, existing
+validators, typed correction permissions and saved versions remain authoritative.
+
 Signal correction reservation includes the pending rows' complete validation
 feedback before choosing a budget-fitting projection. The same payload builder
 feeds every full/minimum/trial estimate and the final request; feedback cannot

@@ -13,6 +13,9 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 from stock_opportunity_agent.research.evolution_core import AgentUsage
+from stock_opportunity_agent.research.evolution_output_validation import (
+    _SOURCE_FACT_RELATION_INSTRUCTION,
+)
 from stock_opportunity_agent.research.evolution_state_patch import PATCH_INSTRUCTION
 
 MINING_CONTROLLER_STAGE = "mining_controller_step"
@@ -238,7 +241,10 @@ class MiningAgentRoleModel:
             )
         parsed, usage = self.caller.complete_json(
             stage=self.stage,
-            system_prompt=output_instruction + _MINING_CONTROLLER_PROMPT,
+            system_prompt=(
+                output_instruction + _MINING_CONTROLLER_PROMPT
+                + _SOURCE_FACT_RELATION_INSTRUCTION
+            ),
             payload=dict(view),
             allow_outcomes=True,
             anonymous_aliases=self.identity_aliases,

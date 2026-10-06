@@ -70,6 +70,7 @@ from stock_opportunity_agent.research.evolution_transport import (
 from stock_opportunity_agent.research.evolution_output_validation import (
     _SIGNAL_BATCH_RESULT_OUTPUT,
     _UNTRUSTED_DATA_INSTRUCTION,
+    _SOURCE_FACT_RELATION_INSTRUCTION,
     _complete_parsed_role,
     _parse_role_output,
 )
@@ -209,6 +210,7 @@ def _request_slow_source_refs(
             '{"read_source_refs":[]} using only supplied refs; an empty list means '
             "the current complete view is sufficient."
             + _UNTRUSTED_DATA_INSTRUCTION
+            + _SOURCE_FACT_RELATION_INSTRUCTION
         ),
         payload=provider_payload,
         parser=parse,
@@ -1507,6 +1509,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                 "Then choose no_change, defer, or one complete vNext update; "
                 "keep holdout and identities hidden."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
                 + _SIGNAL_UPDATE_V2_OUTPUT
             ),
             payload=provider_payload,
@@ -2111,6 +2114,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "emit only supported reusable lessons. Preserve specific "
                 "conditions and limitations within this output budget."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
             ),
             payload=provider_payload,
             parser=parse,
@@ -3138,6 +3142,7 @@ class LLMSignalMiningModel(SignalMiningModel):
             "case feasibility and evidence testing. Group equivalent need "
             "dispositions compactly."
             + _UNTRUSTED_DATA_INSTRUCTION
+            + _SOURCE_FACT_RELATION_INSTRUCTION
             + _MINING_RESEARCH_RELEVANCE
             + _SIGNAL_MINING_HYPOTHESES_V3_OUTPUT
         )
@@ -3443,6 +3448,7 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "or brand in profile_evidence. Respect "
                 "rules.max_case_refs_per_hypothesis."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
                 + _SIGNAL_MINING_RANKING_OUTPUT
             ),
             payload=payload,
@@ -5166,6 +5172,7 @@ _LLM_SIGNAL_BATCH_SYSTEM_PROMPT = (
     "conclusion, set state.value and status.coverage to unavailable and keep both "
     "evidence arrays empty."
     + _UNTRUSTED_DATA_INSTRUCTION
+    + _SOURCE_FACT_RELATION_INSTRUCTION
     + _SIGNAL_BATCH_RESULT_OUTPUT
 )
 

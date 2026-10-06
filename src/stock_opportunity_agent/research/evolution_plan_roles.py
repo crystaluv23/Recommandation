@@ -85,6 +85,7 @@ from stock_opportunity_agent.research.evolution_output_validation import (
     _RESEARCH_STATE_CORRECTION_GUIDANCE,
     _RESEARCH_STATE_OUTPUT,
     _UNTRUSTED_DATA_INSTRUCTION,
+    _SOURCE_FACT_RELATION_INSTRUCTION,
     _blind_prediction_with_baseline,
     _price_reasoning_issues,
     _measurement_reasoning_issues,
@@ -309,6 +310,7 @@ class LLMResearchController:
                 "validation_feedback obligation and keep all previously satisfied "
                 "ones satisfied while repairing the named failure."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
                 + _COMPUTED_PERIOD_INSTRUCTION
                 + _PRICE_SHORTFALL_INSTRUCTION
                 + _RESEARCH_STATE_OUTPUT
@@ -488,6 +490,7 @@ class LLMResearchController:
                 "byte-for-byte. Retained Basic Info provenance stays unchanged "
                 "while its claim may be restated."
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
                 + _COMPUTED_PERIOD_INSTRUCTION
                 + _PRICE_SHORTFALL_INSTRUCTION
                 + PATCH_INSTRUCTION
@@ -1754,6 +1757,7 @@ class LLMSignalRetrievalAgent:
                     else ""
                 )
                 + _UNTRUSTED_DATA_INSTRUCTION
+                + _SOURCE_FACT_RELATION_INSTRUCTION
             ),
             payload=selection_payload,
             parser=parse,
@@ -1857,6 +1861,7 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     "not use web tools."
     + _PREDICTOR_ROLE_AUTHORITY
     + _UNTRUSTED_DATA_INSTRUCTION
+    + _SOURCE_FACT_RELATION_INSTRUCTION
     + _BLIND_PREDICTION_OUTPUT
 )
 
@@ -2045,6 +2050,7 @@ class LLMBlindPredictor:
                     "from baseline. Do not copy incorrect saved numerical reasoning "
                     "as a fact; the saved prediction remains immutable."
                     + _UNTRUSTED_DATA_INSTRUCTION
+                    + _SOURCE_FACT_RELATION_INSTRUCTION
                     + _COMPUTED_PERIOD_INSTRUCTION
                     + _PRICE_SHORTFALL_INSTRUCTION
                     + _REALIZED_OUTCOME_INSTRUCTION
@@ -2833,6 +2839,7 @@ class LLMInformationPlanProposer:
             "only; it must not compute a probability, classify the final Signal, "
             "change the horizon/label/four-way judgment, or generate a prediction."
             + _UNTRUSTED_DATA_INSTRUCTION
+            + _SOURCE_FACT_RELATION_INSTRUCTION
             + _INFORMATION_PLAN_OUTPUT
             + " Read fixed prior, parents, meta-info, source types, constraints, "
             "and slot metadata from proposal_context. validation_feedback is null "
@@ -3374,6 +3381,7 @@ class LLMPlanCritic:
                     "structure without claiming a causal metric effect. These "
                     "comparisons are reflection evidence only."
                     + _UNTRUSTED_DATA_INSTRUCTION
+                    + _SOURCE_FACT_RELATION_INSTRUCTION
                     + _structured_reflection_contract("plan")
                 ),
                 payload=payload,
@@ -3509,6 +3517,7 @@ class LLMRoundReflector:
                     "outcomes: use technical_completion only for completion and "
                     "scoring-impact reporting, never for Plan or magnitude lessons."
                     + _UNTRUSTED_DATA_INSTRUCTION
+                    + _SOURCE_FACT_RELATION_INSTRUCTION
                     + _structured_reflection_contract("round")
                 ),
                 payload=payload,

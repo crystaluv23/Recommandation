@@ -24,6 +24,13 @@ observation cycle.
 
 ## Invariants
 
+The live role adapter shares the fixed source-fact instruction used by extraction,
+research and retrospective roles. Preserve the source's object, unit, currency,
+period and event identity; project cost is not a disclosed contract price, and
+several attributes or disclosures of one event are not independent observations.
+Inferred relationships remain explicit inferences. This authoring guidance changes
+no tool eligibility, termination rule, candidate contract or admission threshold.
+
 ### Incremental action-shape correction
 
 Missing/empty/malformed rationale issues use the shared snapshot-bound patch

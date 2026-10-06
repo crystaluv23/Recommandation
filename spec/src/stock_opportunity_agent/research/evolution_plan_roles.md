@@ -94,6 +94,14 @@ Signal retrieval, blind prediction, and Plan reflection.
 
 ## Invariants
 
+- Source-fact interpretation uses the shared object/unit/period/event instruction
+  on every fixed role request, including initial authoring and correction.
+  Initialize/Reflect, Predictor and retrospective Plan/case/Round roles retain
+  a project's cost and capacity as attributes of that project, rather than
+  interpreting them as separate contracts or independent catalysts. Distinct
+  source-established events remain distinct. This prompt requirement does not
+  certify arbitrary prose, change a saved prediction or authorize a state edit.
+
 - H_init describes the actual final Predictor visibility: the final assembly
   includes Basic Info cards, accepted state and later stage products. Its
   instructions must not claim that only the compact state is forwarded.
