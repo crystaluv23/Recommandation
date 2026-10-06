@@ -4744,6 +4744,62 @@ def _same_projection_interior_candidate(
     return None
 
 
+def _literal_outside_projection_boundaries(
+    projection: _SignalProjectionLineage, exact_text: str,
+) -> list[int]:
+    """Locate a unique original literal crossing the supplied visible window.
+
+    These coordinates authorize only a bounded source read. The quote remains
+    invalid until a corrected result cites a complete literal in a visible view.
+    """
+
+    normalized, _runs = _normalized_projection_text(
+        projection.document.content,
+        strip_market_metadata=projection.document.source_type.casefold()
+        in {"market_data", "historical_price", "price_daily", "prices"},
+    )
+    if (
+        normalized[projection.normalized_start:projection.normalized_end]
+        != projection.projection_text
+        or len(normalized) != projection.normalized_source_length
+        or normalized.count(exact_text) != 1
+    ):
+        return []
+    start = normalized.index(exact_text)
+    end = start + len(exact_text)
+    return [boundary for boundary in (projection.normalized_start, projection.normalized_end)
+            if start < boundary < end and 0 < boundary < len(normalized)]
+
+
+def _visible_literal_spacing_candidate(
+    projection: _SignalProjectionLineage, exact_text: str,
+    eligible_lineage: Mapping[str, _SignalProjectionLineage],
+) -> str | None:
+    """Offer a source literal as feedback only when identical tokens locate it."""
+
+    token_pattern = r"\w+|[^\w\s]"
+    tokens = re.findall(token_pattern, exact_text)
+    if not tokens:
+        return None
+    visible = list(re.finditer(token_pattern, projection.projection_text))
+    values = [match.group() for match in visible]
+    starts = [index for index in range(len(visible) - len(tokens) + 1)
+              if values[index:index + len(tokens)] == tokens]
+    if len(starts) != 1:
+        return None
+    start = visible[starts[0]].start()
+    end = visible[starts[0] + len(tokens) - 1].end()
+    candidate = projection.projection_text[start:end]
+    if len(candidate) > 800 or (
+        projection.normalized_start > 0 and not projection.projection_text[:start].strip()
+    ) or (
+        projection.normalized_end < projection.normalized_source_length
+        and not projection.projection_text[end:].strip()
+    ) or sum(view.projection_text.count(candidate) for view in eligible_lineage.values()) != 1:
+        return None
+    return candidate
+
+
 def _map_projected_signal_evidence(
     value: Mapping[str, Any],
     lineage: Mapping[str, _SignalProjectionLineage],
@@ -4772,7 +4828,7 @@ def _map_projected_signal_evidence(
     evidence = normalized.get("evidence")
     if not isinstance(evidence, Mapping):
         return normalized
-    edge_issues: list[ValidationIssue] = []
+    citation_issues: list[ValidationIssue] = []
     for group in ("supporting", "counter"):
         entries = evidence.get(group, ())
         if not isinstance(entries, list):
@@ -4817,16 +4873,46 @@ def _map_projected_signal_evidence(
                         if projection is not None
                         else 0
                     )
-                    raise ValidationError(
+                    boundaries = (
+                        _literal_outside_projection_boundaries(projection, exact_text)
+                        if projection is not None and occurrence_count == 0
+                        else []
+                    )
+                    spacing_candidate = (
+                        _visible_literal_spacing_candidate(projection, exact_text, eligible_lineage)
+                        if projection is not None and occurrence_count == 0
+                        else None
+                    )
+                    message = (
                         f"Signal {group} evidence[{index}] exact_text does not map "
                         f"uniquely: supplied_projection_id={projection_id!r}, "
                         f"supplied_occurrences={supplied_occurrences}, "
                         f"visible_occurrences={occurrence_count}, "
                         f"matching_projection_ids="
                         f"{sorted(candidate_id for candidate_id, _ in matches)}. "
-                        "Copy one case- and punctuation-exact literal from an eligible "
-                        "projection or return unavailable"
+                        "visible_spacing_literal_candidate="
+                        f"{json.dumps(spacing_candidate, ensure_ascii=False)}. "
+                        "A listed candidate is a source location hint, not semantic "
+                        "confirmation of the interpretation. "
+                        "Copy one contiguous case- and punctuation-exact complete "
+                        "literal from an eligible visible projection; never complete "
+                        "a truncated word or join sentences by omitting intervening "
+                        "source text. A same-source boundary read, when supplied, "
+                        "is evidence access only and does not validate this quote. "
+                        "Return unavailable only when no compliant literal exists"
                     )
+                    citation_issues.append(ValidationIssue(
+                        code="signal_projection_literal", message=message,
+                        paths=(f"evidence.{group}[{index}]",),
+                        source_refs=(projection_id,) if projection is not None else (),
+                        repair_context={
+                            "projection_id": projection_id,
+                            "document_id": projection.document.document_id,
+                            "content_hash": projection.document.content_hash,
+                            "boundary_offsets": boundaries,
+                        } if boundaries else {},
+                    ))
+                    continue
                 resolved_projection_id, projection = matches[0]
             projection_start = projection.projection_text.index(exact_text)
             projection_end = projection_start + len(exact_text)
@@ -4923,7 +5009,7 @@ def _map_projected_signal_evidence(
                     "a complete clause strictly inside the cited projection; "
                     "return unavailable only when no compliant literal exists"
                 )
-                edge_issues.append(ValidationIssue(
+                citation_issues.append(ValidationIssue(
                     code="signal_projection_edge", message=message,
                     paths=(f"evidence.{group}[{index}]",),
                     source_refs=(resolved_projection_id,),
@@ -4970,8 +5056,8 @@ def _map_projected_signal_evidence(
                 }
             )
         evidence[group] = mapped_entries
-    if edge_issues:
-        raise StructuredValidationError(edge_issues)
+    if citation_issues:
+        raise StructuredValidationError(citation_issues)
     normalized["evidence"] = evidence
     return normalized
 
@@ -5465,7 +5551,8 @@ class StructuredLLMSignalRunner:
                         edge_read_requests.extend(
                             dict(issue.repair_context)
                             for issue in exc.issues
-                            if issue.code == "signal_projection_edge"
+                            if issue.code in {"signal_projection_edge", "signal_projection_literal"}
+                            and issue.repair_context
                         )
                     failure_statuses[signal_ref] = (
                         SignalExecutionStatus.VALIDATION_FAILED

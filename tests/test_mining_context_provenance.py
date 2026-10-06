@@ -31,6 +31,40 @@ def controller(cases=(), store=None, **kwargs):
 
 
 class MiningContextProvenanceTests(unittest.TestCase):
+    def test_evidence_cursor_advances_actual_pages_and_preserves_case_bindings(self):
+        case = make_case('paging_case', 4.0)
+        documents = tuple(RawInfoDocument.create(
+            document_id=f'news-{i:02d}', company_id=case.company_id,
+            source_type='company_news', published_at=NOW, available_at=NOW,
+            content=f'Issuer announced contract {i} for current deliveries.',
+        ) for i in range(20))
+        tool = controller([case], RawInfoStore(documents=documents),
+                          label_map={'case-001': 'positive'})
+        tool._execute('fetch_evidence', {'action': 'fetch_evidence',
+            'case_refs': ['case-001'], 'source_families': ['news'],
+            'max_documents': 20, 'rationale': ['Fetch narrative evidence.']})
+        action = {'action': 'inspect_catalog', 'scope': 'evidence',
+                  'rationale': ['Read the next directory page.']}
+        tool._execute('inspect_catalog', action)
+        first = tool._model_view()['last_action_result']['result']
+        self.assertGreater(first['counts']['omitted_after'], 0)
+        self.assertEqual(first['cursor'], 0)
+        self.assertEqual(tool._evidence_catalog_view(), first)
+        seen = list(first['items'])
+        cursor = first['next_cursor']
+        while cursor is not None:
+            tool._execute('inspect_catalog', {**action, 'cursor': cursor})
+            page = tool._model_view()['last_action_result']['result']
+            self.assertEqual(page['cursor'], cursor)
+            seen.extend(page['items'])
+            cursor = page['next_cursor']
+        self.assertEqual(len({row['document_ref'] for row in seen}), len(documents))
+        self.assertEqual(len(seen), len(documents))
+        self.assertTrue(all(row['discovery_only'] for row in seen))
+        self.assertTrue(all(row['case_bindings'][0]['case_ref'] == 'case-001' for row in seen))
+        self.assertTrue(all(row['case_bindings'][0]['event_ref'] in tool._events for row in seen))
+        self.assertIn('next_cursor', tool._narrative_summary()['note'])
+
     def test_registry_original_read_matches_exact_version_without_source_mutation(self):
         with tempfile.TemporaryDirectory() as directory:
             registry = SignalRegistry(Path(directory)); registry.install_catalog(SEED_CATALOG)

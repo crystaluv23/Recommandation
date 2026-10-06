@@ -18,6 +18,9 @@ from stock_opportunity_agent.signal_library import (
 
 AS_OF = datetime(2025, 9, 30, tzinfo=timezone.utc)
 CLAUSE = "Management raised annual guidance from $100 million to $120 million."
+LONG_CLAUSE = (CLAUSE[:-1] + " after confirming "
+               + "an increase in recurring demand and contracted deliveries, " * 6
+               + "with unchanged costs and sufficient current production capacity.")
 
 
 def document(content, *, source_type="filing", available_at=AS_OF):
@@ -53,15 +56,16 @@ def result(ref, projection_id, quote):
 
 
 class SignalEdgeCorrectionTests(TestCase):
-    def edge_fixture(self, *, source_type="filing", available_at=AS_OF):
+    def edge_fixture(self, *, source_type="filing", available_at=AS_OF,
+                     clause=CLAUSE, prefix_count=70):
         """Create the real owner's first rejection rather than inventing feedback."""
-        prefix = "Prior operations continued. " * 70 + "Earlier context. "
-        content = prefix + CLAUSE + " Later operations continued. " * 100
+        prefix = "Prior operations continued. " * prefix_count + "Earlier context. "
+        content = prefix + clause + " Later operations continued. " * 100
         doc = document(content, source_type=source_type, available_at=available_at)
         rows, lineage = roles._shared_llm_signal_projection((signal_input(doc),))
         key = next(key for key, view in lineage.items()
                    if view.normalized_start < len(prefix) < view.normalized_end
-                   and view.normalized_end < len(prefix) + len(CLAUSE))
+                   and view.normalized_end < len(prefix) + len(clause))
         view = lineage[key]
         quote = view.projection_text[len(prefix) - view.normalized_start:]
         with self.assertRaises(StructuredValidationError) as rejected:
@@ -125,8 +129,103 @@ class SignalEdgeCorrectionTests(TestCase):
         self.assertEqual(new_rows[1]["projection_id"], key)
         self.assertIn(CLAUSE, new_rows[0]["exact_text"])
 
-    def run_correction(self, *, block=False):
-        doc, _rows, _lineage, key, quote, _issue = self.edge_fixture()
+    def test_unseen_original_literal_requires_read_and_corrected_visible_quote(self):
+        for family in ("filing", "earnings_call"):
+            with self.subTest(family=family):
+                doc, rows, lineage, key, _quote, _issue = self.edge_fixture(
+                    source_type=family, clause=LONG_CLAUSE, prefix_count=60)
+                authored = result("guidance:v1", key, LONG_CLAUSE)["result"]
+                with self.assertRaises(StructuredValidationError) as rejected:
+                    roles._map_projected_signal_evidence(authored, lineage)
+                issue = rejected.exception.issues[0]
+                self.assertEqual(issue.code, "signal_projection_literal")
+                self.assertEqual(issue.repair_context["boundary_offsets"],
+                                 [lineage[key].normalized_end])
+                selected, new_lineage = roles._signal_edge_correction_projection(
+                    rows, lineage, (issue.repair_context,), as_of=AS_OF)
+                new_key = next(row["projection_id"] for row in selected
+                               if LONG_CLAUSE in row["exact_text"] and row["projection_id"] not in lineage)
+                corrected = result("guidance:v1", new_key, LONG_CLAUSE)["result"]
+                mapped = roles._map_projected_signal_evidence(corrected, new_lineage)
+                self.assertEqual(mapped["evidence"]["supporting"][0]["exact_span"], LONG_CLAUSE)
+                self.assertEqual(mapped["evidence"]["supporting"][0]["document_id"], doc.document_id)
+
+    def test_nonliteral_or_unrelated_quotes_confer_no_source_read(self):
+        _doc, _rows, lineage, key, _quote, _issue = self.edge_fixture(
+            clause=LONG_CLAUSE, prefix_count=60)
+        for supplied_key, quote in (
+            (key, LONG_CLAUSE.replace("$120", "$150")),
+            (key, "Prior operations continued. " + LONG_CLAUSE),
+            ("unknown", LONG_CLAUSE),
+        ):
+            with self.subTest(key=supplied_key, quote=quote):
+                with self.assertRaises(StructuredValidationError) as rejected:
+                    roles._map_projected_signal_evidence(
+                        result("guidance:v1", supplied_key, quote)["result"], lineage)
+                self.assertEqual(rejected.exception.issues[0].repair_context, {})
+        view = lineage[key]
+        repeated = document(view.document.content + " " + LONG_CLAUSE)
+        changed = roles.replace(view, document=repeated,
+                                normalized_source_length=len(repeated.content))
+        self.assertEqual(roles._literal_outside_projection_boundaries(changed, LONG_CLAUSE), [])
+        stale = roles.replace(view, projection_text="changed")
+        self.assertEqual(roles._literal_outside_projection_boundaries(stale, LONG_CLAUSE), [])
+
+    def test_quote_wholly_outside_view_or_from_peer_grants_no_read(self):
+        _doc, _rows, lineage, key, _quote, _issue = self.edge_fixture()
+        other = next(pid for pid, view in lineage.items() if view.normalized_start == 3600)
+        self.assertEqual(roles._literal_outside_projection_boundaries(lineage[other], CLAUSE), [])
+        with self.assertRaisesRegex(ValidationError, "outside this Signal"):
+            roles._map_projected_signal_evidence(
+                result("guidance:v1", key, CLAUSE)["result"], lineage,
+                eligible_projection_ids=(other,))
+
+    def test_literal_and_edge_frontiers_are_collected_in_one_pass(self):
+        _doc, _rows, lineage, key, quote, _issue = self.edge_fixture(
+            clause=LONG_CLAUSE, prefix_count=60)
+        authored = result("guidance:v1", key, LONG_CLAUSE)["result"]
+        authored["evidence"]["supporting"].append({
+            "projection_id": key, "exact_text": LONG_CLAUSE.replace("$120", "$150"),
+        })
+        authored["evidence"]["counter"] = [{"projection_id": key, "exact_text": quote}]
+        with self.assertRaises(StructuredValidationError) as rejected:
+            roles._map_projected_signal_evidence(authored, lineage)
+        self.assertEqual([issue.code for issue in rejected.exception.issues],
+                         ["signal_projection_literal", "signal_projection_literal", "signal_projection_edge"])
+        self.assertEqual([issue.paths for issue in rejected.exception.issues],
+                         [("evidence.supporting[0]",), ("evidence.supporting[1]",), ("evidence.counter[0]",)])
+        self.assertEqual(rejected.exception.issues[1].repair_context, {})
+
+    def test_spacing_hint_is_literal_source_feedback_and_never_accepts_bad_quote(self):
+        literal = 'The amended agreement (the “ Credit Agreement ”) provides a $100 million loan.'
+        doc = document('Earlier background. ' + literal + ' Later context.')
+        _rows, lineage = roles._shared_llm_signal_projection((signal_input(doc),))
+        key = next(iter(lineage))
+        authored = literal.replace('Agreement ”', 'Agreement”')
+        candidate = roles._visible_literal_spacing_candidate(lineage[key], authored, lineage)
+        self.assertEqual(candidate, literal)
+        with self.assertRaises(StructuredValidationError) as rejected:
+            roles._map_projected_signal_evidence(result('guidance:v1', key, authored)['result'], lineage)
+        self.assertIn(literal, str(rejected.exception))
+        self.assertEqual(rejected.exception.issues[0].repair_context, {})
+        mapped = roles._map_projected_signal_evidence(result('guidance:v1', key, candidate)['result'], lineage)
+        self.assertEqual(mapped['evidence']['supporting'][0]['exact_span'], literal)
+        for wrong in (authored.replace('$100', '$150'), authored.replace('loan', 'grant'),
+                      authored.replace('Credit Agreement', 'CreditAgreement'),
+                      authored.replace('provides', 'Provides')):
+            with self.subTest(wrong=wrong):
+                self.assertIsNone(roles._visible_literal_spacing_candidate(lineage[key], wrong, lineage))
+        repeated = document(doc.content + ' ' + literal)
+        _rows, repeated_lineage = roles._shared_llm_signal_projection((signal_input(repeated),))
+        self.assertIsNone(roles._visible_literal_spacing_candidate(
+            next(iter(repeated_lineage.values())), authored, repeated_lineage))
+
+    def run_correction(self, *, block=False, unseen_literal=False):
+        corrected_quote = LONG_CLAUSE if unseen_literal else CLAUSE
+        doc, _rows, _lineage, key, quote, _issue = self.edge_fixture(
+            clause=corrected_quote, prefix_count=60 if unseen_literal else 70)
+        if unseen_literal:
+            quote = LONG_CLAUSE
         sibling_doc = RawInfoDocument.create(
             document_id="sibling", company_id="issuer", source_type="filing",
             published_at=AS_OF, available_at=AS_OF,
@@ -152,8 +251,8 @@ class SignalEdgeCorrectionTests(TestCase):
                 self_selected = next(row for row in payload["signals"]
                                      if row["signal_ref"] == "guidance:v1")
                 chosen = next(pid for pid in self_selected["eligible_projection_ids"]
-                              if pid not in _lineage and CLAUSE in projections[pid]["exact_text"])
-                return {"results": [result("guidance:v1", chosen, CLAUSE)]}, AgentUsage(llm_calls=1, tokens=40)
+                              if pid not in _lineage and corrected_quote in projections[pid]["exact_text"])
+                return {"results": [result("guidance:v1", chosen, corrected_quote)]}, AgentUsage(llm_calls=1, tokens=40)
 
         caller = Caller()
         runner = roles.StructuredLLMSignalRunner(caller)
@@ -212,3 +311,9 @@ class SignalEdgeCorrectionTests(TestCase):
         results, usage = self.run_correction(block=True)
         self.assertEqual(usage, AgentUsage(llm_calls=1, tokens=50))
         self.assertEqual(results["guidance:v1"].execution_status, SignalExecutionStatus.BUDGET_BLOCKED)
+
+    def test_real_runner_discloses_unseen_original_without_accepting_initial_quote(self):
+        results, usage = self.run_correction(unseen_literal=True)
+        self.assertEqual(usage, AgentUsage(llm_calls=2, tokens=90))
+        self.assertEqual(results["guidance:v1"].execution_status, SignalExecutionStatus.SUCCESS)
+        self.assertEqual(results["guidance:v1"].supporting_evidence[0].exact_span, LONG_CLAUSE)

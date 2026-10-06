@@ -692,3 +692,5 @@
 - 2026-10-07 04:12：v181正式1/1/exit0但Registry11/新因子0、幅度全2–3x与Fast7/Slow1 Signal失败；记录实际方法反馈消费和magnitude封面/空/重复/control误读。按完整原生产输入/typed权限补齐不可用finding快照隔离，原答finalize/落盘/完整预测上下文0外部回放通过，6新/311相关/1576全量PASS；不改原冻结产物、评分或声明增益。
 
 - 2026-10-07 04:40：typed owning边界授权同PIT原文有界重叠窗，预算/唯一纠错/原硬校验和有效siblings保持；四真实源匿名payload/readback零外部、8新/61相关/1584全量PASS。本地两MD&A卡不等于两者均已传输，只有control坐标实证、positive分页待查；其余技术家族、magnitude与独立增益继续验收。
+
+- 2026-10-07 04:58：v181非literal引用首前沿泛化：全部literal/edge问题同次反馈；仅同immutable源唯一逐字越边界授权既有2k读取，spacing词/数字/标点完全相同且唯一内侧时给源literal定位候选，不自动改引文/语义。两真实原请求复原：103漏引号空格提示源候选，142补半词新增完整551000边界窗；failed27仅467tokens/非上限截断，已按attempt原件核对而非后来同hash缓存。两个magnitude种子目录实际全cursor0、positive正文未传；固定指令/receipt明确next_cursor与case-label绑定，不改变排列/预算/准入。14源读与20文档实际分页操作回归通过；169相关/1591全量58.425s与lint PASS，无新外部调用、不改v181失败、不声明入库或gain。见reports/v181-literal-and-catalog-replay-20261007.json。

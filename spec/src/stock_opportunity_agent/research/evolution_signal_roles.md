@@ -698,3 +698,21 @@ This is a bounded local re-projection, not another fetch or retry. Accepted Sign
 siblings are not revisited; the model chooses any revised interpretation and quote,
 and the original complete literal/source/eligibility/PIT validation still applies.
 No model result, source body, stored Signal definition or old run is rewritten.
+
+Literal mismatches and edge violations across all supporting/counter citations
+share that first correction frontier. A nonliteral quote remains invalid even
+when its text exists in the original document. Only a unique, byte-exact match
+in the same normalized immutable source that actually crosses a current window
+boundary grants the existing bounded local read. Unknown/ineligible projections,
+stitched sentences, invented suffixes, repeated source matches, and quotes wholly
+outside the supplied window grant no read. The corrected model must copy one
+contiguous complete literal from its newly visible eligible window; runtime does
+not complete words, insert omitted sentences, accept unseen text, or change the
+Signal's interpretation. Ordinary full validation and the sole paid correction
+limit remain identical.
+When a supplied quote differs only in spacing between identical case-sensitive
+word/punctuation tokens, feedback may offer the unique complete interior literal
+from that same eligible visible projection (at most 800 characters). Word tokens,
+numbers, punctuation and their order must all remain identical; repeated or
+edge-touching matches supply no candidate. This is a location hint, never an
+automatic quote replacement or evidence of the model's semantic conclusion.

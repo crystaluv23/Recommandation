@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07 04:58：v181非literal引用首前沿泛化：全部literal/edge问题同次反馈；仅同immutable源唯一逐字越边界授权既有2k读取，spacing词/数字/标点完全相同且唯一内侧时给源literal定位候选，不自动改引文/语义。两真实原请求复原：103漏引号空格提示源候选，142补半词新增完整551000边界窗；failed27仅467tokens/非上限截断，已按attempt原件核对而非后来同hash缓存。两个magnitude种子目录实际全cursor0、positive正文未传；固定指令/receipt明确next_cursor与case-label绑定，不改变排列/预算/准入。14源读与20文档实际分页操作回归通过；169相关/1591全量58.425s与lint PASS，无新外部调用、不改v181失败、不声明入库或gain。见reports/v181-literal-and-catalog-replay-20261007.json。
+
 2026-10-07 04:40：v181引用纠错重传同一截断窗；先spec后typed source-owned边界/同PIT-hash普通2k重叠窗，32k字符/唯一纠错/精确token fitting/各pending最低scope与确定顺序保持，accepted siblings不重跑。四真实原匿名payload/完整原文及新窗readback通过：成本1500/oz、全年EBITDA810–840与midpoint+5、ARR prior100→90、现金流后半表。8新/61相关/1584全量54.925s与lint PASS。两本地10-Q目录有正文坐标，但只确认control的912261实际传输，positive的841722分页消费待查，已纠正此前可见性误述。非literal补词、required-phrase/JSON与magnitude搜索/市场事实仍待全链路审，不改v181失败/不重启/不声明新因子或gain。见reports/v181-edge-window-replay-20261007.json。
 
 2026-10-07 04:12：v181终态exit0/Fast1/Slow1，415 attempts/$2.14415852，Registry11不变/新因子与Update0；c02全24但14正向全2–3x/7Signal校验失败，Slow还有1原文边界失败，未验收。方法记忆实际appended/3反馈已消费，不能算增益。精确原terminal Reflect prompt/payload/权限与94503 usage核对，纠错需71526而剩67396；既有typed remove-only不可用finding现在共用机械隔离/完整重验，0外部原答finalize落盘及完整Predictor closure通过，预测预留82290<147585。6新/311相关/1576全量68.807s PASS。亲自读7 magnitude raw receipts：空1/重复1/多为封面表头，唯一完整新闻control被称positive，两个种子无统计/比较但heavy27/25；搜索内容不验收，继续审目录/读取/市场事实与Signal失败，不重启旧run、不强制高档或入库。见reports/v181-completed-content-audit-20261007.json与reports/v181-unavailable-finding-replay-20261007.json。

@@ -161,6 +161,14 @@ corrections and validates the assembled action before any tool executes.
   the existing light budget charge; budgets and promotion gates do not change.
 - No-match never equals negative: a read or query without a match yields
   unavailable or coverage insufficiency, never a domain claim.
+  Fixed directory guidance names the actual pagination operation: copy the last
+  result's `next_cursor` into the next evidence-catalog request. Without a new
+  fetch, omitted cursor or zero repeats the first page; this is not additional
+  evidence coverage. Each page is a subset of the fetched directory, and unread
+  cards remain unknown. Before a positive/control narrative comparison, bind the
+  chosen document/event to its case bindings and the current label map. This
+  clarifies existing tool semantics without imposing a coverage quota, candidate
+  outcome, additional tool call, or new admission gate.
 
 ### Modality exploration obligation (action plan v2, Phase 2)
 

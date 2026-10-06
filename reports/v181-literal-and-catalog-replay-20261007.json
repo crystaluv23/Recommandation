@@ -1,0 +1,666 @@
+{
+  "schema_version": "v181-literal-and-catalog-replay-v1",
+  "audited_at": "2026-10-06T20:55:20.817105+00:00",
+  "new_external_calls": 0,
+  "original_artifacts_unchanged": true,
+  "replays": [
+    {
+      "attempt_id": 103,
+      "case_id": "cik_0001869198:20250331",
+      "request_hash": "7458e02b8d74c66ec68f0f203ba9999e04fa2d6f150e957cc01b981c649bf679",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "financing_listing_action:v5",
+          "issue": {
+            "code": "signal_projection_literal",
+            "message": "Signal supporting evidence[1] exact_text does not map uniquely: supplied_projection_id='projection_b4d4b824d4fbccf36ad9d5d4', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. visible_spacing_literal_candidate=\"Term Loan Facility On November 5, 2024, the Issuer and certain of its other wholly-owned subsidiaries, each of which is a wholly owned subsidiary of the Company, entered into that certain Fourteenth Amendment to Credit Agreement (the “ Amendment ”), which amended its existing credit agreement (as amended and restated, the “ Amended Credit Agreement ”). The Amended Credit Agreement provides for, among other things, (i) a new term loan facility maturing in 2031 in an aggregate principal amount of $1,000 million (the “ New Term Loan Facility ”) and (ii) amendments to certain other provisions of the Amended Credit Agreement.\". A listed candidate is a source location hint, not semantic confirmation of the interpretation. Copy one contiguous case- and punctuation-exact complete literal from an eligible visible projection; never complete a truncated word or join sentences by omitting intervening source text. A same-source boundary read, when supplied, is evidence access only and does not validate this quote. Return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[1]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_b4d4b824d4fbccf36ad9d5d4"
+            ],
+            "repair_context": {}
+          }
+        }
+      ],
+      "new_source_windows": [],
+      "bounded_source_characters": 32000,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000052.json": "aa109d3135156810c3893e53d700bf15a05f2850c68fb19e6c4545b709396d43",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000055.json": "6b378e276cd01a6ec4311d3ab2f5d5eeb3fa02c5fd1bd08bca69115c4b9cc6fd",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919825000009.json": "3f7eba67eb6726889b9e27c7b31021c5c5d0a199a6af36907aeb8cbeb91c21ff",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000046.json": "b7dc7d3253d21ed0a534ff932914f5e04b0d2f0cef7b320717635fbc8185f5ef",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000038.json": "37098abaaf87204d4caca6195462e70f33ef51cb82d36795b52c08dfb0a61f92",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000119312525044111.json": "51a5524dbd33da8d7c66d2d4238012e60329188447674c232c783a27a058e2f6",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919825000008.json": "04268bef072e3c531274d2b4ba5acf046d88b287c2e45e09977904d3ee5b987e",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919825000003.json": "b1e59d0a77065d049fa515833f00a4751140a7b2964c8b60afa9e15f63080222",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000049.json": "07e0d38bb3542988066684daaa7f6337a6c7682e71134ca8103a6385108a0660",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000119312524237232.json": "7c5161abbd8ed6cb26798d4f9aa089dd614a56f5c2f97826de44f8fe44c9014c"
+      },
+      "original_request_sha256": "d1a2d886d8198624d9e6522319e29812bb08b9d7240b6f6bf31efc72ddedccc5",
+      "original_response_sha256": "8118a98d42410777dc85309673cd68f55cf71f8109f8afed34c7884899377d44",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    },
+    {
+      "attempt_id": 142,
+      "case_id": "cik_0001164727:20250731",
+      "request_hash": "37aa8ffc1419d9372b705050ec664ffe6792ad9f184375b337c7bfb8fde3d760",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "financing_listing_action:v5",
+          "issue": {
+            "code": "signal_projection_literal",
+            "message": "Signal supporting evidence[0] exact_text does not map uniquely: supplied_projection_id='projection_2e43da63b64fb1b16ec5d444', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. visible_spacing_literal_candidate=null. A listed candidate is a source location hint, not semantic confirmation of the interpretation. Copy one contiguous case- and punctuation-exact complete literal from an eligible visible projection; never complete a truncated word or join sentences by omitting intervening source text. A same-source boundary read, when supplied, is evidence access only and does not validate this quote. Return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[0]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_2e43da63b64fb1b16ec5d444"
+            ],
+            "repair_context": {
+              "projection_id": "projection_2e43da63b64fb1b16ec5d444",
+              "document_id": "sec:cik_0001164727:000116472725000011",
+              "content_hash": "997a35b65cf263dc76ccc8244413c3d5c1b4123b7fcbc842bdc5d7ee59f4895b",
+              "boundary_offsets": [
+                551000
+              ]
+            }
+          }
+        }
+      ],
+      "new_source_windows": [
+        {
+          "source_projection": {
+            "projection_id": "projection_c3e49a2f8399a5628c6027ae",
+            "document_id": "sec:cik_0001164727:000116472725000011",
+            "content_hash": "997a35b65cf263dc76ccc8244413c3d5c1b4123b7fcbc842bdc5d7ee59f4895b",
+            "source_type": "filing",
+            "published_at": "2025-02-21T01:20:57+00:00",
+            "available_at": "2025-02-21T01:20:57+00:00",
+            "exact_text": " wind-down and demobilization costs related to the French Guiana project. (9) Restructuring and severance, included in Other expense, net , primarily represents severance and related costs associated with significant organizational and operating model changes implemented by the Company. (10) (Gain) loss on asset and investment sales, included in Other income (loss), net , primarily represents the loss on the abandonment of the near-pit sizing and conveying system at Peñasquito, partially offset by the gain recognized on the sale of the Streaming Credit Facility Agreement (\"SCFA\") in 2024. For additional information, refer to Note 9 to our Consolidated Financial Statements. 112 Table of Contents (11) Gain on debt extinguishment, included in Other income (loss), net , primarily represents the net gain on the partial redemption of certain Senior Notes and losses on the debt tender offer and subsequent extinguishment of the 2023 Newmont Senior Note in 2024. Refer to Note 20 to our Consolidated Financial Statements. (12) Pension settlements, included in Other income (loss), net, primarily represents pension settlement charges related to lump sum payments to participants. Refer to Note 11 to our Consolidated Financial Statements for further information. (13) The tax effect of adjustments, included in Income and mining tax benefit (expense) , represents the tax effect of adjustments in footnotes (3) through (12), as described above, and are calculated using the applicable tax rate. (14) Valuation allowance and other tax adjustments, included in Income and mining tax benefit (expense) , is recorded for items such as foreign tax credits, alternative minimum tax credits, capital losses, disallowed foreign losses, and the effects of changes in foreign currency exchange rates on deferred tax assets and deferred tax liabilities. The adjustment reflects the net increase or (decrease) to net operating losses, capital losses, tax credit carryovers, and other deferred tax assets sub"
+          },
+          "normalized_start": 550000,
+          "normalized_end": 552000,
+          "boundary_anchored_literal_candidates": {
+            "551000": "Refer to Note 20 to our Consolidated Financial Statements."
+          }
+        }
+      ],
+      "bounded_source_characters": 32000,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000011.json": "b5a22cd79ab9be328c20c8eb64e515450179268fdea5b302bfebed1463599395",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472724000061.json": "9e8f7a56544d8fa514cb187d7b8f354a93338976f162d96cf8f488ad7324a1de",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000035.json": "fcb10a4cec1b8ccc7d5c3734c986db7e5240c8fe11a80a12ba3e549ea49caa73",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000020.json": "b5ce09aa9328e58ce42aaa64944cbbc9d7417842561e09798f16ad6647ece0d1",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000033.json": "aba0eaf265f6e2571490fbd75bc60eaee39e99ffcbc565c22126665075ed4038",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000110465925067786.json": "fb42a6063b39580d6379080120a54c51d42a26f8dc535b15a77014a4160a1505",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000110465925044139.json": "b29f5fabc96094bb5e3e18495681d679dc8d86ed2ae0e7d1c956a40a37679361",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000018.json": "fe80756ee80a2fe07ab7ee131c97fe80b467ba3ebe7bca503f6cb9db7340bd03",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000008.json": "f58779a20a4377d488bbdcdf64330d2ad190433273c85109e6ba6ae6ee03fa61",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000110465924120181.json": "e3ee904769a64cb37f1ec35a09d81950ad166c25ed04bdfb129b41b9ef829a54"
+      },
+      "original_request_sha256": "8fb2f30298427024f2a489cfe90254b0624a18944d71b0fbe921ae01006c04de",
+      "original_response_sha256": "1eb12b7c41a342521a21955724584a3702de6022eca9b508101dded89ffac1db",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    }
+  ],
+  "source_directory_baseline": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001285819/sec:cik_0001285819:000143774925017213.json",
+      "source_sha256": "3cdc6256b2966c45db46c58dc03fdd292213bcc553f80c39e0dd2e24d090ab28",
+      "card": {
+        "document_id": "sec:cik_0001285819:000143774925017213",
+        "content_hash": "378729c94a90f60e8fe3937b2a1509c97a3e77ecf770d4718545a95529f6fe8d",
+        "source_type": "filing",
+        "available_at": "2025-05-15T20:32:51+00:00",
+        "visible_chars": 147315,
+        "raw_chars": 1023860,
+        "readable_start": 88744,
+        "form_type": "10-Q",
+        "preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-Q (Mark One) &#160; &#160; &",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "Part I &#8212; Financial Information 5 Item 1. Financial Statements (",
+            "raw_start": 124516,
+            "raw_end": 125279
+          },
+          {
+            "section_id": "sec01",
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_start": 128949,
+            "raw_end": 129240
+          },
+          {
+            "section_id": "sec02",
+            "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 25 Item 4. Con",
+            "raw_start": 129694,
+            "raw_end": 130634
+          },
+          {
+            "section_id": "sec03",
+            "heading": "Part II &#8212; Other Information 26 Item 1. Legal Proceedings 26 Item",
+            "raw_start": 131113,
+            "raw_end": 132311
+          },
+          {
+            "section_id": "sec04",
+            "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 26 Item 3. De",
+            "raw_start": 132983,
+            "raw_end": 133937
+          },
+          {
+            "section_id": "sec05",
+            "heading": "Item 4. Mine Safety Disclosures 26 Item 5. Other Information 26 Item 6. Exhi",
+            "raw_start": 134410,
+            "raw_end": 136001
+          },
+          {
+            "section_id": "sec06",
+            "heading": "PART I &#8212; FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS",
+            "raw_start": 137845,
+            "raw_end": 138195
+          },
+          {
+            "section_id": "sec07",
+            "heading": "ITEM 2. MANAGEMENT &#8217; S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULT",
+            "raw_start": 841722,
+            "raw_end": 841825
+          },
+          {
+            "section_id": "sec08",
+            "heading": "Part II, Item 7, &#8220;Management&#8217;s Discussion and Analysis of Financial Co",
+            "raw_start": 996685,
+            "raw_end": 996777
+          },
+          {
+            "section_id": "sec09",
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK Our exposure",
+            "raw_start": 997192,
+            "raw_end": 997495
+          },
+          {
+            "section_id": "sec10",
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_start": 998918,
+            "raw_end": 999207
+          },
+          {
+            "section_id": "sec11",
+            "heading": "PART II &#8212; OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS",
+            "raw_start": 1002167,
+            "raw_end": 1002609
+          },
+          {
+            "section_id": "sec12",
+            "heading": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of ris",
+            "raw_start": 1003202,
+            "raw_end": 1003506
+          },
+          {
+            "section_id": "sec13",
+            "heading": "Part I, Item 1A, &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the",
+            "raw_start": 1003618,
+            "raw_end": 1003704
+          },
+          {
+            "section_id": "sec14",
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS Not a",
+            "raw_start": 1004760,
+            "raw_end": 1005063
+          },
+          {
+            "section_id": "sec15",
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES Not applicable. ITEM 4. M",
+            "raw_start": 1005227,
+            "raw_end": 1005762
+          },
+          {
+            "section_id": "sec16",
+            "heading": "ITEM 5. OTHER INFORMATION (a) None . (b) None",
+            "raw_start": 1006391,
+            "raw_end": 1007063
+          },
+          {
+            "section_id": "sec17",
+            "heading": "Item 408(c) of Regulation S-K). 26 Table of Contents ITEM 6.",
+            "raw_start": 1007714,
+            "raw_end": 1008944
+          }
+        ],
+        "section_count": 18
+      },
+      "all_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "Part I &#8212; Financial Information 5 Item 1. Financial Statements (",
+          "raw_start": 124516,
+          "raw_end": 125279
+        },
+        {
+          "section_id": "sec01",
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_start": 128949,
+          "raw_end": 129240
+        },
+        {
+          "section_id": "sec02",
+          "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 25 Item 4. Con",
+          "raw_start": 129694,
+          "raw_end": 130634
+        },
+        {
+          "section_id": "sec03",
+          "heading": "Part II &#8212; Other Information 26 Item 1. Legal Proceedings 26 Item",
+          "raw_start": 131113,
+          "raw_end": 132311
+        },
+        {
+          "section_id": "sec04",
+          "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 26 Item 3. De",
+          "raw_start": 132983,
+          "raw_end": 133937
+        },
+        {
+          "section_id": "sec05",
+          "heading": "Item 4. Mine Safety Disclosures 26 Item 5. Other Information 26 Item 6. Exhi",
+          "raw_start": 134410,
+          "raw_end": 136001
+        },
+        {
+          "section_id": "sec06",
+          "heading": "PART I &#8212; FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS",
+          "raw_start": 137845,
+          "raw_end": 138195
+        },
+        {
+          "section_id": "sec07",
+          "heading": "ITEM 2. MANAGEMENT &#8217; S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULT",
+          "raw_start": 841722,
+          "raw_end": 841825
+        },
+        {
+          "section_id": "sec08",
+          "heading": "Part II, Item 7, &#8220;Management&#8217;s Discussion and Analysis of Financial Co",
+          "raw_start": 996685,
+          "raw_end": 996777
+        },
+        {
+          "section_id": "sec09",
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK Our exposure",
+          "raw_start": 997192,
+          "raw_end": 997495
+        },
+        {
+          "section_id": "sec10",
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_start": 998918,
+          "raw_end": 999207
+        },
+        {
+          "section_id": "sec11",
+          "heading": "PART II &#8212; OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS",
+          "raw_start": 1002167,
+          "raw_end": 1002609
+        },
+        {
+          "section_id": "sec12",
+          "heading": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of ris",
+          "raw_start": 1003202,
+          "raw_end": 1003506
+        },
+        {
+          "section_id": "sec13",
+          "heading": "Part I, Item 1A, &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the",
+          "raw_start": 1003618,
+          "raw_end": 1003704
+        },
+        {
+          "section_id": "sec14",
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS Not a",
+          "raw_start": 1004760,
+          "raw_end": 1005063
+        },
+        {
+          "section_id": "sec15",
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES Not applicable. ITEM 4. M",
+          "raw_start": 1005227,
+          "raw_end": 1005762
+        },
+        {
+          "section_id": "sec16",
+          "heading": "ITEM 5. OTHER INFORMATION (a) None . (b) None",
+          "raw_start": 1006391,
+          "raw_end": 1007063
+        },
+        {
+          "section_id": "sec17",
+          "heading": "Item 408(c) of Regulation S-K). 26 Table of Contents ITEM 6.",
+          "raw_start": 1007714,
+          "raw_end": 1008944
+        }
+      ]
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001951089/sec:cik_0001951089:000121390025035550.json",
+      "source_sha256": "8b829213c66b0dbe584c57cf3d3b11fba013bc81615102b4e9136901bafba109",
+      "card": {
+        "document_id": "sec:cik_0001951089:000121390025035550",
+        "content_hash": "cfb4c6d45b52806f38fb610ccc4d2e55ab232ba6d40082e71d8f7bd971ebc9b5",
+        "source_type": "filing",
+        "available_at": "2025-04-25T20:08:07+00:00",
+        "visible_chars": 185648,
+        "raw_chars": 941207,
+        "readable_start": 17,
+        "form_type": "424B3",
+        "preview": "424B3 1 ea0202260-10.htm PROSPECTUS PROSPECTUS &#x00a0; Filed Pursuant to Rule 424(b)(3) Registration Statement No. 333 -278400 Critical Met"
+      },
+      "all_sections": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0002009312/sec:cik_0002009312:000149315225011966.json",
+      "source_sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "card": {
+        "document_id": "sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "source_type": "filing",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "visible_chars": 188392,
+        "raw_chars": 1191914,
+        "readable_start": 160442,
+        "form_type": "10-Q",
+        "preview": "&#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; FORM 10-Q &#160; (Mark One) &#9746; Quar",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+            "raw_start": 183640,
+            "raw_end": 184115
+          },
+          {
+            "section_id": "sec01",
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_start": 184516,
+            "raw_end": 184602
+          },
+          {
+            "section_id": "sec02",
+            "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+            "raw_start": 184996,
+            "raw_end": 185470
+          },
+          {
+            "section_id": "sec03",
+            "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+            "raw_start": 185865,
+            "raw_end": 187105
+          },
+          {
+            "section_id": "sec04",
+            "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+            "raw_start": 187551,
+            "raw_end": 188402
+          },
+          {
+            "section_id": "sec05",
+            "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+            "raw_start": 188811,
+            "raw_end": 190904
+          },
+          {
+            "section_id": "sec06",
+            "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+            "raw_start": 209861,
+            "raw_end": 210430
+          },
+          {
+            "section_id": "sec07",
+            "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+            "raw_start": 214365,
+            "raw_end": 215508
+          },
+          {
+            "section_id": "sec08",
+            "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+            "raw_start": 912261,
+            "raw_end": 912522
+          },
+          {
+            "section_id": "sec09",
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+            "raw_start": 1147325,
+            "raw_end": 1148005
+          },
+          {
+            "section_id": "sec10",
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_start": 1148801,
+            "raw_end": 1149505
+          },
+          {
+            "section_id": "sec11",
+            "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+            "raw_start": 1155063,
+            "raw_end": 1156322
+          },
+          {
+            "section_id": "sec12",
+            "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+            "raw_start": 1158223,
+            "raw_end": 1158900
+          },
+          {
+            "section_id": "sec13",
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+            "raw_start": 1159422,
+            "raw_end": 1160102
+          },
+          {
+            "section_id": "sec14",
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+            "raw_start": 1160835,
+            "raw_end": 1162286
+          },
+          {
+            "section_id": "sec15",
+            "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+            "raw_start": 1163299,
+            "raw_end": 1163981
+          },
+          {
+            "section_id": "sec16",
+            "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+            "raw_start": 1167485,
+            "raw_end": 1169506
+          }
+        ],
+        "section_count": 17
+      },
+      "all_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_start": 183640,
+          "raw_end": 184115
+        },
+        {
+          "section_id": "sec01",
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_start": 184516,
+          "raw_end": 184602
+        },
+        {
+          "section_id": "sec02",
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_start": 184996,
+          "raw_end": 185470
+        },
+        {
+          "section_id": "sec03",
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_start": 185865,
+          "raw_end": 187105
+        },
+        {
+          "section_id": "sec04",
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_start": 187551,
+          "raw_end": 188402
+        },
+        {
+          "section_id": "sec05",
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_start": 188811,
+          "raw_end": 190904
+        },
+        {
+          "section_id": "sec06",
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_start": 209861,
+          "raw_end": 210430
+        },
+        {
+          "section_id": "sec07",
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_start": 214365,
+          "raw_end": 215508
+        },
+        {
+          "section_id": "sec08",
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_start": 912261,
+          "raw_end": 912522
+        },
+        {
+          "section_id": "sec09",
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_start": 1147325,
+          "raw_end": 1148005
+        },
+        {
+          "section_id": "sec10",
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_start": 1148801,
+          "raw_end": 1149505
+        },
+        {
+          "section_id": "sec11",
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_start": 1155063,
+          "raw_end": 1156322
+        },
+        {
+          "section_id": "sec12",
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_start": 1158223,
+          "raw_end": 1158900
+        },
+        {
+          "section_id": "sec13",
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_start": 1159422,
+          "raw_end": 1160102
+        },
+        {
+          "section_id": "sec14",
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_start": 1160835,
+          "raw_end": 1162286
+        },
+        {
+          "section_id": "sec15",
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_start": 1163299,
+          "raw_end": 1163981
+        },
+        {
+          "section_id": "sec16",
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_start": 1167485,
+          "raw_end": 1169506
+        }
+      ]
+    }
+  ],
+  "technical_failures_resolved_live": false,
+  "magnitude_admitted": false,
+  "independent_benefit_confirmed": false,
+  "current_source_changes": {
+    "src/stock_opportunity_agent/research/evolution_signal_roles.py": "2d7b9fbd767d8ca47a73141f3f25bff94855fe2cf28f6e3690c41eec2b92f5e6",
+    "src/stock_opportunity_agent/research/mining_controller.py": "82d471aa0a1a7cf98293d24755fab93373031caa7d9cb185c1ca014bca778d9b",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "58ec24bb1ce09ab31b3a22362b2bbace36e7029f5b7e1d9199de8a85bf193df4",
+    "tests/test_signal_edge_correction.py": "c3faea7b86ce804ed399c35c01304259f05a8518e2b1d46e3122388b0b615b4b",
+    "tests/test_mining_context_provenance.py": "1b27c6063c1233fddf60f591b9e3cee12b8f4c62b27635c66da97dd3999d72e5"
+  },
+  "failure_chronology": [
+    {
+      "attempt_id": 103,
+      "correction_attempt_id": 104,
+      "initial_cause": "One missing space before the original curly closing quote in Amended Credit Agreement. Source literal is already visible; feedback offers a token-identical exact source candidate, never replaces the result.",
+      "correction_cause": "The corrected underwriting quote omits an intervening source sentence. Still invalid; no new source-read authority."
+    },
+    {
+      "attempt_id": 142,
+      "correction_attempt_id": 143,
+      "initial_cause": "Model completed Consolid to Consolidated beyond the visible window. Exact original literal crosses normalized boundary 551000, permitting one same-source bounded read.",
+      "correction_cause": "Repeated the non-visible quote. Old result remains a technical failure; no live correction performed."
+    }
+  ],
+  "failed_json_original": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/failed_responses/000027_20ed8fae1662cafc14aa97c0e4d3928ab8364d0409eace929c202ab4b0492688.json",
+    "sha256": "f0cacdde42b28a0fbd678c84d43434ac7244e47a8f5f15c26c61972ce79f07de",
+    "attempt_id": 27,
+    "request_hash": "20ed8fae1662cafc14aa97c0e4d3928ab8364d0409eace929c202ab4b0492688",
+    "error": "Expecting ',' delimiter: line 1 column 1939 (char 1938)",
+    "output_tokens": 467,
+    "raw_characters": 1940,
+    "output_ceiling_reached": false,
+    "response_authority": "The attempt-specific failed response. Same hash later completed on attempt 78; current response cache is not the original attempt 27 response.",
+    "automatic_structural_repair_performed": false
+  },
+  "magnitude_catalog_actual": {
+    "catalog_action_attempts": [
+      337,
+      362,
+      365,
+      368
+    ],
+    "all_actual_cursors": 0,
+    "next_page_never_requested": true,
+    "control_mda_offset_912261_transmitted": true,
+    "positive_mda_offset_841722_transmitted": false,
+    "source_absence_proven": false,
+    "changes": "Clarify actual next_cursor operation, partial-page notes and case-label binding in fixed model guidance. No directory reorder, quotas, budget or admission changes."
+  },
+  "verification": {
+    "source_read_tests": 14,
+    "focused_log": "/tmp/v181-literal-focused-complete.log",
+    "full_log": "/tmp/v181-literal-full-complete.log",
+    "status": "PASS",
+    "focused_tests": 169,
+    "full_tests": 1591,
+    "full_seconds": 58.425,
+    "lint_log": "/tmp/v181-literal-lint-complete.log"
+  }
+}

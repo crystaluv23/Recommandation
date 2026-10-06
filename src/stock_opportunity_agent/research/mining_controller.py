@@ -724,9 +724,10 @@ class LabelAwareMiningController:
             "event_count": len(events),
             "family_counts": dict(sorted(family_counts.items())),
             "sample_titles": sample_titles,
-            "note": "inspect_catalog with scope=evidence lists every titled "
-            "document by family and window; read_span on event_ref reads "
-            "the verbatim text",
+            "note": "inspect_catalog with scope=evidence pages titled documents "
+            "by family and window; copy the result's next_cursor into the next "
+            "request to reach omitted entries. A page is not the full directory; "
+            "read_span on event_ref reads the verbatim text",
         }
 
     def _modality_coverage(self) -> dict[str, Any]:
@@ -1045,8 +1046,9 @@ class LabelAwareMiningController:
                 "events": len(narrative_events),
                 "sample_titles": sample_titles,
                 "catalog_note": (
-                    "the evidence catalog now lists every titled document "
-                    "by family and window (inspect_catalog scope=evidence)"
+                    "the evidence catalog pages titled documents by family and "
+                    "window (inspect_catalog scope=evidence); use next_cursor "
+                    "to reach omitted entries"
                 ),
             }
             if narrative_events
