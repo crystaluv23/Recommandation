@@ -118,6 +118,15 @@ corrections and validates the assembled action before any tool executes.
   PIT verdicts. A bounded view never proves absence: insufficient coverage
   may support only `evidence_unavailable`, never a domain claim that a fact
   does not exist.
+  A multi-case fetch preserves whole-request coverage in the existing ledger
+  fields: matched query terms and excluded document ids are unions across cases,
+  query sufficiency requires every case's declared query coverage, and unread
+  same-source coverage is true when any requested case has omitted documents.
+  The last case may not overwrite earlier coverage. Runtime action receipts
+  count newly added unique fact and relation refs separately from narrative
+  events and previously known refs. Repeating a fetch retains its source refs
+  and charged action but reports zero new nodes when the graph is unchanged.
+  This changes neither query selection nor measurement/admission semantics.
 - Narrative read access (action plan v2, Phase 1): raw narrative text is the
   authoritative narrative evidence. `NarrativeSpan` carries `event_ref`,
   `case_ref`, `document_ref`, `source_family` (normalized family, not raw

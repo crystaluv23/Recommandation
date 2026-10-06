@@ -961,6 +961,8 @@ class LabelAwareMiningController:
         if query is not None and not isinstance(query, str):
             raise InvalidMiningAction("query must be a string or null")
         self._advance("exploring")
+        prior_fact_refs = set(self._facts)
+        prior_relation_refs = set(self._relations)
         results: list[FetchResult] = []
         for ref in case_refs:
             result = fetch_case_evidence(
@@ -982,8 +984,6 @@ class LabelAwareMiningController:
                 self._document_case_refs.setdefault((document.document_id, document.content_hash), set()).add(str(ref))
         evidence_refs: list[str] = []
         source_types: set[str] = set()
-        coverage: dict[str, Any] = {}
-        omitted: dict[str, Any] = {}
         for result in results:
             evidence_refs.extend(fact.fact_ref for fact in result.facts)
             evidence_refs.extend(
@@ -992,15 +992,25 @@ class LabelAwareMiningController:
             source_types.update(
                 str(document.source_type) for document in result.documents
             )
-            coverage.update(
-                {
-                    "query_coverage": dict(result.query_coverage),
-                    "unread_same_source": result.unread_same_source,
-                }
-            )
-            omitted.update(
-                {"excluded_document_ids": list(result.excluded_by_limits)}
-            )
+        coverage = {
+            "query_coverage": {
+                "matched_terms": sorted({
+                    term for result in results
+                    for term in result.query_coverage.get("matched_terms", ())
+                }),
+                "sufficient": all(
+                    result.query_coverage.get("sufficient", False)
+                    for result in results
+                ),
+            },
+            "unread_same_source": any(result.unread_same_source for result in results),
+        }
+        omitted = {
+            "excluded_document_ids": sorted({
+                document_id for result in results
+                for document_id in result.excluded_by_limits
+            }),
+        }
         self._heavy_used += 1
         self._advance("evidence_ready")
         new_relations = {
@@ -1033,11 +1043,10 @@ class LabelAwareMiningController:
             "action": "fetch_evidence",
             "cases_requested": len(case_refs),
             "families": sorted(source_types),
-            "new_facts": len(evidence_refs)
-            - sum(1 for ref in evidence_refs if ref.startswith("relation-")),
+            "new_facts": len(set(self._facts) - prior_fact_refs),
             "total_facts": len(self._facts),
             "total_events": len(self._events),
-            "new_relations": len(new_relations),
+            "new_relations": len(set(new_relations) - prior_relation_refs),
             "total_relations": len(self._relations),
             "excluded_document_ids": len(
                 omitted.get("excluded_document_ids", ())

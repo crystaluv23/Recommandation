@@ -1,0 +1,2939 @@
+{
+  "schema_version": "fast-checkpoint-and-mining-coverage-audit-v1",
+  "audited_at": "2026-10-06T21:49:50.190753+00:00",
+  "live_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+  "frozen_source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+  "main_patch_base": "127023b6feda52fca1075f24752edea4f2262cda",
+  "new_external_model_or_provider_calls_by_audit": 0,
+  "public_primary_source_verification": true,
+  "historical_artifacts_rewritten": false,
+  "live_source_hot_edited": false,
+  "process_snapshot": {
+    "wrapper_pid": 27009,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+      "--run"
+    ],
+    "source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+    "pid": 37671,
+    "started_at": "2026-10-06T21:28:02.317919+00:00",
+    "status": "running",
+    "automatic_resumes": 3,
+    "last_exit_code": 1
+  },
+  "formal_pointers": {
+    "round": 1,
+    "cycle": 0
+  },
+  "fresh_live_inventory": {
+    "attempts": 459,
+    "statuses": {
+      "completed": 455,
+      "failed": 3,
+      "in_progress": 1
+    },
+    "cost_record_sum": 1.9052026000000002,
+    "cost_scope": "Ledger values including conservative failure reservations; not an exact invoice.",
+    "predictions_by_plan": {
+      "plan_r0001_c01": 24,
+      "plan_r0001_c02": 24
+    },
+    "signal_status_counts": {
+      "plan_r0001_c01:validation_failed": 3,
+      "plan_r0001_c01:success": 91,
+      "plan_r0001_c01:domain_unavailable": 8,
+      "plan_r0001_c02:success": 68,
+      "plan_r0001_c02:domain_unavailable": 7,
+      "plan_r0001_c02:validation_failed": 3
+    },
+    "technical_failures": [
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000701818:20250930",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 5
+        }
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000839470:20250731",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "order_confirmation_disclosed",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        }
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001920294:20250530",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      },
+      {
+        "plan_id": "plan_r0001_c02",
+        "case_id": "cik_0000895728:20250930",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_90df5b2232cbb16caa3810c5' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_90df5b2232cbb16caa3810c5\": \"The balance sheet is also in great shape.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_90df5b2232cbb16caa3810c5' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_90df5b2232cbb16caa3810c5\": \"The balance sheet is also in great shape.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      },
+      {
+        "plan_id": "plan_r0001_c02",
+        "case_id": "cik_0001309402:20250530",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_874cd1cef2816c1d0d7b0acc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_874cd1cef2816c1d0d7b0acc\": \"As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_874cd1cef2816c1d0d7b0acc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_874cd1cef2816c1d0d7b0acc\": \"As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      },
+      {
+        "plan_id": "plan_r0001_c02",
+        "case_id": "cik_0001801368:20250331",
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      }
+    ],
+    "scope": "Mechanical inventory only; not complete substantive acceptance."
+  },
+  "completed_c01_checkpoint": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/attempts/plan_r0001_c01.json",
+    "sha256": "7fac5f469b278b805ff4be9f510b1acc41e346c7bae908c23a49fcacb17033a2",
+    "complete_metadata": {
+      "completed_case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "expected_case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "failures": [],
+      "fitness": {
+        "eligible": true,
+        "evidence_covered_count": 24,
+        "expected_case_count": 24,
+        "predicted_positive_count": 14,
+        "reasons": [],
+        "status": "eligible",
+        "true_positive_count": 11,
+        "valid_case_count": 24
+      },
+      "metrics": {
+        "binary_f1": 0.7857142857142857,
+        "binary_precision": 0.7857142857142857,
+        "binary_recall": 0.7857142857142857,
+        "confusion": {
+          "false_negative": 3,
+          "false_positive": 3,
+          "true_negative": 7,
+          "true_positive": 11
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.14814814814814814,
+        "precision_defined": true,
+        "predicted_positive_count": 14,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c01",
+      "schema_version": "plan-evaluation-attempt-v1",
+      "technical_exclusion_case_ids": []
+    },
+    "case_prediction_trajectory_sets_exact": true,
+    "signal_status_counts": {
+      "success": 91,
+      "domain_unavailable": 8,
+      "validation_failed": 3
+    },
+    "case_inventory": [
+      {
+        "case_id": "cik_0000895728:20250930",
+        "trajectory_sha256": "daee26c7f9719acafa6aa3706d375112c850e0cbc18751ddb185ec0d72f37955",
+        "prediction_sha256": "de19c351d2ab657b5aa06f342085b7419bfdd0d941480c9a9715c652724148df",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "negative_word_count:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001830043:20250930",
+        "trajectory_sha256": "5caf80fa6fcd8bdbf99f32753e01b16a8717d036180f47e967e1b69a02edeb39",
+        "prediction_sha256": "a29ac6797e08a0e77876cf4878e03c098c7a857f7949686d82da2ed725b126ee",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "domain_unavailable"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000701818:20250930",
+        "trajectory_sha256": "dab98f162632293ab3f1f701832b19eb788b451c1c3a3a5d10a7e2bcc8f01d2b",
+        "prediction_sha256": "71a8b6dab06f42b2db0a276e1f2992e61b1b3f6022441d108de30cd5494569b2",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "validation_failed"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "cash_burn_rate_elevated:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "domain_unavailable"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001174922:20250731",
+        "trajectory_sha256": "eaba276222cf105dba6014fbcdfa22c51f75491a0f3729b2fadf8daa9e68646e",
+        "prediction_sha256": "74a710bd5d9ee7f82adad86c7a54ed801e4a79f27d59311f0d607db3c94dc985",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000895421:20250731",
+        "trajectory_sha256": "82d88c6297b508a596c6431e21b62c66c58afd9375e574f3833a38a00efa478b",
+        "prediction_sha256": "a3703634385bbf95fee199d09c03980a9c704f11067865c54b32fad10e5c57d7",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "domain_unavailable"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "trajectory_sha256": "4895ada62e7fb23a84a1cb002708e24a49b008902023e9d078372bfa5a4e9660",
+        "prediction_sha256": "d8f997d462eec4e802aa04e75efd8862f9b732ddb4c743bfee7d8c6554627fad",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001576942:20250530",
+        "trajectory_sha256": "7e7a480244ab46812f0940f74612814c65b8de5ea67cdb2c761836cfbfa4da23",
+        "prediction_sha256": "20c433742ba81c4dd14f94b846db8ba9836ef10aa065b5625a39298ff08781b3",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001590364:20250731",
+        "trajectory_sha256": "69b46cfd94a7cf5526107f018e2a4def702e8d32a22da12a99f2a8d65625ab89",
+        "prediction_sha256": "dc46bb4a234e78a006315daba27fc6be1a331b2a8c54c93edf11238baffc59c0",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000936395:20250930",
+        "trajectory_sha256": "93ffc3249d2bf7d249a7a7977fad934fcf8c166785935941b53e8efd533bbe7b",
+        "prediction_sha256": "c53f447c2e324f8c743e5b83b879843b35a81f89fee15e1bb00ddb6ba3fad486",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001164727:20250731",
+        "trajectory_sha256": "06888d28ee3b66a4e1243e84776bb371947422a56c3b50c402138e85be321207",
+        "prediction_sha256": "b9e5fda1af9b88503b33454423349d3e20b0ad66e22f9277c184c04b20a20266",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001801368:20250331",
+        "trajectory_sha256": "e824584af730eb59f66d62fa91b3c78e03c68a6c2298ab24c8b502fa5cdba7c2",
+        "prediction_sha256": "bb982a85d8d71c81c91790ebcc57693d8585e150fe66c71b84ed0ee4722414e1",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "commercialization_status:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001018963:20250930",
+        "trajectory_sha256": "62ea38ed8eb57c34f21fc25959d6bf3f511729228dd1222183fcf4bc9f1b7c86",
+        "prediction_sha256": "89fb3ccfb1574f2ad2e4eb7053218316a8b264c02a00454c217b6de866ae1df8",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001689548:20250930",
+        "trajectory_sha256": "1a797eb2e0d0c2190c3e11d31e890fcf2de3189e4a7d05f50c76c3e6a7a7ee1d",
+        "prediction_sha256": "a4b5f77ca37943c6cc1a295d02d1a621a06297db1172e1298dc516ed9fd05c83",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "commercialization_status:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0002023554:20250930",
+        "trajectory_sha256": "c878f9f91a3363ba509eb3ed9235ea1f3fbc96fa3710b10a337bd71fc71c09a3",
+        "prediction_sha256": "56fd10fcacd8d6b79faad309d2d710b73a93434cb793ea3312ed0e5e09281e16",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "domain_unavailable"
+          },
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "customer_concentration:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000723125:20250731",
+        "trajectory_sha256": "2d984941911e1d5334ef922f81ee0afba359f15ca7b62f1e29b7da0dbdcd6301",
+        "prediction_sha256": "9560089210d0f5e4c37b9c6d95ba89b956da29c8e6f78c0c268b084d26219aa7",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "customer_concentration:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001646188:20250530",
+        "trajectory_sha256": "eb50e54faac093f83819b518433e7ba55895995f2add96c804c745171f8e4ac6",
+        "prediction_sha256": "6d5bc7f7952c345c470b204cab14fadd4d9ae3fd0408b6038dc29a261795f183",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000860413:20250930",
+        "trajectory_sha256": "9e115a3a6c8af04828adba9af6f041f6cd9837672a42ea5db293e442b9030d53",
+        "prediction_sha256": "c781a7ac0c760a750ea380c3e14e2e344f9abbdf49f1731aa77a885d687c6d18",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001521036:20250331",
+        "trajectory_sha256": "221a41b497edbba89cc05f50fd9a3182402facb21ba88bdd161bdccd82013ebd",
+        "prediction_sha256": "88665557c3742424baff2d924a53af049eddd0613c27a3e2896568ef52e6446b",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001847409:20250131",
+        "trajectory_sha256": "46b0d8ec11f6c4e49bde833f7d72fa934c43b702f3a750309ccef2d8d0feb942",
+        "prediction_sha256": "2b78080c45bcfffe89753da855cc666ae4ef7ecbb87708eff045bb3f2355b5b4",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "revenue_growth_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "domain_unavailable"
+          },
+          {
+            "round": 2,
+            "signal_ref": "cash_burn_rate_elevated:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "domain_unavailable"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001309402:20250530",
+        "trajectory_sha256": "ebbf173c900d11982978cccaa1867a2bfb8bf6e96ae2c8d3144e2086b087984e",
+        "prediction_sha256": "229dc9b4267276c5792e21e6830341eefdcd2da96713fc56f7f98e0c691ef4dc",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001114995:20250331",
+        "trajectory_sha256": "60fe85d575c9dc818dfaaead4ae76f3e84c89b3d18eae7f007f72a3249d89a30",
+        "prediction_sha256": "7ac3af2a4311e89ed969b7c5fbd3cc853099d0b804e005483beaed0fceeb4c28",
+        "stop_reason": "finalized",
+        "candidate_judgment": "unlikely",
+        "magnitude": null,
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "customer_concentration:v2",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001920294:20250530",
+        "trajectory_sha256": "42203bf645055c3af8b44e1d5851b1acf07789b0628ff6b83042e6412220e599",
+        "prediction_sha256": "02f5b007e8cad34549f4fd21587868d4811e5865dd68349aa2c31275abbb90a8",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "domain_unavailable"
+          },
+          {
+            "round": 1,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "validation_failed"
+          },
+          {
+            "round": 1,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0000839470:20250731",
+        "trajectory_sha256": "bef6c2e240228ab9895ed1b0874548eb686127b281a22df6dfe267df058127fe",
+        "prediction_sha256": "774b1b9b30c42a6a87a4714a0f3eb3a5cbdc4bebef64ce2120fb9975a5c72e18",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "validation_failed"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "status": "success"
+          }
+        ]
+      },
+      {
+        "case_id": "cik_0001051627:20250930",
+        "trajectory_sha256": "d1905d67770c0a72a57a743ff0f037a773b69ac17ffc723ea9f1d886d4761d53",
+        "prediction_sha256": "7659ad3fa2d9d5b86a5a262f77db2f0c0a5942dc8686ab83cb5c4d906de96f9c",
+        "stop_reason": "finalized",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x",
+        "signal_results": [
+          {
+            "round": 1,
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "financing_listing_action:v5",
+            "status": "success"
+          },
+          {
+            "round": 1,
+            "signal_ref": "liquidity_runway_months:v3",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "cash_reserves:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "cash_burn_rate_elevated:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "customer_concentration:v2",
+            "status": "success"
+          },
+          {
+            "round": 2,
+            "signal_ref": "guidance_acceleration:v3",
+            "status": "domain_unavailable"
+          }
+        ]
+      }
+    ],
+    "technical_failures": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "signal_round": 1,
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 5
+        }
+      },
+      {
+        "case_id": "cik_0001920294:20250530",
+        "signal_round": 1,
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[2] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=['projection_1f75c8ff373422af89d562d4']; overlapping_projection_interior_candidates={\"projection_1f75c8ff373422af89d562d4\": \"This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "guidance_acceleration",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 3
+        }
+      },
+      {
+        "case_id": "cik_0000839470:20250731",
+        "signal_round": 1,
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: Signal supporting evidence[0] on projection 'projection_544de7679aa6acff2387f87d' touches internal projection edge=['start']; overlapping_projection_ids=['projection_f83f8f137e5b44451ac78c30']; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          },
+          "signal_id": "order_confirmation_disclosed",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 2
+        }
+      }
+    ],
+    "scope": "All persisted case identities, predictions, statuses, and metrics checked. Full semantic acceptance of every case/source is still pending."
+  },
+  "actual_single_correction_failures": [
+    {
+      "initial": {
+        "attempt_id": 214,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "353189c365d79c439251e3abd8823d666800a15344fb6ac4e15401bb9bdcfbbc",
+        "request_sha256": "98d47dd2ae544e6592b902847e0389b1670ad463b0b8452de32af19cce6dff3c",
+        "response_sha256": "c2e825cfc47f4512852929b0883c51f7dc3835a1c79d2122f64c3d91aad8429c",
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "As we look ahead, we want to provide some thoughts on our business outlook in terms of the full year 2025. We expect to achieve a $100 million estimated annual recurring revenue target by the end of 2025, which will include both organic and acquired revenue.",
+                      "projection_id": "projection_59e5767d03409fd3f4169efb"
+                    },
+                    {
+                      "exact_text": "As a result, we now expect to achieve break-even operating performance at $90 million ARR. This update represents an improvement from the prior estimate of ac",
+                      "projection_id": "projection_59e5767d03409fd3f4169efb"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "Management provided fresh full-year 2025 guidance on the Q1 2025 earnings call, reiterating a $100 million ARR target and explicitly stating that the break-even operating performance threshold is now expected at $90 million ARR, which it describes as an improvement from the prior estimate. The explicit revision statement and the lowered break-even ARR level indicate a material strengthening of the growth/profitability path versus prior guidance, supporting a positive assessment. The cited span is truncated at the projection edge ('prior estimate of ac'), so the exact prior baseline figure is not fully visible; the direction of change is nonetheless explicitly stated by management."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.72,
+                  "value": "positive"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "correction": {
+        "attempt_id": 215,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "a4a86a0abbac1bbc4defe5d8582be2f81c0c5160511d4569fbeb1bd78971d06d",
+        "request_sha256": "3de4f5f839192d2ad7591a4ccc28c67ed3abbd93956743b80e485ca5f8ae3c17",
+        "response_sha256": "2a4ed914c936325b6998788a8a36bfe3c816d6ce62e89bf33004957e00607f06",
+        "complete_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "guidance_acceleration",
+              "version": 3
+            },
+            "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "signal_ref": "guidance_acceleration:v3",
+            "validation_error": "Signal supporting evidence[1] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_59e5767d03409fd3f4169efb\": \"As a result, we now expect to achieve break-even operating performance at $90 million ARR.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          }
+        ],
+        "quoted_projection_readback": [
+          {
+            "available_at": "2024-10-30T00:00:00+00:00",
+            "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:c75a3969dca155a930819324",
+            "exact_text": "rst quarter of 2025. This compares to a monthly cash burn rate of approximately $2.2 million, primarily driven by employee-related costs, as well as professional service fees. Furthermore, this cash position is bolstered by our access to up to 48.3 million shares in our equity line of credit (E-LOC). As we look ahead, we want to provide some thoughts on our business outlook in terms of the full year 2025. We expect to achieve a $100 million estimated annual recurring revenue target by the end of 2025, which will include both organic and acquired revenue. Additionally, we expect cost growth, which is highly elastic and primarily driven by headcount, marketing expenses, and hosting costs, to increase in line with that revenue as we scale the organization with a focus on revenue-generating roles, particularly in sales and marketing. As a result, we now expect to achieve break-even operating performance at $90 million ARR. This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success. Let me now turn the call back over to Dan to discuss the momentum we are seeing in the business at the start of 2025.\",\"sentiment\":\"0.3\",\"speaker\":\"Richard Burchill\",\"title\":\"CFO\"},{\"content\":\"Thanks, Rich. We entered 2025 with a solid foundation that we believe well positions the business to acquire enterprise customers and drive revenue growth. Early developments year-to-date have demonstrated clear business momentum as we successfully execute on our go-to-market strategy. Some of our early successes include the completion of a key strategic acquisition, growth of enterprise customers adopting our AI-powered solutions, and the build-out of our customer sales pipeline. To begin, we recently announced the strategic acquisition of GroupBy, a leader in enterprise search, product discovery, and merchandising solutions. This acquisition enhances [ANON_ID_0001]'s sales",
+            "projection_id": "projection_1f75c8ff373422af89d562d4",
+            "published_at": "2024-10-29T00:00:00+00:00",
+            "source_type": "earnings_call"
+          },
+          {
+            "available_at": "2024-10-30T00:00:00+00:00",
+            "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:c75a3969dca155a930819324",
+            "exact_text": " bolster our liquidity position. Prior to the close of the de-SPAC transaction the company incurred approximately $94 million in fixed-rate convertible debt. $53.8 million of this debt was successfully converted into equity by year-end 2024, leaving $40.5 million at the end of the year. Of this, $31 million was subsequently converted into equity in February 2025, and $3.5 million was repaid with cash. We believe the elimination of these debts from our balance sheet strengthens the company financially. As of the end of the first quarter of 2025, the company's remaining debt on the balance sheet comprised $30 million of traditional interest-bearing bank loans we recently secured from Berenberg and $6 million of convertible debt and promissory notes, which will be converted to equity over the remainder of 2025. Additionally, the company maintains a strong liquidity position to support growth and strategic initiatives with approximately $18.9 million in cash on hand as of the end of the first quarter of 2025. This compares to a monthly cash burn rate of approximately $2.2 million, primarily driven by employee-related costs, as well as professional service fees. Furthermore, this cash position is bolstered by our access to up to 48.3 million shares in our equity line of credit (E-LOC). As we look ahead, we want to provide some thoughts on our business outlook in terms of the full year 2025. We expect to achieve a $100 million estimated annual recurring revenue target by the end of 2025, which will include both organic and acquired revenue. Additionally, we expect cost growth, which is highly elastic and primarily driven by headcount, marketing expenses, and hosting costs, to increase in line with that revenue as we scale the organization with a focus on revenue-generating roles, particularly in sales and marketing. As a result, we now expect to achieve break-even operating performance at $90 million ARR. This update represents an improvement from the prior estimate of ac",
+            "projection_id": "projection_59e5767d03409fd3f4169efb",
+            "published_at": "2024-10-29T00:00:00+00:00",
+            "source_type": "earnings_call"
+          }
+        ],
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "As we look ahead, we want to provide some thoughts on our business outlook in terms of the full year 2025. We expect to achieve a $100 million estimated annual recurring revenue target by the end of 2025, which will include both organic and acquired revenue.",
+                      "projection_id": "projection_1f75c8ff373422af89d562d4"
+                    },
+                    {
+                      "exact_text": "As a result, we now expect to achieve break-even operating performance at $90 million ARR.",
+                      "projection_id": "projection_59e5767d03409fd3f4169efb"
+                    },
+                    {
+                      "exact_text": "This update represents an improvement from the prior estimate of ac",
+                      "projection_id": "projection_59e5767d03409fd3f4169efb"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "Management issued fresh full-year 2025 guidance on the Q1 2025 earnings call: it expects to reach a $100 million ARR target by end-2025 and now expects break-even operating performance at $90 million ARR, explicitly described as an improvement from the prior estimate of break-even at $100 million ARR. The explicit current-versus-prior comparator shows a material upward change in the profitability threshold (break-even at a lower ARR level), supporting a positive read on guidance acceleration. The prior-estimate span is truncated at the projection edge, so the comparison is grounded in the visible current guidance plus the explicit revision statement."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.72,
+                  "value": "positive"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "finding": "The new overlapping window supplies the complete prior ARR comparator, but the correction retains the old truncated comparator ending ac. Strict technical rejection remains correct.",
+      "accepted": false
+    },
+    {
+      "initial": {
+        "attempt_id": 227,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "34ca9215112d83907d68ba2236bb78d4b89c004222be3efa3477b3de31c01ecf",
+        "request_sha256": "b7fa119bced5e399f96d9d2575b69e12a2a77475d80f134451ca9d6963f6e4f6",
+        "response_sha256": "749bb7fdc6084556382cc044d8fdb7a38f22612119879084dccf4334c64a5cbd",
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "On July 17, 2024, the Company entered into the Offtake Agreement with FCA, an electric vehicle manufacturer and part of the Stellantis group of companies. Under the terms of the Offtake Agreement, FCA will be obligated to purchase CSPG natural graphite anode products (the “Product”) in amounts (the “Annual Offtake Volume”) and at prices described in the Offtake Agreement, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract. The anticipated Annual Offtake Volume in 2026 is 10,000 mt of Product, and 15,000 mt of Product in years 2027 through 2031, the final year of the Offtake Agreement.",
+                      "projection_id": "projection_f83f8f137e5b44451ac78c30"
+                    },
+                    {
+                      "exact_text": "On February 4, 2024, the Company entered into the Procurement Agreement with SK On. Pursuant to the terms of the Procurement Agreement, [ANON_ID_0001] will supply CSPG natural graphite anode products from its Kellyton Graphite Plant to SK On battery plants located within the U.S. Under the terms of the Procurement Agreement, SK On will be obligated to purchase, on an annual basis, a quantity of CSPG equal to a percent",
+                      "projection_id": "projection_f83f8f137e5b44451ac78c30"
+                    },
+                    {
+                      "exact_text": "The forecasted volume required by SK On in the final year of the Procurement Agreement is 10,000 mt of CSPG. As a result of entry into the Offtake Agreement with FCA and the Procurement Agreement with SK On, the Company has secured offtake agreements for 100% of its anticipated Phase I production capacity and partially committed a portion of anticipated Phase II production capacity from its Kellyton Graphite Plant during the term of the respective contracts.",
+                      "projection_id": "projection_fb0495493752fcaaf50ead69"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The company's 10-K discloses binding offtake and procurement agreements with named counterparties FCA US LLC (Stellantis group) and SK On Co., Ltd., with stated volumes (10,000 mt in 2026 rising to 15,000 mt for 2027-2031 for FCA; 10,000 mt final-year forecast for SK On) and delivery schedules tied to the Kellyton Graphite Plant. These are confirmed qualifying order/offtake events meeting the materiality threshold, disclosed within the 180-day lookback window."
+                },
+                "signal_id": "order_confirmation_disclosed",
+                "state": {
+                  "confidence": 0.9,
+                  "value": "positive"
+                },
+                "status": {
+                  "coverage": "sufficient"
+                },
+                "version": 2
+              },
+              "signal_ref": "order_confirmation_disclosed:v2"
+            }
+          ]
+        }
+      },
+      "correction": {
+        "attempt_id": 228,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "4a6d904541076f7a8bb7ff2c31db333afcaae8a5ce45495cf55121ada2de2779",
+        "request_sha256": "8afcfcebb9505bacc21508864597ffc78743eacd90c4219441fdea2f775e7d9a",
+        "response_sha256": "a2908efaf97bf8509169a2e701fb97ef3e603f49e14eef1d199252791e3cf483",
+        "complete_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "order_confirmation_disclosed",
+              "version": 2
+            },
+            "required_action": "Return outer signal_ref exactly 'order_confirmation_disclosed:v2'; set nested result.signal_id exactly 'order_confirmation_disclosed' without a version suffix and result.version exactly 2. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "order_confirmation_disclosed:v2"
+            ],
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "validation_error": "Signal supporting evidence[1] on projection 'projection_f83f8f137e5b44451ac78c30' touches internal projection edge=['end']; overlapping_projection_ids=['projection_e22eb0ea352e1256a1e288af']; overlapping_projection_interior_candidates={\"projection_e22eb0ea352e1256a1e288af\": \"Under the terms of the Procurement Agreement, SK On will be obligated to purchase, on an annual basis, a quantity of CSPG equal to a percentage of the forecasted volume required by SK On (the “Minimum Purchase Amount”), provided that the Minimum Purchase Amount may be increased from time to time by the mutual agreement of the parties, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists; Signal supporting evidence[2] exact_text does not map uniquely: supplied_projection_id='projection_fb0495493752fcaaf50ead69', supplied_occurrences=0, visible_occurrences=2, matching_projection_ids=['projection_a01d0742e31e29ae837b7d8f', 'projection_e22eb0ea352e1256a1e288af']. visible_spacing_literal_candidate=null. A listed candidate is a source location hint, not semantic confirmation of the interpretation. Copy one contiguous case- and punctuation-exact complete literal from an eligible visible projection; never complete a truncated word or join sentences by omitting intervening source text. A same-source boundary read, when supplied, is evidence access only and does not validate this quote. Return unavailable only when no compliant literal exists"
+          }
+        ],
+        "quoted_projection_readback": [
+          {
+            "available_at": "2025-03-20T20:30:47+00:00",
+            "content_hash": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230",
+            "document_id": "sec:[ANON_ID_0000]:000155837025003382",
+            "exact_text": "tered into the Offtake Agreement with FCA, an electric vehicle manufacturer and part of the Stellantis group of companies. Under the terms of the Offtake Agreement, FCA will be obligated to purchase CSPG natural graphite anode products (the “Product”) in amounts (the “Annual Offtake Volume”) and at prices described in the Offtake Agreement, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract. The anticipated Annual Offtake Volume in 2026 is 10,000 mt of Product, and 15,000 mt of Product in years 2027 through 2031, the final year of the Offtake Agreement. On February 4, 2024, the Company entered into the Procurement Agreement with SK On. Pursuant to the terms of the Procurement Agreement, [ANON_ID_0001] will supply CSPG natural graphite anode products from its Kellyton Graphite Plant to SK On battery plants located within the U.S. Under the terms of the Procurement Agreement, SK On will be obligated to purchase, on an annual basis, a quantity of CSPG equal to a percentage of the forecasted volume required by SK On (the “Minimum Purchase Amount”), provided that the Minimum Purchase Amount may be increased from time to time by the mutual agreement of the parties, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract. The forecasted volume required by SK On in the final year of the Procurement Agreement is 10,000 mt of CSPG. As a result of entry into the Offtake Agreement with FCA and the Procurement Agreement with SK On, the Company has secured offtake agreements for 100% of its anticipated Phase I production capacity and partially committed a portion of anticipated Phase II production capacity from its Kellyton Graphite Plant during the term of the respective contracts. [ANON_ID_0001] continues to engage with these and other potential customers by providing samples of CSPG produced by the Company for testing and evaluation, hosting site tours of the Kellyton Graphite Plant, and having technical product development and commercial discu",
+            "projection_id": "projection_544de7679aa6acff2387f87d",
+            "published_at": "2025-03-20T20:30:47+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-03-20T20:30:47+00:00",
+            "content_hash": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230",
+            "document_id": "sec:[ANON_ID_0000]:000155837025003382",
+            "exact_text": "phite Plant to SK On battery plants located within the U.S. Under the terms of the Procurement Agreement, SK On will be obligated to purchase, on an annual basis, a quantity of CSPG equal to a percentage of the forecasted volume required by SK On (the “Minimum Purchase Amount”), provided that the Minimum Purchase Amount may be increased from time to time by the mutual agreement of the parties, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract. The forecasted volume required by SK On in the final year of the Procurement Agreement is 10,000 mt of CSPG. As a result of entry into the Offtake Agreement with FCA and the Procurement Agreement with SK On, the Company has secured offtake agreements for 100% of its anticipated Phase I production capacity and partially committed a portion of anticipated Phase II production capacity from its Kellyton Graphite Plant during the term of the respective contracts. [ANON_ID_0001] continues to engage with these and other potential customers by providing samples of CSPG produced by the Company for testing and evaluation, hosting site tours of the Kellyton Graphite Plant, and having technical product development and commercial discussions. Feedback from certain potential customers indicates that [ANON_ID_0001]’s material meets their initial specifications, and has resulted in the Company providing additional, or in some cases, larger product samples to these potential customers. 42 Table of Contents Kellyton Graphite Plant – Construction and Estimated Cost Update [ANON_ID_0001] has lowered its estimate of Phase I cost to $245 million, down from the previous estimate of $271 million. This represents a decrease in estimated cost of $26 million, or 9.6%. During the year, [ANON_ID_0001] continued to evaluate its plant design, the construction schedule and the costs related thereto. The decrease in estimated costs primarily relates to savings as a result of further design optimization and savings in steel, piping and equipment installat",
+            "projection_id": "projection_e22eb0ea352e1256a1e288af",
+            "published_at": "2025-03-20T20:30:47+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-03-20T20:30:47+00:00",
+            "content_hash": "3f1da6ee5ec58aa0c337053f922a900fc383a0bb69017b2a659153e563dfc230",
+            "document_id": "sec:[ANON_ID_0000]:000155837025003382",
+            "exact_text": "t Inducement Incentive Award Plan, adopted by the Board of Directors on May 9, 2022 (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on May 13, 2022). 77 Table of Contents 10.17* Employment Agreement, effective August 26, 2022, between the Company and Steven M. Cates (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on June 23, 2022) . 10.18* Employment Agreement, effective January 16, 2023, between the Company and Frank Bakker (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on January 17, 2023) . 10.19 Controlled Equity Offering SM Sales Agreement, dated April 14, 2017, between the Company and Cantor Fitzgerald & Co. (incorporated by reference to Exhibit 1.1 to the Company’s Current Report on Form 8-K filed on April 17, 2017). 10.20* Agreement and Release, effective January 17, 2023, between the Company and Chad M. Potter (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on January 20, 2023). 10.21 Products Procurement Agreement, dated February 4, 2024, between the Company and SK On Co., Ltd. (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on February 5, 2024). 10.22 Binding Offtake Agreement, dated July 17, 2024, by and between Alabama Graphite Products, LLC and FCA US LLC (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed July 18, 2024). 10.23 Purchase Agreement, dated August 30, 2024, by and between the Company and Lincoln Park Capital Fund, LLC (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed August 30, 2024). 10.24 Registration Rights Agreement, dated August 30, 2024, by and between the Company and Lincoln Park Capital Fund, LLC (incorporated by reference to Exhibit 10.2 to the Company’s Current Report on Form 8-K filed August 30, 2024). 10.25 At the Market Of",
+            "projection_id": "projection_572c72e234fd684e7a217874",
+            "published_at": "2025-03-20T20:30:47+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "tered into the Offtake Agreement with FCA, an electric vehicle manufacturer and part of the Stellantis group of companies. Under the terms of the Offtake Agreement, FCA will be obligated to purchase CSPG natural graphite anode products (the “Product”) in amounts (the “Annual Offtake Volume”) and at prices described in the Offtake Agreement, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract. The anticipated Annual Offtake Volume in 2026 is 10,000 mt of Product, and 15,000 mt of Product in years 2027 through 2031, the final year of the Offtake Agreement.",
+                      "projection_id": "projection_544de7679aa6acff2387f87d"
+                    },
+                    {
+                      "exact_text": "Under the terms of the Procurement Agreement, SK On will be obligated to purchase, on an annual basis, a quantity of CSPG equal to a percentage of the forecasted volume required by SK On (the “Minimum Purchase Amount”), provided that the Minimum Purchase Amount may be increased from time to time by the mutual agreement of the parties, upon [ANON_ID_0001] providing CSPG in accordance with the terms of the contract.",
+                      "projection_id": "projection_e22eb0ea352e1256a1e288af"
+                    },
+                    {
+                      "exact_text": "10.21 Products Procurement Agreement, dated February 4, 2024, between the Company and SK On Co., Ltd. (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed on February 5, 2024). 10.22 Binding Offtake Agreement, dated July 17, 2024, by and between Alabama Graphite Products, LLC and FCA US LLC (incorporated by reference to Exhibit 10.1 to the Company’s Current Report on Form 8-K filed July 18, 2024).",
+                      "projection_id": "projection_572c72e234fd684e7a217874"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The company's filings disclose binding offtake and procurement agreements with named counterparties FCA US LLC (Stellantis group) and SK On Co., Ltd. The FCA offtake specifies an anticipated annual volume of 10,000 mt in 2026 and 15,000 mt in 2027-2031, and the SK On procurement agreement specifies a forecasted volume of 10,000 mt in its final year, both well above the 1,000-unit materiality threshold. However, the agreements were entered into on July 17, 2024 and February 4, 2024, which fall outside the 180-day lookback window before the July 31, 2025 as_of date; the disclosures within the window are recaps of previously executed agreements rather than new order confirmations. The result is therefore neutral with respect to a new qualifying event within the lookback window."
+                },
+                "signal_id": "order_confirmation_disclosed",
+                "state": {
+                  "confidence": 0.7,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 2
+              },
+              "signal_ref": "order_confirmation_disclosed:v2"
+            }
+          ]
+        }
+      },
+      "finding": "The corrected answer repairs the prior SK On citation and exhibit provenance, but adds an FCA quote beginning at the start edge with tered. It also imposes an event-date lookback while the immutable skill specifies document publication lookback; historical recap/new-event semantics need a separate substantive review.",
+      "accepted": false
+    },
+    {
+      "initial": {
+        "attempt_id": 249,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "1151b499a636f1321933c4e20b3030d4b1d060408d6b48b2df4f8101d0cb45a3",
+        "request_sha256": "5e2ca45b0fed840f255c77b68562a0f325d5a40251fd07508113f43a92254c58",
+        "response_sha256": "c2d5a6974ee6b12bcd0fa25bb006fe60498c5fea4a9c9676ae7097d60527b4b7",
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "pleased to reaffirm our 2025 guidance. Our resilient business model continues to demonstrate our ability to deliver predictable results in all cycles.",
+                      "projection_id": "projection_57deedec06ee412eded28d26"
+                    },
+                    {
+                      "exact_text": "The acquisition of a 10% interest in the Matterhorn Express, strong Mainline volumes, and the strength of the U.S. CAD exchange rate are all tailwinds to our full year guidance, but are partially offset by higher-than-expected U.S. interest rates. We remain confident in our ability to achieve our near-term and medium-term growth outlooks.",
+                      "projection_id": "projection_9a1e37667cdbf97d15ea39a8"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The visible guidance-related spans show management reaffirming its 2025 guidance and describing tailwinds partially offset by higher-than-expected U.S. interest rates, with continued confidence in near-term and medium-term growth outlooks. No explicit prior guidance baseline or upward revision statement is visible, so the change versus prior guidance cannot be established as materially stronger; the evidence supports a neutral assessment rather than acceleration."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.55,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "correction": {
+        "attempt_id": 250,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "764839c46b163695ec3a884a9029f8caeb6b47d24a9d09adba2890eadb8943b8",
+        "request_sha256": "a9a5044672be3a779cec5c9048ae37d043b2e08e4870223194a4cc34414704ad",
+        "response_sha256": "d53cbad1e1c6fe1078ba048fb5670e590396cc04abc72f54b98dbb2b21bb2a6a",
+        "complete_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "guidance_acceleration",
+              "version": 3
+            },
+            "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "signal_ref": "guidance_acceleration:v3",
+            "validation_error": "Signal supporting evidence[0] on projection 'projection_57deedec06ee412eded28d26' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_57deedec06ee412eded28d26\": \"Our resilient business model continues to demonstrate our ability to deliver predictable results in all cycles.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+          }
+        ],
+        "quoted_projection_readback": [
+          {
+            "available_at": "2025-05-10T00:00:00+00:00",
+            "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:fa7da0996dd0446fc96799af",
+            "exact_text": "hich were sold in 2024. Our gas distribution segment realized a full quarter of contributions from all three U.S. gas utilities acquired in 2024, driving the majority of the year-over-year increase within the business. In Ontario, customer growth and rate increase alongside colder weather resulted in $170 million of EBITDA increase compared to the first quarter of 2024. In Renewables, lower-end resources at the European offshore assets were partially offset by stronger resources in North America, and we experienced similar levels of investment tax credits between those periods. The strong US dollar resulted in larger hedging losses this quarter, but FX was overall still a net tailwind for EBITDA and DCF as the average exchange rate pre-hedging was $1.44 for the quarter versus $1.35 in 2024. Below the line, higher financing costs, taxes, maintenance capital and a slightly higher share count linked to the US gas utility acquisitions partly offset the higher EBITDA contributions. I'm also pleased to reaffirm our 2025 guidance. Our resilient business model continues to demonstrate our ability to deliver predictable results in all cycles. As Greg mentioned earlier, we're not seeing any noticeable impacts from tariffs on our financial guidance. Strong first-quarter performance positions us well to hit our financial guidance for the 20th consecutive year. In fact, I think the lack of arrows on this slide from a tailwind and headwind perspective speaks to the resilience of our assets but as we look forward the recent acquisition of an interest in Matterhorn and forward expectations for the US-Canadian exchange rate which, although fairly heavily hedged, could provide some uplift to results. We're also keeping an eye on US interest rates as they're a bit higher than we had projected, but again not anticipated to be material. As a reminder, Q1 and Q4 are typically our strongest quarters and the US utilities further exaggerate that. Some of our other businesses also have seaso",
+            "projection_id": "projection_87aa77b6849457c9566736c4",
+            "published_at": "2025-05-09T00:00:00+00:00",
+            "source_type": "earnings_call"
+          },
+          {
+            "available_at": "2025-05-10T00:00:00+00:00",
+            "content_hash": "fa7da0996dd0446fc96799af2b07ee9d59e86b835401f4970bc559b6cc1ee537",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:fa7da0996dd0446fc96799af",
+            "exact_text": " pleased to reaffirm our 2025 guidance. Our resilient business model continues to demonstrate our ability to deliver predictable results in all cycles. As Greg mentioned earlier, we're not seeing any noticeable impacts from tariffs on our financial guidance. Strong first-quarter performance positions us well to hit our financial guidance for the 20th consecutive year. In fact, I think the lack of arrows on this slide from a tailwind and headwind perspective speaks to the resilience of our assets but as we look forward the recent acquisition of an interest in Matterhorn and forward expectations for the US-Canadian exchange rate which, although fairly heavily hedged, could provide some uplift to results. We're also keeping an eye on US interest rates as they're a bit higher than we had projected, but again not anticipated to be material. As a reminder, Q1 and Q4 are typically our strongest quarters and the US utilities further exaggerate that. Some of our other businesses also have seasonality built into them. In our Liquids business, we generally have heat restrictions on our pipes in the summers leading to lower volumes. In the winter months, gas transmission experiences far more peak days, and similarly [ANON_ID_0001] Gas Ontario has the majority of its heating degree days leading to higher contributions in those same winter months. In our Renewable segment, we typically experience higher wind resources in the winter months, which provide higher contributions from October to March. Now I'd like to reiterate our long-held capital allocation priorities. We'll continue to maintain our balance sheet strength and targeted debt-to-EBITDA range of 4.5x to 5x. Sustainably returning capital to shareholders is key to our value proposition and we expect to grow the dividend at a level within our annual DCF per share growth. When it comes to new growth, you can expect us to remain disciplined and prioritize low multiple brownfield opportunities and utility-like projects. As we discu",
+            "projection_id": "projection_57deedec06ee412eded28d26",
+            "published_at": "2025-05-09T00:00:00+00:00",
+            "source_type": "earnings_call"
+          },
+          {
+            "available_at": "2025-08-02T00:00:00+00:00",
+            "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:1671fd0384ab41adb0c9f05d",
+            "exact_text": " end of our EBITDA guidance range, and we are well on track to meet our DCF per share midpoint. The balance sheet is also in great shape. As of June 30, we're at 4.7x debt to EBITDA, primarily due to realizing another full quarter of earnings from the U.S. gas utility acquisitions that closed throughout 2024. Our assets remained highly utilized during the quarter, and the Mainline transported 3 million barrels per day. That system has now been in apportionment for 6 of the first 8 months of the year, including July and August. We closed an investment on our West Coast system by a consortium of 38 indigenous groups backed by a loan guarantee provided by the Canadian government. This partnership provides sustained economic benefits to First Nations and is aligned with [ANON_ID_0001]'s continuous goal of recycling capital at attractive valuations for shareholders. We also closed the previously announced acquisition of a 10% interest in the Matterhorn Express pipeline in the Permian and upsized the Traverse Pipeline project from 1.75 Bcf per day to 2.5 Bcf per day, driven by strong customer demand. As a reminder, the Traverse Pipeline is part of the Whistler JV and is designed to transport natural gas between Agua Dulce and the Katy area in Texas. Work on our planned Liquids Mainline Optimizations is ongoing, and we're pleased to announce that our recent 100,000 barrel per day open season on Flanagan South Pipeline was oversubscribed. We expect to reach FID on the first phase of the Mainline Optimization later this year. On the growth front, we sanctioned the $900 million Clear Fork project in Texas, located just outside San Antonio. The project is fully contracted under a long-term offtake agreement with Meta and will support its data center operations. Meta represents a new addition to our growing list of AI and data center-related customers. In Gas Transmission, we sanctioned expansions of Texas Eastern and Aitken Creek gas storage to serve growing industrial power and LNG",
+            "projection_id": "projection_90df5b2232cbb16caa3810c5",
+            "published_at": "2025-08-01T00:00:00+00:00",
+            "source_type": "earnings_call"
+          },
+          {
+            "available_at": "2025-08-02T00:00:00+00:00",
+            "content_hash": "1671fd0384ab41adb0c9f05d9214a0330c6a3b17c90a6b2310258a99d8523cd4",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:1671fd0384ab41adb0c9f05d",
+            "exact_text": "range for EBITDA. The resilience of our business model is really on display as we continue to deliver predictable returns through market volatility. The acquisition of a 10% interest in the Matterhorn Express, strong Mainline volumes, and the strength of the U.S. CAD exchange rate are all tailwinds to our full year guidance, but are partially offset by higher-than-expected U.S. interest rates. We remain confident in our ability to achieve our near-term and medium-term growth outlooks. Now let's touch base on our capital allocation priorities. As you would expect, we continue to be focused on disciplined capital allocation. Our balance sheet provides us with financial strength and flexibility, and our debt-to-EBITDA has decreased to below the midpoint of our target range over the past few quarters as expected following the close of the U.S. gas utility acquisitions. We also extended our track record of recycling capital at attractive valuations. The investment by our First Nation partners and a 12.5% stake in the West Coast system, which closed in July, generated cash proceeds of $0.7 billion and demonstrated our ongoing commitment to economic reconciliation and partnership with indigenous communities. One of the keys to our value proposition is to sustainably return capital to shareholders, and we prioritize being in the 60% to 70% range of DCF payout. Our dividend is underpinned by high-quality, low-risk cash flow growth and continues to support our dividend aristocrat status. As a reminder, we've increased our dividend to shareholders for 30 consecutive years, and we expect to return approximately $40 billion to $45 billion over the next 5 years. In terms of further growth, we will continue to make disciplined investment decisions and prioritize low multiple brownfield and utility-like projects with our $9 billion to $10 billion of annual investment capacity. What I especially like about this quarter is that we've announced or made significant progress on opportun",
+            "projection_id": "projection_9a1e37667cdbf97d15ea39a8",
+            "published_at": "2025-08-01T00:00:00+00:00",
+            "source_type": "earnings_call"
+          }
+        ],
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "I'm also pleased to reaffirm our 2025 guidance.",
+                      "projection_id": "projection_87aa77b6849457c9566736c4"
+                    },
+                    {
+                      "exact_text": "Our resilient business model continues to demonstrate our ability to deliver predictable results in all cycles.",
+                      "projection_id": "projection_57deedec06ee412eded28d26"
+                    },
+                    {
+                      "exact_text": "end of our EBITDA guidance range, and we are well on track to meet our DCF per share midpoint.",
+                      "projection_id": "projection_90df5b2232cbb16caa3810c5"
+                    },
+                    {
+                      "exact_text": "The acquisition of a 10% interest in the Matterhorn Express, strong Mainline volumes, and the strength of the U.S. CAD exchange rate are all tailwinds to our full year guidance, but are partially offset by higher-than-expected U.S. interest rates.",
+                      "projection_id": "projection_9a1e37667cdbf97d15ea39a8"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "Management reaffirmed its 2025 guidance on the Q1 2025 call and, on the Q2 2025 call, described being on track to meet the DCF per share midpoint and at the end of the EBITDA guidance range, with identified tailwinds partially offset by higher-than-expected U.S. interest rates. No explicit upward revision to the guidance level, timing, or conviction versus prior guidance is visible; the stance is a reaffirmation with mixed offsets, so the change is neutral rather than a material strengthening of the growth path."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.6,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "finding": "The corrected answer repairs the initial reaffirmation quote but adds a separate EBITDA sentence beginning at a projection start edge. Availability of a compliant reaffirmation literal does not validate this newly introduced incomplete comparator.",
+      "accepted": false
+    },
+    {
+      "initial": {
+        "attempt_id": 329,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "76b865e74197f57c3c447bea52f7c9a4967614af9d4b5ee77eaa7acb7cb2931c",
+        "request_sha256": "38286ef8fb50031c4acfbffb370bf497ee383ab7b4555758e258bfbaa849b4a7",
+        "response_sha256": "8455cf7d93949a9fd4026b515a07cc73508e7dd43042109b1bd49fb4daae834f",
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "Based upon what we have seen since, we are expecting stronger run rate production for the balance of Q1. We also expect that this momentum will improve further after our Q2 maintenance outage.",
+                      "projection_id": "projection_87dddf25bdc3bf29d1c8d811"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The visible earnings-call excerpt contains forward-looking management expectations for stronger run-rate production in the balance of Q1 and further improvement after the Q2 maintenance outage, but it does not include an explicit prior guidance baseline or a stated upward/downward revision. Because the skill requires current guidance versus explicit prior guidance, and no comparable prior guidance span is visible, the change cannot be measured; this is treated as neutral rather than positive."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.5,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "correction": {
+        "attempt_id": 330,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "709c844cc89708b2f5be217c11e6fa4ff02397503bd62f20f8dc64155b9ade79",
+        "request_sha256": "f7f7fdd0685d5d95d4fed2766fc3665284fffa66280a9f84f0528d0401c9895b",
+        "response_sha256": "2996ed4435a7b3fd01c91771a1bc5185e2fc0cc02d87b8c713eb4567e36374d1",
+        "complete_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "guidance_acceleration",
+              "version": 3
+            },
+            "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "signal_ref": "guidance_acceleration:v3",
+            "validation_error": "signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          }
+        ],
+        "quoted_projection_readback": [
+          {
+            "available_at": "2025-02-28T13:43:00+00:00",
+            "content_hash": "83ad0c65080a4eca2cc562b478084de4275c9c840cc1a28095e680414a0e96e6",
+            "document_id": "sec:[ANON_ID_0000]:[ANON_ID_0001]25000009",
+            "exact_text": "ions - Stage II Stage II advanced the Company’s operations from the production of rare earth concentrate to the separation of individual REE. The project incorporated upgrades and enhancements to the prior facility process flow intended to reliably produce separated REE at a low cost while minimizing the impact on the environment. More specifically, the Company reintroduced an oxidizing roasting circuit, reoriented portions of the plant process flow, increased product finishing capacity, improved wastewater management, and made other improvements to materials handling and storage. The roasting step that oxidizes the rare earth concentrate in a rotary kiln is crucial to ensuring cost-competitiveness. One of the unique attributes of bastnaesite ore is the ability to convert the trivalent cerium in the mixed rare earth concentrate to tetravalent cerium that has a low propensity to dissolve, enabling cerium to be removed expediently along with other insoluble gangue elements without selective extraction. Removal of the lower-value cerium early in the Company’s separations process allows for a significant reduction in the mass of material to be separated and finished, thus reducing the energy, reagents, and wastewater required to produce the higher-value NdPr. Additionally, roasting facilitates a lower temperature leach that reduces maintenance costs and downtime. During the second half of 2023, the Company began producing separated rare earth products. However, the Company continues to expect that it may take many quarters to achieve its designed throughput of separated products. As the Company increases production of separated products over time, it expects to improve the Company’s per-unit production costs of NdPr oxide, which represents a majority of the value contained in the Company’s concentrate. Additionally, beginning in the fourth quarter of 2023, the Company utilizes tolling partners in Southeast Asia to process the Company’s NdPr oxide into NdPr metal for del",
+            "projection_id": "projection_78f7009c9189993f49509a5e",
+            "published_at": "2025-02-28T13:43:00+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-02-21T00:00:00+00:00",
+            "content_hash": "85c65a10075fabf18e928745050f299c475654c3621bd74030acd539a59f6d1e",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_transcript:85c65a10075fabf18e928745",
+            "exact_text": "ing throughput. In much of the operation, we are starting to see more satisfactory uptime and good process stability. While we still have a few assets that are not meeting our expectations, we are steadily addressing these. Some of the key circuits can now further increase uptime only if other areas increase their throughput. This is a pleasing development. In Q4 and early January, we had a couple of mechanical and process upsets that held back production and/or required unexpected rework of the product finishing steps, consuming extra resources and limiting throughput. Based upon what we have seen since, we are expecting stronger run rate production for the balance of Q1. We also expect that this momentum will improve further after our Q2 maintenance outage. We also believe that some of our maintenance cost, labor hours, and reagent consumption per ton of production will be leveraged to a greater extent going forward. In short, I feel good about recent trends in production volumes and cost structure, though we still have significant room for improvement in all areas. The downstream metal, alloy, and magnetics business achieved [ANON_ID_0004]' biggest milestones in Q4. The highlight was commercializing continuous NdPr metal production at Independence. While still early and at relatively limited scale, we are pleased with our team's progress on the learning curve and our ability to consistently produce on-spec metal. Over time, we expect to improve yield and first pass on-spec metal percentage and reduce energy and raw materials consumption per unit produced. In addition to preparing metal for commercial scale alloy and magnet production later this year, we are now able to use our own metal for prototype strip cast melts. Our new product introduction facility continues to increase its scope of activities from alloy production, powder production, sintering, machining, GBD, and magnet characterization. From expanding prototype operations, we are now able to produce magne",
+            "projection_id": "projection_87dddf25bdc3bf29d1c8d811",
+            "published_at": "2025-02-20T00:00:00+00:00",
+            "source_type": "earnings_transcript"
+          }
+        ],
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "Based upon what we have seen since, we are expecting stronger run rate production for the balance of Q1. We also expect that this momentum will improve further after our Q2 maintenance outage.",
+                      "projection_id": "projection_87dddf25bdc3bf29d1c8d811"
+                    },
+                    {
+                      "exact_text": "However, the Company continues to expect that it may take many quarters to achieve its designed throughput of separated products.",
+                      "projection_id": "projection_78f7009c9189993f49509a5e"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The visible evidence contains forward-looking production commentary but no explicit prior guidance baseline against which to measure a material strengthening of the growth path. The current statements about expecting stronger run rate production and continued multi-quarter ramp are not paired with a visible prior guidance comparator, so the comparison required by the skill cannot be established. Result is neutral."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.4,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "finding": "The model returns neutral twice. Its selected forward-looking literals do not contain a version-owned required phrase; other supplied projections do have phrase hits, which alone do not prove they supply the economically relevant comparator. Neither automatic neutral/unavailable conversion nor arbitrary word-hit citation substitution is authorized.",
+      "accepted": false
+    },
+    {
+      "initial": {
+        "attempt_id": 406,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "8781bdccb62eaec6ff0ae65348636f9c902049b2616b5d12accf734dd9f4d291",
+        "request_sha256": "955610ec0cb397d7cc885f66e2d97035947da1e43c6b36e0524ceb3f2b996c60",
+        "response_sha256": "4b0f24f6837659a9177d98f78e6915010b0193bc6eb0a9759c3ee26fc51e5a56",
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "As a result of this effort, we anticipate our consolidated SG&A run rate to decline meaningfully from the $118 million recorded in 2024 to exit this year at an estimated $93 million annualized run rate.",
+                      "projection_id": "projection_a794e4645d8e7c06bd0d972b"
+                    },
+                    {
+                      "exact_text": "As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further.",
+                      "projection_id": "projection_874cd1cef2816c1d0d7b0acc"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "Management guidance on the cost/growth path strengthened versus the prior baseline: the February 2025 filing disclosed approximately $30 million of annual financial improvement identified early in 2025, and the May 2025 earnings call guidance anticipates consolidated SG&A declining from $118 million in 2024 to an estimated $93 million annualized exit run rate, with corporate and trade SG&A expected at $12–$13 million per quarter and a line of sight to the low $40 million range annualized by year-end versus $73 million in 2024. This is an explicit upward revision in the expected cost-reduction trajectory relative to the earlier $30 million figure, though the two measures are not perfectly comparable in scope, so the strengthening is directionally positive rather than a precise like-for-like upgrade."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.62,
+                  "value": "positive"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "correction": {
+        "attempt_id": 407,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "75af79fc266432e0975f424c27d08ae17c8a6cb3bf95cdd4cd60ae96320d8045",
+        "request_sha256": "97293e776aac9e01bc81cfd0a7be55ad35e739dabaccb68334f6b90239a6eb3c",
+        "response_sha256": "f0e7b818458e84a1dfe38ee7d87d34250451285e26872c238980bb96c63f5c9f",
+        "complete_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "guidance_acceleration",
+              "version": 3
+            },
+            "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "signal_ref": "guidance_acceleration:v3",
+            "validation_error": "signal guidance_acceleration:v3 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          }
+        ],
+        "quoted_projection_readback": [
+          {
+            "available_at": "2025-02-08T00:00:00+00:00",
+            "content_hash": "fc2a37b31742bfbc3b48bc14f8be32c57aa94cae6b9f980d9688012ddaa8b87d",
+            "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:fc2a37b31742bfbc3b48bc14",
+            "exact_text": "n for monetization. We have seen the strengthening in the distillers corn oil market since mid-December since the guidance and the model were released. We have the capacity to produce around 300 million pounds of corn oil annually; with Fairmont down, every ten cent move in its value is another $30 million in EBITDA, and we have seen that help our forward margins. The state of Minnesota has granted permits for the summit pipeline to reach our Fergus Falls. Even though they won't grant us a permit to build temporary grain piles, we remain optimistic and hopeful that that project will make progress on permitting in 2025. Let's talk about clean sugar. This exciting project can now make InSpec sweeteners for use across a wide variety of food and industrial products. The wastewater channel remains as we have outlined, and we can only run the planet about a third capacity while we design a solution for either dealing with it on the back end, the front end, selling all industrial products that skips CI and exchange process. Yet, leaves beneficial nutrients for fermentation. In the meantime, we have received kosher and halal certification, and the food production license has been approved in the state of Iowa, which was the major hurdle to finalize our FSs or food safety certification certification audit. We expect approval any day now. The technology is disruptive and a breakthrough. The next build will either be standalone, co-located, either at a wet mill or a dry mill, expansion of what our current wet mill can do, or all of the above. We're also testing a front-end system used globally to not have wastewater solutions over the next few months, at which time we can choose our best path to a hundred percent capacity. Again, it is not a technology issue. This has the same potential we discussed in the past. We continue to remain very excited about our successes so far. Unlike many technologies that have been developed around our weather, around alcohol to jet fuel or cell",
+            "projection_id": "projection_fd755d07cbf186d4ccc863f8",
+            "published_at": "2025-02-07T00:00:00+00:00",
+            "source_type": "earnings_call"
+          },
+          {
+            "available_at": "2025-02-07T20:20:08+00:00",
+            "content_hash": "dd1b5a7a6f433d38d917629ec9886c22fa46f0eceb37a1b40619a7fb5b52f718",
+            "document_id": "sec:[ANON_ID_0000]:[ANON_ID_0001]25000008",
+            "exact_text": " The company is going through final product approvals with multiple potential customers and anticipates receiving final 7 Table of Contents FSSC certification during the first quarter of 2025. Idling of Fairmont, Minnesota Plant In January 2025, the company idled its 119 million gallon ethanol plant in Fairmont, Minnesota as a result of persistent margin pressures, and the majority of the staff was terminated. The facility remains on track for carbon capture and sequestration coming online in 2027 which would fundamentally reshape the economics of the facility. The company will continue to monitor the potential margin available to determine any changes to future operations. Strategic Review As previously announced, the company initiated a strategic review process in February 2024 to explore a broad range of opportunities to enhance long-term shareholder value, including, but not limited to, acquisitions, divestitures, a merger or sale, partnerships and financings. The Board of Directors continues to progress the strategic review process, working with its financial advisors, BMO Capital Markets Corp. and Moelis & Company, and legal advisors Vinson & Elkins LLP. As part of the strategic review process, in early 2025, the company idled its Fairmont, Minnesota facility and launched a corporate reorganization and cost reduction initiative that will significantly reduce selling, general and administrative expenses on an ongoing basis. As part of this initiative, the company has identified early in 2025 approximately $30 million of financial improvement annually, inclusive of savings from idling the Fairmont facility and realigning corporate and trade group selling, general and administrative functions to reflect current strategic priorities, and is continuing to identify more opportunities that may reduce selling, general and administrative functions further. As a result of the reorganization, the company expects to take a one-time charge in the first quarter of 2025 of a",
+            "projection_id": "projection_874cd1cef2816c1d0d7b0acc",
+            "published_at": "2025-02-07T20:20:08+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "complete_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "We have seen the strengthening in the distillers corn oil market since mid-December since the guidance and the model were released.",
+                      "projection_id": "projection_fd755d07cbf186d4ccc863f8"
+                    },
+                    {
+                      "exact_text": "The facility remains on track for carbon capture and sequestration coming online in 2027 which would fundamentally reshape the economics of the facility.",
+                      "projection_id": "projection_874cd1cef2816c1d0d7b0acc"
+                    },
+                    {
+                      "exact_text": "As a result of the reorganization, the company expects to take a one-time charge in the first quarter of 2025 of a",
+                      "projection_id": "projection_874cd1cef2816c1d0d7b0acc"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The visible spans reference prior guidance and forward-looking expectations (e.g., the distillers corn oil guidance/model released in mid-December, the Fairmont facility remaining on track for carbon capture in 2027, and an expected one-time Q1 2025 charge), but no explicit current-versus-prior guidance comparison with a stated direction or magnitude of change is present. The available evidence does not establish a material upward or downward revision to the growth path, so the result is neutral."
+                },
+                "signal_id": "guidance_acceleration",
+                "state": {
+                  "confidence": 0.4,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 3
+              },
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ]
+        }
+      },
+      "finding": "Initial citations miss mandatory guidance phrases. The correction adds source-backed guidance phrasing, but also adds a truncated one-time-charge sentence ending at the current projection edge. This is the same all-returned-citation frontier failure family, not a research-negative result.",
+      "accepted": false
+    }
+  ],
+  "real_magnitude_fetch_replay": {
+    "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated",
+    "frozen_source_revision": "90999e845867ad698bf5843228d3db4153c40aed",
+    "input_manifest_sha256": "b5588fd1c7d7e9a6caa06ea0d860c1d5585297f31cdc6faa007ce06550988db1",
+    "verified_original_source_file_count": 52,
+    "verified_source_file_ledger_sha256": "e75fbdfb4162bf655475b2356f83a762b544582377c49258ee2aba6104ab2073",
+    "original_attempt": {
+      "attempt_id": 361,
+      "request_hash": "afa057eaac45cf4ef6f2d2aa28de64f8588679df40109907cded222ca71ad227",
+      "action": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004"
+        ],
+        "max_documents": 24,
+        "query": "point-in-time financials, filings, news and market data for magnitude_ge3_v1 contrast",
+        "rationale": [
+          "No evidence has been fetched yet (evidence_digest.fetches=0, fact_count=0, event_count=0), so structured and narrative modalities are both unexplored and required.",
+          "The research axis is magnitude_ge3_v1 (realized_max_multiple >= 3.0 vs 2.0-3.0) over true_surge_cases; I need PIT financials, filings, news and pre-cutoff price series to build any measurement.",
+          "Fetching all available families in one call minimizes fetch overhead and preserves heavy budget for compute_statistic, compare_groups and the terminal proposal.",
+          "case_prediction_times are 2025-05-30 for case-001 and 2025-09-30 for cases 002-004; all fetches must respect those cutoffs."
+        ],
+        "source_families": [
+          "company_facts",
+          "financials",
+          "filing",
+          "10-k",
+          "news",
+          "market_data"
+        ]
+      }
+    },
+    "case_results": [
+      {
+        "case_ref": "case-001",
+        "case_id": "cik_0001951089:20250530",
+        "label": "positive",
+        "all_selected_documents": 9,
+        "market_selected_documents": 0,
+        "market_without_query_documents": 1,
+        "market_fact_count": 0,
+        "market_event_count": 0,
+        "facts": 0,
+        "events": 9,
+        "excluded_by_limits": [],
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "market",
+            "news",
+            "time"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false,
+        "market_sources": [
+          {
+            "document_id": "massive:cik_0001951089:market_data:4ea5d71c74df9a80ef5d8b0c",
+            "content_hash": "4ea5d71c74df9a80ef5d8b0c9d3f8dda49781f66586983a09927a261eed48047",
+            "available_at": "2025-05-30T00:00:00+00:00",
+            "prediction_time": "2025-05-30T00:00:00+00:00"
+          }
+        ]
+      },
+      {
+        "case_ref": "case-002",
+        "case_id": "cik_0001285819:20250930",
+        "label": "positive",
+        "all_selected_documents": 6,
+        "market_selected_documents": 0,
+        "market_without_query_documents": 1,
+        "market_fact_count": 0,
+        "market_event_count": 0,
+        "facts": 84,
+        "events": 4,
+        "excluded_by_limits": [],
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "market"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false,
+        "market_sources": [
+          {
+            "document_id": "massive:cik_0001285819:market_data:916ff21a469e4fb00a72f465",
+            "content_hash": "916ff21a469e4fb00a72f4654d1e7d0e07b013dc050ad98cac9433faf7e53cbd",
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          }
+        ]
+      },
+      {
+        "case_ref": "case-003",
+        "case_id": "cik_0002009312:20250930",
+        "label": "control",
+        "all_selected_documents": 5,
+        "market_selected_documents": 0,
+        "market_without_query_documents": 3,
+        "market_fact_count": 0,
+        "market_event_count": 0,
+        "facts": 83,
+        "events": 3,
+        "excluded_by_limits": [],
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "filings",
+            "market",
+            "time"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false,
+        "market_sources": [
+          {
+            "document_id": "massive:cik_0002009312:market_data:40bad31cb21e66e8ca5fa443",
+            "content_hash": "40bad31cb21e66e8ca5fa443a26f88f9c891ef3748d241d16f26c7638826e483",
+            "available_at": "2025-07-31T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          },
+          {
+            "document_id": "massive:cik_0002009312:market_data:82d2100463a7e9ceec81e9a1",
+            "content_hash": "82d2100463a7e9ceec81e9a18d4be4e2f50a97b0c85a4024e96b4b67412d95d7",
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          },
+          {
+            "document_id": "massive:cik_0002009312:market_data:e82cd1bdc95d401c4c9d0aea",
+            "content_hash": "e82cd1bdc95d401c4c9d0aea108412a4cf5e0e7a72ef45719ac115f13c14e186",
+            "available_at": "2025-03-29T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          }
+        ]
+      },
+      {
+        "case_ref": "case-004",
+        "case_id": "cik_0000878518:20250930",
+        "label": "control",
+        "all_selected_documents": 8,
+        "market_selected_documents": 0,
+        "market_without_query_documents": 2,
+        "market_fact_count": 0,
+        "market_event_count": 0,
+        "facts": 0,
+        "events": 8,
+        "excluded_by_limits": [],
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "market",
+            "time"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false,
+        "market_sources": [
+          {
+            "document_id": "massive:cik_0000878518:market_data:64b757e08d766f9ac9449da6",
+            "content_hash": "64b757e08d766f9ac9449da66c2048bb1bac95b9641122ef32f68dda31d88b6a",
+            "available_at": "2025-05-30T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          },
+          {
+            "document_id": "massive:cik_0000878518:market_data:feccb0fe890094e5b3bf22db",
+            "content_hash": "feccb0fe890094e5b3bf22db0a1538917877a83f75db03fe1e6f157ddd99f109",
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "prediction_time": "2025-09-30T00:00:00+00:00"
+          }
+        ]
+      }
+    ],
+    "original_next_request_fact_and_event_refs_match": true,
+    "before": {
+      "current_ledger_coverage": {
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "market",
+            "time"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false
+      },
+      "current_ledger_omitted_coverage": {
+        "excluded_document_ids": []
+      },
+      "last_action_result": {
+        "action": "fetch_evidence",
+        "cases_requested": 4,
+        "families": [
+          "10-k",
+          "company_facts",
+          "filing",
+          "financials",
+          "news"
+        ],
+        "new_facts": 191,
+        "total_facts": 167,
+        "total_events": 24,
+        "new_relations": 107,
+        "total_relations": 107,
+        "excluded_document_ids": 0,
+        "narrative_evidence": {
+          "events": 24,
+          "sample_titles": [
+            "Mining Giants Rio Tinto, Usha & Taseko Address Copper Crunch",
+            "Taseko Mines Ltd: National Bank of Canada Cuts Valuation on Reduced Copper Price Forecast",
+            "Taseko: Q4 Earnings Snapshot"
+          ],
+          "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries"
+        }
+      }
+    },
+    "after": {
+      "current_ledger_coverage": {
+        "query_coverage": {
+          "matched_terms": [
+            "data",
+            "filings",
+            "market",
+            "news",
+            "time"
+          ],
+          "sufficient": true
+        },
+        "unread_same_source": false
+      },
+      "current_ledger_omitted_coverage": {
+        "excluded_document_ids": []
+      },
+      "last_action_result": {
+        "action": "fetch_evidence",
+        "cases_requested": 4,
+        "families": [
+          "10-k",
+          "company_facts",
+          "filing",
+          "financials",
+          "news"
+        ],
+        "new_facts": 167,
+        "total_facts": 167,
+        "total_events": 24,
+        "new_relations": 107,
+        "total_relations": 107,
+        "excluded_document_ids": 0,
+        "narrative_evidence": {
+          "events": 24,
+          "sample_titles": [
+            "Mining Giants Rio Tinto, Usha & Taseko Address Copper Crunch",
+            "Taseko Mines Ltd: National Bank of Canada Cuts Valuation on Reduced Copper Price Forecast",
+            "Taseko: Q4 Earnings Snapshot"
+          ],
+          "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries"
+        }
+      }
+    },
+    "counterexamples": [
+      {
+        "kind": "offline counterexample; not a historical model action",
+        "name": "cap-one",
+        "max_documents": 1,
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004"
+        ],
+        "fetch_count": 1,
+        "heavy_actions": 1,
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [
+              "data",
+              "market",
+              "time"
+            ],
+            "sufficient": true
+          },
+          "unread_same_source": true
+        },
+        "omitted_coverage": {
+          "excluded_document_ids": [
+            "alpha_vantage:cik_0000878518:news:09d4f32c13d747cdb26db899",
+            "alpha_vantage:cik_0000878518:news:0ba9772b243a5f2671d71d77",
+            "alpha_vantage:cik_0000878518:news:756208002f1ac0e2395ffc18",
+            "alpha_vantage:cik_0000878518:news:97740da599edb68c6da7e144",
+            "alpha_vantage:cik_0000878518:news:9e66a21a4032af48dc20481a",
+            "alpha_vantage:cik_0000878518:news:c8be477db18d12d541982587",
+            "finnhub:cik_0000878518:news:a1abd54e976bf5aa922ad855",
+            "sec:cik_0001285819:000143774925014815",
+            "sec:cik_0001285819:000143774925017211",
+            "sec:cik_0001285819:000143774925017213",
+            "sec:cik_0001951089:000121390025026459",
+            "sec:cik_0001951089:000121390025026753",
+            "sec:cik_0001951089:000121390025027568",
+            "sec:cik_0001951089:000121390025030663",
+            "sec:cik_0001951089:000121390025031098",
+            "sec:cik_0001951089:000121390025035550",
+            "sec:cik_0001951089:000121390025035577",
+            "sec:cik_0001951089:000121390025039159",
+            "sec:cik_0002009312:000149315225011966",
+            "sec:cik_0002009312:000164117225010834",
+            "sec_edgar:cik_0001285819:financials:5085e2afea151fa650e2504f",
+            "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+            "sec_edgar:cik_0002009312:company_facts:ed4c1100a79f1460eaafa1ec",
+            "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4"
+          ]
+        },
+        "expected_union_omissions": [
+          "alpha_vantage:cik_0000878518:news:09d4f32c13d747cdb26db899",
+          "alpha_vantage:cik_0000878518:news:0ba9772b243a5f2671d71d77",
+          "alpha_vantage:cik_0000878518:news:756208002f1ac0e2395ffc18",
+          "alpha_vantage:cik_0000878518:news:97740da599edb68c6da7e144",
+          "alpha_vantage:cik_0000878518:news:9e66a21a4032af48dc20481a",
+          "alpha_vantage:cik_0000878518:news:c8be477db18d12d541982587",
+          "finnhub:cik_0000878518:news:a1abd54e976bf5aa922ad855",
+          "sec:cik_0001285819:000143774925014815",
+          "sec:cik_0001285819:000143774925017211",
+          "sec:cik_0001285819:000143774925017213",
+          "sec:cik_0001951089:000121390025026459",
+          "sec:cik_0001951089:000121390025026753",
+          "sec:cik_0001951089:000121390025027568",
+          "sec:cik_0001951089:000121390025030663",
+          "sec:cik_0001951089:000121390025031098",
+          "sec:cik_0001951089:000121390025035550",
+          "sec:cik_0001951089:000121390025035577",
+          "sec:cik_0001951089:000121390025039159",
+          "sec:cik_0002009312:000149315225011966",
+          "sec:cik_0002009312:000164117225010834",
+          "sec_edgar:cik_0001285819:financials:5085e2afea151fa650e2504f",
+          "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+          "sec_edgar:cik_0002009312:company_facts:ed4c1100a79f1460eaafa1ec",
+          "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4"
+        ],
+        "last_action_result": {
+          "action": "fetch_evidence",
+          "cases_requested": 4,
+          "families": [
+            "10-k",
+            "filing",
+            "news"
+          ],
+          "new_facts": 0,
+          "total_facts": 0,
+          "total_events": 4,
+          "new_relations": 0,
+          "total_relations": 0,
+          "excluded_document_ids": 24,
+          "narrative_evidence": {
+            "events": 4,
+            "sample_titles": [
+              "Taseko: Q4 Earnings Snapshot",
+              "10-K 2025-03-28",
+              "10-K 2025-03-31"
+            ],
+            "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries"
+          }
+        },
+        "first_graph_refs_preserved": null
+      },
+      {
+        "kind": "offline counterexample; not a historical model action",
+        "name": "reversed-cap-one",
+        "max_documents": 1,
+        "case_refs": [
+          "case-004",
+          "case-003",
+          "case-002",
+          "case-001"
+        ],
+        "fetch_count": 1,
+        "heavy_actions": 1,
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [
+              "data",
+              "market",
+              "time"
+            ],
+            "sufficient": true
+          },
+          "unread_same_source": true
+        },
+        "omitted_coverage": {
+          "excluded_document_ids": [
+            "alpha_vantage:cik_0000878518:news:09d4f32c13d747cdb26db899",
+            "alpha_vantage:cik_0000878518:news:0ba9772b243a5f2671d71d77",
+            "alpha_vantage:cik_0000878518:news:756208002f1ac0e2395ffc18",
+            "alpha_vantage:cik_0000878518:news:97740da599edb68c6da7e144",
+            "alpha_vantage:cik_0000878518:news:9e66a21a4032af48dc20481a",
+            "alpha_vantage:cik_0000878518:news:c8be477db18d12d541982587",
+            "finnhub:cik_0000878518:news:a1abd54e976bf5aa922ad855",
+            "sec:cik_0001285819:000143774925014815",
+            "sec:cik_0001285819:000143774925017211",
+            "sec:cik_0001285819:000143774925017213",
+            "sec:cik_0001951089:000121390025026459",
+            "sec:cik_0001951089:000121390025026753",
+            "sec:cik_0001951089:000121390025027568",
+            "sec:cik_0001951089:000121390025030663",
+            "sec:cik_0001951089:000121390025031098",
+            "sec:cik_0001951089:000121390025035550",
+            "sec:cik_0001951089:000121390025035577",
+            "sec:cik_0001951089:000121390025039159",
+            "sec:cik_0002009312:000149315225011966",
+            "sec:cik_0002009312:000164117225010834",
+            "sec_edgar:cik_0001285819:financials:5085e2afea151fa650e2504f",
+            "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+            "sec_edgar:cik_0002009312:company_facts:ed4c1100a79f1460eaafa1ec",
+            "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4"
+          ]
+        },
+        "expected_union_omissions": [
+          "alpha_vantage:cik_0000878518:news:09d4f32c13d747cdb26db899",
+          "alpha_vantage:cik_0000878518:news:0ba9772b243a5f2671d71d77",
+          "alpha_vantage:cik_0000878518:news:756208002f1ac0e2395ffc18",
+          "alpha_vantage:cik_0000878518:news:97740da599edb68c6da7e144",
+          "alpha_vantage:cik_0000878518:news:9e66a21a4032af48dc20481a",
+          "alpha_vantage:cik_0000878518:news:c8be477db18d12d541982587",
+          "finnhub:cik_0000878518:news:a1abd54e976bf5aa922ad855",
+          "sec:cik_0001285819:000143774925014815",
+          "sec:cik_0001285819:000143774925017211",
+          "sec:cik_0001285819:000143774925017213",
+          "sec:cik_0001951089:000121390025026459",
+          "sec:cik_0001951089:000121390025026753",
+          "sec:cik_0001951089:000121390025027568",
+          "sec:cik_0001951089:000121390025030663",
+          "sec:cik_0001951089:000121390025031098",
+          "sec:cik_0001951089:000121390025035550",
+          "sec:cik_0001951089:000121390025035577",
+          "sec:cik_0001951089:000121390025039159",
+          "sec:cik_0002009312:000149315225011966",
+          "sec:cik_0002009312:000164117225010834",
+          "sec_edgar:cik_0001285819:financials:5085e2afea151fa650e2504f",
+          "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+          "sec_edgar:cik_0002009312:company_facts:ed4c1100a79f1460eaafa1ec",
+          "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4"
+        ],
+        "last_action_result": {
+          "action": "fetch_evidence",
+          "cases_requested": 4,
+          "families": [
+            "10-k",
+            "filing",
+            "news"
+          ],
+          "new_facts": 0,
+          "total_facts": 0,
+          "total_events": 4,
+          "new_relations": 0,
+          "total_relations": 0,
+          "excluded_document_ids": 24,
+          "narrative_evidence": {
+            "events": 4,
+            "sample_titles": [
+              "Taseko: Q4 Earnings Snapshot",
+              "10-K 2025-03-28",
+              "10-K 2025-03-31"
+            ],
+            "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries"
+          }
+        },
+        "first_graph_refs_preserved": null
+      },
+      {
+        "kind": "offline counterexample; not a historical model action",
+        "name": "repeated-original",
+        "max_documents": 24,
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004"
+        ],
+        "fetch_count": 2,
+        "heavy_actions": 2,
+        "coverage": {
+          "query_coverage": {
+            "matched_terms": [
+              "data",
+              "filings",
+              "market",
+              "news",
+              "time"
+            ],
+            "sufficient": true
+          },
+          "unread_same_source": false
+        },
+        "omitted_coverage": {
+          "excluded_document_ids": []
+        },
+        "expected_union_omissions": [],
+        "last_action_result": {
+          "action": "fetch_evidence",
+          "cases_requested": 4,
+          "families": [
+            "10-k",
+            "company_facts",
+            "filing",
+            "financials",
+            "news"
+          ],
+          "new_facts": 0,
+          "total_facts": 167,
+          "total_events": 24,
+          "new_relations": 0,
+          "total_relations": 107,
+          "excluded_document_ids": 0,
+          "narrative_evidence": {
+            "events": 24,
+            "sample_titles": [
+              "Mining Giants Rio Tinto, Usha & Taseko Address Copper Crunch",
+              "Taseko Mines Ltd: National Bank of Canada Cuts Valuation on Reduced Copper Price Forecast",
+              "Taseko: Q4 Earnings Snapshot"
+            ],
+            "catalog_note": "the evidence catalog pages titled documents by family and window (inspect_catalog scope=evidence); use next_cursor to reach omitted entries"
+          }
+        },
+        "first_graph_refs_preserved": true
+      }
+    ],
+    "finding": "Original fetch selects 167 numeric facts and 24 events, and zero market_data documents. All four cases have approved PIT price documents; removing the query retrieves them but the existing owner explicitly projects no numeric facts or narrative events from market_data. This separates source availability, query selection, and measurement capability; it does not invent a market factor or prove gain.",
+    "repair": "Existing coverage fields aggregate matched/omitted unions, unread any-case and query sufficiency all-case. Existing new_facts/new_relations count unique newly introduced graph refs, independently of narrative events and repeated fetching.",
+    "preserved": [
+      "query/ranking/selection",
+      "PIT",
+      "measurement/admission semantics",
+      "canonical schemas",
+      "graph/citation refs",
+      "heavy-action budget charging"
+    ],
+    "not_live_model_compliance_or_quality_evidence": true
+  },
+  "transcript_date_lineage_issue": {
+    "document": {
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001920294/alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324.json",
+      "file_sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+      "company": "cik_0001920294",
+      "quarter": "2024Q4",
+      "fiscal_end": "2024-09-30",
+      "reported": "2024-10-29",
+      "available_at": "2024-10-30T00:00:00+00:00",
+      "intro": "Good day, and thank you for standing by. Welcome to the Rezolve AI Second Half and Full Year 2024 financial review and 2025 Business Update Conference Call. All participants are in a listen-only mode. Please be advised that today's conference is being recorded. I would now like to hand the conference over to your first speaker today, Michael Guido, VP of Investor Relations. Please go ahead. Thank you, Sharon. Good morning to everyone in the U.S. and good afternoon to everyone in Europe. Welcome to Rezolve's 2024 earnings conference call where we will be discussing our second half and full year 2024 financial results, as well as providing a 2025 business update. Leading today's discussion are Dan Wagner, Rezolve's Founder and CEO; and Rich Burchill, Rezolve's CFO. We previously reported our 2024 financial results and issued an earnings release on those results, as well as a year-to-date 2025 business update on Thursday, April 24. The earnings release and SEC filings can be found on our Investor Relations website. Today's discussion will include statements that constitute forward-looki"
+    },
+    "stored_metadata": {
+      "fiscal_date_ending": "2024-09-30",
+      "provider": "alpha_vantage",
+      "quarter": "2024Q4",
+      "reported_date": "2024-10-29",
+      "symbol": "RZLV"
+    },
+    "first_two_turns": [
+      {
+        "content": "Good day, and thank you for standing by. Welcome to the Rezolve AI Second Half and Full Year 2024 financial review and 2025 Business Update Conference Call. All participants are in a listen-only mode. Please be advised that today's conference is being recorded. I would now like to hand the conference over to your first speaker today, Michael Guido, VP of Investor Relations. Please go ahead.",
+        "sentiment": "0.0",
+        "speaker": "Operator",
+        "title": "Operator"
+      },
+      {
+        "content": "Thank you, Sharon. Good morning to everyone in the U.S. and good afternoon to everyone in Europe. Welcome to Rezolve's 2024 earnings conference call where we will be discussing our second half and full year 2024 financial results, as well as providing a 2025 business update. Leading today's discussion are Dan Wagner, Rezolve's Founder and CEO; and Rich Burchill, Rezolve's CFO. We previously reported our 2024 financial results and issued an earnings release on those results, as well as a year-to-date 2025 business update on Thursday, April 24. The earnings release and SEC filings can be found on our Investor Relations website. Today's discussion will include statements that constitute forward-looking information or forward-looking statements. These statements reflect management's current beliefs and expectations and are subject to a number of factors that may cause actual results to differ materially from those statements. These factors include, but are not limited to, those discussed in our SEC filings. These statements do not guarantee future performance, and therefore undue reliance should not be placed upon them. We do not intend to update these forward-looking statements as a result of new information or future developments, except as required by law. Additionally, our discussion will include both GAAP and non-GAAP financial measures. These non-GAAP financial measures should be viewed in addition to and not as the substitute for Rezolve's reported results prepared in accordance with U.S. GAAP. All non-GAAP financial measures referenced in today's call are reconciled in our annual report on Form 20-F for the fiscal year ended December 31, 2024, to the most directly comparable GAAP measures. For more information regarding definitions of our non-GAAP measures, please see our annual report on Form 20-F for the fiscal year ending December 31, 2024, and the earnings release, which are both available on the Investors section of our website at www.rezolve.com and on the SEC's website at www.sec.gov. Finally, as a reminder, today's conference call is being recorded and the replay will be available on our Investor Relations website. At this time, I'd like to turn the call over to Dan Wagner.",
+        "sentiment": "0.0",
+        "speaker": "Michael Guido",
+        "title": "VP of Investor Relations"
+      }
+    ],
+    "original_earnings_lineage": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/alpha_vantage_earnings_raw_response/cik_0001920294/alpha_vantage:cik_0001920294:alpha_vantage_earnings_raw_response:96cd8b1027085e8d864326ac.json",
+        "file_sha256": "fe565ac257beaf0a2e06b76756b20223fdbc19aebf8d079e202eabe52ed824ec",
+        "content_hash": "96cd8b1027085e8d864326ac9f3e2591526e01e7cf9a45c26dfc1212e325625e",
+        "annual_rows": [
+          {
+            "fiscalDateEnding": "2026-09-30",
+            "reportedEPS": "0"
+          },
+          {
+            "fiscalDateEnding": "2025-09-30",
+            "reportedEPS": "-1.01"
+          },
+          {
+            "fiscalDateEnding": "2024-09-30",
+            "reportedEPS": "-0.3044"
+          },
+          {
+            "fiscalDateEnding": "2023-09-30",
+            "reportedEPS": "-0.0753"
+          },
+          {
+            "fiscalDateEnding": "2022-09-30",
+            "reportedEPS": "-0.17"
+          },
+          {
+            "fiscalDateEnding": "2021-09-30",
+            "reportedEPS": "-0.02"
+          }
+        ],
+        "quarterly_rows": [
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2026-09-30",
+            "reportTime": "post-market",
+            "reportedDate": "2026-10-01",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2026-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2026-09-01",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-12-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2026-03-30",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-09-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-10-01",
+            "reportedEPS": "-0.03",
+            "surprise": "0",
+            "surprisePercentage": "0"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-06-30",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-03-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-04-24",
+            "reportedEPS": "-0.98",
+            "surprise": "-0.95",
+            "surprisePercentage": "-3166.6667"
+          },
+          {
+            "estimatedEPS": "0",
+            "fiscalDateEnding": "2024-09-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-10-29",
+            "reportedEPS": "-0.01",
+            "surprise": "-0.01",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2024-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-06-30",
+            "reportedEPS": "-0.1997",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2024-03-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-03-31",
+            "reportedEPS": "-0.0501",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          }
+        ]
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/alpha_vantage_earnings_raw_response/cik_0001920294/alpha_vantage:cik_0001920294:alpha_vantage_earnings_raw_response:c5b2ccdd1df3a423a1db890c.json",
+        "file_sha256": "6d232c02238b4a1c505b1e99d6ca94dc520a6a3bb0a4e682cee7d47b559066b2",
+        "content_hash": "c5b2ccdd1df3a423a1db890c2740cc0cb7046b43336a84cf20e7d96a1ecab097",
+        "annual_rows": [
+          {
+            "fiscalDateEnding": "2026-06-30",
+            "reportedEPS": "0"
+          },
+          {
+            "fiscalDateEnding": "2025-09-30",
+            "reportedEPS": "-1.01"
+          },
+          {
+            "fiscalDateEnding": "2024-09-30",
+            "reportedEPS": "-0.3044"
+          },
+          {
+            "fiscalDateEnding": "2023-09-30",
+            "reportedEPS": "-0.0753"
+          },
+          {
+            "fiscalDateEnding": "2022-09-30",
+            "reportedEPS": "-0.17"
+          },
+          {
+            "fiscalDateEnding": "2021-09-30",
+            "reportedEPS": "-0.02"
+          }
+        ],
+        "quarterly_rows": [
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2026-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2026-09-01",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-12-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2026-03-30",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-09-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-10-01",
+            "reportedEPS": "-0.03",
+            "surprise": "0",
+            "surprisePercentage": "0"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-06-30",
+            "reportedEPS": "None",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "-0.03",
+            "fiscalDateEnding": "2025-03-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2025-04-24",
+            "reportedEPS": "-0.98",
+            "surprise": "-0.95",
+            "surprisePercentage": "-3166.6667"
+          },
+          {
+            "estimatedEPS": "0",
+            "fiscalDateEnding": "2024-09-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-10-29",
+            "reportedEPS": "-0.01",
+            "surprise": "-0.01",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2024-06-30",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-06-30",
+            "reportedEPS": "-0.1997",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2024-03-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2024-03-31",
+            "reportedEPS": "-0.0501",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          },
+          {
+            "estimatedEPS": "None",
+            "fiscalDateEnding": "2023-12-31",
+            "reportTime": "pre-market",
+            "reportedDate": "2023-12-31",
+            "reportedEPS": "-0.0446",
+            "surprise": "0",
+            "surprisePercentage": "None"
+          }
+        ]
+      }
+    ],
+    "approved_cases_for_issuer": [
+      {
+        "case_id": "cik_0001920294:20250530",
+        "prediction_time": "2025-05-30T00:00:00+00:00"
+      }
+    ],
+    "primary_source": {
+      "url": "https://investor.rezolve.com/node/7716/html",
+      "filing_date": "2025-04-24",
+      "conference_date": "2025-04-28",
+      "conference_time": "08:30 America/New_York",
+      "scope": "Official issuer 6-K announces FY2024 results and matching FY2024/2025 update conference; original transcript explicitly mentions the April24 release."
+    },
+    "api_contract": {
+      "url": "https://www.alphavantage.co/documentation/#earnings-call-transcript",
+      "quarter_definition": "Fiscal quarter; not calendar quarter."
+    },
+    "diagnosis": "Production maps annual-end ordinal fiscal quarters from provider EARNINGS to transcript query, then assigns reportedDate+1 availability. RZLV earnings rows still use September fiscal year/legacy issuer while the fetched Q4 transcript reviews calendar FY2024 and April2025 business update. Echoed symbol/quarter and four period rows do not establish transcript publication lineage.",
+    "retrospective_date_verification_only": true,
+    "confirmed_post_cutoff_leak_for_this_approved_case": false,
+    "limit": "Official April28 call precedes the approved May30 prediction. Incorrect stored date and lookback/temporal-order eligibility remain real defects. Introductions of all26 approved transcripts were inspected for scope, not independently verified conference timestamps for all26.",
+    "next_action": "Audit stable fiscal-year transitions and actual conference-date lineage across acquisition, raw archive, readiness, projection, and blind consumer. Preserve originals; no guess-based calendar remapping, global +day heuristic, live hot edit, or unapproved input snapshot replacement.",
+    "repaired": false
+  },
+  "validation": {
+    "old_method": "All four new tests reproduce old production failures using the old method in memory; repository/frozen source untouched.",
+    "focused": "48 tests PASS / 0.034s",
+    "full": "1600 tests PASS / 56.552s",
+    "lint": "scripts/lint_repo.sh PASS"
+  },
+  "acceptance": {
+    "zero_signal_technical_failures": false,
+    "new_magnitude_admitted_and_used": false,
+    "effective_high_band_expansion": false,
+    "independent_benefit_confirmed": false,
+    "source_temporal_lineage_complete": false,
+    "goal_complete": false
+  },
+  "completed_c02_checkpoint": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/attempts/plan_r0001_c02.json",
+    "sha256": "4532be52833555643cc4a7f5af0721a1a295d3759b245086954241fb552e5410",
+    "complete_metadata": {
+      "completed_case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "expected_case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "failures": [],
+      "fitness": {
+        "eligible": true,
+        "evidence_covered_count": 24,
+        "expected_case_count": 24,
+        "predicted_positive_count": 15,
+        "reasons": [],
+        "status": "eligible",
+        "true_positive_count": 12,
+        "valid_case_count": 24
+      },
+      "metrics": {
+        "binary_f1": 0.8275862068965518,
+        "binary_precision": 0.8,
+        "binary_recall": 0.8571428571428571,
+        "confusion": {
+          "false_negative": 2,
+          "false_positive": 3,
+          "true_negative": 7,
+          "true_positive": 12
+        },
+        "magnitude_accuracy": 0.35714285714285715,
+        "magnitude_macro_f1": 0.17543859649122806,
+        "precision_defined": true,
+        "predicted_positive_count": 15,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c02",
+      "schema_version": "plan-evaluation-attempt-v1",
+      "technical_exclusion_case_ids": []
+    },
+    "case_prediction_trajectory_sets_exact": true,
+    "prediction_inventory": [
+      {
+        "case_id": "cik_0000895728:20250930",
+        "sha256": "74395cd47a2c9e266fdd244c453b79ebf21adbbc4bccf128b5a099249928ccf8",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001830043:20250930",
+        "sha256": "9a2d1c3d0b6e1bf70c50010d547eba5610e00c3c22c862b428a3932b6b1a8022",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0000701818:20250930",
+        "sha256": "a600fef25fca18127d8e7bec180b5d0a5f88dd9609be8d1b92357014e81a6bd8",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001174922:20250731",
+        "sha256": "60fba56a2af8660c1c20b5a2222a60630cfa11127297684ead32bba138708a78",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0000895421:20250731",
+        "sha256": "8ba44948319f21eaae081efc57b5088c085ca149e6cdaa4ffc5f81f9b67ee250",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "sha256": "05a7be6c26126f0de48c5514a425f93dc5d05da502c3d77c2c7195854b81e1ee",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001576942:20250530",
+        "sha256": "e67c74e50e070e5d6be6f2b80385df1ce76e7789d6328d0a1a399a84ce20f87a",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001590364:20250731",
+        "sha256": "ea7990a7c32ec9853f57567d520444bca91e9fe582e9f5888b8d127df36dd3ae",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0000936395:20250930",
+        "sha256": "70825c97479d85e05d149852ad24b827e86da4cbfa3d36b379cde061aaa3ff7a",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001164727:20250731",
+        "sha256": "f1669ff230ad83b5f52e3dd9603db7211572b326b1ddbb08ef761cc1b8e96637",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001801368:20250331",
+        "sha256": "e01c8f654979e899561d6e95b0c77bf0e936076608ac113b05b4f1e0102a6556",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001018963:20250930",
+        "sha256": "8bedb9cf1589d6bcea7eb11c72438d02d629d0b1cf03ff172d9b13171b05500e",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001689548:20250930",
+        "sha256": "2bbb30d9177ca0e9d0fb3f9dcda9be88c2b44a4dd8840b61f39c69559198ade6",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0002023554:20250930",
+        "sha256": "c9009ff69ff7c06f27a071ab679c1908e1febcc5762fcee5d5dc4d62b42a79cd",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0000723125:20250731",
+        "sha256": "f6482b31b31841a7757da71bc8f6936e35eb40c11b6c89667f71fc43a24383d9",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001646188:20250530",
+        "sha256": "38aa27bed49cb975b4a46dea1fb1e79175dc1a4c6f1cd686dcbc8e03eaa100cc",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0000860413:20250930",
+        "sha256": "dd77b78a59baacfb5252e3c62e310498c19a92a68a7131a2913c919d1e43b601",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001521036:20250331",
+        "sha256": "f244c33ffb7e1c8e1a2d7c4d7ae4631c2d96e3d70d52320b0f41da170ff556a2",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001847409:20250131",
+        "sha256": "94151ded2b20733fde26e894756c604b326b016534c64b752d40fac97287bd23",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001309402:20250530",
+        "sha256": "c8d06281f31e5da3dc8dcf792f75fc3306f7cc0085171b7487c851a6e8873da1",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001114995:20250331",
+        "sha256": "0b7d2d0df505075837d6172466395b963b978d04aabbec932c0fa7a99457904a",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "case_id": "cik_0001920294:20250530",
+        "sha256": "991b62c1fe3fdacd98d2b4e89ca0d6b952336137f26eedf43bf0704aa5f36898",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0000839470:20250731",
+        "sha256": "8986e5f21d113dbe34338d15030ad48d44be6ddaea9ce62f02e5ff9825069ca0",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "case_id": "cik_0001051627:20250930",
+        "sha256": "bcb1c2bcec6b53f6e87fcb8f10b09c5f077414fccdb5c7e4eb015f15239fc87f",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      }
+    ],
+    "signal_status_counts": {
+      "success": 68,
+      "domain_unavailable": 7,
+      "validation_failed": 3
+    },
+    "scope": "Persisted identities, predictions, statuses, and metrics checked; full substantive source/trajectory acceptance remains pending."
+  },
+  "paired_live_prediction_difference": {
+    "case_id": "cik_0001018963:20250930",
+    "c01": {
+      "attempt_id": 118,
+      "stage": "blind_predictor_predict",
+      "request_hash": "5a8907d99f149f6710067bef1856aa9572c2d4401437397911cf24dc3ff41ac2",
+      "request_sha256": "5cb1d424ce4c55cb5a7e3e769cb332e33a89423828031e0a79de1135abe2146b",
+      "response_sha256": "932396777f0452d71df09dbbdd6fa6bf51eb369d08489feb02fa99b1ec788077",
+      "analysis_prompt": "Organize evidence into (a) source-backed commercial adoption and contract or demand evidence, (b) forward-expectations and guidance signals, (c) financing, share-overhang, cash-runway, and dilution facts, (d) market baseline, momentum, and early-repricing measurements, and (e) counter-evidence and execution gaps. Weight items by provenance and recency, prefer issuer filings and reported financial facts over third-party narrative, and never count repeated versions of one event as independent evidence. When binary direction looks supported, structure a range of plausible repricing scenarios rather than defaulting to a conservative band, and do not let a negative liquidity-runway or neutral financing fact mechanically cap the scenario range. Surface explicit counter-evidence and uncertainty; do not compute a probability, classify the final answer, or generate the prediction.",
+      "complete_output": {
+        "candidate_judgment": "unlikely",
+        "confidence": {
+          "level": "medium"
+        },
+        "key_reasons": [
+          "The prediction baseline is a mean adjusted close of 78.916 over the last five complete trading days, so the 2x threshold is 157.832; the recent close of 79.26 is only about 0.4% above that baseline, and the computed 180-trading-day price_shape shows a 43.87% return from 55.09 on 2025-01-10 to 79.26 on 2025-09-29, which is far short of a doubling and does not verify a 2x repricing.",
+          "Source-backed commercial momentum is real but not of a scale that credibly supports a 2x share-price move within six months: the Airbus agreement is worth nearly $1 billion over five years, the Boeing agreement is a long-term guaranteed volume extension/expansion, and Q2 2025 revenue growth was only 6.86% year-over-year, while management's raised guidance was for adjusted EBITDA of $800-$840 million and EPS of $2.87-$3.09, not a transformative step-change.",
+          "The capital-structure and liquidity facts are neutral-to-mixed rather than surge catalysts: the $125 million receivables facility with about $80 million outstanding and the amended credit facilities are completed financing events, cash reserves were $319.6 million at 2025-06-29, and the 12.29% year-over-year net share retirement is a positive but modest support, not evidence of an imminent doubling.",
+          "The packet contains no forward price target, no analyst estimate, and no quantified valuation bridge showing how the current 78.916 baseline could reach 157.832 within the six-calendar-month horizon, so the 2x outcome remains speculative rather than an evidence-backed candidate."
+        ],
+        "magnitude": null,
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The six-calendar-month horizon could include new contract awards, guidance raises, or aerospace-cycle acceleration not visible in the supplied packet.",
+          "The CFO retirement and board additions could affect execution or investor confidence in ways not yet measurable.",
+          "The supplied market data ends at 2025-09-29 and does not include forward projections or post-prediction-time developments.",
+          "The 180-trading-day price_shape window is not the same as the six-calendar-month forecast horizon, so its 43.87% return should not be read as a forecast."
+        ]
+      }
+    },
+    "c02": {
+      "attempt_id": 338,
+      "stage": "blind_predictor_predict",
+      "request_hash": "98d86d733b1e47f9f658b722445d4a7379fd74b4b8f3c1b512de78f7f83dda37",
+      "request_sha256": "213e5fd47fa6edb1e065fb0169cf38134a9dfb534ac76c0c23ce160ddfb848dc",
+      "response_sha256": "585578409aaa85cc18f0b39b3068358c6b9d3618d15c16c6abeb62e4681573c2",
+      "analysis_prompt": "Organize and weight supporting and counter evidence for the fixed six-calendar-month 2x Predictor. Distinguish real commercial adoption and binding commitments from narrative and promotional coverage. For magnitude structuring, map source-backed catalysts to a range of possible repricing multiples rather than collapsing to a single conservative band, while explicitly retaining limitations: realized multiples are horizon maxima, backward-looking momentum does not project the six-month horizon, and single-case outcomes do not establish ex-ante calibration. Expose uncertainty and counter-evidence (resale overhang, low cash, dilution risk) as factors that may bear more on magnitude than on binary direction, but flag that relationship as an untested hypothesis rather than an established rule. Do not compute probabilities, classify the final answer, alter the horizon or four-way judgment, or generate the prediction.",
+      "complete_output": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "key_reasons": [
+          "The issuer disclosed two major long-term customer agreements within the lookback window: a new five-year Airbus agreement worth nearly $1 billion positioning it as Airbus' primary flat-rolled supplier, and a new long-term guaranteed volume agreement with Boeing for airframe products, both of which are source-backed binding commitments that could drive accelerating revenue and support a repricing toward the 2x threshold of $157.83 (baseline mean adjusted close $78.92).",
+          "Management raised the midpoint of full-year adjusted EBITDA, EPS, and adjusted free cash flow guidance in Q2 2025, with commercial jet engine sales up 27% in Q2 and 31% year-to-date, and expects full-year jet engine growth above 20% plus double-digit defense growth, providing evidence of expectation-changing acceleration.",
+          "The stock has shown strong momentum with a 43.87% return over the 180-trading-day window ending 2025-09-29 (from $55.09 to $79.26), and a 50.45% year-to-date return, indicating early market confirmation of the growth narrative."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The 2x threshold requires a 100% gain from the baseline mean adjusted close of $78.92 to $157.83, which is a substantial move not directly supported by any explicit forward projection or price target in the supplied evidence.",
+          "Near-term headwinds include airframe inventory destocking holding full-year airframe estimates flat, non-A&D markets expected to decline 5-7%, and the CFO retirement announced for March 2026 introducing succession uncertainty.",
+          "The 180-day price shape shows a max drawdown of -36.27% and daily volatility of 3.34%, indicating significant price risk that could impede a sustained doubling within the six-month horizon.",
+          "No computed metric verifies a doubling or near-doubling price move, and the exact financial impact of the new contracts on share price remains uncertain."
+        ]
+      }
+    },
+    "finding": "The only judgment/magnitude change is ATI unlikely/null to possible/2-3x. c02 F1=.827586 versus c01 .785714, but positive magnitude remains exclusively2-3x; this is same-development-cohort candidate variation, not independent evolution benefit. Both transmitted evolving analysis prompts request scenario ranges and prohibit final classification."
+  }
+}
