@@ -1,0 +1,593 @@
+{
+  "audited_at": "2026-10-06T15:34:42.996830+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated",
+  "external_calls": 0,
+  "production_adapters": [
+    "LLMPlanCritic",
+    "LLMRoundReflector",
+    "PlanMetaMemory.reflection_index/read_refs"
+  ],
+  "saved_plan_round_items_read_exactly": 8,
+  "code_sha256": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "1ab16c226999dc9a4edc0140c1344023c3c0759c3a02c53aed7e96095116d686",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py": "ce2a9e0ae781358890f0c9a1933f807b6553981a0c90c23558c669ae600d51f8"
+  },
+  "scope": "Replay original paid answers through current production construction and capture complete first correction; no correction answer or new reflection fabricated.",
+  "limits": "No live model compliance, citation semantic truth, admitted factor, successor consumption or benefit claim. Existing authored prose defects remain for content audit.",
+  "source_files_unchanged": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/plans/plan_r0001_c02/record.json",
+      "sha256": "549e377f5ff12c9d54cedba00404132a8d69c8319bef67f5151da0f707a7b8a3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/plans/plan_r0001_c01/record.json",
+      "sha256": "7ab18c1b16268a64727bd72744f8e0ed57d6c8e841b5239bbaa2e1c0c9df7461"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/requests/22e75fb572b605d64c0910733fa49450a84fe3d0c4bede04c79f93263766a325.json",
+      "sha256": "2ef535e5892048b42946f7a9c7c3283c05676fe2e49619d0b8394c661dc554d3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/22e75fb572b605d64c0910733fa49450a84fe3d0c4bede04c79f93263766a325.json",
+      "sha256": "814e92e9a381687fca4f30f0e5bd4b950b6e83c3dcb9ec7bcc18095d542e2609"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/requests/b6e39e9f287bcce346abd8ccc857732cc285054d118a319abdc81aca840a3807.json",
+      "sha256": "039ac337996a59f8d61e8efd84cc76c601eec72e56606bb16f565edc47bbb780"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/b6e39e9f287bcce346abd8ccc857732cc285054d118a319abdc81aca840a3807.json",
+      "sha256": "91db960e51e03c94e0a557dd36f4eed235ef4c314d2c713ca79e13d5872140a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/requests/b775a1491fab86e5f376abad2abd89a7e4926fa76fef7582dc3450a1381d3df5.json",
+      "sha256": "28a804213164c5633683fe02644250217c8b22da3143d0e41182708aa600b746"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/b775a1491fab86e5f376abad2abd89a7e4926fa76fef7582dc3450a1381d3df5.json",
+      "sha256": "90d9b6e000579303fd76551ddb0e6668956fb3a2315bcc39dfe995b10b998749"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/meta/round-0001.json",
+      "sha256": "0f316c35799d0f81f7feb5d3d515c8d09afe8eabc4b57cad6dbed22d8d13bf19"
+    }
+  ],
+  "rows": [
+    {
+      "owner": "plan_r0001_c01",
+      "original_request_hash": "22e75fb572b605d64c0910733fa49450a84fe3d0c4bede04c79f93263766a325",
+      "independent_obligation_count": 3,
+      "obligations": [
+        {
+          "obligation_index": 1,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[1].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[1].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 2,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[2].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[2].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 3,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[3].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[3].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        }
+      ],
+      "patch_allowed_operations": [
+        {
+          "op": "append",
+          "path": "reflection_items[1].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].category",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[3].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[3].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[3].category",
+          "descendants": false
+        }
+      ],
+      "initial_source_counts": {
+        "available": 139,
+        "included": 32,
+        "deferred": 107
+      },
+      "stopped_before_scripted_correction": true
+    },
+    {
+      "owner": "plan_r0001_c02",
+      "original_request_hash": "b6e39e9f287bcce346abd8ccc857732cc285054d118a319abdc81aca840a3807",
+      "independent_obligation_count": 3,
+      "obligations": [
+        {
+          "obligation_index": 1,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[1].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[1].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 2,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[2].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[2].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 3,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[4].detail"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[4].source_refs",
+            "reflection_items[4].scope.plan_refs",
+            "reflection_items[4].scope.case_refs",
+            "reflection_items[4].outcome_claims"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "binary_f1=0.786 is not supported by the cited runtime statistics; preserve its Plan/cohort/population instead of changing the scoring denominator",
+          "invalid_container_paths": [],
+          "allowed_append_values": {
+            "reflection_items[4].source_refs": [
+              "reflection_source:8441373a26e30ab1c9626b8a3827adb55c61f2a754659324c2a971c431cebecc",
+              "reflection_source:21d8a5b6cada00f2649670a964b814a384282b4cc2adfd50fbad8dba0dd6e4cd",
+              "reflection_source:e2f6fcb4ef53828f2c358bb8b188cf68955f94cff6afd5e019371e0229c323a7"
+            ],
+            "reflection_items[4].scope.plan_refs": [
+              "reflection_plan:358c4f2d02f1fe15c40e8f61836ab16cca8bdf6c5613b2ae491dad2dc8b0adfb"
+            ],
+            "reflection_items[4].scope.case_refs": []
+          }
+        }
+      ],
+      "patch_allowed_operations": [
+        {
+          "op": "append",
+          "path": "reflection_items[1].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].category",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[4].detail",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[4].detail",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[4].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[4].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[4].source_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[4].source_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[4].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:8441373a26e30ab1c9626b8a3827adb55c61f2a754659324c2a971c431cebecc"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[4].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[4].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[4].outcome_claims",
+          "descendants": false
+        }
+      ],
+      "initial_source_counts": {
+        "available": 146,
+        "included": 32,
+        "deferred": 114
+      },
+      "stopped_before_scripted_correction": true
+    },
+    {
+      "owner": "round",
+      "original_request_hash": "b775a1491fab86e5f376abad2abd89a7e4926fa76fef7582dc3450a1381d3df5",
+      "independent_obligation_count": 3,
+      "obligations": [
+        {
+          "obligation_index": 1,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[0].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[0].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 2,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[1].outcome_claims"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[1].category"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "allowed_append_values": {}
+        },
+        {
+          "obligation_index": 3,
+          "issue_code": "reflection_item",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "reflection_items[2].detail"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [
+            "reflection_items[2].source_refs",
+            "reflection_items[2].scope.plan_refs",
+            "reflection_items[2].scope.case_refs",
+            "reflection_items[2].outcome_claims"
+          ],
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "binary_f1=0.7857142857142857 is not supported by the cited runtime statistics; preserve its Plan/cohort/population instead of changing the scoring denominator",
+          "invalid_container_paths": [],
+          "allowed_append_values": {
+            "reflection_items[2].source_refs": [
+              "reflection_source:08559f050f6a95d2f8dfd6b56c5a74e897316a7e93586ccd1dcb49f29dc86968",
+              "reflection_source:1f5df2b5571dcb9ff7e6d84c5b06608453942f24123e5aa249a4d8dbe98efca3",
+              "reflection_source:c401863d712004fb65b0f4c263084ce08c7cd481d95f406e4f7c9b772bcf9862",
+              "reflection_source:33c295eb5fb79ae9eabb530f324cb64ffc4ca6a2eadc766cd80f8c282148d13c",
+              "reflection_source:d4045451c55cbdf62193ff6f215ccc2a41d4bfa0a15480e6652c7918df6c0955",
+              "reflection_source:8441373a26e30ab1c9626b8a3827adb55c61f2a754659324c2a971c431cebecc",
+              "reflection_source:21d8a5b6cada00f2649670a964b814a384282b4cc2adfd50fbad8dba0dd6e4cd",
+              "reflection_source:e2f6fcb4ef53828f2c358bb8b188cf68955f94cff6afd5e019371e0229c323a7",
+              "reflection_source:e8df9d0a1da4155ac1897bf0c16010de226a23647ec55ddfa8ec6ad84ac45449",
+              "reflection_source:68ee88458191b321c917a90f1c7b606b1ae9caa77d43d35bfd9ed565762e720c"
+            ],
+            "reflection_items[2].scope.plan_refs": [
+              "reflection_plan:358c4f2d02f1fe15c40e8f61836ab16cca8bdf6c5613b2ae491dad2dc8b0adfb",
+              "reflection_plan:c7cce8b55202a4ee131032bdaff04274ed152a9dde78bb542aecf6b9b49e948a"
+            ],
+            "reflection_items[2].scope.case_refs": []
+          }
+        }
+      ],
+      "patch_allowed_operations": [
+        {
+          "op": "append",
+          "path": "reflection_items[0].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[0].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[0].category",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[1].outcome_claims",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[1].category",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].detail",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].detail",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].source_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].source_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].source_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:1f5df2b5571dcb9ff7e6d84c5b06608453942f24123e5aa249a4d8dbe98efca3"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:c401863d712004fb65b0f4c263084ce08c7cd481d95f406e4f7c9b772bcf9862"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:33c295eb5fb79ae9eabb530f324cb64ffc4ca6a2eadc766cd80f8c282148d13c"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:d4045451c55cbdf62193ff6f215ccc2a41d4bfa0a15480e6652c7918df6c0955"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:21d8a5b6cada00f2649670a964b814a384282b4cc2adfd50fbad8dba0dd6e4cd"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:e2f6fcb4ef53828f2c358bb8b188cf68955f94cff6afd5e019371e0229c323a7"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:e8df9d0a1da4155ac1897bf0c16010de226a23647ec55ddfa8ec6ad84ac45449"
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].source_refs",
+          "descendants": false,
+          "exact_value": "reflection_source:68ee88458191b321c917a90f1c7b606b1ae9caa77d43d35bfd9ed565762e720c"
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].scope.plan_refs[0]",
+          "descendants": false
+        },
+        {
+          "op": "replace",
+          "path": "reflection_items[2].scope.plan_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "remove",
+          "path": "reflection_items[2].scope.plan_refs[1]",
+          "descendants": false
+        },
+        {
+          "op": "append",
+          "path": "reflection_items[2].outcome_claims",
+          "descendants": false
+        }
+      ],
+      "initial_source_counts": {
+        "available": 297,
+        "included": 19,
+        "deferred": 278
+      },
+      "stopped_before_scripted_correction": true
+    }
+  ]
+}

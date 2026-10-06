@@ -654,3 +654,5 @@
 - 2026-10-06：审计真实Signal phrase纠错与10x+低估产物，统一初始/纠错的mandatory literal契约，明确interior候选仅是位置提示、数值materiality须有来源的兼容量纲换算；保留neutral有效结果及硬校验，4新/92专项/1520全量/lint PASS。v177 34案仍未提交，后续入库/消费/增益未验收。
 
 - 2026-10-06：将pending Signal完整validation_feedback纳入全部投影预算估计与最终请求，保留最低证据/成功兄弟/已付usage及真实budget-blocked；5份v177原请求0外部回放装入原余量。新增冻结运行终态运输恢复监控、唯一executor/源码输入预算不变/中断停止及10次恢复上限，7专项、1529全量/lint PASS；Fast1已提交、Slow挖掘中，人工发现critic局部修复/归因内容仍未通过，不宣称live修复或增益。
+
+- 2026-10-06：v177完整提交1/1，Registry8→9仅方向v5更新、新因子0/magnitude partial及两Update技术失败未验收；统一反思各独立row的typed首前沿，披露统计与canonical outcome区别。修复从旧context重建可选诊断破坏来源/legacy case/stat hash的问题，新上下文完整状态照常保留；三份真实原答生产0外部回放各3义务、8保存items逐值读回。6新/39相关/1535全量/lint PASS，更正append操作获授权但统计claim无效的台账判断；后继live/双轴入库/独立增益仍待完成。

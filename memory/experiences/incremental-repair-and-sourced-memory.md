@@ -1,6 +1,6 @@
 # Incremental Repair and Sourced Reflection Memory
 
-visit_times: 42
+visit_times: 43
 
 ## Trigger
 
@@ -43,6 +43,11 @@ levels. Tests of individual view helpers had not covered either composition.
 - Keep canonical source shapes identical at generation, archive composition,
   restart and rebase. Bind case identity to its immutable anonymous input and
   prediction, not just outcome facts shared by unrelated cases.
+- Reconstructing a legacy source cannot append newly derived optional diagnostics:
+  whole-source hashes and fallback case identities may already be cited by saved
+  Plan/round items. Preserve the old producer's recorded shape; only saved modern
+  status-bearing context authorizes its matching diagnostic projection. Verify
+  real saved Plan construction and subsequent source reads, not only case views.
 - Measure the actual composed request at every consumer. Count catalogs,
   diagnostics and disclosure envelopes as well as brief text. Bound complete
   units; never silently clip originals or enumerate unlimited deferred IDs.

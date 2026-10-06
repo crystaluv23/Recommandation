@@ -2140,7 +2140,13 @@ def _structured_reflection_contract(level: str) -> str:
         "Obey memory_access limits and do not infer absence from omitted detail. "
         "Numeric evaluation claims must cite runtime_plan_statistics sources "
         "for each owning Plan, cohort and population; a case reference cannot "
-        "support aggregate counts or F1. Combined cohort is per Plan, never "
+        "support aggregate counts or F1. Aggregate statistic sources have no "
+        "individual canonical outcome booleans and cannot be cited inside "
+        "outcome_claims. For an aggregate-only observation, use an appropriate "
+        "permitted non-outcome category; for a success/failure category, read "
+        "actual case outcome sources and cite those canonical claims as well "
+        "as the statistics. Never invent a false/true claim for a statistic. "
+        "Combined cohort is per Plan, never "
         "pooled round statistics. Research-completed diagnostics exclude "
         "technical cases while official scored metrics retain them. Do not "
         "recompute, pool or change these denominators. Full completion requires "
@@ -2369,25 +2375,24 @@ def _structured_reflection_items(
             message="Retain the observable fact without weighting/sufficiency inference, or classify the explanation as a testable hypothesis; preserve other items and outcome facts.",
         ) for position, item in enumerate(raw_items) if isinstance(item, Mapping)
           for field in reflection_fact_inference_fields(item))
-        if policy_issues:
-            for position, item in enumerate(raw_items):
-                try:
-                    index._create_items((item,), level=level, owner_ref=owner_ref, check_inferences=False)
-                except ReflectionValidationError as exc:
-                    prefix = f"reflection_items[{position}]"
-                    def located(path: str) -> str:
-                        return prefix + ("." + path if path else "")
-                    if any(issue.paths == (located(exc.path),) for issue in policy_issues):
-                        continue
-                    policy_issues.append(ValidationIssue(
-                        code="reflection_item", paths=(located(exc.path),), message=str(exc),
-                        dependent_paths=tuple(located(path) for path in exc.dependency_paths),
-                        allowed_repairs=("replace", "add", "remove"),
-                        repair_context={
-                            "invalid_container_paths": [located(path) for path in exc.invalid_container_paths],
-                            "allowed_append_values": {located(path): values for path, values in exc.allowed_append_values.items()},
-                        },
-                    ))
+        for position, item in enumerate(raw_items):
+            try:
+                index._create_items((item,), level=level, owner_ref=owner_ref, check_inferences=False)
+            except ReflectionValidationError as exc:
+                prefix = f"reflection_items[{position}]"
+                def located(path: str) -> str:
+                    return prefix + ("." + path if path else "")
+                if any(issue.paths == (located(exc.path),) for issue in policy_issues):
+                    continue
+                policy_issues.append(ValidationIssue(
+                    code="reflection_item", paths=(located(exc.path),), message=str(exc),
+                    dependent_paths=tuple(located(path) for path in exc.dependency_paths),
+                    allowed_repairs=("replace", "add", "remove"),
+                    repair_context={
+                        "invalid_container_paths": [located(path) for path in exc.invalid_container_paths],
+                        "allowed_append_values": {located(path): values for path, values in exc.allowed_append_values.items()},
+                    },
+                ))
         if item_validator is not None:
             try:
                 item_validator(tuple(raw_items))

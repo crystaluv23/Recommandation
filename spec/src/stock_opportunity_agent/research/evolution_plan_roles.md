@@ -262,11 +262,21 @@ row; unrelated items, sources and outcome claims remain immutable. Canonical
 ingestion and salvage revalidate the same boundary. Historical model views
 disclose `legacy_inference_unchecked` without modifying archived originals.
 
-When raw text policy/inference issues exist, independently validate each row
+For every parseable reflection package, independently validate each row
 against canonical source/category/outcome rules before issuing the first
 correction. Those obligations join the same frontier; a new interpretation
 guard must not conceal an already-detectable category error behind another
 round of model correction. These diagnostic rows never register new evidence.
+Each independent invalid row contributes its first actionable typed issue,
+including any linked category/scope/source dependencies, even when no text
+policy issue exists. Whole-package revalidation remains required after patching;
+this does not enlarge operation permissions or certify arbitrary prose.
+
+The initial Plan/Round contract distinguishes aggregate statistic sources from
+individual canonical outcomes. Statistics cannot populate an outcome claim's
+boolean. Aggregate-only observations use an appropriate permitted non-outcome
+category, or read actual case outcomes when making success/failure assertions.
+The runtime never invents claims or silently recategorizes authored content.
 
 ## Mechanical-only correction channel (2026-10-02)
 

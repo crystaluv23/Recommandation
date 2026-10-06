@@ -46,7 +46,8 @@ def result(status, signal_id="fixture_signal"):
 
 class SignalExecutionProvenanceTests(TestCase):
     def trajectory(self, status):
-        return make_trajectory("opaque_fixture", 1.1, False, None, signal_result=result(status))
+        trajectory = make_trajectory("opaque_fixture", 1.1, False, None, signal_result=result(status))
+        return replace(trajectory, final_context=self.context(trajectory))
 
     def context(self, trajectory):
         return _assemble_final_context(
@@ -154,3 +155,75 @@ class SignalExecutionProvenanceTests(TestCase):
                 replace(evidence, recorded_signal_execution_failures=(row,))
         with self.assertRaises(ValidationError):
             replace(evidence, recorded_signal_execution_failures=(valid, valid))
+
+    def test_legacy_trajectory_keeps_source_hashes_through_saved_plan_and_round_index(self):
+        from stock_opportunity_agent.research.evolution_core import PlanRecord
+        from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
+        from tests.test_evolution_reflection_memory import authored
+
+        legacy = make_trajectory("legacy_fixture", 1.1, False, None,
+            signal_result=result(SignalExecutionStatus.VALIDATION_FAILED))
+        # The old producer never put execution into final_context. Its absent
+        # source identity also makes the legacy case ref depend on the full row.
+        self.assertIsNone(legacy.self_reflection.source_identity)
+        original = CaseReflectionEvidence.from_trajectory(legacy, case_index=1).to_dict()
+        self.assertNotIn("recorded_signal_execution_failures", original)
+
+        def response(request):
+            source = next(row for row in request["payload"]["source_catalog"]
+                if row.get("statistics", {}).get("group") == "technical_completion")
+            item = authored(source, category="repeated_failure_modes")
+            item.update(kind="fact", brief="technical_completion_rate=1.",
+                        detail="Observed technical_completion_rate=1.")
+            return {"reflection_items": [item], "selected_reflection_refs": [], "no_findings_reason": None}
+
+        plan = default_information_plan()
+        caller = PatchCaller(response)
+        reflection = LLMPlanCritic(caller).critique(plan=plan, trajectories=(legacy,),
+            metrics=score_predictions((legacy,)))
+        self.assertEqual(len(reflection.reflection_items), 1)
+        record = replace(make_record(plan.plan_id, 0.5, (1.0,)), plan=plan,
+            trajectories=(legacy,), reflection=reflection, metrics=score_predictions((legacy,)),
+            evaluation=None, fitness=None)
+        restored = PlanRecord.from_dict(json.loads(json.dumps(record.to_dict())))
+        row = PlanMetaReflection.from_record(restored)
+        self.assertEqual(row.original_case_reflections[0].to_dict(), original)
+        index = ReflectionMemoryIndex.from_plan_rows((row.to_model_dict(),), owner_ref="round:legacy")
+        item = reflection.reflection_items[0]
+        self.assertEqual(index.read_refs((item.item_ref,), role="signal_mining")["sources"][0]["content"], item.to_dict())
+        ref = item.source_refs[0]
+        self.assertIn(ref, [source["source_ref"] for source in index.source_catalog()])
+
+    def test_only_complete_matching_saved_statuses_emit_diagnostics(self):
+        from copy import deepcopy
+
+        trajectory = self.trajectory(SignalExecutionStatus.TRANSPORT_FAILED)
+        for mutation in ("missing", "wrong_ref", "wrong_status", "missing_round"):
+            context = deepcopy(trajectory.final_context)
+            card = context["signal_rounds"][0]["batch"]["results"][0]
+            if mutation == "missing":
+                card.pop("execution")
+            elif mutation == "wrong_ref":
+                card["signal_ref"] = "other_signal:v1"
+            elif mutation == "wrong_status":
+                card["execution"]["status"] = "domain_unavailable"
+            else:
+                context["signal_rounds"] = []
+            with self.subTest(mutation=mutation):
+                legacy = CaseReflectionEvidence.from_trajectory(replace(trajectory, final_context=context), case_index=1)
+                self.assertIsNone(legacy.recorded_signal_execution_failures)
+                self.assertNotIn("recorded_signal_execution_failures", legacy.to_dict())
+        self.assertEqual(CaseReflectionEvidence.from_trajectory(trajectory, case_index=1).to_dict()[
+            "recorded_signal_execution_failures"], [{"signal_round": 1, "signal_ref": "fixture_signal:v1", "status": "transport_failed"}])
+
+    def test_empty_old_round_has_no_recorded_status_evidence(self):
+        from stock_opportunity_agent.signal_library import SignalBatchResult
+        from stock_opportunity_agent.research.evolution_core import SignalRound
+
+        trajectory = self.trajectory(SignalExecutionStatus.DOMAIN_UNAVAILABLE)
+        empty = SignalRound(selections=(), information_needs=(), batch=SignalBatchResult(
+            results=(), signal_calls=0))
+        trajectory = replace(trajectory, signal_rounds=(empty,), final_context={
+            "signal_rounds": [{"selected_signals": [], "batch": {"results": [], "signal_calls": 0}}]})
+        evidence = CaseReflectionEvidence.from_trajectory(trajectory, case_index=1)
+        self.assertNotIn("recorded_signal_execution_failures", evidence.to_dict())

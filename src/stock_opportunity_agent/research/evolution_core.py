@@ -2532,6 +2532,28 @@ class ExecutionTrajectory:
         return trajectory
 
 
+def _trajectory_has_recorded_signal_statuses(trajectory: ExecutionTrajectory) -> bool:
+    """Keep legacy source hashes when final context did not record execution."""
+
+    recorded = trajectory.final_context.get("signal_rounds")
+    if not isinstance(recorded, (tuple, list)) or not recorded or len(recorded) != len(trajectory.signal_rounds):
+        return False
+    if not any(signal_round.batch.results for signal_round in trajectory.signal_rounds):
+        return False
+    for row, signal_round in zip(recorded, trajectory.signal_rounds):
+        if not isinstance(row, Mapping) or not isinstance(row.get("batch"), Mapping):
+            return False
+        cards = row["batch"].get("results")
+        if not isinstance(cards, (tuple, list)) or len(cards) != len(signal_round.batch.results):
+            return False
+        for card, result in zip(cards, signal_round.batch.results):
+            if (not isinstance(card, Mapping) or card.get("signal_ref") != result.ref
+                    or not isinstance(card.get("execution"), Mapping)
+                    or card["execution"].get("status") != result.execution_status.value):
+                return False
+    return True
+
+
 @dataclass(frozen=True)
 class CaseReflectionEvidence:
     """Anonymous original post-hoc reflection retained in round meta-info."""
@@ -2769,7 +2791,7 @@ class CaseReflectionEvidence:
                 if result.execution_status not in {
                     SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE,
                 }
-            ),
+            ) if _trajectory_has_recorded_signal_statuses(trajectory) else None,
         )
 
     @classmethod

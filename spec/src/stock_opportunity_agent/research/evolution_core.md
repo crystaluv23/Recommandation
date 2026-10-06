@@ -32,6 +32,13 @@ derives entries from immutable trajectory results, never reflection prose.
 Missing legacy metadata stays unknown. An empty list means no recorded failure,
 not proof of error-free historical execution. This metadata changes neither
 case outcome attribution nor scoring and does not discard valid domain results.
+Trajectory reconstruction emits this metadata only when its saved final-context
+Signal cards explicitly record all corresponding round/ref execution statuses.
+An older final context without those records keeps the field absent, even if
+typed SignalResult rows can now be inspected separately. Otherwise reconstructing
+old source units changes content hashes (and legacy case membership), breaking
+already-authored references. New runtime contexts provide the complete status
+records; restart/archive projections preserve that producer evidence exactly.
 
 Final Basic Info cards retain the upstream `document_id` and `available_at` beside
 the complete literal and stable projection id. Final context explicitly includes
