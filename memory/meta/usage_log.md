@@ -316,3 +316,5 @@
 - 2026-10-07：v182 Update语义与新闻源时钟审计，咨询 self-evolution-convergence-and-acceptance、incremental-repair-and-sourced-memory、historical-news-backfill-boundaries；区分证据角色/测量状态/预测关联，按冻结源hash核查日期，保留原产物与PIT方案待选状态；固定prompt澄清不冒充语义校验或独立增益。
 
 - 2026-10-07（Enbridge双Plan内容复核）：咨询 self-evolution-convergence-and-acceptance、incremental-repair-and-sourced-memory；先绑定16原始wire/cache与73源hash，再检查金额/事件归属、typed删除与下游语义。固定共享authoring指令覆盖首次/修正及实际Mining，不新增语义真值/分类门槛；脚本回放仍接受旧答，不能当live或gain。两visit_times各加1并同步GUIDE；补正上轮historical-news GUIDE的2→3，不计新咨询。
+
+- 2026-10-07（v182目录读取链路）：咨询 nonvisible-source-content-consumes-readable-budget、incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance；复核原目录/适配器/State引用/纠错和最终消费，补通既有分页与公司范围、保留读到的内容，保持预算和canonical引用不变。三visit_times各加1并同步GUIDE；离线原生patch回放非live或gain。

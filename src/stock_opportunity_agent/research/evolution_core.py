@@ -3620,16 +3620,21 @@ class _DocumentChannelProvider:
         self.market_documents = tuple(market_documents)
         self.anchor = dict(anchor) if isinstance(anchor, Mapping) else None
 
-    def catalog_view(self) -> dict[str, Any]:
+    def catalog_view(self, *, cursor: int = 0) -> dict[str, Any]:
         from stock_opportunity_agent.data.disclosure import document_catalog
 
         return document_catalog(
-            self.store, company_id=self.company_id, as_of=self.as_of
+            self.store, company_id=self.company_id, as_of=self.as_of, cursor=cursor
         )
 
     def fetch(self, entries: Any) -> list[dict[str, Any]]:
         from stock_opportunity_agent.data.disclosure import fetch_entry
 
+        # Check the complete batch before producing or retaining any views.
+        for entry in entries:
+            document = self.store.load(str(entry["document_id"]), as_of=self.as_of)
+            if document.company_id != self.company_id:
+                raise ValidationError("document channel fetch is outside the case company")
         cards = [
             fetch_entry(
                 self.store,

@@ -214,11 +214,12 @@ class LLMResearchController:
     def set_document_channel(self, provider: Any) -> None:
         """Attach the bounded in-loop Raw Info catalog/fetch channel.
 
-        The provider exposes ``catalog_view()`` (bounded point-in-time
+        The provider exposes ``catalog_view(cursor=0)`` (bounded point-in-time
         document cards) and ``fetch(entries)`` (bounded verbatim or
         section views resolved through the disclosure interface). While
         set, every H_reflect call receives the catalog view and may spend
-        bounded mid-call exchanges on ``fetch_documents`` requests before
+        bounded mid-call exchanges on catalog paging, ``fetch_documents``
+        and deterministic computation before
         returning the state — the improvised retrieval channel alongside
         frozen-policy Signal execution.
         """
@@ -466,12 +467,24 @@ class LLMResearchController:
                 "prediction_time merely because the source said currently. "
                 "When document_catalog is supplied you may spend bounded mid-call "
                 "exchanges returning exactly "
+                '{"inspect_document_catalog":{"cursor":20}} to read another '
+                "bounded page. Copy next_cursor to advance, or select a valid "
+                "integer offset from zero through counts.eligible to address a "
+                "later page directly. Additional pages arrive in "
+                "document_catalog_pages; previously supplied pages remain visible. "
+                "Paging, fetching and computing share at most two exchanges total. "
+                "You may return "
                 '{"fetch_documents":[{"document_id":"supplied id",'
-                '"section_id":"supplied id or omitted"}]} (at most two exchanges '
-                "of two entries, no repeats) to read one complete document or an "
-                "exact section through the point-in-time disclosure interface; "
-                "fetched views arrive in document_channel and are citable "
-                "evidence like any other source. You may likewise return "
+                '"section_id":"supplied id or omitted"}]} (at most two entries '
+                "per exchange, no repeats) to read a bounded working view of a "
+                "document or exact section through the point-in-time disclosure "
+                "interface. A fitting unit is verbatim; an oversized unit retains "
+                "its provenance and explicit omission markers, not its full body. "
+                "fetched views arrive in document_channel and are retained for "
+                "the final Predictor with their source provenance. Reading does "
+                "not create a new ResearchState evidence kind or projection: "
+                "State citations still require existing Basic Info or current-batch "
+                "Signal refs. You may likewise return "
                 '{"compute":[{"metric":"registered id","params":{...}}]} for any '
                 "registered deterministic metric — price_shape(window_days "
                 "30-365), return_between(from_offset_days>to_offset_days, "
@@ -2484,9 +2497,9 @@ def _structured_reflection_items(
 class _DocumentChannelCaller:
     """Bounded in-loop Raw Info catalog/fetch exchanges for one reflect call.
 
-    Mirrors the proposer's read_refs pattern: the first answers may be
-    ``{"fetch_documents": [...]}`` requests (at most two exchanges, at most
-    two supplied catalog ids each, no repeats), which the runtime resolves
+    Mirrors the proposer's read_refs pattern: the first answers may page the
+    catalog, fetch documents or compute (two shared exchanges, at most two
+    fetch entries each, no repeats), which the runtime resolves
     through the disclosure interface — point-in-time filtered, journaled by
     the ordinary caller persistence — before the model returns its state.
     """
@@ -2500,6 +2513,8 @@ class _DocumentChannelCaller:
         self.exchanges = 0
         self.fetched_keys: set[tuple[str, str | None]] = set()
         self.computed_metric_cards: list[dict[str, Any]] = []
+        self.catalog_pages: list[dict[str, Any]] = []
+        self.catalog_cursors: set[int] = {0}
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self.caller, name)
@@ -2509,7 +2524,20 @@ class _DocumentChannelCaller:
         payload = dict(kwargs["payload"])
         if kwargs["stage"].endswith("_patch_mechanics_correction"):
             return _complete_json_with_invalid_value(self.caller, **kwargs)
-        payload["document_catalog"] = self.provider.catalog_view()
+        if not self.catalog_pages:
+            self.catalog_pages.append(self.provider.catalog_view())
+        payload["document_catalog"] = deepcopy(self.catalog_pages[0])
+        if len(self.catalog_pages) > 1:
+            payload["document_catalog_pages"] = deepcopy(self.catalog_pages[1:])
+        retained_views = getattr(self.provider, "document_views", ())
+        if retained_views:
+            payload["document_channel"] = deepcopy(list(retained_views))
+        if self.computed_metric_cards:
+            existing_metrics = list(payload.get("computed_metrics", ()))
+            for card in self.computed_metric_cards:
+                if card not in existing_metrics:
+                    existing_metrics.append(deepcopy(card))
+            payload["computed_metrics"] = existing_metrics
         while True:
             request = dict(kwargs)
             request["payload"] = deepcopy(payload)
@@ -2517,10 +2545,33 @@ class _DocumentChannelCaller:
                 request["max_request_tokens"] = max(
                     0, request["max_request_tokens"] - usage.tokens
                 )
-            value, used = _complete_json_with_invalid_value(
-                self.caller, **request
-            )
+            try:
+                value, used = _complete_json_with_invalid_value(
+                    self.caller, **request
+                )
+            except (CandidateExecutionRejected, RuntimeBudgetExceeded) as exc:
+                exc.usage = usage + exc.usage
+                raise
             usage = usage + used
+            if set(value) == {"inspect_document_catalog"}:
+                query = value["inspect_document_catalog"]
+                if (
+                    not isinstance(query, Mapping)
+                    or set(query) != {"cursor"}
+                    or type(query["cursor"]) is not int
+                ):
+                    raise ValidationError("document catalog request requires one integer cursor")
+                cursor = query["cursor"]
+                if cursor in self.catalog_cursors:
+                    raise ValidationError("document catalog page was already disclosed")
+                if self.exchanges >= self._MAX_EXCHANGES:
+                    raise ValidationError("document catalog paging exceeds the issued exchange budget")
+                page = self.provider.catalog_view(cursor=cursor)
+                self.exchanges += 1
+                self.catalog_cursors.add(cursor)
+                self.catalog_pages.append(page)
+                payload["document_catalog_pages"] = deepcopy(self.catalog_pages[1:])
+                continue
             if set(value) == {"compute"}:
                 entries = value["compute"]
                 if self.exchanges >= self._MAX_EXCHANGES:
@@ -2562,7 +2613,7 @@ class _DocumentChannelCaller:
                         "optional section_id from the supplied catalog"
                     )
                 key = (document_id, section_id)
-                if key in self.fetched_keys:
+                if key in self.fetched_keys or key in resolved_keys:
                     raise ValidationError(
                         "document channel entry was already fetched"
                     )

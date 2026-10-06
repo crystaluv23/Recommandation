@@ -460,6 +460,7 @@ class ScriptedRoleCaller:
                 {"read_refs"},
                 {"browse_memory"},
                 {"fetch_documents"},
+                {"inspect_document_catalog"},
                 {"compute"},
             )
         ):

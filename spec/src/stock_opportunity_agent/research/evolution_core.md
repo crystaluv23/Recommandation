@@ -74,11 +74,20 @@ Fast/Slow engine dependency.
 - The research loop carries an improvised retrieval channel alongside
   frozen-policy Signal execution: every H_reflect call receives a bounded
   point-in-time `document_catalog` view (disclosure interface cards) and
-  may spend at most two mid-call `fetch_documents` exchanges of two
-  supplied catalog entries each — complete documents or exact sections,
+  may spend at most two mid-call exchanges shared by catalog paging,
+  document fetching and deterministic computation. `inspect_document_catalog`
+  takes an integer `cursor` in the existing catalog's eligible range; a copied
+  `next_cursor` advances sequentially and another valid offset addresses a
+  later page directly within the same budget. Fetches contain at most two
+  supplied entries each — bounded views of documents or exact sections,
   resolved through the disclosure interface with deduplication and
   journaling by ordinary caller persistence. Fetched views arrive in
-  `document_channel` as citable evidence; Signals keep their frozen
+  `document_channel` with content-addressed provenance and reach the final
+  Predictor unchanged. Reading does not mint a ResearchState evidence kind or
+  projection: State citations still require existing Basic Info or Signal refs.
+  The provider enforces both the case company and cutoff on every fetch before
+  persisting any views. Catalog pages and fetched views survive ordinary semantic
+  correction; mechanical-only correction exposes no read actions. Signals keep their frozen
   retrieval policies for cross-case comparability.
 - The assembled final context is a typed append-only artifact:
   `basic_info.projection_cards` preserve every bootstrap projection already

@@ -706,3 +706,5 @@
 2026-10-07：v182终态1/1后继续实际Update语义审计；v3 spec仅version变化、8旧fixtures字节相同，但counter/neutral解释混淆、ceiling-only条件无对应证据/fixture。核验冻结2875新闻hash，23 URL日期线索/67年末同刻仅作诊断，4原始publisher日期冲突；ERII旧订单错日期实际进入594执行与599 Update，非未来泄露定论。叶子spec/固定Update prompt澄清测量角色/状态/关联与定义不变量，实际599原输出生产适配器离线重放仍结构通过，102相关测试及lint通过；无付费模型/旧数据或指针改写。48 Fast完整语义、源时钟纠正输入、新magnitude入库/消费/独立收益仍待验收，已有PIT/独立评估选择待用户回复。见reports/v182-update-semantic-and-news-clock-audit-20261007.md。
 
 - 2026-10-07：完成v182 Enbridge双Plan原始内容复核（16调用/74投影id/73源hash），定位成本与合同金额混用、同一项目重复计数、未引证belief及计算/解释边界；spec先行接共享源事实归属指令到Fast/各层反思/Update/生产Mining共15构造点。373专项和4真实payload脚本适配器回放通过；无新外部调用、旧结果不改，语义服从/真实magnitude准入和消费/独立增益未验收。见reports/v182-enbridge-pair-content-audit-20261007.md。
+
+- 2026-10-07（v182目录读取链路）：底层70份PIT目录有分页而Reflect只传最旧20张且无翻页动作；按既有渐进披露合同补inspect_document_catalog，分页/fetch/compute共用原2交换预算。泛化修复跨公司ID读取、批内重复及语义纠错丢页/读文/计算卡，校准bounded fetch与State引用权限。真实73源hash/70卡及原10 patch生产Controller回放、原12预测消费/JSON归档通过；亲读后50卡和所选492字provider摘要，不冒称70全文。9回归/156专项/1613全量53.877s及lint PASS，旧冻结9测试预期失败，未热改85ffff9e/无新live。PIT定义与独立评估方案待选，6Signal失败/magnitude新入库0及全2–3x/独立gain未验收。见reports/v182-document-channel-navigation-audit-20261007.md。

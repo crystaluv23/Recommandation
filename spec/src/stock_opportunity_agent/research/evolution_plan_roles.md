@@ -321,6 +321,28 @@ boolean. Aggregate-only observations use an appropriate permitted non-outcome
 category, or read actual case outcomes when making success/failure assertions.
 The runtime never invents claims or silently recategorizes authored content.
 
+## Bounded Raw Info navigation (2026-10-07)
+
+The Reflect adapter advertises the data-owned catalog's cursor interface as
+`{"inspect_document_catalog":{"cursor":20}}`. Cursor bounds and PIT selection
+remain owned by `data/disclosure`; the adapter rejects malformed or repeated
+page requests and counts paging, fetch and compute against the same existing
+two-exchange budget. Budget/candidate-stop exceptions retain the actual usage
+accumulated in earlier exchanges and propagate unchanged rather than becoming
+domain conclusions. It preserves the initial catalog and every additional page
+in later authoring/semantic-correction requests rather than hiding earlier reads.
+Fetched bodies and computed cards are likewise retained across semantic correction and forwarded
+through the case provider into final-context assembly and ordinary persistence.
+Fetches fail closed for another company or future availability, including batches
+with one otherwise valid entry; no partial view batch is persisted. Repeated
+entries within one fetch batch are rejected as well as repeats across exchanges.
+
+Document-channel provenance is readable by Predictor. It does not manufacture
+an admissible State citation: the fixed Reflect prompt names the existing
+Basic Info/Signal reference boundary explicitly. Catalog metadata remains
+metadata; neither a page read nor a correct parser result proves source truth,
+complete research coverage or prediction gain.
+
 ## Mechanical-only correction channel (2026-10-02)
 
 The document-channel wrapper passes a runtime-issued
