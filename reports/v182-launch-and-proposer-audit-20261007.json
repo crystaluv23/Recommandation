@@ -1,0 +1,1033 @@
+{
+  "schema_version": "v182-launch-and-proposer-audit-v1",
+  "audited_at": "2026-10-06T21:08:59.396825+00:00",
+  "frozen_preflight": {
+    "source": "/Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation",
+    "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+    "parent": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated",
+    "source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+    "input_manifest_sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c",
+    "input_manifest_hash": "c0cc015186af3bd6d88e2f376be1f2772de4b82a2196a686fbdf6ddc3ffbdf37",
+    "contract_hash": "12a50702a856ddc3dd24b52ed2d044fae573a9a5da85007ef2f0d87c7d4fcf71",
+    "run_contract_sha256": "5789b5a8512556b614949b3705ced68968aeec78df801e2912f008369a700d81",
+    "initial_registry_version": 11,
+    "initial_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "slow_history_manifest_hash": "20eb20c14a8895bcc6b6b7bc23f1a6cad1a553259901394c063e1f4bff3ba395",
+    "max_external_attempts": 1200,
+    "max_total_cost": 100,
+    "external_calls_during_preparation": 0,
+    "locked_test_accessed": false,
+    "changed_parent_manifest_keys": [
+      "registry_source",
+      "slow_history_manifest_hash",
+      "slow_history_source",
+      "source_input_manifest_sha256"
+    ],
+    "source_file_count": 3606,
+    "same_splits_evaluation_locked_test_source_files": true,
+    "changed_parent_contract_keys": [
+      "code_revision",
+      "created_at",
+      "raw_info_inventory_hash",
+      "run_id",
+      "slow_history_manifest_hash"
+    ]
+  },
+  "actual_process_record": {
+    "wrapper_pid": 27009,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+      "--run"
+    ],
+    "source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+    "pid": 27014,
+    "started_at": "2026-10-06T21:02:00.421489+00:00",
+    "status": "running",
+    "automatic_resumes": 0
+  },
+  "actual_process_commands": "27009     1 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 /Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/monitor_frozen_evolution.py --source /Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation --root /Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated --control /Users/l/Project/Recommandation/.delegation/live-runs/v182\n27014 27009 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 /Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/run_minimal_rounds.py --root /Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated --run\n",
+  "frozen_source_tracked_clean": true,
+  "parent_formal_pointers": {
+    "fast": 1,
+    "slow": 1
+  },
+  "current_formal_pointers": {
+    "fast": 0,
+    "slow": 0
+  },
+  "plans": [
+    {
+      "slot": 1,
+      "plan_id": "plan_r0001_c01",
+      "initial_attempt": 1,
+      "correction_attempt": 2,
+      "initial_native_output": {
+        "B": {
+          "requests": [
+            {
+              "description": "Inspect the latest 45 days of point-in-time price and volume to establish the pre-prediction trend, baseline level, and any early repricing, used only as orientation for the fixed 2x Predictor.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "recent_market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            {
+              "description": "Read the most recent applicable operating report available before the prediction time for the business model, risk factors, segment economics, and any disclosed non-recurring items.",
+              "lookback_days": 730,
+              "max_documents": 3,
+              "request_id": "recent_annual_or_interim_filing",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Retrieve the most recent management commentary or earnings-call transcript available before the prediction time, for forward expectations, demand commentary, and guidance cadence.",
+              "lookback_days": 365,
+              "max_documents": 2,
+              "request_id": "management_commentary",
+              "source_types": [
+                "earnings_call",
+                "earnings_transcript"
+              ]
+            },
+            {
+              "description": "Retrieve recent third-party news mentioning the target issuer, covering commercial adoption, contracts, financing, listing events, and regulatory developments that could shift market expectations.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "scoped_news",
+              "source_types": [
+                "news",
+                "company_news"
+              ]
+            },
+            {
+              "description": "Inspect reported financial facts available at the prediction time for revenue growth, margins, cash runway, and capital structure; treat computed runway metrics as descriptive, not as forward projections.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "reported_financial_facts",
+              "source_types": [
+                "sec_company_facts",
+                "financials"
+              ]
+            }
+          ]
+        },
+        "H_analyse": "Organize evidence into (a) source-backed commercial adoption and contract or demand evidence, (b) forward-expectations and guidance signals, (c) financing, share-overhang, cash-runway, and dilution facts, (d) market baseline, momentum, and early-repricing measurements, and (e) counter-evidence and execution gaps. Weight items by provenance and recency, prefer issuer filings and reported financial facts over third-party narrative, and never count repeated versions of one event as independent evidence. When binary direction looks supported, structure a range of plausible repricing scenarios rather than defaulting to a conservative band, and do not let a negative liquidity-runway or neutral financing fact mechanically cap the scenario range. Surface explicit counter-evidence and uncertainty; do not compute a probability, classify the final answer, or generate the prediction.",
+        "H_init": "From Basic Info only, state a commercialization and expectation-gap hypothesis for the fixed six-calendar-month adjusted-share-price 2x Predictor: is there source-backed evidence of real commercial adoption or a catalyst, or only narrative? List the most decision-relevant unresolved information needs, separating business-model questions, demand/contract evidence, financing and share-overhang facts, and market-repricing evidence. Explicitly flag low-baseline issuers with binary catalysts, deeply depressed prior drawdowns, and any source types unavailable for technical reasons (quota or validation failures), treating those as execution gaps rather than as evidence that the data is absent. Do not name or define magnitude classes, do not assign probabilities, and do not finalize a prediction here.",
+        "H_reflect": "After each evidence pass, update support, contradiction, resolved questions, and remaining gaps against the fixed 2x Predictor. Weigh whether source-backed commercial adoption, guidance, and early repricing are real versus narrative, and whether counter-evidence (share overhang, weak cash runway, dilution risk, negative momentum) should bear more on direction or specifically on magnitude, without deciding which direction or magnitude is likely. Choose continue only if a named, answerable information need remains that could flip the thesis; otherwise finalize evidence collection. Never decide the price direction, market trend, or outcome; leave the final four-way judgment and magnitude classification to the fixed Predictor shell.",
+        "used_experience_refs": [
+          "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0",
+          "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379"
+        ]
+      },
+      "native_patch": {
+        "base_hash": "1b0b41cceb2fa9599b5473aa71b351cb2e62ecee90b183cf2d50dd55b9034293",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "H_reflect",
+            "value": "After each evidence pass, update ResearchState only: what the collected evidence supports, what it contradicts, which questions are resolved, and which named, answerable information needs remain against the fixed six-calendar-month adjusted-share-price 2x Predictor. Weigh whether source-backed commercial adoption, guidance, and early repricing evidence are corroborated versus narrative, and whether counter-evidence such as share overhang, weak cash runway, dilution risk, or negative momentum is source-backed or merely asserted, so later evidence collection can prioritize the weakest, most decision-relevant gap. Do not state, estimate, rank, or hint at which price direction, market trend, outcome, or magnitude class is likely, and do not name, define, or finalize any replacement Predictor class ontology; the fixed Predictor shell owns the final candidate_judgment and magnitude classification. Choose continue only if a specific, answerable information need remains that could materially change the evidence picture; otherwise finalize evidence collection and hand the organized evidence to the fixed Predictor shell."
+          }
+        ]
+      },
+      "owner_obligations": [
+        {
+          "allowed_repairs": [
+            "replace"
+          ],
+          "instruction": "invalid_field='H_reflect', H_reflect may update ResearchState and decide evidence collection only; it cannot define or finalize a replacement Predictor class ontology",
+          "issue_code": "plan_fixed_semantics_redefined",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "H_reflect"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace"
+          ],
+          "instruction": "invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely",
+          "issue_code": "controller_decides_price_direction",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "H_reflect"
+          ],
+          "obligation_index": 2,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "exact_allowed_operations": [
+        {
+          "descendants": false,
+          "op": "replace",
+          "path": "H_reflect"
+        }
+      ],
+      "persisted_plan_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/candidates/slot-01.json",
+      "persisted_plan_sha256": "4a7660936e99fbe0fa8f4eed3816209c8de9612190e65a8bdd1ff6cb8f98bb09",
+      "preserved_fields": [
+        "B",
+        "H_init",
+        "H_analyse",
+        "used_experience_refs"
+      ],
+      "adopted_all_actually_disclosed": true,
+      "adopted_refs": [
+        "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+        "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0",
+        "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+        "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379"
+      ],
+      "actual_adopted_briefs": [
+        {
+          "brief": "For future low-base catalyst surge predictions, add an explicit magnitude-scenario step that maps the catalyst to a range of possible repricing multiples, rather than defaulting to a 2-3x band when the binary direction is positive.",
+          "category": "missing_information",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "This action does not require a quantified valuation bridge or a guaranteed price path; it is a scenario-structuring step.",
+            "The realized 13.346x multiple is a maximum five-complete-trading-day adjusted-close mean, not a sustained price level, so the extreme scenario should not be treated as a target.",
+            "The prediction-time baseline mean adjusted close was 4.786 and the recent close was 4.89 on 2025-09-29; the doubling threshold was 9.572."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4"
+            ],
+            "conditions": "Index when a surge prediction has a correct binary direction but a magnitude band that may be too narrow, especially for low-baseline issuers with binary catalysts.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:9569723b3844f541da95a4ddf0eeb6324758160aa8f632d6569c7b4e529418a6"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "This action does not require a quantified valuation bridge or a guaranteed price path; it is a scenario-structuring step.",
+              "The realized 13.346x multiple is a maximum five-complete-trading-day adjusted-close mean, not a sustained price level, so the extreme scenario should not be treated as a target.",
+              "The prediction-time baseline mean adjusted close was 4.786 and the recent close was 4.89 on 2025-09-29; the doubling threshold was 9.572."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a surge prediction has a correct binary direction but a magnitude band that may be too narrow, especially for low-baseline issuers with binary catalysts."
+          }
+        },
+        {
+          "brief": "The liquidity_runway_months signal (20.45 months, state negative) and the financing_listing_action signal (neutral) may have anchored the magnitude band too low by framing the issuer as a cash-burning, dilution-dependent story rather than a low-float repricing candidate.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379",
+          "kind": "hypothesis",
+          "level": "case",
+          "limitations": [
+            "This is a hypothesis, not an established causal rule; the realized outcome alone does not prove the signals caused the underestimate.",
+            "The liquidity_runway_months signal is a computed metric from reported cash and operating cash flow, not a forward projection.",
+            "The financing_listing_action signal was explicitly interpreted as a neutral capital-structure fact, not a directional catalyst."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4"
+            ],
+            "conditions": "Index when a negative liquidity-runway or neutral financing signal is being used to cap the magnitude band of a low-base catalyst-driven surge prediction.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:9569723b3844f541da95a4ddf0eeb6324758160aa8f632d6569c7b4e529418a6"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "This is a hypothesis, not an established causal rule; the realized outcome alone does not prove the signals caused the underestimate.",
+              "The liquidity_runway_months signal is a computed metric from reported cash and operating cash flow, not a forward projection.",
+              "The financing_listing_action signal was explicitly interpreted as a neutral capital-structure fact, not a directional catalyst."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a negative liquidity-runway or neutral financing signal is being used to cap the magnitude band of a low-base catalyst-driven surge prediction."
+          }
+        },
+        {
+          "brief": "For future surge predictions with a correct binary direction, add an explicit magnitude-class check that compares the predicted class against the baseline-relative multiple implied by recent momentum, rather than defaulting to a conservative class.",
+          "category": "plan_issues",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "The realized outcome does not prove that a higher magnitude class was ex-ante calibrated.",
+            "Momentum-implied ranges are backward-looking and may not project the six-month horizon.",
+            "This action must not be used to gate a positive binary judgment on a quantified valuation bridge."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583"
+            ],
+            "conditions": "Index when finalizing a surge prediction whose binary direction is supported but whose magnitude class may be set conservatively.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1a484f36b2be5a11755ce99da731ad2cea6bbc06199286176f89b22d1b133b6d"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "The realized outcome does not prove that a higher magnitude class was ex-ante calibrated.",
+              "Momentum-implied ranges are backward-looking and may not project the six-month horizon.",
+              "This action must not be used to gate a positive binary judgment on a quantified valuation bridge."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when finalizing a surge prediction whose binary direction is supported but whose magnitude class may be set conservatively."
+          }
+        },
+        {
+          "brief": "The resale-overhang warning and modest cash reserves were treated as material counter-evidence to a doubling, but the realized surge occurred despite them; test whether overhang warnings should carry less weight for binary direction than for magnitude.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "kind": "hypothesis",
+          "level": "case",
+          "limitations": [
+            "The realized outcome alone does not establish that the overhang or cash position was economically immaterial.",
+            "No data here shows whether Selling Holders actually sold during the horizon.",
+            "The relationship between overhang warnings and binary direction versus magnitude is untested."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583"
+            ],
+            "conditions": "Index when a resale-overhang warning or low cash balance is being used to cap or negate a binary surge judgment.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1a484f36b2be5a11755ce99da731ad2cea6bbc06199286176f89b22d1b133b6d"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "The realized outcome alone does not establish that the overhang or cash position was economically immaterial.",
+              "No data here shows whether Selling Holders actually sold during the horizon.",
+              "The relationship between overhang warnings and binary direction versus magnitude is untested."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a resale-overhang warning or low cash balance is being used to cap or negate a binary surge judgment."
+          }
+        }
+      ],
+      "experience_snapshot_hash": "e034866d22eec42c2ca1315b6568f517a23c351d30d857591addd39fbe8544cd",
+      "raw_meta_hash": "74926ee70e5e13a3f5d961dd61d892d8ce16b0ece7fe0e88c515503d1e249b10",
+      "proposer_context_experience_snapshot_hash": "74926ee70e5e13a3f5d961dd61d892d8ce16b0ece7fe0e88c515503d1e249b10",
+      "first_initialize_exact_skill_transmission": true,
+      "original_artifact_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/7ae7f2fce2d070f9777a2b88f36a8f9b66bcdf12914c6cd5e6b55f04ccfa83d2.json": "4a1b453e8ee42d9583a55fc3af36cbe14799f77a42eac96bc7581fbd2c106e0b",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/7ae7f2fce2d070f9777a2b88f36a8f9b66bcdf12914c6cd5e6b55f04ccfa83d2.json": "ade816a79a572850fc7d93da895287231b442dd87319d09b4ac4ea4c54871db7",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/db71e0907fcfda0103a6e934a6dea2b152b75b6cb9c24d8026634f81c7817d6d.json": "b13d6be9500dc3aaa316115ce1105e4b4895ea29470f8060c2b9ebf73f82e924",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/db71e0907fcfda0103a6e934a6dea2b152b75b6cb9c24d8026634f81c7817d6d.json": "b56d5bbbc757573cc402e88a2f123ce25f98bce5284f99d22d0469b4f4082676"
+      }
+    },
+    {
+      "slot": 2,
+      "plan_id": "plan_r0001_c02",
+      "initial_attempt": 3,
+      "correction_attempt": 4,
+      "initial_native_output": {
+        "B": {
+          "requests": [
+            {
+              "description": "Retrieve the latest 45 days of point-in-time adjusted price and volume for the target issuer to establish the prediction-time price baseline, recent realized volatility, and any early repricing momentum.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "recent_market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            {
+              "description": "Retrieve recent target-company-scoped news coverage (third-party reporting may include competition, customers, financing, regulation, or product developments) to surface any catalyst or overhang affecting the target issuer.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "recent_company_news",
+              "source_types": [
+                "company_news",
+                "news"
+              ]
+            },
+            {
+              "description": "Retrieve the most recent target-issuer earnings call or transcript to capture management's own commentary on commercial traction, forward expectations, liquidity, and financing plans for the target issuer.",
+              "lookback_days": 365,
+              "max_documents": 2,
+              "request_id": "recent_management_commentary",
+              "source_types": [
+                "earnings_call",
+                "earnings_transcript"
+              ]
+            },
+            {
+              "description": "Read the latest applicable operating report for the target issuer (generic filing; exact form not assumed) covering business model, risks, segment economics, and any disclosed liquidity or dilution terms.",
+              "lookback_days": 730,
+              "max_documents": 3,
+              "request_id": "recent_operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Inspect reported financial facts available at the prediction time for the target issuer's growth, margins, cash, and capital structure, to ground the liquidity-runway framing rather than treat it as a forward projection.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "reported_financial_facts",
+              "source_types": [
+                "financials",
+                "sec_company_facts"
+              ]
+            }
+          ]
+        },
+        "H_analyse": "Organize and weight supporting and counter evidence for the fixed six-calendar-month 2x Predictor. Distinguish real commercial adoption and binding commitments from narrative and promotional coverage. For magnitude structuring, map source-backed catalysts to a range of possible repricing multiples rather than collapsing to a single conservative band, while explicitly retaining limitations: realized multiples are horizon maxima, backward-looking momentum does not project the six-month horizon, and single-case outcomes do not establish ex-ante calibration. Expose uncertainty and counter-evidence (resale overhang, low cash, dilution risk) as factors that may bear more on magnitude than on binary direction, but flag that relationship as an untested hypothesis rather than an established rule. Do not compute probabilities, classify the final answer, alter the horizon or four-way judgment, or generate the prediction.",
+        "H_init": "Form an initial commercialization and expectation-gap hypothesis for the fixed six-calendar-month 2x adjusted-price Predictor using Basic Info only. Explicitly separate: (a) binary direction evidence for whether the target issuer is positioned for a potential surge, and (b) magnitude-scenario evidence that could support a wider or narrower band. Do NOT default to a conservative magnitude band when the binary direction is supported; instead enumerate a range of plausible repricing multiples and note which specific source-backed facts (commercial adoption, binding contracts, early repricing) would justify the upper end versus the lower end. State the most decision-relevant unresolved information needs, including any gap in management commentary, forward guidance, or off-take/customer commitments that would materially narrow the magnitude range. Do not name or define replacement Predictor classes; the fixed shell owns final candidate_judgment and conditional magnitude classification.",
+        "H_reflect": "Reflect over the full Signal batch. Track source-backed support and counter-evidence for the binary thesis, and separately track magnitude-related evidence (commercial adoption, contract durability, liquidity/dilution framing, momentum-implied ranges). Test whether any negative liquidity-runway or neutral financing signal is being used to cap the magnitude band rather than to inform the binary call, and record that as an explicit hypothesis with its limitations. When deciding whether to continue or finalize evidence collection, apply a falsification test: identify what observable catalyst or price action would invalidate the current binary view within the horizon. Decide only whether evidence collection should continue or finalize; do not decide which price direction or magnitude class is likely.",
+        "used_experience_refs": [
+          "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379",
+          "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "reflection:80fd3f0e70c1d39350e52be82be37882c483240614d2be42fdeb6fe7db12be66",
+          "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0"
+        ]
+      },
+      "native_patch": {
+        "base_hash": "0ed7154d1a9b8749799a88b5531b3772ba85937ab3d9889f9561b0c9c11ce1b2",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "H_reflect",
+            "value": "Reflect over the full Signal batch as a collection-continuation decision only. Track source-backed support and counter-evidence for the binary thesis, and separately track magnitude-related evidence (commercial adoption, contract durability, liquidity/dilution framing, momentum-implied ranges). Test whether any negative liquidity-runway or neutral financing signal is being used to cap the magnitude band rather than to inform the binary call, and record that as an explicit hypothesis with its limitations. When deciding whether to continue or finalize evidence collection, apply a coverage-and-falsifiability test: check whether the current source set still leaves material information needs unresolved (management commentary, forward guidance, off-take or customer commitments) and whether an explicit falsification condition for the working thesis is on record. Record resolved questions, remaining needs, and any unresolved gaps. Decide only whether evidence collection should continue or finalize, and which next source requests are needed; do not decide, name, or estimate which price direction, market trend, or magnitude class is likely."
+          }
+        ]
+      },
+      "owner_obligations": [
+        {
+          "allowed_repairs": [
+            "replace"
+          ],
+          "instruction": "invalid_field='H_reflect', H_reflect may decide only whether evidence collection should continue or finalize; it cannot decide which price direction, market trend, or outcome is likely",
+          "issue_code": "controller_decides_price_direction",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "H_reflect"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "exact_allowed_operations": [
+        {
+          "descendants": false,
+          "op": "replace",
+          "path": "H_reflect"
+        }
+      ],
+      "persisted_plan_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/round-0001/candidates/slot-02.json",
+      "persisted_plan_sha256": "5b0576708c1dc78d2742319e38841b9d383b7f89071c48de32d9c749d8cc31bb",
+      "preserved_fields": [
+        "B",
+        "H_init",
+        "H_analyse",
+        "used_experience_refs"
+      ],
+      "adopted_all_actually_disclosed": true,
+      "adopted_refs": [
+        "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+        "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379",
+        "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+        "reflection:80fd3f0e70c1d39350e52be82be37882c483240614d2be42fdeb6fe7db12be66",
+        "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0"
+      ],
+      "actual_adopted_briefs": [
+        {
+          "brief": "For future low-base catalyst surge predictions, add an explicit magnitude-scenario step that maps the catalyst to a range of possible repricing multiples, rather than defaulting to a 2-3x band when the binary direction is positive.",
+          "category": "missing_information",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:aff76126df0d2f8d853686ca1a789b264a5a079c3d15c360576b209c5c75dfe4",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "This action does not require a quantified valuation bridge or a guaranteed price path; it is a scenario-structuring step.",
+            "The realized 13.346x multiple is a maximum five-complete-trading-day adjusted-close mean, not a sustained price level, so the extreme scenario should not be treated as a target.",
+            "The prediction-time baseline mean adjusted close was 4.786 and the recent close was 4.89 on 2025-09-29; the doubling threshold was 9.572."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4"
+            ],
+            "conditions": "Index when a surge prediction has a correct binary direction but a magnitude band that may be too narrow, especially for low-baseline issuers with binary catalysts.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:9569723b3844f541da95a4ddf0eeb6324758160aa8f632d6569c7b4e529418a6"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "This action does not require a quantified valuation bridge or a guaranteed price path; it is a scenario-structuring step.",
+              "The realized 13.346x multiple is a maximum five-complete-trading-day adjusted-close mean, not a sustained price level, so the extreme scenario should not be treated as a target.",
+              "The prediction-time baseline mean adjusted close was 4.786 and the recent close was 4.89 on 2025-09-29; the doubling threshold was 9.572."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a surge prediction has a correct binary direction but a magnitude band that may be too narrow, especially for low-baseline issuers with binary catalysts."
+          }
+        },
+        {
+          "brief": "The liquidity_runway_months signal (20.45 months, state negative) and the financing_listing_action signal (neutral) may have anchored the magnitude band too low by framing the issuer as a cash-burning, dilution-dependent story rather than a low-float repricing candidate.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:8f4a61115e6d0b3f81fd9d1cc1f12f6a21e6e38cb8f2af3adef75958025e4379",
+          "kind": "hypothesis",
+          "level": "case",
+          "limitations": [
+            "This is a hypothesis, not an established causal rule; the realized outcome alone does not prove the signals caused the underestimate.",
+            "The liquidity_runway_months signal is a computed metric from reported cash and operating cash flow, not a forward projection.",
+            "The financing_listing_action signal was explicitly interpreted as a neutral capital-structure fact, not a directional catalyst."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:b17ccbabd6b0fa28e9c91ff216f6e8201edc51e9051a2c72ebba7554c27ba6e4"
+            ],
+            "conditions": "Index when a negative liquidity-runway or neutral financing signal is being used to cap the magnitude band of a low-base catalyst-driven surge prediction.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:9569723b3844f541da95a4ddf0eeb6324758160aa8f632d6569c7b4e529418a6"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "This is a hypothesis, not an established causal rule; the realized outcome alone does not prove the signals caused the underestimate.",
+              "The liquidity_runway_months signal is a computed metric from reported cash and operating cash flow, not a forward projection.",
+              "The financing_listing_action signal was explicitly interpreted as a neutral capital-structure fact, not a directional catalyst."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a negative liquidity-runway or neutral financing signal is being used to cap the magnitude band of a low-base catalyst-driven surge prediction."
+          }
+        },
+        {
+          "brief": "For future surge predictions with a correct binary direction, add an explicit magnitude-class check that compares the predicted class against the baseline-relative multiple implied by recent momentum, rather than defaulting to a conservative class.",
+          "category": "plan_issues",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:b0ca37baa514f7486490ce9d285464e36165bf626ef733f4517d9ce1b2385df0",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "The realized outcome does not prove that a higher magnitude class was ex-ante calibrated.",
+            "Momentum-implied ranges are backward-looking and may not project the six-month horizon.",
+            "This action must not be used to gate a positive binary judgment on a quantified valuation bridge."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583"
+            ],
+            "conditions": "Index when finalizing a surge prediction whose binary direction is supported but whose magnitude class may be set conservatively.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1a484f36b2be5a11755ce99da731ad2cea6bbc06199286176f89b22d1b133b6d"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "The realized outcome does not prove that a higher magnitude class was ex-ante calibrated.",
+              "Momentum-implied ranges are backward-looking and may not project the six-month horizon.",
+              "This action must not be used to gate a positive binary judgment on a quantified valuation bridge."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when finalizing a surge prediction whose binary direction is supported but whose magnitude class may be set conservatively."
+          }
+        },
+        {
+          "brief": "The resale-overhang warning and modest cash reserves were treated as material counter-evidence to a doubling, but the realized surge occurred despite them; test whether overhang warnings should carry less weight for binary direction than for magnitude.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:cfde39ade2218b16a03df86d98c150da6a2a10987bd317b38fecbcecd31e4f6b",
+          "kind": "hypothesis",
+          "level": "case",
+          "limitations": [
+            "The realized outcome alone does not establish that the overhang or cash position was economically immaterial.",
+            "No data here shows whether Selling Holders actually sold during the horizon.",
+            "The relationship between overhang warnings and binary direction versus magnitude is untested."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:079cb31f022e6c325a96223defa97b20deff68a89866199fe5883da957ef2583"
+            ],
+            "conditions": "Index when a resale-overhang warning or low cash balance is being used to cap or negate a binary surge judgment.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1a484f36b2be5a11755ce99da731ad2cea6bbc06199286176f89b22d1b133b6d"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "The realized outcome alone does not establish that the overhang or cash position was economically immaterial.",
+              "No data here shows whether Selling Holders actually sold during the horizon.",
+              "The relationship between overhang warnings and binary direction versus magnitude is untested."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when a resale-overhang warning or low cash balance is being used to cap or negate a binary surge judgment."
+          }
+        },
+        {
+          "brief": "For future non-surge calls on deeply depressed names, add an explicit falsification test for a sharp rebound: identify what observable catalyst or price action would invalidate the non-surge view within the horizon.",
+          "category": "plan_issues",
+          "counter_refs": [],
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:80fd3f0e70c1d39350e52be82be37882c483240614d2be42fdeb6fe7db12be66",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "This action is a process improvement; it does not guarantee better binary accuracy.",
+            "It does not require a quantified valuation bridge or a guaranteed price path as a condition for a positive judgment.",
+            "The realized surge may have been driven by factors outside the supplied evidence."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:301a0c4177c6c5b4c4964d71adf047f8793357ffc3c8e4cfb2961304a424e3fc",
+          "performance": {
+            "basis": "observational_use",
+            "confusion": {
+              "fn": 0,
+              "fp": 0,
+              "tn": 0,
+              "tp": 0
+            },
+            "confusion_weighting": "one_case_one_weight",
+            "correct_rate": null,
+            "disputed_cases": 0,
+            "evaluated_cases": 0,
+            "evaluated_predictions": 0,
+            "independent_cases": 0,
+            "negative_case_correct_rate": null,
+            "paired_cases": 0,
+            "paired_correct_rate_gain": null,
+            "positive_case_correct_rate": null,
+            "technical_cases": 0,
+            "unavailable_cases": 0,
+            "unique_issuers": 0
+          },
+          "scope": {
+            "case_refs": [
+              "case:301a0c4177c6c5b4c4964d71adf047f8793357ffc3c8e4cfb2961304a424e3fc"
+            ],
+            "conditions": "Index when designing or reviewing a non-surge prediction process for a stock with a large prior drawdown and partial evidence coverage.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:8ad52898fd11f7f89aed85150d348cae18d5821a06db2511312ca2486bc97163"
+          ],
+          "usage_context": {
+            "failure_conditions": [
+              "This action is a process improvement; it does not guarantee better binary accuracy.",
+              "It does not require a quantified valuation bridge or a guaranteed price path as a condition for a positive judgment.",
+              "The realized surge may have been driven by factors outside the supplied evidence."
+            ],
+            "related_refs": [],
+            "when_to_use": "Index when designing or reviewing a non-surge prediction process for a stock with a large prior drawdown and partial evidence coverage."
+          }
+        }
+      ],
+      "experience_snapshot_hash": "e034866d22eec42c2ca1315b6568f517a23c351d30d857591addd39fbe8544cd",
+      "raw_meta_hash": "74926ee70e5e13a3f5d961dd61d892d8ce16b0ece7fe0e88c515503d1e249b10",
+      "proposer_context_experience_snapshot_hash": "74926ee70e5e13a3f5d961dd61d892d8ce16b0ece7fe0e88c515503d1e249b10",
+      "first_initialize_exact_skill_transmission": null,
+      "original_artifact_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/70b6a557e499cc1200fb0384faa9fe601260ada51022ef380afcee83515446ce.json": "44bb4c6b786b858ec312dbac4824510593f4d726c4ddc4621bec2f12771f5ea0",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/70b6a557e499cc1200fb0384faa9fe601260ada51022ef380afcee83515446ce.json": "bdcbd40373b6269be984e37a21a17d522efde2dde784c7f35c7d55190c5ea171",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/1cafc32a9a26f4493a98ba0439e79950687a075df09c8b44ae5458f3b734166c.json": "59496c396d7df3fd27a8972706d023acbc98159acc6b19ff9010fba6d82a46a7",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/1cafc32a9a26f4493a98ba0439e79950687a075df09c8b44ae5458f3b734166c.json": "9cf65b9e16e1ac2a45682df398bf2379715458f2f15f5abde3f8ffe2f100b1e7"
+      }
+    }
+  ],
+  "first_three_trajectory_inventory": [
+    {
+      "case_id": "cik_0000895728:20250930",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+      "sha256": "daee26c7f9719acafa6aa3706d375112c850e0cbc18751ddb185ec0d72f37955",
+      "signal_result_inventory": {
+        "success": 3
+      },
+      "magnitude": null,
+      "stop_reason": "finalized",
+      "content_manually_inspected": "First two Predictor outputs, first case two LLM Signal outputs and Initialize correction; this inventory is not a complete source-semantic audit."
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+      "sha256": "5caf80fa6fcd8bdbf99f32753e01b16a8717d036180f47e967e1b69a02edeb39",
+      "signal_result_inventory": {
+        "success": 2,
+        "domain_unavailable": 1
+      },
+      "magnitude": null,
+      "stop_reason": "finalized",
+      "content_manually_inspected": "First two Predictor outputs, first case two LLM Signal outputs and Initialize correction; this inventory is not a complete source-semantic audit."
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+      "sha256": "dab98f162632293ab3f1f701832b19eb788b451c1c3a3a5d10a7e2bcc8f01d2b",
+      "signal_result_inventory": {
+        "validation_failed": 1,
+        "success": 6,
+        "domain_unavailable": 1
+      },
+      "magnitude": "2-3x",
+      "stop_reason": "finalized",
+      "content_manually_inspected": "First two Predictor outputs, first case two LLM Signal outputs and Initialize correction; this inventory is not a complete source-semantic audit."
+    }
+  ],
+  "first_three_signal_inventory": {
+    "success": 11,
+    "domain_unavailable": 2,
+    "validation_failed": 1
+  },
+  "full_stage_acceptance": false,
+  "new_magnitude_signal_admitted": false,
+  "independent_benefit_confirmed": false,
+  "verification": {
+    "frozen_code": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+    "focused_tests": 169,
+    "full_tests": 1591,
+    "full_seconds": 58.425,
+    "lint": "PASS"
+  },
+  "remaining_content_frontiers": [
+    "Remaining live cases, critic, round, Slow method/mining/update/candidate/promotion and successor consumers require actual source-semantic inspection.",
+    "Adoption and source transmission do not prove gain; no high magnitude prediction in this three-case snapshot.",
+    "Bad quote removal may leave a nonnumeric belief without its cited item; inspect actual source and state semantics.",
+    "Market graph/query coverage, required-phrase and JSON families remain under lifecycle audit; no invented economic content or weakened admission."
+  ],
+  "first_real_signal_failure": {
+    "case_id": "cik_0000701818:20250930",
+    "signal_ref": "financing_listing_action:v5",
+    "cause": "Available neutral state and citations contain none of the version-owned required evidence phrases, before and after the sole correction. Model moved the same non-qualifying third-party portfolio dispositions from supporting to counter, without selecting the instructed unavailable result. No JSON failure or boundary-read issue in these two responses.",
+    "chronology": [
+      {
+        "attempt_id": 26,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "d4f5785b97d621589791ebc4586ea9ee76c186be415a46f59833437ea4a60403",
+        "request_sha256": "27f03dbbbb62017dc6324d51888ccaa878a28f40c68ca0b813242f027347298c",
+        "response_sha256": "3b230d7bcd0814a1888920db2ec6818ee1a92f5834fa92db96acfcddda99878c",
+        "validation_feedback": null,
+        "native_failed_row": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+.",
+                    "projection_id": "projection_4c86f58846767ee98c536c00"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                    "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                    "projection_id": "projection_296e8bd1e746dfc896b0e0fc"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.",
+                    "projection_id": "projection_c0c474aab1c5f4290ba873f0"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "The visible filings show the target issuer engaging in share sale and share purchase agreement amendment activity involving its portfolio holdings (Asante Gold Corporation and White Gold Corp.), including a share purchase agreement amendment announced August 11, 2025 and subsequent sales of portions of shares held in Asante Gold Corporation. These are completed or binding capital-structure/portfolio actions involving the sale of equity interests, but the visible spans do not establish a within-horizon change in the target's runway, dilution, or tradability, nor do they constitute a financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing action by the target. No completed financing, offering, placement, credit facility, convertible, PIPE, securities purchase agreement, or listing-compliance event is evidenced in the eligible projections. Accordingly, the measured object is a neutral capital-structure/portfolio-disposition fact rather than a catalyst affecting the target's dilution, distress, or tradability."
+              },
+              "signal_id": "financing_listing_action",
+              "state": {
+                "confidence": 0.55,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              },
+              "version": 5
+            },
+            "signal_ref": "financing_listing_action:v5"
+          }
+        ]
+      },
+      {
+        "attempt_id": 27,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "1b73925c8fa1f402c4523cdb7a0462bf2a12c4749ccbbc4ac14163972c9c29e3",
+        "request_sha256": "6958da26c8aa2f960d736e572de6ab5b8f3769cfaf0a3cf6660ba0265010d31b",
+        "response_sha256": "b3e2939e0b8a239ff7a0449edf700a5e3dbd8fe42ab41dc107974bffb1f3fab3",
+        "validation_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "financing_listing_action",
+              "version": 5
+            },
+            "required_action": "Return outer signal_ref exactly 'financing_listing_action:v5'; set nested result.signal_id exactly 'financing_listing_action' without a version suffix and result.version exactly 5. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "financing_listing_action:v5"
+            ],
+            "signal_ref": "financing_listing_action:v5",
+            "validation_error": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          }
+        ],
+        "native_failed_row": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                    "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                    "projection_id": "projection_296e8bd1e746dfc896b0e0fc"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.",
+                    "projection_id": "projection_c0c474aab1c5f4290ba873f0"
+                  },
+                  {
+                    "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+.",
+                    "projection_id": "projection_4c86f58846767ee98c536c00"
+                  }
+                ],
+                "supporting": []
+              },
+              "interpretation": {
+                "summary": "The visible 6-K filings for the target issuer describe only third-party portfolio share sales (Asante Gold Corporation and White Gold Corp.) and an amendment to a share purchase agreement concerning Asante Gold Corporation, plus routine results, dividend, and sustainability-report announcements. No completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing action by the target issuer is established in the eligible spans; the examined non-qualifying spans are cited as counter evidence. No directional effect on the target's runway, dilution, or tradability can be grounded."
+              },
+              "signal_id": "financing_listing_action",
+              "state": {
+                "confidence": 0.6,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              },
+              "version": 5
+            },
+            "signal_ref": "financing_listing_action:v5"
+          }
+        ]
+      }
+    ],
+    "frozen_run_hot_modified": false,
+    "failure_reclassified_as_domain": false
+  }
+}

@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v181已于2026-10-07 03:50:37真实结束，冻结90999e84、正式Fast/Slow1/1、exit0，415 attempts/$2.14415852。Registry11未变、新因子/更新均0；c02完整24但14正向幅度全2–3x且7Signal失败，c01第五案unfinalized仍diagnostic-only，Slow另1原文边界失败。方法记忆真实写入并传给Mining/Update，独立收益仍未验证。终态Reflect不可用finding按既有typed删除权限修复，原答/完整上下文0外部回放通过、1576全量PASS，未改冻结结果。magnitude七次实际读取多是封面表头且含空/重复、control错称positive；当前搜索质量不验收；最新同原文边界补充窗修复与四源核验/1584全量PASS见文末，只确认control MD&A坐标实际传输，已查明positive未被目录分页消费，实际新模型纠错和其余家族仍待继续。；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+2026-10-07 05:11：v182真实05:02:00启动，冻结85ffff9e/clean、wrapper27009/child27014实际命令核对，继承v181正式1/1及Registry11；同40案/3606源文件/预算/评分/Locked Test，准备0外部。两Plan初答/付费仅H_reflect patch/落盘逐值检查，实际采用4/5已披露refs，首Initialize技能真实传输；95brief中19可见，原hypothesis限制保留，不能当gain。首次三case库存14Signal=11success/2domain/1validation_failed；融资26/27两原答仍neutral且引用不满足version-owned必需词，纠错只将第三方portfolio处置转counter，已读完整反馈，不转成domain。两个null/一个2–3x，正式Fast/Slow仍0/0，完整内容/入库高档与独立增益未验收。169相关/1591全量58.425s/lint PASS为代码准备；原heartbeat接续，保持冻结单executor。见reports/v182-launch-and-proposer-audit-20261007.json。 v181终态1/1、415 attempts/$2.14415852、Registry11未变/0新因子，14正向全部2–3x、7Signal失败与Slow另1边界失败，原件保留。全链路目标持续active，测试、采纳或进程运行不代替验收。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -302,3 +302,9 @@
 - 初始引用只有完整逐字且在当前可见eligible窗内时才可接受；源候选只是定位，不证明经济判断。越界源读取保留32k字符/精确token预算、unique correction、原PIT/hash与accepted siblings，不增加重试。未知、跨Signal、重复、补错数字、拼句及纯不可见远处引用不授新读。两原请求完整匿名payload与原source文件SHA、重新组合的view保存/readback已通过，0新模型答。
 - 两种子目录操作均未提供next_cursor，重复第一页。控制案目录坐标912261已进入请求；正例841722只有本地卡、没有进入目录页。此处结论是未消费，不是无源或无magnitude规律。没有为了平衡label重排目录，继续尊重现有fetch relevance与family/time顺序。
 - 原attempt27 failed_responses是权威：467output tokens、JSON结构缺损，不能声称4000token截断；同request hash的后来attempt78完成缓存不是其原响应。本次未做JSON结构补全，也不把mandatory-phrase失败改成研究阴性。
+
+## v182 冻结启动与真实Proposer消费（2026-10-07 05:11）
+
+- 2026-10-07 05:11：v182真实05:02:00启动，冻结85ffff9e/clean、wrapper27009/child27014实际命令核对，继承v181正式1/1及Registry11；同40案/3606源文件/预算/评分/Locked Test，准备0外部。两Plan初答/付费仅H_reflect patch/落盘逐值检查，实际采用4/5已披露refs，首Initialize技能真实传输；95brief中19可见，原hypothesis限制保留，不能当gain。首次三case库存14Signal=11success/2domain/1validation_failed；融资26/27两原答仍neutral且引用不满足version-owned必需词，纠错只将第三方portfolio处置转counter，已读完整反馈，不转成domain。两个null/一个2–3x，正式Fast/Slow仍0/0，完整内容/入库高档与独立增益未验收。169相关/1591全量58.425s/lint PASS为代码准备；原heartbeat接续，保持冻结单executor。见reports/v182-launch-and-proposer-audit-20261007.json。
+- 第一Plan原H_reflect同时触及两个owner规则，第二触及一个；独立义务共同披露，实际两paid native patches均只replace H_reflect。B/H_init/H_analyse及4/5采用refs逐值保持；实际refs均在19 included_refs，experience_usage snapshot精确等于canonical {brief,disclosures}，与单独meta hash含义区分。首Initialize实际接收最终H_init。未把checkpoint提案当正式round，也不把一条回顾hypothesis当稳定经济规则。
+- 第一Initialize一条Basic Info quote非contiguous，sole patch按确切权限remove该证据成员。个别非数值belief可能仍无该引用，后续要审原source/State的语义；当前仅已读两Predictor和首两LLM Signal输出及明确patch，不声明完整案例内容全验收。
