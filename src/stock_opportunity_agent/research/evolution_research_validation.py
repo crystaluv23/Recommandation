@@ -2742,11 +2742,10 @@ def _validate_research_state_refs(
         for item in (previous_state.supporting_evidence if previous_state else ())
         if isinstance(item, ResearchEvidenceRef)
     }
-    previous_refs = {
-        _research_evidence_key(item): item
-        for item in (previous_state.supporting_evidence if previous_state else ())
-        if isinstance(item, ResearchEvidenceRef)
-    }
+    previous_claims: dict[str, set[str]] = {}
+    for item in (previous_state.supporting_evidence if previous_state else ()):
+        if isinstance(item, ResearchEvidenceRef):
+            previous_claims.setdefault(_research_evidence_key(item), set()).add(item.claim)
     projection_texts = _basic_projection_texts(basic_info or {})
     results = {item.ref: item for item in (batch.results if batch else ())}
     signal_claim_literals: dict[str, list[tuple[int, str]]] = {}
@@ -2779,6 +2778,7 @@ def _validate_research_state_refs(
     def reference_issue(
         index: int, item: ResearchEvidenceRef, code: str, message: str,
         *, fields: tuple[str, ...] = (), repairs: tuple[str, ...] = ("replace", "remove"),
+        repair_context: Mapping[str, Any] | None = None,
     ) -> None:
         path = f"supporting_evidence[{index}]"
         linked = tuple(
@@ -2790,7 +2790,7 @@ def _validate_research_state_refs(
             paths=tuple(f"{path}.{field}" for field in fields) if fields else (path,),
             path_policy="any" if len(fields) > 1 else "all",
             allowed_repairs=repairs, dependent_paths=linked,
-            repair_context={"authorized_member_removals": [path]},
+            repair_context={"authorized_member_removals": [path], **(repair_context or {})},
         ))
 
     for index, item in enumerate(refs):
@@ -2895,13 +2895,26 @@ def _validate_research_state_refs(
             )
             continue
         if key in previous:
-            prior = previous_refs[key]
-            if item.claim != prior.claim:
+            claims = previous_claims[key]
+            if item.claim not in claims:
+                restoration = {}
+                if len(claims) == 1:
+                    restoration = {
+                        "mechanical_action": "restore_retained_signal_claim",
+                        "prior_signal_claim": next(iter(claims)),
+                        "returned_signal_claim": item.claim,
+                        "retained_signal_tuple": {
+                            "signal_ref": item.signal_ref,
+                            "evidence_group": item.evidence_group,
+                            "evidence_index": item.evidence_index,
+                        },
+                    }
                 reference_issue(index, item, "retained_signal_claim_changed",
                     f"supporting_evidence[{index}] retained Signal claim changed from "
-                    f"{prior.claim!r} to {item.claim!r}. Copy the prior claim "
+                    f"{sorted(claims)!r} to {item.claim!r}. Copy a prior claim "
                     "byte-for-byte or remove this evidence item; its backing Signal "
                     "batch is no longer visible", fields=("claim",),
+                    repair_context=restoration,
                 )
             continue
         result = results.get(str(item.signal_ref))

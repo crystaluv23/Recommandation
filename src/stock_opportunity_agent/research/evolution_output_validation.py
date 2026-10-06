@@ -3435,6 +3435,63 @@ def _research_state_evidence_grounding_fallback(
 
     if not isinstance(failure, StructuredValidationError):
         return None
+    claim_restorations: dict[str, str] = {}
+    for issue in failure.issues:
+        if issue.code != "retained_signal_claim_changed" or not is_mechanical_issue(issue):
+            continue
+        context = issue.repair_context
+        if issue.allowed_repairs != ("replace", "remove") or len(issue.paths) != 1:
+            return None
+        match = re.fullmatch(r"supporting_evidence\[(\d+)\]\.claim", issue.paths[0])
+        evidence = failed_output.get("supporting_evidence")
+        prior_claim = context.get("prior_signal_claim")
+        returned_claim = context.get("returned_signal_claim")
+        source_tuple = context.get("retained_signal_tuple")
+        if (
+            match is None
+            or not isinstance(evidence, list)
+            or int(match.group(1)) >= len(evidence)
+            or not isinstance(prior_claim, str)
+            or not prior_claim.strip()
+            or not isinstance(returned_claim, str)
+            or not isinstance(source_tuple, Mapping)
+            or set(source_tuple) != {"signal_ref", "evidence_group", "evidence_index"}
+        ):
+            return None
+        row = evidence[int(match.group(1))]
+        if (
+            not isinstance(row, Mapping)
+            or row.get("kind") != "signal"
+            or row.get("claim") != returned_claim
+            or any(row.get(field) != value for field, value in source_tuple.items())
+        ):
+            return None
+        for path in (*issue.paths, *issue.dependent_paths):
+            if path not in issue.paths and re.fullmatch(
+                r"(?:current_beliefs|contradictions)\[\d+\]", path
+            ) is None:
+                return None
+            if _validation_path_value(failed_output, path) != returned_claim:
+                return None
+            if path in claim_restorations and claim_restorations[path] != prior_claim:
+                return None
+            claim_restorations[path] = prior_claim
+    if claim_restorations:
+        candidate = deepcopy(dict(failed_output))
+        for path, prior_claim in claim_restorations.items():
+            match = re.fullmatch(r"([A-Za-z_]+)\[(\d+)\](?:\.claim)?", path)
+            if match is None:
+                return None
+            field_name, index = match.group(1), int(match.group(2))
+            if field_name == "supporting_evidence":
+                candidate[field_name][index]["claim"] = prior_claim
+            else:
+                candidate[field_name][index] = prior_claim
+        return candidate, {
+            "normalized_paths": tuple(claim_restorations),
+            "removed_paths": (),
+            "source_substitution_paths": (),
+        }
     # Only an owning-validator instruction permits deleting this resolution.
     for issue in failure.issues:
         if issue.code != "stale_resolved_need_retained" or not is_mechanical_issue(issue):

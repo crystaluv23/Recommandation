@@ -1,0 +1,173 @@
+{
+  "schema_version": "v180-retained-claim-replay-v1",
+  "phase": "repaired",
+  "original_request_hash": "1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6",
+  "new_external_calls": 0,
+  "original_artifact_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/attempts.json": "bb08cdfb616fbdda930e0a4a409549d374543c894a00bdf3328343245b6c345f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/state.json": "6c497dda1ea81ff19e044e7cdd57db1e0b7fab237d3a494e2e8a7b5016c989f0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cycle_state.json": "bf39f4410f443f66078e41f3aeae3dce229262fda4255c986b352015174e4f86",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/experiments/round-0001/attempts/plan_r0001_c02.json": "2b13c086629f30c3b52fe1b8100d4c71238d2d250185ba369e49b2571a692fc8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/requests/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "9942a5a1dbcbb552125af4e948f84e2eac13d9ad791b7d58f9ce079c2ed512c4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/responses/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "b4e5c1156fee6879828d4e43f86269940d78f6cc60745230a4cbdd12d50843e2"
+  },
+  "usage_before_terminal_reflect": 97917,
+  "original_prediction_reservation": 79669,
+  "terminal_reflect_budget": 78414,
+  "original_terminal_reflect_usage": 13209,
+  "correction_remaining_budget": 65205,
+  "original_formal_round_cycle": [
+    0,
+    0
+  ],
+  "independent_benefit_confirmed": false,
+  "accepted": true,
+  "validated_decision": "finalize",
+  "restored_claim": "net_share_retirement_yoy=-0.0229939",
+  "restored_linked_belief": "net_share_retirement_yoy=-0.0229939",
+  "validated_evidence_count": 10,
+  "validated_evidence_refs": [
+    {
+      "kind": "basic_info",
+      "signal_ref": null,
+      "claim": "The issuer's forward-looking disclosure identifies expected supply of, demand for, exports of and prices of crude oil, natural gas, NGL, LNG, RNG and renewable energy as material assumptions underlying its outlook."
+    },
+    {
+      "kind": "basic_info",
+      "signal_ref": null,
+      "claim": "The management commentary projection is a 2025Q2 earnings call transcript, but the visible content is truncated after introductory remarks, so full management commentary on catalysts, demand, backlog, financing and guidance is not available."
+    },
+    {
+      "kind": "basic_info",
+      "signal_ref": null,
+      "claim": "The scoped news projection states that the issuer will host a conference call and webcast on November 7, 2025 to discuss 2025 third-quarter financial results and provide a business update."
+    },
+    {
+      "kind": "basic_info",
+      "signal_ref": null,
+      "claim": "The scoped news projection states that the Great Lakes Tunnel Project aims to build a new segment of the Line 5 pipeline under the Straits of Mackinac and that the issuer is awaiting a federal permit to begin construction."
+    },
+    {
+      "kind": "basic_info",
+      "signal_ref": null,
+      "claim": "The market backbone shows a recent adjusted close of 49.72 on 2025-09-29, near the high end of the visible window, so the baseline is not deeply drawn down."
+    },
+    {
+      "kind": "signal",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "claim": "The issuer sanctioned the $900 million Clear Fork project in Texas, fully contracted under a long-term offtake agreement with Meta, supporting its data center operations."
+    },
+    {
+      "kind": "signal",
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "claim": "The issuer announced the Clear Fork Solar project near San Antonio, Texas, a 600-megawatt facility designed to support data center needs, with all generation sold under a long-term offtake agreement with Meta Platforms."
+    },
+    {
+      "kind": "signal",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "claim": "net_share_retirement_yoy=-0.0229939"
+    },
+    {
+      "kind": "signal",
+      "signal_ref": "cash_reserves:v2",
+      "claim": "cash_reserves=1.203e+09"
+    },
+    {
+      "kind": "signal",
+      "signal_ref": "liquidity_runway_months:v3",
+      "claim": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow"
+    }
+  ],
+  "unchanged_hypotheses": true,
+  "validated_needs": [
+    "What did the issuer disclose by prediction_time about permit approvals, regulatory decisions or construction milestones for major projects, including the Great Lakes Tunnel Project, that could affect expected in-service timing within the horizon?",
+    "Counterparty credit quality and contract duration disclosed by prediction_time.",
+    "What did the issuer disclose by prediction_time about the scheduled November 7, 2025 third-quarter results webcast, including any pre-announced agenda, guidance range or business update topics, without requesting results published after prediction_time?",
+    "Available credit facilities, debt maturities, convertible obligations, and equity funding requirements disclosed by prediction_time.",
+    "What did the issuer disclose by prediction_time about customer concentration, counterparty credit quality or contract duration that would make a commercial catalyst more or less durable?"
+  ],
+  "state_persisted_and_reloaded": true,
+  "production_prior_context_exact": true,
+  "new_context_persisted_and_reloaded": true,
+  "new_prediction_reservation": 82110,
+  "prediction_remaining_budget": 144874,
+  "new_prediction_fits": true,
+  "model_terminal_decision_authored": true,
+  "actual_replay_usage": {
+    "llm_calls": 1,
+    "tokens": 13209
+  },
+  "diagnostic_state_path": "/Users/l/Project/Recommandation/reports/audits/v180-terminal-replay-20261007/validated-state.json",
+  "diagnostic_context_path": "/Users/l/Project/Recommandation/reports/audits/v180-terminal-replay-20261007/assembled-context.json",
+  "live_cycle_completed": false,
+  "new_prediction_generated": false,
+  "caller_attempts": 1,
+  "events": [
+    {
+      "event_type": "mechanical_repair_progress",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "normalized_paths": [
+          "supporting_evidence[7].claim",
+          "current_beliefs[7]"
+        ],
+        "removed_paths": [],
+        "source_substitution_paths": []
+      }
+    },
+    {
+      "event_type": "mechanical_repair_progress",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "source_substitution_paths": [],
+        "removed_paths": [
+          "supporting_evidence[10]"
+        ],
+        "normalized_paths": []
+      }
+    },
+    {
+      "event_type": "mechanical_repair_progress",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "source_substitution_paths": [
+          "next_information_needs"
+        ],
+        "removed_paths": []
+      }
+    },
+    {
+      "event_type": "deterministic_fallback_promoted",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "source_substitution_paths": [
+          "next_information_needs"
+        ],
+        "removed_paths": []
+      }
+    }
+  ],
+  "original_artifacts_unchanged": true,
+  "reservation_units": "conservative UTF-8 request bytes plus max output tokens; not tokenizer-measured input tokens",
+  "replayed_at": "2026-10-07T03:09:59.345431+08:00",
+  "source_sha256": {
+    "repaired": {
+      "src/stock_opportunity_agent/research/evolution_output_validation.py": "309bf09d93110362926b97507f31de6b87f5715691d97147a954908d00d4b38b",
+      "src/stock_opportunity_agent/research/evolution_research_validation.py": "cd386c89bd3c711c1ce0602fc0cbec9c2840b65863d532af94b7b1cc750af14e",
+      "src/stock_opportunity_agent/research/repair.py": "9b07ac8619a2bf5206849e112edcc0f7c274fd2354d10eeebfe6f13b67f02cad"
+    },
+    "baseline": {
+      "src/stock_opportunity_agent/research/evolution_output_validation.py": "dcda440fc3c8e38da9bb5a3c20fe875467e8204c908bb65770261248feb88847",
+      "src/stock_opportunity_agent/research/evolution_research_validation.py": "decf8a3821df1c717a79eb0aee49d1cb89a0cb459170f813d5ccc2f6c9ab2b13",
+      "src/stock_opportunity_agent/research/repair.py": "585a09e0ee266844004fcdb24d259dca06343cbf185785420ebf47b76cc874dd"
+    }
+  },
+  "diagnostic_artifact_sha256": {
+    "/Users/l/Project/Recommandation/reports/audits/v180-terminal-replay-20261007/assembled-context.json": "5fdaf6f91aca60e135ba0731d354cec86edcec3ab3072866878fb98f6c944b00",
+    "/Users/l/Project/Recommandation/reports/audits/v180-terminal-replay-20261007/validated-state.json": "c35339434c1d37a296f050d9aa7ae5b8e46e342d9e1a7982614fc9b30ee698a5"
+  }
+}

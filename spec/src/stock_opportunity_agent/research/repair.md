@@ -33,6 +33,12 @@ make all ungrounded literals mechanical; ambiguous source corrections retain
 their existing bounded LLM opportunity. Complete merged validation still owns
 acceptance and the underlying computed card remains available.
 
+Retained Signal claim restoration is mechanical only for the owning typed issue
+with `mechanical_action=restore_retained_signal_claim`. The State validator,
+not this registry, proves one distinct accepted claim at the exact source tuple.
+State fallback binds returned text and linked assertion paths to that snapshot;
+multiple prior claims or conflicting dependency replacements remain semantic.
+
 ## Verification
 
 Plan proposal `B.requests[*].source_types` is an ordered source-family set.

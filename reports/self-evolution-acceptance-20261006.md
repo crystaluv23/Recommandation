@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收，先查终态Reflect未落盘的完整链路，不按原合同盲目重启；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，提交后冻结后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -241,3 +241,12 @@
 - c02经原首答与实际typed add修正后保存，11条采用ref与snapshot持久化，不把其实际采用当收益。首案两轮执行7条Signal：6success/1validation_failed，net_share_retirement_yoy:v3已真实success；唯一预测possible/true/2–3x只是诊断产物。24expected只完成1个，fitness diagnostic_only，metrics=null；无完整F1，不能将空technical_exclusion_case_ids当零技术问题。
 - 首案终态H_reflect确实收到must_finalize=true/termination_trigger=budget_exhausted，原native patch也含replace decision→finalize，但最终保存decision=continue/state_deltas只有1条，随后预测/Posthoc保存、整体因unfinalized_case停止。病例modelusage=13calls/153302tokens。已读取前后runtime、两份Reflect原答及native权限、trajectory和控制代码；下一步须精确回放完整native merge/验证、纠错预算保留与终态落盘，确认阻断来源，不能仅看原答finalize就算完成，也不能强制替模型关闭研究。
 - 最新本地Proposer契约修复通过170相关及1559全量54.551s；未进入冻结v180，也未以运行时热改方式生效。v180原件与评分/状态保持，继续系统性调查这个新的全链路前沿；修复和完整验证后再建立冻结后继。所有三项最终标准仍未通过，独立gain未确认。
+
+## v180 终态预算、旧引文快照与预测闭包（2026-10-07 03:09）
+
+- 基线冻结a4f36f5c与新源码均使用实际terminal请求/原native答（hash `1d4730fe…fa0a6`），同一Plan/State/第二轮Signal/selections。生产RawInfoStore的完整document_catalog与实际Case匿名投影均参与，原首请求payload/system逐值一致、初次保守预留60477，不能用少catalog的mock请求代替。首答前实际usage97917、预测预留79669，terminal预算78414；首答实际13209后剩65205，纠错请求需要69529，本地拒绝、无真实第二次发送。该预留是UTF-8字节+最大输出token的保守计量，不是tokenizer实测输入或provider上下文溢出。
+- 原答自己提出decision→finalize，同时把旧net-share claim加写日期；其旧batch已不可见。原validator允许原文恢复/删除，但未向通用fallback提供唯一原文的typed快照，已有数量隔离/need恢复之后仍失败，因预算拒绝丢失整体terminal delta。没有新增预算、控制器强制finalize或经济规则。
+- 先spec后实施通用所有权恢复：完整Signal ref/group/index绑定已验收claim集合；已存在的多个distinct claim全部可保留，不以dict最后一次覆盖决定真伪。仅一个distinct prior claim才提供typed原文/返回文/原坐标并机械恢复该claim及明示同文关联断言；重复相同claim唯一，多个候选、依赖冲突、来源或返回文已变则不自动选。每次变换重跑完整parser，其他原生操作、源坐标和原始模型答保持；无依据量值、PIT内容和终态决定均不能被修复创造。
+- 新源码原答重放仅1次记录答、0新外部调用：恢复supporting_evidence[7].claim与current_beliefs[7]；沿已有规则删除不支持的customer数量claim、恢复未回答need，最终完整State校验通过，保留模型原答的finalize及cash_reserves/liquidity_runway新有效引文。有效evidence10、five needs保留。validated-state落盘重载相同；先精确重建原完整final_context，再以正常第2轮delta组装新context、落盘重载，下一盲预测预留82110<剩144874。没有生成新预测或改变v180正式0/0与历史分母。
+- [基线完整预算拒绝](v180-retained-claim-baseline-replay-20261007.json)与[修复原答/产物闭包](v180-retained-claim-repaired-replay-20261007.json)列出原件hash、typed操作和原始/修复源码hash；新State/context仅为清楚标记的本地诊断副本，不能计作live成功。5个新测试覆盖数字/定性、native补丁/预算、duplicate与distinct共坐标、过期快照、依赖冲突、保continue及无权补终态；203相关/1564全量63.262s PASS。错误测试模块名的首次selector已纠正，正式相关集与全量均通过。
+- 冻结后继仍必须实测修复采纳与完整Fast→Slow→后继Fast内容，追查剩余Signal技术失败、统计/测量语义、magnitude新入库与真实高档预测；不放宽评分/准入/PIT/Locked Test，独立增益尚未确认。

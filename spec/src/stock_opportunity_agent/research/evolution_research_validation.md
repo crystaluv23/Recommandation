@@ -293,7 +293,13 @@ aggregated; diagnostic prose never becomes write authority. An invalid Signal
 tuple permits only its coordinate fields and explicitly removing that evidence
 member, plus exact-claim linked assertions when needed. A retained Signal claim
 permits restoring that claim or removing its member, never changing another
-source identity. Evidence shape failure permits replacing/removing only that
+source identity. Retained identity is the complete Signal ref/group/index tuple.
+Every previously accepted claim at that tuple remains retainable, including
+distinct claims sharing one evidence item; dictionary overwrite order must not
+choose a claim. Only one distinct prior claim permits exact restoration, and
+the typed issue carries that claim, the returned claim and the unchanged tuple.
+Multiple distinct prior claims expose no mechanical restoration candidate.
+Evidence shape failure permits replacing/removing only that
 invalid member; deeper evidence semantics wait for a well-formed member.
 
 Removing an invalid sole remaining next-information need can require changing

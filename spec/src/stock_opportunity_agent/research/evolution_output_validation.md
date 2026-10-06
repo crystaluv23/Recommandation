@@ -97,6 +97,15 @@ recording them under normalized paths. Applicable deterministic fallbacks run be
 mechanical issues even when unrelated issues remain. Exact runtime-issued need
 restoration is mechanical. Each transform is followed by full revalidation;
 unresolved issues and transformed candidates become the next correction base.
+Restoring a changed retained Signal claim is mechanical only when its owning
+validator supplies one distinct previously accepted claim and the exact unchanged
+Signal ref/group/index tuple. Copy only that claim and explicitly named assertions
+that still equal the returned invalid claim. Bind every edit to that snapshot;
+conflicting linked replacements or ambiguous prior claims get no automatic choice.
+This preserves source identity and the model's unrelated native operations,
+including its terminal decision, and never creates a decision or new evidence.
+Full validation still decides whether that assembled state can complete.
+
 Partial progress is retained but never accepted as a valid complete object.
 A bounded visited-state loop prevents oscillation. The
 anchor-guard evidence-availability vocabulary includes bare verb forms

@@ -1,0 +1,913 @@
+{
+  "prediction_time": "2025-09-30T00:00:00+00:00",
+  "context_contract": {
+    "kind": "typed_append_only_assembly",
+    "target_utf8_bytes": 24000,
+    "budget_enforcement": "exact_wire_remaining_case_tokens",
+    "complete_trajectory_retained_locally": true,
+    "assembly_blocks": [
+      {
+        "block_type": "basic_info_cards",
+        "provenance": "projection_id"
+      },
+      {
+        "block_type": "computed_anchor",
+        "provenance": "runtime_market_computation"
+      },
+      {
+        "block_type": "computed_metrics",
+        "provenance": "runtime_market_computation"
+      },
+      {
+        "block_type": "document_channel",
+        "provenance": "runtime_pit_disclosure"
+      },
+      {
+        "block_type": "signal_results",
+        "provenance": "signal_ref"
+      },
+      {
+        "block_type": "cited_signal_evidence",
+        "provenance": "signal_evidence_ref"
+      },
+      {
+        "block_type": "state_evolution",
+        "provenance": "per_round_delta"
+      },
+      {
+        "block_type": "research_state",
+        "provenance": "runtime_validated_state"
+      },
+      {
+        "block_type": "analysis_prompt",
+        "provenance": "plan"
+      }
+    ],
+    "numeric_decision_inputs_permitted_only_in": [
+      "prediction_baseline",
+      "computed_metrics"
+    ],
+    "presentation_target_exceeded": true
+  },
+  "basic_info": {
+    "source_index": [
+      {
+        "request_id": "market_backbone",
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_7ba45f3b38a75f26f1a5cc4b",
+          "projection_8c10928c5fc8d8dee3f09258",
+          "projection_dfeb52c952db08db90a60185",
+          "projection_6f605cc20da002e68f8649d5",
+          "projection_5ed26bd6dc0079f193a28b28"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 5,
+        "visible_projection_count": 5,
+        "omitted_projection_count": 0
+      },
+      {
+        "request_id": "operating_report",
+        "source_types": [
+          "filing"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_b0b0942fa1a77f1589a556b6",
+          "projection_a3c230d92ce02a2833a934ac",
+          "projection_6d34b3787f5ea788b5ec4fe8",
+          "projection_db6103df265ff48aa4d95026",
+          "projection_02cde2d169a0999ec216206c",
+          "projection_b5c92f7312783c530c49bb7e",
+          "projection_7542db6e9f1f83009dc8edb8",
+          "projection_64e57e860f0cfba3ed4f66c1",
+          "projection_9ec57f997d9b07ed422eee0c",
+          "projection_fb32b971497ce4f2ae973ae6",
+          "projection_5ebcd18cd9f6266099e63f56",
+          "projection_ca38e1956bc41708c41b6017",
+          "projection_0dccfffaa5cdd94730064ea6",
+          "projection_d085527528dc65c622924ae2"
+        ],
+        "projection_status": "partial_context_budget",
+        "available_projection_count": 17,
+        "visible_projection_count": 14,
+        "omitted_projection_count": 3
+      },
+      {
+        "request_id": "management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_630eceed585af76d1648a3b2"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 1,
+        "visible_projection_count": 1,
+        "omitted_projection_count": 0
+      },
+      {
+        "request_id": "scoped_news",
+        "source_types": [
+          "news",
+          "company_news"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_bb02594dcdbf73136959f705",
+          "projection_b7e5942a49a01763223440e5"
+        ],
+        "projection_status": "partial_context_budget",
+        "available_projection_count": 3,
+        "visible_projection_count": 2,
+        "omitted_projection_count": 1
+      },
+      {
+        "request_id": "financial_facts",
+        "source_types": [
+          "financials",
+          "sec_company_facts"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_c717c5658c1151cf812b25a1"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 1,
+        "visible_projection_count": 1,
+        "omitted_projection_count": 0
+      }
+    ],
+    "data_gaps": [],
+    "projection_cards": [
+      {
+        "request_id": "market_backbone",
+        "projection_id": "projection_7ba45f3b38a75f26f1a5cc4b",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:e2877860464df963e4843917",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":46.2,\"as_of_date\":\"2025-08-01\",\"close\":46.2,\"high\":46.21,\"low\":45.11,\"open\":45.8, \"volume\":4571180},{\"adjusted_close\":46.62,\"as_of_date\":\"2025-08-04\",\"close\":46.62,\"high\":46.675,\"low\":46.08,\"open\":46.1, \"volume\":2464741},{\"adjusted_close\":46.74,\"as_of_date\":\"2025-08-05\",\"close\":46.74,\"high\":47.42,\"low\":46.5734,\"open\":46.65, \"volume\":4258880},{\"adjusted_close\":47.01,\"as_of_date\":\"2025-08-06\",\"close\":47.01,\"high\":47.05,\"low\":46.36,\"open\":46.92, \"volume\":4017623},{\"adjusted_close\":47.08,\"as_of_date\":\"2025-08-07\",\"close\":47.08,\"high\":47.205,\"low\":46.68,\"open\":47.02, \"volume\":3221977},{\"adjusted_close\":46.99,\"as_of_date\":\"2025-08-08\",\"close\":46.99,\"high\":47.335,\"low\":46.99,\"open\":47.08, \"volume\":2387218},{\"adjusted_close\":47.49,\"as_of_date\":\"2025-08-11\",\"close\":47.49,\"high\":47.62,\"low\":46.97,\"open\":47.04, \"volume\":3757050},{\"adjusted_close\":47.32,\"as_of_date\":\"2025-08-12\",\"close\":47.32,\"high\":47.605,\"low\":47.075,\"open\":47.51, \"volume\":3968571},{\"adjusted_close\":47.68,\"as_of_date\":\"2025-08-13\",\"close\":47.68,\"high\":47.88,\"low\":47.29,\"open\":47.39, \"volume\":10222512}",
+        "truncated": false
+      },
+      {
+        "request_id": "market_backbone",
+        "projection_id": "projection_8c10928c5fc8d8dee3f09258",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:e2877860464df963e4843917",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":48.18,\"as_of_date\":\"2025-08-14\",\"close\":48.18,\"high\":48.21,\"low\":47.57,\"open\":47.71, \"volume\":3570082},{\"adjusted_close\":47.04,\"as_of_date\":\"2025-08-15\",\"close\":47.04,\"high\":47.65,\"low\":46.93,\"open\":47.49, \"volume\":4290189},{\"adjusted_close\":46.67,\"as_of_date\":\"2025-08-18\",\"close\":46.67,\"high\":47.04,\"low\":46.67,\"open\":46.99, \"volume\":2543000},{\"adjusted_close\":47.19,\"as_of_date\":\"2025-08-19\",\"close\":47.19,\"high\":47.315,\"low\":46.5,\"open\":46.65, \"volume\":3366706},{\"adjusted_close\":48.03,\"as_of_date\":\"2025-08-20\",\"close\":48.03,\"high\":48.2,\"low\":47.33,\"open\":47.35, \"volume\":4189744},{\"adjusted_close\":47.94,\"as_of_date\":\"2025-08-21\",\"close\":47.94,\"high\":48.16,\"low\":47.77,\"open\":47.79, \"volume\":3823783},{\"adjusted_close\":47.97,\"as_of_date\":\"2025-08-22\",\"close\":47.97,\"high\":48.29,\"low\":47.9,\"open\":47.98, \"volume\":5030264},{\"adjusted_close\":47.6,\"as_of_date\":\"2025-08-25\",\"close\":47.6,\"high\":47.96,\"low\":47.585,\"open\":47.93, \"volume\":4696159},{\"adjusted_close\":47.44,\"as_of_date\":\"2025-08-26\",\"close\":47.44,\"high\":47.85,\"low\":47.09,\"open\":47.69, \"volume\":3285763}",
+        "truncated": false
+      },
+      {
+        "request_id": "market_backbone",
+        "projection_id": "projection_dfeb52c952db08db90a60185",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:e2877860464df963e4843917",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":47.61,\"as_of_date\":\"2025-08-27\",\"close\":47.61,\"high\":47.83,\"low\":47.25,\"open\":47.49, \"volume\":3359774},{\"adjusted_close\":47.81,\"as_of_date\":\"2025-08-28\",\"close\":47.81,\"high\":47.95,\"low\":47.4101,\"open\":47.65, \"volume\":2754140},{\"adjusted_close\":48.34,\"as_of_date\":\"2025-08-29\",\"close\":48.34,\"high\":48.59,\"low\":47.8,\"open\":47.89, \"volume\":3529482},{\"adjusted_close\":48.3,\"as_of_date\":\"2025-09-02\",\"close\":48.3,\"high\":48.45,\"low\":47.9424,\"open\":48.0, \"volume\":3762404},{\"adjusted_close\":48.32,\"as_of_date\":\"2025-09-03\",\"close\":48.32,\"high\":48.51,\"low\":47.97,\"open\":48.25, \"volume\":2880093},{\"adjusted_close\":48.16,\"as_of_date\":\"2025-09-04\",\"close\":48.16,\"high\":48.5664,\"low\":48.09,\"open\":48.46, \"volume\":2616066},{\"adjusted_close\":48.26,\"as_of_date\":\"2025-09-05\",\"close\":48.26,\"high\":48.43,\"low\":47.96,\"open\":48.33, \"volume\":2668598},{\"adjusted_close\":48.32,\"as_of_date\":\"2025-09-08\",\"close\":48.32,\"high\":48.68,\"low\":48.0425,\"open\":48.41, \"volume\":2125518},{\"adjusted_close\":48.33,\"as_of_date\":\"2025-09-09\",\"close\":48.33,\"high\":48.6366,\"low\":48.13,\"open\":48.16, \"volume\":2634804}",
+        "truncated": false
+      },
+      {
+        "request_id": "market_backbone",
+        "projection_id": "projection_6f605cc20da002e68f8649d5",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:e2877860464df963e4843917",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":48.59,\"as_of_date\":\"2025-09-10\",\"close\":48.59,\"high\":48.64,\"low\":48.33,\"open\":48.35, \"volume\":2876895},{\"adjusted_close\":48.81,\"as_of_date\":\"2025-09-11\",\"close\":48.81,\"high\":48.815,\"low\":48.44,\"open\":48.68, \"volume\":1972530},{\"adjusted_close\":49.1,\"as_of_date\":\"2025-09-12\",\"close\":49.1,\"high\":49.11,\"low\":48.74,\"open\":48.74, \"volume\":2011776},{\"adjusted_close\":49.06,\"as_of_date\":\"2025-09-15\",\"close\":49.06,\"high\":49.16,\"low\":48.735,\"open\":49.1, \"volume\":2052349},{\"adjusted_close\":48.89,\"as_of_date\":\"2025-09-16\",\"close\":48.89,\"high\":49.21,\"low\":48.865,\"open\":49.15, \"volume\":4127472},{\"adjusted_close\":49.11,\"as_of_date\":\"2025-09-17\",\"close\":49.11,\"high\":49.355,\"low\":48.9,\"open\":48.91, \"volume\":3646269},{\"adjusted_close\":49.12,\"as_of_date\":\"2025-09-18\",\"close\":49.12,\"high\":49.215,\"low\":48.68,\"open\":48.99, \"volume\":2307525},{\"adjusted_close\":49.46,\"as_of_date\":\"2025-09-19\",\"close\":49.46,\"high\":49.55,\"low\":49.035,\"open\":49.35, \"volume\":3096344},{\"adjusted_close\":49.19,\"as_of_date\":\"2025-09-22\",\"close\":49.19,\"high\":49.6,\"low\":49.19,\"open\":49.49, \"volume\":3259032}",
+        "truncated": false
+      },
+      {
+        "request_id": "market_backbone",
+        "projection_id": "projection_5ed26bd6dc0079f193a28b28",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:e2877860464df963e4843917",
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":49.6,\"as_of_date\":\"2025-09-23\",\"close\":49.6,\"high\":49.82,\"low\":49.015,\"open\":49.26, \"volume\":3391575},{\"adjusted_close\":49.98,\"as_of_date\":\"2025-09-24\",\"close\":49.98,\"high\":50.1454,\"low\":49.54,\"open\":49.54, \"volume\":4209552},{\"adjusted_close\":49.57,\"as_of_date\":\"2025-09-25\",\"close\":49.57,\"high\":50.12,\"low\":49.3,\"open\":49.95, \"volume\":3944924},{\"adjusted_close\":49.59,\"as_of_date\":\"2025-09-26\",\"close\":49.59,\"high\":49.99,\"low\":49.43,\"open\":49.82, \"volume\":3213106},{\"adjusted_close\":49.72,\"as_of_date\":\"2025-09-29\",\"close\":49.72,\"high\":49.84,\"low\":49.41,\"open\":49.6, \"volume\":2411012}",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_b0b0942fa1a77f1589a556b6",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-Q ☒ QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the quarterly period ended June 30, 2025 OR ☐ TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the transition period from to Commission file number 001-15254 [MASKED_COMPANY]. (Exact Name of Registrant as Specified in Its Charter) Canada 98-0377957 (State or Other Jurisdiction of Incorporation or Organization) (I.R.S. Employer Identification No.) 200, 425 - 1st Street S.W. Calgary , Alberta , Canada T2P 3L8 (Address of Principal Executive Offices) (Zip Code) ( 403 ) 231-3900 (Registrant’s Telephone Number, Including Area Code) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Shares [MASKED_COMPANY] New York Stock Exchange Indicate by check mark whether the registrant: (1) has filed all reports required to be filed by Section 13 or 15(d) of the Securities Exchange Act of 1934 during the preceding 12 months (or for such shorter perio d that the registrant was required to file such reports), and (2) has been subject to such filing requirements for the past 90 days. Yes ☒ No ☐ Indicate by check mark whether the registrant has submitted electronically every Interactive Data File required to be submitted pursuant to Rule 405 of Regulation S-T (§232.405 of this chapter) during the preceding 12 months (or for such shorter period that the registrant was required to submit such fil es). Yes ☒ No ☐ Indicate by check mark whether the registrant is a large accelerated filer, an accelerated filer, a non-accelerated filer, a smaller reporting company, or an emerging growth company.",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_a3c230d92ce02a2833a934ac",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "#9746; No ☐ Indicate by check mark whether the registrant is a large accelerated filer, an accelerated filer, a non-accelerated filer, a smaller reporting company, or an emerging growth company. See the definitions of “large accelerated filer,” “accelerated filer,” “smaller reporting company,” and “emerging growth company” in Rule 12b-2 of the Exchange Act. Large accelerated filer ☒ Accelerated filer ☐ Non-accelerated filer ☐ Smaller reporting company ☐ Emerging growth company ☐ If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act. ☐ Indicate by check mark whether the registrant is a shell company (as defined in Rule 12b-2 of the Excha nge Act). Yes ☐ No ☒ The registrant had 2,180,514,839 common shares outstanding as at July 25, 2025. PART I PAGE Item 1. Financial Statements 6 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 40 Item 3. Quantitative and Qualitative Disclosures About Market Risk 60 Item 4. Controls and Procedures 60 PART II Item 1. Legal Proceedings 61 Item 1A. Risk Factors 61 Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 62 Item 3. Defaults Upon Senior Securities 62 Item 4. Mine Safety Disclosures 62 Item 5. Other Information 62 Item 6. Exhibits 63 Signatures 64 2 GLOSSARY \"we\", \"our\", \"us\" and \"[MASKED_COMPANY]\" [MASKED_COMPANY]. 6th Circuit the 6th Circuit Court of Appeals AOCI Accumulated other comprehensive income/(loss) BC British Columbia DAPL Dakota Access Pipeline DCP DCP Midstream, LP EBITDA Earn",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_6d34b3787f5ea788b5ec4fe8",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "nbridge\" [MASKED_COMPANY]. 6th Circuit the 6th Circuit Court of Appeals AOCI Accumulated other comprehensive income/(loss) BC British Columbia DAPL Dakota Access Pipeline DCP DCP Midstream, LP EBITDA Earnings before interest, income taxes and depreciation and amortization EEP [MASKED_COMPANY] Energy Partners, L.P. EIS Environmental Impact Statement [MASKED_COMPANY] Gas Ontario [MASKED_COMPANY] Gas Inc. EOG The East Ohio Gas Company Exchange Act United States Securities Exchange Act of 1934, as amended FERC Federal Energy Regulatory Commission NRGreen NRGreen Power Limited Partnership OCI Other comprehensive income/(loss) OEB Ontario Energy Board OPEB Other postretirement benefit obligations Questar Questar Gas Company ROE Return on Equity SEP Spectra Energy Partners, LP the District Court the US Court for the District of Columbia the Guaranteed [MASKED_COMPANY] Notes [MASKED_COMPANY]'s outstanding guaranteed notes the Ohio Commission the Public Utilities Commission of Ohio the Partnerships Spectra Energy Partners, LP and [MASKED_COMPANY] Energy Partners, L.P. the Questar Acquisition [MASKED_COMPANY].'s acquisition of all of the membership interests of Fall West Holdco LLC which owns 100% of Questar Gas Company and its related Wexpro companies on May 31, 2024 the Whistler Parent JV the joint venture formed by [MASKED_COMPANY]., WhiteWater/I Squared Capital and MPLX LP on May 29, 2024 Tomorrow RNG Six Morrow Renewables operating landfill gas-to-renewable natural gas production facilities US United States of America US District Court the US District Court in the Western District of Michigan US Gas Utilities / the Acquisitions [MASKED_COMPANY].'s acquisitions of three US gas utilities from Dominion Energy, Inc. Vector Vector Pipeline L.P. Wexpro Wexpro Company and its consolidated subsidiaries 3 CONVENTIONS The terms \"we\", \"our\", \"us\" and \"[MASKED_COMPANY]\" as used in this report refer collectively to [MASKED_COMPANY]. and its subsidiaries unless the context suggests otherwise. These terms are used for conveni",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_db6103df265ff48aa4d95026",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "#160; The terms \"we\", \"our\", \"us\" and \"[MASKED_COMPANY]\" as used in this report refer collectively to [MASKED_COMPANY]. and its subsidiaries unless the context suggests otherwise. These terms are used for convenience only and are not intended as a precise description of any separate legal entity within [MASKED_COMPANY]. Unless otherwise specified, all dollar amounts are expressed in Canadian dollars, all references to \"dollars\" or \"$\" are to Canadian dollars and all references to \"US$\" are to United States (US) dollars. All amounts are provided on a before-tax basis, unless otherwise stated. FORWARD-LOOKING INFORMATION Forward-looking information, or forward-looking statements, have been included in this quarterly report on Form 10-Q to provide information about us and our subsidiaries and affiliates, including management’s assessment of our and our subsidiaries’ future plans and operations. This information may not be appropriate for other purposes. Forward-looking statements are typically identified by words such as \"anticipate\", \"believe\", \"estimate\", \"expect\", \"forecast\", \"intend\", \"likely\", \"plan\", \"project\", \"target\" and similar words suggesting future outcomes or statements regarding an outlook. Forward-looking information or statements included or incorporated by reference in this document include, but are not limited to, statements with respect to the following: our corporate vision and strategy, including strategic priorities and enablers; expected supply of, demand for, exports of and prices of crude oil, natural gas, natural gas liquids (NGL), liquefied natural gas (LNG), renewable natural gas (RNG) and renewable energy; energy transition and lower-carbon energy, and our approach thereto; environmental, social, governance and sustainability goals, practices and performance; industry and market conditions; anticipated utilization of our assets; dividend growth and payout policy; financial strength and flexibility; expectations on sources of l",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_02cde2d169a0999ec216206c",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "s, practices and performance; industry and market conditions; anticipated utilization of our assets; dividend growth and payout policy; financial strength and flexibility; expectations on sources of liquidity and sufficiency of financial resources; expected strategic priorities and performance of the Liquids Pipelines, Gas Transmission, Gas Distribution and Storage and Renewable Power Generation businesses; the characteristics, anticipated benefits, financing and timing of our acquisitions, dispositions and other transactions, including the anticipated benefits of the acquisitions of three US gas utilities (US Gas Utilities) from Dominion Energy, Inc. (the Acquisitions); expected future actions of regulators and courts, government trade policies, as well as possible impacts of potential and announced tariffs, duties, fees, economic sanctions, or other trade measures and the timing thereof; expected costs, benefits and in-service dates related to announced projects and projects under construction; expected capital expenditures; investable capacity and capital allocation priorities; expected equity funding requirements for our commercially secured growth program; expected future growth, development and expansion opportunities; expected optimization and efficiency opportunities; expectations about our joint venture partners’ ability to complete and finance projects under construction; our ability to successfully integrate the US Gas Utilities; expected closing of acquisitions, dispositions and other transactions and the timing thereof; toll and rate cases discussions and proceedings and anticipated outcomes, timelines and impacts therefrom, including those relating to the Gas Transmission and Gas Distribution and Storage businesses; operational, industry, regulatory, climate change and other risks associated with our businesses; and our assessment of the potential impact of the various risk factors identified herein. Although we believe these forward-looki",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_b5c92f7312783c530c49bb7e",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "climate change and other risks associated with our businesses; and our assessment of the potential impact of the various risk factors identified herein. Although we believe these forward-looking statements are reasonable based on the information available on the date such statements are made and processes used to prepare the information, such statements are not guarantees of future performance and readers are cautioned against placing undue reliance on forward-looking statements. By their nature, these statements involve a variety of assumptions, known and unknown risks and uncertainties and other factors, which may cause actual results, levels of activity and achievements to differ materially from those expressed or implied by such statements. Material assumptions include assumptions about the following: the expected supply of, demand for, export of and prices of crude oil, natural gas, NGL, LNG, RNG and renewable energy; anticipated utilization of assets; exchange rates; inflation; interest rates; tariffs and trade policies; availability and price of labor and construction materials; the stability of our supply chain; operational reliability; maintenance of support and regulatory approvals for our projects and transactions; anticipated in-service dates; weather; the timing, terms and closing of acquisitions, dispositions and other transactions; the realization of anticipated benefits of transactions, including the Acquisitions; governmental legislation; litigation; estimated future dividends and impact of our dividend policy on our future cash flows; our credit ratings; capital project funding; hedging program; expected earnings before interest, income taxes and depreciation and amortization (EBITDA); expected earnings/(loss); expected future cash flows; and expected distributable cash flow. Assumptions regarding the expected supply of and demand for crude oil, natural gas, NGL, LNG, RNG and renewable energy, and the prices of these commodities, are materi",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_7542db6e9f1f83009dc8edb8",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "xpected distributable cash flow. Assumptions regarding the expected supply of and demand for crude oil, natural gas, NGL, LNG, RNG and renewable energy, and the prices of these commodities, are material to and underlie all forward-looking statements, as they may impact current and future levels of demand for our services. Similarly, exchange rates, inflation, interest rates and tariffs impact the economies and business environments in which we operate and may impact levels of demand for our services and cost of inputs, and are therefore inherent in all forward-looking statements. The most relevant assumptions associated with forward-looking statements regarding 4 announced projects and projects under construction, including estimated completion dates and expected capital expenditures, include the following: the availability and price of labor and construction materials; the stability of our supply chain; the effects of inflation and foreign exchange rates on labor and material costs; the effects of interest rates on borrowing costs; the impact of weather and customer, government, court and regulatory approvals on construction and in-service schedules and cost recovery regimes. Our forward-looking statements are subject to risks and uncertainties pertaining to the successful execution of our strategic priorities; operating performance; legislative and regulatory parameters; litigation; acquisitions, dispositions and other transactions and the realization of anticipated benefits therefrom (including the anticipated benefits from the Acquisitions); evolving government trade policies, including potential and announced tariffs, duties, fees, economic sanctions or other trade measures; operational dependence on third parties; dividend policy; project approval and support; renewals of rights-of-way; weather; economic and competitive conditions; public opinion; changes in tax laws and tax rates; exchange rates; inflation; interest rates; commodit",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_64e57e860f0cfba3ed4f66c1",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "ct approval and support; renewals of rights-of-way; weather; economic and competitive conditions; public opinion; changes in tax laws and tax rates; exchange rates; inflation; interest rates; commodity prices; access to and cost of capital; our ability to maintain adequate insurance in the future at commercially reasonable rates and terms; political decisions; global geopolitical conditions; and the supply of, demand for and prices of commodities and other alternative energy, including but not limited to, those risks and uncertainties discussed in this quarterly report on Form 10-Q and in our other filings with Canadian and US securities regulators. The impact of any one assumption, risk, uncertainty or factor on a particular forward-looking statement is not determinable with certainty as these are interdependent and our future course of action depends on management’s assessment of all information available at the relevant time. Except to the extent required by applicable law, [MASKED_COMPANY] assumes no obligation to publicly update or revise any forward-looking statement made in this quarterly report on Form 10-Q or otherwise, whether as a result of new information, future events or otherwise. All forward-looking statements, whether written or oral, attributable to us or persons acting on our behalf, are expressly qualified in their entirety by these cautionary statements. NON-GAAP AND OTHER FINANCIAL MEASURES Part I. Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations (MD&A) in this quarterly report on Form 10-Q makes reference to non-GAAP and other financial measures, including EBITDA. EBITDA is defined as earnings before interest, income taxes and depreciation and amortization. Management uses EBITDA to assess performance of [MASKED_COMPANY] and to set targets. Management believes the presentation of EBITDA gives useful information to investors as it provides increased transparency and insight into the per",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_9ec57f997d9b07ed422eee0c",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "o assess performance of [MASKED_COMPANY] and to set targets. Management believes the presentation of EBITDA gives useful information to investors as it provides increased transparency and insight into the performance of [MASKED_COMPANY]. The non-GAAP and other financial measures are not measures that have a standardized meaning prescribed by the accounting principles generally accepted in the United States of America (US GAAP) and are not US GAAP measures. Therefore, these measures may not be comparable with similar measures presented by other issuers. A reconciliation of historical non-GAAP and other financial measures to the most directly comparable GAAP measures is set out in this MD&A and is available on our website. Additional information on non-GAAP and other financial measures may be found on our website, www.sedarplus.ca or www.sec.gov . 5 PART I - FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS [MASKED_COMPANY]. CONSOLIDATED S TATEMENTS OF EARNINGS Three months ended June 30, Six months ended June 30, 2025 2024 2025 2024 (unaudited; millions of Canadian dollars, except per share amounts) Operating revenues Commodity sales 8,124 5,291 17,673 9,436 Gas distribution sales 1,763 1,208 5,462 3,169 Transportation and other services 4,989 4,837 10,243 9,769 Total operating revenues (Note 3) 14,876 11,336 33,378 22,374 Operating expenses Commodity costs 8,008 5,173 17",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_fb32b971497ce4f2ae973ae6",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "33,378 22,374 Operating expenses Commodity costs 8,008 5,173 17,343 9,179 Gas distribution costs 548 309 2,164 1,303 Operating and administrative 2,310 2,308 4,781 4,442 Depreciation and amortization 1,391 1,273 2,799 2,466 Impairment of long-lived assets (Note 4) 330 — 330 — Total operating expenses 12,587 9,063 27,417 17,390 Operating income 2,289 2,273 5,961 4,984 Income from equity investments 510 489 1,239 1,185 Gain on disposition of equity investments (Note 6) — 1,091 — 1,091 Other income/(expense) (Note 12) 1,369 ( 31 ) 1,489 ( 582 ) Interest expense ( 1,181 ) ( 1,082 ) ( 2,515 ) ( 1,987 ) Earnings before income taxes 2,987 2,740 6,174 4,691 Income tax expense ( 666 ) ( 739 ) ( 1,363 ) ( 1,125 ) Earnings 2,321 2,001 4,811 3,566 Earnings attributable to noncontrolling interests ( 42 ) ( 58 ) ( 168 ) ( 111 ) Earnings attributable to controlling interests 2,279 1,943 4,643 3,455 Preference share dividends ( 102 ) ( 95 ) ( 205 ) ( 188 ) Ear",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_5ebcd18cd9f6266099e63f56",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "table to controlling interests 2,279 1,943 4,643 3,455 Preference share dividends ( 102 ) ( 95 ) ( 205 ) ( 188 ) Earnings attributable to common shareholders 2,177 1,848 4,438 3,267 Earnings per common share attributable to common shareholders (Note 5) 1.00 0.86 2.04 1.53 Diluted earnings per common share attributable to common shareholders (Note 5) 1.00 0.86 2.03 1.53 The accompanying notes are an integral part of these interim consolidated financial statements. 6 [MASKED_COMPANY]. CONSOLIDATED STATEMENT S OF COMPREHENSIVE INCOME Three months ended June 30, Six months ended June 30, 2025 2024 2025 2024 (unaudited; millions of Canadian dollars) Earnings 2,321 2,001 4,811 3,566 Other comprehensive income/(loss), net of tax Change in unrealized gain/(loss) on cash flow hedges 11 12 ( 14 ) 128 Gain/(loss) on net investment hedges (Note 10) 447 ( 161 ) 413 ( 538 ) Other comprehensive income from equity investees and other investments 9 2 21 1 Excluded components of fair value hedges 10 — 14 4 Reclassification to earnings of loss on cash flow hedges 8 9 14 9 Reclassification to earnings of pension and other postretirement benefits (OPEB) amounts ( 6 ) ( 5 ) ( 13 ) ( 9 ) Reclassif",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_ca38e1956bc41708c41b6017",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "9 14 9 Reclassification to earnings of pension and other postretirement benefits (OPEB) amounts ( 6 ) ( 5 ) ( 13 ) ( 9 ) Reclassification of actuarial gain on pension and OPEB from regulatory assets 49 — 49 — Foreign currency translation adjustments ( 3,534 ) 727 ( 3,415 ) 2,385 Other comprehensive income/(loss), net of tax ( 3,006 ) 584 ( 2,931 ) 1,980 Comprehensive income/(loss) ( 685 ) 2,585 1,880 5,546 Comprehensive (income)/loss attributable to noncontrolling interests 20 ( 72 ) ( 108 ) ( 160 ) Comprehensive income/(loss) attributable to controlling interests ( 665 ) 2,513 1,772 5,386 Preference share dividends ( 102 ) ( 95 ) ( 205 ) ( 188 ) Comprehensive income/(loss) attributable to common shareholders ( 767 ) 2,418 1,567 5,198 The accompanying notes are an integral part of these interim consolidated financial statements. 7 [MASKED_COMPANY]. CONSOLIDATED STATEMEN TS OF CHANGES IN EQUITY Three months ended June 30, Six months ended June 30, 2025 2024 2025 2024 (unaudited; millions of Canadian dollars, except per share amounts) Preference shares Balance at beginning and end of period 6,818 6,818 6,818 6,818 Common shares Balance at beginning of period 71,808 69,201",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_0dccfffaa5cdd94730064ea6",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "6,818 6,818 Common shares Balance at beginning of period 71,808 69,201 71,738 69,180 Shares issued, net of issue costs (Note 8) — 2,489 — 2,489 Shares issued on exercise of stock options 14 1 46 5 Shares issued on vesting of restricted stock units (RSU), net of tax 1 7 39 24 Balance at end of period 71,823 71,698 71,823 71,698 Additional paid-in capital Balance at beginning of period 229 274 275 268 Stock-based compensation 11 21 60 53 Stock options exercised ( 13 ) ( 1 ) ( 40 ) ( 5 ) Vested RSUs ( 1 ) ( 22 ) ( 69 ) ( 44 ) Balance at end of period 226 272 226 272 Deficit Balance at beginning of period ( 17,785 ) ( 15,696 ) ( 20,046 ) ( 17,115 ) Earnings attributable to controlling interests 2,279 1,943 4,643 3,455 Preference share dividends ( 102 ) ( 95 ) ( 205 ) ( 188 ) Common share dividends declared ( 2,055 ) ( 1,946 ) ( 2,055 ) ( 1,946 ) Balan",
+        "truncated": false
+      },
+      {
+        "request_id": "operating_report",
+        "projection_id": "projection_d085527528dc65c622924ae2",
+        "document_id": "sec:[MASKED_COMPANY]:000095017025101102",
+        "available_at": "2025-08-01T11:02:37+00:00",
+        "exact_text": "e dividends ( 102 ) ( 95 ) ( 205 ) ( 188 ) Common share dividends declared ( 2,055 ) ( 1,946 ) ( 2,055 ) ( 1,946 ) Balance at end of period ( 17,663 ) ( 15,794 ) ( 17,663 ) ( 15,794 ) Accumulated other comprehensive income (Note 9) Balance at beginning of period 7,188 3,664 7,115 2,303 Other comprehensive income/(loss) attributable to common shareholders, net of tax ( 2,944 ) 570 ( 2,871 ) 1,931 Balance at end of period 4,244 4,234 4,244 4,234 Total [MASKED_COMPANY]. shareholders' equity 65,448 67,228 65,448 67,228 Noncontrolling interests Balance at beginning of period 3,022 3,042 2,993 3,029 Earnings attributable to noncontrolling interests 42 58 168 111 Other comprehensive income/(loss) attributable to noncontrolling interests, net of tax Change in unrealized gain/(loss) on cash flow hedges ( 2 ) 2 ( 1 ) 8 Foreign currency translation adjustments ( 60 ) 12 ( 59 ) 41 ( 62 ) 14 ( 60 ) 49 Comprehensive income/(loss) attributable to noncontrolling interests ( 20 ) 72 108",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_630eceed585af76d1648a3b2",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:1671fd0384ab41adb0c9f05d",
+        "available_at": "2025-08-02T00:00:00+00:00",
+        "exact_text": "{\"quarter\":\"2025Q2\",\"symbol\":\"[MASKED_COMPANY]\",\"transcript\":[{\"content\":\"Good morning, and welcome to the [MASKED_COMPANY]. Second Quarter 2025 Financial Results Conference Call. My name is Rebecca Morley, and I'm the Vice President of Investor Relations and Insurance. Joining me this morning are Greg Ebel, President and CEO; Pat Murray, Executive Vice President and Chief Financial Officer; and the heads of each of our business units: Colin Gruending, Liquids Pipelines; Cynthia Hansen, Gas Transmission; Michele Harradence, Gas Distribution and Storage; and Matthew Akman, Renewable Power. Please note, this conference is being recorded. As per usual, this call is being webcast, and I encourage those listening on the phone to follow along with the supporting slides. We'll try to keep the call to roughly 1 hour. In order to answer as many questions as possible, we will be limiting questions to one plus a single follow-up, if necessary. We'll be prioritizing questions from the investment community. So if you are a member of the media, please direct your inquiries to our communications team, who will be happy to respond. Our Investor Relations team will be available following the call for any follow-up questions. On to Slide 2, where I will remind you that we will be referring to forward-looking information on today's presentation and Q&A. By its nature, this information contains forecast assumptions and expectations about future outcomes, which are subject to the risks and uncertainties outlined here and discussed more fully in our public disclosure filings. We'll also be referring to non-GAAP measures summarized below. And with that, I'll turn it over to Greg Ebel.\",\"sentiment\":\"0.6\",\"speaker\":\"Rebecca Morley\",\"title\":\"Vice President of Investor Relations and Insurance\"},{\"content\":\"Well, thanks very much, Rebecca, and good morning, and thank you all for joining us on the call today. I'm excited to share another strong quarter and highlight the progress we've made across all segments o",
+        "truncated": false
+      },
+      {
+        "request_id": "scoped_news",
+        "projection_id": "projection_bb02594dcdbf73136959f705",
+        "document_id": "avnews_5737fae2ae710d628184d95e",
+        "available_at": "2025-09-26T17:31:08+00:00",
+        "exact_text": "[MASKED_COMPANY]. to Host Webcast to Discuss 2025 Third Quarter Results on November 7 [MASKED_COMPANY]. announced it will host a conference call and webcast on November 7, 2025, at 7 a.m. MT (9 a.m. ET) to discuss its 2025 third-quarter financial results and provide a business update. The event will include remarks from the executive team followed by a Q&A session for analysts and investors. [MASKED_COMPANY] will release its financial results before market open on the same day.",
+        "truncated": false
+      },
+      {
+        "request_id": "scoped_news",
+        "projection_id": "projection_b7e5942a49a01763223440e5",
+        "document_id": "avnews_2b72638846fbad3c8fd88676",
+        "available_at": "2025-09-24T00:00:00+00:00",
+        "exact_text": "New generation of tunneling is safe, proven [MASKED_COMPANY]'s Great Lakes Tunnel Project aims to build a new segment of the Line 5 pipeline under the Straits of Mackinac using advanced tunneling technology. The article highlights the safety and proven nature of modern tunnel boring machines (TBMs), citing numerous successful projects globally and detailing how this technology will improve energy delivery and potentially other utilities in Michigan. [MASKED_COMPANY] is awaiting a federal permit to begin construction, emphasizing the project's importance for Michigan residents and the region.",
+        "truncated": false
+      },
+      {
+        "request_id": "financial_facts",
+        "projection_id": "projection_c717c5658c1151cf812b25a1",
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:29313431393c008179f4d74e",
+        "available_at": "2025-08-01T00:00:00+00:00",
+        "exact_text": "{\"cik\":895728,\"entityName\":\"[MASKED_COMPANY].\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001104659-13-011253\",\"end\":\"2012-12-31\",\"filed\":\"2013-02-15\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2012Q4I\",\"fy\":2012,\"val\":805088607},{\"accn\":\"0001104659-13-065546\",\"end\":\"2013-06-30\",\"filed\":\"2013-08-22\",\"form\":\"6-K/A\",\"fp\":\"Q2\",\"frame\":\"CY2013Q2I\",\"fy\":2013,\"val\":825702397},{\"accn\":\"0001104659-14-010428\",\"end\":\"2013-12-31\",\"filed\":\"2014-02-14\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2013Q4I\",\"fy\":2013,\"val\":831107036},{\"accn\":\"0001104659-14-063983\",\"end\":\"2014-06-30\",\"filed\":\"2014-08-29\",\"form\":\"6-K\",\"fp\":\"Q2\",\"frame\":\"CY2014Q2I\",\"fy\":2014,\"val\":845030196},{\"accn\":\"0001104659-15-012174\",\"end\":\"2014-12-31\",\"filed\":\"2015-02-19\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2014Q4I\",\"fy\":2014,\"val\":851644421},{\"accn\":\"0001104659-15-062298\",\"end\":\"2015-06-30\",\"filed\":\"2015-08-28\",\"form\":\"6-K\",\"fp\":\"Q2\",\"frame\":\"CY2015Q2I\",\"fy\":2015,\"val\":860079695},{\"accn\":\"0001104659-16-098507\",\"end\":\"2015-12-31\",\"filed\":\"2016-02-19\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2015Q4I\",\"fy\":2015,\"val\":867612878},{\"accn\":\"0001104659-16-135276\",\"end\":\"2016-06-30\",\"filed\":\"2016-07-29\",\"form\":\"6-K\",\"fp\":\"Q2\",\"frame\":\"CY2016Q2I\",\"fy\":2016,\"val\":933830897},{\"accn\":\"0001104659-17-010184\",\"end\":\"2016-12-31\",\"filed\":\"2017-02-17\",\"form\":\"40-F\",\"fp\":\"FY\",\"frame\":\"CY2016Q4I\",\"fy\":2016,\"val\":943112225},{\"accn\":\"0001104659-17-049179\",\"end\":\"2017-06-30\",\"filed\":\"2017-08-03\",\"form\":\"6-K\",\"fp\":\"Q2\",\"",
+        "truncated": false
+      }
+    ],
+    "projection_card_counts": {
+      "available_projections": 23,
+      "included_cards": 23,
+      "deferred_projections": 0
+    }
+  },
+  "prediction_baseline": {
+    "doubling_threshold": 99.384,
+    "mean_adjusted_close": 49.692,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 49.72,
+    "recent_close_date": "2025-09-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ]
+  },
+  "computed_metrics": [
+    {
+      "as_of": "2025-09-30T00:00:00+00:00",
+      "labels": {
+        "trend": "range"
+      },
+      "literal_refs": [
+        {
+          "adjusted_close": 43.48,
+          "as_of_date": "2025-01-10"
+        },
+        {
+          "adjusted_close": 49.72,
+          "as_of_date": "2025-09-29"
+        }
+      ],
+      "metric": "price_shape",
+      "params": {
+        "window_days": 180
+      },
+      "schema_version": "computed-metric-card-v1",
+      "values": {
+        "daily_volatility_pct": 1.1759,
+        "first_close": 43.48,
+        "high": 49.98,
+        "last_close": 49.72,
+        "low": 41.09,
+        "max_drawdown_pct": -9.593,
+        "return_pct": 14.3514,
+        "window_trading_days": 180
+      }
+    }
+  ],
+  "document_channel": [],
+  "signal_rounds": [
+    {
+      "selected_signals": [
+        "order_confirmation_disclosed:v2",
+        "financing_listing_action:v5",
+        "net_share_retirement_yoy:v3"
+      ],
+      "batch": {
+        "results": [
+          {
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "state": {
+              "value": "positive",
+              "confidence": 0.95
+            },
+            "interpretation": {
+              "summary": "The company disclosed a new offtake agreement with a named counterparty (Meta Platforms) for the Clear Fork Solar project, a 600-megawatt facility. The agreement is described as long-term and fully contracted, with a stated project value of $900 million, which exceeds the $1M materiality threshold. This qualifies as a positive order confirmation disclosure within the lookback window.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          },
+          {
+            "signal_ref": "financing_listing_action:v5",
+            "state": {
+              "value": "neutral",
+              "confidence": 0.6
+            },
+            "interpretation": {
+              "summary": "Completed capital-structure actions are visible: a June 20, 2025 senior note offering (US$2.25 billion aggregate across four tranches) and an at-the-market equity issuance program under which 51,298,629 common shares were sold for $2.50 billion gross before the program was terminated on August 1, 2024. These are completed financing events that increase leverage and, for the ATM sales, increase share count/dilution. The visible spans do not establish a within-horizon change in runway, dilution, or tradability relative to a prior baseline, so they are reported as neutral capital-structure facts rather than directional catalysts.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743"
+            }
+          },
+          {
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=-0.0229939",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true,
+                "numeric_measurement": {
+                  "value": -0.02299389957766307,
+                  "unit": "fraction",
+                  "formula": "1 - current weighted-average shares / prior-year shares",
+                  "period": {
+                    "end": "2025-06-30",
+                    "start": "2025-01-01"
+                  },
+                  "numeric_sign": "negative",
+                  "categorical_state": "neutral",
+                  "display": {
+                    "value": -2.299389957766307,
+                    "unit": "%"
+                  }
+                },
+                "source_observations": [
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "start": "2025-01-01",
+                    "end": "2025-06-30",
+                    "val": 2180000000
+                  },
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 1,
+                    "start": "2024-01-01",
+                    "end": "2024-06-30",
+                    "val": 2131000000
+                  }
+                ],
+                "deferred_observation_count": 0,
+                "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62"
+            }
+          }
+        ],
+        "signal_calls": 3
+      }
+    },
+    {
+      "selected_signals": [
+        "cash_reserves:v2",
+        "liquidity_runway_months:v3",
+        "customer_concentration:v2",
+        "guidance_acceleration:v3"
+      ],
+      "batch": {
+        "results": [
+          {
+            "signal_ref": "cash_reserves:v2",
+            "state": {
+              "value": "positive",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "cash_reserves=1.203e+09",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true,
+                "numeric_measurement": {
+                  "value": 1203000000.0,
+                  "unit": "CAD",
+                  "formula": "latest reported instant cash balance",
+                  "period": {
+                    "end": "2025-06-30"
+                  },
+                  "numeric_sign": "positive",
+                  "categorical_state": "positive"
+                },
+                "source_observations": [
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "end": "2025-06-30",
+                    "val": 1203000000
+                  }
+                ],
+                "deferred_observation_count": 0,
+                "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          },
+          {
+            "signal_ref": "liquidity_runway_months:v3",
+            "state": {
+              "value": "negative",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true,
+                "source_observations": [
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "start": "2025-01-01",
+                    "end": "2025-06-30",
+                    "val": 6291000000
+                  },
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 1,
+                    "end": "2025-06-30",
+                    "val": 1203000000
+                  }
+                ],
+                "deferred_observation_count": 0,
+                "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4"
+            }
+          },
+          {
+            "signal_ref": "customer_concentration:v2",
+            "state": {
+              "value": "positive",
+              "confidence": 0.7
+            },
+            "interpretation": {
+              "summary": "The visible evidence indicates the growth thesis is not excessively dependent on a single customer or program. Management describes a broad and expanding customer base, noting that there are \"lots of conversations with these types of customers ongoing\" and that these are \"the types of customers we can do business with across all of our platforms.\" The company emphasizes its scale and geographic reach (\"40-plus states and multiple countries,\" \"43 states, eight provinces, and five countries\") as a competitive advantage that attracts large counterparties, and points to backlog and execution as evidence of diversified adoption. While Meta is named as a customer in the Clear Fork announcement, the surrounding commentary frames this as one example within a wider set of ongoing customer engagements rather than a singular dependency. No disclosed revenue, backlog, or order concentration percentages are visible, so the assessment is based on qualitative diversification signals. The result is positive, with partial coverage due to the absence of quantified concentration metrics.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            }
+          },
+          {
+            "signal_ref": "guidance_acceleration:v3",
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Signal execution did not produce a validated domain result. Treat this item as unknown and do not infer that the measured condition is absent."
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "validation_failed"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c"
+            }
+          }
+        ],
+        "signal_calls": 4
+      }
+    }
+  ],
+  "cited_signal_evidence": [
+    {
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:1671fd0384ab41adb0c9f05d",
+        "exact_span": "On the growth front, we sanctioned the $900 million Clear Fork project in Texas, located just outside San Antonio. The project is fully contracted under a long-term offtake agreement with Meta and will support its data center operations. Meta represents a new addition to our growing list of AI and data center-related customers.",
+        "timestamp": "2025-08-02T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "order_confirmation_disclosed:v2",
+      "evidence_group": "supporting",
+      "evidence_index": 1,
+      "evidence": {
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:1671fd0384ab41adb0c9f05d",
+        "exact_span": "In July, we announced the Clear Fork Solar project near San Antonio, Texas, a 600-megawatt facility designed to support data center needs. All generation is sold under a long-term offtake agreement with Meta Platforms.",
+        "timestamp": "2025-08-02T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:29313431393c008179f4d74e",
+        "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":2180000000}",
+        "timestamp": "2025-08-01T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:29313431393c008179f4d74e",
+        "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2025Q2I\",\"fy\":2025,\"val\":1203000000}",
+        "timestamp": "2025-08-01T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:29313431393c008179f4d74e",
+        "exact_span": "{\"accn\":\"0000950170-25-101102\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-01\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":6291000000}",
+        "timestamp": "2025-08-01T00:00:00+00:00"
+      }
+    }
+  ],
+  "state_evolution": [
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [
+            "net_share_retirement_yoy=-0.0229939"
+          ],
+          "removed": []
+        },
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": [
+            "What did the issuer disclose by prediction_time about signed or sanctioned off-take, backlog, customer wins or long-term contracts that could materially increase revenue or EBITDA within the six-calendar-month horizon?",
+            "What did the issuer disclose by prediction_time about share count, float, buybacks or capital-structure overhang that could affect the market's ability to reprice the shares sharply?"
+          ]
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [
+            "The issuer disclosed by prediction_time a signed long-term offtake agreement with Meta Platforms for the Clear Fork Solar project, a 600-megawatt facility, and sanctioned the $900 million Clear Fork project in Texas, fully contracted under that agreement.",
+            "The issuer disclosed by prediction_time completed financing actions, including a June 20, 2025 senior note offering of US$2.25 billion aggregate across four tranches and an at-the-market equity issuance program under which 51,298,629 common shares were sold for $2.50 billion gross before termination on August 1, 2024.",
+            "The issuer disclosed by prediction_time a year-over-year net share retirement of -0.0229939 for the period 2025-01-01 to 2025-06-30."
+          ],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "claim": "net_share_retirement_yoy=-0.0229939",
+              "key": "signal:net_share_retirement_yoy:v3:supporting:0"
+            },
+            {
+              "claim": "The issuer sanctioned the $900 million Clear Fork project in Texas, fully contracted under a long-term offtake agreement with Meta, supporting its data center operations.",
+              "key": "signal:order_confirmation_disclosed:v2:supporting:0"
+            },
+            {
+              "claim": "The issuer announced the Clear Fork Solar project near San Antonio, Texas, a 600-megawatt facility designed to support data center needs, with all generation sold under a long-term offtake agreement with Meta Platforms.",
+              "key": "signal:order_confirmation_disclosed:v2:supporting:1"
+            }
+          ],
+          "removed_keys": []
+        }
+      },
+      "round": 1
+    },
+    {
+      "round": 2,
+      "delta": {
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [],
+          "removed": []
+        },
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [],
+          "removed": []
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [
+            "Counterparty credit quality and contract duration disclosed by prediction_time.",
+            "Available credit facilities, debt maturities, convertible obligations, and equity funding requirements disclosed by prediction_time."
+          ],
+          "removed": [
+            "What did the issuer disclose by prediction_time about liquidity, available credit facilities, debt maturities, convertible obligations or equity funding requirements that could constrain or enable a large re-rating?"
+          ]
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "key": "signal:cash_reserves:v2:supporting:0",
+              "claim": "cash_reserves=1.203e+09"
+            },
+            {
+              "key": "signal:liquidity_runway_months:v3:supporting:0",
+              "claim": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow"
+            }
+          ],
+          "removed_keys": []
+        },
+        "decision": {
+          "from": "continue",
+          "to": "finalize"
+        }
+      }
+    }
+  ],
+  "final_research_state": {
+    "hypotheses": [
+      "The issuer can plausibly reach a 2x adjusted-price surge over the six-calendar-month horizon only if within-horizon evidence shows a genuine, source-backed commercial catalyst such as contracted off-take, backlog conversion, permit approval, financing or customer win that materially changes expected cash flows.",
+      "If the baseline price is already near the high end of its recent range and the required absolute move to a doubling is large, then the surge hypothesis is more likely to fail unless new within-horizon operating or contractual evidence materially raises growth expectations.",
+      "If the operating report, management commentary and financial-facts evidence remain truncated or unavailable on liquidity, going-concern language, customer concentration, float and capital-structure overhang, then the surge hypothesis should remain unresolved rather than be treated as confirmed or rejected."
+    ],
+    "current_beliefs": [
+      "The issuer's own forward-looking disclosure frames the outlook around expected supply, demand, exports and prices of crude oil, natural gas, NGL, LNG, RNG and renewable energy, so commodity and energy-transition conditions are central to whether a commercial catalyst can scale.",
+      "The operating report shows a large, diversified midstream and utility footprint with substantial operating revenues and equity income, which supports the existence of real commercial activity rather than pure narrative.",
+      "The operating report also shows material impairment of long-lived assets and a large foreign currency translation loss, indicating that reported earnings and book value can be volatile even when operating income is positive.",
+      "The earnings call transcript is truncated in the visible projection, so management's full commentary on catalysts, demand, backlog, financing plans and forward guidance is not fully available in Basic Info.",
+      "The scoped news projection shows a scheduled third-quarter results webcast and a Great Lakes Tunnel Project update, but the visible text does not quantify any off-take, backlog, permit approval or financing commitment.",
+      "The financial-facts projection is a company-facts JSON whose visible excerpt is dominated by historical share-count facts, so it does not by itself establish current liquidity, burn, debt or convertible obligations.",
+      "The market backbone shows a recent close near the high end of the visible window, so the baseline is not deeply drawn down; the required move to a doubling is therefore a large absolute advance from an already elevated level.",
+      "net_share_retirement_yoy=-0.0229939"
+    ],
+    "supporting_evidence": [
+      {
+        "kind": "basic_info",
+        "claim": "The issuer's forward-looking disclosure identifies expected supply of, demand for, exports of and prices of crude oil, natural gas, NGL, LNG, RNG and renewable energy as material assumptions underlying its outlook.",
+        "projection_id": "projection_db6103df265ff48aa4d95026",
+        "exact_text": "expected supply of, demand for, exports of and prices of crude oil, natural gas, natural gas liquids (NGL), liquefied natural gas (LNG), renewable natural gas (RNG) and renewable energy; energy transition and lower-carbon energy, and our approach thereto; environmental, social, governance and sustainability goals, practices and performance; industry and market conditions; anticipated utilization of our assets; dividend growth and payout policy; financial strength and flexibility; expectations on sources of l"
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The management commentary projection is a 2025Q2 earnings call transcript, but the visible content is truncated after introductory remarks, so full management commentary on catalysts, demand, backlog, financing and guidance is not available.",
+        "projection_id": "projection_630eceed585af76d1648a3b2",
+        "exact_text": "{\"quarter\":\"2025Q2\",\"symbol\":\"[MASKED_COMPANY]\",\"transcript\":[{\"content\":\"Good morning, and welcome to the [MASKED_COMPANY]. Second Quarter 2025 Financial Results Conference Call. My name is Rebecca Morley, and I'm the Vice President of Investor Relations and Insurance. Joining me this morning are Greg Ebel, President and CEO; Pat Murray, Executive Vice President and Chief Financial Officer; and the heads of each of our business units: Colin Gruending, Liquids Pipelines; Cynthia Hansen, Gas Transmission; Michele Harradence, Gas Distribution and Storage; and Matthew Akman, Renewable Power. Please note, this conference is being recorded. As per usual, this call is being webcast, and I encourage those listening on the phone to follow along with the supporting slides. We'll try to keep the call to roughly 1 hour. In order to answer as many questions as possible, we will be limiting questions to one plus a single follow-up, if necessary. We'll be prioritizing questions from the investment community. So if you are a member of the media, please direct your inquiries to our communications team, who will be happy to respond. Our Investor Relations team will be available following the call for any follow-up questions. On to Slide 2, where I will remind you that we will be referring to forward-looking information on today's presentation and Q&A. By its nature, this information contains forecast assumptions and expectations about future outcomes, which are subject to the risks and uncertainties outlined here and discussed more fully in our public disclosure filings. We'll also be referring to non-GAAP measures summarized below. And with that, I'll turn it over to Greg Ebel.\",\"sentiment\":\"0.6\",\"speaker\":\"Rebecca Morley\",\"title\":\"Vice President of Investor Relations and Insurance\"},{\"content\":\"Well, thanks very much, Rebecca, and good morning, and thank you all for joining us on the call today. I'm excited to share another strong quarter and highlight the progress we've made across all segments o"
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The scoped news projection states that the issuer will host a conference call and webcast on November 7, 2025 to discuss 2025 third-quarter financial results and provide a business update.",
+        "projection_id": "projection_bb02594dcdbf73136959f705",
+        "exact_text": "[MASKED_COMPANY]. to Host Webcast to Discuss 2025 Third Quarter Results on November 7 [MASKED_COMPANY]. announced it will host a conference call and webcast on November 7, 2025, at 7 a.m. MT (9 a.m. ET) to discuss its 2025 third-quarter financial results and provide a business update. The event will include remarks from the executive team followed by a Q&A session for analysts and investors. [MASKED_COMPANY] will release its financial results before market open on the same day."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The scoped news projection states that the Great Lakes Tunnel Project aims to build a new segment of the Line 5 pipeline under the Straits of Mackinac and that the issuer is awaiting a federal permit to begin construction.",
+        "projection_id": "projection_b7e5942a49a01763223440e5",
+        "exact_text": "New generation of tunneling is safe, proven [MASKED_COMPANY]'s Great Lakes Tunnel Project aims to build a new segment of the Line 5 pipeline under the Straits of Mackinac using advanced tunneling technology. The article highlights the safety and proven nature of modern tunnel boring machines (TBMs), citing numerous successful projects globally and detailing how this technology will improve energy delivery and potentially other utilities in Michigan. [MASKED_COMPANY] is awaiting a federal permit to begin construction, emphasizing the project's importance for Michigan residents and the region."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The market backbone shows a recent adjusted close of 49.72 on 2025-09-29, near the high end of the visible window, so the baseline is not deeply drawn down.",
+        "projection_id": "projection_5ed26bd6dc0079f193a28b28",
+        "exact_text": "{\"adjusted_close\":49.72,\"as_of_date\":\"2025-09-29\",\"close\":49.72,\"high\":49.84,\"low\":49.41,\"open\":49.6, \"volume\":2411012}"
+      },
+      {
+        "kind": "signal",
+        "claim": "The issuer sanctioned the $900 million Clear Fork project in Texas, fully contracted under a long-term offtake agreement with Meta, supporting its data center operations.",
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "The issuer announced the Clear Fork Solar project near San Antonio, Texas, a 600-megawatt facility designed to support data center needs, with all generation sold under a long-term offtake agreement with Meta Platforms.",
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "evidence_group": "supporting",
+        "evidence_index": 1
+      },
+      {
+        "kind": "signal",
+        "claim": "net_share_retirement_yoy=-0.0229939",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "cash_reserves=1.203e+09",
+        "signal_ref": "cash_reserves:v2",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "liquidity_runway_months=unbounded_nonnegative_operating_cash_flow",
+        "signal_ref": "liquidity_runway_months:v3",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      }
+    ],
+    "contradictions": [],
+    "resolved_questions": [
+      "The visible Basic Info includes a market backbone with adjusted closes from early August through late September 2025, so the recent price level and trend are available.",
+      "The visible Basic Info includes an operating report with consolidated statements of earnings, comprehensive income and changes in equity, so reported operating performance is partially available.",
+      "The visible Basic Info includes a management commentary projection, but its transcript is truncated, so full management commentary is not available.",
+      "The visible Basic Info includes scoped news about a scheduled third-quarter results webcast and the Great Lakes Tunnel Project, so those catalysts are identified but not quantified.",
+      "The visible Basic Info includes a financial-facts projection, but its visible excerpt is historical share-count data rather than a complete liquidity or debt picture.",
+      "The evaluation anchor is available and shows a recent close of 49.72 and a doubling threshold of 99.384, so the required absolute move is known as control data.",
+      "The issuer disclosed by prediction_time a signed long-term offtake agreement with Meta Platforms for the Clear Fork Solar project, a 600-megawatt facility, and sanctioned the $900 million Clear Fork project in Texas, fully contracted under that agreement.",
+      "The issuer disclosed by prediction_time completed financing actions, including a June 20, 2025 senior note offering of US$2.25 billion aggregate across four tranches and an at-the-market equity issuance program under which 51,298,629 common shares were sold for $2.50 billion gross before termination on August 1, 2024.",
+      "The issuer disclosed by prediction_time a year-over-year net share retirement of -0.0229939 for the period 2025-01-01 to 2025-06-30."
+    ],
+    "open_questions": [],
+    "next_information_needs": [
+      "What did the issuer disclose by prediction_time about permit approvals, regulatory decisions or construction milestones for major projects, including the Great Lakes Tunnel Project, that could affect expected in-service timing within the horizon?",
+      "Counterparty credit quality and contract duration disclosed by prediction_time.",
+      "What did the issuer disclose by prediction_time about the scheduled November 7, 2025 third-quarter results webcast, including any pre-announced agenda, guidance range or business update topics, without requesting results published after prediction_time?",
+      "Available credit facilities, debt maturities, convertible obligations, and equity funding requirements disclosed by prediction_time.",
+      "What did the issuer disclose by prediction_time about customer concentration, counterparty credit quality or contract duration that would make a commercial catalyst more or less durable?"
+    ],
+    "decision": "finalize"
+  },
+  "analysis_prompt": "Organize the collected evidence into: (a) source-backed commercial or operational catalysts, (b) baseline price and volatility facts including the absolute multiple required, (c) liquidity, solvency, concentration, float and capital-structure considerations, and (d) explicit counter-evidence or unknowns. Weight each item by its proximity to the prediction time, direct issuer linkage, and whether it is an audited filing fact versus a third-party report or management claim. Keep binary direction evidence separate from magnitude-related evidence, and flag recurring magnitude defects (systematic underestimation or overestimation) as evidence-collection issues to be addressed through retrieval or analysis emphasis rather than through any change to prediction semantics, labels or class definitions. Expose material uncertainty and unresolved coverage gaps; do not compute probabilities, classify the final answer, alter the horizon or four-way judgment, or generate a prediction."
+}

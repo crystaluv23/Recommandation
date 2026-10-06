@@ -1947,9 +1947,7 @@ class ReflectionRoleAdapterTests(TestCase):
             SignalBatchResult(results=(), signal_calls=0),
         )
 
-        error = validation_error(caller.calls[1])
-        self.assertIn("retained Signal claim changed", error)
-        self.assertIn("backing Signal batch is no longer visible", error)
+        self.assertEqual(len(caller.calls), 1)
         self.assertEqual(reflected.value.supporting_evidence[0].claim, prior_claim)
 
     def test_signal_internal_edges_ignore_surrounding_whitespace(self) -> None:
@@ -3284,3 +3282,144 @@ class ReflectionSalvageTests(TestCase):
                 "reflection_items_all_invalid_salvaged:"
             )
         )
+
+class RetainedSignalClaimRestorationTests(TestCase):
+    """Exercise immutable claim ownership, native terminal patches and ambiguity."""
+
+    @staticmethod
+    def _ref(claim, *, signal_ref="old_capability:v3", index=0):
+        return ResearchEvidenceRef(kind="signal", claim=claim,
+            signal_ref=signal_ref, evidence_group="supporting", evidence_index=index)
+
+    @staticmethod
+    def _visible_batch():
+        return SignalBatchResult(results=(SignalResult(
+            signal_id="new_capability", version=2, value=SignalValue.NEUTRAL,
+            confidence=0.7, interpretation="Current outlook remains unchanged.",
+            coverage=SignalCoverage.SUFFICIENT,
+            supporting_evidence=(SignalEvidence(document_id="current-document",
+                exact_span="Current outlook remains unchanged.",
+                timestamp=datetime(2025, 8, 1, tzinfo=timezone.utc)),)),), signal_calls=1)
+
+    def test_unique_claims_restore_with_linked_assertions_and_native_finalization(self):
+        for claim in ("Management reaffirmed guidance.", "net_share_retirement_yoy=-0.0229939"):
+            with self.subTest(claim=claim):
+                previous = ResearchState(hypotheses=("Unrelated thesis.",),
+                    current_beliefs=(claim, "A separate retained belief."),
+                    contradictions=(claim,), supporting_evidence=(self._ref(claim),),
+                    next_information_needs=("Check a separate risk.",))
+                changed = "The issuer's prior claim was restated."
+                new_claim = "Current outlook remains unchanged."
+
+                def native(kwargs):
+                    return {"base_hash": kwargs["payload"]["output_patch_contract"]["base_hash"],
+                        "operations": [
+                            {"op": "replace", "path": "supporting_evidence[0].claim", "value": changed},
+                            {"op": "replace", "path": "current_beliefs[0]", "value": changed},
+                            {"op": "replace", "path": "contradictions[0]", "value": changed},
+                            {"op": "append", "path": "supporting_evidence", "value": self._ref(
+                                new_claim, signal_ref="new_capability:v2").to_dict()},
+                            {"op": "append", "path": "current_beliefs", "value": new_claim},
+                            {"op": "replace", "path": "decision", "value": "finalize"},
+                        ]}
+
+                class NoCorrectionCaller(ScriptedRoleCaller):
+                    def complete_json(self, **kwargs):
+                        if self.calls:
+                            raise RuntimeBudgetExceeded("No correction budget remains")
+                        return super().complete_json(**kwargs)
+
+                caller = NoCorrectionCaller([native])
+                controller = LLMResearchController(caller)
+                controller.reflection_must_finalize = True
+                result = controller.reflect(default_information_plan(), previous, self._visible_batch())
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(result.usage.llm_calls, 1)
+                self.assertEqual(result.value.decision, ResearchDecision.FINALIZE)
+                self.assertEqual(result.value.current_beliefs, (*previous.current_beliefs, new_claim))
+                self.assertEqual(result.value.contradictions, previous.contradictions)
+                self.assertEqual(result.value.supporting_evidence[0], previous.supporting_evidence[0])
+                self.assertEqual(result.value.supporting_evidence[1].claim, new_claim)
+                self.assertEqual(result.value.next_information_needs, previous.next_information_needs)
+                self.assertEqual(ResearchState.from_dict(result.value.to_dict()), result.value)
+
+    def test_shared_tuple_retains_each_accepted_claim_and_never_selects_one_to_restore(self):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+        claims = ("Management reaffirmed guidance.", "Management discussed cost risks.")
+        for ordered_claims in (claims, tuple(reversed(claims))):
+            previous = ResearchState(hypotheses=("Guidance may matter.",),
+                supporting_evidence=tuple(self._ref(x) for x in ordered_claims),
+                next_information_needs=("Check a separate risk.",))
+            self.assertEqual(_validate_research_state_refs(previous, phase="reflect",
+                previous_state=previous, batch=self._visible_batch()), previous)
+            invalid = previous.to_dict()
+            invalid["supporting_evidence"][0]["claim"] = "Management raised guidance."
+            failure = claim_error(invalid, previous_state=previous, batch=self._visible_batch())
+            issue = next(x for x in failure.issues if x.code == "retained_signal_claim_changed")
+            self.assertNotIn("prior_signal_claim", issue.repair_context)
+            self.assertIsNone(_research_state_evidence_grounding_fallback(invalid, failure))
+            caller = ScriptedRoleCaller([invalid, previous.to_dict()])
+            result = LLMResearchController(caller).reflect(default_information_plan(), previous,
+                self._visible_batch())
+            self.assertEqual(len(caller.calls), 2)
+            self.assertEqual(result.value.supporting_evidence, previous.supporting_evidence)
+
+    def test_identical_prior_duplicates_supply_one_restoration_candidate(self):
+        previous = ResearchState(hypotheses=("Guidance may matter.",),
+            supporting_evidence=(self._ref("Guidance is unchanged."),) * 2,
+            next_information_needs=("Check a separate risk.",))
+        invalid = previous.to_dict()
+        for row in invalid["supporting_evidence"]:
+            row["claim"] = "Guidance is accelerating."
+        caller = ScriptedRoleCaller([invalid])
+        result = LLMResearchController(caller).reflect(default_information_plan(), previous,
+            self._visible_batch())
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(result.value.supporting_evidence, previous.supporting_evidence)
+
+    def test_restoration_refuses_stale_source_text_and_conflicting_dependencies(self):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+        previous = ResearchState(hypotheses=("Separate observations matter.",),
+            supporting_evidence=(self._ref("First accepted claim."),
+                self._ref("Second accepted claim.", index=1)),
+            next_information_needs=("Check a separate risk.",))
+        invalid = previous.to_dict()
+        invalid["supporting_evidence"][0]["claim"] = "Changed claim."
+        failure = claim_error(invalid, previous_state=previous, batch=self._visible_batch())
+        for mutation in ("source", "claim"):
+            stale = json.loads(json.dumps(invalid))
+            row = stale["supporting_evidence"][0]
+            row["signal_ref" if mutation == "source" else "claim"] = "Different value."
+            self.assertIsNone(_research_state_evidence_grounding_fallback(stale, failure))
+        invalid["supporting_evidence"][1]["claim"] = "Changed claim."
+        invalid["current_beliefs"] = ["Changed claim."]
+        failure = claim_error(invalid, previous_state=previous, batch=self._visible_batch())
+        self.assertIsNone(_research_state_evidence_grounding_fallback(invalid, failure))
+
+    def test_restoration_preserves_continue_and_cannot_author_terminal_decision(self):
+        previous = ResearchState(hypotheses=("Guidance may matter.",),
+            supporting_evidence=(self._ref("Guidance is unchanged."),),
+            next_information_needs=("Check a separate risk.",))
+        invalid = previous.to_dict()
+        invalid["supporting_evidence"][0]["claim"] = "Guidance is accelerating."
+        caller = ScriptedRoleCaller([invalid])
+        result = LLMResearchController(caller).reflect(default_information_plan(), previous,
+            self._visible_batch())
+        self.assertEqual(result.value.decision, ResearchDecision.CONTINUE)
+
+        class NoCorrectionCaller(ScriptedRoleCaller):
+            def complete_json(self, **kwargs):
+                if self.calls:
+                    raise RuntimeBudgetExceeded("No correction budget remains")
+                return super().complete_json(**kwargs)
+
+        caller = NoCorrectionCaller([invalid])
+        controller = LLMResearchController(caller)
+        controller.reflection_must_finalize = True
+        with self.assertRaises(RuntimeBudgetExceeded):
+            controller.reflect(default_information_plan(), previous, self._visible_batch())
+        self.assertEqual(len(caller.calls), 1)

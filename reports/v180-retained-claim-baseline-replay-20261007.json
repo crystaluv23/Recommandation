@@ -1,0 +1,96 @@
+{
+  "schema_version": "v180-retained-claim-replay-v1",
+  "phase": "baseline",
+  "original_request_hash": "1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6",
+  "new_external_calls": 0,
+  "original_artifact_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/attempts.json": "bb08cdfb616fbdda930e0a4a409549d374543c894a00bdf3328343245b6c345f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/state.json": "6c497dda1ea81ff19e044e7cdd57db1e0b7fab237d3a494e2e8a7b5016c989f0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cycle_state.json": "bf39f4410f443f66078e41f3aeae3dce229262fda4255c986b352015174e4f86",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/experiments/round-0001/attempts/plan_r0001_c02.json": "2b13c086629f30c3b52fe1b8100d4c71238d2d250185ba369e49b2571a692fc8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/requests/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "9942a5a1dbcbb552125af4e948f84e2eac13d9ad791b7d58f9ce079c2ed512c4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/responses/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "b4e5c1156fee6879828d4e43f86269940d78f6cc60745230a4cbdd12d50843e2"
+  },
+  "usage_before_terminal_reflect": 97917,
+  "original_prediction_reservation": 79669,
+  "terminal_reflect_budget": 78414,
+  "original_terminal_reflect_usage": 13209,
+  "correction_remaining_budget": 65205,
+  "original_formal_round_cycle": [
+    0,
+    0
+  ],
+  "independent_benefit_confirmed": false,
+  "accepted": false,
+  "error": "research_controller_reflect_correction was not sent because its exact reservation exceeded the remaining budget: exact conservative correction reservation exceeds remaining budget; last_validation_error=supporting_evidence[7] retained Signal claim changed from 'net_share_retirement_yoy=-0.0229939' to 'The issuer disclosed by prediction_time a year-over-year net share retirement of -0.0229939 for the period 2025-01-01 to 2025-06-30.'. Copy the prior claim byte-for-byte or remove this evidence item; its backing Signal batch is no longer visible",
+  "error_usage": {
+    "llm_calls": 1,
+    "tokens": 13209
+  },
+  "caller_attempts": 2,
+  "events": [
+    {
+      "event_type": "mechanical_repair_progress",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "source_substitution_paths": [],
+        "removed_paths": [
+          "supporting_evidence[10]"
+        ],
+        "normalized_paths": []
+      }
+    },
+    {
+      "event_type": "mechanical_repair_progress",
+      "stage": "research_controller_reflect",
+      "request_stage": "research_controller_reflect",
+      "actions": {
+        "source_substitution_paths": [
+          "next_information_needs"
+        ],
+        "removed_paths": []
+      }
+    }
+  ],
+  "correction_required_reservation": 69529,
+  "correction_obligations": [
+    {
+      "obligation_index": 1,
+      "issue_code": "retained_signal_claim_changed",
+      "severity": "error",
+      "retryability": "correctable",
+      "must_change_paths": [
+        "supporting_evidence[7].claim"
+      ],
+      "must_change_any_of_paths": [],
+      "permitted_dependency_paths": [
+        "current_beliefs[7]"
+      ],
+      "allowed_repairs": [
+        "replace",
+        "remove"
+      ],
+      "source_refs": [],
+      "instruction": "supporting_evidence[7] retained Signal claim changed from 'net_share_retirement_yoy=-0.0229939' to 'The issuer disclosed by prediction_time a year-over-year net share retirement of -0.0229939 for the period 2025-01-01 to 2025-06-30.'. Copy the prior claim byte-for-byte or remove this evidence item; its backing Signal batch is no longer visible",
+      "authorized_member_removals": [
+        "supporting_evidence[7]"
+      ]
+    }
+  ],
+  "original_artifacts_unchanged": true,
+  "reservation_units": "conservative UTF-8 request bytes plus max output tokens; not tokenizer-measured input tokens",
+  "replayed_at": "2026-10-07T03:09:59.343524+08:00",
+  "source_sha256": {
+    "repaired": {
+      "src/stock_opportunity_agent/research/evolution_output_validation.py": "309bf09d93110362926b97507f31de6b87f5715691d97147a954908d00d4b38b",
+      "src/stock_opportunity_agent/research/evolution_research_validation.py": "cd386c89bd3c711c1ce0602fc0cbec9c2840b65863d532af94b7b1cc750af14e",
+      "src/stock_opportunity_agent/research/repair.py": "9b07ac8619a2bf5206849e112edcc0f7c274fd2354d10eeebfe6f13b67f02cad"
+    },
+    "baseline": {
+      "src/stock_opportunity_agent/research/evolution_output_validation.py": "dcda440fc3c8e38da9bb5a3c20fe875467e8204c908bb65770261248feb88847",
+      "src/stock_opportunity_agent/research/evolution_research_validation.py": "decf8a3821df1c717a79eb0aee49d1cb89a0cb459170f813d5ccc2f6c9ab2b13",
+      "src/stock_opportunity_agent/research/repair.py": "585a09e0ee266844004fcdb24d259dca06343cbf185785420ebf47b76cc874dd"
+    }
+  }
+}
