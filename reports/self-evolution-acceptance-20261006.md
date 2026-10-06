@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v181于2026-10-07 03:14:25真实启动，冻结90999e84，当前逐案Fast/FastSlow0/0，c01第五案unfinalized导致整Plan diagnostic-only，c02继续，仍未验收；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v181于2026-10-07 03:14:25真实启动，冻结90999e84，当前正式Fast/Slow1/0、Slow进行中，c01第五案unfinalized导致整Plan diagnostic-only，c02完整24案/14正向幅度全2–3x且7Signal失败，仍未验收；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -271,3 +271,11 @@
 - 首次1567全量有5个historical-shadow错误：lookup按当前safe summary构造expected导致找不到旧冻结请求。修复仅历史匹配不可用摘要与旧无status兼容，其余identity/version/value/confidence/coverage/已有status及available摘要严格相同；唯一匹配后仍用原saved request，不把新解释写回旧请求。两个独立反例回归加原历史101请求/80routing准备及评分测试通过，未新增外部调用或改变影子cohort。
 - 最后6新、330相关和1570全量55.793秒及repository lint PASS。本地投影同原canonical/status/hash且更明确，不生成新模型答案，不代表模型已遵循新固定提示；运行仍冻结90999e84，不热修改。
 - 03:37部分库存仍有Signal技术失败，正向幅度仍仅2–3x；c01有5保存案、仅4有效，24预期未完成，metrics=null/fitness diagnostic_only。第五案terminal模型原patch有finalize但未落盘，下一步须完整生产组合/预算/语义校验回放；不能以空technical_exclusion_case_ids称零问题，也不能把模型提出finalize当已提交。c02继续独立逐案运行，正式指针仍0/0。新magnitude入库/真实有源3–10x与10x+、独立gain仍未通过。
+
+## v181 实际 Fast 提交到 Slow 消费（2026-10-07 03:45）
+
+- 正式指针round1/cycle0，phase slow_loop；只有c02完整24案提交，c01仍5/24诊断、4valid/metrics null。正式c02 binary F1 .785714（11TP/7TN/3FP/3FN），magnitude macro-F1 .148148；14正向全部2–3x，真值5个3–10x及2个10x+都低估。24案无case级技术排除不能抵销7条Signal validation_failed、其他Plan整份诊断失效或内容错误。
+- 亲自读Plan Critic首答/真实native patch/最终5items：全2–3x和7次幅度低估统计有原矩阵支持；另一fact却把non_surge-truth预测negative写成3，canonical TN是7，错误句引用有效仍是假。提议把class justification加进reflection_skill也有Controller/Predictor职责混淆风险；未自动改旧经验。正式Round因single_complete_plan跳过横向反思，原Plan reflection及案例仍保留。c01那个错误domain技术归因fact留在诊断checkpoint，不是本轮正式c02记录。
+- 已亲自读Slow方法反思固定prompt、3个历史feedback引用和3episode/3lesson实际原答，保留changed_canonical_input/未知归因、技术准入不等效益和既有执行门。历史对照原件明确realized_max_multiple=3.3770028275212063与baseline price2.122为不同量，未把前者当价格。此时方法记忆的最终提交仍未核验，不将原答当已提交记忆。
+- 首Mining真实方向seed经历fetch/inspect及bounded dispositions，缺rationale获得native add修正，最终record_no_pattern又经同一add修正；尚未确认新candidate。终态前heavy21/browse23/light0，模型说已处理151staged需求、现有测量应走Update，不能据此证明所有经济假设已穷尽。magnitude Track与正式入库/后继检索执行还待随后检查。
+- 源hash、原指标/反思摘要和角色风险见[v181 Fast到Slow审计](v181-fast-to-slow-audit-20261007.json)。本轮通用执行原因修复已提交0a30c82b，330相关/1570全量/lint PASS；当前运行仍冻结90999e84，后继需完整复现新的terminal家族及内容前沿后再冻结，不盲目开第二executor。独立效果协议未批准且gain未确认，整体目标继续。

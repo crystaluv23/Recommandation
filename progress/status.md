@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07 03:45：v181正式Fast1/Slow0，c02完整24案/F1=.7857/magnitude macro-F1=.1481，14正向全2–3x（真值5个3–10x/2个10x+），86Signal success/7domain/7validation_failed；c01仍诊断5/24且unfinalized。亲自读Plan初答/native patch/落盘、单完整Plan下Round反思跳过但保留Plan原件、Slow历史3反馈及3episode/3lesson原答、首Mining fetch/disposition/no_pattern；Plan一事实将TN7写3及行动错置H_reflect风险保留、未验收。主0a30c82b通用三原因修复/1570全量与lint通过但不热改909冻结运行，新magnitude/增益未确认。见reports/v181-fast-to-slow-audit-20261007.json。
+
 2026-10-07 03:37：v181实际domain_unavailable被Predictor/Posthoc误写技术缺口并入Experience；先spec后统一Signal Library三原因投影及Retrieval/Reflect/Predictor/全部反思固定指令，routing保留execution、Posthoc旧compact unavailable重投影，legacy未知不补因果。历史影子lookup仅兼容unavailable展示词/旧无status，不改冻结请求，80路由复原且反例仍拒。6新/330相关/1570全量55.793s及lint PASS；修复未热入v181。当前c01第五案仍unfinalized、整Plan diagnostic-only，c02继续；新magnitude入库/高档扩展及独立收益未验收。见reports/v181-execution-cause-audit-20261007.json。
 
 2026-10-07 03:16：v181真实启动03:14:25，冻结90999e84/clean，wrapper97196/child97201已核对实际命令；同v179正式1/1、Registry11、同40案/3606源文件/预算/评分/Locked Test，准备0外部。修复203相关/1564全量63.262s及lint PASS；原10分钟heartbeat接续。启动后两Plan首答直接接受/6与8采用refs已核对，首案研究开始，当前Fast/Slow0/0、非完成；完整内容/零技术失败/magnitude入库高档扩展/独立gain仍待实测。

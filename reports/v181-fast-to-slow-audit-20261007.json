@@ -1,0 +1,233 @@
+{
+  "schema_version": "v181-fast-to-slow-audit-v1",
+  "audited_at": "2026-10-06T19:45:33.438013+00:00",
+  "frozen_source_revision": "90999e845867ad698bf5843228d3db4153c40aed",
+  "main_repaired_checkpoint": "0a30c82b",
+  "formal_round": 1,
+  "formal_cycle": 0,
+  "active_phase": "slow_loop",
+  "ledger_attempt_count": 346,
+  "committed_fast": {
+    "plan_id": "plan_r0001_c02",
+    "n_cases": 24,
+    "metrics": {
+      "binary_f1": 0.7857142857142857,
+      "binary_precision": 0.7857142857142857,
+      "binary_recall": 0.7857142857142857,
+      "confusion": {
+        "false_negative": 3,
+        "false_positive": 3,
+        "true_negative": 7,
+        "true_positive": 11
+      },
+      "magnitude_accuracy": 0.2857142857142857,
+      "magnitude_macro_f1": 0.14814814814814814,
+      "precision_defined": true,
+      "predicted_positive_count": 14,
+      "sample_count": 24,
+      "valid_case_count": 24
+    },
+    "fitness": {
+      "eligible": true,
+      "evidence_covered_count": 24,
+      "expected_case_count": 24,
+      "predicted_positive_count": 14,
+      "reasons": [],
+      "status": "eligible",
+      "true_positive_count": 11,
+      "valid_case_count": 24
+    },
+    "prediction_magnitude_counts": {
+      "None": 10,
+      "2-3x": 14
+    },
+    "truth_magnitude_counts": {
+      "None": 10,
+      "2-3x": 7,
+      "3-10x": 5,
+      "10x+": 2
+    },
+    "signal_status_counts": {
+      "success": 86,
+      "domain_unavailable": 7,
+      "validation_failed": 7
+    },
+    "case_technical_exclusion_count": 0,
+    "new_magnitude_signal_admission_confirmed": false,
+    "content_acceptance_pass": false
+  },
+  "diagnostic_plan": {
+    "plan_id": "plan_r0001_c01",
+    "completed_checkpoint_count": 5,
+    "valid_case_count": 4,
+    "expected_case_count": 24,
+    "metrics": null,
+    "unfinalized_case_id": "cik_0000895421:20250731",
+    "original_finalize_saved_continue": true,
+    "not_in_current_formal_plan_refs": true,
+    "false_domain_gap_fact_only_in_diagnostic_checkpoint": true,
+    "specific_false_fact_ref": "reflection:36e5bc65f6debdc75a8101a20d20af59c4f8802c36b7381995f701786991c682"
+  },
+  "plan_and_round_content_review": {
+    "plan_critic_initial_and_paid_patch_personally_read": true,
+    "persisted_reflection_item_count": 5,
+    "retained_finding_magnitude_collapse": "The magnitude_diagnostics matrix for the research_completed population (24 cases, 0 technical exclusions) shows prediction_distribution.predicted_2-3x = 14 with predicted_3-10x = 0 and predicted_10x+ = 0. Truth distribution was 2-3x: 7, 3-10x: 5, 10x+: 2, non_surge: 10. The confusion matrix shows every true 3-10x case (5) and every true 10x+ case (2) predicted as 2-3x, and 3 true non_surge cases also predicted 2-3x. underestimate_count = 7, overestimate_count = 0, magnitude_correct_count = 4, conditional_accuracy_on_tp = 0.364. This is a directional concentration defect in the magnitude head, not a binary-direction defect: binary F1 is 0.786 with 11 TP, 3 FP, 3 FN, 7 TN. The per-case magnitude_feedback error kinds confirm the pattern: cases 13, 14, 15, 22, 23 are 'underestimate' at ordinal_distance 1 (2-3x predicted vs 3-10x true) and cases 16, 24 are 'underestimate' at ordinal_distance 2 (2-3x predicted vs 10x+ true).",
+    "wrong_statistical_sentence": "The magnitude_diagnostics matrix confirms 3 non_surge-truth cases were predicted negative",
+    "canonical_non_surge_predicted_negative": 7,
+    "claim_verdict": "False: the canonical true-negative count is 7. The separate 3 true 2-3x cases predicted negative are false negatives. Citation checking did not establish the prose count truth.",
+    "action_role_ownership_risk": "Add an explicit magnitude-class diversification step to the Plan's reflection_skill: when the binary direction is supported, require the analyst to state why the 2-3x class is preferred over 3-10x and 10x+, and record a low-base/high-volatility scenario when the issuer trades far below a prior high; do not gate the binary judgment on this step.",
+    "risk_verdict": "This authored action asks reflection_skill to justify magnitude classes. Controller Reflect owns research state, while Predictor owns binary/magnitude judgment. Future adoption must preserve that role boundary; no current action rewrite is made.",
+    "round_reflection_reason": "round_reflection_skipped_single_complete_plan",
+    "round_reflection_items": 0,
+    "original_plan_reflections_retained": 1
+  },
+  "slow_method_memory_review": {
+    "fixed_system_prompt_and_original_answer_personally_read": true,
+    "feedback_units": 3,
+    "feedback_refs": [
+      "slow-history:source-2dab8b3e898e4937:1:slow_input:feedback-003",
+      "slow-history:source-2dab8b3e898e4937:1:slow_loop_result:summary",
+      "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+    ],
+    "original_answer": {
+      "episode_reflections": [
+        {
+          "brief": "Same-case cross-round comparison: left called surge (possible, 2-3x), right called non-surge (unlikely, null); canonical contexts differ, so cause is unestablished and this is not certified model-only instability.",
+          "episode_ref": "episode-c0001-001",
+          "kind": "fact",
+          "reflection": "Cross-round comparison of the same frozen case (comparison_case:dea78542c9e4313a058fd7226c99451e94570d7bae4424b0f9eb99a527bd24c3) shows a reversal: left predicted is_surge=true with magnitude 2-3x and candidate_judgment=possible; right predicted is_surge=false with magnitude=null and candidate_judgment=unlikely. Both canonical contexts differ (9cfa5b81... vs 1d8a5797...), so this is a changed_canonical_input, not a certified model-only instability. The realized outcome was a surge (3.377x max five-day adjusted-close mean vs 2.122 baseline). Cause is unestablished; equal canonical hashes would not prove equal provider requests.",
+          "source_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_input:feedback-003"
+          ],
+          "unresolved_questions": [
+            "Did the canonical-context change alter the provider prompt or model parameters, or only the recorded input?",
+            "Which specific input differences between the two arms drove the reversal?"
+          ]
+        },
+        {
+          "brief": "Cycle-0001 slow loop: zero new candidates/validated signals, goal unmet; two v3 signals promoted but magnitude contribution unassessed pending Fast consumption experiment and Binary-F1 protection; one update rejected for no effective change.",
+          "episode_ref": "episode-c0001-002",
+          "kind": "fact",
+          "reflection": "Cycle-0001 slow-loop result: new_candidate_count=0, new_validated_signal_count=0, signal_goal_status=unmet, min_new_signals_per_cycle=1. Two candidates were promoted/updated (revenue_growth_yoy:v3, net_share_retirement_yoy:v3) with validated hashes, but magnitude_contribution.assessed=false because the required Fast absent/present consumption experiment and Binary-F1 protection have not run. The liquidity_runway_months:v3 update was rejected for structured_output_failed (no effective change). These are engineering/process outcomes, not research conclusions about signal efficacy.",
+          "source_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_result:summary",
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+          ],
+          "unresolved_questions": [
+            "Will the Fast absent/present consumption experiment and Binary-F1 protection be run to assess magnitude contribution?",
+            "Does the promoted v3 pair carry any measured directional or magnitude effect, or only technical validity?"
+          ]
+        },
+        {
+          "brief": "Validation summary: liquidity_runway_months:v3 update rejected for no effective change (mutable values equal baseline); promoted v3 candidates target surge_direction but effect is unverified; rejection is technical, not evidence of irrelevance.",
+          "episode_ref": "episode-c0001-003",
+          "kind": "fact",
+          "reflection": "Validation summary for cycle-0001 lists input_signal_refs including liquidity_runway_months:v3, net_share_retirement_yoy:v2, revenue_growth_yoy:v2, guidance_acceleration:v3, order_confirmation_disclosed:v2 and others, with candidate_research_targets mapping net_share_retirement_yoy:v3 and revenue_growth_yoy:v3 to surge_direction. The rejected liquidity_runway_months:v3 update failed because mutable values equaled the stable baseline. This is a technical validation outcome; it does not establish that liquidity runway is irrelevant to surge direction, only that the submitted edit was not an effective change.",
+          "source_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+          ],
+          "unresolved_questions": [
+            "Would a substantive liquidity_runway_months edit (not label-only) pass validation?",
+            "Do the promoted surge_direction candidates have measured directional effect under the paired gate?"
+          ]
+        }
+      ],
+      "lesson_additions": [
+        {
+          "applicable_scope": "Cross-round prediction comparisons on the same frozen case pool where canonical contexts differ or outputs reverse.",
+          "brief": "For same-case reversals, log both originals, observed changes, and unestablished cause; never certify model-only instability or infer causal Signal credit from equal canonical hashes.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "When the same frozen case yields opposite binary calls across rounds, record it as a cross-round comparison with both originals, the observed output changes, and cause_status=unestablished. Do not certify model-only instability from equal canonical contexts, and do not infer causal Signal credit from the reversal. Route context/prompt sensitivity to Plan research; treat any economic-factor explanation as a hypothesis measurable from prediction-time evidence and testable across independent cases.",
+          "kind": "action",
+          "lesson_id": "lesson-c0001-001",
+          "limitations": [
+            "Canonical hashes do not establish equal provider prompts or model parameters.",
+            "A reversal and outcome correctness do not establish a causal explanation."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_input:feedback-003"
+          ]
+        },
+        {
+          "applicable_scope": "Reading slow-loop result and validation summaries for signal promotion, validation, and magnitude-contribution status.",
+          "brief": "Use measurement_contract to read slow-loop summaries: NEUTRAL is available not decisive, decisive/available gaps are expected, and validated hashes show technical validity only, not verified effect.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "Interpret slow-loop cycle summaries using the measurement_contract: NEUTRAL is available but not decisive, so a decisive/available gap is expected and is not unexplained sample exclusion. Both arms share the frozen case pool, but availability and decisive subsets may differ with their measurements or thresholds. A promoted or validated signal hash establishes technical validity, not verified effect; magnitude contribution stays unassessed until the Fast absent/present consumption experiment and Binary-F1 protection run.",
+          "kind": "fact",
+          "lesson_id": "lesson-c0001-002",
+          "limitations": [
+            "Promoted/validated hashes are technical-validity artifacts, not measured efficacy.",
+            "Magnitude contribution was not assessed in this cycle."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_result:summary",
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+          ]
+        },
+        {
+          "applicable_scope": "Handling rejected signal-update candidates in slow-loop validation where the failure is structural rather than substantive.",
+          "brief": "A structured_output_failed rejection for no effective change is a technical outcome; preserve diagnostics, require a real edit or explicit no_change/defer, and do not infer factor irrelevance.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "Treat a structured_output_failed rejection (e.g., a signal update whose mutable values equal the stable baseline) as a technical execution outcome, not a research conclusion about the signal's relevance. Preserve the case diagnostics and require an actual effective change or an explicit no_change/defer with candidate=null and changed_paths=[] before resubmitting. Do not convert the rejection into evidence that the underlying factor lacks predictive value.",
+          "kind": "action",
+          "lesson_id": "lesson-c0001-003",
+          "limitations": [
+            "The rejection reason is a validation message, not a measured effect on surge direction.",
+            "No substantive liquidity_runway_months edit was tested in this cycle."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+          ]
+        }
+      ]
+    },
+    "episode_count": 3,
+    "lesson_count": 3,
+    "cross_round_original_labels_checked": true,
+    "observed_multiple": 3.3770028275212063,
+    "baseline_price": 2.122,
+    "quantity_note": "The historical comparison source explicitly records realized_max_multiple=3.3770028275212063 and baseline mean_adjusted_close=2.122; these are separate quantities. The selected comparison is changed_canonical_input, cause unestablished.",
+    "persisted_memory_commit_verified": false
+  },
+  "mining_first_seed_review": {
+    "research_axis": "surge_direction",
+    "actual_fetch_inspect_and_disposition_actions_personally_read": true,
+    "initial_missing_rationale_corrected_by_native_add": true,
+    "terminal_record_no_pattern_original_and_native_rationale_add_personally_read": true,
+    "remaining_budget_before_terminal": {
+      "browse_remaining": 23,
+      "heavy_remaining": 21,
+      "light_remaining": 0
+    },
+    "last_model_claim": "No new measurable pattern; existing named measurements belong to Update. All 151 staged backlog rows handled.",
+    "semantic_strength_of_no_pattern_claim": "Not independently confirmed. The model verdict does not prove the full economic hypothesis space was exhausted.",
+    "new_candidates_from_this_seed_confirmed": false
+  },
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/plans/plan_r0001_c02/record.json": "8b8c1551fc96da31dbbbe0ec88b548fafb9674eac392f11650eb7214fce75a17",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/meta/round-0001.json": "91b3ba859be14a43f8accbacace0750a28cefd3ad8d9419d8eaf30a030431bc3",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/2367b65254af92a2b153d66d435554c77afa059dcb9781db00036648267e83b6.json": "f8f60833789ab6204cced6c8fa248e2a6cd9fc72e854081bfd20d39bd5629e2e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/2367b65254af92a2b153d66d435554c77afa059dcb9781db00036648267e83b6.json": "86be1765440bfa3e232b8161aaaf3a76be5242ae39d4cab920969911b2a867f5",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/5024c27b0a7fb27294792d687e67677096e4aa7049af9cb2641198a8c96b936f.json": "da9ad3b9691c16813ff27b686c39a230cecfbc3ecf5040f98c03e26c350afb8b",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/5024c27b0a7fb27294792d687e67677096e4aa7049af9cb2641198a8c96b936f.json": "1cb7d1953ad1ce96528f061adc4a218f73d37f00062179871a9942f89e6e8e91",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/8818417d64e1c2b5b52f14a09fccffadff67c9554deedfa903d6bd6a2791f8ed.json": "021522d135847e51aafb0cb7e3d8eeb35814a457a19ed8bbe4cb14bbbbbfecdd",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/8818417d64e1c2b5b52f14a09fccffadff67c9554deedfa903d6bd6a2791f8ed.json": "6b702579e8e117b9bfc2357f91d016d67bfdebb17fd374d13e870aebb02932da",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/82163a5f086e5bdca9cc2f57ea9daf6a94d9365d237fa5487aeda09fb7e40389.json": "b715b9681707b7a59aa022222473193c647a3b1606cdacb43410ef760960e106",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/82163a5f086e5bdca9cc2f57ea9daf6a94d9365d237fa5487aeda09fb7e40389.json": "ba35ee0c2fd9bc58a1167ddecb3b690b9194ddfedf0fc0e5574022c8066be8d4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/ecf4be77cf1a762417da458d1de85a19a5d092726baf0fc97564318d16fe45ca.json": "b72452b0872b4db68b434333053ef03c003aebcbc942ba7e3142953378e3599f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/ecf4be77cf1a762417da458d1de85a19a5d092726baf0fc97564318d16fe45ca.json": "15dfdf8d775066da01b2a8941f7dacc17821d500ba94015ffce38a89f2a02d6a"
+  },
+  "overall_acceptance": {
+    "zero_technical_failures": false,
+    "new_magnitude_admitted_and_used": false,
+    "magnitude_high_bands_effective": false,
+    "independent_gain_confirmed": false,
+    "goal_complete": false
+  }
+}

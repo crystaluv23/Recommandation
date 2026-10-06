@@ -686,3 +686,5 @@
 - 2026-10-07 03:16：冻结90999e84为v181并由单executor真实启动，承接v179已提交历史/Registry11，保持同cohort/source/scoring/budget/Locked Test；进程实际命令和原10分钟heartbeat接续核对，原v180不重启。准备阶段CLI互斥选项已更正，控制路径迁移遗漏的旧preflight覆盖按原SHA逐字恢复，0外部且原run产物不改。
 
 - 2026-10-07 03:37：按v181真实Signal→预测→持久化Posthoc错误归因修复共享三原因模型视图/固定prompt及routing execution传递，补Posthoc不可用卡重投影与历史冻结lookup兼容；原件/评分/PIT/Locked Test不改，6新/330相关/1570全量55.793s及lint PASS。终态c01 diagnostic-only与Signal技术失败/magnitude集中仍保留，整体目标未完成。
+
+- 2026-10-07 03:45：记录v181实际Fast1→Slow进行中，c02完整24/14正向幅度全2–3x/7Signal失败、c01诊断失败仍保留；逐份核对Plan初答/付费patch/落盘与Round、Slow历史反馈/方法反思和首Mining真实行动，标记TN统计误写及H_reflect幅度判断职责风险，不改原件/评分或宣称增益。代码0a30c82b的1570全量/lint准备证据保持。
