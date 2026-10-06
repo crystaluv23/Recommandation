@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收，先查终态Reflect未落盘的完整链路，不按原合同盲目重启；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -224,3 +224,20 @@
 - net-share Update只改comparison_requirement文字，声称异常分母会在函数执行前返回unavailable。实际2025-05-30的88390180/100仍输出measurement=-883900.8、negative/confidence=.5/partial/success。revenue Update提高positive_min .20→.25并显式加入原默认plausible_abs_max=5；极端665.4055556仍positive/.5/partial，没有声称的极端值排除。其source types/query及阈值可能影响其他输入，不能推断所有输入都无变化；当前8案没有提供声称修复的执行证据，效果保持未验证。
 - 在既有框架内先spec后补齐Mining/Update共用execution_semantics：comparison文本不是deterministic语义guard，未消费的参数名不实现行为，原fixture通过不证明failure-case修复。系统审查同函数家族还发现net-share默认界限1、price-momentum默认50未进入实际docstring投影，现补全其partial/.5且原数值/分类保留的真实规则。AST去除docstring后，正式函数/Resolver与冻结v179逐值相同；没有新增经济阈值、修改评分/准入/不可变fixtures或把旧坏数据猜成百万单位。本地提示披露修复尚不代表模型已有效采纳，下一冻结后继必须重新实测。
 - 所有用户三项终态条件仍未通过；独立效果实验协议仍待批准，不启动其依赖工作、不声称benefit_confirmed。后续先从这份累计失败轨迹接续，同数据/模型/预算建立已测试源码的冻结后继，并继续审阅原47条实际研究轨迹中尚未完成的语义检查。
+
+## 当前 v180 冻结后继（2026-10-07 02:31:31启动）
+
+- root `/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated`；control `.delegation/live-runs/v180`；冻结源码 `/Users/l/.codex/worktrees/evolution-acceptance-v180/Recommandation`，HEAD `a4f36f5cdf0a1fb118b4484a8c78887ea91df853`，tracked clean。包含前两项typed问题/引用归属修复与最新共用执行能力披露，主目录157相关/1559全量54.473s及lint PASS。无关设计修改和v151产物没有进入冻结源码。
+- 继承v179已正式提交Fast/Slow1/1与Registry11/hash `561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b`；生产Slow-history验证通过。未把failed Slow记忆改成processed，也不把两个Update声称当实际修复或独立收益。
+- input canonical hash `7f9ec6f1cab5c484b14202dc77d1898d9a76a9a8ce5e6959b1d717c6e3e81a29`，文件sha256 `b5588fd1c7d7e9a6caa06ea0d860c1d5585297f31cdc6faa007ce06550988db1`；history hash `ed50019efcfea6702e4f8c06ceb6821f6763793fe5a8541327fb7aa606d237f0`；contract hash `fc8da52ede773bc114a0ef98d32f74a0ffb13cda641d459c6b3d3117e01ef30d`，合同文件sha256 `cfdf5b2207a30d3738769f8ad00f28fbbd38f2121fd8002984ae0270288647b4`。
+- 准备阶段0外部调用；逐值核对只改7个Registry/历史出处字段，splits/evaluation/Locked Test/source_files完全相同，3606源文件重新验证；16 Anchor+8 evolution_validation+16 Discovery同40案保持。deepseek-v4-flash、1200attempts/$100、一个Fast→Slow诊断周期，不开展待批准独立增益实验。
+- wrapper88939/child88944，实际命令、running与tracked clean已核对；02:32快照child CPU97.8%正在逐案data-ready验证，ledger0，非完成/非挂起。进程/PID和计数是时点快照，后续须重查。原heartbeat `automation`已改v180坐标并继续10分钟/仅重要变化通知，冻结monitor仍单executor。见 `reports/v180-launch-audit-20261007.json`。
+- 待亲自审阅新Proposer原/纠错payload与各技能传输、v3新方向版本真实检索执行、所有Signal技术失败族、Plan/Round统计与blind角色边界、Slow实际入库/需求路由/测量与fixture/Registry及跨cycle反馈消费。继续审阅v179尚未完成语义检查的原始研究轨迹；本地修复/新运行存在不等于任何一项验收完成。
+
+## v180 提前终止与统一提案契约（2026-10-07 02:43）
+
+- 最终exit.json为02:35:17退出1，process stopped，正式Fast/Slow0/0；active_cycle仍fast_loop/completed_plan_rounds0，不能把active_cycle当执行中的PID。21attempts（17completed/4JSONDecodeError），记录费用$0.09791628，0自动恢复；no_fitness_eligible_candidates不是可自动重试的SSL终止。见 `reports/v180-terminal-frontier-audit-20261007.json`。
+- c01三次提案都被拒绝；四份原始failed_responses是提前关闭四字段Plan对象后，再追加孤立的used_experience_refs成员。两份parseable付费full correction又漏该数组，第三次付费答仍同JSON错误。亲自对照实际固定prompt：开头“Return only evolvable Plan content: B,H...”与后附五字段同对象要求不一致，前文禁止query而后附输出说明却将query列可选。先spec后统一这两处披露，不修改parser/typed权限、不将原malformed响应自动合并或推断采纳。
+- c02经原首答与实际typed add修正后保存，11条采用ref与snapshot持久化，不把其实际采用当收益。首案两轮执行7条Signal：6success/1validation_failed，net_share_retirement_yoy:v3已真实success；唯一预测possible/true/2–3x只是诊断产物。24expected只完成1个，fitness diagnostic_only，metrics=null；无完整F1，不能将空technical_exclusion_case_ids当零技术问题。
+- 首案终态H_reflect确实收到must_finalize=true/termination_trigger=budget_exhausted，原native patch也含replace decision→finalize，但最终保存decision=continue/state_deltas只有1条，随后预测/Posthoc保存、整体因unfinalized_case停止。病例modelusage=13calls/153302tokens。已读取前后runtime、两份Reflect原答及native权限、trajectory和控制代码；下一步须精确回放完整native merge/验证、纠错预算保留与终态落盘，确认阻断来源，不能仅看原答finalize就算完成，也不能强制替模型关闭研究。
+- 最新本地Proposer契约修复通过170相关及1559全量54.551s；未进入冻结v180，也未以运行时热改方式生效。v180原件与评分/状态保持，继续系统性调查这个新的全链路前沿；修复和完整验证后再建立冻结后继。所有三项最终标准仍未通过，独立gain未确认。

@@ -1,0 +1,183 @@
+{
+  "schema_version": "v180-terminal-frontier-audit-v1",
+  "audited_at": "2026-10-06T18:43:04.442336+00:00",
+  "exit": {
+    "exit_code": 1,
+    "reason": "child_terminal",
+    "finished_at": "2026-10-06T18:35:17.396020+00:00"
+  },
+  "last_completed_round": 0,
+  "last_completed_cycle": 0,
+  "active_cycle": {
+    "completed_plan_rounds": 0,
+    "cycle_id": 1,
+    "cycle_mode": "fast_then_slow",
+    "input_signal_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "input_signal_registry_version": 11,
+    "phase": "fast_loop",
+    "start_round": 0,
+    "target_plan_rounds": 1
+  },
+  "external_attempt_count": 21,
+  "attempt_status_counts": {
+    "failed": 4,
+    "completed": 17
+  },
+  "recorded_cost_actual_else_reserved": 0.09791628000000001,
+  "cost_is_not_provider_invoice": true,
+  "malformed_proposals": [
+    {
+      "failure_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000001_54fcc4a824e7cfc7edf384da8ce473f18b2b24b87839bdcc7690fb69dd91d878.json",
+      "request_hash": "54fcc4a824e7cfc7edf384da8ce473f18b2b24b87839bdcc7690fb69dd91d878",
+      "error_type": "JSONDecodeError",
+      "raw_length": 5933,
+      "premature_plan_object_close_offset": 5828,
+      "first_object_keys": [
+        "B",
+        "H_init",
+        "H_reflect",
+        "H_analyse"
+      ],
+      "orphan_tail": ",\"used_experience_refs\":[\"reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57\"]}",
+      "runtime_original_preserved_and_not_repaired": true
+    },
+    {
+      "failure_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000003_26814016a2ddcd9805206ccab0fcc855877075b41aa37464c876a4a3e95ac14b.json",
+      "request_hash": "26814016a2ddcd9805206ccab0fcc855877075b41aa37464c876a4a3e95ac14b",
+      "error_type": "JSONDecodeError",
+      "raw_length": 7068,
+      "premature_plan_object_close_offset": 6183,
+      "first_object_keys": [
+        "B",
+        "H_init",
+        "H_reflect",
+        "H_analyse"
+      ],
+      "orphan_tail": ",\"used_experience_refs\":[\"reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57\",\"reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908\",\"reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02\",\"reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa\",\"reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4\",\"reflection:e06d5438ada14ff83108a4b636654bca5341b77ca3da88b22ba5e1486695c349\",\"reflection:ae671b0428c4b16a7ffc72fa99706dfca5b535987731baed56fa4b8bc7e3f4fb\",\"reflection:732ab848e42fa8b94212211539569b5c407b2963d86d3c4c0bc9d73bb5bcb1b2\",\"reflection:05e5e3fae19229100ba186ad0ca321b1f6a8130da6a0e7c707d13869460d2224\",\"reflection:c2c2ec66bb49a578cd3af5a7383a7298fd819a53825aec09c1e4e55f350ce3c6\",\"reflection:8d131e6e11ec181ad3ea4f4a191e94498fadeac4d4e9c719b77d216cadca2f0c\"]}",
+      "runtime_original_preserved_and_not_repaired": true
+    },
+    {
+      "failure_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000005_f1b6a06f5c8b83a33f5d24120250d77301ec3268393143e63567d33e0df72bde.json",
+      "request_hash": "f1b6a06f5c8b83a33f5d24120250d77301ec3268393143e63567d33e0df72bde",
+      "error_type": "JSONDecodeError",
+      "raw_length": 6197,
+      "premature_plan_object_close_offset": 5702,
+      "first_object_keys": [
+        "B",
+        "H_init",
+        "H_reflect",
+        "H_analyse"
+      ],
+      "orphan_tail": ",\"used_experience_refs\":[\"reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57\",\"reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908\",\"reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02\",\"reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4\",\"reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa\",\"reflection:ae671b0428c4b16a7ffc72fa99706dfca5b535987731baed56fa4b8bc7e3f4fb\"]}",
+      "runtime_original_preserved_and_not_repaired": true
+    },
+    {
+      "failure_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000006_8fc0d5ef901c53f79e85c646c4cde9093894b33a9ea69fe3f58800606765f12e.json",
+      "request_hash": "8fc0d5ef901c53f79e85c646c4cde9093894b33a9ea69fe3f58800606765f12e",
+      "error_type": "JSONDecodeError",
+      "raw_length": 6416,
+      "premature_plan_object_close_offset": 5921,
+      "first_object_keys": [
+        "B",
+        "H_init",
+        "H_reflect",
+        "H_analyse"
+      ],
+      "orphan_tail": ",\"used_experience_refs\":[\"reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57\",\"reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908\",\"reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02\",\"reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4\",\"reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa\",\"reflection:ae671b0428c4b16a7ffc72fa99706dfca5b535987731baed56fa4b8bc7e3f4fb\"]}",
+      "runtime_original_preserved_and_not_repaired": true
+    }
+  ],
+  "accepted_plan": {
+    "plan_id": "plan_r0001_c02",
+    "slot": 2,
+    "adopted_item_refs": [
+      "reflection:732ab848e42fa8b94212211539569b5c407b2963d86d3c4c0bc9d73bb5bcb1b2",
+      "reflection:05e5e3fae19229100ba186ad0ca321b1f6a8130da6a0e7c707d13869460d2224",
+      "reflection:c2c2ec66bb49a578cd3af5a7383a7298fd819a53825aec09c1e4e55f350ce3c6",
+      "reflection:8d131e6e11ec181ad3ea4f4a191e94498fadeac4d4e9c719b77d216cadca2f0c",
+      "reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02",
+      "reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa",
+      "reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4",
+      "reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57",
+      "reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908",
+      "reflection:e06d5438ada14ff83108a4b636654bca5341b77ca3da88b22ba5e1486695c349",
+      "reflection:ae671b0428c4b16a7ffc72fa99706dfca5b535987731baed56fa4b8bc7e3f4fb"
+    ],
+    "snapshot_hash": "8e92127c3227d83a014b94b48506f1e1a4a21c17e8e74bb4f0b2d2a179d480af"
+  },
+  "candidate_attempt": {
+    "fitness": {
+      "eligible": false,
+      "evidence_covered_count": 1,
+      "expected_case_count": 24,
+      "predicted_positive_count": 1,
+      "reasons": [
+        "incomplete_case_set",
+        "unfinalized_case",
+        "no_true_positive"
+      ],
+      "status": "diagnostic_only",
+      "true_positive_count": 0,
+      "valid_case_count": 0
+    },
+    "metrics": null,
+    "expected_count": 24,
+    "completed_count": 1,
+    "technical_exclusion_case_ids": [],
+    "signal_status_counts": {
+      "success": 6,
+      "validation_failed": 1
+    }
+  },
+  "closure_frontier": {
+    "case_id": "cik_0000895728:20250930",
+    "stop_reason": "budget_exhausted",
+    "termination_trigger": "budget_exhausted",
+    "runtime_instructions": {
+      "must_finalize": true,
+      "termination_trigger": "budget_exhausted"
+    },
+    "raw_reflect_request_hash": "1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6",
+    "raw_finalization_operation_present": true,
+    "persisted_final_decision": "continue",
+    "persisted_state_delta_count": 1,
+    "prediction": {
+      "candidate_judgment": "possible",
+      "is_surge": true,
+      "magnitude": "2-3x"
+    },
+    "model_usage": {
+      "cost": 0.045863720000000004,
+      "llm_calls": 13,
+      "tokens": 153302
+    },
+    "remaining_work": "Replay the exact native delta, complete validation, local correction reservation and terminal persistence. A raw finalize operation is not a committed state; do not force a research decision or mark this case complete."
+  },
+  "local_prompt_repairs": {
+    "five_fields_same_root_object": true,
+    "bootstrap_query_not_advertised_as_supported": true,
+    "not_in_frozen_v180": true,
+    "parser_or_repair_authority_changed": false,
+    "focused_tests": 170,
+    "full_tests": 1559
+  },
+  "same_frozen_run_not_restarted": true,
+  "slow_started": false,
+  "independent_benefit_confirmed": false,
+  "goal_complete": false,
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v180/exit.json": "3e010a360b7189f050e1110a82a37a8883ae25472303cddc4f23ce1ae7ee2e0c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/state.json": "6c497dda1ea81ff19e044e7cdd57db1e0b7fab237d3a494e2e8a7b5016c989f0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cycle_state.json": "bf39f4410f443f66078e41f3aeae3dce229262fda4255c986b352015174e4f86",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/attempts.json": "bb08cdfb616fbdda930e0a4a409549d374543c894a00bdf3328343245b6c345f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000001_54fcc4a824e7cfc7edf384da8ce473f18b2b24b87839bdcc7690fb69dd91d878.json": "209ca794fbbd917606fd312642677457a81336eba5c30fa23d5424ab729004d9",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000003_26814016a2ddcd9805206ccab0fcc855877075b41aa37464c876a4a3e95ac14b.json": "8ea3fc425408a6cf6921fb66c22096fa28ac61cbc3351f38be5561435e516c96",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000005_f1b6a06f5c8b83a33f5d24120250d77301ec3268393143e63567d33e0df72bde.json": "f94da562f3b5af1a0403589be84ff9f30114bac58c59720ddcc462931abb1f31",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/failed_responses/000006_8fc0d5ef901c53f79e85c646c4cde9093894b33a9ea69fe3f58800606765f12e.json": "5a1e117e3ef82f44a5ba68bef95224ff953802eb2fb1b1ffe1baf8cf5e0bb155",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/experiments/round-0001/candidates/slot-02.json": "6a541bbf35ee6696612a851c77b03d14cbd2b8885a0fe0dce301d81de12d04cc",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/experiments/round-0001/attempts/plan_r0001_c02.json": "2b13c086629f30c3b52fe1b8100d4c71238d2d250185ba369e49b2571a692fc8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/experiments/round-0001/rejected.json": "538faca6df1e9ba61a5b9d55eb28f77cf5b2c9f4a892c7d5da55d9399038092a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/requests/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "9942a5a1dbcbb552125af4e948f84e2eac13d9ad791b7d58f9ce079c2ed512c4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated/cache/responses/1d4730fe0db3938c663f5769680c3c713cc1880624f118ac152437c6be2fa0a6.json": "b4e5c1156fee6879828d4e43f86269940d78f6cc60745230a4cbdd12d50843e2"
+  }
+}

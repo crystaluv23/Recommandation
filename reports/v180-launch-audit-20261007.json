@@ -1,0 +1,60 @@
+{
+  "schema_version": "v180-launch-audit-v1",
+  "audited_at": "2026-10-06T18:33:14.134152+00:00",
+  "frozen_preflight": {
+    "source": "/Users/l/.codex/worktrees/evolution-acceptance-v180/Recommandation",
+    "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated",
+    "parent": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+    "source_revision": "a4f36f5cdf0a1fb118b4484a8c78887ea91df853",
+    "input_manifest_sha256": "b5588fd1c7d7e9a6caa06ea0d860c1d5585297f31cdc6faa007ce06550988db1",
+    "input_manifest_hash": "7f9ec6f1cab5c484b14202dc77d1898d9a76a9a8ce5e6959b1d717c6e3e81a29",
+    "contract_hash": "fc8da52ede773bc114a0ef98d32f74a0ffb13cda641d459c6b3d3117e01ef30d",
+    "run_contract_sha256": "cfdf5b2207a30d3738769f8ad00f28fbbd38f2121fd8002984ae0270288647b4",
+    "initial_registry_version": 11,
+    "initial_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "slow_history_manifest_hash": "ed50019efcfea6702e4f8c06ceb6821f6763793fe5a8541327fb7aa606d237f0",
+    "max_external_attempts": 1200,
+    "max_total_cost": 100,
+    "external_calls_during_preparation": 0,
+    "locked_test_accessed": false,
+    "changed_parent_manifest_keys": [
+      "initial_registry_hash",
+      "initial_registry_refs",
+      "initial_registry_version",
+      "registry_source",
+      "slow_history_manifest_hash",
+      "slow_history_source",
+      "source_input_manifest_sha256"
+    ],
+    "source_file_count": 3606,
+    "same_splits_evaluation_locked_test_source_files": true
+  },
+  "process_at_audit": {
+    "wrapper_pid": 88939,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v180/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v180_integrated",
+      "--run"
+    ],
+    "source_revision": "a4f36f5cdf0a1fb118b4484a8c78887ea91df853",
+    "pid": 88944,
+    "started_at": "2026-10-06T18:31:31.158780+00:00",
+    "status": "running",
+    "automatic_resumes": 0
+  },
+  "monitor_and_child_commands_verified": true,
+  "tracked_frozen_source_clean": true,
+  "ledger_attempt_count_at_audit": 1,
+  "stage_at_audit": "Initial data/contract validation then Plan proposal; not a completed Fast or Slow cycle.",
+  "heartbeat_id": "automation",
+  "heartbeat_interval_minutes": 10,
+  "heartbeat_updated_to_v180": true,
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v180/frozen-preflight.json": "d75bf3569f24a2dd261de57fc1ccd3c888c5f1eecd7d2d4bd38070f003d1e4d8",
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v180/process.json": "9b17f4125094781ebd94332234b1e476c916ec3c1f253b443dc20c4fc0dd14cf"
+  },
+  "goal_complete": false,
+  "independent_benefit_confirmed": false
+}

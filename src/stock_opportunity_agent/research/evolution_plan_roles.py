@@ -2754,8 +2754,9 @@ class LLMInformationPlanProposer:
         }
         system_prompt = (
             _PREDICTOR_ROLE_AUTHORITY +
-            "Apply the fixed H_P prior. Return only evolvable Plan content: "
-            "B, H_init, H_reflect, and H_analyse. B is an analyst-style source "
+            "Apply the fixed H_P prior. When proposing a Plan, return one JSON "
+            "object containing B, H_init, H_reflect, H_analyse, and "
+            "used_experience_refs as members of that same object. B is an analyst-style source "
             "retrieval plan, not a fixed company profile or computed Signal. "
             "Basic Info is a constrained orientation stage: compose B.requests "
             "from the closed source-type families — market backbone "

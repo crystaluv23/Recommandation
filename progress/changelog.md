@@ -676,3 +676,7 @@
 - 2026-10-07 02:09：v179 Fast1/Slow0，亲自审阅两Plan/横向Round及Slow原答/patch/meta/failed记忆，保留10Signal失败/1budget/1case FN与25幅度全2–3x；统计误读和blind行动需标签不能计有效学习。按唯一selected owner泛化既有nested source canonicalization，不从prose/歧义授予引用；2新/106相关/1559全量PASS，真实Slow原答零外部生产回放仅改2引用、原文/hash不改，人工内容验收仍失败；当前冻结代码不热改。
 
 - 2026-10-07 02:27：v179真实Fast/Slow1/1、exit0，570attempts/记录$2.49397764、Registry10→11仅两方向Update，零新magnitude、25幅度全2–3x与技术失败保留。亲自查完整Update rationale/admission及全部8原归纳案生产Executor零外部回放，新旧除version完全相同；修复声称未成立。先spec后补齐Mining/Update共用执行能力披露与同函数家族两项真实plausibility说明，AST证明执行逻辑未变；157相关/1559全量PASS，独立收益和最终验收仍未通过，冻结后继待接续。
+
+- 2026-10-07 02:33：冻结a4f36f5c建立v180真实后继，生产验证v179正式1/1、Registry11及提交历史，保持40案/3606源/评分/Locked Test/deepseek-v4-flash/1200attempts/$100；准备0外部，wrapper88939/child88944已核对、原heartbeat继续。实际新版本使用、修复采纳和用户三项完整验收未通过；不改v179失败或声称gain。
+
+- 2026-10-07 02:43：v180实际提前exit1/0-0，四malformed提案与首案terminal finalize未落盘完整原件保留。统一固定Proposer根对象五字段与闭合B查询能力披露，parser/typed权限不变，170相关/1559全量54.551s PASS；已入库方向v3真实使用但无完整评分或新magnitude。下一前沿为native验证/纠错预算/终态持久化生产回放，不按原失败合同盲目重启、未宣称gain。

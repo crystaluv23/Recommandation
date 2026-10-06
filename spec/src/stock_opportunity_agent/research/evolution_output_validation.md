@@ -487,3 +487,13 @@ obligations remain local and run after both patch layers merge. A semantic
 failure of that merged object remains invalid and may use only a remaining
 ordinary correction slot; no additional slot or budget is created. Unsupported
 patch envelopes preserve the existing fallback path and immutable baseline.
+
+### Proposer prompt and Basic Info contract consistency
+
+The appended InformationPlanContent instructions declare all five root fields,
+including `used_experience_refs`, in one object. They advertise only
+`lookback_days` as an optional Basic Info request field; free-text `query` remains
+rejected by `_validate_basic_info_orientation_menu`. Generic RawInfoRequest and
+research-document query support do not grant bootstrap query capability. This
+is prompt alignment with the existing validator, not a parser, canonical record,
+or typed repair permission change.

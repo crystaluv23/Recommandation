@@ -64,7 +64,14 @@ This bounded check does not claim to verify arbitrary prose or forecast quality.
 ## Purpose
 
 New proposal output contains the four strategy fields plus
-`used_experience_refs` (empty is allowed). Each adopted ref must have appeared in
+`used_experience_refs` (empty is allowed). All five fields belong to
+the same root Plan object; the prompt's
+opening instruction must not exclude the adoption field or imply a separately
+closed strategy object. Basic Info queries remain outside the closed orientation
+menu, and the appended output instructions must not advertise `B.requests[*].query`
+as an optional supported field. This applies to original proposals and full
+corrections after an unparseable response; it changes no parser or repair authority.
+Each adopted ref must have appeared in
 an actual initial brief, directory page or item read in this proposal. Parent
 metadata and undisclosed/deferred handles do not grant adoption authority.
 Runtime binds the complete final disclosed working-view snapshot and persists
