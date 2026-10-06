@@ -1,5 +1,7 @@
 # Status
 
+2026-10-06 23:08：v177已提交Fast第1轮，48案正式case排除0，但Signal仍12 validation_failed、5 budget_blocked；30个非空幅度全部2–3x。Slow挖掘进行中，Registry仍v8、cycle=0，594 attempts记录成本$3.05872112。修复完整纠错反馈遗漏预算的通用构造路径，5份真实阻断请求0外部生产预算回放均装入；新增冻结运行监控，只在子进程终止且新ledger确认可重试运输错误时恢复，不改源/输入/预算，7监控回归与1529全量/lint PASS。亲自读Plan/Round原答、patch、落盘反思及Slow固定指令/原答，发现非法append导致有用条目丢弃和职责归因错误仍保留，内容验收未通过；冻结v177未含新修复，双轴入库/后继消费/独立增益仍待完成。
+
 2026-10-06 22:22：v177第一Plan24案与第二Plan10案已保存，指针仍0/0，21个非空幅度全为2–3x；第一Plan暂存F1 .80、magnitude macro-F1 .1754，正式case排除0但Signal技术失败仍在，不能整体验收。亲自读四份phrase纠错及两个真实10x+的预测/复盘；修复固定Signal提示中neutral/mandatory evidence冲突、无关interior candidate及无依据量纲比较，不松校验/改阈值。4新/92专项/1520全量与lint PASS；当前冻结运行未含这些修复，后继实际模型遵循及独立增益仍待查。
 
 2026-10-06：v177第二次SSL EOF按冻结代码/缓存恢复，22案快照中7次Signal校验失败、3次纠错预算阻断，14个非空幅度仍全部2–3x，提交指针0/0。修复最终视图丢失execution.status、同ref跨轮被最新结果覆盖、Critic二次压缩和Round/Slow原始反思缺技术记录；新增可选runtime诊断，不改评分/经济结论/历史unknown。6专项与1516全量、lint PASS；22份真实轨迹0外部生产回放传递正确、原hash不变。零技术失败、双轴新入库/后继消费和独立增益仍未验收。

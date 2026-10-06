@@ -284,3 +284,5 @@
 - 2026-10-06: 接续被中断的v177端到端goal；再次consulted `experiences/self-evolution-convergence-and-acceptance.md`和`experiences/incremental-repair-and-sourced-memory.md`，核对实际Proposer字段缺口及Signal技术失败的全生命周期归因，旧运行保持冻结、局部patch保留策略。
 
 - 2026-10-06: v177 Signal证据失败家族审计；consulted `experiences/incremental-repair-and-sourced-memory.md`，逐份检查初答/纠错/可见投影/硬要求的一致性，修复neutral提示与强制证据要求的冲突，禁止无依据量纲比较；不改原阈值或将无关literal自动替换成经济依据。
+
+- 2026-10-06: v177完整纠错预算家族；consulted `experiences/self-evolution-convergence-and-acceptance.md`和`experiences/incremental-repair-and-sourced-memory.md`，确认feedback在预算拟合后追加造成估算/实际请求不一致，沿既有投影/校验合同修复生产组合边界并保留真实失败分母。

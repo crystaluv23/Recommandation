@@ -49,8 +49,8 @@
 |Initialize/Basic Info/need|首案固定指令、部分Basic Info与完整初/终state已查|机械恢复/needs纠错已查|部分财报/新闻投影有明确遗漏，commentary仅开头；重复needs待查|局部内容检查，未整体验收|
 |Signal routing/apply/Reflect|首案两轮选择与结果、第三案失败已查|routing与need局部patch可表达；Signal仍有技术失败|600 MW→1000 units无依据；第三案两个validation_failed及一个budget_blocked|内容/可靠性未通过|
 |Predictor/预测保存/标签后反思|首案和第三案请求、首/第三及Life Time预测与反思已查|首案posthoc outcome局部纠错通过|首案阴性正确不代表增益；第三案技术失败未携带精确诊断到Posthoc|部分已查，反馈归因仍待修|
-|Plan/Round critic、提交|待查|待查|待查|未验收|
-|Slow input/memory/cross-round|待查|待查|待查|未验收|
+|Plan/Round critic、提交|两Plan固定指令相同、Round完整指令已读；有界来源覆盖已查|两Plan/Round原答、typed patch已查；首次outcome错误仅给单个义务，非法append|Fast1提交；Plan各6→3条、Round5→2条；职责错误仍留存|内容与修复链未通过|
+|Slow input/memory/cross-round|完整固定指令及3个feedback单位库存/两历史摘要已读；比较完整原件待查|3个episode与3个lesson原答已读|真实提交历史与same-case对比被处理；经验归因/采用待进一步核对|部分已查，未验收|
 |direction+magnitude Mining、Update|待查|待查|待查|未验收|
 |spec/skill/tests、fixture/admission|待查|待查|待查|未验收|
 |Registry atomic transition/周期提交|待查|待查|待查|未验收|
@@ -89,6 +89,18 @@
 - 完整读过Ondas `cik_0001646188:20250530`的预测和posthoc items：订单/标准选择/价格确认支持possible，预测2–3x，真实10.8594x；复盘保留低估事实、listing/dilution锚定假说及可检验局限，并有可执行的order-to-revenue时点补充动作。轨迹hash `2b744243731923521b926f0b439e94daf70b9c70b7b45b49fe1088b0db7ffc8b`，预测request `437d0707e97730fd10ba5b68fa93d8871b605ac99e52fc58807afc54a271ca0d`，posthoc `b42a275e05e8e2b591d45d501ea8c07cc609135aae1188ff2be185e840926b9d`。
 - 完整读过AXT `cik_0001051627:20250930`的预测和posthoc items：出口许可带来forecast外收入+价格/量确认，预测2–3x，真实13.3460x；最终复盘只有binary正确和magnitude低估两项事实，没有改进动作。不能把事实复述算作有用进化。轨迹hash `2d66f246ac6c30aa3454eaee78137615749de053130a5dc09361493245c0dd3d`，预测request `c0ff427a51850e0860cf14e28249141bda509c055918b7014a350b8b3a0fed31`，posthoc `1cfecf0c3b8b0ca4f3bf4aeb89599ad7c104030c1b562a9e5577068714e59f99`/纠错`2aa7b22a0a00774d1cc05118301c7b31606b2327fdbc698a1d4f5e2c2e146828`。两案完整来源可见性与因果解释未整体验收，不能由后验10x强制改预测档位。
 - 运行仍为冻结a7d8a057，主源码checkpoint只能在后继测试。后续检查magnitude低估事实/动作如何被Plan/Round、H1/Magnitude Track、作者/测试/Registry和后继Predictor实际使用；不把多样预测档位本身当作收益。
+
+## 2026-10-06 23:08完整纠错预算与持续监控检查点
+
+- Fast第1轮已提交：两个Plan各24案，正式case技术排除均0。第一Plan F1 .80（TP12/FP4/TN6/FN2）、magnitude macro-F1 .1754386；第二Plan F1 .7857143（TP11/FP3/TN7/FN3）、magnitude macro-F1 .1481481。48轨迹库存200 success、10 domain_unavailable、12 validation_failed、5 budget_blocked；30个非空magnitude全部2–3x，18个null。两Plan各7个高幅度truth均低估。Fast/完整周期指针1/0，Registry仍v8，当前slow_loop；594 attempts记录成本$3.05872112，预算仍1200/$100。库存不代表48案全部人工内容验收。
+- 找到5次真实纠错预算阻断的共同构造问题：旧fit只估计无feedback payload，随后才附加validation_feedback，导致实际保守wire+output预留超余量363–1578。先同步owning spec，再让所有full/minimum/trial与最终请求走包含pending反馈的同一builder；保留原证据最低限度、有效兄弟、已付usage及硬校验，最低请求仍不装入时如实budget-blocked，不扩大预算或缩减计费分母。纠错eligible列表原来就可能因预算变化而变；required_action改为本次请求的精确列表。
+- 生产预算回放详见`reports/v177-correction-budget-replay-20261006.json`：五份full预留/余量/修复后预留依次为31524/30663/30471、21490/21173/19810、25926/25027/24063、45936/45322/44042、52592/51327/50705；每份保留完整原feedback，只按原排序少一个投影，真实DeepSeek请求preview与旧wire预留一致，原件hash不变，0外部调用。重建使用存档已masked投影，visible_source_characters计数与原pre-mask计数存在单个审计标量差异并在报告显式说明；此回放不执行citation验证或真实模型纠错，不代表v177原失败消失。
+- 新增2项预算回归（无反馈能装入而有反馈超额的真实构造家族，以及完整最低仍装不入反例）；136相关PASS。新增冻结运行监控的7项回归覆盖fresh/stale/授权预算/信号中断、相同命令恢复、源码合同漂移、唯一执行器与恢复上限。最终1529全量/57.325s PASS，日志`/tmp/v177-budget-monitor-full.log`；lint PASS，`/tmp/v177-budget-monitor-lint.log`。一次1522测试旧断言失败后更新与真实eligible contract一致的断言再全量通过，未掩盖失败。
+- 22:22:24 Remote-end-closed、22:32:09 SSL及22:41:23 SSL退出均先确认终态、保存exit/process到resume-02/03/04再按原冻结源/缓存/ledger接续。23:08时wrapper12489/child12495都仍活着，使用`scripts/monitor_frozen_evolution.py`，22:50:51启动；自动恢复次数0。监控只有子进程已终止且其fresh ledger与末行明确RetryableOpenAIClientError才等30秒恢复，最多10次；不因观测超时重启，也不恢复402/权限/预算/源码漂移/用户中断，retry_wait的活wrapper仍是原job。每次child终态独立归档，只有最终monitor退出写exit.json。原10分钟heartbeat已更新为观察同一handle，状态不变静默；网络恢复不是研究周期完成。
+- 亲自读Plan1 request `22e75fb572b605d64c0910733fa49450a84fe3d0c4bede04c79f93263766a325`完整固定指令/原答，Plan2 `b6e39e9f287bcce346abd8ccc857732cc285054d118a319abdc81aca840a3807`原答与固定指令逐字相同；Round `b775a1491fab86e5f376abad2abd89a7e4926fa76fef7582dc3450a1381d3df5`完整固定指令/原答。两个Plan来源分别139/146可用而32包含，Round297可用而19包含，不能把有界视图当全部原始内容已查。
+- 两Plan correction `beaa717ffc2361f8f73a04e6374192157c784509a717c44ad5f33c5bf50d4ea4`、`ac2b156edbc3b16923793f8a2bced0694dc3fbb013fb908b030fc590a0f21889`及Round correction `af59544b1447feb5ac241781cfd1ae701ab0aa0a3c438d8ce72a1c7904718f02`均给出未有outcome_claims的首个错误；实际patch向该数组append canonical false/magnitude claim，但权限只有replace/add/remove，且引用aggregate stats不能提供个案canonical outcome bool。初答还有其他成功/失败条目缺claims，首错式义务不是完整修复前沿。两Plan最终各6→3 authored items，Round5→2，失败分类/跨Plan比较条目被丢弃，原始case反思仍保存；技术可恢复与有用反馈保留尚未通过。
+- 最终Plan1仍保存fact item `reflection:f31b4591dd9011e78fd0254c2b38a6ff197358b1d4787876594ff70390e8c6ed`，其中“Plan提供不了高档输出机制”把shell Predictor最终分类职责错误归给H_analyse；observed全2–3x本身是真的，机制推断并非已证实事实。Plan2“压低风险权重会压制高幅度催化反证”被标hypothesis但逻辑仍需检验。Round原答还声称两Plan同一case set同时又说membership hash不同，这条最终未保存，不能据它证明可比因果效果。未来修复必须保持聚合统计与个案outcome权限、完整义务及角色边界一致，不能简单放开append或凭后验强制高档。
+- Slow reflection request `684125d0b63176a0e5486b8882e12cb2428305500de3e1fdfcd8f28c46de1259`完整固定指令/原答与两历史feedback摘要已读。3个单位包括真实已提交v171的Slow结果/validation及一个same-case两Plan预测对比；原答3episode/3lesson保留context已变化、原因未知、既有magnitude Track失败及Fast消费未评估边界。落盘status=appended，3个processed feedback；episode除runtime添加reflection_layer外与原答一致，lesson逐值一致，仍535个pending，不能宣称全部已消费。但lesson要求unverified因子在支持正向判断前检查历史映射，可能把未证实效果变成正向门槛；二级供给overhang动作也不能从一次反转推断因果。完整comparison来源及后续真实采用仍需检查。H1 Mining最近的need dispositions原答已读，12项deferred_measurement明确当前dev外，无伪称covered；完整输入/候选/双轴Track尚未验收。
 
 ## 接续动作
 

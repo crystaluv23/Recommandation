@@ -4921,6 +4921,7 @@ class StructuredLLMSignalRunner:
         as_of: datetime,
         *,
         budget_trimmed: bool,
+        validation_feedback: tuple[Mapping[str, Any], ...] = (),
     ) -> dict[str, Any]:
         projection_ids_by_ref: dict[str, tuple[str, ...]] = {}
         for item in inputs:
@@ -4977,6 +4978,8 @@ class StructuredLLMSignalRunner:
                 "known_aliases": list(_case_identity_alias_inventory((case,))),
                 "source_scope_is_not_event_subject": True,
             }
+        if validation_feedback:
+            payload["validation_feedback"] = [dict(row) for row in validation_feedback]
         return payload
 
     def _fit_projection_to_budget(
@@ -4987,6 +4990,7 @@ class StructuredLLMSignalRunner:
         as_of: datetime,
         *,
         request_token_budget: int | None = None,
+        validation_feedback: tuple[Mapping[str, Any], ...] = (),
     ) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage], bool]:
         estimator = getattr(self.caller, "estimate_json_request_tokens", None)
         budget = (
@@ -5016,6 +5020,7 @@ class StructuredLLMSignalRunner:
                 selected_lineage,
                 as_of,
                 budget_trimmed=trimmed,
+                validation_feedback=validation_feedback,
             )
             return payload, selected_lineage
 
@@ -5165,6 +5170,9 @@ class StructuredLLMSignalRunner:
 
         for attempt in range(2):
             attempt_inputs = tuple(pending.values())
+            pending_feedback = tuple(
+                row for row in validation_feedback if row.get("signal_ref") in pending
+            )
             documents, lineage = _shared_llm_signal_projection(attempt_inputs)
             remaining_budget = (
                 budget - usage.tokens
@@ -5177,6 +5185,7 @@ class StructuredLLMSignalRunner:
                 lineage,
                 as_of,
                 request_token_budget=remaining_budget,
+                validation_feedback=pending_feedback,
             )
             payload = self._batch_payload(
                 attempt_inputs,
@@ -5184,18 +5193,12 @@ class StructuredLLMSignalRunner:
                 lineage,
                 as_of,
                 budget_trimmed=budget_trimmed,
+                validation_feedback=pending_feedback,
             )
             projection_ids_by_ref = {
                 str(item["signal_ref"]): tuple(item["eligible_projection_ids"])
                 for item in payload["signals"]
             }
-            if validation_feedback:
-                pending_refs = set(pending)
-                payload["validation_feedback"] = [
-                    item
-                    for item in validation_feedback
-                    if item.get("signal_ref") in pending_refs
-                ]
             identity_failures: dict[str, tuple[str, ...]] = {}
             try:
                 value, step_usage = _complete_json_with_invalid_value(
@@ -5341,8 +5344,8 @@ class StructuredLLMSignalRunner:
                                 f"result.signal_id exactly {item.spec.signal_id!r} without "
                                 f"a version suffix and result.version exactly {item.spec.version}. "
                                 "Ground the corrected result in the smallest set of unique "
-                                "quotes required by that Signal's skill, using only its "
-                                "unchanged eligible_projection_ids list. Comparisons may use "
+                                "quotes required by that Signal's skill, using only "
+                                "this request's eligible_projection_ids list. Comparisons may use "
                                 "multiple current/prior or supporting/counter quotes; cite the "
                                 "examined non-qualifying spans as counter evidence for neutral "
                                 "or negative conclusions only when all mandatory evidence "

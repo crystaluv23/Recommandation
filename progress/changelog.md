@@ -652,3 +652,5 @@
 - 2026-10-06：贯通Signal执行状态到最终预测/Posthoc/Critic及可选case原始诊断→Round/Slow来源；同版本逐轮保留自身结果，剥离私有错误文本，domain-unavailable与legacy未知保持独立，固定prompt限制技术失败的经济归因。22份v177原轨迹0外部回放hash不变，6专项/1516全量/lint PASS；冻结v177未热改，实际10次Signal技术失败及幅度塌缩仍待后继修复验收。
 
 - 2026-10-06：审计真实Signal phrase纠错与10x+低估产物，统一初始/纠错的mandatory literal契约，明确interior候选仅是位置提示、数值materiality须有来源的兼容量纲换算；保留neutral有效结果及硬校验，4新/92专项/1520全量/lint PASS。v177 34案仍未提交，后续入库/消费/增益未验收。
+
+- 2026-10-06：将pending Signal完整validation_feedback纳入全部投影预算估计与最终请求，保留最低证据/成功兄弟/已付usage及真实budget-blocked；5份v177原请求0外部回放装入原余量。新增冻结运行终态运输恢复监控、唯一executor/源码输入预算不变/中断停止及10次恢复上限，7专项、1529全量/lint PASS；Fast1已提交、Slow挖掘中，人工发现critic局部修复/归因内容仍未通过，不宣称live修复或增益。

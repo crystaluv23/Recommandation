@@ -644,3 +644,11 @@ An interior citation candidate is only a byte-exact location suggestion, never
 authority to replace the measured claim with an unrelated sentence. Numerical
 materiality comparisons require compatible units and source-backed conversions;
 the fixed instructions do not redefine any stored Signal's threshold.
+
+Signal correction reservation includes the pending rows' complete validation
+feedback before choosing a budget-fitting projection. The same payload builder
+feeds every full/minimum/trial estimate and the final request; feedback cannot
+be appended after fitting. Existing relevance order, one eligible minimum per
+selected Signal, immutable raw sources, and mandatory evidence checks remain.
+If even that complete minimum does not fit, only pending rows retain the explicit
+budget-blocked result and paid initial usage/valid siblings remain intact.

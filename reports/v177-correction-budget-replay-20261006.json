@@ -1,0 +1,145 @@
+{
+  "audited_at": "2026-10-06T14:42:30.736705+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated",
+  "external_calls": 0,
+  "source_module_sha256": "d7dea8a281928bba1271cc7f0ef0d1f1c469fe4f39f801464f7c793ac016ddf9",
+  "verified": "Original provider previews equal recorded full reservations. Full-feedback production fit produces complete requests within original remaining case budgets, preserves feedback and eligible minima, and changes no source artifact.",
+  "limits": "Budget-only replay. Recorded opaque subject metadata adapter preserves scope; archived masked source text changes the pre-egress character-count scalar only, with a conservative scalar-digit allowance in final budgets. Raw-offset validation, model correction semantics and live successor behavior remain untested here. Projection subsets follow existing budget transport contract; omitted text is not absence.",
+  "requests": [
+    {
+      "request_hash": "d7cbc467e98ad60b575f2b06adc87047434b04d293acceb205456ea7191ee5c5",
+      "source_sha256": "35b84acf47bc7305f4e8eb181c0ad93257e092f2deb6a2c39d6a3cf21f5b1944",
+      "matched_failures": [
+        {
+          "case_id": "cik_0000701818:20250930",
+          "plan_id": "plan_r0001_c01",
+          "round": 2,
+          "signal_ref": "order_confirmation_disclosed:v2",
+          "required": 31524,
+          "remaining": 30663
+        }
+      ],
+      "recorded_full_reservation": 31524,
+      "recorded_reservation_without_feedback": 30368,
+      "remaining": 30663,
+      "new_complete_reservation": 30471,
+      "source_projection_count_before": 9,
+      "pre_egress_visible_counter": 12266,
+      "masked_replay_visible_counter": 12334,
+      "counter_digit_reservation_allowance": 0,
+      "source_projection_count_after": 8,
+      "budget_trimmed": true,
+      "eligible_projection_counts": {
+        "order_confirmation_disclosed:v2": 8
+      }
+    },
+    {
+      "request_hash": "821f15e34ea3c86a358036fe677da32a411a68ba0016a0ea876b1d7c0b18e54b",
+      "source_sha256": "7463d9d82b354e2cb6164ad7893eb0c05a660069611ded7be22dc53a5873deee",
+      "matched_failures": [
+        {
+          "case_id": "cik_0001174922:20250731",
+          "plan_id": "plan_r0001_c02",
+          "round": 2,
+          "signal_ref": "guidance_acceleration:v3",
+          "required": 21490,
+          "remaining": 21173
+        }
+      ],
+      "recorded_full_reservation": 21490,
+      "recorded_reservation_without_feedback": 21127,
+      "remaining": 21173,
+      "new_complete_reservation": 19810,
+      "source_projection_count_before": 4,
+      "pre_egress_visible_counter": 7544,
+      "masked_replay_visible_counter": 7560,
+      "counter_digit_reservation_allowance": 0,
+      "source_projection_count_after": 3,
+      "budget_trimmed": true,
+      "eligible_projection_counts": {
+        "guidance_acceleration:v3": 3
+      }
+    },
+    {
+      "request_hash": "35d0580e7f76e052357785d20b8e40dd0ae57c189ea684a12f912449a9f62c96",
+      "source_sha256": "6e00c276c9510572646843d4cb646b8f981b0d81a9a499752490ef188177f9c1",
+      "matched_failures": [
+        {
+          "case_id": "cik_0000723125:20250731",
+          "plan_id": "plan_r0001_c01",
+          "round": 2,
+          "signal_ref": "financing_listing_action:v4",
+          "required": 25926,
+          "remaining": 25027
+        }
+      ],
+      "recorded_full_reservation": 25926,
+      "recorded_reservation_without_feedback": 24458,
+      "remaining": 25027,
+      "new_complete_reservation": 24063,
+      "source_projection_count_before": 6,
+      "pre_egress_visible_counter": 9950,
+      "masked_replay_visible_counter": 9922,
+      "counter_digit_reservation_allowance": 0,
+      "source_projection_count_after": 5,
+      "budget_trimmed": true,
+      "eligible_projection_counts": {
+        "financing_listing_action:v4": 5
+      }
+    },
+    {
+      "request_hash": "14d2bdca0d578ddfca72fcbedea3b62365fa587d96d9314697d4ebd8d46b43f3",
+      "source_sha256": "4c2c34b7576780423c3bb732bf383d06987350fedd48fc98211bbd06745f915d",
+      "matched_failures": [
+        {
+          "case_id": "cik_0000701818:20250930",
+          "plan_id": "plan_r0001_c02",
+          "round": 2,
+          "signal_ref": "guidance_acceleration:v3",
+          "required": 45936,
+          "remaining": 45322
+        }
+      ],
+      "recorded_full_reservation": 45936,
+      "recorded_reservation_without_feedback": 44384,
+      "remaining": 45322,
+      "new_complete_reservation": 44042,
+      "source_projection_count_before": 16,
+      "pre_egress_visible_counter": 25641,
+      "masked_replay_visible_counter": 25710,
+      "counter_digit_reservation_allowance": 0,
+      "source_projection_count_after": 15,
+      "budget_trimmed": true,
+      "eligible_projection_counts": {
+        "guidance_acceleration:v3": 15
+      }
+    },
+    {
+      "request_hash": "868b1e32dc8f5094221811d80fa748ae16ced4427d84b814da1cb03d69ea94e6",
+      "source_sha256": "a2f6215cc671aeca77096c30110b4039c583c7afb5d28498c2a1cbebd0fb1714",
+      "matched_failures": [
+        {
+          "case_id": "cik_0002023554:20250930",
+          "plan_id": "plan_r0001_c01",
+          "round": 1,
+          "signal_ref": "guidance_acceleration:v3",
+          "required": 52592,
+          "remaining": 51327
+        }
+      ],
+      "recorded_full_reservation": 52592,
+      "recorded_reservation_without_feedback": 51014,
+      "remaining": 51327,
+      "new_complete_reservation": 50705,
+      "source_projection_count_before": 16,
+      "pre_egress_visible_counter": 32000,
+      "masked_replay_visible_counter": 32309,
+      "counter_digit_reservation_allowance": 0,
+      "source_projection_count_after": 15,
+      "budget_trimmed": true,
+      "eligible_projection_counts": {
+        "guidance_acceleration:v3": 15
+      }
+    }
+  ]
+}

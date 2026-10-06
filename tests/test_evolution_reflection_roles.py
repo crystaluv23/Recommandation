@@ -2735,7 +2735,7 @@ class ReflectionRoleAdapterTests(TestCase):
         )
         feedback = caller.calls[1]["payload"]["validation_feedback"][0]
         self.assertIn("outside this Signal's eligible_projection_ids", feedback["validation_error"])
-        self.assertIn("unchanged eligible_projection_ids", feedback["required_action"])
+        self.assertIn("this request's eligible_projection_ids", feedback["required_action"])
         self.assertIn(
             "Each Signal may cite only projection ids",
             caller.calls[0]["system_prompt"],
