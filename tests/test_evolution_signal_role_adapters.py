@@ -322,6 +322,80 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertEqual(step.usage.llm_calls, 1)
 
+    def _nested_reference_output(self, nested_ref):
+        return {
+            "episode_reflections": [{
+                "episode_ref": "episode-c0001-001",
+                "source_refs": [nested_ref],
+                "reflection": "The wrapped work has an unresolved measurement question.",
+                "unresolved_questions": ["Does this transfer across independent cases?"],
+                "kind": "hypothesis",
+                "brief": "Keep this measurement question unresolved; independent transfer is untested.",
+            }],
+            "lesson_additions": [{
+                "lesson_id": "lesson-c0001-001",
+                "guidance": "Test transfer across independent cases before claiming benefit.",
+                "applicable_scope": "Imported feedback comparisons",
+                "support_refs": [nested_ref],
+                "counterevidence_refs": [],
+                "limitations": ["A comparison does not establish independent benefit."],
+                "qualifies_refs": [],
+                "challenges_refs": [],
+                "kind": "action",
+                "brief": "Require independent transfer evidence before claiming benefit from an imported comparison.",
+            }],
+        }
+
+    def test_nested_reference_ownership_is_structural_across_opaque_namespaces(self):
+        variants = [
+            ("feedback_ref", "prediction_comparison:opaque"),
+            ("observation_ref", "prediction_observation:opaque"),
+            ("source_refs", ["source-span-opaque", "source-span-opaque"]),
+            ("refs", ["opaque-without-prefix"]),
+        ]
+        for field, refs in variants:
+            with self.subTest(field=field, refs=refs):
+                nested_ref = refs[0] if isinstance(refs, list) else refs
+                output = self._nested_reference_output(nested_ref)
+                original = deepcopy(output)
+                payload = {
+                    "episode_slots": ["episode-c0001-001"],
+                    "lesson_slots": ["lesson-c0001-001"],
+                    "feedback_units": [{
+                        "feedback_ref": "feedback-owner",
+                        "artifact": {"data": {field: refs}},
+                    }],
+                }
+                original_payload = deepcopy(payload)
+                step = LLMSignalMiningModel(ScriptedRoleCaller([output])).reflect_feedback(payload)
+                self.assertEqual(step.value["episode_reflections"][0]["source_refs"], ["feedback-owner"])
+                self.assertEqual(step.value["lesson_additions"][0]["support_refs"], ["feedback-owner"])
+                self.assertEqual(step.metadata["canonicalized_nested_refs"], {nested_ref: "feedback-owner"})
+                self.assertEqual(step.value["episode_reflections"][0]["reflection"], original["episode_reflections"][0]["reflection"])
+                self.assertEqual(output, original)
+                self.assertEqual(payload, original_payload)
+                self.assertEqual(step.usage.llm_calls, 1)
+
+    def test_nested_ref_mentioned_only_as_prose_or_owned_by_two_units_is_not_mapped(self):
+        nested_ref = "prediction_comparison:opaque"
+        variants = [
+            [{"feedback_ref": "feedback-owner", "artifact": {"reason": nested_ref}}],
+            [
+                {"feedback_ref": "feedback-one", "artifact": {"feedback_ref": nested_ref}},
+                {"feedback_ref": "feedback-two", "artifact": {"feedback_ref": nested_ref}},
+            ],
+        ]
+        for units in variants:
+            with self.subTest(units=units):
+                output = self._nested_reference_output(nested_ref)
+                caller = ScriptedRoleCaller([deepcopy(output), deepcopy(output)])
+                with self.assertRaises(ValidationError):
+                    LLMSignalMiningModel(caller).reflect_feedback({
+                        "episode_slots": ["episode-c0001-001", "episode-c0001-002"],
+                        "lesson_slots": ["lesson-c0001-001"],
+                        "feedback_units": units,
+                    })
+
     def test_update_role_retains_initial_and_correction_request_refs(self) -> None:
         class TracedCaller(ScriptedRoleCaller):
             def __init__(self, outputs):

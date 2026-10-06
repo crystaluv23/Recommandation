@@ -1,0 +1,128 @@
+{
+  "created_at": "2026-10-06T18:06:42.519856+00:00",
+  "external_calls": 0,
+  "historical_frozen_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+  "historical_request_hash": "095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9",
+  "human_content_findings": [
+    "Episode 1 compares realized_max_multiple 1.3136 with a dollar threshold 8.736 in its brief. Correct provenance does not make this unit comparison valid.",
+    "Episode 3 calls selected prediction-comparison feedback a candidate target-assignment row. The selected wrapper contains no candidate_research_targets/input_registry_version/output_registry_version keys; this attributed content is unsupported."
+  ],
+  "limits": "This replay proves source ownership/closure and preservation only; human semantic acceptance remains failed. No historical memory, processed feedback pointer, live trajectory or Registry is changed, and no live improvement or gain is established.",
+  "recorded_answer_count": 1,
+  "replayed_source_sha256": "f804130d612adfe0e72e15cab74d22253d6176f9e7e8ced4327540f26e828808",
+  "result": {
+    "accepted_output": {
+      "episode_reflections": [
+        {
+          "brief": "Same frozen case, two canonical contexts: left is_surge=true/2-3x, right is_surge=false/null; realized non_surge (max multiple 1.3136 vs 8.736). Changed outputs is_surge and magnitude; canonical hashes differ but do not establish equal provider prompts, so the reversal cause is unestablished.",
+          "episode_ref": "episode-c0001-001",
+          "kind": "fact",
+          "reflection": "Same frozen case, two canonical contexts: left returned is_surge=true with magnitude 2-3x; right returned is_surge=false with magnitude null. Both originals share the same prediction time and the same realized outcome (non_surge, realized_max_multiple 1.3136 vs 2x threshold 8.736), so the left call was a binary false positive and the right a correct negative. The changed outputs are is_surge and magnitude; the canonical_context_hash differs, but canonical hashes do not establish equal provider prompts or model parameters, so the cause of the reversal is unestablished. This is a cross-round comparison, not evidence that either arm's reasons were sufficient or that the model is unstable in isolation.",
+          "source_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002"
+          ],
+          "unresolved_questions": [
+            "Which specific input or prompt difference between the two canonical contexts produced the is_surge reversal is unknown from the supplied artifacts.",
+            "Whether the left arm's guidance-acceleration emphasis or the right arm's catalyst-absence emphasis reflects a reusable rule cannot be decided from one paired case."
+          ]
+        },
+        {
+          "brief": "Cycle-0001: liquidity_runway_months:v3 promoted/validated; order_confirmation_disclosed:v3 rejected on fixture 6 (expected neutral, got unavailable, resolution=resolved, no data gap). New candidate/promoted/validated counts are 0, signal_goal_status unmet, magnitude_contribution unassessed. Measurement facts, not surge evidence.",
+          "episode_ref": "episode-c0001-002",
+          "kind": "fact",
+          "reflection": "Cycle-0001 slow loop: liquidity_runway_months:v3 was promoted and validated (validated_candidates hash 14e5efd9...), while order_confirmation_disclosed:v3 was rejected because fixture 6 expected neutral but received unavailable with resolution=resolved and no data gap. The rejection is a measurement-semantics failure, not a business conclusion about order disclosure. new_candidate_count, new_promoted_signal_count and new_validated_signal_count are all 0 in the result summary, and signal_goal_status is unmet; magnitude_contribution is unassessed because the required Fast absent/present consumption experiment and Binary-F1 protection have not run. These are engineering and measurement facts, not surge-direction evidence.",
+          "source_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_loop_result:summary",
+            "slow-history:source-a6cca835fabef297:1:slow_loop_validation:summary"
+          ],
+          "unresolved_questions": [
+            "Whether liquidity_runway_months:v3 has any measurable relationship to the fixed surge target is untested; promotion and validation are not effect evidence.",
+            "Whether order_confirmation_disclosed:v3 can be re-specified to return neutral rather than unavailable on the fixture-6 span is unresolved."
+          ]
+        },
+        {
+          "brief": "Slow-input row maps liquidity_runway_months:v3 and order_confirmation_disclosed:v3 to surge_direction (input_registry v9, output_registry v10). This is a target-assignment record, not a measurement; no decisive paired outcome is present, and NEUTRAL is available but not decisive per the measurement contract.",
+          "episode_ref": "episode-c0001-003",
+          "kind": "fact",
+          "reflection": "The committed slow-input row records candidate_research_targets mapping liquidity_runway_months:v3 and order_confirmation_disclosed:v3 to surge_direction, with input_registry_version 9 and output_registry_version 10. This is a target-assignment record, not a measurement of either signal against the fixed surge target. The measurement_contract distinguishes available from decisive: NEUTRAL is available but not decisive, and a decisive/available gap is expected for neutral results rather than unexplained sample exclusion. No decisive paired outcome for either candidate is present in this row, so no directional or magnitude claim about them can be made from it.",
+          "source_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002"
+          ],
+          "unresolved_questions": [
+            "Whether either candidate produces decisive (POSITIVE/NEGATIVE) values on the frozen case pool is not shown in this row.",
+            "Whether the surge_direction target assignment is the correct research target for these candidates is a Plan question, not settled here."
+          ]
+        }
+      ],
+      "lesson_additions": [
+        {
+          "applicable_scope": "Cross-round prediction comparisons where the same case_key appears with differing canonical_context_hash and differing is_surge or magnitude outputs.",
+          "brief": "For same-case opposite is_surge calls across canonical contexts, record changed outputs and shared outcome, label cause unestablished, and avoid equating canonical hashes with equal provider requests or certifying model-only instability from one pair.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "When two canonical contexts for the same frozen case produce opposite is_surge calls, record the changed outputs and the shared realized outcome, and label the cause unestablished. Do not treat equal canonical_context_hash as proof of equal provider requests, and do not certify model-only instability from a single paired reversal. Route context/prompt sensitivity to Plan research rather than asserting a causal driver.",
+          "kind": "action",
+          "lesson_id": "lesson-c0001-001",
+          "limitations": [
+            "One paired case cannot distinguish prompt sensitivity from sampling or parameter differences.",
+            "Canonical hashes do not establish equal provider prompts or model parameters."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002"
+          ]
+        },
+        {
+          "applicable_scope": "Slow-loop candidate validation where a fixture expects neutral and the executor returns unavailable with resolution=resolved and no data gap.",
+          "brief": "A fixture expecting neutral but receiving unavailable with resolution=resolved and no data gap is a measurement-semantics defect, not a business finding; re-specify the neutral/unavailable boundary and keep the rejection separate from surge-direction evidence.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "Treat a fixture failure where the expected value is neutral but the executor returns unavailable with resolution=resolved and no data gap as a measurement-semantics defect, not a business finding. Re-specify the signal's neutral/unavailable boundary before drawing any conclusion about the underlying disclosure, and keep the rejection separate from surge-direction evidence.",
+          "kind": "action",
+          "lesson_id": "lesson-c0001-002",
+          "limitations": [
+            "The fixture-6 span content is described only in the executor interpretation; the full span is not available here.",
+            "Fixing the neutral/unavailable boundary does not establish that the signal predicts the surge target."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_loop_result:summary",
+            "slow-history:source-a6cca835fabef297:1:slow_loop_validation:summary"
+          ]
+        },
+        {
+          "applicable_scope": "Slow-loop summaries and input rows that list promoted, validated, or target-assigned signals without paired decisive outcomes.",
+          "brief": "Promotion, validation, and surge_direction target assignment are measurement identity and intent, not effect evidence; require decisive POSITIVE/NEGATIVE paired outcomes before directional or magnitude claims, since NEUTRAL is available but not decisive.",
+          "challenges_refs": [],
+          "counterevidence_refs": [],
+          "guidance": "Distinguish signal promotion/validation from effect evidence. A validated_candidates hash and a surge_direction target assignment record measurement identity and intent; they do not show that the signal separates the fixed surge target from controls. Require decisive (POSITIVE/NEGATIVE) paired outcomes before making directional or magnitude claims, and remember NEUTRAL is available but not decisive.",
+          "kind": "action",
+          "lesson_id": "lesson-c0001-003",
+          "limitations": [
+            "Promotion and validation may still be necessary preconditions for later effect testing.",
+            "The measurement_contract's decisive/available distinction applies to the paired gate, not to every research use of a signal."
+          ],
+          "qualifies_refs": [],
+          "support_refs": [
+            "slow-history:source-a6cca835fabef297:1:slow_loop_result:summary",
+            "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002"
+          ]
+        }
+      ]
+    },
+    "canonicalized_nested_refs": {
+      "prediction_comparison:282b270f6011d3143f78ffb9baec13d09bf7116a94421e03e3c8eaa5bd546de4": "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002"
+    },
+    "episode_count": 3,
+    "lesson_count": 3,
+    "only_source_aliases_changed": true,
+    "parsed": true
+  },
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "schema_version": "production-nested-source-owner-replay-v1",
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9.json": "d59f2701a8a8724df4048d062925c395714d97cca0300a440a9589b20149969d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9.json": "3792c601d641f2dd92413926a9464b4c50885dac13dbef1999fea1f6f6165e87"
+  },
+  "source_hashes_unchanged": true
+}

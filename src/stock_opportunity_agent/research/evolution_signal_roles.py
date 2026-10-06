@@ -1606,21 +1606,26 @@ class LLMSignalMiningModel(SignalMiningModel):
         )
         nested_ref_owners: dict[str, set[str]] = {}
 
-        def nested_slow_refs(value: Any) -> Iterable[str]:
+        def nested_source_refs(value: Any, *, reference_field: bool = False) -> Iterable[str]:
             if isinstance(value, Mapping):
-                for nested in value.values():
-                    yield from nested_slow_refs(nested)
+                for key, nested in value.items():
+                    is_reference = isinstance(key, str) and (
+                        key in ("ref", "refs") or key.endswith(("_ref", "_refs"))
+                    )
+                    yield from nested_source_refs(nested, reference_field=is_reference)
             elif isinstance(value, (list, tuple)):
                 for nested in value:
-                    yield from nested_slow_refs(nested)
-            elif isinstance(value, str) and value.startswith("slow-history:"):
+                    yield from nested_source_refs(nested, reference_field=reference_field)
+            elif isinstance(value, str) and value and (
+                reference_field or value.startswith("slow-history:")
+            ):
                 yield value
 
         for unit in payload.get("feedback_units", ()):
             if not isinstance(unit, Mapping) or not unit.get("feedback_ref"):
                 continue
             owner = str(unit["feedback_ref"])
-            for nested_ref in nested_slow_refs(unit):
+            for nested_ref in nested_source_refs(unit):
                 if nested_ref != owner:
                     nested_ref_owners.setdefault(nested_ref, set()).add(owner)
         canonicalized_nested_refs: dict[str, str] = {}

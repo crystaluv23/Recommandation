@@ -294,3 +294,5 @@
 - 2026-10-07: v179实际反馈消费与Signal技术失败审计；consulted `experiences/signal-result-evidence-invariants.md`和`experiences/structured-role-boundary-exactness.md`，区分损坏JSON/非literal/内部edge与正常domain_unavailable，核对真实生产payload、付费纠错和落盘，不用来源hash代替内容正确性或采用代替独立gain。
 
 - 2026-10-07: v179未来信息问题的通用后置隔离；consulted `experiences/incremental-repair-and-sourced-memory.md`和`experiences/self-evolution-convergence-and-acceptance.md`，按真实Initialize首答/付费patch验证同一生产输入、typed whole-member remove权限、模型先纠错、完整再验及Reflect未解需求保留；0外部重放不改旧分母，不声明live或gain。各visit_times加1，GUIDE同步已有经验文件计数。
+
+- 2026-10-07: 同轮继续应用上述两份已读经验，核对Slow嵌套比较引用的唯一父单元/typed ref字段与实际生产parser，泛化既有归属转换并保留歧义/prose反例；原答/证据/历史pending不改，来源闭包通过仍不等于统计、单位和blind行动语义有效。本轮不重复计阅读次数。

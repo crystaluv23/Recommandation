@@ -92,12 +92,18 @@ recovery.
 Only top-level `feedback_units[*].feedback_ref` values are persisted as output
 citations. Source locators nested inside a feedback unit remain immutable audit
 data; the model cannot promote them into independent episode or lesson refs
-merely because their strings are visible. When an out-of-scope nested Slow ref
+merely because their strings are visible. When an out-of-scope nested source ref
 occurs inside exactly one selected feedback unit, the adapter deterministically
 canonicalizes it to that owning top-level `feedback_ref`, deduplicates the
 resulting ref list, and records the old-to-owner mapping in role metadata. The
 raw provider response remains immutable. Ambiguous or absent nested refs are not
-repaired. All remaining invalid episode and lesson rows are reported together as
+repaired. Ownership includes reference values in structured `ref`/`refs` or
+`*_ref`/`*_refs` fields across imported comparison, observation and feedback
+wrappers; it is independent of their opaque identifier prefix. Ordinary prose
+does not grant reference authority. Existing nested `slow-history:` locators
+retain their historical ownership behavior. Mapping grants no new independent
+source, read access, or semantic truth; the complete episode/lesson graph and
+selected-source coverage are still validated. All remaining invalid episode and lesson rows are reported together as
 indexed, path-scoped correction obligations, so bounded recovery does not
 discover one bad ref per attempt. The same correction frontier includes the
 complete set of selected top-level feedback refs omitted by otherwise-valid

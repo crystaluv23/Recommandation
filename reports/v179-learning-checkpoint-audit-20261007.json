@@ -1,0 +1,481 @@
+{
+  "acceptance": {
+    "complete": false,
+    "expanded_magnitude_prediction": false,
+    "feedback_consumption": "observed_in_new_Plans_but_not_independent_benefit",
+    "independent_gain": "not_confirmed",
+    "new_magnitude_signal_admission": "not_yet_observed_in_pending_cycle",
+    "technical_failure_free": false
+  },
+  "active_phase": "slow_loop",
+  "all_positive_magnitudes_2_3x": true,
+  "created_at": "2026-10-06T18:09:02.922503+00:00",
+  "formal_pointers": {
+    "cycle": 0,
+    "round": 1
+  },
+  "frozen_source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+  "inspection_limits": "Personally inspected saved attempts/denominators, original and corrected Plan/Round/Slow learning payloads and the cited retained items; Signal and case counts do not assert full semantic acceptance of all 47 completed research trajectories. Slow search/Update/admission remains pending in this snapshot.",
+  "learning_findings": [
+    {
+      "actual_persisted_item": {
+        "brief": "Across the combined 24-case cohort for plan_r0001_c02, magnitude classification collapsed to a single class: all 14 positive predictions were '2-3x', with zero '3-10x' and zero '10x+' predictions, while the truth distribution contained 5 '3-10x' and 2 '10x+' cases. The magnitude confusion matrix shows 6 underestimates, 0 overestimates, and 4 correct magnitude calls, yielding magnitude_accuracy 0.2857 and magnitude_macro_f1 0.1569.",
+        "category": "repeated_failure_modes",
+        "counter_refs": [],
+        "detail": "The runtime magnitude_diagnostics for plan_r0001_c02 (population research_completed, 24 cases, 0 technical exclusions) records prediction_distribution.predicted_2-3x = 14, predicted_3-10x = 0, predicted_10x+ = 0. Truth distribution: 2-3x = 7, 3-10x = 5, 10x+ = 2, non_surge = 10. The confusion matrix shows every true 3-10x case (5) and every true 10x+ case (2) predicted as 2-3x, plus 4 non_surge cases predicted 2-3x. underestimate_count = 6, overestimate_count = 0, magnitude_correct_count = 4, conditional_accuracy_on_tp = 0.4. The per-case magnitude_feedback error kinds confirm the pattern: cases 13, 14, 15, 23 are 'underestimate' with ordinal_distance 1 (2-3x predicted vs 3-10x true), and cases 16 and 24 are 'underestimate' with ordinal_distance 2 (2-3x predicted vs 10x+ true). No case shows an overestimate. This is a magnitude-class failure concentrated in the upper classes, not a binary-direction failure: binary_f1 is 0.7143 with 10 TP, 4 FP, 4 FN, 6 TN. The binary tradeoff is roughly symmetric (4 FP vs 4 FN), so the magnitude collapse is not explained by a directional bias toward negative calls.",
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:d083df0edea2fe429e56daaabe55d32cd7ed591070552539bdce3a3756d3ae10",
+        "kind": "fact",
+        "level": "plan",
+        "limitations": [
+          "The magnitude_diagnostics matrix is deterministic descriptive feedback on frozen cases; it does not establish why the classifier concentrated on 2-3x.",
+          "The 2-3x class has the largest support (7 true cases), so a majority-class default would mechanically produce many 2-3x predictions; the diagnostics alone cannot separate a default heuristic from a genuine evidence-based choice.",
+          "Magnitude macro-F1 is the confirmed secondary ordering only at exactly equal Combined Binary F1; it does not override binary F1 as primary fitness.",
+          "The realized magnitude classes are maximum five-complete-trading-day adjusted-close mean multiples within the horizon, not sustained price levels."
+        ],
+        "outcome_claims": [
+          {
+            "axis": "magnitude",
+            "correct": false,
+            "source_ref": "reflection_source:9ca9359d4f54714d15fa945e8c5f922dc08c64f6db91df2f378dac2255a71ef1"
+          },
+          {
+            "axis": "magnitude",
+            "correct": false,
+            "source_ref": "reflection_source:33c275bd97f1d3ede08f5e32a5dba3bdebb2306a6e05203277d08c61d4d5dd19"
+          }
+        ],
+        "owner_ref": "reflection_plan:a0fbe24b38059f3bb0104d6f4f1b8a58e784839f1eaaaaad948bf66a92c87814",
+        "scope": {
+          "case_refs": [
+            "case:2e29a6b599410ecf740bb85a2470c4d7d34be63bec91b9b0842b8e5b159f220d",
+            "case:315f960fabe602cc642faef78f97243f28bba69641a9da9c5e87056fcccfa54d"
+          ],
+          "conditions": "Index when evaluating magnitude calibration for plan_r0001_c02 or a structurally similar Plan whose magnitude classifier defaults to the lowest surge class; use to justify a magnitude-class discrimination change rather than a binary-direction change.",
+          "plan_refs": [
+            "reflection_plan:a0fbe24b38059f3bb0104d6f4f1b8a58e784839f1eaaaaad948bf66a92c87814"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:1c374e979438df63d6ace1e7179cb025bedd25252a31f1b9f048053aea5fa2e5",
+          "reflection_source:827182d231fddb354ebe0c138299bb346413221d854aeb736bbb2b3f6eb6200c",
+          "reflection_source:9ca9359d4f54714d15fa945e8c5f922dc08c64f6db91df2f378dac2255a71ef1",
+          "reflection_source:33c275bd97f1d3ede08f5e32a5dba3bdebb2306a6e05203277d08c61d4d5dd19"
+        ]
+      },
+      "finding": "The authored fact says every one of five true 3-10x cases was predicted 2-3x, but its owning runtime row says four 2-3x and one predicted_negative. The brief and total six underestimates are correct; this specific detail is not. sources_checked records provenance validation, not semantic acceptance.",
+      "owning_runtime_3_10x_confusion_row": {
+        "predicted_10x+": 0,
+        "predicted_2-3x": 4,
+        "predicted_3-10x": 0,
+        "predicted_negative": 1
+      },
+      "request_hash": "1b43ce4996d0252cec618e44c3b1e0c0569fcccf9d30bd1d62694818b52bb9c0",
+      "stage": "plan_critic"
+    },
+    {
+      "actual_persisted_item": {
+        "brief": "Add a magnitude-class support check that reports per-class support and conditional accuracy on true positives before finalizing any magnitude band, because both Plans show low conditional_accuracy_on_tp (0.444 and 0.40) with thin per-class support.",
+        "category": "missing_capabilities",
+        "counter_refs": [],
+        "detail": "plan_r0001_c01 magnitude_diagnostics: conditional_accuracy_on_tp=0.4444, tp_denominator=9, per_class_support 10x+=2, 2-3x=7, 3-10x=4. plan_r0001_c02: conditional_accuracy_on_tp=0.40, tp_denominator=10, per_class_support 10x+=2, 2-3x=7, 3-10x=5. The 10x+ class has only 2 supporting cases in each Plan, so any magnitude band above 3-10x is support-poor. Action: require the reflection skill to report per-class support and conditional accuracy on true positives alongside any magnitude band choice, and to flag support-poor classes explicitly rather than silently defaulting to the lowest positive band.",
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:01c7d73393adb6989af6d1f3e8d60ae0f93de45e96460c3a97423d587f78397a",
+        "kind": "action",
+        "level": "round",
+        "limitations": [
+          "Per-class support is computed on the research_completed population, which excludes technical cases.",
+          "The 10x+ class has only 2 supporting cases per Plan, so any conclusion about that class is support-poor and should not be treated as robust.",
+          "This action does not require a quantified valuation bridge or guaranteed price path as a condition for a positive judgment."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "reflection_round:6928ddbe76a09579f15d4074c49021168a83724d168ab8dbe2eb077acb9b2b7c",
+        "scope": {
+          "case_refs": [],
+          "conditions": "Index when a Plan must choose or justify a magnitude band and the per-class support for higher bands is thin.",
+          "plan_refs": [
+            "reflection_plan:a0fbe24b38059f3bb0104d6f4f1b8a58e784839f1eaaaaad948bf66a92c87814",
+            "reflection_plan:cddd064bbc4c41de9792bce2c918131fd0327fa8559432b7abf64685a376bb89"
+          ]
+        },
+        "source_refs": [
+          "reflection_source:4964d0d6a426d4c13bb4c4ddef6c6363a8715c0841edc4e2050d2fa9e67a8bce",
+          "reflection_source:1c374e979438df63d6ace1e7179cb025bedd25252a31f1b9f048053aea5fa2e5"
+        ]
+      },
+      "finding": "The action requires H_reflect to report true-class support and conditional accuracy on true positives before a band choice. Those diagnostics require realized labels and are unavailable in blind H_reflect. A retrospective diagnostic can support Plan proposals; it cannot be inserted as a blind runtime requirement. The authored action does not honor the fixed role/data boundary.",
+      "request_hash": "82cd64fcbe4668230f0f21bc2d7673d8d0b80aa461fd06730ee7b405859837b4",
+      "stage": "round_reflect"
+    },
+    {
+      "actual_obligations": [
+        {
+          "allowed_append_values": {},
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "issue_code": "reflection_item",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "reflection_items[0].outcome_claims"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [
+            "reflection_items[0].category"
+          ],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_append_values": {},
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "instruction": "success/failure reflection requires canonical outcome claims",
+          "invalid_container_paths": [],
+          "issue_code": "reflection_item",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "reflection_items[1].outcome_claims"
+          ],
+          "obligation_index": 2,
+          "permitted_dependency_paths": [
+            "reflection_items[1].category"
+          ],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_append_values": {
+            "reflection_items[2].scope.case_refs": [],
+            "reflection_items[2].scope.plan_refs": [
+              "reflection_plan:a0fbe24b38059f3bb0104d6f4f1b8a58e784839f1eaaaaad948bf66a92c87814",
+              "reflection_plan:cddd064bbc4c41de9792bce2c918131fd0327fa8559432b7abf64685a376bb89"
+            ],
+            "reflection_items[2].source_refs": [
+              "reflection_source:193eaaf8f050ce588bf6b24d77df13a47394595365f6314a05175e785646b8d1",
+              "reflection_source:4964d0d6a426d4c13bb4c4ddef6c6363a8715c0841edc4e2050d2fa9e67a8bce",
+              "reflection_source:53de7c6439b44e2349b8f7517b457de72eab6b892bc8d007b7a07caf4d9bd73c",
+              "reflection_source:48a6281d741c6ee5dcbacf6598a37df719969d3fbdd2c46e1cc58f6ddd07c8d0",
+              "reflection_source:6e3211910bd5dfd173e943947415c93426a039565ad8e0ef9f0167b3e1cdaead",
+              "reflection_source:827182d231fddb354ebe0c138299bb346413221d854aeb736bbb2b3f6eb6200c",
+              "reflection_source:1c374e979438df63d6ace1e7179cb025bedd25252a31f1b9f048053aea5fa2e5",
+              "reflection_source:6352a98c7e1a581b29d06a5f3e61a55ec47cf917857aa9681901cd8f293d884e",
+              "reflection_source:ef90a835050a0b8da04e946acdf950c74c941bbca6b7190a0a5b2470537962b4",
+              "reflection_source:ef45cd7367b3b0fa5983de0e458849a48eea107e844464d64665d9aa6c4faf16"
+            ]
+          },
+          "allowed_repairs": [
+            "replace",
+            "add",
+            "remove"
+          ],
+          "instruction": "full research/technical completion contradicts the cited runtime completion totals or lacks completion support",
+          "invalid_container_paths": [],
+          "issue_code": "reflection_item",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "reflection_items[2].brief"
+          ],
+          "obligation_index": 3,
+          "permitted_dependency_paths": [
+            "reflection_items[2].source_refs",
+            "reflection_items[2].scope.plan_refs",
+            "reflection_items[2].scope.case_refs",
+            "reflection_items[2].outcome_claims",
+            "reflection_items[2].detail"
+          ],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "actual_paid_patch": {
+        "base_hash": "0c4d04124566398018282463d4f1f3b9ec26df32bf657f2fa37b358aafd2d73b",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "reflection_items[0].category",
+            "value": "useful_signals"
+          },
+          {
+            "op": "replace",
+            "path": "reflection_items[1].category",
+            "value": "useful_signals"
+          },
+          {
+            "op": "replace",
+            "path": "reflection_items[2].brief",
+            "value": "plan_r0001_c02 reached full technical completion (rate 1.0, zero exclusions) while plan_r0001_c01 had one technical exclusion (rate 0.9583), and that exclusion scored as a false negative; this is a completion and scoring-impact observation only, not a research outcome."
+          }
+        ]
+      },
+      "finding": "Three typed obligations were issued together. The paid patch addressed category alternatives and completion phrasing. Four of six authored horizontal items persisted; original/patch/retained layers remain distinct. Surviving items still require human content checks.",
+      "initial_item_count": 6,
+      "persisted_horizontal_item_count": 4,
+      "request_hash": "ec52baf3808e335f65830d636e7b341e4c35e0a7c838b98b83fb8445bc82112f",
+      "stage": "round_reflect_correction"
+    },
+    {
+      "actual_obligations": [
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove"
+          ],
+          "instruction": "episode_reflections[0] must use one unique episode slot, cite only top-level feedback_units feedback_ref values, and contain reflection text plus an unresolved questions array",
+          "issue_code": "reflection_episode_invalid",
+          "item_id": "episode-c0001-001",
+          "item_id_field": "episode_ref",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "episode_reflections[0]"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "instruction": "lesson_additions[0].support_refs must cite actual valid emitted or prior sources, never an unused slot or itself; support_refs requires feedback, an emitted episode, or a prior lesson, not a new sibling lesson",
+          "issue_code": "reflection_lesson_source_closure",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "lesson_additions[0].support_refs"
+          ],
+          "obligation_index": 2,
+          "permitted_dependency_paths": [],
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "actual_paid_patch": {
+        "base_hash": "751e26cba6731d57108ab6ce466c4ee67935198a96fa24a4dd3706c52f556cb9",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "episode_reflections[0]",
+            "value": {
+              "brief": "Same frozen case, two canonical contexts: left is_surge=true/2-3x, right is_surge=false/null; realized non_surge (max multiple 1.3136 vs 8.736). Changed outputs is_surge and magnitude; canonical hashes differ but do not establish equal provider prompts, so the reversal cause is unestablished.",
+              "episode_ref": "episode-c0001-001",
+              "kind": "fact",
+              "reflection": "Same frozen case, two canonical contexts: left returned is_surge=true with magnitude 2-3x; right returned is_surge=false with magnitude null. Both originals share the same prediction time and the same realized outcome (non_surge, realized_max_multiple 1.3136 vs 2x threshold 8.736), so the left call was a binary false positive and the right a correct negative. The changed outputs are is_surge and magnitude; the canonical_context_hash differs, but canonical hashes do not establish equal provider prompts or model parameters, so the cause of the reversal is unestablished. This is a cross-round comparison, not evidence that either arm's reasons were sufficient or that the model is unstable in isolation.",
+              "source_refs": [
+                "prediction_comparison:282b270f6011d3143f78ffb9baec13d09bf7116a94421e03e3c8eaa5bd546de4"
+              ],
+              "unresolved_questions": [
+                "Which specific input or prompt difference between the two canonical contexts produced the is_surge reversal is unknown from the supplied artifacts.",
+                "Whether the left arm's guidance-acceleration emphasis or the right arm's catalyst-absence emphasis reflects a reusable rule cannot be decided from one paired case."
+              ]
+            }
+          },
+          {
+            "op": "replace",
+            "path": "lesson_additions[0].support_refs[0]",
+            "value": "episode-c0001-001"
+          }
+        ]
+      },
+      "episode_count": 0,
+      "finding": "Both responses cite a nested comparison ref instead of its top-level imported owner. Reflection failed closed, with no episode/lesson appended and selected inputs still pending. The local structural owner-mapping replay preserves original text and repairs only source aliases; separate unit-comparison and target-assignment content errors remain unacceptable.",
+      "lesson_count": 0,
+      "paid_correction_request_hash": "c2f5ff53a79e37ad9c7f695027a3dcd54c752c07f9cca5bdf32804d75d0135b7",
+      "pending_feedback_count": 1738,
+      "persisted_failure": "CandidateExecutionRejected: signal_mining_reflect failed validation after one correction: episode_reflections[0] must use one unique episode slot, cite only top-level feedback_units feedback_ref values, and contain reflection text plus an unresolved questions array; lesson_additions[0].support_refs must cite actual valid emitted or prior sources, never an unused slot or itself; support_refs requires feedback, an emitted episode, or a prior lesson, not a new sibling lesson",
+      "persisted_status": "failed",
+      "processed_feedback_count": 0,
+      "request_hash": "095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9",
+      "selected_feedback_refs": [
+        "slow-history:source-a6cca835fabef297:1:slow_input:feedback-002",
+        "slow-history:source-a6cca835fabef297:1:slow_loop_result:summary",
+        "slow-history:source-a6cca835fabef297:1:slow_loop_validation:summary"
+      ],
+      "selected_feedback_still_pending": true,
+      "stage": "signal_mining_reflect"
+    }
+  ],
+  "monitor": {
+    "child_alive_observed": true,
+    "process": {
+      "automatic_resumes": 2,
+      "command": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/.codex/worktrees/evolution-acceptance-v179/Recommandation/scripts/run_minimal_rounds.py",
+        "--root",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+        "--run"
+      ],
+      "last_exit_code": 1,
+      "pid": 71827,
+      "source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+      "started_at": "2026-10-06T17:34:44.360337+00:00",
+      "status": "running",
+      "wrapper_pid": 64736
+    }
+  },
+  "plans": [
+    {
+      "case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "expected_and_completed_count": 24,
+      "metrics": {
+        "binary_f1": 0.7200000000000001,
+        "binary_precision": 0.8181818181818182,
+        "binary_recall": 0.6428571428571429,
+        "confusion": {
+          "false_negative": 5,
+          "false_positive": 2,
+          "true_negative": 8,
+          "true_positive": 9
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.16666666666666666,
+        "precision_defined": true,
+        "predicted_positive_count": 11,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c01",
+      "prediction_magnitude_distribution": {
+        "2-3x": 11,
+        "None": 13
+      },
+      "signal_status_counts": {
+        "domain_unavailable": 10,
+        "success": 74,
+        "validation_failed": 5
+      },
+      "technical_exclusion_case_ids": [
+        "cik_0001689548:20250930"
+      ]
+    },
+    {
+      "case_ids": [
+        "cik_0000895728:20250930",
+        "cik_0001830043:20250930",
+        "cik_0000701818:20250930",
+        "cik_0001174922:20250731",
+        "cik_0000895421:20250731",
+        "cik_0001869198:20250331",
+        "cik_0001576942:20250530",
+        "cik_0001590364:20250731",
+        "cik_0000936395:20250930",
+        "cik_0001164727:20250731",
+        "cik_0001801368:20250331",
+        "cik_0001018963:20250930",
+        "cik_0001689548:20250930",
+        "cik_0002023554:20250930",
+        "cik_0000723125:20250731",
+        "cik_0001646188:20250530",
+        "cik_0000860413:20250930",
+        "cik_0001521036:20250331",
+        "cik_0001847409:20250131",
+        "cik_0001309402:20250530",
+        "cik_0001114995:20250331",
+        "cik_0001920294:20250530",
+        "cik_0000839470:20250731",
+        "cik_0001051627:20250930"
+      ],
+      "expected_and_completed_count": 24,
+      "metrics": {
+        "binary_f1": 0.7142857142857143,
+        "binary_precision": 0.7142857142857143,
+        "binary_recall": 0.7142857142857143,
+        "confusion": {
+          "false_negative": 4,
+          "false_positive": 4,
+          "true_negative": 6,
+          "true_positive": 10
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.1568627450980392,
+        "precision_defined": true,
+        "predicted_positive_count": 14,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "plan_id": "plan_r0001_c02",
+      "prediction_magnitude_distribution": {
+        "2-3x": 14,
+        "None": 10
+      },
+      "signal_status_counts": {
+        "budget_blocked": 1,
+        "domain_unavailable": 10,
+        "success": 103,
+        "validation_failed": 5
+      },
+      "technical_exclusion_case_ids": []
+    }
+  ],
+  "prediction_positive_count": 25,
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "same_frozen_24_case_membership": true,
+  "schema_version": "human-learning-checkpoint-audit-v1",
+  "signal_result_counts": {
+    "budget_blocked": 1,
+    "domain_unavailable": 20,
+    "success": 177,
+    "validation_failed": 10
+  },
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v179/process.json": "d1cdf03a9cf5d92284ccd0e1f89c21f860696a0e55f2b25f350fe3e871016c53",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9.json": "d59f2701a8a8724df4048d062925c395714d97cca0300a440a9589b20149969d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/1b43ce4996d0252cec618e44c3b1e0c0569fcccf9d30bd1d62694818b52bb9c0.json": "fc7da1c765c6dc2e7b3e8b12f148d40932676874954f3632bc43b61f77061437",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/82cd64fcbe4668230f0f21bc2d7673d8d0b80aa461fd06730ee7b405859837b4.json": "0c103c4eb992652b57245ceeb74b392d90c14169e5916ef833953062b34a52e3",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/c2f5ff53a79e37ad9c7f695027a3dcd54c752c07f9cca5bdf32804d75d0135b7.json": "b1b3f49c6b0cffa274f1b7a7c5696083043dcba7879860f25c5969fcbe36a91c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/ec52baf3808e335f65830d636e7b341e4c35e0a7c838b98b83fb8445bc82112f.json": "0c3e17bec679d3e6ef22873622d335952d4c2117371cf255a137b564c8191b47",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cycle_state.json": "2765d4d3918257be8f379889c130730e6d4be10ed985225e6e30328c2385a8e0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/cycles/cycle-0001/slow_memory.json": "4b2840590bc36504ffeb114af58f119f6387211f0b2078096d976c1d70463313",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/attempts/plan_r0001_c01.json": "b995a169e8429b8291f674ed4ad8d034e203a54f8c7f842da44ee94499a7a257",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/attempts/plan_r0001_c02.json": "997761dd5f4cfbbe7e3996e9d6d3db73a4e22a2bfaac53af971fff202efe8ff2",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/checkpoint.json": "71a38acb436fbcfd54adaf0c1c788f5eee42751b626d683582cdf8dc9b189ae1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/meta/round-0001.json": "e3ee1081f6fd9642212ecc8bee7d896f9735a02b999808ff1fb8fed4cef8a51d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/095b525d4363b6812eefc323104a1e03221bf1f3d7fbd09d1400248ac330f4c9.json": "3792c601d641f2dd92413926a9464b4c50885dac13dbef1999fea1f6f6165e87",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/1b43ce4996d0252cec618e44c3b1e0c0569fcccf9d30bd1d62694818b52bb9c0.json": "4e15427a61440144daa74cf770a01460c4e433ae8a941a98db556db2a127536e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/82cd64fcbe4668230f0f21bc2d7673d8d0b80aa461fd06730ee7b405859837b4.json": "7092212e48bccf5aed6c195373a6528bd49f5b1160a30ba41e2160a4a5426e3e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/c2f5ff53a79e37ad9c7f695027a3dcd54c752c07f9cca5bdf32804d75d0135b7.json": "b30cbca22a07753d40078b71415660063803dff6560c7be9d418252b7b348572",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/ec52baf3808e335f65830d636e7b341e4c35e0a7c838b98b83fb8445bc82112f.json": "f23d753a02f6c689eb77b734ff390e49be0dbfc78bc47e2beab6c246937aa7e4",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/state.json": "3569215261cd4f5b160020b89b81acf5ded0997c0e4e749229ebbfb109fc16e8"
+  },
+  "technical_case_exclusions_retained_in_score": 1
+}

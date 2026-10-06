@@ -42,6 +42,15 @@
 - `reports/v179-temporal-isolation-replay-20261007.json`绑定真实首答 `cbd84f...d925`、真实付费native patch `cbb971...7689`，使用生产LLMResearchController.initialize；逐值核对初始inputs、纠错invalid_output/obligations和完整patch contract。只播放两份已付费原答，0外部调用，所有原件hash不变；最终等于付费合并结果仅移除next_information_needs[0]，五个valid needs/证据/信念/decision均保存。源码hash绑定本地修复，而不是v179冻结版本。
 - 当前真实v179仍固定482a5e1e，未热改或重写旧trajectory/checkpoint/分母；wrapper64736/child71827按原合同运行。c02继续，Plan/Round/Slow仍待逐份验收。Signal的JSON/原文内部边界/mandatory phrase/预算失败是不同剩余家族；本次完整State回放不是整个目标达标，更不证明magnitude新能力或独立gain。
 
+## v179 Fast提交、学习内容复验与嵌套来源归属（2026-10-07 02:09）
+
+- 正式Fast第1轮已提交，Slow仍0/进行中；同固定24家公司由两个Plan评估，不当作48个独立样本。c01 F1=.72、1技术排除仍计FN；c02 F1=.7142857、技术case排除0但Signal仍有失败。208次Signal结果为177success/20domain_unavailable/10validation_failed/1budget_blocked；25个非空预测全2–3x。不能验收零技术问题、幅度扩展或独立gain。原件和当前审计见 `reports/v179-learning-checkpoint-audit-20261007.json`。
+- 已亲自读取两Plan critic原答与c01付费patch、Round原答/3义务/付费patch与正式meta、Slow reflection固定prompt/选中feedback/原答/2义务/付费patch和failed记忆。c02原fact detail声称5个真实3–10x均预测2–3x，实际拥有者matrix为4个2–3x、1个阴性；该错误detail仍sources_checked落盘。Round保存的action要求blind H_reflect在选择band前报告true-class support/TP条件准确率，这些需事后标签，不能作为盲阶段要求。来源合法和结构修正不验证这些内容。
+- 当前Slow reflection因嵌套prediction_comparison引用不在top-levelfeedback_ref而失败，episode/lesson均0、processed0，选中3反馈仍在pending；未把失败当消费或新学习。原model episode还混淆1.3136倍数与8.736美元threshold，并把comparison row误称candidate target-assignment row，selected原件不存在这类字段；这些保留为内容失败，未程序改写经济解释。
+- 归属缺口沿已有canonicalization机制泛化：不再只认slow-history前缀，同时解析所有结构化ref/refs/*_ref/*_refs字段；只能将唯一selected owner的嵌套引用映射回同一top-level反馈单元，保留legacy locator行为。缺失、双owner、普通prose仍拒绝，不开放新source/read权限。首答引用alias不再触发无效全回合，完整coverage和episode/lesson闭包仍校验。
+- 先更新所属spec；2新参数化回归覆盖多个opaque namespaces/深层wrapper/两种引用列表/源与原答不变及歧义/prose反例；106相关/1559全量56.519s PASS。`reports/v179-nested-source-ownership-replay-20261007.json`用实际选中feedback/原首答经生产LLMSignalMiningModel.reflect_feedback，0外部、1个原答，最终仅两个引用由nested换为owner，3episode/3lesson文字保持；所有原件hash不变。修复技术归属不使这份有内容错误的反思通过人工验收，也不修改真实failed memory/processed pointer。
+- 这两类修复仍未进入正在运行的482a5e1e冻结源码。Slow currentdev只有部分病例，来自其外的积累need并不提供当前Dev可读原文；仅一部分材料已读时宣称整个cohort无催化因素仍缺依据，不能用no-pattern/分派完成替代magnitude新能力。继续实际Mining/Update/准入/后继消费检查；本地来源闭包、固定单位/统计和行动可执行性需要分别验证。
+
 ## v178 历史冻结后继（2026-10-07 00:04:43启动）
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。

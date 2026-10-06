@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07 02:09：v179正式Fast1/Slow0，固定24案×两Plan，25正向幅度全2–3x；177success/20domain_unavailable/10Signal校验失败/1预算阻断，c01一技术FN保留分母。亲自读Plan/Round/Slow原答/付费patch/落盘，发现统计误读与blind行动需标签，Slow反思failed/processed0/pending保留。泛化已有嵌套source归属至结构化ref字段，2新/106相关/1559全量PASS，真实原答零外部回放仅改2引用、内容问题仍不验收；冻结监控继续。
+
 2026-10-07 01:59：按真实v179 Initialize首答/付费patch修复未来信息whole-member后置隔离，模型先纠错、精确remove授权、有效siblings与Reflect旧needs/引文保留、完整parser拒绝空continue。7新/90相关/1557全量PASS，生产两原答0外部回放只删违规一项、保五needs及原件hash。v179仍冻结482a5e1e且c02进行中，不改旧分母；Signal失败/幅度新能力/独立gain仍待验收。
 
 2026-10-07 01:40：v179 c01固定24案checkpoint完成，失败案仍在分母作技术FN；F1=.72，11非空幅度全2–3x，Signal5失败/1案例排除，正式指针0/0、c02进行中。亲自读真实Initialize双义务与付费patch、全评分/案例集合，未来内容问题仅改措辞仍失败；另有跨band行动与数值runway归因内容疑点。冻结源码/单executor/两次SSL恢复，未作局部放宽或有效性声明；见reports/v179-c01-checkpoint-audit-20261007.json。
