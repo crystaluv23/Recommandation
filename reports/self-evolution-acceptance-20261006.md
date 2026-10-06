@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v181已于2026-10-07 03:50:37真实结束，冻结90999e84、正式Fast/Slow1/1、exit0，415 attempts/$2.14415852。Registry11未变、新因子/更新均0；c02完整24但14正向幅度全2–3x且7Signal失败，c01第五案unfinalized仍diagnostic-only，Slow另1原文边界失败。方法记忆真实写入并传给Mining/Update，独立收益仍未验证。终态Reflect不可用finding按既有typed删除权限修复，原答/完整上下文0外部回放通过、1576全量PASS，未改冻结结果。magnitude七次实际读取多是封面表头且含空/重复、control错称positive；当前搜索质量不验收，下一步审证据目录/读取/市场事实与剩余技术家族。；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v181已于2026-10-07 03:50:37真实结束，冻结90999e84、正式Fast/Slow1/1、exit0，415 attempts/$2.14415852。Registry11未变、新因子/更新均0；c02完整24但14正向幅度全2–3x且7Signal失败，c01第五案unfinalized仍diagnostic-only，Slow另1原文边界失败。方法记忆真实写入并传给Mining/Update，独立收益仍未验证。终态Reflect不可用finding按既有typed删除权限修复，原答/完整上下文0外部回放通过、1576全量PASS，未改冻结结果。magnitude七次实际读取多是封面表头且含空/重复、control错称positive；当前搜索质量不验收；最新同原文边界补充窗修复与四源核验/1584全量PASS见文末，只确认control MD&A坐标实际传输，positive分页消费和其余家族仍待继续。；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -288,3 +288,10 @@
 - 6项新回归覆盖所有不可用原因、duplicate snapshot、available/prior反例、typed权限与独立未来内容问题；311相关、1576全量68.807s PASS。全量首次发现旧v21用“不可用finding触发付费纠错”作为前提，按新行为改验为1次调用删除非法findings、原unanswered need及valid evidence保持；无关cosmetic answer未被调用或采用。
 - 两magnitude种子均只有4案（2high/2low），无compute_statistic/compare_groups，heavy余27/25。全部7个actual raw receipts已亲读：空窗口1、重复窗口1，其他SEC文本多是封面/表头；唯一完整新闻为case-004/control，作者action却称positive。两种子所见方法delta包含真实3episode/3lesson的bounded brief，但无method原件read_refs。Update作者明确使用technical≠effect/no-effective-edit不可提交教训并no_change；只能确认反馈消费。
 - 完成审计：[周期产物](v181-completed-content-audit-20261007.json)；[terminal原件回放](v181-unavailable-finding-replay-20261007.json)。继续核对证据目录/可读经济正文/market事实构造、Fast七技术失败、Slow内部边界失败、backlog处置语义与后继实际采纳；独立评价协议仍需用户确认，不启动依赖批准的实验。
+
+## v181 同原文引用纠错与目录核验（2026-10-07 04:40）
+
+- 真实guidance首答引用截断，唯一纠错仍拿同一批截断源；完整原文在本地。独立supporting/counter边界义务先联合收集，避免唯一纠错后才发现第二处同类边界；按既有bounded local re-projection规格，typed projection/hash/normalized boundary才可提供同PIT原文的普通2k重叠窗。32k字符上限、每个pending Signal最低eligible source和完整feedback精确请求预算保持；有效siblings不重跑，原完整literal/source/PIT校验继续，无自动改结论或新增重试。初始投影不变。
+- reports/v181-edge-window-replay-20261007.json保存Fast原attempt76/162/260和Slow fixture391。canonical source映射与原匿名payload逐值相等，新窗匿名读回相等，源文件hash保持，0外部。亲读完整新窗：成本指引1500/oz；全年EBITDA810–840 million且midpoint+5 million；ARR盈亏平衡prior100→90 million；现金流表Financing Activities后半。前三有完整boundary-anchored句，现金流表无自动句式candidate，不伪造新Signal回答或判定研究有效。
+- 两本地10-Q目录有18/17个Part/Item记录，在24上限内；正文坐标分别841722/912261。逐实际请求只找到control的912261（5个请求中保留）；positive的841722未找到，分页/目录消费还需核验。此前评论把本地目录生成说成两份均已实际传输，现已更正，不能据此归因所有封面读取为模型忽略。424B3无Part/Item索引；是否需要其他通用导航需先核对范围。市场图目前只将financial/fact来源投影为numeric事实，广泛文字query会先过滤原文；确切覆盖与能力契约继续审。
+- 8新/61相关PASS；1584全量54.925s PASS。旧边界literal仍拒，未来PIT、未知/过期hash/非边界坐标不授权；预算、最低peer scope、确定顺序、paid usage、有效siblings及预算失败覆盖。实际v181仍1/1、415 attempts、Registry11未变、Fast7/Slow1失败、新magnitude0/14正向全2–3x。非literal越界补词、required-phrase、损坏JSON等前沿未关闭；不能以本地核验消除旧失败或称live完成。后继实跑前继续累计错误族和完整内容审查，独立效果协议待确认。

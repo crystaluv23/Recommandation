@@ -1,0 +1,871 @@
+{
+  "schema_version": "v181-edge-window-replay-v1",
+  "audited_at": "2026-10-06T20:38:25.579491+00:00",
+  "new_external_calls": 0,
+  "original_artifacts_unchanged": true,
+  "replays": [
+    {
+      "attempt_id": 76,
+      "case_id": "cik_0000701818:20250930",
+      "request_hash": "25cdcc80f08aea90d38d74fda9fd4c7342702f9ff6a8b4632082efe17cbbb422",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "guidance_acceleration:v3",
+          "issue": {
+            "code": "signal_projection_edge",
+            "message": "Signal supporting evidence[2] on projection 'projection_46292dbb0dc0dfa21966dffc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_46292dbb0dc0dfa21966dffc\": \"As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[2]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_46292dbb0dc0dfa21966dffc"
+            ],
+            "repair_context": {
+              "projection_id": "projection_46292dbb0dc0dfa21966dffc",
+              "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+              "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+              "boundary_offsets": [
+                7400
+              ]
+            }
+          }
+        }
+      ],
+      "new_source_windows": [
+        {
+          "source_projection": {
+            "projection_id": "projection_7e811a070ce0923b9db9d723",
+            "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+            "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+            "source_type": "earnings_call",
+            "published_at": "2025-07-30T00:00:00+00:00",
+            "available_at": "2025-07-31T00:00:00+00:00",
+            "exact_text": "excellent shape and continued to strengthen in Q2. We ended the quarter with just over $1.1 billion in cash and approximately $2.8 billion of total liquidity, both increasing from Q1. We improved our net debt position to approximately $100 million at the end of Q2 and expect to be at net cash in Q3. In Q2, we repurchased and canceled approximately $170 million in shares and subsequently have completed another $55 million for a total of $225 million to date. Including our quarterly dividend, we have returned almost $300 million to shareholders so far, and we're on track for our minimum target of $650 million this year. As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes. Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce. Production over the 2 remaining quarters this year is expected to be relatively even at approximately 500,000 ounces each to deliver our full year production guidance. Operating costs are budgeted to increase in the second half to meet our full year cost guidance. The expected increase is due to the following reasons: first, planned mine sequencing with costs expected to increase at several sites as we transition from capitalized stripping into operating waste; second, some expected inflation as we progress through the rest of the year; and third, slightly stronger production in the first half, providing a favorable denominator on fixed costs with production in the remaining quarters expected to deliver our guidance of 2 million ounces. Total capital expenditures remain on track to meet guidance of $1.15 billion with a slightly higher weighting towards sustaining versus growth capital for the second half of the year. I'll now turn the call over to Claude to discuss our o"
+          },
+          "normalized_start": 6400,
+          "normalized_end": 8400,
+          "boundary_anchored_literal_candidates": {
+            "7400": "Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce."
+          }
+        }
+      ],
+      "bounded_source_characters": 31641,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665.json": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925093824.json": "2ca77f26ac9807ad08434eb253456907183013f02e3e3a680cc0ed430529fca5",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925092747.json": "b775491ea67ad134060b6b20155cc710cf087fdd1e0776a21c3f1bc5c9bb7948",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925089044.json": "275ff16e7ae96ac6eeb851e37a3764334f5e8066da0f3c1192c8b2ad8471294f",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925088119.json": "73980efdb2035e23f4a5cc8b7a947020a3e93a269361fbe78fa27b15064d4b86",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925075920.json": "f7542ba6afff76756859ff0ee7243a62e9d0052a91a6d48ec2c7bf69da5342c0",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925070924.json": "9423608633732a0e2c1704c9e3aa2fb69e79784d2de3d0d0e3a2208e8c3e3c48"
+      },
+      "original_request_sha256": "2d0a0e2d8dfbc1db68a9785ab44ab9ca4b9d7a73fe05e2c73d409cb667a4ef50",
+      "original_response_sha256": "ca51f038acd075f6090b4f5f0dfc1d4bed0e0c6eb7d2f545e549b37d10922228",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    },
+    {
+      "attempt_id": 162,
+      "case_id": "cik_0001018963:20250930",
+      "request_hash": "0909405ad4de508830645a12b9d36386af45880ba2e417793a2c4324322fa64b",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "guidance_acceleration:v3",
+          "issue": {
+            "code": "signal_projection_edge",
+            "message": "Signal supporting evidence[1] on projection 'projection_f3dfe190ccf90f194fc3e388' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_f3dfe190ccf90f194fc3e388\": \"That equates to an adjusted earnings per share of $0.69 to $0.75 per share.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[1]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_f3dfe190ccf90f194fc3e388"
+            ],
+            "repair_context": {
+              "projection_id": "projection_f3dfe190ccf90f194fc3e388",
+              "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+              "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee",
+              "boundary_offsets": [
+                11000
+              ]
+            }
+          }
+        }
+      ],
+      "new_source_windows": [
+        {
+          "source_projection": {
+            "projection_id": "projection_f3aa67640d0ac8071d100c55",
+            "document_id": "alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef",
+            "content_hash": "b0b34701653d7e0a2cd607efbd1be15a61ef393459b7c47128338ee0627d5fee",
+            "source_type": "earnings_call",
+            "published_at": "2025-07-31T00:00:00+00:00",
+            "available_at": "2025-08-01T00:00:00+00:00",
+            "exact_text": "m expectations. Jet engine remains our largest end market and a key growth driver for the rest of the year. Timing in airframe, defense, and our non-A&D markets keeps us on track to deliver second-half revenue growth in the upper single-digit percentage range. As a result, we favorably shifted our range estimates for adjusted EBITDA, EPS, and adjusted free cash flow, capturing our first-half performance. We believe upside beyond our current range is tied to an inflection point for airframe growth and delivery timing in defense. Looking ahead into 2026, we expect growth to continue in all A&D markets. With these dynamics in play, we expect Q3 performance to modestly increase from Q2, with more growth building in our fourth quarter. For the third quarter, we are setting our guidance range for adjusted EBITDA at $200 million to $210 million. That equates to an adjusted earnings per share of $0.69 to $0.75 per share. For the full year, we have narrowed our range to $810 million to $840 million of adjusted EBITDA, raising our midpoint by $5 million. With this balanced approach, the corresponding range for adjusted EPS is now $2.90 to $3.07 per share. As you model your estimates, I would consider the following for our end markets. For the full year, we see greater than 20% growth in jet engines. We expect double-digit defense growth in the full year, reflecting the strength Kim shared. We're holding our full year airframe estimates flat from '24 levels, driven by inventory destocking by our customers. We still see offsets in our non-A&D markets expected to decline from 2024 levels in the range of 5% to 7%. Key factors for these markets are driven by customer behavior, including tariff concerns impacting order activities, inventory management, and conservatism around the macros in our industrial markets. I would expect our EBITDA margins to be at or above 18% for the second half and full year, delivering on the range that we've been targeting for several years. At the segm"
+          },
+          "normalized_start": 10000,
+          "normalized_end": 12000,
+          "boundary_anchored_literal_candidates": {
+            "11000": "For the full year, we have narrowed our range to $810 million to $840 million of adjusted EBITDA, raising our midpoint by $5 million."
+          }
+        }
+      ],
+      "bounded_source_characters": 31921,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025007092.json": "02e14462f629199f72d1d2bff826f20d63a85aa5af611767446f28a587c4c19b",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:b0b34701653d7e0a2cd607ef.json": "7c7921e6bf00befef5853de57faef82fdba71c0881859862dcd1f45734009890",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025036963.json": "1c5f84ff09824c8d8326f23f509216539f40d5ebaeee2a8063e19dcc282b0b32",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025021463.json": "073f14a2e717fd71664ce22ea9fb352b14f63d7891eee73cb0f8b42a69ed8580",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001018963/alpha_vantage:cik_0001018963:earnings_call:7e2a69eede1c1b4c9695b46a.json": "772489f923a9561dc1a1355286a8211b7e1bd0459651c0556ace53320e51e12c",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000119312525199688.json": "aba467fec89ce7bf6b634b234f3c9b9603a50d13f9557273d22693e070588ff3",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025036845.json": "f9eb9cff900a09b38753f707f4d0719bc25ce438f4eb259b7633d53009e5503a",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000119312525123974.json": "36b8ba3b3d173f436d2a15032913ffe6e8ca4893e5f32fc9f2f2cbb1adb141d5",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000119312525217804.json": "8167de389cda8bee2965bdaf5b751c33d9480098f0971447d648ea0a46be873f",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000119312525143715.json": "d252b999d9b657adb0248a6c0198c8abab86b414bed6a0c105dc048e74dd5563"
+      },
+      "original_request_sha256": "b1288a5694f8a4f6190e3a49cce3ce1e63cd54b4011bff594abcae41b64f51a0",
+      "original_response_sha256": "0ab03f5f5b938fc2ad9b07104eabdd3584bf6089322d0ae2f2a98a0e5d3328ab",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    },
+    {
+      "attempt_id": 260,
+      "case_id": "cik_0001920294:20250530",
+      "request_hash": "2629b58aefa92b9bab4f6683235d876eb36bd4a8a09753610ecb2588f589f5a1",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "guidance_acceleration:v3",
+          "issue": {
+            "code": "signal_projection_edge",
+            "message": "Signal supporting evidence[1] on projection 'projection_59e5767d03409fd3f4169efb' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_59e5767d03409fd3f4169efb\": \"As a result, we now expect to achieve break-even operating performance at $90 million ARR.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[1]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_59e5767d03409fd3f4169efb"
+            ],
+            "repair_context": {
+              "projection_id": "projection_59e5767d03409fd3f4169efb",
+              "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+              "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+              "boundary_offsets": [
+                16400
+              ]
+            }
+          }
+        }
+      ],
+      "new_source_windows": [
+        {
+          "source_projection": {
+            "projection_id": "projection_1f75c8ff373422af89d562d4",
+            "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+            "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+            "source_type": "earnings_call",
+            "published_at": "2024-10-29T00:00:00+00:00",
+            "available_at": "2024-10-30T00:00:00+00:00",
+            "exact_text": "rst quarter of 2025. This compares to a monthly cash burn rate of approximately $2.2 million, primarily driven by employee-related costs, as well as professional service fees. Furthermore, this cash position is bolstered by our access to up to 48.3 million shares in our equity line of credit (E-LOC). As we look ahead, we want to provide some thoughts on our business outlook in terms of the full year 2025. We expect to achieve a $100 million estimated annual recurring revenue target by the end of 2025, which will include both organic and acquired revenue. Additionally, we expect cost growth, which is highly elastic and primarily driven by headcount, marketing expenses, and hosting costs, to increase in line with that revenue as we scale the organization with a focus on revenue-generating roles, particularly in sales and marketing. As a result, we now expect to achieve break-even operating performance at $90 million ARR. This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success. Let me now turn the call back over to Dan to discuss the momentum we are seeing in the business at the start of 2025.\",\"sentiment\":\"0.3\",\"speaker\":\"Richard Burchill\",\"title\":\"CFO\"},{\"content\":\"Thanks, Rich. We entered 2025 with a solid foundation that we believe well positions the business to acquire enterprise customers and drive revenue growth. Early developments year-to-date have demonstrated clear business momentum as we successfully execute on our go-to-market strategy. Some of our early successes include the completion of a key strategic acquisition, growth of enterprise customers adopting our AI-powered solutions, and the build-out of our customer sales pipeline. To begin, we recently announced the strategic acquisition of GroupBy, a leader in enterprise search, product discovery, and merchandising solutions. This acquisition enhances Rezolve's sales"
+          },
+          "normalized_start": 15400,
+          "normalized_end": 17400,
+          "boundary_anchored_literal_candidates": {
+            "16400": "This update represents an improvement from the prior estimate of achieving break-even at $100 million ARR, as we plan to align our resource additions with revenue growth to position us for success."
+          }
+        }
+      ],
+      "bounded_source_characters": 31966,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025011912.json": "01a624bef65b5f4c49e2113c114ffae116be50af93fab58379f5a120f7f712f0",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025067632.json": "eb6dd22d1cca09004dfde3255660a58dd18444383d821ff4beef803c4b77435e",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025067626.json": "9ff3564122405f4e0b1d7b744f9c028c08e3e5a367394bf75daf1259bfbc3033",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025077215.json": "cdf5f9e91f4b9eb6fd096a87281c841fa8f87482aa01515d3612111ac1a56cf3",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025073708.json": "f4d7d945c79e5407c5e372f0b30d52933ba02cb8c7913774d59aa83ec8b66421",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025067621.json": "c1aca0c79d3ec046328ad45d734f92f05c53440528cc9dff5941f53977996575",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001920294/alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324.json": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025024898.json": "ba360b692541c70936c20c3de2bb276491b3c408aa268cd7068895f514be0025",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025026125.json": "9895b8a5d42930ba3f16eea5b6e6d178a860ce6abd559e0b94b1d18cb03f7bc8",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001920294/sec:cik_0001920294:000095017025016341.json": "b55c056621cc21ca42bbb98c2d9c4d0f47c74418bbef6382c23dffa43eccc521"
+      },
+      "original_request_sha256": "f262ef693d11cb7db249481d899ccb90bd3aa9d7f6a4264669e162a7c1acfdc7",
+      "original_response_sha256": "3089ff1bf8a8a37dc3c14110854cf3518b6a89381b89ce77f9047dec7cebd49e",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    },
+    {
+      "attempt_id": 391,
+      "case_id": "cik_0001746129:20250731",
+      "request_hash": "d94915c3ab67adb94cc6ebbdbbcd9960b265380e44d96ece6933bbfbe7bc26ff",
+      "original_wire_payload_exact": true,
+      "owner_issues": [
+        {
+          "signal_ref": "financing_listing_action:v5",
+          "issue": {
+            "code": "signal_projection_edge",
+            "message": "Signal supporting evidence[1] on projection 'projection_ca336082822ec693375bc4ad' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+            "paths": [
+              "evidence.supporting[1]"
+            ],
+            "severity": "error",
+            "retryability": "correctable",
+            "path_policy": "all",
+            "allowed_repairs": [
+              "replace"
+            ],
+            "dependent_paths": [],
+            "source_refs": [
+              "projection_ca336082822ec693375bc4ad"
+            ],
+            "repair_context": {
+              "projection_id": "projection_ca336082822ec693375bc4ad",
+              "document_id": "sec:cik_0001746129:000114036125008438",
+              "content_hash": "57e3433d741b8be602664f7be4400086ac613913478fa42c8620d387fee6b6b9",
+              "boundary_offsets": [
+                194600
+              ]
+            }
+          }
+        }
+      ],
+      "new_source_windows": [
+        {
+          "source_projection": {
+            "projection_id": "projection_27c7a6f4e32223b79634fd84",
+            "document_id": "sec:cik_0001746129:000114036125008438",
+            "content_hash": "57e3433d741b8be602664f7be4400086ac613913478fa42c8620d387fee6b6b9",
+            "source_type": "filing",
+            "published_at": "2025-03-12T20:15:51+00:00",
+            "available_at": "2025-03-12T20:15:51+00:00",
+            "exact_text": "st payable and other liabilities 853 432 4,727 Net cash provided by operating activities 55,046 49,125 39,714 Investing Activities Net cash paid for acquisition - ( 16,482 ) - Maturities of interest-bearing time deposits in other banks 19,461 8,471 2,490 Purchases of interest-bearing time deposits in other banks ( 8,501 ) ( 20,676 ) ( 4,727 ) Proceeds from sale of available-for-sale debt securities - - 11,820 Maturities, prepayments and calls of available-for-sale debt securities 195,692 7,422 19,736 Purchases of available-for-sale debt securities ( 83,877 ) - ( 133,052 ) Net change in loans ( 38,638 ) ( 106,762 ) ( 242,105 ) Purchases of premises and equipment ( 4,197 ) ( 2,834 ) ( 294 ) Proceeds from sale of premises and equipment 218 78 3,370 Change in nonmarketable equity securities - ( 74 ) ( 7 ) Net cash provided by (used in) investing activities 80,158 ( 130,857 ) ( 342,769 ) Financing Activities Net change in deposits ( 75,920 ) 159,991 211,829 Cash distributions ( 8,057 ) ( 6,323 ) ( 4,366 ) Shares purchased and retired for restricted stock units ( 666 ) ( 513 ) ( 454 ) Net settlement of stock options 2,591 503 309 Common stock issued for restricted stock units 2 1 - Net cash provided by (used in) financing activities ( 82,050 ) 153,659 207,318 Net Increase/(Decrease) in Cash and Due from Banks 53,154 71,927 ( 95,737 ) Cash and Due from Banks, Beginning of Period 181,042 109,115 204,852 Cash and Due from Banks, End of Period $ 234,196 $ 181,042 $ 109,115 Supplemental Disclosure of Cash Flows Information Interest paid $ 45,565 $ 37,935 $ 9,100 Income taxes paid $ 15,059 $ 10,800 $ 9,981 Dividends declared and not paid $ 2,254 $ 1,932 $ 1,463 Measurement period goodwill adjustment $ - $ ( 146 ) $ 124 See accompanying notes to Consolidated Financial Statements 50 Table of Contents Bank7 Corp. Notes to Consolidated Financial Statements Note 1: Nature of Operations and Summary of Significant Accounting Policies Nature of Operations Bank7 Corp. (the “Company”) is"
+          },
+          "normalized_start": 193600,
+          "normalized_end": 195600,
+          "boundary_anchored_literal_candidates": {
+            "194600": null
+          }
+        }
+      ],
+      "bounded_source_characters": 32000,
+      "maximum_source_characters": 32000,
+      "anonymous_payload_readback_exact": true,
+      "source_sha256": {
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125008438.json": "ca8996edb2e884ad2c5375c67836e71101d921810246c7757dc3409006ed0730",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036124045199.json": "c944623ba8e9cc673447c000f50e4d2db0554efc3bbd6c80c29e8ad552ebe0b0",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036124036309.json": "79f80c4a5e1a7fa211d2e17997c726a095c015dd949254d364cdff669514af77",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125018373.json": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125026134.json": "1d5a65383e8fa566e4c11cba01fd47920c7f28560aa3f164b28035c6b07abffc",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125019776.json": "9e606134845b68cc418a9ecd1ad6eadcc5cd4d3f32636178edf5afe56841089f",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125013171.json": "5c2a1f3aca443ed63bba89aa77a6f5ec479da99b71006df8f56725d964c1be20",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125010177.json": "aba8567fc7fba8ea48b27491954f68e53b9efb4d8048d6e6dec3f597f4a1edaa",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036125001243.json": "50af184e8c664b93870cea8297937db2c25b676c989b0f38ad5af3889a44afaa",
+        "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001746129/sec:cik_0001746129:000114036124043297.json": "d9890a6d5d182e2f657827bed4a3162b282052dbf4bf0dd9f2517d9dc454b8e7"
+      },
+      "original_request_sha256": "6e28fcd2fe420310ffa019605c1e4922bbadd79845a83ffd20868f2be9713e08",
+      "original_response_sha256": "5b338ec6e56d5ee87a0b22fac209f14f5f1e72ca4cad86b5d8bd5f9dc985766b",
+      "claim_level": "Source access and correction composition only; no new model response or live result."
+    }
+  ],
+  "source_directory_baseline": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001285819/sec:cik_0001285819:000143774925017213.json",
+      "source_sha256": "3cdc6256b2966c45db46c58dc03fdd292213bcc553f80c39e0dd2e24d090ab28",
+      "card": {
+        "document_id": "sec:cik_0001285819:000143774925017213",
+        "content_hash": "378729c94a90f60e8fe3937b2a1509c97a3e77ecf770d4718545a95529f6fe8d",
+        "source_type": "filing",
+        "available_at": "2025-05-15T20:32:51+00:00",
+        "visible_chars": 147315,
+        "raw_chars": 1023860,
+        "readable_start": 88744,
+        "form_type": "10-Q",
+        "preview": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-Q (Mark One) &#160; &#160; &",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "Part I &#8212; Financial Information 5 Item 1. Financial Statements (",
+            "raw_start": 124516,
+            "raw_end": 125279
+          },
+          {
+            "section_id": "sec01",
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_start": 128949,
+            "raw_end": 129240
+          },
+          {
+            "section_id": "sec02",
+            "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 25 Item 4. Con",
+            "raw_start": 129694,
+            "raw_end": 130634
+          },
+          {
+            "section_id": "sec03",
+            "heading": "Part II &#8212; Other Information 26 Item 1. Legal Proceedings 26 Item",
+            "raw_start": 131113,
+            "raw_end": 132311
+          },
+          {
+            "section_id": "sec04",
+            "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 26 Item 3. De",
+            "raw_start": 132983,
+            "raw_end": 133937
+          },
+          {
+            "section_id": "sec05",
+            "heading": "Item 4. Mine Safety Disclosures 26 Item 5. Other Information 26 Item 6. Exhi",
+            "raw_start": 134410,
+            "raw_end": 136001
+          },
+          {
+            "section_id": "sec06",
+            "heading": "PART I &#8212; FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS",
+            "raw_start": 137845,
+            "raw_end": 138195
+          },
+          {
+            "section_id": "sec07",
+            "heading": "ITEM 2. MANAGEMENT &#8217; S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULT",
+            "raw_start": 841722,
+            "raw_end": 841825
+          },
+          {
+            "section_id": "sec08",
+            "heading": "Part II, Item 7, &#8220;Management&#8217;s Discussion and Analysis of Financial Co",
+            "raw_start": 996685,
+            "raw_end": 996777
+          },
+          {
+            "section_id": "sec09",
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK Our exposure",
+            "raw_start": 997192,
+            "raw_end": 997495
+          },
+          {
+            "section_id": "sec10",
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_start": 998918,
+            "raw_end": 999207
+          },
+          {
+            "section_id": "sec11",
+            "heading": "PART II &#8212; OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS",
+            "raw_start": 1002167,
+            "raw_end": 1002609
+          },
+          {
+            "section_id": "sec12",
+            "heading": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of ris",
+            "raw_start": 1003202,
+            "raw_end": 1003506
+          },
+          {
+            "section_id": "sec13",
+            "heading": "Part I, Item 1A, &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the",
+            "raw_start": 1003618,
+            "raw_end": 1003704
+          },
+          {
+            "section_id": "sec14",
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS Not a",
+            "raw_start": 1004760,
+            "raw_end": 1005063
+          },
+          {
+            "section_id": "sec15",
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES Not applicable. ITEM 4. M",
+            "raw_start": 1005227,
+            "raw_end": 1005762
+          },
+          {
+            "section_id": "sec16",
+            "heading": "ITEM 5. OTHER INFORMATION (a) None . (b) None",
+            "raw_start": 1006391,
+            "raw_end": 1007063
+          },
+          {
+            "section_id": "sec17",
+            "heading": "Item 408(c) of Regulation S-K). 26 Table of Contents ITEM 6.",
+            "raw_start": 1007714,
+            "raw_end": 1008944
+          }
+        ],
+        "section_count": 18
+      },
+      "all_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "Part I &#8212; Financial Information 5 Item 1. Financial Statements (",
+          "raw_start": 124516,
+          "raw_end": 125279
+        },
+        {
+          "section_id": "sec01",
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_start": 128949,
+          "raw_end": 129240
+        },
+        {
+          "section_id": "sec02",
+          "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 25 Item 4. Con",
+          "raw_start": 129694,
+          "raw_end": 130634
+        },
+        {
+          "section_id": "sec03",
+          "heading": "Part II &#8212; Other Information 26 Item 1. Legal Proceedings 26 Item",
+          "raw_start": 131113,
+          "raw_end": 132311
+        },
+        {
+          "section_id": "sec04",
+          "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 26 Item 3. De",
+          "raw_start": 132983,
+          "raw_end": 133937
+        },
+        {
+          "section_id": "sec05",
+          "heading": "Item 4. Mine Safety Disclosures 26 Item 5. Other Information 26 Item 6. Exhi",
+          "raw_start": 134410,
+          "raw_end": 136001
+        },
+        {
+          "section_id": "sec06",
+          "heading": "PART I &#8212; FINANCIAL INFORMATION ITEM 1. FINANCIAL STATEMENTS",
+          "raw_start": 137845,
+          "raw_end": 138195
+        },
+        {
+          "section_id": "sec07",
+          "heading": "ITEM 2. MANAGEMENT &#8217; S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULT",
+          "raw_start": 841722,
+          "raw_end": 841825
+        },
+        {
+          "section_id": "sec08",
+          "heading": "Part II, Item 7, &#8220;Management&#8217;s Discussion and Analysis of Financial Co",
+          "raw_start": 996685,
+          "raw_end": 996777
+        },
+        {
+          "section_id": "sec09",
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK Our exposure",
+          "raw_start": 997192,
+          "raw_end": 997495
+        },
+        {
+          "section_id": "sec10",
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_start": 998918,
+          "raw_end": 999207
+        },
+        {
+          "section_id": "sec11",
+          "heading": "PART II &#8212; OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS",
+          "raw_start": 1002167,
+          "raw_end": 1002609
+        },
+        {
+          "section_id": "sec12",
+          "heading": "ITEM 1A. RISK FACTORS We operate in an environment that involves a number of ris",
+          "raw_start": 1003202,
+          "raw_end": 1003506
+        },
+        {
+          "section_id": "sec13",
+          "heading": "Part I, Item 1A, &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the",
+          "raw_start": 1003618,
+          "raw_end": 1003704
+        },
+        {
+          "section_id": "sec14",
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS Not a",
+          "raw_start": 1004760,
+          "raw_end": 1005063
+        },
+        {
+          "section_id": "sec15",
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES Not applicable. ITEM 4. M",
+          "raw_start": 1005227,
+          "raw_end": 1005762
+        },
+        {
+          "section_id": "sec16",
+          "heading": "ITEM 5. OTHER INFORMATION (a) None . (b) None",
+          "raw_start": 1006391,
+          "raw_end": 1007063
+        },
+        {
+          "section_id": "sec17",
+          "heading": "Item 408(c) of Regulation S-K). 26 Table of Contents ITEM 6.",
+          "raw_start": 1007714,
+          "raw_end": 1008944
+        }
+      ]
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001951089/sec:cik_0001951089:000121390025035550.json",
+      "source_sha256": "8b829213c66b0dbe584c57cf3d3b11fba013bc81615102b4e9136901bafba109",
+      "card": {
+        "document_id": "sec:cik_0001951089:000121390025035550",
+        "content_hash": "cfb4c6d45b52806f38fb610ccc4d2e55ab232ba6d40082e71d8f7bd971ebc9b5",
+        "source_type": "filing",
+        "available_at": "2025-04-25T20:08:07+00:00",
+        "visible_chars": 185648,
+        "raw_chars": 941207,
+        "readable_start": 17,
+        "form_type": "424B3",
+        "preview": "424B3 1 ea0202260-10.htm PROSPECTUS PROSPECTUS &#x00a0; Filed Pursuant to Rule 424(b)(3) Registration Statement No. 333 -278400 Critical Met"
+      },
+      "all_sections": []
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0002009312/sec:cik_0002009312:000149315225011966.json",
+      "source_sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "card": {
+        "document_id": "sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "source_type": "filing",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "visible_chars": 188392,
+        "raw_chars": 1191914,
+        "readable_start": 160442,
+        "form_type": "10-Q",
+        "preview": "&#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; FORM 10-Q &#160; (Mark One) &#9746; Quar",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+            "raw_start": 183640,
+            "raw_end": 184115
+          },
+          {
+            "section_id": "sec01",
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_start": 184516,
+            "raw_end": 184602
+          },
+          {
+            "section_id": "sec02",
+            "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+            "raw_start": 184996,
+            "raw_end": 185470
+          },
+          {
+            "section_id": "sec03",
+            "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+            "raw_start": 185865,
+            "raw_end": 187105
+          },
+          {
+            "section_id": "sec04",
+            "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+            "raw_start": 187551,
+            "raw_end": 188402
+          },
+          {
+            "section_id": "sec05",
+            "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+            "raw_start": 188811,
+            "raw_end": 190904
+          },
+          {
+            "section_id": "sec06",
+            "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+            "raw_start": 209861,
+            "raw_end": 210430
+          },
+          {
+            "section_id": "sec07",
+            "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+            "raw_start": 214365,
+            "raw_end": 215508
+          },
+          {
+            "section_id": "sec08",
+            "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+            "raw_start": 912261,
+            "raw_end": 912522
+          },
+          {
+            "section_id": "sec09",
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+            "raw_start": 1147325,
+            "raw_end": 1148005
+          },
+          {
+            "section_id": "sec10",
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_start": 1148801,
+            "raw_end": 1149505
+          },
+          {
+            "section_id": "sec11",
+            "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+            "raw_start": 1155063,
+            "raw_end": 1156322
+          },
+          {
+            "section_id": "sec12",
+            "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+            "raw_start": 1158223,
+            "raw_end": 1158900
+          },
+          {
+            "section_id": "sec13",
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+            "raw_start": 1159422,
+            "raw_end": 1160102
+          },
+          {
+            "section_id": "sec14",
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+            "raw_start": 1160835,
+            "raw_end": 1162286
+          },
+          {
+            "section_id": "sec15",
+            "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+            "raw_start": 1163299,
+            "raw_end": 1163981
+          },
+          {
+            "section_id": "sec16",
+            "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+            "raw_start": 1167485,
+            "raw_end": 1169506
+          }
+        ],
+        "section_count": 17
+      },
+      "all_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+          "raw_start": 183640,
+          "raw_end": 184115
+        },
+        {
+          "section_id": "sec01",
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_start": 184516,
+          "raw_end": 184602
+        },
+        {
+          "section_id": "sec02",
+          "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+          "raw_start": 184996,
+          "raw_end": 185470
+        },
+        {
+          "section_id": "sec03",
+          "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+          "raw_start": 185865,
+          "raw_end": 187105
+        },
+        {
+          "section_id": "sec04",
+          "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+          "raw_start": 187551,
+          "raw_end": 188402
+        },
+        {
+          "section_id": "sec05",
+          "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+          "raw_start": 188811,
+          "raw_end": 190904
+        },
+        {
+          "section_id": "sec06",
+          "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+          "raw_start": 209861,
+          "raw_end": 210430
+        },
+        {
+          "section_id": "sec07",
+          "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+          "raw_start": 214365,
+          "raw_end": 215508
+        },
+        {
+          "section_id": "sec08",
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_start": 912261,
+          "raw_end": 912522
+        },
+        {
+          "section_id": "sec09",
+          "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+          "raw_start": 1147325,
+          "raw_end": 1148005
+        },
+        {
+          "section_id": "sec10",
+          "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+          "raw_start": 1148801,
+          "raw_end": 1149505
+        },
+        {
+          "section_id": "sec11",
+          "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+          "raw_start": 1155063,
+          "raw_end": 1156322
+        },
+        {
+          "section_id": "sec12",
+          "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+          "raw_start": 1158223,
+          "raw_end": 1158900
+        },
+        {
+          "section_id": "sec13",
+          "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+          "raw_start": 1159422,
+          "raw_end": 1160102
+        },
+        {
+          "section_id": "sec14",
+          "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+          "raw_start": 1160835,
+          "raw_end": 1162286
+        },
+        {
+          "section_id": "sec15",
+          "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+          "raw_start": 1163299,
+          "raw_end": 1163981
+        },
+        {
+          "section_id": "sec16",
+          "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+          "raw_start": 1167485,
+          "raw_end": 1169506
+        }
+      ]
+    }
+  ],
+  "technical_failures_resolved_live": false,
+  "magnitude_admitted": false,
+  "independent_benefit_confirmed": false,
+  "verification": {
+    "new_tests": 8,
+    "focused_tests": 61,
+    "focused_pass": true,
+    "full_tests": 1584,
+    "full_tests_seconds": 54.925,
+    "full_tests_pass": true,
+    "new_external_calls": 0,
+    "unchanged_initial_projection": true,
+    "rejected_edge_literal_remains_invalid": true,
+    "accepted_siblings_not_reexecuted": true,
+    "minimum_pending_signal_scope_retained": true,
+    "source_window_and_lineage_order_deterministic": true,
+    "complete_independent_edge_frontier": true,
+    "lint_pass": true,
+    "lint_log": "/tmp/v181-signal-edge-lint-complete.log"
+  },
+  "source_directory_finding": "Both local 10-Q cards contain real MD&A body coordinates (841722 and 912261), and neither exceeds the 24-row cap. Only the control coordinate 912261 was found in the two magnitude seeds actual transmitted requests; local generation must not be counted as positive-case model visibility. The 424B3 has no SEC Part/Item headings under the declared index.",
+  "actual_transmitted_mda_coordinates": [
+    {
+      "attempt_id": 338,
+      "request_hash": "1683db6de7a098fafc0997c2a1d165be119c3325edf91d8a2867ef9c0457be26",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "section": {
+        "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+        "raw_end": 912522,
+        "raw_start": 912261,
+        "section_id": "sec08"
+      },
+      "discovery_only": true
+    },
+    {
+      "attempt_id": 363,
+      "request_hash": "d695493f98336501104e847a589e19d7ff31537b38a2a0738b15e1b43e095984",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "section": {
+        "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+        "raw_end": 912522,
+        "raw_start": 912261,
+        "section_id": "sec08"
+      },
+      "discovery_only": true
+    },
+    {
+      "attempt_id": 364,
+      "request_hash": "105056fbde6d03ed1c2c6ec9029aa8ecab78ccff1c708a9cd7e31ef996f29f00",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "section": {
+        "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+        "raw_end": 912522,
+        "raw_start": 912261,
+        "section_id": "sec08"
+      },
+      "discovery_only": true
+    },
+    {
+      "attempt_id": 366,
+      "request_hash": "6a823fbaf9529ecd439d690438729e232c4a4a5fee16739cfa917950f997d4ad",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "section": {
+        "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+        "raw_end": 912522,
+        "raw_start": 912261,
+        "section_id": "sec08"
+      },
+      "discovery_only": true
+    },
+    {
+      "attempt_id": 369,
+      "request_hash": "a05792193aa7ad299259b278439838c0e96849f303d283a7be0da41318091382",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "section": {
+        "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+        "raw_end": 912522,
+        "raw_start": 912261,
+        "section_id": "sec08"
+      },
+      "discovery_only": true
+    }
+  ],
+  "remaining_family_frontiers": [
+    "Nonliteral citations completing a word beyond the source projection (for example Consolid to Consolidated) fail mapping before the typed edge issue; inspect the complete producer/validator/read/correction family before another live successor.",
+    "A nonliteral correction at attempt104 joins nonadjacent complete sentences while omitting an intervening sentence. Preserve strict contiguous literal provenance; do not accept the stitched quote or automatically choose research evidence.",
+    "The two version-owned required-phrase failures remain technical failures; do not convert them into domain_unavailable or rewrite their model conclusions to clear the metric.",
+    "The damaged JSON / omitted requested Signal failure remains; empty output is not source absence.",
+    "Positive-case directory pagination/consumption remains unverified. Actual control MD&A offsets were visible but the model chose and repeated its cover. An incorrect positive/control rationale remains a content failure.",
+    "Market documents can be fetched but are not projected into numerical EvidenceFacts by the current financial-fact selector. Prose query terms also filter candidate documents before max_documents selection; establish exact coverage and owner contracts before a capability extension.",
+    "Backlog disposition semantics, Update fixture semantics, next live cycle and approved independent benefit protocol remain required.",
+    "A failed attempt may share its request hash with a later completed retry; the current success cache is not the earlier malformed raw response. Join failed_responses and attempt-specific records before auditing original error chronology."
+  ],
+  "production_code_sha256": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py": "0f4348337f3d737b0a90f51d8d390e0cc08b109b8688cfd98439c5178a9f0d09",
+    "/Users/l/Project/Recommandation/tests/test_signal_edge_correction.py": "dd067ea5887c9e2febc6abacc35dc585c7843cb277f1f122f9f5bf6a6d7da2ce"
+  }
+}

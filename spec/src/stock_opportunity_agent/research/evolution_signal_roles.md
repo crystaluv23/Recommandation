@@ -682,3 +682,19 @@ be appended after fitting. Existing relevance order, one eligible minimum per
 selected Signal, immutable raw sources, and mandatory evidence checks remain.
 If even that complete minimum does not fit, only pending rows retain the explicit
 budget-blocked result and paid initial usage/valid siblings remain intact.
+
+### Source-bound edge correction windows (2026-10-07)
+
+An internal projection-edge rejection carries typed, source-owned document/hash,
+projection and normalized boundary coordinates. Independent edge failures across
+supporting and counter citations are collected together before the sole correction,
+so another quote does not discover the same error family after that attempt. It may disclose
+one ordinary-sized overlapping window per rejected boundary from that same PIT
+document. Runtime verifies the coordinates against the current immutable lineage;
+prose errors, unknown projections and unrelated documents grant no read authority.
+These windows take priority inside the existing character and exact request budgets,
+with the rejected projection retained ahead of unrelated windows when it fits.
+This is a bounded local re-projection, not another fetch or retry. Accepted Signal
+siblings are not revisited; the model chooses any revised interpretation and quote,
+and the original complete literal/source/eligibility/PIT validation still applies.
+No model result, source body, stored Signal definition or old run is rewritten.

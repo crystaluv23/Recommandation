@@ -4537,6 +4537,102 @@ def _shared_llm_signal_projection(
     return list(payload.values()), lineage
 
 
+def _signal_edge_correction_projection(
+    documents: list[dict[str, Any]],
+    lineage: Mapping[str, _SignalProjectionLineage],
+    read_requests: Iterable[Mapping[str, Any]],
+    *, as_of: datetime,
+) -> tuple[list[dict[str, Any]], dict[str, _SignalProjectionLineage]]:
+    """Disclose bounded same-source overlaps for owner-issued edge failures.
+
+    Only verified current lineage coordinates confer read authority. New windows
+    and their rejected source windows precede unrelated windows under the ordinary
+    character cap; exact request fitting still runs on the resulting payload.
+    """
+
+    rows = {str(row["projection_id"]): row for row in documents}
+    supplemented = dict(lineage)
+    priorities: list[str] = []
+    normalized_sources: dict[tuple[str, str], tuple[str, Any]] = {}
+    for request in read_requests:
+        projection_id = request.get("projection_id")
+        projection = lineage.get(projection_id) if isinstance(projection_id, str) else None
+        if projection is None or projection.document.available_at > as_of or (
+            request.get("document_id") != projection.document.document_id
+            or request.get("content_hash") != projection.document.content_hash
+        ):
+            continue
+        boundaries = request.get("boundary_offsets")
+        if not isinstance(boundaries, (list, tuple)):
+            continue
+        document = projection.document
+        identity = (document.document_id, document.content_hash)
+        if identity not in normalized_sources:
+            normalized_sources[identity] = _normalized_projection_text(
+                document.content,
+                strip_market_metadata=document.source_type.casefold()
+                in {"market_data", "historical_price", "price_daily", "prices"},
+            )
+        normalized, runs = normalized_sources[identity]
+        if (
+            len(normalized) != projection.normalized_source_length
+            or normalized[projection.normalized_start:projection.normalized_end]
+            != projection.projection_text
+        ):
+            continue
+        for boundary in boundaries:
+            if type(boundary) is not int or not 0 < boundary < len(normalized):
+                continue
+            if boundary not in {projection.normalized_start, projection.normalized_end}:
+                continue
+            start = max(0, min(
+                boundary - LLM_SIGNAL_CONTEXT_CHUNK_CHARS // 2,
+                len(normalized) - LLM_SIGNAL_CONTEXT_CHUNK_CHARS,
+            ))
+            end = min(len(normalized), start + LLM_SIGNAL_CONTEXT_CHUNK_CHARS)
+            text_value = normalized[start:end]
+            key = "projection_" + hashlib.sha256(json.dumps(
+                [document.document_id, document.content_hash, start, end, text_value],
+                ensure_ascii=False, separators=(",", ":"),
+            ).encode("utf-8")).hexdigest()[:24]
+            rows.setdefault(key, {
+                "projection_id": key, "document_id": document.document_id,
+                "content_hash": document.content_hash,
+                "source_type": document.source_type,
+                "published_at": document.published_at.isoformat(),
+                "available_at": document.available_at.isoformat(),
+                "exact_text": text_value,
+            })
+            prior = supplemented.get(key)
+            supplemented[key] = _SignalProjectionLineage(
+                document=document, projection_text=text_value,
+                raw_offset_runs=_slice_projection_offset_runs(runs, start, end, rebase=start),
+                normalized_start=start, normalized_end=end,
+                normalized_source_length=len(normalized),
+                eligible_signal_refs=tuple(sorted({
+                    *projection.eligible_signal_refs,
+                    *(prior.eligible_signal_refs if prior is not None else ()),
+                })),
+            )
+            priorities.extend((key, projection_id))
+    selected: list[dict[str, Any]] = []
+    used = 0
+    ordered = list(dict.fromkeys((*priorities, *rows)))
+    required_refs = sorted({
+        ref for projection in lineage.values() for ref in projection.eligible_signal_refs
+    })
+    minimum = [next(key for key in ordered if ref in supplemented[key].eligible_signal_refs)
+               for ref in required_refs]
+    for key in dict.fromkeys((*minimum, *ordered)):
+        row = rows[key]
+        if used + len(row["exact_text"]) > MAX_LLM_SIGNAL_CONTEXT_CHARS:
+            continue
+        selected.append(row)
+        used += len(row["exact_text"])
+    return selected, {str(row["projection_id"]): supplemented[str(row["projection_id"])]
+                      for row in selected}
+
+
 def _bounded_projection_interior_candidate(
     projection: _SignalProjectionLineage,
     *,
@@ -4676,6 +4772,7 @@ def _map_projected_signal_evidence(
     evidence = normalized.get("evidence")
     if not isinstance(evidence, Mapping):
         return normalized
+    edge_issues: list[ValidationIssue] = []
     for group in ("supporting", "counter"):
         entries = evidence.get(group, ())
         if not isinstance(entries, list):
@@ -4814,7 +4911,7 @@ def _map_projected_signal_evidence(
                     )
                     if interior is not None:
                         interior_candidates[resolved_projection_id] = interior
-                raise ValidationError(
+                message = (
                     f"Signal {group} evidence[{index}] on projection "
                     f"{resolved_projection_id!r} touches internal projection "
                     f"edge={touched_edges}; overlapping_projection_ids="
@@ -4826,6 +4923,22 @@ def _map_projected_signal_evidence(
                     "a complete clause strictly inside the cited projection; "
                     "return unavailable only when no compliant literal exists"
                 )
+                edge_issues.append(ValidationIssue(
+                    code="signal_projection_edge", message=message,
+                    paths=(f"evidence.{group}[{index}]",),
+                    source_refs=(resolved_projection_id,),
+                    repair_context={
+                        "projection_id": resolved_projection_id,
+                        "document_id": projection.document.document_id,
+                        "content_hash": projection.document.content_hash,
+                        "boundary_offsets": [
+                            projection.normalized_start if edge == "start"
+                            else projection.normalized_end
+                            for edge in touched_edges
+                        ],
+                    },
+                ))
+                continue
             overlaps = _slice_projection_offset_runs(
                 projection.raw_offset_runs,
                 projection_start,
@@ -4857,6 +4970,8 @@ def _map_projected_signal_evidence(
                 }
             )
         evidence[group] = mapped_entries
+    if edge_issues:
+        raise StructuredValidationError(edge_issues)
     normalized["evidence"] = evidence
     return normalized
 
@@ -5189,6 +5304,7 @@ class StructuredLLMSignalRunner:
         validation_feedback: list[dict[str, Any]] = []
         last_errors: dict[str, str] = {}
         failure_statuses: dict[str, SignalExecutionStatus] = {}
+        edge_read_requests: list[Mapping[str, Any]] = []
 
         for attempt in range(2):
             attempt_inputs = tuple(pending.values())
@@ -5196,6 +5312,10 @@ class StructuredLLMSignalRunner:
                 row for row in validation_feedback if row.get("signal_ref") in pending
             )
             documents, lineage = _shared_llm_signal_projection(attempt_inputs)
+            if attempt:
+                documents, lineage = _signal_edge_correction_projection(
+                    documents, lineage, edge_read_requests, as_of=as_of,
+                )
             remaining_budget = (
                 budget - usage.tokens
                 if budget is not None
@@ -5341,6 +5461,12 @@ class StructuredLLMSignalRunner:
                     )
                 except ValidationError as exc:
                     validation_error = str(exc)
+                    if attempt == 0 and isinstance(exc, StructuredValidationError):
+                        edge_read_requests.extend(
+                            dict(issue.repair_context)
+                            for issue in exc.issues
+                            if issue.code == "signal_projection_edge"
+                        )
                     failure_statuses[signal_ref] = (
                         SignalExecutionStatus.VALIDATION_FAILED
                     )
