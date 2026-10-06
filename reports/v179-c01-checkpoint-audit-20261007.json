@@ -1,0 +1,328 @@
+{
+  "acceptance": {
+    "c01_higher_magnitude_classes": false,
+    "c01_technical_exclusion_free": false,
+    "complete": false,
+    "feedback_actual_consumption": "observed",
+    "independent_benefit": "not_confirmed",
+    "new_magnitude_signal": "not_observed"
+  },
+  "actual_plan_attempt": {
+    "artifact": {
+      "file_sha256": "b995a169e8429b8291f674ed4ad8d034e203a54f8c7f842da44ee94499a7a257",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/attempts/plan_r0001_c01.json"
+    },
+    "completed_case_count": 24,
+    "expected_case_count": 24,
+    "fitness": {
+      "eligible": true,
+      "evidence_covered_count": 23,
+      "expected_case_count": 24,
+      "predicted_positive_count": 11,
+      "reasons": [],
+      "status": "eligible",
+      "true_positive_count": 9,
+      "valid_case_count": 24
+    },
+    "metrics": {
+      "binary_f1": 0.7200000000000001,
+      "binary_precision": 0.8181818181818182,
+      "binary_recall": 0.6428571428571429,
+      "confusion": {
+        "false_negative": 5,
+        "false_positive": 2,
+        "true_negative": 8,
+        "true_positive": 9
+      },
+      "magnitude_accuracy": 0.2857142857142857,
+      "magnitude_macro_f1": 0.16666666666666666,
+      "precision_defined": true,
+      "predicted_positive_count": 11,
+      "sample_count": 24,
+      "valid_case_count": 24
+    },
+    "prediction_magnitude_counts": {
+      "2-3x": 11,
+      "None": 13
+    },
+    "signal_failures": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "batch output omitted requested signal_ref",
+          "status": "validation_failed"
+        },
+        "signal_ref": "financing_listing_action:v5"
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] exact_text does not map uniquely: supplied_projection_id='projection_b4d4b824d4fbccf36ad9d5d4', supplied_occurrences=0, visible_occurrences=0, matching_projection_ids=[]. Copy one case- and punctuation-exact literal from an eligible projection or return unavailable",
+          "status": "validation_failed"
+        },
+        "signal_ref": "financing_listing_action:v5"
+      },
+      {
+        "case_id": "cik_0001590364:20250731",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] on projection 'projection_fc830dec11dfa723722d6fc7' touches internal projection edge=['start']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_fc830dec11dfa723722d6fc7\": \"For the strategic capital initiative or SCI, it was great to announce one investment management as an equity investor to the partnership.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      },
+      {
+        "case_id": "cik_0000936395:20250930",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[1] on projection 'projection_4fc6a8ff218a8d26102167c5' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_4fc6a8ff218a8d26102167c5\": \"With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      },
+      {
+        "case_id": "cik_0001521036:20250331",
+        "execution": {
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[0] on projection 'projection_e0ffe3bcbd43d2866fdb0dc9' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_e0ffe3bcbd43d2866fdb0dc9\": \"Therefore, for the full year, we expect fully diluted adjusted earnings per share to be in a range of $7 and $7.20, an increase of 3.5% to 6.5% over 2024.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+          "status": "validation_failed"
+        },
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ],
+    "signal_status_counts": {
+      "domain_unavailable": 10,
+      "success": 74,
+      "validation_failed": 5
+    },
+    "technical_exclusion_case_ids": [
+      "cik_0001689548:20250930"
+    ],
+    "truth_prediction_matrix": {
+      "10x+->2-3x": 2,
+      "2-3x->2-3x": 4,
+      "2-3x->None": 3,
+      "3-10x->2-3x": 3,
+      "3-10x->None": 2,
+      "None->2-3x": 2,
+      "None->None": 8
+    }
+  },
+  "additional_content_findings": [
+    {
+      "actual_item": {
+        "brief": "When binary direction is judged possible/likely on a catalyst-backed pre-revenue issuer, widen the magnitude band to include the next class up rather than defaulting to the conservative band.",
+        "category": "plan_issues",
+        "counter_refs": [],
+        "detail": "The prediction was binary-correct but conservative (candidate_judgment_feedback: correct_positive_conservative) and magnitude-underestimated by one ordinal class. Action: in future plans, when a source-backed commercial catalyst (binding off-take, production increase) is present and the binary surge call is positive, set the magnitude band to span at least the adjacent higher class, and record the specific catalyst that would justify the upper band. This is a calibration action, not a claim that the higher band is always correct.",
+        "evidence_status": "sources_checked",
+        "item_ref": "reflection:e06d5438ada14ff83108a4b636654bca5341b77ca3da88b22ba5e1486695c349",
+        "kind": "action",
+        "level": "case",
+        "limitations": [
+          "Widening bands increases false-positive magnitude risk in cases where the surge does not materialize.",
+          "The appropriate band width depends on issuer volatility and float, which are not fully characterized here."
+        ],
+        "outcome_claims": [],
+        "owner_ref": "case:6c39ca5c716c80be231d07898d778242719ff2fe05513fe2addb4a9bb38831c8",
+        "scope": {
+          "case_refs": [
+            "case:6c39ca5c716c80be231d07898d778242719ff2fe05513fe2addb4a9bb38831c8"
+          ],
+          "conditions": "Index when a plan must choose a magnitude band for a positive binary surge call on a low-float, catalyst-driven issuer.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:209564d07a3001d4fb8c3af8cabfa880474a67891e91748ebcbe5294a14f08d8"
+        ]
+      },
+      "case_id": "cik_0000839470:20250731",
+      "finding": "The authored action asks a future magnitude band to span the adjacent class, while canonical prediction must choose one of three exclusive positive enums. Correct binary and observed underestimation do not validate this proposed multi-band policy. Do not count it as effective learning.",
+      "stage": "posthoc_reflect",
+      "status": "ontology_conflict_in_authored_action"
+    },
+    {
+      "actual_reason": "The liquidity_runway_months signal reports 5.27 months of runway, which, while tight, is a positive numeric measurement that could be extended by the completed December 2024 registered offering of 5,000,000 shares and 5,000,000 warrants, potentially funding operations through the horizon.",
+      "case_id": "cik_0001920294:20250530",
+      "finding": "A positive numeric runway length is not a bullish categorical stock forecast. The claim that an already-completed December offering can extend a later reported runway needs the measurement and funding timing checked; no automatic economic sign flip or invented proceeds is authorized.",
+      "stage": "blind_predictor_predict",
+      "status": "requires_source_timing_review"
+    }
+  ],
+  "created_at": "2026-10-06T17:40:21.358261+00:00",
+  "failed_case": {
+    "actual_feedback": {
+      "alternative_change_groups": [],
+      "completion_check": "Apply only an allowed repair to every machine-readable obligation. Preserve all content outside required_change_paths and permitted_dependency_paths; change a dependency only when strictly necessary, then satisfy the complete output contract. Diagnostic instruction prose grants no additional write scope.",
+      "invalid_output": {
+        "contradictions": [],
+        "current_beliefs": [
+          "The issuer's recent market data shows a sharp decline from a September 5 close of 46.85 to a September 8 close of 40.75 on elevated volume of 1508310, followed by further weakness to a September 11 close of 39.42, indicating a violent repricing episode around early September.",
+          "The issuer disclosed on August 4, 2025 topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), reporting a 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days."
+        ],
+        "decision": "continue",
+        "hypotheses": [
+          "The issuer's stock could plausibly double within the six-month horizon if the RADIANT topline results lead to a partnership, regulatory clarity, or commercial adoption that materially changes revenue expectations, but the 23% discontinuation rate and ongoing securities investigation create a credible counter-case that the market may instead re-rate the stock lower or keep it range-bound.",
+          "The termination of the 2024 Sales Agreement and entry into the 2025 Sales Agreement with TD Cowen for up to $250 million could provide financing flexibility that supports the stock, but it also signals potential dilution risk that could cap upside and prevent a doubling within the horizon.",
+          "The upcoming presentation of full RADIANT study results at the American Epilepsy Society Conference in December 2025 could serve as a dated catalyst that either validates the topline results and drives a re-rating, or reveals additional safety or efficacy concerns that undermine the bull case and prevent a doubling."
+        ],
+        "next_information_needs": [
+          "What specific disclosures has the issuer made by the prediction time regarding the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?",
+          "What details has the issuer disclosed by the prediction time about its cash position, burn rate, and expected cash runway, and how does the new $250 million at-the-market program with TD Cowen affect its financing strategy and potential dilution?",
+          "What has the issuer disclosed by the prediction time about the commercial opportunity for vormatrigine, including target patient population, pricing assumptions, and competitive positioning against existing anti-seizure medications?",
+          "What has the issuer disclosed by the prediction time about the status and potential outcomes of the securities investigation by the Schall Law Firm, and are there any other legal or regulatory proceedings that could affect the stock?",
+          "What has the issuer disclosed by the prediction time about its other late-stage assets and the expected timing of the 5 clinical readouts within the next year, and how could those readouts affect the stock price within the six-month horizon?",
+          "What has the issuer disclosed by the prediction time about its share count, float, and any recent changes in institutional ownership or short interest that could affect liquidity and the potential for a rapid repricing?"
+        ],
+        "open_questions": [],
+        "resolved_questions": [],
+        "supporting_evidence": [
+          {
+            "claim": "The issuer's recent market data shows a sharp decline from a September 5 close of 46.85 to a September 8 close of 40.75 on elevated volume of 1508310, followed by further weakness to a September 11 close of 39.42, indicating a violent repricing episode around early September.",
+            "exact_text": "{\"adjusted_close\":46.85,\"as_of_date\":\"2025-09-05\",\"close\":46.85,\"high\":47.83,\"low\":45.815,\"open\":46.58, \"volume\":355258},{\"adjusted_close\":40.75,\"as_of_date\":\"2025-09-08\",\"close\":40.75,\"high\":43.15,\"low\":37.19,\"open\":41.94, \"volume\":1508310},{\"adjusted_close\":40.03,\"as_of_date\":\"2025-09-09\",\"close\":40.03,\"high\":41.08,\"low\":38.0,\"open\":40.86, \"volume\":720384},{\"adjusted_close\":40.23,\"as_of_date\":\"2025-09-10\",\"close\":40.23,\"high\":40.61,\"low\":38.94,\"open\":40.61, \"volume\":293053},{\"adjusted_close\":39.42,\"as_of_date\":\"2025-09-11\",\"close\":39.42,\"high\":40.69,\"low\":39.4,\"open\":40.46, \"volume\":242553}",
+            "kind": "basic_info",
+            "projection_id": "projection_2e325a4839aacffa67546d6d"
+          },
+          {
+            "claim": "The issuer disclosed on August 4, 2025 topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), reporting a 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+            "exact_text": "On August 4, 2025, the Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+            "kind": "basic_info",
+            "projection_id": "projection_ac3b88cf2afae8f48f79dca4"
+          }
+        ]
+      },
+      "obligation_count": 2,
+      "obligations": [
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove"
+          ],
+          "future_source_date_refs": [
+            "December 2025"
+          ],
+          "instruction": "research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What specific disclosures has the issuer made by the prediction time regarding the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?', future_source_date_refs=[\"December 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not",
+          "issue_code": "future_information_unavailable",
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "next_information_needs[0]"
+          ],
+          "obligation_index": 1,
+          "permitted_dependency_paths": [],
+          "prediction_time": "2025-09-30",
+          "required_temporal_boundary": "available_by_prediction_time",
+          "retryability": "correctable",
+          "severity": "error",
+          "source_refs": []
+        },
+        {
+          "allowed_repairs": [
+            "replace",
+            "remove"
+          ],
+          "closest_visible_projection_window": "Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days. Patients observed a rapid and sustained response, with approximately 60% of patients achieving 50% response in the study. Vormatrigine was generally well-tolerated and continues to demonstrate a favorable safety profile. The Company will present additional data from the RADIANT study at the 36th International Epilepsy Congress on August 31, 2025 in Lisbon, Portugal. The Company also submitted a late-breaker abstract to present the full RADIANT study results at",
+          "instruction": "supporting_evidence[1] basic_info exact_text is not one contiguous literal substring unique to projection 'projection_ac3b88cf2afae8f48f79dca4'; invalid_exact_text='On August 4, 2025, the Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.'; occurrences_in_named_projection=0; closest_visible_projection_window='Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days. Patients observed a rapid and sustained response, with approximately 60% of patients achieving 50% response in the study. Vormatrigine was generally well-tolerated and continues to demonstrate a favorable safety profile. The Company will present additional data from the RADIANT study at the 36th International Epilepsy Congress on August 31, 2025 in Lisbon, Portugal. The Company also submitted a late-breaker abstract to present the full RADIANT study results at'. Copy one byte-for-byte span without ellipses, JSON-field reordering, non-contiguous joins, or paraphrase, or remove this evidence item",
+          "issue_code": "basic_literal_not_grounded",
+          "matching_projection_ids": [],
+          "must_change_any_of_paths": [],
+          "must_change_paths": [
+            "supporting_evidence[1]"
+          ],
+          "obligation_index": 2,
+          "occurrences_in_named_projection": 0,
+          "permitted_dependency_paths": [
+            "current_beliefs[1]"
+          ],
+          "retryability": "correctable",
+          "returned_projection_id": "projection_ac3b88cf2afae8f48f79dca4",
+          "severity": "error",
+          "source_refs": []
+        }
+      ],
+      "permitted_dependency_path_count": 1,
+      "permitted_dependency_paths": [
+        "current_beliefs[1]"
+      ],
+      "required_change_path_count": 2,
+      "required_change_paths": [
+        "next_information_needs[0]",
+        "supporting_evidence[1]"
+      ],
+      "validation_contract": "structured-validation-v1",
+      "validation_error": "research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What specific disclosures has the issuer made by the prediction time regarding the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?', future_source_date_refs=[\"December 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not; supporting_evidence[1] basic_info exact_text is not one contiguous literal substring unique to projection 'projection_ac3b88cf2afae8f48f79dca4'; invalid_exact_text='On August 4, 2025, the Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.'; occurrences_in_named_projection=0; closest_visible_projection_window='Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days. Patients observed a rapid and sustained response, with approximately 60% of patients achieving 50% response in the study. Vormatrigine was generally well-tolerated and continues to demonstrate a favorable safety profile. The Company will present additional data from the RADIANT study at the 36th International Epilepsy Congress on August 31, 2025 in Lisbon, Portugal. The Company also submitted a late-breaker abstract to present the full RADIANT study results at'. Copy one byte-for-byte span without ellipses, JSON-field reordering, non-contiguous joins, or paraphrase, or remove this evidence item"
+    },
+    "actual_paid_patch": {
+      "base_hash": "a52d6a7567c184b5ed87642cdd039e1fe9ffae8681cff876609dbd960676f181",
+      "operations": [
+        {
+          "op": "replace",
+          "path": "next_information_needs[0]",
+          "value": "What has the issuer disclosed by the prediction time about the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?"
+        },
+        {
+          "op": "replace",
+          "path": "supporting_evidence[1]",
+          "value": {
+            "claim": "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+            "exact_text": "Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+            "kind": "basic_info",
+            "projection_id": "projection_ac3b88cf2afae8f48f79dca4"
+          }
+        },
+        {
+          "op": "replace",
+          "path": "current_beliefs[1]",
+          "value": "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days."
+        }
+      ]
+    },
+    "denominator_fact": "The same fixed case remains in the 24 expected/scored cases as an abstaining negative and true-surge false negative; no rotation or denominator removal.",
+    "failure": {
+      "file_sha256": "31466e37746633cad01311f15b25b579e74db4cf5a3672f5500e11940c3b1687",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001689548:20250930.failure.json"
+    },
+    "ground_truth": {
+      "is_surge": true,
+      "magnitude": "3-10x",
+      "realized_max_multiple": 6.795183595612781
+    },
+    "human_finding": "The sole paid correction changes the question wording but retains future presentation contents. It correctly repairs the separate literal/linked claim, but the owning future-information validator still rejects. No new inferred medical result or economic conclusion is substituted.",
+    "initial_request_hash": "cbd84f12e1f0229e85feb3a8fd1731bf50c58ded5760325832c6eedbe8d4d925",
+    "message": "research_controller_initialize failed validation after one correction: research_controller requested source contents or realized facts beyond prediction_time, invalid_field='next_information_needs[0]', next_information_needs[0]='What has the issuer disclosed by the prediction time about the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?', future_source_date_refs=[\"December 2025\"], prediction_time='2025-09-30'. Remove this item or restate it to request only evidence already available by prediction_time. A cutoff-bounded as-of question about a disclosed future schedule, expectation, or milestone is allowed, but later contents, results, announcements, or updates are not",
+    "paid_correction_request_hash": "cbb971201bb1c80052df5747c3ec33ef21c4a9a1481b683f2a156c43f4d37689",
+    "placeholder": {
+      "file_sha256": "64061b67d705e57eec5bd3bb5bb73bde1e8556fbd467dffeca991e8cfff86fbe",
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/trajectories/plan_r0001_c01/cik_0001689548:20250930.json"
+    },
+    "systemic_boundary": "Indexed temporal obligations already allow replace/remove. Current final fallback does not discard this semantic question family; any proposed isolation must retain mandatory-need/transition invariants, preserve non-targeted content and rerun complete validation without changing PIT guarantees."
+  },
+  "formal_pointers": {
+    "cycle": 0,
+    "round": 0
+  },
+  "inspection_limits": "Personally read the actual failed Initialize feedback and paid patch, complete attempt metrics/case set, exact abstention record, two additional case predictions and authored lessons. Counts of all case artifacts do not imply full semantic acceptance of every retained claim. Plan Critic/round/Slow remain pending in this snapshot.",
+  "monitor": {
+    "child_alive_observed": true,
+    "process": {
+      "automatic_resumes": 2,
+      "command": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/.codex/worktrees/evolution-acceptance-v179/Recommandation/scripts/run_minimal_rounds.py",
+        "--root",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+        "--run"
+      ],
+      "last_exit_code": 1,
+      "pid": 71827,
+      "source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+      "started_at": "2026-10-06T17:34:44.360337+00:00",
+      "status": "running",
+      "wrapper_pid": 64736
+    }
+  },
+  "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "schema_version": "human-plan-checkpoint-audit-v1",
+  "source_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb"
+}

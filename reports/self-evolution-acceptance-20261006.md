@@ -26,6 +26,14 @@
 - 已亲自读两项初期Signal付费纠错：Kinross融资v5纠错返回损坏JSON，failed_responses保留完整文本而最终Signal只报omitted signal_ref；Life Time融资v5修复一项edge引用时又删去另一处引号周围原空格，严格literal拒绝正确。库存另有两项guidance内部edge失败，实际付费答仍保留截断增长句或旧年份片段，已读完整反馈与回答；不作模糊引文接受，不将失败改成unavailable或研究阴性。
 - 一次新鲜SSL EOF由冻结monitor按原合同恢复同一运行，当前child PID必须重查。本次保留事实和失败，不热改运行源码、不依据单条引文立刻重开一轮；完整Slow及上下游内容审计继续，最终零技术失败、新magnitude入库/高档有效预测、独立收益均未验收。
 
+## v179 c01 完整案例checkpoint（2026-10-07 01:40）
+
+- c01完成固定24案的attempt checkpoint，c02正在执行；正式Fast/Slow指针仍0/0。亲自读取完整expected/completed集合、评分、failure/abstain/trajectory及真实Initialize初答和付费patch；见 `reports/v179-c01-checkpoint-audit-20261007.json`。技术排除 `cik_0001689548:20250930`仍在原24案分母，真实surge6.795x作为技术FN，不替换案例或移出评分。
+- c01 Binary F1=.72（TP9/FP2/TN8/FN5）、magnitude macro-F1=.1666667、magnitude accuracy=.2857143；11非空幅度全部2–3x，13为null。89次Signal结果为success74/domain_unavailable10/validation_failed5。仍有1案例技术排除，不能通过零技术失败或幅度扩展验收；次指标变化不代表出现更高预测档或独立增益。
+- 失败Initialize的首次frontier有2条正确授权义务（未来内容question、另一literal及linked claim），真实付费patch修复后者但只换前者措辞，仍请求December 2025会议完整结果内容。未来日期校验与逐项remove权限一致；当前final fallback没有隔离该语义问题族。任何候选修复都应检查所有valid siblings、非空needs、Reflect旧need保留及完整再验，不能擅改PIT边界或猜医疗/经济结论。没有因此热改源码或宣称一个小fallback就足以验收。
+- 额外内容审阅发现Kellyton案例的posthoc action要求幅度band跨相邻class，而canonical输出必须单选三个exclusive enums；实际二元正确、幅度低估不验证这一行动。AI/commerce案例把5.27个月正数runway用为上行论据并称已完成December offering可延长后来runway，仍需核对数值/分类与事实时间，不能自动翻转经济符号或发明融资流入。来源正确不代表行动和归因正确。
+- 第二次新鲜SSL EOF仍按原HEAD/合同/缓存恢复同一作业；冻结tracked源码clean、wrapper与当前child实际命令已重查。报告明确区分人工读过的内容与机器库存，其余c02、Plan/Round critic和Slow继续待查，目标保持active。
+
 ## v178 历史冻结后继（2026-10-07 00:04:43启动）
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。
