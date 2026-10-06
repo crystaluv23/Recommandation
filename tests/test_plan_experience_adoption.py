@@ -57,6 +57,37 @@ class PlanExperienceAdoptionTests(TestCase):
         self.assertEqual(len(caller.calls), 1)
         self.assertEqual(plan.experience_usage["item_refs"], ())
 
+    def test_missing_metadata_does_not_hide_independent_strategy_issues(self):
+        original = self.output()
+        original["B"]["requests"][0]["source_types"] = ["8-k"]
+        original["H_analyse"] = "Compute probabilities and generate a prediction."
+        retained = deepcopy(original)
+
+        def repair(call):
+            feedback = call["payload"]["validation_feedback"]
+            self.assertEqual(feedback["invalid_output"], retained)
+            contract = call["payload"]["output_patch_contract"]
+            allowed = {entry["path"] for entry in contract["allowed_operations"]}
+            self.assertTrue({"used_experience_refs", "B.requests[0].source_types[0]",
+                             "H_analyse"}.issubset(allowed))
+            return patch(contract,
+                {"op": "add", "path": "used_experience_refs", "value": []},
+                {"op": "replace", "path": "B.requests[0].source_types[0]", "value": "filing"},
+                {"op": "replace", "path": "H_analyse",
+                 "value": default_information_plan().analysis_prompt},
+            )
+
+        caller = PatchCaller(original, repair)
+        plan = self.propose(caller)
+        self.assertEqual(len(caller.calls), 2)
+        expected = deepcopy(retained["B"])
+        expected["requests"][0]["source_types"] = ["filing"]
+        self.assertEqual(plan.basic_info_policy.to_dict(), expected)
+        self.assertEqual(plan.initial_research_skill, retained["H_init"])
+        self.assertEqual(plan.reflection_skill, retained["H_reflect"])
+        self.assertEqual(plan.experience_usage["item_refs"], ())
+        self.assertEqual(original, retained)
+
     def test_adoption_patch_cannot_change_strategy(self):
         caller = PatchCaller(self.output(), lambda call: patch(
             call["payload"]["output_patch_contract"],

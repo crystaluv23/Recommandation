@@ -1,0 +1,72 @@
+{
+  "schema_version": "diagnostic-source-ownership-production-replay-v1",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated",
+  "external_calls": 0,
+  "code_sha256": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py": "968f5c143662cc5c7db3e2b6694bf06439ae30217cf44e3b3c067260b6d73a00"
+  },
+  "immutable_sources": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/9ebc06db71e969776031831aed00937f40559e9ee31d8e08240e386529ca0e3d.json": "065e970c195190cbcce522dda41ac11185c1e0692c015613b8959d9371f00c81",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/5635fe4185c320af77272d3e0f88b33850d3a9e10449d229c259fb7259e08aba.json": "19463a3ea5456f36134ec3daa96fe3e5b7ad1b4f1b9bf2e87f2951b7aee2bf91",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/9ebc06db71e969776031831aed00937f40559e9ee31d8e08240e386529ca0e3d.json": "9ad8a8e46c95a5a4c452057b57ca7a964b89f749ad52bc89ae6ca003f5f88df1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/5635fe4185c320af77272d3e0f88b33850d3a9e10449d229c259fb7259e08aba.json": "b086ba12b31344b2ab4cabe7d16a03c5b23d687fb21506cf8d13af9172a58025"
+  },
+  "rows": [
+    {
+      "label": "original_initial",
+      "accepted": true,
+      "production_adapter": "LLMInformationPlanProposer.propose",
+      "scripted_response_count": 1,
+      "correction_calls_required": 0,
+      "actual_used_experience_refs": [
+        "reflection:8b01f32b02f4fc7ba9fdfe480c9628f439eeb74124cfe471a5da225cc50a1c35",
+        "reflection:8cd75fb4d636049566b9c2ad6bd4e41fbffc5af48715460b6963d00e99900af3",
+        "reflection:b1e6f39a7baf02380373ab396c301f2e3a968d1f48b303afb4892971f5590608",
+        "reflection:630ed779c77a74428ba15789e52aa68cc9e37d3038ca838c3b85c886a0d2bcf3",
+        "reflection:e4e9d0f363b47278ff09cecd22fc083ff56dd844eb7c4c1eb7ec1fbffb854bc6",
+        "reflection:5339824435383ee480c31c9eda291044f1b1d117ab484908aa9d9e62a85bf219",
+        "reflection:a6766c2b1fd7d5086354435b5b164b162d30626825fa5193621dba617e49fc8a",
+        "reflection:a864a6a34fd2d7ae7327ac67bc55aed24bf8f6f59b1d722f63172bf3e54e50b0",
+        "reflection:149faf1efc38e395cbd262077ee21ed4ef51d89ec96a12d9667f9f94219b1128",
+        "reflection:f3ac884f2d0ccc54705a5b9e7ae5b8592f742de67a4fe34127a51b6afa01a361",
+        "reflection:1ec5b42e531a870b04ce3b4a9cc508b8058a742ca7e18c715ef9283cea11b96e"
+      ],
+      "strategy_fields_unchanged": true,
+      "news_description": "Retrieve recent target-company-scoped news that may change market expectations, including financing, customer or off-take announcements, regulatory or permitting events, litigation, dilution, and competitive developments. Because this is third-party reporting, verify any material claim against the issuer's own filings or financial facts before weighting it.",
+      "same_disclosed_experience_refs": true,
+      "original_request_hash": "9ebc06db71e969776031831aed00937f40559e9ee31d8e08240e386529ca0e3d",
+      "original_correction_hash": null
+    },
+    {
+      "label": "original_delta_merged",
+      "accepted": true,
+      "production_adapter": "LLMInformationPlanProposer.propose",
+      "scripted_response_count": 1,
+      "correction_calls_required": 0,
+      "actual_used_experience_refs": [
+        "reflection:8b01f32b02f4fc7ba9fdfe480c9628f439eeb74124cfe471a5da225cc50a1c35",
+        "reflection:8cd75fb4d636049566b9c2ad6bd4e41fbffc5af48715460b6963d00e99900af3",
+        "reflection:b1e6f39a7baf02380373ab396c301f2e3a968d1f48b303afb4892971f5590608",
+        "reflection:630ed779c77a74428ba15789e52aa68cc9e37d3038ca838c3b85c886a0d2bcf3",
+        "reflection:e4e9d0f363b47278ff09cecd22fc083ff56dd844eb7c4c1eb7ec1fbffb854bc6",
+        "reflection:5339824435383ee480c31c9eda291044f1b1d117ab484908aa9d9e62a85bf219",
+        "reflection:a6766c2b1fd7d5086354435b5b164b162d30626825fa5193621dba617e49fc8a",
+        "reflection:a864a6a34fd2d7ae7327ac67bc55aed24bf8f6f59b1d722f63172bf3e54e50b0",
+        "reflection:149faf1efc38e395cbd262077ee21ed4ef51d89ec96a12d9667f9f94219b1128",
+        "reflection:f3ac884f2d0ccc54705a5b9e7ae5b8592f742de67a4fe34127a51b6afa01a361",
+        "reflection:1ec5b42e531a870b04ce3b4a9cc508b8058a742ca7e18c715ef9283cea11b96e"
+      ],
+      "strategy_fields_unchanged": true,
+      "news_description": "Retrieve recent target-company-scoped news that may change market expectations, including financing, customer or off-take announcements, regulatory or permitting events, litigation, dilution, and competitive developments. These source types may include third-party reporting rather than the issuer's own disclosure, so attribute each item to its actual origin and verify any material claim against the issuer's own filings or financial facts before weighting it.",
+      "same_disclosed_experience_refs": true,
+      "original_request_hash": "9ebc06db71e969776031831aed00937f40559e9ee31d8e08240e386529ca0e3d",
+      "original_correction_hash": "5635fe4185c320af77272d3e0f88b33850d3a9e10449d229c259fb7259e08aba"
+    }
+  ],
+  "limits": [
+    "Original frozen v178 rejected this proposal; local replay does not erase that live technical rejection.",
+    "The second replay is the original delta merged under its exact saved authority, then independently validated as a complete proposal; it is not a new model correction.",
+    "No Plan is inserted into the live workspace and no adoption or gain is credited to the rejected live proposal.",
+    "Live model behavior with this repair requires a new frozen successor."
+  ]
+}

@@ -69,6 +69,58 @@ def authored(sources, *, category, text, outcome=False):
 
 
 class StructuredReflectionRoleLifecycleTests(unittest.TestCase):
+    def test_plan_role_prohibitions_are_not_prediction_instructions(self):
+        from stock_opportunity_agent.research.evolution_core import default_information_plan
+        for prefix in ("Do not", "This role does not", "Never", "Must not"):
+            with self.subTest(prefix=prefix):
+                _validate_fixed_plan_semantics(replace(default_information_plan(),
+                    analysis_prompt=f"Organize evidence; {prefix} compute probabilities, assign a judgment or generate the prediction."))
+                for field in ("initial_research_skill", "reflection_skill"):
+                    _validate_fixed_plan_semantics(replace(default_information_plan(), **{
+                        field: f"Use evidence and questions; {prefix} define the four-way judgment ontology.",
+                    }))
+
+    def test_plan_prohibitions_do_not_hide_affirmative_contrasts(self):
+        from stock_opportunity_agent.research.evolution_core import default_information_plan
+        cases = (
+            "This role does not only compute probabilities.",
+            "This role does not compute returns; compute probabilities.",
+            "Do not compute returns but compute probabilities.",
+            "Never compute returns. Generate the prediction.",
+        )
+        for text in cases:
+            with self.subTest(text=text), self.assertRaises(StructuredValidationError):
+                _validate_fixed_plan_semantics(replace(default_information_plan(), analysis_prompt=text))
+
+    def test_unknown_reflection_containers_have_whole_key_remove_authority(self):
+        from stock_opportunity_agent.research.evolution_output_validation import _validation_obligations
+        from stock_opportunity_agent.research.evolution_state_patch import apply_state_patch, state_patch_contract
+        index = ReflectionMemoryIndex.from_entries([])
+        for extra in ([], ["cash_reserves:v2"], {"signal_refs": []}, "unsupported"):
+            with self.subTest(extra=extra):
+                base = {"reflection_items": [], "selected_reflection_refs": [],
+                        "no_findings_reason": "No supported additional lesson.", "related_signal_refs": extra}
+                with self.assertRaises(StructuredValidationError) as caught:
+                    _structured_reflection_items(base, index=index, level="case", owner_ref="case:test")
+                feedback = _validation_obligations(caught.exception, base)
+                contract = state_patch_contract(base, mode="correction", obligations=feedback["obligations"])
+                self.assertEqual([p["path"] for p in contract["allowed_operations"]], ["related_signal_refs"])
+                patch = {"base_hash": contract["base_hash"], "operations": [{"op": "remove", "path": "related_signal_refs"}]}
+                merged = apply_state_patch(base, patch, contract=contract)
+                self.assertNotIn("related_signal_refs", merged)
+                self.assertEqual(merged["no_findings_reason"], base["no_findings_reason"])
+                _structured_reflection_items(merged, index=index, level="case", owner_ref="case:test")
+
+    def test_reflection_frontier_includes_envelope_and_independent_item_errors(self):
+        index = ReflectionMemoryIndex.from_entries([])
+        base = {"reflection_items": [{"category": "missing_information"}],
+                "selected_reflection_refs": [], "related_signal_refs": []}
+        with self.assertRaises(StructuredValidationError) as caught:
+            _structured_reflection_items(base, index=index, level="case", owner_ref="case:test")
+        paths = {path for issue in caught.exception.issues for path in issue.paths}
+        self.assertIn("related_signal_refs", paths)
+        self.assertTrue(any(path.startswith("reflection_items[0]") for path in paths))
+
     def test_plan_consumer_uses_the_same_proof_gate_for_each_instruction(self):
         from stock_opportunity_agent.research.evolution_core import default_information_plan
         for field, path in (("initial_research_skill", "H_init"),

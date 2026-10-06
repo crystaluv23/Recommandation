@@ -1,0 +1,191 @@
+{
+  "schema_version": "diagnostic-production-contract-family-replay-v1",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated",
+  "external_calls": 0,
+  "code_sha256": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py": "968f5c143662cc5c7db3e2b6694bf06439ae30217cf44e3b3c067260b6d73a00",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py": "a568c5eefd2a84703b2c087a402bd0543711b9fc3809176655f804cc94b8caa0"
+  },
+  "immutable_sources": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/slow_history/manifest.json": "42395832e10b3df80a4e404dfa00d1dee34b235eb454c795c0973d1e00e5950f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/457eabe58c2901b4fe7508b2993225dc8a52ad13b27b60f30952ba4786fe6aee.json": "cd3502495a8118d9145b6f8c820d5d1f113ff8db779ab9873e043901ed958a1d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/457eabe58c2901b4fe7508b2993225dc8a52ad13b27b60f30952ba4786fe6aee.json": "31dff8bc800f8c1e28c78c40a2cd9cce5d8a69d3509a7d7b33a2712292802c3d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/aae773b1bba02a2929dbf793ec14cd23dfca6213b4b7508a69080d3cac68c150.json": "c5be2f415dbda3f4ddd074be11fb87efa2f3d0863e827a16de99657950bbb33b",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/aae773b1bba02a2929dbf793ec14cd23dfca6213b4b7508a69080d3cac68c150.json": "782743dde080a69ae59e84b990a5f6b83b42b6a96ff557b7e14cdaf175f0bc0a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/4c124d5636ec7f4cd6ae2c9ed67df0f84716f7080c53f38cc7f5508138d095d4.json": "758fe01c613b3cf774dd57adbb3f375def2ab5da58b5592422d5e7c125972275",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/4c124d5636ec7f4cd6ae2c9ed67df0f84716f7080c53f38cc7f5508138d095d4.json": "b7f96a1b053d0559bd9b6a9e0704f87ea5f261ba8bde3c45eb287171dac65c9e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/bb77b717007bad9ac88c5f66f70c243f4aaf3590bed08c8a1a296387271775a0.json": "cedabc8a3c01b55245ed6a32ab10320e43d86982ff4299ff975a59f7edf95249",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/bb77b717007bad9ac88c5f66f70c243f4aaf3590bed08c8a1a296387271775a0.json": "08b72e44bb25afae6e999cb9fe2328d97af9e64ba9e4bef803d0eae204a87e17",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001869198:20250331.json": "f600e49c104b351bbf33384c7d5ef595ecda91830a297e4ab54d3318a3e7ccc8"
+  },
+  "rows": [
+    {
+      "kind": "original_role_prohibition_proposal",
+      "request_hash": "457eabe58c2901b4fe7508b2993225dc8a52ad13b27b60f30952ba4786fe6aee",
+      "production_adapter": "LLMInformationPlanProposer.propose",
+      "accepted_unchanged": true,
+      "scripted_responses": 1,
+      "correction_requests": 0,
+      "used_experience_refs": [
+        "reflection:8b01f32b02f4fc7ba9fdfe480c9628f439eeb74124cfe471a5da225cc50a1c35",
+        "reflection:a6766c2b1fd7d5086354435b5b164b162d30626825fa5193621dba617e49fc8a",
+        "reflection:630ed779c77a74428ba15789e52aa68cc9e37d3038ca838c3b85c886a0d2bcf3",
+        "reflection:1ec5b42e531a870b04ce3b4a9cc508b8058a742ca7e18c715ef9283cea11b96e"
+      ],
+      "analysis_prompt": "Organize evidence into three explicitly separated columns and weight within each rather than across: (1) realized or contracted commercial facts (signed offtakes, purchase orders, recognized revenue, funded capacity, filed financings closed), (2) forward-looking or contingent claims (pipeline, MoUs, non-binding agreements, management targets, analyst framing), (3) counter-evidence and constraints (dilution, going-concern language, covenant or liquidity stress, customer concentration, insider selling, historical slippage). Weight column 1 above column 2 for magnitude plausibility but treat column 3 as capable of overriding both. State the strongest single item against the hypothesized mechanism, and state the residual uncertainty that no retrieved item resolves. Where disclosure briefs are legacy_unreviewed or carry legacy_inference_unchecked weighting explanations, verify the underlying source before relying on the stated weight. Do not aggregate repeated versions of one case into independent support, and do not convert a realized past outcome into a causal claim about the mechanism under study. This role organizes and weights evidence and reports uncertainty only; it does not compute probabilities, assign the four-way judgment or magnitude class, or generate a prediction.",
+      "same_disclosed_experience_refs": true
+    },
+    {
+      "kind": "original_missing_metadata_strategy_frontier",
+      "request_hash": "aae773b1bba02a2929dbf793ec14cd23dfca6213b4b7508a69080d3cac68c150",
+      "production_adapter": "LLMInformationPlanProposer.propose",
+      "initial_response_accepted": false,
+      "stopped_before_correction_response": true,
+      "obligations": [
+        {
+          "obligation_index": 1,
+          "issue_code": "experience_adoption_missing",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "used_experience_refs"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [],
+          "allowed_repairs": [
+            "add"
+          ],
+          "source_refs": [],
+          "instruction": "New proposal output requires used_experience_refs: add only actually adopted disclosed refs, or [] for no adoption. Missing metadata is unknown, not an empty adoption list; preserve B and every H_* field"
+        },
+        {
+          "obligation_index": 2,
+          "issue_code": "basic_info_family_outside_menu",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "B.requests[5].source_types"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [],
+          "allowed_repairs": [
+            "replace"
+          ],
+          "source_refs": [],
+          "instruction": "Basic Info request source types must belong to the closed orientation families (market_backbone: ['historical_price', 'market_data', 'price_daily', 'prices'], operating_report: ['filing', 'filing_body', 'sec_filing'], management_commentary: ['earnings_call', 'earnings_transcript'], scoped_news: ['company_news', 'news'], financial_facts: ['company_facts', 'financial_statements', 'financials', 'sec_company_facts']); uncovered=['8-k']"
+        }
+      ],
+      "issued_contract": {
+        "schema_version": "structured-state-patch-v1",
+        "base_hash": "2af38aa180783b859966ae26ea211600871a293487426642cc31859f7fc6e170",
+        "allowed_operations": [
+          {
+            "op": "add",
+            "path": "used_experience_refs",
+            "descendants": false
+          },
+          {
+            "op": "replace",
+            "path": "B.requests[5].source_types[0]",
+            "descendants": false
+          },
+          {
+            "op": "replace",
+            "path": "B.requests[5].source_types[1]",
+            "descendants": false
+          }
+        ],
+        "append_limits": {},
+        "exact_append_limits": {},
+        "identity_guards": [],
+        "index_semantics": "all indices address the issued base snapshot",
+        "base_location": "validation_feedback.invalid_output"
+      }
+    },
+    {
+      "kind": "original_posthoc_envelope_frontier",
+      "request_hash": "4c124d5636ec7f4cd6ae2c9ed67df0f84716f7080c53f38cc7f5508138d095d4",
+      "original_correction_hash": "bb77b717007bad9ac88c5f66f70c243f4aaf3590bed08c8a1a296387271775a0",
+      "production_adapter": "LLMBlindPredictor.reflect",
+      "same_source_catalog": true,
+      "original_paid_delta_obeyed_original_authority": true,
+      "original_delta_left_unsupported_root": [],
+      "stopped_before_new_correction_response": true,
+      "new_obligations": [
+        {
+          "obligation_index": 1,
+          "issue_code": "reflection_envelope",
+          "severity": "error",
+          "retryability": "correctable",
+          "must_change_paths": [
+            "related_signal_refs"
+          ],
+          "must_change_any_of_paths": [],
+          "permitted_dependency_paths": [],
+          "allowed_repairs": [
+            "remove"
+          ],
+          "source_refs": [],
+          "instruction": "Remove unsupported reflection field related_signal_refs",
+          "invalid_container_paths": [
+            "related_signal_refs"
+          ]
+        }
+      ],
+      "new_issued_contract": {
+        "schema_version": "structured-state-patch-v1",
+        "base_hash": "889ee694e41f6c39df3349561c858386e3389e08370b147acfafcbd31c9ff850",
+        "allowed_operations": [
+          {
+            "op": "remove",
+            "path": "related_signal_refs",
+            "descendants": false,
+            "invalid_container": true
+          }
+        ],
+        "append_limits": {},
+        "exact_append_limits": {},
+        "identity_guards": [],
+        "index_semantics": "all indices address the issued base snapshot",
+        "base_location": "invalid_output"
+      },
+      "original_issued_contract": {
+        "allowed_operations": [
+          {
+            "descendants": false,
+            "op": "remove",
+            "path": "related_signal_refs[0]"
+          },
+          {
+            "descendants": false,
+            "op": "remove",
+            "path": "related_signal_refs[1]"
+          },
+          {
+            "descendants": false,
+            "op": "remove",
+            "path": "related_signal_refs[2]"
+          },
+          {
+            "descendants": false,
+            "op": "remove",
+            "path": "related_signal_refs[3]"
+          }
+        ],
+        "append_limits": {},
+        "base_hash": "889ee694e41f6c39df3349561c858386e3389e08370b147acfafcbd31c9ff850",
+        "base_location": "invalid_output",
+        "exact_append_limits": {},
+        "identity_guards": [],
+        "index_semantics": "all indices address the issued base snapshot",
+        "schema_version": "structured-state-patch-v1"
+      }
+    }
+  ],
+  "limits": [
+    "Original frozen v178 failures remain; local replay is not live acceptance, adoption or benefit.",
+    "Frontier audits stop before any new correction response; no model answer or research fact is fabricated.",
+    "The original paid member-removal delta is applied only under its exact saved old contract; it is not presented as a valid response to the new whole-key authority.",
+    "No live Plan, reflection, registry, trajectory or commit pointer is edited."
+  ]
+}

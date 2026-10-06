@@ -2,13 +2,36 @@
 
 ## 当前结论与要求
 
-状态：已启动，尚未验收。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：当前 v178 于2026-10-07 00:04:43启动，尚未验收；v177已完成且失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
 3. 追踪源反馈→诊断/Experience→后续实际prompt→改变的Plan/Signal/研究动作。有效性另用现有独立固定cohort、失败分母和四臂协议；没有预先冻结的协议及足够结果，状态为未验证。入库、使用、productive reuse、观察正确率与独立增益保持分开。
 
-## 运行身份与冻结边界
+## 当前 v178 冻结后继（2026-10-07 00:04:43启动）
+
+- Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。
+- 冻结源码：`/Users/l/.codex/worktrees/evolution-acceptance-v178/Recommandation`，HEAD `a95ee0c23ab72cfc90f31b5ea52b172ffd89005c`，包含本次及此前主源码验收修复；tracked clean。主checkout文档更新和无关未提交规格不改变运行源码。
+- 继承v177真实已提交Fast round1、Slow cycle1，Registry v9/hash `072ebb6d2a0519a2465dd6f3abba9a435af99c40041d5a2d2aeed66b4d5cdc4f`。生产 validate_slow_history_manifest 验证原始出版、候选、周期产物hash，fast_context携带1份真实Round meta entry；暂存失败不当作新历史。
+- Input manifest canonical hash `41c21cff41a971f71de774c4a719562e2ac00e15f73f89e29b4d944f8605406e`（文件sha256 `a8fd933fccba09decf753725433502b556914dd3fc85dc035eb2f0e672309598`）；history hash `aaebefd6d2dcd6c98391903c6ecae3824a76179506f02dc2aa2b46971f99ca07`；contract hash `a6cca835fabef297c093035d29198aad57f90544cf2a5e0e2598a20c04e07274`。
+- 与v177逐值比较，只变更7个Registry/已提交历史出处字段；splits、evaluation、标签与Locked Test边界、3606源文件完全相同且重新逐文件校验。16 Anchor+8 evolution_validation+16 Discovery固定，2Plan顺序评估。新合同沿用deepseek-v4-flash、1200attempts/$100、1周期，不换模型、不放宽评分或候选准入。准备/冻结0外部调用，attempt ledger初始空。
+- scripts/monitor_frozen_evolution.py现从同一冻结源码运行。初始wrapper/child 37095/37101；process.json记录实际command/revision/status，检查时必须重新核对真实进程。monitor.lock与workspace execution lock保障单一executor；transport恢复只按已提交监控合同执行。原10分钟heartbeat已更新为v178坐标，没有新建重复automation。
+- v177完整1/1、Registry8→9且exit0，但新magnitude因子0、30非空幅度全2–3x、Signal/Update终态技术失败仍在，不予整体验收。v178需要亲自确认固定prompt实际构造与遵循、经验实际采纳、融资v5真实执行、Magnitude Mining新因子准入，以及发布后后继Fast消费；没有以离线重放冒充这些结果。
+- 独立效果评价的40issuer×2replicate/四臂/阈值提案尚待用户确认；不把该提案当已冻结协议，不作benefit_confirmed声明，也不启动依赖该批准的额外实验。
+
+## v178 实际首轮与通用契约修复（2026-10-07 00:45）
+
+- 正式指针 Fast round=1、Slow cycle=0，active phase=slow_loop；只有 `plan_r0001_c02` 完成24案。候选原件中的经验采用为显式 `[]`/snapshot `c3b277f668a98fcc5e2bb7b8c5fa0af514c682f2f25abef3b76311918b6db025`。11-ref和4-ref原提案被冻结校验器拒绝，不计真实采用。固定评分 F1=.75（TP9/FP1/TN9/FN5），magnitude macro-F1=.125、accuracy=.2142857；10个非空幅度全2–3x。正式case排除0，但110次Signal结果有success99/validation_failed4/domain_unavailable7，不能据此宣称零技术失败。
+- Posthoc有3份原答把 `related_signal_refs` 放在不允许的根层；实际旧修正合同仅授权移除数组成员，模型完全遵守却留下空的非法键，故反思终态失败。来源关联应在各item内。亲自看完整固定指令、原答、付费patch和落盘结果，修复整个未知容器家族：明确字段位置、授权删除非法键本身、联合独立item首前沿并全量重验，不自动丢弃合法条目。
+- Proposer实际初答 `9ebc06...0e3d` 与其付费修正 `5635fe...8aba` 都明确第三方news需对照issuer自己的filing/facts；已有单独first-party B request。旧来源guard把验证对象/“rather than”当作news的作者归属。通用修复仅豁免有明确验证动词/连接词和已有first-party来源支持的这一处引用；任何其他肯定所有权、跨公司范围仍拒绝，诊断不给未授权的来源替换建议。
+- 第二初答 `457eab...6aee` 明确“this role does not compute probabilities...”并保留四个已披露经验ref；旧职责guard漏掉does-not并误拒。统一Plan角色禁止句识别，遇句界/分号/对比肯定句停止；“does not only”与后续肯定计算仍拒绝，不改Predictor职责或幅度定义。
+- 第三初答 `aae773...c150` 同时缺采纳字段且使用B闭合集之外的8-k，旧反馈先只要求补 `[]`，修正后才发现另一错误。现在缺字段保持unknown并检查其余可解析策略，首次给出两个准确独立义务；不可因此接受缺字段、默推空采用或开放8-k。组合修复后的保护检查使用同一已发typed operation paths，合法metadata补充与策略修复可共存，无关字段仍不可更改。
+- 两份零外部生产回放见 `reports/v178-source-ownership-replay-20261007.json`（原始11-ref完整回答与原付费patch合并后各自接受）和 `reports/v178-contract-family-replay-20261007.json`（原4-ref完整回答无需修正；真实missing+B菜单与Posthoc首次权限审计停止在新模型回答之前）。每份绑定原文件/code hash，保留原prompt、source catalog、refs、策略和历史来源；不写live Plan、反思或Registry，不抵销实际失败、不计采用/增益，未编造新模型答案。
+- 新联合测试同时覆盖missing metadata+B非菜单来源+职责冲突，单次修正仅改正式授权字段；来源验证的无first-party/额外作者声称/跨公司与禁止句的肯定反例保持失败。187相关 tests/3.842s PASS；最终1548全量 tests/60.575s PASS，lint PASS。日志 `/tmp/v178-contract-family-{focused,full,lint}.log`。这些修复不进入正在运行的a95冻结源码。
+- 亲自读融资v5执行初答 `142060...46c`、纠错 `4c9df4...94bd` 及对应可见投影：首答改动引号周围空格，纠错又拼接不相邻的“公司未获 proceeds”句，严格原文映射拒绝正确。实际success的cash runway v2以低runway条件定义positive、长/无burn定义negative；575117000正OCF和10879000现金给出unbounded/negative符合现有定义和immutable fixture，不应擅自反转经济语义。LLM文字仍须区分burn runway与所有融资风险。
+- 00:44快照286 attempts，记录成本$1.28122764；monitor因4次新鲜SSL EOF按原代码/合同/缓存恢复同一运行。监控中的当前PID必须重查，恢复不算新cycle。Slow挖掘进行中，magnitude新入库/后继有效消费/独立收益均未验收。
+
+## v177 历史运行身份与冻结边界
 
 - Run：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated`。
 - 冻结源码：`/Users/l/.codex/worktrees/evolution-acceptance-20261006/Recommandation`，HEAD `a7d8a057f483251e93df602665670389ef353e5c`。运行中不得改此源码；主checkout后续文档checkpoint不改变运行源身份。
@@ -23,7 +46,7 @@
 - Worktree仅通过本地symlink访问原始oracle、approved输入、v143参考合同及.env.local；不复制或输出secret。完整输入manifest保存原始source_path与hash。
 - 主checkout既有未提交的6份Experience reuse规格与v151文件均为本次之前的变更；未混入执行源码或本次checkpoint。当前执行版本仍使用已提交的knowledge实现，不能声称未实现reuse_success_rate已完成。
 
-## 进程与监控
+## v177 历史进程与监控
 
 - 控制目录：`/Users/l/Project/Recommandation/.delegation/live-runs/v177`。
 - `run.py` 保存实际child `process.json`、`cycle.log`、wrapper日志和最终 `exit.json`。初次wrapper/child PID为85458/85459；2026-10-06 21:45:36原代码恢复为88114/88115。检查时重新验证command，不能只相信旧PID。
@@ -128,7 +151,7 @@
 ## 接续动作
 
 1. 检查child/exit、attempt ledger、trajectory及新requests/responses；逐份读取还没检查的实际内容，不重复已经看过的原件。审计摘要应记录看过的hash和语义结论。
-2. 优先处理上述Signal内部edge、version phrase和纠错预算家族，技术失败向Posthoc/Critic/Slow的实际诊断消费及订单量纲内容错误；逐份读新失败原答/纠错/context，不能只修最新报错。新源码修复只能进冻结后继，当前v177继续保持a7d8a057。
+2. 优先处理上述Signal内部edge、version phrase和纠错预算家族，技术失败向Posthoc/Critic/Slow的实际诊断消费及订单量纲内容错误；逐份读新失败原答/纠错/context，不能只修最新报错。新源码修复只能进冻结后继，当前v178继续保持a95ee0c2；v177已结束，不重启。
 3. 完成Fast后亲自核对24案固定评分/技术排除/magnitude矩阵和经验反馈；检查Slow是否使用真实已提交反馈，magnitude Track是否完成而非假completed。
 4. 成功发布后检查proof与确切目标，准备冻结后继及检索/执行/预测消费证据。对入库0、幅度仍集中2–3x或研究增益不足如实继续诊断，不改评分。
 5. 独立效果评价所需阈值/样本/重复等值只能沿用已批准协议；当前尚未找到本次预注册protocol，不能任意定义后宣称gain_confirmed。必要时给用户具体、可审核的协议选择，同时继续不依赖此决策的链路工作。

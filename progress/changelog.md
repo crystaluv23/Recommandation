@@ -658,3 +658,7 @@
 - 2026-10-06：v177完整提交1/1，Registry8→9仅方向v5更新、新因子0/magnitude partial及两Update技术失败未验收；统一反思各独立row的typed首前沿，披露统计与canonical outcome区别。修复从旧context重建可选诊断破坏来源/legacy case/stat hash的问题，新上下文完整状态照常保留；三份真实原答生产0外部回放各3义务、8保存items逐值读回。6新/39相关/1535全量/lint PASS，更正append操作获授权但统计claim无效的台账判断；后继live/双轴入库/独立增益仍待完成。
 
 - 2026-10-07 00:00：修复冻结cash-runway定义词面guard、Update构造期重复diff typed机械修复与Mining catalog scope预算合同；两份实际原答/原patch零外部生产回放通过6 immutable fixture、不发布，259专项/1540全量/lint PASS。真实v177 magnitude仍无新因子，完整needs分派不等于能力；后继live消费与独立增益待验收。
+
+- 2026-10-07 00:06：提交a95ee0c2修复后启动v178真实后继，继承v177已提交Registry9/反馈，同40案与3606源文件已核验、预算模型评分不变；同源码单executor监控与原10分钟heartbeat接续。准备0外部调用，live全链路、magnitude新因子/后继消费及独立增益仍未验收。
+
+- 2026-10-07 00:45：按真实v178失败族修复来源验证与作者归属混淆、does-not角色护栏、反思未知根容器的whole-key权限与首次frontier、Plan缺采纳字段遮挡策略错误及联合typed修正的保护矛盾；源/策略/已披露ref/hash-bound生产零外部回放不冒充live采用。187相关/1548全量/lint PASS；Fast1/Slow0，幅度仍全2–3x、技术失败保留，冻结v178继续监控。

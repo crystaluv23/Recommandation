@@ -17,6 +17,12 @@ and apply only explicitly allowed deterministic recovery transforms.
 
 ## Invariants
 
+- Fixed Plan role guards recognize explicit do-not/does-not prohibitions. Their
+  bounded scope ends at a sentence/semicolon boundary or affirmative contrast;
+  not-only wording does not negate a computation/classification instruction.
+  The same prohibition screen applies to H_analyse and controller ontology
+  checks. Explicit role restraint is not a forbidden prediction instruction.
+
 - Unique whole JSON literal restoration uses the same exact-text transform and
   snapshot patch permissions as producer-owned numeric text repairs. Validation
   path reads use the patch engine's complete field/index grammar, including
@@ -121,6 +127,10 @@ the fully merged output; diagnostic prose grants no extra authority.
 
 Plan market-backbone, source capability/scope, executable-skill and fixed
 Predictor-boundary guards publish the exact Plan component or field they own.
+Their independent checks share one initial frontier over a parseable Plan;
+one source/menu/role error must not hide another error until after correction.
+Every issue retains its owning typed permissions; an untyped validation failure
+still propagates rather than granting replacement authority.
 A parseable untyped failure cannot silently request a complete Plan replacement.
 
 Roles opt into the shared incremental contract with `output_patch_base` for a
@@ -288,7 +298,8 @@ description/query field (or an H_init/H_reflect/H_analyse skill field) is
 flagged only when at least one ownership-phrase occurrence is affirmative.
 An occurrence counts as locally negated only when a not/never cue sits in
 the same clause within a bounded window and reaches the phrase through an
-"as ..." connector (or a bare determiner); "not only ... but also",
+"as ..." connector (or a bare determiner), or through an immediate
+`rather than`/`instead of` contrast; "not only ... but also",
 contrastive affirmative phrasing, negations in earlier clauses, and
 affirmative occurrences mixed with negated ones in the same field keep the
 field rejected. The cross-issuer authorization check uses the same
@@ -299,6 +310,18 @@ semantics, the market-backbone requirement, and PIT/role boundaries are
 unchanged. The shared rule is a generic lexical guard, not an NLP parser,
 and carries no company- or case-specific exception; phrasing it does not
 recognize as clearly local negation stays rejected.
+
+A news request may separately instruct verification against the issuer's own
+filings when B explicitly includes a first-party-capable source request. An
+ownership phrase reached through a bounded, same-clause verification verb and
+`against`/`with`/`using` connector is then a verification reference, not a claim
+that the news source has first-party authorship. Each occurrence is checked:
+another affirmative ownership claim in that field remains rejected, as does
+the reference when B supplies no first-party-capable source. Retrieval or
+ownership assertions cannot be hidden inside the verification connector.
+No request, source type or prose is rewritten by this guard.
+Repair diagnostics authorize only the named text fields; they do not instruct
+the model to alter B source types or add requests outside typed permissions.
 
 ## Need-transition restoration and drift pairing (round 19)
 

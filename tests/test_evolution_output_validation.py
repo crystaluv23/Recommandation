@@ -3416,6 +3416,52 @@ class OwnershipScopeLocalNegationTests(TestCase):
                 self.assertEqual(issue.code, "source_ownership_not_guaranteed")
                 self.assertEqual(issue.paths, ("B.requests[0].description",))
 
+    def test_news_verification_reference_needs_separate_first_party_source(self):
+        for connector in ("against", "with", "using"):
+            with self.subTest(connector=connector):
+                description = (
+                    "Retrieve target-company-scoped news as third-party reporting; "
+                    f"verify any material claim {connector} the issuer's own filings "
+                    "before weighting it."
+                )
+                plan = self._plan(description=description)
+                with self.assertRaises(StructuredValidationError):
+                    self._validate(plan)
+                filing_request = replace(plan.basic_info_policy.requests[0],
+                    request_id="first_party", source_types=("filing",),
+                    description="Read the target issuer's own filings.")
+                supported = replace(plan, basic_info_policy=replace(
+                    plan.basic_info_policy, requests=plan.basic_info_policy.requests + (filing_request,)))
+                self._validate(supported)
+
+    def test_verification_reference_cannot_hide_another_ownership_claim(self):
+        cases = (
+            "Collect the issuer's own disclosures; verify news against the issuer's own filings.",
+            "Verify news and collect material facts against the issuer's own filings.",
+            "Verify news; rely on the issuer's own filings.",
+        )
+        for description in cases:
+            with self.subTest(description=description):
+                plan = self._plan(description=description)
+                filing_request = replace(plan.basic_info_policy.requests[0],
+                    request_id="first_party", source_types=("filing",),
+                    description="Read the target issuer's own filings.")
+                plan = replace(plan, basic_info_policy=replace(
+                    plan.basic_info_policy, requests=plan.basic_info_policy.requests + (filing_request,)))
+                with self.assertRaises(StructuredValidationError):
+                    self._validate(plan)
+
+    def test_immediate_instead_or_rather_contrast_negates_only_that_occurrence(self):
+        for contrast in ("rather than", "instead of"):
+            with self.subTest(contrast=contrast):
+                text = f"Attribute coverage to third-party reporting {contrast} the issuer's own disclosure."
+                self._validate(self._plan(description=text))
+                with self.assertRaises(StructuredValidationError):
+                    self._validate(self._plan(description=text + " Collect the issuer's own filings."))
+                with self.assertRaisesRegex(ValidationError, "cross-issuer"):
+                    self._validate(self._plan(description=(
+                        f"Collect competitor actions {contrast} the target company's own disclosures.")))
+
     def test_query_field_checked_per_occurrence(self):
         flagged = self._plan(
             description="Collect third-party news about financing.",

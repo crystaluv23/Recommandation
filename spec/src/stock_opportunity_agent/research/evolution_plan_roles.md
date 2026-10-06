@@ -29,6 +29,16 @@ mandatory output. Proposer and Critic disclose the same division of authority;
 the absence of classification inside H_analyse is not proof that the system
 lacks magnitude prediction. Any causal quality attribution still needs evidence.
 
+The shared structured reflection envelope admits only `reflection_items`,
+`selected_reflection_refs` and optional `no_findings_reason`. Signal association
+refs belong inside individual authored items and must be supported by that
+item's source handles; they are never a top-level envelope field. Fixed prompts
+must name this location. Unsupported envelope containers receive typed
+whole-field remove authority, including empty arrays; deleting their members
+does not remove the unsupported key. Initial feedback also checks every
+parseable item independently alongside envelope issues, then fully revalidates
+the merged response. Valid siblings, citations and scope are preserved.
+
 Source wording describes its own availability time. Initialize/Reflect must not
 promote an expired dated event or an old source's “currently” into a claim that
 it remains current at prediction_time. Predictor receives the cutoff explicitly
@@ -60,6 +70,14 @@ metadata and undisclosed/deferred handles do not grant adoption authority.
 Runtime binds the complete final disclosed working-view snapshot and persists
 the adoption metadata. A new proposal that omits `used_experience_refs` receives
 typed add-only repair authority for this field; omission cannot mean no adoption.
+Missing adoption metadata does not suppress independent strategy validation:
+runtime checks the otherwise parseable four fields with adoption still unknown
+and combines the missing-field obligation with their owning typed issues. This
+is a diagnostic view, never an accepted new Plan or an inferred empty adoption.
+After applying a typed correction, the drift check uses that same issued
+contract's operation paths. It cannot reject an explicitly authorized metadata
+addition merely because another obligation repairs a strategy field. All
+unrelated fields remain immutable and the entire merged Plan is revalidated.
 Invalid lists/unknown refs receive typed local repair authority for this field
 alone. Persisted legacy Plans remain readable with unknown adoption; the legacy
 record loader is separate from validation of newly authored role responses.

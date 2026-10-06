@@ -1236,6 +1236,8 @@ _OWNERSHIP_SCOPE_NEGATION_PRECEDING = re.compile(
     r"(?:\s+\w+){0,4}?\s+as\b"
     r"(?:\s+(?:the|this|these|those|such|it|them|that))?\s*$"
     r"|\b(?:not|never)\b(?!\s+(?:only|just|merely|simply)\b)"
+    r"(?:\s+(?:the|this|these|those|such|it|them|that))?\s*$"
+    r"|\b(?:rather\s+than|instead\s+of)"
     r"(?:\s+(?:the|this|these|those|such|it|them|that))?\s*$",
     re.IGNORECASE,
 )
@@ -1243,16 +1245,33 @@ _OWNERSHIP_SCOPE_NEGATION_PRECEDING = re.compile(
 _OWNERSHIP_SCOPE_NEGATION_WINDOW_CHARS = 72
 
 _OWNERSHIP_SCOPE_CLAUSE_SEPARATORS = ",;:.!?\n"
+_OWNERSHIP_VERIFICATION_REFERENCE_PRECEDING = re.compile(
+    r"\b(?:verify|verifying|check|checking|cross[- ]check|corroborate|corroborating)\b"
+    r"(?:(?!\b(?:retrieve|collect|fetch|read|obtain|treat|classify|describe|frame)\b)"
+    r"[^,;:.!?\n]){0,100}?\b(?:against|with|using)\s+(?:the\s+)?$",
+    re.IGNORECASE,
+)
+
+
+def _has_unbacked_ownership_match(text_value: str, *, verification_supported: bool) -> bool:
+    """Reject ownership claims while preserving supported verification references."""
+    for match in _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE.finditer(text_value):
+        if _scope_match_is_locally_negated(text_value, match):
+            continue
+        prefix = text_value[max(0, match.start() - 160):match.start()]
+        if verification_supported and _OWNERSHIP_VERIFICATION_REFERENCE_PRECEDING.search(prefix):
+            continue
+        return True
+    return False
 
 
 def _scope_match_is_locally_negated(text_value: str, match: re.Match[str]) -> bool:
     """Whether one scope-phrase occurrence is locally negated or prohibited.
 
-    Only a not/never cue inside the same clause and a bounded window counts,
-    and the cue must reach the phrase through an "as ..." connector (or a
-    bare determiner), so "not only ... but also", contrastive affirmative
-    phrasing, and negations in earlier clauses leave the occurrence
-    affirmative.
+    A not/never cue must reach the phrase through an "as ..." connector or
+    bare determiner inside a bounded clause. Immediate rather-than/instead-of
+    contrasts also negate it. "Not only ... but also", affirmative contrasts
+    and negations in earlier clauses leave the occurrence affirmative.
     """
 
     window = text_value[
@@ -1297,6 +1316,11 @@ _FIRST_PARTY_CAPABLE_SOURCE_TYPES = frozenset(
 def _validate_proposed_request_scope(plan: InformationPlan) -> None:
     """Reject cross-issuer requests the company-scoped resolver cannot perform."""
 
+    all_source_types = {
+        source_type
+        for request in plan.basic_info_policy.requests
+        for source_type in request.source_types
+    }
     for index, request in enumerate(plan.basic_info_policy.requests):
         fields = {
             "description": request.description,
@@ -1305,8 +1329,9 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
         ownership_fields = [
             field_name
             for field_name, text_value in fields.items()
-            if _has_affirmative_scope_match(
-                _FIRST_PARTY_OWNERSHIP_REQUEST_SCOPE, text_value
+            if _has_unbacked_ownership_match(
+                text_value,
+                verification_supported=bool(all_source_types & _FIRST_PARTY_CAPABLE_SOURCE_TYPES),
             )
         ]
         if ownership_fields and (
@@ -1321,9 +1346,10 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
                             "information_plan_propose described company_news/news as "
                             "the target issuer's own disclosure even though those "
                             "source types may contain third-party reporting. Rewrite "
-                            "every named field as target-company-scoped news, or "
-                            "remove the news source type when first-party authorship "
-                            "is required"
+                            "every named field to distinguish target-company-scoped "
+                            "news from first-party evidence; verification references "
+                            "require B to supply a first-party-capable source. Only "
+                            "the named fields are authorized for this repair"
                         ),
                         paths=tuple(paths),
                         allowed_repairs=("replace", "remove"),
@@ -1350,11 +1376,6 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
             "disclosures or target-company-scoped news mentioning competition"),
         )])
 
-    all_source_types = {
-        source_type
-        for request in plan.basic_info_policy.requests
-        for source_type in request.source_types
-    }
     skill_fields = {
         "H_init": plan.initial_research_skill,
         "H_reflect": plan.reflection_skill,
@@ -1380,8 +1401,9 @@ def _validate_proposed_request_scope(plan: InformationPlan) -> None:
                         "information_plan_propose instructed a role to treat news as "
                         "the target issuer's own disclosure even though B contains "
                         "no first-party-capable source. Rewrite every named field to "
-                        "use target-company-scoped evidence, or add an explicit "
-                        "first-party source request"
+                        "use target-company-scoped evidence without asserting "
+                        "first-party authorship. Only the named fields are "
+                        "authorized for this repair"
                     ),
                     paths=tuple(unsupported_ownership_fields),
                     allowed_repairs=("replace",),
@@ -1561,6 +1583,12 @@ _FIXED_SEMANTICS_REDEFINITION = re.compile(
     r"final\s+signal\s+classif|generate\s+(?:the\s+)?prediction)",
     re.IGNORECASE | re.DOTALL,
 )
+_PLAN_PROHIBITION_GUARD = re.compile(
+    r"\b(?:do(?:es)?\s+not|never|must\s+not|cannot)\b"
+    r"(?!\s+(?:only|just|merely|simply)\b)"
+    r"(?:(?!\b(?:but|however|instead|yet)\b)[^.!?;\n]){0,300}",
+    re.IGNORECASE,
+)
 
 
 def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
@@ -1589,12 +1617,7 @@ def _validate_fixed_plan_semantics(plan: InformationPlan) -> None:
         ("H_reflect", plan.reflection_skill),
     ):
         scrubbed = _RESEARCH_CONTROLLER_ONTOLOGY_GUARD.sub("", text_value)
-        scrubbed = re.sub(
-            r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
-            "",
-            scrubbed,
-            flags=re.IGNORECASE,
-        )
+        scrubbed = _PLAN_PROHIBITION_GUARD.sub("", scrubbed)
         if _RESEARCH_CONTROLLER_PREDICTION_ONTOLOGY.search(scrubbed):
             issues.append(ValidationIssue(
                 code="plan_fixed_semantics_redefined", paths=(field_name,),
@@ -1752,8 +1775,14 @@ def _validate_plan_for_proposer_context(
 ) -> None:
     """Apply the complete current semantic contract to a proposed or parent Plan."""
 
-    _validate_proposed_market_backbone(plan)
-    _validate_proposed_request_scope(plan)
+    issues: list[ValidationIssue] = []
+    for validate in (_validate_proposed_market_backbone, _validate_proposed_request_scope,
+                     _validate_basic_info_orientation_menu, _validate_fixed_plan_semantics,
+                     _validate_proposed_plan_skills):
+        try:
+            validate(plan)
+        except StructuredValidationError as exc:
+            issues.extend(exc.issues)
     unsupported = sorted(
         {
             source_type
@@ -1763,7 +1792,7 @@ def _validate_plan_for_proposer_context(
         }
     )
     if unsupported:
-        raise StructuredValidationError([ValidationIssue(
+        issues.append(ValidationIssue(
             code="plan_source_type_unsupported",
             message="information_plan_propose used unsupported source types: " + ", ".join(unsupported),
             paths=tuple(
@@ -1771,10 +1800,9 @@ def _validate_plan_for_proposer_context(
                 for index, request in enumerate(plan.basic_info_policy.requests)
                 for source_index, source in enumerate(request.source_types) if source in unsupported
             ), allowed_repairs=("replace", "remove"),
-        )])
-    _validate_basic_info_orientation_menu(plan)
-    _validate_fixed_plan_semantics(plan)
-    _validate_proposed_plan_skills(plan)
+        ))
+    if issues:
+        raise StructuredValidationError(issues)
 
 
 def _reject_fixed_semantics_redefinition(value: Any) -> Any:
@@ -1806,12 +1834,7 @@ def _fixed_semantics_match(text_value: str) -> re.Match[str] | None:
         text_value,
         flags=re.IGNORECASE,
     )
-    scrubbed = re.sub(
-        r"\b(?:do not|never|must not|cannot)\b[^.]{0,300}",
-        "",
-        scrubbed,
-        flags=re.IGNORECASE,
-    )
+    scrubbed = _PLAN_PROHIBITION_GUARD.sub("", scrubbed)
     return _FIXED_SEMANTICS_REDEFINITION.search(scrubbed)
 
 

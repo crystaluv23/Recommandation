@@ -2178,8 +2178,11 @@ def _structured_reflection_contract(level: str) -> str:
         "and used. Limitations must retain known economic/research conditions "
         "weakening, invalidating or reversing its interpretation; do not substitute "
         "missing data checks for those boundaries, and state unknown boundaries "
-        "honestly. You may additionally return related_signal_refs: an array of "
+        "honestly. Inside each authored item, you may additionally return "
+        "related_signal_refs: an array of "
         "exact Signal versions present in the supporting source catalog/originals. "
+        "Never put related_signal_refs at the top level; the envelope contains "
+        "only reflection_items, selected_reflection_refs and no_findings_reason. "
         "These refs index related Experience, not evidence of consumption or effect. "
         "Success/failure assertions require outcome_claims matching the canonical "
         "source facts; technical exclusions cannot be "
@@ -2355,19 +2358,20 @@ def _structured_reflection_items(
         ValidationIssue(
             code="reflection_envelope", paths=(field,),
             message=f"Remove unsupported reflection field {field}", allowed_repairs=("remove",),
+            repair_context={"invalid_container_paths": [field]}
+            if isinstance(value[field], (list, Mapping)) else {},
         ) for field in sorted(set(value) - required - {"no_findings_reason"})
     ]
-    if envelope_issues:
-        raise StructuredValidationError(envelope_issues)
     raw_items = value.get("reflection_items")
+    policy_issues = list(envelope_issues)
     if isinstance(raw_items, list):
-        policy_issues = [ValidationIssue(
+        policy_issues.extend(ValidationIssue(
             code="reflection_action_proof_gate", paths=(f"reflection_items[{position}].{field}",),
             allowed_repairs=("replace",),
             message="An action cannot require a quantified/stated price path or threshold-bound projection, or cap/downgrade the judgment solely without that proof; keep such analysis optional.",
         ) for position, item in enumerate(raw_items) if isinstance(item, Mapping) and item.get("kind") == "action"
           for field in ("brief", "detail") if isinstance(item.get(field), str)
-          and violates_opportunity_proof_gate(item[field])]
+          and violates_opportunity_proof_gate(item[field]))
         policy_issues.extend(ValidationIssue(
             code="reflection_fact_inference", paths=(f"reflection_items[{position}].{field}",),
             dependent_paths=(f"reflection_items[{position}].kind",),
@@ -2398,8 +2402,8 @@ def _structured_reflection_items(
                 item_validator(tuple(raw_items))
             except StructuredValidationError as exc:
                 policy_issues.extend(exc.issues)
-        if policy_issues:
-            raise StructuredValidationError(policy_issues)
+    if policy_issues:
+        raise StructuredValidationError(policy_issues)
     # Retrospective descriptions may discuss probabilities and horizons. They
     # cannot mutate fixed semantics; the eventual Plan proposal is validated at
     # that owning boundary. Applying the Plan instruction word filter here
@@ -2986,25 +2990,26 @@ class LLMInformationPlanProposer:
                         value = apply_state_patch(failed_value, value, contract=patch_contract)
                     if attempt and failed_value and failure is not None:
                         obligations = _validation_obligations(failure, failed_value)
-                        must_change_paths = [
+                        authorized_paths = ([entry["path"] for entry in patch_contract["allowed_operations"]]
+                            if patch_contract is not None else [
                             path
                             for obligation in obligations["obligations"]
                             for path in obligation["must_change_paths"]
                             if path.startswith(
                                 ("B.", "B[", "H_init", "H_reflect", "H_analyse")
                             )
-                        ]
-                        if must_change_paths:
+                        ])
+                        if authorized_paths:
                             drift_paths = _scoped_correction_drift_paths(
                                 failed_value,
                                 value,
-                                must_change_paths,
+                                authorized_paths,
                             )
                             if drift_paths:
                                 raise ValidationError(
                                     "information_plan_propose correction changed "
                                     "unrelated valid content outside "
-                                    f"must_change_paths={must_change_paths}, "
+                                    f"authorized_paths={authorized_paths}, "
                                     f"unrelated_changed_paths={drift_paths}. Preserve "
                                     "every unrelated B request and H_* field "
                                     "byte-for-byte"
@@ -3024,6 +3029,7 @@ class LLMInformationPlanProposer:
                         plan_id=plan_id,
                         parent_ids=parent_ids,
                     )
+                    adoption_issues: list[ValidationIssue] = []
                     if "used_experience_refs" in value:
                         adopted = value["used_experience_refs"]
                         if (not isinstance(adopted, list) or len(adopted) > 48
@@ -3040,21 +3046,25 @@ class LLMInformationPlanProposer:
                             "item_refs": adopted,
                         }
                     else:
-                        raise StructuredValidationError((ValidationIssue(
+                        adoption_issues.append(ValidationIssue(
                             code="experience_adoption_missing", paths=("used_experience_refs",),
                             allowed_repairs=("add",),
                             message=("New proposal output requires used_experience_refs: "
                                 "add only actually adopted disclosed refs, or [] for no adoption. "
                                 "Missing metadata is unknown, not an empty adoption list; "
                                 "preserve B and every H_* field"),
-                        ),))
+                        ))
                     plan = _parse_role_output(
                         stage, normalized, InformationPlan.from_dict
                     )
-                    _validate_plan_for_proposer_context(
-                        plan,
-                        available_source_types=self.available_source_types,
-                    )
+                    try:
+                        _validate_plan_for_proposer_context(
+                            plan, available_source_types=self.available_source_types,
+                        )
+                    except StructuredValidationError as exc:
+                        raise StructuredValidationError([*adoption_issues, *exc.issues]) from exc
+                    if adoption_issues:
+                        raise StructuredValidationError(adoption_issues)
                     if _canonical_hash(plan.canonical_dict()) in parent_content_hashes:
                         raise _proposal_focus_issue(proposal_attempt, "candidate Plan exactly duplicates a selected parent")
                     try:
