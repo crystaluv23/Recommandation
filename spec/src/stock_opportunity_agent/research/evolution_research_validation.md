@@ -39,6 +39,13 @@ reflection transitions, and Predictor inputs after generic JSON parsing.
 
 ## Invariants
 
+- When the existing unavailable-topic check rejects a new belief or resolution,
+  its remove-only obligation carries the exact returned text, field and
+  unavailable Signal reference with `mechanical_action=remove_unavailable_finding`.
+  This is permission to quarantine that indexed text, never permission to
+  invent an answer, resolve a need, change a decision or alter the Signal result.
+  The detection predicate and canonical State schema remain unchanged.
+
 - Shared producer-owned measurement guards run on the fully assembled state,
   with exact text/claim repair paths. These obligations carry source Signal refs;
   they authorize replacing/removing only the invalid prose member, never changing

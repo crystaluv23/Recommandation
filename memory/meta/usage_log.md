@@ -300,3 +300,5 @@
 - 2026-10-07: v180终态阻断家族；consulted `experiences/incremental-repair-and-sourced-memory.md`与`experiences/self-evolution-convergence-and-acceptance.md`及复盘报告，核对完整原生产匿名/catalog/typed权限与本地预算拒绝，唯一旧Signal claim快照恢复不猜经济含义，不代写终态决定；检查多claim共坐标、依赖冲突、完整再验、持久化与下一预测消费。各visit_times加1且GUIDE同步。
 
 - 2026-10-07: v181执行原因误归因全链路；consulted `experiences/technical-failure-before-quality-attribution.md`、`experiences/signal-result-evidence-invariants.md`、`experiences/incremental-repair-and-sourced-memory.md`、`experiences/self-evolution-convergence-and-acceptance.md`，核对实际Signal→Predictor→Posthoc false fact、共享fixed prompt、路由history和旧影子lookup。domain、technical、legacy unknown统一投影；不改原预测/经验/失败分母、不用测试或原件hash代替语义真值。四visit_times各加1，GUIDE同步。
+
+- 2026-10-07 04:12：v181终态与Slow内容复验；consulted `experiences/incremental-repair-and-sourced-memory.md`及`experiences/self-evolution-convergence-and-acceptance.md`，原system/payload/权限/完整case usage对账，typed不可用finding只删拥有者确切成员并全再验/落盘/下一预测闭包；亲读7 raw receipts区分探索标记与经济正文、正确case-label绑定，方法消费不作增益。两visit_times各加1，GUIDE同步，不重复计同轮复读。

@@ -3066,6 +3066,12 @@ def _validate_research_state_refs(
                          "new belief/resolution and keep the topic open if it still matters"),
                 paths=tuple(f"{error['field']}[{index}]" for index, text in enumerate(getattr(state, error["field"])) if text == error["text"]),
                 allowed_repairs=("remove",),
+                repair_context={
+                    "mechanical_action": "remove_unavailable_finding",
+                    "unavailable_finding_field": error["field"],
+                    "unavailable_finding_text": error["text"],
+                    "unavailable_signal_ref": error["signal_ref"],
+                },
             ))
     terminal_unavailable_only = (
         phase == "reflect"

@@ -451,6 +451,17 @@ This removes a legacy fallback-only nonempty condition and grants no new paths.
 
 ## Future-information question isolation after correction
 
+The owning unavailable-finding obligation is eligible for mechanical progress
+before a paid correction: remove only its exact indexed `current_beliefs` or
+`resolved_questions` text when the owner supplies matching snapshot text, field,
+Signal reference and `remove_unavailable_finding` context with remove-only
+authority. Duplicate indexed occurrences address the same issued snapshot.
+No hypothesis, evidence, uncertainty, need, sibling or decision is rewritten.
+The fully assembled State must pass the production parser; unrelated semantic
+issues still receive their bounded correction or fail closed. This prevents a
+known invalid coverage diagnostic from spending the terminal correction budget,
+without granting extra budget or forcing finalization.
+
 The owning temporal validator may authorize replace/remove of one indexed
 `open_questions` or `next_information_needs` member under
 `future_information_unavailable`. These are semantic obligations: the bounded

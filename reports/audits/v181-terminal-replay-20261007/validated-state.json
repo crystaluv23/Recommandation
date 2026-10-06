@@ -1,0 +1,78 @@
+{
+  "hypotheses": [
+    "The target issuer will not achieve a 2x adjusted-share-price surge within the six-calendar-month horizon because the visible evidence shows a large, liquid, near-high trading profile with no concrete dated catalyst, though this is provisional pending retrieval of forward-looking guidance and capital-structure details.",
+    "If the direction were positive, the plausible magnitude class would be a moderate single-digit to low-double-digit percentage move rather than a doubling, because the visible market backbone shows a recent close of 144.94 and a mean adjusted close of 143.314 with no evidence of an imminent re-rating catalyst.",
+    "A concrete dated catalyst such as a major contract award, regulatory approval, financing close, or earnings inflection could change expectations within the horizon, but no such catalyst is visible in the Basic Info bundle, so the hypothesis remains falsifiable by retrieval of issuer-specific forward-looking disclosures."
+  ],
+  "current_beliefs": [
+    "The current-batch guidance signal is neutral: the visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+    "The current-batch financing/listing signal is neutral: the only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral."
+  ],
+  "supporting_evidence": [
+    {
+      "kind": "basic_info",
+      "claim": "Management commentary describes a constructive market backdrop, record client assets, and healthy investment-banking pipelines, but these are qualitative positives that do not establish a near-term doubling catalyst.",
+      "projection_id": "projection_63eb4fd2f40e1b746b069497",
+      "exact_text": "The second-quarter results were strong. As we look ahead, we are entering the third quarter with momentum. Investment Banking pipelines are healthy, dialogues are active, and markets have proven resilient. And Wealth and Investment Management continue to gather assets with total client assets now reaching $8.2 trillion."
+    },
+    {
+      "kind": "basic_info",
+      "claim": "The scoped news projection is about Figma's IPO pricing and mentions Goldman Sachs only as a joint lead book-running manager, so it is not direct evidence of a Goldman Sachs operating or financial catalyst.",
+      "projection_id": "projection_e1f00d90bf8265c6e1bd293f",
+      "exact_text": "Figma Announces Pricing of Initial Public Offering | Figma Blog Figma has announced the pricing of its initial public offering (IPO) of 36,937,080 shares of Class A common stock at $33.00 per share. The shares are scheduled to begin trading on the New York Stock Exchange on July 31, 2025, under the ticker symbol \"FIG,\" with the offering expected to close on August 1, 2025. This IPO involves both shares offered by Figma and by existing stockholders, with Morgan Stanley, Goldman Sachs & Co. LLC, Allen & Company LLC, and J.P. Morgan serving as joint lead book-running managers."
+    },
+    {
+      "kind": "basic_info",
+      "claim": "The reported financial facts projection is a company-facts JSON fragment with historical share-count observations, and it does not provide a current solvency, liquidity, or capital-structure assessment for the horizon.",
+      "projection_id": "projection_1c24e310da9e1ab22415213c",
+      "exact_text": "{\"cik\":895421,\"entityName\":\"MORGAN STANLEY\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-09-169269\",\"end\":\"2009-07-31\",\"filed\":\"2009-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2009Q2I\",\"fy\":2009,\"val\":1359166836},{\"accn\":\"0001193125-09-227984\",\"end\":\"2009-10-31\",\"filed\":\"2009-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2009Q3I\",\"fy\":2009,\"val\":1359433369},{\"accn\":\"0001193125-10-042763\",\"end\":\"2010-01-31\",\"filed\":\"2010-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2009Q4I\",\"fy\":2009,\"val\":1398087044},{\"accn\":\"0001193125-10-112958\",\"end\":\"2010-04-30\",\"filed\":\"2010-05-07\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2010Q1I\",\"fy\":2010,\"val\":1397819191},{\"accn\":\"0001193125-10-181853\",\"end\":\"2010-07-31\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":1396968554},{\"accn\":\"0001193125-10-252125\",\"end\":\"2010-10-31\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":1512877397},{\"accn\":\"0001193125-11-050049\",\"end\":\"2011-01-31\",\"filed\":\"2011-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2010Q4I\",\"fy\":2010,\"val\":1545631781},{\"accn\":\"0001193125-11-132343\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":1544658124},{\"accn\":\"0001193125-11-213320\",\"end\":\"2011-07-31\",\"filed\":\"2011-08-08\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":1927916237},{\"accn\":\"0001193125-11-299890\",\"end\":\"2011-10-31\",\"filed\":\"2011-11-07\",\"form\":\"10-Q"
+    },
+    {
+      "kind": "signal",
+      "claim": "cash_reserves=9.0739e+10",
+      "signal_ref": "cash_reserves:v2",
+      "evidence_group": "supporting",
+      "evidence_index": 0
+    },
+    {
+      "kind": "signal",
+      "claim": "The visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+      "signal_ref": "guidance_acceleration:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0
+    },
+    {
+      "kind": "signal",
+      "claim": "The only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral.",
+      "signal_ref": "financing_listing_action:v5",
+      "evidence_group": "supporting",
+      "evidence_index": 0
+    },
+    {
+      "kind": "signal",
+      "claim": "liquidity_runway_months=11.3537",
+      "signal_ref": "liquidity_runway_months:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0
+    }
+  ],
+  "contradictions": [],
+  "resolved_questions": [
+    "The visible market backbone resolves the recent price level: the last close is 144.94 on 2025-07-30, and the mean of the last five complete adjusted closes is 143.314.",
+    "The visible operating report resolves that the issuer filed a Form 8-K on July 16, 2025, furnishing second-quarter 2025 results, so a recent earnings catalyst is present.",
+    "The visible management commentary resolves that management described a constructive market environment, record client assets, and healthy investment-banking pipelines as of the second-quarter 2025 earnings call.",
+    "The visible scoped news resolves that the only visible news projection concerns Figma's IPO pricing, with Goldman Sachs named as a joint lead book-running manager, not as the subject of a direct catalyst.",
+    "The visible reported financial facts resolve that the projection is a historical company-facts JSON fragment and does not provide a current solvency or liquidity assessment.",
+    "The evaluation anchor resolves the control-data baseline: the doubling threshold is 286.628, the mean adjusted close is 143.314, and the recent close is 144.94.",
+    "The current-batch liquidity-runway signal resolves that the exact reported measure is liquidity_runway_months=11.3537, a positive numeric measurement with a neutral categorical state.",
+    "The current-batch order-confirmation signal resolves that within the 180-day lookback window the eligible documents disclose no qualifying new customer order, contract, offtake agreement, or binding award in which the target company is the recipient."
+  ],
+  "open_questions": [],
+  "next_information_needs": [
+    "What concrete, dated catalysts or scheduled events, such as contract awards, regulatory decisions, financing closings, or earnings releases, has the issuer disclosed by the prediction time that could materially change expectations within the six-calendar-month horizon?",
+    "What float, liquidity, ownership-concentration, or customer-concentration characteristics has the issuer disclosed by the prediction time that would make sharp repricing more or less feasible?",
+    "Which sources in the Basic Info bundle are truncated, omitted, or missing forward-looking coverage, so that a negative verdict is not built on incomplete information?",
+    "What analyst or market expectations, if any, were available by the prediction time regarding the issuer's earnings trajectory or price targets that could indicate whether a doubling is plausible within the horizon?"
+  ],
+  "decision": "finalize"
+}

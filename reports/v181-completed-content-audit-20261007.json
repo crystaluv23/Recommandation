@@ -1,0 +1,1766 @@
+{
+  "schema_version": "v181-completed-content-audit-v1",
+  "audited_at": "2026-10-06T20:11:30.707008+00:00",
+  "frozen_source_revision": "90999e845867ad698bf5843228d3db4153c40aed",
+  "exit": {
+    "exit_code": 0,
+    "reason": "child_terminal",
+    "finished_at": "2026-10-06T19:50:37.959749+00:00"
+  },
+  "formal_round": 1,
+  "formal_cycle": 1,
+  "live_processes_absent_confirmed": true,
+  "ledger_attempt_count": 415,
+  "ledger_status_counts": {
+    "completed": 414,
+    "failed": 1
+  },
+  "actual_cost": 2.1441585200000004,
+  "committed_fast": {
+    "plan_id": "plan_r0001_c02",
+    "n_cases": 24,
+    "metrics": {
+      "binary_f1": 0.7857142857142857,
+      "binary_precision": 0.7857142857142857,
+      "binary_recall": 0.7857142857142857,
+      "confusion": {
+        "false_negative": 3,
+        "false_positive": 3,
+        "true_negative": 7,
+        "true_positive": 11
+      },
+      "magnitude_accuracy": 0.2857142857142857,
+      "magnitude_macro_f1": 0.14814814814814814,
+      "precision_defined": true,
+      "predicted_positive_count": 14,
+      "sample_count": 24,
+      "valid_case_count": 24
+    },
+    "fitness": {
+      "eligible": true,
+      "evidence_covered_count": 24,
+      "expected_case_count": 24,
+      "predicted_positive_count": 14,
+      "reasons": [],
+      "status": "eligible",
+      "true_positive_count": 11,
+      "valid_case_count": 24
+    },
+    "prediction_magnitude_counts": {
+      "None": 10,
+      "2-3x": 14
+    },
+    "truth_magnitude_counts": {
+      "None": 10,
+      "2-3x": 7,
+      "3-10x": 5,
+      "10x+": 2
+    },
+    "signal_status_counts": {
+      "success": 86,
+      "domain_unavailable": 7,
+      "validation_failed": 7
+    },
+    "case_technical_exclusion_count": 0,
+    "new_magnitude_signal_admission_confirmed": false,
+    "content_acceptance_pass": false
+  },
+  "diagnostic_plan": {
+    "plan_id": "plan_r0001_c01",
+    "completed_checkpoint_count": 5,
+    "valid_case_count": 4,
+    "expected_case_count": 24,
+    "metrics": null,
+    "unfinalized_case_id": "cik_0000895421:20250731",
+    "original_finalize_saved_continue": true,
+    "not_in_current_formal_plan_refs": true,
+    "false_domain_gap_fact_only_in_diagnostic_checkpoint": true,
+    "specific_false_fact_ref": "reflection:36e5bc65f6debdc75a8101a20d20af59c4f8802c36b7381995f701786991c682"
+  },
+  "all_saved_signal_status_counts": {
+    "validation_failed": 8,
+    "success": 106,
+    "domain_unavailable": 10
+  },
+  "case_checkpoints": [
+    {
+      "plan": "plan_r0001_c01",
+      "case_id": "cik_0000701818:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "validation_failed": 1,
+        "success": 3
+      },
+      "source_sha256": "b3afd8d1fc0454c375d048606a21ee8e9bc767ad5de2cc8aaad99c8a9185b526"
+    },
+    {
+      "plan": "plan_r0001_c01",
+      "case_id": "cik_0000895421:20250731",
+      "state_decision": "continue",
+      "stop_reason": "budget_exhausted",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 5,
+        "domain_unavailable": 2
+      },
+      "source_sha256": "2fdacd33bdbc384256cb9004147217c9e614a68a12f7d3a3cf03a593e47a6d71"
+    },
+    {
+      "plan": "plan_r0001_c01",
+      "case_id": "cik_0000895728:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "602e61550c033141ab77426a9c3d9c1ddc60a903077015cccbd1a83805af1915"
+    },
+    {
+      "plan": "plan_r0001_c01",
+      "case_id": "cik_0001174922:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "7025802ef038bc758432910d4b9033b55a60903ecb27a9570139f29bb5d335f8"
+    },
+    {
+      "plan": "plan_r0001_c01",
+      "case_id": "cik_0001830043:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 6,
+        "domain_unavailable": 1
+      },
+      "source_sha256": "9c536f1c0ce2635b509406a5fd58ab6caf4cade14a7a037ab9df7e7221c32546"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000701818:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "validation_failed": 2,
+        "success": 2
+      },
+      "source_sha256": "b30a7c09b5bce55b1add2d9543d8885fa9e211fceb09b2df3c1ec71388647d22"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000723125:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 8
+      },
+      "source_sha256": "0433a8d6e52a7b4fa2d0a7213ab193c5c95028334326058bbc57a308c6fdd045"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000839470:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "b7df466112d0676901324f5b8d01e3d636a24deb844fb08424bec14ee135d9e9"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000860413:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 2
+      },
+      "source_sha256": "ea49a51ce7f0a243cee6193a7878cd16aee69774fa6230ca93ff0e8bcb20c57f"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000895421:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 2
+      },
+      "source_sha256": "0169d380ee4b61987609ec9d1733d738a45815b41998800c9b5b3c91c6ac56c3"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000895728:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "24bb558de42414c9b1bf8e72271dcd11118a36a59286219eb098efb3e4ba94b3"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0000936395:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 2
+      },
+      "source_sha256": "331dab603144fd22b699761fa429e433459da3d80e1210f9fdf7eb54ea8c2d26"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001018963:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 1,
+        "validation_failed": 1
+      },
+      "source_sha256": "a81c875029750c82b991b586baf4f9232d70c5c5c84109c28d9eab3be6d3abab"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001051627:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "14f9ea6631c8e6740d7082af071cc7ecef8ad73b523fa8f082b0342c6ec70f35"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001114995:20250331",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "792149b135f7c59e17277299192eee390fc86c1b7d6b872e0ca7c535a6220f42"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001164727:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "validation_failed": 1,
+        "success": 3
+      },
+      "source_sha256": "3829ff3a22e1e2004b773ce4a44d98f7951855ac30d7b78d2e3570d2b761240e"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001174922:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 5,
+        "domain_unavailable": 2
+      },
+      "source_sha256": "8b090228127b5c6a08bc7a41075a02bc491d9f23d0e46e06ee262722861d13f6"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001309402:20250530",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "23a64ef8cb4483f69983bba5bee3e06cb33a426c3b7790accd03f20d591c9d9d"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001521036:20250331",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "d7b0f285afa0c44901ef4519957705a334812e46590f66dc0ccf4825c448e017"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001576942:20250530",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "0b6dbd9dafcf72e556d5efa1e305b9e06bc75f03a8c5d02a882a8d239003fea7"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001590364:20250731",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "91b42e58af1179dd5b847c13f19faae645648bdb874bde9f664fe3e02425b51f"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001646188:20250530",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 4
+      },
+      "source_sha256": "b904deb93dfd05bf50e425b500df5a79c74f964091214b81007a7b71fe58967c"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001689548:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 5,
+        "domain_unavailable": 2
+      },
+      "source_sha256": "454bb1eaaece8c3682f1b0bfe244536346da11c091bb6fd4b6d4251f5f259475"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001801368:20250331",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 3
+      },
+      "source_sha256": "061475c23ed074ed7757edaa44e644cab8c77ddfdc6c819e414fff4d0536ba24"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001830043:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "success": 6,
+        "domain_unavailable": 2
+      },
+      "source_sha256": "a5bb624551454a713cb0c3bcfadb2abe670643fb0af9a8534c1e542d581c16eb"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001847409:20250131",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "validation_failed": 1,
+        "success": 6
+      },
+      "source_sha256": "9a8bed5ed3f533c5d812cece8b9b8c66d008da6aceffc39aed2b0fa1442232c5"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001869198:20250331",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": false,
+        "magnitude": null
+      },
+      "signal_status_counts": {
+        "validation_failed": 1,
+        "success": 3
+      },
+      "source_sha256": "ef96b9e27e324da14d437f0eb4b380182e01081d3eb58e41dd18e6da3dae242f"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0001920294:20250530",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "success": 3,
+        "validation_failed": 1
+      },
+      "source_sha256": "b6d2591e603521ac4b1c11ee889e11684f0133e2668d2eaa777c3e3396f3fdf6"
+    },
+    {
+      "plan": "plan_r0001_c02",
+      "case_id": "cik_0002023554:20250930",
+      "state_decision": "finalize",
+      "stop_reason": "finalized",
+      "prediction": {
+        "is_surge": true,
+        "magnitude": "2-3x"
+      },
+      "signal_status_counts": {
+        "domain_unavailable": 1,
+        "success": 2
+      },
+      "source_sha256": "c14261e3b8a834b6ec805c66ad4d27631af6bfe449cacaf86ae27e262f5d26ee"
+    }
+  ],
+  "completed_slow": {
+    "input_registry_version": 11,
+    "output_registry_version": 11,
+    "input_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "output_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "new_candidate_count": 0,
+    "new_validated_signal_count": 0,
+    "new_promoted_signal_count": 0,
+    "updated_signal_count": 0,
+    "signal_goal_status": "unmet",
+    "magnitude_contribution": {
+      "assessed": false,
+      "fast_consumption_assessed": false,
+      "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+      "target_candidate_refs": [],
+      "target_mining_assessed": true,
+      "target_supported_candidate_refs": [],
+      "target_track_statuses": {
+        "magnitude_ge3_v1": "completed"
+      }
+    }
+  },
+  "method_memory": {
+    "status": "appended",
+    "episode_count": 3,
+    "lesson_count": 3,
+    "processed_feedback_refs": [
+      "slow-history:source-2dab8b3e898e4937:1:slow_input:feedback-003",
+      "slow-history:source-2dab8b3e898e4937:1:slow_loop_result:summary",
+      "slow-history:source-2dab8b3e898e4937:1:slow_loop_validation:summary"
+    ],
+    "pending_count": 2535,
+    "usage_ref": "8818417d64e1c2b5b52f14a09fccffadff67c9554deedfa903d6bd6a2791f8ed",
+    "failure_ref": null,
+    "consumer_delta_hash": "6e2dad5fc761bbff0ad89b2732a9ef07f3fab0fe6eed0eecbd36be0434e14473",
+    "consumer_request_hash": "c617211e52972bdada5f386bd4401b122b4a633bf2a346f785b4814819db17ce",
+    "claim_level": "Persisted historical feedback and its brief method view reached Mining and Update. This is feedback consumption, not confirmed predictive benefit."
+  },
+  "magnitude_mining": [
+    {
+      "seed": "hypothesis",
+      "first_request_hash": "c617211e52972bdada5f386bd4401b122b4a633bf2a346f785b4814819db17ce",
+      "terminal_request_hash": "3b8fb5831c04ab95cf088dd1c08cfe9a97a9141f3bfa396c5cea13e08fd8061f",
+      "cohort_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      },
+      "prediction_times": {
+        "case-001": "2025-05-30T00:00:00+00:00",
+        "case-002": "2025-09-30T00:00:00+00:00",
+        "case-003": "2025-09-30T00:00:00+00:00",
+        "case-004": "2025-09-30T00:00:00+00:00"
+      },
+      "manifest": {
+        "cohort_case_count": 4,
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort.",
+        "narrative_source_families": [
+          {
+            "case_count": 4,
+            "source_type": "filing"
+          },
+          {
+            "case_count": 2,
+            "source_type": "10-k"
+          },
+          {
+            "case_count": 1,
+            "source_type": "news"
+          }
+        ],
+        "pre_cutoff_price_series_cases": 4,
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "structured_financial_concepts": [
+          {
+            "case_count": 4,
+            "cases_with_comparable_records": 3,
+            "concept": "EntityCommonStockSharesOutstanding",
+            "source_display_name": "Entity Common Stock, Shares Outstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "OperatingIncomeLoss",
+            "source_display_name": "Operating Income (Loss)",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+            "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "InventoryNet",
+            "source_display_name": "Inventory, Net",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+            "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "NetIncomeLoss",
+            "source_display_name": "Net Income (Loss) Attributable to Parent",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "CashAndCashEquivalentsAtCarryingValue",
+            "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "AssetsCurrent",
+            "source_display_name": "Assets, Current",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "LiabilitiesCurrent",
+            "source_display_name": "Liabilities, Current",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "StockholdersEquity",
+            "source_display_name": "Stockholders' Equity Attributable to Parent",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "CommonStockSharesOutstanding",
+            "source_display_name": "Common Stock, Shares, Outstanding",
+            "taxonomy": "us-gaap",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "WeightedAverageShares",
+            "source_display_name": "None",
+            "taxonomy": "ifrs-full",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+            "taxonomy": "us-gaap",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 1,
+            "concept": "ShortTermInvestments",
+            "source_display_name": "Short-term Investments",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          }
+        ]
+      },
+      "action_counts": {
+        "fetch_evidence": 1,
+        "inspect_catalog": 4,
+        "read_span": 4,
+        "record_need_dispositions": 15,
+        "record_no_pattern": 1
+      },
+      "call_trace": [
+        {
+          "attempt_id": 336,
+          "request_hash": "c617211e52972bdada5f386bd4401b122b4a633bf2a346f785b4814819db17ce",
+          "action": "fetch_evidence"
+        },
+        {
+          "attempt_id": 337,
+          "request_hash": "842da399de3d4c121f39f9f3ca4c8786c296b7cd3db969dc955a5e06c835b4ab",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 338,
+          "request_hash": "1683db6de7a098fafc0997c2a1d165be119c3325edf91d8a2867ef9c0457be26",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 339,
+          "request_hash": "fb321247aa8f4a380338a42c5147cb8a3a6695d7a732a441ec979ba2b4da3781",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 340,
+          "request_hash": "f39f04285a5a0f21c71106b97e35f38fc3c9a07e5db507e341875651f15639d0",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 341,
+          "request_hash": "abf535d268f557db75310fbaf0448f23ddbbf8afc09083a6f7ac1a9bb491c89e",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 342,
+          "request_hash": "ac8fb0f4c0c2a9c81cc9381c86b0771a8637bd7750db9dfeca404ab1f3a9b561",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 343,
+          "request_hash": "1ca629670961c17b4d1d26df36b0afe96fbe8d73364c119f95eec5049b3baad3",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 344,
+          "request_hash": "e3b5475b0bbb041078d6c475ab200de0c0e74a0252fb8e4b469a9f28512650f6",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 345,
+          "request_hash": "1f5b1af79913405e11fd5a6c06d03295b856337967606e2df350a20329d500c8",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 346,
+          "request_hash": "2a145c603b205a64e988674739e3aba64920be615c490bf72bf0d033f5fe2f4e",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 347,
+          "request_hash": "e84b5cc925940b4aad2bc08485a5cb98b968de1beb2d4ea0f35bb107e992a75e",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 348,
+          "request_hash": "5d22c5038b0b4b7d8b2c3e5ff013232475ef00c51f97c13ddaaa493bfe563cf7",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 349,
+          "request_hash": "d61069ccf5ce4812c952bd2811f97137f394208c75c0bc6928965ca1e271c494",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 350,
+          "request_hash": "78d3a6bb9464842382ce2bbdcf206490f243e9c56ca3462e9fc1e728086499cd",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 351,
+          "request_hash": "08e32146176fa2d8004fd8c5e6d0d5fc2700a338a40d87e0b2fa1ba613fb4484",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 352,
+          "request_hash": "609adfe2a4749ebfa114cf6373ca6d17ac39174f6fc1c3ec3266818d0dd4980a",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 353,
+          "request_hash": "7b596b465b476b3c932b7fef6269cb011565517c4ccfb99af74a77d805a37d02",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 354,
+          "request_hash": "d104c407c04893f81117fc24f9c497f7e0fadc333502e30ca9dfae8fa30947ab",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 355,
+          "request_hash": "1dda17f089438109b375c51fced69b81791793f9495eac3b6eb21cc7c9f70c50",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 356,
+          "request_hash": "c5ca91f8feba633a4ff4825c46d21a3d99e18286e8a3dd398396791d7abb932f",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 357,
+          "request_hash": "e4e652bc56a407985bf2155ff70526715c7d2969415a64397e4aecbd485a3a17",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 358,
+          "request_hash": "c0796a1115e20c6faee6edf8d8677001fa3b9691a088c1c7fe03c41b13362763",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 359,
+          "request_hash": "c577d425c8599d14359767018a8221015391c380282153163a237e8e18b99692",
+          "action": "record_need_dispositions"
+        },
+        {
+          "attempt_id": 360,
+          "request_hash": "3b8fb5831c04ab95cf088dd1c08cfe9a97a9141f3bfa396c5cea13e08fd8061f",
+          "action": "record_no_pattern"
+        }
+      ],
+      "terminal_budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 27,
+        "light_remaining": 0
+      },
+      "terminal_answer": {
+        "action": "record_no_pattern",
+        "coverage": {
+          "explored_families": [
+            "10-k",
+            "company_facts",
+            "filing",
+            "financials",
+            "news"
+          ],
+          "narrative_reads": 4,
+          "note": "All available structured and narrative modalities explored; no new admissible measurement proposed this seed.",
+          "structured_concepts_covered": [
+            "EntityCommonStockSharesOutstanding",
+            "OperatingIncomeLoss",
+            "NetCashProvidedByOperatingActivities",
+            "PaymentsToAcquirePropertyPlantAndEquipment",
+            "InventoryNet",
+            "RevenueFromContractWithCustomerExcludingAssessedTax",
+            "NetIncomeLoss",
+            "CashAndCashEquivalentsAtCarryingValue",
+            "AssetsCurrent",
+            "LiabilitiesCurrent",
+            "StockholdersEquity",
+            "CommonStockSharesOutstanding",
+            "WeightedAverageShares",
+            "WeightedAverageNumberOfSharesOutstandingBasic",
+            "ShortTermInvestments"
+          ]
+        },
+        "rationale": [
+          "The magnitude_ge3_v1 axis contrasts true_surge cases with realized_max_multiple >= 3.0 against those in [2.0, 3.0); the only positive-vs-control contrast surfaced in this cohort is the order_confirmation_disclosed attribute, which is discovery-only (index hits, no amount_usd_median, no control cases) and therefore cannot ground a new measurement.",
+          "The structured concept coverage shows the discriminating concepts (Revenue, GrossProfit, OperatingIncomeLoss, cash-flow items) are present in only one or two cases per group, so no concept has both positive and control coverage sufficient to define a recurring magnitude-class measurement without fabricating support.",
+          "The narrative evidence already read (four bounded spans across case-001 and case-002) plus the evidence directory and memory index contain no recurring, source-backed narrative predicate that separates the >=3x class from the 2-3x class; the prior_modality_footprints is empty, so no demonstrated predicate-label mismatch exists to redirect.",
+          "The backlog is fully dispositioned (pending_count 0, 151 staged rows, no allowed_need_refs), so no remaining need requires a new measurement, and proposing a candidate now would either reuse an existing signal base name or assert coverage the evidence does not support.",
+          "Budget state: heavy_remaining 27, browse_remaining 20, light_remaining 0; this is a supported research reason for no pattern, not a budget-exhaustion claim."
+        ]
+      },
+      "terminal_memory_consumption": {
+        "original_disclosure_bytes": 2,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "current_method_delta_hash": "6e2dad5fc761bbff0ad89b2732a9ef07f3fab0fe6eed0eecbd36be0434e14473",
+      "full_method_original_reads_confirmed": false
+    },
+    {
+      "seed": "discovery",
+      "first_request_hash": "afa057eaac45cf4ef6f2d2aa28de64f8588679df40109907cded222ca71ad227",
+      "terminal_request_hash": "ff1b6ba23e92d7768d5f0eaed539db21e62a68eaec2c49378e862fa859dfdb81",
+      "cohort_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      },
+      "prediction_times": {
+        "case-001": "2025-05-30T00:00:00+00:00",
+        "case-002": "2025-09-30T00:00:00+00:00",
+        "case-003": "2025-09-30T00:00:00+00:00",
+        "case-004": "2025-09-30T00:00:00+00:00"
+      },
+      "manifest": {
+        "cohort_case_count": 4,
+        "coverage_note": "Runtime-owned, value-free coverage of this cohort's point-in-time documents. A measurement input outside these families has no in-window source in this cohort.",
+        "narrative_source_families": [
+          {
+            "case_count": 4,
+            "source_type": "filing"
+          },
+          {
+            "case_count": 2,
+            "source_type": "10-k"
+          },
+          {
+            "case_count": 1,
+            "source_type": "news"
+          }
+        ],
+        "pre_cutoff_price_series_cases": 4,
+        "schema_version": "h1-measurable-evidence-manifest-v1",
+        "structured_financial_concepts": [
+          {
+            "case_count": 4,
+            "cases_with_comparable_records": 3,
+            "concept": "EntityCommonStockSharesOutstanding",
+            "source_display_name": "Entity Common Stock, Shares Outstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "OperatingIncomeLoss",
+            "source_display_name": "Operating Income (Loss)",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "NetCashProvidedByUsedInOperatingActivities",
+            "source_display_name": "Net Cash Provided by (Used in) Operating Activities",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "PaymentsToAcquirePropertyPlantAndEquipment",
+            "source_display_name": "Payments to Acquire Property, Plant, and Equipment",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "InventoryNet",
+            "source_display_name": "Inventory, Net",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "RevenueFromContractWithCustomerExcludingAssessedTax",
+            "source_display_name": "Revenue from Contract with Customer, Excluding Assessed Tax",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "NetIncomeLoss",
+            "source_display_name": "Net Income (Loss) Attributable to Parent",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "CashAndCashEquivalentsAtCarryingValue",
+            "source_display_name": "Cash and Cash Equivalents, at Carrying Value",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "AssetsCurrent",
+            "source_display_name": "Assets, Current",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "LiabilitiesCurrent",
+            "source_display_name": "Liabilities, Current",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "StockholdersEquity",
+            "source_display_name": "Stockholders' Equity Attributable to Parent",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "CommonStockSharesOutstanding",
+            "source_display_name": "Common Stock, Shares, Outstanding",
+            "taxonomy": "us-gaap",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "WeightedAverageShares",
+            "source_display_name": "None",
+            "taxonomy": "ifrs-full",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 2,
+            "concept": "WeightedAverageNumberOfSharesOutstandingBasic",
+            "source_display_name": "Weighted Average Number of Shares Outstanding, Basic",
+            "taxonomy": "us-gaap",
+            "unit": "shares"
+          },
+          {
+            "case_count": 2,
+            "cases_with_comparable_records": 1,
+            "concept": "ShortTermInvestments",
+            "source_display_name": "Short-term Investments",
+            "taxonomy": "us-gaap",
+            "unit": "USD"
+          }
+        ]
+      },
+      "action_counts": {
+        "fetch_evidence": 3,
+        "inspect_catalog": 15,
+        "native_patch": 1,
+        "read_span": 3,
+        "record_no_pattern": 1
+      },
+      "call_trace": [
+        {
+          "attempt_id": 361,
+          "request_hash": "afa057eaac45cf4ef6f2d2aa28de64f8588679df40109907cded222ca71ad227",
+          "action": "fetch_evidence"
+        },
+        {
+          "attempt_id": 362,
+          "request_hash": "782df59c745e03a994eebfd0bc60fc2865f9c66844c00b92f76d5b9d2a80862c",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 363,
+          "request_hash": "d695493f98336501104e847a589e19d7ff31537b38a2a0738b15e1b43e095984",
+          "action": "fetch_evidence"
+        },
+        {
+          "attempt_id": 364,
+          "request_hash": "105056fbde6d03ed1c2c6ec9029aa8ecab78ccff1c708a9cd7e31ef996f29f00",
+          "action": "native_patch"
+        },
+        {
+          "attempt_id": 365,
+          "request_hash": "bbec4d1b72c101ec702650e88059ff846e018d51e709505942076ab155b70775",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 366,
+          "request_hash": "6a823fbaf9529ecd439d690438729e232c4a4a5fee16739cfa917950f997d4ad",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 367,
+          "request_hash": "a379d267078c0e320a3a6e9a963c9e09d58e0a4216c803c94301c4975736d02f",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 368,
+          "request_hash": "4e38d9368a0a0e65cefc532bdf76cc0a9fd766ada24632a17b7729ff82cb5dd6",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 369,
+          "request_hash": "a05792193aa7ad299259b278439838c0e96849f303d283a7be0da41318091382",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 370,
+          "request_hash": "ca35ccfedc57a363392f762b72f554541e2b91997874275836999052bd538019",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 371,
+          "request_hash": "51f315b26c0ee6997709eb67af8ee2349817a54eeb7348b0501ca1fe4baaa31e",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 372,
+          "request_hash": "041ca8f427ecc8c9d68b653cca533fc92bc05f85cdb15607e68fe43d78af6438",
+          "action": "read_span"
+        },
+        {
+          "attempt_id": 373,
+          "request_hash": "34eb0a37dfbf8c81e49a5c94b912784c75c4f48d7173ed6fec423dccb89b56ba",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 374,
+          "request_hash": "ee77278e5f16c0012709889da1fd32d6679d2d48b95a81faf72914f868eb3082",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 375,
+          "request_hash": "33f3b9e7188d6277b33e6a6f559a14862eabb7f42eee5a00c1c1d0972ec49112",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 376,
+          "request_hash": "1bd12175e00011b791db8ba13cd45316cb0d8acdb30699e1b49a74f6f263d6c2",
+          "action": "fetch_evidence"
+        },
+        {
+          "attempt_id": 377,
+          "request_hash": "0c4b35861367fd7b17bf1910239c33b94f3a0a6888885b6b2a258bdc760c5e16",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 378,
+          "request_hash": "b359550bd58d343b1692e5ffe4194d7bcb6c6b2c35060d2101b7cd85247091de",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 379,
+          "request_hash": "5f7d8fccc07e4a98c83e9a04806dda81ccd1817adb51c29b095224d2fd9970b4",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 380,
+          "request_hash": "08933146d94cd31b96f4f4dba731b2904032b8c42f6177830d7e8ea811748ba1",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 381,
+          "request_hash": "cc9eba6595f235b8fcf0c008e391131d2c0063d19bc8943c772b0ee9a5e2213e",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 382,
+          "request_hash": "cce6690eb83affe5051b510159ef3bbdb760a7d505a4e24e467bee324d8d76dd",
+          "action": "inspect_catalog"
+        },
+        {
+          "attempt_id": 383,
+          "request_hash": "ff1b6ba23e92d7768d5f0eaed539db21e62a68eaec2c49378e862fa859dfdb81",
+          "action": "record_no_pattern"
+        }
+      ],
+      "terminal_budget": {
+        "browse_remaining": 12,
+        "heavy_remaining": 25,
+        "light_remaining": 0
+      },
+      "terminal_answer": {
+        "action": "record_no_pattern",
+        "coverage": {
+          "explored_families": [
+            "10-k",
+            "company_facts",
+            "filing",
+            "financials",
+            "news"
+          ],
+          "narrative_reads": [
+            "document-alpha_vantage:[ANON_ID_0001]:news:756208002f1ac0e2395ffc18",
+            "document-sec:[ANON_ID_0002]:000149315225011966"
+          ],
+          "note": "Both structured and narrative modalities are explored; no recurring, source-backed measurement distinguishing the magnitude_ge3_v1 high (>=3.0x) from low (2.0-3.0x) contrast could be grounded within this cohort's point-in-time evidence.",
+          "structured_concepts_covered": [
+            "AssetsCurrent",
+            "CashAndCashEquivalentsAtCarryingValue",
+            "CommonStockSharesOutstanding",
+            "EntityCommonStockSharesOutstanding",
+            "InventoryNet",
+            "LiabilitiesCurrent",
+            "NetCashProvidedByUsedInOperatingActivities",
+            "NetIncomeLoss",
+            "OperatingIncomeLoss",
+            "PaymentsToAcquirePropertyPlantAndEquipment",
+            "RevenueFromContractWithCustomerExcludingAssessedTax",
+            "StockholdersEquity",
+            "WeightedAverageNumberOfSharesOutstandingBasic"
+          ]
+        },
+        "rationale": [
+          "The research axis magnitude_ge3_v1 contrasts true-surge cases by realized multiple (>=3.0x vs 2.0-3.0x), but the cohort supplies only 4 cases (2 positive, 2 control) with 2 cases carrying structured facts, so no recurring factor can be established.",
+          "Structured concept coverage is thin and asymmetric: several concepts (LongTermDebtCurrent, ResearchAndDevelopmentExpense, Revenues, StockIssuedDuringPeriodValueStockOptionsExercised, SubleaseIncome, UnrealizedGainLossOnDerivatives, VariableLeaseCost) appear only in positive cases, and others (SalariesWagesAndOfficersCompensation, SalesAndExciseTaxPayableCurrent, ServicingAssetAtAmortizedValue, ShortTermBorrowings, StockIssuedDuringPeriodSharesNewIssues, StockIssuedDuringPeriodValueIssuedForServices, TaxesPayableCurrent, UnrecognizedTaxBenefits, WeightedAverageNumberOfDilutedSharesOutstanding) only in controls, so any candidate built on them would be a single-case artifact rather than a recurring measurement.",
+          "Narrative exploration is grounded (one news document for case-004 and one SEC filing span for case-003 read verbatim), but the narrative_summary and attribute_case_coverage show order_confirmation_disclosed as discovery_only with a single positive case and zero controls, which is insufficient to support a recurring narrative predicate for the magnitude contrast.",
+          "Prior modality footprints are empty and slow-method memory records zero new candidates and an unassessed magnitude contribution, so there is no prior evidence base to justify proposing a magnitude_ge3_v1 measurement from this seed.",
+          "No admissible candidate can be proposed without fabricating support: the observable would either reuse an existing signal base name (Update path) or rest on a single-case concept contrast, and the runtime's own coverage note confirms no in-window source exists outside the listed families."
+        ]
+      },
+      "terminal_memory_consumption": {
+        "original_disclosure_bytes": 2,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "current_method_delta_hash": "6e2dad5fc761bbff0ad89b2732a9ef07f3fab0fe6eed0eecbd36be0434e14473",
+      "full_method_original_reads_confirmed": false
+    }
+  ],
+  "magnitude_raw_reads_personally_reviewed": [
+    {
+      "attempt_id": 338,
+      "authored_action": {
+        "action": "read_span",
+        "event_ref": "event-808176a501075791",
+        "length": 4000,
+        "offset": 17,
+        "rationale": [
+          "Narrative modality is unexplored and required; structured is already explored.",
+          "Read a bounded raw narrative span from a case-001 filing to ground the narrative exploration obligation before any terminal action.",
+          "The 424B3 2025-04-25 document for case-001 has no sections, so start at its readable_start offset 17."
+        ],
+        "type": "json_object"
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "available_at": "2025-04-25T20:08:07+00:00",
+        "case_refs": [
+          "case-001"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000121390025035550",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "424B3 1 ea0202260-10.htm PROSPECTUS PROSPECTUS &#x00a0; Filed Pursuant to Rule 424(b)(3) Registration Statement No. 333 -278400 [MASKED_COMPANY].",
+        "next_readable_start": 4187,
+        "offset": 17,
+        "raw_window_chars": 4000,
+        "readable_chars": 149,
+        "ref": "event-808176a501075791",
+        "source_family": "filing",
+        "target": "event_ref",
+        "title": "424B3 2025-04-25",
+        "verbatim_hash": "a91d5be6586d6948e258b7b77763ce2aa216909d2732b3c9e6f30f475b7f8521"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 344,
+      "authored_action": {
+        "action": "read_span",
+        "event_ref": "event-0f41cee34f041273",
+        "rationale": [
+          "Narrative modality is marked explored but only one document span has been read; I need at least one grounded raw narrative read to satisfy exploration obligations and to look for a recurring catalyst contrast.",
+          "Reading a filing-family event verbatim is the cheapest way to test whether any disclosed catalyst (acquisition, financing, order) recurs across the positive cases before proposing a candidate.",
+          "Budget: browse_remaining=23, heavy_remaining=27, light_remaining=1; this read uses browse budget and leaves heavy budget for compute/compare and a terminal action."
+        ]
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "available_at": "2025-05-15T20:32:51+00:00",
+        "case_refs": [
+          "case-002"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "has_readable_text": false,
+        "length": 1200,
+        "masked": "",
+        "next_readable_start": 88744,
+        "offset": 0,
+        "raw_window_chars": 1200,
+        "readable_chars": 0,
+        "ref": "event-0f41cee34f041273",
+        "source_family": "filing",
+        "target": "event_ref",
+        "title": "10-Q 2025-05-15",
+        "verbatim_hash": "77daaf71ed35b7f6d9807adcb236fab0ad46ece2c7c1cfdc496e0e91a8f728ab"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 345,
+      "authored_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "length": 4000,
+        "offset": 88744,
+        "rationale": [
+          "The prior read of document-sec:[ANON_ID_0001]:000143774925017213 returned has_readable_text=false at offset 0 with next_readable_start=88744; continue at that offset rather than repeating the empty range.",
+          "This 10-Q (2025-05-15) is the case-002 filing and is the most direct in-window source for the Q2 2025 revenue guidance / backlog conversion need (need-cebe025201faae76197a9f06).",
+          "Browse budget remains 22, so a bounded 4000-char narrative read is admissible and advances grounded narrative exploration."
+        ],
+        "target": "document_ref"
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "case_refs": [
+          "case-002"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "&#160; &#160; Table of Contents UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 10-Q (Mark One) &#160; &#160; &#9746; QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 &#160;&#8203; For the quarterly period ended March 31, 2025 or &#160; &#9744; TRANSITION REPORT PURSUANT TO SECTION &#160; 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934",
+        "next_readable_start": 92781,
+        "offset": 88744,
+        "raw_window_chars": 4000,
+        "readable_chars": 408,
+        "ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "target": "document_ref",
+        "verbatim_hash": "d0935e4d2e3afdec29232e50048fa3e00615ded5f0e9356295f825cea7a4dc5c"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 346,
+      "authored_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "length": 4000,
+        "offset": 92781,
+        "rationale": [
+          "Narrative modality is marked explored, but the only narrative spans read so far are a 10-Q cover page and a short 8-K excerpt; the substantive operating narrative for the positive cases remains unread.",
+          "The backlog needs for the positive cases concern revenue guidance, order backlog, acquisition financing, and scheduled catalysts — all narrative disclosures that would appear in the body of the 10-Q, not the cover page.",
+          "Continuing the same 10-Q document at next_readable_start=92781 is the cheapest way to reach the substantive MD&A/notes text without re-fetching families already covered."
+        ],
+        "target": "document_ref"
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "case_refs": [
+          "case-002"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "&#160;&#8203; For the transition period from to Commission file number: 001-34475 [MASKED_COMPANY] (Exact name of registrant as specified in its charter) Washington 91-1663741 (State or other jurisdiction of incorporation or organization) (I.R.S. Employer Identification Number) &#8203; &#8203; 201 Elliott Avenue West Seattle , Washington 98119",
+        "next_readable_start": 96969,
+        "offset": 92781,
+        "raw_window_chars": 4000,
+        "readable_chars": 347,
+        "ref": "document-sec:[ANON_ID_0001]:000143774925017213",
+        "target": "document_ref",
+        "verbatim_hash": "ee4f49adc364fa87260447658f503259724207e4fc9ae6e240c503eab0bab960"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 366,
+      "authored_action": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "length": 4000,
+        "offset": 160442,
+        "rationale": [
+          "Narrative modality is unexplored and required; structured is already explored.",
+          "Read the 10-Q 2025-08-14 filing bound to control case-003 at its readable_start to ground narrative evidence before any terminal action.",
+          "This is a first read of this document range; browse budget is ample (24)."
+        ]
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "case_refs": [
+          "case-003"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "&#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; FORM 10-Q &#160; (Mark One) &#9746; Quarterly Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 &#160; For the quarterly period ended: June 30, 2025 OR &#160;",
+        "next_readable_start": 164709,
+        "offset": 160442,
+        "raw_window_chars": 4000,
+        "readable_chars": 286,
+        "ref": "event-99d2c1094c6984b5",
+        "source_family": "filing",
+        "target": "event_ref",
+        "title": "10-Q 2025-08-14",
+        "verbatim_hash": "977b59adfb3048041a765159578a6d7c81764f27e6656b69f31337832f9d9ba7"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 369,
+      "authored_action": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "length": 4000,
+        "offset": 160442,
+        "rationale": [
+          "Continue the already-started 10-Q read for case-003 at next_readable_start 164709 is not needed; instead read the section body around the MD&A/risk area to ground narrative exploration for the magnitude axis.",
+          "Narrative modality is marked explored but only one 4000-char window has been read; a second bounded read strengthens grounded narrative coverage before any terminal action.",
+          "Browse budget remains 23, so this read is admissible."
+        ]
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "case_refs": [
+          "case-003"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "&#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; FORM 10-Q &#160; (Mark One) &#9746; Quarterly Report Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 &#160; For the quarterly period ended: June 30, 2025 OR &#160;",
+        "next_readable_start": 164709,
+        "offset": 160442,
+        "raw_window_chars": 4000,
+        "readable_chars": 286,
+        "ref": "event-99d2c1094c6984b5",
+        "source_family": "filing",
+        "target": "event_ref",
+        "title": "10-Q 2025-08-14",
+        "verbatim_hash": "977b59adfb3048041a765159578a6d7c81764f27e6656b69f31337832f9d9ba7"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    },
+    {
+      "attempt_id": 372,
+      "authored_action": {
+        "action": "read_span",
+        "event_ref": "event-07391c0f699f68bb",
+        "length": 4000,
+        "offset": 0,
+        "rationale": [
+          "Narrative modality is marked explored but I have only read one document range (case-003 filing); I need at least one bounded raw narrative read on a positive case to ground any narrative predicate candidate.",
+          "Reading a filing/news event verbatim is the authoritative narrative evidence and uses the browse budget (21 remaining), not the exhausted light budget.",
+          "This supports the magnitude_ge3_v1 axis by checking whether positive cases disclose a recurring catalyst contrast (e.g., order confirmations, acquisitions, financing) that could distinguish >=3x from 2-3x."
+        ]
+      },
+      "actual_receipt": {
+        "action": "read_span",
+        "available_at": "2025-02-14T05:11:44+00:00",
+        "case_refs": [
+          "case-004"
+        ],
+        "document_ref": "document-alpha_vantage:[ANON_ID_0001]:news:756208002f1ac0e2395ffc18",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "{\"authors\":[\"Jess Watts\"],\"banner_image\":null,\"category_within_source\":\"General\",\"overall_sentiment_label\":\"Bullish\",\"overall_sentiment_score\":0.882186,\"source\":\"Global Mining Review\",\"source_domain\":\"Global Mining Review\",\"summary\":\"[MASKED_COMPANY] has released an economic impact study for its Gibraltar copper mine in central British Columbia, highlighting its significant contributions to the Cariboo Region, BC, and Canada since 2004. The study forecasts the mine's economic impact through 2044, projecting CAN$41.9 billion in output and CAN$21.2 billion in value-added GDP for Canada. Gibraltar is also a major employer, providing 700 direct jobs and supporting 2860 full-time jobs, and has generated over CAN$2 billion in government revenues, with an additional CAN$3.1 billion forecast.\",\"ticker_sentiment\":[{\"relevance_score\":\"1.000000\",\"ticker\":\"[MASKED_COMPANY]\",\"ticker_sentiment_label\":\"Bullish\",\"ticker_sentiment_score\":\"0.890837\"}],\"time_published\":\"20250214T051144\",\"title\":\"[ANON_ID_0000] releases economic impact study for Gibraltar copper mine\",\"topics\":[{\"relevance_score\":\"0.928458\",\"topic\":\"manufacturing\"},{\"relevance_score\":\"0.820105\",\"topic\":\"economy_macro\"},{\"relevance_score\":\"0.724570\",\"topic\":\"economy_fiscal\"},{\"relevance_score\":\"0.640066\",\"topic\":\"energy_transportation\"}],\"url\":\"https://www.globalminingreview.com/mining/14022025/[ANON_ID_0002]-releases-economic-impact-study-for-gibraltar-copper-mine/\"}",
+        "next_readable_start": null,
+        "offset": 0,
+        "raw_window_chars": 1408,
+        "readable_chars": 1408,
+        "ref": "event-07391c0f699f68bb",
+        "source_family": "news",
+        "target": "event_ref",
+        "title": "[ANON_ID_0000] releases economic impact study for Gibraltar copper mine",
+        "verbatim_hash": "756208002f1ac0e2395ffc181a0f3804d5ad6d626b00b3c2219626eaaebae3ed"
+      },
+      "authoritative_label_map": {
+        "case-001": "positive",
+        "case-002": "positive",
+        "case-003": "control",
+        "case-004": "control"
+      }
+    }
+  ],
+  "content_findings": [
+    "Neither magnitude seed executed compute_statistic or compare_groups; heavy budgets remained 27 and 25 at the terminals. No-pattern is an authored result of these bounded searches, not proof that no magnitude measurement is possible.",
+    "Seven raw narrative read actions: one empty; one repeated identical case-003 filing window; the filing text windows otherwise show prospectus/10-Q cover pages and registration metadata rather than economic operating narrative. The one complete news body concerns a copper mine economic-impact study.",
+    "Attempt 372 says it is reading a positive case, but its returned case-004 binding maps to control. Case joins and retrospective labels were available in the same request.",
+    "The manifest exposes point-in-time price series for all four cases; the second seed requests market_data, while its final fetched-family digest omits it. Whether the mining tool exposes usable price facts/statistics remains an unaudited capability path.",
+    "Source citation validity did not validate the earlier Plan TN count (canonical 7 versus authored 3) or its Controller/Predictor role ownership. Those original items remain unchanged.",
+    "Update author at attempt 407 chose no_change and explicitly applied the method lesson that technical validation is not effect proof and a non-effective edit is inadmissible. Its complete source/fixture semantic review remains pending."
+  ],
+  "update_targets": [
+    {
+      "target": {
+        "problem_type": "repeated_explicit_misleading",
+        "recurring_contexts": [
+          {
+            "context_tag": "catalyst_window",
+            "issuers": 19,
+            "observations": 19,
+            "positive_surge_rate": null
+          },
+          {
+            "context_tag": "capital_intensive",
+            "issuers": 16,
+            "observations": 16,
+            "positive_surge_rate": null
+          },
+          {
+            "context_tag": "small_cap",
+            "issuers": 14,
+            "observations": 14,
+            "positive_surge_rate": null
+          }
+        ],
+        "signal_ref": "financing_listing_action:v5",
+        "support": {
+          "directional_wrong": 0,
+          "misleading_attributions": 2,
+          "unavailable": 0,
+          "unavailable_with_inputs": 0,
+          "unique_observations": 20
+        },
+        "worked_recent_cycles": 0
+      },
+      "status": "completed",
+      "model_called": false,
+      "disposition": "defer",
+      "defer_reason": "insufficient_local_induction",
+      "execution_usage": {
+        "cost": 0.04026792,
+        "llm_calls": 11,
+        "tokens": 137468
+      },
+      "local_selection": {
+        "available_bucket_counts": {
+          "correct": 0,
+          "neutral": 7,
+          "unavailable": 0,
+          "wrong": 0
+        },
+        "holdout_case_ids": [
+          "cik_0001474627:20250530",
+          "cik_0001679273:20250331",
+          "cik_0002009312:20250930",
+          "cik_0001681459:20250530",
+          "cik_0001065059:20250131",
+          "cik_0001361658:20250131",
+          "cik_0000878518:20250930",
+          "cik_0001097362:20250731"
+        ],
+        "induction_case_ids": [
+          "cik_0001951089:20250530",
+          "cik_0001946703:20250731"
+        ],
+        "issuer_disjoint": true,
+        "primary_sources": [],
+        "problem_bucket": "wrong",
+        "technical_failure_count": 1
+      },
+      "technical_failures": [
+        {
+          "case_id": "cik_0001746129:20250731",
+          "execution_status": "validation_failed",
+          "error_code": "signal_output_validation_exhausted",
+          "error_message": "Signal supporting evidence[0] on projection 'projection_ca336082822ec693375bc4ad' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        }
+      ]
+    },
+    {
+      "target": {
+        "problem_type": "repeated_explicit_misleading",
+        "recurring_contexts": [
+          {
+            "context_tag": "catalyst_window",
+            "issuers": 10,
+            "observations": 10,
+            "positive_surge_rate": 0.75
+          },
+          {
+            "context_tag": "small_cap",
+            "issuers": 10,
+            "observations": 10,
+            "positive_surge_rate": 0.75
+          },
+          {
+            "context_tag": "capital_intensive",
+            "issuers": 8,
+            "observations": 8,
+            "positive_surge_rate": 0.75
+          }
+        ],
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "support": {
+          "directional_wrong": 1,
+          "misleading_attributions": 6,
+          "unavailable": 2,
+          "unavailable_with_inputs": 2,
+          "unique_observations": 10
+        },
+        "worked_recent_cycles": 0
+      },
+      "status": "completed",
+      "model_called": true,
+      "disposition": "no_change",
+      "defer_reason": null,
+      "execution_usage": {
+        "cost": 0.03551464,
+        "llm_calls": 11,
+        "tokens": 121593
+      },
+      "local_selection": {
+        "available_bucket_counts": {
+          "correct": 0,
+          "neutral": 4,
+          "unavailable": 3,
+          "wrong": 1
+        },
+        "holdout_case_ids": [
+          "cik_0001474627:20250530",
+          "cik_0001679273:20250331",
+          "cik_0002009312:20250930",
+          "cik_0001681459:20250530",
+          "cik_0001065059:20250131",
+          "cik_0001361658:20250131",
+          "cik_0000878518:20250930",
+          "cik_0001097362:20250731"
+        ],
+        "induction_case_ids": [
+          "cik_0001421517:20250131",
+          "cik_0001951089:20250530",
+          "cik_0001946703:20250731",
+          "cik_0000800457:20250731"
+        ],
+        "issuer_disjoint": true,
+        "primary_sources": [
+          "wrong",
+          "domain_unavailable"
+        ],
+        "problem_bucket": "wrong",
+        "technical_failure_count": 0
+      },
+      "technical_failures": []
+    },
+    {
+      "target": {
+        "problem_type": "repeated_explicit_misleading",
+        "recurring_contexts": [
+          {
+            "context_tag": "catalyst_window",
+            "issuers": 17,
+            "observations": 17,
+            "positive_surge_rate": 0.8
+          },
+          {
+            "context_tag": "large_cap",
+            "issuers": 13,
+            "observations": 13,
+            "positive_surge_rate": 1.0
+          },
+          {
+            "context_tag": "mid_cap",
+            "issuers": 8,
+            "observations": 8,
+            "positive_surge_rate": 0.5
+          }
+        ],
+        "signal_ref": "guidance_acceleration:v3",
+        "support": {
+          "directional_wrong": 3,
+          "misleading_attributions": 5,
+          "unavailable": 2,
+          "unavailable_with_inputs": 2,
+          "unique_observations": 17
+        },
+        "worked_recent_cycles": 0
+      },
+      "status": "completed",
+      "model_called": false,
+      "disposition": "defer",
+      "defer_reason": "insufficient_local_induction",
+      "execution_usage": {
+        "cost": 0.025422319999999998,
+        "llm_calls": 8,
+        "tokens": 89571
+      },
+      "local_selection": {
+        "available_bucket_counts": {
+          "correct": 0,
+          "neutral": 0,
+          "unavailable": 8,
+          "wrong": 0
+        },
+        "holdout_case_ids": [
+          "cik_0001474627:20250530",
+          "cik_0001679273:20250331",
+          "cik_0002009312:20250930",
+          "cik_0001681459:20250530",
+          "cik_0001065059:20250131",
+          "cik_0001361658:20250131",
+          "cik_0000878518:20250930",
+          "cik_0001097362:20250731"
+        ],
+        "induction_case_ids": [
+          "cik_0001951089:20250530",
+          "cik_0001946703:20250731"
+        ],
+        "issuer_disjoint": true,
+        "primary_sources": [
+          "domain_unavailable",
+          "domain_unavailable"
+        ],
+        "problem_bucket": "wrong",
+        "technical_failure_count": 0
+      },
+      "technical_failures": []
+    }
+  ],
+  "update_original_request_hashes": [
+    "e4b9d33cedd4ed1ce1c4fecdb713faf8e14b5f1dc40b72f1411e3f41774bc132",
+    "2a4d7d9676811f4b814e3da752af7af7df7d947612c367eee326015aeb347ad6"
+  ],
+  "review_remaining": [
+    "Full backlog disposition semantics beyond reviewed rows",
+    "Slow fixture source-boundary failure and exact original/correction replay",
+    "Seven Fast Signal validation failures and role/content audit of other checkpoints",
+    "Mining directory/read coverage and market evidence construction",
+    "Successor live integration and magnitude admission/use",
+    "User-approved independent benefit protocol"
+  ],
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/state.json": "d290a88bcd9fa538a81080ace610673c716726a56854ce0e5459f892ba3a0b5a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cycle_state.json": "f10674c1252174473029b75cdac6bdb438181ea53b580e733ea6b92ae7888876",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/attempts.json": "2b6ff0cdf221aac33aa834f49868f9a847273c317e1d761711ad2c1e6897a8e1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/input_manifest.json": "b5588fd1c7d7e9a6caa06ea0d860c1d5585297f31cdc6faa007ce06550988db1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/run_contract.json": "a245251e161def8182826bc4715db9d9a6b171245e906eb478936310d51da7f2",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/cycles/cycle-0001/slow_input.json": "7ac0e1dcc1b52ed6c9b96f4c90c0926797a90457bcf36478ccafc0e99c5811c6",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/cycles/cycle-0001/slow_memory.json": "923cb650372dab48b47673eea8f909fe87c356977488f2f46ed68d5c44e6e2bc",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/cycles/cycle-0001/slow_loop_result.json": "79e2f3faad2a2af0db3e815c2f1ebfd20a6c153770cf8c1eeddc3857fc3ba154",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/cycles/cycle-0001/slow_loop_validation.json": "469cde4ce3b0a6de039c43448f8fdeb2c48792d34010b6b5cb7341cb84bad7a8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/cycles/cycle-0001/slow_experiments.json": "e3175ccf13974abc77ce57d5e0844b27bd4a7098a84602d9e7f424c13e0c4321"
+  },
+  "acceptance": {
+    "zero_technical_failure": false,
+    "new_magnitude_signal_admission": false,
+    "higher_magnitude_prediction_supported": false,
+    "independent_benefit_confirmed": false,
+    "goal_complete": false
+  }
+}

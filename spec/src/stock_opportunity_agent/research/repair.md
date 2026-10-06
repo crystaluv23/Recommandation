@@ -41,6 +41,14 @@ multiple prior claims or conflicting dependency replacements remain semantic.
 
 ## Verification
 
+An unavailable finding is mechanical only when the owning State validator
+marks `remove_unavailable_finding` with its exact field, returned text and Signal
+reference. The remove-only indexed obligation must match that snapshot; absent
+context, replace/add authority, alternative paths and dependencies do not grant
+quarantine. Valid observations, prior findings and unresolved needs survive.
+Complete State validation runs again after removal, including mixed independent
+failures and the terminal all-unavailable preservation contract.
+
 Plan proposal `B.requests[*].source_types` is an ordered source-family set.
 Exact repeated nonblank string members may be removed mechanically, retaining
 the first occurrence and every distinct value in original order. No casefold,

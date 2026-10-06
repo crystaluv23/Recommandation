@@ -1111,7 +1111,7 @@ class ReflectionRoleAdapterTests(TestCase):
             previous.next_information_needs,
         )
 
-    def test_v21_reflect_rejects_cosmetic_progress_and_hides_unavailable_claim(self) -> None:
+    def test_v21_reflect_quarantines_unavailable_findings_and_preserves_unanswered_need(self) -> None:
         fixture = json.loads(
             (
                 PROJECT_ROOT
@@ -1145,20 +1145,20 @@ class ReflectionRoleAdapterTests(TestCase):
             [fixture["unchanged_output"], fixture["cosmetic_correction"]]
         )
 
-        with self.assertRaisesRegex(
-            CandidateExecutionRejected,
-            "outside typed authority",
-        ):
-            LLMResearchController(caller).reflect(
-                default_information_plan(),
-                ResearchState(
-                    open_questions=("Is customer concentration known?",),
-                    next_information_needs=(fixture["previous_need"],),
-                ),
-                SignalBatchResult(
-                    results=(unavailable, available), signal_calls=2
-                ),
-            )
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(),
+            ResearchState(
+                open_questions=("Is customer concentration known?",),
+                next_information_needs=(fixture["previous_need"],),
+            ),
+            SignalBatchResult(results=(unavailable, available), signal_calls=2),
+        )
+        self.assertEqual(reflected.value.current_beliefs, ())
+        self.assertEqual(reflected.value.resolved_questions, ())
+        self.assertEqual(reflected.value.next_information_needs, (fixture["previous_need"],))
+        self.assertEqual(len(reflected.value.supporting_evidence), 1)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertEqual(caller.outputs, [fixture["cosmetic_correction"]])
 
         unavailable_view = caller.calls[0]["payload"]["signal_batch"][0]
         summary = unavailable_view["interpretation"]["summary"]
@@ -1168,10 +1168,6 @@ class ReflectionRoleAdapterTests(TestCase):
             unavailable_view["evidence"], {"supporting": [], "counter": []}
         )
         self.assertIn("not evidence of absence", caller.calls[0]["system_prompt"])
-        self.assertIn(
-            "treated an unavailable Signal as a finding",
-            validation_error(caller.calls[1]),
-        )
 
         compact_posthoc = evolution_runtime_module._compact_posthoc_context(
             {

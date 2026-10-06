@@ -1,0 +1,820 @@
+{
+  "prediction_time": "2025-07-31T00:00:00+00:00",
+  "context_contract": {
+    "kind": "typed_append_only_assembly",
+    "target_utf8_bytes": 24000,
+    "budget_enforcement": "exact_wire_remaining_case_tokens",
+    "complete_trajectory_retained_locally": true,
+    "assembly_blocks": [
+      {
+        "block_type": "basic_info_cards",
+        "provenance": "projection_id"
+      },
+      {
+        "block_type": "computed_anchor",
+        "provenance": "runtime_market_computation"
+      },
+      {
+        "block_type": "computed_metrics",
+        "provenance": "runtime_market_computation"
+      },
+      {
+        "block_type": "document_channel",
+        "provenance": "runtime_pit_disclosure"
+      },
+      {
+        "block_type": "signal_results",
+        "provenance": "signal_ref"
+      },
+      {
+        "block_type": "cited_signal_evidence",
+        "provenance": "signal_evidence_ref"
+      },
+      {
+        "block_type": "state_evolution",
+        "provenance": "per_round_delta"
+      },
+      {
+        "block_type": "research_state",
+        "provenance": "runtime_validated_state"
+      },
+      {
+        "block_type": "analysis_prompt",
+        "provenance": "plan"
+      }
+    ],
+    "numeric_decision_inputs_permitted_only_in": [
+      "prediction_baseline",
+      "computed_metrics"
+    ],
+    "presentation_target_exceeded": true
+  },
+  "basic_info": {
+    "source_index": [
+      {
+        "request_id": "recent_market_backbone",
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_d4cfe7c37933821d5eeade20",
+          "projection_9594e6b132f95d61058be59d",
+          "projection_c650bfeb9394208c601dfbf0",
+          "projection_11d2b0e09b97497f313089c8",
+          "projection_8d94ecd83d502aecc10f61da"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 5,
+        "visible_projection_count": 5,
+        "omitted_projection_count": 0
+      },
+      {
+        "request_id": "recent_operating_report",
+        "source_types": [
+          "filing"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_d6e59e5c1e23fe2ac630a99d",
+          "projection_44590e94896b24b904d4c033",
+          "projection_cde25659c462b50cf8574b1d",
+          "projection_a8a8412b03f84df1f5762a37"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 4,
+        "visible_projection_count": 4,
+        "omitted_projection_count": 0
+      },
+      {
+        "request_id": "management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_0398b7cdab936d529b241a5d",
+          "projection_7128adae7f46f5dea00b55d1",
+          "projection_6ebea0e7e435ca87b29280ab",
+          "projection_9f8e781f2663878cefdb2d22",
+          "projection_a88bab857017fc4d20b0050f",
+          "projection_ec72d4975e589e82f757370d",
+          "projection_960d744fff052bc83a02c393",
+          "projection_84642da169f36a72e68ad6e1",
+          "projection_63eb4fd2f40e1b746b069497"
+        ],
+        "projection_status": "partial_context_budget",
+        "available_projection_count": 15,
+        "visible_projection_count": 9,
+        "omitted_projection_count": 6
+      },
+      {
+        "request_id": "scoped_news",
+        "source_types": [
+          "company_news",
+          "news"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_e1f00d90bf8265c6e1bd293f"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 1,
+        "visible_projection_count": 1,
+        "omitted_projection_count": 0
+      },
+      {
+        "request_id": "reported_financial_facts",
+        "source_types": [
+          "sec_company_facts",
+          "financials"
+        ],
+        "status": "resolved",
+        "projection_ids": [
+          "projection_1c24e310da9e1ab22415213c"
+        ],
+        "projection_status": "complete",
+        "available_projection_count": 1,
+        "visible_projection_count": 1,
+        "omitted_projection_count": 0
+      }
+    ],
+    "data_gaps": [],
+    "projection_cards": [
+      {
+        "request_id": "recent_market_backbone",
+        "projection_id": "projection_d4cfe7c37933821d5eeade20",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:0753a2fda6be894d5cf2347c",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":128.4,\"as_of_date\":\"2025-06-02\",\"close\":128.4,\"high\":128.47,\"low\":126.36,\"open\":127.48, \"volume\":3608056},{\"adjusted_close\":128.68,\"as_of_date\":\"2025-06-03\",\"close\":128.68,\"high\":129.18,\"low\":127.13,\"open\":128.12, \"volume\":4145999},{\"adjusted_close\":128.16,\"as_of_date\":\"2025-06-04\",\"close\":128.16,\"high\":129.42,\"low\":128.16,\"open\":128.84, \"volume\":3123273},{\"adjusted_close\":130.62,\"as_of_date\":\"2025-06-05\",\"close\":130.62,\"high\":131.05,\"low\":127.34,\"open\":128.37, \"volume\":6194188},{\"adjusted_close\":131.82,\"as_of_date\":\"2025-06-06\",\"close\":131.82,\"high\":133.57,\"low\":130.82,\"open\":132.08, \"volume\":5004465},{\"adjusted_close\":131.95,\"as_of_date\":\"2025-06-09\",\"close\":131.95,\"high\":132.9,\"low\":131.11,\"open\":132.23, \"volume\":4838689},{\"adjusted_close\":131.82,\"as_of_date\":\"2025-06-10\",\"close\":131.82,\"high\":132.46,\"low\":131.15,\"open\":131.6, \"volume\":3816898},{\"adjusted_close\":131.81,\"as_of_date\":\"2025-06-11\",\"close\":131.81,\"high\":133.45,\"low\":131.416,\"open\":132.03, \"volume\":5810214},{\"adjusted_close\":131.92,\"as_of_date\":\"2025-06-12\",\"close\":131.92,\"high\":132.0,\"low\":129.8,\"open\":130.66, \"volume\":4258742}",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_market_backbone",
+        "projection_id": "projection_9594e6b132f95d61058be59d",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:0753a2fda6be894d5cf2347c",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":129.49,\"as_of_date\":\"2025-06-13\",\"close\":129.49,\"high\":131.0688,\"low\":128.81,\"open\":130.19, \"volume\":4367616},{\"adjusted_close\":130.9,\"as_of_date\":\"2025-06-16\",\"close\":130.9,\"high\":132.8,\"low\":130.29,\"open\":130.29, \"volume\":6240543},{\"adjusted_close\":130.09,\"as_of_date\":\"2025-06-17\",\"close\":130.09,\"high\":131.17,\"low\":129.66,\"open\":129.84, \"volume\":4767744},{\"adjusted_close\":132.52,\"as_of_date\":\"2025-06-18\",\"close\":132.52,\"high\":132.96,\"low\":129.93,\"open\":130.02, \"volume\":6170559},{\"adjusted_close\":132.71,\"as_of_date\":\"2025-06-20\",\"close\":132.71,\"high\":133.37,\"low\":131.91,\"open\":133.35, \"volume\":8904389},{\"adjusted_close\":134.0,\"as_of_date\":\"2025-06-23\",\"close\":134.0,\"high\":134.1,\"low\":130.9,\"open\":132.06, \"volume\":5232415},{\"adjusted_close\":135.9,\"as_of_date\":\"2025-06-24\",\"close\":135.9,\"high\":136.68,\"low\":135.01,\"open\":135.68, \"volume\":5599881},{\"adjusted_close\":137.72,\"as_of_date\":\"2025-06-25\",\"close\":137.72,\"high\":137.89,\"low\":135.41,\"open\":136.12, \"volume\":5736436},{\"adjusted_close\":139.75,\"as_of_date\":\"2025-06-26\",\"close\":139.75,\"high\":140.195,\"low\":137.84,\"open\":138.01, \"volume\":6013633}",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_market_backbone",
+        "projection_id": "projection_c650bfeb9394208c601dfbf0",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:0753a2fda6be894d5cf2347c",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":140.69,\"as_of_date\":\"2025-06-27\",\"close\":140.69,\"high\":141.9,\"low\":139.1,\"open\":140.25, \"volume\":7249261},{\"adjusted_close\":140.86,\"as_of_date\":\"2025-06-30\",\"close\":140.86,\"high\":141.85,\"low\":139.55,\"open\":141.51, \"volume\":8034434},{\"adjusted_close\":141.07,\"as_of_date\":\"2025-07-01\",\"close\":141.07,\"high\":141.61,\"low\":139.469,\"open\":140.55, \"volume\":6166696},{\"adjusted_close\":142.86,\"as_of_date\":\"2025-07-02\",\"close\":142.86,\"high\":142.88,\"low\":140.98,\"open\":141.615, \"volume\":5494497},{\"adjusted_close\":144.14,\"as_of_date\":\"2025-07-03\",\"close\":144.14,\"high\":144.56,\"low\":142.67,\"open\":143.36, \"volume\":3974691},{\"adjusted_close\":143.74,\"as_of_date\":\"2025-07-07\",\"close\":143.74,\"high\":145.16,\"low\":142.495,\"open\":144.11, \"volume\":5991623},{\"adjusted_close\":141.13,\"as_of_date\":\"2025-07-08\",\"close\":141.13,\"high\":144.06,\"low\":141.02,\"open\":143.61, \"volume\":6620758},{\"adjusted_close\":141.55,\"as_of_date\":\"2025-07-09\",\"close\":141.55,\"high\":142.94,\"low\":140.9,\"open\":142.9, \"volume\":4837192},{\"adjusted_close\":143.09,\"as_of_date\":\"2025-07-10\",\"close\":143.09,\"high\":143.16,\"low\":141.32,\"open\":141.76, \"volume\":5623199}",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_market_backbone",
+        "projection_id": "projection_11d2b0e09b97497f313089c8",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:0753a2fda6be894d5cf2347c",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":142.28,\"as_of_date\":\"2025-07-11\",\"close\":142.28,\"high\":142.45,\"low\":141.12,\"open\":141.86, \"volume\":3647479},{\"adjusted_close\":143.97,\"as_of_date\":\"2025-07-14\",\"close\":143.97,\"high\":144.05,\"low\":142.0,\"open\":142.45, \"volume\":5376069},{\"adjusted_close\":141.59,\"as_of_date\":\"2025-07-15\",\"close\":141.59,\"high\":144.0,\"low\":141.55,\"open\":143.29, \"volume\":7392239},{\"adjusted_close\":139.79,\"as_of_date\":\"2025-07-16\",\"close\":139.79,\"high\":139.999,\"low\":135.265,\"open\":139.5, \"volume\":10610796},{\"adjusted_close\":140.9,\"as_of_date\":\"2025-07-17\",\"close\":140.9,\"high\":141.69,\"low\":139.1303,\"open\":139.26, \"volume\":7695950},{\"adjusted_close\":140.83,\"as_of_date\":\"2025-07-18\",\"close\":140.83,\"high\":141.75,\"low\":140.2,\"open\":141.45, \"volume\":5572322},{\"adjusted_close\":140.47,\"as_of_date\":\"2025-07-21\",\"close\":140.47,\"high\":142.52,\"low\":140.1839,\"open\":141.24, \"volume\":5853541},{\"adjusted_close\":140.04,\"as_of_date\":\"2025-07-22\",\"close\":140.04,\"high\":140.89,\"low\":138.93,\"open\":140.8, \"volume\":5257248},{\"adjusted_close\":142.21,\"as_of_date\":\"2025-07-23\",\"close\":142.21,\"high\":142.629,\"low\":139.93,\"open\":140.775, \"volume\":6612879}",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_market_backbone",
+        "projection_id": "projection_8d94ecd83d502aecc10f61da",
+        "document_id": "massive:[MASKED_COMPANY]:market_data:0753a2fda6be894d5cf2347c",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "exact_text": "{\"adjusted_close\":142.5,\"as_of_date\":\"2025-07-24\",\"close\":142.5,\"high\":143.72,\"low\":141.85,\"open\":142.47, \"volume\":3817932},{\"adjusted_close\":143.01,\"as_of_date\":\"2025-07-25\",\"close\":143.01,\"high\":143.375,\"low\":142.05,\"open\":142.92, \"volume\":3463310},{\"adjusted_close\":142.56,\"as_of_date\":\"2025-07-28\",\"close\":142.56,\"high\":143.14,\"low\":142.02,\"open\":143.04, \"volume\":3729601},{\"adjusted_close\":143.56,\"as_of_date\":\"2025-07-29\",\"close\":143.56,\"high\":144.05,\"low\":142.1,\"open\":143.5, \"volume\":5158704},{\"adjusted_close\":144.94,\"as_of_date\":\"2025-07-30\",\"close\":144.94,\"high\":145.48,\"low\":143.283,\"open\":143.83, \"volume\":5236849}",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_operating_report",
+        "projection_id": "projection_d6e59e5c1e23fe2ac630a99d",
+        "document_id": "sec:[MASKED_COMPANY]:000089542125000419",
+        "available_at": "2025-07-16T11:59:47+00:00",
+        "exact_text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant To Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of report (Date of earliest event reported): July 16, 2025 [MASKED_COMPANY] (Exact Name of Registrant as Specified in Charter) Delaware 1-11758 36-3145972 (State or Other Jurisdiction of Incorporation) (Commission File Number) (IRS Employer Identification No.) 1585 Broadway , New York , New York 10036 (Address of Principal Executive Offices) (Zip Code) Registrant’s telephone number, including area code: ( 212 ) 761-4000 Not Applicable (Former Name or Former Address, if Changed Since Last Report) Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions: ☐ Written communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425) ☐ Soliciting material pursuant to Rule 14a-12 under the Exchange Act (17 CFR 240.14a-12) ☐ Pre-commencement communications pursuant to Rule 14d-2(b) under the Exchange Act (17 CFR 240.14d-2(b)) ☐ Pre-commencement communications pursuant to Rule 13e-4(c) under the Exchange Act (17 CFR 240.13e-4(c)) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock, $0.01 par value [MASKED_COMPANY] New York Stock Exchange Title of each class Trading Symbol(s) Name of each exchange on which registered Depositary Shares, each representing 1/1,000th interest in a share of Floating Rate Non-Cumulative Preferred Stock, Series A, $0.01 par value [MASKED_COMPANY]/PA New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of Fixed-to-Floating Rate Non-Cumulative Preferred Stock, Series E, $0.01 par valu",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_operating_report",
+        "projection_id": "projection_44590e94896b24b904d4c033",
+        "document_id": "sec:[MASKED_COMPANY]:000089542125000419",
+        "available_at": "2025-07-16T11:59:47+00:00",
+        "exact_text": "s A, $0.01 par value [MASKED_COMPANY]/PA New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of Fixed-to-Floating Rate Non-Cumulative Preferred Stock, Series E, $0.01 par value [MASKED_COMPANY]/PE New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of Fixed-to-Floating Rate Non-Cumulative Preferred Stock, Series F, $0.01 par value [MASKED_COMPANY]/PF New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of Fixed-to-Floating Rate Non-Cumulative Preferred Stock, Series I, $0.01 par value [MASKED_COMPANY]/PI New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of Fixed-to-Floating Rate Non-Cumulative Preferred Stock, Series K, $0.01 par value [MASKED_COMPANY]/PK New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of 4.875% Non-Cumulative Preferred Stock, Series L, $0.01 par value [MASKED_COMPANY]/PL New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of 4.250% Non-Cumulative Preferred Stock, Series O, $0.01 par value [MASKED_COMPANY]/PO New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of 6.500% Non-Cumulative Preferred Stock, Series P, $0.01 par value [MASKED_COMPANY]/PP New York Stock Exchange Depositary Shares, each representing 1/1,000th interest in a share of 6.625% Non-Cumulative Preferred Stock, Series Q, $0.01 par value [MASKED_COMPANY]/PQ New York Stock Exchange Global Medium-Term Notes, Series A, Fixed Rate Step-Up Senior Notes Due 2026 of [MASKED_COMPANY] Finance LLC (and Registrant’s guarantee with respect thereto) [MASKED_COMPANY]/26C New York Stock Exchange Global Medium-Term Notes, Series A, Floating Rate Notes Due 2029 of [MASKED_COMPANY] Finance LLC (and Registrant’s guarantee with respect thereto) [MASKED_COMPANY]/29 New York Stock Exchange Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (§230.405 of this chapter) or Rule 12b-2 of the Securiti",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_operating_report",
+        "projection_id": "projection_cde25659c462b50cf8574b1d",
+        "document_id": "sec:[MASKED_COMPANY]:000089542125000419",
+        "available_at": "2025-07-16T11:59:47+00:00",
+        "exact_text": "Exchange Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (§230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (§240.12b-2 of this chapter). Emerging growth company ☐ If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act. ☐ Item 2.02 Results of Operations and Financial Condition. On July 16, 2025, [MASKED_COMPANY] (the \"Company\") released financial information with respect to its quarter ended June 30, 2025. A copy of the press release containing this information is annexed as Exhibit 99.1 to this Report and by this reference incorporated herein and made a part hereof. In addition, a copy of the Company's Financial Data Supplement for its quarter ended June 30, 2025 is annexed as Exhibit 99.2 to this Report and by this reference incorporated herein and made a part hereof. The information furnished under Item 2.02 of this Report, including Exhibit 99.1 and Exhibit 99.2, shall be deemed to be \"filed\" for purposes of the Securities Exchange Act of 1934, as amended. Item 9.01 Financial Statements and Exhibits. (d) Exhibits Exhibit Number Description 99.1 Press release of the Company, dated July 16, 2025 , containing financial information for the quarter ended June 30, 2025 . 99.2 Financial Data Supplement of the Company for the quarter ended June 30, 2025 . 101 Interactive Data Files pursuant to Rule 406 of Regulation S-T formatted in Inline eXtensible Business Reporting Language (“Inline XBRL”). 104 Cover Page Interactive Data File (formatted in Inline XBRL and contained",
+        "truncated": false
+      },
+      {
+        "request_id": "recent_operating_report",
+        "projection_id": "projection_a8a8412b03f84df1f5762a37",
+        "document_id": "sec:[MASKED_COMPANY]:000089542125000419",
+        "available_at": "2025-07-16T11:59:47+00:00",
+        "exact_text": "uant to Rule 406 of Regulation S-T formatted in Inline eXtensible Business Reporting Language (“Inline XBRL”). 104 Cover Page Interactive Data File (formatted in Inline XBRL and contained in Exhibit 101). SIGNATURE Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, hereunto duly authorized. [MASKED_COMPANY] (Registrant) Date: July 16, 2025 By: /s/ Victoria Worster Name: Victoria Worster Title: Chief Accounting Officer and Controller",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_0398b7cdab936d529b241a5d",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "{\"quarter\":\"2025Q2\",\"symbol\":\"[MASKED_COMPANY]\",\"transcript\":[{\"content\":\"Good morning. Welcome to [MASKED_COMPANY] Second Quarter 2025 Earnings Call. On behalf of [MASKED_COMPANY], I will begin the call with the following information and disclaimers. This call is being recorded. During today's presentation, we will refer to our earnings release and financial supplement, copies of which are available at morganstanley.com. Today's presentation may include forward-looking statements that are subject to risks and uncertainties that may cause actual results to differ materially. [MASKED_COMPANY] does not undertake to update the forward-looking statements in this discussion. Please refer to our notices regarding forward-looking statements and non-GAAP measures that appear in the earnings release. This presentation may not be duplicated or reproduced without our consent. I will now turn the call over to Chairman and Chief Executive Officer, Ted Pick.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"Thank you, and good morning. Thank you for joining us. The second quarter unfolded with two distinct halves. The first half began with uncertainty and market volatility associated with the U.S. trade policy and the second half ended with increasing engagement and a steady rebound in capital markets. For the quarter, the Firm delivered $16.8 billion in revenue, $2.13 in EPS and an 18.2% return on tangible, completing a very strong first half of 2025, $34.5 billion in revenue, $4.73 in EPS and a 20.6% return on tangible. With six sequential quarters of durable earnings, $2.02, $1.82, $1.88, $2.22, $2.60, and $2.13, [MASKED_COMPANY]'s results have a cadence that reflects consistently higher levels of performance as we execute our strategy through different market and macro backdrops. The results speak to the power of our Integrated Firm and the alignment of the Firm's leadership team. With the expectation of a more constructive regulatory backdrop, we are intensely focused on gen",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_7128adae7f46f5dea00b55d1",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "The results speak to the power of our Integrated Firm and the alignment of the Firm's leadership team. With the expectation of a more constructive regulatory backdrop, we are intensely focused on generating returns on incremental capital deployment and investing for growth across the Integrated Firm globally. Total client assets across Wealth and Investment Management climbed to over $8.2 trillion, reflecting our scale and gaining ground toward our target to exceed $10 trillion. In Wealth, an excellent quarter. Profits before tax reached a record $2.2 billion on margins of over 28%. Net new assets of $59 billion were strong despite higher seasonal tax payments. And fee-based flows of $43 billion demonstrate the value of advice amidst the complex environment and support durable growth of recurring fee-based revenues. Ongoing investments in our world-class platform, including investments to support our advisers, a build-out of E-Trade capabilities, and the expansion of our central workplace channel serve as an engine for future growth. In Investment Management, our leading industry-parametric platform as well as strong Fixed Income strategies have successfully positioned this business to achieve consistent long-term inflows, generating a positive $11 billion in the second quarter. Our Institutional franchise delivered revenues of $7.6 billion supported by our leading equity markets business that reached a $3.7 billion top line. Despite a slowdown in strategic and capital markets activity for half of the quarter, our multiyear investments in our client franchise and global footprint are yielding results. A resumption of investment banking activity in June highlighted that clients turned to [MASKED_COMPANY] as market windows reopened, and serve as momentum heading into the second half of 2025. Boardrooms appear more accepting of ongoing uncertainty broadly, and we are leaning into our strategy to help clients navigate bouts of volatility. While we're still in the earlier",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_6ebea0e7e435ca87b29280ab",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "econd half of 2025. Boardrooms appear more accepting of ongoing uncertainty broadly, and we are leaning into our strategy to help clients navigate bouts of volatility. While we're still in the earlier stages of the Investment Banking recovery, the outstanding performance in equity underwriting this quarter is a positive leading indicator. Further, while there's clearly more work to do, we are beginning to see bank regulatory reform progress. The new SLR proposal and potential for CCAR reform suggests the regulatory body continues to constructively reevaluate the total capital framework. With a CET1 ratio of 15%, we are over 200 basis points above our forward capital requirement, which affords us ongoing flexibility to deploy capital. We now have a $1 per share dividend. Incremental capital deployment will range from supporting clients, growing our businesses, opportunistically buying back stock, and evaluating inorganic opportunities where there is clear strategic alignment, all through the lens of generating strong and durable returns for our shareholders. Looking ahead, we remain constructive on the market environment. Our strategy to raise, manage, and allocate capital for clients across the Wealth and Institutional universe is working. Amidst continuing economic and geopolitical uncertainty, we are intensely focused on continuing to deliver outstanding durable results for clients and returns for shareholders. Sharon will now take us through the quarter in greater detail. Over to you.\",\"sentiment\":\"0.8\",\"speaker\":\"Ted Pick\",\"title\":\"CEO\"},{\"content\":\"Thank you, and good morning. In the second quarter, the Firm produced revenues of $16.8 billion. Our EPS was $2.13 and our ROTCE was 18.2%. The market backdrop varied materially over the course of the quarter, impacting investor sentiment and prompting clients to seek advice and reposition portfolios in response to evolving trends and themes. Amid this backdrop, our business performed very well. We benefited from our",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_9f8e781f2663878cefdb2d22",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "investor sentiment and prompting clients to seek advice and reposition portfolios in response to evolving trends and themes. Amid this backdrop, our business performed very well. We benefited from our multiyear investments to drive organic growth in Wealth and Investment Management and to support our global footprint across the integrated investment bank. Deepening partnerships across the Integrated Firm positioned us well to capture momentum in the quarter. The Firm's year-to-date efficiency ratio was 70%. Efficiency gains remain a product of continued prioritization of our controllable spend and savings from prior space exits, self-funding investments, and driving increased productivity by leveraging technology to support the Firm's strategy. Improved efficiency also comes despite higher execution-related costs on the back of elevated volumes broadly. Now to the businesses. Institutional Securities revenues were $7.6 billion, supported by our Equity and Fixed Income markets franchises, and regionally, by period-over-period strength in Asia and EMEA. Results benefited from our ongoing investments in talent, global footprint, and technology enabling us to capture activity levels and meet clients' need for advice. The underlying businesses performance varied throughout the quarter. Our markets business captured client flow opportunities early on when activity levels were elevated. Investment banking paused for April and the first half of May, but activity recovered alongside rising asset levels. A rebound in the performance of IPOs that had been priced earlier in the year supported prospective issuers to successfully come to market, further establishing investor and corporate confidence. As a result, the integrated investment bank ended the quarter with strength. Investment Banking revenues were $1.5 billion. Equity underwriting gained momentum following multiple years of subdued activity. And its rebound partially offset the year-over-year declines in debt underwrit",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_a88bab857017fc4d20b0050f",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "ent Banking revenues were $1.5 billion. Equity underwriting gained momentum following multiple years of subdued activity. And its rebound partially offset the year-over-year declines in debt underwriting and advisory. Regionally, strength out of Asia Pacific was supported by a healthy mix of activity across equity products. Advisory revenues were $508 million, reflecting lower completed activity. Equity underwriting revenues of $500 million improved meaningfully versus the prior year, driven by broad-based strength across products. Despite a slowdown in April and much of May, convertibles, follow-ons, and IPO issuance all accelerated towards the end of the quarter as global issuers and investors gained confidence amid a market rebound. Fixed income underwriting revenues were $532 million. Results declined versus the strong comparative period, primarily due to lower non-investment grade issuance. The M&A backlog continues to build across regions with a thematic focus on growth, supported by health care and technology. With a similar focus on growth companies, our IPO pipeline is balanced between the Americas and Asia, and issuers are poised to launch new products to open markets. We have been investing in strategic hires and corporate lending to expand and deepen our coverage footprint. And our results and recent announcements prove ongoing progress. As we continue to support clients who are increasingly accepting of uncertainty and in greater need for advice, we are well positioned to capture share as Investment Banking activity accelerates. Turning to Equity, our franchise continues to deliver robust results with revenues of $3.7 billion, reflecting growth across products and regions. Volatility around changing trends and the eventual rebound in markets required clients to reposition, which drove heightened engagement globally. Prime brokerage revenues were especially strong, achieving a record. Average client balances rose to all-time highs, driving the strength o",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_ec72d4975e589e82f757370d",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "s to reposition, which drove heightened engagement globally. Prime brokerage revenues were especially strong, achieving a record. Average client balances rose to all-time highs, driving the strength of the financing revenues. Cash results increased versus the last year on higher volumes across regions with strength in EMEA. Derivative results rose versus the previous year as the business actively supported clients, particularly around tariff-related market events, during the period. Fixed Income revenues were $2.2 billion, driven by the strength in macro products. Macro results increased versus the prior year. The business benefited from an increase in client hedging, trend in foreign exchange markets, shifting interest rate expectations, and wider bid-offer spreads, particularly early in the quarter. Micro results were solid. Strength in secured lending revenues, which continue to grow on the back of higher balances, were partially offset by heightened volatility and widening credit spreads at the beginning of the quarter. Commodity results primarily reflected lower revenues in power and gas, and fewer structured trades compared to the previous period. Other revenues were $202 million. The comparison period benefited from higher net interest income and fees on corporate loans. Turning to ISG lending and provisions. In the quarter, ISG lending provisions were $168 million, driven by portfolio growth and a moderately weaker macroeconomic outlook. Net charge-offs were $19 million, primarily related to several commercial real estate loans, which were largely provisioned for in previous quarters. Turning to Wealth Management. The business delivered on key metrics. Strong net new assets, exceptional fee-based flows, and healthy lending growth reinforced our differentiated Wealth Management franchise. Revenues were $7.8 billion, inclusive of $292 million of DCP. And the margin continued to expand, showcasing the inherent operating leverage of our scaled platform. Results",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_960d744fff052bc83a02c393",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "alth Management franchise. Revenues were $7.8 billion, inclusive of $292 million of DCP. And the margin continued to expand, showcasing the inherent operating leverage of our scaled platform. Results reflect our investments focused on growth and our strong track record to help clients understand the value of advice. Moving to our business results in the second quarter. Pretax profit was a record at $2.2 billion, and the pretax margin was 28.3%. DCP negatively impacted the margin by approximately 70 basis points. Higher margin shows strength of our asset growth achieved by our investment-led strategy. The underlying business progressed towards our long-term goal of 30%. Asset management revenues were $4.4 billion, up 11% versus the prior year, driven by higher market levels and the cumulative impact of consistently robust fee-based flows. In the quarter, fee-based flows were very strong at $43 billion, marking a record, excluding previous asset acquisitions. Clients continue to shift assets from adviser-led brokerage accounts to fee-based accounts, and we continue to invest in overall education, technology, and product innovation to benefit clients and support ongoing asset migration. Fee-based assets now stand at $2.5 trillion. Net new assets in the quarter of $59 billion were inclusive of a $22 billion headwind from tax outflows and reflect growth across channels. Adviser-led flows were particularly strong, originating from new advisers who are attracted to the strength of the Workplace as well as assets that originated from Workplace. Transactional revenues were $1.3 billion. And excluding the impact of DCP, revenues increased 17% versus the last year. Retail engagement was especially strong in April as clients responded to elevated market volatility, and activity persisted with momentum at the end of the quarter. Bank lending balances increased sequentially to $169 billion, predominantly driven by growth in securities-based lending. Steady growth in lending shows",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_84642da169f36a72e68ad6e1",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "sisted with momentum at the end of the quarter. Bank lending balances increased sequentially to $169 billion, predominantly driven by growth in securities-based lending. Steady growth in lending shows our progress in deepening client relationships by offering portfolio solutions, addressing both sides of the clients' balance sheets. Household lending penetration grew across our adviser-led channel, with greater engagement from advisers and clients. Total deposits increased $383 billion. And net interest income of $1.9 billion was flat sequentially. These results reinforce continued stability in sweep balances. Throughout the quarter, clients steadily deployed cash into the market, indicating confidence in the forward look. As we look ahead to the third quarter, we would expect NII to remain around recent levels, subject to changes in the policy rate. Along with $6.5 trillion of client assets, our second-quarter performance demonstrates that our strategy is working, benefiting from years of sustained investment and consistent execution. Our scale positions us to continue to innovate and invest in a secularly growing market. Today we have 20 million individual relationships across our three channels, and the opportunity to deliver incremental advice and solutions across channels and our platform remains ahead of us. Turning to Investment Management. The business delivered strong results with revenues of $1.6 billion, increasing 12% year-over-year. Total AUM reached a record at $1.7 trillion. Our franchise generated positive long-term net flows of $11 billion, bringing year-to-date inflows to $16 billion. Strong organic growth is the product of leveraging our global distribution with a particular emphasis in fixed income. We are also continuing to see strong demand for Parametric's customized portfolios, especially among our wealth management client base. Asset Management and related fees were $1.4 billion, driven by higher average AUM across asset classes. Performance",
+        "truncated": false
+      },
+      {
+        "request_id": "management_commentary",
+        "projection_id": "projection_63eb4fd2f40e1b746b069497",
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "available_at": "2025-07-17T00:00:00+00:00",
+        "exact_text": "ametric's customized portfolios, especially among our wealth management client base. Asset Management and related fees were $1.4 billion, driven by higher average AUM across asset classes. Performance-based income and other revenues were $118 million, largely driven by gains in infrastructure funds. Liquidity and overlay services had outflows of $27.3 billion, reflecting institutional outflows, partially related to deployment into markets and corporate CapEx. Overall, we are seeing the benefit of our investments and continued focus on global distribution capabilities. By leveraging the Integrated Firm, we are focused on our ability to generate sustainable growth in long-term flows and fee-based revenues. Turning to the balance sheet. Total spot assets increased $54 billion from the prior quarter to $1.4 trillion. Our standardized CET1 ratio stands at 15%. Standardized RWAs increased sequentially to $523 billion as we actively supported our clients. Our stress test results reflect the durability of our business model and show consistent improvement in our results over the past five years. We announced a quarterly dividend increase of $0.075, bringing our quarterly dividend per share to $1. Our quarterly tax rate was 22.7%, reflecting our global mix and level of earnings. We expect a tax rate of approximately 24% in the second half of this year, consistent with our initial guidance. The second-quarter results were strong. As we look ahead, we are entering the third quarter with momentum. Investment Banking pipelines are healthy, dialogues are active, and markets have proven resilient. And Wealth and Investment Management continue to gather assets with total client assets now reaching $8.2 trillion.\",\"sentiment\":\"0.7\",\"speaker\":\"Sharon Yeshaya\",\"title\":\"CFO\"},{\"content\":\"We'll take our first question from Ebrahim Poonawala with Bank of America.\",\"sentiment\":\"0.0\",\"speaker\":\"Operator\",\"title\":\"Operator\"},{\"content\":\"I have a question regarding the incremental return on",
+        "truncated": false
+      },
+      {
+        "request_id": "scoped_news",
+        "projection_id": "projection_e1f00d90bf8265c6e1bd293f",
+        "document_id": "avnews_d8f58a4c9d11222e31bcac4a",
+        "available_at": "2025-07-30T03:09:51+00:00",
+        "exact_text": "Figma Announces Pricing of Initial Public Offering | Figma Blog Figma has announced the pricing of its initial public offering (IPO) of 36,937,080 shares of Class A common stock at $33.00 per share. The shares are scheduled to begin trading on the New York Stock Exchange on July 31, 2025, under the ticker symbol \"FIG,\" with the offering expected to close on August 1, 2025. This IPO involves both shares offered by Figma and by existing stockholders, with [MASKED_COMPANY], Goldman Sachs & Co. LLC, Allen & Company LLC, and J.P. [MASKED_COMPANY] serving as joint lead book-running managers.",
+        "truncated": false
+      },
+      {
+        "request_id": "reported_financial_facts",
+        "projection_id": "projection_1c24e310da9e1ab22415213c",
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:ca6f74c0cda71b17a7b70f7a",
+        "available_at": "2025-05-05T00:00:00+00:00",
+        "exact_text": "{\"cik\":895421,\"entityName\":\"[MASKED_COMPANY]\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-09-169269\",\"end\":\"2009-07-31\",\"filed\":\"2009-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2009Q2I\",\"fy\":2009,\"val\":1359166836},{\"accn\":\"0001193125-09-227984\",\"end\":\"2009-10-31\",\"filed\":\"2009-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2009Q3I\",\"fy\":2009,\"val\":1359433369},{\"accn\":\"0001193125-10-042763\",\"end\":\"2010-01-31\",\"filed\":\"2010-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2009Q4I\",\"fy\":2009,\"val\":1398087044},{\"accn\":\"0001193125-10-112958\",\"end\":\"2010-04-30\",\"filed\":\"2010-05-07\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2010Q1I\",\"fy\":2010,\"val\":1397819191},{\"accn\":\"0001193125-10-181853\",\"end\":\"2010-07-31\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":1396968554},{\"accn\":\"0001193125-10-252125\",\"end\":\"2010-10-31\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":1512877397},{\"accn\":\"0001193125-11-050049\",\"end\":\"2011-01-31\",\"filed\":\"2011-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2010Q4I\",\"fy\":2010,\"val\":1545631781},{\"accn\":\"0001193125-11-132343\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":1544658124},{\"accn\":\"0001193125-11-213320\",\"end\":\"2011-07-31\",\"filed\":\"2011-08-08\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":1927916237},{\"accn\":\"0001193125-11-299890\",\"end\":\"2011-10-31\",\"filed\":\"2011-11-07\",\"form\":\"10-Q",
+        "truncated": false
+      }
+    ],
+    "projection_card_counts": {
+      "available_projections": 20,
+      "included_cards": 20,
+      "deferred_projections": 0
+    }
+  },
+  "prediction_baseline": {
+    "doubling_threshold": 286.628,
+    "mean_adjusted_close": 143.314,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 144.94,
+    "recent_close_date": "2025-07-30",
+    "status": "available",
+    "trading_dates": [
+      "2025-07-24",
+      "2025-07-25",
+      "2025-07-28",
+      "2025-07-29",
+      "2025-07-30"
+    ]
+  },
+  "computed_metrics": [
+    {
+      "as_of": "2025-07-31T00:00:00+00:00",
+      "labels": {
+        "trend": "range"
+      },
+      "literal_refs": [
+        {
+          "adjusted_close": 128.44,
+          "as_of_date": "2024-11-07"
+        },
+        {
+          "adjusted_close": 144.94,
+          "as_of_date": "2025-07-30"
+        }
+      ],
+      "metric": "price_shape",
+      "params": {
+        "window_days": 180
+      },
+      "schema_version": "computed-metric-card-v1",
+      "values": {
+        "daily_volatility_pct": 2.1247,
+        "first_close": 128.44,
+        "high": 144.94,
+        "last_close": 144.94,
+        "low": 99.83,
+        "max_drawdown_pct": -29.2387,
+        "return_pct": 12.8465,
+        "window_trading_days": 180
+      }
+    }
+  ],
+  "document_channel": [],
+  "signal_rounds": [
+    {
+      "selected_signals": [
+        "financing_listing_action:v5",
+        "guidance_acceleration:v3",
+        "cash_reserves:v2"
+      ],
+      "batch": {
+        "results": [
+          {
+            "signal_ref": "financing_listing_action:v5",
+            "state": {
+              "value": "neutral",
+              "confidence": 0.6
+            },
+            "interpretation": {
+              "summary": "The only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743"
+            }
+          },
+          {
+            "signal_ref": "guidance_acceleration:v3",
+            "state": {
+              "value": "neutral",
+              "confidence": 0.6
+            },
+            "interpretation": {
+              "summary": "The visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c"
+            }
+          },
+          {
+            "signal_ref": "cash_reserves:v2",
+            "state": {
+              "value": "positive",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "cash_reserves=9.0739e+10",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true,
+                "numeric_measurement": {
+                  "value": 90739000000.0,
+                  "unit": "USD",
+                  "formula": "latest reported instant cash balance",
+                  "period": {
+                    "end": "2025-03-31"
+                  },
+                  "numeric_sign": "positive",
+                  "categorical_state": "positive"
+                },
+                "source_observations": [
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "end": "2025-03-31",
+                    "val": 90739000000
+                  }
+                ],
+                "deferred_observation_count": 0,
+                "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            }
+          }
+        ],
+        "signal_calls": 3
+      }
+    },
+    {
+      "selected_signals": [
+        "liquidity_runway_months:v3",
+        "cash_to_current_liabilities_ratio:v2",
+        "order_confirmation_disclosed:v2",
+        "customer_concentration:v2"
+      ],
+      "batch": {
+        "results": [
+          {
+            "signal_ref": "liquidity_runway_months:v3",
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "liquidity_runway_months=11.3537",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true,
+                "numeric_measurement": {
+                  "value": 11.35372872872873,
+                  "unit": "months",
+                  "formula": "cash / (absolute negative operating cash flow / reported months)",
+                  "period": {
+                    "end": "2025-03-31",
+                    "start": "2025-01-01"
+                  },
+                  "numeric_sign": "positive",
+                  "categorical_state": "neutral"
+                },
+                "source_observations": [
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 0,
+                    "start": "2025-01-01",
+                    "end": "2025-03-31",
+                    "val": -23976000000
+                  },
+                  {
+                    "evidence_group": "supporting",
+                    "evidence_index": 1,
+                    "end": "2025-03-31",
+                    "val": 90739000000
+                  }
+                ],
+                "deferred_observation_count": 0,
+                "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors."
+              }
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "research_status": {
+              "technical_status": "admitted",
+              "effect_status": "unverified",
+              "research_targets": [
+                "surge_direction"
+              ],
+              "admission_key": "818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4"
+            }
+          },
+          {
+            "signal_ref": "cash_to_current_liabilities_ratio:v2",
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Unavailable: visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          },
+          {
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "state": {
+              "value": "neutral",
+              "confidence": 0.62
+            },
+            "interpretation": {
+              "summary": "Within the 180-day lookback window, the eligible documents disclose no new customer order, contract, offtake agreement, or binding award in which the target company is the recipient with a named counterparty/program and a stated or implied value, volume, or delivery schedule meeting the materiality threshold. The examined spans are non-qualifying: the Figma IPO item names the target only as a joint lead book-running manager (adviser role, not an order received); the Ormat item names the target's renewables affiliate as a tax-equity partner in Ormat's project financing rather than a customer order to the target; the SelectQuote item names the target's private credit unit as an investor in a third party's financing; the Lloyds item names the target as buyback manager for a third party; and the remaining items are awards, a research study release, and general commentary. No explicit cancellation or denial of a qualifying order was found. Accordingly the result is neutral.",
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              }
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            }
+          },
+          {
+            "signal_ref": "customer_concentration:v2",
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.5
+            },
+            "interpretation": {
+              "summary": "Unavailable: visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          }
+        ],
+        "signal_calls": 4
+      }
+    }
+  ],
+  "cited_signal_evidence": [
+    {
+      "signal_ref": "cash_reserves:v2",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:ca6f74c0cda71b17a7b70f7a",
+        "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2025Q1I\",\"fy\":2025,\"val\":90739000000}",
+        "timestamp": "2025-05-05T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "guidance_acceleration:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "alpha_vantage:[MASKED_COMPANY]:earnings_call:4991cd407c0da0768c268d49",
+        "exact_span": "We expect a tax rate of approximately 24% in the second half of this year, consistent with our initial guidance.",
+        "timestamp": "2025-07-17T00:00:00+00:00"
+      }
+    },
+    {
+      "signal_ref": "financing_listing_action:v5",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "avnews_c2b867982dda832d4a9d3e42",
+        "exact_span": "IonQ Announces At-the-Market Equity Offering Program for up to $500 Million\n\nIonQ (NYSE: IONQ) has announced an At-the-Market (ATM) equity offering program through an agreement with [MASKED_COMPANY] & Co. LLC and Needham & Company LLC, potentially raising up to $500 million.",
+        "timestamp": "2025-02-26T04:37:09+00:00"
+      }
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "evidence_group": "supporting",
+      "evidence_index": 0,
+      "evidence": {
+        "document_id": "sec_edgar:[MASKED_COMPANY]:financials:ca6f74c0cda71b17a7b70f7a",
+        "exact_span": "{\"accn\":\"0000895421-25-000343\",\"end\":\"2025-03-31\",\"filed\":\"2025-05-05\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":-23976000000}",
+        "timestamp": "2025-05-05T00:00:00+00:00"
+      }
+    }
+  ],
+  "state_evolution": [
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [
+            "The current-batch guidance signal is neutral: the visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+            "The current-batch financing/listing signal is neutral: the only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral."
+          ],
+          "removed": []
+        },
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": [
+            "What forward-looking guidance or outlook has the issuer provided by the prediction time for revenue, margins, capital returns, or segment performance that could support or contradict a doubling of the adjusted share price within the horizon?",
+            "What capital-structure, solvency, or liquidity disclosures has the issuer made by the prediction time, including going-concern language, debt maturities, convertible overhang, or share repurchase capacity, that could cap or amplify repricing?"
+          ]
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [
+            "The current-batch cash-reserves signal resolves that the issuer's latest reported instant cash balance is cash_reserves=9.0739e+10 as of 2025-03-31.",
+            "The current-batch guidance signal resolves that visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance and a third-quarter NII expectation to remain around recent levels, with no explicit upward revision.",
+            "The current-batch financing/listing signal resolves that the only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, a third-party event, with no target-issuer financing, restructuring, redemption, reverse split, or listing action visible."
+          ],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "claim": "cash_reserves=9.0739e+10",
+              "key": "signal:cash_reserves:v2:supporting:0"
+            },
+            {
+              "claim": "The only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral.",
+              "key": "signal:financing_listing_action:v5:supporting:0"
+            },
+            {
+              "claim": "The visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+              "key": "signal:guidance_acceleration:v3:supporting:0"
+            }
+          ],
+          "removed_keys": []
+        }
+      },
+      "round": 1
+    },
+    {
+      "round": 2,
+      "delta": {
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [],
+          "removed": [
+            "Management commentary describes a constructive market backdrop, record client assets, and healthy investment-banking pipelines, but these are qualitative positives that do not establish a near-term doubling catalyst.",
+            "The scoped news projection is about Figma's IPO pricing and mentions Goldman Sachs only as a joint lead book-running manager, so it is not direct evidence of a Goldman Sachs operating or financial catalyst.",
+            "The reported financial facts projection is a company-facts JSON fragment with historical share-count observations, and it does not provide a current solvency, liquidity, or capital-structure assessment for the horizon.",
+            "No visible Basic Info projection provides a concrete, dated catalyst that would plausibly change expectations enough to double the adjusted share price within the six-calendar-month horizon."
+          ]
+        },
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [
+            "The current-batch liquidity-runway signal resolves that the exact reported measure is liquidity_runway_months=11.3537, a positive numeric measurement with a neutral categorical state.",
+            "The current-batch order-confirmation signal resolves that within the 180-day lookback window the eligible documents disclose no qualifying new customer order, contract, offtake agreement, or binding award in which the target company is the recipient."
+          ],
+          "removed": [
+            "The current-batch cash-reserves signal resolves that the issuer's latest reported instant cash balance is cash_reserves=9.0739e+10 as of 2025-03-31.",
+            "The current-batch guidance signal resolves that visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance and a third-quarter NII expectation to remain around recent levels, with no explicit upward revision.",
+            "The current-batch financing/listing signal resolves that the only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, a third-party event, with no target-issuer financing, restructuring, redemption, reverse split, or listing action visible."
+          ]
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "key": "signal:liquidity_runway_months:v3:supporting:0",
+              "claim": "liquidity_runway_months=11.3537"
+            }
+          ],
+          "removed_keys": []
+        },
+        "decision": {
+          "from": "continue",
+          "to": "finalize"
+        }
+      }
+    }
+  ],
+  "final_research_state": {
+    "hypotheses": [
+      "The target issuer will not achieve a 2x adjusted-share-price surge within the six-calendar-month horizon because the visible evidence shows a large, liquid, near-high trading profile with no concrete dated catalyst, though this is provisional pending retrieval of forward-looking guidance and capital-structure details.",
+      "If the direction were positive, the plausible magnitude class would be a moderate single-digit to low-double-digit percentage move rather than a doubling, because the visible market backbone shows a recent close of 144.94 and a mean adjusted close of 143.314 with no evidence of an imminent re-rating catalyst.",
+      "A concrete dated catalyst such as a major contract award, regulatory approval, financing close, or earnings inflection could change expectations within the horizon, but no such catalyst is visible in the Basic Info bundle, so the hypothesis remains falsifiable by retrieval of issuer-specific forward-looking disclosures."
+    ],
+    "current_beliefs": [
+      "The current-batch guidance signal is neutral: the visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+      "The current-batch financing/listing signal is neutral: the only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral."
+    ],
+    "supporting_evidence": [
+      {
+        "kind": "basic_info",
+        "claim": "Management commentary describes a constructive market backdrop, record client assets, and healthy investment-banking pipelines, but these are qualitative positives that do not establish a near-term doubling catalyst.",
+        "projection_id": "projection_63eb4fd2f40e1b746b069497",
+        "exact_text": "The second-quarter results were strong. As we look ahead, we are entering the third quarter with momentum. Investment Banking pipelines are healthy, dialogues are active, and markets have proven resilient. And Wealth and Investment Management continue to gather assets with total client assets now reaching $8.2 trillion."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The scoped news projection is about Figma's IPO pricing and mentions Goldman Sachs only as a joint lead book-running manager, so it is not direct evidence of a Goldman Sachs operating or financial catalyst.",
+        "projection_id": "projection_e1f00d90bf8265c6e1bd293f",
+        "exact_text": "Figma Announces Pricing of Initial Public Offering | Figma Blog Figma has announced the pricing of its initial public offering (IPO) of 36,937,080 shares of Class A common stock at $33.00 per share. The shares are scheduled to begin trading on the New York Stock Exchange on July 31, 2025, under the ticker symbol \"FIG,\" with the offering expected to close on August 1, 2025. This IPO involves both shares offered by Figma and by existing stockholders, with [MASKED_COMPANY], Goldman Sachs & Co. LLC, Allen & Company LLC, and J.P. [MASKED_COMPANY] serving as joint lead book-running managers."
+      },
+      {
+        "kind": "basic_info",
+        "claim": "The reported financial facts projection is a company-facts JSON fragment with historical share-count observations, and it does not provide a current solvency, liquidity, or capital-structure assessment for the horizon.",
+        "projection_id": "projection_1c24e310da9e1ab22415213c",
+        "exact_text": "{\"cik\":895421,\"entityName\":\"[MASKED_COMPANY]\",\"facts\":{\"dei\":{\"EntityCommonStockSharesOutstanding\":{\"description\":\"Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.\",\"label\":\"Entity Common Stock, Shares Outstanding\",\"units\":{\"shares\":[{\"accn\":\"0001193125-09-169269\",\"end\":\"2009-07-31\",\"filed\":\"2009-08-07\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2009Q2I\",\"fy\":2009,\"val\":1359166836},{\"accn\":\"0001193125-09-227984\",\"end\":\"2009-10-31\",\"filed\":\"2009-11-09\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2009Q3I\",\"fy\":2009,\"val\":1359433369},{\"accn\":\"0001193125-10-042763\",\"end\":\"2010-01-31\",\"filed\":\"2010-02-26\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2009Q4I\",\"fy\":2009,\"val\":1398087044},{\"accn\":\"0001193125-10-112958\",\"end\":\"2010-04-30\",\"filed\":\"2010-05-07\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2010Q1I\",\"fy\":2010,\"val\":1397819191},{\"accn\":\"0001193125-10-181853\",\"end\":\"2010-07-31\",\"filed\":\"2010-08-09\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2010Q2I\",\"fy\":2010,\"val\":1396968554},{\"accn\":\"0001193125-10-252125\",\"end\":\"2010-10-31\",\"filed\":\"2010-11-08\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2010Q3I\",\"fy\":2010,\"val\":1512877397},{\"accn\":\"0001193125-11-050049\",\"end\":\"2011-01-31\",\"filed\":\"2011-02-28\",\"form\":\"10-K\",\"fp\":\"FY\",\"frame\":\"CY2010Q4I\",\"fy\":2010,\"val\":1545631781},{\"accn\":\"0001193125-11-132343\",\"end\":\"2011-04-30\",\"filed\":\"2011-05-09\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2011Q1I\",\"fy\":2011,\"val\":1544658124},{\"accn\":\"0001193125-11-213320\",\"end\":\"2011-07-31\",\"filed\":\"2011-08-08\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"frame\":\"CY2011Q2I\",\"fy\":2011,\"val\":1927916237},{\"accn\":\"0001193125-11-299890\",\"end\":\"2011-10-31\",\"filed\":\"2011-11-07\",\"form\":\"10-Q"
+      },
+      {
+        "kind": "signal",
+        "claim": "cash_reserves=9.0739e+10",
+        "signal_ref": "cash_reserves:v2",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "The visible current-period guidance is limited to a reaffirmation of the prior tax-rate guidance (\"consistent with our initial guidance\") and a third-quarter NII expectation to \"remain around recent levels.\" No explicit prior guidance span for NII is visible, and the tax-rate statement is a reaffirmation rather than a material upward change in level, timing, or conviction. No explicit comparator or revision statement establishes an upward revision, so the growth path is not materially strengthened versus prior guidance.",
+        "signal_ref": "guidance_acceleration:v3",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "The only completed or binding financing/listing action in the visible projections is IonQ's ATM equity offering program, which is a third-party capital-structure event and not an action by the target issuer. The target's own visible filings concern earnings and listed securities, not a new financing, restructuring, redemption, reverse split, or listing action. No visible span establishes a within-horizon change in the target's runway, dilution, or tradability, so the signal is neutral.",
+        "signal_ref": "financing_listing_action:v5",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      },
+      {
+        "kind": "signal",
+        "claim": "liquidity_runway_months=11.3537",
+        "signal_ref": "liquidity_runway_months:v3",
+        "evidence_group": "supporting",
+        "evidence_index": 0
+      }
+    ],
+    "contradictions": [],
+    "resolved_questions": [
+      "The visible market backbone resolves the recent price level: the last close is 144.94 on 2025-07-30, and the mean of the last five complete adjusted closes is 143.314.",
+      "The visible operating report resolves that the issuer filed a Form 8-K on July 16, 2025, furnishing second-quarter 2025 results, so a recent earnings catalyst is present.",
+      "The visible management commentary resolves that management described a constructive market environment, record client assets, and healthy investment-banking pipelines as of the second-quarter 2025 earnings call.",
+      "The visible scoped news resolves that the only visible news projection concerns Figma's IPO pricing, with Goldman Sachs named as a joint lead book-running manager, not as the subject of a direct catalyst.",
+      "The visible reported financial facts resolve that the projection is a historical company-facts JSON fragment and does not provide a current solvency or liquidity assessment.",
+      "The evaluation anchor resolves the control-data baseline: the doubling threshold is 286.628, the mean adjusted close is 143.314, and the recent close is 144.94.",
+      "The current-batch liquidity-runway signal resolves that the exact reported measure is liquidity_runway_months=11.3537, a positive numeric measurement with a neutral categorical state.",
+      "The current-batch order-confirmation signal resolves that within the 180-day lookback window the eligible documents disclose no qualifying new customer order, contract, offtake agreement, or binding award in which the target company is the recipient."
+    ],
+    "open_questions": [],
+    "next_information_needs": [
+      "What concrete, dated catalysts or scheduled events, such as contract awards, regulatory decisions, financing closings, or earnings releases, has the issuer disclosed by the prediction time that could materially change expectations within the six-calendar-month horizon?",
+      "What float, liquidity, ownership-concentration, or customer-concentration characteristics has the issuer disclosed by the prediction time that would make sharp repricing more or less feasible?",
+      "Which sources in the Basic Info bundle are truncated, omitted, or missing forward-looking coverage, so that a negative verdict is not built on incomplete information?",
+      "What analyst or market expectations, if any, were available by the prediction time regarding the issuer's earnings trajectory or price targets that could indicate whether a doubling is plausible within the horizon?"
+    ],
+    "decision": "finalize"
+  },
+  "analysis_prompt": "Organize and weight the collected evidence into a support/contradiction map for the fixed six-calendar-month 2x Predictor. Separate (a) verifiable commercial or contractual facts, (b) balance-sheet and solvency facts, (c) market-microstructure facts (float, liquidity, base level, realized volatility), and (d) narrative or expectation claims. Present supporting evidence and counter-evidence with equal explicitness, flag which items rest on third-party reporting versus issuer disclosure, and note where sources were truncated or missing. Keep the binary direction question and the magnitude question analytically separate, and record an explicit low-base/high-volatility alternative scenario before any negative-leaning weighting is finalized. Flag, but do not resolve, uncertainty about catalyst sufficiency and about whether concentration or capital-structure overhang caps or amplifies repricing. Do not compute probabilities, do not classify the final Signal, do not change the horizon or four-way judgment, and do not generate a prediction."
+}

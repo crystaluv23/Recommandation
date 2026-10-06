@@ -69,6 +69,8 @@ def is_mechanical_issue(issue: Any) -> bool:
         return issue.repair_context.get("mechanical_action") == "restore_source_json_literal"
     if issue.code == "retained_signal_claim_changed":
         return issue.repair_context.get("mechanical_action") == "restore_retained_signal_claim"
+    if issue.code == "unavailable_signal_treated_as_finding":
+        return issue.repair_context.get("mechanical_action") == "remove_unavailable_finding"
     return False
 
 

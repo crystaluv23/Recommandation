@@ -3574,6 +3574,32 @@ def _research_state_evidence_grounding_fallback(
             continue
         if "remove" not in allowed_repairs:
             return None
+        if issue_code == "unavailable_signal_treated_as_finding":
+            field_name = obligation.get("unavailable_finding_field")
+            returned_text = obligation.get("unavailable_finding_text")
+            signal_ref = obligation.get("unavailable_signal_ref")
+            if (
+                allowed_repairs != ["remove"]
+                or not must_change_paths
+                or dependent_paths
+                or obligation.get("must_change_any_of_paths")
+                or obligation.get("mechanical_action") != "remove_unavailable_finding"
+                or field_name not in ("current_beliefs", "resolved_questions")
+                or not isinstance(returned_text, str)
+                or not returned_text.strip()
+                or not isinstance(signal_ref, str)
+                or not signal_ref.strip()
+            ):
+                return None
+            for path in must_change_paths:
+                if (
+                    not isinstance(path, str)
+                    or re.fullmatch(rf"{field_name}\[\d+\]", path) is None
+                    or _validation_path_value(failed_output, path) != returned_text
+                ):
+                    return None
+            removal_paths.extend(must_change_paths)
+            continue
         if issue_code == "future_information_unavailable":
             if (
                 len(must_change_paths) != 1
