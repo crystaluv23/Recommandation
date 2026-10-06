@@ -3109,6 +3109,176 @@ class TemporalQuantityAggregatedFeedbackTests(TestCase):
         self.assertEqual(value.current_beliefs, ())
         self.assertEqual(value.hypotheses, tuple(self._value()["hypotheses"]))
 
+    def _complete_temporal_correction(self, initial: dict, corrected: dict):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+
+        caller = ScriptedRoleCaller([initial, corrected])
+        result = evolution_runtime_module._complete_parsed_role(
+            caller,
+            stage="research_controller_initialize",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=self._make_parser(),
+            allow_outcomes=False,
+            enforce_scoped_correction=True,
+            exact_compaction_scope=True,
+            stable_correction_prefix=True,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
+        )
+        return result, caller
+
+    def _temporal_value(self):
+        value = self._compliant()
+        claim = "Revenue was $4 million."
+        value["supporting_evidence"][0]["claim"] = claim
+        value["current_beliefs"] = [claim]
+        value["next_information_needs"] = self._value()["next_information_needs"]
+        return value
+
+    def test_exhausted_temporal_correction_preserves_valid_state_siblings(self):
+        initial = self._temporal_value()
+        corrected = self._temporal_value()
+        corrected["next_information_needs"][0] = (
+            "Which results will the company report after September 2025 in its Q3 filing?"
+        )
+        (state, usage), caller = self._complete_temporal_correction(
+            initial, corrected
+        )
+        expected = dict(corrected)
+        expected["next_information_needs"] = corrected["next_information_needs"][1:]
+        self.assertEqual(state.to_dict(), self._make_parser()(expected).to_dict())
+        self.assertEqual(usage.llm_calls, 2)
+        self.assertEqual(len(caller.calls), 2)
+        self.assertEqual(
+            caller.calls[1]["payload"]["validation_feedback"]["obligations"][0][
+                "issue_code"
+            ],
+            "future_information_unavailable",
+        )
+        self.assertEqual(initial, self._temporal_value())
+        self.assertEqual(len(corrected["next_information_needs"]), 2)
+
+    def test_multiple_temporal_members_use_one_snapshot_without_index_shift(self):
+        value = self._temporal_value()
+        future_need = value["next_information_needs"][0]
+        valid_need = value["next_information_needs"][1]
+        value["next_information_needs"] = [future_need, valid_need, future_need]
+        value["open_questions"] = [
+            "Which realized results will be published in December 2025?",
+            "The disclosed commercial opportunity is uncertain.",
+        ]
+        (state, usage), _caller = self._complete_temporal_correction(value, value)
+        expected = dict(value)
+        expected["next_information_needs"] = [valid_need]
+        expected["open_questions"] = [value["open_questions"][1]]
+        self.assertEqual(state.to_dict(), self._make_parser()(expected).to_dict())
+        self.assertEqual(usage.llm_calls, 2)
+
+    def test_temporal_isolation_cannot_finalize_an_empty_continuing_frontier(self):
+        value = self._temporal_value()
+        value["next_information_needs"] = value["next_information_needs"][:1]
+        with self.assertRaises(ValidationError) as raised:
+            self._complete_temporal_correction(value, value)
+        self.assertIn("continuing research requires", str(raised.exception))
+        self.assertEqual(value["decision"], "continue")
+
+    def test_temporal_isolation_requires_exact_owner_remove_authority(self):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+        from stock_opportunity_agent.models import ValidationIssue
+
+        context = {
+            "prediction_time": "2025-09-30",
+            "future_source_date_refs": ["Q3"],
+            "required_temporal_boundary": "available_by_prediction_time",
+        }
+        variants = [
+            {"paths": ("next_information_needs",)},
+            {"paths": ("current_beliefs[0]",)},
+            {"allowed_repairs": ("replace",)},
+            {"dependent_paths": ("decision",)},
+            {"path_policy": "any"},
+            {"repair_context": {}},
+        ]
+        for variant in variants:
+            with self.subTest(variant=variant):
+                fields = {
+                    "code": "future_information_unavailable",
+                    "message": "Remove the invalid question.",
+                    "paths": ("next_information_needs[0]",),
+                    "allowed_repairs": ("replace", "remove"),
+                    "repair_context": context,
+                }
+                fields.update(variant)
+                self.assertIsNone(
+                    _research_state_evidence_grounding_fallback(
+                        self._compliant(),
+                        StructuredValidationError([ValidationIssue(**fields)]),
+                    )
+                )
+
+    def test_disclosed_future_schedule_stays_in_the_research_frontier(self):
+        value = self._compliant()
+        value["next_information_needs"][0] = (
+            "What production milestones did the company disclose by 2025-09-30 "
+            "for the period through 2026-03-30?"
+        )
+        parsed = self._make_parser()(value)
+        self.assertEqual(parsed.to_dict(), value)
+
+    def test_mixed_quote_and_temporal_failure_preserves_independent_valid_need(self):
+        value = self._temporal_value()
+        value["supporting_evidence"][0]["exact_text"] = "Revenue was $40 million."
+        (state, usage), _caller = self._complete_temporal_correction(value, value)
+        self.assertEqual(state.supporting_evidence, ())
+        self.assertEqual(state.current_beliefs, ())
+        self.assertEqual(state.next_information_needs, (value["next_information_needs"][1],))
+        self.assertEqual(state.hypotheses, tuple(value["hypotheses"]))
+        self.assertEqual(usage.llm_calls, 2)
+
+    def test_reflect_quarantine_keeps_prior_unresolved_need_and_literal(self):
+        from stock_opportunity_agent.research.evolution_output_validation import (
+            _research_state_evidence_grounding_fallback,
+        )
+        from stock_opportunity_agent.research.evolution_research_validation import (
+            _normalize_research_state_output,
+            _validate_research_state_refs,
+        )
+
+        prior_value = self._temporal_value()
+        prior_value["next_information_needs"] = prior_value["next_information_needs"][1:]
+        prior = self._make_parser()(prior_value)
+        value = prior.to_dict()
+        value["next_information_needs"].append(self._temporal_value()["next_information_needs"][0])
+
+        def parse(output):
+            normalized = _normalize_research_state_output(
+                output,
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+            return _validate_research_state_refs(
+                ResearchState.from_dict(normalized),
+                phase="reflect",
+                previous_state=prior,
+                evaluation_context=self.EVALUATION_CONTEXT,
+            )
+
+        state, usage = evolution_runtime_module._complete_parsed_role(
+            ScriptedRoleCaller([value, value]),
+            stage="research_controller_reflect",
+            system_prompt="Return the fixed contract.",
+            payload={},
+            parser=parse,
+            allow_outcomes=False,
+            final_validation_fallback=_research_state_evidence_grounding_fallback,
+        )
+        self.assertEqual(state, prior)
+        self.assertEqual(usage.llm_calls, 2)
+
 
 class TemporalSchedulePluralVocabularyTests(TestCase):
     """Plural bounded schedule nouns keep the as-of allowance (V122 MP Materials)."""

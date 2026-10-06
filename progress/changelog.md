@@ -670,3 +670,5 @@
 - 2026-10-07 01:24：亲自核对v179两Plan各11条采纳、原始metadata-only付费patch、snapshot双层hash及c01实际三技能消费；两runway v3真实执行但零新幅度能力。部分库存4技术失败与首案未支持的非数值声称保留，监控继续、指针0/0、未宣称gain；记录Systemic要求，完整周期后联合判断修复。
 
 - 2026-10-07 01:40：核对v179 c01完整24案checkpoint、技术FN保留分母及付费双义务修正；F1=.72/11幅度全2–3x，Signal5失败/1案例排除、正式0/0，c02继续。新增跨band反思行动与runway时间/符号语义检查记录，不热改冻结源码或将反馈消费视为gain；两次SSL恢复及实际进程/clean已核对。
+
+- 2026-10-07 01:59：先spec后修未来信息question后置whole-member隔离，不提前覆盖模型语义修正、扩大权限或更改PIT；7新/90相关/1557全量PASS，真实Initialize首答/native付费patch经生产Controller零外部回放仅删违规need、保五需求及原证据/信念/decision/hash。当前v179保持冻结与旧失败分母，Signal技术失败/magnitude新入库及增益仍未验收。

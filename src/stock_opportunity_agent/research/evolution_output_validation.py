@@ -3429,7 +3429,7 @@ def _research_state_evidence_grounding_fallback(
     failed_output: Mapping[str, Any],
     failure: ValidationError,
 ) -> tuple[dict[str, Any], dict[str, tuple[str, ...]]] | None:
-    """Drop only mechanically isolated invalid evidence assertions."""
+    """Quarantine owner-authorized members, then let the full parser decide."""
 
     if not isinstance(failure, StructuredValidationError):
         return None
@@ -3513,6 +3513,36 @@ def _research_state_evidence_grounding_fallback(
             continue
         if "remove" not in allowed_repairs:
             return None
+        if issue_code == "future_information_unavailable":
+            if (
+                len(must_change_paths) != 1
+                or not isinstance(must_change_paths[0], str)
+                or dependent_paths
+                or obligation.get("must_change_any_of_paths")
+                or obligation.get("required_temporal_boundary")
+                != "available_by_prediction_time"
+                or not obligation.get("prediction_time")
+                or not obligation.get("future_source_date_refs")
+            ):
+                return None
+            match = re.fullmatch(
+                r"(open_questions|next_information_needs)\[(\d+)\]",
+                must_change_paths[0],
+            )
+            if match is None:
+                return None
+            items = failed_output.get(match.group(1))
+            index = int(match.group(2))
+            if (
+                not isinstance(items, list)
+                or index >= len(items)
+                or not isinstance(items[index], str)
+            ):
+                return None
+            # This code is intentionally absent from is_mechanical_issue:
+            # semantic reframing gets the model correction opportunity first.
+            removal_paths.append(must_change_paths[0])
+            continue
         if issue_code == "claim_quantity_not_supported":
             if not must_change_paths:
                 return None

@@ -1,0 +1,112 @@
+{
+  "accepted_state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "The issuer's recent market data shows a sharp decline from a September 5 close of 46.85 to a September 8 close of 40.75 on elevated volume of 1508310, followed by further weakness to a September 11 close of 39.42, indicating a violent repricing episode around early September.",
+      "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "The issuer's stock could plausibly double within the six-month horizon if the RADIANT topline results lead to a partnership, regulatory clarity, or commercial adoption that materially changes revenue expectations, but the 23% discontinuation rate and ongoing securities investigation create a credible counter-case that the market may instead re-rate the stock lower or keep it range-bound.",
+      "The termination of the 2024 Sales Agreement and entry into the 2025 Sales Agreement with TD Cowen for up to $250 million could provide financing flexibility that supports the stock, but it also signals potential dilution risk that could cap upside and prevent a doubling within the horizon.",
+      "The upcoming presentation of full RADIANT study results at the American Epilepsy Society Conference in December 2025 could serve as a dated catalyst that either validates the topline results and drives a re-rating, or reveals additional safety or efficacy concerns that undermine the bull case and prevent a doubling."
+    ],
+    "next_information_needs": [
+      "What details has the issuer disclosed by the prediction time about its cash position, burn rate, and expected cash runway, and how does the new $250 million at-the-market program with TD Cowen affect its financing strategy and potential dilution?",
+      "What has the issuer disclosed by the prediction time about the commercial opportunity for vormatrigine, including target patient population, pricing assumptions, and competitive positioning against existing anti-seizure medications?",
+      "What has the issuer disclosed by the prediction time about the status and potential outcomes of the securities investigation by the Schall Law Firm, and are there any other legal or regulatory proceedings that could affect the stock?",
+      "What has the issuer disclosed by the prediction time about its other late-stage assets and the expected timing of the 5 clinical readouts within the next year, and how could those readouts affect the stock price within the six-month horizon?",
+      "What has the issuer disclosed by the prediction time about its share count, float, and any recent changes in institutional ownership or short interest that could affect liquidity and the potential for a rapid repricing?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "The issuer's recent market data shows a sharp decline from a September 5 close of 46.85 to a September 8 close of 40.75 on elevated volume of 1508310, followed by further weakness to a September 11 close of 39.42, indicating a violent repricing episode around early September.",
+        "exact_text": "{\"adjusted_close\":46.85,\"as_of_date\":\"2025-09-05\",\"close\":46.85,\"high\":47.83,\"low\":45.815,\"open\":46.58, \"volume\":355258},{\"adjusted_close\":40.75,\"as_of_date\":\"2025-09-08\",\"close\":40.75,\"high\":43.15,\"low\":37.19,\"open\":41.94, \"volume\":1508310},{\"adjusted_close\":40.03,\"as_of_date\":\"2025-09-09\",\"close\":40.03,\"high\":41.08,\"low\":38.0,\"open\":40.86, \"volume\":720384},{\"adjusted_close\":40.23,\"as_of_date\":\"2025-09-10\",\"close\":40.23,\"high\":40.61,\"low\":38.94,\"open\":40.61, \"volume\":293053},{\"adjusted_close\":39.42,\"as_of_date\":\"2025-09-11\",\"close\":39.42,\"high\":40.69,\"low\":39.4,\"open\":40.46, \"volume\":242553}",
+        "kind": "basic_info",
+        "projection_id": "projection_2e325a4839aacffa67546d6d"
+      },
+      {
+        "claim": "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+        "exact_text": "Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+        "kind": "basic_info",
+        "projection_id": "projection_ac3b88cf2afae8f48f79dca4"
+      }
+    ]
+  },
+  "case_id": "cik_0001689548:20250930",
+  "created_at": "2026-10-06T17:59:27.736620+00:00",
+  "exact_initial_inputs_and_paid_authority_match": true,
+  "external_calls": 0,
+  "fallback_event": {
+    "context_only_paths": [],
+    "correction_count": 1,
+    "event_type": "structured_validation_fallback_applied",
+    "fallback_steps": [
+      {
+        "context_only_paths": [],
+        "normalized_paths": [],
+        "removed_paths": [
+          "next_information_needs[0]"
+        ],
+        "source_substitution_paths": []
+      }
+    ],
+    "normalized_paths": [],
+    "removed_paths": [
+      "next_information_needs[0]"
+    ],
+    "source_substitution_paths": [],
+    "stage": "research_controller_initialize"
+  },
+  "historical_frozen_revision": "482a5e1ecdd57d160b60c44c732157f3f62cd4bb",
+  "initial_and_paid_request_hashes": [
+    "cbd84f12e1f0229e85feb3a8fd1731bf50c58ded5760325832c6eedbe8d4d925",
+    "cbb971201bb1c80052df5747c3ec33ef21c4a9a1481b683f2a156c43f4d37689"
+  ],
+  "isolated_future_question": "What has the issuer disclosed by the prediction time about the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?",
+  "limits": "Offline production replay only. Does not rewrite v179 trajectory, denominator or checkpoint, does not prove live completion, and does not establish research gain or magnitude capability.",
+  "persisted_paid_patch": {
+    "base_hash": "a52d6a7567c184b5ed87642cdd039e1fe9ffae8681cff876609dbd960676f181",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "next_information_needs[0]",
+        "value": "What has the issuer disclosed by the prediction time about the timing and content of the full RADIANT study results presentation at the American Epilepsy Society Conference in December 2025, and are there any scheduled regulatory interactions or partnership discussions tied to vormatrigine?"
+      },
+      {
+        "op": "replace",
+        "path": "supporting_evidence[1]",
+        "value": {
+          "claim": "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+          "exact_text": "Company announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37). Dosing with vormatrigine over eight weeks led to 56.3% median reduction in seizure frequency from baseline, with approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days.",
+          "kind": "basic_info",
+          "projection_id": "projection_ac3b88cf2afae8f48f79dca4"
+        }
+      },
+      {
+        "op": "replace",
+        "path": "current_beliefs[1]",
+        "value": "The issuer announced topline results from the RADIANT study evaluating vormatrigine in patients with focal onset seizures (n=37), with dosing over eight weeks leading to 56.3% median reduction in seizure frequency from baseline and approximately 22% of patients reaching 100% reduction in seizure frequency in the last 28 days."
+      }
+    ]
+  },
+  "preservation": "Accepted state equals the paid merged state with only its owner-authorized future question removed; five valid needs, grounded evidence, beliefs and decision are identical after canonical parsing.",
+  "recorded_model_responses_only": true,
+  "replayed_source_hashes": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_output_validation.md": "c13c16310bdb1b8c421dfd05f82b1fda9b10db90ba2d1fa6aa27c48b4e86a769",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py": "dcda440fc3c8e38da9bb5a3c20fe875467e8204c908bb65770261248feb88847",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py": "a568c5eefd2a84703b2c087a402bd0543711b9fc3809176655f804cc94b8caa0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py": "decf8a3821df1c717a79eb0aee49d1cb89a0cb459170f813d5ccc2f6c9ab2b13"
+  },
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "schema_version": "production-temporal-isolation-replay-v1",
+  "source_hashes": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/cbb971201bb1c80052df5747c3ec33ef21c4a9a1481b683f2a156c43f4d37689.json": "04e61516279c9b16911a59a0faed82beec63537317f2dbfcf67b7ca94257a2e6",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/cbd84f12e1f0229e85feb3a8fd1731bf50c58ded5760325832c6eedbe8d4d925.json": "f2dd41427a9ca6017329ed8605a74cd1c17256b67f5029671714c98ad4949c9e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/cbb971201bb1c80052df5747c3ec33ef21c4a9a1481b683f2a156c43f4d37689.json": "1c6e2f43f2d5bf76e25f972c0a3dd5daeb4508a9858f159f7619fef047526346",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/cbd84f12e1f0229e85feb3a8fd1731bf50c58ded5760325832c6eedbe8d4d925.json": "76eb9d1253266a23638f319f05b21470008c7b5a11921f041bcd9314b710fc4e"
+  },
+  "source_hashes_unchanged": true
+}

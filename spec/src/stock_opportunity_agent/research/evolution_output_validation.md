@@ -435,6 +435,25 @@ Complete State parsing still checks retention, need transitions, timing and
 decision rules; it may refuse the resulting object for those actual obligations.
 This removes a legacy fallback-only nonempty condition and grants no new paths.
 
+## Future-information question isolation after correction
+
+The owning temporal validator may authorize replace/remove of one indexed
+`open_questions` or `next_information_needs` member under
+`future_information_unavailable`. These are semantic obligations: the bounded
+model correction runs first so the author can restate a valid cutoff-bounded
+question. They do not become pre-correction mechanical repairs.
+
+After correction is exhausted, State quarantine may remove only the explicitly
+named whole text member with remove permission, no alternative/dependency paths,
+and the owner's available-by-prediction-time context. It never supplies an
+answer, rewrites a question, changes decision, removes a whole collection, or
+marks a need resolved. Mixed independent evidence obligations retain their own
+existing authority; removals address one base snapshot and preserve all siblings.
+The assembled State must pass the original complete parser, including mandatory
+continuation needs, prior unresolved need retention, evidence and PIT checks.
+An empty continuing frontier or invalid transition remains a technical rejection;
+partial salvage cannot manufacture research completion or erase scored failures.
+
 ## Realized outcome measurement ownership
 
 Case posthoc receives the existing immutable realized_max_multiple and the

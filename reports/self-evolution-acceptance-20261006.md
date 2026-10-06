@@ -34,6 +34,14 @@
 - 额外内容审阅发现Kellyton案例的posthoc action要求幅度band跨相邻class，而canonical输出必须单选三个exclusive enums；实际二元正确、幅度低估不验证这一行动。AI/commerce案例把5.27个月正数runway用为上行论据并称已完成December offering可延长后来runway，仍需核对数值/分类与事实时间，不能自动翻转经济符号或发明融资流入。来源正确不代表行动和归因正确。
 - 第二次新鲜SSL EOF仍按原HEAD/合同/缓存恢复同一作业；冻结tracked源码clean、wrapper与当前child实际命令已重查。报告明确区分人工读过的内容与机器库存，其余c02、Plan/Round critic和Slow继续待查，目标保持active。
 
+## v179 未来信息问题的通用后置隔离（2026-10-07 01:59）
+
+- 错误链：Initial明确限定prediction_time且暴露证据；拥有者已对未来内容问题发出精确indexed replace/remove权限；付费原patch修好独立literal，却继续请求未来会议内容。原后置fallback没有消费这类已发remove权限，导致整个案例技术排除。不是时点规则误拒，也不应自动猜一个有效经济问题。
+- 先更新所属spec，再扩展已有State隔离路径：模型先获得有界语义重述机会，耗尽后仅移除拥有者指定的whole text member，要求无alternative/dependency路径及available-by-prediction-time上下文。不增机械前置code，不改decision、不补答案、不删容器、不标记resolved。独立evidence失败仍按其原权限处理，同snapshot倒序删成员、完整parser重验；continue已无needs仍拒绝，原Reflect未解需求和literal保持。
+- 七项新回归覆盖单项/多项/两个collection/混合引文、保留合法已披露未来milestone、空frontier及未授权路径/操作、Reflect历史需求/引文；相关90 tests PASS，1557全量/58.043s PASS。日志 `/tmp/v179-temporal-{focused,full,replay}.log`。新回归在旧实现先表现出实际不接受/空frontier诊断缺失，代码修复后通过。
+- `reports/v179-temporal-isolation-replay-20261007.json`绑定真实首答 `cbd84f...d925`、真实付费native patch `cbb971...7689`，使用生产LLMResearchController.initialize；逐值核对初始inputs、纠错invalid_output/obligations和完整patch contract。只播放两份已付费原答，0外部调用，所有原件hash不变；最终等于付费合并结果仅移除next_information_needs[0]，五个valid needs/证据/信念/decision均保存。源码hash绑定本地修复，而不是v179冻结版本。
+- 当前真实v179仍固定482a5e1e，未热改或重写旧trajectory/checkpoint/分母；wrapper64736/child71827按原合同运行。c02继续，Plan/Round/Slow仍待逐份验收。Signal的JSON/原文内部边界/mandatory phrase/预算失败是不同剩余家族；本次完整State回放不是整个目标达标，更不证明magnitude新能力或独立gain。
+
 ## v178 历史冻结后继（2026-10-07 00:04:43启动）
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v178`。
