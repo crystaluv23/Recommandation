@@ -117,6 +117,17 @@ into an existing valid episode, preserving both reflection texts, questions and
 source refs. It never invents reflection text or marks an absent ref processed;
 anything less remains a failed memory delta and stays pending.
 
+The first-contact reflection prompt explicitly requires the union of episode
+source refs to cover every selected feedback unit; lesson citations do not
+substitute for episode coverage. A mixed comparison/non-comparison episode
+diagnostic discloses both source partitions, the refs not covered by other
+individually valid episodes, and those episodes' coverage. Thus a correction
+can retain the uncovered summary sources in the current row when the comparison
+already has its own episode, rather than replacing the summary with a duplicate
+comparison and discovering lost coverage only after the bounded correction.
+These source facts grant no extra write authority, do not choose or generate
+reflection prose, and never relax the separation or complete-coverage guards.
+
 Reflection, H1, H3, E2, and Update may make at most one typed
 `read_source_refs` request per logical job. The runtime resolves opaque refs only
 within the role scope and whole-entry budget, records included/deferred refs and

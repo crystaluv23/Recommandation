@@ -1,0 +1,119 @@
+{
+  "status": "proposal_pending_user_policy_selection",
+  "oracle_writes": 0,
+  "new_external_provider_or_model_calls": 0,
+  "not_a_new_input_manifest": true,
+  "scope": "Four primary-source-verified date conflicts only; the remaining approved transcripts still require full date provenance review.",
+  "proposed_snapshot_replacements": [
+    {
+      "old_source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001920294/alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324.json",
+      "old_file_sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+      "excluded_old_document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+      "proposed_record_without_content": {
+        "available_at": "2025-04-29T00:00:00+00:00",
+        "company_id": "cik_0001920294",
+        "content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+        "document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324:dateproof:b23c0547f7594df4",
+        "metadata": {
+          "fiscal_date_ending": "2024-12-31",
+          "provider": "alpha_vantage",
+          "quarter": "2024Q4",
+          "reported_date": "2025-04-24",
+          "symbol": "RZLV",
+          "source_call_date": "2025-04-28",
+          "availability_basis": "verified_public_call_information_next_utc_day",
+          "availability_source_url": "https://investor.rezolve.com/node/7716/html",
+          "original_document_id": "alpha_vantage:cik_0001920294:earnings_call:c75a3969dca155a930819324",
+          "original_record_sha256": "f7f6a3842330a156e2ac7f4acb4a2d885b07ab098251254dc4d45625a2f9775e",
+          "provider_earnings_fiscal_date_ending": "2024-09-30",
+          "provider_earnings_reported_date": "2024-10-29"
+        },
+        "published_at": "2025-04-28T00:00:00+00:00",
+        "source_type": "earnings_call"
+      },
+      "unchanged_content_hash": "c75a3969dca155a9308193243fe3d3f351b19dab0deae9d59345598e2fdd0a5d",
+      "schema_validation_passed_in_memory": true
+    },
+    {
+      "old_source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json",
+      "old_file_sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "excluded_old_document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "proposed_record_without_content": {
+        "available_at": "2025-05-08T00:00:00+00:00",
+        "company_id": "cik_0000701818",
+        "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+        "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b:dateproof:55fa2c9ad6079602",
+        "metadata": {
+          "fiscal_date_ending": "2025-03-31",
+          "provider": "alpha_vantage",
+          "quarter": "2025Q1",
+          "reported_date": "2025-05-06",
+          "symbol": "KGC",
+          "source_call_date": "2025-05-07",
+          "availability_basis": "verified_public_call_information_next_utc_day",
+          "availability_source_url": "https://www.kinross.com/English/news-and-investors/news-releases/press-release-details/2025/Kinross-to-announce-Q1-results-on-May-6-2025/default.aspx",
+          "original_document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+          "original_record_sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d"
+        },
+        "published_at": "2025-05-07T00:00:00+00:00",
+        "source_type": "earnings_call"
+      },
+      "unchanged_content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+      "schema_validation_passed_in_memory": true
+    },
+    {
+      "old_source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a.json",
+      "old_file_sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa",
+      "excluded_old_document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+      "proposed_record_without_content": {
+        "available_at": "2025-05-01T00:00:00+00:00",
+        "company_id": "cik_0000860413",
+        "content_hash": "0f2df7d4dde1b1d0e3dcd42a820e41313c8a8d67c0df7fde9e027afdd7c630ad",
+        "document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a:dateproof:f965f939d036ea62",
+        "metadata": {
+          "fiscal_date_ending": "2025-03-31",
+          "provider": "alpha_vantage",
+          "quarter": "2025Q1",
+          "reported_date": "2025-04-29",
+          "symbol": "FIBK",
+          "source_call_date": "2025-04-30",
+          "availability_basis": "verified_public_call_information_next_utc_day",
+          "availability_source_url": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000057/fibk-20250331x8kpr.htm",
+          "original_document_id": "alpha_vantage:cik_0000860413:earnings_call:0f2df7d4dde1b1d0e3dcd42a",
+          "original_record_sha256": "5103acfc4c4987c36f42f83e93840aad7d4403d14cce45099afd4bf4f4b012aa"
+        },
+        "published_at": "2025-04-30T00:00:00+00:00",
+        "source_type": "earnings_call"
+      },
+      "unchanged_content_hash": "0f2df7d4dde1b1d0e3dcd42a820e41313c8a8d67c0df7fde9e027afdd7c630ad",
+      "schema_validation_passed_in_memory": true
+    },
+    {
+      "old_source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000860413/alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e.json",
+      "old_file_sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59",
+      "excluded_old_document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+      "proposed_record_without_content": {
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "company_id": "cik_0000860413",
+        "content_hash": "5c87489efef8befa6410f69ee50f332053b8a9e4f56473b82aaf031af7cd3dc2",
+        "document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e:dateproof:1ce1d942ecbd9e20",
+        "metadata": {
+          "fiscal_date_ending": "2025-06-30",
+          "provider": "alpha_vantage",
+          "quarter": "2025Q2",
+          "reported_date": "2025-07-29",
+          "symbol": "FIBK",
+          "source_call_date": "2025-07-30",
+          "availability_basis": "verified_public_call_information_next_utc_day",
+          "availability_source_url": "https://www.sec.gov/Archives/edgar/data/860413/000086041325000114/fibk-20250630x8kpr.htm",
+          "original_document_id": "alpha_vantage:cik_0000860413:earnings_call:5c87489efef8befa6410f69e",
+          "original_record_sha256": "a2ed0b264e6597d7994792b2581ba1c1d865d6a004e1df7174d2fef16854ba59"
+        },
+        "published_at": "2025-07-30T00:00:00+00:00",
+        "source_type": "earnings_call"
+      },
+      "unchanged_content_hash": "5c87489efef8befa6410f69ee50f332053b8a9e4f56473b82aaf031af7cd3dc2",
+      "schema_validation_passed_in_memory": true
+    }
+  ]
+}

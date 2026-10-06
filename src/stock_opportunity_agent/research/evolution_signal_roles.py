@@ -1707,6 +1707,8 @@ class LLMSignalMiningModel(SignalMiningModel):
             issues: list[ValidationIssue] = []
             seen_episodes: set[str] = set()
             covered_feedback_refs: set[str] = set()
+            valid_episode_sources: dict[int, set[str]] = {}
+            mixed_episode_sources: dict[int, set[str]] = {}
             for collection, text_field, rows in (
                 ("episode_reflections", "reflection", episodes),
                 ("lesson_additions", "guidance", lessons),
@@ -1774,9 +1776,8 @@ class LLMSignalMiningModel(SignalMiningModel):
                 comparison_refs = set(source_refs) & set(comparison_sources)
                 if comparison_refs:
                     if not set(source_refs) <= set(comparison_sources):
-                        issues.append(ValidationIssue(code="cross_round_mixed_sources",
-                            paths=(path,), allowed_repairs=("replace",),
-                            message="Keep paired comparison episodes separate from other feedback; retain coverage in a separate supplied episode slot."))
+                        mixed_episode_sources[index] = set(source_refs)
+                        continue
                     else:
                         index_view = ReflectionMemoryIndex()
                         try:
@@ -1790,6 +1791,34 @@ class LLMSignalMiningModel(SignalMiningModel):
                             issues.append(ValidationIssue(code="cross_round_reflection_invalid",
                                 paths=(target,), dependent_paths=(path + ".kind",) if target != path else (),
                                 allowed_repairs=("replace",), message=str(exc)))
+                            continue
+                if not reflection_fact_inference_fields(raw, detail_field="reflection"):
+                    valid_episode_sources[index] = set(source_refs)
+            for index, source_refs in mixed_episode_sources.items():
+                other_coverage = set().union(*valid_episode_sources.values())
+                issues.append(ValidationIssue(
+                    code="cross_round_mixed_sources",
+                    paths=(f"episode_reflections[{index}]",),
+                    allowed_repairs=("replace",),
+                    source_refs=tuple(sorted(source_refs - other_coverage)),
+                    message=(
+                        "Keep paired comparison episodes separate from other feedback. "
+                        "Preserve episode coverage of every selected feedback ref; "
+                        "lesson citations do not substitute for episode coverage. "
+                        "Use the source partitions and coverage below to retain "
+                        "uncovered sources, without duplicating an already-covered "
+                        "comparison or changing unauthorized siblings."
+                    ),
+                    repair_context={
+                        "comparison_feedback_refs": sorted(source_refs & set(comparison_sources)),
+                        "other_feedback_refs": sorted(source_refs - set(comparison_sources)),
+                        "feedback_refs_without_other_valid_episode": sorted(source_refs - other_coverage),
+                        "other_valid_episode_coverage": {
+                            f"episode_reflections[{other_index}]": sorted(refs)
+                            for other_index, refs in valid_episode_sources.items()
+                        },
+                    },
+                ))
             missing_feedback_refs = sorted(
                 feedback_refs - covered_feedback_refs
             )
@@ -2063,6 +2092,10 @@ class LLMSignalMiningModel(SignalMiningModel):
                 "inside a feedback unit are audit content and are not valid output "
                 "citations. One episode may cite multiple supplied feedback refs; "
                 "never emit more episodes than supplied episode slots."
+                " The union of episode source_refs must cover every selected "
+                "feedback_units feedback_ref. Lesson citations do not substitute "
+                "for episode coverage. Keep comparison and other feedback in "
+                "separate episodes while preserving this complete coverage."
                 " Keep each complete reflection or guidance concise (about 120 "
                 "words), each brief about 50 words, and at most two material "
                 "unresolved questions per episode. Lesson slots are optional: "
