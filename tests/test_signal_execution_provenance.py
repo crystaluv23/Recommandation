@@ -1,7 +1,10 @@
 """Technical Signal failures survive production prediction and learning views."""
 
 import json
+from copy import deepcopy
 from dataclasses import replace
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest import TestCase
 
 from stock_opportunity_agent.models import ValidationError
@@ -10,12 +13,17 @@ from stock_opportunity_agent.research.evolution_core import (
     _assemble_final_context, default_information_plan,
 )
 from stock_opportunity_agent.research.evolution_plan_roles import (
-    LLMBlindPredictor, LLMPlanCritic, LLMRoundReflector, _plan_critic_trajectory,
+    LLMBlindPredictor, LLMPlanCritic, LLMResearchController, LLMRoundReflector,
+    LLMSignalRetrievalAgent,
+    _plan_critic_trajectory,
 )
 from stock_opportunity_agent.research.evolution_output_validation import _compact_posthoc_context
 from stock_opportunity_agent.research.scheme_evolution import score_predictions
 from stock_opportunity_agent.signal_library import (
-    SignalCoverage, SignalExecutionStatus, SignalResult, SignalValue,
+    FAILED_SIGNAL_MODEL_SUMMARY, SIGNAL_EXECUTION_STATUS_INSTRUCTION,
+    UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY, UNAVAILABLE_SIGNAL_MODEL_SUMMARY,
+    SignalBatchResult, SignalCoverage, SignalExecutionStatus, SignalRegistry, SignalResult, SignalValue,
+    signal_result_model_view,
 )
 from tests.scheme_evolution_test_support import NOW, make_record, make_trajectory
 from tests.test_evolution_state_patch import PatchCaller
@@ -56,6 +64,100 @@ class SignalExecutionProvenanceTests(TestCase):
             state=trajectory.final_state, rounds=trajectory.signal_rounds, prediction_time=NOW,
         )
 
+    def test_model_views_preserve_distinct_execution_causes_without_mutating_sources(self):
+        for status in SignalExecutionStatus:
+            with self.subTest(status=status):
+                canonical = result(status).to_dict()
+                original = deepcopy(canonical)
+                viewed = signal_result_model_view(canonical)
+                if status is SignalExecutionStatus.SUCCESS:
+                    expected = canonical["interpretation"]["summary"]
+                elif status is SignalExecutionStatus.DOMAIN_UNAVAILABLE:
+                    expected = UNAVAILABLE_SIGNAL_MODEL_SUMMARY
+                else:
+                    expected = FAILED_SIGNAL_MODEL_SUMMARY
+                self.assertEqual(viewed["interpretation"]["summary"], expected)
+                self.assertEqual(viewed["execution"], {"status": status.value})
+                self.assertEqual(signal_result_model_view(viewed), viewed)
+                self.assertEqual(canonical, original)
+
+        canonical = result(SignalExecutionStatus.DOMAIN_UNAVAILABLE).to_dict()
+        for execution in (None, {}, {"status": "legacy_unrecognized"}, {"status": []}, {"status": {}}):
+            with self.subTest(execution=execution):
+                legacy = deepcopy(canonical)
+                if execution is None:
+                    legacy.pop("execution")
+                else:
+                    legacy["execution"] = execution
+                original = deepcopy(legacy)
+                viewed = signal_result_model_view(legacy)
+                self.assertEqual(viewed["interpretation"]["summary"],
+                                 UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY)
+                if execution is None:
+                    self.assertNotIn("execution", viewed)
+                else:
+                    self.assertEqual(viewed["execution"].get("status"), execution.get("status"))
+                self.assertEqual(signal_result_model_view(viewed), viewed)
+                self.assertEqual(legacy, original)
+
+    def test_mixed_causes_survive_posthoc_reprojection(self):
+        trajectory = self.trajectory(SignalExecutionStatus.DOMAIN_UNAVAILABLE)
+        technical = self.trajectory(SignalExecutionStatus.VALIDATION_FAILED)
+        trajectory = replace(trajectory, signal_rounds=(
+            *trajectory.signal_rounds, *technical.signal_rounds))
+        context = self.context(trajectory)
+        legacy = deepcopy(context["signal_rounds"][0]["batch"]["results"][0])
+        legacy.pop("execution")
+        context["signal_rounds"][0]["batch"]["results"].append(legacy)
+        original = deepcopy(context)
+        compact = _compact_posthoc_context(context)
+        self.assertEqual([row["interpretation"]["summary"] for row in compact["signal_results"]], [
+            UNAVAILABLE_SIGNAL_MODEL_SUMMARY, UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY,
+            FAILED_SIGNAL_MODEL_SUMMARY,
+        ])
+        self.assertNotIn("execution", compact["signal_results"][1])
+        self.assertEqual(context, original)
+
+    def test_native_reflect_uses_explicit_status_instruction(self):
+        trajectory = self.trajectory(SignalExecutionStatus.DOMAIN_UNAVAILABLE)
+
+        def response(request):
+            contract = request["payload"]["output_patch_contract"]
+            return {"base_hash": contract["base_hash"], "operations": []}
+
+        caller = PatchCaller(response)
+        reflected = LLMResearchController(caller).reflect(
+            default_information_plan(), trajectory.final_state,
+            SignalBatchResult(results=(result(SignalExecutionStatus.DOMAIN_UNAVAILABLE),), signal_calls=1),
+        )
+        self.assertEqual(reflected.value, trajectory.final_state)
+        self.assertEqual(len(caller.calls), 1)
+        self.assertIn(SIGNAL_EXECUTION_STATUS_INSTRUCTION, caller.calls[0]["system_prompt"])
+        self.assertNotIn("unavailable Signal is only a coverage diagnostic", caller.calls[0]["system_prompt"])
+
+    def test_actual_routing_history_retains_cause_without_private_diagnostics(self):
+        with TemporaryDirectory() as directory:
+            registry = SignalRegistry(Path(directory) / "signals")
+            registry.install_catalog(Path(__file__).resolve().parents[1] / "configs/signals_v1.json")
+            for status in (SignalExecutionStatus.DOMAIN_UNAVAILABLE, SignalExecutionStatus.VALIDATION_FAILED):
+                with self.subTest(status=status):
+                    caller = PatchCaller({"selections": []})
+                    raw = result(status, "cash_reserves").to_dict()
+                    original = deepcopy(raw)
+                    LLMSignalRetrievalAgent(caller).select(
+                        ("Unspecified issuer evidence facet.",), registry.freeze(),
+                        {"cash_reserves:v1": ()}, {"cash_reserves:v1": raw},
+                        ("revenue_growth_yoy:v1",),
+                    )
+                    self.assertEqual(len(caller.calls), 1)
+                    call = caller.calls[0]
+                    card = call["payload"]["previous_signal_results"]["cash_reserves:v1"]
+                    self.assertEqual(card["execution"], {"status": status.value})
+                    self.assertIn(SIGNAL_EXECUTION_STATUS_INSTRUCTION, call["system_prompt"])
+                    self.assertNotIn("could not find its required data", call["system_prompt"])
+                    self.assertNotIn("LOCAL_DIAGNOSTIC_SENTINEL", json.dumps(call))
+                    self.assertEqual(raw, original)
+
     def test_each_execution_status_survives_final_and_posthoc_views(self):
         for status in SignalExecutionStatus:
             with self.subTest(status=status):
@@ -91,7 +193,7 @@ class SignalExecutionProvenanceTests(TestCase):
         self.assertEqual(caller.calls[0]["payload"]["final_context"]["signal_rounds"][0]["batch"]["results"][0]["execution"], {"status": "budget_blocked"})
         self.assertEqual(caller.calls[1]["payload"]["compact_context"]["signal_results"][0]["execution"], {"status": "budget_blocked"})
         for call in caller.calls:
-            self.assertIn("technical execution gaps", call["system_prompt"])
+            self.assertIn(SIGNAL_EXECUTION_STATUS_INSTRUCTION, call["system_prompt"])
             self.assertNotIn("LOCAL_DIAGNOSTIC_SENTINEL", json.dumps(call))
 
     def test_actual_critic_request_and_persisted_round_slow_read_retain_failures(self):
@@ -102,6 +204,7 @@ class SignalExecutionProvenanceTests(TestCase):
             metrics=score_predictions((trajectory,)),
         )
         expected = [{"signal_round": 1, "signal_ref": "fixture_signal:v1", "status": "validation_failed"}]
+        self.assertIn(SIGNAL_EXECUTION_STATUS_INSTRUCTION, caller.calls[0]["system_prompt"])
         self.assertEqual(caller.calls[0]["payload"]["trajectories"][0]["recorded_signal_execution_failures"], expected)
         record = replace(make_record("plan_fixture", 0.5, (1.0,)),
             reflection=reflection, trajectories=(trajectory,),
@@ -125,7 +228,7 @@ class SignalExecutionProvenanceTests(TestCase):
         round_caller = PatchCaller(NO_FINDINGS)
         LLMRoundReflector(round_caller).reflect(round_id=1, records=(record, second), prior="Fixed prior.")
         self.assertEqual(len(round_caller.calls), 1)
-        self.assertIn("technical execution gaps", round_caller.calls[0]["system_prompt"])
+        self.assertIn(SIGNAL_EXECUTION_STATUS_INSTRUCTION, round_caller.calls[0]["system_prompt"])
 
     def test_legacy_missing_diagnostics_remain_unknown_and_domain_gap_is_not_failure(self):
         evidence = CaseReflectionEvidence.from_trajectory(self.trajectory(SignalExecutionStatus.DOMAIN_UNAVAILABLE), case_index=1)
@@ -140,6 +243,8 @@ class SignalExecutionProvenanceTests(TestCase):
             "interpretation": {"summary": "Legacy unknown cause."}, "status": {"coverage": "unavailable"},
         }]}}]})
         self.assertNotIn("execution", compact["signal_results"][0])
+        self.assertEqual(compact["signal_results"][0]["interpretation"]["summary"],
+                         UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY)
 
     def test_diagnostic_rows_validate_identity_status_and_duplicates(self):
         evidence = CaseReflectionEvidence.from_trajectory(self.trajectory(SignalExecutionStatus.VALIDATION_FAILED), case_index=1)

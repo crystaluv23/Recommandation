@@ -64,6 +64,7 @@ from stock_opportunity_agent.signal_library import (
     SignalResult,
     SignalSpec,
     SIGNAL_CONTEXT_TAGS,
+    SIGNAL_EXECUTION_STATUS_INSTRUCTION,
     signal_result_model_view,
     _thaw_json,
 )
@@ -434,9 +435,11 @@ class LLMResearchController:
                 "open_questions or next_information_needs. If every current-batch "
                 "Signal is unavailable, preserve every prior ResearchState field and "
                 "item byte-for-byte and change only decision to finalize. An "
-                "unavailable Signal is only a coverage diagnostic: it is "
-                "not evidence of absence and cannot create a belief or resolve a "
-                "question. evaluation_context is control data, not evidence: every "
+                "unavailable Signal is not evidence of absence and cannot "
+                "create a belief or resolve a "
+                "question. "
+                + SIGNAL_EXECUTION_STATUS_INSTRUCTION +
+                "evaluation_context is control data, not evidence: every "
                 "new or retained question must request only facts available by "
                 "prediction_time. A cutoff-bounded question may ask what was already "
                 "disclosed about a future schedule, but must not request later "
@@ -676,6 +679,7 @@ def _signal_routing_result_view(
             "state",
             "interpretation",
             "status",
+            "execution",
         )
         if key in model_view
     }
@@ -1691,10 +1695,12 @@ class LLMSignalRetrievalAgent:
                 "while its effect remains unverified. Select by need and applicability; "
                 "admission does not establish predictive benefit. "
                 "cards are already versioned, eligible, and unexecuted; never recreate "
-                "omitted refs. Check previous_signal_results: a Signal whose prior "
-                "result was 'unavailable' could not find its required data for this "
-                "case — do not select another Signal with the same data requirement "
-                "unless you have a specific reason to believe it will succeed. "
+                "omitted refs. Check previous_signal_results and their recorded "
+                "execution status. An unavailable-shaped result alone does not "
+                "establish missing issuer data or justify excluding another Signal "
+                "with the same data requirement. For domain_unavailable, assess "
+                "whether the sibling has a specific basis to find useful evidence. "
+                + SIGNAL_EXECUTION_STATUS_INSTRUCTION +
                 "For research_context, use it only to test Signal "
                 "applicability; it is accepted controller context, not source evidence. "
                 "Preserve previous_context_tags "
@@ -1801,12 +1807,9 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     + _COMPUTED_PERIOD_INSTRUCTION +
     _PRICE_SHORTFALL_INSTRUCTION +
     "keep each computed return with that card's own first/last prices and dates, "
-    "rather than attaching an unrelated Basic Info price. Signal execution.status "
-    "distinguishes domain_unavailable from validation_failed, transport_failed, "
-    "permanent_failed, budget_blocked and authorization_blocked. The latter are "
-    "technical execution gaps, not missing issuer data or economic absence; "
-    "do not use them as positive or negative stock evidence. Legacy unavailable "
-    "results without execution.status have an unknown cause. Respect Signal "
+    "rather than attaching an unrelated Basic Info price. "
+    + SIGNAL_EXECUTION_STATUS_INSTRUCTION +
+    "Respect Signal "
     "measurement_context: categorical states are not stock-direction forecasts, "
     "numeric_sign is distinct from the measured predicate's categorical state; "
     "a fraction_difference display uses percentage points, not percent, "
@@ -2186,13 +2189,8 @@ def _structured_reflection_contract(level: str) -> str:
         "These refs index related Experience, not evidence of consumption or effect. "
         "Success/failure assertions require outcome_claims matching the canonical "
         "source facts; technical exclusions cannot be "
-        "research successes or failures. Signal execution.status distinguishes "
-        "domain_unavailable from validation_failed, transport_failed, "
-        "permanent_failed, budget_blocked and authorization_blocked. The latter "
-        "are technical execution gaps, not proof of missing issuer data or "
-        "economic absence, and not valid factor prediction failures. Describe "
-        "their repair as a technical action separately from completed research. "
-        "A legacy unavailable item without execution status has unknown cause. "
+        "research successes or failures. "
+        + SIGNAL_EXECUTION_STATUS_INSTRUCTION +
         "Category and claim correctness are "
         "linked: successful_patterns and decision_drivers items may carry only "
         "correct=true claims, while failed_patterns, why_prediction_failed, "

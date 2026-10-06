@@ -101,6 +101,16 @@ Signal retrieval, blind prediction, and Plan reflection.
 
 - Adapters translate model output into core protocols; they do not own engine
   state or commit pointers.
+- Signal retrieval, Reflect, Predictor and every authored reflection level share the Signal
+  Library's explicit execution-status instruction. `domain_unavailable` is a
+  normal domain coverage outcome, technical statuses are listed separately,
+  and legacy missing status is unknown. Prompts do not use an ambiguous
+  "former/latter" reference to assign these classes. Model views preserve the
+  same distinctions before compact posthoc projection; immutable old predictions
+  and Experience are not retrospectively corrected by this prompt alignment.
+  Prior routing-result cards retain recorded execution status without private
+  diagnostics. An unavailable value alone cannot establish missing issuer data
+  or exclude a sibling measurement with the same data requirement.
 - Prediction-time roles never receive labels or target identity.
 - Post-label Jev feedback includes deterministic proper-score and concentration
   diagnostics. Post-hoc reflection and the Plan critic must explain recurring

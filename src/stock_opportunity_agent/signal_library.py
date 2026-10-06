@@ -281,6 +281,20 @@ _SIGNAL_TECHNICAL_FAILURE_STATUSES = frozenset(
     }
 )
 
+SIGNAL_EXECUTION_STATUS_INSTRUCTION = (
+    "Interpret Signal execution.status literally. domain_unavailable is a normal "
+    "domain coverage outcome: visible evidence was insufficient for a canonical "
+    "conclusion. domain_unavailable is not a technical execution gap or failure, "
+    "and does not prove the measured condition is absent. Only "
+    + ", ".join(sorted(status.value for status in _SIGNAL_TECHNICAL_FAILURE_STATUSES))
+    + " are technical execution gaps: no validated domain result was produced. "
+    "Do not treat a technical failure as missing issuer data, economic absence "
+    "or a valid factor prediction failure. Describe technical repair separately "
+    "from completed research. An unavailable result without a recognized "
+    "execution status has unknown cause; infer neither coverage insufficiency "
+    "nor technical failure from its unavailable-shaped value alone. "
+)
+
 
 @dataclass(frozen=True)
 class EvidencePolicy:
@@ -1022,13 +1036,20 @@ class SignalResult:
 
 
 UNAVAILABLE_SIGNAL_MODEL_SUMMARY = (
-    "Unavailable: visible evidence was insufficient for a canonical conclusion. "
+    "domain_unavailable: a normal domain coverage outcome, not a technical "
+    "execution gap or failure. Visible evidence was insufficient for a canonical conclusion. "
     "This is not evidence that the measured condition is absent."
 )
 
 FAILED_SIGNAL_MODEL_SUMMARY = (
-    "Signal execution did not produce a validated domain result. Treat this item "
+    "Technical execution gap: Signal execution did not produce a validated domain result. Treat this item "
     "as unknown and do not infer that the measured condition is absent."
+)
+
+UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY = (
+    "Unavailable result with unknown execution cause. Infer neither domain "
+    "coverage insufficiency nor technical failure. This is not evidence that "
+    "the measured condition is absent."
 )
 
 
@@ -1047,9 +1068,13 @@ def signal_result_model_view(
         result["interpretation"] = {
             "summary": (
                 FAILED_SIGNAL_MODEL_SUMMARY
-                if execution_status
+                if isinstance(execution_status, str) and execution_status
                 in {status.value for status in _SIGNAL_TECHNICAL_FAILURE_STATUSES}
-                else UNAVAILABLE_SIGNAL_MODEL_SUMMARY
+                else (
+                    UNAVAILABLE_SIGNAL_MODEL_SUMMARY
+                    if execution_status == SignalExecutionStatus.DOMAIN_UNAVAILABLE.value
+                    else UNKNOWN_UNAVAILABLE_SIGNAL_MODEL_SUMMARY
+                )
             )
         }
         result["evidence"] = {"supporting": [], "counter": []}

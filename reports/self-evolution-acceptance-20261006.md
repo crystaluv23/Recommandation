@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v181于2026-10-07 03:14:25真实启动，冻结90999e84，当前PIT data-ready检查/FastSlow0/0，仍未验收；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v181于2026-10-07 03:14:25真实启动，冻结90999e84，当前逐案Fast/FastSlow0/0，c01第五案unfinalized导致整Plan diagnostic-only，c02继续，仍未验收；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -262,3 +262,12 @@
 - 启动后亲自读两份实际Proposer固定prompt、B/H_init/H_reflect/H_analyse及原JSON/checkpoint：c01/c02均首答直接接受，无付费纠错/追加read，五字段同根且B不再宣称query可选；分别6/8条真实采用ref与同snapshot8e92127c…精确落盘。有效性尚未证明；c02 H_reflect的“Before finalizing a non-surge judgment”条件措辞仍预设下一Predictor所有的判断，与末句不决定方向/幅度存在角色混淆风险，须结合实际controller输入/行为检查，不能仅凭parser通过接受研究语义。当前首案已开始真实研究，正式指针未提交。
 
 - 首批四个c01案例checkpoint实际stop_reason=finalized/decision=finalize，避免了v180首案unfinalized状态，但不能把它说成本次unique claim修复一定被触发或完整周期成功；逐例Signal状态/幅度保存在launch audit。Signal validation_failed仍存在；Predictor原文本把domain_unavailable称为technical execution gap，还出现缺少quantified price bridge的理由，必须核对固定prior及后续反思传播，不允许将正确domain覆盖诊断当工程错误或以价格证明门替代研究。原预测/失败分母不改，当前不满足用户三项终态验收。
+
+## v181 正常覆盖误归因与消费边界（2026-10-07 03:37）
+
+- 亲自读取c01 Match Group实际完整Predictor/Posthoc与持久化原fact，`order_confirmation_disclosed:v2`的原始执行状态为`domain_unavailable`：来源未含可判定订单材料，是正常domain coverage不足。模型却在预测uncertainty与Posthoc fact将它称作technical execution gap；`sources_checked`只能证明引用出处，不能证明这个归因正确。原预测/经验保持，见[v181实际内容及当前投影审计](v181-execution-cause-audit-20261007.json)。
+- 固定prompt使用“the latter”区分五技术状态，路由更把全部unavailable说成找不到所需数据；旧模型视图亦将无记录状态归到coverage不足。先spec后由Signal Library提供一个明确指令，Retrieval/Reflect/Predictor/Posthoc/Plan/Round/Slow authored reflection共同使用：domain是正常覆盖不足，五runtime technical statuses才是未产出有效domain结果，缺失/未识别legacy状态为原因未知。路由prior卡保留实际execution但不泄露私有错误；不改变canonical enum、观察统计、评分/准入或PIT。
+- 第一批回归还发现Posthoc直接复制带signal_ref的旧compact卡。现在只对unavailable卡重投影三原因摘要；available卡原有source periods和数值metadata保持，不改原packet。涵盖7状态、未知/缺失/异常类型、混合状态、重复投影不变性、原件不变及生产角色/持久化跨层读取。
+- 首次1567全量有5个historical-shadow错误：lookup按当前safe summary构造expected导致找不到旧冻结请求。修复仅历史匹配不可用摘要与旧无status兼容，其余identity/version/value/confidence/coverage/已有status及available摘要严格相同；唯一匹配后仍用原saved request，不把新解释写回旧请求。两个独立反例回归加原历史101请求/80routing准备及评分测试通过，未新增外部调用或改变影子cohort。
+- 最后6新、330相关和1570全量55.793秒及repository lint PASS。本地投影同原canonical/status/hash且更明确，不生成新模型答案，不代表模型已遵循新固定提示；运行仍冻结90999e84，不热修改。
+- 03:37部分库存仍有Signal技术失败，正向幅度仍仅2–3x；c01有5保存案、仅4有效，24预期未完成，metrics=null/fitness diagnostic_only。第五案terminal模型原patch有finalize但未落盘，下一步须完整生产组合/预算/语义校验回放；不能以空technical_exclusion_case_ids称零问题，也不能把模型提出finalize当已提交。c02继续独立逐案运行，正式指针仍0/0。新magnitude入库/真实有源3–10x与10x+、独立gain仍未通过。

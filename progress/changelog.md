@@ -684,3 +684,5 @@
 - 2026-10-07 03:09：按v180真实terminal原答与完整生产匿名/catalog/预留预算修复唯一旧Signal claim的typed快照恢复，旧共坐标多claim不再按覆盖顺序误拒；全文再验、落盘重载及预测闭包0外部回放，拒绝歧义/依赖冲突/过期来源和代写终态决定。5新/203相关/1564全量63.262s PASS，lint PASS，冻结v180原失败不改，待后继live验收。
 
 - 2026-10-07 03:16：冻结90999e84为v181并由单executor真实启动，承接v179已提交历史/Registry11，保持同cohort/source/scoring/budget/Locked Test；进程实际命令和原10分钟heartbeat接续核对，原v180不重启。准备阶段CLI互斥选项已更正，控制路径迁移遗漏的旧preflight覆盖按原SHA逐字恢复，0外部且原run产物不改。
+
+- 2026-10-07 03:37：按v181真实Signal→预测→持久化Posthoc错误归因修复共享三原因模型视图/固定prompt及routing execution传递，补Posthoc不可用卡重投影与历史冻结lookup兼容；原件/评分/PIT/Locked Test不改，6新/330相关/1570全量55.793s及lint PASS。终态c01 diagnostic-only与Signal技术失败/magnitude集中仍保留，整体目标未完成。

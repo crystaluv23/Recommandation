@@ -146,6 +146,16 @@ directional-effectiveness statistics. Their diagnostics remain in the canonical
 record; downstream model views receive only a generic unknown-result summary and
 the status. The model does not author execution status.
 
+Downstream interpretation preserves three distinct causes: `domain_unavailable`
+is normal domain coverage insufficiency, the runtime technical-failure statuses
+mean no validated domain result was produced, and missing/unrecognized legacy
+status has unknown cause. A model view never infers evidence insufficiency from
+an unavailable-shaped value alone. The shared consumer instruction names these
+classes explicitly from the runtime taxonomy, without pronoun-based grouping;
+it must not call a valid domain result a technical failure or infer economic
+absence from either class. These are presentation rules only: original results,
+canonical status, observation statistics and admission/effect rules do not change.
+
 Batch execution isolates failures by exact Signal ref. A valid sibling remains
 accepted and is not regenerated merely because another row fails validation or
 cannot afford its correction. Only failed rows receive the bounded correction;
@@ -552,8 +562,9 @@ successful sibling's result.
 is absent. The complete model-returned interpretation remains durable in the
 canonical `SignalResult` for audit, but every downstream model-facing view
 (routing history, H_reflect, Predictor/post-hoc, critic/meta, and Slow inputs)
-replaces it with one deterministic coverage statement: visible evidence was
-insufficient for a canonical conclusion and this is not evidence of absence.
+replaces it with a deterministic status-specific statement: normal domain
+coverage insufficiency, technical execution failure, or unknown legacy cause.
+None is evidence of economic absence; unavailable alone does not select a cause.
 An unavailable Signal cannot create a supporting/counter claim or resolve a
 research question.
 

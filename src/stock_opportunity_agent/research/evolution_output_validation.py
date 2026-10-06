@@ -1064,7 +1064,9 @@ def _compact_posthoc_context(original_context: Mapping[str, Any]) -> dict[str, A
                     data_gaps.append(dict(request_row["data_gap"]))
     signal_results: list[dict[str, Any]] = []
     for result in _context_signal_results(original_context):
-        if "signal_ref" in result:
+        state = result.get("state")
+        unavailable = isinstance(state, Mapping) and state.get("value") == "unavailable"
+        if "signal_ref" in result and not unavailable:
             # This is already a runtime-produced model view. Re-projecting a
             # compact card without raw evidence would erase its source periods.
             signal_results.append(dict(result))

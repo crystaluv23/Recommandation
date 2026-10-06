@@ -1,6 +1,6 @@
 # Technical Failure Before Quality Attribution
 
-visit_times: 5
+visit_times: 6
 
 ## Trigger
 

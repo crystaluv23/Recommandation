@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07 03:37：v181实际domain_unavailable被Predictor/Posthoc误写技术缺口并入Experience；先spec后统一Signal Library三原因投影及Retrieval/Reflect/Predictor/全部反思固定指令，routing保留execution、Posthoc旧compact unavailable重投影，legacy未知不补因果。历史影子lookup仅兼容unavailable展示词/旧无status，不改冻结请求，80路由复原且反例仍拒。6新/330相关/1570全量55.793s及lint PASS；修复未热入v181。当前c01第五案仍unfinalized、整Plan diagnostic-only，c02继续；新magnitude入库/高档扩展及独立收益未验收。见reports/v181-execution-cause-audit-20261007.json。
+
 2026-10-07 03:16：v181真实启动03:14:25，冻结90999e84/clean，wrapper97196/child97201已核对实际命令；同v179正式1/1、Registry11、同40案/3606源文件/预算/评分/Locked Test，准备0外部。修复203相关/1564全量63.262s及lint PASS；原10分钟heartbeat接续。启动后两Plan首答直接接受/6与8采用refs已核对，首案研究开始，当前Fast/Slow0/0、非完成；完整内容/零技术失败/magnitude入库高档扩展/独立gain仍待实测。
 
 2026-10-07 03:09：v180终态阻断生产原件精确重放；原匿名/catalog/prompt一致，首答后纠错预算65205而需要69529，本地拒绝无发送。通用typed唯一旧Signal claim及关联断言快照恢复、共坐标多claim顺序无关；歧义/冲突/过期来源不自动选，不能代写finalize。原答0外部回放完整校验/状态重载/生产上下文精确组装通过，下一预测82110预算<144874；原运行0/0不改。5新/203相关/1564全量63.262s PASS，lint PASS，仍待冻结后继实测，三项完整验收未通过。

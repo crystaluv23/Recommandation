@@ -116,6 +116,28 @@ def _load_routing_requests(source_root: Path) -> list[tuple[str, dict[str, Any]]
     return rows
 
 
+def _routing_history_matches(previous: Any, expected: Mapping[str, Any]) -> bool:
+    """Match frozen prior results independently of unavailable summary wording."""
+
+    if not isinstance(previous, Mapping) or previous.keys() != expected.keys():
+        return False
+    for ref, raw in previous.items():
+        if not isinstance(raw, Mapping) or set(raw) - {
+            "signal_id", "version", "state", "interpretation", "status", "execution",
+        }:
+            return False
+        actual = dict(raw)
+        wanted = dict(expected[ref])
+        state = actual.get("state", {})
+        if isinstance(state, Mapping) and state.get("value") == "unavailable":
+            actual["interpretation"] = wanted["interpretation"] = {"summary": "unavailable"}
+        if "execution" not in raw:
+            wanted.pop("execution", None)
+        if actual != wanted:
+            return False
+    return True
+
+
 def _prediction_questions() -> dict[str, dict[str, Any]]:
     return _jev_judgment_questions()
 
@@ -267,7 +289,7 @@ def prepare_shadow(
                 == tuple(round_value["information_needs"])
                 and (payload.get("evaluation_context") or {}).get("prediction_time")
                 == trajectory["prediction_time"]
-                and payload.get("previous_signal_results", {}) == expected_previous
+                and _routing_history_matches(payload.get("previous_signal_results", {}), expected_previous)
             ]
             if len(matches) != 1:
                 raise ValidationError(

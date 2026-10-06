@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
@@ -12,6 +13,7 @@ from stock_opportunity_agent.llm.openrouter_jev import JevDecisionResponse
 
 from scripts.run_jev_historical_shadow import (
     _selected_routing_refs,
+    _routing_history_matches,
     prepare_direction_probe,
     prepare_magnitude_followup,
     prepare_routing_context_parity_probe,
@@ -23,6 +25,49 @@ from scripts.run_jev_historical_shadow import (
 
 
 class JevHistoricalShadowTests(TestCase):
+    def test_historical_unavailable_matching_preserves_canonical_fields(self):
+        row = {
+            "signal_id": "fixture_signal", "version": 1,
+            "state": {"value": "unavailable", "confidence": 0.5},
+            "interpretation": {"summary": "Current explicit domain coverage summary."},
+            "status": {"coverage": "unavailable"},
+            "execution": {"status": "domain_unavailable"},
+        }
+        expected = {"fixture_signal:v1": row}
+        archived = deepcopy(expected)
+        archived["fixture_signal:v1"]["interpretation"]["summary"] = "Old coverage summary."
+        original = deepcopy(archived)
+        self.assertTrue(_routing_history_matches(archived, expected))
+        self.assertEqual(archived, original)
+        legacy = deepcopy(archived)
+        legacy["fixture_signal:v1"].pop("execution")
+        self.assertTrue(_routing_history_matches(legacy, expected))
+        self.assertNotIn("execution", legacy["fixture_signal:v1"])
+        for key, value in (
+            ("version", 2), ("state", {"value": "unavailable", "confidence": 0.8}),
+            ("status", {"coverage": "partial"}),
+            ("execution", {"status": "validation_failed"}),
+            ("unowned", "extra"),
+        ):
+            changed = deepcopy(archived)
+            changed["fixture_signal:v1"][key] = value
+            with self.subTest(key=key):
+                self.assertFalse(_routing_history_matches(changed, expected))
+        self.assertFalse(_routing_history_matches({}, expected))
+
+    def test_historical_available_summaries_remain_exact(self):
+        row = {
+            "signal_id": "fixture_signal", "version": 1,
+            "state": {"value": "positive", "confidence": 0.8},
+            "interpretation": {"summary": "Accepted available measurement."},
+            "status": {"coverage": "sufficient"},
+        }
+        expected = {"fixture_signal:v1": row}
+        self.assertTrue(_routing_history_matches(expected, expected))
+        altered = deepcopy(expected)
+        altered["fixture_signal:v1"]["interpretation"]["summary"] = "Different available measurement."
+        self.assertFalse(_routing_history_matches(altered, expected))
+
     def test_routing_cap_ranks_by_total_selection_probability(self):
         cards = [
             {"signal_ref": f"signal_{index}:v1", "execution_type": "deterministic"}

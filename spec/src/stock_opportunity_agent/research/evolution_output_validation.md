@@ -60,6 +60,11 @@ and apply only explicitly allowed deterministic recovery transforms.
   the proposal is scripted; this does not prove historical research quality.
 - The compact posthoc view retains runtime-computed metric cards from the original
   Predictor packet, so numerical price-shape reasoning remains checkable.
+  Available compact Signal cards retain producer-owned measurement metadata.
+  Unavailable compact cards reapply the Signal Library's status-specific safe
+  summary, including legacy missing or unrecognized status as unknown cause.
+  A saved compact card's presence is not authority to retain an ambiguous cause;
+  this projection leaves the original packet and canonical result untouched.
 - Explicitly linked positive endpoints and a percentage change in Predictor
   prose receive a bounded arithmetic check. Signed declines, endpoint precision,
   and percentage rounding are respected; separate-window statements, zero bases,

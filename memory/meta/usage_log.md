@@ -298,3 +298,5 @@
 - 2026-10-07: 同轮继续应用上述两份已读经验，核对Slow嵌套比较引用的唯一父单元/typed ref字段与实际生产parser，泛化既有归属转换并保留歧义/prose反例；原答/证据/历史pending不改，来源闭包通过仍不等于统计、单位和blind行动语义有效。本轮不重复计阅读次数。
 
 - 2026-10-07: v180终态阻断家族；consulted `experiences/incremental-repair-and-sourced-memory.md`与`experiences/self-evolution-convergence-and-acceptance.md`及复盘报告，核对完整原生产匿名/catalog/typed权限与本地预算拒绝，唯一旧Signal claim快照恢复不猜经济含义，不代写终态决定；检查多claim共坐标、依赖冲突、完整再验、持久化与下一预测消费。各visit_times加1且GUIDE同步。
+
+- 2026-10-07: v181执行原因误归因全链路；consulted `experiences/technical-failure-before-quality-attribution.md`、`experiences/signal-result-evidence-invariants.md`、`experiences/incremental-repair-and-sourced-memory.md`、`experiences/self-evolution-convergence-and-acceptance.md`，核对实际Signal→Predictor→Posthoc false fact、共享fixed prompt、路由history和旧影子lookup。domain、technical、legacy unknown统一投影；不改原预测/经验/失败分母、不用测试或原件hash代替语义真值。四visit_times各加1，GUIDE同步。
