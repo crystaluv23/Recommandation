@@ -1,0 +1,273 @@
+{
+  "schema_version": "live-integrated-acceptance-audit-v1",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated",
+  "source_revision": "a95ee0c23ab72cfc90f31b5ea52b172ffd89005c",
+  "fast_pointer": 1,
+  "slow_pointer": 1,
+  "exit": {
+    "exit_code": 0,
+    "reason": "child_terminal",
+    "finished_at": "2026-10-06T16:57:34.891105+00:00"
+  },
+  "attempt_count": 400,
+  "recorded_cost_with_failed_reservations": 1.8528459600000002,
+  "complete_plans": 1,
+  "explicit_adoption": {
+    "item_refs": [],
+    "snapshot_hash": "c3b277f668a98fcc5e2bb7b8c5fa0af514c682f2f25abef3b76311918b6db025"
+  },
+  "metrics": {
+    "binary_f1": 0.75,
+    "binary_precision": 0.9,
+    "binary_recall": 0.6428571428571429,
+    "confusion": {
+      "false_negative": 5,
+      "false_positive": 1,
+      "true_negative": 9,
+      "true_positive": 9
+    },
+    "magnitude_accuracy": 0.21428571428571427,
+    "magnitude_macro_f1": 0.125,
+    "precision_defined": true,
+    "predicted_positive_count": 10,
+    "sample_count": 24,
+    "valid_case_count": 24
+  },
+  "conditional_magnitude_matrix": [
+    {
+      "truth": "10x+",
+      "prediction": "2-3x",
+      "count": 2
+    },
+    {
+      "truth": "2-3x",
+      "prediction": "2-3x",
+      "count": 3
+    },
+    {
+      "truth": "2-3x",
+      "prediction": null,
+      "count": 4
+    },
+    {
+      "truth": "3-10x",
+      "prediction": "2-3x",
+      "count": 4
+    },
+    {
+      "truth": "3-10x",
+      "prediction": null,
+      "count": 1
+    }
+  ],
+  "signal_execution_counts": {
+    "validation_failed": 4,
+    "success": 99,
+    "domain_unavailable": 7
+  },
+  "posthoc_terminal_failures": 3,
+  "new_magnitude_signals": 0,
+  "signal_goal_status": "unmet",
+  "magnitude_contribution": {
+    "assessed": false,
+    "fast_consumption_assessed": false,
+    "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+    "target_candidate_refs": [],
+    "target_mining_assessed": true,
+    "target_supported_candidate_refs": [],
+    "target_track_statuses": {
+      "magnitude_ge3_v1": "completed"
+    }
+  },
+  "input_registry_hash": "072ebb6d2a0519a2465dd6f3abba9a435af99c40041d5a2d2aeed66b4d5cdc4f",
+  "output_registry_hash": "4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311",
+  "registry_version": 10,
+  "promoted": [
+    "liquidity_runway_months:v3"
+  ],
+  "published_runway_proof": {
+    "accepted": true,
+    "admission_identity": {
+      "candidate_hash": "14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12",
+      "contract_validation": {
+        "accepted": true,
+        "executed_tests": 5,
+        "reasons": []
+      },
+      "input_registry_hash": "072ebb6d2a0519a2465dd6f3abba9a435af99c40041d5a2d2aeed66b4d5cdc4f",
+      "research_provenance": {
+        "generation_case_ids": [
+          "cik_0000878518:20250930",
+          "cik_0001097362:20250731",
+          "cik_0001285819:20250930",
+          "cik_0001421517:20250131",
+          "cik_0001474627:20250530",
+          "cik_0001681459:20250530",
+          "cik_0001746129:20250731",
+          "cik_0001951089:20250530"
+        ],
+        "induction_case_ids": [
+          "cik_0000878518:20250930",
+          "cik_0001097362:20250731",
+          "cik_0001285819:20250930",
+          "cik_0001474627:20250530"
+        ],
+        "origin": "current_cycle",
+        "source_input_hash": "3bf385c68cc484f3b1586230f16af4994cc94e0608dbc575ec57302d3bb834f5"
+      },
+      "research_targets": [
+        "surge_direction"
+      ],
+      "schema_version": "signal-candidate-admission-identity-v1",
+      "signal_ref": "liquidity_runway_months:v3",
+      "validator_hash": "d92f3cd46d14087fcfd9ebdb6fe0a89751765a0dba1e8c6943aba3a9f8162ca3"
+    },
+    "candidate_hash": "14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12",
+    "contract_validation": {
+      "accepted": true,
+      "executed_tests": 5,
+      "reasons": []
+    },
+    "evaluation_key": "818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4",
+    "reasons": [],
+    "schema_version": "signal-candidate-admission-v1",
+    "signal_ref": "liquidity_runway_months:v3",
+    "status": "admitted"
+  },
+  "published_runway_definition_function_and_fixtures_unchanged": true,
+  "published_runway_parameters": {
+    "max_period_age_days": 550,
+    "negative_runway_min_months": 12,
+    "positive_runway_max_months": 6
+  },
+  "mining_seeds": [
+    {
+      "axis_id": "magnitude_ge3_v1",
+      "seed": "hypothesis",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 27,
+      "ledger_actions": 27,
+      "narrative_reads": 1,
+      "candidate_count": 0,
+      "pending_need_refs": [],
+      "disposition_rows": 73,
+      "unique_need_refs": 148
+    },
+    {
+      "axis_id": "magnitude_ge3_v1",
+      "seed": "discovery",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 28,
+      "ledger_actions": 28,
+      "narrative_reads": 5,
+      "candidate_count": 0,
+      "pending_need_refs": [],
+      "disposition_rows": 0,
+      "unique_need_refs": 0
+    },
+    {
+      "axis_id": "surge_direction",
+      "seed": "hypothesis",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 27,
+      "ledger_actions": 27,
+      "narrative_reads": 1,
+      "candidate_count": 0,
+      "pending_need_refs": [],
+      "disposition_rows": 140,
+      "unique_need_refs": 148
+    },
+    {
+      "axis_id": "surge_direction",
+      "seed": "discovery",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 15,
+      "ledger_actions": 15,
+      "narrative_reads": 3,
+      "candidate_count": 0,
+      "pending_need_refs": [],
+      "disposition_rows": 0,
+      "unique_need_refs": 0
+    }
+  ],
+  "semantic_findings": [
+    {
+      "stage": "plan_critic",
+      "request_hash": "ee9795b39cbca59cd72e232ba1309eae01db4512b8a625068a4c01280558f4f5",
+      "finding": "Persisted detail incorrectly says every higher-band truth was predicted 2-3x; the matrix has one high-band missed_surge with null magnitude. Valid source refs do not validate this assertion."
+    },
+    {
+      "stage": "magnitude_hypothesis_terminal",
+      "request_hash": "66a2659e778442de19573afed7d675327951bf3aee08442a2cc2518b53de689e",
+      "finding": "Terminal universal source-absence claim exceeds one bounded narrative read; completed exploration flag is not exhaustive reading or semantic absence proof."
+    },
+    {
+      "stage": "mining_need_disposition",
+      "finding": "Magnitude hypothesis maps going-concern/ATM facts to pure deterministic burn-runway Update; immutable definition/function does not permit adding those new narrative measurements. Routing is staged intent and no measurement was delivered."
+    },
+    {
+      "stage": "runway_update",
+      "finding": "Rationale claims categorical alignment but both direction thresholds remain unchanged; admitted changes concern retrieval and fact age only. Effect remains unverified."
+    }
+  ],
+  "limits": [
+    "Live stage completion and technical admission are real; zero technical failure, novel magnitude capability and independent benefit are not achieved.",
+    "No original request, response, Plan, Signal, reflection or committed pointer is edited.",
+    "Stricter whitespace-edge guard and ad9 Plan/reflection repairs are local successor code, not part of this frozen run.",
+    "Independent paired/four-arm protocol remains unapproved and has not been launched."
+  ],
+  "immutable_sources": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/cycles/cycle-0001/slow_loop_result.json": "739c31ad4529be950fd3ea8abab01f055c8c875c69b55763d27fccab4c33a08e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000701818:20250930.json": "fa23a2b020d0a9ece9693fc281586a94e8330e1fe9f3c2fae3cc5ce9a9178464",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000723125:20250731.json": "a5560af1b14fc6d67a72fc4dd181e7cea5c3353dd8c8b63cc218f3fcf7ef2478",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000839470:20250731.json": "48ffda59d8e6800cd47ad1b880f2d281352dec966b62043b7e67080e1bb58907",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000860413:20250930.json": "3d17a77a97e0fa2316fcad9fa1185a35385430f886f6ca12073dc83c9bccae9c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000895421:20250731.json": "eb2b85c722b1091c307477100e8db723f3f5ec23928681ca89da1e219fd207f2",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000895728:20250930.json": "b1ee3b6709b650829c0852b8ac4176913cb8faa8d2a60de5f3df9ce4b542c44c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0000936395:20250930.json": "468761ce004013e38af8544f074c38a21ed1fd73df6ecabfc9888f6189eae670",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001018963:20250930.json": "520e2eb7b12f53128282e6ef087e2b95b646f06a969859f2f30c9d03118929b9",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001051627:20250930.json": "88b8f67b4e1d081de83f3987b8f3248a4391504931b4d89db74cbcd27aec73d7",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001114995:20250331.json": "9dfb2a6ba8a8a86b525e647ca505d7f30ad82fb25245cfe5901d8b44944b5d51",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001164727:20250731.json": "b7289d3aca6eb59ebfbcacb8cc7774182fef773aee6e43de82f33de8c337e774",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001174922:20250731.json": "50a6b0a7507e80d4496c4101ea4c557bc6537b7981a4d5cbbd927ab01000f0d2",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001309402:20250530.json": "a098c30af828f5d236b0fc7fdff002451f2aa11c91148f7aff269f94bf7835a5",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001521036:20250331.json": "5a97d9d8ed108a34fbe21695a578845ca33b22312f88ffa2d276009ba9430fff",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001576942:20250530.json": "cfb78024fcab69c77a264927b576a52256b3b6e1da9fa4d32fd11a5a284e2c0a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001590364:20250731.json": "cead16247114da75021811896e89625d0ff99351bf60c8351011eb81a06a632c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001646188:20250530.json": "bd3e328b1455ec8ad0dfb8941e263059e7bebcabb4e30a798ce29faf0d1af39d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001689548:20250930.json": "54cf516438a1508f98fc9738cce0c904bb6113f27e7b47b98dd7a47576b85515",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001801368:20250331.json": "b792f8e12ea4fd585b25370fec6260541d55de1efeb04f564b1e2a821d66034c",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001830043:20250930.json": "52dafce27681b09bbe594295a1613143b2061027422e2c9adb2eacf5f58886fb",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001847409:20250131.json": "88829f05dc0016482e300f55a4094d49fea8704d51ecc970ad736f2679629820",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001869198:20250331.json": "f600e49c104b351bbf33384c7d5ef595ecda91830a297e4ab54d3318a3e7ccc8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0001920294:20250530.json": "684a4b89a3959d917ee47e7bf1a1d7c425cd020ebdf2cde3a569f547f2f998f0",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/trajectories/plan_r0001_c02/cik_0002023554:20250930.json": "667937f8641fad99636f991dbea3150f4a71a3de08ff289458f8b427eaca567d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/meta/round-0001.json": "b3be97e8978ac6abcc0c343caff0cebb37b784fa4d18c00d0a25b143a174a4bd",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/experiments/round-0001/candidates/slot-02.json": "ba88c8cd9b0e382ce68a738d477d07a064e5a926db9f952c57571aff788882ed",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/attempts.json": "c6c1e2e4f6ac21ef98307550ab73e3778c6888121625cf36fe731d45547a6b67",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/signals/financial/liquidity_runway_months/versions/v3/admission.json": "6f5debf6eefc606798770f7d4071d7ca8f99f129db39e850cec501a77f315abf",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/signals/financial/liquidity_runway_months/versions/v2/spec.json": "6c73913d30ca36b63becd11e6016ad01c73a361a2fb1eca34de5ea88b65e32fa",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/signals/financial/liquidity_runway_months/versions/v2/tests.json": "676494226654bd500c9944ccfc1cb8907e7c35de80fbcaab0334008d3480a1f8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/signals/financial/liquidity_runway_months/versions/v3/tests.json": "676494226654bd500c9944ccfc1cb8907e7c35de80fbcaab0334008d3480a1f8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/ee9795b39cbca59cd72e232ba1309eae01db4512b8a625068a4c01280558f4f5.json": "f6a8dbc2a8aa88e72d2913092e0efb609319f11ea89302d4cc294f94c0051e99",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/ee9795b39cbca59cd72e232ba1309eae01db4512b8a625068a4c01280558f4f5.json": "48aec1e7433282d53f3f456a74bac4342e36d9bcef16a7b922cebdc435ca2ea8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/752a8a745b46250141696ff4b36397a70525b0056eb686455b4769a036672538.json": "fc417f8c3b9602d73545e96a3391e44eba99d97aad6b85151c68a8a6473a6aaa",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/752a8a745b46250141696ff4b36397a70525b0056eb686455b4769a036672538.json": "c2d85a3985dd18dfc4dea6ca73d4f091a4587de067687b095845bc292bd401a8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/66a2659e778442de19573afed7d675327951bf3aee08442a2cc2518b53de689e.json": "b0cea81783954ab2a661d646bc2b5033acf98adc01e00d4b88098640890a8d16",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/66a2659e778442de19573afed7d675327951bf3aee08442a2cc2518b53de689e.json": "f6316c78e3a0942c4d08c0c7ee71ab7c3e0f35b4adb7567e1d886691aeea573d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/27ea6a3795ccdb8b3850fbf8e8768e8759dc8dc2887710244d5166b2e4a0b62f.json": "1614bf70337bf028af934b5bd34dd70d13d2b50a9c5629d309cb808860cc4e7a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/27ea6a3795ccdb8b3850fbf8e8768e8759dc8dc2887710244d5166b2e4a0b62f.json": "b6505cf06db58857635e39795cbe60b5cf35260854bd8645e6ebaac3066eed4f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/59d4179ed769e36be3c04f2019d7fcc0db05d3f5b2de3abec333f59e3c8a68ca.json": "935d111c84311e81b2d72c348d2f3c2c88e5dc4a04a6b8c90b7015a3c3c6d446",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/59d4179ed769e36be3c04f2019d7fcc0db05d3f5b2de3abec333f59e3c8a68ca.json": "5b063e45cc5b104a2b47e1be2d35d581da71a3eef03cc34901e1b1f70041e3ac",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/requests/528b5b50832c7f68e0a0b5d93d82cdf388f83f0d559d82810914ccedd722a570.json": "861ba21ab7b2039694eee111fe2f552aeb7070e07d15785d4725c9f908b6f594",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cache/responses/528b5b50832c7f68e0a0b5d93d82cdf388f83f0d559d82810914ccedd722a570.json": "f7a00a58f59e43e9e195670d8704622d73615d510350ae437aa8da180c1d4acb",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/state.json": "1dd1b828dca3abebd14e97283e655e233461057943eb2e2a0ed46263fbc1ffd1",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v178_integrated/cycle_state.json": "eeb3fd58ebba34f97d19315b0ed099a5cc95a6d6e32a7e9aed20f5bfde8149a4",
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v178/exit.json": "ba78ab6d9e10a407d1c98db85f70477d566e723dc4255c11dfb53516f5245913"
+  }
+}

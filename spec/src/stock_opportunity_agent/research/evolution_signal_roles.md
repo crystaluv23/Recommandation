@@ -205,6 +205,10 @@ follow [stage contracts](stage_contracts.md).
   eligible fact selections must not fall back to unfiltered future records.
 - Every shared payload declares each Signal's own eligible projection refs.
   Initial validation isolates omitted, cross-Signal, edge, and shape failures;
+  Whitespace before or after a quote cannot turn an internal projection-edge
+  fragment into an interior citation. Edge checks ignore that surrounding
+  whitespace; actual document boundaries and complete interior literals retain
+  the same lineage mapping and eligibility rules.
   its sole correction contains only failed Signals, their eligible evidence,
   and their feedback, while accepted siblings are retained without re-execution.
   Edge-violation feedback always leaves the model a compliant repair: when no

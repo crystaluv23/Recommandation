@@ -1952,6 +1952,52 @@ class ReflectionRoleAdapterTests(TestCase):
         self.assertIn("backing Signal batch is no longer visible", error)
         self.assertEqual(reflected.value.supporting_evidence[0].claim, prior_claim)
 
+    def test_signal_internal_edges_ignore_surrounding_whitespace(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        for whitespace in ("", " ", " \t\n"):
+            for edge in ("start", "end"):
+                with self.subTest(whitespace=whitespace, edge=edge):
+                    fragment = "fragment at a truncated boundary"
+                    text = (whitespace + fragment + ". Complete interior sentence. Tail."
+                            if edge == "start" else
+                            "Head. Complete interior sentence. " + fragment + whitespace)
+                    document = RawInfoDocument.create(
+                        document_id="edge-document", company_id="issuer-1", source_type="filing",
+                        published_at=timestamp, available_at=timestamp,
+                        content="prefix " + text + " suffix",
+                    )
+                    lineage = evolution_runtime_module._SignalProjectionLineage(
+                        document=document, projection_text=text,
+                        raw_offset_runs=((0, len(text), 7, 7 + len(text)),),
+                        normalized_start=7, normalized_end=7 + len(text),
+                        normalized_source_length=len(document.content),
+                    )
+                    result = {"evidence": {"supporting": [{
+                        "projection_id": "edge", "exact_text": fragment,
+                    }], "counter": []}}
+                    with self.assertRaisesRegex(ValidationError, "edge=\\['" + edge + "'\\]"):
+                        evolution_runtime_module._map_projected_signal_evidence(result, {"edge": lineage})
+
+    def test_signal_document_boundaries_and_interior_literals_remain_valid(self) -> None:
+        timestamp = datetime(2025, 9, 30, tzinfo=timezone.utc)
+        for text, quote in (("  Management reaffirmed guidance.  ", "Management reaffirmed guidance."),
+                            ("  First sentence. Interior evidence. Last sentence.  ", "Interior evidence.")):
+            with self.subTest(quote=quote):
+                document = RawInfoDocument.create(
+                    document_id="whole-document", company_id="issuer-1", source_type="filing",
+                    published_at=timestamp, available_at=timestamp, content=text,
+                )
+                lineage = evolution_runtime_module._SignalProjectionLineage(
+                    document=document, projection_text=text,
+                    raw_offset_runs=((0, len(text), 0, len(text)),),
+                    normalized_start=0, normalized_end=len(text), normalized_source_length=len(text),
+                )
+                result = {"evidence": {"supporting": [{
+                    "projection_id": "whole", "exact_text": quote,
+                }], "counter": []}}
+                mapped = evolution_runtime_module._map_projected_signal_evidence(result, {"whole": lineage})
+                self.assertEqual(mapped["evidence"]["supporting"][0]["exact_span"], quote)
+
     def test_v12_signal_evidence_rejects_internal_projection_edge_fragment(self) -> None:
         fixture = json.loads(
             (

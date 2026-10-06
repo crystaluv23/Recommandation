@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：当前 v178 于2026-10-07 00:04:43启动，尚未验收；v177已完成且失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v178已于2026-10-07 00:57:34完整提交Fast/Slow1/1并exit0，尚未通过总体验收；v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -30,6 +30,18 @@
 - 新联合测试同时覆盖missing metadata+B非菜单来源+职责冲突，单次修正仅改正式授权字段；来源验证的无first-party/额外作者声称/跨公司与禁止句的肯定反例保持失败。187相关 tests/3.842s PASS；最终1548全量 tests/60.575s PASS，lint PASS。日志 `/tmp/v178-contract-family-{focused,full,lint}.log`。这些修复不进入正在运行的a95冻结源码。
 - 亲自读融资v5执行初答 `142060...46c`、纠错 `4c9df4...94bd` 及对应可见投影：首答改动引号周围空格，纠错又拼接不相邻的“公司未获 proceeds”句，严格原文映射拒绝正确。实际success的cash runway v2以低runway条件定义positive、长/无burn定义negative；575117000正OCF和10879000现金给出unbounded/negative符合现有定义和immutable fixture，不应擅自反转经济语义。LLM文字仍须区分burn runway与所有融资风险。
 - 00:44快照286 attempts，记录成本$1.28122764；monitor因4次新鲜SSL EOF按原代码/合同/缓存恢复同一运行。监控中的当前PID必须重查，恢复不算新cycle。Slow挖掘进行中，magnitude新入库/后继有效消费/独立收益均未验收。
+
+## v178 完整结论与内容边界（2026-10-07 00:58）
+
+- 最终400 attempts，记录成本$1.85284596，7次新鲜SSL EOF按同代码/合同/缓存恢复；exit0，active_cycle=null，Fast/Slow正式1/1。原monitor已经终止，不重启已完成作业。真实审计与原件hash：`reports/v178-live-acceptance-audit-20261007.json`。
+- Registry9→10/hash `4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311`；唯一出版 `liquidity_runway_months:v3`，candidate hash `14e5efd9dd676e10531072decf1c051aa767edbc2bb6cc955923f44f40d4ff12`，evaluation key `818ecdb58bf4f3667272d5011be6286a843d822620a01100bdc16cb0fccf7ce4`。亲自读spec/tests/admission/评估/原始Update与付费patch。五个immutable fixture通过；definition/function与v2完全相同、fixtures逐值相同，没有LLM skill。改变只有查询词、lookback/最大事实年龄365→550和比较说明；阈值6/12没变。准入真实，effect unverified/pending_use、目标surge_direction；原rationale说改变分类方向，但实际没有反转，不能把这项推断计为能力改进。
+- 真实Update初答添加最小period-span1导致四fixture unavailable，付费修正移除该限制；runtime在完整复验下机械恢复精确diff，最终成功。此前cash-runway词面与重复diff修复已在此live版本发挥作用。订单v3仍因fixture6 expected neutral/received unavailable被拒，guidance v3明确no_change。Schema/准入成功不等于研究增益。
+- 四Mining seed全部no_pattern_with_coverage、候选0。magnitude hypothesis27调用/27ledger动作/1叙事read/73分派行覆盖148独立needs；magnitude discovery28/28/5reads。direction hypothesis27/27/1read/140行覆盖148needs，direction discovery15/15/3reads。pending分派0只是路由完成；所有新因子、验证新因子和新入库数量仍0，signal_goal_status=unmet。幅度Track记completed但Fast absent/present consumption/Binary-F1 protection未运行，magnitude_contribution.assessed=false，不能计幅度完成。
+- 内容验收未通过：真实Plan Critic `ee9795...8f4f5` +付费patch `752a8a...538` 的落盘detail称“every 3-10x truth and every 10x+ truth predicted 2-3x”；实际矩阵是3–10x的4例→2–3x/1例→null、10x+的2例→2–3x。其“0case exclusions→no technical gaps”文字也不能抹去4次Signal失败。来源签名正确仍不证明文字统计正确。Round因只有1个完整Plan而跳过LLM反思，top-level items空，Plan层六条仍进入meta；不能把Round跳过当作已经综合学习。
+- 幅度hypothesis的最后no_pattern原答 `66a265...689e` 在只读一个局部窗口后声称整个cohort无相关披露，超过实际阅读覆盖；模型正确遵守scope预算并不证明终态研究理由正确。其going-concern/ATM需求路由到纯确定性burn-runway Update也丢失了新的叙事测量对象；定义不可变防止该对象偷偷进入runway函数，但没有完成需求。不能用词面相近、needs分派或候选数量替代测量级覆盖。
+- 另查三份失败Signal纠错原件 `59d417...8ca`、`a1ad850...eda8`、`6048ec...38e2`：被引用句没有任何version-owned mandatory phrase，虽然同一可见投影还有匹配字样；模型没有遵守已有字面要求，严格拒绝保留。前者还把内部投影首句的空格去掉，截断的“the year...”得以避开旧边缘检查。泛化修复让两端检查忽略相邻空白，空格/tab/newline不再绕过内部边界；完整文档真正边界与内部合法句仍映射。2新/136相关/1550全量 tests（59.848s）与lint PASS，日志 `/tmp/v178-evidence-edge-{focused,full,lint}.log`；尚未进入live冻结版本。
+- 参考原始RSI实践：[AlphaEvolve](https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/)用自动执行与量化评分选择候选，[DGM](https://sakana.ai/dgm/)将自修改与下游任务实测交替。对本项目的推论是沿用固定外部评分、不可变来源与独立效果验证，不能把LLM自述、引用通过或更多反思当作增益。暂不据此改祖先架构、评分或canonical record。
+- 下一步在已测试源码冻结后继，继承Registry10与真实1/1历史，检查修复后Proposer实际采用、runway v3实际执行、既有技术失效家族和幅度探索内容。现有独立收益协议仍待确认，未启动额外独立实验。
 
 ## v177 历史运行身份与冻结边界
 

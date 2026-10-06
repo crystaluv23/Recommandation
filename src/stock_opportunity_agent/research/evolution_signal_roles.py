@@ -4730,12 +4730,12 @@ def _map_projected_signal_evidence(
             projection_end = projection_start + len(exact_text)
             touched_edges: list[str] = []
             if (
-                projection_start == 0
+                not projection.projection_text[:projection_start].strip()
                 and projection.normalized_start > 0
             ):
                 touched_edges.append("start")
             if (
-                projection_end == len(projection.projection_text)
+                not projection.projection_text[projection_end:].strip()
                 and projection.normalized_end < projection.normalized_source_length
             ):
                 touched_edges.append("end")
