@@ -1,0 +1,251 @@
+{
+  "schema_version": "v181-launch-audit-v1",
+  "audited_at": "2026-10-07T03:16:12.946445+08:00",
+  "frozen_preflight": {
+    "source": "/Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation",
+    "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated",
+    "parent": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+    "source_revision": "90999e845867ad698bf5843228d3db4153c40aed",
+    "input_manifest_sha256": "b5588fd1c7d7e9a6caa06ea0d860c1d5585297f31cdc6faa007ce06550988db1",
+    "input_manifest_hash": "7f9ec6f1cab5c484b14202dc77d1898d9a76a9a8ce5e6959b1d717c6e3e81a29",
+    "contract_hash": "66d93955caf3fdecc46dfd956ad365b980896f1dac322175b0c0732856880ef8",
+    "run_contract_sha256": "a245251e161def8182826bc4715db9d9a6b171245e906eb478936310d51da7f2",
+    "initial_registry_version": 11,
+    "initial_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "slow_history_manifest_hash": "ed50019efcfea6702e4f8c06ceb6821f6763793fe5a8541327fb7aa606d237f0",
+    "max_external_attempts": 1200,
+    "max_total_cost": 100,
+    "external_calls_during_preparation": 0,
+    "locked_test_accessed": false,
+    "changed_parent_manifest_keys": [
+      "initial_registry_hash",
+      "initial_registry_refs",
+      "initial_registry_version",
+      "registry_source",
+      "slow_history_manifest_hash",
+      "slow_history_source",
+      "source_input_manifest_sha256"
+    ],
+    "source_file_count": 3606,
+    "same_splits_evaluation_locked_test_source_files": true
+  },
+  "process_at_audit": {
+    "wrapper_pid": 97196,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated",
+      "--run"
+    ],
+    "source_revision": "90999e845867ad698bf5843228d3db4153c40aed",
+    "pid": 97201,
+    "started_at": "2026-10-06T19:14:25.736240+00:00",
+    "status": "running",
+    "automatic_resumes": 0
+  },
+  "actual_process_commands": {
+    "wrapper_pid": "97196 Ss     0.0 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 /Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation/scripts/monitor_frozen_evolution.py --source /Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation --root /Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated --control /Users/l/Project/Recommandation/.delegation/live-runs/v181",
+    "pid": "97201 S      0.0 /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 /Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation/scripts/run_minimal_rounds.py --root /Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated --run"
+  },
+  "monitor_and_child_commands_verified": true,
+  "tracked_frozen_source_clean": true,
+  "ledger_attempt_count_at_audit": 1,
+  "stage_at_audit": "Point-in-time evaluation data-readiness checks; no completed Fast or Slow cycle.",
+  "formal_round": 0,
+  "formal_cycle": 0,
+  "heartbeat_id": "automation",
+  "heartbeat_interval_minutes": 10,
+  "heartbeat_updated_to_v181": true,
+  "preparation_incidents": {
+    "invalid_mutually_exclusive_cli_arguments": {
+      "corrected_before_external_calls": true,
+      "log": "/Users/l/Project/Recommandation/.delegation/live-runs/v181/prepare-invalid-options.log"
+    },
+    "temporary_control_path_migration": {
+      "incident": "temporary migration helper retained previous control output path",
+      "external_calls": 0,
+      "original_v180_preflight_restored_byte_for_byte": true,
+      "expected_original_sha256": "d75bf3569f24a2dd261de57fc1ccd3c888c5f1eecd7d2d4bd38070f003d1e4d8",
+      "new_v181_preflight_preserved": true,
+      "original_run_sources_contracts_states_responses_unchanged": true
+    }
+  },
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v181/frozen-preflight.json": "9f046f9c7d68c60a00ccd75346d8739a7904bd23705d602fe5d14ed961f77c8e",
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v181/process.json": "8e93afcf71482ae7789b572df834dccca636c697400c06f3e15efd1893c5b366"
+  },
+  "main_checkpoint_containing_source": "90999e845867ad698bf5843228d3db4153c40aed",
+  "focused_tests": {
+    "count": 203,
+    "pass": true
+  },
+  "full_tests": {
+    "count": 1564,
+    "seconds": 63.262,
+    "pass": true
+  },
+  "lint_pass": true,
+  "goal_complete": false,
+  "independent_benefit_confirmed": false,
+  "proposer_acceptance_audit": {
+    "audited_at": "2026-10-07T03:18:23.144438+08:00",
+    "plans": [
+      {
+        "slot": 1,
+        "request_hash": "b5726c2c214c24ee01b7eb821352c6cb05bf322bb3e80ce6d144b81d12844bc9",
+        "first_answer_directly_accepted": true,
+        "correction_or_document_read_calls": 0,
+        "original_root_keys": [
+          "B",
+          "H_analyse",
+          "H_init",
+          "H_reflect",
+          "used_experience_refs"
+        ],
+        "adopted_item_refs": [
+          "reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02",
+          "reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa",
+          "reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4",
+          "reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57",
+          "reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908",
+          "reflection:e06d5438ada14ff83108a4b636654bca5341b77ca3da88b22ba5e1486695c349"
+        ],
+        "snapshot_hash": "8e92127c3227d83a014b94b48506f1e1a4a21c17e8e74bb4f0b2d2a179d480af",
+        "adoption_checkpoint_exact": true,
+        "skills_personally_read": true,
+        "basic_info_request_count": 5,
+        "live_transmitted_fixed_prompt_uses_one_root_with_five_members": true,
+        "live_transmitted_fixed_prompt_does_not_advertise_B_query": true,
+        "research_gain_proven": false,
+        "source_sha256": {
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/b5726c2c214c24ee01b7eb821352c6cb05bf322bb3e80ce6d144b81d12844bc9.json": "c17ec1e48140bfcea5b7fd51f20424c18a577b47829b4f1d8b137c4d1d92164e",
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/b5726c2c214c24ee01b7eb821352c6cb05bf322bb3e80ce6d144b81d12844bc9.json": "14e8cfb218fd58d22401b61b7350e126ae72f8ecc0551d8ce6f48a1274a166b9",
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/round-0001/candidates/slot-01.json": "a215d6b702b119f2cf6b334902f592d7f26f486fceb517ad26ce52331e13aacc"
+        }
+      },
+      {
+        "slot": 2,
+        "request_hash": "1e67eb3314c77cbbdf2b22b24f9c54094c72ed5dfe7e6e844aa4207e4c5b4989",
+        "first_answer_directly_accepted": true,
+        "correction_or_document_read_calls": 0,
+        "original_root_keys": [
+          "B",
+          "H_analyse",
+          "H_init",
+          "H_reflect",
+          "used_experience_refs"
+        ],
+        "adopted_item_refs": [
+          "reflection:8d131e6e11ec181ad3ea4f4a191e94498fadeac4d4e9c719b77d216cadca2f0c",
+          "reflection:8d3d808fa3231f8fcfebd5b1f9f27bbb07162b2409303cb41bac7ad871589b02",
+          "reflection:99595d7a28b7881ca3230d7e6b818af2106eb86d0a49fafc99585717e3ad07fa",
+          "reflection:ce19fadc1567b5193508ffc6bea68797ce94e921f73d0adf6301cd851e114ce4",
+          "reflection:79bde25d51d1dae4419347f2cc212f23bf3fceb5e68f1f5dba1637ae3b973e57",
+          "reflection:c87926cf83e99f5a1964f5047a028fbd7eba7c93baaee14b83d1373affa93908",
+          "reflection:e06d5438ada14ff83108a4b636654bca5341b77ca3da88b22ba5e1486695c349",
+          "reflection:ae671b0428c4b16a7ffc72fa99706dfca5b535987731baed56fa4b8bc7e3f4fb"
+        ],
+        "snapshot_hash": "8e92127c3227d83a014b94b48506f1e1a4a21c17e8e74bb4f0b2d2a179d480af",
+        "adoption_checkpoint_exact": true,
+        "skills_personally_read": true,
+        "basic_info_request_count": 5,
+        "live_transmitted_fixed_prompt_uses_one_root_with_five_members": true,
+        "live_transmitted_fixed_prompt_does_not_advertise_B_query": true,
+        "research_gain_proven": false,
+        "source_sha256": {
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/requests/1e67eb3314c77cbbdf2b22b24f9c54094c72ed5dfe7e6e844aa4207e4c5b4989.json": "bca59b69abc51a7f0feb164ae2151647642524d40b90a27b4b1359ac45af4970",
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/cache/responses/1e67eb3314c77cbbdf2b22b24f9c54094c72ed5dfe7e6e844aa4207e4c5b4989.json": "f224805984091c85108c7e26cdcd43994d02fb7221600c44bc6269376a2e82bf",
+          "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/round-0001/candidates/slot-02.json": "edfd82d6809a5e688f45f0993c94d40a20a50795c55f5f9360235671e6a62f9f"
+        }
+      }
+    ],
+    "semantic_followups": [
+      {
+        "slot": 2,
+        "field": "H_reflect",
+        "literal": "Before finalizing a non-surge judgment",
+        "assessment": "Conditional wording anticipates a judgment owned by the later fixed Predictor. Inspect actual controller consumption for role confusion; its own final sentence forbids deciding direction or magnitude. Parser acceptance alone does not settle this semantic issue."
+      }
+    ],
+    "formal_round_cycle_still_incomplete": true,
+    "independent_benefit_confirmed": false
+  },
+  "early_case_checkpoint_snapshot": {
+    "at": "2026-10-07T03:20:46.177427+08:00",
+    "cases": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted",
+        "decision": "finalize",
+        "signal_execution_status_counts": {
+          "validation_failed": 1,
+          "success": 3
+        },
+        "prediction_summary": {
+          "candidate_judgment": "possible",
+          "is_surge": true,
+          "magnitude": "2-3x"
+        },
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/trajectories/plan_r0001_c01/cik_0000701818:20250930.json",
+        "source_sha256": "b3afd8d1fc0454c375d048606a21ee8e9bc767ad5de2cc8aaad99c8a9185b526"
+      },
+      {
+        "case_id": "cik_0000895728:20250930",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted",
+        "decision": "finalize",
+        "signal_execution_status_counts": {
+          "success": 3
+        },
+        "prediction_summary": {
+          "candidate_judgment": "unlikely",
+          "is_surge": false,
+          "magnitude": null
+        },
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/trajectories/plan_r0001_c01/cik_0000895728:20250930.json",
+        "source_sha256": "602e61550c033141ab77426a9c3d9c1ddc60a903077015cccbd1a83805af1915"
+      },
+      {
+        "case_id": "cik_0001174922:20250731",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted",
+        "decision": "finalize",
+        "signal_execution_status_counts": {
+          "success": 3
+        },
+        "prediction_summary": {
+          "candidate_judgment": "unlikely",
+          "is_surge": false,
+          "magnitude": null
+        },
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/trajectories/plan_r0001_c01/cik_0001174922:20250731.json",
+        "source_sha256": "7025802ef038bc758432910d4b9033b55a60903ecb27a9570139f29bb5d335f8"
+      },
+      {
+        "case_id": "cik_0001830043:20250930",
+        "stop_reason": "finalized",
+        "termination_trigger": "budget_exhausted",
+        "decision": "finalize",
+        "signal_execution_status_counts": {
+          "success": 6,
+          "domain_unavailable": 1
+        },
+        "prediction_summary": {
+          "candidate_judgment": "unlikely",
+          "is_surge": false,
+          "magnitude": null
+        },
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v181_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+        "source_sha256": "9c536f1c0ce2635b509406a5fd58ab6caf4cade14a7a037ab9df7e7221c32546"
+      }
+    ],
+    "expected_per_plan": 24,
+    "cannot_establish_full_fitness_or_gain": true,
+    "semantic_followups": [
+      "A Predictor uncertainty calls domain_unavailable a technical execution gap although that status is a domain coverage outcome. Trace exact fixed prompt, result classification and subsequent posthoc/critic/Slow adoption; do not rewrite the original.",
+      "Enbridge Predictor mentions lacking a quantified price bridge; inspect actual shell's ban on mandatory price-proof gates before interpreting this as a valid research conclusion."
+    ]
+  }
+}

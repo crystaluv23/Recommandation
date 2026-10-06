@@ -2,7 +2,7 @@
 
 ## 当前结论与要求
 
-状态：v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，提交后冻结后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v181于2026-10-07 03:14:25真实启动，冻结90999e84，当前PIT data-ready检查/FastSlow0/0，仍未验收；v180于2026-10-07 02:35:17提前退出1，Fast/Slow0/0、no_fitness_eligible_candidates；当前停止且未验收；终态阻断已用精确生产原件复现并完成通用快照修复、0外部落盘/预测闭包重放，lint PASS，已提交并进入冻结v181后继实测，不重启原失败工作区；v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
@@ -250,3 +250,15 @@
 - 新源码原答重放仅1次记录答、0新外部调用：恢复supporting_evidence[7].claim与current_beliefs[7]；沿已有规则删除不支持的customer数量claim、恢复未回答need，最终完整State校验通过，保留模型原答的finalize及cash_reserves/liquidity_runway新有效引文。有效evidence10、five needs保留。validated-state落盘重载相同；先精确重建原完整final_context，再以正常第2轮delta组装新context、落盘重载，下一盲预测预留82110<剩144874。没有生成新预测或改变v180正式0/0与历史分母。
 - [基线完整预算拒绝](v180-retained-claim-baseline-replay-20261007.json)与[修复原答/产物闭包](v180-retained-claim-repaired-replay-20261007.json)列出原件hash、typed操作和原始/修复源码hash；新State/context仅为清楚标记的本地诊断副本，不能计作live成功。5个新测试覆盖数字/定性、native补丁/预算、duplicate与distinct共坐标、过期快照、依赖冲突、保continue及无权补终态；203相关/1564全量63.262s PASS。错误测试模块名的首次selector已纠正，正式相关集与全量均通过。
 - 冻结后继仍必须实测修复采纳与完整Fast→Slow→后继Fast内容，追查剩余Signal技术失败、统计/测量语义、magnitude新入库与真实高档预测；不放宽评分/准入/PIT/Locked Test，独立增益尚未确认。
+
+## v181 冻结后继真实启动（2026-10-07 03:14:25）
+
+- root `runs/cold_start/minimal_rounds_v181_integrated`，control `.delegation/live-runs/v181`，源码 `/Users/l/.codex/worktrees/evolution-acceptance-v181/Recommandation`，HEAD `90999e845867ad698bf5843228d3db4153c40aed`且tracked clean；包含统一Proposer五字段/禁止bootstrap query提示及本次unique retained-claim修复。203相关/1564全量63.262s/lint PASS属于源码准备，不等于live采纳。
+- 从v179正式Fast/Slow1/1继续，Registry11/hash56116710…，没有继承v180未提交诊断指针。准备0外部；input canonical/file hash与v180完全相同（7f9ec6f1…/b5588fd1…），historyed50019e…，同40案/3606源文件/评价/PIT/Locked Test/模型deepseek-v4-flash/1200attempts/$100。contract hash `66d93955caf3fdecc46dfd956ad365b980896f1dac322175b0c0732856880ef8`、文件sha `a245251e161def8182826bc4715db9d9a6b171245e906eb478936310d51da7f2`。
+- 真实wrapper97196/child97201、command/run source均核对，正式Fast/Slow0/0，当前执行逐案PIT data-ready检查；不是挂起或完成。原heartbeat `automation` ACTIVE/10分钟已接续v181和最新失败/修复证据，保持无可行动变化安静。见 [launch audit](v181-launch-audit-20261007.json)。PID/计数是时点快照，后续核对exit与实际进程。
+- 准备脚本最初同时带seed-registry与history互斥CLI参数，0外部即拒，保留原准备日志后更正只用history。迁移临时freeze helper时漏改control目录，短暂覆盖v180 preflight；已从先前launch audit逐字恢复、原sha d75bf356…一致，新v181预检保存到正确目录，原运行源/合同/指针/模型产物未改。恢复记录在控制目录与launch audit。这些是准备过程已纠正的助手操作问题，不记作live技术排除或研究反馈。
+- 后续亲自检查实际Proposer采用/技能、terminal State落盘与下一预测、全部Signal失败家族、Plan/Round/Slow统计和研究语义、magnitude新候选/入库/后继消费及有源高档预测。不因本地closure重放通过就宣称技术失败清零、研究内容正确或自进化有收益；独立效果协议尚未批准，不启动其依赖实验。
+
+- 启动后亲自读两份实际Proposer固定prompt、B/H_init/H_reflect/H_analyse及原JSON/checkpoint：c01/c02均首答直接接受，无付费纠错/追加read，五字段同根且B不再宣称query可选；分别6/8条真实采用ref与同snapshot8e92127c…精确落盘。有效性尚未证明；c02 H_reflect的“Before finalizing a non-surge judgment”条件措辞仍预设下一Predictor所有的判断，与末句不决定方向/幅度存在角色混淆风险，须结合实际controller输入/行为检查，不能仅凭parser通过接受研究语义。当前首案已开始真实研究，正式指针未提交。
+
+- 首批四个c01案例checkpoint实际stop_reason=finalized/decision=finalize，避免了v180首案unfinalized状态，但不能把它说成本次unique claim修复一定被触发或完整周期成功；逐例Signal状态/幅度保存在launch audit。Signal validation_failed仍存在；Predictor原文本把domain_unavailable称为technical execution gap，还出现缺少quantified price bridge的理由，必须核对固定prior及后续反思传播，不允许将正确domain覆盖诊断当工程错误或以价格证明门替代研究。原预测/失败分母不改，当前不满足用户三项终态验收。
