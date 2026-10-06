@@ -2,13 +2,15 @@
 
 ## 当前结论与要求
 
-状态：v179于2026-10-07 01:07:55真实启动，尚未验收；v178已完整Fast/Slow1/1并exit0，v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
+状态：v179于2026-10-07 02:09:16实际结束，正式Fast/Slow1/1、exit0，但整体验收未通过。Registry10→11仅两个现有方向因子更新，新magnitude因子0、25正向预测全2–3x；仍1案例技术FN、10Signal校验失败及1预算阻断，Slow记忆failed。已按两个Update全部8个实际归纳案例验证其声称修复未改变原失败行为。v177/v178失败证据保留。用户明确授权真实自进化测试、过程中监控及必要的设计框架内修复。代码/固定prompt的正确性以实际全链路和产物检查为依据，不能用测试数量、进程存在或Registry数量代替。
 
 1. 完整 Fast→Slow→后继 Fast 每个阶段的实际输入、原始响应、解析/修复、状态和最终产物逐份人工检查；最终验收要求无技术性排除。可成功修复的首答错误须保留并分析，但不能把终态失败隐去。
 2. 至少一条真实新 magnitude 因子通过完整技术准入并原子入库；核对精确 spec/skill/tests、research target、fixture、admission proof、Registry版本/hash。随后证明新版本实际被检索、执行、进入预测证据；3–10x/10x+选择必须有证据，不能用prompt配额或自动映射强迫。
 3. 追踪源反馈→诊断/Experience→后续实际prompt→改变的Plan/Signal/研究动作。有效性另用现有独立固定cohort、失败分母和四臂协议；没有预先冻结的协议及足够结果，状态为未验证。入库、使用、productive reuse、观察正确率与独立增益保持分开。
 
 ## 当前 v179 冻结后继（2026-10-07 01:07:55启动）
+
+以下为启动及各时点快照，保留原始观察；最新终态以文末“v179 正式终态与可执行变化审计”为准。
 
 - Root：`/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated`；control：`/Users/l/Project/Recommandation/.delegation/live-runs/v179`；冻结源码：`/Users/l/.codex/worktrees/evolution-acceptance-v179/Recommandation`，HEAD `482a5e1ecdd57d160b60c44c732157f3f62cd4bb`，tracked clean。包含ad9f1804的Plan/reflection整体契约修复及内部引用首尾空白边界修复。1550全量/59.848s与lint PASS；无关未提交设计和v151文件未进入运行源码。
 - 已验证v178正式Fast/Slow1/1、Registry10/hash `4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311`及admission/原候选/周期来源后继承；生产validate_slow_history_manifest通过，fast_context含一份真正提交的Round meta，不把旧错误改成成功记录。
@@ -210,3 +212,15 @@
 3. 完成Fast后亲自核对24案固定评分/技术排除/magnitude矩阵和经验反馈；检查Slow是否使用真实已提交反馈，magnitude Track是否完成而非假completed。
 4. 成功发布后检查proof与确切目标，准备冻结后继及检索/执行/预测消费证据。对入库0、幅度仍集中2–3x或研究增益不足如实继续诊断，不改评分。
 5. 独立效果评价所需阈值/样本/重复等值只能沿用已批准协议；当前尚未找到本次预注册protocol，不能任意定义后宣称gain_confirmed。必要时给用户具体、可审核的协议选择，同时继续不依赖此决策的链路工作。
+
+## v179 正式终态与可执行变化审计（2026-10-07 02:27）
+
+- 直接读取最终exit.json、state.json和cycle_state.json：02:09:16退出0，正式Fast/Slow1/1、active_cycle=null。process.json的last_exit_code=1属于此前SSL恢复，不覆盖最终exit0。570外部attempts（562completed/8failed），按actual_cost非空否则reserved_cost重算记录费用$2.49397764，不是供应商账单；两个SSL恢复保留。终态原件及每Plan/每seed审计见 `reports/v179-terminal-acceptance-audit-20261007.json`。
+- 同24个有序案例×两Plan，不是48个独立样本。c01/c02 Binary F1分别.72/.7142857，magnitude macro-F1分别.1666667/.1568627；25正向预测全2–3x。208 Signal结果177success/20domain_unavailable/10validation_failed/1budget_blocked；c01一技术FN仍在原分母。没有达到无技术排除，也没有高档预测验收。
+- Registry10/hash4fd2c472…→11/hash56116710…，实际admitted `net_share_retirement_yoy:v3` 与 `revenue_growth_yoy:v3`，两个research target均surge_direction。new_candidate/new_validated/new_promoted均0，signal_goal_status=unmet。liquidity_runway v4付费patch恢复为与稳定版本完全相同的mutable内容，正确终态拒绝no effective change，不能隐去或作新因子。magnitude_contribution.assessed=false，Fast absent/present及Binary-F1保护实验未运行。
+- 四个Mining seed都终态no_pattern_with_coverage、零候选：magnitude hypothesis/discovery分别36/19模型调用、2/4叙事read、当前dev4案；direction分别38/16调用、1/2叙事read、当前dev8案。family explored/catalog覆盖不证明逐份读完或全cohort不存在因子。hypothesis分别224/259需求处置；原审计rows含同ref后续处置，occurrences不能当独立需求数。需求处于outside_current_dev也不等于原发行人不存在事实。已看到“回购授权等同share-count变化”“债务偿还等同cash/current-liabilities”的宽泛替代，不能把该路由当等价经济测量。
+- Slow反思failed，episodes0/lessons0/processed0，1738个pending保留。已有nested source引用泛化修复能解析原答，但原文仍有1.3136倍与8.736美元混单位比较、将comparison feedback说成未提供的candidate assignment row。c02 Critic错误写全部5个真实3–10x都预测2–3x，实际是4个加1个阴性；Round还有要求blind H_reflect取真实类别统计的行动。引用可解析、sources_checked或指针完成均不足以接受这些内容。
+- 两个Update首答的完整rationale、函数能力、精确入库spec/tests/admission逐份核对；用其各4个原始归纳案例的完整PIT RawInfoDocument，生产EvidenceResolver+SignalExecutor零外部回放。旧结果与原payload逐值一致，新旧结果除version外全部一致；原请求、原答、源文件/hash及冻结原件保持。报告 `reports/v179-update-production-behavior-audit-20261007.json` 包含8个结果、literal evidence、实际resolution、候选/admission身份和源hash，不是新增独立增益实验。
+- net-share Update只改comparison_requirement文字，声称异常分母会在函数执行前返回unavailable。实际2025-05-30的88390180/100仍输出measurement=-883900.8、negative/confidence=.5/partial/success。revenue Update提高positive_min .20→.25并显式加入原默认plausible_abs_max=5；极端665.4055556仍positive/.5/partial，没有声称的极端值排除。其source types/query及阈值可能影响其他输入，不能推断所有输入都无变化；当前8案没有提供声称修复的执行证据，效果保持未验证。
+- 在既有框架内先spec后补齐Mining/Update共用execution_semantics：comparison文本不是deterministic语义guard，未消费的参数名不实现行为，原fixture通过不证明failure-case修复。系统审查同函数家族还发现net-share默认界限1、price-momentum默认50未进入实际docstring投影，现补全其partial/.5且原数值/分类保留的真实规则。AST去除docstring后，正式函数/Resolver与冻结v179逐值相同；没有新增经济阈值、修改评分/准入/不可变fixtures或把旧坏数据猜成百万单位。本地提示披露修复尚不代表模型已有效采纳，下一冻结后继必须重新实测。
+- 所有用户三项终态条件仍未通过；独立效果实验协议仍待批准，不启动其依赖工作、不声称benefit_confirmed。后续先从这份累计失败轨迹接续，同数据/模型/预算建立已测试源码的冻结后继，并继续审阅原47条实际研究轨迹中尚未完成的语义检查。

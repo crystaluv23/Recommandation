@@ -155,6 +155,20 @@ independent Exploration sibling.
 
 ## Purpose
 
+Mining and Update receive the same candidate execution semantics from the Slow
+engine. That view must distinguish executable retrieval coverage and registered
+function parameters from descriptive comparison text. A deterministic function
+does not parse `comparison_requirement` into a new denominator, unit,
+plausibility, or unavailable guard; unknown parameter names do not implement a
+guard either. The selected function's disclosed contract owns those behaviors.
+Narrative skills may interpret comparison instructions against visible source
+evidence. Changing the descriptive text can clarify intent without changing a
+deterministic result. Candidate rationales must not claim that the text itself
+implements a numerical repair. This clarifies the existing execution boundary;
+it does not change candidate records, technical admission, promotion, immutable
+fixtures, or research scoring. Actual failure-case replay and subsequent use
+remain separate from passing the unchanged fixtures.
+
 Implement structured adapters for deterministic/LLM Signal execution, Signal
 mining, and Signal update proposals. With a frozen v8 sampling manifest and JSON role caller, production mining
 uses `LabelAwareMiningController` (Phase 6 cutover). H1/H2/H3 and E1/E2

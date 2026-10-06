@@ -196,7 +196,9 @@ def signal_candidate_execution_contract() -> dict[str, Any]:
             "structured": (
                 "A typed point-in-time measurement whose value is fully determined "
                 "by inputs and parameters; it requires an exact registered "
-                "deterministic function."
+                "deterministic function. Only parameters actually used by the "
+                "selected deterministic_function_contract affect its behavior; "
+                "unknown parameter names do not implement a new guard or formula."
             ),
             "narrative": (
                 "A semantic predicate over source text; it requires a grounded LLM skill."
@@ -231,6 +233,17 @@ def signal_candidate_execution_contract() -> dict[str, Any]:
                 "minimum_distinct_periods and minimum_period_span_days check period "
                 "coverage, not concept completeness or comparable duration. The "
                 "implementation must still check every required component and period."
+            ),
+            "comparison_requirement": (
+                "Describes the intended comparison; the resolver does not parse "
+                "its prose into a semantic coverage check. A deterministic function "
+                "does not execute this text as a denominator, unit, plausibility "
+                "or unavailable guard: its disclosed function contract owns those "
+                "behaviors. Narrative skills may interpret comparison instructions "
+                "against visible evidence. A text change can clarify intent without "
+                "changing a deterministic result; do not claim it implements a "
+                "numerical repair. Passing unchanged fixtures does not demonstrate "
+                "that a claimed failure-case repair occurred."
             ),
             "fixtures": (
                 "Non-unavailable fixtures must satisfy the same retrieval coverage "

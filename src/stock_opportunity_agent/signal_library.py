@@ -3931,6 +3931,9 @@ def _net_share_retirement_yoy_signal(
     unavailable. Numeric states use positive_min (default 0) and negative_max (default
     positive_min): value >= positive_min is positive, otherwise value <= negative_max is
     negative, otherwise neutral. Thresholds do not change the measurement.
+    Values beyond plausible_abs_max (default 1) retain their measurement and categorical
+    state, but are downgraded to partial coverage at 0.5 confidence with an
+    implausible_value marker; this is not an unavailable guard or numeric clamp.
     max_period_age_days (default 550) bounds current SEC period age; older comparative
     periods remain allowed.
     """
@@ -4710,7 +4713,9 @@ def _price_momentum_signal(
     dates and adjustment convention. Numeric states use positive_min (default 0) and
     negative_max (default positive_min): value >= positive_min is positive, otherwise
     value <= negative_max is negative, otherwise neutral. Thresholds do not change the
-    measurement.
+    measurement. Values beyond plausible_abs_max (default 50) retain their measurement
+    and categorical state, but are downgraded to partial coverage at 0.5 confidence
+    with an implausible_value marker; this is not an unavailable guard or numeric clamp.
     """
 
     found = _latest_metadata_value(documents, "prices")

@@ -799,6 +799,12 @@ those descriptions for the actual supplied registry, including overrides; it
 never substitutes a built-in description merely because the function name
 matches. Missing documentation is explicit. These descriptions do not change
 execution, thresholds, point-in-time checks, or candidate validation.
+Descriptions must also disclose a function's default `plausible_abs_max` when
+it supplies one to the shared numeric result builder. Net share retirement uses
+1 and price momentum uses 50. Exceeding that bound preserves the measured
+quantity and categorical state, marks `implausible_value`, and lowers confidence
+to 0.5 with partial coverage; it neither clamps the quantity nor produces
+`unavailable`. A candidate's comparison prose cannot override that implementation.
 
 ## Multi-target evaluation statistics (implemented for magnitude_ge3_v1)
 

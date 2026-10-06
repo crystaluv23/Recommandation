@@ -1,0 +1,1300 @@
+{
+  "schema_version": "v179-update-production-behavior-audit-v1",
+  "audited_at": "2026-10-06T18:26:28.141185+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "auditor_revision": "223406e9c7fbb6c36eb0bd28791cbb969a68402a",
+  "scope": "All four supplied induction cases for each of the two admitted Updates; full original PIT RawInfoDocument inputs and production EvidenceResolver/SignalExecutor, no external calls. This is wiring/behavior verification, not independent gain evidence.",
+  "frozen_signal_execution_ast_identical_to_auditor": true,
+  "only_function_documentation_changed_in_signal_runtime": true,
+  "external_calls": 0,
+  "original_files_unchanged": true,
+  "updates": [
+    {
+      "signal_id": "net_share_retirement_yoy",
+      "original_update_request_hash": "b67c2af8d091c1280979bc5844f07b7a4cae16fdde2b393c70c0d2f5bbe1dcf3",
+      "raw_rationale": [
+        "The stable deterministic function financial.net_share_retirement_yoy is correctly implemented and its definition is immutable; the observed defect is retrieval coverage, not measurement semantics.",
+        "Case update-case-002 shows the current retrieval admits a prior-year weighted-average share value of 100 shares against a current value of 88,390,180 shares, producing an implausible -883900.8 ratio that is still emitted as a decisive negative state at partial coverage.",
+        "The stable function contract already downgrades values beyond plausible_abs_max to partial coverage with an implausible_value marker, but the retrieval layer does not require the prior-year denominator to be a plausible comparable share count, so the measurement is admitted rather than treated as unavailable.",
+        "The correctable defect is therefore in raw_retrieval: add a comparison_requirement that requires both periods to be plausible weighted-average share counts in the same unit and rejects implausible prior-year denominators before the deterministic function runs.",
+        "The immutable definition, execution identity, schema, evidence policy, and the supplied fixture are preserved; the fixture still executes to positive under the updated retrieval because both 100 and 95 are plausible share counts in the same unit and the period span is 365 days."
+      ],
+      "raw_changed_paths": [
+        "spec.raw_retrieval.comparison_requirement"
+      ],
+      "original_deterministic_function_contract": "Measure net share retirement as 1 - current / prior-year weighted-average shares over comparable periods. Positive means net retirement and negative means dilution; this is not a cash buyback amount. Missing comparable or stale current facts yield unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+      "admission": {
+        "accepted": true,
+        "admission_identity": {
+          "candidate_hash": "0ab835a852e97c7e1b32dc253ef26fce8f8ba0c92586fe6c133df8d0567aec1c",
+          "contract_validation": {
+            "accepted": true,
+            "executed_tests": 1,
+            "reasons": []
+          },
+          "input_registry_hash": "4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311",
+          "research_provenance": {
+            "generation_case_ids": [
+              "cik_0001065059:20250131",
+              "cik_0001285819:20250930",
+              "cik_0001421517:20250131",
+              "cik_0001679273:20250331",
+              "cik_0001681459:20250530",
+              "cik_0001746129:20250731",
+              "cik_0001951089:20250530",
+              "cik_0002009312:20250930"
+            ],
+            "induction_case_ids": [
+              "cik_0001285819:20250930",
+              "cik_0001679273:20250331",
+              "cik_0001681459:20250530",
+              "cik_0001951089:20250530"
+            ],
+            "origin": "current_cycle",
+            "source_input_hash": "c0bbe544563e92b9302c3e71fb67e803e2c1f57febd382b33c59fa5d6c9019a8"
+          },
+          "research_targets": [
+            "surge_direction"
+          ],
+          "schema_version": "signal-candidate-admission-identity-v1",
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "validator_hash": "61bde25fd830e9bec7f0034ba3920708efe27610094db849c79dd7fb5032546b"
+        },
+        "candidate_hash": "0ab835a852e97c7e1b32dc253ef26fce8f8ba0c92586fe6c133df8d0567aec1c",
+        "contract_validation": {
+          "accepted": true,
+          "executed_tests": 1,
+          "reasons": []
+        },
+        "evaluation_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+        "reasons": [],
+        "schema_version": "signal-candidate-admission-v1",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "status": "admitted"
+      },
+      "case_count": 4,
+      "cases": [
+        {
+          "case_ref": "update-case-001",
+          "company_id": "cik_0001681459",
+          "prediction_time": "2025-05-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "9be4b9d44cc2f2ded38dca758db22e20f922df385c35311e847a3ef3e9af7592"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 2,
+            "state": {
+              "value": "positive",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.0285978"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001681459:financials:9be4b9d44cc2f2ded38dca75",
+                  "exact_span": "{\"accn\":\"0001681459-25-000079\",\"end\":\"2025-03-31\",\"filed\":\"2025-04-24\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":421200000}",
+                  "timestamp": "2025-04-24T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001681459:financials:9be4b9d44cc2f2ded38dca75",
+                  "exact_span": "{\"accn\":\"0001681459-25-000079\",\"end\":\"2024-03-31\",\"filed\":\"2025-04-24\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2024Q1\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":433600000}",
+                  "timestamp": "2025-04-24T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.02859778597785978,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2025-03-31",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.0285978"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001681459:financials:9be4b9d44cc2f2ded38dca75",
+                  "exact_span": "{\"accn\":\"0001681459-25-000079\",\"end\":\"2025-03-31\",\"filed\":\"2025-04-24\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":421200000}",
+                  "timestamp": "2025-04-24T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001681459:financials:9be4b9d44cc2f2ded38dca75",
+                  "exact_span": "{\"accn\":\"0001681459-25-000079\",\"end\":\"2024-03-31\",\"filed\":\"2025-04-24\",\"form\":\"10-Q\",\"fp\":\"Q1\",\"frame\":\"CY2024Q1\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":433600000}",
+                  "timestamp": "2025-04-24T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.02859778597785978,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2025-03-31",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "9be4b9d44cc2f2ded38dca758db22e20f922df385c35311e847a3ef3e9af7592"
+            ],
+            [
+              "9be4b9d44cc2f2ded38dca758db22e20f922df385c35311e847a3ef3e9af7592"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 94,
+              "observed_period_span_days": 3765,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 94,
+              "observed_period_span_days": 3765,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-002",
+          "company_id": "cik_0001951089",
+          "prediction_time": "2025-05-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 2,
+            "state": {
+              "value": "negative",
+              "confidence": 0.5
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=-883901; implausible_value"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-07-01\",\"val\":88390180}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2023-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-07-01\",\"val\":100}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -883900.8,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-07-01"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 3,
+            "state": {
+              "value": "negative",
+              "confidence": 0.5
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=-883901; implausible_value"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-07-01\",\"val\":88390180}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2023-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-07-01\",\"val\":100}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -883900.8,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-07-01"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+            ],
+            [
+              "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 11,
+              "observed_period_span_days": 915,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 11,
+              "observed_period_span_days": 915,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-003",
+          "company_id": "cik_0001285819",
+          "prediction_time": "2025-09-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794",
+            "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 2,
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.000875893"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+                  "exact_span": "{\"accn\":\"0001437749-25-026933\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":58323586}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+                  "exact_span": "{\"accn\":\"0001437749-25-026933\",\"end\":\"2024-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":58374716}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.0008758929122669734,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2025-06-30",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 3,
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.000875893"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+                  "exact_span": "{\"accn\":\"0001437749-25-026933\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":58323586}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052",
+                  "exact_span": "{\"accn\":\"0001437749-25-026933\",\"end\":\"2024-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":58374716}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.0008758929122669734,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2025-06-30",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794",
+              "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27"
+            ],
+            [
+              "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794",
+              "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 152,
+              "observed_period_span_days": 6711,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 152,
+              "observed_period_span_days": 6711,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-004",
+          "company_id": "cik_0001679273",
+          "prediction_time": "2025-03-31T00:00:00+00:00",
+          "input_content_hashes": [
+            "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 2,
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.0144529"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2024-11-24\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-05-27\",\"val\":143200000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2023-11-26\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-05-29\",\"val\":145300000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.014452856159669625,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2024-11-24",
+                "start": "2024-05-27"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "net_share_retirement_yoy",
+            "version": 3,
+            "state": {
+              "value": "neutral",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "net_share_retirement_yoy=0.0144529"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2024-11-24\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-05-27\",\"val\":143200000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2023-11-26\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-05-29\",\"val\":145300000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 0.014452856159669625,
+              "unit": "fraction",
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "period": {
+                "end": "2024-11-24",
+                "start": "2024-05-27"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+            ],
+            [
+              "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 117,
+              "observed_period_span_days": 3855,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 117,
+              "observed_period_span_days": 3855,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        }
+      ],
+      "all_supplied_induction_results_identical_except_version": true
+    },
+    {
+      "signal_id": "revenue_growth_yoy",
+      "original_update_request_hash": "73656a527cbf205599defcf75492a004a3357df0d2a3b286e07947c9dc023177",
+      "raw_rationale": [
+        "The stable Signal measures year-over-year revenue growth but the learned profile shows repeated misalignment: negative growth states have higher mean realized multiples than positive growth states, and the positive state has the lowest mean realized multiple.",
+        "The current retrieval uses only source_types ['financials'] and query_terms ['revenue','sales'], which can miss canonical revenue facts tagged under other concepts or taxonomies (e.g., IFRS Revenue) and can admit non-canonical or deprecated revenue concepts.",
+        "The update tightens retrieval to require the canonical total revenue series and adds a comparison requirement that explicitly excludes partial or deprecated revenue tags, while preserving the immutable definition, execution identity, and all fixtures.",
+        "The parameters are adjusted to reduce false positives from extreme growth values by raising positive_min and adding a plausible_abs_max cap, consistent with the deterministic function contract."
+      ],
+      "raw_changed_paths": [
+        "spec.raw_retrieval.source_types",
+        "spec.raw_retrieval.query_terms",
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.parameters"
+      ],
+      "original_deterministic_function_contract": "Measure revenue_growth_yoy as current / comparable prior-year revenue - 1. Requires SEC duration facts from the per-issuer canonical total series (dominance-resolved; partial or zero same-period tag values never displace the total), matching units and comparable year-over-year periods; zero prior revenue or missing/stale current facts yields unavailable. Numeric states use positive_min (default 0) and negative_max (default positive_min): value >= positive_min is positive, otherwise value <= negative_max is negative, otherwise neutral. Thresholds do not change the measurement. Values beyond plausible_abs_max (default 5) are downgraded to partial coverage at 0.5 confidence with an implausible_value marker. max_period_age_days (default 550) bounds current SEC period age; older comparative periods remain allowed.",
+      "admission": {
+        "accepted": true,
+        "admission_identity": {
+          "candidate_hash": "61920dacb93e2afb1df28e1c4364e9b5a4031853348a902336fb576f0130fb17",
+          "contract_validation": {
+            "accepted": true,
+            "executed_tests": 1,
+            "reasons": []
+          },
+          "input_registry_hash": "4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311",
+          "research_provenance": {
+            "generation_case_ids": [
+              "cik_0001065059:20250131",
+              "cik_0001285819:20250930",
+              "cik_0001421517:20250131",
+              "cik_0001679273:20250331",
+              "cik_0001681459:20250530",
+              "cik_0001746129:20250731",
+              "cik_0001951089:20250530",
+              "cik_0002009312:20250930"
+            ],
+            "induction_case_ids": [
+              "cik_0001285819:20250930",
+              "cik_0001679273:20250331",
+              "cik_0001951089:20250530",
+              "cik_0002009312:20250930"
+            ],
+            "origin": "current_cycle",
+            "source_input_hash": "c0bbe544563e92b9302c3e71fb67e803e2c1f57febd382b33c59fa5d6c9019a8"
+          },
+          "research_targets": [
+            "surge_direction"
+          ],
+          "schema_version": "signal-candidate-admission-identity-v1",
+          "signal_ref": "revenue_growth_yoy:v3",
+          "validator_hash": "61bde25fd830e9bec7f0034ba3920708efe27610094db849c79dd7fb5032546b"
+        },
+        "candidate_hash": "61920dacb93e2afb1df28e1c4364e9b5a4031853348a902336fb576f0130fb17",
+        "contract_validation": {
+          "accepted": true,
+          "executed_tests": 1,
+          "reasons": []
+        },
+        "evaluation_key": "83bf32683e48345ae8ee139f8042147153b5b90e7f210cf15d00e7c1a7cb5f85",
+        "reasons": [],
+        "schema_version": "signal-candidate-admission-v1",
+        "signal_ref": "revenue_growth_yoy:v3",
+        "status": "admitted"
+      },
+      "case_count": 4,
+      "cases": [
+        {
+          "case_ref": "update-case-001",
+          "company_id": "cik_0002009312",
+          "prediction_time": "2025-09-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "bb696056feeac902f0458bf4409d36af6e39b42101106fe3173786d1bd17ce7f",
+            "ed4c1100a79f1460eaafa1eca0859435264f38a34cfa743d75bad23c6e694fdb"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 2,
+            "state": {
+              "value": "negative",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=-0.123319"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4",
+                  "exact_span": "{\"accn\":\"0001493152-25-011966\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":1930603}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4",
+                  "exact_span": "{\"accn\":\"0001493152-25-011966\",\"end\":\"2024-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":2202172}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -0.12331870535089906,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2025-06-30",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 3,
+            "state": {
+              "value": "negative",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=-0.123319"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4",
+                  "exact_span": "{\"accn\":\"0001493152-25-011966\",\"end\":\"2025-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2025-01-01\",\"val\":1930603}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4",
+                  "exact_span": "{\"accn\":\"0001493152-25-011966\",\"end\":\"2024-06-30\",\"filed\":\"2025-08-14\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-01-01\",\"val\":2202172}",
+                  "timestamp": "2025-08-14T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -0.12331870535089906,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2025-06-30",
+                "start": "2025-01-01"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "bb696056feeac902f0458bf4409d36af6e39b42101106fe3173786d1bd17ce7f",
+              "ed4c1100a79f1460eaafa1eca0859435264f38a34cfa743d75bad23c6e694fdb"
+            ],
+            [
+              "bb696056feeac902f0458bf4409d36af6e39b42101106fe3173786d1bd17ce7f",
+              "ed4c1100a79f1460eaafa1eca0859435264f38a34cfa743d75bad23c6e694fdb"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 21,
+              "observed_period_span_days": 1322,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 21,
+              "observed_period_span_days": 1322,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-002",
+          "company_id": "cik_0001285819",
+          "prediction_time": "2025-09-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27",
+            "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 2,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Latest supported SEC revenue period ended 2021-09-30 and is stale."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          },
+          "new_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 3,
+            "state": {
+              "value": "unavailable",
+              "confidence": 0.0
+            },
+            "interpretation": {
+              "summary": "Latest supported SEC revenue period ended 2021-09-30 and is stale."
+            },
+            "evidence": {
+              "supporting": [],
+              "counter": []
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794",
+              "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27"
+            ],
+            [
+              "dd0e5a40eefdb1f9ffa40052cb83bd9fb2c5b46e1288331eb3a61e3c939a2794",
+              "5085e2afea151fa650e2504f74404577fb36b0440090f62b18e08a084d9d6a27"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 152,
+              "observed_period_span_days": 6711,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 2,
+              "selected_document_count": 2,
+              "query_matched_document_count": 2,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 152,
+              "observed_period_span_days": 6711,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-003",
+          "company_id": "cik_0001951089",
+          "prediction_time": "2025-05-30T00:00:00+00:00",
+          "input_content_hashes": [
+            "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 2,
+            "state": {
+              "value": "positive",
+              "confidence": 0.5
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=665.406; implausible_value"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-07-01\",\"val\":359859}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2023-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-07-01\",\"val\":540}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 665.4055555555556,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-07-01"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 3,
+            "state": {
+              "value": "positive",
+              "confidence": 0.5
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=665.406; implausible_value"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2024-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-07-01\",\"val\":359859}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35",
+                  "exact_span": "{\"accn\":\"0001213900-25-024970\",\"end\":\"2023-12-31\",\"filed\":\"2025-03-19\",\"form\":\"6-K\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2023-07-01\",\"val\":540}",
+                  "timestamp": "2025-03-19T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": 665.4055555555556,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-07-01"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+            ],
+            [
+              "510adf33218c256ee8b00b351d8d960891a167d8990839c9733793b3c882ca4d"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 11,
+              "observed_period_span_days": 915,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 11,
+              "observed_period_span_days": 915,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        },
+        {
+          "case_ref": "update-case-004",
+          "company_id": "cik_0001679273",
+          "prediction_time": "2025-03-31T00:00:00+00:00",
+          "input_content_hashes": [
+            "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+          ],
+          "original_v2_state_and_measurement_exactly_reproduced": true,
+          "results_identical_except_version": true,
+          "old_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 2,
+            "state": {
+              "value": "negative",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=-0.0419144"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2024-11-24\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-05-27\",\"val\":3255000000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001558370-24-000050\",\"end\":\"2023-11-26\",\"filed\":\"2024-01-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"start\":\"2023-05-29\",\"val\":3397400000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -0.04191440513333722,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-11-24",
+                "start": "2024-05-27"
+              }
+            }
+          },
+          "new_result": {
+            "signal_id": "revenue_growth_yoy",
+            "version": 3,
+            "state": {
+              "value": "negative",
+              "confidence": 1.0
+            },
+            "interpretation": {
+              "summary": "revenue_growth_yoy=-0.0419144"
+            },
+            "evidence": {
+              "supporting": [
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001679273-24-000087\",\"end\":\"2024-11-24\",\"filed\":\"2024-12-20\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2025,\"start\":\"2024-05-27\",\"val\":3255000000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                },
+                {
+                  "document_id": "sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd",
+                  "exact_span": "{\"accn\":\"0001558370-24-000050\",\"end\":\"2023-11-26\",\"filed\":\"2024-01-04\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"start\":\"2023-05-29\",\"val\":3397400000}",
+                  "timestamp": "2024-12-20T00:00:00+00:00"
+                }
+              ],
+              "counter": []
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "execution": {
+              "status": "success"
+            },
+            "measurement": {
+              "value": -0.04191440513333722,
+              "unit": "fraction",
+              "formula": "current / comparable prior-year revenue - 1",
+              "period": {
+                "end": "2024-11-24",
+                "start": "2024-05-27"
+              }
+            }
+          },
+          "resolution_statuses": [
+            "resolved",
+            "resolved"
+          ],
+          "resolved_content_hashes": [
+            [
+              "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+            ],
+            [
+              "887808d858920f2c3c2777fd0afac7f87898b470d4e9de2c972920ebf40b2852"
+            ]
+          ],
+          "resolution_coverage": [
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 117,
+              "observed_period_span_days": 3855,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            },
+            {
+              "eligible_document_count": 1,
+              "selected_document_count": 1,
+              "query_matched_document_count": 1,
+              "query_status": "matched",
+              "query_requested": true,
+              "query_evaluated": true,
+              "selection_truncated": false,
+              "deduplicated_document_count": 0,
+              "visible_span_count": 0,
+              "context_truncated": null,
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "observed_distinct_period_count": 117,
+              "observed_period_span_days": 3855,
+              "observed_observation_count": 0,
+              "contract_satisfied": true,
+              "missing_requirements": []
+            }
+          ]
+        }
+      ],
+      "all_supplied_induction_results_identical_except_version": true
+    }
+  ],
+  "acceptance": {
+    "new_magnitude_signal": false,
+    "benefit_confirmed": false,
+    "net_share_claimed_unavailable_fix_reproduced": false,
+    "revenue_extreme_value_removal_claim_reproduced": false,
+    "revenue_parameters_and_retrieval_can_affect_other_inputs": true
+  },
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/b67c2af8d091c1280979bc5844f07b7a4cae16fdde2b393c70c0d2f5bbe1dcf3.json": "59d5a550a13e79b01d73b7074584c8253dc5f4e2f44af36802fd901b845586ff",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/b67c2af8d091c1280979bc5844f07b7a4cae16fdde2b393c70c0d2f5bbe1dcf3.json": "b59841b6c89fbabfd88e0a5fa45951cdc85c688323d687fdbb63cb894c9fc99a",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/net_share_retirement_yoy/versions/v2/spec.json": "ccb42fbb56426fcdfe68b3ae0d6b1a8ef6b36ae7ef7f3036a8a16dbe9abf2f12",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/net_share_retirement_yoy/versions/v3/admission.json": "64db82642a8e38537e26012b985c53f9c852dd35a992b69ea23264f299f958ab",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001681459/sec_edgar:cik_0001681459:financials:9be4b9d44cc2f2ded38dca75.json": "c7fba45f0877970ebcc59bdddf7b97875d4b935c0cd127cf639421843db399a7",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001951089/sec_edgar:cik_0001951089:financials:510adf33218c256ee8b00b35.json": "c0140f398eba67499b97c83ec971dc17f06d9f8b45d6fe0157d939761fc42f65",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001285819/sec_edgar:cik_0001285819:financials:dd0e5a40eefdb1f9ffa40052.json": "7d057b82084192163e4503b52280d82578df48926aaf1a27b70fab31ea2b4910",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001285819/sec_edgar:cik_0001285819:financials:5085e2afea151fa650e2504f.json": "58ebf8774d7c9a02f577f557c58983d3dbaa20c569a647a0fce6f178013776b7",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001679273/sec_edgar:cik_0001679273:financials:887808d858920f2c3c2777fd.json": "65f608b417cfc2a76205957840eeae9fdb68b3f1f36ef7f81eaa8e1e5e79ee1d",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/requests/73656a527cbf205599defcf75492a004a3357df0d2a3b286e07947c9dc023177.json": "0ad47d51c433e891dededa463ff044226876644259b7660e32c9ec9befb5ed59",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cache/responses/73656a527cbf205599defcf75492a004a3357df0d2a3b286e07947c9dc023177.json": "759bcc873432e4773bd883aa80c81ed48ab0bee9d029fdfa7e67f672a78e9271",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/revenue_growth_yoy/versions/v2/spec.json": "00175663162b75b19654d0abb7df98ca66421867647d2fba57096b60748bb011",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/signals/financial/revenue_growth_yoy/versions/v3/admission.json": "7410611427d16b86f5c0743dfe056f76fafc483954bb85ba23692d6e20916338",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0002009312/sec_edgar:cik_0002009312:financials:bb696056feeac902f0458bf4.json": "7bce7218218f3d05ea4801f50d9f52fac5e21adf02c173db8d397b96987b56f5",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/company_facts/cik_0002009312/sec_edgar:cik_0002009312:company_facts:ed4c1100a79f1460eaafa1ec.json": "cc97e523c89df2003bde6f77a88d85d5dcc38f296362ae73a171412e4841c21e",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py": "0a224b2a8ccd054a0dc05334bb3a150813e09d598d491e425ce1924b7ef786eb",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py": "a260e829e2e2d86f904e425f50ca8ad8c338e7510bb8dadb7ffea12857eac25e"
+  }
+}

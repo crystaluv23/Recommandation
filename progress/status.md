@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07 02:27：v179正式Fast/Slow1/1、exit0，570attempts记录费用$2.49397764，Registry10→11仅两方向Update；magnitude新因子0、25正向全2–3x，技术FN1/Signal校验失败10/budget1，Slow记忆failed/processed0。两个Update全部8原归纳案经完整原PIT数据与生产Executor回放，新旧除version外相同，异常分母/极端收入声称修复未发生；共用执行能力说明与两函数docstring按现有行为补齐，评分/准入/阈值不变。完整目标及独立增益未验收，准备测试后冻结接续。
+
 2026-10-07 02:09：v179正式Fast1/Slow0，固定24案×两Plan，25正向幅度全2–3x；177success/20domain_unavailable/10Signal校验失败/1预算阻断，c01一技术FN保留分母。亲自读Plan/Round/Slow原答/付费patch/落盘，发现统计误读与blind行动需标签，Slow反思failed/processed0/pending保留。泛化已有嵌套source归属至结构化ref字段，2新/106相关/1559全量PASS，真实原答零外部回放仅改2引用、内容问题仍不验收；冻结监控继续。
 
 2026-10-07 01:59：按真实v179 Initialize首答/付费patch修复未来信息whole-member后置隔离，模型先纠错、精确remove授权、有效siblings与Reflect旧needs/引文保留、完整parser拒绝空continue。7新/90相关/1557全量PASS，生产两原答0外部回放只删违规一项、保五needs及原件hash。v179仍冻结482a5e1e且c02进行中，不改旧分母；Signal失败/幅度新能力/独立gain仍待验收。

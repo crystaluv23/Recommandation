@@ -1,0 +1,373 @@
+{
+  "schema_version": "v179-terminal-acceptance-audit-v1",
+  "audited_at": "2026-10-06T18:26:28.240587+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated",
+  "exit": {
+    "exit_code": 0,
+    "reason": "child_terminal",
+    "finished_at": "2026-10-06T18:09:16.983139+00:00"
+  },
+  "last_completed_round": 1,
+  "last_completed_cycle": 1,
+  "active_cycle": null,
+  "external_attempt_count": 570,
+  "external_attempt_status_counts": {
+    "completed": 562,
+    "failed": 8
+  },
+  "recorded_cost_using_actual_or_reserved": 2.49397764,
+  "cost_is_not_provider_invoice": true,
+  "unique_scored_cases": 24,
+  "same_ordered_cases_for_both_plans": [
+    "cik_0000895728:20250930",
+    "cik_0001830043:20250930",
+    "cik_0000701818:20250930",
+    "cik_0001174922:20250731",
+    "cik_0000895421:20250731",
+    "cik_0001869198:20250331",
+    "cik_0001576942:20250530",
+    "cik_0001590364:20250731",
+    "cik_0000936395:20250930",
+    "cik_0001164727:20250731",
+    "cik_0001801368:20250331",
+    "cik_0001018963:20250930",
+    "cik_0001689548:20250930",
+    "cik_0002023554:20250930",
+    "cik_0000723125:20250731",
+    "cik_0001646188:20250530",
+    "cik_0000860413:20250930",
+    "cik_0001521036:20250331",
+    "cik_0001847409:20250131",
+    "cik_0001309402:20250530",
+    "cik_0001114995:20250331",
+    "cik_0001920294:20250530",
+    "cik_0000839470:20250731",
+    "cik_0001051627:20250930"
+  ],
+  "plans": [
+    {
+      "plan_id": "plan_r0001_c01",
+      "metrics": {
+        "binary_f1": 0.7200000000000001,
+        "binary_precision": 0.8181818181818182,
+        "binary_recall": 0.6428571428571429,
+        "confusion": {
+          "false_negative": 5,
+          "false_positive": 2,
+          "true_negative": 8,
+          "true_positive": 9
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.16666666666666666,
+        "precision_defined": true,
+        "predicted_positive_count": 11,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "technical_exclusion_case_ids": [
+        "cik_0001689548:20250930"
+      ],
+      "prediction_magnitude_distribution": {
+        "None": 13,
+        "2-3x": 11
+      },
+      "signal_status_counts": {
+        "success": 74,
+        "domain_unavailable": 10,
+        "validation_failed": 5
+      }
+    },
+    {
+      "plan_id": "plan_r0001_c02",
+      "metrics": {
+        "binary_f1": 0.7142857142857143,
+        "binary_precision": 0.7142857142857143,
+        "binary_recall": 0.7142857142857143,
+        "confusion": {
+          "false_negative": 4,
+          "false_positive": 4,
+          "true_negative": 6,
+          "true_positive": 10
+        },
+        "magnitude_accuracy": 0.2857142857142857,
+        "magnitude_macro_f1": 0.1568627450980392,
+        "precision_defined": true,
+        "predicted_positive_count": 14,
+        "sample_count": 24,
+        "valid_case_count": 24
+      },
+      "technical_exclusion_case_ids": [],
+      "prediction_magnitude_distribution": {
+        "None": 10,
+        "2-3x": 14
+      },
+      "signal_status_counts": {
+        "success": 103,
+        "validation_failed": 5,
+        "domain_unavailable": 10,
+        "budget_blocked": 1
+      }
+    }
+  ],
+  "signal_status_counts": {
+    "success": 177,
+    "domain_unavailable": 20,
+    "validation_failed": 10,
+    "budget_blocked": 1
+  },
+  "registry": {
+    "input_registry_version": 10,
+    "input_registry_hash": "4fd2c472ba80687bf7be35d371a82e74aebc4ae12c066dd4471581757e36c311",
+    "output_registry_version": 11,
+    "output_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+    "promoted": [
+      "net_share_retirement_yoy:v3",
+      "revenue_growth_yoy:v3"
+    ],
+    "candidate_research_targets": {
+      "net_share_retirement_yoy:v3": "surge_direction",
+      "revenue_growth_yoy:v3": "surge_direction"
+    },
+    "new_candidate_count": 0,
+    "new_promoted_signal_count": 0,
+    "new_validated_signal_count": 0,
+    "updated_signal_count": 2,
+    "signal_goal_status": "unmet",
+    "rejected": {
+      "update:liquidity_runway_months:v3": [
+        "structured_output_failed: signal_update_decision failed validation after one correction: Signal Update candidate has no effective change; supply an actual valid update or choose no_change/defer with candidate=null, changed_paths=[] and a consistent rationale. The candidate's mutable values equal the stable baseline: changing path labels alone is not an edit. Preserve all case diagnostics."
+      ]
+    }
+  },
+  "magnitude_contribution": {
+    "assessed": false,
+    "fast_consumption_assessed": false,
+    "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+    "target_candidate_refs": [],
+    "target_mining_assessed": true,
+    "target_supported_candidate_refs": [],
+    "target_track_statuses": {
+      "magnitude_ge3_v1": "completed"
+    }
+  },
+  "mining_seeds": [
+    {
+      "axis_id": "magnitude_ge3_v1",
+      "seed": "hypothesis",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 36,
+      "ledger_actions": 36,
+      "narrative_reads": 2,
+      "candidate_count": 0,
+      "explored_families": [
+        "10-k",
+        "company_facts",
+        "filing",
+        "financials",
+        "news"
+      ],
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004"
+      ],
+      "modality_coverage": {
+        "narrative": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        },
+        "structured": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        }
+      },
+      "need_dispositions": 224,
+      "pending_need_count": 0,
+      "need_disposition_ref_occurrences": {
+        "deferred_measurement": 228,
+        "not_testable": 39,
+        "update_existing": 3,
+        "fast_plan_action": 16
+      },
+      "distinct_need_refs_in_disposition_rows": 286,
+      "disposition_count_scope": "Raw audit rows can repeat a ref across successive dispositions; occurrences are not unique need counts."
+    },
+    {
+      "axis_id": "magnitude_ge3_v1",
+      "seed": "discovery",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 19,
+      "ledger_actions": 19,
+      "narrative_reads": 4,
+      "candidate_count": 0,
+      "explored_families": [
+        "10-k",
+        "company_facts",
+        "filing",
+        "financials",
+        "market_data",
+        "news"
+      ],
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004"
+      ],
+      "modality_coverage": {
+        "narrative": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        },
+        "structured": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        }
+      },
+      "need_dispositions": 0,
+      "pending_need_count": 0,
+      "need_disposition_ref_occurrences": {},
+      "distinct_need_refs_in_disposition_rows": 0,
+      "disposition_count_scope": "Raw audit rows can repeat a ref across successive dispositions; occurrences are not unique need counts."
+    },
+    {
+      "axis_id": "surge_direction",
+      "seed": "hypothesis",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 38,
+      "ledger_actions": 38,
+      "narrative_reads": 1,
+      "candidate_count": 0,
+      "explored_families": [
+        "10-k",
+        "company_facts",
+        "filing",
+        "financials",
+        "news",
+        "sec_filing"
+      ],
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004",
+        "case-005",
+        "case-006",
+        "case-007",
+        "case-008"
+      ],
+      "modality_coverage": {
+        "narrative": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        },
+        "structured": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        }
+      },
+      "need_dispositions": 259,
+      "pending_need_count": 0,
+      "need_disposition_ref_occurrences": {
+        "update_existing": 10,
+        "deferred_measurement": 252,
+        "not_testable": 6,
+        "new_measurement": 4,
+        "fast_plan_action": 14
+      },
+      "distinct_need_refs_in_disposition_rows": 286,
+      "disposition_count_scope": "Raw audit rows can repeat a ref across successive dispositions; occurrences are not unique need counts."
+    },
+    {
+      "axis_id": "surge_direction",
+      "seed": "discovery",
+      "status": "completed",
+      "terminal_kind": "no_pattern_with_coverage",
+      "model_calls": 16,
+      "ledger_actions": 16,
+      "narrative_reads": 2,
+      "candidate_count": 0,
+      "explored_families": [
+        "10-k",
+        "company_facts",
+        "filing",
+        "financials",
+        "news",
+        "sec_filing"
+      ],
+      "fetched_case_refs": [
+        "case-001",
+        "case-002",
+        "case-003",
+        "case-004",
+        "case-005",
+        "case-006",
+        "case-007",
+        "case-008"
+      ],
+      "modality_coverage": {
+        "narrative": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        },
+        "structured": {
+          "available": true,
+          "explored": true,
+          "status": "explored"
+        }
+      },
+      "need_dispositions": 0,
+      "pending_need_count": 0,
+      "need_disposition_ref_occurrences": {},
+      "distinct_need_refs_in_disposition_rows": 0,
+      "disposition_count_scope": "Raw audit rows can repeat a ref across successive dispositions; occurrences are not unique need counts."
+    }
+  ],
+  "slow_memory": {
+    "status": "failed",
+    "processed_feedback_refs": [],
+    "pending_feedback_count": 1738,
+    "episode_count": 0,
+    "lesson_count": 0
+  },
+  "slow_experiment_attempt_count": 5,
+  "scope": "Terminal persisted artifacts and original per-plan case inventories inspected. Detailed raw prompt/response and human semantic findings are in the linked prior stage and Update audits; this does not assert every one of 47 research trajectories passed semantic review.",
+  "related_audits": [
+    "reports/v179-feedback-consumption-audit-20261007.json",
+    "reports/v179-c01-checkpoint-audit-20261007.json",
+    "reports/v179-learning-checkpoint-audit-20261007.json",
+    "reports/v179-update-production-behavior-audit-20261007.json"
+  ],
+  "acceptance": {
+    "technical_case_exclusions_zero": false,
+    "technical_signal_failures_zero": false,
+    "new_magnitude_signal_admitted": false,
+    "higher_prediction_bands_supported": false,
+    "slow_feedback_memory_committed": false,
+    "independent_benefit_confirmed": false,
+    "goal_complete": false
+  },
+  "source_sha256": {
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/state.json": "3569215261cd4f5b160020b89b81acf5ded0997c0e4e749229ebbfb109fc16e8",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/cycle_state.json": "9889e7e4d672c1ad65bd8bc522f0affb2e707c0aa26b444a6419f061d4f39cc7",
+    "/Users/l/Project/Recommandation/.delegation/live-runs/v179/exit.json": "be0fa2789e9c175c8d9cb0d5fddeed7f7a09e615365f399aed766fc20eab5ea3",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/cycles/cycle-0001/slow_loop_result.json": "05892af5f2b0eca8e7e1c63d12cfa6505c056853e45e76eadde0e66f52a34a0f",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/cycles/cycle-0001/slow_loop_validation.json": "57c13f2e8e2be0b70221ec9a43e29209e74bf115fb82aff1f0399815b128ddfe",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/cycles/cycle-0001/slow_experiments.json": "db0bf3cb45397c3754cb0c2633d42fa4e66cea10196f68393d4d734b658318ed",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/cycles/cycle-0001/slow_memory.json": "4b2840590bc36504ffeb114af58f119f6387211f0b2078096d976c1d70463313",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/attempts.json": "2138a8e0911fb6d981806cb1e8406083e58709e043e5975857eb141442d97870",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/attempts/plan_r0001_c01.json": "b995a169e8429b8291f674ed4ad8d034e203a54f8c7f842da44ee94499a7a257",
+    "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v179_integrated/experiments/round-0001/attempts/plan_r0001_c02.json": "997761dd5f4cfbbe7e3996e9d6d3db73a4e22a2bfaac53af971fff202efe8ff2"
+  }
+}
