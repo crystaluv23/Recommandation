@@ -650,3 +650,5 @@
 - 2026-10-06：接续v177及同一监控、保存SSL退出并按冻结合同缓存恢复；人工读出Signal层技术失败/反馈诊断丢失及订单量纲内容问题。修复新Plan缺used_experience_refs被当legacy的问题，仅授权字段add、保留策略/历史unknown；两份付费原答生产离线重放0外部通过，5新/250相关/1510全量PASS，完整live及独立增益仍待验收。
 
 - 2026-10-06：贯通Signal执行状态到最终预测/Posthoc/Critic及可选case原始诊断→Round/Slow来源；同版本逐轮保留自身结果，剥离私有错误文本，domain-unavailable与legacy未知保持独立，固定prompt限制技术失败的经济归因。22份v177原轨迹0外部回放hash不变，6专项/1516全量/lint PASS；冻结v177未热改，实际10次Signal技术失败及幅度塌缩仍待后继修复验收。
+
+- 2026-10-06：审计真实Signal phrase纠错与10x+低估产物，统一初始/纠错的mandatory literal契约，明确interior候选仅是位置提示、数值materiality须有来源的兼容量纲换算；保留neutral有效结果及硬校验，4新/92专项/1520全量/lint PASS。v177 34案仍未提交，后续入库/消费/增益未验收。

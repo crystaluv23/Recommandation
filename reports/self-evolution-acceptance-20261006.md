@@ -80,6 +80,16 @@
 - 亲自读取Kinross guidance初答hash `0ede8f244460503d9e964f811db8d9150f3101237f06510d72f9f67253f59f05`、纠错hash `3e5d9bcf0a6b54780579a4067b65e5fe6d5b6d49a7b3c375ff037d9c77d56c5b`及纠错完整固定指令/实际feedback：纠错重复了内部截断句；提示列出的完整候选是资本回报句，不是原guidance比较句，不能自动替换或删除来伪造经济依据。原模型初答还引用投影外完整数字，必须后续审计上游完整片段可见性与修复边界。此次状态传递修复没有消除这些原有执行错误。
 - 冻结v177仍运行a7d8a057，主源码修复未进入它；后继冻结运行才可验收技术失败消除。双轴真实入库、后继消费、幅度扩展和独立增益仍待完成。
 
+## 2026-10-06 22:22固定Signal指令与幅度内容审计
+
+- 第一Plan24案全部暂存；`experiments/round-0001/attempts/plan_r0001_c01.json`记录case排除0、F1 .80（TP12/FP4/TN6/FN2）、magnitude accuracy .3571、macro-F1 .1754。第二Plan10案已保存。Fast/Slow指针仍0/0，Plan级Critic请求尚未出现，不能将案例posthoc当作Plan级或周期提交。
+- 两Plan合计34份保存轨迹：132 success、10 domain_unavailable、9 validation_failed、5 budget_blocked；21个非空magnitude全为2–3x、13个null。337 attempts记录成本$1.30547984，未扩大预算。正式case排除0不等于Signal层零技术故障。
+- 亲自读取四份phrase纠错hash `377fd8ae51d602b3a2f3b22dcf8e4847c048bf8fbccf460f966d3289186b3bc7`、`56c8dcfe46a11718769102323198daa2898688b1c22061949af7fb591494cd42`、`6244897688a5f132e881af5de42c43318feadddc4e0cdc9f525b3521dc7e37b1`、`e202fd12f846c7d21d8fc6b1f7ba76a369c50364e47f1e30187594c7e9dbb136`的完整原始结果，并逐值统计同请求eligible投影中的必需短语可见性。融资那案10个eligible投影均无版本允许短语，其余guidance投影有匹配但引用没有满足；不能通过自动换成无关句子或扩大词表伪造依据。版本skill/词表是否经济上充分仍是内容审计问题，未私改历史Signal。
+- 先改owning spec再统一初始执行/纠错提示：neutral/negative仍须满足版本所有mandatory证据要求；无合规eligible literal时unavailable+空证据；interior候选只有支持同一测量claim时可用；数值阈值只能比较兼容量纲，换算须来自可见来源。没有新增语义硬门、松掉校验或重写固定阈值。4新测试使用实际生产runner与显式原协议回复，覆盖有效neutral保留、缺短语重复仍technical失败、unavailable带证据仍拒绝、两阶段提示一致。92专项、1520全量 / 60.346s、lint PASS，日志`/tmp/v177-literal-contract-{focused,full,lint}.log`；只证明合同/传递，不证明真实LLM遵循。
+- 完整读过Ondas `cik_0001646188:20250530`的预测和posthoc items：订单/标准选择/价格确认支持possible，预测2–3x，真实10.8594x；复盘保留低估事实、listing/dilution锚定假说及可检验局限，并有可执行的order-to-revenue时点补充动作。轨迹hash `2b744243731923521b926f0b439e94daf70b9c70b7b45b49fe1088b0db7ffc8b`，预测request `437d0707e97730fd10ba5b68fa93d8871b605ac99e52fc58807afc54a271ca0d`，posthoc `b42a275e05e8e2b591d45d501ea8c07cc609135aae1188ff2be185e840926b9d`。
+- 完整读过AXT `cik_0001051627:20250930`的预测和posthoc items：出口许可带来forecast外收入+价格/量确认，预测2–3x，真实13.3460x；最终复盘只有binary正确和magnitude低估两项事实，没有改进动作。不能把事实复述算作有用进化。轨迹hash `2d66f246ac6c30aa3454eaee78137615749de053130a5dc09361493245c0dd3d`，预测request `c0ff427a51850e0860cf14e28249141bda509c055918b7014a350b8b3a0fed31`，posthoc `1cfecf0c3b8b0ca4f3bf4aeb89599ad7c104030c1b562a9e5577068714e59f99`/纠错`2aa7b22a0a00774d1cc05118301c7b31606b2327fdbc698a1d4f5e2c2e146828`。两案完整来源可见性与因果解释未整体验收，不能由后验10x强制改预测档位。
+- 运行仍为冻结a7d8a057，主源码checkpoint只能在后继测试。后续检查magnitude低估事实/动作如何被Plan/Round、H1/Magnitude Track、作者/测试/Registry和后继Predictor实际使用；不把多样预测档位本身当作收益。
+
 ## 接续动作
 
 1. 检查child/exit、attempt ledger、trajectory及新requests/responses；逐份读取还没检查的实际内容，不重复已经看过的原件。审计摘要应记录看过的hash和语义结论。

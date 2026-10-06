@@ -634,3 +634,13 @@ Existing version-owned result_required_evidence_phrases are explicitly disclosed
 in the initial fixed prompt as applying to every available state, not just positive.
 The hard validator remains unchanged; a correction must not discover this obligation
 for the first time. No hidden lexical requirement is added or old Signal rewritten.
+
+Neutral/negative counter-evidence must still meet every version-owned mandatory
+evidence requirement. Both initial and correction instructions make explicit
+that general business commentary cannot replace a missing measured object or
+required literal phrase; if no eligible complete literal satisfies that contract,
+the result is unavailable with unavailable coverage and empty evidence arrays.
+An interior citation candidate is only a byte-exact location suggestion, never
+authority to replace the measured claim with an unrelated sentence. Numerical
+materiality comparisons require compatible units and source-backed conversions;
+the fixed instructions do not redefine any stored Signal's threshold.

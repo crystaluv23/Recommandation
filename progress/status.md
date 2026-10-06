@@ -1,5 +1,7 @@
 # Status
 
+2026-10-06 22:22：v177第一Plan24案与第二Plan10案已保存，指针仍0/0，21个非空幅度全为2–3x；第一Plan暂存F1 .80、magnitude macro-F1 .1754，正式case排除0但Signal技术失败仍在，不能整体验收。亲自读四份phrase纠错及两个真实10x+的预测/复盘；修复固定Signal提示中neutral/mandatory evidence冲突、无关interior candidate及无依据量纲比较，不松校验/改阈值。4新/92专项/1520全量与lint PASS；当前冻结运行未含这些修复，后继实际模型遵循及独立增益仍待查。
+
 2026-10-06：v177第二次SSL EOF按冻结代码/缓存恢复，22案快照中7次Signal校验失败、3次纠错预算阻断，14个非空幅度仍全部2–3x，提交指针0/0。修复最终视图丢失execution.status、同ref跨轮被最新结果覆盖、Critic二次压缩和Round/Slow原始反思缺技术记录；新增可选runtime诊断，不改评分/经济结论/历史unknown。6专项与1516全量、lint PASS；22份真实轨迹0外部生产回放传递正确、原hash不变。零技术失败、双轴新入库/后继消费和独立增益仍未验收。
 
 2026-10-06：v177恢复SSL临时中断后已保存7案、Fast/Slow指针0/0；亲自检查发现新Plan缺采纳字段被legacy兼容、Signal两个校验失败及一个预算阻断、技术诊断未到Posthoc、订单容量与数量量纲混淆。先修spec及新Proposer add-only字段权限；两份真实付费原答0外部重放保持策略/原件，5新/250相关/1510全量PASS。未热改冻结v177，零技术问题/幅度新入库/独立增益尚未验收。
