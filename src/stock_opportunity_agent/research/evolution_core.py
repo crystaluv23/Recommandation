@@ -2544,10 +2544,31 @@ class CaseReflectionEvidence:
     magnitude_feedback: Mapping[str, Any] | None = None
     jev_decision_feedback: Mapping[str, Any] | None = None
     technical_exclusion: Mapping[str, Any] | None = None
+    recorded_signal_execution_failures: tuple[Mapping[str, Any], ...] | None = None
 
     def __post_init__(self) -> None:
         if self.case_index < 1:
             raise ValidationError("case reflection index must be positive")
+        if self.recorded_signal_execution_failures is not None:
+            rows = self.recorded_signal_execution_failures
+            if not isinstance(rows, (list, tuple)):
+                raise ValidationError("recorded Signal execution failures must be an array")
+            seen = set()
+            for row in rows:
+                if (not isinstance(row, Mapping)
+                    or set(row) != {"signal_round", "signal_ref", "status"}
+                    or type(row["signal_round"]) is not int or row["signal_round"] < 1
+                    or not isinstance(row["signal_ref"], str)
+                    or re.fullmatch(r"[a-z0-9][a-z0-9_:-]*:v[1-9][0-9]*", row["signal_ref"]) is None
+                    or not isinstance(row["status"], str)
+                    or row["status"] not in {status.value for status in SignalExecutionStatus
+                        if status not in {SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE}}):
+                    raise ValidationError("recorded Signal execution failure identity/status is invalid")
+                key = (row["signal_round"], row["signal_ref"])
+                if key in seen:
+                    raise ValidationError("recorded Signal execution failures contain duplicate identity")
+                seen.add(key)
+            object.__setattr__(self, "recorded_signal_execution_failures", tuple(dict(row) for row in rows))
         if not isinstance(self.stop_reason, RuntimeStopReason):
             object.__setattr__(
                 self,
@@ -2563,6 +2584,10 @@ class CaseReflectionEvidence:
                 RuntimeStopReason(self.termination_trigger),
             )
         if self.technical_exclusion is not None:
+            if self.recorded_signal_execution_failures is not None:
+                raise ValidationError(
+                    "technical exclusion cannot carry research-case Signal diagnostics"
+                )
             technical = dict(self.technical_exclusion)
             if set(technical) != {
                 "failure_class",
@@ -2689,6 +2714,8 @@ class CaseReflectionEvidence:
             value["magnitude_feedback"] = dict(self.magnitude_feedback)
         if self.jev_decision_feedback is not None:
             value["jev_decision_feedback"] = dict(self.jev_decision_feedback)
+        if self.recorded_signal_execution_failures is not None:
+            value["recorded_signal_execution_failures"] = [dict(row) for row in self.recorded_signal_execution_failures]
         return value
 
     @classmethod
@@ -2734,6 +2761,15 @@ class CaseReflectionEvidence:
                 trajectory.prediction,
                 trajectory.ground_truth,
             ),
+            recorded_signal_execution_failures=tuple(
+                {"signal_round": position, "signal_ref": result.ref,
+                 "status": result.execution_status.value}
+                for position, signal_round in enumerate(trajectory.signal_rounds, 1)
+                for result in signal_round.batch.results
+                if result.execution_status not in {
+                    SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE,
+                }
+            ),
         )
 
     @classmethod
@@ -2771,6 +2807,7 @@ class CaseReflectionEvidence:
         if not set(data) <= required | {
             "magnitude_feedback",
             "jev_decision_feedback",
+            "recorded_signal_execution_failures",
         } or not required <= set(data):
             raise ValidationError("case reflection evidence fields are invalid")
         feedback = data["candidate_judgment_feedback"]
@@ -2803,6 +2840,7 @@ class CaseReflectionEvidence:
             jev_decision_feedback=(
                 dict(serialized_jev) if serialized_jev is not None else None
             ),
+            recorded_signal_execution_failures=data.get("recorded_signal_execution_failures"),
         )
 
     @property
@@ -4006,35 +4044,26 @@ def _assemble_final_context(
         for round_row in round_rows
         for result in round_row.batch.results
     }
-    model_signal_results = {
-        ref: signal_result_model_view(result)
-        for ref, result in signal_results.items()
-    }
-    for ref, result in model_signal_results.items():
-        if ref in (signal_research_status or {}):
-            result["research_status"] = _thaw_json(signal_research_status[ref])
-    signal_rounds = [
-        {
+    signal_rounds = []
+    for round_row in round_rows:
+        cards = []
+        for result in round_row.batch.results:
+            view = signal_result_model_view(result)
+            card = {
+                "signal_ref": result.ref,
+                "state": view["state"],
+                "interpretation": view["interpretation"],
+                "status": view["status"],
+            }
+            if "execution" in view:
+                card["execution"] = view["execution"]
+            if result.ref in (signal_research_status or {}):
+                card["research_status"] = _thaw_json(signal_research_status[result.ref])
+            cards.append(card)
+        signal_rounds.append({
             "selected_signals": list(round_row.selected_signals),
-            "batch": {
-                "results": [
-                    {
-                        "signal_ref": result.ref,
-                        "state": model_signal_results[result.ref]["state"],
-                        "interpretation": model_signal_results[result.ref][
-                            "interpretation"
-                        ],
-                        "status": model_signal_results[result.ref]["status"],
-                        **({"research_status": model_signal_results[result.ref]["research_status"]}
-                           if "research_status" in model_signal_results[result.ref] else {}),
-                    }
-                    for result in round_row.batch.results
-                ],
-                "signal_calls": round_row.batch.signal_calls,
-            },
-        }
-        for round_row in round_rows
-    ]
+            "batch": {"results": cards, "signal_calls": round_row.batch.signal_calls},
+        })
     cited_signal_evidence: list[dict[str, Any]] = []
     seen_signal_evidence: set[tuple[str, str, int]] = set()
     for evidence_ref in state.supporting_evidence:

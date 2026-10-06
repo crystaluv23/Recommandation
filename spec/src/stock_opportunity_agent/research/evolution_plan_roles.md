@@ -177,6 +177,15 @@ Signal retrieval, blind prediction, and Plan reflection.
 
 ## Shared stage boundary (2026-10-01)
 
+Predictor, Posthoc and Plan Critic preserve runtime-owned Signal execution
+status in their model views. Reflection instructions distinguish validation,
+transport, permanent, budget and authorization failures from domain-unavailable
+source evidence. A technical gap may support a technical repair action, never
+an economic absence claim or a lesson that a valid factor failed to predict.
+Historical compact contexts without status remain unknown; no consumer invents
+the cause from `unavailable` alone. Round and Slow source reads retain the same
+case/Plan provenance and the original execution records.
+
 Follow [stage contracts](stage_contracts.md) for dependency checks, omissions,
 partial mechanical repair and immutable accepted units. A newly resolved
 question conflicting with an unanswered retained need publishes both correction

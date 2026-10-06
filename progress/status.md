@@ -1,5 +1,7 @@
 # Status
 
+2026-10-06：v177第二次SSL EOF按冻结代码/缓存恢复，22案快照中7次Signal校验失败、3次纠错预算阻断，14个非空幅度仍全部2–3x，提交指针0/0。修复最终视图丢失execution.status、同ref跨轮被最新结果覆盖、Critic二次压缩和Round/Slow原始反思缺技术记录；新增可选runtime诊断，不改评分/经济结论/历史unknown。6专项与1516全量、lint PASS；22份真实轨迹0外部生产回放传递正确、原hash不变。零技术失败、双轴新入库/后继消费和独立增益仍未验收。
+
 2026-10-06：v177恢复SSL临时中断后已保存7案、Fast/Slow指针0/0；亲自检查发现新Plan缺采纳字段被legacy兼容、Signal两个校验失败及一个预算阻断、技术诊断未到Posthoc、订单容量与数量量纲混淆。先修spec及新Proposer add-only字段权限；两份真实付费原答0外部重放保持策略/原件，5新/250相关/1510全量PASS。未热改冻结v177，零技术问题/幅度新入库/独立增益尚未验收。
 
 2026-10-06：已启动v177端到端自进化验收，冻结a7d8a057源码、v171已提交Registry v8及同40案/PIT/Locked Test边界；两个Plan Fast→Slow与后继消费/双轴入库/独立增益分别验收。启动前1505全量测试PASS，10分钟持续监控已启用；当前未声明完整周期、magnitude入库或研究增益。主checkout既有未提交规格/v151改动保留。见reports/self-evolution-acceptance-20261006.md。

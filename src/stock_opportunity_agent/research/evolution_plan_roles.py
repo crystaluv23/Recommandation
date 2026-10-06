@@ -1801,7 +1801,12 @@ _BLIND_PREDICTOR_SYSTEM_PROMPT = (
     + _COMPUTED_PERIOD_INSTRUCTION +
     _PRICE_SHORTFALL_INSTRUCTION +
     "keep each computed return with that card's own first/last prices and dates, "
-    "rather than attaching an unrelated Basic Info price. Respect Signal "
+    "rather than attaching an unrelated Basic Info price. Signal execution.status "
+    "distinguishes domain_unavailable from validation_failed, transport_failed, "
+    "permanent_failed, budget_blocked and authorization_blocked. The latter are "
+    "technical execution gaps, not missing issuer data or economic absence; "
+    "do not use them as positive or negative stock evidence. Legacy unavailable "
+    "results without execution.status have an unknown cause. Respect Signal "
     "measurement_context: categorical states are not stock-direction forecasts, "
     "numeric_sign is distinct from the measured predicate's categorical state; "
     "a fraction_difference display uses percentage points, not percent, "
@@ -2172,7 +2177,14 @@ def _structured_reflection_contract(level: str) -> str:
         "These refs index related Experience, not evidence of consumption or effect. "
         "Success/failure assertions require outcome_claims matching the canonical "
         "source facts; technical exclusions cannot be "
-        "research successes or failures. Category and claim correctness are "
+        "research successes or failures. Signal execution.status distinguishes "
+        "domain_unavailable from validation_failed, transport_failed, "
+        "permanent_failed, budget_blocked and authorization_blocked. The latter "
+        "are technical execution gaps, not proof of missing issuer data or "
+        "economic absence, and not valid factor prediction failures. Describe "
+        "their repair as a technical action separately from completed research. "
+        "A legacy unavailable item without execution status has unknown cause. "
+        "Category and claim correctness are "
         "linked: successful_patterns and decision_drivers items may carry only "
         "correct=true claims, while failed_patterns, why_prediction_failed, "
         "false_positive_patterns, and false_negative_patterns items may carry "
@@ -3140,6 +3152,7 @@ def _plan_critic_trajectory(
                     "state",
                     "interpretation",
                     "status",
+                    "execution",
                 )
                 if key in model_result
             }
@@ -3280,6 +3293,7 @@ class LLMPlanCritic:
                 {key: row[key] for key in (
                     "case_index", "stop_reason", "termination_trigger",
                     "technical_exclusion", "candidate_judgment_feedback", "magnitude_feedback",
+                    "recorded_signal_execution_failures",
                 ) if key in row}
                 for row in source_rows
             ]

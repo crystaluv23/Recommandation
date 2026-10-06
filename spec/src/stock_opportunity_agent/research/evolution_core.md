@@ -19,6 +19,19 @@ the same assembled view. Existing canonical SignalResult and ResearchState stay
 unchanged. Generic controllers without this optional interface remain valid.
 Actual-result status is recursively projected to independent plain JSON before
 Predictor assembly, preserving the deep immutability of its Registry source.
+Final Signal cards retain each round's runtime-owned `execution.status` from
+that round's result, alongside domain coverage. Technical execution failure is
+distinct from domain-unavailable evidence. Later execution of the same version
+must not overwrite earlier round cards; archived originals remain unchanged.
+
+`CaseReflectionEvidence.recorded_signal_execution_failures` is optional runtime
+audit metadata carried into Plan/round meta and Slow source reads. Each entry
+contains the actual one-based Signal round, exact `signal_ref`, and technical
+`status`; success and domain-unavailable results are not failure entries. Runtime
+derives entries from immutable trajectory results, never reflection prose.
+Missing legacy metadata stays unknown. An empty list means no recorded failure,
+not proof of error-free historical execution. This metadata changes neither
+case outcome attribution nor scoring and does not discard valid domain results.
 
 Final Basic Info cards retain the upstream `document_id` and `available_at` beside
 the complete literal and stable projection id. Final context explicitly includes

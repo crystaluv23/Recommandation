@@ -32,6 +32,7 @@
 - 402余额/权限/预算耗尽：停止自动重试并报告；暂时transport只允许原代码/合同/缓存恢复。单一运行锁，禁止重复启动。
 - 原入口仅完成一个Fast→Slow诊断周期；完成后应先人工验收再用当前输出Registry/提交历史准备冻结后继Fast，不能把本周期承诺成已经完成后继消费。
 - 初次运行在21:43:26因SSL unexpected EOF退出1。原`exit-initial.json`/`process-initial.json`已保存；恢复保持冻结源码/合同/缓存，未扩大预算。当前监控已接续到聊天`01a11172-f0cd-7b93-a286-e9c74f59fb8f`，同一automation未重复创建。
+- 第二次SSL unexpected EOF在22:00:40退出1；验证旧PID退出后保存`exit-resume-01.json`/`process-resume-01.json`，22:02:24同代码/输入/缓存恢复为wrapper/child 93431/93432。当前PID需每次重新核对；恢复未改变运行合同、预算或错误原件。
 
 ## 已亲自查看 / 已验证
 
@@ -68,6 +69,16 @@
 - 两个新proposal request `b55c1921612de031198c71007d36e7423d82e44871cb270d74db1479857c44a0`、`6b472ebe83a748394ddd434f17dbf50242ba55f2fcd9c0e2fff293464748fe0d`均只返回四策略字段。实际prompt明确要求used_experience_refs，旧parser却按legacy缺字段兼容，不能证明采用。修复已先写owning spec，再在主源码要求新回答字段、缺字段仅add权限、非法refs完全重验；历史Plan loader仍unknown，四策略不可被此patch重写。
 - 两份付费原答通过真实生产Proposer离线重放，只脚本化补`[]`：策略/原件保持、0外部调用。这证明技术边界修复，不证明模型真实采用经验。证据`reports/v177-adoption-production-replay-20261006.json`。5新回归、250相关测试PASS；首轮全量因一份旧离线作者fixture缺新字段失败，修正fixture后1510全量/57.584s PASS。修复未热改v177。
 - 独立增益标准已向用户请求具体确认：40未参与开发公司、2独立重复、四臂、Binary及magnitude macro-F1各提升0.05、Binary增益95%公司聚类下界>0、技术失败0。尚无答复；候选方案不是已冻结/已授权扩预算的protocol，不能宣称gain_confirmed。链路测试不依赖此回答继续。
+
+## 2026-10-06 22:10技术归因修复与真实回放
+
+- 快照22案，229 attempts，记录成本$0.89510988，Fast/Slow提交指针0/0；81 success、8 domain_unavailable、7 validation_failed、3 budget_blocked。14个非空magnitude均2–3x，8个null。这里只是库存，未把22案全部标记为人工内容验收。
+- 实际固定prompt/轨迹阅读发现：`_assemble_final_context`丢掉execution，且同ref逐轮卡片从全局最新结果取值；Critic的初步trajectory视图随后被二次压缩覆盖；case→Plan→Round原始反思不保存Signal技术状态。已先补owning spec，再修主源码所有实际出口。新增可选`recorded_signal_execution_failures`只含真实round/ref/status；旧缺字段仍未知，[]只表示没有已记录故障；不把混合有效/失败Signal的整案自动排除，不改评分/经济结论。
+- 固定Predictor与共享反思指令明确技术失败不代表公司数据缺失、经济事实不存在或有效因子预测失效。原始错误code/message保留在本地SignalResult，模型只接收status，避免泄漏内部路径/身份或让诊断文本充当证据。
+- 6项专项测试通过：全部状态、同ref跨轮结果、实际Predictor/Posthoc/Critic请求、Round JSON持久化及生产source resolver的signal_mining读取、legacy未知与非法诊断反例。全量1516 tests / 57.534s PASS；lint PASS，日志`/tmp/v177-provenance-full.log`、`/tmp/v177-provenance-lint.log`。
+- 22份真实v177轨迹经生产最终组装/Posthoc/Critic和CaseReflectionEvidence反序列化回放全部保留原status，原件sha256不变、0外部调用。逐案记录在`reports/v177-execution-provenance-replay-20261006.json`。Critic使用显式本地no-findings回复，因此回放只证明链路与保留，不证明模型正确归因、live采用或研究收益。
+- 亲自读取Kinross guidance初答hash `0ede8f244460503d9e964f811db8d9150f3101237f06510d72f9f67253f59f05`、纠错hash `3e5d9bcf0a6b54780579a4067b65e5fe6d5b6d49a7b3c375ff037d9c77d56c5b`及纠错完整固定指令/实际feedback：纠错重复了内部截断句；提示列出的完整候选是资本回报句，不是原guidance比较句，不能自动替换或删除来伪造经济依据。原模型初答还引用投影外完整数字，必须后续审计上游完整片段可见性与修复边界。此次状态传递修复没有消除这些原有执行错误。
+- 冻结v177仍运行a7d8a057，主源码修复未进入它；后继冻结运行才可验收技术失败消除。双轴真实入库、后继消费、幅度扩展和独立增益仍待完成。
 
 ## 接续动作
 
