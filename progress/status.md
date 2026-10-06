@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07（Bumble双Plan/未来来源）：亲读16原调用/68可见投影118451字符/16相同路由卡/首20目录卡，47源hash重验；动态overview13摘要亲读、3原provider冲突经生产归一化完整复现，Bumble未来全年业绩实际进入18，656请求扫描仅此wire命中、两Plan污染fingerprint仍留。冻结v3回购完整result回放相等；Q2 partial被实际need合同当Q3 full并落盘resolved、旧range在259可见而260 compact缺失，单案correct不证明因果/学习。更新三咨询visit与GUIDE；不改oracle/指针/模型/评分/合同，无新外部调用。终态1/1、6Signal失败、新magnitude0/29全2–3x/独立gain未确认；其余44案例内容链及消费者仍待亲读。见reports/v182-bumble-pair-content-and-future-source-audit-20261007.md。
+
 2026-10-07（v182目录读取链路）：底层70份PIT目录有分页而Reflect只传最旧20张且无翻页动作；按既有渐进披露合同补inspect_document_catalog，分页/fetch/compute共用原2交换预算。泛化修复跨公司ID读取、批内重复及语义纠错丢页/读文/计算卡，校准bounded fetch与State引用权限。真实73源hash/70卡及原10 patch生产Controller回放、原12预测消费/JSON归档通过；亲读后50卡和所选492字provider摘要，不冒称70全文。9回归/156专项/1613全量53.877s及lint PASS，旧冻结9测试预期失败，未热改85ffff9e/无新live。PIT定义与独立评估方案待选，6Signal失败/magnitude新入库0及全2–3x/独立gain未验收。见reports/v182-document-channel-navigation-audit-20261007.md。
 
 2026-10-07（Enbridge双Plan内容复核）：亲读本案16原始调用、6固定prompt和6组可见源窗（74不同projection id），73冻结源hash重验，另亲读10完整新闻并通过生产函数逐值复现word_count=4（其中2为low-risk词频而非负面事件）；全48案仅机械定位，其余46案未冒充亲读验收。确认项目成本被写合同stated value、同一Clear Fork属性被写两个项目、删除假引文后非数值belief残留、LLM自行汇总融资额及远期投产/因果fact解释风险；原guidance技术失败仍保留。先4叶子spec再接共享对象/单位/币种/期间/事件与数值归属指令到Fast/反思/Update/生产Mining共15固定构造点；不改旧artifact、技能定义、分类/PIT/准入或typed权限。373相关测试及4真实payload脚本适配器回放通过，旧预测/no-pattern仍接受，未证明语义修好或gain；终态magnitude0、全2–3x、memory failed、方向v3 pending_use不变。待PIT/独立评估选择与剩余内容/真实后继验收，goal active。报告 reports/v182-enbridge-pair-content-audit-20261007.md / .json。

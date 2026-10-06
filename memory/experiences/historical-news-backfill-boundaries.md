@@ -1,6 +1,6 @@
 # Historical News Backfill Boundaries
 
-visit_times: 3
+visit_times: 4
 
 ## Trigger
 
@@ -53,3 +53,25 @@ Alpha Vantage indexing is not guaranteed to cover every material article, and
 provider summaries may omit decisive details. This workflow does not replace
 SEC filings, transcripts, publisher bodies acquired under appropriate terms, or
 historical company-identity validation.
+
+## Provider publication time can label a later body version (2026-10-07)
+
+v182 Bumble's provider summary is dated 2025-04-24 but describes realized
+full-year 2025 figures confirmed by the company on 2026-03-11; the summary
+actually reached the order Signal at cutoff 2025-09-30. Two related dynamic
+overview records also contain a 2026-03-03 current quote and a corporate rebrand
+announced in January 2026. The original provider feed and production normalizer
+reproduce the complete canonical records exactly: a valid timestamp and matching
+file hash do not establish that the historical body was available then.
+
+Before reusing such inputs, verify the body/version availability lineage. Keep
+original cache/oracle/requests/outcomes immutable; prepare reviewed new inputs
+rather than guessing a corrected publication date. A dynamic URL is a review
+clue, not proof that every record is corrupt. A future-year token can be a valid
+forecast, scheduled event or non-calendar fiscal year. No downstream citation
+does not prove the transmitted future fact had no model influence, and a cached
+second Plan result is not another independent time check.
+
+See `reports/v182-bumble-pair-content-and-future-source-audit-20261007.md` and
+its JSON companion for exact provider/cache/source/wire hashes, original values
+and the pending-policy/no-migration boundary.

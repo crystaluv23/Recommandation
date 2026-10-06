@@ -318,3 +318,5 @@
 - 2026-10-07（Enbridge双Plan内容复核）：咨询 self-evolution-convergence-and-acceptance、incremental-repair-and-sourced-memory；先绑定16原始wire/cache与73源hash，再检查金额/事件归属、typed删除与下游语义。固定共享authoring指令覆盖首次/修正及实际Mining，不新增语义真值/分类门槛；脚本回放仍接受旧答，不能当live或gain。两visit_times各加1并同步GUIDE；补正上轮historical-news GUIDE的2→3，不计新咨询。
 
 - 2026-10-07（v182目录读取链路）：咨询 nonvisible-source-content-consumes-readable-budget、incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance；复核原目录/适配器/State引用/纠错和最终消费，补通既有分页与公司范围、保留读到的内容，保持预算和canonical引用不变。三visit_times各加1并同步GUIDE；离线原生patch回放非live或gain。
+
+- 2026-10-07（Bumble双Plan/未来来源）：咨询 live-evolution-context-audit、self-evolution-convergence-and-acceptance、historical-news-backfill-boundaries。逐份绑定 wire/cache/trajectory，区分 Signal 读窗缺失、runtime 错误 full-answer 授权及 compact 反思丢比较依据；原始 provider time/body 冲突生产复现后才确认未来输入，不凭 URL/年份或无引用判断有效性。三 visit_times 各加1并同步 GUIDE；来源时间/独立评估仍待选择，未做迁移/后继。
