@@ -506,6 +506,18 @@ follow [stage contracts](stage_contracts.md).
   every rationale and candidate to use only its own nested evidence.
 - Production Signal Update uses `signal-update-decision-v2`. Each case first
   records a source-cited evidence verdict; outcome relation is a separate field.
+  Its fixed prompt distinguishes evidence roles from measurement states:
+  a non-qualifying literal may support a neutral result through `counter`
+  citations; `counter` does not itself mean a negative state. A source-correct
+  measurement can be misaligned with an outcome without an execution defect.
+  Skill edits preserve the immutable definition's measured object, applicability,
+  materiality thresholds and state meanings; unchanged fixtures do not authorize
+  a new minimum/expected-value gate or another narrowing of that definition.
+  When no supported execution repair fits those boundaries, `no_change` or
+  `defer` remains valid. This is authoring guidance, not a claim that structural
+  validation proves arbitrary skill prose equivalent or that an update improves
+  prediction quality; actual-content review and independent evaluation remain
+  necessary.
   Model-facing source spans carry a case/document/content-bound `source_span_ref`.
   HTML spans use the shared readable projection without clipping source text;
   the complete original literal remains local. A wire fact may select exactly

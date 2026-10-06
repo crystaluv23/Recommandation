@@ -702,3 +702,5 @@
 - 2026-10-07 05:50：按原v181 magnitude fetch/下一view重放修复多案覆盖被末案覆盖、叙事事件和重复图节点误报新增；PIT/查询/测量/引用/预算保持，4旧失败回归/48相关/1600全量56.552s及lint PASS。v182正式Fast1/Slow0、两Plan0case排除但6Signal校验失败，29正向全2–3x；新增纠错半句和实际RZLV电话会旧EPS日期链问题保留原件，官方Apr28早于本案May30，未证明未来泄漏或独立gain。后继前继续完整Slow及日期lineage/输入合同审计，冻结运行不热改。见reports/v182-fast-checkpoint-and-mining-coverage-audit-20261007.json。
 
 - 2026-10-07：v182终态Fast/Slow1/1与方向v3准入发布审计；原Slow mixed-source纠错造成0学习消费已证实，泛化初始episode完整覆盖和typed来源分组/他行有效覆盖诊断，合法source-only真实离线回放保留全部正文、保存与消费投影通过，原错误patch仍拒收。163专项/1604全量/lint PASS；四条来源时间冲突和可审查纠正预览待PIT合同选择，不改oracle/live。magnitude新增0/全部2–3x与6Signal失败仍未验收。
+
+2026-10-07：v182终态1/1后继续实际Update语义审计；v3 spec仅version变化、8旧fixtures字节相同，但counter/neutral解释混淆、ceiling-only条件无对应证据/fixture。核验冻结2875新闻hash，23 URL日期线索/67年末同刻仅作诊断，4原始publisher日期冲突；ERII旧订单错日期实际进入594执行与599 Update，非未来泄露定论。叶子spec/固定Update prompt澄清测量角色/状态/关联与定义不变量，实际599原输出生产适配器离线重放仍结构通过，102相关测试及lint通过；无付费模型/旧数据或指针改写。48 Fast完整语义、源时钟纠正输入、新magnitude入库/消费/独立收益仍待验收，已有PIT/独立评估选择待用户回复。见reports/v182-update-semantic-and-news-clock-audit-20261007.md。
