@@ -1,5 +1,7 @@
 # Usage Log
 
+- 2026-10-06: Consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance for v177 immutable cash-runway description versus validator conflict and duplicate Update diff metadata; replay real fixed candidates/fixtures, preserve research content and exact typed repair boundaries before a frozen successor.
+
 - 2026-10-06: Consulted incremental-repair-and-sourced-memory and self-evolution-convergence-and-acceptance for v177 Plan/Round reflection first-error correction; align aggregate-source versus canonical-outcome disclosure, collect independent typed row obligations, preserve siblings and verify actual persisted answers without asserting live benefit.
 
 - 2026-05-02: Trigger "adding provider, adapter, registry, or external-service integration"; read `memory/experiences/provider-boundary-placement.md` before expanding data-source capabilities so provider selection stays at the data capability boundary.

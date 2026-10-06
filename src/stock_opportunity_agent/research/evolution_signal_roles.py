@@ -1105,6 +1105,16 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         paths=("rationale",), allowed_repairs=("replace",),
                         repair_context={"invalid_container_paths": ["rationale"]},
                     )]) from exc
+                declared = value.get("changed_paths")
+                if isinstance(declared, list) and (
+                    any(not isinstance(item, str) or not item.strip() for item in declared)
+                    or len(set(declared)) != len(declared)
+                ):
+                    normalization = normalized_changed_paths(value)
+                    if normalization is not None:
+                        raise StructuredValidationError([
+                            changed_paths_metadata_issue(value, normalization)
+                        ]) from exc
                 raise StructuredValidationError(
                     [
                         ValidationIssue(
@@ -1357,15 +1367,7 @@ class LLMSignalUpdateModel(SignalUpdateModel):
                         if isinstance(exc, StructuredValidationError):
                             issues.extend(exc.issues)
                         elif normalization is not None:
-                            issues.append(ValidationIssue(
-                                code="signal_update_diff_metadata_invalid",
-                                message="Copy the exact runtime-derived candidate diff",
-                                paths=("changed_paths",), allowed_repairs=("replace",),
-                                repair_context={"mechanical_action": "restore_signal_changed_paths",
-                                                "invalid_container_paths": ["changed_paths"],
-                                                "original_value": deepcopy(value.get("changed_paths")),
-                                                "required_value": normalization},
-                            ))
+                            issues.append(changed_paths_metadata_issue(value, normalization))
                         else:
                             issues.append(
                                 ValidationIssue(
@@ -1460,6 +1462,21 @@ class LLMSignalUpdateModel(SignalUpdateModel):
             if isinstance(declared, list) and tuple(declared) == effective:
                 return None
             return list(effective)
+
+        def changed_paths_metadata_issue(
+            failed_output: Mapping[str, Any], required_value: list[str],
+        ) -> ValidationIssue:
+            """Authorize only exact diff bookkeeping derived from a valid pair."""
+
+            return ValidationIssue(
+                code="signal_update_diff_metadata_invalid",
+                message="Copy the exact runtime-derived candidate diff",
+                paths=("changed_paths",), allowed_repairs=("replace",),
+                repair_context={"mechanical_action": "restore_signal_changed_paths",
+                                "invalid_container_paths": ["changed_paths"],
+                                "original_value": deepcopy(failed_output.get("changed_paths")),
+                                "required_value": required_value},
+            )
 
         value, usage, request_refs = _complete_parsed_role_with_trace(
             self.caller,

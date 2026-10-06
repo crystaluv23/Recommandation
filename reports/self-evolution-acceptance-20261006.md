@@ -114,6 +114,17 @@
 - 0外部回放三份真实付费原答，通过实际LLMPlanCritic/LLMRoundReflector生产构造各得到3个独立首前沿义务；在发新纠错前停止，无编写“模型已正确纠错”的伪回答。另从真实Round JSON重建PlanMetaMemory并逐值读回8个已保存Plan/Round items，原requests/responses/records/meta hash不变。证据`reports/v177-reflection-frontier-replay-20261006.json`包含代码hash、义务/权限及原件hash。回放证明来源兼容和完整纠错前沿，不验证原文任意语义、真实模型遵循、双轴因子入库、后继消费或研究增益。
 - 3项新反思回归与3项历史来源回归（包括空旧Signal round也不能凭空追加[]）；39相关PASS，全量1535 tests/54.997s PASS、lint PASS，日志`/tmp/v177-reflection-frontier-{focused-final,full-final,lint}.log`。专项首轮2项测试断言错把最终append合同当义务列表、把flattened反馈当嵌套字段，核对真实合同后修正测试并公开更正台账；不是修改运行权限使测试通过。冻结v177未包含本次或此前主源码修复，后继真实测试仍必需。
 
+## 2026-10-07 00:00 Update 原答重放与 Mining scope 合同修复
+
+- 亲自读取 Update 初始固定 prompt、两份原始 full object、两份实际 delta correction、候选 spec/skill/immutable tests 和实际验证失败。liquidity_runway_months 的 frozen 定义使用“cash runway in months”，与真实 callable 文档一致，却被只接受 liquidity/runway/month 的词面 guard 阻断；Update 无权修改 immutable definition。先补 spec，再在共享概念 screen 加入 cash/runway/month 别名；现金余额、不同 runway 概念或 years 单位仍拒绝，原公式与 fixture 不变。
+- net_share_retirement_yoy 原 correction 删除了破坏 fixture 的 min_observations 门槛，但 changed_paths[0]/[1] 修改后留下重复 parameters。既有 runtime exact-diff normalization 在构造 SignalUpdateDecision 之后才可达，构造期重复字段错误提前绕过了 typed mechanical repair。修复为：仅当稳定/候选对可合法导出实际 diff 时，重复或空成员先发同一个 replace-only 元数据义务，再重跑完整角色、不可变字段与 fixture 验证；不改变 candidate、diagnostics、rationale 或授予新的模型数组删除权限。
+- 通过真实 LLMSignalUpdateModel 和生产 validate_signal_update_candidate/SignalCandidateValidator 重放两份原付费初答及原付费 correction；每项仍恰好两次 scripted 返回，没有编造新的纠错响应，外部调用0。liquidity_runway_months:v3 通过5个原 fixture，net_share_retirement_yoy:v3通过1个；源 requests/responses、Registry v9/hash 原件不变，没有 materialize、publish 或 live gain。证据：reports/v177-update-family-replay-20261006.json。
+- 亲自核对 magnitude hypothesis 最后两份实际请求/回答：`4d02465d235e4e54eff930902a3b2e0d8cfda85d77e67bfe7800779835172056` 与 `ed353ebffa032f4e3eedf60a4036254cc2ec50d54731cb9011d6ed3016b8be10`。两次都请求 inspect_catalog(scope=signals,cursor=7)，当时 heavy_remaining=19、browse_remaining=21、light_remaining=0。控制器没有60次调用上限；连续两次 light 不可执行动作使其 deferred_budget。旧 available_actions 因 memory browse 仍可用而保留 inspect_catalog 名字，未披露其唯一剩余合法 scope；第二份原答明确被该列表误导。
+- 先改 Mining owning spec，新增 runtime tool_contracts.inspect_catalog 的 default_scope、budget_by_scope 和 allowed_scopes，并在 scope 额度拒绝时说明请求 scope 与剩余允许 scope；固定 prompt 明确 action 名可用不代表所有变体可用。Signals/evidence/backlog仍消耗 light，memory仍消耗 browse；没有转移、提高预算或放松候选/探索/域终态要求。四种 light/browse 边界以及拒绝后切换 memory 的实际执行均验证。审计：reports/v177-mining-catalog-budget-audit-20261006.json。
+- 计数核对：audit 的114 staged dispositions是114行，覆盖276个 unique needs，pending0；不能说只分派了114个 needs。完整分派仍是 staged intent，不是真实新能力。Outside-current-dev 不足以证明 cohort没有可泛化测量；原no-pattern语义尚未全部通过，更不能强造 magnitude Signal。
+- 259专项 tests/7.840s PASS；最终1540全量 tests/57.256s PASS，lint PASS。日志 `/tmp/v177-update-scope-{focused,full,lint}.log`。反例覆盖描述相近但错误概念/单位、元数据可修但 candidate fixture仍失败、memory/Signals不同预算边界；没有修改 v177冻结源码或旧付费原件。
+- v177仍是 Fast/Slow 1/1、Registry9，仅方向 Update入库；magnitude新因子0，30个非空预测全2–3x，技术失败真实存在。本地重放不抵销这些失败。下一步用当前修复冻结后继，继承v177真实已提交反馈和Registry9，验证实际Prompt遵循、旧新Signal执行及幅度新入库/后继消费；独立效果协议仍待用户确认，不宣称 benefit_confirmed。
+
 ## 接续动作
 
 1. 检查child/exit、attempt ledger、trajectory及新requests/responses；逐份读取还没检查的实际内容，不重复已经看过的原件。审计摘要应记录看过的hash和语义结论。

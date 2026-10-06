@@ -1823,6 +1823,20 @@ class SignalEvolutionTests(TestCase):
         self.assertEqual(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description="Measure cash burn.")), ())
         self.assertTrue(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description="Measure breadth across reported business segments.")))
 
+    def test_description_guard_accepts_cash_runway_months_without_mislabeling(self) -> None:
+        stable = SignalSpec(signal_id="liquidity_runway_months", version=1,
+            category="financial", execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED, source_types=("financials",),
+            function="financial.liquidity_runway_months", description="Measure cash runway in months.")
+        for text in ("Measure cash runway in months.", "Measure liquidity runway in months.",
+            "Measure cash runway in months from negative operating cash flow and the closest same-currency cash balance."):
+            with self.subTest(text=text):
+                self.assertEqual(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description=text)), ())
+        for text in ("Measure cash balance in months.", "Measure customer acquisition runway in months.",
+                     "Measure cash runway in years."):
+            with self.subTest(text=text):
+                self.assertTrue(SignalCandidateValidator._measurement_semantic_reasons(replace(stable, description=text)))
+
     def test_validator_rejects_definition_implementation_mismatch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -656,3 +656,5 @@
 - 2026-10-06：将pending Signal完整validation_feedback纳入全部投影预算估计与最终请求，保留最低证据/成功兄弟/已付usage及真实budget-blocked；5份v177原请求0外部回放装入原余量。新增冻结运行终态运输恢复监控、唯一executor/源码输入预算不变/中断停止及10次恢复上限，7专项、1529全量/lint PASS；Fast1已提交、Slow挖掘中，人工发现critic局部修复/归因内容仍未通过，不宣称live修复或增益。
 
 - 2026-10-06：v177完整提交1/1，Registry8→9仅方向v5更新、新因子0/magnitude partial及两Update技术失败未验收；统一反思各独立row的typed首前沿，披露统计与canonical outcome区别。修复从旧context重建可选诊断破坏来源/legacy case/stat hash的问题，新上下文完整状态照常保留；三份真实原答生产0外部回放各3义务、8保存items逐值读回。6新/39相关/1535全量/lint PASS，更正append操作获授权但统计claim无效的台账判断；后继live/双轴入库/独立增益仍待完成。
+
+- 2026-10-07 00:00：修复冻结cash-runway定义词面guard、Update构造期重复diff typed机械修复与Mining catalog scope预算合同；两份实际原答/原patch零外部生产回放通过6 immutable fixture、不发布，259专项/1540全量/lint PASS。真实v177 magnitude仍无新因子，完整needs分派不等于能力；后继live消费与独立增益待验收。

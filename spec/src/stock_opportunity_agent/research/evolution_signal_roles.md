@@ -545,7 +545,13 @@ follow [stage contracts](stage_contracts.md).
   with the exact diff recomputed from the stable/candidate pair. It then reruns the
   complete parser and fixture validator. This bookkeeping normalization
   cannot alter the candidate, evidence diagnostics, fixtures, disposition, or
-  rationale; any other invalidity still fails closed. The complete vNext template also carries the stable
+  rationale; any other invalidity still fails closed.
+  This exact diff normalization also runs when duplicate or empty declared paths
+  prevent construction of the canonical decision record. A separately valid
+  stable/candidate pair is still required, and the full decision and immutable
+  fixtures are revalidated after changing only the runtime-owned bookkeeping.
+  No candidate, diagnostic, rationale or disposition is rewritten by this repair.
+  The complete vNext template also carries the stable
   version's non-empty executable fixtures. Update output must preserve those
   fixtures byte-for-byte; tests are not a model-editable path and may never be
   replaced by an empty array. The clone-only argument schema accepts the same

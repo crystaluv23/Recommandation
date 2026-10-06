@@ -580,6 +580,59 @@ class SignalRoleAdapterTests(TestCase):
         )
         self.assertEqual(step.value.candidate, candidate)
 
+    def test_update_program_normalizes_paths_rejected_by_record_constructor(self) -> None:
+        stable = SignalSpec(signal_id="cash_reserves", version=1, category="financial",
+            description="Read the latest point-in-time cash balance.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED, source_types=("financials",),
+            function="financial.cash_reserves")
+        candidate = {"signal_ref": stable.ref, "spec": {**stable.to_dict(), "version": 2,
+            "raw_retrieval": {**stable.to_dict()["raw_retrieval"], "minimum_observations": 2}},
+            "skill": None, "tests": [{"name": "immutable fixture"}]}
+        for declared in (["spec.parameters", "spec.parameters"], ["", "spec.parameters"]):
+            with self.subTest(declared=declared):
+                response = {"signal_ref": stable.ref, "disposition": "update",
+                    "problem_type": "retrieval", "rationale": ["Require two observations."],
+                    "case_diagnostics": [], "changed_paths": declared, "candidate": candidate}
+                original = deepcopy(response)
+                caller = ScriptedRoleCaller([response])
+                model = LLMSignalUpdateModel(caller)
+                validated = []
+                model.set_candidate_validator(lambda ref, value, paths: validated.append((ref, deepcopy(value), paths)))
+                step = model.update({"target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()},
+                    "induction_cases": []})
+                self.assertEqual(step.usage.llm_calls, 1)
+                self.assertEqual(len(caller.calls), 1)
+                self.assertEqual(step.value.changed_paths, ("spec.raw_retrieval.minimum_observations",))
+                self.assertEqual(step.value.candidate, candidate)
+                self.assertEqual(validated, [(stable.ref, candidate, step.value.changed_paths)])
+                self.assertEqual(response, original)
+                self.assertEqual(step.value.rationale, tuple(original["rationale"]))
+
+    def test_update_path_normalization_still_rechecks_fixture_failure(self) -> None:
+        stable = SignalSpec(signal_id="cash_reserves", version=1, category="financial",
+            description="Read the latest point-in-time cash balance.",
+            execution_type=SignalExecutionType.DETERMINISTIC,
+            modality=SignalModality.STRUCTURED, source_types=("financials",),
+            function="financial.cash_reserves")
+        candidate = {"signal_ref": stable.ref, "spec": {**stable.to_dict(), "version": 2,
+            "raw_retrieval": {**stable.to_dict()["raw_retrieval"], "minimum_observations": 2}},
+            "skill": None, "tests": [{"name": "immutable fixture"}]}
+        response = {"signal_ref": stable.ref, "disposition": "update", "problem_type": "retrieval",
+            "rationale": ["Require two observations."], "case_diagnostics": [],
+            "changed_paths": ["spec.parameters", "spec.parameters"], "candidate": candidate}
+        caller = ScriptedRoleCaller([response, response, response])
+        model = LLMSignalUpdateModel(caller)
+        def reject(_ref, _candidate, _paths):
+            raise ValidationError("fixture failed: evidence remains unavailable")
+        model.set_candidate_validator(reject)
+        with self.assertRaises(CandidateExecutionRejected):
+            model.update({"target": {"signal_ref": stable.ref, "stable_spec": stable.to_dict()}, "induction_cases": []})
+        correction = caller.calls[1]["payload"]["validation_feedback"]
+        self.assertIn("fixture failed", correction["validation_error"])
+        self.assertEqual(correction["invalid_output"]["changed_paths"], ["spec.raw_retrieval.minimum_observations"])
+        self.assertEqual(correction["invalid_output"]["candidate"], candidate)
+
     def test_update_candidate_fixture_failure_is_corrected_before_staging(self) -> None:
         stable = SignalSpec(
             signal_id="cash_reserves",

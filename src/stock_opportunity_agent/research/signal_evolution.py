@@ -136,6 +136,7 @@ _FUNCTION_DESCRIPTION_CONCEPTS = {
     ),
     "financial.liquidity_runway_months": (
         ("liquidity", "runway", "month"),
+        ("cash", "runway", "month"),
     ),
     "market.max_drawdown_1y": (("drawdown",),),
     "market.price_momentum_126d": (("momentum",), ("total", "return")),

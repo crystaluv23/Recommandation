@@ -327,6 +327,12 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   no exact incidental word such as "rate" is required. The runtime never adds
   keywords to a model's description to make a candidate pass. Actual callable
   formula documentation and immutable fixture checks remain separately required.
+  The liquidity-runway function likewise admits cash runway measured in months,
+  the wording used by its callable documentation and frozen seed definition.
+  Cash balance alone, a different runway concept, or missing month units remain
+  outside this bounded description screen; the formula/fixtures still govern
+  measurement validity. Update cannot change that frozen definition to satisfy
+  an inconsistent keyword requirement.
   The role adapter may resolve a model-selected case/document/content-bound
   source span ref to its complete local literal before source validation.
   Canonical case diagnostics retain the original `document_ref,exact_span`

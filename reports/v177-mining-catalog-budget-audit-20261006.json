@@ -1,0 +1,117 @@
+{
+  "schema_version": "diagnostic-mining-scope-budget-audit-v1",
+  "source_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated",
+  "source_revision": "a7d8a057f483251e93df602665670389ef353e5c",
+  "external_calls": 0,
+  "published_candidates": 0,
+  "finding": "inspect_catalog remains available for memory browsing after light exhaustion; Signals pagination is not admissible, but the old model view did not disclose scope-specific admissibility. The actor repeated the rejected Signals scope despite positive heavy/browse counters, causing deferred_budget.",
+  "terminal_kind": "deferred_budget",
+  "staged_disposition_rows": 114,
+  "staged_need_count": 276,
+  "pending_need_count": 0,
+  "original_decisions": [
+    {
+      "request_hash": "4d02465d235e4e54eff930902a3b2e0d8cfda85d77e67bfe7800779835172056",
+      "request_sha256": "d1a44e28f3aa55b6c7bc9dd6e29c5f39ae2c854e0942c7c545866eda426238cc",
+      "response_sha256": "12216582d14f07a5f3cbaf50d6fede60da2192171d873e9096e1d3d46d3e35d7",
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 19,
+        "light_remaining": 0
+      },
+      "original_available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_deferred",
+        "record_no_pattern"
+      ],
+      "original_last_invalid_action": null,
+      "need_state": {
+        "pending_count": 0,
+        "staged_count": 276
+      },
+      "original_response": {
+        "action": "inspect_catalog",
+        "cursor": 7,
+        "rationale": [
+          "Backlog is empty (available 0) and all 276 needs are already staged; the remaining admissible work is to ground a magnitude_ge3 candidate or terminalize.",
+          "The evidence digest shows structured concepts and narrative families already fetched, but I have not yet read the full signal catalog page beyond the first 7 of 18 signals, and the omitted 11 signals may contain a magnitude-relevant measurement I must not duplicate.",
+          "Reading the next signal catalog page is a light action that clarifies the existing-signal namespace before I decide whether a new magnitude candidate is genuinely novel."
+        ],
+        "scope": "signals"
+      },
+      "repaired_scope_contract": {
+        "default_scope": "signals",
+        "budget_by_scope": {
+          "signals": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "backlog": "light"
+        },
+        "allowed_scopes": [
+          "memory"
+        ]
+      }
+    },
+    {
+      "request_hash": "ed353ebffa032f4e3eedf60a4036254cc2ec50d54731cb9011d6ed3016b8be10",
+      "request_sha256": "226fc3f8995c43eda6fa95db7b370943bacdae29007e71df6b3423e7f75f8cb3",
+      "response_sha256": "d100329d0527c706f8370c453c84e1d3c473c0b963a8fc4f703939c2c2aa5c41",
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 19,
+        "light_remaining": 0
+      },
+      "original_available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_deferred",
+        "record_no_pattern"
+      ],
+      "original_last_invalid_action": {
+        "action": "inspect_catalog",
+        "issue": "light action budget exhausted"
+      },
+      "need_state": {
+        "pending_count": 0,
+        "staged_count": 276
+      },
+      "original_response": {
+        "action": "inspect_catalog",
+        "cursor": 7,
+        "rationale": [
+          "Light budget is exhausted, so I must use a heavy or browse action; the last invalid action was an inspect_catalog light call.",
+          "I need to see the remaining signal catalog entries (cursor 7) to know which existing signal base names are already taken before proposing a genuinely new measurement, and to check the omitted signals for coverage.",
+          "inspect_catalog scope=signals is a light action, but the runtime lists inspect_catalog as available; I will use scope=signals with the next cursor to read the omitted signal specs."
+        ],
+        "scope": "signals"
+      },
+      "repaired_scope_contract": {
+        "default_scope": "signals",
+        "budget_by_scope": {
+          "signals": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "backlog": "light"
+        },
+        "allowed_scopes": [
+          "memory"
+        ]
+      }
+    }
+  ],
+  "limits_preserved": true,
+  "limitations": [
+    "New prompt guidance has not yet been tested with a live model.",
+    "No new Signal, domain research conclusion or independent benefit is established.",
+    "Original paid requests, replies and sealed experiments remain unchanged."
+  ]
+}

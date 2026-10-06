@@ -1,0 +1,96 @@
+{
+  "audited_at": "2026-10-06T15:47:36.679670+00:00",
+  "run_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated",
+  "external_calls": 0,
+  "registry_unchanged": {
+    "version": 9,
+    "hash": "072ebb6d2a0519a2465dd6f3abba9a435af99c40041d5a2d2aeed66b4d5cdc4f"
+  },
+  "scope": "Original paid initial answers plus their original recorded typed patches through LLMSignalUpdateModel and production candidate/fixture validators. No new correction answer, staging or publication.",
+  "limits": "Does not erase frozen v177 failures, prove real successor compliance, factor effectiveness or magnitude benefit.",
+  "code_sha256": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py": "477635e9105a8a777aae1cf36ee75e6a16131acf14a1ae98eda419a0adb0c2c3",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "d3413f17947a52822c172314c8259c9a5971646f4f5002104c0ebfd0af26e5de"
+  },
+  "sources": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/5eba51a523ce16ee2e73a7f9c4ea9172f14e6197d01cff3655f45d8693bd8cf7.json",
+      "sha256": "63520965eb6cbaf454905709d3272e0d60b1ff2c3585b464afd1acaf9fdec950"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/c2be9fdd09da29a3e4f5de114770a60c5ebc6f2e85820b18845c97c02f097f97.json",
+      "sha256": "2cd995cc9ecf719c8de5decc93aae0e2da9184280c9ec88e46b7dbdbadef9e80"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/requests/5eba51a523ce16ee2e73a7f9c4ea9172f14e6197d01cff3655f45d8693bd8cf7.json",
+      "sha256": "8977de62f0958b3601458efcfc308be761dedbfb38ea16c522cc26d3a299ec9f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/929107dc3dbe1c128b92c5d387a3000efbe1c79ba398c2a8d049257d97543be3.json",
+      "sha256": "c1f1a08e8a466f83b820c6a117ddb7ca556d760960796d5b5780ab7b6eb0ae84"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/cache/responses/10901eae2b8c6636ac33ca8dca539dccb72e8a72b5b9500d5dbe2c50b7978637.json",
+      "sha256": "a1720355e33ee29cb40c1e1af9bb11ebbfcc44ad550dd5d16c8de8a941c4c87c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v177_integrated/requests/929107dc3dbe1c128b92c5d387a3000efbe1c79ba398c2a8d049257d97543be3.json",
+      "sha256": "5e5c7f9fd332b96885518b9402d8a6899c5e08b392c8f0109b150b16f899f866"
+    }
+  ],
+  "rows": [
+    {
+      "parent_ref": "liquidity_runway_months:v2",
+      "candidate_ref": "liquidity_runway_months:v3",
+      "initial_request_hash": "5eba51a523ce16ee2e73a7f9c4ea9172f14e6197d01cff3655f45d8693bd8cf7",
+      "recorded_correction_hash": "c2be9fdd09da29a3e4f5de114770a60c5ebc6f2e85820b18845c97c02f097f97",
+      "replay_scripted_recorded_answers": 2,
+      "fixture_checks": [
+        {
+          "signal_ref": "liquidity_runway_months:v3",
+          "accepted": true,
+          "reasons": [],
+          "candidate_hash": "",
+          "executed_tests": 5
+        }
+      ],
+      "final_changed_paths": [
+        "spec.raw_retrieval.lookback_days",
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.raw_retrieval.query_terms",
+        "spec.parameters"
+      ],
+      "tests_and_definition_unchanged": true
+    },
+    {
+      "parent_ref": "net_share_retirement_yoy:v2",
+      "candidate_ref": "net_share_retirement_yoy:v3",
+      "initial_request_hash": "929107dc3dbe1c128b92c5d387a3000efbe1c79ba398c2a8d049257d97543be3",
+      "recorded_correction_hash": "10901eae2b8c6636ac33ca8dca539dccb72e8a72b5b9500d5dbe2c50b7978637",
+      "replay_scripted_recorded_answers": 2,
+      "fixture_checks": [
+        {
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "accepted": false,
+          "reasons": [
+            "fixture 1 failed: expected positive, received unavailable; resolution=unresolved; Point-in-time documents were found but required coverage is incomplete: observations=0/2; executor interpretation: Point-in-time inputs did not satisfy the Signal retrieval contract."
+          ],
+          "candidate_hash": "",
+          "executed_tests": 0
+        },
+        {
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "accepted": true,
+          "reasons": [],
+          "candidate_hash": "",
+          "executed_tests": 1
+        }
+      ],
+      "final_changed_paths": [
+        "spec.raw_retrieval.comparison_requirement",
+        "spec.parameters"
+      ],
+      "tests_and_definition_unchanged": true
+    }
+  ]
+}

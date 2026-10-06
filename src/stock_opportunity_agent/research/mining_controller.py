@@ -71,6 +71,9 @@ HEAVY_ACTIONS = frozenset(
     }
 )
 LIGHT_ACTIONS = frozenset({"inspect_manifest", "inspect_catalog"})
+_CATALOG_SCOPE_BUDGETS = {
+    "signals": "light", "evidence": "light", "memory": "browse", "backlog": "light",
+}
 
 ALLOWED_DISPOSITIONS = frozenset(
     {
@@ -493,6 +496,11 @@ class LabelAwareMiningController:
             "case_refs": [ref for ref, _case in self.case_pairs],
             "case_prediction_times": {ref: case.prediction_time.isoformat() for ref, case in self.case_pairs},
             "tool_contracts": {
+                "inspect_catalog": {
+                    "default_scope": "signals",
+                    "budget_by_scope": dict(_CATALOG_SCOPE_BUDGETS),
+                    "allowed_scopes": self._available_catalog_scopes(),
+                },
                 "compute_statistic": {"rules": sorted(COMPUTE_RULES), "operand_count": 2,
                     "operand_scope": "same_case", "operand_order": "numerator_then_denominator_or_latest_then_prior",
                     "numeric_requirements": "finite operands and result; non-zero denominator for ratios"},
@@ -550,6 +558,12 @@ class LabelAwareMiningController:
                 "dispositions": sorted(ALLOWED_DISPOSITIONS),
             }
         return view
+
+    def _available_catalog_scopes(self) -> list[str]:
+        """Disclose only catalog variants permitted by their actual budgets."""
+        budget = self._remaining_budget()
+        return [scope for scope, dimension in _CATALOG_SCOPE_BUDGETS.items()
+                if budget[f"{dimension}_remaining"] > 0]
 
     def _remaining_budget(self) -> dict[str, int]:
         """One runtime source for disclosed counters and authored-claim checks."""
@@ -821,11 +835,19 @@ class LabelAwareMiningController:
         coverage = raw.get("coverage")
         if isinstance(coverage, Mapping) and isinstance(coverage.get("note"), str):
             texts.append(("coverage.note", coverage["note"]))
-        memory_read = action == "inspect_catalog" and raw.get("scope") == "memory"
-        if action in LIGHT_ACTIONS and not memory_read and self._light_used >= self.light_action_limit:
+        if action == "inspect_catalog":
+            scope = str(raw.get("scope", "signals"))
+            dimension = _CATALOG_SCOPE_BUDGETS.get(scope)
+            if dimension is None:
+                raise InvalidMiningAction("inspect_catalog scope must be signals, evidence, memory or backlog")
+            if self._remaining_budget()[f"{dimension}_remaining"] == 0:
+                message = "light action budget exhausted" if dimension == "light" else "browse budget exhausted"
+                raise BudgetInadmissibleAction(
+                    f"{message} for inspect_catalog(scope={scope}); "
+                    f"allowed_scopes: {self._available_catalog_scopes()}"
+                )
+        elif action in LIGHT_ACTIONS and self._light_used >= self.light_action_limit:
             raise BudgetInadmissibleAction("light action budget exhausted")
-        if memory_read and self._browse_used >= self.browse_limit:
-            raise BudgetInadmissibleAction("browse budget exhausted")
         narrative_read = action == "read_span" and any(key in raw for key in ("event_ref", "document_ref"))
         if narrative_read and self._browse_used >= self.browse_limit:
             raise BudgetInadmissibleAction("browse budget exhausted")

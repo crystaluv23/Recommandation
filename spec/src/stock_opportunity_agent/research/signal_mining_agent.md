@@ -74,6 +74,12 @@ corrections and validates the assembled action before any tool executes.
   Every model view also carries runtime-owned tool contracts: the exact frozen
   compute rule enum, two numeric operands from one case in supplied order, and
   read target fields/exclusive selection/window limits with their budget class.
+  The catalog contract also names its default scope, scope-specific budget
+  classes and currently allowed scopes: `signals`, `evidence` and `backlog`
+  charge light; `memory` charges browse. An available `inspect_catalog` action
+  authorizes only those allowed scopes, not every variant. Budget rejection
+  reports the requested scope and remaining allowed scopes; the next decision
+  may choose another action. No budget is transferred or increased.
   Numeric computation rejects non-finite operands/results and a zero ratio
   denominator with a typed validation error before adding a relation or charging
   a successful action. It does not substitute an aggregate, change operands or
@@ -512,4 +518,7 @@ consume browse budget but do not satisfy narrative exploration. Immutable
 visibility indexes and document cards are cached only within the controller,
 keyed by document identity and hash. The model sees one budget-admissible action
 list, with separate heavy/light/browse dimensions; exhausted light budget does
-not imply exhausted heavy or browse budget.
+not imply exhausted heavy or browse budget. When only browse remains for
+catalog inspection, its allowed scope is `memory`; Signals, evidence-directory
+and backlog inspection stay unavailable. Fixed role instructions must preserve
+that distinction even when the action name remains in `available_actions`.

@@ -31,6 +31,8 @@ class MiningRoleModelTests(unittest.TestCase):
         self.assertIn("label_map", call["payload"])
         self.assertTrue(call["allow_outcomes"])
         self.assertIn("record_no_pattern", call["system_prompt"])
+        self.assertIn("tool_contracts.inspect_catalog.allowed_scopes", call["system_prompt"])
+        self.assertIn("only for memory", call["system_prompt"])
         self.assertEqual(model.usage.llm_calls, 1)
 
     def test_adapter_accumulates_usage_and_rejects_non_object(self) -> None:

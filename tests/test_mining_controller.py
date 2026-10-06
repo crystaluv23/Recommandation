@@ -9,6 +9,7 @@ from tests.scheme_evolution_test_support import (  # noqa: F403
 )
 
 from stock_opportunity_agent.research.mining_controller import (
+    BudgetInadmissibleAction,
     LabelAwareMiningController,
 )
 
@@ -1422,6 +1423,57 @@ class SharedStageBoundaryTests(unittest.TestCase):
         read = model.views[1]["last_action_result"]["result"]
         self.assertEqual(read["items"], [entries[20]])
         self.assertEqual(controller.meta_memory_briefs["items"], entries)
+
+    def test_catalog_scope_contract_matches_validation_at_each_budget_boundary(self):
+        cases, store = _fixture_store()
+        for light, browse in ((0, 1), (1, 0), (0, 0), (1, 1)):
+            with self.subTest(light=light, browse=browse):
+                controller = _controller(store, cases, ScriptedMiningDecisionModel([]),
+                                         seed="discovery", light_action_limit=1, browse_limit=1)
+                controller._light_used = 1 - light
+                controller._browse_used = 1 - browse
+                view = controller._model_view()
+                contract = view["tool_contracts"]["inspect_catalog"]
+                allowed = contract["allowed_scopes"]
+                self.assertEqual(contract["default_scope"], "signals")
+                self.assertEqual("inspect_catalog" in view["available_actions"], bool(allowed))
+                for scope in ("signals", "evidence", "memory", "backlog"):
+                    action = {"action": "inspect_catalog", "scope": scope,
+                              "rationale": ["Read the authorized catalog."]}
+                    if scope in allowed:
+                        controller._validate_action_shape(action)
+                    else:
+                        with self.assertRaisesRegex(BudgetInadmissibleAction, f"scope={scope}"):
+                            controller._validate_action_shape(action)
+                default = {"action": "inspect_catalog", "rationale": ["Read Signals."]}
+                if light:
+                    controller._validate_action_shape(default)
+                else:
+                    with self.assertRaises(BudgetInadmissibleAction):
+                        controller._validate_action_shape(default)
+                self.assertEqual(controller._remaining_budget(), view["budget"])
+
+    def test_catalog_rejection_can_switch_to_memory_without_spending_light_or_heavy(self):
+        cases, store = _fixture_store()
+        def switch_scope(view):
+            self.assertEqual(view["tool_contracts"]["inspect_catalog"]["allowed_scopes"], ["memory"])
+            self.assertIn("scope=signals", view["last_invalid_action"]["issue"])
+            return {"action": "inspect_catalog", "scope": "memory",
+                    "rationale": ["Browse the remaining authorized scope."]}
+        model = ScriptedMiningDecisionModel([
+            {"action": "inspect_catalog", "scope": "signals", "rationale": ["Read Signals."]},
+            switch_scope,
+            {"action": "record_deferred", "rationale": ["Preserve incomplete research."]},
+        ])
+        controller = _controller(store, cases, model, seed="discovery", light_action_limit=1, browse_limit=1)
+        controller._light_used = 1
+        initial_heavy = controller._remaining_budget()["heavy_remaining"]
+        result = controller.run()
+        self.assertEqual(result.terminal_kind, "evidence_unavailable")
+        self.assertEqual(controller._remaining_budget(),
+                         {"heavy_remaining": initial_heavy, "light_remaining": 0, "browse_remaining": 0})
+        self.assertEqual(model.views[-1]["last_action_result"]["scope"], "memory")
+        self.assertNotIn("inspect_catalog", model.views[-1]["available_actions"])
 
     def test_narrative_read_remains_admissible_after_heavy_exhaustion(self):
         cases, store = _fixture_store()
