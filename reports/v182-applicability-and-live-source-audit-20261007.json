@@ -1,0 +1,1212 @@
+{
+  "schema_version": "v182-applicability-and-live-source-audit-v1",
+  "audited_at": "2026-10-06T21:24:42.978853+00:00",
+  "live_root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+  "frozen_source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+  "source_patch_base_revision": "aaedd489",
+  "new_external_calls_by_audit": 0,
+  "historical_artifacts_rewritten": false,
+  "active_process": {
+    "wrapper_pid": 27009,
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/run_minimal_rounds.py",
+      "--root",
+      "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+      "--run"
+    ],
+    "source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+    "pid": 34963,
+    "started_at": "2026-10-06T21:24:04.392130+00:00",
+    "status": "running",
+    "automatic_resumes": 2,
+    "last_exit_code": 1
+  },
+  "formal_pointers": {
+    "last_completed_round": 0,
+    "last_completed_cycle": 0
+  },
+  "partial_live_inventory": {
+    "attempts": 213,
+    "settled_cost": 0.8690337600000001,
+    "predictions": [
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000701818:20250930",
+        "prediction_sha256": "71a8b6dab06f42b2db0a276e1f2992e61b1b3f6022441d108de30cd5494569b2",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000723125:20250731",
+        "prediction_sha256": "9560089210d0f5e4c37b9c6d95ba89b956da29c8e6f78c0c268b084d26219aa7",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000860413:20250930",
+        "prediction_sha256": "c781a7ac0c760a750ea380c3e14e2e344f9abbdf49f1731aa77a885d687c6d18",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000895421:20250731",
+        "prediction_sha256": "a3703634385bbf95fee199d09c03980a9c704f11067865c54b32fad10e5c57d7",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000895728:20250930",
+        "prediction_sha256": "de19c351d2ab657b5aa06f342085b7419bfdd0d941480c9a9715c652724148df",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000936395:20250930",
+        "prediction_sha256": "c53f447c2e324f8c743e5b83b879843b35a81f89fee15e1bb00ddb6ba3fad486",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001018963:20250930",
+        "prediction_sha256": "89fb3ccfb1574f2ad2e4eb7053218316a8b264c02a00454c217b6de866ae1df8",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001114995:20250331",
+        "prediction_sha256": "7ac3af2a4311e89ed969b7c5fbd3cc853099d0b804e005483beaed0fceeb4c28",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001164727:20250731",
+        "prediction_sha256": "b9e5fda1af9b88503b33454423349d3e20b0ad66e22f9277c184c04b20a20266",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001174922:20250731",
+        "prediction_sha256": "74a710bd5d9ee7f82adad86c7a54ed801e4a79f27d59311f0d607db3c94dc985",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001309402:20250530",
+        "prediction_sha256": "229dc9b4267276c5792e21e6830341eefdcd2da96713fc56f7f98e0c691ef4dc",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001521036:20250331",
+        "prediction_sha256": "88665557c3742424baff2d924a53af049eddd0613c27a3e2896568ef52e6446b",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001576942:20250530",
+        "prediction_sha256": "20c433742ba81c4dd14f94b846db8ba9836ef10aa065b5625a39298ff08781b3",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001590364:20250731",
+        "prediction_sha256": "dc46bb4a234e78a006315daba27fc6be1a331b2a8c54c93edf11238baffc59c0",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001646188:20250530",
+        "prediction_sha256": "6d5bc7f7952c345c470b204cab14fadd4d9ae3fd0408b6038dc29a261795f183",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001689548:20250930",
+        "prediction_sha256": "a4b5f77ca37943c6cc1a295d02d1a621a06297db1172e1298dc516ed9fd05c83",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001801368:20250331",
+        "prediction_sha256": "bb982a85d8d71c81c91790ebcc57693d8585e150fe66c71b84ed0ee4722414e1",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001830043:20250930",
+        "prediction_sha256": "a29ac6797e08a0e77876cf4878e03c098c7a857f7949686d82da2ed725b126ee",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001847409:20250131",
+        "prediction_sha256": "2b78080c45bcfffe89753da855cc666ae4ef7ecbb87708eff045bb3f2355b5b4",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001869198:20250331",
+        "prediction_sha256": "d8f997d462eec4e802aa04e75efd8862f9b732ddb4c743bfee7d8c6554627fad",
+        "candidate_judgment": "unlikely",
+        "magnitude": null
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0002023554:20250930",
+        "prediction_sha256": "56fd10fcacd8d6b79faad309d2d710b73a93434cb793ea3312ed0e5e09281e16",
+        "candidate_judgment": "possible",
+        "magnitude": "2-3x"
+      }
+    ],
+    "signal_status_counts": {
+      "validation_failed": 1,
+      "success": 78,
+      "domain_unavailable": 6
+    },
+    "technical_failures": [
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000701818:20250930",
+        "signal_round": 1,
+        "result": {
+          "evidence": {
+            "counter": [],
+            "supporting": []
+          },
+          "execution": {
+            "error_code": "signal_output_validation_exhausted",
+            "error_message": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+            "status": "validation_failed"
+          },
+          "interpretation": {
+            "summary": "Signal execution failed strict validation or execution: signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 5
+        }
+      }
+    ],
+    "trajectories": [
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000701818:20250930",
+        "trajectory_sha256": "dab98f162632293ab3f1f701832b19eb788b451c1c3a3a5d10a7e2bcc8f01d2b",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000723125:20250731",
+        "trajectory_sha256": "2d984941911e1d5334ef922f81ee0afba359f15ca7b62f1e29b7da0dbdcd6301",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000860413:20250930",
+        "trajectory_sha256": "9e115a3a6c8af04828adba9af6f041f6cd9837672a42ea5db293e442b9030d53",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000895421:20250731",
+        "trajectory_sha256": "82d88c6297b508a596c6431e21b62c66c58afd9375e574f3833a38a00efa478b",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000895728:20250930",
+        "trajectory_sha256": "daee26c7f9719acafa6aa3706d375112c850e0cbc18751ddb185ec0d72f37955",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0000936395:20250930",
+        "trajectory_sha256": "93ffc3249d2bf7d249a7a7977fad934fcf8c166785935941b53e8efd533bbe7b",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001018963:20250930",
+        "trajectory_sha256": "62ea38ed8eb57c34f21fc25959d6bf3f511729228dd1222183fcf4bc9f1b7c86",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001114995:20250331",
+        "trajectory_sha256": "60fe85d575c9dc818dfaaead4ae76f3e84c89b3d18eae7f007f72a3249d89a30",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001164727:20250731",
+        "trajectory_sha256": "06888d28ee3b66a4e1243e84776bb371947422a56c3b50c402138e85be321207",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001174922:20250731",
+        "trajectory_sha256": "eaba276222cf105dba6014fbcdfa22c51f75491a0f3729b2fadf8daa9e68646e",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001309402:20250530",
+        "trajectory_sha256": "ebbf173c900d11982978cccaa1867a2bfb8bf6e96ae2c8d3144e2086b087984e",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001521036:20250331",
+        "trajectory_sha256": "221a41b497edbba89cc05f50fd9a3182402facb21ba88bdd161bdccd82013ebd",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001576942:20250530",
+        "trajectory_sha256": "7e7a480244ab46812f0940f74612814c65b8de5ea67cdb2c761836cfbfa4da23",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001590364:20250731",
+        "trajectory_sha256": "69b46cfd94a7cf5526107f018e2a4def702e8d32a22da12a99f2a8d65625ab89",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001646188:20250530",
+        "trajectory_sha256": "eb50e54faac093f83819b518433e7ba55895995f2add96c804c745171f8e4ac6",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001689548:20250930",
+        "trajectory_sha256": "1a797eb2e0d0c2190c3e11d31e890fcf2de3189e4a7d05f50c76c3e6a7a7ee1d",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001801368:20250331",
+        "trajectory_sha256": "e824584af730eb59f66d62fa91b3c78e03c68a6c2298ab24c8b502fa5cdba7c2",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001830043:20250930",
+        "trajectory_sha256": "5caf80fa6fcd8bdbf99f32753e01b16a8717d036180f47e967e1b69a02edeb39",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001847409:20250131",
+        "trajectory_sha256": "46b0d8ec11f6c4e49bde833f7d72fa934c43b702f3a750309ccef2d8d0feb942",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0001869198:20250331",
+        "trajectory_sha256": "4895ada62e7fb23a84a1cb002708e24a49b008902023e9d078372bfa5a4e9660",
+        "stop_reason": "finalized"
+      },
+      {
+        "plan_id": "plan_r0001_c01",
+        "case_id": "cik_0002023554:20250930",
+        "trajectory_sha256": "c878f9f91a3363ba509eb3ed9235ea1f3fbc96fa3710b10a337bd71fc71c09a3",
+        "stop_reason": "finalized"
+      }
+    ],
+    "scope": "Inventory only; not full semantic acceptance of every case."
+  },
+  "mandatory_object_failure": {
+    "case_id": "cik_0000701818:20250930",
+    "requests": [
+      {
+        "attempt_id": 26,
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "d4f5785b97d621589791ebc4586ea9ee76c186be415a46f59833437ea4a60403",
+        "request_sha256": "27f03dbbbb62017dc6324d51888ccaa878a28f40c68ca0b813242f027347298c",
+        "response_sha256": "3b230d7bcd0814a1888920db2ec6818ee1a92f5834fa92db96acfcddda99878c",
+        "mandatory_phrases": [
+          "financing",
+          "refinancing",
+          "debt",
+          "restructuring",
+          "listing",
+          "dilution",
+          "redemption",
+          "reverse split",
+          "share sale",
+          "offering",
+          "placement",
+          "credit facility",
+          "loan",
+          "convertible",
+          "PIPE",
+          "securities purchase agreement"
+        ],
+        "eligible_projection_count": 10,
+        "eligible_characters": 13529,
+        "eligible_source_projection": [
+          {
+            "available_at": "2025-08-11T11:44:59+00:00",
+            "content_hash": "76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+            "document_id": "sec:[ANON_ID_0000]:000110465925075920",
+            "exact_text": "6-K 1 tm2523086d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of August, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated August 11, 2025 99.2 Early Warning Report dated August 11, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel August 11, 2025",
+            "projection_id": "projection_4c86f58846767ee98c536c00",
+            "published_at": "2025-08-11T11:44:59+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-24T11:12:06+00:00",
+            "content_hash": "39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+            "document_id": "sec:[ANON_ID_0000]:000110465925092747",
+            "exact_text": "6-K 1 tm2526826d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated September 23, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 23, 2025",
+            "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4",
+            "published_at": "2025-09-24T11:12:06+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-08T14:23:42+00:00",
+            "content_hash": "704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+            "document_id": "sec:[ANON_ID_0000]:000110465925088119",
+            "exact_text": "6-K 1 tm2525518d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated September 8, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 8, 2025",
+            "projection_id": "projection_296e8bd1e746dfc896b0e0fc",
+            "published_at": "2025-09-08T14:23:42+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-30T21:14:51+00:00",
+            "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+            "document_id": "sec:[ANON_ID_0000]:000110465925072244",
+            "exact_text": "6-K 1 tm2521379d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of June, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17th Floor, 25 York Street Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40-F: Form 20-F o Form 40-F ý EXPLANATORY NOTE This Current Report on Form 6-K, dated July 30, 2025, is being furnished for the sole purpose of providing a copy of the Consolidated Financial Statements and Management’s Discussion and Analysis for the period ended June 30, 2025. This current report is specifically incorporated by reference into [ANON_ID_0002] Corporation’s Registration Statements on Form S-8 (Registration Nos. 333-180822, 333-180823, 333-180824 filed on April 19, 2012, Registration No. 333-217099 filed on April 3, 2017 and Registration No. 333-262966 filed on February 24, 2022). EXHIBITS Exhibit No. Description 99.1 Second Quarter Unaudited Interim Condensed Consolidated Financial Statements and Management’s Discussion and Analysis for the period ended June 30, 2025 99.2 CEO Certification of interim filings for the period ended June 30, 2025 99.3 CFO Certification of interim filings for the period ended June 30, 2025 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION By: /s/ Julie Robertson Name: Title: Julie Robertson Senior Vice-President, Finance Date: July 30, 2025",
+            "projection_id": "projection_8500fc98f6803b17d0edba7d",
+            "published_at": "2025-07-30T21:14:51+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-25T23:59:16+00:00",
+            "content_hash": "6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+            "document_id": "sec:[ANON_ID_0000]:000110465925070924",
+            "exact_text": "6-K 1 tm2521792d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of July, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated July 25, 2025 99.2 Early Warning Report dated July 25, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel July 25, 2025",
+            "projection_id": "projection_c0c474aab1c5f4290ba873f0",
+            "published_at": "2025-07-25T23:59:16+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-26T19:46:25+00:00",
+            "content_hash": "dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2",
+            "document_id": "sec:[ANON_ID_0000]:000110465925093824",
+            "exact_text": "6-K 1 tm2527064d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Early Warning Report dated September 25, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 26, 2025",
+            "projection_id": "projection_71ad727b724ad3665c8c9c69",
+            "published_at": "2025-09-26T19:46:25+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-10T19:31:48+00:00",
+            "content_hash": "07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+            "document_id": "sec:[ANON_ID_0000]:000110465925089044",
+            "exact_text": "6-K 1 tm2525808d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Early Warning Report dated September 9, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 10, 2025",
+            "projection_id": "projection_e2bab00da392833bf99f685d",
+            "published_at": "2025-09-10T19:31:48+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-31T01:14:39+00:00",
+            "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+            "document_id": "sec:[ANON_ID_0000]:000110465925072367",
+            "exact_text": "6-K 1 tm2522148d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of July, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This Current Report on Form 6-K, dated July 30, 2025 is specifically incorporated by reference into [ANON_ID_0002] Corporation's Registration Statements on Form S-8 [Registration No. 333-262966 filed on February 24, 2022, Registration No. 333-217099 filed on April 3, 2017 and Registration Nos. 333-180824, 333-180823 and 333-180822 filed on April 19, 2012.] Page 2 This report on Form 6-K is being furnished for the sole purpose of providing copies of the two press releases dated July 30, 2025 in which [ANON_ID_0002] Corporation reported its unaudited results for the second quarter ended June 30, 2025, and declared a dividend to be paid on September 4, 2025. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated July 30, 2025 in which [ANON_ID_0003] reported its unaudited second quarter results for the quarter ended June 30, 2025. 99.2 Press Release dated July 30, 2025 in which [ANON_ID_0003] declared a dividend to be paid on September 4, 2025. Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel July 30, 2025",
+            "projection_id": "projection_c10450a7d1bf1e1bb75a5d17",
+            "published_at": "2025-07-31T01:14:39+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-06-25T21:00:17+00:00",
+            "content_hash": "1982f4f4eec8688c7f40260c6c60dba128e0fc60e831fb94db910f9405e25562",
+            "document_id": "sec:[ANON_ID_0000]:000110465925062623",
+            "exact_text": "6-K 1 tm2518978d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of June, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated June 25, 2025 in which [ANON_ID_0002] Corporation announced the dates for release of its 2025 Q2 results. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated June 25, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel June 25, 2025",
+            "projection_id": "projection_39ea6667521623fa07723864",
+            "published_at": "2025-06-25T21:00:17+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-05-27T21:05:24+00:00",
+            "content_hash": "26ec7261b4253affc7fd9845aec76412e405f1bedc2e1e6cb2f1531bec125389",
+            "document_id": "sec:[ANON_ID_0000]:000110465925053056",
+            "exact_text": "6-K 1 tm2516267d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of May, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated May 27, 2025 in which [ANON_ID_0002] Corporation announced the publication of its 2024 Sustainability Report. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated May 27, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel May 27, 2025",
+            "projection_id": "projection_c5778e36c8c0fa0bffb85a4e",
+            "published_at": "2025-05-27T21:05:24+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "phrase_matching_views": [],
+        "validation_feedback": [],
+        "complete_original_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [],
+                  "supporting": [
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+.",
+                      "projection_id": "projection_4c86f58846767ee98c536c00"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                      "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                      "projection_id": "projection_296e8bd1e746dfc896b0e0fc"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.",
+                      "projection_id": "projection_c0c474aab1c5f4290ba873f0"
+                    }
+                  ]
+                },
+                "interpretation": {
+                  "summary": "The visible filings show the target issuer engaging in share sale and share purchase agreement amendment activity involving its portfolio holdings (Asante Gold Corporation and White Gold Corp.), including a share purchase agreement amendment announced August 11, 2025 and subsequent sales of portions of shares held in Asante Gold Corporation. These are completed or binding capital-structure/portfolio actions involving the sale of equity interests, but the visible spans do not establish a within-horizon change in the target's runway, dilution, or tradability, nor do they constitute a financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing action by the target. No completed financing, offering, placement, credit facility, convertible, PIPE, securities purchase agreement, or listing-compliance event is evidenced in the eligible projections. Accordingly, the measured object is a neutral capital-structure/portfolio-disposition fact rather than a catalyst affecting the target's dilution, distress, or tradability."
+                },
+                "signal_id": "financing_listing_action",
+                "state": {
+                  "confidence": 0.55,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 5
+              },
+              "signal_ref": "financing_listing_action:v5"
+            }
+          ]
+        }
+      },
+      {
+        "attempt_id": 27,
+        "stage": "llm_signal_batch_execute_correction",
+        "request_hash": "1b73925c8fa1f402c4523cdb7a0462bf2a12c4749ccbbc4ac14163972c9c29e3",
+        "request_sha256": "6958da26c8aa2f960d736e572de6ab5b8f3769cfaf0a3cf6660ba0265010d31b",
+        "response_sha256": "b3e2939e0b8a239ff7a0449edf700a5e3dbd8fe42ab41dc107974bffb1f3fab3",
+        "mandatory_phrases": [
+          "financing",
+          "refinancing",
+          "debt",
+          "restructuring",
+          "listing",
+          "dilution",
+          "redemption",
+          "reverse split",
+          "share sale",
+          "offering",
+          "placement",
+          "credit facility",
+          "loan",
+          "convertible",
+          "PIPE",
+          "securities purchase agreement"
+        ],
+        "eligible_projection_count": 10,
+        "eligible_characters": 13529,
+        "eligible_source_projection": [
+          {
+            "available_at": "2025-08-11T11:44:59+00:00",
+            "content_hash": "76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+            "document_id": "sec:[ANON_ID_0000]:000110465925075920",
+            "exact_text": "6-K 1 tm2523086d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of August, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated August 11, 2025 99.2 Early Warning Report dated August 11, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel August 11, 2025",
+            "projection_id": "projection_4c86f58846767ee98c536c00",
+            "published_at": "2025-08-11T11:44:59+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-24T11:12:06+00:00",
+            "content_hash": "39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+            "document_id": "sec:[ANON_ID_0000]:000110465925092747",
+            "exact_text": "6-K 1 tm2526826d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated September 23, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 23, 2025",
+            "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4",
+            "published_at": "2025-09-24T11:12:06+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-08T14:23:42+00:00",
+            "content_hash": "704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+            "document_id": "sec:[ANON_ID_0000]:000110465925088119",
+            "exact_text": "6-K 1 tm2525518d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated September 8, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 8, 2025",
+            "projection_id": "projection_296e8bd1e746dfc896b0e0fc",
+            "published_at": "2025-09-08T14:23:42+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-30T21:14:51+00:00",
+            "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+            "document_id": "sec:[ANON_ID_0000]:000110465925072244",
+            "exact_text": "6-K 1 tm2521379d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of June, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17th Floor, 25 York Street Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40-F: Form 20-F o Form 40-F ý EXPLANATORY NOTE This Current Report on Form 6-K, dated July 30, 2025, is being furnished for the sole purpose of providing a copy of the Consolidated Financial Statements and Management’s Discussion and Analysis for the period ended June 30, 2025. This current report is specifically incorporated by reference into [ANON_ID_0002] Corporation’s Registration Statements on Form S-8 (Registration Nos. 333-180822, 333-180823, 333-180824 filed on April 19, 2012, Registration No. 333-217099 filed on April 3, 2017 and Registration No. 333-262966 filed on February 24, 2022). EXHIBITS Exhibit No. Description 99.1 Second Quarter Unaudited Interim Condensed Consolidated Financial Statements and Management’s Discussion and Analysis for the period ended June 30, 2025 99.2 CEO Certification of interim filings for the period ended June 30, 2025 99.3 CFO Certification of interim filings for the period ended June 30, 2025 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION By: /s/ Julie Robertson Name: Title: Julie Robertson Senior Vice-President, Finance Date: July 30, 2025",
+            "projection_id": "projection_8500fc98f6803b17d0edba7d",
+            "published_at": "2025-07-30T21:14:51+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-25T23:59:16+00:00",
+            "content_hash": "6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+            "document_id": "sec:[ANON_ID_0000]:000110465925070924",
+            "exact_text": "6-K 1 tm2521792d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of July, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated July 25, 2025 99.2 Early Warning Report dated July 25, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel July 25, 2025",
+            "projection_id": "projection_c0c474aab1c5f4290ba873f0",
+            "published_at": "2025-07-25T23:59:16+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-26T19:46:25+00:00",
+            "content_hash": "dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2",
+            "document_id": "sec:[ANON_ID_0000]:000110465925093824",
+            "exact_text": "6-K 1 tm2527064d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Early Warning Report dated September 25, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 26, 2025",
+            "projection_id": "projection_71ad727b724ad3665c8c9c69",
+            "published_at": "2025-09-26T19:46:25+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-09-10T19:31:48+00:00",
+            "content_hash": "07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+            "document_id": "sec:[ANON_ID_0000]:000110465925089044",
+            "exact_text": "6-K 1 tm2525808d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of September, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+. Page 2 INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Early Warning Report dated September 9, 2025 Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel September 10, 2025",
+            "projection_id": "projection_e2bab00da392833bf99f685d",
+            "published_at": "2025-09-10T19:31:48+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-07-31T01:14:39+00:00",
+            "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+            "document_id": "sec:[ANON_ID_0000]:000110465925072367",
+            "exact_text": "6-K 1 tm2522148d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of July, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This Current Report on Form 6-K, dated July 30, 2025 is specifically incorporated by reference into [ANON_ID_0002] Corporation's Registration Statements on Form S-8 [Registration No. 333-262966 filed on February 24, 2022, Registration No. 333-217099 filed on April 3, 2017 and Registration Nos. 333-180824, 333-180823 and 333-180822 filed on April 19, 2012.] Page 2 This report on Form 6-K is being furnished for the sole purpose of providing copies of the two press releases dated July 30, 2025 in which [ANON_ID_0002] Corporation reported its unaudited results for the second quarter ended June 30, 2025, and declared a dividend to be paid on September 4, 2025. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated July 30, 2025 in which [ANON_ID_0003] reported its unaudited second quarter results for the quarter ended June 30, 2025. 99.2 Press Release dated July 30, 2025 in which [ANON_ID_0003] declared a dividend to be paid on September 4, 2025. Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel July 30, 2025",
+            "projection_id": "projection_c10450a7d1bf1e1bb75a5d17",
+            "published_at": "2025-07-31T01:14:39+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-06-25T21:00:17+00:00",
+            "content_hash": "1982f4f4eec8688c7f40260c6c60dba128e0fc60e831fb94db910f9405e25562",
+            "document_id": "sec:[ANON_ID_0000]:000110465925062623",
+            "exact_text": "6-K 1 tm2518978d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington , DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of June, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated June 25, 2025 in which [ANON_ID_0002] Corporation announced the dates for release of its 2025 Q2 results. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated June 25, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel June 25, 2025",
+            "projection_id": "projection_39ea6667521623fa07723864",
+            "published_at": "2025-06-25T21:00:17+00:00",
+            "source_type": "filing"
+          },
+          {
+            "available_at": "2025-05-27T21:05:24+00:00",
+            "content_hash": "26ec7261b4253affc7fd9845aec76412e405f1bedc2e1e6cb2f1531bec125389",
+            "document_id": "sec:[ANON_ID_0000]:000110465925053056",
+            "exact_text": "6-K 1 tm2516267d1_6k.htm FORM 6-K SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 FORM 6-K REPORT OF FOREIGN PRIVATE ISSUER PURSUANT TO RULE 13a-16 OR 15d-16 UNDER THE SECURITIES EXCHANGE ACT OF 1934 For the month of May, 2025 Commission File Number: 001-13382 [ANON_ID_0001] CORPORATION (Translation of registrant's name into English) 17 th Floor, 25 York Street, Toronto, Ontario M5J 2V5 (Address of principal executive offices) Indicate by check mark whether the registrant files or will file annual reports under cover of Form 20-F or Form 40F: Form 20-F ¨ Form 40-F x This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated May 27, 2025 in which [ANON_ID_0002] Corporation announced the publication of its 2024 Sustainability Report. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated May 27, 2025 Page 2 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. [ANON_ID_0001] CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel May 27, 2025",
+            "projection_id": "projection_c5778e36c8c0fa0bffb85a4e",
+            "published_at": "2025-05-27T21:05:24+00:00",
+            "source_type": "filing"
+          }
+        ],
+        "phrase_matching_views": [],
+        "validation_feedback": [
+          {
+            "expected_result_identity": {
+              "signal_id": "financing_listing_action",
+              "version": 5
+            },
+            "required_action": "Return outer signal_ref exactly 'financing_listing_action:v5'; set nested result.signal_id exactly 'financing_listing_action' without a version suffix and result.version exactly 5. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+            "returned_signal_refs": [
+              "financing_listing_action:v5"
+            ],
+            "signal_ref": "financing_listing_action:v5",
+            "validation_error": "signal financing_listing_action:v5 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['financing', 'refinancing', 'debt', 'restructuring', 'listing', 'dilution', 'redemption', 'reverse split', 'share sale', 'offering', 'placement', 'credit facility', 'loan', 'convertible', 'PIPE', 'securities purchase agreement']. Return unavailable with empty evidence when visible evidence does not name the measured object"
+          }
+        ],
+        "complete_original_output": {
+          "results": [
+            {
+              "result": {
+                "evidence": {
+                  "counter": [
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                      "projection_id": "projection_2d38f031b9b4e80f7dbb6ce4"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which [ANON_ID_0002] Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.",
+                      "projection_id": "projection_296e8bd1e746dfc896b0e0fc"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which [ANON_ID_0002] Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.",
+                      "projection_id": "projection_c0c474aab1c5f4290ba873f0"
+                    },
+                    {
+                      "exact_text": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which [ANON_ID_0002] Corporation announced an amendment agreement to the share purchase agreement between [ANON_ID_0002] Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+.",
+                      "projection_id": "projection_4c86f58846767ee98c536c00"
+                    }
+                  ],
+                  "supporting": []
+                },
+                "interpretation": {
+                  "summary": "The visible 6-K filings for the target issuer describe only third-party portfolio share sales (Asante Gold Corporation and White Gold Corp.) and an amendment to a share purchase agreement concerning Asante Gold Corporation, plus routine results, dividend, and sustainability-report announcements. No completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing action by the target issuer is established in the eligible spans; the examined non-qualifying spans are cited as counter evidence. No directional effect on the target's runway, dilution, or tradability can be grounded."
+                },
+                "signal_id": "financing_listing_action",
+                "state": {
+                  "confidence": 0.6,
+                  "value": "neutral"
+                },
+                "status": {
+                  "coverage": "partial"
+                },
+                "version": 5
+              },
+              "signal_ref": "financing_listing_action:v5"
+            }
+          ]
+        }
+      }
+    ],
+    "saved_status": "validation_failed",
+    "source_scope": "All ten supplied windows contain no version-owned mandatory phrase. This does not prove absence in undisclosed originals or other source families.",
+    "old_prompt_later_unconditional_neutral_instruction_present": true,
+    "interpretation": "The actual paid correction ignored the mandatory gate. Fixed prompt applicability/direction precedence was ambiguous; model causation is not inferred solely from that wording."
+  },
+  "cross_citation_counterexample": {
+    "observed_before_repair": "The prior production owner accepted the neutral result by joining the two unrelated citations. This is an offline error-family counterexample, not an observed v182 model answer.",
+    "spec": {
+      "signal_id": "phrase_boundary",
+      "version": 1,
+      "category": "test",
+      "definition": {
+        "description": "Literal credit facility."
+      },
+      "schema": {
+        "value": {
+          "type": "categorical",
+          "values": [
+            "positive",
+            "neutral",
+            "negative",
+            "unavailable"
+          ]
+        },
+        "confidence": {
+          "type": "float"
+        }
+      },
+      "execution": {
+        "type": "llm",
+        "skill_file": "skill.md"
+      },
+      "raw_retrieval": {
+        "source_types": [
+          "filing"
+        ],
+        "query_terms": [
+          "phrase boundary"
+        ]
+      },
+      "evidence_policy": {
+        "require_source": true,
+        "require_timestamp": true,
+        "require_exact_span": true
+      },
+      "parameters": {
+        "result_required_evidence_phrases": [
+          "credit facility"
+        ]
+      }
+    },
+    "documents": [
+      {
+        "document_id": "doc_0",
+        "company_id": "opaque",
+        "source_type": "filing",
+        "published_at": "2025-07-31T00:00:00+00:00",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "content": "The board reviewed credit.",
+        "content_hash": "44b092bb40f39d39a3a9c7de62585b16728b015fda0939ac27f71bf14a8891eb",
+        "metadata": {}
+      },
+      {
+        "document_id": "doc_1",
+        "company_id": "opaque",
+        "source_type": "filing",
+        "published_at": "2025-07-31T00:00:00+00:00",
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "content": "Facility output remains unchanged.",
+        "content_hash": "1820e24fe075e0d2fb23be5e46d40835bac59a85341aa61ecdacce171fac0702",
+        "metadata": {}
+      }
+    ],
+    "result": {
+      "signal_id": "phrase_boundary",
+      "version": 1,
+      "state": {
+        "value": "neutral",
+        "confidence": 0.5
+      },
+      "interpretation": {
+        "summary": "No individual citation names a credit facility."
+      },
+      "evidence": {
+        "supporting": [],
+        "counter": [
+          {
+            "document_id": "doc_0",
+            "exact_span": "The board reviewed credit.",
+            "timestamp": "2025-07-31T00:00:00+00:00"
+          },
+          {
+            "document_id": "doc_1",
+            "exact_span": "Facility output remains unchanged.",
+            "timestamp": "2025-07-31T00:00:00+00:00"
+          }
+        ]
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "execution": {
+        "status": "success"
+      }
+    },
+    "after_repair_error": "signal phrase_boundary:v1 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['credit facility'] within one exact supporting or counter span; do not assemble a phrase across separate citations. Return unavailable with empty evidence when visible evidence does not name the measured object",
+    "normalization_policy_unchanged": true
+  },
+  "real_source_window_recovery": {
+    "case_id": "cik_0000936395:20250930",
+    "initial": {
+      "attempt_id": 85,
+      "stage": "llm_signal_batch_execute",
+      "request_hash": "56f0dee312beec427366893c8b0b5495def757d4d8bb5925da0dd4789f7f0bcf",
+      "request_sha256": "5c677a57b9a7d8cf6129edd41150776cfc8a591b17c6225cb1d6ce4adcf03e97",
+      "response_sha256": "ce2e22f69b5e314e8174215684ffdcb36ff4e650c01f22c812fa3db50d6366fe",
+      "complete_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026. As we see it today, we expect to deliver approximately 17% year on year growt",
+                    "projection_id": "projection_4fc6a8ff218a8d26102167c5"
+                  },
+                  {
+                    "exact_text": "Now on to guidance. For the fiscal fourth quarter, we expect to deliver revenue in a range of $1.24 billion to $1.32 billion. We expect Q4 adjusted gross margins to be between 42-43%.",
+                    "projection_id": "projection_c1609759172562f3ce5d3471"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "Fresh Q3 FY2025 management guidance (Sept 4, 2025) provides a preliminary FY2026 view of approximately 17% year-over-year growth and Q4 revenue of $1.24–1.32 billion, with gross margins improving from the Q2 floor. However, no explicit prior guidance span is visible in the eligible projections to establish a quantified upward revision versus a prior baseline; the comparison therefore cannot be confirmed as a material strengthening of the growth path. Result is neutral."
+              },
+              "signal_id": "guidance_acceleration",
+              "state": {
+                "confidence": 0.5,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              },
+              "version": 3
+            },
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      }
+    },
+    "correction": {
+      "attempt_id": 86,
+      "stage": "llm_signal_batch_execute_correction",
+      "request_hash": "3d026a2141469dc972241966fd25e1c23d36470942a92c92f705a94c1f5636eb",
+      "request_sha256": "783562d658a2971c41eed1695df296d7eb7460af50fa01d6ef8e299981a5c802",
+      "response_sha256": "0999bcefe2b56096d22ea8a576d0b3ba06eb647ce92c03e959a3b1daccdbabb5",
+      "complete_feedback": [
+        {
+          "expected_result_identity": {
+            "signal_id": "guidance_acceleration",
+            "version": 3
+          },
+          "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+          "returned_signal_refs": [
+            "guidance_acceleration:v3"
+          ],
+          "signal_ref": "guidance_acceleration:v3",
+          "validation_error": "Signal supporting evidence[0] on projection 'projection_4fc6a8ff218a8d26102167c5' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_4fc6a8ff218a8d26102167c5\": \"With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+        }
+      ],
+      "new_windows": [
+        {
+          "available_at": "2025-09-05T00:00:00+00:00",
+          "content_hash": "20258bddd129b37a173d7a2e93415dd7e49b6cee04c37aa7c23244576c265b1a",
+          "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:20258bddd129b37a173d7a2e",
+          "exact_text": "s R&D with a carrying value of approximately $90 million. This will be adjusted from our GAAP reported earnings. Further, as we align our investments and as part of a broader effort to drive operating efficiencies, we are implementing a reduction in headcount that impacts approximately 4% to 5% of our workforce, inclusive of the broadband investment shift. This will result in a Q4 restructuring expense of approximately $20 million to cover employee severance and related costs, expected to be paid starting in Q4 and additionally adjusted out from our GAAP reported earnings. Looking further out, we believe demand to be very durable over the midterm horizon in both our systems and interconnect portfolios. This is being borne out by our orders and backlog that provide visibility into 2026. With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026. As we see it today, we expect to deliver approximately 17% year on year growth in fiscal 2026, similar to what we're currently projecting in fiscal 2025, achieving the high end of our three-year revenue CAGR target one year early. We expect that gross margins will continue to improve in fiscal 2026 with an initial estimate of 43% plus or minus one point. And we expect to continue investment in our product and technology roadmap funded by a combination of portfolio decisions and operational efficiencies, the net result of which will enable fiscal 2026 OpEx to be flat to fiscal 2025 at approximately $1.5 billion. Taken together, we now believe that we will accelerate our longer-term goal of 15% to 16% operating margin by one year from 2027 to 2026, driven by increased operating leverage and improving gross margins. Given that, and in combination with the continued rapid growth we are seeing in the market, we will not be providing new three-year targets. With that, let me turn it back to Gary for some closing comments before we take your questions.\",\"sentiment\":\"0",
+          "projection_id": "projection_4c3c0510cdd3585ce1e792da",
+          "published_at": "2025-09-04T00:00:00+00:00",
+          "source_type": "earnings_call"
+        }
+      ],
+      "complete_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026. As we see it today, we expect to deliver approximately 17% year on year growth in fiscal 2026, similar to what we're currently projecting in fiscal 2025, achieving the high end of our three-year revenue CAGR target one year early.",
+                    "projection_id": "projection_4c3c0510cdd3585ce1e792da"
+                  },
+                  {
+                    "exact_text": "Taken together, we now believe that we will accelerate our longer-term goal of 15% to 16% operating margin by one year from 2027 to 2026, driven by increased operating leverage and improving gross margins.",
+                    "projection_id": "projection_4c3c0510cdd3585ce1e792da"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "Fresh fiscal Q3 2025 management guidance strengthens the growth path versus prior guidance: management provides a preliminary fiscal 2026 view of approximately 17% year-on-year revenue growth, similar to the currently projected fiscal 2025 level, and states it now expects to achieve the high end of its three-year revenue CAGR target one year early. It also states it now believes it will accelerate its 15% to 16% operating margin goal by one year from 2027 to 2026. These are explicit upward changes in timing and conviction relative to the prior multi-year framework, though the fiscal 2026 revenue growth rate is described as similar to fiscal 2025 rather than higher, and the company will not provide new three-year targets."
+              },
+              "signal_id": "guidance_acceleration",
+              "state": {
+                "confidence": 0.72,
+                "value": "positive"
+              },
+              "status": {
+                "coverage": "sufficient"
+              },
+              "version": 3
+            },
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      }
+    },
+    "source_proof": [
+      {
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000936395/alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e.json",
+        "source_file_sha256": "c8cca552e2bdbc86fc9d90847e819a7ba846b90a58e8d3d0cbe38b38a7818538",
+        "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+        "content_hash": "20258bddd129b37a173d7a2e93415dd7e49b6cee04c37aa7c23244576c265b1a",
+        "normalized_start": 15400,
+        "normalized_end": 17400,
+        "available_at": "2025-09-05T00:00:00+00:00",
+        "new_view_exact_source_slice": true,
+        "projection_id_verified": true
+      }
+    ],
+    "saved_success": {
+      "evidence": {
+        "counter": [],
+        "supporting": [
+          {
+            "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+            "exact_span": "With this strength and the momentum we're seeing in 2025, we have increased confidence to provide a preliminary view of 2026. As we see it today, we expect to deliver approximately 17% year on year growth in fiscal 2026, similar to what we're currently projecting in fiscal 2025, achieving the high end of our three-year revenue CAGR target one year early.",
+            "timestamp": "2025-09-05T00:00:00+00:00"
+          },
+          {
+            "document_id": "alpha_vantage:cik_0000936395:earnings_call:20258bddd129b37a173d7a2e",
+            "exact_span": "Taken together, we now believe that we will accelerate our longer-term goal of 15% to 16% operating margin by one year from 2027 to 2026, driven by increased operating leverage and improving gross margins.",
+            "timestamp": "2025-09-05T00:00:00+00:00"
+          }
+        ]
+      },
+      "execution": {
+        "status": "success"
+      },
+      "interpretation": {
+        "summary": "Fresh fiscal Q3 2025 management guidance strengthens the growth path versus prior guidance: management provides a preliminary fiscal 2026 view of approximately 17% year-on-year revenue growth, similar to the currently projected fiscal 2025 level, and states it now expects to achieve the high end of its three-year revenue CAGR target one year early. It also states it now believes it will accelerate its 15% to 16% operating margin goal by one year from 2027 to 2026. These are explicit upward changes in timing and conviction relative to the prior multi-year framework, though the fiscal 2026 revenue growth rate is described as similar to fiscal 2025 rather than higher, and the company will not provide new three-year targets."
+      },
+      "signal_id": "guidance_acceleration",
+      "state": {
+        "confidence": 0.72,
+        "value": "positive"
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "version": 3
+    },
+    "reflect": {
+      "attempt_id": 87,
+      "stage": "research_controller_reflect",
+      "request_hash": "7505c5e5e32cb90c66d4bd944cde95f9c2b0d9a9a58a8624f27bd00f5388da01",
+      "request_sha256": "60aea899be407bb3235634cadf9772e79baeea053a7873a787b9dab575c42c3f",
+      "response_sha256": "8c074b6fd8e7d60dcb56f2d7b2465e6d244f3d084bd7d7fca1cbea530120e46d",
+      "complete_output": {
+        "base_hash": "7ebfa5b14730031f4e5bba8ea3dd83ddea60da22fb90dcfa345453502a9ad441",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "supporting_evidence[3]",
+            "value": {
+              "claim": "The issuer announced a definitive agreement to acquire Nubis Communications, a company specializing in high-performance optical and electrical interconnects for AI workloads, for $270 million in cash.",
+              "exact_text": "[ANON_ID_0000] to Acquire Nubis Communications to Expand its Inside the Data Center Strategy and Further Address Growing AI Workloads [ANON_ID_0000] (NYSE: [ANON_ID_0001]) has announced its definitive agreement to acquire Nubis Communications, a company specializing in high-performance optical and electrical interconnects for AI workloads, for $270 million in cash. This acquisition aims to expand [ANON_ID_0000]'s portfolio and talent to address the growing demand for connectivity within data centers, particularly for AI-related traffic. Nubis's Co-Packaged Optics (CPO)/Near Packaged Optics (NPO) and Electrical ACC technologies will enhance [ANON_ID_0000]'s high-speed interconnects, providing scalable and high-performance solutions for AI systems.",
+              "kind": "basic_info",
+              "projection_id": "projection_fee9cfebe756044feb098bdd"
+            }
+          },
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "Management stated that with one customer the opportunity is hundreds of millions, that the first initial orders for that program have been received, and that deployments will begin shortly.",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "order_confirmation_disclosed:v2"
+            }
+          },
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "Management stated it expects to deliver approximately 17% year on year growth in fiscal 2026, similar to what it is currently projecting in fiscal 2025, achieving the high end of its three-year revenue CAGR target one year early.",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          },
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "Management stated it now believes it will accelerate its longer-term goal of 15% to 16% operating margin by one year from 2027 to 2026, driven by increased operating leverage and improving gross margins.",
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "current_beliefs[0]",
+            "value": "The issuer's management stated that with one customer the opportunity is hundreds of millions, that the first initial orders for that program have been received, and that deployments will begin shortly, and management stated it expects to deliver approximately 17% year on year growth in fiscal 2026, similar to what it is currently projecting in fiscal 2025, achieving the high end of its three-year revenue CAGR target one year early, and management stated it now believes it will accelerate its longer-term goal of 15% to 16% operating margin by one year from 2027 to 2026, driven by increased operating leverage and improving gross margins."
+          },
+          {
+            "op": "remove",
+            "path": "next_information_needs[0]"
+          },
+          {
+            "op": "remove",
+            "path": "next_information_needs[1]"
+          },
+          {
+            "op": "append",
+            "path": "resolved_questions",
+            "value": "Management disclosed a customer program with a stated value of hundreds of millions, confirmed initial orders have been received, and said deployments will begin shortly."
+          },
+          {
+            "op": "append",
+            "path": "resolved_questions",
+            "value": "Management provided a preliminary fiscal 2026 view of approximately 17% year on year revenue growth, similar to the currently projected fiscal 2025 level, and stated it now expects to achieve the high end of its three-year revenue CAGR target one year early."
+          },
+          {
+            "op": "append",
+            "path": "resolved_questions",
+            "value": "Management stated it now believes it will accelerate its 15% to 16% operating margin goal by one year from 2027 to 2026."
+          },
+          {
+            "op": "replace",
+            "path": "decision",
+            "value": "finalize"
+          }
+        ]
+      }
+    },
+    "predictor": {
+      "attempt_id": 88,
+      "stage": "blind_predictor_predict",
+      "request_hash": "fa5d3ba9f6508db983d34deb9084f4db447d5a59d24ba3d052d5c7688d28f6d5",
+      "request_sha256": "14607a43534299723c9e9c2a0e346bd9924b19c04dcb5bb16415ee1c106c1f39",
+      "response_sha256": "75c2d49277cc1e818a84d5ee62a6eecc45a8f1021ed0c737eac591d6926ba46f",
+      "corrected_literal_carryover_exact": true,
+      "complete_output": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "key_reasons": [
+          "Management disclosed a customer program with a stated value of hundreds of millions, confirmed initial orders have been received, and said deployments will begin shortly, providing source-backed demand evidence that could support further share-price repricing.",
+          "Management provided a preliminary fiscal 2026 view of approximately 17% year-on-year revenue growth and stated it now expects to achieve the high end of its three-year revenue CAGR target one year early, an upward timing change that could drive expectation revisions.",
+          "The issuer announced a definitive agreement to acquire Nubis Communications, an AI-focused optical and electrical interconnect company, for $270 million in cash, adding a material AI-related catalyst.",
+          "The stock has shown strong momentum, with the computed 180-trading-day return at 75.22% from January 10, 2025 to September 29, 2025, and the prediction baseline mean adjusted close of $140.224 versus a doubling threshold of $280.448."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The visible evidence does not quantify the revenue or earnings contribution from the disclosed customer program or the Nubis acquisition, so the path to a 2x price outcome remains uncertain.",
+          "The stock has already repriced substantially, and the computed 180-day max drawdown of -45.51% shows significant volatility that could reverse before the horizon end.",
+          "No forward price target or explicit multi-quarter guidance bridge to a doubling of the adjusted share price is provided."
+        ]
+      }
+    },
+    "claim_level": "Actual unique correction, source-bound reading, persistence and downstream consumption; not independent prediction gain."
+  },
+  "additional_semantic_review": {
+    "third_party_financing": {
+      "attempt_id": 51,
+      "stage": "llm_signal_batch_execute_correction",
+      "request_hash": "14f8873386a5735c9b3bbe4bcea3d1ee9b80fa1d84ca35e38dac75c18e556ca2",
+      "request_sha256": "169880ab7e7d0cc0508e90aa8d6018ae52b5ef484c6f87a9fefd66ea338e3095",
+      "response_sha256": "fc061cbe17897a15da35684b5764d9c2d0fab45ae685dfd8b88e4074b4be6fca",
+      "complete_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "IonQ Announces At-the-Market Equity Offering Program for up to $500 Million IonQ (NYSE: IONQ) has announced an At-the-Market (ATM) equity offering program through an agreement with [ANON_ID_0000] & Co. LLC and Needham & Company LLC, potentially raising up to $500 million. The quantum computing company plans to use the net proceeds for general corporate purposes, including accelerating its networking business and exploring new growth areas. The shares will be offered over time, and there is no guarantee that any shares will actually be sold under the program.",
+                    "projection_id": "projection_5f41f7d5fbede484081dd708"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "The only eligible span describing a financing or listing action concerns IonQ's at-the-market equity offering program, a third-party issuer unrelated to the target subject. No eligible span establishes a completed or binding financing, restructuring, listing, redemption, or reverse-split action by the target subject, so no within-horizon change in the target's runway, dilution, or tradability is evidenced. The IonQ ATM program is a capital-structure event for a different issuer and does not qualify as a target-subject catalyst."
+              },
+              "signal_id": "financing_listing_action",
+              "state": {
+                "confidence": 0.6,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              },
+              "version": 5
+            },
+            "signal_ref": "financing_listing_action:v5"
+          }
+        ]
+      },
+      "finding": "Technically accepted neutral result cites only an unrelated issuer ATM program, in supporting evidence. Target-action applicability is not established; current fixed-prompt clarification has not been tested live.",
+      "acceptance": false
+    }
+  },
+  "repair_scope": {
+    "source_owner": "Require a whole phrase inside one independent exact supporting/counter literal; never join citations.",
+    "fixed_prompt": "Decide declared measured-object/subject/relationship applicability before direction; neutral/negative requires all mandatory evidence.",
+    "correction": "Same exact single-literal obligation through existing unique correction.",
+    "preserved": [
+      "immutable Signal versions and skills",
+      "canonical record/scoring semantics",
+      "PIT/eligible source checks",
+      "character and exact token ceilings",
+      "local re-projection",
+      "one paid correction",
+      "accepted siblings",
+      "explicit technical failure classification"
+    ]
+  },
+  "validation": {
+    "focused": "209 tests / 6.753s PASS; final prompt adjustment included in subsequent full run",
+    "full": "1596 tests / 56.049s PASS on final source and prompt",
+    "lint": "scripts/lint_repo.sh PASS; full output read at /tmp/v182-applicability-lint-complete.log"
+  },
+  "acceptance": {
+    "zero_technical_failures": false,
+    "new_magnitude_admitted_and_used": false,
+    "effective_high_band_expansion": false,
+    "independent_benefit_confirmed": false,
+    "goal_complete": false
+  },
+  "transport_resume_audit": {
+    "audited_at": "2026-10-06T21:27:11.625682+00:00",
+    "process": {
+      "wrapper_pid": 27009,
+      "command": [
+        "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/Users/l/.codex/worktrees/evolution-acceptance-v182/Recommandation/scripts/run_minimal_rounds.py",
+        "--root",
+        "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+        "--run"
+      ],
+      "source_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+      "pid": 34963,
+      "started_at": "2026-10-06T21:24:04.392130+00:00",
+      "status": "running",
+      "automatic_resumes": 2,
+      "last_exit_code": 1
+    },
+    "same_request_resume_proof": [
+      {
+        "stage": "research_controller_reflect",
+        "exact_same_request_attempts": [
+          {
+            "actual_cost": 0.018850160000000005,
+            "attempt_id": 195,
+            "error_message": "OpenAI API request failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)",
+            "error_type": "RetryableOpenAIClientError",
+            "finished_at": "2026-10-06T21:19:29.793950+00:00",
+            "request_hash": "a0741a83d56d4a5121264805b58f0626d65a274c2bec142449fa6c52c62bf90c",
+            "reserved_cost": 0.018850160000000005,
+            "response_hash": "f346bc20466ea65fea600d87668b0baf3f3f1597837c5f7b0dc8ce020a048473",
+            "started_at": "2026-10-06T21:19:24.788661+00:00",
+            "status": "failed"
+          },
+          {
+            "actual_cost": 0.00409108,
+            "attempt_id": 196,
+            "finished_at": "2026-10-06T21:21:55.976013+00:00",
+            "request_hash": "a0741a83d56d4a5121264805b58f0626d65a274c2bec142449fa6c52c62bf90c",
+            "reserved_cost": 0.018850160000000005,
+            "response_hash": "e8d4ed698b288d7790da1c91afa3ce14f9067cd1d384b0c3eceb51ea05223636",
+            "started_at": "2026-10-06T21:21:51.716865+00:00",
+            "status": "completed"
+          }
+        ]
+      },
+      {
+        "stage": "llm_signal_batch_execute",
+        "exact_same_request_attempts": [
+          {
+            "actual_cost": 0.015605800000000001,
+            "attempt_id": 213,
+            "error_message": "OpenAI API request failed: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)",
+            "error_type": "RetryableOpenAIClientError",
+            "finished_at": "2026-10-06T21:23:33.687294+00:00",
+            "request_hash": "353189c365d79c439251e3abd8823d666800a15344fb6ac4e15401bb9bdcfbbc",
+            "reserved_cost": 0.015605800000000001,
+            "response_hash": "e7eff5dbeec99358ab461b1d50f05ebab72263accc754f63588a50af656ca3ff",
+            "started_at": "2026-10-06T21:23:28.680859+00:00",
+            "status": "failed"
+          },
+          {
+            "actual_cost": 0.0033560800000000004,
+            "attempt_id": 214,
+            "finished_at": "2026-10-06T21:26:01.569788+00:00",
+            "request_hash": "353189c365d79c439251e3abd8823d666800a15344fb6ac4e15401bb9bdcfbbc",
+            "reserved_cost": 0.015605800000000001,
+            "response_hash": "ac247863af5db530a9f1f58209b3abef4714543cbacad3b3896203022d5dabdd",
+            "started_at": "2026-10-06T21:25:58.349035+00:00",
+            "status": "completed"
+          }
+        ]
+      }
+    ],
+    "claim": "Sequential bounded retryable SSL recovery under unchanged frozen source and inputs; not a new executor or a new evolution cycle."
+  }
+}

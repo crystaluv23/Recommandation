@@ -3527,7 +3527,8 @@ def validate_signal_result(
         raise ValidationError(
             f"available signal result ({result.value.value}) requires source evidence; "
             "cite the examined non-qualifying spans as counter evidence for "
-            "neutral or negative conclusions, or return unavailable with empty "
+            "neutral or negative conclusions only when all mandatory measured-object "
+            "requirements hold, or return unavailable with empty "
             "evidence when the visible text cannot support applying the skill"
         )
     if result.measurement is not None:
@@ -3563,14 +3564,15 @@ def validate_signal_result(
                 )
     required_phrases = spec.parameters.get("result_required_evidence_phrases")
     if required_phrases:
-        cited_text = (
+        cited_texts = tuple(
             " "
             + re.sub(
                 r"[^a-z0-9]+",
                 " ",
-                "\n".join(item.exact_span for item in evidence).casefold(),
+                item.exact_span.casefold(),
             ).strip()
             + " "
+            for item in evidence
         )
         normalized_phrases = tuple(
             " "
@@ -3578,12 +3580,18 @@ def validate_signal_result(
             + " "
             for phrase in required_phrases
         )
-        if not any(phrase in cited_text for phrase in normalized_phrases):
+        if not any(
+            phrase in cited_text
+            for cited_text in cited_texts
+            for phrase in normalized_phrases
+        ):
             raise ValidationError(
                 f"signal {spec.ref} available result requires cited evidence "
                 "containing at least one version-owned "
                 "result_required_evidence_phrases value: "
-                f"{list(required_phrases)}. Return unavailable with empty evidence "
+                f"{list(required_phrases)} within one exact supporting or counter "
+                "span; do not assemble a phrase across separate citations. "
+                "Return unavailable with empty evidence "
                 "when visible evidence does not name the measured object"
             )
 

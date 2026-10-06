@@ -201,9 +201,13 @@ follow [stage contracts](stage_contracts.md).
   Neutral and negative conclusions are available results: the executor cites the
   examined non-qualifying spans as counter evidence instead of abstaining, and
   the batch prompt, correction actions, and runtime evidence-validation errors
-  all state that unavailable is reserved for text that cannot support applying
-  the skill at all — never for the mere absence of a span satisfying a positive
-  semantic condition.
+  all first distinguish applicability from direction. Applying a skill requires
+  its version-owned measured object and any mandatory literal evidence; readable
+  off-object text alone is insufficient. A skill measuring the target issuer's
+  action cannot use an unrelated third-party action as a neutral target event;
+  third-party evidence remains applicable when the skill declares the relevant
+  relationship. Once those requirements hold, unavailable
+  is never used merely because no span satisfies a positive semantic condition.
 - A shared transport identity-output rejection is handled as a per-result
   technical validation failure, never as semantic unavailable. If every violation
   lies inside a unique requested `results[i].result`, only those dependent Signal
@@ -662,14 +666,20 @@ changing a stored Signal's research definition.
 
 Existing version-owned result_required_evidence_phrases are explicitly disclosed
 in the initial fixed prompt as applying to every available state, not just positive.
-The hard validator remains unchanged; a correction must not discover this obligation
-for the first time. No hidden lexical requirement is added or old Signal rewritten.
+The owner validator checks each complete cited span independently; a phrase cannot
+be assembled across separate citations. Existing word boundaries and punctuation/
+spacing normalization remain unchanged. A correction must not discover this
+obligation for the first time. No hidden lexical requirement is added or old Signal
+rewritten.
 
 Neutral/negative counter-evidence must still meet every version-owned mandatory
 evidence requirement. Both initial and correction instructions make explicit
 that general business commentary cannot replace a missing measured object or
 required literal phrase; if no eligible complete literal satisfies that contract,
 the result is unavailable with unavailable coverage and empty evidence arrays.
+The fixed prompt states this applicability decision before deciding positive,
+neutral or negative direction; its later guidance about non-positive conclusions
+explicitly depends on satisfying the same mandatory evidence requirements.
 An interior citation candidate is only a byte-exact location suggestion, never
 authority to replace the measured claim with an unrelated sentence. Numerical
 materiality comparisons require compatible units and source-backed conversions;
