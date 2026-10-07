@@ -33,7 +33,10 @@ progress/status.md
 progress/changelog.md
 memory/GUIDE.md
 memory/meta/insights.md
-memory/meta/usage_log.md
+memory/meta/reviews.md
+spec/agent-workflow.md
+progress/convergence.json
+scripts/check_project.py
 .githooks/pre-push
 scripts/lint_repo.sh
 "
@@ -48,6 +51,12 @@ done
 
 if [ "$missing_required" -eq 0 ]; then
   pass "required meta and lint files exist"
+fi
+
+if python3 scripts/check_project.py; then
+  pass "meta records and convergence review are consistent (administrative only)"
+else
+  fail "meta convergence check failed"
 fi
 
 if [ ! -x ".githooks/pre-push" ]; then

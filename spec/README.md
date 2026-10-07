@@ -13,6 +13,11 @@ spec/vision.md
 
 Each lower level is more concrete and must stay consistent with its ancestors.
 
+Assistant collaboration and convergence governance are specified separately in
+[agent-workflow.md](agent-workflow.md), entered through `AGENTS.md`. Its checker
+lives under `scripts/`, outside the research package; it does not change the
+business module hierarchy, canonical records, scoring or live execution contracts.
+
 `spec/src/` mirrors `src/` at package and module granularity once source exists or once the intended source tree is clear enough to design against. A package-level spec uses `<module>.md`; child modules use `<module>/<submodule>.md`.
 
 Example:

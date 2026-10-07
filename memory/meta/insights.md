@@ -19,3 +19,10 @@ Evidence and qualifications: [multi-iteration retrospective](../../reports/self-
 - Consult [incremental repair and sourced memory](../experiences/incremental-repair-and-sourced-memory.md) for prompt/validator/repair consistency, typed snapshot-bound edits, and unchanged valid siblings.
 - Measure complete production payloads for proposer, critics and Slow consumers; bound catalogs and diagnostics as well as briefs. Verify case discovery and exact source reads within the advertised budget.
 - Verify stable source identity across generation, persistence, restart and rebase. Citations establish provenance; neither a higher reflection level nor model confidence establishes truth or future benefit.
+
+## 2026-10-07：经验必须影响行动
+
+[工作契约](../../spec/agent-workflow.md)替代机械咨询计数。相同策略两轮没有
+目标验收推进、修复后同类复发或实验前提失效时，解释旧检查为何未奏效并选择
+有区分力的下一步；不能只重读经验或增加prompt。完整后继须过行政前提检查，
+其PASS不是研究验收。规则自身的实际效果见 [reviews](reviews.md)，仍待真实触发。
