@@ -1,5 +1,7 @@
 # Status
 
+2026-10-07（实际回答范围合同/目标限制）：Bumble 两案原 need contract 完整复现、保存状态通过完整 validator；诊断副本保留未答需求后被 remove_exact_target/fallback 删除，冻结/main 完整结果相等。更高 scheme/runtime 合同明确预期scope→删除义务，已保存实际disposition提案，未改 spec/runtime。亲读 Kinross12相关原输出/5完整窗口10007字符，264截断→265新完整窗口及前后指引通过真实生产 runner（10源hash、初始/纠错PID与完整canonical相等）；neutral水平仍可用于背景，269归因待审，未冒称完整双案验收，仍44/48待读。终态exit0/1/1/frozen clean，新magnitude0/独立gain未确认。goal服务2026-10-07T03:41:36Z新鲜返回usageLimited（覆盖旧ACTIVE），保存已完成成果后停止新增目标工作；PIT及四臂选择无新答复、不重启。见reports/v182-executed-answer-scope-contract-review-20261007.md/.json。
+
 2026-10-07（Bumble双Plan/未来来源）：亲读16原调用/68可见投影118451字符/16相同路由卡/首20目录卡，47源hash重验；动态overview13摘要亲读、3原provider冲突经生产归一化完整复现，Bumble未来全年业绩实际进入18，656请求扫描仅此wire命中、两Plan污染fingerprint仍留。冻结v3回购完整result回放相等；Q2 partial被实际need合同当Q3 full并落盘resolved、旧range在259可见而260 compact缺失，单案correct不证明因果/学习。更新三咨询visit与GUIDE；不改oracle/指针/模型/评分/合同，无新外部调用。终态1/1、6Signal失败、新magnitude0/29全2–3x/独立gain未确认；其余44案例内容链及消费者仍待亲读。见reports/v182-bumble-pair-content-and-future-source-audit-20261007.md。
 
 2026-10-07（v182目录读取链路）：底层70份PIT目录有分页而Reflect只传最旧20张且无翻页动作；按既有渐进披露合同补inspect_document_catalog，分页/fetch/compute共用原2交换预算。泛化修复跨公司ID读取、批内重复及语义纠错丢页/读文/计算卡，校准bounded fetch与State引用权限。真实73源hash/70卡及原10 patch生产Controller回放、原12预测消费/JSON归档通过；亲读后50卡和所选492字provider摘要，不冒称70全文。9回归/156专项/1613全量53.877s及lint PASS，旧冻结9测试预期失败，未热改85ffff9e/无新live。PIT定义与独立评估方案待选，6Signal失败/magnitude新入库0及全2–3x/独立gain未验收。见reports/v182-document-channel-navigation-audit-20261007.md。

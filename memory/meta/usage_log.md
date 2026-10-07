@@ -320,3 +320,5 @@
 - 2026-10-07（v182目录读取链路）：咨询 nonvisible-source-content-consumes-readable-budget、incremental-repair-and-sourced-memory、self-evolution-convergence-and-acceptance；复核原目录/适配器/State引用/纠错和最终消费，补通既有分页与公司范围、保留读到的内容，保持预算和canonical引用不变。三visit_times各加1并同步GUIDE；离线原生patch回放非live或gain。
 
 - 2026-10-07（Bumble双Plan/未来来源）：咨询 live-evolution-context-audit、self-evolution-convergence-and-acceptance、historical-news-backfill-boundaries。逐份绑定 wire/cache/trajectory，区分 Signal 读窗缺失、runtime 错误 full-answer 授权及 compact 反思丢比较依据；原始 provider time/body 冲突生产复现后才确认未来输入，不凭 URL/年份或无引用判断有效性。三 visit_times 各加1并同步 GUIDE；来源时间/独立评估仍待选择，未做迁移/后继。
+
+- 2026-10-07：实际回答范围/反馈合同复核，咨询 incremental-repair-and-sourced-memory（56→57）与 self-evolution-convergence-and-acceptance（60→61）；按复盘核对祖先合同、真实 normal prompt、validator、typed fallback 和保存结果。Bumble 保留未决需求反而被要求删除；Kinross 原纠错是成功反例。只做报告及冻结/main 零外部回放，不把合法引用/neutral 当完整回答或因果证明；goal 服务新鲜 usageLimited，保存成果后停止新增目标工作。

@@ -1,0 +1,2170 @@
+{
+  "schema_version": "v182-executed-answer-scope-contract-review-v1",
+  "reviewed_at": "2026-10-07T03:43:02.091267+00:00",
+  "main_revision": "ff28a5a1951212fa8addd0b2578754e68ebd926d",
+  "frozen_revision": "85ffff9ed976cc4597b7e6e26a2dfe7537ab4099",
+  "run_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated",
+  "input_manifest_sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c",
+  "run_contract_sha256": "5789b5a8512556b614949b3705ced68968aeec78df801e2912f008369a700d81",
+  "scope": {
+    "kinross_original_outputs_personally_read": 12,
+    "selected_complete_source_windows_personally_read": 5,
+    "selected_source_window_characters": 10007,
+    "two_source_files_hash_and_literal_verified": true,
+    "source_file_hash_verification_is_not_personal_full_body_or_independent_date_review": true,
+    "other_runner_source_files_mechanically_verified": 10,
+    "kinross_full_pair_content_review_completed": false,
+    "previous_full_pair_content_reviews": 4,
+    "remaining_full_case_content_reviews": 44,
+    "whole_chain_or_goal_pass": false
+  },
+  "actual_kinross_attempts": [
+    {
+      "attempt_id": 24,
+      "stage": "signal_retrieval_cards",
+      "request_hash": "f2d49a165abb806b0e87f6e93bf47e2aa862189dffcc3d7b3ca57f5582a3797a",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/f2d49a165abb806b0e87f6e93bf47e2aa862189dffcc3d7b3ca57f5582a3797a.json",
+      "request_file_sha256": "0ef23bd0918e3e166c3e125555528e1538a05dc5ced566c8a226fc36b97e5adb",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/f2d49a165abb806b0e87f6e93bf47e2aa862189dffcc3d7b3ca57f5582a3797a.json",
+      "response_file_sha256": "a4e788805bb8e42d445cc898406550ffeb5b1c38c49fa7109f59ac70c2d7bc65",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "bcc13152c4b790f18b0b07389cf0911949dba1405b926fc5936ca7bf393a79da",
+      "raw_output": {
+        "selections": [
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "The issuer's sale of Asante Gold shares is a financing/listing action that may affect dilution, tradability, or capital position.",
+            "context_tags": [
+              "catalyst_window",
+              "small_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Directly addresses the disclosed sale of Asante Gold shares, covering the number of shares sold, proceeds, and remaining stake.",
+            "signal_ref": "financing_listing_action:v5",
+            "target_need_indices": [
+              5
+            ]
+          },
+          {
+            "answer_scope": "partial",
+            "applicability_hypothesis": "The active repurchase program and cancellation of shares should register as net share retirement, relevant to equity supply and per-share value.",
+            "context_tags": [
+              "catalyst_window",
+              "large_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": "Remaining buyback authorization and any stated minimum annual return-of-capital target.",
+            "selection_reason": "Directly measures net share retirement versus dilution, covering the buyback pace and remaining authorization facets of the repurchase program.",
+            "signal_ref": "net_share_retirement_yoy:v3",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Cash reserves and liquidity inform how much capacity remains for the repurchase program and return-of-capital target.",
+            "context_tags": [
+              "large_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "confirmation",
+            "reason_code": "combine_evidence",
+            "residual_need": null,
+            "selection_reason": "Provides the point-in-time cash and liquidity balance that contextualizes the buyback capacity and balance-sheet strength.",
+            "signal_ref": "cash_reserves:v2",
+            "target_need_indices": [
+              3
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Runway derived from operating cash flow and cash balance tests the sustainability of the buyback pace and return-of-capital target.",
+            "context_tags": [
+              "capital_intensive",
+              "large_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Assesses whether cash runway and operating cash flow support the repurchase program and capital return commitments.",
+            "signal_ref": "liquidity_runway_months:v3",
+            "target_need_indices": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 25,
+      "stage": "signal_retrieval_cards_correction",
+      "request_hash": "bf50fced5291dcdc7fa57f3c2570f632e95ddb297f5953feb09596704627d4f2",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/bf50fced5291dcdc7fa57f3c2570f632e95ddb297f5953feb09596704627d4f2.json",
+      "request_file_sha256": "9b569da65606ba196f546d7ca3c1e6f0a942c38650989f62ea9c51e6404ad23a",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/bf50fced5291dcdc7fa57f3c2570f632e95ddb297f5953feb09596704627d4f2.json",
+      "response_file_sha256": "70dae8b92bf816566750a8aedd69ee3d09291b6865d4ab0519d57f86952255f4",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "bcc13152c4b790f18b0b07389cf0911949dba1405b926fc5936ca7bf393a79da",
+      "raw_output": {
+        "base_hash": "62ab1356d14b78a46370ffcd5dc44d27f94f9b1bb9be07f77b71ddcb8c4d1dc9",
+        "operations": [
+          {
+            "op": "replace",
+            "path": "selections[0]",
+            "value": {
+              "answer_scope": null,
+              "applicability_hypothesis": "The issuer's sale of Asante Gold shares is a financing/listing action that may affect dilution, tradability, or capital position.",
+              "context_tags": [
+                "catalyst_window",
+                "small_cap"
+              ],
+              "expected_role": "confirmation",
+              "reason_code": "combine_evidence",
+              "residual_need": null,
+              "selection_reason": "Contextualizes the disclosed Asante Gold share sale and capital position alongside the repurchase program and balance-sheet strength.",
+              "signal_ref": "financing_listing_action:v5",
+              "target_need_indices": [
+                5
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 29,
+      "stage": "signal_retrieval_cards",
+      "request_hash": "df3a57ecaee0697debf8ccd1abb8f391b171f86a6fd865906946c57da2dd1b93",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/df3a57ecaee0697debf8ccd1abb8f391b171f86a6fd865906946c57da2dd1b93.json",
+      "request_file_sha256": "9ee37e6648f6cbb29562211e3a5ed5ed12b407aab6a144ef4d6ec1cd7839f91a",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/df3a57ecaee0697debf8ccd1abb8f391b171f86a6fd865906946c57da2dd1b93.json",
+      "response_file_sha256": "8945f41574df8686697278f8237f1f71b9f74e5eff7a0af5b30012d34565303c",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "bcc13152c4b790f18b0b07389cf0911949dba1405b926fc5936ca7bf393a79da",
+      "raw_output": {
+        "selections": [
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "The issuer reports revenue and comparable prior-period figures, so year-over-year revenue growth can be computed at the prediction time.",
+            "context_tags": [
+              "large_cap",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Admitted deterministic revenue growth measure applicable to the issuer's reported financials; effect on surge direction remains unverified.",
+            "signal_ref": "revenue_growth_yoy:v3",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "The issuer provides fresh management guidance versus prior guidance, enabling a judgment on whether the growth path is materially strengthened.",
+            "context_tags": [
+              "large_cap",
+              "catalyst_window"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Admitted management guidance signal applicable to the issuer's on-track full-year guidance disclosure; effect remains unverified.",
+            "signal_ref": "guidance_acceleration:v3",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "The issuer reports operating cash flow and cash balances, allowing computation of negative operating cash flow relative to cash.",
+            "context_tags": [
+              "large_cap",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Deterministic cash burn measure applicable to the issuer's operating cash flow and cash balance data; effect on surge direction remains unverified.",
+            "signal_ref": "cash_burn_rate_elevated:v2",
+            "target_need_indices": []
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "The issuer discloses customer orders, contracts, or binding awards with named counterparties and stated values, enabling order confirmation assessment.",
+            "context_tags": [
+              "catalyst_window",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Order confirmation signal applicable to the issuer's disclosed contracts and project updates; effect remains unverified.",
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "target_need_indices": []
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 30,
+      "stage": "llm_signal_batch_execute",
+      "request_hash": "6ef5ff1d94295cd130ce38ecb471047cc6806b49380ce9fe34b4f8f3fa5238c3",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/6ef5ff1d94295cd130ce38ecb471047cc6806b49380ce9fe34b4f8f3fa5238c3.json",
+      "request_file_sha256": "38d400da35b16bcdc5defaa6bfacc4d2fb7f64fac53717e341738e9af1f8f11c",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/6ef5ff1d94295cd130ce38ecb471047cc6806b49380ce9fe34b4f8f3fa5238c3.json",
+      "response_file_sha256": "876094341d3ba05a88e2234d324584fa181b72d8707fc5ac66a60b1094bcfe94",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "e6039c770c29ac267071aeea8acaa8b2ac4b11f6f4a3c707ed0c5d49509c8896",
+      "raw_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "Moving to our outlook. Following a strong first quarter, we are firmly on track to achieve our production, cost, and capital guidance for the year.",
+                    "projection_id": "projection_a4f30440367d180886f6d5de"
+                  },
+                  {
+                    "exact_text": "Turning now to our outlook. Following a strong second quarter and first half, we have produced just over 1 million ounces at a cost of sales in line with our guidance. Looking ahead, we remain firmly on track to achieve our full-year guidance.",
+                    "projection_id": "projection_99dac4d7c66be5e733d3bde1"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "Both the Q1 2025 and Q2 2025 earnings calls reaffirm that the company remains on track to achieve its full-year production, cost, and capital guidance. No explicit upward or downward revision to guidance levels, timing, or conviction is stated; the language is a reaffirmation of existing guidance rather than a material strengthening of the growth path. Therefore, the signal is neutral."
+              },
+              "signal_id": "guidance_acceleration",
+              "state": {
+                "confidence": 0.8,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "sufficient"
+              },
+              "version": 3
+            },
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 263,
+      "stage": "signal_retrieval_cards",
+      "request_hash": "74317aa994f3e28704273de688369e14944ab2b665c5c5fffde2af610e4d1d2f",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/74317aa994f3e28704273de688369e14944ab2b665c5c5fffde2af610e4d1d2f.json",
+      "request_file_sha256": "82ff77303270930b40eabf065e1dcbb5af903fbfff0541bdb996ea546eb81964",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/74317aa994f3e28704273de688369e14944ab2b665c5c5fffde2af610e4d1d2f.json",
+      "response_file_sha256": "b98115ee9d3be28500726c8da5cbc779bca783ae6cfd3fb04270067b148005eb",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "bcc13152c4b790f18b0b07389cf0911949dba1405b926fc5936ca7bf393a79da",
+      "raw_output": {
+        "selections": [
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "Issuer has disclosed production guidance and updated outlook, so guidance acceleration can be assessed.",
+            "context_tags": [
+              "catalyst_window",
+              "large_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Directly covers forward guidance and production targets versus prior periods, addressing the first information need.",
+            "signal_ref": "guidance_acceleration:v3",
+            "target_need_indices": [
+              0
+            ]
+          },
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "Issuer may have disclosed offtake or customer contracts relevant to revenue visibility.",
+            "context_tags": [
+              "catalyst_window",
+              "capital_intensive"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Covers binding off-take agreements and customer commitments affecting revenue visibility.",
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Customer concentration may affect the durability of revenue visibility from contracts.",
+            "context_tags": [
+              "customer_concentrated",
+              "small_cap"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Assesses whether revenue visibility depends on a single customer or program.",
+            "signal_ref": "customer_concentration:v2",
+            "target_need_indices": [
+              1
+            ]
+          },
+          {
+            "answer_scope": null,
+            "applicability_hypothesis": "Recent financing or listing actions may influence liquidity and share count.",
+            "context_tags": [
+              "catalyst_window",
+              "capital_intensive"
+            ],
+            "expected_role": "coverage",
+            "reason_code": "assess_applicability",
+            "residual_need": null,
+            "selection_reason": "Evaluates financing or listing actions that could affect runway and dilution.",
+            "signal_ref": "financing_listing_action:v5",
+            "target_need_indices": []
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 264,
+      "stage": "llm_signal_batch_execute",
+      "request_hash": "98acd06156b14a01810fa954db952cf823a886636b892696c986f2d5c1235937",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/98acd06156b14a01810fa954db952cf823a886636b892696c986f2d5c1235937.json",
+      "request_file_sha256": "946f576dc02db5796064fe6333f719e703d1cd59fca5dff6178e5090b5c5d775",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/98acd06156b14a01810fa954db952cf823a886636b892696c986f2d5c1235937.json",
+      "response_file_sha256": "ea850d04058766614846eea136271d6bc7dd34ec4873b6d0402e933c3630f056",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "e6039c770c29ac267071aeea8acaa8b2ac4b11f6f4a3c707ed0c5d49509c8896",
+      "raw_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "Moving to our outlook. Following a strong first quarter, we are firmly on track to achieve our production, cost, and capital guidance for the year.",
+                    "projection_id": "projection_a4f30440367d180886f6d5de"
+                  },
+                  {
+                    "exact_text": "Turning now to our outlook. Following a strong second quarter and first half, we have produced just over 1 million ounces at a cost of sales in line with our guidance. Looking ahead, we remain firmly on track to achieve our full-year guidance.",
+                    "projection_id": "projection_99dac4d7c66be5e733d3bde1"
+                  },
+                  {
+                    "exact_text": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,",
+                    "projection_id": "projection_46292dbb0dc0dfa21966dffc"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "Management guidance across the visible Q1 and Q2 2025 earnings calls reaffirms the same full-year production and cost targets (2 million ounces at $1,120/oz cost of sales), with Q2 language ('solidly on track') slightly stronger in conviction than Q1 ('firmly on track'). No explicit upward or downward revision to the guidance level, timing, or targets is disclosed; the guidance is reaffirmed rather than accelerated. This is a neutral result."
+              },
+              "signal_id": "guidance_acceleration",
+              "state": {
+                "confidence": 0.6,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              },
+              "version": 3
+            },
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 265,
+      "stage": "llm_signal_batch_execute_correction",
+      "request_hash": "6fb1386bb58539c78910adfbfc60421464fb2b93f36634acfa38ca29f5a846b2",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/6fb1386bb58539c78910adfbfc60421464fb2b93f36634acfa38ca29f5a846b2.json",
+      "request_file_sha256": "dd7e593114ae05294197288120cc19c0b4bbe0dcb17066074fa1edea9c62f196",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/6fb1386bb58539c78910adfbfc60421464fb2b93f36634acfa38ca29f5a846b2.json",
+      "response_file_sha256": "0f798ab46f77fd70170146aea9ba7d1ecbfe69097058b1410723e95282e44652",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "e6039c770c29ac267071aeea8acaa8b2ac4b11f6f4a3c707ed0c5d49509c8896",
+      "raw_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": [
+                  {
+                    "exact_text": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+                    "projection_id": "projection_7e811a070ce0923b9db9d723"
+                  },
+                  {
+                    "exact_text": "Turning to our guidance. We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+                    "projection_id": "projection_91ce9f4d75cac45b9d61b39e"
+                  }
+                ]
+              },
+              "interpretation": {
+                "summary": "Current Q2 2025 guidance reaffirms the same full-year production and cost targets (2 million ounces at $1,120/oz cost of sales and $1,500/oz AISC) that were already stated in the prior Q1 2025 guidance. No upward or downward revision in level, timing, or conviction is visible; the language is a reaffirmation of existing targets rather than a material strengthening of the growth path."
+              },
+              "signal_id": "guidance_acceleration",
+              "state": {
+                "confidence": 0.8,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "sufficient"
+              },
+              "version": 3
+            },
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 266,
+      "stage": "llm_signal_batch_execute",
+      "request_hash": "2218c76e3b55beed023743ad73d38d5fb54cb0a6c792f9dd0e535f866a9acfb1",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/2218c76e3b55beed023743ad73d38d5fb54cb0a6c792f9dd0e535f866a9acfb1.json",
+      "request_file_sha256": "d0b2c473acfc618104c2ac46d27036de6c94346a266cc9955715086dac7fe5e9",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/2218c76e3b55beed023743ad73d38d5fb54cb0a6c792f9dd0e535f866a9acfb1.json",
+      "response_file_sha256": "8d1f47026555f5318c418344fbc164a9bcffbe0a95848d6f2c3821c8ad1e664d",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "e6039c770c29ac267071aeea8acaa8b2ac4b11f6f4a3c707ed0c5d49509c8896",
+      "raw_output": {
+        "results": [
+          {
+            "result": {
+              "evidence": {
+                "counter": [],
+                "supporting": []
+              },
+              "interpretation": {
+                "summary": "The visible projections consist of Form 6-K cover pages and exhibit indices referencing press releases and early warning reports concerning share purchase agreement amendments, share sales in Asante Gold Corporation and White Gold Corp., quarterly results, a dividend declaration, Q2 results timing, and a sustainability report. None of the visible text discloses a new customer order, contract, offtake agreement, or binding award with a named counterparty or program, nor any stated or implied value, volume, or delivery schedule. The available documents are insufficient to support a judgment on the order-confirmation signal."
+              },
+              "signal_id": "order_confirmation_disclosed",
+              "state": {
+                "confidence": 0.5,
+                "value": "unavailable"
+              },
+              "status": {
+                "coverage": "unavailable"
+              },
+              "version": 2
+            },
+            "signal_ref": "order_confirmation_disclosed:v2"
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 267,
+      "stage": "research_controller_reflect",
+      "request_hash": "aaba03c3098bf411dc5a7b53a2409e49da21b05072d1987d617a9b09f72f13b1",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/aaba03c3098bf411dc5a7b53a2409e49da21b05072d1987d617a9b09f72f13b1.json",
+      "request_file_sha256": "43d56aa269452e00c4b0b09ecf1a9511ec92ab68549aa81c2f6160e8f006b5f7",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/aaba03c3098bf411dc5a7b53a2409e49da21b05072d1987d617a9b09f72f13b1.json",
+      "response_file_sha256": "d2c580e09354deaa9d8d513d39be428848767ba09eac91228aed82ae52dc9c92",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "599115cd69b7502a670f24386a506f1611f00dab15aec1683fd417975a9e7929",
+      "raw_output": {
+        "base_hash": "c7baf72527d44fdb8fbd342d7be3d4bbcf9d0804672eff830638ad57a8aa1640",
+        "operations": [
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          },
+          {
+            "op": "append",
+            "path": "supporting_evidence",
+            "value": {
+              "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "kind": "signal",
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          },
+          {
+            "op": "remove",
+            "path": "next_information_needs[0]"
+          },
+          {
+            "op": "append",
+            "path": "resolved_questions",
+            "value": "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?"
+          },
+          {
+            "op": "replace",
+            "path": "decision",
+            "value": "finalize"
+          }
+        ]
+      }
+    },
+    {
+      "attempt_id": 268,
+      "stage": "blind_predictor_predict",
+      "request_hash": "460d144cf03f848330363aad39c13440d4364145a069ad3dbeeceede1e8f8a7f",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/460d144cf03f848330363aad39c13440d4364145a069ad3dbeeceede1e8f8a7f.json",
+      "request_file_sha256": "2f04bb67e4ca1f073ead9e0a5ab63a095107919eafc36b3030f29afe4d01caa1",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/460d144cf03f848330363aad39c13440d4364145a069ad3dbeeceede1e8f8a7f.json",
+      "response_file_sha256": "2665d44ef933321278a382b0b9a568d796698ce9ab16b84caf56dbbc58590966",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "935dd1a2115bf65696ab35e7cac2797882593b225d4a2331cdace2f2fecad627",
+      "raw_output": {
+        "candidate_judgment": "possible",
+        "confidence": {
+          "level": "low"
+        },
+        "key_reasons": [
+          "The target issuer's adjusted close rose from 10.44 on 2025-01-10 to 24.37 on 2025-09-29, a 133.43% return over 180 trading days, showing strong positive momentum that could support further repricing toward the 2x baseline threshold of 47.964.",
+          "UBS raised its price target to $27 from $20 while maintaining a Buy rating, citing the company's strong financial position with $1.1 billion in cash and $2.8 billion in total liquidity, which supports existing operations and new growth projects.",
+          "The company reported record Q2 2025 free cash flow of approximately $650 million and first-half free cash flow over $1 billion, with record operating margins of just over $2,200 per ounce, providing a fundamental basis for potential share price appreciation.",
+          "The company remains on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce, with an annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027 underpinned by significant reserves and resources."
+        ],
+        "magnitude": "2-3x",
+        "session_id": "anonymous-session-id",
+        "uncertainties": [
+          "The 2x baseline threshold of 47.964 requires a 100% gain from the mean adjusted close of 23.982, which is a substantial move over six calendar months.",
+          "The guidance_acceleration signal is neutral, indicating no upward revision in production or cost targets, which may limit the pace of fundamental acceleration.",
+          "The order_confirmation_disclosed signal returned domain_unavailable, meaning visible evidence was insufficient for a canonical conclusion on binding off-take agreements or customer commitments.",
+          "InvestingPro analysis suggests the stock is currently overbought, and the stock has already surged 149.43% over the past year, which may indicate limited near-term upside.",
+          "The company faces potential growth deceleration in the coming years, and there is no explicit forward projection or price target supporting a doubling within the six-month horizon."
+        ]
+      }
+    },
+    {
+      "attempt_id": 269,
+      "stage": "blind_predictor_posthoc_reflect",
+      "request_hash": "70f376ed6427b3922f5250c7efaebe3caffe935326914a21c542c70ab6040b17",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/70f376ed6427b3922f5250c7efaebe3caffe935326914a21c542c70ab6040b17.json",
+      "request_file_sha256": "618b3bbadf5da022e98bdc20d731ae2c1db821c53aa346ec2418f5908263b645",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/70f376ed6427b3922f5250c7efaebe3caffe935326914a21c542c70ab6040b17.json",
+      "response_file_sha256": "bd4e6b6c9ed9e8e374e2b3b7cb74e5775780f7719b8f5740e40fd44a0e216798",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "c5c0d64dc15e756d4cb4d2ae3e5c7b81f0bec90e4f49f0082fb8de2016c9ea02",
+      "raw_output": {
+        "no_findings_reason": null,
+        "reflection_items": [
+          {
+            "brief": "The 'possible surge' call was a binary false positive: the stock did not double within the six-month horizon.",
+            "category": "why_prediction_failed",
+            "counter_refs": [],
+            "detail": "The prediction labeled the outcome a surge (is_surge=true) with a 2-3x magnitude. The revealed ground truth is is_surge=false with realized_max_multiple=1.5662, i.e. a maximum five-complete-trading-day adjusted-close mean of about 1.57x the prediction-time baseline mean of 23.982, well below the 47.964 doubling threshold. The binary direction call was wrong.",
+            "kind": "fact",
+            "limitations": [
+              "A single realized outcome does not establish the ex-ante probability of the surge class.",
+              "The realized multiple is a maximum-of-window statistic, not a terminal return."
+            ],
+            "outcome_claims": [
+              {
+                "axis": "binary",
+                "correct": false,
+                "source_ref": "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+              }
+            ],
+            "scope": {
+              "case_refs": [
+                "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+              ],
+              "conditions": "Index when reviewing a surge/non-surge binary call on this case where the realized maximum multiple stayed below the doubling threshold.",
+              "plan_refs": []
+            },
+            "source_refs": [
+              "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            ]
+          },
+          {
+            "brief": "The cited guidance_acceleration signal was neutral, not an accelerating catalyst, yet it appeared among the surge-supporting reasons.",
+            "category": "misleading_signals",
+            "counter_refs": [],
+            "detail": "The guidance_acceleration:v3 interpretation states the Q2 2025 guidance reaffirms the same full-year production and cost targets already stated in Q1 2025, with no upward or downward revision in level, timing, or conviction. Its state value is 'neutral' with confidence 0.8. The original prediction listed the on-track 2 million ounce / $1,120 cost-of-sales / $1,500 AISC guidance as a fundamental basis for appreciation, but the signal itself carries no acceleration.",
+            "kind": "fact",
+            "limitations": [
+              "A neutral guidance signal does not by itself rule out a surge; it only removes one claimed accelerant.",
+              "The signal measures guidance revision direction, not gold price or margin outcomes."
+            ],
+            "outcome_claims": [],
+            "scope": {
+              "case_refs": [
+                "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+              ],
+              "conditions": "Index when a reaffirmed (unchanged) guidance item is being counted as positive momentum for a surge call.",
+              "plan_refs": []
+            },
+            "source_refs": [
+              "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            ]
+          },
+          {
+            "brief": "The order_confirmation_disclosed signal returned domain_unavailable, so no canonical conclusion on binding off-take or customer commitments was available.",
+            "category": "missing_information",
+            "counter_refs": [],
+            "detail": "order_confirmation_disclosed:v2 has execution.status='domain_unavailable' with coverage 'unavailable' and value 'unavailable'. Per the interpretation, this is a normal domain coverage outcome: visible evidence was insufficient for a canonical conclusion, and it is not evidence that the measured condition is absent. It is also not a technical execution gap. The original prediction correctly flagged this as an uncertainty but still leaned to a possible surge.",
+            "kind": "fact",
+            "limitations": [
+              "domain_unavailable does not prove that off-take agreements or customer commitments are absent.",
+              "No validated domain result was produced, so this cannot be scored as a factor prediction failure."
+            ],
+            "outcome_claims": [],
+            "scope": {
+              "case_refs": [
+                "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+              ],
+              "conditions": "Index when a surge call rests partly on revenue-visibility items whose signal coverage is unavailable rather than confirmed.",
+              "plan_refs": []
+            },
+            "source_refs": [
+              "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            ]
+          },
+          {
+            "brief": "Test whether the surge call was driven by extrapolating a 133.43% trailing 180-trading-day return rather than by a forward path to the 47.964 doubling threshold.",
+            "category": "decision_drivers",
+            "counter_refs": [],
+            "detail": "The computed price_shape metric shows adjusted close rising from 10.44 on 2025-01-10 to 24.37 on 2025-09-29, a 133.4291% return over 180 trading days, with daily volatility 2.6198% and a max drawdown of -13.581%. The prediction cited this momentum as a reason a further repricing toward 47.964 was possible. A testable hypothesis is that trailing momentum was treated as evidence of a forward doubling path when no forward projection to 47.964 was supplied. Test by comparing surge calls that cite only trailing returns against those with an explicit forward path, and by checking whether the doubling threshold was ever bridged.",
+            "kind": "hypothesis",
+            "limitations": [
+              "This is a hypothesis about the reasoning process, not an established cause of the outcome.",
+              "The realized outcome alone cannot confirm that momentum extrapolation caused the false positive.",
+              "The 133.43% figure is a trailing 180-trading-day return, not a forecast."
+            ],
+            "outcome_claims": [],
+            "scope": {
+              "case_refs": [
+                "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+              ],
+              "conditions": "Index when a surge judgment leans on trailing price momentum without a forward path to the doubling threshold.",
+              "plan_refs": []
+            },
+            "source_refs": [
+              "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            ]
+          },
+          {
+            "brief": "For future surge calls on this case, require the surge case to state a concrete forward path to the 47.964 doubling threshold and to record the overbought/valuation counter-evidence alongside it.",
+            "category": "plan_issues",
+            "counter_refs": [],
+            "detail": "The prediction-time baseline mean adjusted close was 23.982 (recent close 24.37 on 2025-09-29), so the doubling threshold was 47.964. The original prediction itself noted InvestingPro flagged the stock as overbought after a 149.43% one-year change and that no explicit forward projection or price target supported a doubling, yet still returned 'possible' surge. Action: when a surge call is made, require (a) a stated forward path or catalyst sequence that could plausibly reach the doubling threshold within the horizon, and (b) explicit recording of the strongest counter-evidence (overbought conditions, prior-year run-up, growth-deceleration risk). This is an optional analytical discipline, not a mandatory price-proof gate, and it does not by itself determine the binary judgment.",
+            "kind": "action",
+            "limitations": [
+              "Requiring a forward path is a process discipline; it does not guarantee correct binary classification.",
+              "The overbought and growth-deceleration observations are third-party commentary, not validated causal factors.",
+              "This action must not be treated as a binding price-proof condition for a positive judgment."
+            ],
+            "outcome_claims": [],
+            "scope": {
+              "case_refs": [
+                "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+              ],
+              "conditions": "Index when preparing a surge/non-surge judgment on this case and deciding how much forward-path and counter-evidence documentation to require.",
+              "plan_refs": []
+            },
+            "source_refs": [
+              "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            ]
+          }
+        ],
+        "selected_reflection_refs": []
+      }
+    },
+    {
+      "attempt_id": 270,
+      "stage": "blind_predictor_posthoc_reflect_correction",
+      "request_hash": "d9130d9b05e53fa22c100749a529097d616ed95b66b0cece80d26cd640bbc72a",
+      "request_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/requests/d9130d9b05e53fa22c100749a529097d616ed95b66b0cece80d26cd640bbc72a.json",
+      "request_file_sha256": "1a7933b5bf979e001348713aed2a0b62b92cbf567b5585f29690e1ba0884ba71",
+      "response_file": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cache/responses/d9130d9b05e53fa22c100749a529097d616ed95b66b0cece80d26cd640bbc72a.json",
+      "response_file_sha256": "f2b7ee1240f27459bbe33546dd92c77e6b35a419d3f43011731530d94b0a9bfb",
+      "original_payload_output_exact_match": true,
+      "system_prompt_sha256": "163b559ce03a5bf2ff791833cb33f91a93dd93336c9eb64d2b1868414fed5d35",
+      "raw_output": {
+        "base_hash": "7fd49a3d1cdf9effd287ede02185180ab05dbdca411844531023cfec032d848c",
+        "operations": [
+          {
+            "op": "append",
+            "path": "reflection_items[3].outcome_claims",
+            "value": {
+              "axis": "binary",
+              "correct": false,
+              "source_ref": "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "selected_complete_kinross_source_windows": [
+    {
+      "seen_in_attempts": [
+        30,
+        264,
+        265
+      ],
+      "projection": {
+        "available_at": "2025-05-07T00:00:00+00:00",
+        "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+        "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:2761f139f195f3fb785c442b",
+        "exact_text": "sment Agency of Canada. And we've also kicked off detailed engineering on the mill and site infrastructure to advance the main project towards construction. Turning now to sustainability. I am pleased to say that our annual sustainability report will be published later this month. This comprehensive report, which is in its 17th edition, provides an update on all the progress we made in 2024 and what we aim to accomplish this year and beyond. It's an impressive document, which I encourage you all to review. Moving to our outlook. Following a strong first quarter, we are firmly on track to achieve our production, cost, and capital guidance for the year. As we did last year and in Q1, we will continue to maintain our financial discipline and prioritize cost management in order to deliver strong margins and cash flow. With this positive outlook, I am pleased to say that in addition to our dividend, we have enhanced our return of capital by reactivating our share buyback. This should provide a substantial year-over-year increase in return of capital to our shareholders. With that, I'll now turn the call over to Andrea.\",\"sentiment\":\"0.8\",\"speaker\":\"Paul Rollinson\",\"title\":\"CEO\"},{\"content\":\"Thanks, Paul. This morning, I will review our financial highlights from the quarter, provide an overview of our balance sheet and return of capital plans and comment on our outlook. As Paul noted, we had a strong start to the year in Q1. We produced 512,000 gold equivalent ounces and sold 506,000 ounces. As per plan, Q1 cost of sales of $1,038 per ounce and all-in sustaining costs of $1,355 per ounce were lower than our guidance for the year. Q1 costs were also lower than the prior quarter, benefiting from more ounces produced, lower energy, and lower maintenance costs. Q1 margins were strong at over $1,800 per ounce, increasing over the prior quarter and outpacing the increase in the gold price. In Q1, our adjusted earnings were $0.30 per share and adjusted operating cash flow was $6",
+        "projection_id": "projection_a4f30440367d180886f6d5de",
+        "published_at": "2025-05-06T00:00:00+00:00",
+        "source_type": "earnings_call"
+      }
+    },
+    {
+      "seen_in_attempts": [
+        30,
+        264,
+        265
+      ],
+      "projection": {
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+        "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:b4cdd180de023800dac85665",
+        "exact_text": "ater in the decade and beyond. The greenfields projects at Great Bear and Lobo also progressed well and are expected to contribute to our production in 2029 and 2031, respectively. Also, in the current gold price environment, we are seeing value-generating investment opportunities across our portfolio that capitalize on our significant resource base and our recent positive drill results. We see opportunities to extend mine life while maintaining our focus on margins and shareholder value. The team will comment on our resource optionality later. Turning now to a few remarks on sustainability. Our annual sustainability report was published earlier in May. It is a comprehensive document, which I encourage you all to review. Also, in Q2, we made progress across various water management initiatives, which remains a key focus area within our approach to sustainability. For example, at La Coipa, we enhanced water efficiency through an optimization program to reduce the amount of water loss going to our dry stack tailings. In Alaska, at Fish Creek, a historic mining area that [ANON_ID_0001] did not operate, but later reclaimed for the benefit of the environment and local communities, fish populations continue to thrive. Turning now to our outlook. Following a strong second quarter and first half, we have produced just over 1 million ounces at a cost of sales in line with our guidance. Looking ahead, we remain firmly on track to achieve our full-year guidance. We will continue to maintain our financial discipline and prioritize margins to drive strong cash flow, which will support ongoing return of capital and further strengthen the balance sheet. With that, I will now turn the call over to Andrea.\",\"sentiment\":\"0.9\",\"speaker\":\"J. Paul Rollinson\",\"title\":\"CEO\"},{\"content\":\"Thanks, Paul. This morning, I will review our financial highlights from the quarter, provide an update on our balance sheet and return of capital program and comment on our guidance and outlook. As Paul noted, we",
+        "projection_id": "projection_99dac4d7c66be5e733d3bde1",
+        "published_at": "2025-07-30T00:00:00+00:00",
+        "source_type": "earnings_call"
+      }
+    },
+    {
+      "seen_in_attempts": [
+        264,
+        265
+      ],
+      "projection": {
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+        "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:b4cdd180de023800dac85665",
+        "exact_text": ". This morning, I will review our financial highlights from the quarter, provide an update on our balance sheet and return of capital program and comment on our guidance and outlook. As Paul noted, we had a strong second quarter. We produced 513,000 gold equivalent ounces with sales of 508,000 ounces. Cost of sales was $1,074 per ounce, and with an average realized gold price of $3,285 per ounce, we delivered record margins of just over $2,200 per ounce. Cost of sales of $1,074 per ounce increased from Q1, largely due to higher royalties. Higher sustaining capital expenditures also contributed to higher all-in sustaining costs compared to Q1. In Q2, our adjusted earnings were $0.44 per share and adjusted operating cash flow was $844 million. Attributable CapEx was $302 million, split relatively evenly between sustaining and growth. Attributable free cash flow was a record $647 million, or $542 million excluding changes in working capital. Turning to our balance sheet, which remains in excellent shape and continued to strengthen in Q2. We ended the quarter with just over $1.1 billion in cash and approximately $2.8 billion of total liquidity, both increasing from Q1. We improved our net debt position to approximately $100 million at the end of Q2 and expect to be at net cash in Q3. In Q2, we repurchased and canceled approximately $170 million in shares and subsequently have completed another $55 million for a total of $225 million to date. Including our quarterly dividend, we have returned almost $300 million to shareholders so far, and we're on track for our minimum target of $650 million this year. As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes. Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,",
+        "projection_id": "projection_46292dbb0dc0dfa21966dffc",
+        "published_at": "2025-07-30T00:00:00+00:00",
+        "source_type": "earnings_call"
+      }
+    },
+    {
+      "seen_in_attempts": [
+        265
+      ],
+      "projection": {
+        "available_at": "2025-07-31T00:00:00+00:00",
+        "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+        "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:b4cdd180de023800dac85665",
+        "exact_text": "excellent shape and continued to strengthen in Q2. We ended the quarter with just over $1.1 billion in cash and approximately $2.8 billion of total liquidity, both increasing from Q1. We improved our net debt position to approximately $100 million at the end of Q2 and expect to be at net cash in Q3. In Q2, we repurchased and canceled approximately $170 million in shares and subsequently have completed another $55 million for a total of $225 million to date. Including our quarterly dividend, we have returned almost $300 million to shareholders so far, and we're on track for our minimum target of $650 million this year. As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes. Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce. Production over the 2 remaining quarters this year is expected to be relatively even at approximately 500,000 ounces each to deliver our full year production guidance. Operating costs are budgeted to increase in the second half to meet our full year cost guidance. The expected increase is due to the following reasons: first, planned mine sequencing with costs expected to increase at several sites as we transition from capitalized stripping into operating waste; second, some expected inflation as we progress through the rest of the year; and third, slightly stronger production in the first half, providing a favorable denominator on fixed costs with production in the remaining quarters expected to deliver our guidance of 2 million ounces. Total capital expenditures remain on track to meet guidance of $1.15 billion with a slightly higher weighting towards sustaining versus growth capital for the second half of the year. I'll now turn the call over to Claude to discuss our o",
+        "projection_id": "projection_7e811a070ce0923b9db9d723",
+        "published_at": "2025-07-30T00:00:00+00:00",
+        "source_type": "earnings_call"
+      }
+    },
+    {
+      "seen_in_attempts": [
+        30,
+        264,
+        265
+      ],
+      "projection": {
+        "available_at": "2025-05-07T00:00:00+00:00",
+        "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+        "document_id": "alpha_vantage:[ANON_ID_0000]:earnings_call:2761f139f195f3fb785c442b",
+        "exact_text": "e also building cash on the balance sheet with a view to repay the $500 million 2027 notes at or before maturity. At today's gold prices, we expect to be in a net cash position by the end of the year. Lastly, during the quarter, Moody's performed their annual review, revising our outlook to positive from stable and reaffirming our investment-grade credit rating. Turning to our guidance. We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce. Operating costs are expected to increase throughout the rest of the year for three reasons. First, stripping costs at Round Mountain Phase S and Fort Knox Phase X are currently being capitalized, and we expect both to be characterized as operating costs for accounting purposes from midyear. Second, we continue to expect inflation in the range of 3% to 4% on average for the year. And third, we had slightly stronger production in Q1, providing a favorable denominator on fixed costs with production in the remaining quarters expected to deliver our annual guidance of 2 million ounces. Capital expenditures remain on track to meet guidance of $1.15 billion. I will now turn the call over to Claude to discuss our operations.\",\"sentiment\":\"0.7\",\"speaker\":\"Andrea Freeborough\",\"title\":\"CFO\"},{\"content\":\"Thank you, Andrea. Delivery of our safety excellence program has now been completed, including at the corporate office, and refresher training has begun at some sites. In the first quarter, we placed significant focus on our leading safety practices. We conducted 54 operational learning teams and over 28,000 field engagements. This quarter, our operations continued their strong performance, delivering production of 512,000 ounces. Starting with Tasiast, the mine delivered strong results in the first quarter with production of 138,000 ounces at a cost of sales of $811 per ounce. Tasiast performed well during the quarter, driven by strong grades and recover",
+        "projection_id": "projection_91ce9f4d75cac45b9d61b39e",
+        "published_at": "2025-05-06T00:00:00+00:00",
+        "source_type": "earnings_call"
+      }
+    }
+  ],
+  "source_bindings": [
+    {
+      "sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json",
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+      "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+      "published_at": "2025-05-06T00:00:00+00:00",
+      "available_at": "2025-05-07T00:00:00+00:00",
+      "metadata": {
+        "fiscal_date_ending": "2025-03-31",
+        "provider": "alpha_vantage",
+        "quarter": "2025Q1",
+        "reported_date": "2025-05-06",
+        "symbol": "KGC"
+      }
+    },
+    {
+      "sha256": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+      "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665.json",
+      "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+      "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+      "published_at": "2025-07-30T00:00:00+00:00",
+      "available_at": "2025-07-31T00:00:00+00:00",
+      "metadata": {
+        "fiscal_date_ending": "2025-06-30",
+        "provider": "alpha_vantage",
+        "quarter": "2025Q2",
+        "reported_date": "2025-07-30",
+        "symbol": "KGC"
+      }
+    }
+  ],
+  "kinross_guidance_correction_feedback": [
+    {
+      "expected_result_identity": {
+        "signal_id": "guidance_acceleration",
+        "version": 3
+      },
+      "required_action": "Return outer signal_ref exactly 'guidance_acceleration:v3'; set nested result.signal_id exactly 'guidance_acceleration' without a version suffix and result.version exactly 3. Ground the corrected result in the smallest set of unique quotes required by that Signal's skill, using only this request's eligible_projection_ids list. Comparisons may use multiple current/prior or supporting/counter quotes; cite the examined non-qualifying spans as counter evidence for neutral or negative conclusions only when all mandatory evidence requirements still hold, including any signal_spec.parameters.result_required_evidence_phrases. If no eligible complete literal meets those requirements, return unavailable with unavailable coverage and empty supporting/counter arrays. Do not substitute an unrelated interior citation candidate merely to pass edge validation.",
+      "returned_signal_refs": [
+        "guidance_acceleration:v3"
+      ],
+      "signal_ref": "guidance_acceleration:v3",
+      "validation_error": "Signal supporting evidence[2] on projection 'projection_46292dbb0dc0dfa21966dffc' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={\"projection_46292dbb0dc0dfa21966dffc\": \"As we look forward, we expect to continue to return a substantial amount of capital to shareholders while also strengthening our balance sheet with a view to repaying our $500 million 2027 notes.\"}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists"
+    }
+  ],
+  "kinross_need_contract": {
+    "legacy_unindexed_answer_signal_refs": [],
+    "need_rules": [
+      {
+        "available_answer_actions": [
+          {
+            "answer_scope": "full",
+            "residual_need": null,
+            "signal_ref": "guidance_acceleration:v3"
+          }
+        ],
+        "available_answer_signal_refs": [
+          "guidance_acceleration:v3"
+        ],
+        "context_only_signal_refs": [],
+        "need": "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?",
+        "need_index": 0,
+        "required_transition": "if evidence from this available full answer is adopted, remove_exact_need; otherwise preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "Are there any binding off-take agreements, customer commitments, or long-term sales contracts disclosed by the prediction time that could materially affect revenue visibility and support a higher repricing multiple?",
+        "need_index": 1,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": [
+          "order_confirmation_disclosed:v2"
+        ]
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What are the latest analyst consensus estimates and price targets for the target issuer as of the prediction time, and how have they changed over the past quarter?",
+        "need_index": 2,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "Has the target issuer disclosed any new project milestones, permitting approvals, or expansion plans by the prediction time that could serve as near-term catalysts within the six-month horizon?",
+        "need_index": 3,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      },
+      {
+        "available_answer_actions": [],
+        "available_answer_signal_refs": [],
+        "context_only_signal_refs": [],
+        "need": "What is the target issuer's sensitivity to gold price movements, and are there any disclosed hedging activities or cost structures that could amplify or dampen the impact of gold price changes on earnings?",
+        "need_index": 4,
+        "required_transition": "preserve_exactly",
+        "unavailable_answer_signal_refs": []
+      }
+    ]
+  },
+  "kinross_persistence": {
+    "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c02/cik_0000701818:20250930.json",
+    "trajectory_sha256": "22e007b37cc034e8bd4a7cedbe37386099d488325d8a6825e2e0b14fabc356f8",
+    "initial_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "The target issuer stock reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence.",
+        "The target issuer stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth.",
+        "UBS analyst Daniel Major recently increased the target issuer's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position.",
+        "The target issuer has been identified as a potential growth stock by a screen based on Louis Navellier's methodology, aligning with eight strict rules and showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity."
+      ],
+      "decision": "continue",
+      "hypotheses": [
+        "The target issuer's recent 52-week high, strong Q2 earnings, and analyst price target increase indicate positive momentum that could support a doubling of the adjusted share price within the six-month horizon if gold prices remain elevated and operational performance continues.",
+        "The target issuer's strong balance sheet with $1.1 billion in cash and $2.8 billion in total liquidity, combined with record free cash flow and an on-track full-year production guidance of 2 million ounces, provides a fundamental basis for a potential surge in share price within the six-month horizon if gold prices remain elevated and operational performance continues.",
+        "The target issuer's identification as a potential growth stock by Louis Navellier's screen, along with positive earnings revisions and expanding operating margins, suggests that the stock may be positioned for a significant repricing if growth expectations are sustained."
+      ],
+      "next_information_needs": [
+        "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?",
+        "Are there any binding off-take agreements, customer commitments, or long-term sales contracts disclosed by the prediction time that could materially affect revenue visibility and support a higher repricing multiple?",
+        "What are the latest analyst consensus estimates and price targets for the target issuer as of the prediction time, and how have they changed over the past quarter?",
+        "Has the target issuer disclosed any new project milestones, permitting approvals, or expansion plans by the prediction time that could serve as near-term catalysts within the six-month horizon?",
+        "What is the target issuer's sensitivity to gold price movements, and are there any disclosed hedging activities or cost structures that could amplify or dampen the impact of gold price changes on earnings?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "The target issuer stock reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence.",
+          "exact_text": "Kinross Gold Corp stock hits 52-week high at $23.97 Kinross Gold Corp's stock has reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence. The company boasts excellent financial health, a 149.43% 1-year change, and recently reported strong second-quarter earnings that surpassed analyst expectations due to higher gold prices and robust operational performance.",
+          "kind": "basic_info",
+          "projection_id": "projection_424311b21119c89fd11b2bb8"
+        },
+        {
+          "claim": "The target issuer stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth.",
+          "exact_text": "Kinross Gold Corp stock reaches 52-week high at 20.4 USD Kinross Gold Corp stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth. The company also reported strong Q2 earnings, surpassing analyst expectations with adjusted earnings of $0.44 per share and $1.73 billion in revenue, further benefiting from U.S. tariffs on certain gold bars. InvestingPro analysis suggests the stock is currently overbought, with further insights available to subscribers.",
+          "kind": "basic_info",
+          "projection_id": "projection_812058e6ad3e78274bb9983e"
+        },
+        {
+          "claim": "UBS analyst Daniel Major recently increased the target issuer's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position.",
+          "exact_text": "UBS Boosts Kinross Gold’s (KGC) Price Target to $27, Maintains Buy UBS analyst Daniel Major recently increased Kinross Gold's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position. Kinross Gold boasts $1.1 billion in cash and $2.8 billion in total liquidity, which supports existing operations and new growth projects. The company projects an annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+          "kind": "basic_info",
+          "projection_id": "projection_106a7c08bdff66aeb4147035"
+        },
+        {
+          "claim": "The target issuer has been identified as a potential growth stock by a screen based on Louis Navellier's methodology, aligning with eight strict rules and showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity.",
+          "exact_text": "Kinross Gold Corp (NYSE:KGC) Identified by Louis Navellier's Growth Stock Screen Kinross Gold Corp (NYSE:KGC) has been identified as a potential growth stock by a screen based on Louis Navellier's \"The Little Book That Makes You Rich\" methodology. The company aligns with Navellier's eight strict rules, showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity. While fundamental analysis supports these findings, investors should monitor potential growth deceleration in the coming years.",
+          "kind": "basic_info",
+          "projection_id": "projection_80b4f1b41091a6bd0b420a24"
+        }
+      ]
+    },
+    "signal_round": {
+      "batch": {
+        "document_fingerprints": {
+          "guidance_acceleration:v3": [
+            "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b:2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+            "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665:b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+            "sec:cik_0000701818:000110465925070924:6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+            "sec:cik_0000701818:000110465925072244:1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+            "sec:cik_0000701818:000110465925072367:575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+            "sec:cik_0000701818:000110465925075920:76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+            "sec:cik_0000701818:000110465925088119:704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+            "sec:cik_0000701818:000110465925089044:07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+            "sec:cik_0000701818:000110465925092747:39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+            "sec:cik_0000701818:000110465925093824:dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2"
+          ],
+          "order_confirmation_disclosed:v2": [
+            "sec:cik_0000701818:000110465925053056:26ec7261b4253affc7fd9845aec76412e405f1bedc2e1e6cb2f1531bec125389",
+            "sec:cik_0000701818:000110465925062623:1982f4f4eec8688c7f40260c6c60dba128e0fc60e831fb94db910f9405e25562",
+            "sec:cik_0000701818:000110465925070924:6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+            "sec:cik_0000701818:000110465925072244:1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+            "sec:cik_0000701818:000110465925072367:575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+            "sec:cik_0000701818:000110465925075920:76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+            "sec:cik_0000701818:000110465925088119:704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+            "sec:cik_0000701818:000110465925089044:07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+            "sec:cik_0000701818:000110465925092747:39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+            "sec:cik_0000701818:000110465925093824:dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2"
+          ]
+        },
+        "resolutions": [
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 12,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 2,
+              "observed_observation_count": 0,
+              "observed_period_span_days": 91,
+              "query_evaluated": true,
+              "query_matched_document_count": 3,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-05-07T00:00:00+00:00",
+                "content_hash": "2761f139f195f3fb785c442b14f71654e518ad32b97da6881d29a6ba21a88fce",
+                "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b"
+              },
+              {
+                "available_at": "2025-07-31T00:00:00+00:00",
+                "content_hash": "b4cdd180de023800dac85665b5fcb5dfd0b87e509edd854b1c38a6207105e94a",
+                "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665"
+              },
+              {
+                "available_at": "2025-07-30T21:14:51+00:00",
+                "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+                "document_id": "sec:cik_0000701818:000110465925072244"
+              },
+              {
+                "available_at": "2025-09-26T19:46:25+00:00",
+                "content_hash": "dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2",
+                "document_id": "sec:cik_0000701818:000110465925093824"
+              },
+              {
+                "available_at": "2025-09-24T11:12:06+00:00",
+                "content_hash": "39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+                "document_id": "sec:cik_0000701818:000110465925092747"
+              },
+              {
+                "available_at": "2025-09-10T19:31:48+00:00",
+                "content_hash": "07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+                "document_id": "sec:cik_0000701818:000110465925089044"
+              },
+              {
+                "available_at": "2025-09-08T14:23:42+00:00",
+                "content_hash": "704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+                "document_id": "sec:cik_0000701818:000110465925088119"
+              },
+              {
+                "available_at": "2025-08-11T11:44:59+00:00",
+                "content_hash": "76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+                "document_id": "sec:cik_0000701818:000110465925075920"
+              },
+              {
+                "available_at": "2025-07-31T01:14:39+00:00",
+                "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+                "document_id": "sec:cik_0000701818:000110465925072367"
+              },
+              {
+                "available_at": "2025-07-25T23:59:16+00:00",
+                "content_hash": "6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+                "document_id": "sec:cik_0000701818:000110465925070924"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+                    "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+                    "sec:cik_0000701818:000110465925072244",
+                    "sec:cik_0000701818:000110465925093824",
+                    "sec:cik_0000701818:000110465925092747",
+                    "sec:cik_0000701818:000110465925089044",
+                    "sec:cik_0000701818:000110465925088119",
+                    "sec:cik_0000701818:000110465925075920",
+                    "sec:cik_0000701818:000110465925072367",
+                    "sec:cik_0000701818:000110465925070924"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:guidance_acceleration:v3",
+                  "source_types": [
+                    "earnings_call",
+                    "company_announcement",
+                    "press_release",
+                    "filing"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+              "lookback_days": 365,
+              "max_documents": 10,
+              "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+              "request_id": "signal:guidance_acceleration:v3",
+              "source_types": [
+                "earnings_call",
+                "company_announcement",
+                "press_release",
+                "filing"
+              ]
+            },
+            "status": "resolved"
+          },
+          {
+            "appended_documents": [],
+            "context_spans": [],
+            "coverage": {
+              "context_truncated": null,
+              "contract_satisfied": true,
+              "deduplicated_document_count": 0,
+              "eligible_document_count": 35,
+              "missing_requirements": [],
+              "observed_distinct_period_count": 0,
+              "observed_observation_count": 0,
+              "observed_period_span_days": null,
+              "query_evaluated": true,
+              "query_matched_document_count": 20,
+              "query_requested": true,
+              "query_status": "matched",
+              "required_source_group_count": 0,
+              "satisfied_source_group_count": 0,
+              "selected_document_count": 10,
+              "selection_truncated": true,
+              "visible_span_count": 0
+            },
+            "data_gap": null,
+            "documents": [
+              {
+                "available_at": "2025-07-30T21:14:51+00:00",
+                "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+                "document_id": "sec:cik_0000701818:000110465925072244"
+              },
+              {
+                "available_at": "2025-05-27T21:05:24+00:00",
+                "content_hash": "26ec7261b4253affc7fd9845aec76412e405f1bedc2e1e6cb2f1531bec125389",
+                "document_id": "sec:cik_0000701818:000110465925053056"
+              },
+              {
+                "available_at": "2025-09-10T19:31:48+00:00",
+                "content_hash": "07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+                "document_id": "sec:cik_0000701818:000110465925089044"
+              },
+              {
+                "available_at": "2025-09-24T11:12:06+00:00",
+                "content_hash": "39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+                "document_id": "sec:cik_0000701818:000110465925092747"
+              },
+              {
+                "available_at": "2025-07-31T01:14:39+00:00",
+                "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+                "document_id": "sec:cik_0000701818:000110465925072367"
+              },
+              {
+                "available_at": "2025-09-26T19:46:25+00:00",
+                "content_hash": "dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2",
+                "document_id": "sec:cik_0000701818:000110465925093824"
+              },
+              {
+                "available_at": "2025-09-08T14:23:42+00:00",
+                "content_hash": "704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+                "document_id": "sec:cik_0000701818:000110465925088119"
+              },
+              {
+                "available_at": "2025-08-11T11:44:59+00:00",
+                "content_hash": "76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+                "document_id": "sec:cik_0000701818:000110465925075920"
+              },
+              {
+                "available_at": "2025-07-25T23:59:16+00:00",
+                "content_hash": "6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+                "document_id": "sec:cik_0000701818:000110465925070924"
+              },
+              {
+                "available_at": "2025-06-25T21:00:17+00:00",
+                "content_hash": "1982f4f4eec8688c7f40260c6c60dba128e0fc60e831fb94db910f9405e25562",
+                "document_id": "sec:cik_0000701818:000110465925062623"
+              }
+            ],
+            "events": [
+              {
+                "details": {
+                  "matched_document_ids": [
+                    "sec:cik_0000701818:000110465925072244",
+                    "sec:cik_0000701818:000110465925053056",
+                    "sec:cik_0000701818:000110465925089044",
+                    "sec:cik_0000701818:000110465925092747",
+                    "sec:cik_0000701818:000110465925072367",
+                    "sec:cik_0000701818:000110465925093824",
+                    "sec:cik_0000701818:000110465925088119",
+                    "sec:cik_0000701818:000110465925075920",
+                    "sec:cik_0000701818:000110465925070924",
+                    "sec:cik_0000701818:000110465925062623"
+                  ],
+                  "phase": "initial",
+                  "request_id": "signal:order_confirmation_disclosed:v2",
+                  "source_types": [
+                    "filing",
+                    "news",
+                    "transcript",
+                    "10-k",
+                    "10-q",
+                    "8-k",
+                    "company_news",
+                    "sec_filing",
+                    "earnings_call"
+                  ]
+                },
+                "kind": "local_query"
+              }
+            ],
+            "omitted_context_markers": [],
+            "request": {
+              "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+              "lookback_days": 180,
+              "max_documents": 10,
+              "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+              "request_id": "signal:order_confirmation_disclosed:v2",
+              "source_types": [
+                "filing",
+                "news",
+                "transcript",
+                "10-k",
+                "10-q",
+                "8-k",
+                "company_news",
+                "sec_filing",
+                "earnings_call"
+              ]
+            },
+            "status": "resolved"
+          }
+        ],
+        "results": [
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": [
+                {
+                  "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+                  "exact_span": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+                  "timestamp": "2025-07-31T00:00:00+00:00"
+                },
+                {
+                  "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+                  "exact_span": "Turning to our guidance. We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+                  "timestamp": "2025-05-07T00:00:00+00:00"
+                }
+              ]
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "summary": "Current Q2 2025 guidance reaffirms the same full-year production and cost targets (2 million ounces at $1,120/oz cost of sales and $1,500/oz AISC) that were already stated in the prior Q1 2025 guidance. No upward or downward revision in level, timing, or conviction is visible; the language is a reaffirmation of existing targets rather than a material strengthening of the growth path."
+            },
+            "signal_id": "guidance_acceleration",
+            "state": {
+              "confidence": 0.8,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "sufficient"
+            },
+            "version": 3
+          },
+          {
+            "evidence": {
+              "counter": [],
+              "supporting": []
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            },
+            "interpretation": {
+              "summary": "The visible projections consist of Form 6-K cover pages and exhibit indices referencing press releases and early warning reports concerning share purchase agreement amendments, share sales in Asante Gold Corporation and White Gold Corp., quarterly results, a dividend declaration, Q2 results timing, and a sustainability report. None of the visible text discloses a new customer order, contract, offtake agreement, or binding award with a named counterparty or program, nor any stated or implied value, volume, or delivery schedule. The available documents are insufficient to support a judgment on the order-confirmation signal."
+            },
+            "signal_id": "order_confirmation_disclosed",
+            "state": {
+              "confidence": 0.5,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 2
+          }
+        ],
+        "signal_calls": 2,
+        "skipped_unchanged_refs": [],
+        "usage": {
+          "cost": 0.00953372,
+          "llm_calls": 3,
+          "tokens": 33179
+        }
+      },
+      "information_needs": [
+        "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?",
+        "Are there any binding off-take agreements, customer commitments, or long-term sales contracts disclosed by the prediction time that could materially affect revenue visibility and support a higher repricing multiple?",
+        "What are the latest analyst consensus estimates and price targets for the target issuer as of the prediction time, and how have they changed over the past quarter?",
+        "Has the target issuer disclosed any new project milestones, permitting approvals, or expansion plans by the prediction time that could serve as near-term catalysts within the six-month horizon?",
+        "What is the target issuer's sensitivity to gold price movements, and are there any disclosed hedging activities or cost structures that could amplify or dampen the impact of gold price changes on earnings?"
+      ],
+      "selected_signals": [
+        "guidance_acceleration:v3",
+        "order_confirmation_disclosed:v2"
+      ],
+      "selections": [
+        {
+          "answer_scope": "full",
+          "applicability_hypothesis": "Issuer has disclosed production guidance and updated outlook, so guidance acceleration can be assessed.",
+          "context_tags": [
+            "catalyst_window",
+            "large_cap"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": null,
+          "selection_reason": "Directly covers forward guidance and production targets versus prior periods, addressing the first information need.",
+          "signal_ref": "guidance_acceleration:v3",
+          "target_need_indices": [
+            0
+          ]
+        },
+        {
+          "answer_scope": "full",
+          "applicability_hypothesis": "Issuer may have disclosed offtake or customer contracts relevant to revenue visibility.",
+          "context_tags": [
+            "catalyst_window",
+            "capital_intensive"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": null,
+          "selection_reason": "Covers binding off-take agreements and customer commitments affecting revenue visibility.",
+          "signal_ref": "order_confirmation_disclosed:v2",
+          "target_need_indices": [
+            1
+          ]
+        }
+      ]
+    },
+    "state_deltas": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": [
+              "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?"
+            ]
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [
+              "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?"
+            ],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+                "key": "signal:guidance_acceleration:v3:supporting:0"
+              },
+              {
+                "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+                "key": "signal:guidance_acceleration:v3:supporting:1"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "round": 1
+      }
+    ],
+    "final_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "The target issuer stock reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence.",
+        "The target issuer stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth.",
+        "UBS analyst Daniel Major recently increased the target issuer's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position.",
+        "The target issuer has been identified as a potential growth stock by a screen based on Louis Navellier's methodology, aligning with eight strict rules and showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity."
+      ],
+      "decision": "finalize",
+      "hypotheses": [
+        "The target issuer's recent 52-week high, strong Q2 earnings, and analyst price target increase indicate positive momentum that could support a doubling of the adjusted share price within the six-month horizon if gold prices remain elevated and operational performance continues.",
+        "The target issuer's strong balance sheet with $1.1 billion in cash and $2.8 billion in total liquidity, combined with record free cash flow and an on-track full-year production guidance of 2 million ounces, provides a fundamental basis for a potential surge in share price within the six-month horizon if gold prices remain elevated and operational performance continues.",
+        "The target issuer's identification as a potential growth stock by Louis Navellier's screen, along with positive earnings revisions and expanding operating margins, suggests that the stock may be positioned for a significant repricing if growth expectations are sustained."
+      ],
+      "next_information_needs": [
+        "Are there any binding off-take agreements, customer commitments, or long-term sales contracts disclosed by the prediction time that could materially affect revenue visibility and support a higher repricing multiple?",
+        "What are the latest analyst consensus estimates and price targets for the target issuer as of the prediction time, and how have they changed over the past quarter?",
+        "Has the target issuer disclosed any new project milestones, permitting approvals, or expansion plans by the prediction time that could serve as near-term catalysts within the six-month horizon?",
+        "What is the target issuer's sensitivity to gold price movements, and are there any disclosed hedging activities or cost structures that could amplify or dampen the impact of gold price changes on earnings?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [
+        "What specific forward guidance or production targets has the target issuer disclosed by the prediction time for the next six months, and how do they compare to prior periods?"
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "The target issuer stock reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence.",
+          "exact_text": "Kinross Gold Corp stock hits 52-week high at $23.97 Kinross Gold Corp's stock has reached a new 52-week high of $23.97, reflecting a significant upswing and strong investor confidence. The company boasts excellent financial health, a 149.43% 1-year change, and recently reported strong second-quarter earnings that surpassed analyst expectations due to higher gold prices and robust operational performance.",
+          "kind": "basic_info",
+          "projection_id": "projection_424311b21119c89fd11b2bb8"
+        },
+        {
+          "claim": "The target issuer stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth.",
+          "exact_text": "Kinross Gold Corp stock reaches 52-week high at 20.4 USD Kinross Gold Corp stock hit a new 52-week high of 20.4 USD, reflecting a 123.34% surge over the past year, supported by robust fundamentals including a $24.78 billion market cap and 34.4% revenue growth. The company also reported strong Q2 earnings, surpassing analyst expectations with adjusted earnings of $0.44 per share and $1.73 billion in revenue, further benefiting from U.S. tariffs on certain gold bars. InvestingPro analysis suggests the stock is currently overbought, with further insights available to subscribers.",
+          "kind": "basic_info",
+          "projection_id": "projection_812058e6ad3e78274bb9983e"
+        },
+        {
+          "claim": "UBS analyst Daniel Major recently increased the target issuer's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position.",
+          "exact_text": "UBS Boosts Kinross Gold’s (KGC) Price Target to $27, Maintains Buy UBS analyst Daniel Major recently increased Kinross Gold's price target to $27 from $20, while reiterating a Buy rating due to the company's strong financial position. Kinross Gold boasts $1.1 billion in cash and $2.8 billion in total liquidity, which supports existing operations and new growth projects. The company projects an annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027, underpinned by significant proven/probable reserves and measured/indicated resources.",
+          "kind": "basic_info",
+          "projection_id": "projection_106a7c08bdff66aeb4147035"
+        },
+        {
+          "claim": "The target issuer has been identified as a potential growth stock by a screen based on Louis Navellier's methodology, aligning with eight strict rules and showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity.",
+          "exact_text": "Kinross Gold Corp (NYSE:KGC) Identified by Louis Navellier's Growth Stock Screen Kinross Gold Corp (NYSE:KGC) has been identified as a potential growth stock by a screen based on Louis Navellier's \"The Little Book That Makes You Rich\" methodology. The company aligns with Navellier's eight strict rules, showing strong performance in areas like positive earnings revisions and surprises, increasing sales and EPS growth, expanding operating margins, and high return on equity. While fundamental analysis supports these findings, investors should monitor potential growth deceleration in the coming years.",
+          "kind": "basic_info",
+          "projection_id": "projection_80b4f1b41091a6bd0b420a24"
+        },
+        {
+          "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        },
+        {
+          "claim": "We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      ]
+    },
+    "prediction": {
+      "candidate_judgment": "possible",
+      "confidence": {
+        "level": "low"
+      },
+      "is_surge": true,
+      "key_reasons": [
+        "The target issuer's adjusted close rose from 10.44 on 2025-01-10 to 24.37 on 2025-09-29, a 133.43% return over 180 trading days, showing strong positive momentum that could support further repricing toward the 2x baseline threshold of 47.964.",
+        "UBS raised its price target to $27 from $20 while maintaining a Buy rating, citing the company's strong financial position with $1.1 billion in cash and $2.8 billion in total liquidity, which supports existing operations and new growth projects.",
+        "The company reported record Q2 2025 free cash flow of approximately $650 million and first-half free cash flow over $1 billion, with record operating margins of just over $2,200 per ounce, providing a fundamental basis for potential share price appreciation.",
+        "The company remains on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce, with an annual attributable gold equivalent production of 2.0 million oz between 2025 and 2027 underpinned by significant reserves and resources."
+      ],
+      "magnitude": "2-3x",
+      "session_id": "anonymous-session-id",
+      "uncertainties": [
+        "The 2x baseline threshold of 47.964 requires a 100% gain from the mean adjusted close of 23.982, which is a substantial move over six calendar months.",
+        "The guidance_acceleration signal is neutral, indicating no upward revision in production or cost targets, which may limit the pace of fundamental acceleration.",
+        "The order_confirmation_disclosed signal returned domain_unavailable, meaning visible evidence was insufficient for a canonical conclusion on binding off-take agreements or customer commitments.",
+        "InvestingPro analysis suggests the stock is currently overbought, and the stock has already surged 149.43% over the past year, which may indicate limited near-term upside.",
+        "The company faces potential growth deceleration in the coming years, and there is no explicit forward projection or price target supporting a doubling within the six-month horizon."
+      ]
+    },
+    "self_reflection": {
+      "decision_drivers": [],
+      "ignored_evidence": [],
+      "misleading_signals": [
+        "The guidance_acceleration:v3 interpretation states the Q2 2025 guidance reaffirms the same full-year production and cost targets already stated in Q1 2025, with no upward or downward revision in level, timing, or conviction. Its state value is 'neutral' with confidence 0.8. The original prediction listed the on-track 2 million ounce / $1,120 cost-of-sales / $1,500 AISC guidance as a fundamental basis for appreciation, but the signal itself carries no acceleration."
+      ],
+      "missing_information": [
+        "order_confirmation_disclosed:v2 has execution.status='domain_unavailable' with coverage 'unavailable' and value 'unavailable'. Per the interpretation, this is a normal domain coverage outcome: visible evidence was insufficient for a canonical conclusion, and it is not evidence that the measured condition is absent. It is also not a technical execution gap. The original prediction correctly flagged this as an uncertainty but still leaned to a possible surge."
+      ],
+      "plan_issues": [
+        "The prediction-time baseline mean adjusted close was 23.982 (recent close 24.37 on 2025-09-29), so the doubling threshold was 47.964. The original prediction itself noted InvestingPro flagged the stock as overbought after a 149.43% one-year change and that no explicit forward projection or price target supported a doubling, yet still returned 'possible' surge. Action: when a surge call is made, require (a) a stated forward path or catalyst sequence that could plausibly reach the doubling threshold within the horizon, and (b) explicit recording of the strongest counter-evidence (overbought conditions, prior-year run-up, growth-deceleration risk). This is an optional analytical discipline, not a mandatory price-proof gate, and it does not by itself determine the binary judgment."
+      ],
+      "prediction_outcome": {
+        "correct": false
+      },
+      "reflection_items": [
+        {
+          "brief": "The 'possible surge' call was a binary false positive: the stock did not double within the six-month horizon.",
+          "category": "why_prediction_failed",
+          "counter_refs": [],
+          "detail": "The prediction labeled the outcome a surge (is_surge=true) with a 2-3x magnitude. The revealed ground truth is is_surge=false with realized_max_multiple=1.5662, i.e. a maximum five-complete-trading-day adjusted-close mean of about 1.57x the prediction-time baseline mean of 23.982, well below the 47.964 doubling threshold. The binary direction call was wrong.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:af798d23a24432cc09678bebff486e4b81d86a2678e94ea318a07718a42835a4",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "A single realized outcome does not establish the ex-ante probability of the surge class.",
+            "The realized multiple is a maximum-of-window statistic, not a terminal return."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": false,
+              "source_ref": "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+            }
+          ],
+          "owner_ref": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b",
+          "scope": {
+            "case_refs": [
+              "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+            ],
+            "conditions": "Index when reviewing a surge/non-surge binary call on this case where the realized maximum multiple stayed below the doubling threshold.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+          ]
+        },
+        {
+          "brief": "The cited guidance_acceleration signal was neutral, not an accelerating catalyst, yet it appeared among the surge-supporting reasons.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "detail": "The guidance_acceleration:v3 interpretation states the Q2 2025 guidance reaffirms the same full-year production and cost targets already stated in Q1 2025, with no upward or downward revision in level, timing, or conviction. Its state value is 'neutral' with confidence 0.8. The original prediction listed the on-track 2 million ounce / $1,120 cost-of-sales / $1,500 AISC guidance as a fundamental basis for appreciation, but the signal itself carries no acceleration.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:a215f109b0ada63fc7454fea640dd70970cd8e8fc3cda90cd92035c5aa7db2b4",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "A neutral guidance signal does not by itself rule out a surge; it only removes one claimed accelerant.",
+            "The signal measures guidance revision direction, not gold price or margin outcomes."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b",
+          "scope": {
+            "case_refs": [
+              "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+            ],
+            "conditions": "Index when a reaffirmed (unchanged) guidance item is being counted as positive momentum for a surge call.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+          ]
+        },
+        {
+          "brief": "The order_confirmation_disclosed signal returned domain_unavailable, so no canonical conclusion on binding off-take or customer commitments was available.",
+          "category": "missing_information",
+          "counter_refs": [],
+          "detail": "order_confirmation_disclosed:v2 has execution.status='domain_unavailable' with coverage 'unavailable' and value 'unavailable'. Per the interpretation, this is a normal domain coverage outcome: visible evidence was insufficient for a canonical conclusion, and it is not evidence that the measured condition is absent. It is also not a technical execution gap. The original prediction correctly flagged this as an uncertainty but still leaned to a possible surge.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:ffe799fc5c0f1c3f1af41a3d27f94fc280b4960b5d2cd5bf7d341db81d56ccd6",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "domain_unavailable does not prove that off-take agreements or customer commitments are absent.",
+            "No validated domain result was produced, so this cannot be scored as a factor prediction failure."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b",
+          "scope": {
+            "case_refs": [
+              "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+            ],
+            "conditions": "Index when a surge call rests partly on revenue-visibility items whose signal coverage is unavailable rather than confirmed.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+          ]
+        },
+        {
+          "brief": "For future surge calls on this case, require the surge case to state a concrete forward path to the 47.964 doubling threshold and to record the overbought/valuation counter-evidence alongside it.",
+          "category": "plan_issues",
+          "counter_refs": [],
+          "detail": "The prediction-time baseline mean adjusted close was 23.982 (recent close 24.37 on 2025-09-29), so the doubling threshold was 47.964. The original prediction itself noted InvestingPro flagged the stock as overbought after a 149.43% one-year change and that no explicit forward projection or price target supported a doubling, yet still returned 'possible' surge. Action: when a surge call is made, require (a) a stated forward path or catalyst sequence that could plausibly reach the doubling threshold within the horizon, and (b) explicit recording of the strongest counter-evidence (overbought conditions, prior-year run-up, growth-deceleration risk). This is an optional analytical discipline, not a mandatory price-proof gate, and it does not by itself determine the binary judgment.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:d051fd3676863d42909119e7a5c625fe30608ce4011f9748ec5300ca8e2f0e2c",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "Requiring a forward path is a process discipline; it does not guarantee correct binary classification.",
+            "The overbought and growth-deceleration observations are third-party commentary, not validated causal factors.",
+            "This action must not be treated as a binding price-proof condition for a positive judgment."
+          ],
+          "outcome_claims": [],
+          "owner_ref": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b",
+          "scope": {
+            "case_refs": [
+              "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+            ],
+            "conditions": "Index when preparing a surge/non-surge judgment on this case and deciding how much forward-path and counter-evidence documentation to require.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:1da022b69ff1e53b4a45fbc5840755f95b0c5109e1c1d64d99312ee02915ffa5"
+          ]
+        }
+      ],
+      "source_identity": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b",
+      "source_snapshot": {
+        "candidate_judgment_feedback": {
+          "assessment": "false_positive",
+          "binary_correct": false,
+          "candidate_judgment": "possible",
+          "predicted_binary_label": "surge",
+          "reflection_guidance": "The possible judgment was a false positive; identify speculative or noisy positive evidence and counter-evidence that should have constrained it.",
+          "true_binary_label": "non_surge"
+        },
+        "magnitude_feedback": {
+          "error_kind": "not_applicable",
+          "magnitude_applicable": false,
+          "magnitude_correct": false,
+          "ordinal_distance": null,
+          "predicted_magnitude": "2-3x",
+          "true_magnitude": null
+        },
+        "source_identity": "case:838f443e003b9ec80a51e1386a54c821b0e172879860883583fb1f7ec0ee3f0b"
+      },
+      "why_prediction_failed": [
+        "The prediction labeled the outcome a surge (is_surge=true) with a 2-3x magnitude. The revealed ground truth is is_surge=false with realized_max_multiple=1.5662, i.e. a maximum five-complete-trading-day adjusted-close mean of about 1.57x the prediction-time baseline mean of 23.982, well below the 47.964 doubling threshold. The binary direction call was wrong."
+      ]
+    }
+  },
+  "bumble_owning_validator_and_fallback_replay": {
+    "external_calls": 0,
+    "scope": "owning production validators/fallback, not full transport or live controller",
+    "plans": {
+      "plan_r0001_c01": {
+        "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c01/cik_0001830043:20250930.json",
+        "trajectory_file_sha256": "5caf80fa6fcd8bdbf99f32753e01b16a8717d036180f47e967e1b69a02edeb39",
+        "attempt_id": 19,
+        "original_contract_exact_match": true,
+        "persisted_wrong_scope_state_full_validator_accepted": true,
+        "actual_need": "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?",
+        "actual_selection": {
+          "signal_ref": "guidance_acceleration:v3",
+          "reason_code": "answer_need",
+          "selection_reason": "Directly addresses the need for management's Q3 or full-year 2025 revenue, profitability, or cash flow guidance and key assumptions.",
+          "applicability_hypothesis": "If management's fresh guidance materially strengthens the growth path versus prior guidance, it could signal a positive repricing within six months.",
+          "expected_role": "primary",
+          "context_tags": [
+            "catalyst_window",
+            "mid_cap"
+          ],
+          "target_need_indices": [
+            4
+          ],
+          "answer_scope": "full",
+          "residual_need": null
+        },
+        "guidance_result": {
+          "signal_id": "guidance_acceleration",
+          "version": 3,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "sec:cik_0001830043:000119312525146199",
+                "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+                "timestamp": "2025-06-25T12:20:35+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "execution": {
+            "status": "success"
+          }
+        },
+        "preserve_unanswered_counterfactual": {
+          "hypotheses": [
+            "If the issuer's restructuring and AI-driven product initiatives produce measurable paying-user stabilization or revenue growth by the horizon end, then the adjusted share price could re-rate toward the doubling threshold; otherwise, continued user declines and impairment charges will keep the stock depressed.",
+            "If the issuer discloses new commercial partnerships, AI feature monetization, or cost savings from the workforce reduction that exceed current expectations, then the expectation gap could close and drive a sharp repricing within six months.",
+            "If the issuer's Q3 2025 results show further paying-user declines or revenue contraction, then the stock may remain below the doubling threshold, as the market continues to price in weak demand and execution risk."
+          ],
+          "current_beliefs": [
+            "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+            "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+            "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+            "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+            "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+            "net_share_retirement_yoy=0.181749"
+          ],
+          "supporting_evidence": [
+            {
+              "kind": "basic_info",
+              "claim": "The issuer disclosed a plan to implement a global workforce reduction and restructuring of its operations, with forward-looking statements flagging execution and timing risks.",
+              "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+              "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated"
+            },
+            {
+              "kind": "basic_info",
+              "claim": "A third-party investigation report cited an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, pointing to demand and sentiment pressure.",
+              "projection_id": "projection_0a39f87989579f9ee66e27d7",
+              "exact_text": "This investigation comes after Bumble reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. Bumble's stock fell 15.94% after the announcement."
+            },
+            {
+              "kind": "basic_info",
+              "claim": "The issuer's management commentary emphasized a clear and focused strategy and investments in AI and product technology, but the visible transcript excerpt does not quantify adoption or monetization.",
+              "projection_id": "projection_029e0f859b8e8372134fe18b",
+              "exact_text": "Hello, everyone, and thank you for joining us today. I’m excited to be back leading Bumble. We’re moving fast with a clear and focused strategy. It has been really exciting to see the energy the team has around what we are building and t"
+            },
+            {
+              "kind": "basic_info",
+              "claim": "The issuer's Class A common stock had 103,951,845 shares issued and outstanding as of June 30, 2025, down from 107,107,632 as of December 31, 2024, indicating share count reduction.",
+              "projection_id": "projection_d5f65227c7db9101b4c0ccc8",
+              "exact_text": "Class A common stock (par value $ 0.01 per share, 6,000,000,000 shares authorized; 103,951,845 shares issued and outstanding as of June 30, 2025; 107,107,632 shares issued and outstanding as of December 31, 2024) 1,040 1,071"
+            },
+            {
+              "kind": "signal",
+              "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+              "signal_ref": "guidance_acceleration:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            },
+            {
+              "kind": "signal",
+              "claim": "net_share_retirement_yoy=0.181749",
+              "signal_ref": "net_share_retirement_yoy:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            },
+            {
+              "kind": "signal",
+              "claim": "net_share_retirement_yoy=0.181749",
+              "signal_ref": "net_share_retirement_yoy:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 1
+            },
+            {
+              "kind": "signal",
+              "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+              "signal_ref": "guidance_acceleration:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "contradictions": [],
+          "resolved_questions": [],
+          "open_questions": [],
+          "next_information_needs": [
+            "What specific cost savings or operational benefits does the issuer expect from the global workforce reduction and restructuring, and by what date does it expect to realize them?",
+            "What are the latest disclosed trends in total paying users and average revenue per paying user for the most recent quarter, and how do they compare to prior periods?",
+            "Has the issuer announced any new commercial partnerships, AI product monetization milestones, or material contracts that could drive revenue growth within the next six months?",
+            "What is the issuer's current share repurchase authorization or any disclosed plans to reduce share count further, and how might that affect the share price?",
+            "Are there any disclosed regulatory, legal, or competitive developments that could materially affect the issuer's business or stock price within the next six months?",
+            "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?"
+          ],
+          "decision": "finalize"
+        },
+        "counterfactual_errors": [
+          {
+            "returned_path": "next_information_needs[5]",
+            "prior_state_path": "next_information_needs[4]",
+            "value": "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?",
+            "signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "issue": "targeted need remained byte-for-byte",
+            "required_action": "remove_exact_target"
+          }
+        ],
+        "typed_issue": {
+          "code": "research_need_transition_invalid",
+          "message": "research_controller_reflect violated the supplied need transition contract: {'returned_path': 'next_information_needs[5]', 'prior_state_path': 'next_information_needs[4]', 'value': 'What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?', 'signal_refs': ['guidance_acceleration:v3'], 'issue': 'targeted need remained byte-for-byte', 'required_action': 'remove_exact_target'}. Preserve every untargeted prior need exactly",
+          "paths": [
+            "next_information_needs[5]"
+          ],
+          "severity": "error",
+          "retryability": "correctable",
+          "path_policy": "all",
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "dependent_paths": [],
+          "source_refs": [],
+          "repair_context": {
+            "write_scope_complete": false,
+            "returned_path": "next_information_needs[5]",
+            "prior_state_path": "next_information_needs[4]",
+            "prior_need": "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?",
+            "required_action": "remove_exact_target",
+            "required_need": null,
+            "required_need_occurrences": null,
+            "returned_need": "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?"
+          }
+        },
+        "deterministic_fallback_removed_unanswered_need": true,
+        "fallback_metadata": {
+          "source_substitution_paths": [
+            "next_information_needs"
+          ],
+          "removed_paths": []
+        },
+        "fallback_result_full_validator_accepted": true
+      },
+      "plan_r0001_c02": {
+        "trajectory_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/experiments/trajectories/plan_r0001_c02/cik_0001830043:20250930.json",
+        "trajectory_file_sha256": "175a5f62cf3812ad8afd9a8ffd17a2aa1b0fbdcc407712060fa55c8e81c96bc0",
+        "attempt_id": 257,
+        "original_contract_exact_match": true,
+        "persisted_wrong_scope_state_full_validator_accepted": true,
+        "actual_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+        "actual_selection": {
+          "signal_ref": "guidance_acceleration:v3",
+          "reason_code": "answer_need",
+          "selection_reason": "Directly addresses the issuer's Q3 2025 revenue and adjusted EBITDA outlook and whether prior guidance was reaffirmed or revised.",
+          "applicability_hypothesis": "Fresh management guidance on the Q3 2025 outlook can indicate whether the prior range was reaffirmed or revised, informing the revenue trajectory.",
+          "expected_role": "primary",
+          "context_tags": [
+            "catalyst_window",
+            "mid_cap"
+          ],
+          "target_need_indices": [
+            2
+          ],
+          "answer_scope": "full",
+          "residual_need": null
+        },
+        "guidance_result": {
+          "signal_id": "guidance_acceleration",
+          "version": 3,
+          "state": {
+            "value": "neutral",
+            "confidence": 0.5
+          },
+          "interpretation": {
+            "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+          },
+          "evidence": {
+            "supporting": [
+              {
+                "document_id": "sec:cik_0001830043:000119312525146199",
+                "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+                "timestamp": "2025-06-25T12:20:35+00:00"
+              }
+            ],
+            "counter": []
+          },
+          "status": {
+            "coverage": "partial"
+          },
+          "execution": {
+            "status": "success"
+          }
+        },
+        "preserve_unanswered_counterfactual": {
+          "hypotheses": [
+            "The issuer is not positioned for a six-calendar-month adjusted-share-price doubling because its own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, and no visible evidence shows a commercial inflection large enough to reverse that trajectory.",
+            "If the issuer's AI-driven matching and verification initiatives produce measurable member-quality and engagement improvements before the horizon end, the market could re-rate the stock upward, but the visible evidence does not yet quantify adoption or retention gains sufficient to support a doubling.",
+            "The most likely path to a doubling would require a new, source-backed catalyst such as a binding commercial partnership, a material upward guidance revision, or evidence of accelerating payer growth, none of which is visible in the supplied Basic Info."
+          ],
+          "current_beliefs": [
+            "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+            "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+            "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale.",
+            "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price.",
+            "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million."
+          ],
+          "supporting_evidence": [
+            {
+              "kind": "basic_info",
+              "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+              "projection_id": "projection_0a39f87989579f9ee66e27d7",
+              "exact_text": "This investigation comes after Bumble reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. Bumble's stock fell 15.94% after the announcement."
+            },
+            {
+              "kind": "basic_info",
+              "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+              "projection_id": "projection_4a50091b38550fa1aacfeac0",
+              "exact_text": "Bumble Inc. (BMBL) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for Bumble, which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend."
+            },
+            {
+              "kind": "signal",
+              "claim": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+              "signal_ref": "guidance_acceleration:v3",
+              "evidence_group": "supporting",
+              "evidence_index": 0
+            }
+          ],
+          "contradictions": [],
+          "resolved_questions": [],
+          "open_questions": [],
+          "next_information_needs": [
+            "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+            "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+            "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+            "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+            "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?",
+            "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?"
+          ],
+          "decision": "finalize"
+        },
+        "counterfactual_errors": [
+          {
+            "returned_path": "next_information_needs[5]",
+            "prior_state_path": "next_information_needs[2]",
+            "value": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+            "signal_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "issue": "targeted need remained byte-for-byte",
+            "required_action": "remove_exact_target"
+          }
+        ],
+        "typed_issue": {
+          "code": "research_need_transition_invalid",
+          "message": "research_controller_reflect violated the supplied need transition contract: {'returned_path': 'next_information_needs[5]', 'prior_state_path': 'next_information_needs[2]', 'value': 'What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?', 'signal_refs': ['guidance_acceleration:v3'], 'issue': 'targeted need remained byte-for-byte', 'required_action': 'remove_exact_target'}. Preserve every untargeted prior need exactly",
+          "paths": [
+            "next_information_needs[5]"
+          ],
+          "severity": "error",
+          "retryability": "correctable",
+          "path_policy": "all",
+          "allowed_repairs": [
+            "replace",
+            "remove",
+            "add"
+          ],
+          "dependent_paths": [],
+          "source_refs": [],
+          "repair_context": {
+            "write_scope_complete": false,
+            "returned_path": "next_information_needs[5]",
+            "prior_state_path": "next_information_needs[2]",
+            "prior_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+            "required_action": "remove_exact_target",
+            "required_need": null,
+            "required_need_occurrences": null,
+            "returned_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?"
+          }
+        },
+        "deterministic_fallback_removed_unanswered_need": true,
+        "fallback_metadata": {
+          "source_substitution_paths": [
+            "next_information_needs"
+          ],
+          "removed_paths": []
+        },
+        "fallback_result_full_validator_accepted": true
+      }
+    },
+    "counterexamples": [
+      {
+        "script_authored_probe": true,
+        "result_coverage": "partial",
+        "routing_answer_scope": "full",
+        "emitted_action": {
+          "signal_ref": "guidance_acceleration:v3",
+          "answer_scope": "full",
+          "residual_need": null
+        }
+      },
+      {
+        "script_authored_probe": true,
+        "result_coverage": "partial",
+        "routing_answer_scope": "partial",
+        "emitted_action": {
+          "signal_ref": "guidance_acceleration:v3",
+          "answer_scope": "partial",
+          "residual_need": "What are the key assumptions?"
+        }
+      },
+      {
+        "script_authored_probe": true,
+        "result_coverage": "sufficient",
+        "routing_answer_scope": "full",
+        "emitted_action": {
+          "signal_ref": "guidance_acceleration:v3",
+          "answer_scope": "full",
+          "residual_need": null
+        }
+      },
+      {
+        "script_authored_probe": true,
+        "result_coverage": "sufficient",
+        "routing_answer_scope": "partial",
+        "emitted_action": {
+          "signal_ref": "guidance_acceleration:v3",
+          "answer_scope": "partial",
+          "residual_need": "What are the key assumptions?"
+        }
+      }
+    ]
+  },
+  "frozen_and_current_complete_contract_diagnostic_equal": true,
+  "kinross_production_runner_replay": {
+    "external_calls": 0,
+    "scripted_calls": 2,
+    "complete_canonical_result_exact_match": true,
+    "initial_and_correction_projection_ids_exact_match": true,
+    "verified_source_files": [
+      {
+        "sha256": "1e548ac54d38a9c4a38a6763410bda767f57d2c23a47f207ad051527f397289d",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b.json"
+      },
+      {
+        "sha256": "764e4d75432a1e94414ab848598da741fca4ed6502d7c10aaeeee3172dffee13",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0000701818/alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665.json"
+      },
+      {
+        "sha256": "9423608633732a0e2c1704c9e3aa2fb69e79784d2de3d0d0e3a2208e8c3e3c48",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925070924.json"
+      },
+      {
+        "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json"
+      },
+      {
+        "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json"
+      },
+      {
+        "sha256": "f7542ba6afff76756859ff0ee7243a62e9d0052a91a6d48ec2c7bf69da5342c0",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925075920.json"
+      },
+      {
+        "sha256": "73980efdb2035e23f4a5cc8b7a947020a3e93a269361fbe78fa27b15064d4b86",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925088119.json"
+      },
+      {
+        "sha256": "275ff16e7ae96ac6eeb851e37a3764334f5e8066da0f3c1192c8b2ad8471294f",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925089044.json"
+      },
+      {
+        "sha256": "b775491ea67ad134060b6b20155cc710cf087fdd1e0776a21c3f1bc5c9bb7948",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925092747.json"
+      },
+      {
+        "sha256": "2ca77f26ac9807ad08434eb253456907183013f02e3e3a680cc0ed430529fca5",
+        "source_path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925093824.json"
+      }
+    ],
+    "result": {
+      "signal_id": "guidance_acceleration",
+      "version": 3,
+      "state": {
+        "value": "neutral",
+        "confidence": 0.8
+      },
+      "interpretation": {
+        "summary": "Current Q2 2025 guidance reaffirms the same full-year production and cost targets (2 million ounces at $1,120/oz cost of sales and $1,500/oz AISC) that were already stated in the prior Q1 2025 guidance. No upward or downward revision in level, timing, or conviction is visible; the language is a reaffirmation of existing targets rather than a material strengthening of the growth path."
+      },
+      "evidence": {
+        "supporting": [
+          {
+            "document_id": "alpha_vantage:cik_0000701818:earnings_call:b4cdd180de023800dac85665",
+            "exact_span": "Turning to our guidance. Following the first half, we remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining cost of $1,500 per ounce.",
+            "timestamp": "2025-07-31T00:00:00+00:00"
+          },
+          {
+            "document_id": "alpha_vantage:cik_0000701818:earnings_call:2761f139f195f3fb785c442b",
+            "exact_span": "Turning to our guidance. We remain solidly on track to produce 2 million ounces at a cost of sales of $1,120 per ounce and all-in sustaining costs of $1,500 per ounce.",
+            "timestamp": "2025-05-07T00:00:00+00:00"
+          }
+        ],
+        "counter": []
+      },
+      "status": {
+        "coverage": "sufficient"
+      },
+      "execution": {
+        "status": "success"
+      }
+    },
+    "usage": {
+      "llm_calls": 2,
+      "tokens": 10,
+      "cost": 0.02
+    },
+    "limitations": [
+      "Actual native outputs are fed to the production runner over exact canonical sources; model identity masking and provider transport are not replayed.",
+      "No economic direction, date policy or historical result is rewritten."
+    ]
+  },
+  "frozen_and_current_complete_runner_diagnostic_equal": true,
+  "reproduction_scripts": {
+    "answer_scope": "\"\"\"Replay owning need validators with immutable Bumble trajectories; no model I/O.\"\"\"\nimport json, hashlib\nfrom pathlib import Path\nfrom dataclasses import replace\nfrom stock_opportunity_agent.research.evolution_core import ResearchState, SignalRound\nfrom stock_opportunity_agent.research.evolution_research_validation import (\n _reflection_need_transition_contract, _validate_research_state_refs,\n _targeted_answer_need_transition_errors, _signal_result_has_adoptable_evidence,\n _need_transition_validation_issue,\n)\nfrom stock_opportunity_agent.research.evolution_output_validation import (\n StructuredValidationError, _research_need_transition_fallback,\n)\nfrom stock_opportunity_agent.signal_library import SignalCoverage\nROOT=Path('/Users/l/Project/Recommandation'); RUN=ROOT/'runs/cold_start/minimal_rounds_v182_integrated'\ncalls={c['attempt_id']:c for c in json.loads(Path('/tmp/v182-terminal-calls.json').read_text())}\nout={ 'external_calls':0, 'scope':'owning production validators/fallback, not full transport or live controller', 'plans':{}, 'counterexamples':[] }\nfor plan,attempt in [('plan_r0001_c01',19),('plan_r0001_c02',257)]:\n path=RUN/'experiments/trajectories'/plan/'cik_0001830043:20250930.json'\n raw=json.loads(path.read_text())['trajectory']; previous=ResearchState.from_dict(raw['initial_state']); current=ResearchState.from_dict(raw['final_state']); round_=SignalRound.from_dict(raw['signal_rounds'][0]); selections=round_.selections; batch=round_.batch\n context=calls[attempt]['payload']['evaluation_context']\n contract=_reflection_need_transition_contract(previous,selections,batch,evaluation_context=context)\n assert contract==calls[attempt]['payload']['need_transition_contract']\n validated=_validate_research_state_refs(current,phase='reflect',previous_state=previous,batch=batch,selections=selections,evaluation_context=context)\n assert validated.to_dict()==current.to_dict()\n selection=next(x for x in selections if x.signal_ref=='guidance_acceleration:v3'); index=selection.target_need_indices[0]; need=previous.next_information_needs[index]\n # Scripted counterfactual: preserve the unanswered demand; remove its false resolved marker only.\n retained=replace(current,next_information_needs=current.next_information_needs+(need,),resolved_questions=tuple(x for x in current.resolved_questions if x!=need))\n available={x.ref for x in batch.results if _signal_result_has_adoptable_evidence(x)}\n adopted={str(x.signal_ref) for x in current.supporting_evidence if x.kind=='signal'}\n errors=_targeted_answer_need_transition_errors(previous,retained,selections,adopted,available,evaluation_context=context)\n assert len(errors)==1 and errors[0]['required_action']=='remove_exact_target'\n issue=_need_transition_validation_issue(errors[0],retained)\n repaired=_research_need_transition_fallback(retained.to_dict(),StructuredValidationError([issue]))\n assert repaired and need not in repaired[0]['next_information_needs']\n restored=ResearchState.from_dict(repaired[0]);_validate_research_state_refs(restored,phase='reflect',previous_state=previous,batch=batch,selections=selections,evaluation_context=context)\n result=next(x for x in batch.results if x.ref==selection.signal_ref)\n out['plans'][plan]={'trajectory_path':str(path),'trajectory_file_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'attempt_id':attempt,'original_contract_exact_match':True,'persisted_wrong_scope_state_full_validator_accepted':True,'actual_need':need,'actual_selection':selection.to_dict(),'guidance_result':result.to_dict(),'preserve_unanswered_counterfactual':retained.to_dict(),'counterfactual_errors':errors,'typed_issue':issue.to_dict(),'deterministic_fallback_removed_unanswered_need':True,'fallback_metadata':repaired[1],'fallback_result_full_validator_accepted':True}\n# Coverage and question completeness are independent. These are script-authored probes,\n# not economic answers or observations from v182.\nbase=next(x for x in round_.selections if x.signal_ref=='guidance_acceleration:v3')\nresult=next(x for x in round_.batch.results if x.ref==base.signal_ref)\nfor coverage in [SignalCoverage.PARTIAL,SignalCoverage.SUFFICIENT]:\n r=replace(result,coverage=coverage); b=replace(round_.batch,results=(r,),signal_calls=1)\n for scope in ['full','partial']:\n  s=replace(base,target_need_indices=(0,),answer_scope=scope,residual_need='What are the key assumptions?' if scope=='partial' else None)\n  state=ResearchState(next_information_needs=('What guidance and key assumptions were disclosed?',))\n  action=_reflection_need_transition_contract(state,(s,),b)['need_rules'][0]['available_answer_actions'][0]\n  assert action['answer_scope']==scope\n  out['counterexamples'].append({'script_authored_probe':True,'result_coverage':coverage.value,'routing_answer_scope':scope,'emitted_action':action})\nprint(json.dumps({'plans':len(out['plans']),'exact_contracts':True,'persisted_states_accepted':True,'preservation_forces_delete':True,'coverage_scope_probes':len(out['counterexamples']),'external_calls':0}))\nPath('/tmp/v182-answer-scope-contract-replay.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\\n')\n",
+    "kinross_correction": "\"\"\"Replay one real Signal extraction/correction pair over frozen canonical sources.\"\"\"\nimport json,hashlib\nfrom dataclasses import asdict\nfrom pathlib import Path\nfrom datetime import datetime\nfrom tests.evolution_runtime_test_support import ScriptedRoleCaller\nfrom stock_opportunity_agent.data.raw_info import RawInfoDocument\nfrom stock_opportunity_agent.research.evolution_signal_roles import StructuredLLMSignalRunner\nfrom stock_opportunity_agent.signal_library import SignalSpec,LLMSignalBatchInput\nROOT=Path('/Users/l/Project/Recommandation');RUN=ROOT/'runs/cold_start/minimal_rounds_v182_integrated'\nc={x['attempt_id']:x for x in json.loads(Path('/tmp/v182-terminal-calls.json').read_text())}\npayload=c[264]['payload'];specrow=payload['signals'][0]; hashes=[]\nfor p in payload['source_projection']:\n if p['content_hash'] not in hashes:hashes.append(p['content_hash'])\nmanifest=json.loads((RUN/'input_manifest.json').read_text());byhash={};sources=[]\nfor s in manifest['source_files']:\n if '/cik_0000701818/' not in s['source_path']:continue\n path=Path(s['source_path']);d=json.loads(path.read_text())\n if d.get('content_hash') in hashes:\n  assert hashlib.sha256(path.read_bytes()).hexdigest()==s['sha256']\n  doc=RawInfoDocument.from_dict(d); byhash[doc.content_hash]=doc;sources.append(s)\nassert set(byhash)==set(hashes)\ncaller=ScriptedRoleCaller([c[264]['output'],c[265]['output']]); runner=StructuredLLMSignalRunner(caller)\nvalue,usage=runner.execute(SignalSpec.from_dict(specrow['signal_spec']),tuple(byhash[h] for h in hashes),specrow['skill'],datetime.fromisoformat(payload['as_of']))\nexpected=next(x for x in json.loads((RUN/'experiments/trajectories/plan_r0001_c02/cik_0000701818:20250930.json').read_text())['trajectory']['signal_rounds'][0]['batch']['results'] if x['signal_id']=='guidance_acceleration')\n# Native request uses anonymous target names while this local caller uses original\n# canonical bodies; do not claim wire equality or provider execution.\nassert value.to_dict()==expected,(value.to_dict(),expected)\nassert len(caller.calls)==2\nfor call,num in zip(caller.calls,[264,265]):\n assert [x['projection_id'] for x in call['payload']['source_projection']]==[x['projection_id'] for x in c[num]['payload']['source_projection']]\noutput={'external_calls':0,'scripted_calls':len(caller.calls),'complete_canonical_result_exact_match':True,'initial_and_correction_projection_ids_exact_match':True,'verified_source_files':sources,'result':value.to_dict(),'usage':asdict(usage),'limitations':['Actual native outputs are fed to the production runner over exact canonical sources; model identity masking and provider transport are not replayed.','No economic direction, date policy or historical result is rewritten.']}\nPath('/tmp/v182-kinross-guidance-correction-replay.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\\n')\nprint(json.dumps({k:output[k] for k in ['external_calls','scripted_calls','complete_canonical_result_exact_match','initial_and_correction_projection_ids_exact_match']}))\n"
+  },
+  "findings": [
+    {
+      "id": "C1",
+      "status": "confirmed_contract_defect",
+      "evidence": "Both Bumble persisted states and original need contracts are accepted by current and frozen production validators. A diagnostic copy that retains the unanswered need and removes only its false resolved marker is rejected with remove_exact_target. The owning typed fallback deletes that retained demand; the merged result passes the full validator.",
+      "limits": "Counterfactual states are scripted diagnostics, never historical or new live observations. Evidence-adoption/availability is established; semantic completeness is not."
+    },
+    {
+      "id": "C2",
+      "status": "ancestor_contract_constraint",
+      "evidence": "scheme_evolution.md and evolution_runtime.md explicitly bind post-execution removal/replacement to pre-execution selector answer_scope/residual. evolution_research_validation.md repeats the occurrence-aware obligation. The fixed Reflect prompt and owning fallback implement it consistently.",
+      "implication": "Leaf-only relaxation would diverge from the present higher contract. No runtime/spec/schema is changed in this review."
+    },
+    {
+      "id": "C3",
+      "status": "confirmed_successful_native_correction_counterexample",
+      "evidence": "Kinross264 clips the third citation at the window edge ending $1,. Original265 receives a new complete interior window and replaces the source set with explicit Q2 and Q1 full-year production/cost guidance. Production runner consumes those exact original two outputs, generates identical initial/correction projection IDs and returns the complete persisted success/neutral/sufficient canonical result in both revisions.",
+      "limits": "Canonical bodies are replayed; anonymous masking/HTTP and new model compliance are not. Other quote-correction failures remain formal failures."
+    },
+    {
+      "id": "C4",
+      "status": "semantic_review_open",
+      "evidence": "Kinross267 adopts full-year 2025 targets and resolves a need asking for the next six months at cutoff 2025-09-30. The cited sources describe 2025, including approximately 500,000 ounces in each remaining quarter.",
+      "limits": "This does not prove missing 2026 company guidance or require a fabricated six-month forecast. Scope/actual knowledge completeness must be authored and checked; sufficient measurement coverage alone is insufficient proof."
+    },
+    {
+      "id": "C5",
+      "status": "learning_attribution_review_open",
+      "evidence": "Predictor268 cites the absolute production/cost level and strong margins as supporting context while explicitly calling guidance_acceleration neutral. Posthoc269 labels its use misleading because it is not an accelerating catalyst.",
+      "limits": "Neutral revision direction does not make the underlying level useless; the original reason does not explicitly assert raised guidance. This is a questionable attribution, not a proven cause of the binary false positive. Other posthoc items correctly preserve domain_unavailable and mark momentum causation as hypothesis."
+    }
+  ],
+  "concrete_proposal_not_applied": {
+    "contract_change": "Keep Routing scope as prospective intent. At Reflect, author an actual per-target disposition full/partial/unanswered supported by exact adopted evidence tuples; preserve unresolved demand when execution does not answer the anticipated scope. Use existing bounded exchange and snapshot-bound repair, retaining the immutable Routing record.",
+    "top_down_owners": [
+      "spec/src/stock_opportunity_agent/research/scheme_evolution.md",
+      "spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "spec/src/stock_opportunity_agent/research/evolution_research_validation.md"
+    ],
+    "interfaces_needing_review": "Exact placement and persistence of the new answer-disposition metadata must be approved before implementation; no new canonical fields or cross-module dependency is silently introduced.",
+    "validator_responsibility": "Validate stable need occurrence ownership, admitted exact evidence identity, residual bounded by target/PIT, typed repair authority, and final state consistency. Do not pretend literal identity proves semantic completeness.",
+    "counterexamples": [
+      "A partial Signal comparison may fully answer a narrow factual need.",
+      "A sufficient measurement may answer only one period or facet of a compound need.",
+      "Neutral revision evidence can contain useful absolute levels.",
+      "Unavailable and technical failure remain distinct and cannot resolve a demand.",
+      "Full or partial adoption cannot remove untargeted duplicate occurrences.",
+      "Historical disclosure of a forecast is admissible; do not require future realized values."
+    ],
+    "acceptance": "First update approved higher contracts, then initial prompt/output parsing, validator, correction permissions, deterministic fallback, preserved stage products, final Predictor assembly, posthoc and higher/next-cycle consumers. Replay exact old requests and meaningful counterexamples; no claim of semantic repair or benefit before real authorized observations."
+  },
+  "fresh_terminal": {
+    "exit_code": 0,
+    "finished_at": "2026-10-06T21:59:30.527295+00:00",
+    "last_completed_round": 1,
+    "last_completed_cycle": 1,
+    "frozen_tracked_clean": true
+  },
+  "goal_service_snapshot": {
+    "observed_at": "2026-10-07T03:41:36Z",
+    "status": "usageLimited",
+    "tokensUsed": 6011233,
+    "timeUsedSeconds": 36662,
+    "human_or_automation_cannot_infer_ACTIVE_from_old_prompt": true,
+    "no_goal_status_update_attempted": true
+  },
+  "validation": {
+    "zero_external_calls": true,
+    "owning_need_validator_fallback_replay": "PASS",
+    "frozen_current_diagnostic_equality": "PASS",
+    "real_guidance_runner_correction_canonical_equality": "PASS",
+    "original_source_request_response_binding": "PASS",
+    "runtime_or_spec_changed": false,
+    "unit_suite": "not rerun for report-only change",
+    "repository_lint": "PASS; final .lint-feedback/pre-push-last.log timestamp_utc 2026-10-07T03:44:45Z read"
+  },
+  "limitations": [
+    "Kinross full pair, all selector cards, remaining source windows and higher/next-cycle consumption have not completed personal review. Four prior full case evidence/output chains are reviewed; 44 remain.",
+    "Two exact source hashes and literal checks do not independently validate transcript publication clocks; the PIT policy question remains unanswered.",
+    "No source migration, oracle edit, new manifest, paid model call, v182 restart, scoring change or independent benefit experiment.",
+    "New magnitude publication, exact-version successor use, high-magnitude expansion and independent benefit remain unaccepted."
+  ]
+}
