@@ -322,3 +322,5 @@
 - 2026-10-07（Bumble双Plan/未来来源）：咨询 live-evolution-context-audit、self-evolution-convergence-and-acceptance、historical-news-backfill-boundaries。逐份绑定 wire/cache/trajectory，区分 Signal 读窗缺失、runtime 错误 full-answer 授权及 compact 反思丢比较依据；原始 provider time/body 冲突生产复现后才确认未来输入，不凭 URL/年份或无引用判断有效性。三 visit_times 各加1并同步 GUIDE；来源时间/独立评估仍待选择，未做迁移/后继。
 
 - 2026-10-07：实际回答范围/反馈合同复核，咨询 incremental-repair-and-sourced-memory（56→57）与 self-evolution-convergence-and-acceptance（60→61）；按复盘核对祖先合同、真实 normal prompt、validator、typed fallback 和保存结果。Bumble 保留未决需求反而被要求删除；Kinross 原纠错是成功反例。只做报告及冻结/main 零外部回放，不把合法引用/neutral 当完整回答或因果证明；goal 服务新鲜 usageLimited，保存成果后停止新增目标工作。
+
+- 2026-10-07（用户要求深入复盘）：咨询 self-evolution-convergence-and-acceptance（61→62）、incremental-repair-and-sourced-memory（57→58），对照9月27日复盘与v178–v182保存报告、vision/architecture/benefit合同及启动历史。复核已有教训未成为启动决策约束、真实生产/模型行为证据与脚本回放边界、PIT正文版本、实际回答范围和新规则fixture缺口；保留v179策略传输及v181方法记忆消费的正面证据，不把全部路径说成从未学习。仅更新咨询计数/日志并在聊天汇报；不改运行代码、研究合同、旧来源、评分或启动实验。本次goal服务返回null，不推断为active、不创建替代目标。
