@@ -1,0 +1,152 @@
+[
+  {
+    "proof_id": "issuer-KGC-2025-09-29",
+    "started_epoch": 1792442377.40187,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-KGC-2025-09-30-2026-08-16",
+    "started_epoch": 1792442378.511164,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-WYNN-2025-07-30",
+    "started_epoch": 1792442426.2800949,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-WYNN-2025-07-31-2026-08-16",
+    "started_epoch": 1792442427.70079,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-ENB-2025-09-29",
+    "started_epoch": 1792442428.775807,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-ENB-2025-09-30-2026-08-16",
+    "started_epoch": 1792442437.421957,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-MS-2025-07-30",
+    "started_epoch": 1792442438.533074,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-MS-2025-07-31-2026-08-16",
+    "started_epoch": 1792442486.30043,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-LTH-2025-03-28",
+    "started_epoch": 1792442487.7208378,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-LTH-2025-03-29-2026-08-16",
+    "started_epoch": 1792442489.0416589,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-SFIX-2025-05-29",
+    "started_epoch": 1792442497.442048,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-SFIX-2025-05-30-2026-08-16",
+    "started_epoch": 1792442498.860563,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-CIEN-2025-09-29",
+    "started_epoch": 1792442546.32075,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-CIEN-2025-09-30-2026-08-16",
+    "started_epoch": 1792442547.733907,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-FTAI-2025-07-30",
+    "started_epoch": 1792442549.0616908,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-FTAI-2025-07-31-2026-08-16",
+    "started_epoch": 1792442557.462131,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-ATI-2025-09-29",
+    "started_epoch": 1792442558.880589,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-ATI-2025-09-30-2026-08-16",
+    "started_epoch": 1792442606.341103,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-NEM-2025-07-30",
+    "started_epoch": 1792442607.750628,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-NEM-2025-07-31-2026-08-16",
+    "started_epoch": 1792442609.0756679,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-MP-2025-03-28",
+    "started_epoch": 1792442617.482216,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-MP-2025-03-29-2026-08-16",
+    "started_epoch": 1792442618.900609,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-SNDK-2025-09-29",
+    "started_epoch": 1792442666.3617148,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-SNDK-2025-09-30-2026-08-16",
+    "started_epoch": 1792442667.76126,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-MU-2025-07-30",
+    "started_epoch": 1792442669.095722,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-MU-2025-07-31-2026-08-16",
+    "started_epoch": 1792442677.502298,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-PRAX-2025-09-29",
+    "started_epoch": 1792442678.92064,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-PRAX-2025-09-30-2026-08-16",
+    "started_epoch": 1792442726.382043,
+    "state": "received"
+  },
+  {
+    "proof_id": "issuer-ONDS-2025-05-29",
+    "started_epoch": 1792442727.776395,
+    "state": "received"
+  },
+  {
+    "proof_id": "splits-ONDS-2025-05-30-2026-09-08",
+    "started_epoch": 1792442729.109098,
+    "state": "received"
+  }
+]

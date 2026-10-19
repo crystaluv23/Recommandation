@@ -1,0 +1,584 @@
+{
+  "status": "source_materialization_and_fifteen_native_baselines_supported_with_original_fourteen_gate_result_preserved",
+  "fixed_case_denominator": 15,
+  "new_original_market_document_denominator": 16,
+  "actual_typed_view_documents": 19,
+  "old_five_review_rows_preserved_verbatim": true,
+  "review_records_total": 21,
+  "read_only_explicit_view_binding": {
+    "manifest_sha256": "b7f5629176acb8d55cc2394137cd86380f6150e087b28281c6aa04e02fe98b52",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_market_snapshot_20261020_v1/snapshot",
+    "store_type": "reviewed"
+  },
+  "native_restart_and_worker_snapshot": {
+    "same_reviewed_type": true,
+    "full_documents_equal": true,
+    "acquisition_allowed": false,
+    "snapshot_files_unchanged": true
+  },
+  "saved_actual_BasicInfo_bundle_and_runtime_baseline_checks": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "ticker": "KGC",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 23.982,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 47.964,
+        "recent_close": 24.37,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "31f7b4e8f1a1aed8e8ab40eb258097a1b3b09d1ef600301fd45f279fd66bf00d"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "ticker": "WYNN",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 109.61399999999999,
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ],
+        "doubling_threshold": 219.22799999999998,
+        "recent_close": 109.53,
+        "recent_close_date": "2025-07-30"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "792790c0ab88052419f3f6eb427ae06a4b8af71caf419c51ac551a65df355fe1"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "ticker": "ENB",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 49.692,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 99.384,
+        "recent_close": 49.72,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "70a023aee2bf07c6808f497f5e29cab34cdd2b15929089c04e0bf25930ba8223"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "ticker": "MS",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 143.314,
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ],
+        "doubling_threshold": 286.628,
+        "recent_close": 144.94,
+        "recent_close_date": "2025-07-30"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "5f71b2c15586b7adfd87edd3e17f6508c82e7b4d06a77f84f7ebb9b1f04505dc"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "ticker": "LTH",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 31.8,
+        "trading_dates": [
+          "2025-03-24",
+          "2025-03-25",
+          "2025-03-26",
+          "2025-03-27",
+          "2025-03-28"
+        ],
+        "doubling_threshold": 63.6,
+        "recent_close": 30.5,
+        "recent_close_date": "2025-03-28"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "e4b2fc6cf83d109e6d94a627545a3f2d5962a95fb734cf4a40165e11a9c63d6a"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "ticker": "SFIX",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 4.368,
+        "trading_dates": [
+          "2025-05-22",
+          "2025-05-23",
+          "2025-05-27",
+          "2025-05-28",
+          "2025-05-29"
+        ],
+        "doubling_threshold": 8.736,
+        "recent_close": 4.39,
+        "recent_close_date": "2025-05-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "04dd25ed65169e774bdad73a0d3ab503371592de6193643d3af4ebff5dde2545"
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "ticker": "CIEN",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 140.224,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 280.448,
+        "recent_close": 144.12,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "dc54b71563721d667197f6b20d6a4302f74b8dfa81cd527a2d1b85d1cc41f448"
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "ticker": "FTAI",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 120.016,
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ],
+        "doubling_threshold": 240.032,
+        "recent_close": 144.46,
+        "recent_close_date": "2025-07-30"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "698a86bcbcc34b175affc447a36a2d69213796cf01d02bed4f3cd7c835576695"
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "ticker": "ATI",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 78.91600000000001,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 157.83200000000002,
+        "recent_close": 79.26,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "8c161a532588ec21246d6dc57abb3854b8a5377ec5dafbba3536b3c9959b81c4"
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "ticker": "NEM",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 63.444,
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ],
+        "doubling_threshold": 126.888,
+        "recent_close": 62.31,
+        "recent_close_date": "2025-07-30"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "b3838d034315d5d4da8b7fc22323c4b5c076573128e515200d24feceba9acfbb"
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "ticker": "MP",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 26.318,
+        "trading_dates": [
+          "2025-03-24",
+          "2025-03-25",
+          "2025-03-26",
+          "2025-03-27",
+          "2025-03-28"
+        ],
+        "doubling_threshold": 52.636,
+        "recent_close": 25.97,
+        "recent_close_date": "2025-03-28"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "9b5b6178d43a19ffaabde21bb6a245c5abcf9525fa6aff1a36b2f6d7968e7840"
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "ticker": "SNDK",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 102.228,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 204.456,
+        "recent_close": 113.5,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "262ed7894c7561528ff5954e39a99e6401a6c20cafa0984198ca35db73ecc5d2"
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "ticker": "MU",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 112.18800000000002,
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ],
+        "doubling_threshold": 224.37600000000003,
+        "recent_close": 114.74,
+        "recent_close_date": "2025-07-30"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "67de303510b95192917977d1942120c6ec0d8bd9b3d133f8ba8d6361e0606972"
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "ticker": "PRAX",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 50.327999999999996,
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ],
+        "doubling_threshold": 100.65599999999999,
+        "recent_close": 52.38,
+        "recent_close_date": "2025-09-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "e7a6bb100c4527ed73e7f73c4bf754eaa7f20d48fd79febe6c104b555f4eb8c2"
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "ticker": "ONDS",
+      "market_request_status": "resolved",
+      "request_max_documents": 1,
+      "consumed_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ],
+      "baseline": {
+        "status": "available",
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "mean_adjusted_close": 0.9836600000000001,
+        "trading_dates": [
+          "2025-05-22",
+          "2025-05-23",
+          "2025-05-27",
+          "2025-05-28",
+          "2025-05-29"
+        ],
+        "doubling_threshold": 1.9673200000000002,
+        "recent_close": 1.07,
+        "recent_close_date": "2025-05-29"
+      },
+      "all_original_literal_baselines_match": true,
+      "original_saved_case_sha256": "a4ace8fdc9c6a64ad2ce9bcb21b7da8a59a113a801b701ab55a280107dd53cff"
+    }
+  ],
+  "source_load_PIT_and_identity_checks": [
+    {
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "complete_original_equal": true,
+      "at_available_equal": true,
+      "one_second_before_rejected": true
+    }
+  ],
+  "separate_denominators": {
+    "source_proof_and_exact_original_load": {
+      "passed": 16,
+      "denominator": 16
+    },
+    "default_market_requests_resolved_and_runtime_baseline_matches": {
+      "passed": 15,
+      "denominator": 15
+    },
+    "original_extra_all_admitted_documents_consumed_gate": {
+      "passed": 14,
+      "denominator": 15,
+      "original_result_not_edited": true,
+      "ONDS_reason": "Default orientation market request cap1 selects the31bar short original. The181bar second admitted original remains in the reviewed store. Both original literal five-close expectations match the actual selected baseline; they are not independent market measurements."
+    }
+  },
+  "new_ONDS_native_long_input_preparation": {
+    "execution": "One bounded actual SignalExecutor.prepare_inputs call made before this review, with original archived price_momentum_126d:v1 in an immutable local FrozenSignalRegistry and the actual reviewed worker store. No mock, apply, model role or archive manifest write.",
+    "exact_spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v1/spec.json",
+    "exact_spec_sha256": "298186290b11e7f49faa0808515d6d96bd96fb756410494ef4347d33099a0df3",
+    "signal_ref": "price_momentum_126d:v1",
+    "company_id": "cik_0001646188",
+    "as_of": "2025-05-30T00:00:00+00:00",
+    "request": {
+      "source_types": [
+        "market_data"
+      ],
+      "lookback_days": 400,
+      "minimum_observations": 127,
+      "max_documents": 10,
+      "query": "adjusted close price history"
+    },
+    "status": "resolved",
+    "selected_documents": [
+      {
+        "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+        "bar_count": 181
+      },
+      {
+        "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+        "bar_count": 31
+      }
+    ],
+    "coverage": {
+      "observed_observation_count": 181,
+      "observed_distinct_period_count": 181,
+      "observed_period_span_days": 262,
+      "selected_document_count": 2,
+      "contract_satisfied": true,
+      "missing_requirements": []
+    },
+    "interpretation": "The genuine127-observation retrieval requirement selects and loads the long181-bar original. It does not count the overlap as212 observations. Default cap1 baseline consumption is not evidence of an F5 long-window omission in this tested prepare path; actual price_momentum apply/output was not run or proved."
+  },
+  "originals_and_inputs_modified": false,
+  "reviewer_network_or_model_calls": 0,
+  "LabelStore_or_full_prepare": false,
+  "narrow_conclusion": "New explicit reviewed view preserves all16 exact market originals and old admitted sources; all15 actual saved default market bundles yield the expected native baseline. Original14/15 extra consumption gate remains exactly as reported. The separate bounded ONDS exactv1 Signal input-preparation control reaches the long original.",
+  "limitations": [
+    "No full48 readiness run, no replacement of prior16 anchor failures, no wholeMVP or Fast/Slow completion.",
+    "No new research narrative/source admission beyond this market profile, stock prediction, LLM behavior, metric apply result or independent research benefit.",
+    "Provider-era/vintage and authorship limitations remain those of the separate independent-proof-review; original windows and incomplete returned calendar coverage are not rewritten.",
+    "No production runner/review/view/input/result/script modified; only this independent consumer review is written."
+  ],
+  "bindings": {
+    "source_review": {
+      "path": "/Users/l/Project/Recommandation/reports/local-trusted-anchor-market-review-20261020.json",
+      "sha256": "a0efa02e046d7b036f4ad6728d1d626d900fce91c6f28eb5772105396f5ba87f"
+    },
+    "input_manifest_file_sha256": "b0b14a7eb4799321be7058613ca75c43c7c85f730e5fce8a59d73d5e5b93cb0c",
+    "result_file_sha256": "b5b83cf48dce000e23cf65186b37a0f9f6be00091b4ed717251a61824f1b7a47",
+    "independent_proof_review": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/independent-proof-review.json",
+      "sha256": "395ea3dbc40bbfb77dc4881ac0daf7481390145e6cc8a89df341ecf1a5bcd6f3"
+    }
+  }
+}

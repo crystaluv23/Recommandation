@@ -1,0 +1,1122 @@
+{
+  "external_llm_calls": 0,
+  "manifest_hash": "8e2feda9e083ae17090f6fad2c976cb08ff67184d58172876d82346e788e83c6",
+  "oracle_identity": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+    "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+  },
+  "original_oracle_writes": 0,
+  "readonly_data_requests_for_retained_proofs": 33,
+  "records": [
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+        "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9558f4ca495c26a0af518a2e.json",
+            "sha256": "0aa953844eff2c4f2e95cedf67318f63367808fc3bfefe1478497f5a671b2295"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000119312525146199/d915271d8k.htm",
+          "expected_content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-06-25T12:20:35+00:00",
+          "accession_number": "0001193125-25-146199",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "form": "8-K",
+          "issuer_cik": "0001830043",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "d915271d8k.htm"
+        }
+      ],
+      "reason": "Q2 2025 forward revenue and adjusted EBITDA guidance; original numeric ranges and context remain available, not Q3/FY answers.",
+      "reviewed_available_at": "2025-06-25T12:20:35+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/615a4af908c13d46cb5bd1a4.json",
+            "sha256": "79268825d2fe5f3193b384120c6daeab46b311c0d6bca19c27796a57b2774a2b"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000162828025038861/bmbl-20250630.htm",
+          "expected_content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-08-07T20:05:33+00:00",
+          "accession_number": "0001628280-25-038861",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001830043",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "bmbl-20250630.htm"
+        }
+      ],
+      "reason": "Issuer Q2 2025 10-Q; same-unit share and fiscal-period disclosures require original table/context reading, not automatic cross-tag arithmetic.",
+      "reviewed_available_at": "2025-08-07T20:05:33+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+      "document_id": "avnews_82c6cc3e5143825f6225f673",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+        "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/reports/v182-bumble-pair-content-and-future-source-audit-20261007.json",
+            "sha256": "143ebca8834b586f1258d507313f2388da19cae08c1e533f10aa7952a3be495d"
+          },
+          "kind": "bound_prior_source_version_audit"
+        }
+      ],
+      "reason": "Saved provider title/summary at 2025-04-24 contains later FY2025 realized disclosures; original audit binds provider/source identity. Exclude this exact body version without inventing a corrected timestamp or replacing it with another document.",
+      "verdict": "excluded"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+        "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+      },
+      "proofs": [],
+      "reason": "Complete public-conference-content and UTC completion proof not established in this local scope; provider reportedDate alone is insufficient.",
+      "verdict": "unknown"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "c48ddf33f63755eb0e12623ebd4358593898f691d587dc25890a69a33702603f",
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+        "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+            "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:28:08.042545+00:00",
+          "provider_retrieved_at": "2026-08-16T07:28:08.034427+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/historical_identity.response.json",
+            "sha256": "5bd69c36b59c47185da91998f870ddeb00d62400f7f01832b74278db5af95020"
+          },
+          "entry_name": "historical_identity",
+          "expected_identity": {
+            "cik": "0001830043",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "BMBL",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/splits.response.json",
+            "sha256": "a75375a255fc0dd5835aac5c5ee6bbb6e9424a0477a0c5a9b3620d3c223c23d5"
+          },
+          "entry_name": "splits",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/unadjusted_daily.response.json",
+            "sha256": "4a9dc4e88b73bd3b132c376c73c794ebf2d01f6e425760f04dd396a809d2b36a"
+          },
+          "entry_name": "unadjusted_daily",
+          "kind": "massive_unadjusted_overlap",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        }
+      ],
+      "reason": "Candidate: exact original provider/production reconstruction, historical issuer and no-post-cutoff-split basis proof; no exact vintage or predictive effect guarantee.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000701818",
+      "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+        "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive/price_daily/e0ebf8ef8b1aaf5fe907914e.json",
+            "sha256": "3590cda22754ab72d9f86b02d5d2529ab9a3f6edde56055c26d97f3d35a43100"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T05:55:40.923703+00:00",
+          "provider_retrieved_at": "2026-08-16T05:55:40.916402+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-KGC-2025-09-29.response.json",
+            "sha256": "757f4440621e3e718d247ccccc9cc9566d20735656f02cfe5733d6a1924cfa62"
+          },
+          "entry_name": "issuer-KGC-2025-09-29",
+          "expected_identity": {
+            "cik": "0000701818",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "KGC",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-KGC-2025-09-30-2026-08-16.response.json",
+            "sha256": "3568e8c040ab7f2272b45e001863ff64e4863b44f01319a0249237481715dbba"
+          },
+          "entry_name": "splits-KGC-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001174922",
+      "content_hash": "75cab593ff8c174d6b55c6c9019b539b749de5c112486b63e5bb8673524da338",
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+        "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/cfe1b1934471074141274fd3.json",
+            "sha256": "f130e0e50f8a6c04b3ce72798ec52592769f831f972804876a83f70de6c1b0f2"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:33:17.403963+00:00",
+          "provider_retrieved_at": "2026-08-16T07:33:17.399310+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-WYNN-2025-07-30.response.json",
+            "sha256": "18560a545b1ec1c73c389b01c79d2f8542e1969fc35189bb72e33b2a2de97805"
+          },
+          "entry_name": "issuer-WYNN-2025-07-30",
+          "expected_identity": {
+            "cik": "0001174922",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "WYNN",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-WYNN-2025-07-31-2026-08-16.response.json",
+            "sha256": "38d18f6eba2e30ec5a3180e30aed447b9d193096d4392941fc3db567e5e7511f"
+          },
+          "entry_name": "splits-WYNN-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895728",
+      "content_hash": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+        "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/530b10a20f09abd46ae82d20.json",
+            "sha256": "8b3f8a99b1ef7456adfaaadf40e2c10eb935d67f687a1587639538c7bbc391b7"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:21:33.683689+00:00",
+          "provider_retrieved_at": "2026-08-16T08:21:33.674439+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ENB-2025-09-29.response.json",
+            "sha256": "49f86ada2ee622290f01c9eb09bf916ed524a53eb5002bec5218d834207bdf68"
+          },
+          "entry_name": "issuer-ENB-2025-09-29",
+          "expected_identity": {
+            "cik": "0000895728",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "ENB",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ENB-2025-09-30-2026-08-16.response.json",
+            "sha256": "ed4a2c50462d134f160ddbd2361ad5a7a2700577ecadad22a45b4dc4a0cba76f"
+          },
+          "entry_name": "splits-ENB-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895421",
+      "content_hash": "0753a2fda6be894d5cf2347c3af787f06338102210645312b6d8eff25f66fd22",
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+        "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/9a5a01ed952a1e1c1c721835.json",
+            "sha256": "ed45dbb74eefee0086b99b8f3e67f1092c0586df717ae03ca8a12e4846be7ff1"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:27:10.149429+00:00",
+          "provider_retrieved_at": "2026-08-16T07:27:10.142640+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MS-2025-07-30.response.json",
+            "sha256": "6815824b9d577443480549ebc454beafe69e6fd4a422bf849d59c91fd632d476"
+          },
+          "entry_name": "issuer-MS-2025-07-30",
+          "expected_identity": {
+            "cik": "0000895421",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "MS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MS-2025-07-31-2026-08-16.response.json",
+            "sha256": "11e24bd2f6bc7111d6625b28ff307869b791cbe81ebddda5e6a9476e4ff7c5e3"
+          },
+          "entry_name": "splits-MS-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001869198",
+      "content_hash": "81572f1417844d7a68230ab6750bee33729c697579e895a7fcda62e4d76c47eb",
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+        "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive/price_daily/849e224e70ee1f70e49da6b0.json",
+            "sha256": "73213a576e7636cdd770d70d8d0ae25cc478dc1498d42606e7bc5f78c00f6c50"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:19:34.442323+00:00",
+          "provider_retrieved_at": "2026-08-16T07:19:34.438385+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-LTH-2025-03-28.response.json",
+            "sha256": "21f76aebe0f6232a50aa54c04d925445587a75a9e05305c7b64bfa9cb0a04522"
+          },
+          "entry_name": "issuer-LTH-2025-03-28",
+          "expected_identity": {
+            "cik": "0001869198",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "LTH",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-LTH-2025-03-29-2026-08-16.response.json",
+            "sha256": "0abe292e3bd4d8a1a3ea633781e3cd2263b42f7142d11dce2086a61a0f61afd4"
+          },
+          "entry_name": "splits-LTH-2025-03-29-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-03-29T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001576942",
+      "content_hash": "9a587b3f71a458db45f7446d41828ab17b43e117d613420854d01f992aec271c",
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+        "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/2db6c972e1641dcc7c71ee22.json",
+            "sha256": "83a0e8a611a0a3199bb44a225edcaebe09b92a6480bae57dcbbd12807bc3690c"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:35:06.934019+00:00",
+          "provider_retrieved_at": "2026-08-16T07:35:06.927265+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SFIX-2025-05-29.response.json",
+            "sha256": "3a9041da6b9f2a666506e1ab50bcdffc89d3e59b4fd23f2e102c02dbba438e4f"
+          },
+          "entry_name": "issuer-SFIX-2025-05-29",
+          "expected_identity": {
+            "cik": "0001576942",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "SFIX",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SFIX-2025-05-30-2026-08-16.response.json",
+            "sha256": "e4e5da0a4fcdf798c410709557f5762313edd3cf346da6aba8e9120d1cd2ae49"
+          },
+          "entry_name": "splits-SFIX-2025-05-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000936395",
+      "content_hash": "27a376f19e25e596bc97443ddd0bb758c2a627f7eb79e814d82adf00933e39e7",
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+        "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive/price_daily/8f39ee2fd6f19e13bd1f5317.json",
+            "sha256": "51dfc7e418cf5512af1bdbe0997381298c94c8e84465e658457464e276689725"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:43:33.876508+00:00",
+          "provider_retrieved_at": "2026-08-16T07:43:33.870886+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-CIEN-2025-09-29.response.json",
+            "sha256": "ba723591b153f9861047b61b82b7dfbb3f0b5cf7dabec03af7644d8a8355d442"
+          },
+          "entry_name": "issuer-CIEN-2025-09-29",
+          "expected_identity": {
+            "cik": "0000936395",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "CIEN",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-CIEN-2025-09-30-2026-08-16.response.json",
+            "sha256": "c862356b0ad04fd168e92c47bf24bb5c262c207de4dc9d3d9e77705bb818e866"
+          },
+          "entry_name": "splits-CIEN-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001590364",
+      "content_hash": "700274cd4bc5b20fe238330b4742147b29931cbd82aeba3b422fd7e07517b014",
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+        "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/80939e3752f3e60935494440.json",
+            "sha256": "65765a2002d025e92f38cccbb8401cbed252bf30a716f80293b369790d1882f9"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:02:57.954401+00:00",
+          "provider_retrieved_at": "2026-08-16T07:02:57.947851+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-FTAI-2025-07-30.response.json",
+            "sha256": "225a4b3414bcb4bdaaf8bbc2feddb686e5668be0513d960bc715425d7c548620"
+          },
+          "entry_name": "issuer-FTAI-2025-07-30",
+          "expected_identity": {
+            "cik": "0001590364",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "FTAI",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-FTAI-2025-07-31-2026-08-16.response.json",
+            "sha256": "6b90bdacd4c67d9c8ee10eecad9fca863d6bacff4c316114d467e6b49cf56bf0"
+          },
+          "entry_name": "splits-FTAI-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001018963",
+      "content_hash": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76",
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+        "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/010e1bbdaea56da890258302.json",
+            "sha256": "e267db74991621caf4634d80c0b057b08622fbd7cced50ad1685618a6b9736e6"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:03:27.717820+00:00",
+          "provider_retrieved_at": "2026-08-16T07:03:27.711474+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ATI-2025-09-29.response.json",
+            "sha256": "4f1acf4160b9e90e0700b52ed8900c0cc5630939729e56377e7738d860ccd973"
+          },
+          "entry_name": "issuer-ATI-2025-09-29",
+          "expected_identity": {
+            "cik": "0001018963",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "ATI",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ATI-2025-09-30-2026-08-16.response.json",
+            "sha256": "2a740adfad47705265ca861b3b0e7e0eb5d34045ee5aa9be735a8134694d260b"
+          },
+          "entry_name": "splits-ATI-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001164727",
+      "content_hash": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5",
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+        "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/efe21718549d3b355b6e0430.json",
+            "sha256": "2ee09c97bc8c5e5f6cda171bf3a3f371f0a0ad5d7787c2bc5044a8254a8d6121"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:30:15.889191+00:00",
+          "provider_retrieved_at": "2026-08-16T07:30:15.882824+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-NEM-2025-07-30.response.json",
+            "sha256": "0e93c6910314b5e14c673b4a96e7a9140c03edd867e3bfd290f753865f049031"
+          },
+          "entry_name": "issuer-NEM-2025-07-30",
+          "expected_identity": {
+            "cik": "0001164727",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "NEM",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-NEM-2025-07-31-2026-08-16.response.json",
+            "sha256": "9577cf60332dd6518e9620abcf0ff57f54404aeb5e63e12db6149f6dbd683788"
+          },
+          "entry_name": "splits-NEM-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001801368",
+      "content_hash": "7cbfb517300de5af5327374acfb7f429e3d801e760afc13ae90ce9623037f8ad",
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+        "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/7de59c6a0b60e8a141fdec6b.json",
+            "sha256": "38f0ee943e2f239c11cad9557e723eda538d06a9cbdbc6997838d3167afd7d2a"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:04:43.530048+00:00",
+          "provider_retrieved_at": "2026-08-16T07:04:43.519945+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MP-2025-03-28.response.json",
+            "sha256": "31fb38ca83d6b264cd7b024951433b609004b743ce6da97dc7e68911fd401ab4"
+          },
+          "entry_name": "issuer-MP-2025-03-28",
+          "expected_identity": {
+            "cik": "0001801368",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "MP",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MP-2025-03-29-2026-08-16.response.json",
+            "sha256": "a20e43e1b9bf1574d934fdd3ec0b2e185c2a36616775cbb947f17e1b00a2c20f"
+          },
+          "entry_name": "splits-MP-2025-03-29-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-03-29T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0002023554",
+      "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+        "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+            "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:14:31.677927+00:00",
+          "provider_retrieved_at": "2026-08-16T08:14:31.671317+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SNDK-2025-09-29.response.json",
+            "sha256": "e0045e33084c34cd5f6cac40022a24a1df534c9e25ab86bdbc570f94f0120de1"
+          },
+          "entry_name": "issuer-SNDK-2025-09-29",
+          "expected_identity": {
+            "cik": "0002023554",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "SNDK",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SNDK-2025-09-30-2026-08-16.response.json",
+            "sha256": "b18b9b80a606d89726729f79c4829c687141e3efdb998f3e3cb2def4bddd57bd"
+          },
+          "entry_name": "splits-SNDK-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000723125",
+      "content_hash": "823e5d16b8cfc77479fe99de251b7bf8b7a87b9b6ed65a7d8d191dbae1f19ed3",
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+        "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/7a17328006a83a8d8f5e0716.json",
+            "sha256": "383ed43604da5e7fd039da9d06646e7d2554cbcc88d04bdf0f35fb13047c2525"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:41:17.052061+00:00",
+          "provider_retrieved_at": "2026-08-16T08:41:17.044372+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MU-2025-07-30.response.json",
+            "sha256": "2791ab1efc4afd124dd6f9e2fcd2b611764e2502ff5f719b04cb87ab9967b1c2"
+          },
+          "entry_name": "issuer-MU-2025-07-30",
+          "expected_identity": {
+            "cik": "0000723125",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "MU",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MU-2025-07-31-2026-08-16.response.json",
+            "sha256": "eeb054a91a93e4b7f55743181e1ce0dc5d940a2341f1f89bb6abaeef788caca7"
+          },
+          "entry_name": "splits-MU-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001689548",
+      "content_hash": "cab65f074179af11f7282a5b19f4523da24468167da2a2f4f5d20bea0e9d1e23",
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+        "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/2fe7d53ca2ecc9575d982146.json",
+            "sha256": "f77b6d43b58651d8260f1305869cc34096a6bbd0a34eea1533c7f7645358f805"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:06:02.792106+00:00",
+          "provider_retrieved_at": "2026-08-16T07:06:02.786862+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-PRAX-2025-09-29.response.json",
+            "sha256": "e34fbd4df105231ab21586303ac5121926f3e394c592f48a32f9781962af1641"
+          },
+          "entry_name": "issuer-PRAX-2025-09-29",
+          "expected_identity": {
+            "cik": "0001689548",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "PRAX",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-PRAX-2025-09-30-2026-08-16.response.json",
+            "sha256": "0520662c22dbffca5a31b1522445420b953b8a285fc3b53a9f380db96459fa7d"
+          },
+          "entry_name": "splits-PRAX-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "0d02e15a6b697fad524fc8ef7e835db5ecbdcc157bdcf32c9567c11e555f8afa",
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+        "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ca450ac42f91a72fa1788ce0.json",
+            "sha256": "9eb8526ce487df3bcc28b46f8f474e25d3c5aa7e5b58af6c24c7d9af735f211e"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T09:32:03.528715+00:00",
+          "provider_retrieved_at": "2026-08-16T09:32:03.525417+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ONDS-2025-05-29.response.json",
+            "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+          },
+          "entry_name": "issuer-ONDS-2025-05-29",
+          "expected_identity": {
+            "cik": "0001646188",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "ONDS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ONDS-2025-05-30-2026-09-08.response.json",
+            "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+          },
+          "entry_name": "splits-ONDS-2025-05-30-2026-09-08",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "4f0a68e38b3c4e8d5356b8805fafa1ecbc452f0a862456ad9c341bec18b37565",
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+        "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/2a7f8b91f51d604ae832b2a5.json",
+            "sha256": "5a85fbf3fd56c3340025254d10e661123ee631c97ede5fd2052e329921511fff"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-09-08T13:11:55.306581+00:00",
+          "provider_retrieved_at": "2026-09-08T13:11:55.301645+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ONDS-2025-05-29.response.json",
+            "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+          },
+          "entry_name": "issuer-ONDS-2025-05-29",
+          "expected_identity": {
+            "cik": "0001646188",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "ONDS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ONDS-2025-05-30-2026-09-08.response.json",
+            "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+          },
+          "entry_name": "splits-ONDS-2025-05-30-2026-09-08",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    }
+  ],
+  "schema_version": "reviewed-raw-info-snapshot-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000701818",
+      "cik_0000723125",
+      "cik_0000895421",
+      "cik_0000895728",
+      "cik_0000936395",
+      "cik_0001018963",
+      "cik_0001164727",
+      "cik_0001174922",
+      "cik_0001576942",
+      "cik_0001590364",
+      "cik_0001646188",
+      "cik_0001689548",
+      "cik_0001801368",
+      "cik_0001830043",
+      "cik_0001869198",
+      "cik_0002023554"
+    ],
+    "purpose": "Fixed 15-case/16-original retained anchor market qualification and native consumers; not full readiness."
+  },
+  "status": "candidate_not_materialized",
+  "transcript_complete_proofs_accepted": 0,
+  "unknown_or_outside_scope_is_not_negative_evidence": true
+}

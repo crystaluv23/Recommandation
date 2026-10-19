@@ -1,0 +1,538 @@
+{
+  "status": "bounded_native_source_proofs_and_full_original_normalization_passed",
+  "scope": {
+    "fixed_cases": 15,
+    "original_market_documents": 16,
+    "retained_readonly_GETs": 30,
+    "new_network_or_model_calls_by_reviewer": 0,
+    "full_prepare_or_LabelStore_load": false
+  },
+  "bindings": {
+    "inventory": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/inventory.json",
+      "sha256": "cd20f162f7d7bd04d0340732bd0b19262b9aad6e03f06594d72fc909a35f2183"
+    },
+    "proof_results": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+      "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+    },
+    "attempts": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/attempts.json",
+      "sha256": "19a88a3eb31cf4455e9abc66fd68ccd8fd547ff0e83ec2b10064d6f36cc3ebfa"
+    },
+    "proof_plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/plan.json",
+      "sha256": "bed5b6a470b63db2f02e4db55108c29ad168a142d479c515c2606e1f9b4756b0"
+    },
+    "native_reader": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    }
+  },
+  "proof_request_review": {
+    "attempts": 30,
+    "distinct_attempted_request_ids": 30,
+    "request_ids_match_frozen_plan_and_results": true,
+    "all_plan_methods_GET": true,
+    "all_HTTP_and_provider_success": true,
+    "all_raw_SHA_and_pagination_shapes_checked": true,
+    "all_15_split_bodies_empty": true,
+    "all_15_split_queries_all_type_without_event_filter": true,
+    "all_15_historical_issuer_request_dates_match_actual_last_bar": true,
+    "issuer_identity": "Actual response ticker/CIK/US stocks/common-stock/USD/exchange verified against original document and fixed case, not metadata.symbol or checksum alone. Historical identity descriptions/market caps are not admitted as PIT narrative facts.",
+    "original_nested_bindings_unchanged": 37,
+    "collector_bound_inventory_plus_nested_bindings": 38
+  },
+  "full_original_normalization": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "ticker": "KGC",
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 250,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+      "cache_clock": "2026-08-16T05:55:40.916402+00:00",
+      "normalization_clock": "2026-08-16T05:55:40.923703+00:00",
+      "required_split_not_before": "2026-08-16T05:55:40.923703+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:39:39.558132+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "ticker": "WYNN",
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 238,
+      "original_request_window": [
+        "2024-07-31",
+        "2025-07-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-07-30"
+      ],
+      "canonical_body_hash": "75cab593ff8c174d6b55c6c9019b539b749de5c112486b63e5bb8673524da338",
+      "cache_clock": "2026-08-16T07:33:17.399310+00:00",
+      "normalization_clock": "2026-08-16T07:33:17.403963+00:00",
+      "required_split_not_before": "2026-08-16T07:33:17.403963+00:00",
+      "split_interval": [
+        "2025-07-31",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:40:28.774925+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "ticker": "ENB",
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 250,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+      "cache_clock": "2026-08-16T08:21:33.674439+00:00",
+      "normalization_clock": "2026-08-16T08:21:33.683689+00:00",
+      "required_split_not_before": "2026-08-16T08:21:33.683689+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:40:38.532187+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "ticker": "MS",
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 238,
+      "original_request_window": [
+        "2024-07-31",
+        "2025-07-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-07-30"
+      ],
+      "canonical_body_hash": "0753a2fda6be894d5cf2347c3af787f06338102210645312b6d8eff25f66fd22",
+      "cache_clock": "2026-08-16T07:27:10.142640+00:00",
+      "normalization_clock": "2026-08-16T07:27:10.149429+00:00",
+      "required_split_not_before": "2026-08-16T07:27:10.149429+00:00",
+      "split_interval": [
+        "2025-07-31",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:41:27.477382+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "ticker": "LTH",
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 154,
+      "original_request_window": [
+        "2024-03-31",
+        "2025-03-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-03-28"
+      ],
+      "canonical_body_hash": "81572f1417844d7a68230ab6750bee33729c697579e895a7fcda62e4d76c47eb",
+      "cache_clock": "2026-08-16T07:19:34.438385+00:00",
+      "normalization_clock": "2026-08-16T07:19:34.442323+00:00",
+      "required_split_not_before": "2026-08-16T07:19:34.442323+00:00",
+      "split_interval": [
+        "2025-03-29",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:41:30.116713+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "ticker": "SFIX",
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 196,
+      "original_request_window": [
+        "2024-05-30",
+        "2025-05-29"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-05-29"
+      ],
+      "canonical_body_hash": "9a587b3f71a458db45f7446d41828ab17b43e117d613420854d01f992aec271c",
+      "cache_clock": "2026-08-16T07:35:06.927265+00:00",
+      "normalization_clock": "2026-08-16T07:35:06.934019+00:00",
+      "required_split_not_before": "2026-08-16T07:35:06.934019+00:00",
+      "split_interval": [
+        "2025-05-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:41:40.059232+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "ticker": "CIEN",
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 250,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "27a376f19e25e596bc97443ddd0bb758c2a627f7eb79e814d82adf00933e39e7",
+      "cache_clock": "2026-08-16T07:43:33.870886+00:00",
+      "normalization_clock": "2026-08-16T07:43:33.876508+00:00",
+      "required_split_not_before": "2026-08-16T07:43:33.876508+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:42:28.918881+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "ticker": "FTAI",
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 238,
+      "original_request_window": [
+        "2024-07-31",
+        "2025-07-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-07-30"
+      ],
+      "canonical_body_hash": "700274cd4bc5b20fe238330b4742147b29931cbd82aeba3b422fd7e07517b014",
+      "cache_clock": "2026-08-16T07:02:57.947851+00:00",
+      "normalization_clock": "2026-08-16T07:02:57.954401+00:00",
+      "required_split_not_before": "2026-08-16T07:02:57.954401+00:00",
+      "split_interval": [
+        "2025-07-31",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:42:38.535963+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "ticker": "ATI",
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 250,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76",
+      "cache_clock": "2026-08-16T07:03:27.711474+00:00",
+      "normalization_clock": "2026-08-16T07:03:27.717820+00:00",
+      "required_split_not_before": "2026-08-16T07:03:27.717820+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:43:27.493094+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "ticker": "NEM",
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 238,
+      "original_request_window": [
+        "2024-07-31",
+        "2025-07-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-07-30"
+      ],
+      "canonical_body_hash": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5",
+      "cache_clock": "2026-08-16T07:30:15.882824+00:00",
+      "normalization_clock": "2026-08-16T07:30:15.889191+00:00",
+      "required_split_not_before": "2026-08-16T07:30:15.889191+00:00",
+      "split_interval": [
+        "2025-07-31",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:43:30.122380+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "ticker": "MP",
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 154,
+      "original_request_window": [
+        "2024-03-31",
+        "2025-03-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-03-28"
+      ],
+      "canonical_body_hash": "7cbfb517300de5af5327374acfb7f429e3d801e760afc13ae90ce9623037f8ad",
+      "cache_clock": "2026-08-16T07:04:43.519945+00:00",
+      "normalization_clock": "2026-08-16T07:04:43.530048+00:00",
+      "required_split_not_before": "2026-08-16T07:04:43.530048+00:00",
+      "split_interval": [
+        "2025-03-29",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:43:39.968970+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "ticker": "SNDK",
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 151,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2025-02-24",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+      "cache_clock": "2026-08-16T08:14:31.671317+00:00",
+      "normalization_clock": "2026-08-16T08:14:31.677927+00:00",
+      "required_split_not_before": "2026-08-16T08:14:31.677927+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:44:28.950720+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "ticker": "MU",
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 238,
+      "original_request_window": [
+        "2024-07-31",
+        "2025-07-30"
+      ],
+      "actual_bar_window": [
+        "2024-08-16",
+        "2025-07-30"
+      ],
+      "canonical_body_hash": "823e5d16b8cfc77479fe99de251b7bf8b7a87b9b6ed65a7d8d191dbae1f19ed3",
+      "cache_clock": "2026-08-16T08:41:17.044372+00:00",
+      "normalization_clock": "2026-08-16T08:41:17.052061+00:00",
+      "required_split_not_before": "2026-08-16T08:41:17.052061+00:00",
+      "split_interval": [
+        "2025-07-31",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:44:38.576755+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "ticker": "PRAX",
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 250,
+      "original_request_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-30",
+        "2025-09-29"
+      ],
+      "canonical_body_hash": "cab65f074179af11f7282a5b19f4523da24468167da2a2f4f5d20bea0e9d1e23",
+      "cache_clock": "2026-08-16T07:06:02.786862+00:00",
+      "normalization_clock": "2026-08-16T07:06:02.792106+00:00",
+      "required_split_not_before": "2026-08-16T07:06:02.792106+00:00",
+      "split_interval": [
+        "2025-09-30",
+        "2026-08-16"
+      ],
+      "split_GET_time": "2026-10-19T20:45:27.476552+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "ticker": "ONDS",
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 31,
+      "original_request_window": [
+        "2025-04-15",
+        "2025-05-29"
+      ],
+      "actual_bar_window": [
+        "2025-04-15",
+        "2025-05-29"
+      ],
+      "canonical_body_hash": "0d02e15a6b697fad524fc8ef7e835db5ecbdcc157bdcf32c9567c11e555f8afa",
+      "cache_clock": "2026-08-16T09:32:03.525417+00:00",
+      "normalization_clock": "2026-08-16T09:32:03.528715+00:00",
+      "required_split_not_before": "2026-08-16T09:32:03.528715+00:00",
+      "split_interval": [
+        "2025-05-30",
+        "2026-09-08"
+      ],
+      "split_GET_time": "2026-10-19T20:45:30.288262+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "ticker": "ONDS",
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "native_profile_passed": true,
+      "error": null,
+      "full_original_bar_count": 181,
+      "original_request_window": [
+        "2024-04-25",
+        "2025-05-29"
+      ],
+      "actual_bar_window": [
+        "2024-09-09",
+        "2025-05-29"
+      ],
+      "canonical_body_hash": "4f0a68e38b3c4e8d5356b8805fafa1ecbc452f0a862456ad9c341bec18b37565",
+      "cache_clock": "2026-09-08T13:11:55.301645+00:00",
+      "normalization_clock": "2026-09-08T13:11:55.306581+00:00",
+      "required_split_not_before": "2026-09-08T13:11:55.306581+00:00",
+      "split_interval": [
+        "2025-05-30",
+        "2026-09-08"
+      ],
+      "split_GET_time": "2026-10-19T20:45:30.288262+00:00",
+      "verification": "Actual native _verify_market_document calls original Massive daily parser and HistoricalPriceAdapter and compares complete to_dict equality; it also validates original sanitized request, all rows, cutoff, exact historical issuer and retained all-type complete split ledger."
+    }
+  ],
+  "ONDS_two_originals": {
+    "count": 2,
+    "separate_windows_preserved": true,
+    "latest_old_clock": "2026-09-08T13:11:55.306581+00:00",
+    "shared_split_interval": [
+      "2025-05-30",
+      "2026-09-08"
+    ],
+    "actual_split_GET": "2026-10-19T20:45:30.288262+00:00",
+    "interpretation": "One historical identity proof at2025-05-29 and one all-type empty split coverage superset qualify each exact original separately; the31-row and181-row originals are not merged or rewritten."
+  },
+  "changed_but_rehashed_counterexamples": [
+    {
+      "variant": "wrong_CIK_rehashed",
+      "all_modified_raw_and_request_record_SHA_rebound": true,
+      "expected_identity_also_changed_to_wrong_CIK": true,
+      "results": [
+        {
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "status": "rejected",
+          "error": "historical market issuer identity differs"
+        },
+        {
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "status": "rejected",
+          "error": "historical market issuer identity differs"
+        }
+      ]
+    },
+    {
+      "variant": "short_split_interval_rehashed",
+      "all_modified_raw_and_request_record_SHA_rebound": true,
+      "expected_identity_also_changed_to_wrong_CIK": false,
+      "results": [
+        {
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "status": "admitted",
+          "error": null
+        },
+        {
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "status": "rejected",
+          "error": "split proof does not cover earliest allowed consumer through original fetch"
+        }
+      ]
+    },
+    {
+      "variant": "GET_before_late_normalization_clock_rehashed",
+      "all_modified_raw_and_request_record_SHA_rebound": true,
+      "expected_identity_also_changed_to_wrong_CIK": false,
+      "results": [
+        {
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "status": "admitted",
+          "error": null
+        },
+        {
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "status": "rejected",
+          "error": "market proof was retrieved before its covered interval ended"
+        }
+      ]
+    }
+  ],
+  "counterexample_interpretation": "A short-toAug16 ledger and a GET between the late cache and normalization instants still suffice for the earlier ONDS original, but correctly fail the later original. This demonstrates why both windows and the max old normalization clock must remain bound. Wrong CIK fails even after rebinding both raw/requests and the claimed expected_identity.",
+  "narrow_conclusion": "All16 exact originals satisfy the existing native market proof profile with full production reconstruction plus the30 retained identity/split receipts. This is source qualification evidence; new view materialization and actual consumer access are separate artifacts, not inferred here.",
+  "limitations": [
+    "Non-strict-vintage contract: no claim of cutoff-time archived vendor vintage, absolute provider/authorship truth, or price accuracy beyond retained-source reconstruction and bounded adjustment evidence.",
+    "An empty complete all-type response is the provider ledger statement for the exact requested interval; no wider absence or complete corporate-history claim.",
+    "Optional unadjusted redownload is not required and was not added; full original reconstruction is the primary check. Request windows with fewer returned historical rows remain as originally saved, not falsely called full calendar-window coverage.",
+    "No market source/profile/code/proof/review/original modified; mutations were temporary copies only.",
+    "Not full48 readiness, replacement of original16 anchor failures, wholeMVP closure, model behavior or independent research benefit."
+  ],
+  "reviewer_written_artifact_only": "independent-proof-review.json"
+}

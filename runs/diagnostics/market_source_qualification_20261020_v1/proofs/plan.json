@@ -1,0 +1,708 @@
+{
+  "inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/inventory.json",
+    "sha256": "cd20f162f7d7bd04d0340732bd0b19262b9aad6e03f06594d72fc909a35f2183"
+  },
+  "max_cumulative_attempts": 30,
+  "requests": [
+    {
+      "case_ids": [
+        "cik_0000701818:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/KGC",
+      "existing_exact_proof": null,
+      "expected_cik": "0000701818",
+      "expected_company_id": "cik_0000701818",
+      "expected_symbol": "KGC",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-KGC-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000701818:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-KGC-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T05:55:40.923703+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "KGC"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001174922:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/WYNN",
+      "existing_exact_proof": null,
+      "expected_cik": "0001174922",
+      "expected_company_id": "cik_0001174922",
+      "expected_symbol": "WYNN",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-WYNN-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001174922:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-WYNN-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:33:17.403963+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "WYNN"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000895728:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ENB",
+      "existing_exact_proof": null,
+      "expected_cik": "0000895728",
+      "expected_company_id": "cik_0000895728",
+      "expected_symbol": "ENB",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-ENB-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000895728:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-ENB-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T08:21:33.683689+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "ENB"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000895421:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MS",
+      "existing_exact_proof": null,
+      "expected_cik": "0000895421",
+      "expected_company_id": "cik_0000895421",
+      "expected_symbol": "MS",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-MS-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000895421:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-MS-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:27:10.149429+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "MS"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001869198:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/LTH",
+      "existing_exact_proof": null,
+      "expected_cik": "0001869198",
+      "expected_company_id": "cik_0001869198",
+      "expected_symbol": "LTH",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-LTH-2025-03-28",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-03-28"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001869198:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-LTH-2025-03-29-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:19:34.442323+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-03-29",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "LTH"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001576942:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/SFIX",
+      "existing_exact_proof": null,
+      "expected_cik": "0001576942",
+      "expected_company_id": "cik_0001576942",
+      "expected_symbol": "SFIX",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-SFIX-2025-05-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-05-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001576942:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-SFIX-2025-05-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:35:06.934019+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "SFIX"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000936395:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/CIEN",
+      "existing_exact_proof": null,
+      "expected_cik": "0000936395",
+      "expected_company_id": "cik_0000936395",
+      "expected_symbol": "CIEN",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-CIEN-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000936395:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-CIEN-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:43:33.876508+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "CIEN"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001590364:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/FTAI",
+      "existing_exact_proof": null,
+      "expected_cik": "0001590364",
+      "expected_company_id": "cik_0001590364",
+      "expected_symbol": "FTAI",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-FTAI-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001590364:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-FTAI-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:02:57.954401+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "FTAI"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001018963:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ATI",
+      "existing_exact_proof": null,
+      "expected_cik": "0001018963",
+      "expected_company_id": "cik_0001018963",
+      "expected_symbol": "ATI",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-ATI-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001018963:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-ATI-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:03:27.717820+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "ATI"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001164727:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/NEM",
+      "existing_exact_proof": null,
+      "expected_cik": "0001164727",
+      "expected_company_id": "cik_0001164727",
+      "expected_symbol": "NEM",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-NEM-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001164727:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-NEM-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:30:15.889191+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "NEM"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001801368:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MP",
+      "existing_exact_proof": null,
+      "expected_cik": "0001801368",
+      "expected_company_id": "cik_0001801368",
+      "expected_symbol": "MP",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-MP-2025-03-28",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-03-28"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001801368:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-MP-2025-03-29-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:04:43.530048+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-03-29",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "MP"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0002023554:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/SNDK",
+      "existing_exact_proof": null,
+      "expected_cik": "0002023554",
+      "expected_company_id": "cik_0002023554",
+      "expected_symbol": "SNDK",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-SNDK-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0002023554:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-SNDK-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T08:14:31.677927+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "SNDK"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000723125:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MU",
+      "existing_exact_proof": null,
+      "expected_cik": "0000723125",
+      "expected_company_id": "cik_0000723125",
+      "expected_symbol": "MU",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-MU-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0000723125:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-MU-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T08:41:17.052061+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "MU"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001689548:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/PRAX",
+      "existing_exact_proof": null,
+      "expected_cik": "0001689548",
+      "expected_company_id": "cik_0001689548",
+      "expected_symbol": "PRAX",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-PRAX-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001689548:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-PRAX-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-08-16T07:06:02.792106+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "PRAX"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001646188:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880"
+      ],
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ONDS",
+      "existing_exact_proof": null,
+      "expected_cik": "0001646188",
+      "expected_company_id": "cik_0001646188",
+      "expected_symbol": "ONDS",
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "issuer-ONDS-2025-05-29",
+      "proof_kind": "massive_historical_issuer",
+      "query": {
+        "date": "2025-05-29"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    },
+    {
+      "case_ids": [
+        "cik_0001646188:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880"
+      ],
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "event_type_filter_forbidden": true,
+      "existing_exact_proof": null,
+      "method": "GET",
+      "not_executed": true,
+      "proof_id": "splits-ONDS-2025-05-30-2026-09-08",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "proof_retrieved_not_before_utc": "2026-09-08T13:11:55.306581+00:00",
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile",
+      "query": {
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-09-08",
+        "limit": "1000",
+        "sort": "execution_date.asc",
+        "ticker": "ONDS"
+      },
+      "state": "missing_retained_GET_proof_in_checked_scope"
+    }
+  ],
+  "requests_per_60_seconds": 5,
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/collect_reviewed_market_proofs.py",
+    "sha256": "aaf5b1a8549526fb9b31eb7a6860c8aafed9aa4242575034dae11e0570082314"
+  },
+  "timeout_seconds": 30,
+  "verified_distinct_nested_bindings": 38
+}

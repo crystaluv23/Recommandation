@@ -1,0 +1,718 @@
+{
+  "candidate_document_denominator": 16,
+  "candidate_verdicts": [
+    {
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "verdict": "admitted"
+    }
+  ],
+  "consumer_cases_passed": 14,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_case_denominator": 15,
+  "full_dataset_readiness_proven": false,
+  "full_prepare_executed": false,
+  "input_manifest_hash": "e4f413ea5c05516f33f0794dc689adcfe34abe7adaa2352968b69cdd4285497c",
+  "labels_loaded": false,
+  "limitations": [
+    "No new narrative qualification or role execution; 15-case market consumers only.",
+    "Source admission and arithmetic do not establish prediction gain, full readiness or Fast/Slow completion."
+  ],
+  "new_admitted_document_count": 16,
+  "old_review_row_count": 5,
+  "old_reviewed_view_unchanged": true,
+  "old_rows_preserved_verbatim": true,
+  "originals_and_inputs_unchanged": true,
+  "outcomes": [
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 47.964,
+        "mean_adjusted_close": 23.982,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 24.37,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0000701818:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 219.22799999999998,
+        "mean_adjusted_close": 109.61399999999999,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 109.53,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001174922:20250731",
+      "consumer_source_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 99.384,
+        "mean_adjusted_close": 49.692,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 49.72,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0000895728:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 286.628,
+        "mean_adjusted_close": 143.314,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 144.94,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0000895421:20250731",
+      "consumer_source_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 63.6,
+        "mean_adjusted_close": 31.8,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 30.5,
+        "recent_close_date": "2025-03-28",
+        "status": "available",
+        "trading_dates": [
+          "2025-03-24",
+          "2025-03-25",
+          "2025-03-26",
+          "2025-03-27",
+          "2025-03-28"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001869198:20250331",
+      "consumer_source_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 8.736,
+        "mean_adjusted_close": 4.368,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 4.39,
+        "recent_close_date": "2025-05-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-05-22",
+          "2025-05-23",
+          "2025-05-27",
+          "2025-05-28",
+          "2025-05-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001576942:20250530",
+      "consumer_source_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 280.448,
+        "mean_adjusted_close": 140.224,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 144.12,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0000936395:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 240.032,
+        "mean_adjusted_close": 120.016,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 144.46,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001590364:20250731",
+      "consumer_source_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 157.83200000000002,
+        "mean_adjusted_close": 78.91600000000001,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 79.26,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001018963:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 126.888,
+        "mean_adjusted_close": 63.444,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 62.31,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001164727:20250731",
+      "consumer_source_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 52.636,
+        "mean_adjusted_close": 26.318,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 25.97,
+        "recent_close_date": "2025-03-28",
+        "status": "available",
+        "trading_dates": [
+          "2025-03-24",
+          "2025-03-25",
+          "2025-03-26",
+          "2025-03-27",
+          "2025-03-28"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001801368:20250331",
+      "consumer_source_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 204.456,
+        "mean_adjusted_close": 102.228,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 113.5,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0002023554:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 224.37600000000003,
+        "mean_adjusted_close": 112.18800000000002,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 114.74,
+        "recent_close_date": "2025-07-30",
+        "status": "available",
+        "trading_dates": [
+          "2025-07-24",
+          "2025-07-25",
+          "2025-07-28",
+          "2025-07-29",
+          "2025-07-30"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0000723125:20250731",
+      "consumer_source_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 1,
+      "all_admitted_market_documents_consumed": true,
+      "baseline": {
+        "doubling_threshold": 100.65599999999999,
+        "mean_adjusted_close": 50.327999999999996,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 52.38,
+        "recent_close_date": "2025-09-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-09-23",
+          "2025-09-24",
+          "2025-09-25",
+          "2025-09-26",
+          "2025-09-29"
+        ]
+      },
+      "candidate_documents": 1,
+      "case_id": "cik_0001689548:20250930",
+      "consumer_source_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": true,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+          "exact_available_load_equal": true
+        }
+      ]
+    },
+    {
+      "admitted_documents": 2,
+      "all_admitted_market_documents_consumed": false,
+      "baseline": {
+        "doubling_threshold": 1.9673200000000002,
+        "mean_adjusted_close": 0.9836600000000001,
+        "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+        "recent_close": 1.07,
+        "recent_close_date": "2025-05-29",
+        "status": "available",
+        "trading_dates": [
+          "2025-05-22",
+          "2025-05-23",
+          "2025-05-27",
+          "2025-05-28",
+          "2025-05-29"
+        ]
+      },
+      "candidate_documents": 2,
+      "case_id": "cik_0001646188:20250530",
+      "consumer_source_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ],
+      "literal_matches": [
+        {
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "matches": true
+        },
+        {
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "matches": true
+        }
+      ],
+      "market_request_resolved": true,
+      "passed": false,
+      "source_boundary_checks": [
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "exact_available_load_equal": true
+        },
+        {
+          "before_available_rejected": true,
+          "complete_original_equal": true,
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "exact_available_load_equal": true
+        }
+      ]
+    }
+  ],
+  "readonly_data_requests": 0,
+  "restored_typed_store_equal": true,
+  "reviewed_total_document_count": 19,
+  "schema_version": "fixed-anchor-market-qualification-result-v1"
+}

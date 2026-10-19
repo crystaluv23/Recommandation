@@ -1,0 +1,288 @@
+{
+  "acquisition_allowed": false,
+  "baseline_literal_expectations": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/baseline-literal-expectations.json",
+    "sha256": "4638b33f9f833016a1914c1f759cc2e1e8a250722bf0a59d123551bca78648ac"
+  },
+  "candidate_document_denominator": 16,
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_anchor_market_snapshot.py",
+      "sha256": "9aa612edd2f2d937e12b1f0579f5e8549949a3929d42436192980307506957b5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    }
+  ],
+  "collection_plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/plan.json",
+    "sha256": "bed5b6a470b63db2f02e4db55108c29ad168a142d479c515c2606e1f9b4756b0"
+  },
+  "final_attempts": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/attempts.json",
+    "sha256": "19a88a3eb31cf4455e9abc66fd68ccd8fd547ff0e83ec2b10064d6f36cc3ebfa"
+  },
+  "final_results": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+    "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+  },
+  "fixed_case_denominator": 15,
+  "full_prepare_executed": false,
+  "inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/inventory.json",
+    "sha256": "cd20f162f7d7bd04d0340732bd0b19262b9aad6e03f06594d72fc909a35f2183"
+  },
+  "labels_loaded": false,
+  "model_calls_authorized": false,
+  "origin_reconstruction": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/origin-reconstruction.json",
+    "sha256": "79b1389939586d0dc1f0df37bcdfd15c96463895bd6ef56c210c438c532c6898"
+  },
+  "original_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+      "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+      "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    }
+  ],
+  "raw_response_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-KGC-2025-09-29.response.json",
+      "sha256": "757f4440621e3e718d247ccccc9cc9566d20735656f02cfe5733d6a1924cfa62"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-KGC-2025-09-30-2026-08-16.response.json",
+      "sha256": "3568e8c040ab7f2272b45e001863ff64e4863b44f01319a0249237481715dbba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-WYNN-2025-07-30.response.json",
+      "sha256": "18560a545b1ec1c73c389b01c79d2f8542e1969fc35189bb72e33b2a2de97805"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-WYNN-2025-07-31-2026-08-16.response.json",
+      "sha256": "38d18f6eba2e30ec5a3180e30aed447b9d193096d4392941fc3db567e5e7511f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ENB-2025-09-29.response.json",
+      "sha256": "49f86ada2ee622290f01c9eb09bf916ed524a53eb5002bec5218d834207bdf68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ENB-2025-09-30-2026-08-16.response.json",
+      "sha256": "ed4a2c50462d134f160ddbd2361ad5a7a2700577ecadad22a45b4dc4a0cba76f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MS-2025-07-30.response.json",
+      "sha256": "6815824b9d577443480549ebc454beafe69e6fd4a422bf849d59c91fd632d476"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MS-2025-07-31-2026-08-16.response.json",
+      "sha256": "11e24bd2f6bc7111d6625b28ff307869b791cbe81ebddda5e6a9476e4ff7c5e3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-LTH-2025-03-28.response.json",
+      "sha256": "21f76aebe0f6232a50aa54c04d925445587a75a9e05305c7b64bfa9cb0a04522"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-LTH-2025-03-29-2026-08-16.response.json",
+      "sha256": "0abe292e3bd4d8a1a3ea633781e3cd2263b42f7142d11dce2086a61a0f61afd4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SFIX-2025-05-29.response.json",
+      "sha256": "3a9041da6b9f2a666506e1ab50bcdffc89d3e59b4fd23f2e102c02dbba438e4f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SFIX-2025-05-30-2026-08-16.response.json",
+      "sha256": "e4e5da0a4fcdf798c410709557f5762313edd3cf346da6aba8e9120d1cd2ae49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-CIEN-2025-09-29.response.json",
+      "sha256": "ba723591b153f9861047b61b82b7dfbb3f0b5cf7dabec03af7644d8a8355d442"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-CIEN-2025-09-30-2026-08-16.response.json",
+      "sha256": "c862356b0ad04fd168e92c47bf24bb5c262c207de4dc9d3d9e77705bb818e866"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-FTAI-2025-07-30.response.json",
+      "sha256": "225a4b3414bcb4bdaaf8bbc2feddb686e5668be0513d960bc715425d7c548620"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-FTAI-2025-07-31-2026-08-16.response.json",
+      "sha256": "6b90bdacd4c67d9c8ee10eecad9fca863d6bacff4c316114d467e6b49cf56bf0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ATI-2025-09-29.response.json",
+      "sha256": "4f1acf4160b9e90e0700b52ed8900c0cc5630939729e56377e7738d860ccd973"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ATI-2025-09-30-2026-08-16.response.json",
+      "sha256": "2a740adfad47705265ca861b3b0e7e0eb5d34045ee5aa9be735a8134694d260b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-NEM-2025-07-30.response.json",
+      "sha256": "0e93c6910314b5e14c673b4a96e7a9140c03edd867e3bfd290f753865f049031"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-NEM-2025-07-31-2026-08-16.response.json",
+      "sha256": "9577cf60332dd6518e9620abcf0ff57f54404aeb5e63e12db6149f6dbd683788"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MP-2025-03-28.response.json",
+      "sha256": "31fb38ca83d6b264cd7b024951433b609004b743ce6da97dc7e68911fd401ab4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MP-2025-03-29-2026-08-16.response.json",
+      "sha256": "a20e43e1b9bf1574d934fdd3ec0b2e185c2a36616775cbb947f17e1b00a2c20f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SNDK-2025-09-29.response.json",
+      "sha256": "e0045e33084c34cd5f6cac40022a24a1df534c9e25ab86bdbc570f94f0120de1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SNDK-2025-09-30-2026-08-16.response.json",
+      "sha256": "b18b9b80a606d89726729f79c4829c687141e3efdb998f3e3cb2def4bddd57bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MU-2025-07-30.response.json",
+      "sha256": "2791ab1efc4afd124dd6f9e2fcd2b611764e2502ff5f719b04cb87ab9967b1c2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MU-2025-07-31-2026-08-16.response.json",
+      "sha256": "eeb054a91a93e4b7f55743181e1ce0dc5d940a2341f1f89bb6abaeef788caca7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-PRAX-2025-09-29.response.json",
+      "sha256": "e34fbd4df105231ab21586303ac5121926f3e394c592f48a32f9781962af1641"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-PRAX-2025-09-30-2026-08-16.response.json",
+      "sha256": "0520662c22dbffca5a31b1522445420b953b8a285fc3b53a9f380db96459fa7d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ONDS-2025-05-29.response.json",
+      "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ONDS-2025-05-30-2026-09-08.response.json",
+      "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+    }
+  ],
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "b7f5629176acb8d55cc2394137cd86380f6150e087b28281c6aa04e02fe98b52",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_market_snapshot_20261020_v1/snapshot",
+    "store_type": "reviewed"
+  },
+  "schema_version": "fixed-anchor-market-consumers-v1",
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-anchor-market-review-20261020.json",
+    "sha256": "a0efa02e046d7b036f4ad6728d1d626d900fce91c6f28eb5772105396f5ba87f"
+  }
+}

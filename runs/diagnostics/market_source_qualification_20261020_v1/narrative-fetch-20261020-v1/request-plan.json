@@ -1,0 +1,72 @@
+{
+  "schema_version": "bounded-sec-missing-primary-get-plan-v1",
+  "scope": "Read-only exact missing source retrieval only; no source profile implementation, original/cache overwrite, admission, labels, models or run preparation.",
+  "narrative_inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-inventory.json",
+    "sha256": "a174dca9dc02a178713112c53746e1bded6703306e01b130d6d17bcdf94d335d"
+  },
+  "max_GET_attempts": 4,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "stop_further_same_host_requests_after_http_403_or_429": true,
+  "other_already_planned_host_may_continue": true,
+  "requests": [
+    {
+      "name": "kgc_q2_statements_mda_ex99_1",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_ex99-1.htm",
+      "expected_kind": "static SEC quarterly statements/MD&A exhibit",
+      "parent_accession": "0001104659-25-072244",
+      "parent_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+        "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+      },
+      "expected_available_at_if_parent_attachment_proven": "2025-07-30T21:14:51+00:00"
+    },
+    {
+      "name": "ms_q2_earnings_ex99_1",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/a2q25msearningsrelease.htm",
+      "expected_kind": "static SEC earnings release exhibit",
+      "parent_accession": "0000895421-25-000419",
+      "parent_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+        "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+      },
+      "expected_available_at_if_parent_attachment_proven": "2025-07-16T11:59:47+00:00"
+    },
+    {
+      "name": "ms_q2_supplement_ex99_2",
+      "method": "GET",
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/a2q25msfinancialsupplement.htm",
+      "expected_kind": "static SEC financial supplement exhibit",
+      "parent_accession": "0000895421-25-000419",
+      "parent_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+        "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+      },
+      "expected_available_at_if_parent_attachment_proven": "2025-07-16T11:59:47+00:00"
+    },
+    {
+      "name": "ms_submissions_archive_001",
+      "method": "GET",
+      "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+      "expected_kind": "SEC historical submissions page linked by retained issuer root",
+      "root_submissions_cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "root_listed_page_range": [
+        "2025-06-30",
+        "2025-08-19"
+      ],
+      "target_accession": "0000895421-25-000419"
+    }
+  ],
+  "source_profile": {
+    "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+    "sha256": "6d073a693b083d7bf9ed1f012fdab8c0f612cbd91226e289a95323bec907df36"
+  },
+  "external_llm_calls": 0,
+  "no_qualification_claim": true
+}

@@ -1,0 +1,2629 @@
+{
+  "schema_version": "market-source-qualification-inventory-v1",
+  "scope": "Local retained-source bindings and missing proof GET inputs only; not source admission, RawInfo rewrite, readiness execution, label load or research run.",
+  "original_readiness_denominator": 48,
+  "original_anchor_failure_count": 16,
+  "case_denominator": 15,
+  "candidate_document_denominator": 16,
+  "excluded_already_qualified_case": {
+    "case_id": "cik_0001830043:20250930",
+    "ticker": "BMBL",
+    "reason": "Already has separately reviewed market proof/admitted view; excluded from these 15 case proof requests, original16 denominator retained.",
+    "existing_review": {
+      "path": "/Users/l/Project/Recommandation/reports/local-trusted-source-market-review-20261019.json",
+      "sha256": "80026c42e28408d10dc41ccc7873c8ce074e1fa621296e33bf342f4f11973a6e"
+    },
+    "existing_request_records": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+      "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+    }
+  },
+  "original_anchor_failure": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+    "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+  },
+  "original_anchor_cases": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/anchor.json",
+    "sha256": "6ed4bba072fad5a8f607d5fb5f85af4e48161fe170d6ba5e237a27500875fc23"
+  },
+  "proof_profile": {
+    "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+    "sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+  },
+  "proof_reader": {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+    "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+  },
+  "checked_proof_scope": {
+    "source_cache_capability_roots": [
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      },
+      {
+        "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive",
+        "capability_directories": [
+          "price_daily"
+        ],
+        "historical_issuer_or_split_capability_present": false
+      }
+    ],
+    "retained_request_record_files": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+        "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+      }
+    ],
+    "limitation": "No whole-history/global-cache proof absence claim. Only exact previously located source cache roots and the retained BMBL request collection checked; no issuer/split evidence in this bounded scope matches these 15 cases."
+  },
+  "cases": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "company_name": "Kinross Gold Corp / KINROSS GOLD CORP",
+      "ticker": "KGC",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+            "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+          },
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+          "content_sha256": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive/price_daily/e0ebf8ef8b1aaf5fe907914e.json",
+            "sha256": "3590cda22754ab72d9f86b02d5d2529ab9a3f6edde56055c26d97f3d35a43100"
+          },
+          "cache_retrieved_at": "2026-08-16T05:55:40.916402+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T05:55:40.916402+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T05:55:40.923703+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/KGC/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "KGC",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 250,
+          "first_bar_date": "2024-09-30",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "KGC",
+            "adjusted": true,
+            "count": 250,
+            "queryCount": 250,
+            "resultsCount": 250
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T05:55:40.923703+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-KGC-2025-09-29",
+        "splits-KGC-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "company_name": "Wynn Resorts Ltd / WYNN RESORTS LTD",
+      "ticker": "WYNN",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+            "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+          },
+          "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+          "content_sha256": "75cab593ff8c174d6b55c6c9019b539b749de5c112486b63e5bb8673524da338",
+          "source_type": "market_data",
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "available_at_utc": "2025-07-31T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/cfe1b1934471074141274fd3.json",
+            "sha256": "f130e0e50f8a6c04b3ce72798ec52592769f831f972804876a83f70de6c1b0f2"
+          },
+          "cache_retrieved_at": "2026-08-16T07:33:17.399310+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:33:17.399310+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:33:17.403963+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/WYNN/range/1/day/2024-07-31/2025-07-30",
+            "symbol": "WYNN",
+            "start": "2024-07-31",
+            "end": "2025-07-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 238,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-07-30",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "WYNN",
+            "adjusted": true,
+            "count": 238,
+            "queryCount": 238,
+            "resultsCount": 238
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-07-31",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:33:17.403963+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-WYNN-2025-07-30",
+        "splits-WYNN-2025-07-31-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "company_name": "Enbridge Inc / ENBRIDGE INC",
+      "ticker": "ENB",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+            "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+          },
+          "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+          "content_sha256": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/530b10a20f09abd46ae82d20.json",
+            "sha256": "8b3f8a99b1ef7456adfaaadf40e2c10eb935d67f687a1587639538c7bbc391b7"
+          },
+          "cache_retrieved_at": "2026-08-16T08:21:33.674439+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T08:21:33.674439+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T08:21:33.683689+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/ENB/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "ENB",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 250,
+          "first_bar_date": "2024-09-30",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "ENB",
+            "adjusted": true,
+            "count": 250,
+            "queryCount": 250,
+            "resultsCount": 250
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T08:21:33.683689+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-ENB-2025-09-29",
+        "splits-ENB-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "company_name": "Morgan Stanley / MORGAN STANLEY",
+      "ticker": "MS",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+            "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+          },
+          "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+          "content_sha256": "0753a2fda6be894d5cf2347c3af787f06338102210645312b6d8eff25f66fd22",
+          "source_type": "market_data",
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "available_at_utc": "2025-07-31T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/9a5a01ed952a1e1c1c721835.json",
+            "sha256": "ed45dbb74eefee0086b99b8f3e67f1092c0586df717ae03ca8a12e4846be7ff1"
+          },
+          "cache_retrieved_at": "2026-08-16T07:27:10.142640+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:27:10.142640+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:27:10.149429+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/MS/range/1/day/2024-07-31/2025-07-30",
+            "symbol": "MS",
+            "start": "2024-07-31",
+            "end": "2025-07-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 238,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-07-30",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "MS",
+            "adjusted": true,
+            "count": 238,
+            "queryCount": 238,
+            "resultsCount": 238
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-07-31",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:27:10.149429+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-MS-2025-07-30",
+        "splits-MS-2025-07-31-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "company_name": "Life Time Group Holdings Inc / Life Time Group Holdings, Inc.",
+      "ticker": "LTH",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+            "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+          },
+          "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+          "content_sha256": "81572f1417844d7a68230ab6750bee33729c697579e895a7fcda62e4d76c47eb",
+          "source_type": "market_data",
+          "published_at": "2025-03-29T00:00:00+00:00",
+          "available_at": "2025-03-29T00:00:00+00:00",
+          "available_at_utc": "2025-03-29T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive/price_daily/849e224e70ee1f70e49da6b0.json",
+            "sha256": "73213a576e7636cdd770d70d8d0ae25cc478dc1498d42606e7bc5f78c00f6c50"
+          },
+          "cache_retrieved_at": "2026-08-16T07:19:34.438385+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:19:34.438385+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:19:34.442323+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/LTH/range/1/day/2024-03-31/2025-03-30",
+            "symbol": "LTH",
+            "start": "2024-03-31",
+            "end": "2025-03-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 154,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-03-28",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "LTH",
+            "adjusted": true,
+            "count": 154,
+            "queryCount": 154,
+            "resultsCount": 154
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-03-29",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:19:34.442323+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-LTH-2025-03-28",
+        "splits-LTH-2025-03-29-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "company_name": "Stitch Fix Inc - Class A / Stitch Fix, Inc.",
+      "ticker": "SFIX",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+            "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+          },
+          "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+          "content_sha256": "9a587b3f71a458db45f7446d41828ab17b43e117d613420854d01f992aec271c",
+          "source_type": "market_data",
+          "published_at": "2025-05-30T00:00:00+00:00",
+          "available_at": "2025-05-30T00:00:00+00:00",
+          "available_at_utc": "2025-05-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/2db6c972e1641dcc7c71ee22.json",
+            "sha256": "83a0e8a611a0a3199bb44a225edcaebe09b92a6480bae57dcbbd12807bc3690c"
+          },
+          "cache_retrieved_at": "2026-08-16T07:35:06.927265+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:35:06.927265+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:35:06.934019+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/SFIX/range/1/day/2024-05-30/2025-05-29",
+            "symbol": "SFIX",
+            "start": "2024-05-30",
+            "end": "2025-05-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 196,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-05-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "SFIX",
+            "adjusted": true,
+            "count": 196,
+            "queryCount": 196,
+            "resultsCount": 196
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-05-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:35:06.934019+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-SFIX-2025-05-29",
+        "splits-SFIX-2025-05-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "company_id": "cik_0000936395",
+      "company_name": "CIENA Corp / CIENA CORP",
+      "ticker": "CIEN",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+            "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+          },
+          "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+          "content_sha256": "27a376f19e25e596bc97443ddd0bb758c2a627f7eb79e814d82adf00933e39e7",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive/price_daily/8f39ee2fd6f19e13bd1f5317.json",
+            "sha256": "51dfc7e418cf5512af1bdbe0997381298c94c8e84465e658457464e276689725"
+          },
+          "cache_retrieved_at": "2026-08-16T07:43:33.870886+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:43:33.870886+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:43:33.876508+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/CIEN/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "CIEN",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 250,
+          "first_bar_date": "2024-09-30",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "CIEN",
+            "adjusted": true,
+            "count": 250,
+            "queryCount": 250,
+            "resultsCount": 250
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:43:33.876508+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-CIEN-2025-09-29",
+        "splits-CIEN-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "company_name": "FTAI Aviation Ltd - Class A / FTAI Aviation Ltd.",
+      "ticker": "FTAI",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+            "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+          },
+          "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+          "content_sha256": "700274cd4bc5b20fe238330b4742147b29931cbd82aeba3b422fd7e07517b014",
+          "source_type": "market_data",
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "available_at_utc": "2025-07-31T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/80939e3752f3e60935494440.json",
+            "sha256": "65765a2002d025e92f38cccbb8401cbed252bf30a716f80293b369790d1882f9"
+          },
+          "cache_retrieved_at": "2026-08-16T07:02:57.947851+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:02:57.947851+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:02:57.954401+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/FTAI/range/1/day/2024-07-31/2025-07-30",
+            "symbol": "FTAI",
+            "start": "2024-07-31",
+            "end": "2025-07-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 238,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-07-30",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "FTAI",
+            "adjusted": true,
+            "count": 238,
+            "queryCount": 238,
+            "resultsCount": 238
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-07-31",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:02:57.954401+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-FTAI-2025-07-30",
+        "splits-FTAI-2025-07-31-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "company_name": "ATI Inc / ATI INC",
+      "ticker": "ATI",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+            "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+          },
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "content_sha256": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/010e1bbdaea56da890258302.json",
+            "sha256": "e267db74991621caf4634d80c0b057b08622fbd7cced50ad1685618a6b9736e6"
+          },
+          "cache_retrieved_at": "2026-08-16T07:03:27.711474+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:03:27.711474+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:03:27.717820+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/ATI/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "ATI",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 250,
+          "first_bar_date": "2024-09-30",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "ATI",
+            "adjusted": true,
+            "count": 250,
+            "queryCount": 250,
+            "resultsCount": 250
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:03:27.717820+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-ATI-2025-09-29",
+        "splits-ATI-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "company_name": "Newmont Corp / NEWMONT Corp /DE/",
+      "ticker": "NEM",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+            "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+          },
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "content_sha256": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5",
+          "source_type": "market_data",
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "available_at_utc": "2025-07-31T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/efe21718549d3b355b6e0430.json",
+            "sha256": "2ee09c97bc8c5e5f6cda171bf3a3f371f0a0ad5d7787c2bc5044a8254a8d6121"
+          },
+          "cache_retrieved_at": "2026-08-16T07:30:15.882824+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:30:15.882824+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:30:15.889191+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/NEM/range/1/day/2024-07-31/2025-07-30",
+            "symbol": "NEM",
+            "start": "2024-07-31",
+            "end": "2025-07-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 238,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-07-30",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "NEM",
+            "adjusted": true,
+            "count": 238,
+            "queryCount": 238,
+            "resultsCount": 238
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-07-31",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:30:15.889191+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-NEM-2025-07-30",
+        "splits-NEM-2025-07-31-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "company_name": "MP Materials Corporation / MP Materials Corp. / DE",
+      "ticker": "MP",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+            "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+          },
+          "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+          "content_sha256": "7cbfb517300de5af5327374acfb7f429e3d801e760afc13ae90ce9623037f8ad",
+          "source_type": "market_data",
+          "published_at": "2025-03-29T00:00:00+00:00",
+          "available_at": "2025-03-29T00:00:00+00:00",
+          "available_at_utc": "2025-03-29T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/7de59c6a0b60e8a141fdec6b.json",
+            "sha256": "38f0ee943e2f239c11cad9557e723eda538d06a9cbdbc6997838d3167afd7d2a"
+          },
+          "cache_retrieved_at": "2026-08-16T07:04:43.519945+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:04:43.519945+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:04:43.530048+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/MP/range/1/day/2024-03-31/2025-03-30",
+            "symbol": "MP",
+            "start": "2024-03-31",
+            "end": "2025-03-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 154,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-03-28",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "MP",
+            "adjusted": true,
+            "count": 154,
+            "queryCount": 154,
+            "resultsCount": 154
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-03-29",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:04:43.530048+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-MP-2025-03-28",
+        "splits-MP-2025-03-29-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "company_name": "Sandisk Corp",
+      "ticker": "SNDK",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+            "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+          },
+          "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+          "content_sha256": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+            "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+          },
+          "cache_retrieved_at": "2026-08-16T08:14:31.671317+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T08:14:31.671317+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T08:14:31.677927+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/SNDK/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "SNDK",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 151,
+          "first_bar_date": "2025-02-24",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "SNDK",
+            "adjusted": true,
+            "count": 151,
+            "queryCount": 151,
+            "resultsCount": 151
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T08:14:31.677927+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-SNDK-2025-09-29",
+        "splits-SNDK-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "company_name": "Micron Technology Inc / MICRON TECHNOLOGY INC",
+      "ticker": "MU",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+            "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+          },
+          "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+          "content_sha256": "823e5d16b8cfc77479fe99de251b7bf8b7a87b9b6ed65a7d8d191dbae1f19ed3",
+          "source_type": "market_data",
+          "published_at": "2025-07-31T00:00:00+00:00",
+          "available_at": "2025-07-31T00:00:00+00:00",
+          "available_at_utc": "2025-07-31T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/7a17328006a83a8d8f5e0716.json",
+            "sha256": "383ed43604da5e7fd039da9d06646e7d2554cbcc88d04bdf0f35fb13047c2525"
+          },
+          "cache_retrieved_at": "2026-08-16T08:41:17.044372+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T08:41:17.044372+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T08:41:17.052061+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/MU/range/1/day/2024-07-31/2025-07-30",
+            "symbol": "MU",
+            "start": "2024-07-31",
+            "end": "2025-07-30",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 238,
+          "first_bar_date": "2024-08-16",
+          "latest_bar_date": "2025-07-30",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "MU",
+            "adjusted": true,
+            "count": 238,
+            "queryCount": 238,
+            "resultsCount": 238
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-07-31",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T08:41:17.052061+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-MU-2025-07-30",
+        "splits-MU-2025-07-31-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "company_name": "Praxis Precision Medicines Inc / Praxis Precision Medicines, Inc.",
+      "ticker": "PRAX",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "candidate_document_count": 1,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+            "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+          },
+          "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+          "content_sha256": "cab65f074179af11f7282a5b19f4523da24468167da2a2f4f5d20bea0e9d1e23",
+          "source_type": "market_data",
+          "published_at": "2025-09-30T00:00:00+00:00",
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "available_at_utc": "2025-09-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/2fe7d53ca2ecc9575d982146.json",
+            "sha256": "f77b6d43b58651d8260f1305869cc34096a6bbd0a34eea1533c7f7645358f805"
+          },
+          "cache_retrieved_at": "2026-08-16T07:06:02.786862+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T07:06:02.786862+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T07:06:02.792106+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/PRAX/range/1/day/2024-09-30/2025-09-29",
+            "symbol": "PRAX",
+            "start": "2024-09-30",
+            "end": "2025-09-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 250,
+          "first_bar_date": "2024-09-30",
+          "latest_bar_date": "2025-09-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "PRAX",
+            "adjusted": true,
+            "count": 250,
+            "queryCount": 250,
+            "resultsCount": 250
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-09-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T07:06:02.792106+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-PRAX-2025-09-29",
+        "splits-PRAX-2025-09-30-2026-08-16"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "company_name": "Ondas Holdings Inc / Ondas Inc.",
+      "ticker": "ONDS",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "candidate_document_count": 2,
+      "documents": [
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+            "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+          },
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "content_sha256": "0d02e15a6b697fad524fc8ef7e835db5ecbdcc157bdcf32c9567c11e555f8afa",
+          "source_type": "market_data",
+          "published_at": "2025-05-30T00:00:00+00:00",
+          "available_at": "2025-05-30T00:00:00+00:00",
+          "available_at_utc": "2025-05-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ca450ac42f91a72fa1788ce0.json",
+            "sha256": "9eb8526ce487df3bcc28b46f8f474e25d3c5aa7e5b58af6c24c7d9af735f211e"
+          },
+          "cache_retrieved_at": "2026-08-16T09:32:03.525417+00:00",
+          "cache_retrieved_at_utc": "2026-08-16T09:32:03.525417+00:00",
+          "cache_retrieval_utc_date": "2026-08-16",
+          "normalization_retrieved_at_utc": "2026-08-16T09:32:03.528715+00:00",
+          "normalization_retrieval_utc_date": "2026-08-16",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/ONDS/range/1/day/2025-04-15/2025-05-29",
+            "symbol": "ONDS",
+            "start": "2025-04-15",
+            "end": "2025-05-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 31,
+          "first_bar_date": "2025-04-15",
+          "latest_bar_date": "2025-05-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "ONDS",
+            "adjusted": true,
+            "count": 31,
+            "queryCount": 31,
+            "resultsCount": 31
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-05-30",
+            "execution_date.lte": "2026-08-16",
+            "proof_retrieved_not_before_utc": "2026-08-16T09:32:03.528715+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        },
+        {
+          "original_record": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+            "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+          },
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "content_sha256": "4f0a68e38b3c4e8d5356b8805fafa1ecbc452f0a862456ad9c341bec18b37565",
+          "source_type": "market_data",
+          "published_at": "2025-05-30T00:00:00+00:00",
+          "available_at": "2025-05-30T00:00:00+00:00",
+          "available_at_utc": "2025-05-30T00:00:00+00:00",
+          "cache": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/2a7f8b91f51d604ae832b2a5.json",
+            "sha256": "5a85fbf3fd56c3340025254d10e661123ee631c97ede5fd2052e329921511fff"
+          },
+          "cache_retrieved_at": "2026-09-08T13:11:55.301645+00:00",
+          "cache_retrieved_at_utc": "2026-09-08T13:11:55.301645+00:00",
+          "cache_retrieval_utc_date": "2026-09-08",
+          "normalization_retrieved_at_utc": "2026-09-08T13:11:55.306581+00:00",
+          "normalization_retrieval_utc_date": "2026-09-08",
+          "normalization_clock_unique_across_all_bars": true,
+          "original_request": {
+            "endpoint": "https://api.massive.com/v2/aggs/ticker/ONDS/range/1/day/2024-04-25/2025-05-29",
+            "symbol": "ONDS",
+            "start": "2024-04-25",
+            "end": "2025-05-29",
+            "sanitized_params": [
+              [
+                "method",
+                "GET"
+              ],
+              [
+                "adjusted",
+                "true"
+              ],
+              [
+                "limit",
+                "50000"
+              ],
+              [
+                "sort",
+                "asc"
+              ]
+            ],
+            "method": "GET"
+          },
+          "original_bar_count": 181,
+          "first_bar_date": "2024-09-09",
+          "latest_bar_date": "2025-05-29",
+          "response_markers": {
+            "status": "OK",
+            "ticker": "ONDS",
+            "adjusted": true,
+            "count": 181,
+            "queryCount": 181,
+            "resultsCount": 181
+          },
+          "pagination_markers": {
+            "next_url": {
+              "present": false,
+              "value": null
+            },
+            "next_page": {
+              "present": false,
+              "value": null
+            },
+            "next_page_token": {
+              "present": false,
+              "value": null
+            }
+          },
+          "successful_complete_page_shape": true,
+          "required_split_absence_coverage": {
+            "execution_date.gte": "2025-05-30",
+            "execution_date.lte": "2026-09-08",
+            "proof_retrieved_not_before_utc": "2026-09-08T13:11:55.306581+00:00"
+          },
+          "qualified_for_blind_use": false,
+          "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+          "complete_production_reconstruction_verified_this_inventory": false
+        }
+      ],
+      "proof_request_ids": [
+        "issuer-ONDS-2025-05-29",
+        "splits-ONDS-2025-05-30-2026-09-08"
+      ]
+    }
+  ],
+  "proposed_readonly_proof_requests": [
+    {
+      "proof_id": "issuer-KGC-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/KGC",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0000701818:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "expected_company_id": "cik_0000701818",
+      "expected_cik": "0000701818",
+      "expected_symbol": "KGC",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-KGC-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "KGC",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T05:55:40.923703+00:00",
+      "case_ids": [
+        "cik_0000701818:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-WYNN-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/WYNN",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "case_ids": [
+        "cik_0001174922:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "expected_company_id": "cik_0001174922",
+      "expected_cik": "0001174922",
+      "expected_symbol": "WYNN",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-WYNN-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "WYNN",
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:33:17.403963+00:00",
+      "case_ids": [
+        "cik_0001174922:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-ENB-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ENB",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0000895728:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "expected_company_id": "cik_0000895728",
+      "expected_cik": "0000895728",
+      "expected_symbol": "ENB",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-ENB-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "ENB",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T08:21:33.683689+00:00",
+      "case_ids": [
+        "cik_0000895728:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-MS-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MS",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "case_ids": [
+        "cik_0000895421:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "expected_company_id": "cik_0000895421",
+      "expected_cik": "0000895421",
+      "expected_symbol": "MS",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-MS-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "MS",
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:27:10.149429+00:00",
+      "case_ids": [
+        "cik_0000895421:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-LTH-2025-03-28",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/LTH",
+      "query": {
+        "date": "2025-03-28"
+      },
+      "case_ids": [
+        "cik_0001869198:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "expected_company_id": "cik_0001869198",
+      "expected_cik": "0001869198",
+      "expected_symbol": "LTH",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-LTH-2025-03-29-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "LTH",
+        "execution_date.gte": "2025-03-29",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:19:34.442323+00:00",
+      "case_ids": [
+        "cik_0001869198:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-SFIX-2025-05-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/SFIX",
+      "query": {
+        "date": "2025-05-29"
+      },
+      "case_ids": [
+        "cik_0001576942:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "expected_company_id": "cik_0001576942",
+      "expected_cik": "0001576942",
+      "expected_symbol": "SFIX",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-SFIX-2025-05-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "SFIX",
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:35:06.934019+00:00",
+      "case_ids": [
+        "cik_0001576942:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-CIEN-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/CIEN",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0000936395:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "expected_company_id": "cik_0000936395",
+      "expected_cik": "0000936395",
+      "expected_symbol": "CIEN",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-CIEN-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "CIEN",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:43:33.876508+00:00",
+      "case_ids": [
+        "cik_0000936395:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-FTAI-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/FTAI",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "case_ids": [
+        "cik_0001590364:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "expected_company_id": "cik_0001590364",
+      "expected_cik": "0001590364",
+      "expected_symbol": "FTAI",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-FTAI-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "FTAI",
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:02:57.954401+00:00",
+      "case_ids": [
+        "cik_0001590364:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-ATI-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ATI",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0001018963:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "expected_company_id": "cik_0001018963",
+      "expected_cik": "0001018963",
+      "expected_symbol": "ATI",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-ATI-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "ATI",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:03:27.717820+00:00",
+      "case_ids": [
+        "cik_0001018963:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-NEM-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/NEM",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "case_ids": [
+        "cik_0001164727:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "expected_company_id": "cik_0001164727",
+      "expected_cik": "0001164727",
+      "expected_symbol": "NEM",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-NEM-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "NEM",
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:30:15.889191+00:00",
+      "case_ids": [
+        "cik_0001164727:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-MP-2025-03-28",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MP",
+      "query": {
+        "date": "2025-03-28"
+      },
+      "case_ids": [
+        "cik_0001801368:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "expected_company_id": "cik_0001801368",
+      "expected_cik": "0001801368",
+      "expected_symbol": "MP",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-MP-2025-03-29-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "MP",
+        "execution_date.gte": "2025-03-29",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:04:43.530048+00:00",
+      "case_ids": [
+        "cik_0001801368:20250331"
+      ],
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-SNDK-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/SNDK",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0002023554:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "expected_company_id": "cik_0002023554",
+      "expected_cik": "0002023554",
+      "expected_symbol": "SNDK",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-SNDK-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "SNDK",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T08:14:31.677927+00:00",
+      "case_ids": [
+        "cik_0002023554:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-MU-2025-07-30",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/MU",
+      "query": {
+        "date": "2025-07-30"
+      },
+      "case_ids": [
+        "cik_0000723125:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "expected_company_id": "cik_0000723125",
+      "expected_cik": "0000723125",
+      "expected_symbol": "MU",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-MU-2025-07-31-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "MU",
+        "execution_date.gte": "2025-07-31",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T08:41:17.052061+00:00",
+      "case_ids": [
+        "cik_0000723125:20250731"
+      ],
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-PRAX-2025-09-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/PRAX",
+      "query": {
+        "date": "2025-09-29"
+      },
+      "case_ids": [
+        "cik_0001689548:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "expected_company_id": "cik_0001689548",
+      "expected_cik": "0001689548",
+      "expected_symbol": "PRAX",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-PRAX-2025-09-30-2026-08-16",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "PRAX",
+        "execution_date.gte": "2025-09-30",
+        "execution_date.lte": "2026-08-16",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-08-16T07:06:02.792106+00:00",
+      "case_ids": [
+        "cik_0001689548:20250930"
+      ],
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    },
+    {
+      "proof_id": "issuer-ONDS-2025-05-29",
+      "proof_kind": "massive_historical_issuer",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/v3/reference/tickers/ONDS",
+      "query": {
+        "date": "2025-05-29"
+      },
+      "case_ids": [
+        "cik_0001646188:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880"
+      ],
+      "expected_company_id": "cik_0001646188",
+      "expected_cik": "0001646188",
+      "expected_symbol": "ONDS",
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true
+    },
+    {
+      "proof_id": "splits-ONDS-2025-05-30-2026-09-08",
+      "proof_kind": "massive_no_post_cutoff_splits",
+      "method": "GET",
+      "endpoint": "https://api.massive.com/stocks/v1/splits",
+      "query": {
+        "ticker": "ONDS",
+        "execution_date.gte": "2025-05-30",
+        "execution_date.lte": "2026-09-08",
+        "sort": "execution_date.asc",
+        "limit": "1000"
+      },
+      "proof_retrieved_not_before_utc": "2026-09-08T13:11:55.306581+00:00",
+      "case_ids": [
+        "cik_0001646188:20250530"
+      ],
+      "document_ids": [
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880"
+      ],
+      "existing_exact_proof": null,
+      "state": "missing_retained_GET_proof_in_checked_scope",
+      "not_executed": true,
+      "event_type_filter_forbidden": true,
+      "qualification_requires": "HTTP/provider success, complete page and exactly empty results; nonempty/pagination is not admitted by current profile"
+    }
+  ],
+  "deduplicated_required_GET_count": 30,
+  "ONDS_handling": "Two distinct original windows/caches remain separate candidate documents. One latest-date identity request and one split-absence coverage superset may supply proof to both, subject to actual success and full per-document reconstruction.",
+  "qualification_conditions": [
+    "Each original/cache must later pass full native parser+adapter reconstruction; this inventory is not that verification.",
+    "Historical identity response must match issuer CIK/symbol/US common-stock identity on exact latest-bar date.",
+    "Split request covers document availability UTC date through later cache/normalization UTC date, with no event-type filter; retained GET must occur at or after the later original instant.",
+    "Empty complete split ledger is required by current narrow profile; nonempty ledger remains unsupported/pending, not automatically repaired or admitted.",
+    "No new cutoff-vintage archive policy or repeated-download-every-row requirement is introduced."
+  ],
+  "input_bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/anchor.json",
+      "sha256": "6ed4bba072fad5a8f607d5fb5f85af4e48161fe170d6ba5e237a27500875fc23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+      "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+      "sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive/price_daily/e0ebf8ef8b1aaf5fe907914e.json",
+      "sha256": "3590cda22754ab72d9f86b02d5d2529ab9a3f6edde56055c26d97f3d35a43100"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/cfe1b1934471074141274fd3.json",
+      "sha256": "f130e0e50f8a6c04b3ce72798ec52592769f831f972804876a83f70de6c1b0f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/530b10a20f09abd46ae82d20.json",
+      "sha256": "8b3f8a99b1ef7456adfaaadf40e2c10eb935d67f687a1587639538c7bbc391b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/9a5a01ed952a1e1c1c721835.json",
+      "sha256": "ed45dbb74eefee0086b99b8f3e67f1092c0586df717ae03ca8a12e4846be7ff1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive/price_daily/849e224e70ee1f70e49da6b0.json",
+      "sha256": "73213a576e7636cdd770d70d8d0ae25cc478dc1498d42606e7bc5f78c00f6c50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/2db6c972e1641dcc7c71ee22.json",
+      "sha256": "83a0e8a611a0a3199bb44a225edcaebe09b92a6480bae57dcbbd12807bc3690c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive/price_daily/8f39ee2fd6f19e13bd1f5317.json",
+      "sha256": "51dfc7e418cf5512af1bdbe0997381298c94c8e84465e658457464e276689725"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/80939e3752f3e60935494440.json",
+      "sha256": "65765a2002d025e92f38cccbb8401cbed252bf30a716f80293b369790d1882f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/010e1bbdaea56da890258302.json",
+      "sha256": "e267db74991621caf4634d80c0b057b08622fbd7cced50ad1685618a6b9736e6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/efe21718549d3b355b6e0430.json",
+      "sha256": "2ee09c97bc8c5e5f6cda171bf3a3f371f0a0ad5d7787c2bc5044a8254a8d6121"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/7de59c6a0b60e8a141fdec6b.json",
+      "sha256": "38f0ee943e2f239c11cad9557e723eda538d06a9cbdbc6997838d3167afd7d2a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+      "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/7a17328006a83a8d8f5e0716.json",
+      "sha256": "383ed43604da5e7fd039da9d06646e7d2554cbcc88d04bdf0f35fb13047c2525"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/2fe7d53ca2ecc9575d982146.json",
+      "sha256": "f77b6d43b58651d8260f1305869cc34096a6bbd0a34eea1533c7f7645358f805"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ca450ac42f91a72fa1788ce0.json",
+      "sha256": "9eb8526ce487df3bcc28b46f8f474e25d3c5aa7e5b58af6c24c7d9af735f211e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/2a7f8b91f51d604ae832b2a5.json",
+      "sha256": "5a85fbf3fd56c3340025254d10e661123ee631c97ede5fd2052e329921511fff"
+    }
+  ],
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "labels_loaded": false,
+  "large_price_archive_read": false,
+  "full_prepare_executed": false,
+  "new_source_admission": false,
+  "input_bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/anchor.json",
+      "sha256": "6ed4bba072fad5a8f607d5fb5f85af4e48161fe170d6ba5e237a27500875fc23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+      "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+      "sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "a3d18cf70c09db50a6d52a00d423bdda0042be038704ae81f593c3bbfba19f05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive/price_daily/e0ebf8ef8b1aaf5fe907914e.json",
+      "sha256": "3590cda22754ab72d9f86b02d5d2529ab9a3f6edde56055c26d97f3d35a43100"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/cfe1b1934471074141274fd3.json",
+      "sha256": "f130e0e50f8a6c04b3ce72798ec52592769f831f972804876a83f70de6c1b0f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/530b10a20f09abd46ae82d20.json",
+      "sha256": "8b3f8a99b1ef7456adfaaadf40e2c10eb935d67f687a1587639538c7bbc391b7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/9a5a01ed952a1e1c1c721835.json",
+      "sha256": "ed45dbb74eefee0086b99b8f3e67f1092c0586df717ae03ca8a12e4846be7ff1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive/price_daily/849e224e70ee1f70e49da6b0.json",
+      "sha256": "73213a576e7636cdd770d70d8d0ae25cc478dc1498d42606e7bc5f78c00f6c50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/2db6c972e1641dcc7c71ee22.json",
+      "sha256": "83a0e8a611a0a3199bb44a225edcaebe09b92a6480bae57dcbbd12807bc3690c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive/price_daily/8f39ee2fd6f19e13bd1f5317.json",
+      "sha256": "51dfc7e418cf5512af1bdbe0997381298c94c8e84465e658457464e276689725"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/80939e3752f3e60935494440.json",
+      "sha256": "65765a2002d025e92f38cccbb8401cbed252bf30a716f80293b369790d1882f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/010e1bbdaea56da890258302.json",
+      "sha256": "e267db74991621caf4634d80c0b057b08622fbd7cced50ad1685618a6b9736e6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/efe21718549d3b355b6e0430.json",
+      "sha256": "2ee09c97bc8c5e5f6cda171bf3a3f371f0a0ad5d7787c2bc5044a8254a8d6121"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/7de59c6a0b60e8a141fdec6b.json",
+      "sha256": "38f0ee943e2f239c11cad9557e723eda538d06a9cbdbc6997838d3167afd7d2a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+      "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/7a17328006a83a8d8f5e0716.json",
+      "sha256": "383ed43604da5e7fd039da9d06646e7d2554cbcc88d04bdf0f35fb13047c2525"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/2fe7d53ca2ecc9575d982146.json",
+      "sha256": "f77b6d43b58651d8260f1305869cc34096a6bbd0a34eea1533c7f7645358f805"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ca450ac42f91a72fa1788ce0.json",
+      "sha256": "9eb8526ce487df3bcc28b46f8f474e25d3c5aa7e5b58af6c24c7d9af735f211e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/2a7f8b91f51d604ae832b2a5.json",
+      "sha256": "5a85fbf3fd56c3340025254d10e661123ee631c97ede5fd2052e329921511fff"
+    }
+  ],
+  "originals_unchanged": true
+}

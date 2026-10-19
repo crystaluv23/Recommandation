@@ -1,0 +1,452 @@
+[
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/KGC",
+    "http_status": 200,
+    "name": "issuer-KGC-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-KGC-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:39:38.510313+00:00",
+    "sha256": "757f4440621e3e718d247ccccc9cc9566d20735656f02cfe5733d6a1924cfa62"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-KGC-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "KGC"
+    },
+    "raw_response": "splits-KGC-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:39:39.558132+00:00",
+    "sha256": "3568e8c040ab7f2272b45e001863ff64e4863b44f01319a0249237481715dbba"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/WYNN",
+    "http_status": 200,
+    "name": "issuer-WYNN-2025-07-30",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_response": "issuer-WYNN-2025-07-30.response.json",
+    "retrieved_at": "2026-10-19T20:40:27.699987+00:00",
+    "sha256": "18560a545b1ec1c73c389b01c79d2f8542e1969fc35189bb72e33b2a2de97805"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-WYNN-2025-07-31-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "WYNN"
+    },
+    "raw_response": "splits-WYNN-2025-07-31-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:40:28.774925+00:00",
+    "sha256": "38d18f6eba2e30ec5a3180e30aed447b9d193096d4392941fc3db567e5e7511f"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/ENB",
+    "http_status": 200,
+    "name": "issuer-ENB-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-ENB-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:40:30.015387+00:00",
+    "sha256": "49f86ada2ee622290f01c9eb09bf916ed524a53eb5002bec5218d834207bdf68"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-ENB-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "ENB"
+    },
+    "raw_response": "splits-ENB-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:40:38.532187+00:00",
+    "sha256": "ed4a2c50462d134f160ddbd2361ad5a7a2700577ecadad22a45b4dc4a0cba76f"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/MS",
+    "http_status": 200,
+    "name": "issuer-MS-2025-07-30",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_response": "issuer-MS-2025-07-30.response.json",
+    "retrieved_at": "2026-10-19T20:40:39.632955+00:00",
+    "sha256": "6815824b9d577443480549ebc454beafe69e6fd4a422bf849d59c91fd632d476"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-MS-2025-07-31-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "MS"
+    },
+    "raw_response": "splits-MS-2025-07-31-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:41:27.477382+00:00",
+    "sha256": "11e24bd2f6bc7111d6625b28ff307869b791cbe81ebddda5e6a9476e4ff7c5e3"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/LTH",
+    "http_status": 200,
+    "name": "issuer-LTH-2025-03-28",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_response": "issuer-LTH-2025-03-28.response.json",
+    "retrieved_at": "2026-10-19T20:41:29.040710+00:00",
+    "sha256": "21f76aebe0f6232a50aa54c04d925445587a75a9e05305c7b64bfa9cb0a04522"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-LTH-2025-03-29-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "LTH"
+    },
+    "raw_response": "splits-LTH-2025-03-29-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:41:30.116713+00:00",
+    "sha256": "0abe292e3bd4d8a1a3ea633781e3cd2263b42f7142d11dce2086a61a0f61afd4"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/SFIX",
+    "http_status": 200,
+    "name": "issuer-SFIX-2025-05-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_response": "issuer-SFIX-2025-05-29.response.json",
+    "retrieved_at": "2026-10-19T20:41:38.859381+00:00",
+    "sha256": "3a9041da6b9f2a666506e1ab50bcdffc89d3e59b4fd23f2e102c02dbba438e4f"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-SFIX-2025-05-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "SFIX"
+    },
+    "raw_response": "splits-SFIX-2025-05-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:41:40.059232+00:00",
+    "sha256": "e4e5da0a4fcdf798c410709557f5762313edd3cf346da6aba8e9120d1cd2ae49"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/CIEN",
+    "http_status": 200,
+    "name": "issuer-CIEN-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-CIEN-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:42:27.436022+00:00",
+    "sha256": "ba723591b153f9861047b61b82b7dfbb3f0b5cf7dabec03af7644d8a8355d442"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-CIEN-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "CIEN"
+    },
+    "raw_response": "splits-CIEN-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:42:28.918881+00:00",
+    "sha256": "c862356b0ad04fd168e92c47bf24bb5c262c207de4dc9d3d9e77705bb818e866"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/FTAI",
+    "http_status": 200,
+    "name": "issuer-FTAI-2025-07-30",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_response": "issuer-FTAI-2025-07-30.response.json",
+    "retrieved_at": "2026-10-19T20:42:30.200536+00:00",
+    "sha256": "225a4b3414bcb4bdaaf8bbc2feddb686e5668be0513d960bc715425d7c548620"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-FTAI-2025-07-31-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "FTAI"
+    },
+    "raw_response": "splits-FTAI-2025-07-31-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:42:38.535963+00:00",
+    "sha256": "6b90bdacd4c67d9c8ee10eecad9fca863d6bacff4c316114d467e6b49cf56bf0"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/ATI",
+    "http_status": 200,
+    "name": "issuer-ATI-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-ATI-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:42:40.067244+00:00",
+    "sha256": "4f1acf4160b9e90e0700b52ed8900c0cc5630939729e56377e7738d860ccd973"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-ATI-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "ATI"
+    },
+    "raw_response": "splits-ATI-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:43:27.493094+00:00",
+    "sha256": "2a740adfad47705265ca861b3b0e7e0eb5d34045ee5aa9be735a8134694d260b"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/NEM",
+    "http_status": 200,
+    "name": "issuer-NEM-2025-07-30",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_response": "issuer-NEM-2025-07-30.response.json",
+    "retrieved_at": "2026-10-19T20:43:28.849974+00:00",
+    "sha256": "0e93c6910314b5e14c673b4a96e7a9140c03edd867e3bfd290f753865f049031"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-NEM-2025-07-31-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "NEM"
+    },
+    "raw_response": "splits-NEM-2025-07-31-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:43:30.122380+00:00",
+    "sha256": "9577cf60332dd6518e9620abcf0ff57f54404aeb5e63e12db6149f6dbd683788"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/MP",
+    "http_status": 200,
+    "name": "issuer-MP-2025-03-28",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-03-28"
+    },
+    "raw_response": "issuer-MP-2025-03-28.response.json",
+    "retrieved_at": "2026-10-19T20:43:38.784351+00:00",
+    "sha256": "31fb38ca83d6b264cd7b024951433b609004b743ce6da97dc7e68911fd401ab4"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-MP-2025-03-29-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-03-29",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "MP"
+    },
+    "raw_response": "splits-MP-2025-03-29-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:43:39.968970+00:00",
+    "sha256": "a20e43e1b9bf1574d934fdd3ec0b2e185c2a36616775cbb947f17e1b00a2c20f"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/SNDK",
+    "http_status": 200,
+    "name": "issuer-SNDK-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-SNDK-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:44:27.474635+00:00",
+    "sha256": "e0045e33084c34cd5f6cac40022a24a1df534c9e25ab86bdbc570f94f0120de1"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-SNDK-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "SNDK"
+    },
+    "raw_response": "splits-SNDK-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:44:28.950720+00:00",
+    "sha256": "b18b9b80a606d89726729f79c4829c687141e3efdb998f3e3cb2def4bddd57bd"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/MU",
+    "http_status": 200,
+    "name": "issuer-MU-2025-07-30",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-07-30"
+    },
+    "raw_response": "issuer-MU-2025-07-30.response.json",
+    "retrieved_at": "2026-10-19T20:44:30.198800+00:00",
+    "sha256": "2791ab1efc4afd124dd6f9e2fcd2b611764e2502ff5f719b04cb87ab9967b1c2"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-MU-2025-07-31-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-07-31",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "MU"
+    },
+    "raw_response": "splits-MU-2025-07-31-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:44:38.576755+00:00",
+    "sha256": "eeb054a91a93e4b7f55743181e1ce0dc5d940a2341f1f89bb6abaeef788caca7"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/PRAX",
+    "http_status": 200,
+    "name": "issuer-PRAX-2025-09-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-09-29"
+    },
+    "raw_response": "issuer-PRAX-2025-09-29.response.json",
+    "retrieved_at": "2026-10-19T20:44:40.022731+00:00",
+    "sha256": "e34fbd4df105231ab21586303ac5121926f3e394c592f48a32f9781962af1641"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-PRAX-2025-09-30-2026-08-16",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-09-30",
+      "execution_date.lte": "2026-08-16",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "PRAX"
+    },
+    "raw_response": "splits-PRAX-2025-09-30-2026-08-16.response.json",
+    "retrieved_at": "2026-10-19T20:45:27.476552+00:00",
+    "sha256": "0520662c22dbffca5a31b1522445420b953b8a285fc3b53a9f380db96459fa7d"
+  },
+  {
+    "endpoint": "https://api.massive.com/v3/reference/tickers/ONDS",
+    "http_status": 200,
+    "name": "issuer-ONDS-2025-05-29",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "date": "2025-05-29"
+    },
+    "raw_response": "issuer-ONDS-2025-05-29.response.json",
+    "retrieved_at": "2026-10-19T20:45:29.051400+00:00",
+    "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+  },
+  {
+    "endpoint": "https://api.massive.com/stocks/v1/splits",
+    "http_status": 200,
+    "name": "splits-ONDS-2025-05-30-2026-09-08",
+    "next_page_present": false,
+    "provider_status": "OK",
+    "query": {
+      "execution_date.gte": "2025-05-30",
+      "execution_date.lte": "2026-09-08",
+      "limit": "1000",
+      "sort": "execution_date.asc",
+      "ticker": "ONDS"
+    },
+    "raw_response": "splits-ONDS-2025-05-30-2026-09-08.response.json",
+    "retrieved_at": "2026-10-19T20:45:30.288262+00:00",
+    "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+  }
+]

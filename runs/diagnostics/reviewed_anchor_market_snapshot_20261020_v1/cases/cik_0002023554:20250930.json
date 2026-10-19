@@ -1,0 +1,991 @@
+{
+  "basic_info_bundle": {
+    "requests": [
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1",
+            "source_group[0]=10-K|10-Q|20-F|40-F"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 0,
+          "query_requested": true,
+          "query_status": "unmatched",
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.operating_report",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "query": "business operations segments products services customers risks",
+          "request_id": "orientation.v1.operating_report",
+          "required_source_groups": [
+            [
+              "10-K",
+              "10-Q",
+              "20-F",
+              "40-F"
+            ]
+          ],
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.scoped_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "end": 26628,
+            "exact_text": "{\"adjusted_close\":45.52,\"as_of_date\":\"2025-08-18\",\"close\":45.52,\"high\":45.87,\"low\":44.25,\"open\":44.25,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2541739},{\"adjusted_close\":44.58,\"as_of_date\":\"2025-08-19\",\"close\":44.58,\"high\":46.5,\"low\":44.26,\"open\":46.23,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2372946},{\"adjusted_close\":44.4,\"as_of_date\":\"2025-08-20\",\"close\":44.4,\"high\":45.0,\"low\":43.2016,\"open\":44.86,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":1526997},{\"adjusted_close\":45.5,\"as_of_date\":\"2025-08-21\",\"close\":45.5,\"high\":45.6,\"low\":43.56,\"open\":43.87,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":1802283},{\"adjusted_close\":46.37,\"as_of_date\":\"2025-08-22\",\"close\":46.37,\"high\":47.19,\"low\":45.63,\"open\":46.11,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2208268},{\"adjusted_close\":46.78,\"as_of_date\":\"2025-08-25\",\"close\":46.78,\"high\":46.88,\"low\":46.01,\"open\":46.36,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":1318226},{\"adjusted_close\":47.35,\"as_of_date\":\"2025-08-26\",\"close\":47.35,\"high\":48.21,\"low\":46.75,\"open\":46.75,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2577847},{\"adjusted_close\":48.44,\"as_of_date\":\"2025-08-27\",\"close\":48.44,\"high\":49.08,\"low\":47.4,\"open\":47.4,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2145445},{\"adjusted_close\":50.87,\"as_of_date\":\"2025-08-28\",\"close\":50.87,\"high\":51.23,\"low\":48.56,\"open\":48.56,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2919374}",
+            "start": 24791
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "end": 28470,
+            "exact_text": "{\"adjusted_close\":52.47,\"as_of_date\":\"2025-08-29\",\"close\":52.47,\"high\":52.94,\"low\":50.82,\"open\":51.15,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":4228360},{\"adjusted_close\":51.07,\"as_of_date\":\"2025-09-02\",\"close\":51.07,\"high\":51.7,\"low\":50.07,\"open\":51.01,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":2023555},{\"adjusted_close\":53.01,\"as_of_date\":\"2025-09-03\",\"close\":53.01,\"high\":53.225,\"low\":50.65,\"open\":51.92,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":1689664},{\"adjusted_close\":62.5,\"as_of_date\":\"2025-09-04\",\"close\":62.5,\"high\":62.65,\"low\":55.55,\"open\":55.67,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":10189014},{\"adjusted_close\":68.55,\"as_of_date\":\"2025-09-05\",\"close\":68.55,\"high\":68.67,\"low\":63.74,\"open\":65.52,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":9050047},{\"adjusted_close\":70.495,\"as_of_date\":\"2025-09-08\",\"close\":70.495,\"high\":71.0,\"low\":67.86,\"open\":68.65,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":5869086},{\"adjusted_close\":70.51,\"as_of_date\":\"2025-09-09\",\"close\":70.51,\"high\":71.4,\"low\":69.57,\"open\":70.26,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":3364273},{\"adjusted_close\":73.92,\"as_of_date\":\"2025-09-10\",\"close\":73.92,\"high\":74.49,\"low\":72.03,\"open\":72.42,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":4053043},{\"adjusted_close\":84.3,\"as_of_date\":\"2025-09-11\",\"close\":84.3,\"high\":85.89,\"low\":81.38,\"open\":82.3,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":10167439}",
+            "start": 26629
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "end": 30331,
+            "exact_text": "{\"adjusted_close\":86.13,\"as_of_date\":\"2025-09-12\",\"close\":86.13,\"high\":86.96,\"low\":82.28,\"open\":85.31,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":5641707},{\"adjusted_close\":90.09,\"as_of_date\":\"2025-09-15\",\"close\":90.09,\"high\":92.055,\"low\":85.12,\"open\":85.3,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":8981304},{\"adjusted_close\":91.55,\"as_of_date\":\"2025-09-16\",\"close\":91.55,\"high\":93.13,\"low\":89.56,\"open\":90.31,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":6292143},{\"adjusted_close\":93.97,\"as_of_date\":\"2025-09-17\",\"close\":93.97,\"high\":94.81,\"low\":90.22,\"open\":90.775,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":7031001},{\"adjusted_close\":98.87,\"as_of_date\":\"2025-09-18\",\"close\":98.87,\"high\":102.93,\"low\":96.8581,\"open\":97.3,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":9441906},{\"adjusted_close\":102.21,\"as_of_date\":\"2025-09-19\",\"close\":102.21,\"high\":102.99,\"low\":96.71,\"open\":98.0,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":6459942},{\"adjusted_close\":102.92,\"as_of_date\":\"2025-09-22\",\"close\":102.92,\"high\":108.8,\"low\":101.59,\"open\":105.76,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":7692187},{\"adjusted_close\":106.4,\"as_of_date\":\"2025-09-23\",\"close\":106.4,\"high\":110.21,\"low\":104.7,\"open\":105.0,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":7834964},{\"adjusted_close\":99.83,\"as_of_date\":\"2025-09-24\",\"close\":99.83,\"high\":107.72,\"low\":96.6313,\"open\":103.555,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":12409337}",
+            "start": 28471
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "end": 30955,
+            "exact_text": "{\"adjusted_close\":94.29,\"as_of_date\":\"2025-09-25\",\"close\":94.29,\"high\":100.45,\"low\":93.535,\"open\":96.265,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":10569285},{\"adjusted_close\":97.12,\"as_of_date\":\"2025-09-26\",\"close\":97.12,\"high\":99.6462,\"low\":94.39,\"open\":96.0,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":6418041},{\"adjusted_close\":113.5,\"as_of_date\":\"2025-09-29\",\"close\":113.5,\"high\":114.0,\"low\":103.348,\"open\":104.25,\"retrieved_at\":\"2026-08-16T08:14:31.677927+00:00\",\"source\":\"massive\",\"symbol\":\"SNDK\",\"volume\":12435373}",
+            "start": 30332
+          }
+        ],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 151,
+          "observed_observation_count": 151,
+          "observed_period_span_days": 217,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 4
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+              ],
+              "phase": "initial",
+              "request_id": "orientation.v1.market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "resolved"
+      }
+    ]
+  },
+  "case": {
+    "candidate_document_count": 1,
+    "case_id": "cik_0002023554:20250930",
+    "company_id": "cik_0002023554",
+    "company_name": "Sandisk Corp",
+    "documents": [
+      {
+        "available_at": "2025-09-30T00:00:00+00:00",
+        "available_at_utc": "2025-09-30T00:00:00+00:00",
+        "cache": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+          "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+        },
+        "cache_retrieval_utc_date": "2026-08-16",
+        "cache_retrieved_at": "2026-08-16T08:14:31.671317+00:00",
+        "cache_retrieved_at_utc": "2026-08-16T08:14:31.671317+00:00",
+        "complete_production_reconstruction_verified_this_inventory": false,
+        "content_sha256": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "first_bar_date": "2025-02-24",
+        "latest_bar_date": "2025-09-29",
+        "normalization_clock_unique_across_all_bars": true,
+        "normalization_retrieval_utc_date": "2026-08-16",
+        "normalization_retrieved_at_utc": "2026-08-16T08:14:31.677927+00:00",
+        "original_bar_count": 151,
+        "original_record": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+          "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+        },
+        "original_request": {
+          "end": "2025-09-29",
+          "endpoint": "https://api.massive.com/v2/aggs/ticker/SNDK/range/1/day/2024-09-30/2025-09-29",
+          "method": "GET",
+          "sanitized_params": [
+            [
+              "method",
+              "GET"
+            ],
+            [
+              "adjusted",
+              "true"
+            ],
+            [
+              "limit",
+              "50000"
+            ],
+            [
+              "sort",
+              "asc"
+            ]
+          ],
+          "start": "2024-09-30",
+          "symbol": "SNDK"
+        },
+        "pagination_markers": {
+          "next_page": {
+            "present": false,
+            "value": null
+          },
+          "next_page_token": {
+            "present": false,
+            "value": null
+          },
+          "next_url": {
+            "present": false,
+            "value": null
+          }
+        },
+        "published_at": "2025-09-30T00:00:00+00:00",
+        "qualification_state": "candidate_only_missing_retained_historical_issuer_and_all_type_split_proofs",
+        "qualified_for_blind_use": false,
+        "required_split_absence_coverage": {
+          "execution_date.gte": "2025-09-30",
+          "execution_date.lte": "2026-08-16",
+          "proof_retrieved_not_before_utc": "2026-08-16T08:14:31.677927+00:00"
+        },
+        "response_markers": {
+          "adjusted": true,
+          "count": 151,
+          "queryCount": 151,
+          "resultsCount": 151,
+          "status": "OK",
+          "ticker": "SNDK"
+        },
+        "source_type": "market_data",
+        "successful_complete_page_shape": true
+      }
+    ],
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "proof_request_ids": [
+      "issuer-SNDK-2025-09-29",
+      "splits-SNDK-2025-09-30-2026-08-16"
+    ],
+    "ticker": "SNDK"
+  },
+  "lineage": {
+    "entries": [
+      {
+        "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "projection_id": "projection_8c5a9bb176f8ffcc0ef8935a",
+        "projection_text": "{\"adjusted_close\":45.52,\"as_of_date\":\"2025-08-18\",\"close\":45.52,\"high\":45.87,\"low\":44.25,\"open\":44.25, \"volume\":2541739},{\"adjusted_close\":44.58,\"as_of_date\":\"2025-08-19\",\"close\":44.58,\"high\":46.5,\"low\":44.26,\"open\":46.23, \"volume\":2372946},{\"adjusted_close\":44.4,\"as_of_date\":\"2025-08-20\",\"close\":44.4,\"high\":45.0,\"low\":43.2016,\"open\":44.86, \"volume\":1526997},{\"adjusted_close\":45.5,\"as_of_date\":\"2025-08-21\",\"close\":45.5,\"high\":45.6,\"low\":43.56,\"open\":43.87, \"volume\":1802283},{\"adjusted_close\":46.37,\"as_of_date\":\"2025-08-22\",\"close\":46.37,\"high\":47.19,\"low\":45.63,\"open\":46.11, \"volume\":2208268},{\"adjusted_close\":46.78,\"as_of_date\":\"2025-08-25\",\"close\":46.78,\"high\":46.88,\"low\":46.01,\"open\":46.36, \"volume\":1318226},{\"adjusted_close\":47.35,\"as_of_date\":\"2025-08-26\",\"close\":47.35,\"high\":48.21,\"low\":46.75,\"open\":46.75, \"volume\":2577847},{\"adjusted_close\":48.44,\"as_of_date\":\"2025-08-27\",\"close\":48.44,\"high\":49.08,\"low\":47.4,\"open\":47.4, \"volume\":2145445},{\"adjusted_close\":50.87,\"as_of_date\":\"2025-08-28\",\"close\":50.87,\"high\":51.23,\"low\":48.56,\"open\":48.56, \"volume\":2919374}",
+        "raw_offset_runs": [
+          [
+            0,
+            102,
+            24791,
+            24893
+          ],
+          [
+            102,
+            103,
+            24893,
+            24978
+          ],
+          [
+            103,
+            222,
+            24978,
+            25097
+          ],
+          [
+            222,
+            223,
+            25097,
+            25182
+          ],
+          [
+            223,
+            342,
+            25182,
+            25301
+          ],
+          [
+            342,
+            343,
+            25301,
+            25386
+          ],
+          [
+            343,
+            460,
+            25386,
+            25503
+          ],
+          [
+            460,
+            461,
+            25503,
+            25588
+          ],
+          [
+            461,
+            581,
+            25588,
+            25708
+          ],
+          [
+            581,
+            582,
+            25708,
+            25793
+          ],
+          [
+            582,
+            702,
+            25793,
+            25913
+          ],
+          [
+            702,
+            703,
+            25913,
+            25998
+          ],
+          [
+            703,
+            823,
+            25998,
+            26118
+          ],
+          [
+            823,
+            824,
+            26118,
+            26203
+          ],
+          [
+            824,
+            942,
+            26203,
+            26321
+          ],
+          [
+            942,
+            943,
+            26321,
+            26406
+          ],
+          [
+            943,
+            1063,
+            26406,
+            26526
+          ],
+          [
+            1063,
+            1064,
+            26526,
+            26611
+          ],
+          [
+            1064,
+            1081,
+            26611,
+            26628
+          ]
+        ]
+      },
+      {
+        "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "projection_id": "projection_b0dc6693824d669b36443e2b",
+        "projection_text": "{\"adjusted_close\":52.47,\"as_of_date\":\"2025-08-29\",\"close\":52.47,\"high\":52.94,\"low\":50.82,\"open\":51.15, \"volume\":4228360},{\"adjusted_close\":51.07,\"as_of_date\":\"2025-09-02\",\"close\":51.07,\"high\":51.7,\"low\":50.07,\"open\":51.01, \"volume\":2023555},{\"adjusted_close\":53.01,\"as_of_date\":\"2025-09-03\",\"close\":53.01,\"high\":53.225,\"low\":50.65,\"open\":51.92, \"volume\":1689664},{\"adjusted_close\":62.5,\"as_of_date\":\"2025-09-04\",\"close\":62.5,\"high\":62.65,\"low\":55.55,\"open\":55.67, \"volume\":10189014},{\"adjusted_close\":68.55,\"as_of_date\":\"2025-09-05\",\"close\":68.55,\"high\":68.67,\"low\":63.74,\"open\":65.52, \"volume\":9050047},{\"adjusted_close\":70.495,\"as_of_date\":\"2025-09-08\",\"close\":70.495,\"high\":71.0,\"low\":67.86,\"open\":68.65, \"volume\":5869086},{\"adjusted_close\":70.51,\"as_of_date\":\"2025-09-09\",\"close\":70.51,\"high\":71.4,\"low\":69.57,\"open\":70.26, \"volume\":3364273},{\"adjusted_close\":73.92,\"as_of_date\":\"2025-09-10\",\"close\":73.92,\"high\":74.49,\"low\":72.03,\"open\":72.42, \"volume\":4053043},{\"adjusted_close\":84.3,\"as_of_date\":\"2025-09-11\",\"close\":84.3,\"high\":85.89,\"low\":81.38,\"open\":82.3, \"volume\":10167439}",
+        "raw_offset_runs": [
+          [
+            0,
+            102,
+            26629,
+            26731
+          ],
+          [
+            102,
+            103,
+            26731,
+            26816
+          ],
+          [
+            103,
+            222,
+            26816,
+            26935
+          ],
+          [
+            222,
+            223,
+            26935,
+            27020
+          ],
+          [
+            223,
+            344,
+            27020,
+            27141
+          ],
+          [
+            344,
+            345,
+            27141,
+            27226
+          ],
+          [
+            345,
+            463,
+            27226,
+            27344
+          ],
+          [
+            463,
+            464,
+            27344,
+            27429
+          ],
+          [
+            464,
+            585,
+            27429,
+            27550
+          ],
+          [
+            585,
+            586,
+            27550,
+            27635
+          ],
+          [
+            586,
+            707,
+            27635,
+            27756
+          ],
+          [
+            707,
+            708,
+            27756,
+            27841
+          ],
+          [
+            708,
+            827,
+            27841,
+            27960
+          ],
+          [
+            827,
+            828,
+            27960,
+            28045
+          ],
+          [
+            828,
+            948,
+            28045,
+            28165
+          ],
+          [
+            948,
+            949,
+            28165,
+            28250
+          ],
+          [
+            949,
+            1066,
+            28250,
+            28367
+          ],
+          [
+            1066,
+            1067,
+            28367,
+            28452
+          ],
+          [
+            1067,
+            1085,
+            28452,
+            28470
+          ]
+        ]
+      },
+      {
+        "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "projection_id": "projection_0a595a7f749bca5e0f4d6ffb",
+        "projection_text": "{\"adjusted_close\":86.13,\"as_of_date\":\"2025-09-12\",\"close\":86.13,\"high\":86.96,\"low\":82.28,\"open\":85.31, \"volume\":5641707},{\"adjusted_close\":90.09,\"as_of_date\":\"2025-09-15\",\"close\":90.09,\"high\":92.055,\"low\":85.12,\"open\":85.3, \"volume\":8981304},{\"adjusted_close\":91.55,\"as_of_date\":\"2025-09-16\",\"close\":91.55,\"high\":93.13,\"low\":89.56,\"open\":90.31, \"volume\":6292143},{\"adjusted_close\":93.97,\"as_of_date\":\"2025-09-17\",\"close\":93.97,\"high\":94.81,\"low\":90.22,\"open\":90.775, \"volume\":7031001},{\"adjusted_close\":98.87,\"as_of_date\":\"2025-09-18\",\"close\":98.87,\"high\":102.93,\"low\":96.8581,\"open\":97.3, \"volume\":9441906},{\"adjusted_close\":102.21,\"as_of_date\":\"2025-09-19\",\"close\":102.21,\"high\":102.99,\"low\":96.71,\"open\":98.0, \"volume\":6459942},{\"adjusted_close\":102.92,\"as_of_date\":\"2025-09-22\",\"close\":102.92,\"high\":108.8,\"low\":101.59,\"open\":105.76, \"volume\":7692187},{\"adjusted_close\":106.4,\"as_of_date\":\"2025-09-23\",\"close\":106.4,\"high\":110.21,\"low\":104.7,\"open\":105.0, \"volume\":7834964},{\"adjusted_close\":99.83,\"as_of_date\":\"2025-09-24\",\"close\":99.83,\"high\":107.72,\"low\":96.6313,\"open\":103.555, \"volume\":12409337}",
+        "raw_offset_runs": [
+          [
+            0,
+            102,
+            28471,
+            28573
+          ],
+          [
+            102,
+            103,
+            28573,
+            28658
+          ],
+          [
+            103,
+            223,
+            28658,
+            28778
+          ],
+          [
+            223,
+            224,
+            28778,
+            28863
+          ],
+          [
+            224,
+            344,
+            28863,
+            28983
+          ],
+          [
+            344,
+            345,
+            28983,
+            29068
+          ],
+          [
+            345,
+            466,
+            29068,
+            29189
+          ],
+          [
+            466,
+            467,
+            29189,
+            29274
+          ],
+          [
+            467,
+            589,
+            29274,
+            29396
+          ],
+          [
+            589,
+            590,
+            29396,
+            29481
+          ],
+          [
+            590,
+            712,
+            29481,
+            29603
+          ],
+          [
+            712,
+            713,
+            29603,
+            29688
+          ],
+          [
+            713,
+            837,
+            29688,
+            29812
+          ],
+          [
+            837,
+            838,
+            29812,
+            29897
+          ],
+          [
+            838,
+            959,
+            29897,
+            30018
+          ],
+          [
+            959,
+            960,
+            30018,
+            30103
+          ],
+          [
+            960,
+            1085,
+            30103,
+            30228
+          ],
+          [
+            1085,
+            1086,
+            30228,
+            30313
+          ],
+          [
+            1086,
+            1104,
+            30313,
+            30331
+          ]
+        ]
+      },
+      {
+        "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "projection_id": "projection_e1cf8a71adbc89cae61fc0f8",
+        "projection_text": "{\"adjusted_close\":94.29,\"as_of_date\":\"2025-09-25\",\"close\":94.29,\"high\":100.45,\"low\":93.535,\"open\":96.265, \"volume\":10569285},{\"adjusted_close\":97.12,\"as_of_date\":\"2025-09-26\",\"close\":97.12,\"high\":99.6462,\"low\":94.39,\"open\":96.0, \"volume\":6418041},{\"adjusted_close\":113.5,\"as_of_date\":\"2025-09-29\",\"close\":113.5,\"high\":114.0,\"low\":103.348,\"open\":104.25, \"volume\":12435373}",
+        "raw_offset_runs": [
+          [
+            0,
+            105,
+            30332,
+            30437
+          ],
+          [
+            105,
+            106,
+            30437,
+            30522
+          ],
+          [
+            106,
+            228,
+            30522,
+            30644
+          ],
+          [
+            228,
+            229,
+            30644,
+            30729
+          ],
+          [
+            229,
+            352,
+            30729,
+            30852
+          ],
+          [
+            352,
+            353,
+            30852,
+            30937
+          ],
+          [
+            353,
+            371,
+            30937,
+            30955
+          ]
+        ]
+      }
+    ],
+    "max_normalized_characters": 32000,
+    "schema_version": "basic-info-model-projection-v1"
+  },
+  "model_context": {
+    "max_normalized_characters": 32000,
+    "requests": [
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.operating_report",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "query": "business operations segments products services customers risks",
+          "request_id": "orientation.v1.operating_report",
+          "required_source_groups": [
+            [
+              "10-K",
+              "10-Q",
+              "20-F",
+              "40-F"
+            ]
+          ],
+          "source_types": [
+            "filing"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 4,
+        "data_gap": null,
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "complete",
+        "projections": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "exact_text": "{\"adjusted_close\":45.52,\"as_of_date\":\"2025-08-18\",\"close\":45.52,\"high\":45.87,\"low\":44.25,\"open\":44.25, \"volume\":2541739},{\"adjusted_close\":44.58,\"as_of_date\":\"2025-08-19\",\"close\":44.58,\"high\":46.5,\"low\":44.26,\"open\":46.23, \"volume\":2372946},{\"adjusted_close\":44.4,\"as_of_date\":\"2025-08-20\",\"close\":44.4,\"high\":45.0,\"low\":43.2016,\"open\":44.86, \"volume\":1526997},{\"adjusted_close\":45.5,\"as_of_date\":\"2025-08-21\",\"close\":45.5,\"high\":45.6,\"low\":43.56,\"open\":43.87, \"volume\":1802283},{\"adjusted_close\":46.37,\"as_of_date\":\"2025-08-22\",\"close\":46.37,\"high\":47.19,\"low\":45.63,\"open\":46.11, \"volume\":2208268},{\"adjusted_close\":46.78,\"as_of_date\":\"2025-08-25\",\"close\":46.78,\"high\":46.88,\"low\":46.01,\"open\":46.36, \"volume\":1318226},{\"adjusted_close\":47.35,\"as_of_date\":\"2025-08-26\",\"close\":47.35,\"high\":48.21,\"low\":46.75,\"open\":46.75, \"volume\":2577847},{\"adjusted_close\":48.44,\"as_of_date\":\"2025-08-27\",\"close\":48.44,\"high\":49.08,\"low\":47.4,\"open\":47.4, \"volume\":2145445},{\"adjusted_close\":50.87,\"as_of_date\":\"2025-08-28\",\"close\":50.87,\"high\":51.23,\"low\":48.56,\"open\":48.56, \"volume\":2919374}",
+            "projection_id": "projection_8c5a9bb176f8ffcc0ef8935a"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "exact_text": "{\"adjusted_close\":52.47,\"as_of_date\":\"2025-08-29\",\"close\":52.47,\"high\":52.94,\"low\":50.82,\"open\":51.15, \"volume\":4228360},{\"adjusted_close\":51.07,\"as_of_date\":\"2025-09-02\",\"close\":51.07,\"high\":51.7,\"low\":50.07,\"open\":51.01, \"volume\":2023555},{\"adjusted_close\":53.01,\"as_of_date\":\"2025-09-03\",\"close\":53.01,\"high\":53.225,\"low\":50.65,\"open\":51.92, \"volume\":1689664},{\"adjusted_close\":62.5,\"as_of_date\":\"2025-09-04\",\"close\":62.5,\"high\":62.65,\"low\":55.55,\"open\":55.67, \"volume\":10189014},{\"adjusted_close\":68.55,\"as_of_date\":\"2025-09-05\",\"close\":68.55,\"high\":68.67,\"low\":63.74,\"open\":65.52, \"volume\":9050047},{\"adjusted_close\":70.495,\"as_of_date\":\"2025-09-08\",\"close\":70.495,\"high\":71.0,\"low\":67.86,\"open\":68.65, \"volume\":5869086},{\"adjusted_close\":70.51,\"as_of_date\":\"2025-09-09\",\"close\":70.51,\"high\":71.4,\"low\":69.57,\"open\":70.26, \"volume\":3364273},{\"adjusted_close\":73.92,\"as_of_date\":\"2025-09-10\",\"close\":73.92,\"high\":74.49,\"low\":72.03,\"open\":72.42, \"volume\":4053043},{\"adjusted_close\":84.3,\"as_of_date\":\"2025-09-11\",\"close\":84.3,\"high\":85.89,\"low\":81.38,\"open\":82.3, \"volume\":10167439}",
+            "projection_id": "projection_b0dc6693824d669b36443e2b"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "exact_text": "{\"adjusted_close\":86.13,\"as_of_date\":\"2025-09-12\",\"close\":86.13,\"high\":86.96,\"low\":82.28,\"open\":85.31, \"volume\":5641707},{\"adjusted_close\":90.09,\"as_of_date\":\"2025-09-15\",\"close\":90.09,\"high\":92.055,\"low\":85.12,\"open\":85.3, \"volume\":8981304},{\"adjusted_close\":91.55,\"as_of_date\":\"2025-09-16\",\"close\":91.55,\"high\":93.13,\"low\":89.56,\"open\":90.31, \"volume\":6292143},{\"adjusted_close\":93.97,\"as_of_date\":\"2025-09-17\",\"close\":93.97,\"high\":94.81,\"low\":90.22,\"open\":90.775, \"volume\":7031001},{\"adjusted_close\":98.87,\"as_of_date\":\"2025-09-18\",\"close\":98.87,\"high\":102.93,\"low\":96.8581,\"open\":97.3, \"volume\":9441906},{\"adjusted_close\":102.21,\"as_of_date\":\"2025-09-19\",\"close\":102.21,\"high\":102.99,\"low\":96.71,\"open\":98.0, \"volume\":6459942},{\"adjusted_close\":102.92,\"as_of_date\":\"2025-09-22\",\"close\":102.92,\"high\":108.8,\"low\":101.59,\"open\":105.76, \"volume\":7692187},{\"adjusted_close\":106.4,\"as_of_date\":\"2025-09-23\",\"close\":106.4,\"high\":110.21,\"low\":104.7,\"open\":105.0, \"volume\":7834964},{\"adjusted_close\":99.83,\"as_of_date\":\"2025-09-24\",\"close\":99.83,\"high\":107.72,\"low\":96.6313,\"open\":103.555, \"volume\":12409337}",
+            "projection_id": "projection_0a595a7f749bca5e0f4d6ffb"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+            "exact_text": "{\"adjusted_close\":94.29,\"as_of_date\":\"2025-09-25\",\"close\":94.29,\"high\":100.45,\"low\":93.535,\"open\":96.265, \"volume\":10569285},{\"adjusted_close\":97.12,\"as_of_date\":\"2025-09-26\",\"close\":97.12,\"high\":99.6462,\"low\":94.39,\"open\":96.0, \"volume\":6418041},{\"adjusted_close\":113.5,\"as_of_date\":\"2025-09-29\",\"close\":113.5,\"high\":114.0,\"low\":103.348,\"open\":104.25, \"volume\":12435373}",
+            "projection_id": "projection_e1cf8a71adbc89cae61fc0f8"
+          }
+        ],
+        "request": {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "resolved",
+        "visible_projection_count": 4
+      }
+    ]
+  },
+  "outcome": {
+    "admitted_documents": 1,
+    "all_admitted_market_documents_consumed": true,
+    "baseline": {
+      "doubling_threshold": 204.456,
+      "mean_adjusted_close": 102.228,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 113.5,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "candidate_documents": 1,
+    "case_id": "cik_0002023554:20250930",
+    "consumer_source_ids": [
+      "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+    ],
+    "literal_matches": [
+      {
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "matches": true
+      }
+    ],
+    "market_request_resolved": true,
+    "passed": true,
+    "source_boundary_checks": [
+      {
+        "before_available_rejected": true,
+        "complete_original_equal": true,
+        "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+        "exact_available_load_equal": true
+      }
+    ]
+  }
+}

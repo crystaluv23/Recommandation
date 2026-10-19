@@ -1,0 +1,431 @@
+{
+  "scope": "Root-independent source-literal arithmetic before new reviewed-view consumption; not data admission or model oracle.",
+  "fixed_case_denominator": 15,
+  "candidate_documents": 16,
+  "cases": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            24.48,
+            23.31,
+            23.64,
+            24.11,
+            24.37
+          ],
+          "independent_mean": 23.982,
+          "latest_close": 24.37
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+          "literal_baseline_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ],
+          "literal_prices": [
+            108.45,
+            109.44,
+            111.27,
+            109.38,
+            109.53
+          ],
+          "independent_mean": 109.61399999999999,
+          "latest_close": 109.53
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            49.6,
+            49.98,
+            49.57,
+            49.59,
+            49.72
+          ],
+          "independent_mean": 49.692,
+          "latest_close": 49.72
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+          "literal_baseline_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ],
+          "literal_prices": [
+            142.5,
+            143.01,
+            142.56,
+            143.56,
+            144.94
+          ],
+          "independent_mean": 143.314,
+          "latest_close": 144.94
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+          "literal_baseline_dates": [
+            "2025-03-24",
+            "2025-03-25",
+            "2025-03-26",
+            "2025-03-27",
+            "2025-03-28"
+          ],
+          "literal_prices": [
+            32.47,
+            32.57,
+            31.73,
+            31.73,
+            30.5
+          ],
+          "independent_mean": 31.8,
+          "latest_close": 30.5
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+          "literal_baseline_dates": [
+            "2025-05-22",
+            "2025-05-23",
+            "2025-05-27",
+            "2025-05-28",
+            "2025-05-29"
+          ],
+          "literal_prices": [
+            4.29,
+            4.17,
+            4.45,
+            4.54,
+            4.39
+          ],
+          "independent_mean": 4.368,
+          "latest_close": 4.39
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "company_id": "cik_0000936395",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            139.48,
+            138.42,
+            137.17,
+            141.93,
+            144.12
+          ],
+          "independent_mean": 140.224,
+          "latest_close": 144.12
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+          "literal_baseline_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ],
+          "literal_prices": [
+            109.92,
+            117.18,
+            114.38,
+            114.14,
+            144.46
+          ],
+          "independent_mean": 120.016,
+          "latest_close": 144.46
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            78.09,
+            77.01,
+            77.41,
+            82.81,
+            79.26
+          ],
+          "independent_mean": 78.91600000000001,
+          "latest_close": 79.26
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+          "literal_baseline_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ],
+          "literal_prices": [
+            61.51,
+            65.75,
+            63.66,
+            63.99,
+            62.31
+          ],
+          "independent_mean": 63.444,
+          "latest_close": 62.31
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+          "literal_baseline_dates": [
+            "2025-03-24",
+            "2025-03-25",
+            "2025-03-26",
+            "2025-03-27",
+            "2025-03-28"
+          ],
+          "literal_prices": [
+            26.46,
+            26.93,
+            26.06,
+            26.17,
+            25.97
+          ],
+          "independent_mean": 26.318,
+          "latest_close": 25.97
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            106.4,
+            99.83,
+            94.29,
+            97.12,
+            113.5
+          ],
+          "independent_mean": 102.228,
+          "latest_close": 113.5
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+          "literal_baseline_dates": [
+            "2025-07-24",
+            "2025-07-25",
+            "2025-07-28",
+            "2025-07-29",
+            "2025-07-30"
+          ],
+          "literal_prices": [
+            111.73,
+            111.26,
+            111.25,
+            111.96,
+            114.74
+          ],
+          "independent_mean": 112.18800000000002,
+          "latest_close": 114.74
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+          "literal_baseline_dates": [
+            "2025-09-23",
+            "2025-09-24",
+            "2025-09-25",
+            "2025-09-26",
+            "2025-09-29"
+          ],
+          "literal_prices": [
+            48.6,
+            48.97,
+            49.25,
+            52.44,
+            52.38
+          ],
+          "independent_mean": 50.327999999999996,
+          "latest_close": 52.38
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "original_literal_expectations": [
+        {
+          "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+          "literal_baseline_dates": [
+            "2025-05-22",
+            "2025-05-23",
+            "2025-05-27",
+            "2025-05-28",
+            "2025-05-29"
+          ],
+          "literal_prices": [
+            0.9093,
+            0.9268,
+            0.9422,
+            1.07,
+            1.07
+          ],
+          "independent_mean": 0.9836600000000001,
+          "latest_close": 1.07
+        },
+        {
+          "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+          "literal_baseline_dates": [
+            "2025-05-22",
+            "2025-05-23",
+            "2025-05-27",
+            "2025-05-28",
+            "2025-05-29"
+          ],
+          "literal_prices": [
+            0.9093,
+            0.9268,
+            0.9422,
+            1.07,
+            1.07
+          ],
+          "independent_mean": 0.9836600000000001,
+          "latest_close": 1.07
+        }
+      ],
+      "formula": "mean of five last dated original adjusted_close observations strictly before prediction UTC day; no label source"
+    }
+  ]
+}

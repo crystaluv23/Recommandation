@@ -2,10 +2,19 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批6次独立角色执行，
-0新资料，host tokens/cost未知。
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批36GET（30行情+6SEC）、
+0新模型；host tokens/cost及资料API成本未测量。
 
 ## 当前验收
+
+本轮 [Anchor行情来源](../reports/anchor-market-source-qualification-20261020.md)：
+固定15新case/16原件3307bars精确重建，30GET无重试，38原绑定不变；16/16
+native历史issuer/复权依据准入。新19docs typed view保存/恢复与旧view隔离通过；
+15/15真实BasicInfo/resolver基线匹配冻结literal。额外“全原件消费”gate仍14/15：
+ONDS默认cap只读两个重叠窗之一，另一窗未冒称已读。独立错CIK/缩split/过早GET
+反例通过；独立exact momentum:v1请求实际选181长窗并满足127uniqueobs，原14gate不改。
+17定向测试通过。加旧BMBL后已覆盖原16Anchor行情proof缺项，
+尚未执行16或48案fullprepare、稳定refs覆盖或新研究角色。
 
 本轮 [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md) 新控制3/3窄通过：
 6新隔离角色/0typed纠错，actual v3/v3/v2及-0.1/-0.1/+0.1、Basic/shares/期间公开；
@@ -54,7 +63,8 @@ full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残�
 
 ## 未关闭边界
 
-完整48案readiness缺16 market anchors；26 transcript完整公开内容时间证明仍0。
+完整48案readiness未验；原16Anchor行情proof缺项已具证，不等于整体输入齐全。
+26 transcript完整公开内容时间证明仍0。
 污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
 旧v182权威Fast/Slow=1/1已完成不可重启；memory失败processed0/pending3518未修成成功。
 方向/magnitude新Signal技术准入、精确复用、完整F10提交及Slow消费、完整闭环/MVP
@@ -62,11 +72,12 @@ full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残�
 
 ## 下一步
 
-停止重复测量控制。新 [source layout修复](../reports/source-layout-readiness-20261020.md)
-已按已加载document.source_type识别market/narrative；5项native prepare窄验通过，
-真实BMBL baseline6.494跨layout可用，显式窄view仍不fallback。仅单anchor/label stub，
-不是16或48案通过。原16缺不表示无价：16/16本地有候选并可算，另15家身份/PIT
-复权proof仍unknown。下一步核这些原cache/证明缺项，再限域公开取证，不跑full。
-关联旧27测试误读真实LabelStore并临时prepare后readiness拒绝，已明确记录；
-正式6e模型批此前已完成/labels0。outbox父目录通用修复旧断言失败/新20项通过。
+停止重复行情证明和测量控制。叙述inventory27selectedprimary中26通过现SEC proof，
+13家已有年/中期正文；尚未新增叙述view/宣称经营信息可见充分。KGC/MS剩经营
+附件已取到但未归一/准入，6K/8K不冒称periodic。live归档页不能凭旧目录同名拼接；
+新root实际linked page虽找到MS目标，acceptance15:59:47Z比原11:59:47+00晚4h，
+当前原件仍未准入，未猜ET/加容差。下一步核源时间/解析链并给出可追溯修复，
+再完善具证叙述view与label-free Registry readiness。
+原[source layout修复](../reports/source-layout-readiness-20261020.md)单anchor5tests
+及旧关联27tests误读真实LabelStore例外均保持披露，未重写成完整准备成功。
 原8项用户改动保持；整体MVP active未完成。

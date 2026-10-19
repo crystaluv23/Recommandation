@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：完成固定15新增Anchor/16原价格的3307bar全重建与30次有界只读GET证明，16/16经既有native历史issuer/拆股basis准入；新19doc typed view实际15/15基线匹配并恢复，独立错CIK/缩区间/normalization前GET拒绝。额外全集消费gate14/15原样保留（ONDS默认cap1）；独立exactmomentum请求可选181unique长窗满足127obs，不扩大预算凑通过。17定向测试通过。与旧BMBL共同补齐原16行情proof缺项，未宣称full48 readiness/MVP；另6SEC GET取到三附件及真实root-linked MS archive，但新acceptance比原件晚4h，原件未改/未准入，源时间链仍待核。
+
 - 2026-10-20：修native prepare按路径判market/narrative造成reviewed documents遗漏，改用同允许集合内已解析source_type；BMBL真实具证view的基线6.494及layout迁移、PIT/类型/精确review/日期/显式view不fallback反例5项通过（单anchor/临时labels，非16/48案通过）。16本地都有候选价，另15来源/PIT proof未知。旧关联27测试意外读取真实LabelStore并做临时readiness拒绝，边界越出已据实记录；无研究cycle/模型/评分/下载，不影响此前完成的6e批。
 
 - 2026-10-20：冻结6e1f193a完成新latest-pair三项控制，6隔离角色首答全部接受，独立核full/partial/full、Basic/shares/期间/exactv3v3v2及唯一158字残留；63文件完成恢复全等，289202逻辑units，0外LLM/资料/标签。原FY/basic0/3及整体MVP保持；fresh未触发typed镜像纠错。正式结束后补exchange预建outbox父目录，原pending断言先失败、新20exchange/consumer/driver测试通过，不伪称新模型效果。下一步只诊断16anchors真实来源/prepare连接，不启动full。

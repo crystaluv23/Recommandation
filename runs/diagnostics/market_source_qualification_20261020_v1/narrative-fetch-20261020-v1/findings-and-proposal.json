@@ -1,0 +1,166 @@
+{
+  "schema_version": "bounded-sec-body-findings-and-acceptance-proposal-v1",
+  "request_plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/request-plan.json",
+    "sha256": "9bbb1fcc0e49f21424a6ba30ca359ae2c6f3bc779ed0a9443e8b62575d5c512e"
+  },
+  "collector": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/collector.py",
+    "sha256": "9331267a425d84578d465cad92096fd0bedca4e016811f8b2c69451d2639e42c"
+  },
+  "results": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/results.json",
+    "sha256": "000b2e6fb8e4d1f71fc57d424843397c2377b4fc8a63026f379125b070bdb072"
+  },
+  "requests_attempted": 4,
+  "http_200_count": 4,
+  "read_only_data_requests": 4,
+  "external_llm_calls": 0,
+  "body_findings": [
+    {
+      "name": "kgc_q2_statements_mda_ex99_1",
+      "raw_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/kgc_q2_statements_mda_ex99_1.response.raw",
+        "sha256": "99ba36302c55e92acc006d82b5659940b1e3b36851b828e0924c0b8c277a245b"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_ex99-1.htm",
+      "http_status": 200,
+      "body_contains_substantive_operations_or_financial_tables": true,
+      "cover_only": false,
+      "diagnostic_visible_chars": 200007,
+      "material_checks": [
+        {
+          "normalized_diagnostic_start": 3443,
+          "text": "-containing ore, and reclamation of gold mining properties. Kinross’ gold production and exploration activities are carried out principally in Canada, the United States, Brazil, Chile, Mauritania and Finland. Gold is produced in the form of doré, which is shipped to refineries for final processing. Kinross also produces and sells a quantity of silver. The profitability and operating cash flow of Kinross are affected by various factors, including the amount of gold and silver produced, the market prices of gold and silver, operating costs, interest rates, regulatory and environmental compliance, the level of exploration activity and capital expenditures, general and administrative costs, and other disc",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        },
+        {
+          "normalized_diagnostic_start": 10142,
+          "text": "wer production from Tasiast and Round Mountain, as planned. Metal sales in the second quarter of 2025 increased by 42% to $1,728.5 million compared to the second quarter of 2024, due to a 40% increase in the average realized gold price to $3,284 per ounce. Total gold equivalent ounces sold in the second quarter of 2025 were comparable to 2024. Production cost of sales in the second quarter of 2025 were $568.4 million, and $1,080 per equivalent ounce sold, an increase of 6% and 5%, respectively, compared to the same period in 2024. The increase in costs was mainly due to production and sales mix, including lower planned production from the lowest-cost Tasiast operation and higher production at Fort Kno",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        }
+      ],
+      "PIT_attachment_provenance_status": "Parent primary literal links and original acceptance clock retained; current source profile does not yet admit separate attachment bodies. Fetch clock is not historical availability.",
+      "operating_menu_status": "Not automatically qualified: inherited parent form 6-K or 8-K is outside current PERIODIC_FORMS."
+    },
+    {
+      "name": "ms_q2_earnings_ex99_1",
+      "raw_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_earnings_ex99_1.response.raw",
+        "sha256": "2474c819ec27b61ba802f6849ff439cff5a1703f7bdaf8a06cb092e990e2372c"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/a2q25msearningsrelease.htm",
+      "http_status": 200,
+      "body_contains_substantive_operations_or_financial_tables": true,
+      "cover_only": false,
+      "diagnostic_visible_chars": 22708,
+      "material_checks": [
+        {
+          "normalized_diagnostic_start": 250,
+          "text": "% NEW YORK, July 16, 2025 – Morgan Stanley (NYSE: MS) today reported net revenues of $16.8 billion for the second quarter ended June 30, 2025 compared with $15.0 billion a year ago. Net income applicable to Morgan Stanley was $3.5 billion, or $2.13 per diluted share, 1 compared with $3.1 billion, or $1.82 per diluted share, 1 for the same period a year ago. Ted Pick, Chairman and Chief Executive Officer, said, “Morgan Stanley delivered another strong quarter. Six sequential quarters of consistent earnings – $2.02, $1.82, $1.88, $2.22, $2.60 and $2.13 – reflect higher levels of performance in different market environments. Institutional Securities saw strength and balance across businesses and geograph",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        },
+        {
+          "normalized_diagnostic_start": 820,
+          "text": "her levels of performance in different market environments. Institutional Securities saw strength and balance across businesses and geographies. Wealth continues to deliver, adding $59 billion of net new assets and $43 billion of fee-based flows. Total client assets across Wealth and Investment Management reached $8.2 trillion. We announced an increase of our quarterly common stock dividend to $1.00 per share with flexibility to deploy incremental capital. The management team is executing across the Integrated Firm, acting as a trusted advisor to clients and driving durable growth and long-term returns for our shareholders.” Financial Summary 2,3 Firm ($ millions, except per share data) 2Q 2025 2Q 202",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        }
+      ],
+      "PIT_attachment_provenance_status": "Parent primary literal links and original acceptance clock retained; current source profile does not yet admit separate attachment bodies. Fetch clock is not historical availability.",
+      "operating_menu_status": "Not automatically qualified: inherited parent form 6-K or 8-K is outside current PERIODIC_FORMS."
+    },
+    {
+      "name": "ms_q2_supplement_ex99_2",
+      "raw_response": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_supplement_ex99_2.response.raw",
+        "sha256": "2c05caa250735ab004024cd8df78566de2ed3f6a453f248e7d630e6684cfc5bc"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/a2q25msfinancialsupplement.htm",
+      "http_status": 200,
+      "body_contains_substantive_operations_or_financial_tables": true,
+      "cover_only": false,
+      "diagnostic_visible_chars": 43399,
+      "material_checks": [
+        {
+          "normalized_diagnostic_start": 1264,
+          "text": " Mar 31, 2025 Jun 30, 2024 Jun 30, 2025 Jun 30, 2024 Change Net revenues Institutional Securities $ 7,643 $ 8,983 $ 6,982 (15 %) 9 % $ 16,626 $ 13,998 19 % Wealth Management 7,764 7,327 6,792 6 % 14 % 15,091 13,672 10 % Investment Management 1,552 1,602 1,386 (3 %) 12 % 3,154 2,763 14 % Intersegment Eliminations (167) (173) (141) 3 % (18 %) (340) (278) (22 %) Net revenues (1) $ 16,792 $ 17,739 $ 15,019 (5 %) 12 % $ 34,531 $ 30,155 15 % Provision for credit losses $ 196 $ 135 $ 76 45 % 158 % $ 331 $ 70 * Non-interest expenses Institutional Securities $ 5,364 $ 5,611 $ 4,882 (4 %) 10 % $ 10,975 $ 9,545 15 % Wealth Management 5,536 5,332 4,949 4 % 12 % 10,868 10,031 8 % Investment Management 1,229 1,279 ",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        },
+        {
+          "normalized_diagnostic_start": 2519,
+          "text": "s $ 4,622 $ 5,544 $ 4,074 (17 %) 13 % $ 10,166 $ 8,469 20 % Net Income applicable to Morgan Stanley Institutional Securities $ 1,604 $ 2,529 $ 1,520 (37 %) 6 % $ 4,133 $ 3,339 24 % Wealth Management 1,700 1,532 1,403 11 % 21 % 3,232 2,806 15 % Investment Management 245 262 165 (6 %) 48 % 507 357 42 % Intersegment Eliminations (10) (8) (12) (25 %) 17 % (18) (14) (29 %) Net Income applicable to Morgan Stanley $ 3,539 $ 4,315 $ 3,076 (18 %) 15 % $ 7,854 $ 6,488 21 % Earnings applicable to Morgan Stanley common shareholders $ 3,392 $ 4,157 $ 2,942 (18 %) 15 % $ 7,549 $ 6,208 22 % Notes: - Firm net revenues excluding mark-to-market gains and losses on deferred cash-based compensation plans (DCP), which rep",
+          "status": "markup-stripped source inspection only; not a model-facing projection/citation"
+        }
+      ],
+      "PIT_attachment_provenance_status": "Parent primary literal links and original acceptance clock retained; current source profile does not yet admit separate attachment bodies. Fetch clock is not historical availability.",
+      "operating_menu_status": "Not automatically qualified: inherited parent form 6-K or 8-K is outside current PERIODIC_FORMS."
+    }
+  ],
+  "MS_archived_submissions_finding": {
+    "raw_response": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_submissions_archive_001.response.raw",
+      "sha256": "6a49fc0a39e23da134ea1bb06fb5fe7f80b9502aac2a8045cbdd9877d6a64f73"
+    },
+    "retained_root_cache": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+    },
+    "old_root_listing_entry": {
+      "filingCount": 2084,
+      "filingFrom": "2025-06-30",
+      "filingTo": "2025-08-19",
+      "name": "CIK0000895421-submissions-001.json"
+    },
+    "fetched_page_row_count": 2025,
+    "actual_filing_date_min": "2025-09-15",
+    "actual_filing_date_max": "2025-10-16",
+    "target_accession": "0000895421-25-000419",
+    "target_matches": 0,
+    "pair_matches_root_listing": false,
+    "native_root_only_profile_probe": {
+      "rejected": true,
+      "error_type": "ReviewedSourceRejected",
+      "error": "SEC submissions endpoint differs from reviewed issuer"
+    },
+    "interpretation": "Observed old-root/live-page snapshot mismatch; an HTTP200 or matching archive filename is insufficient. No replacement acceptance time inferred."
+  },
+  "filing_orientation_contract": {
+    "binding": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68"
+    },
+    "PERIODIC_FORMS": [
+      "10-K",
+      "10-Q",
+      "20-F",
+      "40-F"
+    ],
+    "new_operating_report_qualification": false
+  },
+  "proposal": {
+    "scope": "Proposal only; no production source/spec/canonical data changes made. Preserve original root-only SEC behavior and historical bytes.",
+    "optional_archived_acceptance_proof": [
+      "Retain the issuer root response and the separate historical submissions page as independent hash-bound artifacts, with exact request/retrieval metadata. Never merge the page into or rewrite root.filings.recent.",
+      "Require exact SEC root endpoint and issuer CIK, one files-list entry for the exact requested archive basename, same-CIK archive endpoint and declared filing date range/count. Reject foreign hosts, arbitrary paths, ambiguous file entries and malformed parallel arrays.",
+      "Validate fetched page shape and count/date coverage against the bound root listing; require exactly one target accession and original form, primary document, acceptance timestamp and issuer identity. Original published/available times must remain exact and PIT-safe.",
+      "Retain original static primary body/content/hash matching and identity checks; target absent, repeated, wrong form/primary/date, changed response or root/page generation mismatch rejects.",
+      "The current retained-old-root/fresh-001 pair must reject: range, count and target do not match. A fresh root plus its specifically linked page is needed; no filename guessing or automatic retry loop."
+    ],
+    "next_bounded_proof_action": {
+      "requires_separate_plan": true,
+      "max_GET_attempts": 2,
+      "first_exact_url": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "second_url_rule": "Only the exact files-list entry from that newly retained root whose declared range covers the original filing date 2025-07-16; missing/ambiguous range stops without a second GET.",
+      "stop": "Any HTTP/shape/identity/target mismatch remains pending; no admission or subsequent page scan."
+    },
+    "attachment_boundary": [
+      "A separately retained attachment cannot be relabeled as its parent primary document. Any later attachment proof profile must bind the exact static parent, literal same-accession attachment href, retained attachment bytes and original acceptance provenance without modifying original records.",
+      "KGC 6-K and MS 8-K remain outside PERIODIC_FORMS=(10-K,10-Q,20-F,40-F), even when their attachments contain useful operations. Do not broaden orientation menu or mark the annual/interim action complete from this fetch.",
+      "Already identified KGC 40-F primary URL remains a possible separately planned fetch, with no guarantee it contains the full annual business body; no extra GET was made in this four-request batch."
+    ]
+  },
+  "no_new_source_view_or_admission": true,
+  "original_cache_and_records_unchanged": true,
+  "large_archive_or_LabelStore_read": false,
+  "full_prepare_or_research_model_called": false
+}

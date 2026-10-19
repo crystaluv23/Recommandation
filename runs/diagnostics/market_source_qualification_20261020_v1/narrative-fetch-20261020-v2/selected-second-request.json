@@ -1,0 +1,11 @@
+{
+  "root_sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b",
+  "root_file_entry": {
+    "name": "CIK0000895421-submissions-003.json",
+    "filingCount": 2005,
+    "filingFrom": "2025-06-03",
+    "filingTo": "2025-07-30"
+  },
+  "method": "GET",
+  "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json"
+}

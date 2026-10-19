@@ -1,0 +1,129 @@
+{
+  "documents": [
+    {
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "path": "documents/0000.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "path": "documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "path": "documents/0002.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "path": "documents/0003.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "path": "documents/0004.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "path": "documents/0005.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "path": "documents/0006.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "path": "documents/0007.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "path": "documents/0008.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "path": "documents/0009.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "path": "documents/0010.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "path": "documents/0011.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "path": "documents/0012.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "path": "documents/0013.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "path": "documents/0014.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "path": "documents/0015.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "path": "documents/0016.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "path": "documents/0017.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "path": "documents/0018.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    }
+  ],
+  "oracle_sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+  "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_market_snapshot_20261020_v1/snapshot",
+  "schema_version": "materialized-reviewed-raw-info-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000701818",
+      "cik_0000723125",
+      "cik_0000895421",
+      "cik_0000895728",
+      "cik_0000936395",
+      "cik_0001018963",
+      "cik_0001164727",
+      "cik_0001174922",
+      "cik_0001576942",
+      "cik_0001590364",
+      "cik_0001646188",
+      "cik_0001689548",
+      "cik_0001801368",
+      "cik_0001830043",
+      "cik_0001869198",
+      "cik_0002023554"
+    ],
+    "purpose": "Fixed 15-case/16-original retained anchor market qualification and native consumers; not full readiness."
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-anchor-market-review-20261020.json",
+    "sha256": "a0efa02e046d7b036f4ad6728d1d626d900fce91c6f28eb5772105396f5ba87f"
+  }
+}

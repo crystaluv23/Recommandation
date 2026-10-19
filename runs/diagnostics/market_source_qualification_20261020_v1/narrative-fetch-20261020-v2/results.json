@@ -1,0 +1,104 @@
+{
+  "plan_sha256": "6c64e6713f3b4cf18a002fd35a9a3120261e2d38d56462bab635c050d793b2e1",
+  "max_GET_attempts": 2,
+  "GET_attempts": 2,
+  "requests": [
+    {
+      "name": "ms_current_submissions_root",
+      "method": "GET",
+      "url": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T20:53:09.849013+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "retrieved_at_utc": "2026-10-19T20:53:12.025410+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_current_submissions_root.response.raw",
+      "raw_sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b",
+      "bytes": 3887809,
+      "response_headers": {
+        "x-amzn-RequestId": "bb75a41c-5cca-4496-bafe-3057eacd8dde",
+        "Access-Control-Allow-Origin": "*",
+        "x-amz-apigw-id": "FglquFttIAMEQ9A=",
+        "X-Amzn-Trace-Id": "Root=1-6ad68310-7a74d04c5518685317e93507",
+        "Content-Type": "application/json",
+        "Vary": "Accept-Encoding",
+        "Date": "Mon, 19 Oct 2026 20:53:10 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; preload"
+      }
+    },
+    {
+      "name": "ms_linked_submissions_archive",
+      "method": "GET",
+      "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "request_headers": {
+        "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+        "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "identity"
+      },
+      "started_at_utc": "2026-10-19T20:53:12.044451+00:00",
+      "status": "http_response_retained",
+      "http_status": 200,
+      "response_url": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "retrieved_at_utc": "2026-10-19T20:53:13.593561+00:00",
+      "raw_response": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_linked_submissions_archive.response.raw",
+      "raw_sha256": "b28a24dc4f15bb7ccfb630d24a93e7cea79ee2bd2ff2a9606d8ea16d485687e7",
+      "bytes": 396571,
+      "response_headers": {
+        "x-amzn-RequestId": "938d5b43-7c64-4f66-bde7-0a0f11feaf89",
+        "Access-Control-Allow-Origin": "*",
+        "x-amz-apigw-id": "Fglw8G7DIAMEWyA=",
+        "X-Amzn-Trace-Id": "Root=1-6ad68338-c96d434d3a2552fc807e8748",
+        "Content-Type": "application/json",
+        "Vary": "Accept-Encoding",
+        "Date": "Mon, 19 Oct 2026 20:53:13 GMT",
+        "Transfer-Encoding": "chunked",
+        "Connection": "Transfer-Encoding",
+        "Strict-Transport-Security": "max-age=31536000 ; preload"
+      }
+    }
+  ],
+  "external_llm_calls": 0,
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "source_admission": false,
+  "selected_second_request": {
+    "root_sha256": "86a336522bd3013ce7c7eeae3c3e919b3b8c9701cff8d2d9ebb46ac41f5fd73b",
+    "root_file_entry": {
+      "name": "CIK0000895421-submissions-003.json",
+      "filingCount": 2005,
+      "filingFrom": "2025-06-03",
+      "filingTo": "2025-07-30"
+    },
+    "method": "GET",
+    "url": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json"
+  },
+  "old_four_request_files_before": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_supplement_ex99_2.response.raw": "2c05caa250735ab004024cd8df78566de2ed3f6a453f248e7d630e6684cfc5bc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_earnings_ex99_1.response.raw": "2474c819ec27b61ba802f6849ff439cff5a1703f7bdaf8a06cb092e990e2372c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/findings-and-proposal.json": "5f466978623353fbc40f5c169c9bc0b1d40654e21f6c0bb3852e65b3bf7934c8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/request-plan.json": "9bbb1fcc0e49f21424a6ba30ca359ae2c6f3bc779ed0a9443e8b62575d5c512e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/results.json": "000b2e6fb8e4d1f71fc57d424843397c2377b4fc8a63026f379125b070bdb072",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/collector.py": "9331267a425d84578d465cad92096fd0bedca4e016811f8b2c69451d2639e42c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_submissions_archive_001.response.raw": "6a49fc0a39e23da134ea1bb06fb5fe7f80b9502aac2a8045cbdd9877d6a64f73",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/kgc_q2_statements_mda_ex99_1.response.raw": "99ba36302c55e92acc006d82b5659940b1e3b36851b828e0924c0b8c277a245b"
+  },
+  "old_four_request_files_after": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_supplement_ex99_2.response.raw": "2c05caa250735ab004024cd8df78566de2ed3f6a453f248e7d630e6684cfc5bc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_q2_earnings_ex99_1.response.raw": "2474c819ec27b61ba802f6849ff439cff5a1703f7bdaf8a06cb092e990e2372c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/findings-and-proposal.json": "5f466978623353fbc40f5c169c9bc0b1d40654e21f6c0bb3852e65b3bf7934c8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/request-plan.json": "9bbb1fcc0e49f21424a6ba30ca359ae2c6f3bc779ed0a9443e8b62575d5c512e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/results.json": "000b2e6fb8e4d1f71fc57d424843397c2377b4fc8a63026f379125b070bdb072",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/collector.py": "9331267a425d84578d465cad92096fd0bedca4e016811f8b2c69451d2639e42c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/ms_submissions_archive_001.response.raw": "6a49fc0a39e23da134ea1bb06fb5fe7f80b9502aac2a8045cbdd9877d6a64f73",
+    "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v1/kgc_q2_statements_mda_ex99_1.response.raw": "99ba36302c55e92acc006d82b5659940b1e3b36851b828e0924c0b8c277a245b"
+  },
+  "old_four_request_files_unchanged": true,
+  "collector_sha256": "462e7f1ffb15bef2b8145a7480e956d5ed43775fcaaf5efcf51ccb5b84aad7e9"
+}
