@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：新增显式SEC CompanyFacts filed次UTC日proof分支，绑定cache/raw/newnormalization、完整products及原件；不改oracle根门或primaryaudit限制。独立发现Python true==1/int==float漏判，canonical exact贯通原件/readonlyappend/restore及新diagnostic；30安全selectors带labels/prepare tripwire通过，root此前31项重复误选labels/临时fullprepare例外如实保留。新15case derivation/input-only脚本准备完成但实际未执行，无新GET/模型，整体MVP仍open。
+
 - 2026-10-20：固定15财务cache精确重建揭示364同日filed与错issuer家族，先修spec再共享既有per-accession normalizer：完整aware次日UTC资格、严格body/请求CIK、保留所有比较期间及旧原件。独立反例进一步补齐持久化legacy消费者issuer拒绝，实际executor保存技术失败；旧ID仅改时间会被重放吞掉的实证保留，新IDs另存。禁socket98测试通过，旧现代backfill12docs/3380rows完整全等；不改date-level FeatureRecord或旧0/15readiness。财务proof/newview、整体MVP仍open，无新GET/模型/标签/fullprepare。
 
 - 2026-10-20：新增43doc经营来源view，27原件保分母、26native proof通过但仅24经营年/季正文准入、3unknown；15case经营投影13resolved均partial_context_budget。精确最新v12/18refs原生输入准备270项，108resolved/162unresolved，0/15达0.8；九财务ref及news负词各15缺失，未做apply/标签/fullprepare。MS另1GET取得完整header前缀：07:59无offset、原11:59Z、新JSON15:59Z；真实parser不偏移，原writer未证，不能将较新API当纠正值。原件/profile不改；接下来核结构化财务来源与源时间规范。

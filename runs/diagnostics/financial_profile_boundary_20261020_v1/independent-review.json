@@ -1,0 +1,110 @@
+{
+  "schema_version": "independent-financial-profile-boundary-review-v1",
+  "conclusion": "No remaining blocking issue observed in the fixed bounded local proof/reconstruction and readonly consumer controls. This is profile boundary evidence, not actual15case source admission.",
+  "artifacts": {
+    "probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_profile_boundary_20261020_v1/probe.py",
+      "sha256": "c44e15e534199899ce3a934d846f2a87ebf13bcb43e91e240fa95b0b1060fcd7"
+    },
+    "initial-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_profile_boundary_20261020_v1/initial-results.json",
+      "sha256": "b1d60b8ade5305ca2d0d51cf10e050fab4a54f2a1a4534691f197ed5be9cd487"
+    },
+    "original-reader.py.txt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_profile_boundary_20261020_v1/original-reader.py.txt",
+      "sha256": "d9f7ca3b7c192da331da20441c9657ce79aafb7f1a4b95e074455fe7bee8e6dc"
+    },
+    "final-probe.py": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_profile_boundary_20261020_v1/final-probe.py",
+      "sha256": "1b2b567f48fce8642647e99a12077ea01ebd61ec822d2b4b4f7722a3ea9b71cb"
+    },
+    "final-results.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_profile_boundary_20261020_v1/final-results.json",
+      "sha256": "5d9c5bcc3a2943e287edbbef52ab23fd24a02587e722de2d8c1953e2031fe314"
+    }
+  },
+  "initial_reader_sha256": "d9f7ca3b7c192da331da20441c9657ce79aafb7f1a4b95e074455fe7bee8e6dc",
+  "current_code_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+  },
+  "initial_findings": {
+    "substantive_rehashed_mutations_rejected": [
+      "value",
+      "unit",
+      "end",
+      "filed",
+      "body_cik",
+      "endpoint",
+      "method",
+      "selection_cap",
+      "form_allowlist",
+      "early_normalized_clock",
+      "expected_missing",
+      "expected_extra",
+      "expected_duplicate",
+      "rawresponse",
+      "whole_raw"
+    ],
+    "false_admits": [
+      "metadata_bool_as_integer",
+      "metadata_count_as_float"
+    ],
+    "cause": "Python complete-dict equality conflated True with1 and integer with equal float. An admitted record could differ from the canonical_record_hash in the expected reconstructed set. No false numeric body value was established.",
+    "original_failure_preserved": true,
+    "positive_controls": {
+      "restart": true,
+      "worker": true,
+      "refresh": true,
+      "full_record_equality": true,
+      "refresh_drift_rejected": true,
+      "worker_drift_rejected": true,
+      "direct_inside_rejected": true,
+      "symlink_inside_rejected": true
+    }
+  },
+  "fixed_counterreview": {
+    "metadata_bool_as_integer": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts admitted original differs from complete reconstruction"
+    },
+    "metadata_count_as_float": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts admitted original differs from complete reconstruction"
+    },
+    "nonexact_append": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "document is outside the immutable reviewed input set"
+    },
+    "exact_append_idempotent": true,
+    "rehashed_materialized_record_restart": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "materialized document differs from admitted original"
+    },
+    "retained_FTAI_body_positive": {
+      "source_cache_sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+      "synthetic_raw_proof_and_temporary_products": true,
+      "products": 42,
+      "same_day_accessions": 0,
+      "worker_exact": true,
+      "cache_unchanged": true
+    }
+  },
+  "closure_scope": [
+    "Initial value/unit/end/filed/CIK/endpoint/method/selection/formallowlist/early normalization clock/expected set/raw response/whole raw tests fail closed after all external hashes are recomputed. Fixed cache body is the independent anchor except explicit source-request/CIK probes.",
+    "Original two canonical metadata false-admits now reject on complete record identity. Actual readonly append rejects nonexact sibling while exact replay stays idempotent; restart rejects a changed materialized record even when the snapshot manifest is rehashed.",
+    "Temporary materialize/open/restart/worker and direct/symlink original root guards passed. Across refresh/worker proof file drift rejects; code uses per-_verified_review local memo, no cross-refresh verification cache.",
+    "One readonly retained FTAI cache-body control generated42 scoped products, excluded Jul31 same-day accession, and retained exact worker view. Whole raw proof and products were constructed only in a temporary synthetic oracle, not admitted as production sources."
+  ],
+  "limits": [
+    "No network/model/LabelStore/globaloracle write/real15case/fullprepare; newID appendFalse actualproduction readback is driver responsibility.",
+    "This profile supports SEC-authority current extraction plus explicit filed-next-UTC-day policy. It does not prove API vintage, independent primary-filing value audit or absolute SEC authorship. Both retrospective/primary-audit flags remain.",
+    "A wholly reauthored internally consistent source graph cannot be authenticated by local checksum/reconstruction alone; trusted review/source retention remains the outer evidence boundary.",
+    "Initial15 adversarial cases were not needlessly rerun after a comparison-only fix; final independent replay targeted the two original failures and readonly append/restore, with one retained body positive.",
+    "Does not close all financial sources, readiness,Signals,MVP or research benefit."
+  ]
+}

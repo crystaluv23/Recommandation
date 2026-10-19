@@ -1,0 +1,47 @@
+{
+  "cases": [
+    {
+      "case": "exact",
+      "driver_gate_rejected": false,
+      "native_append_returned": false,
+      "python_record_equality": true,
+      "stored_bytes_unchanged": true,
+      "worker_restore_collection_equal": true
+    },
+    {
+      "case": "boolean_to_integer",
+      "driver_gate_rejected": true,
+      "native_append_returned": false,
+      "python_record_equality": true,
+      "stored_bytes_unchanged": true,
+      "worker_restore_collection_equal": false
+    },
+    {
+      "case": "boolean_to_float",
+      "driver_gate_rejected": true,
+      "native_append_returned": false,
+      "python_record_equality": true,
+      "stored_bytes_unchanged": true,
+      "worker_restore_collection_equal": false
+    },
+    {
+      "case": "only_clock",
+      "driver_gate_rejected": true,
+      "native_append_returned": false,
+      "python_record_equality": false,
+      "stored_bytes_unchanged": true,
+      "worker_restore_collection_equal": false
+    }
+  ],
+  "diagnostic_prepare_or_execute_called": false,
+  "fresh_temp_restart_exact": true,
+  "labels_loaded": false,
+  "models": 0,
+  "network_requests": 0,
+  "real_global_oracle_opened": false,
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_anchor_financial_snapshot.py",
+    "sha256": "e7b97734d546b668f73df2bb570949ee7bb422d31f7ce241678d091e586a3929"
+  },
+  "status": "passed"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "root-test-transcript-v1",
+  "command": "PYTHONPATH=src:scripts bundled-python -m unittest tests.test_reviewed_companyfacts_profile tests.test_reviewed_source_snapshot tests.test_reviewed_market_profile",
+  "result": "PASS",
+  "tests_run": 31,
+  "elapsed_seconds": 14.938,
+  "record_kind": "Transcribed final output of root tool run, not a separately captured raw stdout file",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "d9f7ca3b7c192da331da20441c9657ce79aafb7f1a4b95e074455fe7bee8e6dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_companyfacts_profile.py",
+      "sha256": "db8e29cf58c35e567d312b50705f753da75c2871024d50470146cd42996af6ad"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_source_snapshot.py",
+      "sha256": "38b62a7e88667464dc71e2c0e50396f12c54176240b2cd1606c2d48345eb3d1a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_market_profile.py",
+      "sha256": "98384cd04e87d99db7f94621d5ec3f381c2f183e4c192f89c491d70ba346efa5"
+    }
+  ],
+  "scope_exception": {
+    "real_label_files_read": true,
+    "temporary_full_preparation_attempted": true,
+    "research_cycle_executed": false,
+    "model_calls": 0,
+    "details": "Whole old source module included test_minimal_input_verification_cannot_drop_reviewed_binding (hashes real labels) and test_fresh_narrow_cli_freeze_restores_view_and_preserves_full_readiness_failure (temporary full readiness rejection). This repeats the previously disclosed selector mistake. It is not no-label/fullprepare evidence.",
+    "correction": "Final run uses explicit safe selectors and LabelStore/fullprepare tripwires; real financial diagnostic has not executed."
+  }
+}

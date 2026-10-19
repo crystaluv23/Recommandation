@@ -12,6 +12,11 @@ from typing import Any, Mapping
 
 from stock_opportunity_agent.artifacts import atomic_write_json, canonical_json_hash
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore, content_sha256
+from stock_opportunity_agent.data.sec_company_facts import (
+    STANDARD_FORMS, STANDARD_TAXONOMIES, materialize_company_fact_documents,
+    validate_company_facts_response,
+)
+from stock_opportunity_agent.data.sources.core import DataSourceError
 from stock_opportunity_agent.models import ValidationError
 
 
@@ -28,7 +33,7 @@ def _source_boundary(function):
     def checked(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except (KeyError, IndexError, TypeError, ValueError, OverflowError, AttributeError, OSError, ValidationError) as exc:
+        except (KeyError, IndexError, TypeError, ValueError, OverflowError, AttributeError, OSError, ValidationError, DataSourceError) as exc:
             raise ReviewedSourceRejected(f"invalid reviewed source artifact: {exc}") from exc
     return checked
 
@@ -247,9 +252,80 @@ def _verify_market_document(document, row, proofs, cutoff):
             raise ReviewedSourceRejected("market unadjusted overlap differs from original basis")
 
 
+def _verify_companyfacts_document(document, row, proofs, cutoff, memo):
+    """Rebuild a complete bound accession group once within one review call."""
+    required = {"sec_companyfacts_cache", "sec_companyfacts_raw_response", "sec_companyfacts_normalization"}
+    if set(proofs) != required:
+        raise ReviewedSourceRejected("Company Facts requires cache, raw response and normalization proofs")
+    key = tuple((kind, str(Path(proofs[kind][0]["artifact"]["path"]).resolve()),
+                 proofs[kind][0]["artifact"]["sha256"]) for kind in sorted(required))
+    if key not in memo:
+        cache_proof, cache = proofs["sec_companyfacts_cache"]
+        raw_proof, raw_record = proofs["sec_companyfacts_raw_response"]
+        _normalization_proof, normalization = proofs["sec_companyfacts_normalization"]
+        if (normalization["schema_version"] != "sec-companyfacts-normalization-v1"
+                or normalization["normalizer_profile"] != "sec_companyfacts_filed_next_utc_day_v1"
+                or normalization["source_cache"] != cache_proof["artifact"]
+                or normalization["raw_response"] != raw_proof["artifact"]):
+            raise ReviewedSourceRejected("Company Facts normalization source identity differs")
+        item, selection, provenance = (normalization[name] for name in ("item", "selection", "provenance"))
+        cik = item["cik"]
+        endpoint = "https://data.sec.gov/api/xbrl/companyfacts/CIK" + cik + ".json"
+        validate_company_facts_response(cache["body"], cik)
+        if (len(cik) != 10 or not cik.isascii() or not cik.isdigit()
+                or item["company_id"] != "cik_" + cik or item["source_url"] != endpoint
+                or cache.get("endpoint") != endpoint or cache.get("source_key") != "sec_edgar"
+                or cache.get("capability") != "financial_statements" or cache.get("payload_kind") != "json"
+                or cache.get("params") != [["method", "GET"]]):
+            raise ReviewedSourceRejected("Company Facts managed cache request differs")
+        raw = RawInfoDocument.from_dict(raw_record)
+        raw_content = json.dumps(cache["body"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        raw_id = "sec_edgar:" + item["company_id"] + ":sec_company_facts_raw_response:" + content_sha256(raw_content)[:24]
+        if (raw.source_type != "sec_company_facts_raw_response" or raw.document_id != raw_id
+                or raw.company_id != item["company_id"] or raw.content != raw_content
+                or raw.metadata.get("provider") != "sec_edgar" or raw.metadata.get("cik") != cik):
+            raise ReviewedSourceRejected("Company Facts retained raw response differs")
+        cached_at, normalized_at = _instant(cache["retrieved_at"]), _instant(normalization["normalized_at"])
+        if raw.available_at != raw.published_at or not cached_at <= raw.available_at <= normalized_at:
+            raise ReviewedSourceRejected("Company Facts cache/normalization clocks differ")
+        selected_at = _instant(selection["available_at_through"])
+        if (selection["period_end_from"] != date.min.isoformat()
+                or selection["period_end_through"] != selected_at.astimezone(timezone.utc).date().isoformat()
+                or selected_at > cutoff
+                or selection["taxonomy_allowlist"] != list(STANDARD_TAXONOMIES)
+                or selection["form_allowlist"] != list(STANDARD_FORMS)):
+            raise ReviewedSourceRejected("Company Facts selection differs from supported acquisition scope")
+        policy_hash = canonical_json_hash({"schema_version": "sec-company-facts-acquisition-v1", "selection": selection})
+        if provenance != {"acquisition_policy_hash": policy_hash, "acquisition_selection": selection}:
+            raise ReviewedSourceRejected("Company Facts acquisition provenance differs")
+        products, _stats = materialize_company_fact_documents(cache["body"], item=item,
+            selection=selection, provenance=provenance, retrieved_at=normalized_at)
+        expected = normalization["expected_products"]
+        expected_by_id = {entry["document_id"]: entry for entry in expected}
+        reconstructed = {product.document_id: {"document_id": product.document_id,
+            "content_hash": product.content_hash, "canonical_record_hash": canonical_json_hash(product.to_dict())}
+            for product in products}
+        if len(expected_by_id) != len(expected) or expected_by_id != reconstructed:
+            raise ReviewedSourceRejected("Company Facts complete normalized product set differs")
+        memo[key] = {product.document_id: product for product in products}
+    if (document.source_type != "sec_company_facts" or document.document_id not in memo[key]
+            or canonical_json_hash(document.to_dict()) != canonical_json_hash(memo[key][document.document_id].to_dict())
+            or document.available_at != _instant(row["reviewed_available_at"])
+            or document.available_at > cutoff):
+        raise ReviewedSourceRejected("Company Facts admitted original differs from complete reconstruction")
+
+
 @_source_boundary
 def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocument]]:
-    _raw, review = _read_bound(binding)
+    decoded, companyfacts = {}, {}
+
+    def read_bound(artifact):
+        key = (str(Path(artifact["path"]).resolve()), artifact["sha256"])
+        if key not in decoded:
+            decoded[key] = _read_bound(artifact)
+        return decoded[key]
+
+    _raw, review = read_bound(binding)
     if review.get("schema_version") != "reviewed-raw-info-snapshot-v1":
         raise ReviewedSourceRejected("unsupported reviewed source manifest")
     unhashed = {key: value for key, value in review.items() if key != "manifest_hash"}
@@ -259,7 +335,7 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
     if scope.get("acquisition_allowed") is not False:
         raise ReviewedSourceRejected("this reviewed snapshot forbids acquisition")
     cutoff = _instant(scope["as_of"])
-    _read_bound(review["oracle_identity"])
+    read_bound(review["oracle_identity"])
     oracle_root = Path(review["oracle_identity"]["path"]).resolve().parent
     documents, seen = [], set()
     for row in review["records"]:
@@ -268,7 +344,7 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
         seen.add(row["document_id"])
         if not Path(row["original_record"]["path"]).resolve().is_relative_to(oracle_root):
             raise ReviewedSourceRejected("original record is outside the declared oracle root")
-        _record_bytes, record = _read_bound(row["original_record"])
+        _record_bytes, record = read_bound(row["original_record"])
         document = RawInfoDocument.from_dict(record)
         if (document.document_id != row["document_id"] or document.company_id != row["company_id"]
                 or document.content_hash != row["content_hash"] or document.company_id not in scope["company_ids"]):
@@ -276,7 +352,7 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
         kinds = [item["kind"] for item in row["proofs"]]
         if len(kinds) != len(set(kinds)):
             raise ReviewedSourceRejected("duplicate reviewed proof kind")
-        proofs = {item["kind"]: (item, _read_bound(item["artifact"])[1]) for item in row["proofs"]}
+        proofs = {item["kind"]: (item, read_bound(item["artifact"])[1]) for item in row["proofs"]}
         if row["verdict"] in {"unknown", "excluded"}:
             continue
         if row["verdict"] != "admitted":
@@ -286,6 +362,8 @@ def _verified_review(binding: Mapping[str, Any]) -> tuple[dict, list[RawInfoDocu
             _verify_sec_document(document, row, proofs, cutoff)
         elif profile == "massive_daily_no_post_cutoff_split_v1":
             _verify_market_document(document, row, proofs, cutoff)
+        elif profile == "sec_companyfacts_filed_next_utc_day_v1":
+            _verify_companyfacts_document(document, row, proofs, cutoff, companyfacts)
         else:
             raise ReviewedSourceRejected("unsupported reviewed proof profile")
         documents.append(document)
@@ -340,7 +418,7 @@ class ReviewedRawInfoStore(RawInfoStore):
         """Allow only an exact admitted replay, without writing anything."""
         self.refresh()
         existing = self._documents.get(document.document_id)
-        if existing is None or existing.to_dict() != document.to_dict():
+        if existing is None or canonical_json_hash(existing.to_dict()) != canonical_json_hash(document.to_dict()):
             raise ReviewedSourceRejected("document is outside the immutable reviewed input set")
         return False
 
@@ -366,8 +444,9 @@ class ReviewedRawInfoStore(RawInfoStore):
             expected.add(path)
             _raw, value = _read_bound({"path": str(path), "sha256": row["sha256"]})
             document = RawInfoDocument.from_dict(value)
+            original = by_id.get(document.document_id)
             if (document.document_id in loaded or document.document_id != row["document_id"]
-                    or document != by_id.get(document.document_id)):
+                    or original is None or canonical_json_hash(document.to_dict()) != canonical_json_hash(original.to_dict())):
                 raise ReviewedSourceRejected("materialized document differs from admitted original")
             loaded[document.document_id] = document
         if set(loaded) != set(by_id) or set(self.root.rglob("*.json")) != expected:

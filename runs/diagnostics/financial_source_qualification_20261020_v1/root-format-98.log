@@ -1,0 +1,41 @@
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/suite.py", line 24, in __init__
+    self.addTests(tests)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/suite.py", line 57, in addTests
+    for test in tests:
+                ^^^^^
+  File "<stdin>", line 7, in <genexpr>
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_data_resolution.py", line 10, in <module>
+    from stock_opportunity_agent.data.acquisition import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py", line 4, in <module>
+    from stock_opportunity_agent.cases import CaseOutcomeLabel, HistoricalCase
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py", line 3, in <module>
+    from stock_opportunity_agent.cases.learning import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py", line 9, in <module>
+    from stock_opportunity_agent.cases.outcomes import CaseOutcomeLabel
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py", line 11, in <module>
+    from stock_opportunity_agent.data.sources.core import PriceBar
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py", line 3, in <module>
+    from stock_opportunity_agent.data.backfill import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py", line 20, in <module>
+    from stock_opportunity_agent.data.sec_company_facts import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py", line 13, in <module>
+    from stock_opportunity_agent.data.sources.core import DataSourceError
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py", line 75, in <module>
+    from stock_opportunity_agent.data.sources import alpha_vantage as _alpha_vantage  # noqa: E402,F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py", line 12, in <module>
+    from stock_opportunity_agent.data.sources.core import (
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py", line 13, in <module>
+    from urllib import request
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/urllib/request.py", line 88, in <module>
+    import http.client
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/http/client.py", line 1498, in <module>
+    import ssl
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/ssl.py", line 955, in <module>
+    class SSLSocket(socket):
+TypeError: function() argument 'code' must be code, not str

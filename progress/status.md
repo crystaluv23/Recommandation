@@ -13,7 +13,9 @@
 按完整aware cutoff执行次日UTC政策、严格issuer且不裁旧比较期间；独立发现并补齐
 持久化旧body的消费者issuer拒绝。root禁socket的98测试通过，真实旧ID重放、重启
 及actual executor技术失败均验证；现代backfill12docs/3380rows完整全等。
-旧原件/view不改，财务proof/profile与新view尚未建立，0/15旧readiness不改写。
+旧原件/view不改，[财务profile](../reports/reviewed-financial-profile-20261020.md)已实现并经30安全测试，
+独立bool/int等价反例修至canonical完整比对；实际15case新view尚未执行，旧0/15不改写。
+root此前31关联误带真实labels hash和临时fullprepare拒绝，例外已披露，不作零访问证据。
 
 最新 [经营来源/readiness](../reports/anchor-operating-source-readiness-20261020.md)：
 原27selectedprimary中26通过现SEC proof，但仅24年/季报经营正文准入、3unknown；

@@ -306,4 +306,3 @@ def _parse_datetime(value: Any, name: str) -> datetime:
 
 def _midnight_utc(value: date) -> datetime:
     return datetime.combine(value, time.min, tzinfo=timezone.utc)
-

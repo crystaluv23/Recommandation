@@ -88,3 +88,16 @@ Source-family selection is explicit, never a fallback from failed SEC proof.
 The five-original market cohort has materialization and negative-control
 evidence; this does not admit other market records or close its known
 consumer day-boundary/visibility gaps.
+
+## Company Facts extension
+
+The [Company Facts profile](reviewed_companyfacts_profile.md) explicitly supports
+`sec_companyfacts_filed_next_utc_day_v1` for newly materialized typed accession
+originals. It verifies a managed SEC cache, the retained whole-response proof and
+a complete normalization record through the actual shared data normalizer. Old
+aggregates and whole-response proofs never become admitted financial products.
+Existing oracle-root, original-record and immutable view interfaces remain in
+force. Within one review verification, repeated immutable bindings may share
+their decoded bytes and one complete reconstruction; every refresh starts a new
+verification and rereads/hash-checks all bound files. No process-wide or persisted
+verification cache may bypass evidence drift.

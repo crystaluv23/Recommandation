@@ -1,0 +1,28 @@
+{
+  "documents": [
+    {
+      "document_id": "secfacts:0000000001:0000000010-24-000001:9f7c223737e46476",
+      "path": "documents/0000.json",
+      "sha256": "9af9b6c9bb0c32f9d81abeb0ec00190246451853d8424b185155aa0c15e8a083"
+    },
+    {
+      "document_id": "secfacts:0000000001:0000000010-25-000001:e214463d94de2063",
+      "path": "documents/0001.json",
+      "sha256": "68fcadfa7fb2868a500aa8e19b6591848aa75c138d82edc769bb672adcfc879c"
+    }
+  ],
+  "oracle_sha256": "4c452113425550b34719ca6bc8da304a42a209580b505b4c885d4eda7eda3750",
+  "root": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpbc28v1ah/metadata_count_as_float/view",
+  "schema_version": "materialized-reviewed-raw-info-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-02-01T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000000001"
+    ]
+  },
+  "source_review": {
+    "path": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpbc28v1ah/metadata_count_as_float/review.json",
+    "sha256": "81f747eae4713d0e266adc4e5a166fab707e404293df90b7a25d32fa6ffe68f2"
+  }
+}

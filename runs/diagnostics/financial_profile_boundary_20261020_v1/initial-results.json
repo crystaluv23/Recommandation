@@ -1,0 +1,112 @@
+{
+  "scope": "Independent synthetic temporary proof graph; fixed SEC cache body except named source-request/CIK probes; outer hashes recomputed, no source authentication claim.",
+  "code_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py": "d9f7ca3b7c192da331da20441c9657ce79aafb7f1a4b95e074455fe7bee8e6dc",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+  },
+  "mutations": {
+    "value": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "unit": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "end": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "filed": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "body_cik": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "invalid reviewed source artifact: SEC Company Facts response CIK mismatch"
+    },
+    "endpoint": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts managed cache request differs"
+    },
+    "method": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts managed cache request differs"
+    },
+    "selection_cap": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts selection differs from supported acquisition scope"
+    },
+    "form_allowlist": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts selection differs from supported acquisition scope"
+    },
+    "early_normalized_clock": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts cache/normalization clocks differ"
+    },
+    "expected_missing": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "expected_extra": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "expected_duplicate": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts complete normalized product set differs"
+    },
+    "rawresponse": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts retained raw response differs"
+    },
+    "whole_raw": {
+      "accepted": false,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts admitted original differs from complete reconstruction"
+    },
+    "metadata_bool_as_integer": {
+      "accepted": true,
+      "documents": 2,
+      "binding": {
+        "store_type": "reviewed",
+        "root": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpbc28v1ah/metadata_bool_as_integer/view",
+        "manifest_sha256": "e334dad12426048bd3c878c259ffa3c10a638780f4b6526fc3d12258a031ac77"
+      }
+    },
+    "metadata_count_as_float": {
+      "accepted": true,
+      "documents": 2,
+      "binding": {
+        "store_type": "reviewed",
+        "root": "/private/var/folders/6t/vrhq4bz975v02cfgtkfbzbmw0000gn/T/tmpbc28v1ah/metadata_count_as_float/view",
+        "manifest_sha256": "eba182a431eedc64ead50321f9008ebfdb8240f4aaa024aa31973216c43f592f"
+      }
+    }
+  },
+  "positive": {
+    "restart": true,
+    "worker": true,
+    "refresh": true,
+    "full_record_equality": true,
+    "refresh_drift_rejected": true,
+    "worker_drift_rejected": true,
+    "direct_inside_rejected": true,
+    "symlink_inside_rejected": true
+  }
+}

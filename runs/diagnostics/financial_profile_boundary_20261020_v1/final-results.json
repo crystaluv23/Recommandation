@@ -1,0 +1,37 @@
+{
+  "code_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+  },
+  "checks": {
+    "metadata_bool_as_integer": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts admitted original differs from complete reconstruction"
+    },
+    "metadata_count_as_float": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "Company Facts admitted original differs from complete reconstruction"
+    },
+    "nonexact_append": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "document is outside the immutable reviewed input set"
+    },
+    "exact_append_idempotent": true,
+    "rehashed_materialized_record_restart": {
+      "rejected": true,
+      "type": "ReviewedSourceRejected",
+      "message": "materialized document differs from admitted original"
+    },
+    "retained_FTAI_body_positive": {
+      "source_cache_sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+      "synthetic_raw_proof_and_temporary_products": true,
+      "products": 42,
+      "same_day_accessions": 0,
+      "worker_exact": true,
+      "cache_unchanged": true
+    }
+  }
+}

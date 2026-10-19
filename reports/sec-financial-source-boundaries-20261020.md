@@ -41,7 +41,10 @@ Root ran all four relevant modules with sockets forbidden: **98 tests passed**
 real-store replay controls). The [raw final log](../runs/diagnostics/financial_source_qualification_20261020_v1/root-final-98.log)
 and original-implementation failures remain separate. An initial independent
 fixture error is retained and not counted as a production failure. Final source
-bindings match both the root run and independent review. No new production LLM
+bindings match both the original root run and independent review. A subsequent
+EOF-only formatting cleanup passed the same98 tests; its separate
+[root verification](../runs/diagnostics/financial_source_qualification_20261020_v1/root-format-verification.json)
+retains the new bindings and an initial verification-bootstrap import error. No new production LLM
 completion, external LLM API, GET, real LabelStore access or full preparation was
 performed. One local deterministic invalid-source execution verifies the failure
 path only. Host-agent tokens/cost remain unmeasured.

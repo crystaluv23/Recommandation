@@ -1,0 +1,28 @@
+{
+  "schema_version": "financial-format-verification-v1",
+  "behavior_change": false,
+  "change": "Remove one extra EOF blank line found by git diff --cached --check after staged lint; original bound code/test evidence retained.",
+  "bootstrap_failure": "root-format-98.log: replacing socket before importing ssl invalidated SSLSocket class construction; no production failure or network request.",
+  "final_log": "root-format-98-final.log",
+  "tests_run": 98,
+  "result": "PASS",
+  "network_forbidden": true,
+  "current_code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+    }
+  ]
+}
