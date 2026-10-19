@@ -1,0 +1,51 @@
+{
+  "plan_sha256": "2a859226fef0cdaba5552f862474423c237ad1c87e9838cb387917b7e60e5cfd",
+  "method": "GET",
+  "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/0000895421-25-000419.txt",
+  "request_headers": {
+    "User-Agent": "StockOpportunityAgent jiamingcui0523@gmail.com",
+    "Accept": "application/json,text/html;q=0.9,*/*;q=0.8",
+    "Accept-Encoding": "identity",
+    "Range": "bytes=0-65535"
+  },
+  "GET_attempts": 1,
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "started_at_utc": "2026-10-19T20:59:44.689009+00:00",
+  "state": "http_response_prefix_retained",
+  "external_llm_calls": 0,
+  "http_status": 200,
+  "response_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/0000895421-25-000419.txt",
+  "retrieved_at_utc": "2026-10-19T20:59:45.569816+00:00",
+  "response_headers": {
+    "Content-Type": "text/plain",
+    "X-Frame-Options": "SAMEORIGIN",
+    "x-amz-id-2": "X1fDiE+yQKzrI5W104mVj1Hib0OghjmXYUucZMKk5pJ9ITd+K4hujjs0xckK1UwfSKULPxM/vxeavLmuGl8qk0KQJB7eOYlc",
+    "x-amz-request-id": "Z76EBWTA9R1T83F4",
+    "x-amz-replication-status": "COMPLETED",
+    "Last-Modified": "Wed, 16 Jul 2025 12:00:08 GMT",
+    "ETag": "\"7035cb7879d51ba45a24d2840c3f981c-gzip\"",
+    "x-amz-server-side-encryption": "AES256",
+    "x-amz-meta-mode": "33188",
+    "x-amz-version-id": "EsxHX0rFVxQVzpkFMrm39oYgQYelP5yP",
+    "X-Content-Type-Options": "nosniff",
+    "X-XSS-Protection": "1; mode=block",
+    "Vary": "Accept-Encoding",
+    "Date": "Mon, 19 Oct 2026 20:59:45 GMT",
+    "Transfer-Encoding": "chunked",
+    "Connection": "Transfer-Encoding",
+    "Strict-Transport-Security": "max-age=31536000 ; includeSubDomains ; preload"
+  },
+  "raw_prefix_path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/submission-header.response-prefix.raw",
+  "raw_prefix_sha256": "30ee01cc0d2fc360e9443da7ca3524c6f639e52e67b6bc023721229739b9e8cd",
+  "retained_bytes": 65536,
+  "retention": "Exact returned prefix/range bytes, not a claimed hash of the complete submission file.",
+  "SEC_header_end_present": true,
+  "header_fields": {
+    "acceptance_datetime_token": "20250716075947",
+    "accession_number": "0000895421-25-000419",
+    "submission_type": "8-K",
+    "issuer_cik": "0000895421"
+  },
+  "identity_matches_plan": true
+}

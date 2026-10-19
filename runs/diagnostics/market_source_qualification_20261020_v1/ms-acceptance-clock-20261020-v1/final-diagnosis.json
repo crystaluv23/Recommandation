@@ -1,0 +1,99 @@
+{
+  "schema_version": "single-ms-acceptance-source-clock-diagnosis-v1",
+  "scope": "Single exact issuer/accession, no global time-policy conclusion, no source/profile/canonical edits.",
+  "bindings": {
+    "parser_replay": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/parser-replay.json",
+      "sha256": "a0bab4670f2246c08a6d1f95a493811a91c5e46187b3c5e4486e573bb8da9344"
+    },
+    "header_request_plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-request-plan.json",
+      "sha256": "2a859226fef0cdaba5552f862474423c237ad1c87e9838cb387917b7e60e5cfd"
+    },
+    "header_get_receipt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-get-receipt.json",
+      "sha256": "f2005a4ee0374ff27599e69717ff037d238cc1b480fc2e932a0883b702212c0a"
+    },
+    "header_response_prefix": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/submission-header.response-prefix.raw",
+      "sha256": "30ee01cc0d2fc360e9443da7ca3524c6f639e52e67b6bc023721229739b9e8cd"
+    },
+    "original_record": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+      "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+    },
+    "new_SEC_archive_page": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_linked_submissions_archive.response.raw",
+      "sha256": "b28a24dc4f15bb7ccfb630d24a93e7cea79ee2bd2ff2a9606d8ea16d485687e7"
+    },
+    "native_sources": [
+      {
+        "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+        "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+        "sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe"
+      }
+    ]
+  },
+  "three_clock_comparison": {
+    "original_canonical_published_and_available_UTC": "2025-07-16T11:59:47+00:00",
+    "new_SEC_archive_JSON_acceptanceDateTime": "2025-07-16T15:59:47.000Z",
+    "new_native_parser_then_adapter_UTC": "2025-07-16T15:59:47+00:00",
+    "independent_official_submission_header_token": "20250716075947",
+    "submission_header_token_has_explicit_timezone": false,
+    "wall_clock_difference_original_UTC_minus_header_hours": 4.0,
+    "wall_clock_difference_new_JSON_UTC_minus_header_hours": 8.0,
+    "interpretation": "These wall-clock differences are comparisons only, not an assigned timezone or correction. Do not assume the later JSON instant is a proven correction to the original."
+  },
+  "source_to_persistence_trace": {
+    "actual_new_aware_row_through_native_parser_and_adapter": {
+      "input_UTC": "2025-07-16T15:59:47.000Z",
+      "optional_datetime_output": "2025-07-16T15:59:47+00:00",
+      "filing_metadata_output": "2025-07-16T15:59:47+00:00",
+      "adapter_published_at": "2025-07-16T15:59:47+00:00",
+      "adapter_available_at": "2025-07-16T15:59:47+00:00",
+      "time_shift_seconds": 0.0,
+      "persisted": false
+    },
+    "origin_115947_trace": "Both bounded old root caches lack the target accession. Original record metadata binds issuer/form/accession/static body but no original input-row/retrieval-clock lineage; original writer/actual input acceptance string cannot be established from this scope.",
+    "historical_parser_check": {
+      "associated_primary_cache_run_commit": "47d5c4762b966cecd53466c258e7a24d3f7a5316",
+      "optional_datetime_AST_equals_current": true,
+      "filing_array_AST_equals_current": true,
+      "limitation": "Associated run contract is not proof it wrote the original global record."
+    }
+  },
+  "discriminating_findings": [
+    "The current parser and adapter preserve the aware15:59:47Z actual new source row; no four-hour subtraction is caused by this actual native path.",
+    "The independent official same-accession header says07:59:47 without a timezone, weakening any claim that the original11:59UTC is simply an incorrectly early version of the new15:59UTC source.",
+    "A source-specific interpretation of the unzoned SEC header is required before choosing an authoritative instant. A summer offset guess or uniform four-hour rewrite is not evidence.",
+    "The original record remains unqualified under current exact source-profile equality with the newly retained JSON row; no existing record or proof has been changed to force equality.",
+    "Whole archive-page listing/range discrepancy is a separate observation, not a newly imposed existing native published acceptance requirement."
+  ],
+  "remediation_options_after_source_semantics_verification": [
+    {
+      "condition": "An authoritative SEC timestamp definition and exact header establish that original11:59UTC is correct.",
+      "action": "Preserve original record; explicitly design a header-acceptance proof alternative retaining official header identity/raw bytes/time semantics, and retain conflicting JSON response as conflict evidence. Do not reinterpret it as an exact matching root/page row."
+    },
+    {
+      "condition": "Independent source/version evidence proves the original instant wrong.",
+      "action": "Keep historical original/old freezes unchanged. Prepare a separately traceable regenerated source/version/view with verified time and agreed identity handling, then re-run exact qualification; do not overwrite original or add a time tolerance."
+    },
+    {
+      "condition": "Conflicting official representations remain unresolved.",
+      "action": "Keep this MS source pending/unqualified; obtain a different already-qualified source for later research only through existing source contracts. Do not fall back to filing-date midnight or infer absence of public material."
+    }
+  ],
+  "stop_condition_reached": "One exact header GET and bounded native replay supplied discriminating evidence. No further requests, cohort scan or implementation in this task.",
+  "read_only_SEC_GETs_this_task": 1,
+  "prior_two_plans_SEC_GETs": 6,
+  "automatic_retries": 0,
+  "redirects_followed": 0,
+  "external_llm_calls": 0,
+  "LabelStore_or_large_archive_read": false,
+  "no_primary_or_exhibit_operating_menu_upgrade": true,
+  "production_code_or_profile_modified": false,
+  "originals_unchanged": true
+}

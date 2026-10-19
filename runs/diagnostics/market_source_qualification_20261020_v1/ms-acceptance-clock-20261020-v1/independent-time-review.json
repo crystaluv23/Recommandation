@@ -1,0 +1,140 @@
+{
+  "status": "exact_single_case_clock_contradiction_preserved_original_writer_and_header_UTC_interpretation_unresolved",
+  "issuer_cik": "0000895421",
+  "accession": "0000895421-25-000419",
+  "source_body_identity": {
+    "original_record": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+      "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+    },
+    "primary_document": "ms-20250716.htm",
+    "form": "8-K",
+    "matching_retained_row_and_complete_submission_header": true,
+    "original_body_and_metadata_identity_preserved_by_actual_adapter": true,
+    "mapping_is_separate_from_time_qualification": true
+  },
+  "actual_time_chain": {
+    "original_published_at": "2025-07-16T11:59:47+00:00",
+    "original_available_at": "2025-07-16T11:59:47+00:00",
+    "actual_retained_JSON_acceptanceDateTime": "2025-07-16T15:59:47.000Z",
+    "actual_current_optional_parser": "2025-07-16T15:59:47+00:00",
+    "actual_current_filing_array_parser": "2025-07-16T15:59:47+00:00",
+    "actual_native_adapter_published_at": "2025-07-16T15:59:47+00:00",
+    "actual_native_adapter_available_at": "2025-07-16T15:59:47+00:00",
+    "complete_record_differences": {
+      "published_at": {
+        "original": "2025-07-16T11:59:47+00:00",
+        "new_row_adapter": "2025-07-16T15:59:47+00:00"
+      },
+      "available_at": {
+        "original": "2025-07-16T11:59:47+00:00",
+        "new_row_adapter": "2025-07-16T15:59:47+00:00"
+      }
+    },
+    "aware_parser_shift_seconds": 0.0,
+    "native_adapter_replay_limit": "Uses the actual parser and SecFilingAdapter with a narrow read-only compatibility client supplying only the real retained row and original body; it does not claim to reconstruct the original root enumeration or writer."
+  },
+  "submission_header_evidence": {
+    "plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-request-plan.json",
+      "sha256": "2a859226fef0cdaba5552f862474423c237ad1c87e9838cb387917b7e60e5cfd"
+    },
+    "receipt": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/header-get-receipt.json",
+      "sha256": "f2005a4ee0374ff27599e69717ff037d238cc1b480fc2e932a0883b702212c0a"
+    },
+    "prefix": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/submission-header.response-prefix.raw",
+      "sha256": "30ee01cc0d2fc360e9443da7ca3524c6f639e52e67b6bc023721229739b9e8cd",
+      "bytes": 65536
+    },
+    "header_complete_within_prefix": true,
+    "literal_acceptance_token": "20250716075947",
+    "token_contains_offset": false,
+    "form_accession_CIK_and_first_document_filename_match": true,
+    "HTTP_status": 200,
+    "retention_limit": "A65536-byte exact prefix with a complete SEC header; not a hash or download of the entire submission. Range request got200 and no complete-file inference follows.",
+    "Last_Modified_literal": "Wed, 16 Jul 2025 12:00:08 GMT",
+    "Last_Modified_limit": "HTTP object modification timestamp is corroborating metadata, not proof of first-public availability or interchangeable with acceptance.",
+    "UTC_interpretation": "No timezone conversion of the offsetless07:59:47 token is performed or used to choose original11:59:47Z versus JSON15:59:47Z. Source-specific authoritative SEC clock semantics must be established before normalization/admission."
+  },
+  "target_mapping": {
+    "current_root_CIK_matches": true,
+    "one_exact_linked_archive_entry": {
+      "name": "CIK0000895421-submissions-003.json",
+      "filingCount": 2005,
+      "filingFrom": "2025-06-03",
+      "filingTo": "2025-07-30"
+    },
+    "target_accession_unique": true,
+    "parallel_array_lengths": {
+      "accessionNumber": 2005,
+      "filingDate": 2005,
+      "reportDate": 2005,
+      "acceptanceDateTime": 2005,
+      "act": 2005,
+      "form": 2005,
+      "fileNumber": 2005,
+      "filmNumber": 2005,
+      "items": 2005,
+      "core_type": 2005,
+      "size": 2005,
+      "isXBRL": 2005,
+      "isInlineXBRL": 2005,
+      "isXBRLNumeric": 2005,
+      "primaryDocument": 2005,
+      "primaryDocDescription": 2005
+    },
+    "target_date_within_declared_range": true,
+    "whole_page_range_equality_required": false,
+    "limit": "This exact target can be mapped to the same-issuer linked page even though other page rows exceed the root-listed date range; no novel whole-page-range-equality policy is introduced. Mapping does not settle public/acceptance time."
+  },
+  "origin_writer_limits": {
+    "known_old_root_caches": [
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+          "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+        },
+        "retained_target_in_recent": 0
+      },
+      {
+        "binding": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+          "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+        },
+        "retained_target_in_recent": 0
+      }
+    ],
+    "associated_commit": "47d5c4762b966cecd53466c258e7a24d3f7a5316",
+    "historical_function_AST_equals_current": {
+      "_optional_aware_datetime": true,
+      "_filings_from_arrays": true
+    },
+    "not_proven": "Neither bounded historical cache retains this target row, and original RawInfoDocument has no exact input-row/retrieval/writer binding. Associated run cache/commit and equal parser AST cannot identify the original producer input or prove that the new15:59 row was used then."
+  },
+  "conclusions": {
+    "proved": "Current parser/adapter preserve the actual aware15:59:47Z row without subtracting four hours; the old original is11:59:47Z. Exact same filing header supplies offsetless07:59:47. Identity/body mapping is confirmed, and these literal clocks remain separately bound.",
+    "not_proved": "Whether the original11:59 clock or the new JSON15:59 clock is the correct acceptance/first-public UTC instant, or which input/writer produced the original. No blanket timezone bug or original error is established.",
+    "current_admission": "Do not bypass the existing exact-time source profile or rewrite canonical times merely because all candidate instants precede the July31 case cutoff.",
+    "minimal_follow_up": [
+      "Finish the source-specific official SEC timestamp specification and daylight/standard-time interpretation proof; the root-reported FAQ EST wording alone is not silently mapped to America/New_York daylight rules here.",
+      "Keep JSON row, header literal, HTTP retrieval/Last-Modified and original canonical times as distinct evidence. Resolve source precedence explicitly before any narrow profile or separately traceable source-record change.",
+      "If origin diagnosis is needed, bind the original selected input row/request/body and writer provenance; absence in these two caches is not whole-history absence. Current aware parser code needs no four-hour conversion fix on this evidence."
+    ]
+  },
+  "external_context_not_independently_browsed": "Root reports an official SEC Webmaster FAQ AcceptanceTime Time(EST) statement and is tracing the PDS specification. This reviewer made no network request and does not use an external issue report as this-case timing proof.",
+  "reviewer_actions": {
+    "network_requests": 0,
+    "model_calls": 0,
+    "LabelStore_reads": 0,
+    "source_code_or_view_changes": 0,
+    "original_rewrites": 0
+  },
+  "bindings": {
+    "parser_replay_sha256": "a0bab4670f2246c08a6d1f95a493811a91c5e46187b3c5e4486e573bb8da9344",
+    "current_parser_sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526",
+    "current_adapter_sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "original_record_unchanged_sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+  }
+}

@@ -1,0 +1,2262 @@
+{
+  "basic_info_bundle": {
+    "requests": [
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1",
+            "source_group[0]=10-K|10-Q|20-F|40-F"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 0,
+          "query_requested": true,
+          "query_status": "unmatched",
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.operating_report",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.operating_report",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "query": "business operations segments products services customers risks",
+          "request_id": "orientation.v1.operating_report",
+          "required_source_groups": [
+            [
+              "10-K",
+              "10-Q",
+              "20-F",
+              "40-F"
+            ]
+          ],
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.scoped_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "orientation.v1.financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "end": 46709,
+            "exact_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":16600371},{\"adjusted_close\":18.7,\"as_of_date\":\"2025-08-19\",\"close\":18.7,\"high\":19.3,\"low\":18.65,\"open\":19.27,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":16389548},{\"adjusted_close\":19.08,\"as_of_date\":\"2025-08-20\",\"close\":19.08,\"high\":19.14,\"low\":18.74,\"open\":18.89,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":18240838},{\"adjusted_close\":19.51,\"as_of_date\":\"2025-08-21\",\"close\":19.51,\"high\":19.5465,\"low\":19.07,\"open\":19.085,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":15918142},{\"adjusted_close\":19.6,\"as_of_date\":\"2025-08-22\",\"close\":19.6,\"high\":19.805,\"low\":19.19,\"open\":19.3,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":12862625},{\"adjusted_close\":19.72,\"as_of_date\":\"2025-08-25\",\"close\":19.72,\"high\":19.82,\"low\":19.62,\"open\":19.66,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":14901592},{\"adjusted_close\":20.23,\"as_of_date\":\"2025-08-26\",\"close\":20.23,\"high\":20.26,\"low\":19.77,\"open\":19.805,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":14002462},{\"adjusted_close\":20.21,\"as_of_date\":\"2025-08-27\",\"close\":20.21,\"high\":20.24,\"low\":19.8728,\"open\":20.12,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":12186524},{\"adjusted_close\":20.22,\"as_of_date\":\"2025-08-28\",\"close\":20.22,\"high\":20.3954,\"low\":20.07,\"open\":20.22,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":11746288}",
+            "start": 44860
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "end": 48555,
+            "exact_text": "{\"adjusted_close\":20.9,\"as_of_date\":\"2025-08-29\",\"close\":20.9,\"high\":20.97,\"low\":20.19,\"open\":20.19,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":18169216},{\"adjusted_close\":21.46,\"as_of_date\":\"2025-09-02\",\"close\":21.46,\"high\":21.51,\"low\":20.83,\"open\":21.34,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":32164497},{\"adjusted_close\":21.82,\"as_of_date\":\"2025-09-03\",\"close\":21.82,\"high\":21.97,\"low\":21.52,\"open\":21.665,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":21288570},{\"adjusted_close\":21.49,\"as_of_date\":\"2025-09-04\",\"close\":21.49,\"high\":22.03,\"low\":21.49,\"open\":21.575,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":16623751},{\"adjusted_close\":22.11,\"as_of_date\":\"2025-09-05\",\"close\":22.11,\"high\":22.22,\"low\":21.61,\"open\":21.845,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":17605662},{\"adjusted_close\":22.53,\"as_of_date\":\"2025-09-08\",\"close\":22.53,\"high\":22.7,\"low\":22.28,\"open\":22.5,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":18362441},{\"adjusted_close\":22.37,\"as_of_date\":\"2025-09-09\",\"close\":22.37,\"high\":22.85,\"low\":22.22,\"open\":22.7,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":15299958},{\"adjusted_close\":22.94,\"as_of_date\":\"2025-09-10\",\"close\":22.94,\"high\":22.985,\"low\":22.545,\"open\":22.55,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":15285689},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-11\",\"close\":23.26,\"high\":23.295,\"low\":22.73,\"open\":22.81,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":12476493}",
+            "start": 46710
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "end": 50404,
+            "exact_text": "{\"adjusted_close\":23.28,\"as_of_date\":\"2025-09-12\",\"close\":23.28,\"high\":23.65,\"low\":23.1935,\"open\":23.43,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":11887660},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-15\",\"close\":23.26,\"high\":23.42,\"low\":23.01,\"open\":23.25,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":13960631},{\"adjusted_close\":22.74,\"as_of_date\":\"2025-09-16\",\"close\":22.74,\"high\":23.37,\"low\":22.7111,\"open\":23.305,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":11727526},{\"adjusted_close\":22.46,\"as_of_date\":\"2025-09-17\",\"close\":22.46,\"high\":22.82,\"low\":22.28,\"open\":22.42,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":13246762},{\"adjusted_close\":22.26,\"as_of_date\":\"2025-09-18\",\"close\":22.26,\"high\":22.35,\"low\":21.94,\"open\":22.285,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":14341064},{\"adjusted_close\":23.49,\"as_of_date\":\"2025-09-19\",\"close\":23.49,\"high\":23.64,\"low\":22.405,\"open\":22.5,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":29879277},{\"adjusted_close\":24.23,\"as_of_date\":\"2025-09-22\",\"close\":24.23,\"high\":24.29,\"low\":23.53,\"open\":24.0,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":24978972},{\"adjusted_close\":24.48,\"as_of_date\":\"2025-09-23\",\"close\":24.48,\"high\":24.91,\"low\":24.3,\"open\":24.51,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":19494936},{\"adjusted_close\":23.31,\"as_of_date\":\"2025-09-24\",\"close\":23.31,\"high\":24.59,\"low\":23.28,\"open\":24.55,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":21431418}",
+            "start": 48556
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "end": 51025,
+            "exact_text": "{\"adjusted_close\":23.64,\"as_of_date\":\"2025-09-25\",\"close\":23.64,\"high\":23.82,\"low\":23.205,\"open\":23.425,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":24998365},{\"adjusted_close\":24.11,\"as_of_date\":\"2025-09-26\",\"close\":24.11,\"high\":24.1194,\"low\":23.595,\"open\":23.71,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":22886139},{\"adjusted_close\":24.37,\"as_of_date\":\"2025-09-29\",\"close\":24.37,\"high\":24.875,\"low\":24.32,\"open\":24.68,\"retrieved_at\":\"2026-08-16T05:55:40.923703+00:00\",\"source\":\"massive\",\"symbol\":\"KGC\",\"volume\":26277033}",
+            "start": 50405
+          }
+        ],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 250,
+          "observed_observation_count": 250,
+          "observed_period_span_days": 364,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 4
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+              ],
+              "phase": "initial",
+              "request_id": "orientation.v1.market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "resolved"
+      }
+    ]
+  },
+  "case": {
+    "case_id": "cik_0000701818:20250930",
+    "checked_global_primary_namespace": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818",
+    "company_id": "cik_0000701818",
+    "company_name": "Kinross Gold Corp / KINROSS GOLD CORP",
+    "eligible_primary_record_count": 10,
+    "followup_existing_submissions_references": [
+      {
+        "accepted_at": "2025-03-27T20:55:21.000Z",
+        "accession_number": "0001104659-25-028819",
+        "form": "40-F",
+        "kind": "existing cached submissions metadata only; primary body not acquired/validated",
+        "limitation": "40-F primary may itself reference annual-report exhibits; body sufficiency cannot be inferred before retrieval.",
+        "primary_cache_in_checked_root": null,
+        "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm"
+      }
+    ],
+    "gaps": [
+      "No annual/interim primary report in the ten current global filing records checked. Two relevant 6-K originals are covers/indexes referencing Q2 statements/MD&A or earnings exhibits; their static/acceptance proof passes but operating body is not in those primary contents.",
+      "Referenced financial exhibit body was not found by exact cache-key lookup in checked source caches; a form label or exhibit link does not supply its contents."
+    ],
+    "has_proven_primary_operating_report": false,
+    "news_transcript_status": "not used as substitute for primary SEC operating body; not reviewed or admitted here",
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "records": [
+      {
+        "accession_number": "0001104659-25-072244",
+        "available_at": "2025-07-30T21:14:51+00:00",
+        "body_chars": 13117,
+        "body_scope": "primary cover/current report references separate financial/earnings exhibits; those exhibit bodies not established here",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "content_sha256": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+        "document_id": "sec:cik_0000701818:000110465925072244",
+        "document_period_end_literal": null,
+        "exhibit_references": [
+          {
+            "body_cache_in_known_source_root": null,
+            "body_not_established": true,
+            "link_labels": [
+              "99.1",
+              "Second Quarter Unaudited Interim Condensed Consolidated Financial Statements and Management\u2019s Discussion and Analysis for the period ended June 30, 2025"
+            ],
+            "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_ex99-1.htm"
+          },
+          {
+            "body_cache_in_known_source_root": null,
+            "body_not_established": true,
+            "link_labels": [
+              "99.2",
+              "CEO Certification of interim filings for the period ended June 30, 2025"
+            ],
+            "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_ex99-2.htm"
+          },
+          {
+            "body_cache_in_known_source_root": null,
+            "body_not_established": true,
+            "link_labels": [
+              "99.3",
+              "CFO Certification of interim filings for the period ended June 30, 2025"
+            ],
+            "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_ex99-3.htm"
+          }
+        ],
+        "form": "6-K",
+        "metadata": {
+          "accession_number": "0001104659-25-072244",
+          "cik": "0000701818",
+          "form": "6-K",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm"
+        },
+        "native_profile_error": null,
+        "native_sec_archive_acceptance_profile_pass": true,
+        "new_admission_created": false,
+        "operating_periodic_source_present": false,
+        "original_record": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+          "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+        },
+        "primary_document": "tm2521379d1_6k.htm",
+        "published_at": "2025-07-30T21:14:51+00:00",
+        "scope_excerpt_markup_stripped_diagnostic_only": "his Current Report on Form 6-K, dated July 30, 2025, is being furnished for the sole purpose of providing a copy of the Consolidated Financial Statements and Management\u2019s Discussion and Analysis for the period ended June 30, 2025. This current report is specifically incorporated by reference into Kinross Gold Corporation\u2019s Registration Statements on Form S-8 (Registration Nos. 333-180822, 333-180823, 333-180824 filed on April 19, 2012, Registration No. 333-217099 filed on April 3, 2017 and Registration No. 333-262966 filed on February 24, 2022). EXHIBITS Exhibit No. Description 99.1 Second Quarter Unaudited Interim Condensed Consolidated Financial Statements and Management\u2019s Discussion and Analysis for the period ended June 30, 2025 99.2 CEO Certification of interim filings for the period ended June 30, 2025 99.3 CFO Certification of interim filings for the period ended June 30, 2025 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the reg",
+        "source_type": "filing",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm",
+        "static_body_cache": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2ac14a7179bb085fb9732d6b.json",
+          "sha256": "f19a42150e5c11903240c5901a2b43be4da4a4c3e39e040b59291cbc550d732c"
+        },
+        "static_body_endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm",
+        "static_body_exact_original_equality": true,
+        "static_body_retrieved_at": "2026-08-21T16:25:07.464019+00:00",
+        "submissions_acceptance_rows": [
+          {
+            "acceptanceDateTime": "2025-07-30T21:14:51.000Z",
+            "accessionNumber": "0001104659-25-072244",
+            "filingDate": "2025-07-30",
+            "form": "6-K",
+            "primaryDocument": "tm2521379d1_6k.htm",
+            "reportDate": "2025-06-30"
+          }
+        ],
+        "submissions_cache": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+          "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+        },
+        "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+        "submissions_recent_target_match_count": 1,
+        "submissions_retrieved_at": "2026-08-21T16:24:56.948806+00:00"
+      },
+      {
+        "accession_number": "0001104659-25-072367",
+        "available_at": "2025-07-31T01:14:39+00:00",
+        "body_chars": 10058,
+        "body_scope": "primary cover/current report references separate financial/earnings exhibits; those exhibit bodies not established here",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "content_sha256": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+        "document_id": "sec:cik_0000701818:000110465925072367",
+        "document_period_end_literal": null,
+        "exhibit_references": [
+          {
+            "body_cache_in_known_source_root": null,
+            "body_not_established": true,
+            "link_labels": [
+              "99.1",
+              "Press Release dated July 30, 2025 in which Kinross reported its unaudited second quarter results for the quarter ended June 30, 2025."
+            ],
+            "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_ex99-1.htm"
+          },
+          {
+            "body_cache_in_known_source_root": null,
+            "body_not_established": true,
+            "link_labels": [
+              "99.2",
+              "Press Release dated July 30, 2025 in which Kinross declared a dividend to be paid on September 4, 2025."
+            ],
+            "url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_ex99-2.htm"
+          }
+        ],
+        "form": "6-K",
+        "metadata": {
+          "accession_number": "0001104659-25-072367",
+          "cik": "0000701818",
+          "form": "6-K",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm"
+        },
+        "native_profile_error": null,
+        "native_sec_archive_acceptance_profile_pass": true,
+        "new_admission_created": false,
+        "operating_periodic_source_present": false,
+        "original_record": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json",
+          "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61"
+        },
+        "primary_document": "tm2522148d1_6k.htm",
+        "published_at": "2025-07-31T01:14:39+00:00",
+        "scope_excerpt_markup_stripped_diagnostic_only": "d on April 19, 2012.] Page 2 This report on Form 6-K is being furnished for the sole purpose of providing copies of the two press releases dated July 30, 2025 in which Kinross Gold Corporation reported its unaudited results for the second quarter ended June 30, 2025, and declared a dividend to be paid on September 4, 2025. INDEX Table of Contents SIGNATURES EXHIBIT INDEX 99.1 Press Release dated July 30, 2025 in which Kinross reported its unaudited second quarter results for the quarter ended June 30, 2025. 99.2 Press Release dated July 30, 2025 in which Kinross declared a dividend to be paid on September 4, 2025. Page 3 SIGNATURES Pursuant to the requirements of Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized. KINROSS GOLD CORPORATION Signed: //Lucas R. Crosby// Senior Vice President, General Counsel July 30, 2025",
+        "source_type": "filing",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm",
+        "static_body_cache": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/b90c1ec44e00683142740abd.json",
+          "sha256": "bd6bdfe75a2a7eacfd47dc6a206b275c2f874a24495239bca045a60236cc02bd"
+        },
+        "static_body_endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm",
+        "static_body_exact_original_equality": true,
+        "static_body_retrieved_at": "2026-08-21T16:25:06.360744+00:00",
+        "submissions_acceptance_rows": [
+          {
+            "acceptanceDateTime": "2025-07-31T01:14:39.000Z",
+            "accessionNumber": "0001104659-25-072367",
+            "filingDate": "2025-07-31",
+            "form": "6-K",
+            "primaryDocument": "tm2522148d1_6k.htm",
+            "reportDate": "2025-07-30"
+          }
+        ],
+        "submissions_cache": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+          "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+        },
+        "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+        "submissions_recent_target_match_count": 1,
+        "submissions_retrieved_at": "2026-08-21T16:24:56.948806+00:00"
+      }
+    ],
+    "requires_missing_historical_acceptance_proof": false,
+    "requires_new_operating_body": true,
+    "selected_record_count": 2,
+    "selection": "Latest pre-cutoff annual plus latest interim where locally present; KGC two quarterly cover/index originals; MS sole existing primary. No whole historical narrative audit.",
+    "ticker": "KGC"
+  },
+  "exact_signal_input_resolutions": [
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:financing_listing_action:v5",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "news"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:financing_listing_action:v5",
+            "source_types": [
+              "filing",
+              "company_announcement",
+              "news"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+        "lookback_days": 730,
+        "max_documents": 10,
+        "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+        "request_id": "signal:financing_listing_action:v5",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "news"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:cash_burn_rate_elevated:v2",
+        "source_types": [
+          "company_facts",
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:cash_burn_rate_elevated:v2",
+            "source_types": [
+              "company_facts",
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end.",
+        "lookback_days": 550,
+        "max_documents": 10,
+        "query": "cash burn rate operating cash flow cash and cash equivalents NetCashProvidedByUsedInOperatingActivities CashAndCashEquivalentsAtCarryingValue",
+        "request_id": "signal:cash_burn_rate_elevated:v2",
+        "source_types": [
+          "company_facts",
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "source_group[0]=financials|filing",
+          "distinct_periods=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:cash_reserves:v2",
+        "source_types": [
+          "financials",
+          "filing"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:cash_reserves:v2",
+            "source_types": [
+              "financials",
+              "filing"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Read the latest point-in-time cash and equivalents balance.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 1,
+        "query": "cash and equivalents cash balance liquidity",
+        "request_id": "signal:cash_reserves:v2",
+        "required_source_groups": [
+          [
+            "financials",
+            "filing"
+          ]
+        ],
+        "source_types": [
+          "financials",
+          "filing"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:cash_to_current_liabilities_ratio:v2",
+        "source_types": [
+          "company_facts",
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:cash_to_current_liabilities_ratio:v2",
+            "source_types": [
+              "company_facts",
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency.",
+        "max_documents": 10,
+        "query": "CashAndCashEquivalentsAtCarryingValue LiabilitiesCurrent cash current liabilities liquidity ratio 10-Q 10-K 20-F SEC company facts USD",
+        "request_id": "signal:cash_to_current_liabilities_ratio:v2",
+        "source_types": [
+          "company_facts",
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/2",
+          "period_span_days=0/330"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:gross_margin_change:v3",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:gross_margin_change:v3",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure the latest point-in-time change in gross margin.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 2,
+        "minimum_period_span_days": 330,
+        "query": "revenue gross profit",
+        "request_id": "signal:gross_margin_change:v3",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:liquidity_runway_months:v3",
+        "source_types": [
+          "financials",
+          "company_facts"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:liquidity_runway_months:v3",
+            "source_types": [
+              "financials",
+              "company_facts"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance.",
+        "lookback_days": 550,
+        "max_documents": 10,
+        "query": "CashAndCashEquivalentsAtCarryingValue CashAndCashEquivalents CashEquivalents NetCashProvidedByUsedInOperatingActivities CashFlowsFromUsedInOperatingActivities liquidity runway operating cash flow cash burn months",
+        "request_id": "signal:liquidity_runway_months:v3",
+        "source_types": [
+          "financials",
+          "company_facts"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/2",
+          "period_span_days=0/330"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:net_share_retirement_yoy:v3",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:net_share_retirement_yoy:v3",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 2,
+        "minimum_period_span_days": 330,
+        "query": "weighted average shares shares outstanding",
+        "request_id": "signal:net_share_retirement_yoy:v3",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:operating_cash_flow_margin:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:operating_cash_flow_margin:v2",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 1,
+        "query": "operating cash flow revenue",
+        "request_id": "signal:operating_cash_flow_margin:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/3",
+          "period_span_days=0/330"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:revenue_acceleration:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:revenue_acceleration:v2",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 3,
+        "minimum_period_span_days": 330,
+        "query": "revenue sales",
+        "request_id": "signal:revenue_acceleration:v2",
+        "source_types": [
+          "financials"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1",
+          "distinct_periods=0/2",
+          "period_span_days=0/330"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:revenue_growth_yoy:v3",
+        "source_types": [
+          "financials",
+          "company_facts"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:revenue_growth_yoy:v3",
+            "source_types": [
+              "financials",
+              "company_facts"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure the latest point-in-time year-over-year revenue growth.",
+        "max_documents": 10,
+        "minimum_distinct_periods": 2,
+        "minimum_period_span_days": 330,
+        "query": "revenue sales total revenue revenues",
+        "request_id": "signal:revenue_growth_yoy:v3",
+        "source_types": [
+          "financials",
+          "company_facts"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:guidance_acceleration:v3",
+        "source_types": [
+          "earnings_call",
+          "company_announcement",
+          "press_release",
+          "filing"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:guidance_acceleration:v3",
+            "source_types": [
+              "earnings_call",
+              "company_announcement",
+              "press_release",
+              "filing"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+        "lookback_days": 365,
+        "max_documents": 10,
+        "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+        "request_id": "signal:guidance_acceleration:v3",
+        "source_types": [
+          "earnings_call",
+          "company_announcement",
+          "press_release",
+          "filing"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 1,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 250,
+        "observed_observation_count": 250,
+        "observed_period_span_days": 364,
+        "query_evaluated": true,
+        "query_matched_document_count": 1,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+            ],
+            "phase": "initial",
+            "request_id": "signal:max_drawdown_1y:v2",
+            "source_types": [
+              "market_data"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure maximum drawdown from the point-in-time one-year price series.",
+        "lookback_days": 400,
+        "max_documents": 10,
+        "query": "adjusted close price history",
+        "request_id": "signal:max_drawdown_1y:v2",
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "status": "resolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 1,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 250,
+        "observed_observation_count": 250,
+        "observed_period_span_days": 364,
+        "query_evaluated": true,
+        "query_matched_document_count": 1,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 1,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": null,
+      "documents": [
+        {
+          "available_at": "2025-09-30T00:00:00+00:00",
+          "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+          "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+        }
+      ],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [
+              "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+            ],
+            "phase": "initial",
+            "request_id": "signal:price_momentum_126d:v2",
+            "source_types": [
+              "market_data"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series.",
+        "lookback_days": 400,
+        "max_documents": 10,
+        "minimum_observations": 127,
+        "query": "adjusted close price history",
+        "request_id": "signal:price_momentum_126d:v2",
+        "source_types": [
+          "market_data"
+        ]
+      },
+      "status": "resolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "alpha_vantage",
+        "reason": "external_not_authorized",
+        "request_id": "signal:negative_word_count:v2",
+        "source_types": [
+          "news"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:negative_word_count:v2",
+            "source_types": [
+              "news"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Count configured negative terms in complete point-in-time company news source documents.",
+        "lookback_days": 365,
+        "max_documents": 10,
+        "query": "risk loss delay decline warning",
+        "request_id": "signal:negative_word_count:v2",
+        "source_types": [
+          "news"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:order_confirmation_disclosed:v3",
+        "source_types": [
+          "filing",
+          "news",
+          "transcript",
+          "10-k",
+          "10-q",
+          "8-k",
+          "company_news",
+          "sec_filing",
+          "earnings_call"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:order_confirmation_disclosed:v3",
+            "source_types": [
+              "filing",
+              "news",
+              "transcript",
+              "10-k",
+              "10-q",
+              "8-k",
+              "company_news",
+              "sec_filing",
+              "earnings_call"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+        "lookback_days": 180,
+        "max_documents": 10,
+        "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+        "request_id": "signal:order_confirmation_disclosed:v3",
+        "source_types": [
+          "filing",
+          "news",
+          "transcript",
+          "10-k",
+          "10-q",
+          "8-k",
+          "company_news",
+          "sec_filing",
+          "earnings_call"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:order_quality:v2",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:order_quality:v2",
+            "source_types": [
+              "filing",
+              "company_announcement",
+              "customer_announcement",
+              "earnings_call"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue.",
+        "lookback_days": 730,
+        "max_documents": 10,
+        "query": "purchase order backlog contract award customer commitment",
+        "request_id": "signal:order_quality:v2",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:commercialization_status:v2",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:commercialization_status:v2",
+            "source_types": [
+              "filing",
+              "company_announcement",
+              "customer_announcement",
+              "earnings_call"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable.",
+        "lookback_days": 1095,
+        "max_documents": 10,
+        "query": "commercial launch commercial shipment scaled sales",
+        "request_id": "signal:commercialization_status:v2",
+        "source_types": [
+          "filing",
+          "company_announcement",
+          "customer_announcement",
+          "earnings_call"
+        ]
+      },
+      "status": "unresolved"
+    },
+    {
+      "appended_documents": [],
+      "context_spans": [],
+      "coverage": {
+        "context_truncated": null,
+        "contract_satisfied": false,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 0,
+        "missing_requirements": [
+          "documents=0/1"
+        ],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 0,
+        "query_requested": true,
+        "query_status": "unmatched",
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0,
+        "selected_document_count": 0,
+        "selection_truncated": false,
+        "visible_span_count": 0
+      },
+      "data_gap": {
+        "message": "Source-data external acquisition is not authorized.",
+        "provider": "sec_edgar",
+        "reason": "external_not_authorized",
+        "request_id": "signal:customer_concentration:v2",
+        "source_types": [
+          "filing",
+          "earnings_call",
+          "customer_announcement"
+        ]
+      },
+      "documents": [],
+      "events": [
+        {
+          "details": {
+            "matched_document_ids": [],
+            "phase": "initial",
+            "request_id": "signal:customer_concentration:v2",
+            "source_types": [
+              "filing",
+              "earnings_call",
+              "customer_announcement"
+            ]
+          },
+          "kind": "local_query"
+        }
+      ],
+      "omitted_context_markers": [],
+      "request": {
+        "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+        "lookback_days": 1095,
+        "max_documents": 10,
+        "query": "customer concentration major customer revenue customer",
+        "request_id": "signal:customer_concentration:v2",
+        "source_types": [
+          "filing",
+          "earnings_call",
+          "customer_announcement"
+        ]
+      },
+      "status": "unresolved"
+    }
+  ],
+  "lineage": {
+    "entries": [
+      {
+        "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+        "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+        "projection_id": "projection_8b0ddd2e660ef461ec3f6dc6",
+        "projection_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43, \"volume\":16600371},{\"adjusted_close\":18.7,\"as_of_date\":\"2025-08-19\",\"close\":18.7,\"high\":19.3,\"low\":18.65,\"open\":19.27, \"volume\":16389548},{\"adjusted_close\":19.08,\"as_of_date\":\"2025-08-20\",\"close\":19.08,\"high\":19.14,\"low\":18.74,\"open\":18.89, \"volume\":18240838},{\"adjusted_close\":19.51,\"as_of_date\":\"2025-08-21\",\"close\":19.51,\"high\":19.5465,\"low\":19.07,\"open\":19.085, \"volume\":15918142},{\"adjusted_close\":19.6,\"as_of_date\":\"2025-08-22\",\"close\":19.6,\"high\":19.805,\"low\":19.19,\"open\":19.3, \"volume\":12862625},{\"adjusted_close\":19.72,\"as_of_date\":\"2025-08-25\",\"close\":19.72,\"high\":19.82,\"low\":19.62,\"open\":19.66, \"volume\":14901592},{\"adjusted_close\":20.23,\"as_of_date\":\"2025-08-26\",\"close\":20.23,\"high\":20.26,\"low\":19.77,\"open\":19.805, \"volume\":14002462},{\"adjusted_close\":20.21,\"as_of_date\":\"2025-08-27\",\"close\":20.21,\"high\":20.24,\"low\":19.8728,\"open\":20.12, \"volume\":12186524},{\"adjusted_close\":20.22,\"as_of_date\":\"2025-08-28\",\"close\":20.22,\"high\":20.3954,\"low\":20.07,\"open\":20.22, \"volume\":11746288}",
+        "raw_offset_runs": [
+          [
+            0,
+            104,
+            44860,
+            44964
+          ],
+          [
+            104,
+            105,
+            44964,
+            45048
+          ],
+          [
+            105,
+            223,
+            45048,
+            45166
+          ],
+          [
+            223,
+            224,
+            45166,
+            45250
+          ],
+          [
+            224,
+            345,
+            45250,
+            45371
+          ],
+          [
+            345,
+            346,
+            45371,
+            45455
+          ],
+          [
+            346,
+            470,
+            45455,
+            45579
+          ],
+          [
+            470,
+            471,
+            45579,
+            45663
+          ],
+          [
+            471,
+            590,
+            45663,
+            45782
+          ],
+          [
+            590,
+            591,
+            45782,
+            45866
+          ],
+          [
+            591,
+            712,
+            45866,
+            45987
+          ],
+          [
+            712,
+            713,
+            45987,
+            46071
+          ],
+          [
+            713,
+            835,
+            46071,
+            46193
+          ],
+          [
+            835,
+            836,
+            46193,
+            46277
+          ],
+          [
+            836,
+            959,
+            46277,
+            46400
+          ],
+          [
+            959,
+            960,
+            46400,
+            46484
+          ],
+          [
+            960,
+            1083,
+            46484,
+            46607
+          ],
+          [
+            1083,
+            1084,
+            46607,
+            46691
+          ],
+          [
+            1084,
+            1102,
+            46691,
+            46709
+          ]
+        ]
+      },
+      {
+        "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+        "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+        "projection_id": "projection_5542114a0d37ba5267450a1c",
+        "projection_text": "{\"adjusted_close\":20.9,\"as_of_date\":\"2025-08-29\",\"close\":20.9,\"high\":20.97,\"low\":20.19,\"open\":20.19, \"volume\":18169216},{\"adjusted_close\":21.46,\"as_of_date\":\"2025-09-02\",\"close\":21.46,\"high\":21.51,\"low\":20.83,\"open\":21.34, \"volume\":32164497},{\"adjusted_close\":21.82,\"as_of_date\":\"2025-09-03\",\"close\":21.82,\"high\":21.97,\"low\":21.52,\"open\":21.665, \"volume\":21288570},{\"adjusted_close\":21.49,\"as_of_date\":\"2025-09-04\",\"close\":21.49,\"high\":22.03,\"low\":21.49,\"open\":21.575, \"volume\":16623751},{\"adjusted_close\":22.11,\"as_of_date\":\"2025-09-05\",\"close\":22.11,\"high\":22.22,\"low\":21.61,\"open\":21.845, \"volume\":17605662},{\"adjusted_close\":22.53,\"as_of_date\":\"2025-09-08\",\"close\":22.53,\"high\":22.7,\"low\":22.28,\"open\":22.5, \"volume\":18362441},{\"adjusted_close\":22.37,\"as_of_date\":\"2025-09-09\",\"close\":22.37,\"high\":22.85,\"low\":22.22,\"open\":22.7, \"volume\":15299958},{\"adjusted_close\":22.94,\"as_of_date\":\"2025-09-10\",\"close\":22.94,\"high\":22.985,\"low\":22.545,\"open\":22.55, \"volume\":15285689},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-11\",\"close\":23.26,\"high\":23.295,\"low\":22.73,\"open\":22.81, \"volume\":12476493}",
+        "raw_offset_runs": [
+          [
+            0,
+            100,
+            46710,
+            46810
+          ],
+          [
+            100,
+            101,
+            46810,
+            46894
+          ],
+          [
+            101,
+            222,
+            46894,
+            47015
+          ],
+          [
+            222,
+            223,
+            47015,
+            47099
+          ],
+          [
+            223,
+            345,
+            47099,
+            47221
+          ],
+          [
+            345,
+            346,
+            47221,
+            47305
+          ],
+          [
+            346,
+            468,
+            47305,
+            47427
+          ],
+          [
+            468,
+            469,
+            47427,
+            47511
+          ],
+          [
+            469,
+            591,
+            47511,
+            47633
+          ],
+          [
+            591,
+            592,
+            47633,
+            47717
+          ],
+          [
+            592,
+            711,
+            47717,
+            47836
+          ],
+          [
+            711,
+            712,
+            47836,
+            47920
+          ],
+          [
+            712,
+            832,
+            47920,
+            48040
+          ],
+          [
+            832,
+            833,
+            48040,
+            48124
+          ],
+          [
+            833,
+            956,
+            48124,
+            48247
+          ],
+          [
+            956,
+            957,
+            48247,
+            48331
+          ],
+          [
+            957,
+            1079,
+            48331,
+            48453
+          ],
+          [
+            1079,
+            1080,
+            48453,
+            48537
+          ],
+          [
+            1080,
+            1098,
+            48537,
+            48555
+          ]
+        ]
+      },
+      {
+        "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+        "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+        "projection_id": "projection_d95ac02dccab836c1f121f69",
+        "projection_text": "{\"adjusted_close\":23.28,\"as_of_date\":\"2025-09-12\",\"close\":23.28,\"high\":23.65,\"low\":23.1935,\"open\":23.43, \"volume\":11887660},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-15\",\"close\":23.26,\"high\":23.42,\"low\":23.01,\"open\":23.25, \"volume\":13960631},{\"adjusted_close\":22.74,\"as_of_date\":\"2025-09-16\",\"close\":22.74,\"high\":23.37,\"low\":22.7111,\"open\":23.305, \"volume\":11727526},{\"adjusted_close\":22.46,\"as_of_date\":\"2025-09-17\",\"close\":22.46,\"high\":22.82,\"low\":22.28,\"open\":22.42, \"volume\":13246762},{\"adjusted_close\":22.26,\"as_of_date\":\"2025-09-18\",\"close\":22.26,\"high\":22.35,\"low\":21.94,\"open\":22.285, \"volume\":14341064},{\"adjusted_close\":23.49,\"as_of_date\":\"2025-09-19\",\"close\":23.49,\"high\":23.64,\"low\":22.405,\"open\":22.5, \"volume\":29879277},{\"adjusted_close\":24.23,\"as_of_date\":\"2025-09-22\",\"close\":24.23,\"high\":24.29,\"low\":23.53,\"open\":24.0, \"volume\":24978972},{\"adjusted_close\":24.48,\"as_of_date\":\"2025-09-23\",\"close\":24.48,\"high\":24.91,\"low\":24.3,\"open\":24.51, \"volume\":19494936},{\"adjusted_close\":23.31,\"as_of_date\":\"2025-09-24\",\"close\":23.31,\"high\":24.59,\"low\":23.28,\"open\":24.55, \"volume\":21431418}",
+        "raw_offset_runs": [
+          [
+            0,
+            104,
+            48556,
+            48660
+          ],
+          [
+            104,
+            105,
+            48660,
+            48744
+          ],
+          [
+            105,
+            226,
+            48744,
+            48865
+          ],
+          [
+            226,
+            227,
+            48865,
+            48949
+          ],
+          [
+            227,
+            351,
+            48949,
+            49073
+          ],
+          [
+            351,
+            352,
+            49073,
+            49157
+          ],
+          [
+            352,
+            473,
+            49157,
+            49278
+          ],
+          [
+            473,
+            474,
+            49278,
+            49362
+          ],
+          [
+            474,
+            596,
+            49362,
+            49484
+          ],
+          [
+            596,
+            597,
+            49484,
+            49568
+          ],
+          [
+            597,
+            718,
+            49568,
+            49689
+          ],
+          [
+            718,
+            719,
+            49689,
+            49773
+          ],
+          [
+            719,
+            839,
+            49773,
+            49893
+          ],
+          [
+            839,
+            840,
+            49893,
+            49977
+          ],
+          [
+            840,
+            960,
+            49977,
+            50097
+          ],
+          [
+            960,
+            961,
+            50097,
+            50181
+          ],
+          [
+            961,
+            1082,
+            50181,
+            50302
+          ],
+          [
+            1082,
+            1083,
+            50302,
+            50386
+          ],
+          [
+            1083,
+            1101,
+            50386,
+            50404
+          ]
+        ]
+      },
+      {
+        "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+        "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+        "projection_id": "projection_9cd3234bf54affbeb7b5f26a",
+        "projection_text": "{\"adjusted_close\":23.64,\"as_of_date\":\"2025-09-25\",\"close\":23.64,\"high\":23.82,\"low\":23.205,\"open\":23.425, \"volume\":24998365},{\"adjusted_close\":24.11,\"as_of_date\":\"2025-09-26\",\"close\":24.11,\"high\":24.1194,\"low\":23.595,\"open\":23.71, \"volume\":22886139},{\"adjusted_close\":24.37,\"as_of_date\":\"2025-09-29\",\"close\":24.37,\"high\":24.875,\"low\":24.32,\"open\":24.68, \"volume\":26277033}",
+        "raw_offset_runs": [
+          [
+            0,
+            104,
+            50405,
+            50509
+          ],
+          [
+            104,
+            105,
+            50509,
+            50593
+          ],
+          [
+            105,
+            229,
+            50593,
+            50717
+          ],
+          [
+            229,
+            230,
+            50717,
+            50801
+          ],
+          [
+            230,
+            352,
+            50801,
+            50923
+          ],
+          [
+            352,
+            353,
+            50923,
+            51007
+          ],
+          [
+            353,
+            371,
+            51007,
+            51025
+          ]
+        ]
+      }
+    ],
+    "max_normalized_characters": 32000,
+    "schema_version": "basic-info-model-projection-v1"
+  },
+  "model_context": {
+    "max_normalized_characters": 32000,
+    "requests": [
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.operating_report",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "query": "business operations segments products services customers risks",
+          "request_id": "orientation.v1.operating_report",
+          "required_source_groups": [
+            [
+              "10-K",
+              "10-Q",
+              "20-F",
+              "40-F"
+            ]
+          ],
+          "source_types": [
+            "filing"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient recent issuer-specific developments in operations, customers, financing, regulation and products; limited retrieval is not absence.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "orientation.v1.scoped_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "sec_edgar",
+          "reason": "external_not_authorized",
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Orient reported growth, margins, cash and capital structure from point-in-time financial facts; preserve period, unit and data gaps.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "orientation.v1.financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 4,
+        "data_gap": null,
+        "effective_context_truncated": false,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_context_truncated": false,
+        "projection_status": "complete",
+        "projections": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "exact_text": "{\"adjusted_close\":19.38,\"as_of_date\":\"2025-08-18\",\"close\":19.38,\"high\":19.5216,\"low\":19.16,\"open\":19.43, \"volume\":16600371},{\"adjusted_close\":18.7,\"as_of_date\":\"2025-08-19\",\"close\":18.7,\"high\":19.3,\"low\":18.65,\"open\":19.27, \"volume\":16389548},{\"adjusted_close\":19.08,\"as_of_date\":\"2025-08-20\",\"close\":19.08,\"high\":19.14,\"low\":18.74,\"open\":18.89, \"volume\":18240838},{\"adjusted_close\":19.51,\"as_of_date\":\"2025-08-21\",\"close\":19.51,\"high\":19.5465,\"low\":19.07,\"open\":19.085, \"volume\":15918142},{\"adjusted_close\":19.6,\"as_of_date\":\"2025-08-22\",\"close\":19.6,\"high\":19.805,\"low\":19.19,\"open\":19.3, \"volume\":12862625},{\"adjusted_close\":19.72,\"as_of_date\":\"2025-08-25\",\"close\":19.72,\"high\":19.82,\"low\":19.62,\"open\":19.66, \"volume\":14901592},{\"adjusted_close\":20.23,\"as_of_date\":\"2025-08-26\",\"close\":20.23,\"high\":20.26,\"low\":19.77,\"open\":19.805, \"volume\":14002462},{\"adjusted_close\":20.21,\"as_of_date\":\"2025-08-27\",\"close\":20.21,\"high\":20.24,\"low\":19.8728,\"open\":20.12, \"volume\":12186524},{\"adjusted_close\":20.22,\"as_of_date\":\"2025-08-28\",\"close\":20.22,\"high\":20.3954,\"low\":20.07,\"open\":20.22, \"volume\":11746288}",
+            "projection_id": "projection_8b0ddd2e660ef461ec3f6dc6"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "exact_text": "{\"adjusted_close\":20.9,\"as_of_date\":\"2025-08-29\",\"close\":20.9,\"high\":20.97,\"low\":20.19,\"open\":20.19, \"volume\":18169216},{\"adjusted_close\":21.46,\"as_of_date\":\"2025-09-02\",\"close\":21.46,\"high\":21.51,\"low\":20.83,\"open\":21.34, \"volume\":32164497},{\"adjusted_close\":21.82,\"as_of_date\":\"2025-09-03\",\"close\":21.82,\"high\":21.97,\"low\":21.52,\"open\":21.665, \"volume\":21288570},{\"adjusted_close\":21.49,\"as_of_date\":\"2025-09-04\",\"close\":21.49,\"high\":22.03,\"low\":21.49,\"open\":21.575, \"volume\":16623751},{\"adjusted_close\":22.11,\"as_of_date\":\"2025-09-05\",\"close\":22.11,\"high\":22.22,\"low\":21.61,\"open\":21.845, \"volume\":17605662},{\"adjusted_close\":22.53,\"as_of_date\":\"2025-09-08\",\"close\":22.53,\"high\":22.7,\"low\":22.28,\"open\":22.5, \"volume\":18362441},{\"adjusted_close\":22.37,\"as_of_date\":\"2025-09-09\",\"close\":22.37,\"high\":22.85,\"low\":22.22,\"open\":22.7, \"volume\":15299958},{\"adjusted_close\":22.94,\"as_of_date\":\"2025-09-10\",\"close\":22.94,\"high\":22.985,\"low\":22.545,\"open\":22.55, \"volume\":15285689},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-11\",\"close\":23.26,\"high\":23.295,\"low\":22.73,\"open\":22.81, \"volume\":12476493}",
+            "projection_id": "projection_5542114a0d37ba5267450a1c"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "exact_text": "{\"adjusted_close\":23.28,\"as_of_date\":\"2025-09-12\",\"close\":23.28,\"high\":23.65,\"low\":23.1935,\"open\":23.43, \"volume\":11887660},{\"adjusted_close\":23.26,\"as_of_date\":\"2025-09-15\",\"close\":23.26,\"high\":23.42,\"low\":23.01,\"open\":23.25, \"volume\":13960631},{\"adjusted_close\":22.74,\"as_of_date\":\"2025-09-16\",\"close\":22.74,\"high\":23.37,\"low\":22.7111,\"open\":23.305, \"volume\":11727526},{\"adjusted_close\":22.46,\"as_of_date\":\"2025-09-17\",\"close\":22.46,\"high\":22.82,\"low\":22.28,\"open\":22.42, \"volume\":13246762},{\"adjusted_close\":22.26,\"as_of_date\":\"2025-09-18\",\"close\":22.26,\"high\":22.35,\"low\":21.94,\"open\":22.285, \"volume\":14341064},{\"adjusted_close\":23.49,\"as_of_date\":\"2025-09-19\",\"close\":23.49,\"high\":23.64,\"low\":22.405,\"open\":22.5, \"volume\":29879277},{\"adjusted_close\":24.23,\"as_of_date\":\"2025-09-22\",\"close\":24.23,\"high\":24.29,\"low\":23.53,\"open\":24.0, \"volume\":24978972},{\"adjusted_close\":24.48,\"as_of_date\":\"2025-09-23\",\"close\":24.48,\"high\":24.91,\"low\":24.3,\"open\":24.51, \"volume\":19494936},{\"adjusted_close\":23.31,\"as_of_date\":\"2025-09-24\",\"close\":23.31,\"high\":24.59,\"low\":23.28,\"open\":24.55, \"volume\":21431418}",
+            "projection_id": "projection_d95ac02dccab836c1f121f69"
+          },
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+            "exact_text": "{\"adjusted_close\":23.64,\"as_of_date\":\"2025-09-25\",\"close\":23.64,\"high\":23.82,\"low\":23.205,\"open\":23.425, \"volume\":24998365},{\"adjusted_close\":24.11,\"as_of_date\":\"2025-09-26\",\"close\":24.11,\"high\":24.1194,\"low\":23.595,\"open\":23.71, \"volume\":22886139},{\"adjusted_close\":24.37,\"as_of_date\":\"2025-09-29\",\"close\":24.37,\"high\":24.875,\"low\":24.32,\"open\":24.68, \"volume\":26277033}",
+            "projection_id": "projection_9cd3234bf54affbeb7b5f26a"
+          }
+        ],
+        "request": {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "source_context_truncated": false,
+        "status": "resolved",
+        "visible_projection_count": 4
+      }
+    ]
+  },
+  "summary": {
+    "case_id": "cik_0000701818:20250930",
+    "meets_existing_0_8_signal_input_fraction": false,
+    "operating_coverage": {
+      "context_truncated": false,
+      "contract_satisfied": false,
+      "deduplicated_document_count": 0,
+      "eligible_document_count": 0,
+      "missing_requirements": [
+        "documents=0/1",
+        "source_group[0]=10-K|10-Q|20-F|40-F"
+      ],
+      "observed_distinct_period_count": 0,
+      "observed_observation_count": 0,
+      "observed_period_span_days": null,
+      "query_evaluated": true,
+      "query_matched_document_count": 0,
+      "query_requested": true,
+      "query_status": "unmatched",
+      "required_source_group_count": 1,
+      "satisfied_source_group_count": 0,
+      "selected_document_count": 0,
+      "selection_truncated": false,
+      "visible_span_count": 0
+    },
+    "operating_model_projection_present": false,
+    "operating_omitted_projection_count": 0,
+    "operating_projection_status": "unavailable",
+    "operating_request_status": "unresolved",
+    "operating_source_ids": [],
+    "operating_visible_projection_count": 0,
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "resolved_fraction": 0.1111111111111111,
+    "resolved_signal_input_count": 2,
+    "signal_ref_denominator": 18,
+    "source_preservation": true,
+    "ticker": "KGC"
+  }
+}

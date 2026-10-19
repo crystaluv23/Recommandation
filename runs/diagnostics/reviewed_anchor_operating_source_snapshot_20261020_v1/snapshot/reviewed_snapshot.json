@@ -1,0 +1,249 @@
+{
+  "documents": [
+    {
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "path": "documents/0000.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "path": "documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "path": "documents/0002.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "path": "documents/0003.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "path": "documents/0004.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "path": "documents/0005.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "path": "documents/0006.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "path": "documents/0007.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "path": "documents/0008.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "path": "documents/0009.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "path": "documents/0010.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "path": "documents/0011.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "path": "documents/0012.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "path": "documents/0013.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "path": "documents/0014.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "path": "documents/0015.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "path": "documents/0016.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "path": "documents/0017.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "path": "documents/0018.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    },
+    {
+      "document_id": "sec:cik_0001174922:000117492225000039",
+      "path": "documents/0019.json",
+      "sha256": "031d98815b8354228940eb3199b44775d2069a85da061494a1564c6dbacf7b52"
+    },
+    {
+      "document_id": "sec:cik_0001174922:000117492225000084",
+      "path": "documents/0020.json",
+      "sha256": "26c26673b2249272b302f4b4587023d35c1cc9d635fc7fc3d42b689510c337d9"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "path": "documents/0021.json",
+      "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+    },
+    {
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "path": "documents/0022.json",
+      "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+    },
+    {
+      "document_id": "sec:cik_0001869198:000186919825000009",
+      "path": "documents/0023.json",
+      "sha256": "3f7eba67eb6726889b9e27c7b31021c5c5d0a199a6af36907aeb8cbeb91c21ff"
+    },
+    {
+      "document_id": "sec:cik_0001869198:000186919824000052",
+      "path": "documents/0024.json",
+      "sha256": "aa109d3135156810c3893e53d700bf15a05f2850c68fb19e6c4545b709396d43"
+    },
+    {
+      "document_id": "sec:cik_0001576942:000157694224000099",
+      "path": "documents/0025.json",
+      "sha256": "e81b74f2b32b68d79716ee30b6e7b72c8a37cb50b4b6a6adf94065505226668b"
+    },
+    {
+      "document_id": "sec:cik_0001576942:000157694225000009",
+      "path": "documents/0026.json",
+      "sha256": "1e41d0c2c22582a994bfa5aafaf91dcf51782e8fb2b5b159e018194bff55a106"
+    },
+    {
+      "document_id": "sec:cik_0000936395:000093639525000041",
+      "path": "documents/0027.json",
+      "sha256": "f27685f9bd686871c5c76f46e2375155f86fed22e484a711bb7a7c0d01033779"
+    },
+    {
+      "document_id": "sec:cik_0001590364:000159036425000006",
+      "path": "documents/0028.json",
+      "sha256": "6b3673e71f9021cd99c107f9dcd60b44e16167c13d7cbdcea142af9baa20b3f0"
+    },
+    {
+      "document_id": "sec:cik_0001590364:000159036425000011",
+      "path": "documents/0029.json",
+      "sha256": "43dd7b96f0c0f2b6627d24ead98149af80732fa5ff04ace5eea75fc346ca15a4"
+    },
+    {
+      "document_id": "sec:cik_0001018963:000162828025007092",
+      "path": "documents/0030.json",
+      "sha256": "02e14462f629199f72d1d2bff826f20d63a85aa5af611767446f28a587c4c19b"
+    },
+    {
+      "document_id": "sec:cik_0001018963:000162828025036963",
+      "path": "documents/0031.json",
+      "sha256": "1c5f84ff09824c8d8326f23f509216539f40d5ebaeee2a8063e19dcc282b0b32"
+    },
+    {
+      "document_id": "sec:cik_0001164727:000116472725000011",
+      "path": "documents/0032.json",
+      "sha256": "b5a22cd79ab9be328c20c8eb64e515450179268fdea5b302bfebed1463599395"
+    },
+    {
+      "document_id": "sec:cik_0001164727:000116472725000035",
+      "path": "documents/0033.json",
+      "sha256": "fcb10a4cec1b8ccc7d5c3734c986db7e5240c8fe11a80a12ba3e549ea49caa73"
+    },
+    {
+      "document_id": "sec:cik_0001801368:000180136825000009",
+      "path": "documents/0034.json",
+      "sha256": "f29c053928de19c927c8bda51bdd0d82ec995ee0572dd37f6a31d4a8da8808e2"
+    },
+    {
+      "document_id": "sec:cik_0001801368:000180136824000087",
+      "path": "documents/0035.json",
+      "sha256": "f8bb21e524c9eae2a395841fcb9fa06cc48e862136637e3b3fe18f9ebb14b613"
+    },
+    {
+      "document_id": "sec:cik_0002023554:000202355425000034",
+      "path": "documents/0036.json",
+      "sha256": "0d1eda6d9ae6c48893ca42b05d177ad18b867ccefb51e920641cbfab431ca416"
+    },
+    {
+      "document_id": "sec:cik_0002023554:000202355425000027",
+      "path": "documents/0037.json",
+      "sha256": "93dddd2ab911094ed80e57ba48b9ff1e9feb785737982190a3b49f23941c98db"
+    },
+    {
+      "document_id": "sec:cik_0000723125:000072312525000021",
+      "path": "documents/0038.json",
+      "sha256": "cafd50e63919b3df17cbdd75f6223d132899281f958e70f1b6ea9ff3b2afdf68"
+    },
+    {
+      "document_id": "sec:cik_0001689548:000168954825000040",
+      "path": "documents/0039.json",
+      "sha256": "761da1b5c8b34c28e092c1f8c581b285f1976566dd7419b1ea614680b663a31b"
+    },
+    {
+      "document_id": "sec:cik_0001689548:000168954825000092",
+      "path": "documents/0040.json",
+      "sha256": "5a02c80d657bb6eccfbb42851955640f5cd3daea019582570f59b2233c7ff6a4"
+    },
+    {
+      "document_id": "sec:cik_0001646188:000121390025022968",
+      "path": "documents/0041.json",
+      "sha256": "6080267cb40047e3bde396ed8b236e880ea47026a434ffd64cb846d454fe3af9"
+    },
+    {
+      "document_id": "sec:cik_0001646188:000121390025043731",
+      "path": "documents/0042.json",
+      "sha256": "7c37a215fa473bf13dfd99fbf5c6ad37a81c60b4131a6d015a385bc6bbd3b533"
+    }
+  ],
+  "oracle_sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855",
+  "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot",
+  "schema_version": "materialized-reviewed-raw-info-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000701818",
+      "cik_0000723125",
+      "cik_0000895421",
+      "cik_0000895728",
+      "cik_0000936395",
+      "cik_0001018963",
+      "cik_0001164727",
+      "cik_0001174922",
+      "cik_0001576942",
+      "cik_0001590364",
+      "cik_0001646188",
+      "cik_0001689548",
+      "cik_0001801368",
+      "cik_0001830043",
+      "cik_0001869198",
+      "cik_0002023554"
+    ],
+    "purpose": "Fixed 15-case market plus same27 selected operating-primary qualification and label-free exact v12 input readiness; no full run."
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-anchor-operating-review-20261020.json",
+    "sha256": "1cc0470ab342bdf0a7181bab37cbf2e677a026325b25af21186324acb7bcb376"
+  }
+}

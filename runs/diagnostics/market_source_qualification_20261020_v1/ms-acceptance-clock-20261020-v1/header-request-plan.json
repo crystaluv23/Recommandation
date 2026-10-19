@@ -1,0 +1,30 @@
+{
+  "schema_version": "exact-ms-submission-header-get-plan-v1",
+  "max_GET_attempts": 1,
+  "automatic_retries": 0,
+  "redirects_allowed": false,
+  "method": "GET",
+  "url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/0000895421-25-000419.txt",
+  "request_range": "bytes=0-65535",
+  "max_retained_response_bytes": 65536,
+  "endpoint_verification": {
+    "original_primary_record": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+      "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+    },
+    "original_primary_source_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/ms-20250716.htm",
+    "original_accession": "0000895421-25-000419",
+    "issuer_CIK": "0000895421",
+    "construction": "Same official www.sec.gov Archives issuer/accession directory as the retained primary; complete-submission basename is exact hyphenated accession + .txt. Response header identity must verify same accession/CIK/form before acceptance interpretation."
+  },
+  "expected_accession": "0000895421-25-000419",
+  "expected_form": "8-K",
+  "expected_issuer_cik": "0000895421",
+  "scope": "Retain and inspect submission header only. If range ignored, stop after65536 bytes and explicitly record a prefix rather than a full-response hash. No followup URLs or body read into model.",
+  "parser_replay": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/ms-acceptance-clock-20261020-v1/parser-replay.json",
+    "sha256": "a0bab4670f2246c08a6d1f95a493811a91c5e46187b3c5e4486e573bb8da9344"
+  },
+  "external_llm_calls": 0,
+  "no_source_rewrite_or_admission": true
+}

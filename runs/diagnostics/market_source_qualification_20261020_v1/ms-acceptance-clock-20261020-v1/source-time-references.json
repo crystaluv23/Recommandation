@@ -1,0 +1,31 @@
+{
+  "schema_version": "sec-source-time-documentation-review-v1",
+  "method": "Root primary-source web read, separate from37 provider/source data GETs; no role completion or source admission",
+  "sources": [
+    {
+      "url": "https://www.sec.gov/about/webmaster-frequently-asked-questions",
+      "section": "How can I understand EDGAR Timestamps?",
+      "fact": "SEC labels acceptance time EST and links its PDS specification. It distinguishes acceptance from first availability on sec.gov.",
+      "limit": "This wording alone does not explicitly explain daylight saving for this header token."
+    },
+    {
+      "url": "https://www.sec.gov/info/edgar/specifications/pds_dissemination_spec.pdf",
+      "section": "March2025 PDS technical specification, FAQ-linked",
+      "fact": "Defines submission/document structure, acceptance and dissemination; retrieved document is marked DRAFT.",
+      "limit": "No explicit daylight-saving rule for the exact ACCEPTANCE-DATETIME header field was found in the bounded read."
+    },
+    {
+      "url": "https://www.sec.gov/files/rules/final/2024/33-11313.pdf",
+      "section": "Hours of Operation, p66/footnote139",
+      "fact": "SEC describes EDGAR operating hours using Eastern Standard or Eastern Daylight time, whichever is in effect.",
+      "limit": "Operational-clock context supports an Eastern civil-time interpretation but is not a direct field-specific definition."
+    },
+    {
+      "url": "https://github.com/dgunning/edgartools/issues/1501",
+      "section": "Original developer issue report, October2026",
+      "fact": "Reports independently observed submissions-JSON acceptanceDateTime discrepancies from raw headers, including a four-hour-late UTC value.",
+      "limit": "Hypothesis-generating primary bug report, not proof about this MS accession and not an authorization for global offset correction."
+    }
+  ],
+  "conclusion": "Do not equate newer JSON with correct historical UTC or rewrite the original. Prepare a specifically sourced header-time normalization/proof proposal, preserving timezone assumptions and the JSON conflict. No profile/canonical code or record changes performed."
+}

@@ -1,0 +1,2229 @@
+{
+  "external_llm_calls": 0,
+  "manifest_hash": "c0c3e56750069484955294b9e7d50d7b2b9089d5cb346eee3b6cbe3420196542",
+  "oracle_identity": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+    "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+  },
+  "original_oracle_writes": 0,
+  "readonly_data_requests_for_retained_proofs": 33,
+  "records": [
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000119312525146199.json",
+        "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9558f4ca495c26a0af518a2e.json",
+            "sha256": "0aa953844eff2c4f2e95cedf67318f63367808fc3bfefe1478497f5a671b2295"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000119312525146199/d915271d8k.htm",
+          "expected_content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-06-25T12:20:35+00:00",
+          "accession_number": "0001193125-25-146199",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "form": "8-K",
+          "issuer_cik": "0001830043",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "d915271d8k.htm"
+        }
+      ],
+      "reason": "Q2 2025 forward revenue and adjusted EBITDA guidance; original numeric ranges and context remain available, not Q3/FY answers.",
+      "reviewed_available_at": "2025-06-25T12:20:35+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+        "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/615a4af908c13d46cb5bd1a4.json",
+            "sha256": "79268825d2fe5f3193b384120c6daeab46b311c0d6bca19c27796a57b2774a2b"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1830043/000162828025038861/bmbl-20250630.htm",
+          "expected_content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-08-07T20:05:33+00:00",
+          "accession_number": "0001628280-25-038861",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/823014a354d76cf724d5edf4.json",
+            "sha256": "ed4c1e5ce5ad4036ee78f621df1166d09911134e9553db5b390e7a4048a8dcf8"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001830043",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "bmbl-20250630.htm"
+        }
+      ],
+      "reason": "Issuer Q2 2025 10-Q; same-unit share and fiscal-period disclosures require original table/context reading, not automatic cross-tag arithmetic.",
+      "reviewed_available_at": "2025-08-07T20:05:33+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "e3fa9e10193ccb7d57c63d8a3602d521845ddbc7897bee1a1d1e0882663786f6",
+      "document_id": "avnews_82c6cc3e5143825f6225f673",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/news/cik_0001830043/avnews_82c6cc3e5143825f6225f673.json",
+        "sha256": "c67fae71ac7135a621c36abf302d2eee97ffe6a9ca6d6c11ab53d0ff7715be46"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/reports/v182-bumble-pair-content-and-future-source-audit-20261007.json",
+            "sha256": "143ebca8834b586f1258d507313f2388da19cae08c1e533f10aa7952a3be495d"
+          },
+          "kind": "bound_prior_source_version_audit"
+        }
+      ],
+      "reason": "Saved provider title/summary at 2025-04-24 contains later FY2025 realized disclosures; original audit binds provider/source identity. Exclude this exact body version without inventing a corrected timestamp or replacing it with another document.",
+      "verdict": "excluded"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "3f5b1019cfa17ec53dfd963eec8aab2b75bf8cd019eaf45f6fe0ea6766cf1845",
+      "document_id": "alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/earnings_call/cik_0001830043/alpha_vantage:cik_0001830043:earnings_call:3f5b1019cfa17ec53dfd963e.json",
+        "sha256": "f23c7887094f0cb484d053e6d04aab37e6f6a98d8e6bd7ad2c73b3ef2d718bc3"
+      },
+      "proofs": [],
+      "reason": "Complete public-conference-content and UTC completion proof not established in this local scope; provider reportedDate alone is insufficient.",
+      "verdict": "unknown"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "content_hash": "c48ddf33f63755eb0e12623ebd4358593898f691d587dc25890a69a33702603f",
+      "document_id": "massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+        "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+            "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:28:08.042545+00:00",
+          "provider_retrieved_at": "2026-08-16T07:28:08.034427+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/historical_identity.response.json",
+            "sha256": "5bd69c36b59c47185da91998f870ddeb00d62400f7f01832b74278db5af95020"
+          },
+          "entry_name": "historical_identity",
+          "expected_identity": {
+            "cik": "0001830043",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "BMBL",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/splits.response.json",
+            "sha256": "a75375a255fc0dd5835aac5c5ee6bbb6e9424a0477a0c5a9b3620d3c223c23d5"
+          },
+          "entry_name": "splits",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/unadjusted_daily.response.json",
+            "sha256": "4a9dc4e88b73bd3b132c376c73c794ebf2d01f6e425760f04dd396a809d2b36a"
+          },
+          "entry_name": "unadjusted_daily",
+          "kind": "massive_unadjusted_overlap",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/bmbl_market_readonly_proof_20261019/results.json",
+            "sha256": "450b3e0aa4112a0eb69ad3c2aebdc9b36e443d3d91acdb022c78f60d3ad8c373"
+          }
+        }
+      ],
+      "reason": "Candidate: exact original provider/production reconstruction, historical issuer and no-post-cutoff-split basis proof; no exact vintage or predictive effect guarantee.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000701818",
+      "content_hash": "d087c9d442c67561fb938488949781758d6ab476dd41bea78b3c8ee96f0d98ff",
+      "document_id": "massive:cik_0000701818:market_data:d087c9d442c67561fb938488",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000701818/massive:cik_0000701818:market_data:d087c9d442c67561fb938488.json",
+        "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v2/cache/data/massive/price_daily/e0ebf8ef8b1aaf5fe907914e.json",
+            "sha256": "3590cda22754ab72d9f86b02d5d2529ab9a3f6edde56055c26d97f3d35a43100"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T05:55:40.923703+00:00",
+          "provider_retrieved_at": "2026-08-16T05:55:40.916402+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-KGC-2025-09-29.response.json",
+            "sha256": "757f4440621e3e718d247ccccc9cc9566d20735656f02cfe5733d6a1924cfa62"
+          },
+          "entry_name": "issuer-KGC-2025-09-29",
+          "expected_identity": {
+            "cik": "0000701818",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "KGC",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-KGC-2025-09-30-2026-08-16.response.json",
+            "sha256": "3568e8c040ab7f2272b45e001863ff64e4863b44f01319a0249237481715dbba"
+          },
+          "entry_name": "splits-KGC-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001174922",
+      "content_hash": "75cab593ff8c174d6b55c6c9019b539b749de5c112486b63e5bb8673524da338",
+      "document_id": "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001174922/massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9.json",
+        "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/cfe1b1934471074141274fd3.json",
+            "sha256": "f130e0e50f8a6c04b3ce72798ec52592769f831f972804876a83f70de6c1b0f2"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:33:17.403963+00:00",
+          "provider_retrieved_at": "2026-08-16T07:33:17.399310+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-WYNN-2025-07-30.response.json",
+            "sha256": "18560a545b1ec1c73c389b01c79d2f8542e1969fc35189bb72e33b2a2de97805"
+          },
+          "entry_name": "issuer-WYNN-2025-07-30",
+          "expected_identity": {
+            "cik": "0001174922",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "WYNN",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-WYNN-2025-07-31-2026-08-16.response.json",
+            "sha256": "38d18f6eba2e30ec5a3180e30aed447b9d193096d4392941fc3db567e5e7511f"
+          },
+          "entry_name": "splits-WYNN-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895728",
+      "content_hash": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+      "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895728/massive:cik_0000895728:market_data:e2877860464df963e4843917.json",
+        "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/530b10a20f09abd46ae82d20.json",
+            "sha256": "8b3f8a99b1ef7456adfaaadf40e2c10eb935d67f687a1587639538c7bbc391b7"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:21:33.683689+00:00",
+          "provider_retrieved_at": "2026-08-16T08:21:33.674439+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ENB-2025-09-29.response.json",
+            "sha256": "49f86ada2ee622290f01c9eb09bf916ed524a53eb5002bec5218d834207bdf68"
+          },
+          "entry_name": "issuer-ENB-2025-09-29",
+          "expected_identity": {
+            "cik": "0000895728",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "ENB",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ENB-2025-09-30-2026-08-16.response.json",
+            "sha256": "ed4a2c50462d134f160ddbd2361ad5a7a2700577ecadad22a45b4dc4a0cba76f"
+          },
+          "entry_name": "splits-ENB-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895421",
+      "content_hash": "0753a2fda6be894d5cf2347c3af787f06338102210645312b6d8eff25f66fd22",
+      "document_id": "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000895421/massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c.json",
+        "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/9a5a01ed952a1e1c1c721835.json",
+            "sha256": "ed45dbb74eefee0086b99b8f3e67f1092c0586df717ae03ca8a12e4846be7ff1"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:27:10.149429+00:00",
+          "provider_retrieved_at": "2026-08-16T07:27:10.142640+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MS-2025-07-30.response.json",
+            "sha256": "6815824b9d577443480549ebc454beafe69e6fd4a422bf849d59c91fd632d476"
+          },
+          "entry_name": "issuer-MS-2025-07-30",
+          "expected_identity": {
+            "cik": "0000895421",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "MS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MS-2025-07-31-2026-08-16.response.json",
+            "sha256": "11e24bd2f6bc7111d6625b28ff307869b791cbe81ebddda5e6a9476e4ff7c5e3"
+          },
+          "entry_name": "splits-MS-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001869198",
+      "content_hash": "81572f1417844d7a68230ab6750bee33729c697579e895a7fcda62e4d76c47eb",
+      "document_id": "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001869198/massive:cik_0001869198:market_data:81572f1417844d7a68230ab6.json",
+        "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v6/cache/data/massive/price_daily/849e224e70ee1f70e49da6b0.json",
+            "sha256": "73213a576e7636cdd770d70d8d0ae25cc478dc1498d42606e7bc5f78c00f6c50"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:19:34.442323+00:00",
+          "provider_retrieved_at": "2026-08-16T07:19:34.438385+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-LTH-2025-03-28.response.json",
+            "sha256": "21f76aebe0f6232a50aa54c04d925445587a75a9e05305c7b64bfa9cb0a04522"
+          },
+          "entry_name": "issuer-LTH-2025-03-28",
+          "expected_identity": {
+            "cik": "0001869198",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "LTH",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-LTH-2025-03-29-2026-08-16.response.json",
+            "sha256": "0abe292e3bd4d8a1a3ea633781e3cd2263b42f7142d11dce2086a61a0f61afd4"
+          },
+          "entry_name": "splits-LTH-2025-03-29-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-03-29T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001576942",
+      "content_hash": "9a587b3f71a458db45f7446d41828ab17b43e117d613420854d01f992aec271c",
+      "document_id": "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001576942/massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d.json",
+        "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v8/cache/data/massive/price_daily/2db6c972e1641dcc7c71ee22.json",
+            "sha256": "83a0e8a611a0a3199bb44a225edcaebe09b92a6480bae57dcbbd12807bc3690c"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:35:06.934019+00:00",
+          "provider_retrieved_at": "2026-08-16T07:35:06.927265+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SFIX-2025-05-29.response.json",
+            "sha256": "3a9041da6b9f2a666506e1ab50bcdffc89d3e59b4fd23f2e102c02dbba438e4f"
+          },
+          "entry_name": "issuer-SFIX-2025-05-29",
+          "expected_identity": {
+            "cik": "0001576942",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "SFIX",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SFIX-2025-05-30-2026-08-16.response.json",
+            "sha256": "e4e5da0a4fcdf798c410709557f5762313edd3cf346da6aba8e9120d1cd2ae49"
+          },
+          "entry_name": "splits-SFIX-2025-05-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000936395",
+      "content_hash": "27a376f19e25e596bc97443ddd0bb758c2a627f7eb79e814d82adf00933e39e7",
+      "document_id": "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000936395/massive:cik_0000936395:market_data:27a376f19e25e596bc97443d.json",
+        "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v9/cache/data/massive/price_daily/8f39ee2fd6f19e13bd1f5317.json",
+            "sha256": "51dfc7e418cf5512af1bdbe0997381298c94c8e84465e658457464e276689725"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:43:33.876508+00:00",
+          "provider_retrieved_at": "2026-08-16T07:43:33.870886+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-CIEN-2025-09-29.response.json",
+            "sha256": "ba723591b153f9861047b61b82b7dfbb3f0b5cf7dabec03af7644d8a8355d442"
+          },
+          "entry_name": "issuer-CIEN-2025-09-29",
+          "expected_identity": {
+            "cik": "0000936395",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "CIEN",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-CIEN-2025-09-30-2026-08-16.response.json",
+            "sha256": "c862356b0ad04fd168e92c47bf24bb5c262c207de4dc9d3d9e77705bb818e866"
+          },
+          "entry_name": "splits-CIEN-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001590364",
+      "content_hash": "700274cd4bc5b20fe238330b4742147b29931cbd82aeba3b422fd7e07517b014",
+      "document_id": "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001590364/massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b.json",
+        "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/80939e3752f3e60935494440.json",
+            "sha256": "65765a2002d025e92f38cccbb8401cbed252bf30a716f80293b369790d1882f9"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:02:57.954401+00:00",
+          "provider_retrieved_at": "2026-08-16T07:02:57.947851+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-FTAI-2025-07-30.response.json",
+            "sha256": "225a4b3414bcb4bdaaf8bbc2feddb686e5668be0513d960bc715425d7c548620"
+          },
+          "entry_name": "issuer-FTAI-2025-07-30",
+          "expected_identity": {
+            "cik": "0001590364",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "FTAI",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-FTAI-2025-07-31-2026-08-16.response.json",
+            "sha256": "6b90bdacd4c67d9c8ee10eecad9fca863d6bacff4c316114d467e6b49cf56bf0"
+          },
+          "entry_name": "splits-FTAI-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001018963",
+      "content_hash": "cfcdba9bce983722a10ca573c9c9d41f49c84e5a8321cc6d31264404dc0a8c76",
+      "document_id": "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001018963/massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573.json",
+        "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/010e1bbdaea56da890258302.json",
+            "sha256": "e267db74991621caf4634d80c0b057b08622fbd7cced50ad1685618a6b9736e6"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:03:27.717820+00:00",
+          "provider_retrieved_at": "2026-08-16T07:03:27.711474+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ATI-2025-09-29.response.json",
+            "sha256": "4f1acf4160b9e90e0700b52ed8900c0cc5630939729e56377e7738d860ccd973"
+          },
+          "entry_name": "issuer-ATI-2025-09-29",
+          "expected_identity": {
+            "cik": "0001018963",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "ATI",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ATI-2025-09-30-2026-08-16.response.json",
+            "sha256": "2a740adfad47705265ca861b3b0e7e0eb5d34045ee5aa9be735a8134694d260b"
+          },
+          "entry_name": "splits-ATI-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001164727",
+      "content_hash": "82862f34fff99d6db7abd22829704911038950978dd6c5c2157a9e95925e79b5",
+      "document_id": "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001164727/massive:cik_0001164727:market_data:82862f34fff99d6db7abd228.json",
+        "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/efe21718549d3b355b6e0430.json",
+            "sha256": "2ee09c97bc8c5e5f6cda171bf3a3f371f0a0ad5d7787c2bc5044a8254a8d6121"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:30:15.889191+00:00",
+          "provider_retrieved_at": "2026-08-16T07:30:15.882824+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-NEM-2025-07-30.response.json",
+            "sha256": "0e93c6910314b5e14c673b4a96e7a9140c03edd867e3bfd290f753865f049031"
+          },
+          "entry_name": "issuer-NEM-2025-07-30",
+          "expected_identity": {
+            "cik": "0001164727",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "NEM",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-NEM-2025-07-31-2026-08-16.response.json",
+            "sha256": "9577cf60332dd6518e9620abcf0ff57f54404aeb5e63e12db6149f6dbd683788"
+          },
+          "entry_name": "splits-NEM-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001801368",
+      "content_hash": "7cbfb517300de5af5327374acfb7f429e3d801e760afc13ae90ce9623037f8ad",
+      "document_id": "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001801368/massive:cik_0001801368:market_data:7cbfb517300de5af5327374a.json",
+        "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/7de59c6a0b60e8a141fdec6b.json",
+            "sha256": "38f0ee943e2f239c11cad9557e723eda538d06a9cbdbc6997838d3167afd7d2a"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:04:43.530048+00:00",
+          "provider_retrieved_at": "2026-08-16T07:04:43.519945+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MP-2025-03-28.response.json",
+            "sha256": "31fb38ca83d6b264cd7b024951433b609004b743ce6da97dc7e68911fd401ab4"
+          },
+          "entry_name": "issuer-MP-2025-03-28",
+          "expected_identity": {
+            "cik": "0001801368",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNYS",
+            "ticker": "MP",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MP-2025-03-29-2026-08-16.response.json",
+            "sha256": "a20e43e1b9bf1574d934fdd3ec0b2e185c2a36616775cbb947f17e1b00a2c20f"
+          },
+          "entry_name": "splits-MP-2025-03-29-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-03-29T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0002023554",
+      "content_hash": "344f9c0e704fc4366b29da12d90bd0e3c39233536f2cbdf5473cd2ef3270b3c4",
+      "document_id": "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0002023554/massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12.json",
+        "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/166e93e01fdf4ebf72481561.json",
+            "sha256": "afd57355b7a0780b53a18d466c5ef1a01c92f202b9de630e51bc918d800c098e"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:14:31.677927+00:00",
+          "provider_retrieved_at": "2026-08-16T08:14:31.671317+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-SNDK-2025-09-29.response.json",
+            "sha256": "e0045e33084c34cd5f6cac40022a24a1df534c9e25ab86bdbc570f94f0120de1"
+          },
+          "entry_name": "issuer-SNDK-2025-09-29",
+          "expected_identity": {
+            "cik": "0002023554",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "SNDK",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-SNDK-2025-09-30-2026-08-16.response.json",
+            "sha256": "b18b9b80a606d89726729f79c4829c687141e3efdb998f3e3cb2def4bddd57bd"
+          },
+          "entry_name": "splits-SNDK-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000723125",
+      "content_hash": "823e5d16b8cfc77479fe99de251b7bf8b7a87b9b6ed65a7d8d191dbae1f19ed3",
+      "document_id": "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0000723125/massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de.json",
+        "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v11/cache/data/massive/price_daily/7a17328006a83a8d8f5e0716.json",
+            "sha256": "383ed43604da5e7fd039da9d06646e7d2554cbcc88d04bdf0f35fb13047c2525"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T08:41:17.052061+00:00",
+          "provider_retrieved_at": "2026-08-16T08:41:17.044372+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-MU-2025-07-30.response.json",
+            "sha256": "2791ab1efc4afd124dd6f9e2fcd2b611764e2502ff5f719b04cb87ab9967b1c2"
+          },
+          "entry_name": "issuer-MU-2025-07-30",
+          "expected_identity": {
+            "cik": "0000723125",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "MU",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-MU-2025-07-31-2026-08-16.response.json",
+            "sha256": "eeb054a91a93e4b7f55743181e1ce0dc5d940a2341f1f89bb6abaeef788caca7"
+          },
+          "entry_name": "splits-MU-2025-07-31-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-07-31T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001689548",
+      "content_hash": "cab65f074179af11f7282a5b19f4523da24468167da2a2f4f5d20bea0e9d1e23",
+      "document_id": "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001689548/massive:cik_0001689548:market_data:cab65f074179af11f7282a5b.json",
+        "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v5/cache/data/massive/price_daily/2fe7d53ca2ecc9575d982146.json",
+            "sha256": "f77b6d43b58651d8260f1305869cc34096a6bbd0a34eea1533c7f7645358f805"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T07:06:02.792106+00:00",
+          "provider_retrieved_at": "2026-08-16T07:06:02.786862+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-PRAX-2025-09-29.response.json",
+            "sha256": "e34fbd4df105231ab21586303ac5121926f3e394c592f48a32f9781962af1641"
+          },
+          "entry_name": "issuer-PRAX-2025-09-29",
+          "expected_identity": {
+            "cik": "0001689548",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "PRAX",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-PRAX-2025-09-30-2026-08-16.response.json",
+            "sha256": "0520662c22dbffca5a31b1522445420b953b8a285fc3b53a9f380db96459fa7d"
+          },
+          "entry_name": "splits-PRAX-2025-09-30-2026-08-16",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-09-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "0d02e15a6b697fad524fc8ef7e835db5ecbdcc157bdcf32c9567c11e555f8afa",
+      "document_id": "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef.json",
+        "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v12/cache/data/massive/price_daily/ca450ac42f91a72fa1788ce0.json",
+            "sha256": "9eb8526ce487df3bcc28b46f8f474e25d3c5aa7e5b58af6c24c7d9af735f211e"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-08-16T09:32:03.528715+00:00",
+          "provider_retrieved_at": "2026-08-16T09:32:03.525417+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ONDS-2025-05-29.response.json",
+            "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+          },
+          "entry_name": "issuer-ONDS-2025-05-29",
+          "expected_identity": {
+            "cik": "0001646188",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "ONDS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ONDS-2025-05-30-2026-09-08.response.json",
+            "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+          },
+          "entry_name": "splits-ONDS-2025-05-30-2026-09-08",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "4f0a68e38b3c4e8d5356b8805fafa1ecbc452f0a862456ad9c341bec18b37565",
+      "document_id": "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001646188/massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880.json",
+        "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+      },
+      "proof_profile": "massive_daily_no_post_cutoff_split_v1",
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/data/massive/price_daily/2a7f8b91f51d604ae832b2a5.json",
+            "sha256": "5a85fbf3fd56c3340025254d10e661123ee631c97ede5fd2052e329921511fff"
+          },
+          "kind": "massive_daily_origin",
+          "normalization_retrieved_at": "2026-09-08T13:11:55.306581+00:00",
+          "provider_retrieved_at": "2026-09-08T13:11:55.301645+00:00"
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/issuer-ONDS-2025-05-29.response.json",
+            "sha256": "83ac6f818a947d7211186f0cb0b6e760caebd8e3f1418a7eb812f3e2e4cae58b"
+          },
+          "entry_name": "issuer-ONDS-2025-05-29",
+          "expected_identity": {
+            "cik": "0001646188",
+            "currency_name": "usd",
+            "locale": "us",
+            "market": "stocks",
+            "primary_exchange": "XNAS",
+            "ticker": "ONDS",
+            "type": "CS"
+          },
+          "kind": "massive_historical_issuer",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        },
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/splits-ONDS-2025-05-30-2026-09-08.response.json",
+            "sha256": "4abad19b900d675722ccf48f060d073518b14bb0289c6b77f2a9b5c3ecb25c57"
+          },
+          "entry_name": "splits-ONDS-2025-05-30-2026-09-08",
+          "kind": "massive_no_post_cutoff_splits",
+          "request_record": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/proofs/results.json",
+            "sha256": "18b113ec4712c46688282644e1f4927fadfd9c736fb9ccf80d4e278929408a6f"
+          }
+        }
+      ],
+      "reason": "Native complete production reconstruction, historical issuer and all-type split proof passed at the original case cutoff; no predictive effect claim.",
+      "reviewed_available_at": "2025-05-30T00:00:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000701818",
+      "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+      "document_id": "sec:cik_0000701818:000110465925072244",
+      "operating_source_classification": {
+        "body_scope": "primary cover/current report references separate financial/earnings exhibits; those exhibit bodies not established here",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "6-K",
+        "operating_periodic_source_present": false
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+        "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2ac14a7179bb085fb9732d6b.json",
+            "sha256": "f19a42150e5c11903240c5901a2b43be4da4a4c3e39e040b59291cbc550d732c"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm",
+          "expected_content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-07-30T21:14:51+00:00",
+          "accession_number": "0001104659-25-072244",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+            "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+          },
+          "form": "6-K",
+          "issuer_cik": "0000701818",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "tm2521379d1_6k.htm"
+        }
+      ],
+      "reason": "Native SEC identity/time proof passed, but the selected primary is a cover/current-report index referring to separate operating exhibits; full annual/interim operating body is not established in this frozen scope.",
+      "reviewed_available_at": "2025-07-30T21:14:51+00:00",
+      "verdict": "unknown"
+    },
+    {
+      "company_id": "cik_0000701818",
+      "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+      "document_id": "sec:cik_0000701818:000110465925072367",
+      "operating_source_classification": {
+        "body_scope": "primary cover/current report references separate financial/earnings exhibits; those exhibit bodies not established here",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "6-K",
+        "operating_periodic_source_present": false
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json",
+        "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/b90c1ec44e00683142740abd.json",
+            "sha256": "bd6bdfe75a2a7eacfd47dc6a206b275c2f874a24495239bca045a60236cc02bd"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm",
+          "expected_content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-07-31T01:14:39+00:00",
+          "accession_number": "0001104659-25-072367",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+            "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+          },
+          "form": "6-K",
+          "issuer_cik": "0000701818",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "tm2522148d1_6k.htm"
+        }
+      ],
+      "reason": "Native SEC identity/time proof passed, but the selected primary is a cover/current-report index referring to separate operating exhibits; full annual/interim operating body is not established in this frozen scope.",
+      "reviewed_available_at": "2025-07-31T01:14:39+00:00",
+      "verdict": "unknown"
+    },
+    {
+      "company_id": "cik_0001174922",
+      "content_hash": "72850f9a5f0abd42282059b197b49ef7fdb52981061adc8e3b1fd472fbe6bf1d",
+      "document_id": "sec:cik_0001174922:000117492225000039",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001174922/sec:cik_0001174922:000117492225000039.json",
+        "sha256": "031d98815b8354228940eb3199b44775d2069a85da061494a1564c6dbacf7b52"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e09cfa6c4d22e93c40b9685.json",
+            "sha256": "600ff3d1905e47ca4b795261fe57fde7d7db3d14a619b36bbf8119948f43bd22"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1174922/000117492225000039/wynn-20241231.htm",
+          "expected_content_hash": "72850f9a5f0abd42282059b197b49ef7fdb52981061adc8e3b1fd472fbe6bf1d",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-13T22:00:42+00:00",
+          "accession_number": "0001174922-25-000039",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3e7da9966775d1eb231fd0e.json",
+            "sha256": "a8ba6225709b7fd64a550cd07c0951a2ecb961874a19af3eacf8041482d479c2"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001174922",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "wynn-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-13T22:00:42+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001174922",
+      "content_hash": "d3a0f15c4f9ad8aca9b3be4bb742089a647ca27f1a545c2d15fdc8d2e848f890",
+      "document_id": "sec:cik_0001174922:000117492225000084",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001174922/sec:cik_0001174922:000117492225000084.json",
+        "sha256": "26c26673b2249272b302f4b4587023d35c1cc9d635fc7fc3d42b689510c337d9"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/301c6f4632bfa611b693aa5a.json",
+            "sha256": "7313df985c01854a0791ca4db8a235af80d0fe2bf89647d359e9b8b3a2a8b124"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1174922/000117492225000084/wynn-20250331.htm",
+          "expected_content_hash": "d3a0f15c4f9ad8aca9b3be4bb742089a647ca27f1a545c2d15fdc8d2e848f890",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-05-06T21:00:26+00:00",
+          "accession_number": "0001174922-25-000084",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a3e7da9966775d1eb231fd0e.json",
+            "sha256": "a8ba6225709b7fd64a550cd07c0951a2ecb961874a19af3eacf8041482d479c2"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001174922",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "wynn-20250331.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-05-06T21:00:26+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895728",
+      "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000089572825000006.json",
+        "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e4b10692099e75192411496.json",
+            "sha256": "099407d7fbf3fd7d9f700f3968bfaaa3c5abf1a26956e1ee25ed445d94a7ef2a"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000089572825000006/enb-20241231.htm",
+          "expected_content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-14T12:10:59+00:00",
+          "accession_number": "0000895728-25-000006",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+            "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+          },
+          "form": "10-K",
+          "issuer_cik": "0000895728",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "enb-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-14T12:10:59+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895728",
+      "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895728/sec:cik_0000895728:000095017025101102.json",
+        "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7a0cdba6ca05b7f1d7a3d8eb.json",
+            "sha256": "cd8443dc679491afdd37e9653b82a5f0969d2e4933a5395ba6629afca086fe63"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895728/000095017025101102/enb-20250630.htm",
+          "expected_content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-08-01T11:02:37+00:00",
+          "accession_number": "0000950170-25-101102",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aef35d31db2b831136174b7.json",
+            "sha256": "762f921f69a79c313444aeaa5fb8852ca966422a18d4ff29b2c6d741a86acd08"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0000895728",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "enb-20250630.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-08-01T11:02:37+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000895421",
+      "content_hash": "5666f8f981f19ef22fe54b4804c67b6bfbe885b29b6daa229b26e083a461c95f",
+      "document_id": "sec:cik_0000895421:000089542125000419",
+      "operating_source_classification": {
+        "body_scope": "primary cover/current report references separate financial/earnings exhibits; those exhibit bodies not established here",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "8-K",
+        "operating_periodic_source_present": false
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+        "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/87cf453ffed51e42dc4aca19.json",
+            "sha256": "8fcb57599a2b7cd2f5a901fb2318deed9f51de7c2e48d6810cd5f2b82411b390"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/ms-20250716.htm",
+          "expected_content_hash": "5666f8f981f19ef22fe54b4804c67b6bfbe885b29b6daa229b26e083a461c95f",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-07-16T11:59:47+00:00",
+          "accession_number": "0000895421-25-000419",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+            "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+          },
+          "form": "8-K",
+          "issuer_cik": "0000895421",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ms-20250716.htm"
+        }
+      ],
+      "reason": "Native SEC proof remains unproven: SEC issuer/accession identity differs",
+      "reviewed_available_at": "2025-07-16T11:59:47+00:00",
+      "verdict": "unknown"
+    },
+    {
+      "company_id": "cik_0001869198",
+      "content_hash": "ae91739bf5b31f2b5afeb935b66d5f4ef1807ca60a3811e66a2e5db16d0882fe",
+      "document_id": "sec:cik_0001869198:000186919825000009",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919825000009.json",
+        "sha256": "3f7eba67eb6726889b9e27c7b31021c5c5d0a199a6af36907aeb8cbeb91c21ff"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/123508d89bb65dbfb6a354a1.json",
+            "sha256": "ba88e2207b89f8482dbe87ea91d54bb09f03343982a375d205d79fe3059fbeee"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1869198/000186919825000009/lth-20241231.htm",
+          "expected_content_hash": "ae91739bf5b31f2b5afeb935b66d5f4ef1807ca60a3811e66a2e5db16d0882fe",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-27T11:58:44+00:00",
+          "accession_number": "0001869198-25-000009",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/74e01da2cfae251bb8dc015c.json",
+            "sha256": "15b9f9bb68e241c6aa71bcd45158cb4e17d3575bb9d5708991f13f7c2f079752"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001869198",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "lth-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-27T11:58:44+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001869198",
+      "content_hash": "6f55acd8fc3803833b03d821f8e0c54b2138f67fc209aa41f51971fff7b2a60f",
+      "document_id": "sec:cik_0001869198:000186919824000052",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001869198/sec:cik_0001869198:000186919824000052.json",
+        "sha256": "aa109d3135156810c3893e53d700bf15a05f2850c68fb19e6c4545b709396d43"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/be1a870d40b1067c14cbcb91.json",
+            "sha256": "4d2d54e4a4b292ee1df23d48fc9af09bad21f225893104686104ef52d5278e1a"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1869198/000186919824000052/lth-20240930.htm",
+          "expected_content_hash": "6f55acd8fc3803833b03d821f8e0c54b2138f67fc209aa41f51971fff7b2a60f",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2024-10-28T20:20:31+00:00",
+          "accession_number": "0001869198-24-000052",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/74e01da2cfae251bb8dc015c.json",
+            "sha256": "15b9f9bb68e241c6aa71bcd45158cb4e17d3575bb9d5708991f13f7c2f079752"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001869198",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "lth-20240930.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2024-10-28T20:20:31+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001576942",
+      "content_hash": "f1a01339a2c04595b4904c8b86143e2bfd200a126641fb692b9f8c3b60ed03b4",
+      "document_id": "sec:cik_0001576942:000157694224000099",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001576942/sec:cik_0001576942:000157694224000099.json",
+        "sha256": "e81b74f2b32b68d79716ee30b6e7b72c8a37cb50b4b6a6adf94065505226668b"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/96e1cc277a43d22af90554f5.json",
+            "sha256": "177119bb31e648aa57038742335721d3733ae83f68a5ead5420c4f6f1d0f0be3"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1576942/000157694224000099/sfix-20240803.htm",
+          "expected_content_hash": "f1a01339a2c04595b4904c8b86143e2bfd200a126641fb692b9f8c3b60ed03b4",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2024-09-25T20:47:48+00:00",
+          "accession_number": "0001576942-24-000099",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/754e183cd4da6d867a7bf09b.json",
+            "sha256": "c2d2c977148ff5c40b70a4bc037da93de8f4b6703d6ac665dd0a4f2ecdc78403"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001576942",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "sfix-20240803.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2024-09-25T20:47:48+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001576942",
+      "content_hash": "1f957f1f80c2a825e98d6aeb7b7536a2840f1b6c97661fd36f5d209aba603916",
+      "document_id": "sec:cik_0001576942:000157694225000009",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001576942/sec:cik_0001576942:000157694225000009.json",
+        "sha256": "1e41d0c2c22582a994bfa5aafaf91dcf51782e8fb2b5b159e018194bff55a106"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/16025180c25b1d5cae68d02f.json",
+            "sha256": "0e6b34768e98c14fa3ea918c38bce11700182af147c8f2e90e563ef288e581df"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1576942/000157694225000009/sfix-20250201.htm",
+          "expected_content_hash": "1f957f1f80c2a825e98d6aeb7b7536a2840f1b6c97661fd36f5d209aba603916",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-03-12T20:15:41+00:00",
+          "accession_number": "0001576942-25-000009",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/754e183cd4da6d867a7bf09b.json",
+            "sha256": "c2d2c977148ff5c40b70a4bc037da93de8f4b6703d6ac665dd0a4f2ecdc78403"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001576942",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "sfix-20250201.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-03-12T20:15:41+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000936395",
+      "content_hash": "47322b678f7a2e84ed7a3c5bc8fcfd7bf60a6dc87d0096eb883df9d49a8c11ce",
+      "document_id": "sec:cik_0000936395:000093639525000041",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000936395/sec:cik_0000936395:000093639525000041.json",
+        "sha256": "f27685f9bd686871c5c76f46e2375155f86fed22e484a711bb7a7c0d01033779"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/6e0b8bd6096b092494c2fafa.json",
+            "sha256": "4b561b0f9604a3227d457e0b3c0f5750974a6e5c9e35a5540c38a414a445163c"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/936395/000093639525000041/cien-20250802.htm",
+          "expected_content_hash": "47322b678f7a2e84ed7a3c5bc8fcfd7bf60a6dc87d0096eb883df9d49a8c11ce",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-09-04T20:05:56+00:00",
+          "accession_number": "0000936395-25-000041",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/cfe9567ef40a08c8a4d838dc.json",
+            "sha256": "92c44c10a85565cea0b12dc35b6bad4b01f0f573b7a97c282230b6780ca16d9c"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0000936395",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "cien-20250802.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-09-04T20:05:56+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001590364",
+      "content_hash": "a6e8aa9f76bccb3dc94959412ca7b5a8e4a0e64fdfc536cc3343633159338f17",
+      "document_id": "sec:cik_0001590364:000159036425000006",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001590364/sec:cik_0001590364:000159036425000006.json",
+        "sha256": "6b3673e71f9021cd99c107f9dcd60b44e16167c13d7cbdcea142af9baa20b3f0"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/429b889930fa229ebbac8b51.json",
+            "sha256": "a0472183142afd8903bfae961504fed9c228f7b37759aac4d638dcb9a6b96aa3"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1590364/000159036425000006/ftai-20241231.htm",
+          "expected_content_hash": "a6e8aa9f76bccb3dc94959412ca7b5a8e4a0e64fdfc536cc3343633159338f17",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-03-03T22:06:12+00:00",
+          "accession_number": "0001590364-25-000006",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/53eb2aae9d6608d130f664cc.json",
+            "sha256": "562626ad0acc677211db55d3dc78eef406a7f7defd848da06c481920b606eba3"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001590364",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ftai-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-03-03T22:06:12+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001590364",
+      "content_hash": "295748f5409738f1d8db54b82e0886dbdb81afc62d175539a94452925333887d",
+      "document_id": "sec:cik_0001590364:000159036425000011",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001590364/sec:cik_0001590364:000159036425000011.json",
+        "sha256": "43dd7b96f0c0f2b6627d24ead98149af80732fa5ff04ace5eea75fc346ca15a4"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/e1201a66b43b7c87fec99072.json",
+            "sha256": "d4c4cc6feec7e1e50a65bf08934c5b0068f1eca3ad1e0b713b834d193d57d772"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1590364/000159036425000011/ftai-20250331.htm",
+          "expected_content_hash": "295748f5409738f1d8db54b82e0886dbdb81afc62d175539a94452925333887d",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-05-05T21:17:24+00:00",
+          "accession_number": "0001590364-25-000011",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/53eb2aae9d6608d130f664cc.json",
+            "sha256": "562626ad0acc677211db55d3dc78eef406a7f7defd848da06c481920b606eba3"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001590364",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ftai-20250331.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-05-05T21:17:24+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001018963",
+      "content_hash": "9c08fc3dde198e9d2a3e5bc67efb9b2e8d8929d01b3f53b443e9ef5de22131c8",
+      "document_id": "sec:cik_0001018963:000162828025007092",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025007092.json",
+        "sha256": "02e14462f629199f72d1d2bff826f20d63a85aa5af611767446f28a587c4c19b"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/7bbceeb7a4372aa719ab6d26.json",
+            "sha256": "971fd0c5562d335de71dac6bd6528efc4c5f2ad3c098cbe820fab3029bd46385"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1018963/000162828025007092/ati-20241229.htm",
+          "expected_content_hash": "9c08fc3dde198e9d2a3e5bc67efb9b2e8d8929d01b3f53b443e9ef5de22131c8",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-21T20:40:28+00:00",
+          "accession_number": "0001628280-25-007092",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/687f852ce9514897a998bdc9.json",
+            "sha256": "951f622466cb3f8b201da12b8e735b53774359f515621161079277b1c1979402"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001018963",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ati-20241229.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-21T20:40:28+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001018963",
+      "content_hash": "f07900f0ae908e56683396e3442ace7d21fef450a36cb7d58cd49eba40e0ce3b",
+      "document_id": "sec:cik_0001018963:000162828025036963",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001018963/sec:cik_0001018963:000162828025036963.json",
+        "sha256": "1c5f84ff09824c8d8326f23f509216539f40d5ebaeee2a8063e19dcc282b0b32"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/42b7c0f5c21c43a3e73bf76e.json",
+            "sha256": "4927ca7e2aa1af45fa404133ffeb33ab8d01666e66827f9532d536f55963e745"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1018963/000162828025036963/ati-20250629.htm",
+          "expected_content_hash": "f07900f0ae908e56683396e3442ace7d21fef450a36cb7d58cd49eba40e0ce3b",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-07-31T19:19:21+00:00",
+          "accession_number": "0001628280-25-036963",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/687f852ce9514897a998bdc9.json",
+            "sha256": "951f622466cb3f8b201da12b8e735b53774359f515621161079277b1c1979402"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001018963",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ati-20250629.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-07-31T19:19:21+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001164727",
+      "content_hash": "997a35b65cf263dc76ccc8244413c3d5c1b4123b7fcbc842bdc5d7ee59f4895b",
+      "document_id": "sec:cik_0001164727:000116472725000011",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000011.json",
+        "sha256": "b5a22cd79ab9be328c20c8eb64e515450179268fdea5b302bfebed1463599395"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/c7363c69d3e3de1789ed4d58.json",
+            "sha256": "b84fea26439e95e80844c4e8f69e715a03500e091f41b52e1ee4b7c522d9d2a9"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1164727/000116472725000011/nem-20241231.htm",
+          "expected_content_hash": "997a35b65cf263dc76ccc8244413c3d5c1b4123b7fcbc842bdc5d7ee59f4895b",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-21T01:20:57+00:00",
+          "accession_number": "0001164727-25-000011",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/835584197a6e5016e633dd8e.json",
+            "sha256": "c0528b34ca543fdfdfb2323848ea2c4dc002a9e1ae410dd9d0c6a7d7308d229b"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001164727",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "nem-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-21T01:20:57+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001164727",
+      "content_hash": "c7589d4d2c28cc1a6289fa0879d7e9e5680d98fa1b29a086f498e404ed5bd5a5",
+      "document_id": "sec:cik_0001164727:000116472725000035",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001164727/sec:cik_0001164727:000116472725000035.json",
+        "sha256": "fcb10a4cec1b8ccc7d5c3734c986db7e5240c8fe11a80a12ba3e549ea49caa73"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/c8c8a4c2216a26f2d6ac5b3c.json",
+            "sha256": "c9fa3ca4149b50ed55ae2010f218b59169c748cb1b015dc1102b73a9df1829cb"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1164727/000116472725000035/nem-20250630.htm",
+          "expected_content_hash": "c7589d4d2c28cc1a6289fa0879d7e9e5680d98fa1b29a086f498e404ed5bd5a5",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-07-24T21:00:49+00:00",
+          "accession_number": "0001164727-25-000035",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/835584197a6e5016e633dd8e.json",
+            "sha256": "c0528b34ca543fdfdfb2323848ea2c4dc002a9e1ae410dd9d0c6a7d7308d229b"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001164727",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "nem-20250630.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-07-24T21:00:49+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001801368",
+      "content_hash": "83ad0c65080a4eca2cc562b478084de4275c9c840cc1a28095e680414a0e96e6",
+      "document_id": "sec:cik_0001801368:000180136825000009",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001801368/sec:cik_0001801368:000180136825000009.json",
+        "sha256": "f29c053928de19c927c8bda51bdd0d82ec995ee0572dd37f6a31d4a8da8808e2"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/a35d4984b8bf299f0002a877.json",
+            "sha256": "308ff009d2b9d761595dcdfaf49d48cef551915504b8aa94af23aee2b1a011ee"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1801368/000180136825000009/mp-20241231.htm",
+          "expected_content_hash": "83ad0c65080a4eca2cc562b478084de4275c9c840cc1a28095e680414a0e96e6",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-28T13:43:00+00:00",
+          "accession_number": "0001801368-25-000009",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/34e921b837d5b8d47ed71abc.json",
+            "sha256": "e36c6936e8f338e00927e5cf98edaee9b81cc7ac1cd09c7c1017a7c0e0099c82"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001801368",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "mp-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-28T13:43:00+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001801368",
+      "content_hash": "3e356389386f6bb5857ef9379244523ee9b597a28db9c3bcc6249d2639420036",
+      "document_id": "sec:cik_0001801368:000180136824000087",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001801368/sec:cik_0001801368:000180136824000087.json",
+        "sha256": "f8bb21e524c9eae2a395841fcb9fa06cc48e862136637e3b3fe18f9ebb14b613"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/82d70e19ed0e00941428e718.json",
+            "sha256": "0668834383e097dd09e5716e4d3f63fd647ff66e213a12c843b9fdbdf0101046"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1801368/000180136824000087/mp-20240930.htm",
+          "expected_content_hash": "3e356389386f6bb5857ef9379244523ee9b597a28db9c3bcc6249d2639420036",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2024-11-08T21:04:16+00:00",
+          "accession_number": "0001801368-24-000087",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/34e921b837d5b8d47ed71abc.json",
+            "sha256": "e36c6936e8f338e00927e5cf98edaee9b81cc7ac1cd09c7c1017a7c0e0099c82"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001801368",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "mp-20240930.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2024-11-08T21:04:16+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0002023554",
+      "content_hash": "5c6ccb016447fd9dc3b40c1408496b90b5abcdf1982136d1e11812ee6c93bd7d",
+      "document_id": "sec:cik_0002023554:000202355425000034",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0002023554/sec:cik_0002023554:000202355425000034.json",
+        "sha256": "0d1eda6d9ae6c48893ca42b05d177ad18b867ccefb51e920641cbfab431ca416"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/724cd2bd4b7cff338af905c9.json",
+            "sha256": "8aee1c79ba50d5ea6b49cb67a79c2147dce9af896fe0921c7d1b96d5e704f612"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/2023554/000202355425000034/sndk-20250627.htm",
+          "expected_content_hash": "5c6ccb016447fd9dc3b40c1408496b90b5abcdf1982136d1e11812ee6c93bd7d",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-08-21T00:31:19+00:00",
+          "accession_number": "0002023554-25-000034",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aa01c29d2801eacfd12c4f2.json",
+            "sha256": "48a17149e4ce82880ac72c44ef5e997b05b6fe9a956dd4bfd05de097247a3718"
+          },
+          "form": "10-K",
+          "issuer_cik": "0002023554",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "sndk-20250627.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-08-21T00:31:19+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0002023554",
+      "content_hash": "36ce1676c9c2405c0da2ff8c6fed46edfe36912825f6a0bd08c10f27eab84818",
+      "document_id": "sec:cik_0002023554:000202355425000027",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0002023554/sec:cik_0002023554:000202355425000027.json",
+        "sha256": "93dddd2ab911094ed80e57ba48b9ff1e9feb785737982190a3b49f23941c98db"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9c6e34177573fdafccb211f9.json",
+            "sha256": "922a9960f09a5438c5da7d397c23050832c7cc848a52890f984afb3880c163da"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/2023554/000202355425000027/sndk-20250328.htm",
+          "expected_content_hash": "36ce1676c9c2405c0da2ff8c6fed46edfe36912825f6a0bd08c10f27eab84818",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-05-12T20:27:40+00:00",
+          "accession_number": "0002023554-25-000027",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2aa01c29d2801eacfd12c4f2.json",
+            "sha256": "48a17149e4ce82880ac72c44ef5e997b05b6fe9a956dd4bfd05de097247a3718"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0002023554",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "sndk-20250328.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-05-12T20:27:40+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0000723125",
+      "content_hash": "02b4b4b45ab88e5516a499162ba1d330e7efb8d3328f31f270f9f9f2a1c27d56",
+      "document_id": "sec:cik_0000723125:000072312525000021",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000723125/sec:cik_0000723125:000072312525000021.json",
+        "sha256": "cafd50e63919b3df17cbdd75f6223d132899281f958e70f1b6ea9ff3b2afdf68"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/4f4acce9e1eb24ee2a0392eb.json",
+            "sha256": "e16dfc03a9d73027d3f7cdaf7e54b9a0e4d2aac91720bf96ddd76a7f956ec91a"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000021/mu-20250529.htm",
+          "expected_content_hash": "02b4b4b45ab88e5516a499162ba1d330e7efb8d3328f31f270f9f9f2a1c27d56",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-06-25T22:50:42+00:00",
+          "accession_number": "0000723125-25-000021",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/cdd93dd20e097e90e7001f1b.json",
+            "sha256": "1fae0b5ef942c5ca9ba21c2bf0c8bd3cb3fceebb393dbc9c771367dd032fd90c"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0000723125",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "mu-20250529.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-06-25T22:50:42+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001689548",
+      "content_hash": "b0dba5c8bc2b97a048426022557fd14fd5b680a96c26dc6ef105121d1fbb280e",
+      "document_id": "sec:cik_0001689548:000168954825000040",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001689548/sec:cik_0001689548:000168954825000040.json",
+        "sha256": "761da1b5c8b34c28e092c1f8c581b285f1976566dd7419b1ea614680b663a31b"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/fccf479dfb0e785b241a67f5.json",
+            "sha256": "e853a23ccc3132c1231d3dfa660226c8e244b25066f260e68af90337ea04e14c"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1689548/000168954825000040/prax-20241231.htm",
+          "expected_content_hash": "b0dba5c8bc2b97a048426022557fd14fd5b680a96c26dc6ef105121d1fbb280e",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-02-28T13:06:25+00:00",
+          "accession_number": "0001689548-25-000040",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9ab2794e10861aced8cfb276.json",
+            "sha256": "509c25e3daf4150643abb73e079be9ce7fe082c5d79f6588172a43251af063de"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001689548",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "prax-20241231.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-02-28T13:06:25+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001689548",
+      "content_hash": "8cbcb07083c614a180d3e9d971d4f05ef65c09bf687fcc389ce62fb715e438fe",
+      "document_id": "sec:cik_0001689548:000168954825000092",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001689548/sec:cik_0001689548:000168954825000092.json",
+        "sha256": "5a02c80d657bb6eccfbb42851955640f5cd3daea019582570f59b2233c7ff6a4"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/87d2b09171691fb5dc8eb37e.json",
+            "sha256": "e618a498ce6460f9120e91f3b2e022e7a10f33d56c75773ed05378f40cd37859"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1689548/000168954825000092/prax-20250630.htm",
+          "expected_content_hash": "8cbcb07083c614a180d3e9d971d4f05ef65c09bf687fcc389ce62fb715e438fe",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-08-04T12:33:42+00:00",
+          "accession_number": "0001689548-25-000092",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/9ab2794e10861aced8cfb276.json",
+            "sha256": "509c25e3daf4150643abb73e079be9ce7fe082c5d79f6588172a43251af063de"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001689548",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "prax-20250630.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-08-04T12:33:42+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "c64b0e2787e2bbfa3e335ae44ec2dec0aa2194499ae7cdf55565b724184c7dda",
+      "document_id": "sec:cik_0001646188:000121390025022968",
+      "operating_source_classification": {
+        "body_scope": "static annual primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-K",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001646188/sec:cik_0001646188:000121390025022968.json",
+        "sha256": "6080267cb40047e3bde396ed8b236e880ea47026a434ffd64cb846d454fe3af9"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ec08690511fc3b7a7d9d11b7.json",
+            "sha256": "4c4e95dad2bd5fcbf3b2cc5d37fada24a6bb96f21e6454579d14931f5a035692"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1646188/000121390025022968/ea0232702-10k_ondashold.htm",
+          "expected_content_hash": "c64b0e2787e2bbfa3e335ae44ec2dec0aa2194499ae7cdf55565b724184c7dda",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-03-12T12:48:37+00:00",
+          "accession_number": "0001213900-25-022968",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/512519057b056515ab3696a1.json",
+            "sha256": "39c5db18929ce78c4f099267a3e9597a290189dd6e05173cb26bbfe5ca5b98a3"
+          },
+          "form": "10-K",
+          "issuer_cik": "0001646188",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ea0232702-10k_ondashold.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-03-12T12:48:37+00:00",
+      "verdict": "admitted"
+    },
+    {
+      "company_id": "cik_0001646188",
+      "content_hash": "31266feab325af6eb2fb6e855695f994ae0753a90c023e7b7a3fa0f1f4b913a0",
+      "document_id": "sec:cik_0001646188:000121390025043731",
+      "operating_source_classification": {
+        "body_scope": "static interim primary report",
+        "business_risks_segments_fact_sufficiency_verified": false,
+        "form": "10-Q",
+        "operating_periodic_source_present": true
+      },
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001646188/sec:cik_0001646188:000121390025043731.json",
+        "sha256": "7c37a215fa473bf13dfd99fbf5c6ad37a81c60b4131a6d015a385bc6bbd3b533"
+      },
+      "proofs": [
+        {
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/260186c77d5cf7183791be4d.json",
+            "sha256": "71aba608e8c9977547e4be6fb24f972f20af33e5af5e87a2b0112b0b9dea2d7a"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1646188/000121390025043731/ea0241139-10q_ondas.htm",
+          "expected_content_hash": "31266feab325af6eb2fb6e855695f994ae0753a90c023e7b7a3fa0f1f4b913a0",
+          "kind": "sec_static_archive_body"
+        },
+        {
+          "accepted_at": "2025-05-15T12:38:38+00:00",
+          "accession_number": "0001213900-25-043731",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/512519057b056515ab3696a1.json",
+            "sha256": "39c5db18929ce78c4f099267a3e9597a290189dd6e05173cb26bbfe5ca5b98a3"
+          },
+          "form": "10-Q",
+          "issuer_cik": "0001646188",
+          "kind": "sec_submissions_acceptance",
+          "primary_document": "ea0241139-10q_ondas.htm"
+        }
+      ],
+      "reason": "Native exact SEC body/issuer/acceptance/PIT proof and retained full annual/interim operating primary scope; complete business/risk/segment fact visibility is unverified.",
+      "reviewed_available_at": "2025-05-15T12:38:38+00:00",
+      "verdict": "admitted"
+    }
+  ],
+  "schema_version": "reviewed-raw-info-snapshot-v1",
+  "scope": {
+    "acquisition_allowed": false,
+    "as_of": "2025-09-30T00:00:00+00:00",
+    "company_ids": [
+      "cik_0000701818",
+      "cik_0000723125",
+      "cik_0000895421",
+      "cik_0000895728",
+      "cik_0000936395",
+      "cik_0001018963",
+      "cik_0001164727",
+      "cik_0001174922",
+      "cik_0001576942",
+      "cik_0001590364",
+      "cik_0001646188",
+      "cik_0001689548",
+      "cik_0001801368",
+      "cik_0001830043",
+      "cik_0001869198",
+      "cik_0002023554"
+    ],
+    "purpose": "Fixed 15-case market plus same27 selected operating-primary qualification and label-free exact v12 input readiness; no full run."
+  },
+  "status": "candidate_not_materialized",
+  "transcript_complete_proofs_accepted": 0,
+  "unknown_or_outside_scope_is_not_negative_evidence": true
+}

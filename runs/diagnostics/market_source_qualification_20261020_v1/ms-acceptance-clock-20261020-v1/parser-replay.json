@@ -1,0 +1,88 @@
+{
+  "schema_version": "exact-ms-source-parser-clock-replay-v1",
+  "source_row": {
+    "accessionNumber": "0000895421-25-000419",
+    "filingDate": "2025-07-16",
+    "reportDate": "2025-07-16",
+    "acceptanceDateTime": "2025-07-16T15:59:47.000Z",
+    "act": "34",
+    "form": "8-K",
+    "fileNumber": "001-11758",
+    "filmNumber": "251126163",
+    "items": "2.02,9.01",
+    "core_type": "XBRL",
+    "size": 4291977,
+    "isXBRL": 1,
+    "isInlineXBRL": 1,
+    "isXBRLNumeric": null,
+    "primaryDocument": "ms-20250716.htm",
+    "primaryDocDescription": "8-K"
+  },
+  "source_page": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-fetch-20261020-v2/ms_linked_submissions_archive.response.raw",
+    "sha256": "b28a24dc4f15bb7ccfb630d24a93e7cea79ee2bd2ff2a9606d8ea16d485687e7"
+  },
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+    "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+  },
+  "original_clock_utc": "2025-07-16T11:59:47+00:00",
+  "actual_optional_datetime_result_utc": "2025-07-16T15:59:47+00:00",
+  "actual_filing_array_parser_result_utc": "2025-07-16T15:59:47+00:00",
+  "actual_adapter_published_at_utc": "2025-07-16T15:59:47+00:00",
+  "actual_adapter_available_at_utc": "2025-07-16T15:59:47+00:00",
+  "original_vs_normalized_actual_row_differences": {
+    "published_at": {
+      "original": "2025-07-16T11:59:47+00:00",
+      "from_actual_new_row": "2025-07-16T15:59:47+00:00"
+    },
+    "available_at": {
+      "original": "2025-07-16T11:59:47+00:00",
+      "from_actual_new_row": "2025-07-16T15:59:47+00:00"
+    }
+  },
+  "adapter_scope": "Offline only: exact actual-row FilingMetadata through real SecFilingAdapter with retained original primary body, no provider fetch; narrow compatibility client supplies selected actual row, not a reconstructed production root enumeration.",
+  "parser_time_shift_from_actual_aware_row_seconds": 0.0,
+  "bounded_old_root_caches": [
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "retrieved_at": "2026-08-21T16:25:56.818806+00:00",
+      "retained_target_rows_in_recent": 0
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "retrieved_at": "2026-09-11T05:12:46.206579+00:00",
+      "retained_target_rows_in_recent": 0
+    }
+  ],
+  "origin_writer_not_proven": "Original RawInfoDocument has no retrieval/input-row binding; neither checked historical cache retains the target row. Associated primary-cache run commit is not proof that this run originally wrote the canonical record.",
+  "associated_cached_primary_run_contract": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/run_contract.json",
+    "sha256": "2d0965c02a051742bf895a38d5dbadff3223c8d88f62045a6467900a5e184fe8"
+  },
+  "associated_run_commit": "47d5c4762b966cecd53466c258e7a24d3f7a5316",
+  "historical_optional_datetime_AST_equals_current": true,
+  "historical_filing_array_AST_equals_current": true,
+  "current_source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe"
+    }
+  ],
+  "no_canonical_record_persisted": true,
+  "new_network_requests": 0,
+  "external_llm_calls": 0,
+  "conclusion": "Current native parser and adapter preserve the actual aware15:59:47Z value; they do not subtract four hours on this input. Origin11:59:47 input remains unproven, so independent exact submission header is discriminating evidence, not authorization to guess an offset."
+}

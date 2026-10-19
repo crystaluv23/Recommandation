@@ -2,10 +2,17 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批36GET（30行情+6SEC）、
-0新模型；host tokens/cost及资料API成本未测量。
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批37有界取证GET（30行情+7SEC），
+规范web查阅另列；0新生产LLM节点，host tokens/cost及资料API成本未测量。
 
 ## 当前验收
+
+最新 [经营来源/readiness](../reports/anchor-operating-source-readiness-20261020.md)：
+原27selectedprimary中26通过现SEC proof，但仅24年/季报经营正文准入、3unknown；
+新43docs typed view恢复/原件绑定全等。15case actual operating13resolved，均明示
+partial_context_budget，非经营事实全读。精确最新v12/18refs共270输入准备：
+108resolved/162unresolved，13case为8/18、KGC/MS2/18，0/15达到0.8；9financial
+及news负词ref各15未解，两market refs各15resolved。此v12窄验不是默认v6/full48。
 
 本轮 [Anchor行情来源](../reports/anchor-market-source-qualification-20261020.md)：
 固定15新case/16原件3307bars精确重建，30GET无重试，38原绑定不变；16/16
@@ -73,11 +80,11 @@ full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残�
 ## 下一步
 
 停止重复行情证明和测量控制。叙述inventory27selectedprimary中26通过现SEC proof，
-13家已有年/中期正文；尚未新增叙述view/宣称经营信息可见充分。KGC/MS剩经营
-附件已取到但未归一/准入，6K/8K不冒称periodic。live归档页不能凭旧目录同名拼接；
-新root实际linked page虽找到MS目标，acceptance15:59:47Z比原11:59:47+00晚4h，
-当前原件仍未准入，未猜ET/加容差。下一步核源时间/解析链并给出可追溯修复，
-再完善具证叙述view与label-free Registry readiness。
+13家已有年/中期正文并进新view；未宣称经营信息可见充分。KGC/MS附件已取到但未
+归一/准入，6K/8K不冒称periodic。MS当前API15:59Z、原件11:59Z、独立header
+07:59无offset，实际parser不偏移；原writer/input未知，不能认定原错或猜时区修正。
+下一步优先核实际缺失的结构化财务来源/PIT证明；MS header时间规范与API冲突另行
+明确，不用其做无依据准入或改写原件。
 原[source layout修复](../reports/source-layout-readiness-20261020.md)单anchor5tests
 及旧关联27tests误读真实LabelStore例外均保持披露，未重写成完整准备成功。
 原8项用户改动保持；整体MVP active未完成。

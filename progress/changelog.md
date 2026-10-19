@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：新增43doc经营来源view，27原件保分母、26native proof通过但仅24经营年/季正文准入、3unknown；15case经营投影13resolved均partial_context_budget。精确最新v12/18refs原生输入准备270项，108resolved/162unresolved，0/15达0.8；九财务ref及news负词各15缺失，未做apply/标签/fullprepare。MS另1GET取得完整header前缀：07:59无offset、原11:59Z、新JSON15:59Z；真实parser不偏移，原writer未证，不能将较新API当纠正值。原件/profile不改；接下来核结构化财务来源与源时间规范。
+
 - 2026-10-20：完成固定15新增Anchor/16原价格的3307bar全重建与30次有界只读GET证明，16/16经既有native历史issuer/拆股basis准入；新19doc typed view实际15/15基线匹配并恢复，独立错CIK/缩区间/normalization前GET拒绝。额外全集消费gate14/15原样保留（ONDS默认cap1）；独立exactmomentum请求可选181unique长窗满足127obs，不扩大预算凑通过。17定向测试通过。与旧BMBL共同补齐原16行情proof缺项，未宣称full48 readiness/MVP；另6SEC GET取到三附件及真实root-linked MS archive，但新acceptance比原件晚4h，原件未改/未准入，源时间链仍待核。
 
 - 2026-10-20：修native prepare按路径判market/narrative造成reviewed documents遗漏，改用同允许集合内已解析source_type；BMBL真实具证view的基线6.494及layout迁移、PIT/类型/精确review/日期/显式view不fallback反例5项通过（单anchor/临时labels，非16/48案通过）。16本地都有候选价，另15来源/PIT proof未知。旧关联27测试意外读取真实LabelStore并做临时readiness拒绝，边界越出已据实记录；无研究cycle/模型/评分/下载，不影响此前完成的6e批。
