@@ -1,0 +1,2085 @@
+{
+  "case": {
+    "PIT": {
+      "future_period_end_rows_in_scoped_body": 0,
+      "legacy_rule": "scoped row.filed<=asof.date, document available latest_filed00:00UTC",
+      "modern_rule": "accession availability filed_date+1day00:00UTC",
+      "rows_filed_same_day_as_midnight_cutoff": 0,
+      "same_day_accessions": []
+    },
+    "case_id": "cik_0000895728:20250930",
+    "company_id": "cik_0000895728",
+    "cutoff": "2025-09-30T00:00:00+00:00",
+    "exact_cache": {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json",
+        "sha256": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070"
+      },
+      "cache_retrieved_at": "2026-08-21T16:25:31.952567+00:00",
+      "canonical_body_equals_raw_original": true,
+      "capability": "financial_statements",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000895728.json",
+      "expected_cik": "0000895728",
+      "issuer_validator_pass": true,
+      "original_normalization_clock": "2026-08-21T16:25:32.206666+00:00",
+      "params": [
+        [
+          "method",
+          "GET"
+        ]
+      ],
+      "payload_kind": "json",
+      "response_cik": 895728,
+      "source_key": "sec_edgar"
+    },
+    "missing_proof_families": [
+      "financial_specific_reviewed_profile",
+      "per_accession_availability_and_primary_filing_audit",
+      "parent_taxonomy_tag_unit_source_locator_preservation",
+      "retrospective_current_identity_handling"
+    ],
+    "native_reconstruction": {
+      "new_records_persisted": false,
+      "original_normalization_clock_preserved": true,
+      "raw_and_financial_to_dict_exact": true
+    },
+    "not_a_9Signals_readiness_claim": true,
+    "original_financial": {
+      "accession_count": 49,
+      "available_at": "2025-08-01T00:00:00+00:00",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000895728/sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e.json",
+        "sha256": "6027c4651f4bf6c3d9d9ef563c8a0553a26b3b22213beb58fe802d6e423c6148"
+      },
+      "content_hash": "29313431393c008179f4d74efe41e781d88b64b939afb52d575afe332114e90c",
+      "current_response_entityName_retained": true,
+      "document_id": "sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e",
+      "fact_rows": 19588,
+      "filed_max": "2025-08-01",
+      "filed_min": "2013-02-15",
+      "metadata": {
+        "cik": "0000895728",
+        "provider": "sec_edgar",
+        "scoped_as_of": "2025-09-30"
+      },
+      "period_end_max": "2025-07-25",
+      "period_end_min": "2009-12-31",
+      "published_at": "2025-08-01T00:00:00+00:00",
+      "schema": "legacy_nested_CompanyFacts_aggregate",
+      "source_period_coverage_only": {
+        "contract_satisfied": true,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 102,
+        "observed_observation_count": 0,
+        "observed_period_span_days": 5685,
+        "required_source_group_count": 0,
+        "satisfied_source_group_count": 0
+      },
+      "source_type": "financials",
+      "top_level_keys": [
+        "cik",
+        "entityName",
+        "facts"
+      ]
+    },
+    "original_raw_proof": {
+      "available_at": "2026-08-21T16:25:32.206666+00:00",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000895728/sec_edgar:cik_0000895728:sec_company_facts_raw_response:a6da747c36bc1fc5a017a18d.json",
+        "sha256": "fde154a1bcfb6b17e99dfc60474cc5b92fc5838477dcb02f85499bdffd3b244f"
+      },
+      "content_hash": "a6da747c36bc1fc5a017a18dc617243d0d7cce8ca1b98b7586953d242d82fde1",
+      "document_id": "sec_edgar:cik_0000895728:sec_company_facts_raw_response:a6da747c36bc1fc5a017a18d",
+      "model_visible_financial_document": false,
+      "published_at": "2026-08-21T16:25:32.206666+00:00",
+      "raw_fact_rows": 21229,
+      "rows_filed_after_cutoff": 1641,
+      "source_type": "sec_company_facts_raw_response"
+    },
+    "qualified": false,
+    "representative_accession_groups": [
+      {
+        "accession": "0000950170-25-101102",
+        "facts_count": 348,
+        "filed_dates": [
+          "2025-08-01"
+        ],
+        "forms": [
+          "10-Q"
+        ],
+        "group_not_a_new_or_original_standalone_document": true,
+        "period_end_max": "2025-07-25",
+        "period_end_min": "2023-12-31",
+        "source_row_examples": [
+          {
+            "accession": "0000950170-25-101102",
+            "filed": "2025-08-01",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "dei",
+              "EntityCommonStockSharesOutstanding",
+              "units",
+              "shares",
+              46
+            ],
+            "period_end": "2025-07-25",
+            "period_start": null,
+            "row_canonical_sha256": "5bd2df40d0a360cd0b2ac203c4970d8bb4e918a67a7cb962e38e199a0703b552",
+            "tag": "EntityCommonStockSharesOutstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "accession": "0000950170-25-101102",
+            "filed": "2025-08-01",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsAndOtherReceivablesNetCurrent",
+              "units",
+              "CAD",
+              37
+            ],
+            "period_end": "2025-06-30",
+            "period_start": null,
+            "row_canonical_sha256": "e3e78b8a031088c389fd35867eef5e3b017117f22e1c04b83da4bb150b583227",
+            "tag": "AccountsAndOtherReceivablesNetCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          },
+          {
+            "accession": "0000950170-25-101102",
+            "filed": "2025-08-01",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+              "units",
+              "CAD",
+              90
+            ],
+            "period_end": "2025-06-30",
+            "period_start": null,
+            "row_canonical_sha256": "8846646190d0daf059842d8dc70fe30fd528cbcf493e76f273af45210b79dfab",
+            "tag": "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          }
+        ],
+        "taxonomies": [
+          "dei",
+          "us-gaap"
+        ],
+        "units": [
+          "CAD",
+          "CAD/shares",
+          "pure",
+          "shares"
+        ]
+      },
+      {
+        "accession": "0000895728-24-000020",
+        "facts_count": 343,
+        "filed_dates": [
+          "2024-08-02"
+        ],
+        "forms": [
+          "10-Q"
+        ],
+        "group_not_a_new_or_original_standalone_document": true,
+        "period_end_max": "2024-07-26",
+        "period_end_min": "2022-12-31",
+        "source_row_examples": [
+          {
+            "accession": "0000895728-24-000020",
+            "filed": "2024-08-02",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "dei",
+              "EntityCommonStockSharesOutstanding",
+              "units",
+              "shares",
+              41
+            ],
+            "period_end": "2024-07-26",
+            "period_start": null,
+            "row_canonical_sha256": "3fa02ba91d90faa06db6b23293481dbb07d6462d6cdebd48e8e47a0f47335b84",
+            "tag": "EntityCommonStockSharesOutstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "accession": "0000895728-24-000020",
+            "filed": "2024-08-02",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsAndOtherReceivablesNetCurrent",
+              "units",
+              "CAD",
+              31
+            ],
+            "period_end": "2024-06-30",
+            "period_start": null,
+            "row_canonical_sha256": "225a1fcd0cea891b05184f886f36a060c0f4a66cf2d2a6f2bd4e38b486f334c1",
+            "tag": "AccountsAndOtherReceivablesNetCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          },
+          {
+            "accession": "0000895728-24-000020",
+            "filed": "2024-08-02",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+              "units",
+              "CAD",
+              84
+            ],
+            "period_end": "2024-06-30",
+            "period_start": null,
+            "row_canonical_sha256": "1740e315997be4c4b1ac119cd3161a34cd0158e42d2faad5728785f00a60a337",
+            "tag": "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          }
+        ],
+        "taxonomies": [
+          "dei",
+          "us-gaap"
+        ],
+        "units": [
+          "CAD",
+          "CAD/shares",
+          "pure",
+          "shares"
+        ]
+      },
+      {
+        "accession": "0000895728-25-000006",
+        "facts_count": 699,
+        "filed_dates": [
+          "2025-02-14"
+        ],
+        "forms": [
+          "10-K"
+        ],
+        "group_not_a_new_or_original_standalone_document": true,
+        "period_end_max": "2025-02-07",
+        "period_end_min": "2021-12-31",
+        "source_row_examples": [
+          {
+            "accession": "0000895728-25-000006",
+            "filed": "2025-02-14",
+            "form": "10-K",
+            "json_path": [
+              "facts",
+              "dei",
+              "EntityCommonStockSharesOutstanding",
+              "units",
+              "shares",
+              43
+            ],
+            "period_end": "2025-02-07",
+            "period_start": null,
+            "row_canonical_sha256": "ebd8069d147bb93c309aa9ac1c03e48f9e0b713e078280b639728c268c701a0f",
+            "tag": "EntityCommonStockSharesOutstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "accession": "0000895728-25-000006",
+            "filed": "2025-02-14",
+            "form": "10-K",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsAndOtherReceivablesNetCurrent",
+              "units",
+              "CAD",
+              33
+            ],
+            "period_end": "2024-12-31",
+            "period_start": null,
+            "row_canonical_sha256": "d55c8e383da3df09b12282b63d20d72999aa75d2983784f6bf8bd8c5204b3dc5",
+            "tag": "AccountsAndOtherReceivablesNetCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          },
+          {
+            "accession": "0000895728-25-000006",
+            "filed": "2025-02-14",
+            "form": "10-K",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+              "units",
+              "CAD",
+              86
+            ],
+            "period_end": "2024-12-31",
+            "period_start": null,
+            "row_canonical_sha256": "8f6c7963e9222af6813f44e09bbb441a7250828a1b2726cbb0225eda82c087ed",
+            "tag": "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          }
+        ],
+        "taxonomies": [
+          "dei",
+          "us-gaap"
+        ],
+        "units": [
+          "CAD",
+          "CAD/shares",
+          "EUR",
+          "USD",
+          "pure",
+          "shares"
+        ]
+      },
+      {
+        "accession": "0000895728-25-000012",
+        "facts_count": 252,
+        "filed_dates": [
+          "2025-05-09"
+        ],
+        "forms": [
+          "10-Q"
+        ],
+        "group_not_a_new_or_original_standalone_document": true,
+        "period_end_max": "2025-05-02",
+        "period_end_min": "2023-12-31",
+        "source_row_examples": [
+          {
+            "accession": "0000895728-25-000012",
+            "filed": "2025-05-09",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "dei",
+              "EntityCommonStockSharesOutstanding",
+              "units",
+              "shares",
+              45
+            ],
+            "period_end": "2025-05-02",
+            "period_start": null,
+            "row_canonical_sha256": "776994f940ed63c7bc127cfba396abffeb77512b0273b827a9ba03f0d9013af0",
+            "tag": "EntityCommonStockSharesOutstanding",
+            "taxonomy": "dei",
+            "unit": "shares"
+          },
+          {
+            "accession": "0000895728-25-000012",
+            "filed": "2025-05-09",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsAndOtherReceivablesNetCurrent",
+              "units",
+              "CAD",
+              36
+            ],
+            "period_end": "2025-03-31",
+            "period_start": null,
+            "row_canonical_sha256": "1476019492e473d8bb32ebd1ad7e8a300d09c88592f30000d400f8bbcb6b3af6",
+            "tag": "AccountsAndOtherReceivablesNetCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          },
+          {
+            "accession": "0000895728-25-000012",
+            "filed": "2025-05-09",
+            "form": "10-Q",
+            "json_path": [
+              "facts",
+              "us-gaap",
+              "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+              "units",
+              "CAD",
+              89
+            ],
+            "period_end": "2025-03-31",
+            "period_start": null,
+            "row_canonical_sha256": "02a53cf4bf372214d55c35bc9d27a0e6cf979ccec2b7d079f78b6ce7b6331607",
+            "tag": "AccountsPayableAndOtherAccruedLiabilitiesCurrent",
+            "taxonomy": "us-gaap",
+            "unit": "CAD"
+          }
+        ],
+        "taxonomies": [
+          "dei",
+          "us-gaap"
+        ],
+        "units": [
+          "CAD",
+          "CAD/shares",
+          "pure",
+          "shares"
+        ]
+      }
+    ],
+    "ticker": "ENB"
+  },
+  "exact_signal_input_resolutions": [
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 2,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          },
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000089572825000006",
+                "sec:cik_0000895728:000095017025101102"
+              ],
+              "phase": "initial",
+              "request_id": "signal:financing_listing_action:v5",
+              "source_types": [
+                "filing",
+                "company_announcement",
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+          "lookback_days": 730,
+          "max_documents": 10,
+          "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+          "request_id": "signal:financing_listing_action:v5",
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "news"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "financing_listing_action:v5"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 7,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 19,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 1302,
+          "query_evaluated": true,
+          "query_matched_document_count": 7,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 7,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2025-08-02T00:00:00+00:00",
+            "content_hash": "044bb48a269ec76710676995473e5edddfea406bb9170f31fe3d8c93da7d5ac1",
+            "document_id": "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767"
+          },
+          {
+            "available_at": "2024-11-02T00:00:00+00:00",
+            "content_hash": "a7ed01bb6637b59c78a970289c18a76d303046f3831bdfca880ab78255a9f9b3",
+            "document_id": "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c"
+          },
+          {
+            "available_at": "2024-08-03T00:00:00+00:00",
+            "content_hash": "a8f6b2b7f8cf06bf5e4a87c22759df4be856e1c4f1bc94d56dbe23473606e736",
+            "document_id": "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf"
+          },
+          {
+            "available_at": "2025-05-10T00:00:00+00:00",
+            "content_hash": "423f1b54234d142c6cf9332879991cc2a83d3d8cdc573a73b9f4aedc2c297781",
+            "document_id": "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c"
+          },
+          {
+            "available_at": "2024-05-11T00:00:00+00:00",
+            "content_hash": "8de3662c6707837ab8a6bb5032dfe4b43be74e1dad7964d780bcedd8aaf2cef3",
+            "document_id": "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a"
+          },
+          {
+            "available_at": "2025-03-12T00:00:00+00:00",
+            "content_hash": "2b2fe51e269fef0b3581e3f0435a558446e1aeedc75c82d30e5f69418826f7d8",
+            "document_id": "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767",
+                "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c",
+                "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf",
+                "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c",
+                "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a",
+                "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+              ],
+              "phase": "initial",
+              "request_id": "signal:cash_burn_rate_elevated:v2",
+              "source_types": [
+                "company_facts",
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure absolute negative operating cash flow divided by the closest same-currency cash balance at or before the reported period end.",
+          "lookback_days": 550,
+          "max_documents": 10,
+          "query": "cash burn rate operating cash flow cash and cash equivalents NetCashProvidedByUsedInOperatingActivities CashAndCashEquivalentsAtCarryingValue",
+          "request_id": "signal:cash_burn_rate_elevated:v2",
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "cash_burn_rate_elevated:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 51,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 51,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 4421,
+          "query_evaluated": true,
+          "query_matched_document_count": 51,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 1,
+          "satisfied_source_group_count": 1,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2016-02-20T00:00:00+00:00",
+            "content_hash": "a78e618798903a43edb1941f4ecc0eb82c9eca26f5051e00b2358edc85006cd6",
+            "document_id": "secfacts:0000895728:0001104659-16-098507:a78e618798903a43"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000089572825000006",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "sec:cik_0000895728:000095017025101102",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0001104659-16-098507:a78e618798903a43",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+              ],
+              "phase": "initial",
+              "request_id": "signal:cash_reserves:v2",
+              "source_types": [
+                "financials",
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read the latest point-in-time cash and equivalents balance.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 1,
+          "query": "cash and equivalents cash balance liquidity",
+          "request_id": "signal:cash_reserves:v2",
+          "required_source_groups": [
+            [
+              "financials",
+              "filing"
+            ]
+          ],
+          "source_types": [
+            "financials",
+            "filing"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "cash_reserves:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 56,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 4787,
+          "query_evaluated": true,
+          "query_matched_document_count": 49,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          },
+          {
+            "available_at": "2015-02-20T00:00:00+00:00",
+            "content_hash": "b552371f0fa73e5a248d4ce789a66b8184018c3b0165d547eab567f2d18d8570",
+            "document_id": "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+                "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+              ],
+              "phase": "initial",
+              "request_id": "signal:cash_to_current_liabilities_ratio:v2",
+              "source_types": [
+                "company_facts",
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure the ratio of latest cash and equivalents to current liabilities for the same point-in-time period and reported currency.",
+          "max_documents": 10,
+          "query": "CashAndCashEquivalentsAtCarryingValue LiabilitiesCurrent cash current liabilities liquidity ratio 10-Q 10-K 20-F SEC company facts USD",
+          "request_id": "signal:cash_to_current_liabilities_ratio:v2",
+          "source_types": [
+            "company_facts",
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "cash_to_current_liabilities_ratio:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 62,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 5152,
+          "query_evaluated": true,
+          "query_matched_document_count": 43,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2013-08-23T00:00:00+00:00",
+            "content_hash": "4bd694b90ad7b01c284a32d5178bf477d7c5b6eb508cbfaa01059299e6b75520",
+            "document_id": "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+              ],
+              "phase": "initial",
+              "request_id": "signal:gross_margin_change:v3",
+              "source_types": [
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure the latest point-in-time change in gross margin.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query": "revenue gross profit",
+          "request_id": "signal:gross_margin_change:v3",
+          "source_types": [
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "gross_margin_change:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 7,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 19,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 1302,
+          "query_evaluated": true,
+          "query_matched_document_count": 6,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 7,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2025-08-02T00:00:00+00:00",
+            "content_hash": "044bb48a269ec76710676995473e5edddfea406bb9170f31fe3d8c93da7d5ac1",
+            "document_id": "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767"
+          },
+          {
+            "available_at": "2024-11-02T00:00:00+00:00",
+            "content_hash": "a7ed01bb6637b59c78a970289c18a76d303046f3831bdfca880ab78255a9f9b3",
+            "document_id": "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c"
+          },
+          {
+            "available_at": "2024-08-03T00:00:00+00:00",
+            "content_hash": "a8f6b2b7f8cf06bf5e4a87c22759df4be856e1c4f1bc94d56dbe23473606e736",
+            "document_id": "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf"
+          },
+          {
+            "available_at": "2025-05-10T00:00:00+00:00",
+            "content_hash": "423f1b54234d142c6cf9332879991cc2a83d3d8cdc573a73b9f4aedc2c297781",
+            "document_id": "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c"
+          },
+          {
+            "available_at": "2024-05-11T00:00:00+00:00",
+            "content_hash": "8de3662c6707837ab8a6bb5032dfe4b43be74e1dad7964d780bcedd8aaf2cef3",
+            "document_id": "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a"
+          },
+          {
+            "available_at": "2025-03-12T00:00:00+00:00",
+            "content_hash": "2b2fe51e269fef0b3581e3f0435a558446e1aeedc75c82d30e5f69418826f7d8",
+            "document_id": "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767",
+                "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c",
+                "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf",
+                "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c",
+                "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a",
+                "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+              ],
+              "phase": "initial",
+              "request_id": "signal:liquidity_runway_months:v3",
+              "source_types": [
+                "financials",
+                "company_facts"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure cash runway in months from the latest negative operating cash flow duration and closest same-currency cash balance.",
+          "lookback_days": 550,
+          "max_documents": 10,
+          "query": "CashAndCashEquivalentsAtCarryingValue CashAndCashEquivalents CashEquivalents NetCashProvidedByUsedInOperatingActivities CashFlowsFromUsedInOperatingActivities liquidity runway operating cash flow cash burn months",
+          "request_id": "signal:liquidity_runway_months:v3",
+          "source_types": [
+            "financials",
+            "company_facts"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "liquidity_runway_months:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 62,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 5152,
+          "query_evaluated": true,
+          "query_matched_document_count": 49,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          },
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2013-08-23T00:00:00+00:00",
+            "content_hash": "4bd694b90ad7b01c284a32d5178bf477d7c5b6eb508cbfaa01059299e6b75520",
+            "document_id": "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+              ],
+              "phase": "initial",
+              "request_id": "signal:net_share_retirement_yoy:v3",
+              "source_types": [
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query": "weighted average shares shares outstanding",
+          "request_id": "signal:net_share_retirement_yoy:v3",
+          "source_types": [
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "net_share_retirement_yoy:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 56,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 4787,
+          "query_evaluated": true,
+          "query_matched_document_count": 43,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          },
+          {
+            "available_at": "2015-02-20T00:00:00+00:00",
+            "content_hash": "b552371f0fa73e5a248d4ce789a66b8184018c3b0165d547eab567f2d18d8570",
+            "document_id": "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+                "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+              ],
+              "phase": "initial",
+              "request_id": "signal:operating_cash_flow_margin:v2",
+              "source_types": [
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 1,
+          "query": "operating cash flow revenue",
+          "request_id": "signal:operating_cash_flow_margin:v2",
+          "source_types": [
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "operating_cash_flow_margin:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 62,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 5152,
+          "query_evaluated": true,
+          "query_matched_document_count": 43,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2013-08-23T00:00:00+00:00",
+            "content_hash": "4bd694b90ad7b01c284a32d5178bf477d7c5b6eb508cbfaa01059299e6b75520",
+            "document_id": "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+              ],
+              "phase": "initial",
+              "request_id": "signal:revenue_acceleration:v2",
+              "source_types": [
+                "financials"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 3,
+          "minimum_period_span_days": 330,
+          "query": "revenue sales",
+          "request_id": "signal:revenue_acceleration:v2",
+          "source_types": [
+            "financials"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "revenue_acceleration:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 49,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 62,
+          "observed_observation_count": 0,
+          "observed_period_span_days": 5152,
+          "query_evaluated": true,
+          "query_matched_document_count": 43,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 10,
+          "selection_truncated": true,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2018-02-17T00:00:00+00:00",
+            "content_hash": "e32a0657937c5ae4c50a84f0d38e4ec1c6addadb7ccf3b220ec7afce52deb1ac",
+            "document_id": "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4"
+          },
+          {
+            "available_at": "2020-02-15T00:00:00+00:00",
+            "content_hash": "d09f4fb8c3aeb31d3c26d3c0b7277c5fe874afa5ccdf034c04caebd1a4c4717c",
+            "document_id": "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d"
+          },
+          {
+            "available_at": "2023-02-11T00:00:00+00:00",
+            "content_hash": "50d049f77865281cf60ff61425e51fc36a4e0bed4de76d4cc3d74261804d8834",
+            "document_id": "secfacts:0000895728:0000895728-23-000008:50d049f77865281c"
+          },
+          {
+            "available_at": "2024-02-10T00:00:00+00:00",
+            "content_hash": "9d66b68544debe48a80321c48e3a87375d47bad075cdbd834368cd9d5fb679d7",
+            "document_id": "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48"
+          },
+          {
+            "available_at": "2022-02-12T00:00:00+00:00",
+            "content_hash": "687c007b80a585b92ea3c1154bed9c83d6eee777dd10b437049450da4ae20c09",
+            "document_id": "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9"
+          },
+          {
+            "available_at": "2021-02-13T00:00:00+00:00",
+            "content_hash": "764d7f0bf6130e3a1e7d86f1338b808fa908536f55d6709b50fbd68a998ce9a5",
+            "document_id": "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+          },
+          {
+            "available_at": "2019-05-11T00:00:00+00:00",
+            "content_hash": "efb633815cb3e3019ad933d0d91af98b5b9d6be4203855de349783837e6f40a1",
+            "document_id": "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301"
+          },
+          {
+            "available_at": "2019-02-16T00:00:00+00:00",
+            "content_hash": "59794f8e9351a7265ff697e4cb85e8373bd909e9c9b0551d6879549a78b3366c",
+            "document_id": "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+          },
+          {
+            "available_at": "2025-02-15T00:00:00+00:00",
+            "content_hash": "9b59a13d75a7540709f11cacdc029266897f410f056870ca9ad355dd8a26aad5",
+            "document_id": "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+          },
+          {
+            "available_at": "2013-08-23T00:00:00+00:00",
+            "content_hash": "4bd694b90ad7b01c284a32d5178bf477d7c5b6eb508cbfaa01059299e6b75520",
+            "document_id": "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+                "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+                "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+                "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+                "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+                "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+                "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+                "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+                "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+                "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+              ],
+              "phase": "initial",
+              "request_id": "signal:revenue_growth_yoy:v3",
+              "source_types": [
+                "financials",
+                "company_facts"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure the latest point-in-time year-over-year revenue growth.",
+          "max_documents": 10,
+          "minimum_distinct_periods": 2,
+          "minimum_period_span_days": 330,
+          "query": "revenue sales total revenue revenues",
+          "request_id": "signal:revenue_growth_yoy:v3",
+          "source_types": [
+            "financials",
+            "company_facts"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "revenue_growth_yoy:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 2,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          },
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000095017025101102",
+                "sec:cik_0000895728:000089572825000006"
+              ],
+              "phase": "initial",
+              "request_id": "signal:guidance_acceleration:v3",
+              "source_types": [
+                "earnings_call",
+                "company_announcement",
+                "press_release",
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+          "lookback_days": 365,
+          "max_documents": 10,
+          "query": "guidance outlook forecast raises guidance raised guidance lowers guidance lowered guidance reaffirms guidance reaffirmed guidance updated guidance revised guidance now expects management expects company expects",
+          "request_id": "signal:guidance_acceleration:v3",
+          "source_types": [
+            "earnings_call",
+            "company_announcement",
+            "press_release",
+            "filing"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "guidance_acceleration:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 250,
+          "observed_observation_count": 250,
+          "observed_period_span_days": 364,
+          "query_evaluated": true,
+          "query_matched_document_count": 1,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+            "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+              ],
+              "phase": "initial",
+              "request_id": "signal:max_drawdown_1y:v2",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure maximum drawdown from the point-in-time one-year price series.",
+          "lookback_days": 400,
+          "max_documents": 10,
+          "query": "adjusted close price history",
+          "request_id": "signal:max_drawdown_1y:v2",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "max_drawdown_1y:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 250,
+          "observed_observation_count": 250,
+          "observed_period_span_days": 364,
+          "query_evaluated": true,
+          "query_matched_document_count": 1,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-09-30T00:00:00+00:00",
+            "content_hash": "e2877860464df963e48439173ac0d24bb4769b9f82a6c1710d0246eb370b6535",
+            "document_id": "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+              ],
+              "phase": "initial",
+              "request_id": "signal:price_momentum_126d:v2",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series.",
+          "lookback_days": 400,
+          "max_documents": 10,
+          "minimum_observations": 127,
+          "query": "adjusted close price history",
+          "request_id": "signal:price_momentum_126d:v2",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "price_momentum_126d:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 0,
+          "query_requested": true,
+          "query_status": "unmatched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "Source-data external acquisition is not authorized.",
+          "provider": "alpha_vantage",
+          "reason": "external_not_authorized",
+          "request_id": "signal:negative_word_count:v2",
+          "source_types": [
+            "news"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "signal:negative_word_count:v2",
+              "source_types": [
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Count configured negative terms in complete point-in-time company news source documents.",
+          "lookback_days": 365,
+          "max_documents": 10,
+          "query": "risk loss delay decline warning",
+          "request_id": "signal:negative_word_count:v2",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved"
+      },
+      "signal_ref": "negative_word_count:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 1,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000095017025101102"
+              ],
+              "phase": "initial",
+              "request_id": "signal:order_confirmation_disclosed:v3",
+              "source_types": [
+                "filing",
+                "news",
+                "transcript",
+                "10-k",
+                "10-q",
+                "8-k",
+                "company_news",
+                "sec_filing",
+                "earnings_call"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+          "lookback_days": 180,
+          "max_documents": 10,
+          "query": "order contract offtake binding award customer order delivery schedule named counterparty purchase agreement supply agreement new order offtake agreement binding contract",
+          "request_id": "signal:order_confirmation_disclosed:v3",
+          "source_types": [
+            "filing",
+            "news",
+            "transcript",
+            "10-k",
+            "10-q",
+            "8-k",
+            "company_news",
+            "sec_filing",
+            "earnings_call"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "order_confirmation_disclosed:v3"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 2,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          },
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000089572825000006",
+                "sec:cik_0000895728:000095017025101102"
+              ],
+              "phase": "initial",
+              "request_id": "signal:order_quality:v2",
+              "source_types": [
+                "filing",
+                "company_announcement",
+                "customer_announcement",
+                "earnings_call"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue.",
+          "lookback_days": 730,
+          "max_documents": 10,
+          "query": "purchase order backlog contract award customer commitment",
+          "request_id": "signal:order_quality:v2",
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "customer_announcement",
+            "earnings_call"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "order_quality:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 2,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          },
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000089572825000006",
+                "sec:cik_0000895728:000095017025101102"
+              ],
+              "phase": "initial",
+              "request_id": "signal:commercialization_status:v2",
+              "source_types": [
+                "filing",
+                "company_announcement",
+                "customer_announcement",
+                "earnings_call"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable.",
+          "lookback_days": 1095,
+          "max_documents": 10,
+          "query": "commercial launch commercial shipment scaled sales",
+          "request_id": "signal:commercialization_status:v2",
+          "source_types": [
+            "filing",
+            "company_announcement",
+            "customer_announcement",
+            "earnings_call"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "commercialization_status:v2"
+    },
+    {
+      "resolution": {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": null,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 2,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": true,
+          "query_matched_document_count": 2,
+          "query_requested": true,
+          "query_status": "matched",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 2,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-02-14T12:10:59+00:00",
+            "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+            "document_id": "sec:cik_0000895728:000089572825000006"
+          },
+          {
+            "available_at": "2025-08-01T11:02:37+00:00",
+            "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+            "document_id": "sec:cik_0000895728:000095017025101102"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0000895728:000089572825000006",
+                "sec:cik_0000895728:000095017025101102"
+              ],
+              "phase": "initial",
+              "request_id": "signal:customer_concentration:v2",
+              "source_types": [
+                "filing",
+                "earnings_call",
+                "customer_announcement"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+          "lookback_days": 1095,
+          "max_documents": 10,
+          "query": "customer concentration major customer revenue customer",
+          "request_id": "signal:customer_concentration:v2",
+          "source_types": [
+            "filing",
+            "earnings_call",
+            "customer_announcement"
+          ]
+        },
+        "status": "resolved"
+      },
+      "signal_ref": "customer_concentration:v2"
+    }
+  ],
+  "summary": {
+    "case_id": "cik_0000895728:20250930",
+    "meets_existing_0_8_signal_input_fraction": true,
+    "resolved_fraction": 0.9444444444444444,
+    "resolved_signal_inputs": 17,
+    "signal_ref_denominator": 18
+  }
+}

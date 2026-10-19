@@ -1,0 +1,178 @@
+{
+  "schema_version": "bounded-ms-annual-pointer-v1",
+  "inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+    "sha256": "5888ce3bc68708ed29f908f9a5386b28c48023cc2009940909855c3f44d39aa1"
+  },
+  "scope": "Only the five already retained MS root/history array caches enumerated in the fixed inventory. No other run/cache roots, Company Facts, global namespace or archive pages searched.",
+  "company_id": "cik_0000895421",
+  "case_cutoff": "2025-07-31T00:00:00+00:00",
+  "annual_pointer_status": "unknown_in_checked_arrays",
+  "precutoff_10k_rows": [],
+  "checked_arrays": [
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "parallel_array_count": 19703,
+      "precutoff_annual_rows": 0,
+      "annual_rows_in_arrays": [
+        {
+          "accessionNumber": "0000895421-26-000086",
+          "filingDate": "2026-02-19",
+          "reportDate": "2025-12-31",
+          "form": "10-K",
+          "acceptanceDateTime": "2026-02-19T21:42:18.000Z",
+          "primaryDocument": "ms-20251231.htm",
+          "submissions_binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+            "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+          }
+        }
+      ]
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "parallel_array_count": 19783,
+      "precutoff_annual_rows": 0,
+      "annual_rows_in_arrays": [
+        {
+          "accessionNumber": "0000895421-26-000086",
+          "filingDate": "2026-02-19",
+          "reportDate": "2025-12-31",
+          "form": "10-K",
+          "acceptanceDateTime": "2026-02-19T21:42:18.000Z",
+          "primaryDocument": "ms-20251231.htm",
+          "submissions_binding": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+            "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+          }
+        }
+      ]
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+        "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+      "parallel_array_count": 2088,
+      "precutoff_annual_rows": 0,
+      "annual_rows_in_arrays": []
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+        "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json",
+      "parallel_array_count": 2032,
+      "precutoff_annual_rows": 0,
+      "annual_rows_in_arrays": []
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "parallel_array_count": 2005,
+      "precutoff_annual_rows": 0,
+      "annual_rows_in_arrays": []
+    }
+  ],
+  "linked_but_not_retained_pages": [
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "declared_link": {
+        "filingCount": 2008,
+        "filingFrom": "2025-02-20",
+        "filingTo": "2025-03-29",
+        "name": "CIK0000895421-submissions-004.json"
+      },
+      "retained_archive_status_in_same_root": "not_present_in_checked_root"
+    },
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "declared_link": {
+        "filingCount": 2008,
+        "filingFrom": "2025-01-06",
+        "filingTo": "2025-02-18",
+        "name": "CIK0000895421-submissions-005.json"
+      },
+      "retained_archive_status_in_same_root": "not_present_in_checked_root"
+    },
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "declared_link": {
+        "filingCount": 2005,
+        "filingFrom": "2025-03-13",
+        "filingTo": "2025-04-19",
+        "name": "CIK0000895421-submissions-004.json"
+      },
+      "retained_archive_status_in_same_root": "not_present_in_checked_root"
+    },
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "declared_link": {
+        "filingCount": 2138,
+        "filingFrom": "2025-02-03",
+        "filingTo": "2025-03-11",
+        "name": "CIK0000895421-submissions-005.json"
+      },
+      "retained_archive_status_in_same_root": "not_present_in_checked_root"
+    }
+  ],
+  "exact_missing_cache_candidates": [
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-004.json",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/82bd42f97d049ae881167ad6.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-004.json",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/82bd42f97d049ae881167ad6.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-005.json",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/347942761b86060cdf82b363.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-005.json",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/347942761b86060cdf82b363.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "status": "not_present_in_checked_root"
+    }
+  ],
+  "conclusion": "No pre-Jul31-2025 MS10-K accession/primary/acceptance pointer is established by these retained arrays. Missing linked archive caches remain unknown; later10-K cannot substitute. Annual plus Q1 may still be required for the operating menu.",
+  "new_requests_proposed": 0,
+  "external_requests": 0,
+  "source_appends": 0,
+  "models_labels_signals_fullprepare": 0,
+  "fixed_inventory_and_proposal_unchanged": true,
+  "profile_interpretation_clarification": "Whole-page filingDate extrema equality is not an existing hard gate. Prior recorded root filingTo/page-max differences do not prohibit every target. Any later extension should verify true root issuer/link, complete flat shape, unique exact target/form/primary/accepted/document equality and target membership in the declared date window where applicable, without changing clocks or repackaging sources.",
+  "ms_old_clock_scope_clarification": "Exact native reconstruction establishes a retained official cache chain matching the old original clock; it does not identify the August original writer or prove the newer API clock wrong."
+}

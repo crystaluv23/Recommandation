@@ -1,0 +1,5 @@
+{
+  "raw_feedback": "status: 1\n\nPre-push lint feedback\ntimestamp_utc: 2026-10-19T21:51:15Z\nrepo: /Users/l/Project/Recommandation\ncommand: scripts/lint_repo.sh\n\nRepository lint\nroot: /Users/l/Project/Recommandation\n\nPASS: required meta and lint files exist\nFAIL: advance substitutes lower-level evidence\nFAIL: meta convergence check failed\nPASS: .githooks/pre-push is executable\nPASS: scripts/lint_repo.sh is executable\nPASS: git core.hooksPath is .githooks\nPASS: no merge conflict markers\nPASS: no trailing whitespace\nPASS: no hand-written outcome label constants\nPASS: local markdown links resolve\n\nLint result: FAIL (1 issue(s))\n",
+  "cause": "Root classified local data prerequisite progress as a convergence acceptance advance, whose existing required_level is live. The data-only evidence cannot satisfy that whole-chain live requirement.",
+  "correction": "Keep evidence level local and acceptance open. Preserve measured source progress in iteration result/evidence but clear the invalid acceptance_advances entry. No thresholds, required levels or checker behavior changed."
+}

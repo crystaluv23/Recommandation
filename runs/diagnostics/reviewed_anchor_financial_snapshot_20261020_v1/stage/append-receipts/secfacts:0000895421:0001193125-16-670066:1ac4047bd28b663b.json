@@ -1,0 +1,10 @@
+{
+  "append_returned_true": true,
+  "case_id": "cik_0000895421:20250731",
+  "complete_load_equal": true,
+  "document_id": "secfacts:0000895421:0001193125-16-670066:1ac4047bd28b663b",
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts/cik_0000895421/secfacts:0000895421:0001193125-16-670066:1ac4047bd28b663b.json",
+    "sha256": "2b6bafea0f8e2548573d6c9369ac6bab8b834a8523afb07120da755656b44407"
+  }
+}

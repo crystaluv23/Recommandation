@@ -1,0 +1,174 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "a6ced8d58bd4219e50e9a2196bd3182fab184c754d2b0812c1c750aacb36d278",
+      "content_hash": "b68e42a504058d0597b5f574c7116449cceb741825e4b8b3e43088c51c1c94fb",
+      "document_id": "secfacts:0001801368:0001801368-20-000002:b68e42a504058d05"
+    },
+    {
+      "canonical_record_hash": "554966c4d8a2f6cc5de8631c87a300d87344c7fa938dd20f8b0810abbb7813e7",
+      "content_hash": "98e11fe735736dfb215f3505b887d9a0d6d75af1e00c1a01c7a8a64abe134bf2",
+      "document_id": "secfacts:0001801368:0001801368-20-000005:98e11fe735736dfb"
+    },
+    {
+      "canonical_record_hash": "a5fc761e989b803aa6932f3455070dfff7a5eeb122df24168406125e4b44af35",
+      "content_hash": "919a1c9c26d0fcf3186524e5bd7c5b900ea2edd3494f48500f8d5ccfb89362d3",
+      "document_id": "secfacts:0001801368:0001801368-20-000009:919a1c9c26d0fcf3"
+    },
+    {
+      "canonical_record_hash": "f6ea61de772aec3c659a891fa646eec6cf2fcbe1a02f8f1f8acf7e37597955fc",
+      "content_hash": "6f5b87b2fc7b3df690776fab30cb07adc2eecb0d13a429060b223b4cecccf2cf",
+      "document_id": "secfacts:0001801368:0001801368-21-000011:6f5b87b2fc7b3df6"
+    },
+    {
+      "canonical_record_hash": "57aee509ca95ed54f39127f56675e3dc032d448ec02cf996e15c2a526f771e4d",
+      "content_hash": "79ad349b320722060a9d748a2ecedc7df8cee5cfa2ae7879847f24ade91d06d1",
+      "document_id": "secfacts:0001801368:0001801368-21-000020:79ad349b32072206"
+    },
+    {
+      "canonical_record_hash": "2daece783452133f6bd706991cb98746c0c29acad3508d46b77e4e6f96dc707b",
+      "content_hash": "c14bc18cdb494349ef8c03fdecec983b365081c0ce270d532e1c3cec2aa096c4",
+      "document_id": "secfacts:0001801368:0001801368-21-000036:c14bc18cdb494349"
+    },
+    {
+      "canonical_record_hash": "bf6ab03094bd9002e3bb84048fbf3dc6b04f8d4e17745eeb0730e926f6fe3f2c",
+      "content_hash": "fffcd444481fdc4e35a93f685958bd94d9befa080af56d5e18f8837e56f12228",
+      "document_id": "secfacts:0001801368:0001801368-21-000046:fffcd444481fdc4e"
+    },
+    {
+      "canonical_record_hash": "9c4dd377a7c102944992221c962272ae6281bc3aeedb91b75bb0ddcc69b41fcb",
+      "content_hash": "53b35602be7a5278ed89f03bf4e90ba9af80c97287a53306f1d9ea12e4d3a58e",
+      "document_id": "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278"
+    },
+    {
+      "canonical_record_hash": "6f2ccc51cf2a0652aadf7198e42026ca8254a45f14b06c6892757e8272bfe848",
+      "content_hash": "7e0a3d784cf0dcc24ab0f2bf15bb3903edcf6d17542c1f0223c78bd4c1fdc8f2",
+      "document_id": "secfacts:0001801368:0001801368-22-000017:7e0a3d784cf0dcc2"
+    },
+    {
+      "canonical_record_hash": "a35f2ad6a1ae36c35d9cc43a682f0bd3b6c598748c4406346849fcc09e7ae22e",
+      "content_hash": "10d176bf138b2f4524cd09c70577d6287c83239bff106917b46e9b452ae8efc8",
+      "document_id": "secfacts:0001801368:0001801368-22-000030:10d176bf138b2f45"
+    },
+    {
+      "canonical_record_hash": "af052cee642f30db4bd4f4294370b3265ecac092ff5b1b9764acb7d6c547d716",
+      "content_hash": "15b5e211f2083e916e49a9b824c3904b8e1bae95a3f2207999d3b4dc86f9ac2e",
+      "document_id": "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91"
+    },
+    {
+      "canonical_record_hash": "8581cca3722abb08091e6824aaec5080406d9dfb75d0c62034d20224abdaa30e",
+      "content_hash": "ea3ebf5c32e9d712f9b99a699b8ae2718ab7091e08a1ffec561a3dde84a89bc1",
+      "document_id": "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712"
+    },
+    {
+      "canonical_record_hash": "36ee4fdd0262e5653f8a922f8f7f8e24090326458e042f6f7b3a38d259d2ad71",
+      "content_hash": "d9db9eb72cc7663f1c747901b91f71fcef57b038b51ec05487b3ef1fd4f1f313",
+      "document_id": "secfacts:0001801368:0001801368-23-000020:d9db9eb72cc7663f"
+    },
+    {
+      "canonical_record_hash": "2f5de96435f777afda2511caba2dcc520286dcae561661b7f2173da29ab0f28e",
+      "content_hash": "bda1b81463e308afda8baa2260d88ffe7b1758109d410633ab9b4fb9b663cea5",
+      "document_id": "secfacts:0001801368:0001801368-23-000029:bda1b81463e308af"
+    },
+    {
+      "canonical_record_hash": "23b2099d3fb3ba75a0cca0fc91b7a962e6353717556f620721bf0db3e229b662",
+      "content_hash": "c0f62ca12c1ba398ffb107c9e62b5fdfc545d5f84dba57602fb40ec7abbd65f7",
+      "document_id": "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398"
+    },
+    {
+      "canonical_record_hash": "39a4f4a955f2a26b9bfe4e6a79944a7ac5fead6937698fefee0f797375473d35",
+      "content_hash": "496118c941458ffd5a451539dcd1662923b0a60042a6a8876a4ab19c062ea289",
+      "document_id": "secfacts:0001801368:0001801368-24-000014:496118c941458ffd"
+    },
+    {
+      "canonical_record_hash": "d8db7b7143a01bb478d118049c91bfa67e76ae4b5eeb929f935d42902f480d96",
+      "content_hash": "a7b6cd99e6eeec655b6a78f6d13434c3316d86be14e1a8993071427e914c8404",
+      "document_id": "secfacts:0001801368:0001801368-24-000045:a7b6cd99e6eeec65"
+    },
+    {
+      "canonical_record_hash": "43fc9aa98a794df679ee7e98fbebd1b20078521b3b9a4705167aa67c29e25557",
+      "content_hash": "02e80e321064be6d86c530345661ef4e8883ca0321eb82ef304bb01e96bbfa8a",
+      "document_id": "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d"
+    },
+    {
+      "canonical_record_hash": "69fd250db3b7d559485534f92f7e982cb2a15305efc0a281e12411527f6f5c0b",
+      "content_hash": "0eeef78fad17876b917b500f905249125d25eca7255bd697dc7014e80ecfb8aa",
+      "document_id": "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b"
+    },
+    {
+      "canonical_record_hash": "60aa79bc6be42ed833bc8e016afa282be3f1adb256b400ca642267de669c5d68",
+      "content_hash": "851869cd6b49f0ae1a3da8a8b6bd86c313c39aefa42e8d20c3a978d9d05715ab",
+      "document_id": "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae"
+    }
+  ],
+  "item": {
+    "cik": "0001801368",
+    "company_id": "cik_0001801368",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001801368.json",
+    "symbol": "MP"
+  },
+  "normalized_at": "2026-10-19T21:39:41.976221+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "2f61952eafebecb9bb12ec72ad50b4ab2e7504d8d4caf7776ca54e301729d2c2",
+    "acquisition_selection": {
+      "available_at_through": "2025-03-31T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-03-31",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001801368/sec_edgar:cik_0001801368:sec_company_facts_raw_response:2cc9540b9e2383eb226aef83.json",
+    "sha256": "85ab87e6473fb026fd1554d32db99db3c69aab95beb560913ac38376983bea1f"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-03-31T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-03-31",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4facb8267b25b39c5c0af5b8.json",
+    "sha256": "dae7cc415e0545dcf577a3827af0ff1ca8a367374dc87773b94999548e314361"
+  }
+}

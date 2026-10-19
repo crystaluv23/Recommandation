@@ -1,0 +1,930 @@
+{
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_anchor_financial_snapshot.py",
+      "sha256": "e7b97734d546b668f73df2bb570949ee7bb422d31f7ce241678d091e586a3929"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_anchor_financial_snapshot.md",
+      "sha256": "c79556a7fc652028918c982168fd3068cb0c6f896cfe8419e08b98da95ac7aed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "8e30357dacf367d05425aa8b491090c36a53c6d7095c7bdf36183d787cd2e9d6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md",
+      "sha256": "a91763bf23d75049ac58a6afcdf707e0038636751281df3d547c73f872b687fd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "acac01e4ba79291d9f32a660ebe0a4db48e24e81011bbe389f633f28b9d4efb2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "207195fbf751d2bf69ffe3e8fdf11c23c16c2b6171457f250d4df67b760f2080"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "750731968e94afe106a7ce1c216a454bf97f81548b506bb69e31ac3011ab1112"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "07d697e30483b37703cecf9355783148fd9e616ed9f9d907ce612a0ffa655e43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    }
+  ],
+  "exact_cache_denominator": 15,
+  "fixed_case_denominator": 15,
+  "full_prepare_allowed": false,
+  "inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/financial_source_qualification_20261020_v1/inventory.json",
+    "sha256": "4da1faff57f64bcb1e5571d3b3b7bd4d006ad8b5ac427da59a76a5b279d63f8b"
+  },
+  "labels_allowed": false,
+  "legacy_aggregate_denominator": 15,
+  "model_allowed": false,
+  "network_allowed": false,
+  "old_readiness_result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/result.json",
+    "sha256": "ed93e8cc13b6acfa68b6954da504390f17adda86351df783384036c84457bc34"
+  },
+  "old_source_review": {
+    "path": "/Users/l/Project/Recommandation/reports/local-trusted-anchor-operating-review-20261020.json",
+    "sha256": "1cc0470ab342bdf0a7181bab37cbf2e677a026325b25af21186324acb7bcb376"
+  },
+  "old_view_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0000.json",
+      "sha256": "f045a69c3fe9d4ab268c46e93e3465e50b471d6bbdd45dfc56347c6ee68ed009"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0001.json",
+      "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0002.json",
+      "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0003.json",
+      "sha256": "a6f01aede7eee1276ab9610287885c7b6a3a69f33a809c5df15c1a182751c1fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0004.json",
+      "sha256": "c13102b09b3ab073cf72f818d5ed93f89baee21c2b384e08f6ffafd153cd0e3b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0005.json",
+      "sha256": "4ea040a461104f7b2ac72bbac679183e8b58f162ff0e149b11ba984d800a3115"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0006.json",
+      "sha256": "d2140b7dbce2f2882a96126c5648168572797833c7e9310dfe7ae32a77c144d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0007.json",
+      "sha256": "f2029a6683484edb4139cbe1af780b900be134cd3e6f9b731dbc1e14c4f864f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0008.json",
+      "sha256": "b1138d5fd1430716020cfb798cf71cc655c4b143995a14f39f9a69466071a65e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0009.json",
+      "sha256": "0401e897b23441870f85f345ac958ca21a2ed7e30762e035efd4430486cec62e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0010.json",
+      "sha256": "eee537143ee9609deeb20488663b580fbb14a783dc9257a36417f3f444bff308"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0011.json",
+      "sha256": "59fd1abb7414a8ad1ecfc07f3ec9b992ab953145ef414c0d495d3d1c9505dc7b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0012.json",
+      "sha256": "e45b003a44237fcf914d22f42e7ade8805839214a1eee9bcd089f3fd77cef1d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0013.json",
+      "sha256": "95d7f3b8a18caaf409f8182706a7906ffe3a91338a970b73ce43b056ed847cb4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0014.json",
+      "sha256": "0241c2d24739bf2a62eeaf379086c0ce8d2ac526189d641a4522d9288dfe439f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0015.json",
+      "sha256": "1facc322e54e9fc882bfe4df9322117dcadd84ab7569f29a8a667ebc98b3a627"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0016.json",
+      "sha256": "b36a6964950b6b62eff8c4cbfa8efb0c0e7a7bec2eedc926e12bfd99295e7f7c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0017.json",
+      "sha256": "dca7dc2465253c6d70e6e756b94ffde765c0be3440973f56a628f6865f513cbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0018.json",
+      "sha256": "edf007d9ebb741a6e7eb9a03faa75d02d346a0612def6704942971e09d45eebb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0019.json",
+      "sha256": "031d98815b8354228940eb3199b44775d2069a85da061494a1564c6dbacf7b52"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0020.json",
+      "sha256": "26c26673b2249272b302f4b4587023d35c1cc9d635fc7fc3d42b689510c337d9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0021.json",
+      "sha256": "88632704b4b0cd6f1079621beecfb8b5ca4e7ba2af15a49f70a4a1f33ae7f76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0022.json",
+      "sha256": "9c172d0e48f52a23c333992b8bb14024b9a747e7029b22e6aa7ee4003dde6745"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0023.json",
+      "sha256": "3f7eba67eb6726889b9e27c7b31021c5c5d0a199a6af36907aeb8cbeb91c21ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0024.json",
+      "sha256": "aa109d3135156810c3893e53d700bf15a05f2850c68fb19e6c4545b709396d43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0025.json",
+      "sha256": "e81b74f2b32b68d79716ee30b6e7b72c8a37cb50b4b6a6adf94065505226668b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0026.json",
+      "sha256": "1e41d0c2c22582a994bfa5aafaf91dcf51782e8fb2b5b159e018194bff55a106"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0027.json",
+      "sha256": "f27685f9bd686871c5c76f46e2375155f86fed22e484a711bb7a7c0d01033779"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0028.json",
+      "sha256": "6b3673e71f9021cd99c107f9dcd60b44e16167c13d7cbdcea142af9baa20b3f0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0029.json",
+      "sha256": "43dd7b96f0c0f2b6627d24ead98149af80732fa5ff04ace5eea75fc346ca15a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0030.json",
+      "sha256": "02e14462f629199f72d1d2bff826f20d63a85aa5af611767446f28a587c4c19b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0031.json",
+      "sha256": "1c5f84ff09824c8d8326f23f509216539f40d5ebaeee2a8063e19dcc282b0b32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0032.json",
+      "sha256": "b5a22cd79ab9be328c20c8eb64e515450179268fdea5b302bfebed1463599395"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0033.json",
+      "sha256": "fcb10a4cec1b8ccc7d5c3734c986db7e5240c8fe11a80a12ba3e549ea49caa73"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0034.json",
+      "sha256": "f29c053928de19c927c8bda51bdd0d82ec995ee0572dd37f6a31d4a8da8808e2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0035.json",
+      "sha256": "f8bb21e524c9eae2a395841fcb9fa06cc48e862136637e3b3fe18f9ebb14b613"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0036.json",
+      "sha256": "0d1eda6d9ae6c48893ca42b05d177ad18b867ccefb51e920641cbfab431ca416"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0037.json",
+      "sha256": "93dddd2ab911094ed80e57ba48b9ff1e9feb785737982190a3b49f23941c98db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0038.json",
+      "sha256": "cafd50e63919b3df17cbdd75f6223d132899281f958e70f1b6ea9ff3b2afdf68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0039.json",
+      "sha256": "761da1b5c8b34c28e092c1f8c581b285f1976566dd7419b1ea614680b663a31b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0040.json",
+      "sha256": "5a02c80d657bb6eccfbb42851955640f5cd3daea019582570f59b2233c7ff6a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0041.json",
+      "sha256": "6080267cb40047e3bde396ed8b236e880ea47026a434ffd64cb846d454fe3af9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/documents/0042.json",
+      "sha256": "7c37a215fa473bf13dfd99fbf5c6ad37a81c60b4131a6d015a385bc6bbd3b533"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/oracle.json",
+      "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/snapshot/reviewed_snapshot.json",
+      "sha256": "d0c5c0ba3fe2afa4740b56a9697997b165592e0d8197c7c605d4dbca6bae4147"
+    }
+  ],
+  "operating_inputs": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_operating_source_snapshot_20261020_v1/input_manifest.json",
+    "sha256": "c01a530a4a85020706007a46f349c849bf08249a556dcc82cb592b71a652dda5"
+  },
+  "oracle_identity": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/oracle.json",
+    "sha256": "b56ff5db23439091179dc4d9194d07bd42e38bfcb7743c0a18506ca2a9145855"
+  },
+  "plan_hash": "567c7db62347538dbb654735fddf6369a5b2ec02082d9dbdf8e557e8e60f5409",
+  "proof_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "raw_proof_denominator": 15,
+  "registry_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/registry.json",
+      "sha256": "41da62a18a371e11376933fb7dfe57f22440f3129467e2248a8c5d45d63ee0f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+      "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+      "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+      "sha256": "c8a90a2f7c4b0000c038f547efd2012414abb1c57fcf457c9bc56a9e9dd823fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "sha256": "00a4595fe13d41e8bc0e972ef99fe6f9a8e5c46988aa47a667d8bf8816b309da"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+      "sha256": "a4c30faa11f819b8f677939b56e0d1a92c2f3cfc1f798fe9d01714ffacd9c885"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "sha256": "7f442b11c3fb3407ad0d7726e4fb28cbaa9f33c7c76ce6b52eaa1c9331bb6f60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+      "sha256": "19197cadb4729a131cf3c968ccc369ee0c7c0054ca95b719f7ff247f1b75613e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+      "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+      "sha256": "cccc639ea02b2aaad172239a438bd429b950116a5d2a2d33f2aa0d677901d276"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "sha256": "e2852a024a76e9b1b7f836c101ca02e09150727bbba93dbc6b1d077da76e4a1a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "sha256": "91acc7bf052c8a39114c5a119e6a9bec9c6093ccaf4ae65ea832d605255636cf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/spec.json",
+      "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/management/guidance_acceleration/versions/v3/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/max_drawdown_1y/versions/v2/spec.json",
+      "sha256": "98bd4cbc4aaf1b7fca8bfaa8d14f0167da52f4a3cd94e9caa09b3bdec1536786"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/market/price_momentum_126d/versions/v2/spec.json",
+      "sha256": "5fdc0c057e2c419f84b81ce8f384768c6c138b28e47e24851aeed6164c7c8d1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/news/negative_word_count/versions/v2/spec.json",
+      "sha256": "32213a3e163e264e5a98e085c547d872609c2c60b23fd6bd3c8cae961112d025"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+      "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+      "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/spec.json",
+      "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/orders/order_quality/versions/v2/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/spec.json",
+      "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/product/commercialization_status/versions/v2/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/spec.json",
+      "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/risks/customer_concentration/versions/v2/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+    }
+  ],
+  "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "registry_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "registry_source_inputs": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/inputs.json",
+    "sha256": "aac7581f1a381338282da198d9028f5c09ddff4cae9125658c1b46614abb41da"
+  },
+  "registry_version": 12,
+  "resolution_denominator": 270,
+  "schema_version": "fixed-anchor-financial-plan-v1",
+  "signal_apply_allowed": false,
+  "signal_ref_denominator": 18,
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/e48b789271e3894197c53e5b.json",
+      "sha256": "4c6d86309c4d37707745f545ddb22fbcaab5332f60f57c8f9f2e97f20bc4fc44"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000701818/sec_edgar:cik_0000701818:financials:e6788b243ea9f3d1fd159b77.json",
+      "sha256": "9633657c5cc28261f7b05d20614909edcf1fa10e83354dcdf7f28068a47dc3dd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000701818/sec_edgar:cik_0000701818:sec_company_facts_raw_response:e78b516df0e46826ba0f8675.json",
+      "sha256": "20a57b7eb813474500239872e36ffb8ae17e008e36baca942457ad47cada1422"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/707095b97d4a11dd41ed5099.json",
+      "sha256": "9da57c7f4e4f55ab2a8853a8a4813c88b6cf7eaad177000d3d5b41d987ad33b5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001174922/sec_edgar:cik_0001174922:financials:af02b34425cf9889a432fab8.json",
+      "sha256": "80b86401d9c5360677b49566e3bb1a12f61e87852b3e8fad1c2f5a88def18319"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001174922/sec_edgar:cik_0001174922:sec_company_facts_raw_response:8fe26eecbc42b8fefba257f0.json",
+      "sha256": "199d5d62a6bd484a23d79419bc81d696df01611246a57bd8dd221c190536d7f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json",
+      "sha256": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000895728/sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e.json",
+      "sha256": "6027c4651f4bf6c3d9d9ef563c8a0553a26b3b22213beb58fe802d6e423c6148"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000895728/sec_edgar:cik_0000895728:sec_company_facts_raw_response:a6da747c36bc1fc5a017a18d.json",
+      "sha256": "fde154a1bcfb6b17e99dfc60474cc5b92fc5838477dcb02f85499bdffd3b244f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/71c8d72b414df8ea108f88b6.json",
+      "sha256": "7278e57575af886912ca77a0fe9e773d8609ba43ff6f6b30973bc13c2bf015ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000895421/sec_edgar:cik_0000895421:financials:ca6f74c0cda71b17a7b70f7a.json",
+      "sha256": "b91080da976b0abd480e71889a3489aeeb411e19e8c4935e8294a8bd71191675"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000895421/sec_edgar:cik_0000895421:sec_company_facts_raw_response:75f34c55c9e90ff92fb39b5e.json",
+      "sha256": "33a37b7c37c05bf8158394281fcc0ad3297fa506ab0a77d326dc83920bc30fc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/38cb85907571ff499dbde519.json",
+      "sha256": "8d3abdf30ec3d1536fb23d869191fa320173fd2efeb9a207458819152f3d3a27"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001869198/sec_edgar:cik_0001869198:financials:dbd7ec9ca3018badd98514e9.json",
+      "sha256": "895bb601b534a21eabb6c9a49866b786676a19ce16e908dd02eb7769dc8a3e51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001869198/sec_edgar:cik_0001869198:sec_company_facts_raw_response:1b75f3fbb47513ed0a340d14.json",
+      "sha256": "bed3b8263d28147823e16beee0c0a6345aac956141a078a374a87d9ebad3434f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/e32274f5da542746ad601d07.json",
+      "sha256": "9953daf32a227b69acac0ed5c502f646f19086a684f5d1b241024d8aa92261d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001576942/sec_edgar:cik_0001576942:financials:91d5db6ede527161129df429.json",
+      "sha256": "90bd339233db9048f21628355923223ffb90c9c4abcf07472c65926a531249bb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001576942/sec_edgar:cik_0001576942:sec_company_facts_raw_response:2b14bbb159e6acac111db620.json",
+      "sha256": "c1a7aa43a60fca433eada49bceec44e4c0e11410adb48d45c46623df633fcc9c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/f06273986e446356870e6858.json",
+      "sha256": "836e05a52213a515c37a237fcac1722ddf2c06d744ba0abbd947896d86aae079"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000936395/sec_edgar:cik_0000936395:financials:994cb910fa47094f92890608.json",
+      "sha256": "e116589307061e38be95b44dfcaa2565bd9d61877e88b4c33dab28c3b8eec93c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000936395/sec_edgar:cik_0000936395:sec_company_facts_raw_response:9e42256bac287327811949e9.json",
+      "sha256": "789f3f19a78ed39e214c8013576e31859f23fde77492cba87424bdeccb1ddebd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json",
+      "sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001590364/sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27.json",
+      "sha256": "476241fc0d658fb9e97effb29020878efa08d30de61fba5cde2bbd54e05d21b8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001590364/sec_edgar:cik_0001590364:sec_company_facts_raw_response:8c0f3341c9c36bc0fe088b29.json",
+      "sha256": "d7a45cca3c9f730cd319eee3cc52d44a613843147f3288978f76e281181d9d16"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/49876a3c63986b9f6f0f3b9a.json",
+      "sha256": "6c7403a0b1f67c49b76aa4976c82c41840ec50aaa25693ff5c764b55bdb6206a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001018963/sec_edgar:cik_0001018963:financials:4206eeb51c29cd13cdfffd1a.json",
+      "sha256": "03a4358133e5d543f7e68f3a26308120ce3576b243667fb8a03e2d22e18db89e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001018963/sec_edgar:cik_0001018963:sec_company_facts_raw_response:294e76dd21da38bb396fbe0a.json",
+      "sha256": "fa48b213663530e40b08581d922904a7ffdcf600e99433ff0a0a10060bf69bc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/e5e2e755090619d971d7fb35.json",
+      "sha256": "737424a0933e4fa0bc17cf2164a6d7203987a9eeb0c772b7a2449f82e7870b38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001164727/sec_edgar:cik_0001164727:financials:e29f812f4564ce5b82c8bb45.json",
+      "sha256": "7acb351f57c503473471bff275854dbab8923267d0943d7ecb792db9c250444d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001164727/sec_edgar:cik_0001164727:sec_company_facts_raw_response:b64534c3e4aa25a40d625bff.json",
+      "sha256": "314a585db1bb4c15f169277bdb90bb8d5b90e343caa1ead92b513bf5cc0720b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4facb8267b25b39c5c0af5b8.json",
+      "sha256": "dae7cc415e0545dcf577a3827af0ff1ca8a367374dc87773b94999548e314361"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001801368/sec_edgar:cik_0001801368:financials:c2804905238561821d810b3a.json",
+      "sha256": "7e04272958d722e8d1d60f62c0077b0c269deb9fd5b1ac37f3285b64f57c0b4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001801368/sec_edgar:cik_0001801368:sec_company_facts_raw_response:2cc9540b9e2383eb226aef83.json",
+      "sha256": "85ab87e6473fb026fd1554d32db99db3c69aab95beb560913ac38376983bea1f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/1569cd80fc962fdc004e7f30.json",
+      "sha256": "3dd05d3843a1c2f2c4003a6ad449488d404eb247ff9aacdbf8ed819fd2dbe142"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0002023554/sec_edgar:cik_0002023554:financials:78c706359f8aae145cb43139.json",
+      "sha256": "0548e9e6fa676899e80a8ca682fe456c516918c3bae5e69b6a0e97cd90873854"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0002023554/sec_edgar:cik_0002023554:sec_company_facts_raw_response:8914fac4ec1d1c785ba778ca.json",
+      "sha256": "568b2453ceebeaef523c6ce2122010f3db085ffd0883de3be0302b16a3a3b601"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/e8117a656d491a91c712e4bb.json",
+      "sha256": "0cf257e2f0fdf49041422e604d87ad7b37238f09ba964e998f8ceedaf8b40562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000723125/sec_edgar:cik_0000723125:financials:0cdbc63d8003d80c74bd2c20.json",
+      "sha256": "1f3a06b1d9eec63077c79020a4261e4eb0d46e53e127ba74698666c45a888dbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000723125/sec_edgar:cik_0000723125:sec_company_facts_raw_response:21f3ae79a6452339a4e9d9e0.json",
+      "sha256": "8c6fdbd34838c4d0597f398582e497a632ae2ba043635600494a8f5151219d45"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4015fcea78662eb84822b470.json",
+      "sha256": "3d3266ea00178e5ebf6f955038f491a8b4cc098987c77804449253f5783cadec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001689548/sec_edgar:cik_0001689548:financials:96261dac477ab51ba02f8629.json",
+      "sha256": "b6961d9236f127d42f182e305889719bd61666fabe12e97b9d98743cc9f32581"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001689548/sec_edgar:cik_0001689548:sec_company_facts_raw_response:b04a00e398b906076efba463.json",
+      "sha256": "3bd42867db45b9736eb037899565477bc22b4369e7721268fe5e0ec11be03b0c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/a9dfdc44eb36a2f4a3fa971d.json",
+      "sha256": "0fee025eb15563a9f1277788ba729fadc5558aadec52110e93a2d01b25340949"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001646188/sec_edgar:cik_0001646188:financials:5856d546b0275ffc5e04f776.json",
+      "sha256": "2e8a4a7d9be304c6df08401a7321e10d13c3483f269d3fc02a77d1411081e2c1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001646188/sec_edgar:cik_0001646188:sec_company_facts_raw_response:141b3566248f18b079d90b3e.json",
+      "sha256": "9dd4a33c1ca30f0c47b1e8922f631481bc6bfafd6c8b390946f5c0e6afc37ced"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-19T21:25:57Z",
+    "checked_at": "2026-10-19T21:49:09Z",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
     "source": "root actual get_goal read this source-qualification turn; active local engineering goal, no old experiment resume"
@@ -89,9 +89,16 @@
         "runs/diagnostics/financial_source_qualification_20261020_v1/root-final-98.log",
         "runs/diagnostics/financial_source_qualification_20261020_v1/producer-backfill-final-equivalence.json",
         "runs/diagnostics/financial_source_qualification_20261020_v1/independent/producer-consumer-review.json",
-        "runs/diagnostics/financial_source_qualification_20261020_v1/independent/feature-branch-review.json"
+        "runs/diagnostics/financial_source_qualification_20261020_v1/independent/feature-branch-review.json",
+        "reports/anchor-financial-source-readiness-20261020.md",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/append-inventory.json",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/independent/final-source-review.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/proposal.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json"
       ],
-      "remaining": "Fixed15 sourceview43docs admits24fullannual/interim originals while3newnarratives remainunknown. Latestv12 exact18refs inputprep270:108resolved/162unresolved,13cases8/18 andKGC/MS2/18,0/15>=0.8. Ninefinancialrefs/newsnegativewordall15missing; no full48/defaultv6 readiness. MS clocks conflict sourceheader07:59nooffset/original11:59Z/newJSON15:59Z; currentparser preservesawaretime, originalwriterunknown. F10/Slow/newSignal/wholeloop/MVP remainopen; oldFY/basic0/3 unchanged. Financialproducer/consumer localdefectfamily fixed98tests/independentactualfailure; qualifiedfinancialview and newexactreadinessstillpending, old0/15unchanged."
+      "remaining": "Actual fixed15 financialview650docs:243/270resolved,13/15>=0.8; KGC/MS each11/18 andnews15missing. This is exactv12 source/period input preparation only, not defaultv6/full48 or correct Signal measurement. Ninefinancialref135newresolved andsame-day364excluded with old15030bytes preserved. Missingperiodicbodies/archiveproof, transcriptpolicyproof, freshF7/fullF10/Slow/newmagnitude+directionreuse/wholeloop remainopen; originalFYbasic0/3 unchanged. Independentbenefitlaterunknown."
     },
     {
       "id": "feedback_consumption",
@@ -686,10 +693,31 @@
         "runs/diagnostics/financial_source_qualification_20261020_v1/independent/feature-branch-review.json"
       ],
       "result": "Fixed15 exactcachedsources reconstruct30/30 olddocuments butFTAI364same-dayrows andENB-to-MS relabel violate source/PIT. Sharedtypedperaccnormalizer repairsproducer, strictpersistedlegacyconsumerissuer guard addedafterindependent19527factcounterexample. Root98testspasswithsocketsforbidden; independent actualexecutor persistsvalidation_failed/unavailable. Modernbackfill12docs3380rows/statscompleteequal. Oldoriginals/viewsuntouched; no financialsourcequalification/readinessclose, no GET/model/labels/fullprepare."
+    },
+    {
+      "id": "engineering-mvp-financial-source-readiness-20261020",
+      "strategy": "qualified_typed_financial_source_view",
+      "failure_families": [
+        "financial_source_family_missing",
+        "filed_day_pit",
+        "canonical_record_equivalence",
+        "periodic_source_and_archive_proof_gaps"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/anchor-financial-source-readiness-20261020.md",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/append-inventory.json",
+        "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/independent/final-source-review.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/proposal.json",
+        "runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json"
+      ],
+      "result": "Partial local source prerequisite progress only; not a required-live content-chain acceptance advance. Onefrozen actualdataonlyexecution appends607exactproducts; old15030files and48reviewrows unchanged,new650view/worker/restartcanonicalequal. Independent15cache/607product/all270source-PIT-periodchecks pass. Exactv12:243resolved/27unresolved,13cases17/18,KGC-MS11/18,13/15>=.8 versusold0/15;135newfinancialinputs. FTAI364same-dayrows excluded.0GET/model/apply/labels/fullprepare. Boundlocalperiodicprobe finds nativeoldMSclockmatchingarchivechain butno missedperiodicbodypair inchecked11originals/22paths; primarybodies/archiveproofremainnext."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-financial-source-boundaries-20261020",
+    "after_iteration": "engineering-mvp-financial-source-readiness-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -822,7 +850,14 @@
       "runs/diagnostics/financial_source_qualification_20261020_v1/root-final-98.log",
       "runs/diagnostics/financial_source_qualification_20261020_v1/producer-backfill-final-equivalence.json",
       "runs/diagnostics/financial_source_qualification_20261020_v1/independent/producer-consumer-review.json",
-      "runs/diagnostics/financial_source_qualification_20261020_v1/independent/feature-branch-review.json"
+      "runs/diagnostics/financial_source_qualification_20261020_v1/independent/feature-branch-review.json",
+      "reports/anchor-financial-source-readiness-20261020.md",
+      "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/result.json",
+      "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/append-inventory.json",
+      "runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/independent/final-source-review.json",
+      "runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+      "runs/diagnostics/periodic_source_qualification_20261020_v1/proposal.json",
+      "runs/diagnostics/periodic_source_qualification_20261020_v1/annual-pointer.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -860,21 +895,23 @@
       "Preparation treated ancestor folder names as source identity and therefore discarded qualified flat reviewed documents. Original source-shortage artifact only inspected16Anchors from a2SECview, not all48 or all local candidate prices. Broad associated-test selector also included an old realLabelStore temporarypreflight despite this batch no-label limit; final five bounded tests use explicit stubs and the exception is disclosed.",
       "A valid source store may contain overlapping long and short windows while the default BasicInfo cap selects one. Source admission, exact baseline arithmetic and all-window reading are different claims; preserve original14/15 diagnostic rather than widening a cap to force15. Live SEC archive filenames can rotate: oldroot listing plus new same-name page can disagree onrange/count/target and cannot prove historical acceptance.",
       "Market sources and full operating reports do not supply structured financial observations: exact latest v12 readiness is0/15, not an inferred full-cohort success. A newer official JSON clock can conflict with the original and primary submission header; replaying a healthy aware parser rules out current code shifting but does not identify the original writer or establish which upstream clock is correct. Header local-time semantics must be sourced rather than guessed from a4h difference.",
-      "Exact old native reconstruction hid both same-day filed leakage and foreign-body relabeling. Producer-only repair missed persisted legacy consumer inputs, and changing only old availability would be swallowed by content/id replay. Independent actual-store/executor probes were needed; date-level FeatureRecord is a separate contract, not automatically intraday-safe."
+      "Exact old native reconstruction hid both same-day filed leakage and foreign-body relabeling. Producer-only repair missed persisted legacy consumer inputs, and changing only old availability would be swallowed by content/id replay. Independent actual-store/executor probes were needed; date-level FeatureRecord is a separate contract, not automatically intraday-safe.",
+      "Python bool/int/float equality is weaker than canonical record identity at original, readonly replay and restore. Root also repeated a whole-module selector mistake that read real label hashes and attempted temporary fullprepare; final explicit safe selectors plus tripwires isolate the intended boundary.",
+      "A two-cache search did not identify all retained upstream proof. A specifically located older official root-linked archive exactly reconstructs original MS clock; preserve that new evidence without pretending to identify the original writer or prove the newer API wrong."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "qualified_typed_financial_source_view",
-      "action": "Review the exact15 retained Company Facts caches and newly typed accession products under a minimal explicit financial proof contract; bind issuer, original endpoint/cache, normalization selection, periods/units and conservative availability. Materialize individually qualified products only in a new reviewed view, then measure the same exactv12 requests.",
-      "stop": "No automatic old aggregate admission, same-ID clock rewriting, whole current response as model input, guessed acceptance time, legacy FeatureRecord semantic change or full successor while source prerequisites fail.",
-      "question": "Which exact new typed financial products possess source-specific proof sufficient for historical model use and the existing nine financial input requirements?",
-      "pass": "Each admitted product reconstructs from its bound issuer cache and authorized selection, has valid periods/units/date-only availability and retained primary/source qualification evidence, and is consumed through the actual reviewed-store resolver.",
-      "fail": "Only corrected timestamps, response hash or producer tests support the admission, or retained retrospective/primary-audit gaps remain unresolved.",
-      "on_pass": "Publish a separate reviewed source view and run the fixed15 exact-ref input preparation with all outcomes; then consider broader original contract readiness.",
-      "on_fail": "Retain typed source gaps and obtain only the specific missing authoritative proof; do not substitute prose, shrink the cohort or invoke Plan/model stages.",
-      "new_evidence": "30/30 old reconstruction is compatible with PIT/issuer defects. Sharedproducer and persistedconsumer controls now pass98 tests and actual failure wiring, enabling source qualification without reusing unsafe old aggregate IDs.",
-      "distinguishing_variable": "Financial source-specific historical observation proof and actual exact-ref resolution, rather than numerical presence or local producer correctness."
+      "strategy": "exact_missing_periodic_bodies_and_archive_proof",
+      "action": "Use the bounded KGC/MS metadata/cache proposal to obtain only missing pre-cutoff periodic primary bodies and qualify their real root-linked archive proof. Keep post-cutoff MS Q2 rejected, annual metadata unknown where unproven, and old source/body clocks unchanged. Re-measure the same fixed15 exactv12 requests only in a new reviewed view after qualification.",
+      "stop": "No repeated financial derivation, source-family substitution, archive-to-root repackaging, guessed timezone correction, date-extrema whole-page hardgate, cohort shrink, model stage or full successor while shared input prerequisites fail.",
+      "question": "Can the exact retained official root/archive pointers and missing static primary reports close KGC/MS narrative source gaps under the existing issuer/PIT/full-body contract?",
+      "pass": "Authentic endpoint/body, real root-link/flat-array target identity, form/primary document and acceptance evidence support pre-cutoff periodic records, separately materialized and consumed without changing old evidence.",
+      "fail": "Only cover exhibits, post-cutoff reports, unsupported proof shape, unverified annual pointer or guessed source time supports the claimed operating source.",
+      "on_pass": "Materialize a new explicitly reviewed view and measure the same fixedcase/ref requests; then inspect original full48/defaultv6 prerequisites without changing their meanings.",
+      "on_fail": "Retain exact narrative gaps and seek only the specified missing authoritative source/pointer; do not launch Plan/model or full successor.",
+      "new_evidence": "Financial-specific source qualification changes the same15case exactv12 readiness from0to13/15, isolating remaining narrative gaps toKGC/MS andnews15. Limitedlocalprobe identifies actual pre-cutoff periodic pointers and a healthy oldMS nativeclock reconstruction, distinguishing absent bodies from clock parsing.",
+      "distinguishing_variable": "Real pre-cutoff full periodic body and native official archive target proof, rather than numerical financial records, cover text, newer API clock or a different Registry."
     }
   },
   "successor_prerequisites": [

@@ -7,38 +7,32 @@
 
 ## 当前验收
 
-最新 [SEC财务边界修复](../reports/sec-financial-source-boundaries-20261020.md)：
-固定15case/45原件与cache清单完成，旧adapter30/30重建但不代表合格；FTAI原件含
-364条同日filed、错ENB→MS亦可被旧producer错标。现共享per-accession normalizer
-按完整aware cutoff执行次日UTC政策、严格issuer且不裁旧比较期间；独立发现并补齐
-持久化旧body的消费者issuer拒绝。root禁socket的98测试通过，真实旧ID重放、重启
-及actual executor技术失败均验证；现代backfill12docs/3380rows完整全等。
-旧原件/view不改，[财务profile](../reports/reviewed-financial-profile-20261020.md)已实现并经30安全测试，
-独立bool/int等价反例修至canonical完整比对；实际15case新view尚未执行，旧0/15不改写。
-root此前31关联误带真实labels hash和临时fullprepare拒绝，例外已披露，不作零访问证据。
+最新 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
+固定15case/45旧source对象不缩；607新peracc产品逐canonical append/load相等，
+旧global15030文件字节不变，旧review48rows保留，新650doc view/worker/restart一致。
+独立真实15cache/607products及全部270来源/PIT/期间/observation核对通过。
+精确最新v12/18refs：243resolved/27unresolved，13case17/18、KGC/MS11/18，
+13/15达到既有0.8（旧经营view0/15保留）；135新增均九financial refs。
+news各15、两家各6narrative仍缺。FTAI原364同日rows全部排除，未重写原件。
+本stage0GET/model/apply/标签/fullprepare，不证明语义测量或defaultv6/full48。
 
-最新 [经营来源/readiness](../reports/anchor-operating-source-readiness-20261020.md)：
-原27selectedprimary中26通过现SEC proof，但仅24年/季报经营正文准入、3unknown；
-新43docs typed view恢复/原件绑定全等。15case actual operating13resolved，均明示
-partial_context_budget，非经营事实全读。精确最新v12/18refs共270输入准备：
-108resolved/162unresolved，13case为8/18、KGC/MS2/18，0/15达到0.8；9financial
-及news负词ref各15未解，两market refs各15resolved。此v12窄验不是默认v6/full48。
+[SEC财务修复](../reports/sec-financial-source-boundaries-20261020.md)98测试及
+[新profile](../reports/reviewed-financial-profile-20261020.md)30安全selectors通过；
+独立Python true/int/float误放反例已接canonical原件/readonlyappend/restore。
+root此前31关联误带真实labels hash和临时fullprepare拒绝，已披露并排除于零访问证据。
 
-本轮 [Anchor行情来源](../reports/anchor-market-source-qualification-20261020.md)：
-固定15新case/16原件3307bars精确重建，30GET无重试，38原绑定不变；16/16
-native历史issuer/复权依据准入。新19docs typed view保存/恢复与旧view隔离通过；
-15/15真实BasicInfo/resolver基线匹配冻结literal。额外“全原件消费”gate仍14/15：
-ONDS默认cap只读两个重叠窗之一，另一窗未冒称已读。独立错CIK/缩split/过早GET
-反例通过；独立exact momentum:v1请求实际选181长窗并满足127uniqueobs，原14gate不改。
-17定向测试通过。加旧BMBL后已覆盖原16Anchor行情proof缺项，
-尚未执行16或48案fullprepare、稳定refs覆盖或新研究角色。
+[行情来源](../reports/anchor-market-source-qualification-20261020.md)原16Anchor proof缺项已补：
+15新case/16原件3307bars重建、30GET/16准入、38绑定不变；15/15基线通过，
+额外全原件消费gate仍14/15（ONDS默认cap1），独立127obs需求实际选181长窗。
+[经营来源](../reports/anchor-operating-source-readiness-20261020.md)原27保分母，
+26proof pass/24经营正文准入/3unknown；13经营投影均partial_context_budget。
+新本地KGC/MS11原件+22cache候选未找到漏选periodic组合；精确KGC40F/MSQ1
+正文待取证，MSQ2晚于cutoff。旧MS archive可native完整重建原11:59Z记录，
+与新API15:59Z冲突仍保留，不识别原writer或猜时区修正。
 
-本轮 [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md) 新控制3/3窄通过：
-6新隔离角色/0typed纠错，actual v3/v3/v2及-0.1/-0.1/+0.1、Basic/shares/期间公开；
-full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残留精确传递。
-唯一完成恢复63文件全等/0新增派发，289202逻辑units，host tokens/cost未知。
-[原fixed-FY/basic批](../reports/reviewed-measurement-stage-20261020.md)仍0/3，不改oracle/分母；
-任意FY/tag能力、F7typed镜像权限fresh触发及整体F4/F7/MVP均不由本批关闭。
+[latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md)新控制3/3窄通过，
+6隔离角色/0typed纠错，63文件恢复全等。原fixed-FY/basic0/3保留，F7镜像fresh
+触发、整体F4/F7/MVP不由此关闭。host tokens/cost未知。
 
 此前 [BasicInfo菜单](../reports/basic-info-orientation-menu-20261020.md)及
 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md)窄通过：1proposer+
@@ -89,12 +83,8 @@ full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残�
 
 ## 下一步
 
-停止重复行情证明和测量控制。叙述inventory27selectedprimary中26通过现SEC proof，
-13家已有年/中期正文并进新view；未宣称经营信息可见充分。KGC/MS附件已取到但未
-归一/准入，6K/8K不冒称periodic。MS当前API15:59Z、原件11:59Z、独立header
-07:59无offset，实际parser不偏移；原writer/input未知，不能认定原错或猜时区修正。
-下一步为新typed财务产品建立逐来源proof和独立view，再重测精确refs；MS header时间规范与API冲突另行
-明确，不用其做无依据准入或改写原件。
-原[source layout修复](../reports/source-layout-readiness-20261020.md)单anchor5tests
-及旧关联27tests误读真实LabelStore例外均保持披露，未重写成完整准备成功。
-原8项用户改动保持；整体MVP active未完成。
+不重做已通过的财务来源derivation和测量控制。按精确cached metadata为KGC年报、
+MS pre-cutoff季报及annual缺证准备有界原始资料取证；扩展真实root-linked SEC
+archive proof形状时保持exact target/issuer/form/时间，不改包或猜全页时钟。
+之后在新view测同15case/18refs，再评估原full48/defaultv6前提；当前无完整后继。
+原8项用户改动保持；MVP goal active未完成。

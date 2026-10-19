@@ -1,0 +1,114 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "34f0d8a1f4722f5f38fa1375723d69cf5f9b608acf51630c531867e0dadad50f",
+      "content_hash": "f122e21367b2a0cf77b9d0994c88409aa350ada05d9eb9d07375ab4dd36f4ae8",
+      "document_id": "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf"
+    },
+    {
+      "canonical_record_hash": "4d2dc2e44cbf22af2c94b1fec77b648a3c0fd7a3b42558c8cf5848463d2bbd92",
+      "content_hash": "880dfe8519eb23375bf113dc0d6a66be226b378c06e3365f02711a32e08c714d",
+      "document_id": "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337"
+    },
+    {
+      "canonical_record_hash": "8288abbb7d40cbf79ea3173a865c20418eeb0f399d8b10cc4c63a7129a4e5015",
+      "content_hash": "a69c3154df819e31aca64b2d82f57ea053e4cde8b260815974329ff50e75aadf",
+      "document_id": "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31"
+    },
+    {
+      "canonical_record_hash": "1945e75f0894cc1eefaf1dc3a911b752abdbae83a1ebb32b38ff8f89b39337ea",
+      "content_hash": "2136f5f4a90f173bef96f2c03834f88aaa58006bb0ff07890914a567fec4db81",
+      "document_id": "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b"
+    },
+    {
+      "canonical_record_hash": "1ed4b1f3f9187d711e0310f1c980eab4c867eb462a6e98f70805fbc422b3f778",
+      "content_hash": "7bbf2de97deb77d82bb259a7d9b343e5312dfcee064f7879ead934e3b3ef34f6",
+      "document_id": "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8"
+    },
+    {
+      "canonical_record_hash": "962207ae8cf73acf0c98fa1eb921f065584318ddc93e596fb958e5bc27d29146",
+      "content_hash": "5a532d8ab0507ee7cdd6de9005278eddfbeafae9fb8ce3029aff123860243052",
+      "document_id": "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7"
+    },
+    {
+      "canonical_record_hash": "95581166ad08d34d4684266c6809a881d46f9d75de89818def81db42751add12",
+      "content_hash": "157b22665acb5b4310486cc561f29673c754b587d3c814715a48789c89f52c72",
+      "document_id": "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43"
+    },
+    {
+      "canonical_record_hash": "37b407f44045eeed7e7e310ed02d72b61e59fc3f5932ae5fdf46d6d02fd33d2c",
+      "content_hash": "3c6602ad062843355a97c5ce57e1a023763e9c6770c59fd3baf89c52cfe23a84",
+      "document_id": "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+    }
+  ],
+  "item": {
+    "cik": "0000701818",
+    "company_id": "cik_0000701818",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000701818.json",
+    "symbol": "KGC"
+  },
+  "normalized_at": "2026-10-19T21:39:38.361250+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "692f932bb9c6129abdc3bd8ef21ef6f860ad123766b4b12aeaa75d69daef16d6",
+    "acquisition_selection": {
+      "available_at_through": "2025-09-30T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-09-30",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0000701818/sec_edgar:cik_0000701818:sec_company_facts_raw_response:e78b516df0e46826ba0f8675.json",
+    "sha256": "20a57b7eb813474500239872e36ffb8ae17e008e36baca942457ad47cada1422"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-09-30T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-09-30",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/e48b789271e3894197c53e5b.json",
+    "sha256": "4c6d86309c4d37707745f545ddb22fbcaab5332f60f57c8f9f2e97f20bc4fc44"
+  }
+}

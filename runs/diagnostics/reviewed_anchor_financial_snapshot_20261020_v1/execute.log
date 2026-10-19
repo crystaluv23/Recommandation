@@ -1,0 +1,42 @@
+START 2026-10-19T21:39:24.494231+00:00
+COMMAND ["/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3", "scripts/diagnose_reviewed_anchor_financial_snapshot.py", "--execute", "--output", "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage"]
+STDOUT_AND_STDERR_MERGED
+KGC: appended/verified 8 accession products
+WYNN: appended/verified 60 accession products
+ENB: appended/verified 49 accession products
+MS: appended/verified 64 accession products
+LTH: appended/verified 14 accession products
+SFIX: appended/verified 30 accession products
+CIEN: appended/verified 61 accession products
+FTAI: appended/verified 42 accession products
+ATI: appended/verified 66 accession products
+NEM: appended/verified 70 accession products
+MP: appended/verified 20 accession products
+SNDK: appended/verified 4 accession products
+MU: appended/verified 62 accession products
+PRAX: appended/verified 20 accession products
+ONDS: appended/verified 37 accession products
+KGC: exact-v12 inputs 11/18
+WYNN: exact-v12 inputs 17/18
+ENB: exact-v12 inputs 17/18
+MS: exact-v12 inputs 11/18
+LTH: exact-v12 inputs 17/18
+SFIX: exact-v12 inputs 17/18
+CIEN: exact-v12 inputs 17/18
+FTAI: exact-v12 inputs 17/18
+ATI: exact-v12 inputs 17/18
+NEM: exact-v12 inputs 17/18
+MP: exact-v12 inputs 17/18
+SNDK: exact-v12 inputs 17/18
+MU: exact-v12 inputs 17/18
+PRAX: exact-v12 inputs 17/18
+ONDS: exact-v12 inputs 17/18
+{
+  "schema_version": "fixed-anchor-financial-result-v1",
+  "fixed_case_denominator": 15,
+  "new_product_denominator": 607,
+  "cases_meeting_existing_0_8": 13
+}
+
+EXIT 0
+END 2026-10-19T21:47:57.660627+00:00

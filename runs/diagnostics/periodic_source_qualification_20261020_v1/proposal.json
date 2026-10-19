@@ -1,0 +1,110 @@
+{
+  "schema_version": "bounded-periodic-source-proof-proposal-v1",
+  "status": "proposal_only_no_GET_or_admission",
+  "inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/inventory.json",
+    "sha256": "5888ce3bc68708ed29f908f9a5386b28c48023cc2009940909855c3f44d39aa1"
+  },
+  "candidate_policy": "Use the original case cutoff: KGC annual40-F and MS Q1 are pre-cutoff. MS Q2 Aug4 is post-Jul31 and cannot substitute. No clock rewriting or 6-K-cover-as-periodic claim.",
+  "proposed_readonly_static_requests": [
+    {
+      "request_id": "kgc-fy2024-40f-primary",
+      "method": "GET",
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "query": {},
+      "ticker": "KGC",
+      "case_cutoff": "2025-09-30T00:00:00+00:00",
+      "form": "40-F",
+      "period_end": "2024-12-31",
+      "accession_number": "0001104659-25-028819",
+      "primary_document": "kgc-20241231x40f.htm",
+      "expected_acceptance": "2025-03-27T20:55:21.000Z",
+      "retained_submissions": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+      }
+    },
+    {
+      "request_id": "ms-q12025-10q-primary",
+      "method": "GET",
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "query": {},
+      "ticker": "MS",
+      "case_cutoff": "2025-07-31T00:00:00+00:00",
+      "form": "10-Q",
+      "period_end": "2025-03-31",
+      "accession_number": "0000895421-25-000343",
+      "primary_document": "ms-20250331.htm",
+      "expected_acceptance": "2025-05-05T20:13:06.000Z",
+      "retained_submissions": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      }
+    }
+  ],
+  "new_requests_proposed": 2,
+  "selection_exclusions": [
+    {
+      "accession_number": "0000895421-25-000440",
+      "reason": "Accepted 2025-08-04T20:30:56Z after MS case cutoff 2025-07-31T00:00:00Z."
+    }
+  ],
+  "minimum_future_profile_work": "Explicit root-linked historical submissions archive proof branch: verify exact root CIK/endpoint, root files membership name/count, exact retained archive GET/body/parallel arrays/unique accession and accepted-aware clock. Record declared root date ranges and observed filingDate extrema independently. Their discovered mismatch needs an explicit owning-contract interpretation; this proposal adds no equality rule, timezone repair or tolerance and performs no admission. Do not repackage flat archive as root recent. Preserve each original root/archive vintage binding.",
+  "semantic_limitations": [
+    "KGC40-F primary may refer to separate business/financial exhibits; actual new body scope must be reviewed before claiming full operating narrative.",
+    "MSQ1 primary body still absent in the two checked cache roots; linked historical proof is present but not supported by the current reviewed profile.",
+    "Existing MS8-K matched its old retained archive clock through actual native offline reconstruction; this does not resolve the separate new API/header conflict or establish full periodic operating content.",
+    "No other run/cache roots were searched and no global absence claim is made.",
+    "Three root-declared archive date bounds differ from actual filingDate extrema despite exact filename/count/array agreement; native clock reconstruction is not reviewed-profile admission."
+  ],
+  "linked_archive_date_discrepancies": [
+    {
+      "archive": "CIK0000895421-submissions-001.json",
+      "root_declared_from": "2025-07-31",
+      "root_declared_to": "2025-09-09",
+      "actual_from": "2025-07-31",
+      "actual_to": "2025-09-10",
+      "filing_count_equal": true,
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+        "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+      }
+    },
+    {
+      "archive": "CIK0000895421-submissions-002.json",
+      "root_declared_from": "2025-06-02",
+      "root_declared_to": "2025-07-29",
+      "actual_from": "2025-06-02",
+      "actual_to": "2025-07-30",
+      "filing_count_equal": true,
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+        "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+      }
+    },
+    {
+      "archive": "CIK0000895421-submissions-003.json",
+      "root_declared_from": "2025-04-21",
+      "root_declared_to": "2025-05-31",
+      "actual_from": "2025-04-21",
+      "actual_to": "2025-05-30",
+      "filing_count_equal": true,
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      }
+    }
+  ]
+}

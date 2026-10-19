@@ -1,0 +1,144 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "a2c5aa66d81677e7a1a65d128aed2ba07cf5da4fe55f10a3cd77f86d76e6de68",
+      "content_hash": "ca05bdf3c358b94c6317d8b193e98b7596ee677ac459359cbc45156b799b262a",
+      "document_id": "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c"
+    },
+    {
+      "canonical_record_hash": "8f50d82d1b9c5b70710c28b6c78730f54d36a3cf3694bd8b04216483c74b7e30",
+      "content_hash": "e067c915fe50ec0ca5055c0dc2a784f29b9709c698cd5d08e40b1b2c8ec6bc10",
+      "document_id": "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c"
+    },
+    {
+      "canonical_record_hash": "f971e0af6409d00bd533051473e160813cf24ba5d13c60f2ec943f670ff57ef5",
+      "content_hash": "6a0cb3f13caad78001d19b1d16f04584a7d77a44ee7796b63b989ec2e5eb633f",
+      "document_id": "secfacts:0001869198:0001869198-22-000042:6a0cb3f13caad780"
+    },
+    {
+      "canonical_record_hash": "8c28a870e4149def35df3ea2594ee03df940d98e4bd28a4a92b0735506994eb1",
+      "content_hash": "c83b2b6f6d10dff7b874d5f153a0fd7ca61e9539f9d9349c5f8e2d9cb49caf52",
+      "document_id": "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7"
+    },
+    {
+      "canonical_record_hash": "6f5b329617eac1e20f37da4cf6b6a1e2f53ab548fa32ecf37c2ca1982b3b6069",
+      "content_hash": "6f45f95e66f8f01e3f94ceae07e576c394359978d8a2e1d93ad407065579df2d",
+      "document_id": "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e"
+    },
+    {
+      "canonical_record_hash": "009399f21199ec97bffc0603693c2bb6eba629183e6ee609c138150a952f00b2",
+      "content_hash": "3d05e2a4a7d3279ec145238ba3db42d377d39cedc72a833a75ff41b8366bc368",
+      "document_id": "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e"
+    },
+    {
+      "canonical_record_hash": "b17cf87dcef78ba9b796260caca38a8bdbe6827ae55300be46118cec4addf3d0",
+      "content_hash": "4c080501164fb49572173c54270df5367c95598f467c38d0557a9d45c375d869",
+      "document_id": "secfacts:0001869198:0001869198-23-000035:4c080501164fb495"
+    },
+    {
+      "canonical_record_hash": "fc3e2f5bb9473870aa1a8ba4591b0b56f8390781efa0d16b68bb2123ae08c3ee",
+      "content_hash": "c09184c422bdc0ee31ceca94180ea5f989bb2dbf547daa15cf2ff35ad154807d",
+      "document_id": "secfacts:0001869198:0001869198-23-000053:c09184c422bdc0ee"
+    },
+    {
+      "canonical_record_hash": "5cdaa4fc3d6e5e90ea4ac6a6a2590095fbad93f1eb5a6b999e5ba546b8f92ebb",
+      "content_hash": "190cad2fd2cb23a02a6a5157b22524228ba13e0a4671fd0ad3889a148110aa5a",
+      "document_id": "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0"
+    },
+    {
+      "canonical_record_hash": "395c28e7a806ab7a98dd894752f2a444b9e72ca9e61a0e9e53e5a2175df831a2",
+      "content_hash": "d71e464169de4c42f89ead90b7168785f1a3ed4c10afb5bc9bd29c8a319361d3",
+      "document_id": "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42"
+    },
+    {
+      "canonical_record_hash": "d200b9c13ba9c4bd62931ee1d223a252db429f43ffdde892fcbb867422770a4b",
+      "content_hash": "8e538f6870222439ef273fabf95562c8c645d827cb31b7126f04102387a72daf",
+      "document_id": "secfacts:0001869198:0001869198-24-000026:8e538f6870222439"
+    },
+    {
+      "canonical_record_hash": "271df06fdcb35e0007d35107f3ed074ab683de267f59246d4c11b8b6944f843e",
+      "content_hash": "1122ec2e8ab438828374255ef244331fa4007a6e236d4f75071dc80fa9b9d826",
+      "document_id": "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882"
+    },
+    {
+      "canonical_record_hash": "682ac8afc95b22ac9a29c4d5fb9815ff447147b18de929e3d8e472416d1e97e5",
+      "content_hash": "e84e55af32fc64ced1faacd2a94494a338286ec3a1562d57885e73b8399e6589",
+      "document_id": "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce"
+    },
+    {
+      "canonical_record_hash": "6c1e5b2294bd0f989b8f9c9d6302bc69b52f3313e367279bfa9d508e59cdfb4a",
+      "content_hash": "fcf62927a3e7e4c3c78ac5ce7bf8c490043bc1f5f8e2d8bcaec2608febbba16a",
+      "document_id": "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3"
+    }
+  ],
+  "item": {
+    "cik": "0001869198",
+    "company_id": "cik_0001869198",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001869198.json",
+    "symbol": "LTH"
+  },
+  "normalized_at": "2026-10-19T21:39:39.911329+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "2f61952eafebecb9bb12ec72ad50b4ab2e7504d8d4caf7776ca54e301729d2c2",
+    "acquisition_selection": {
+      "available_at_through": "2025-03-31T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-03-31",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0001869198/sec_edgar:cik_0001869198:sec_company_facts_raw_response:1b75f3fbb47513ed0a340d14.json",
+    "sha256": "bed3b8263d28147823e16beee0c0a6345aac956141a078a374a87d9ebad3434f"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-03-31T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-03-31",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/38cb85907571ff499dbde519.json",
+    "sha256": "8d3abdf30ec3d1536fb23d869191fa320173fd2efeb9a207458819152f3d3a27"
+  }
+}

@@ -1,0 +1,4811 @@
+{
+  "scope": "Independent completed-artifact read-only review; no acquisition/model/Signalapply/labels/fullprepare/globalstore writes or refresh.",
+  "plan_hash": "567c7db62347538dbb654735fddf6369a5b2ec02082d9dbdf8e557e8e60f5409",
+  "input_manifest_hash": "eabe6282d5b6c6a04a7a9e91243ddfb347087f5765c39f2300ac672a9c0505d8",
+  "fixed_cases": 15,
+  "exact_registry_version": 12,
+  "registry_hash_recomputed": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "exact_ref_denominator": 18,
+  "resolution_denominator": 270,
+  "status_counts": {
+    "unresolved": 27,
+    "resolved": 243
+  },
+  "per_ref_status_counts": {
+    "financing_listing_action:v5": {
+      "unresolved": 2,
+      "resolved": 13
+    },
+    "cash_burn_rate_elevated:v2": {
+      "resolved": 15
+    },
+    "cash_reserves:v2": {
+      "resolved": 15
+    },
+    "cash_to_current_liabilities_ratio:v2": {
+      "resolved": 15
+    },
+    "gross_margin_change:v3": {
+      "resolved": 15
+    },
+    "liquidity_runway_months:v3": {
+      "resolved": 15
+    },
+    "net_share_retirement_yoy:v3": {
+      "resolved": 15
+    },
+    "operating_cash_flow_margin:v2": {
+      "resolved": 15
+    },
+    "revenue_acceleration:v2": {
+      "resolved": 15
+    },
+    "revenue_growth_yoy:v3": {
+      "resolved": 15
+    },
+    "guidance_acceleration:v3": {
+      "unresolved": 2,
+      "resolved": 13
+    },
+    "max_drawdown_1y:v2": {
+      "resolved": 15
+    },
+    "price_momentum_126d:v2": {
+      "resolved": 15
+    },
+    "negative_word_count:v2": {
+      "unresolved": 15
+    },
+    "order_confirmation_disclosed:v3": {
+      "unresolved": 2,
+      "resolved": 13
+    },
+    "order_quality:v2": {
+      "unresolved": 2,
+      "resolved": 13
+    },
+    "commercialization_status:v2": {
+      "unresolved": 2,
+      "resolved": 13
+    },
+    "customer_concentration:v2": {
+      "unresolved": 2,
+      "resolved": 13
+    }
+  },
+  "source_proof_checks": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "products": 8,
+      "facts": 2847,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "products": 60,
+      "facts": 23251,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "products": 49,
+      "facts": 19588,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "products": 64,
+      "facts": 42410,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "products": 14,
+      "facts": 5478,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "products": 30,
+      "facts": 9081,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "products": 61,
+      "facts": 23950,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "products": 42,
+      "facts": 16461,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "products": 66,
+      "facts": 27268,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "products": 70,
+      "facts": 36021,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "products": 20,
+      "facts": 6594,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "products": 4,
+      "facts": 1509,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "products": 62,
+      "facts": 25577,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "products": 20,
+      "facts": 4867,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "products": 37,
+      "facts": 10098,
+      "exact_cache_request_and_body": true,
+      "complete_actual_normalizer_reconstruction": true
+    }
+  ],
+  "new_financial_products": 607,
+  "FTAI": {
+    "raw_same_day_rows": 364,
+    "admitted_same_day_rows": 0
+  },
+  "old_operating_review_rows_preserved": 48,
+  "old_global_file_bindings_unchanged": 15030,
+  "allowed_new_files": 607,
+  "all_old_oracle_bytes_unchanged": true,
+  "reviewed_view_restart_worker_canonical_equal": true,
+  "whole_raw_and_legacy_aggregates_not_visible": true,
+  "case_summaries": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "resolved_signal_inputs": 11,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.6111111111111112,
+      "meets_existing_0_8_signal_input_fraction": false
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "resolved_signal_inputs": 11,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.6111111111111112,
+      "meets_existing_0_8_signal_input_fraction": false
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18,
+      "resolved_fraction": 0.9444444444444444,
+      "meets_existing_0_8_signal_input_fraction": true
+    }
+  ],
+  "all270_saved_resolutions_read_and_sources_periods_checked": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 10,
+      "period_span_days": 774,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 10,
+      "period_span_days": 774,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335",
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000701818:0001104659-22-041156:7bbf2de97deb77d8",
+        "secfacts:0000701818:0001104659-21-043926:2136f5f4a90f173b",
+        "secfacts:0000701818:0001104659-20-039814:a69c3154df819e31",
+        "secfacts:0000701818:0001104659-19-018715:880dfe8519eb2337",
+        "secfacts:0000701818:0001104659-18-021288:f122e21367b2a0cf",
+        "secfacts:0000701818:0001104659-24-039723:157b22665acb5b43",
+        "secfacts:0000701818:0001104659-23-040149:5a532d8ab0507ee7",
+        "secfacts:0000701818:0001104659-25-028819:3c6602ad06284335"
+      ],
+      "period_count": 35,
+      "period_span_days": 3331,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000701818:market_data:d087c9d442c67561fb938488"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-25-000039:aa6049aa3a3403f0",
+        "secfacts:0001174922:0001174922-24-000046:ecf2f49dfdb757a1",
+        "secfacts:0001174922:0001174922-24-000160:0fe4c3f0d5269b24",
+        "secfacts:0001174922:0001174922-24-000094:48ab49aec2da08c6",
+        "secfacts:0001174922:0001174922-24-000082:0021ee5c9d47e746",
+        "secfacts:0001174922:0001174922-25-000084:126d0218d878e58c"
+      ],
+      "period_count": 19,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "secfacts:0001174922:0001174922-20-000024:417cdddb23a93809",
+        "secfacts:0001174922:0001174922-19-000021:6095050555d87156",
+        "secfacts:0001174922:0001174922-25-000039:aa6049aa3a3403f0",
+        "secfacts:0001174922:0001174922-21-000029:995b0c3fb3fa7404",
+        "secfacts:0001174922:0001174922-24-000046:ecf2f49dfdb757a1",
+        "secfacts:0001174922:0001174922-23-000048:0f6654dd48c3331b",
+        "secfacts:0001174922:0001174922-22-000031:94c4e51373fb299a",
+        "sec:cik_0001174922:000117492225000084",
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c"
+      ],
+      "period_count": 65,
+      "period_span_days": 4735,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001193125-11-050547:66e385e2910104a5",
+        "secfacts:0001174922:0001174922-21-000029:995b0c3fb3fa7404",
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001174922-25-000039:aa6049aa3a3403f0",
+        "secfacts:0001174922:0001193125-13-087674:d21ad5fdf1e11756",
+        "secfacts:0001174922:0001174922-24-000046:ecf2f49dfdb757a1",
+        "secfacts:0001174922:0001174922-18-000019:c5cd2cceae2fbb25",
+        "secfacts:0001174922:0001174922-23-000048:0f6654dd48c3331b",
+        "secfacts:0001174922:0001174922-22-000031:94c4e51373fb299a"
+      ],
+      "period_count": 93,
+      "period_span_days": 6245,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001174922-15-000021:684d6e9a10bde932",
+        "secfacts:0001174922:0001193125-13-087674:d21ad5fdf1e11756",
+        "secfacts:0001174922:0001193125-14-077632:224ee29ca2ce450e",
+        "secfacts:0001174922:0001193125-11-050547:66e385e2910104a5",
+        "secfacts:0001174922:0001193125-12-089377:3c283dea5555f74f",
+        "secfacts:0001174922:0001174922-18-000175:95de9a91a1fa0342",
+        "secfacts:0001174922:0001174922-18-000160:44baf0e2cffe2c7d",
+        "secfacts:0001174922:0001193125-13-438301:c309f3191c51454c"
+      ],
+      "period_count": 86,
+      "period_span_days": 3957,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-25-000039:aa6049aa3a3403f0",
+        "secfacts:0001174922:0001174922-24-000046:ecf2f49dfdb757a1",
+        "secfacts:0001174922:0001174922-24-000094:48ab49aec2da08c6",
+        "secfacts:0001174922:0001174922-24-000160:0fe4c3f0d5269b24",
+        "secfacts:0001174922:0001174922-24-000082:0021ee5c9d47e746",
+        "secfacts:0001174922:0001174922-25-000084:126d0218d878e58c"
+      ],
+      "period_count": 19,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001193125-11-050547:66e385e2910104a5",
+        "secfacts:0001174922:0001193125-14-077632:224ee29ca2ce450e",
+        "secfacts:0001174922:0001193125-13-087674:d21ad5fdf1e11756",
+        "secfacts:0001174922:0001193125-12-089377:3c283dea5555f74f",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001174922-15-000021:684d6e9a10bde932",
+        "secfacts:0001174922:0001174922-20-000024:417cdddb23a93809",
+        "secfacts:0001174922:0001174922-19-000115:7e9f428505db4a9b",
+        "secfacts:0001174922:0001174922-19-000080:9ec1ee04da3949ad"
+      ],
+      "period_count": 97,
+      "period_span_days": 4428,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-21-000029:995b0c3fb3fa7404",
+        "secfacts:0001174922:0001174922-20-000024:417cdddb23a93809",
+        "secfacts:0001174922:0001174922-25-000039:aa6049aa3a3403f0",
+        "secfacts:0001174922:0001174922-23-000048:0f6654dd48c3331b",
+        "secfacts:0001174922:0001174922-22-000031:94c4e51373fb299a",
+        "secfacts:0001174922:0001174922-24-000046:ecf2f49dfdb757a1",
+        "secfacts:0001174922:0001174922-19-000021:6095050555d87156",
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001193125-14-077632:224ee29ca2ce450e"
+      ],
+      "period_count": 90,
+      "period_span_days": 5575,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001193125-13-087674:d21ad5fdf1e11756",
+        "secfacts:0001174922:0001193125-14-077632:224ee29ca2ce450e",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001174922-15-000021:684d6e9a10bde932",
+        "secfacts:0001174922:0001193125-12-089377:3c283dea5555f74f",
+        "secfacts:0001174922:0001174922-18-000175:95de9a91a1fa0342",
+        "secfacts:0001174922:0001174922-18-000160:44baf0e2cffe2c7d",
+        "secfacts:0001174922:0001193125-13-438301:c309f3191c51454c",
+        "secfacts:0001174922:0001193125-13-329016:feffc326ba90455d"
+      ],
+      "period_count": 77,
+      "period_span_days": 3591,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001174922:0001174922-17-000027:fd67601c94588f0c",
+        "secfacts:0001174922:0001193125-13-087674:d21ad5fdf1e11756",
+        "secfacts:0001174922:0001193125-14-077632:224ee29ca2ce450e",
+        "secfacts:0001174922:0001174922-16-000144:bafb9e72bb405cbb",
+        "secfacts:0001174922:0001174922-15-000021:684d6e9a10bde932",
+        "secfacts:0001174922:0001193125-12-089377:3c283dea5555f74f",
+        "secfacts:0001174922:0001193125-11-050547:66e385e2910104a5",
+        "secfacts:0001174922:0001174922-18-000175:95de9a91a1fa0342",
+        "secfacts:0001174922:0001174922-18-000160:44baf0e2cffe2c7d",
+        "secfacts:0001174922:0001193125-13-438301:c309f3191c51454c"
+      ],
+      "period_count": 86,
+      "period_span_days": 3957,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001174922:market_data:75cab593ff8c174d6b55c6c9"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767",
+        "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c",
+        "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf",
+        "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c",
+        "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a",
+        "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+      ],
+      "period_count": 19,
+      "period_span_days": 1302,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "sec:cik_0000895728:000095017025101102",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0001104659-16-098507:a78e618798903a43",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a"
+      ],
+      "period_count": 51,
+      "period_span_days": 4421,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+        "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+      ],
+      "period_count": 56,
+      "period_span_days": 4787,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726"
+      ],
+      "period_count": 62,
+      "period_span_days": 5152,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0000950170-25-101102:044bb48a269ec767",
+        "secfacts:0000895728:0000895728-24-000028:a7ed01bb6637b59c",
+        "secfacts:0000895728:0000895728-24-000020:a8f6b2b7f8cf06bf",
+        "secfacts:0000895728:0000895728-25-000012:423f1b54234d142c",
+        "secfacts:0000895728:0000895728-24-000013:8de3662c6707837a",
+        "secfacts:0000895728:0001193125-25-052058:2b2fe51e269fef0b"
+      ],
+      "period_count": 19,
+      "period_span_days": 1302,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+      ],
+      "period_count": 62,
+      "period_span_days": 5152,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+        "secfacts:0000895728:0001104659-15-012174:b552371f0fa73e5a"
+      ],
+      "period_count": 56,
+      "period_span_days": 4787,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407"
+      ],
+      "period_count": 62,
+      "period_span_days": 5152,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895728:0000895728-18-000008:e32a0657937c5ae4",
+        "secfacts:0000895728:0000895728-20-000009:d09f4fb8c3aeb31d",
+        "secfacts:0000895728:0000895728-23-000008:50d049f77865281c",
+        "secfacts:0000895728:0000895728-24-000007:9d66b68544debe48",
+        "secfacts:0000895728:0000895728-22-000011:687c007b80a585b9",
+        "secfacts:0000895728:0000895728-21-000010:764d7f0bf6130e3a",
+        "secfacts:0000895728:0000895728-19-000095:efb633815cb3e301",
+        "secfacts:0000895728:0000895728-19-000033:59794f8e9351a726",
+        "secfacts:0000895728:0000895728-25-000006:9b59a13d75a75407",
+        "secfacts:0000895728:0001104659-13-065546:4bd694b90ad7b01c"
+      ],
+      "period_count": 62,
+      "period_span_days": 5152,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000095017025101102",
+        "sec:cik_0000895728:000089572825000006"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000895728:market_data:e2877860464df963e4843917"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0000895421-24-000300:19e9b3995fd1e0e6",
+        "secfacts:0000895421:0000895421-25-000304:ad51e86455773da3",
+        "secfacts:0000895421:0000895421-24-000491:4f85a0887329893f",
+        "secfacts:0000895421:0000895421-24-000403:ba617e742921b070",
+        "secfacts:0000895421:0000895421-25-000343:098d3ee6485bd13c",
+        "secfacts:0000895421:0000895421-24-000322:49f4dd9c7ed03db8"
+      ],
+      "period_count": 19,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0001193125-16-473553:53bb6be9c3a4802c",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f",
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0000895421-20-000265:a6caf0efbd340d1e"
+      ],
+      "period_count": 70,
+      "period_span_days": 4810,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f",
+        "secfacts:0000895421:0001193125-16-473553:53bb6be9c3a4802c",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0000895421-21-000286:a86b150c2c83fe8b"
+      ],
+      "period_count": 74,
+      "period_span_days": 5174,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0001193125-16-473553:53bb6be9c3a4802c",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f",
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0001193125-17-247402:d82f28b11e0e2ead",
+        "secfacts:0000895421:0001193125-17-331902:493abb9f6b4451c0"
+      ],
+      "period_count": 65,
+      "period_span_days": 4445,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0000895421-24-000300:19e9b3995fd1e0e6",
+        "secfacts:0000895421:0000895421-25-000304:ad51e86455773da3",
+        "secfacts:0000895421:0000895421-24-000491:4f85a0887329893f",
+        "secfacts:0000895421:0000895421-24-000403:ba617e742921b070",
+        "secfacts:0000895421:0000895421-25-000343:098d3ee6485bd13c",
+        "secfacts:0000895421:0000895421-24-000322:49f4dd9c7ed03db8"
+      ],
+      "period_count": 19,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0000895421-20-000265:a6caf0efbd340d1e",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0001193125-16-473553:53bb6be9c3a4802c",
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f"
+      ],
+      "period_count": 70,
+      "period_span_days": 4810,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0000895421-24-000300:19e9b3995fd1e0e6",
+        "secfacts:0000895421:0000895421-25-000304:ad51e86455773da3",
+        "secfacts:0000895421:0000895421-23-000284:9b0abbf3199697c7",
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0000895421-21-000286:a86b150c2c83fe8b",
+        "secfacts:0000895421:0000895421-22-000400:60844fb610bf0070",
+        "secfacts:0000895421:0000895421-20-000265:a6caf0efbd340d1e",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-10-042763:ad60abaf977bb5f0"
+      ],
+      "period_count": 63,
+      "period_span_days": 6637,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0001193125-16-473553:53bb6be9c3a4802c",
+        "secfacts:0000895421:0001193125-14-396227:863e99048756b5ec"
+      ],
+      "period_count": 66,
+      "period_span_days": 4445,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000895421:0001193125-11-050049:86bace1a1e83de75",
+        "secfacts:0000895421:0001193125-12-081807:f8589276519daae3",
+        "secfacts:0000895421:0001193125-13-077191:c575ee6eb56437a6",
+        "secfacts:0000895421:0001193125-14-067354:db70bf365003a2dc",
+        "secfacts:0000895421:0001193125-19-051943:49db6b4352276fad",
+        "secfacts:0000895421:0001193125-17-059212:447ca7c6b59396fc",
+        "secfacts:0000895421:0001193125-15-071980:d40f6cfc0b13855f",
+        "secfacts:0000895421:0001193125-18-060831:3c663e44f7cb66d6",
+        "secfacts:0000895421:0000895421-21-000286:a86b150c2c83fe8b",
+        "secfacts:0000895421:0000895421-20-000265:a6caf0efbd340d1e"
+      ],
+      "period_count": 73,
+      "period_span_days": 5174,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000895421:market_data:0753a2fda6be894d5cf2347c"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "order_quality:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "commercialization_status:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "signal_ref": "customer_concentration:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0",
+        "secfacts:0001869198:0001869198-24-000026:8e538f6870222439"
+      ],
+      "period_count": 20,
+      "period_span_days": 1516,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "sec:cik_0001869198:000186919824000052",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7"
+      ],
+      "period_count": 33,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e",
+        "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-22-000042:6a0cb3f13caad780"
+      ],
+      "period_count": 38,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e",
+        "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0"
+      ],
+      "period_count": 37,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0",
+        "secfacts:0001869198:0001869198-24-000026:8e538f6870222439"
+      ],
+      "period_count": 20,
+      "period_span_days": 1516,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e",
+        "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0"
+      ],
+      "period_count": 37,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e",
+        "secfacts:0001869198:0001869198-22-000057:c83b2b6f6d10dff7",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0"
+      ],
+      "period_count": 37,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0",
+        "secfacts:0001869198:0001869198-23-000053:c09184c422bdc0ee",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e"
+      ],
+      "period_count": 36,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001869198:0001869198-24-000008:d71e464169de4c42",
+        "secfacts:0001869198:0001869198-23-000014:3d05e2a4a7d3279e",
+        "secfacts:0001869198:0001869198-25-000009:fcf62927a3e7e4c3",
+        "secfacts:0001869198:0001869198-24-000052:e84e55af32fc64ce",
+        "secfacts:0001869198:0001869198-24-000032:1122ec2e8ab43882",
+        "secfacts:0001869198:0001869198-21-000006:ca05bdf3c358b94c",
+        "secfacts:0001869198:0001869198-23-000053:c09184c422bdc0ee",
+        "secfacts:0001869198:0001869198-23-000063:190cad2fd2cb23a0",
+        "secfacts:0001869198:0001869198-22-000010:e067c915fe50ec0c",
+        "secfacts:0001869198:0001869198-22-000069:6f45f95e66f8f01e"
+      ],
+      "period_count": 36,
+      "period_span_days": 2247,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "period_count": 155,
+      "period_span_days": 226,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001869198:market_data:81572f1417844d7a68230ab6"
+      ],
+      "period_count": 155,
+      "period_span_days": 226,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-24-000037:aaa7437b6fe11d8b",
+        "secfacts:0001576942:0001576942-24-000017:80c0dcef49527969",
+        "secfacts:0001576942:0001576942-25-000009:68d0065b643439cd",
+        "secfacts:0001576942:0001576942-23-000154:bb741e28a86b189c",
+        "secfacts:0001576942:0001576942-24-000133:2a306c227c35cbdf"
+      ],
+      "period_count": 12,
+      "period_span_days": 1281,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "sec:cik_0001576942:000157694225000009",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-23-000114:b6a90fe8e5a49aa3",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-19-000007:ff49e72135d0bcad"
+      ],
+      "period_count": 23,
+      "period_span_days": 3290,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-23-000114:b6a90fe8e5a49aa3",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001576942-20-000035:442e61dba667d4ef",
+        "secfacts:0001576942:0001576942-20-000014:10ab5c63e232632b",
+        "secfacts:0001576942:0001576942-24-000017:80c0dcef49527969"
+      ],
+      "period_count": 30,
+      "period_span_days": 3290,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-23-000114:b6a90fe8e5a49aa3",
+        "secfacts:0001576942:0001576942-19-000007:ff49e72135d0bcad",
+        "secfacts:0001576942:0001576942-25-000009:68d0065b643439cd",
+        "secfacts:0001576942:0001576942-23-000064:ca042785745ec39f"
+      ],
+      "period_count": 33,
+      "period_span_days": 3472,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-24-000017:80c0dcef49527969",
+        "secfacts:0001576942:0001576942-24-000037:aaa7437b6fe11d8b",
+        "secfacts:0001576942:0001576942-23-000154:bb741e28a86b189c",
+        "secfacts:0001576942:0001576942-25-000009:68d0065b643439cd",
+        "secfacts:0001576942:0001576942-24-000133:2a306c227c35cbdf"
+      ],
+      "period_count": 12,
+      "period_span_days": 1281,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001564590-18-015311:e125db1c1147b524",
+        "secfacts:0001576942:0001576942-19-000005:698face55cf726ec",
+        "secfacts:0001576942:0001576942-19-000007:ff49e72135d0bcad",
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001564590-18-005480:4bdb4f6bb83bcd12",
+        "secfacts:0001576942:0001576942-24-000037:aaa7437b6fe11d8b",
+        "secfacts:0001576942:0001576942-24-000017:80c0dcef49527969",
+        "secfacts:0001576942:0001576942-23-000114:b6a90fe8e5a49aa3",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b"
+      ],
+      "period_count": 35,
+      "period_span_days": 3192,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-24-000099:a6525a6b80a0cde0",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-23-000114:b6a90fe8e5a49aa3",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001576942-24-000037:aaa7437b6fe11d8b",
+        "secfacts:0001576942:0001576942-24-000017:80c0dcef49527969",
+        "secfacts:0001576942:0001576942-20-000035:442e61dba667d4ef"
+      ],
+      "period_count": 30,
+      "period_span_days": 3290,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-22-000041:5ca53a8eb501e499",
+        "secfacts:0001576942:0001576942-22-000015:6ca19a7885ead015",
+        "secfacts:0001576942:0001576942-21-000082:24acb030493f5859",
+        "secfacts:0001576942:0001576942-20-000035:442e61dba667d4ef",
+        "secfacts:0001576942:0001576942-20-000014:10ab5c63e232632b",
+        "secfacts:0001576942:0001576942-21-000040:e9fcd1a6041ae359"
+      ],
+      "period_count": 29,
+      "period_span_days": 2191,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001576942:0001576942-19-000013:aa671a6f6a7eced4",
+        "secfacts:0001576942:0001576942-20-000077:4f46c9a9959f062b",
+        "secfacts:0001576942:0001576942-22-000077:349ecf69fa23857d",
+        "secfacts:0001576942:0001576942-21-000121:947a7696744808a3",
+        "secfacts:0001576942:0001576942-18-000003:f4c2adbad066cb5c",
+        "secfacts:0001576942:0001576942-23-000064:ca042785745ec39f",
+        "secfacts:0001576942:0001576942-23-000023:0bb8202b0a347f98",
+        "secfacts:0001576942:0001576942-22-000041:5ca53a8eb501e499",
+        "secfacts:0001576942:0001576942-22-000015:6ca19a7885ead015",
+        "secfacts:0001576942:0001576942-21-000082:24acb030493f5859"
+      ],
+      "period_count": 33,
+      "period_span_days": 2828,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "period_count": 196,
+      "period_span_days": 286,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001576942:market_data:9a587b3f71a458db45f7446d"
+      ],
+      "period_count": 196,
+      "period_span_days": 286,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000936395-24-000044:26a22a5e22a4664a",
+        "secfacts:0000936395:0000936395-24-000032:faf4793008c57e22",
+        "secfacts:0000936395:0000936395-24-000025:fae46a376b214613",
+        "secfacts:0000936395:0000936395-25-000041:fa16598a482f7d1e",
+        "secfacts:0000936395:0000936395-25-000025:9914566fe09fe21f",
+        "secfacts:0000936395:0000936395-25-000011:b8a95dd6231613a5"
+      ],
+      "period_count": 23,
+      "period_span_days": 1399,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041",
+        "secfacts:0000936395:0000936395-22-000065:207c8b8821a19a2a",
+        "secfacts:0000936395:0000936395-23-000044:a558db14811b4e3c",
+        "secfacts:0000936395:0000936395-19-000056:e05d125e78d02a7c",
+        "secfacts:0000936395:0000936395-24-000044:26a22a5e22a4664a",
+        "secfacts:0000936395:0000936395-20-000042:169ddff64a3cfcb2",
+        "secfacts:0000936395:0000936395-21-000054:d9114764254ed451",
+        "secfacts:0000936395:0000936395-11-000009:c9ea913867a50bcd",
+        "secfacts:0000936395:0000936395-12-000075:6500cb9d3550e0b3",
+        "secfacts:0000936395:0000936395-13-000057:eab3e1665a8ac123"
+      ],
+      "period_count": 43,
+      "period_span_days": 5887,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000936395-22-000065:207c8b8821a19a2a",
+        "secfacts:0000936395:0000936395-23-000044:a558db14811b4e3c",
+        "secfacts:0000936395:0000936395-20-000042:169ddff64a3cfcb2",
+        "secfacts:0000936395:0000936395-24-000044:26a22a5e22a4664a",
+        "secfacts:0000936395:0000936395-21-000054:d9114764254ed451",
+        "secfacts:0000936395:0000936395-19-000056:e05d125e78d02a7c",
+        "secfacts:0000936395:0000936395-11-000009:c9ea913867a50bcd",
+        "secfacts:0000936395:0000936395-15-000062:9dc6b133d24c4853",
+        "secfacts:0000936395:0000936395-16-000128:0deba6b337f3b6fc",
+        "secfacts:0000936395:0000936395-17-000064:e2c3e93b1ff4e599"
+      ],
+      "period_count": 47,
+      "period_span_days": 5887,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000950123-11-083442:6935a1acfdb3900f",
+        "secfacts:0000936395:0000936395-12-000059:f7e4f00314a57c21",
+        "secfacts:0000936395:0000936395-12-000047:6c7fc5f4b3125bd2",
+        "secfacts:0000936395:0000936395-13-000029:130b17cbc7cea323",
+        "secfacts:0000936395:0000936395-11-000009:c9ea913867a50bcd",
+        "secfacts:0000936395:0000936395-12-000075:6500cb9d3550e0b3",
+        "secfacts:0000936395:0000936395-16-000115:264618ac8812f69b",
+        "secfacts:0000936395:0000936395-16-000104:0bd4c8db3e5b2bf3",
+        "secfacts:0000936395:0000936395-15-000053:b48d25094610ffd0",
+        "secfacts:0000936395:0000936395-15-000038:1aae5319d680584b"
+      ],
+      "period_count": 35,
+      "period_span_days": 2863,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000936395-24-000044:26a22a5e22a4664a",
+        "secfacts:0000936395:0000936395-24-000032:faf4793008c57e22",
+        "secfacts:0000936395:0000936395-24-000025:fae46a376b214613",
+        "secfacts:0000936395:0000936395-25-000041:fa16598a482f7d1e",
+        "secfacts:0000936395:0000936395-25-000025:9914566fe09fe21f",
+        "secfacts:0000936395:0000936395-25-000011:b8a95dd6231613a5"
+      ],
+      "period_count": 23,
+      "period_span_days": 1399,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000936395-12-000075:6500cb9d3550e0b3",
+        "secfacts:0000936395:0000936395-11-000009:c9ea913867a50bcd",
+        "secfacts:0000936395:0000936395-13-000057:eab3e1665a8ac123",
+        "secfacts:0000936395:0000936395-14-000063:98735516219de03d",
+        "secfacts:0000936395:0000936395-16-000104:0bd4c8db3e5b2bf3",
+        "secfacts:0000936395:0000936395-15-000053:b48d25094610ffd0",
+        "secfacts:0000936395:0000936395-15-000038:1aae5319d680584b",
+        "secfacts:0000936395:0000936395-14-000051:22d7ad19d15d25fd",
+        "secfacts:0000936395:0000936395-12-000059:f7e4f00314a57c21",
+        "secfacts:0000936395:0000936395-12-000047:6c7fc5f4b3125bd2"
+      ],
+      "period_count": 35,
+      "period_span_days": 2772,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000936395-23-000044:a558db14811b4e3c",
+        "secfacts:0000936395:0000936395-24-000044:26a22a5e22a4664a",
+        "secfacts:0000936395:0000936395-22-000065:207c8b8821a19a2a",
+        "secfacts:0000936395:0000936395-20-000042:169ddff64a3cfcb2",
+        "secfacts:0000936395:0000936395-21-000054:d9114764254ed451",
+        "secfacts:0000936395:0000936395-19-000056:e05d125e78d02a7c",
+        "secfacts:0000936395:0000936395-20-000028:2dfd878f3b153118",
+        "secfacts:0000936395:0000936395-20-000036:eda713a8e58f858d",
+        "secfacts:0000936395:0000936395-18-000048:8026cdeb70537568",
+        "secfacts:0000936395:0000936395-17-000064:e2c3e93b1ff4e599"
+      ],
+      "period_count": 43,
+      "period_span_days": 3696,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000950123-11-083442:6935a1acfdb3900f",
+        "secfacts:0000936395:0000936395-13-000029:130b17cbc7cea323",
+        "secfacts:0000936395:0000936395-16-000115:264618ac8812f69b",
+        "secfacts:0000936395:0000936395-16-000104:0bd4c8db3e5b2bf3",
+        "secfacts:0000936395:0000936395-12-000059:f7e4f00314a57c21",
+        "secfacts:0000936395:0000936395-12-000047:6c7fc5f4b3125bd2",
+        "secfacts:0000936395:0000936395-18-000024:967b59b411a778e3",
+        "secfacts:0000936395:0000936395-13-000040:8d2b227dfeacb618",
+        "secfacts:0000936395:0000936395-14-000051:22d7ad19d15d25fd",
+        "secfacts:0000936395:0000936395-14-000040:74f2ff453488847e"
+      ],
+      "period_count": 36,
+      "period_span_days": 3138,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000936395:0000950123-11-083442:6935a1acfdb3900f",
+        "secfacts:0000936395:0000936395-16-000115:264618ac8812f69b",
+        "secfacts:0000936395:0000936395-16-000104:0bd4c8db3e5b2bf3",
+        "secfacts:0000936395:0000936395-13-000029:130b17cbc7cea323",
+        "secfacts:0000936395:0000936395-12-000059:f7e4f00314a57c21",
+        "secfacts:0000936395:0000936395-12-000047:6c7fc5f4b3125bd2",
+        "secfacts:0000936395:0000936395-13-000040:8d2b227dfeacb618",
+        "secfacts:0000936395:0000936395-18-000024:967b59b411a778e3",
+        "secfacts:0000936395:0000936395-17-000051:6f1e3bc5f1b97e2c",
+        "secfacts:0000936395:0000936395-17-000038:f4f887ab41587a11"
+      ],
+      "period_count": 34,
+      "period_span_days": 3138,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000936395:market_data:27a376f19e25e596bc97443d"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-24-000003:df8f8263aa29313f",
+        "secfacts:0001590364:0001590364-25-000006:92df3c21a1dddd17",
+        "secfacts:0001590364:0001590364-24-000021:6fbb2296c0ee406a",
+        "secfacts:0001590364:0001590364-24-000016:09488f02b50b401d",
+        "secfacts:0001590364:0001590364-25-000011:a02b311c117aa77b",
+        "secfacts:0001590364:0001590364-24-000011:37e4494112ec8eb9"
+      ],
+      "period_count": 22,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "sec:cik_0001590364:000159036425000011",
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-22-000002:ee871803a6099349",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-23-000007:8293cd373faacbf8"
+      ],
+      "period_count": 50,
+      "period_span_days": 3705,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-22-000002:ee871803a6099349",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-20-000009:28460d6b998461c4",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-20-000007:525df4544d772a8f",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-23-000007:8293cd373faacbf8"
+      ],
+      "period_count": 53,
+      "period_span_days": 3705,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001140361-22-042077:5fcd598ebf40573b",
+        "secfacts:0001590364:0001590364-22-000007:3661b0cb43831b92",
+        "secfacts:0001590364:0001590364-23-000028:13714437187b60d1",
+        "secfacts:0001590364:0001590364-23-000023:ef698756263b59e4"
+      ],
+      "period_count": 53,
+      "period_span_days": 3948,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-24-000003:df8f8263aa29313f",
+        "secfacts:0001590364:0001590364-25-000006:92df3c21a1dddd17",
+        "secfacts:0001590364:0001590364-24-000021:6fbb2296c0ee406a",
+        "secfacts:0001590364:0001590364-24-000016:09488f02b50b401d",
+        "secfacts:0001590364:0001590364-25-000011:a02b311c117aa77b",
+        "secfacts:0001590364:0001590364-24-000011:37e4494112ec8eb9"
+      ],
+      "period_count": 22,
+      "period_span_days": 1581,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-21-000008:46b4036cde4ecfb9",
+        "secfacts:0001590364:0001590364-23-000028:13714437187b60d1",
+        "secfacts:0001590364:0001590364-23-000023:ef698756263b59e4",
+        "secfacts:0001590364:0001590364-20-000009:28460d6b998461c4"
+      ],
+      "period_count": 58,
+      "period_span_days": 3948,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-22-000002:ee871803a6099349",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-23-000007:8293cd373faacbf8",
+        "secfacts:0001590364:0001590364-24-000003:df8f8263aa29313f",
+        "secfacts:0001590364:0001590364-25-000006:92df3c21a1dddd17"
+      ],
+      "period_count": 59,
+      "period_span_days": 4440,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-19-000010:7fb681d0724dc016",
+        "secfacts:0001590364:0001590364-19-000006:b99d2858fd111fcb",
+        "secfacts:0001590364:0001590364-24-000021:6fbb2296c0ee406a",
+        "secfacts:0001590364:0001590364-24-000016:09488f02b50b401d"
+      ],
+      "period_count": 54,
+      "period_span_days": 4332,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001590364:0001590364-18-000003:8916280b444d8e9e",
+        "secfacts:0001590364:0001590364-16-000014:04fb0c121f7c373a",
+        "secfacts:0001590364:0001590364-17-000004:2654ce3aa9af302d",
+        "secfacts:0001590364:0001590364-20-000002:592799b230f56c99",
+        "secfacts:0001590364:0001590364-21-000002:5d4a30c83d8ac151",
+        "secfacts:0001590364:0001590364-19-000002:c03b9bf06e927862",
+        "secfacts:0001590364:0001590364-24-000021:6fbb2296c0ee406a",
+        "secfacts:0001590364:0001590364-24-000016:09488f02b50b401d",
+        "secfacts:0001590364:0001590364-23-000028:13714437187b60d1",
+        "secfacts:0001590364:0001590364-23-000023:ef698756263b59e4"
+      ],
+      "period_count": 55,
+      "period_span_days": 4332,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001590364:market_data:700274cd4bc5b20fe238330b"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0001628280-25-007092:b2e20216917be07f",
+        "secfacts:0001018963:0001628280-25-036963:312e10b734aea16f",
+        "secfacts:0001018963:0001628280-24-044066:df9f3136a2b8342e",
+        "secfacts:0001018963:0001628280-24-035141:edfc1b5dd1d12b52",
+        "secfacts:0001018963:0001628280-25-021463:9afea83eb61ffbbd",
+        "secfacts:0001018963:0001628280-24-019285:52691465c3ff8e21"
+      ],
+      "period_count": 20,
+      "period_span_days": 1286,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "secfacts:0001018963:0001628280-25-007092:b2e20216917be07f",
+        "sec:cik_0001018963:000162828025036963",
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0001628280-24-006606:b7c3c6385c5658e6",
+        "secfacts:0001018963:0001018963-16-000049:820c45f27168d31d",
+        "secfacts:0001018963:0001628280-23-005017:8d5d990aec6a9c4d",
+        "secfacts:0001018963:0001018963-15-000005:c40bff55c99c4c44",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3"
+      ],
+      "period_count": 62,
+      "period_span_days": 5145,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0001018963-15-000005:c40bff55c99c4c44",
+        "secfacts:0001018963:0001018963-16-000049:820c45f27168d31d",
+        "secfacts:0001018963:0001628280-20-008258:4000bb505ec73ee2",
+        "secfacts:0001018963:0001628280-23-005017:8d5d990aec6a9c4d",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001018963-17-000007:7852f0c54d709e66",
+        "secfacts:0001018963:0001018963-19-000007:4acf346bb01c11f9",
+        "secfacts:0001018963:0001628280-24-006606:b7c3c6385c5658e6"
+      ],
+      "period_count": 66,
+      "period_span_days": 4781,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0000950123-11-019865:58c7511086e45ae2",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0001628280-20-008258:4000bb505ec73ee2",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001018963-19-000007:4acf346bb01c11f9",
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001193125-13-084310:d240cf034925fbd1",
+        "secfacts:0001018963:0001193125-12-081765:9bd54ee7a3553bb0",
+        "secfacts:0001018963:0001018963-17-000007:7852f0c54d709e66",
+        "secfacts:0001018963:0001018963-18-000004:870dfd87490f6cdd"
+      ],
+      "period_count": 60,
+      "period_span_days": 4785,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0001628280-25-007092:b2e20216917be07f",
+        "secfacts:0001018963:0001628280-25-036963:312e10b734aea16f",
+        "secfacts:0001018963:0001628280-24-044066:df9f3136a2b8342e",
+        "secfacts:0001018963:0001628280-24-035141:edfc1b5dd1d12b52",
+        "secfacts:0001018963:0001628280-25-021463:9afea83eb61ffbbd",
+        "secfacts:0001018963:0001628280-24-019285:52691465c3ff8e21"
+      ],
+      "period_count": 20,
+      "period_span_days": 1286,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0000950123-11-019865:58c7511086e45ae2",
+        "secfacts:0001018963:0001193125-12-081765:9bd54ee7a3553bb0",
+        "secfacts:0001018963:0001193125-13-084310:d240cf034925fbd1",
+        "secfacts:0001018963:0001018963-15-000005:c40bff55c99c4c44",
+        "secfacts:0001018963:0001018963-16-000049:820c45f27168d31d",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001018963-18-000004:870dfd87490f6cdd",
+        "secfacts:0001018963:0001018963-19-000007:4acf346bb01c11f9",
+        "secfacts:0001018963:0001018963-17-000007:7852f0c54d709e66"
+      ],
+      "period_count": 60,
+      "period_span_days": 4421,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0001628280-24-006606:b7c3c6385c5658e6",
+        "secfacts:0001018963:0001628280-25-007092:b2e20216917be07f",
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001628280-23-005017:8d5d990aec6a9c4d",
+        "secfacts:0001018963:0001628280-22-003961:688f54a9b77fc0c9",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0000950123-11-019865:58c7511086e45ae2",
+        "secfacts:0001018963:0001628280-20-008258:4000bb505ec73ee2",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001193125-13-084310:d240cf034925fbd1"
+      ],
+      "period_count": 70,
+      "period_span_days": 6241,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0000950123-11-019865:58c7511086e45ae2",
+        "secfacts:0001018963:0001193125-13-084310:d240cf034925fbd1",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0001193125-12-081765:9bd54ee7a3553bb0",
+        "secfacts:0001018963:0001445305-13-002639:07853df29122585e",
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001628280-20-008258:4000bb505ec73ee2",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001018963-19-000007:4acf346bb01c11f9",
+        "secfacts:0001018963:0001628280-24-006606:b7c3c6385c5658e6"
+      ],
+      "period_count": 65,
+      "period_span_days": 5877,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001018963:0000950123-11-019865:58c7511086e45ae2",
+        "secfacts:0001018963:0001193125-13-084310:d240cf034925fbd1",
+        "secfacts:0001018963:0001193125-12-081765:9bd54ee7a3553bb0",
+        "secfacts:0001018963:0001445305-14-000663:0bae11e09342f1c5",
+        "secfacts:0001018963:0001445305-13-002639:07853df29122585e",
+        "secfacts:0001018963:0001628280-21-003434:c50748051a3b95d9",
+        "secfacts:0001018963:0001628280-20-008258:4000bb505ec73ee2",
+        "secfacts:0001018963:0001018963-20-000004:595e02119e6754d3",
+        "secfacts:0001018963:0001018963-19-000007:4acf346bb01c11f9",
+        "secfacts:0001018963:0001193125-13-319181:36224d22961fb37e"
+      ],
+      "period_count": 52,
+      "period_span_days": 4785,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001018963:market_data:cfcdba9bce983722a10ca573"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001018963:000162828025036963",
+        "sec:cik_0001018963:000162828025007092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0001164727-25-000011:e42bf9fbbee2a589",
+        "secfacts:0001164727:0001164727-24-000016:ece41089d1633ec9",
+        "secfacts:0001164727:0001164727-24-000061:72a8b1a19b5a4762",
+        "secfacts:0001164727:0001164727-24-000039:f57e9de7db3f1ea9",
+        "secfacts:0001164727:0001164727-25-000035:81df7dc868eb7e43",
+        "secfacts:0001164727:0001164727-25-000020:dcdb908549dd0861",
+        "secfacts:0001164727:0001164727-24-000031:7df12a632f611111"
+      ],
+      "period_count": 22,
+      "period_span_days": 1659,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "sec:cik_0001164727:000116472725000035",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001558370-19-000806:3ba3db43efc6019b",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354"
+      ],
+      "period_count": 57,
+      "period_span_days": 4792,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001164727-21-000027:be1a6ce7086c37b5",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354",
+        "secfacts:0001164727:0001193125-14-061205:0e102b94d359ec84",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001164727-22-000007:64f3bae3542258bd"
+      ],
+      "period_count": 66,
+      "period_span_days": 5527,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354",
+        "secfacts:0001164727:0001558370-19-000806:3ba3db43efc6019b",
+        "secfacts:0001164727:0001558370-17-000729:4e023f5b86e4d92d",
+        "secfacts:0001164727:0001558370-16-003258:82a5c4ef98745824",
+        "secfacts:0001164727:0001558370-18-000894:19a611935a8aeadc"
+      ],
+      "period_count": 62,
+      "period_span_days": 4792,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0001164727-25-000011:e42bf9fbbee2a589",
+        "secfacts:0001164727:0001164727-24-000016:ece41089d1633ec9",
+        "secfacts:0001164727:0001164727-24-000061:72a8b1a19b5a4762",
+        "secfacts:0001164727:0001164727-25-000035:81df7dc868eb7e43",
+        "secfacts:0001164727:0001164727-24-000039:f57e9de7db3f1ea9",
+        "secfacts:0001164727:0001164727-25-000020:dcdb908549dd0861",
+        "secfacts:0001164727:0001164727-24-000031:7df12a632f611111"
+      ],
+      "period_count": 22,
+      "period_span_days": 1659,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7",
+        "secfacts:0001164727:0001193125-14-061205:0e102b94d359ec84",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001558370-18-000894:19a611935a8aeadc",
+        "secfacts:0001164727:0001558370-17-000729:4e023f5b86e4d92d",
+        "secfacts:0001164727:0001558370-19-000806:3ba3db43efc6019b"
+      ],
+      "period_count": 56,
+      "period_span_days": 4428,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001164727-21-000027:be1a6ce7086c37b5",
+        "secfacts:0001164727:0001164727-25-000011:e42bf9fbbee2a589",
+        "secfacts:0001164727:0001558370-19-000806:3ba3db43efc6019b",
+        "secfacts:0001164727:0001164727-23-000011:e1e389dad962f050",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354",
+        "secfacts:0001164727:0001164727-23-000035:309bc90fbae418d1",
+        "secfacts:0001164727:0001164727-22-000007:64f3bae3542258bd",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7"
+      ],
+      "period_count": 60,
+      "period_span_days": 6619,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001558370-16-003258:82a5c4ef98745824",
+        "secfacts:0001164727:0001558370-17-000729:4e023f5b86e4d92d",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7",
+        "secfacts:0001164727:0001193125-14-061205:0e102b94d359ec84",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354"
+      ],
+      "period_count": 63,
+      "period_span_days": 4792,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001164727:0000950123-11-017350:8f3e19021d650cea",
+        "secfacts:0001164727:0001193125-12-075918:7f717b2bb310fd4c",
+        "secfacts:0001164727:0001193125-14-236178:4df70c3fd4b65d9d",
+        "secfacts:0001164727:0001558370-17-000729:4e023f5b86e4d92d",
+        "secfacts:0001164727:0001193125-13-070256:dd958d096c09e3f7",
+        "secfacts:0001164727:0001558370-16-003258:82a5c4ef98745824",
+        "secfacts:0001164727:0001564590-15-000777:1f15812800d9af05",
+        "secfacts:0001164727:0001558370-18-003282:ca40b7dff84d964c",
+        "secfacts:0001164727:0001558370-18-000894:19a611935a8aeadc",
+        "secfacts:0001164727:0001558370-20-001041:f0f5fcb27a694354"
+      ],
+      "period_count": 62,
+      "period_span_days": 4792,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001164727:market_data:82862f34fff99d6db7abd228"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001164727:000116472725000035",
+        "sec:cik_0001164727:000116472725000011"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-24-000045:a7b6cd99e6eeec65"
+      ],
+      "period_count": 24,
+      "period_span_days": 1556,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "sec:cik_0001801368:000180136824000087",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91"
+      ],
+      "period_count": 31,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-21-000011:6f5b87b2fc7b3df6",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-23-000029:bda1b81463e308af",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91"
+      ],
+      "period_count": 36,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-22-000030:10d176bf138b2f45",
+        "secfacts:0001801368:0001801368-21-000046:fffcd444481fdc4e",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91"
+      ],
+      "period_count": 37,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-24-000045:a7b6cd99e6eeec65"
+      ],
+      "period_count": 24,
+      "period_span_days": 1556,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712",
+        "secfacts:0001801368:0001801368-21-000046:fffcd444481fdc4e",
+        "secfacts:0001801368:0001801368-21-000036:c14bc18cdb494349",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91",
+        "secfacts:0001801368:0001801368-22-000030:10d176bf138b2f45",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd"
+      ],
+      "period_count": 38,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-23-000009:ea3ebf5c32e9d712",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-23-000029:bda1b81463e308af",
+        "secfacts:0001801368:0001801368-21-000011:6f5b87b2fc7b3df6",
+        "secfacts:0001801368:0001801368-24-000045:a7b6cd99e6eeec65"
+      ],
+      "period_count": 35,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-22-000030:10d176bf138b2f45",
+        "secfacts:0001801368:0001801368-21-000046:fffcd444481fdc4e",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-23-000029:bda1b81463e308af",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91",
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae"
+      ],
+      "period_count": 38,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001801368:0001801368-22-000030:10d176bf138b2f45",
+        "secfacts:0001801368:0001801368-21-000046:fffcd444481fdc4e",
+        "secfacts:0001801368:0001801368-24-000087:0eeef78fad17876b",
+        "secfacts:0001801368:0001801368-24-000066:02e80e321064be6d",
+        "secfacts:0001801368:0001801368-22-000010:53b35602be7a5278",
+        "secfacts:0001801368:0001801368-24-000014:496118c941458ffd",
+        "secfacts:0001801368:0001801368-25-000009:851869cd6b49f0ae",
+        "secfacts:0001801368:0001801368-23-000036:c0f62ca12c1ba398",
+        "secfacts:0001801368:0001801368-23-000029:bda1b81463e308af",
+        "secfacts:0001801368:0001801368-22-000036:15b5e211f2083e91"
+      ],
+      "period_count": 38,
+      "period_span_days": 2243,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "period_count": 155,
+      "period_span_days": 226,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001801368:market_data:7cbfb517300de5af5327374a"
+      ],
+      "period_count": 155,
+      "period_span_days": 226,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "sec:cik_0002023554:000202355425000027",
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a",
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0",
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a",
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c",
+        "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9",
+        "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a",
+        "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0"
+      ],
+      "period_count": 14,
+      "period_span_days": 1139,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "period_count": 151,
+      "period_span_days": 217,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0002023554:market_data:344f9c0e704fc4366b29da12"
+      ],
+      "period_count": 151,
+      "period_span_days": 217,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-24-000027:efe765d3489640b3",
+        "secfacts:0000723125:0000723125-24-000019:571a6ae0e6c58077",
+        "secfacts:0000723125:0000723125-24-000007:a70eb6628f6dd3df",
+        "secfacts:0000723125:0000723125-25-000009:c90c6c48610fea90",
+        "secfacts:0000723125:0000723125-25-000021:77aff6ae3c4c83ed",
+        "secfacts:0000723125:0000723125-24-000047:45b979908103228f"
+      ],
+      "period_count": 21,
+      "period_span_days": 1385,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021",
+        "secfacts:0000723125:0000723125-20-000082:5463a00b70e0530b",
+        "secfacts:0000723125:0000723125-19-000094:ebc6b84ac53b1ab2",
+        "secfacts:0000723125:0000723125-18-000092:2d6a2200138211dd",
+        "secfacts:0000723125:0000723125-17-000131:b4418bac3e3f0002",
+        "secfacts:0000723125:0000723125-23-000054:969a438767365751",
+        "secfacts:0000723125:0000723125-21-000065:040128f88587b69e",
+        "secfacts:0000723125:0000723125-22-000048:bcb19684d05770a6",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6"
+      ],
+      "period_count": 58,
+      "period_span_days": 4775,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-20-000082:5463a00b70e0530b",
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-14-000195:cc00907fd31a41d1",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6",
+        "secfacts:0000723125:0000723125-19-000094:ebc6b84ac53b1ab2",
+        "secfacts:0000723125:0000723125-22-000048:bcb19684d05770a6",
+        "secfacts:0000723125:0000723125-15-000112:0a07e9c98d17c374",
+        "secfacts:0000723125:0000723125-23-000054:969a438767365751"
+      ],
+      "period_count": 67,
+      "period_span_days": 5510,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000195:cc00907fd31a41d1",
+        "secfacts:0000723125:0000723125-17-000131:b4418bac3e3f0002",
+        "secfacts:0000723125:0001104659-17-061554:ed8a72c79d81662f",
+        "secfacts:0000723125:0000723125-16-000269:b50ce37065f0e71f",
+        "secfacts:0000723125:0000723125-15-000112:0a07e9c98d17c374",
+        "secfacts:0000723125:0000723125-18-000092:2d6a2200138211dd"
+      ],
+      "period_count": 56,
+      "period_span_days": 3693,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-24-000027:efe765d3489640b3",
+        "secfacts:0000723125:0000723125-24-000019:571a6ae0e6c58077",
+        "secfacts:0000723125:0000723125-25-000021:77aff6ae3c4c83ed",
+        "secfacts:0000723125:0000723125-24-000007:a70eb6628f6dd3df",
+        "secfacts:0000723125:0000723125-25-000009:c90c6c48610fea90",
+        "secfacts:0000723125:0000723125-24-000047:45b979908103228f"
+      ],
+      "period_count": 21,
+      "period_span_days": 1385,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-14-000195:cc00907fd31a41d1",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6",
+        "secfacts:0000723125:0000723125-11-000122:1edd55d23a59526f",
+        "secfacts:0000723125:0000723125-12-000084:6c847f7ed6073113",
+        "secfacts:0000723125:0000723125-12-000057:111dec8f2dad8e78",
+        "secfacts:0000723125:0000723125-11-000085:35303ad89d8167bb",
+        "secfacts:0000723125:0000723125-14-000068:211f21fa05bef14d"
+      ],
+      "period_count": 41,
+      "period_span_days": 2240,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-20-000082:5463a00b70e0530b",
+        "secfacts:0000723125:0000723125-17-000131:b4418bac3e3f0002",
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-19-000094:ebc6b84ac53b1ab2",
+        "secfacts:0000723125:0000723125-18-000092:2d6a2200138211dd",
+        "secfacts:0000723125:0000723125-23-000054:969a438767365751",
+        "secfacts:0000723125:0000723125-24-000027:efe765d3489640b3",
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-22-000048:bcb19684d05770a6",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6"
+      ],
+      "period_count": 73,
+      "period_span_days": 5874,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000195:cc00907fd31a41d1",
+        "secfacts:0000723125:0000723125-17-000131:b4418bac3e3f0002",
+        "secfacts:0000723125:0001104659-17-061554:ed8a72c79d81662f",
+        "secfacts:0000723125:0000723125-15-000112:0a07e9c98d17c374",
+        "secfacts:0000723125:0000723125-16-000269:b50ce37065f0e71f",
+        "secfacts:0000723125:0000723125-18-000092:2d6a2200138211dd"
+      ],
+      "period_count": 56,
+      "period_span_days": 3693,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0000723125:0000723125-11-000189:0500d105697a94a7",
+        "secfacts:0000723125:0000723125-12-000156:4c09f5f6b2c99ab0",
+        "secfacts:0000723125:0000723125-14-000133:4a7168b5145ca7c6",
+        "secfacts:0000723125:0000723125-13-000228:fdfac56e939ceb7d",
+        "secfacts:0000723125:0000723125-14-000195:cc00907fd31a41d1",
+        "secfacts:0000723125:0000723125-17-000131:b4418bac3e3f0002",
+        "secfacts:0000723125:0001104659-17-061554:ed8a72c79d81662f",
+        "secfacts:0000723125:0000723125-15-000112:0a07e9c98d17c374",
+        "secfacts:0000723125:0000723125-16-000269:b50ce37065f0e71f",
+        "secfacts:0000723125:0000723125-18-000092:2d6a2200138211dd"
+      ],
+      "period_count": 56,
+      "period_span_days": 3693,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0000723125:market_data:823e5d16b8cfc77479fe99de"
+      ],
+      "period_count": 238,
+      "period_span_days": 348,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-25-000058:a88d3247bc66e883",
+        "secfacts:0001689548:0001689548-24-000060:89a35309292c90b2"
+      ],
+      "period_count": 19,
+      "period_span_days": 943,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "sec:cik_0001689548:000168954825000092",
+        "secfacts:0001689548:0001689548-22-000014:a8e4a3b4ca8368b9",
+        "secfacts:0001689548:0001689548-21-000094:6a7f79f4afae52c6",
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-21-000075:4a019e967a326fac",
+        "secfacts:0001689548:0001689548-23-000044:851fffcb6a88a8fb",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a"
+      ],
+      "period_count": 36,
+      "period_span_days": 2039,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-22-000014:a8e4a3b4ca8368b9",
+        "secfacts:0001689548:0001689548-23-000044:851fffcb6a88a8fb",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-21-000016:4d3d8e3e57e9f5e2",
+        "secfacts:0001689548:0001689548-21-000094:6a7f79f4afae52c6",
+        "secfacts:0001689548:0001689548-21-000075:4a019e967a326fac",
+        "secfacts:0001689548:0001689548-22-000125:1e176b66c88ee89d",
+        "secfacts:0001689548:0001193125-20-301222:c0a65f07a9046395",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8"
+      ],
+      "period_count": 39,
+      "period_span_days": 2249,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-23-000044:851fffcb6a88a8fb",
+        "secfacts:0001689548:0001689548-23-000159:667726535d9a1196",
+        "secfacts:0001689548:0001689548-22-000014:a8e4a3b4ca8368b9",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-23-000128:a8282fbcba390c1b",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-23-000086:1090edfe8907f6e4"
+      ],
+      "period_count": 38,
+      "period_span_days": 2039,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-25-000058:a88d3247bc66e883",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-24-000060:89a35309292c90b2"
+      ],
+      "period_count": 19,
+      "period_span_days": 943,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-21-000075:4a019e967a326fac",
+        "secfacts:0001689548:0001689548-21-000094:6a7f79f4afae52c6",
+        "secfacts:0001689548:0001689548-23-000159:667726535d9a1196",
+        "secfacts:0001689548:0001689548-22-000125:1e176b66c88ee89d",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-23-000128:a8282fbcba390c1b",
+        "secfacts:0001689548:0001689548-22-000111:871b6de5a54a7cbe",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001193125-20-301222:c0a65f07a9046395"
+      ],
+      "period_count": 37,
+      "period_span_days": 2404,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-22-000014:a8e4a3b4ca8368b9",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-21-000094:6a7f79f4afae52c6",
+        "secfacts:0001689548:0001689548-23-000044:851fffcb6a88a8fb",
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-21-000075:4a019e967a326fac",
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-21-000016:4d3d8e3e57e9f5e2",
+        "secfacts:0001689548:0001689548-22-000111:871b6de5a54a7cbe",
+        "secfacts:0001689548:0001689548-23-000159:667726535d9a1196"
+      ],
+      "period_count": 39,
+      "period_span_days": 2404,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-23-000159:667726535d9a1196",
+        "secfacts:0001689548:0001689548-23-000128:a8282fbcba390c1b",
+        "secfacts:0001689548:0001689548-25-000058:a88d3247bc66e883",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-24-000060:89a35309292c90b2",
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-23-000086:1090edfe8907f6e4"
+      ],
+      "period_count": 27,
+      "period_span_days": 1308,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001689548:0001689548-25-000092:e9d18dae21b288b8",
+        "secfacts:0001689548:0001689548-24-000101:2c1b9eef72b54fe8",
+        "secfacts:0001689548:0001689548-24-000088:461c234cf2d2336a",
+        "secfacts:0001689548:0001689548-23-000159:667726535d9a1196",
+        "secfacts:0001689548:0001689548-23-000128:a8282fbcba390c1b",
+        "secfacts:0001689548:0001689548-25-000040:3de43a4b3d2bc754",
+        "secfacts:0001689548:0001689548-25-000058:a88d3247bc66e883",
+        "secfacts:0001689548:0001689548-24-000034:4fa85df74989fab0",
+        "secfacts:0001689548:0001689548-24-000060:89a35309292c90b2",
+        "secfacts:0001689548:0001689548-23-000044:851fffcb6a88a8fb"
+      ],
+      "period_count": 34,
+      "period_span_days": 1745,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001689548:market_data:cab65f074179af11f7282a5b"
+      ],
+      "period_count": 250,
+      "period_span_days": 364,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "financing_listing_action:v5",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-24-028244:993840de9cb82eff",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-25-022968:3676b38dd3860b1f",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d",
+        "secfacts:0001646188:0001213900-24-043218:563741558bdb3fd0",
+        "secfacts:0001646188:0001213900-25-043731:023819c39b4dfda7"
+      ],
+      "period_count": 56,
+      "period_span_days": 1573,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "cash_reserves:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "sec:cik_0001646188:000121390025043731",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-24-028244:993840de9cb82eff",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-22-013991:d6476728be31dc57",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d"
+      ],
+      "period_count": 80,
+      "period_span_days": 1777,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-24-028244:993840de9cb82eff",
+        "secfacts:0001646188:0001213900-25-022968:3676b38dd3860b1f",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-22-013991:d6476728be31dc57",
+        "secfacts:0001646188:0001213900-21-059274:21966ae0b65c83d7",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433"
+      ],
+      "period_count": 99,
+      "period_span_days": 1897,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "gross_margin_change:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-21-059274:21966ae0b65c83d7",
+        "secfacts:0001646188:0001213900-22-045615:8f870e64620d8d45",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-20-035586:7e74645aedc20726",
+        "secfacts:0001646188:0001213900-21-043005:8bfdf2426fc1e308",
+        "secfacts:0001646188:0001213900-20-022400:82cf2cc620be947c",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99"
+      ],
+      "period_count": 94,
+      "period_span_days": 2285,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "liquidity_runway_months:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d",
+        "secfacts:0001646188:0001213900-25-022968:3676b38dd3860b1f",
+        "secfacts:0001646188:0001213900-25-043731:023819c39b4dfda7",
+        "secfacts:0001646188:0001213900-24-043218:563741558bdb3fd0",
+        "secfacts:0001646188:0001213900-24-028244:993840de9cb82eff"
+      ],
+      "period_count": 56,
+      "period_span_days": 1573,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-22-045615:8f870e64620d8d45",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-21-059274:21966ae0b65c83d7",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-21-043005:8bfdf2426fc1e308",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d",
+        "secfacts:0001646188:0001213900-22-025400:f49571015fc33ac5"
+      ],
+      "period_count": 88,
+      "period_span_days": 2285,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99",
+        "secfacts:0001646188:0001213900-24-068614:91be532ab4bc6e3d",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-25-022968:3676b38dd3860b1f",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-23-039353:fd1c3ef82df8820e",
+        "secfacts:0001646188:0001213900-22-045615:8f870e64620d8d45",
+        "secfacts:0001646188:0001213900-24-043218:563741558bdb3fd0"
+      ],
+      "period_count": 84,
+      "period_span_days": 1531,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "revenue_acceleration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-22-045615:8f870e64620d8d45",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-21-059274:21966ae0b65c83d7",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-20-035586:7e74645aedc20726",
+        "secfacts:0001646188:0001213900-21-043005:8bfdf2426fc1e308",
+        "secfacts:0001646188:0001213900-20-022400:82cf2cc620be947c",
+        "secfacts:0001646188:0001213900-22-025400:f49571015fc33ac5"
+      ],
+      "period_count": 87,
+      "period_span_days": 1921,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "revenue_growth_yoy:v3",
+      "status": "resolved",
+      "document_ids": [
+        "secfacts:0001646188:0001213900-23-066533:ecd2659be261fbf7",
+        "secfacts:0001646188:0001213900-22-071605:9659338fe2817433",
+        "secfacts:0001646188:0001213900-22-045615:8f870e64620d8d45",
+        "secfacts:0001646188:0001213900-23-086734:09545d4d1a2a7d49",
+        "secfacts:0001646188:0001213900-21-059274:21966ae0b65c83d7",
+        "secfacts:0001646188:0001213900-20-035586:7e74645aedc20726",
+        "secfacts:0001646188:0001213900-23-019939:eaa4784351306f5e",
+        "secfacts:0001646188:0001213900-20-022400:82cf2cc620be947c",
+        "secfacts:0001646188:0001213900-21-043005:8bfdf2426fc1e308",
+        "secfacts:0001646188:0001213900-24-096251:be381f4f3bbd4b99"
+      ],
+      "period_count": 94,
+      "period_span_days": 2285,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "guidance_acceleration:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "max_drawdown_1y:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ],
+      "period_count": 181,
+      "period_span_days": 262,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "price_momentum_126d:v2",
+      "status": "resolved",
+      "document_ids": [
+        "massive:cik_0001646188:market_data:4f0a68e38b3c4e8d5356b880",
+        "massive:cik_0001646188:market_data:0d02e15a6b697fad524fc8ef"
+      ],
+      "period_count": 181,
+      "period_span_days": 262,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "negative_word_count:v2",
+      "status": "unresolved",
+      "document_ids": [],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": [
+        "documents=0/1"
+      ]
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "order_quality:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "commercialization_status:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "signal_ref": "customer_concentration:v2",
+      "status": "resolved",
+      "document_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "period_count": 0,
+      "period_span_days": null,
+      "missing_requirements": []
+    }
+  ],
+  "limits": [
+    "SEC authority current extraction plus conservative filed-nextUTCday policy, not APIvintage/primaryfiling numerical audit.",
+    "Resolved source/period coverage is not tag/unit/comparable-period semantic measurement or all9financialSignals readiness.",
+    "Only fixed15 data-only preparation; not full48,MVP,model behavior or research benefit."
+  ],
+  "code_bindings_verified": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_anchor_financial_snapshot.py",
+      "sha256": "e7b97734d546b668f73df2bb570949ee7bb422d31f7ce241678d091e586a3929"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_anchor_financial_snapshot.md",
+      "sha256": "c79556a7fc652028918c982168fd3068cb0c6f896cfe8419e08b98da95ac7aed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "8e30357dacf367d05425aa8b491090c36a53c6d7095c7bdf36183d787cd2e9d6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md",
+      "sha256": "a91763bf23d75049ac58a6afcdf707e0038636751281df3d547c73f872b687fd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "acac01e4ba79291d9f32a660ebe0a4db48e24e81011bbe389f633f28b9d4efb2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "207195fbf751d2bf69ffe3e8fdf11c23c16c2b6171457f250d4df67b760f2080"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "f770e0c0f15b046c564c54a736dfac24b73e6fe7bb9c24454801b2789d1cad68"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "125bc938ffc17180d86f1d62d972b2bd2040629da59a73b1495b3ff71487e636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "4a7f169d9a7362ff75a64873aa2c02760e1e9a036e639daa3eea5d79a10b2bc0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "750731968e94afe106a7ce1c216a454bf97f81548b506bb69e31ac3011ab1112"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "1283d2102ea99c692e2fca6b7b0e039734331933b413cb8aa11dbc46b35a4b66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "1ef644e6041ee93d46db1098b4058eca4a4bae35019bef5dd61694e86610303a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "582d43a4912c1248866c3dddd8b15aed24e5f22a4f72ccde2f2f6d10cb740b77"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "5badee2500158877c5d1439defa9874a611e08e394cbaf276c37010373e519be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "bffe40af047b810d2efdf5c2178b475b73e8c3f4fb90ef37ac5676ada4a32a13"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "48bc084ca33c095f0ecc0e93404b4d17eb580f1364defa758a8375fd7c93d4a6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "84febd7d707f5f850bb9f3f1570e40058dcc8129244dc52c8d7e5fd67367f00c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "c4bba21b5ec197a4f99fb2cefb5e8b2256dfc72dc92c9feffd47f455c4ddb917"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "64f05159c03e2cd4cf0b9b2587a4b5dd31a68371b4a3e17313bc4d3c7ac173f9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "07d697e30483b37703cecf9355783148fd9e616ed9f9d907ce612a0ffa655e43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    }
+  ],
+  "completed_artifact_bindings": {
+    "plan.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/plan.json",
+      "sha256": "09fed612e6e46dc2f36ebe3e8acd6d4a994aa7ad44382447efb08bc52e78a179"
+    },
+    "input_manifest.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/input_manifest.json",
+      "sha256": "807fb3dcc990f34822adf79b64c07f50c407c659367dc9b43be68793413df465"
+    },
+    "result.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/result.json",
+      "sha256": "7d9853d178b029fa0ef6b663d14d3837948f16a56a99a1fe1afb778ad1e3be94"
+    },
+    "append-inventory.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/append-inventory.json",
+      "sha256": "9a3e8eb6ec091600e550999cbb7313cb30b90264e3e3f5f905bc8918a0b4e918"
+    },
+    "global-originals-before.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/global-originals-before.json",
+      "sha256": "7c2b377fc48cbb87c4d14e6fad801abbca60b9f238c94eea20e8017986d3bf07"
+    },
+    "source-review.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/source-review.json",
+      "sha256": "faadfd5370718cc9f311d29184f2c14f65a2b5c698e292b1fdee9fed3bc01067"
+    },
+    "snapshot/reviewed_snapshot.json": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/snapshot/reviewed_snapshot.json",
+      "sha256": "51b26fdaa2c6575e9ff3f8b8a727181a5be679eff2a8ac0e426adc3599a8d4b9"
+    }
+  },
+  "review_script_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/independent/final-source-review.py",
+    "sha256": "71dddd0d140bae328d543a7bf710fd8d27b073003ac28c4079761ca54592e586"
+  },
+  "new_view_document_count": 650,
+  "cases_meeting_existing_0_8": 13
+}

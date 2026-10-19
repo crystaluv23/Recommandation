@@ -1,0 +1,94 @@
+{
+  "expected_products": [
+    {
+      "canonical_record_hash": "8200a8b67bfa291c5f8e47a57d393d619b2f1d5c6f5db917de14e5c79d4aaaf3",
+      "content_hash": "402f3bb6d12dc37afede2b549869717f7c47a15fd248815dce07ea4b896a1e28",
+      "document_id": "secfacts:0002023554:0002023554-25-000004:402f3bb6d12dc37a"
+    },
+    {
+      "canonical_record_hash": "8b2ac391416c2b0663ad589da26b411050f8d0300ce34a893573e683bfa38611",
+      "content_hash": "55e844c40fa5dde97f79be48dc02ced0d802785fbb320297973a27722084d6f6",
+      "document_id": "secfacts:0002023554:0002023554-25-000016:55e844c40fa5dde9"
+    },
+    {
+      "canonical_record_hash": "cae084ebd0caff24c4234ddf5c31c63ff461f42e3a2a9642fb66a3dc385a3ead",
+      "content_hash": "16a848deac4dc89ca555af1613c09c3d24559c331e68093e1c8477d82babef23",
+      "document_id": "secfacts:0002023554:0002023554-25-000027:16a848deac4dc89c"
+    },
+    {
+      "canonical_record_hash": "a047f46cac11a8f22870dac111021f071f2e81f68651cd1f7e133a6ca48983f9",
+      "content_hash": "55cc7a0aa7c1fce0868bc47beacd227a58d4e5809a3d47c779d5b3e9ae634185",
+      "document_id": "secfacts:0002023554:0002023554-25-000034:55cc7a0aa7c1fce0"
+    }
+  ],
+  "item": {
+    "cik": "0002023554",
+    "company_id": "cik_0002023554",
+    "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002023554.json",
+    "symbol": "SNDK"
+  },
+  "normalized_at": "2026-10-19T21:39:42.084961+00:00",
+  "normalizer_profile": "sec_companyfacts_filed_next_utc_day_v1",
+  "provenance": {
+    "acquisition_policy_hash": "692f932bb9c6129abdc3bd8ef21ef6f860ad123766b4b12aeaa75d69daef16d6",
+    "acquisition_selection": {
+      "available_at_through": "2025-09-30T00:00:00+00:00",
+      "form_allowlist": [
+        "10-K",
+        "10-K/A",
+        "10-Q",
+        "10-Q/A",
+        "20-F",
+        "20-F/A",
+        "40-F",
+        "40-F/A",
+        "6-K",
+        "6-K/A",
+        "8-K",
+        "8-K/A"
+      ],
+      "period_end_from": "0001-01-01",
+      "period_end_through": "2025-09-30",
+      "taxonomy_allowlist": [
+        "dei",
+        "ifrs-full",
+        "srt",
+        "us-gaap"
+      ]
+    }
+  },
+  "raw_response": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/sec_company_facts_raw_response/cik_0002023554/sec_edgar:cik_0002023554:sec_company_facts_raw_response:8914fac4ec1d1c785ba778ca.json",
+    "sha256": "568b2453ceebeaef523c6ce2122010f3db085ffd0883de3be0302b16a3a3b601"
+  },
+  "schema_version": "sec-companyfacts-normalization-v1",
+  "selection": {
+    "available_at_through": "2025-09-30T00:00:00+00:00",
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ],
+    "period_end_from": "0001-01-01",
+    "period_end_through": "2025-09-30",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ]
+  },
+  "source_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/1569cd80fc962fdc004e7f30.json",
+    "sha256": "3dd05d3843a1c2f2c4003a6ad449488d404eb247ff9aacdbf8ed819fd2dbe142"
+  }
+}

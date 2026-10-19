@@ -1,0 +1,1613 @@
+{
+  "schema_version": "bounded-periodic-source-inventory-v1",
+  "scope": "Only KGC/MS exact global filing namespaces, the 22 listed managed cache candidate paths in two known roots, and three already-bound selected static caches. Not a global absence proof.",
+  "created_at": "2026-10-19T21:45:38.773035+00:00",
+  "source_inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-inventory.json",
+    "sha256": "a174dca9dc02a178713112c53746e1bded6703306e01b130d6d17bcdf94d335d"
+  },
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    }
+  ],
+  "fixed_cases": [
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "checked_namespace": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818"
+    },
+    {
+      "ticker": "MS",
+      "case_id": "cik_0000895421:20250731",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "checked_namespace": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421"
+    }
+  ],
+  "summary": {
+    "checked_original_count": 11,
+    "formal_periodic_originals_in_checked_namespaces": 0,
+    "exact_cache_candidate_count": 22,
+    "present_candidate_count": 7,
+    "root_submissions_count": 4,
+    "linked_retained_archives_count": 3,
+    "known_selected_static_caches": 3,
+    "external_requests": 0,
+    "source_appends": 0,
+    "labels_or_signal_or_fullprepare_or_model_calls": 0,
+    "linked_archive_counts_and_arrays_consistent": true,
+    "linked_archive_exact_date_bound_matches": 0,
+    "linked_archive_date_bound_checks": 3
+  },
+  "originals": [
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925053056.json",
+        "sha256": "d5d5a20aeeef8b5451cdcf2ae32a1694d3bcc4f814389863d58d9ddaad2b0886"
+      },
+      "document_id": "sec:cik_0000701818:000110465925053056",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "26ec7261b4253affc7fd9845aec76412e405f1bedc2e1e6cb2f1531bec125389",
+      "canonical_record_hash": "7a260417896490fa14fc7a670ac4a1a59f9fcbff24e5dfbe16576f813628368b",
+      "metadata": {
+        "accession_number": "0001104659-25-053056",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925053056/tm2516267d1_6k.htm"
+      },
+      "published_at": "2025-05-27T21:05:24+00:00",
+      "available_at": "2025-05-27T21:05:24+00:00",
+      "body_chars": 9678,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated May 27, 2025 in which Kinross Gold Corporation announced the publication of its 2024 Sustainability Report.     INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925062623.json",
+        "sha256": "7b30afb36b02d1b1dd78bdd778324f12ceae29e7810ed776eb4c0ee15719e6e4"
+      },
+      "document_id": "sec:cik_0000701818:000110465925062623",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "1982f4f4eec8688c7f40260c6c60dba128e0fc60e831fb94db910f9405e25562",
+      "canonical_record_hash": "45c278fb20038a3fb8ab40eb54f3a4fa61c48c8ea377a067d8537fdab0c973fc",
+      "metadata": {
+        "accession_number": "0001104659-25-062623",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925062623/tm2518978d1_6k.htm"
+      },
+      "published_at": "2025-06-25T21:00:17+00:00",
+      "available_at": "2025-06-25T21:00:17+00:00",
+      "body_chars": 9055,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated June 25, 2025 in which Kinross Gold Corporation announced the dates for release of its 2025 Q2 results.   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925070924.json",
+        "sha256": "9423608633732a0e2c1704c9e3aa2fb69e79784d2de3d0d0e3a2208e8c3e3c48"
+      },
+      "document_id": "sec:cik_0000701818:000110465925070924",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "6b55a4bac4c8528b5481c17d6e942c873dc56c93ade38ce13c1473ed64c48caa",
+      "canonical_record_hash": "0f725fdcb19f778c1a9dd241d2a60103f52f07edc5c132057ebbe397ece77136",
+      "metadata": {
+        "accession_number": "0001104659-25-070924",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925070924/tm2521792d1_6k.htm"
+      },
+      "published_at": "2025-07-25T23:59:16+00:00",
+      "available_at": "2025-07-25T23:59:16+00:00",
+      "body_chars": 8762,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated July 25, 2025 in which Kinross Gold Corporation announced the sale of shares of White Gold Corp. and (ii) the related Early Warning Report as filed on SEDAR+.   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+        "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+      },
+      "document_id": "sec:cik_0000701818:000110465925072244",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "1baab057f904750361f36dcc30369775b3512d87a4331e3a7590b1c83c1fba00",
+      "canonical_record_hash": "daf797eeaf06bc057afb763680016a11839efc05d65b5079e60562a37898a368",
+      "metadata": {
+        "accession_number": "0001104659-25-072244",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm"
+      },
+      "published_at": "2025-07-30T21:14:51+00:00",
+      "available_at": "2025-07-30T21:14:51+00:00",
+      "body_chars": 13117,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This Current Report on Form 6-K, dated July 30, 2025, is being furnished for the sole purpose of providing a copy of the Consolidated Financial Statements and Management’s Discussion and Analysis for the period ended June 30, 2025.   This current report is specifically incorporated by reference into Kinross Gold Corporation’s Registration Statements on Form S-8 (Registration Nos. 333-180822, 333-180823, 333-180824 filed on April 19, 2012, Registration No. 333-217099 filed on April 3, 2017 and Re",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json",
+        "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61"
+      },
+      "document_id": "sec:cik_0000701818:000110465925072367",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "575b1d047346e6a8fb7c7727560f7e3ce312ca6153d420074e5ff16715097f7f",
+      "canonical_record_hash": "6f61315332e0c740a5b47eb13453df05c0c91a44f5a85485887e1436f905f32f",
+      "metadata": {
+        "accession_number": "0001104659-25-072367",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm"
+      },
+      "published_at": "2025-07-31T01:14:39+00:00",
+      "available_at": "2025-07-31T01:14:39+00:00",
+      "body_chars": 10058,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This Current Report on Form 6-K, dated July 30, 2025 is specifically incorporated by reference into Kinross Gold Corporation's Registration Statements on Form S-8 [Registration No. 333-262966 filed on February 24, 2022, Registration No. 333-217099 filed on April 3, 2017 and Registration Nos. 333-180824, 333-180823 and 333-180822 filed on April 19, 2012.]           Page 2 This report on Form 6-K is being furnished for the sole purpose of providing copies of the two press releases dated July 30, 2",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925075920.json",
+        "sha256": "f7542ba6afff76756859ff0ee7243a62e9d0052a91a6d48ec2c7bf69da5342c0"
+      },
+      "document_id": "sec:cik_0000701818:000110465925075920",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "76dc186cb474292d15fc3c02fbf150b2ea28825f31be6ee48502460fc3c68714",
+      "canonical_record_hash": "e79f788b3ada6e3fb28a337f7e9326bf92b05a50d5ac957e7b1a4e0e0c32c680",
+      "metadata": {
+        "accession_number": "0001104659-25-075920",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925075920/tm2523086d1_6k.htm"
+      },
+      "published_at": "2025-08-11T11:44:59+00:00",
+      "available_at": "2025-08-11T11:44:59+00:00",
+      "body_chars": 9520,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of (i) the press release dated August 11, 2025 in which Kinross Gold Corporation announced an amendment agreement to the share purchase agreement between Kinross Gold Corporation and Asante Gold Corporation and (ii) the related Early Warning Report as filed on SEDAR+.         Page 2   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925088119.json",
+        "sha256": "73980efdb2035e23f4a5cc8b7a947020a3e93a269361fbe78fa27b15064d4b86"
+      },
+      "document_id": "sec:cik_0000701818:000110465925088119",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "704ffea6c564014fcdeadc575c649d3c95e2ae39a789cd81d9dd035bea625398",
+      "canonical_record_hash": "936717ef3db0dcb6d5e7922625ac158e09558035ca85fbe97f46689097631ddb",
+      "metadata": {
+        "accession_number": "0001104659-25-088119",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925088119/tm2525518d1_6k.htm"
+      },
+      "published_at": "2025-09-08T14:23:42+00:00",
+      "available_at": "2025-09-08T14:23:42+00:00",
+      "body_chars": 9138,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 8, 2025 in which Kinross Gold Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.           Page 2   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925089044.json",
+        "sha256": "275ff16e7ae96ac6eeb851e37a3764334f5e8066da0f3c1192c8b2ad8471294f"
+      },
+      "document_id": "sec:cik_0000701818:000110465925089044",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "07dc6892874def330526d75b232ea499f8adb35d06f167d6fbac45c1db4cdc8b",
+      "canonical_record_hash": "0bd2cc52c779916fbb038ff84a6630eb53ab1bd398af91f9dcbf4198b4b08016",
+      "metadata": {
+        "accession_number": "0001104659-25-089044",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925089044/tm2525808d1_6k.htm"
+      },
+      "published_at": "2025-09-10T19:31:48+00:00",
+      "available_at": "2025-09-10T19:31:48+00:00",
+      "body_chars": 10057,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+.           Page 2   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925092747.json",
+        "sha256": "b775491ea67ad134060b6b20155cc710cf087fdd1e0776a21c3f1bc5c9bb7948"
+      },
+      "document_id": "sec:cik_0000701818:000110465925092747",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "39bc2ab6b53258ae8b71e8609327e546d9cb14d8702f0b8b1ae6b1e910025b59",
+      "canonical_record_hash": "dd0bfe50833f0fa9aefac9f450ffb6e0cfaf64773523368f745d9fc0c2b4dbeb",
+      "metadata": {
+        "accession_number": "0001104659-25-092747",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925092747/tm2526826d1_6k.htm"
+      },
+      "published_at": "2025-09-24T11:12:06+00:00",
+      "available_at": "2025-09-24T11:12:06+00:00",
+      "body_chars": 9605,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of the press release dated September 23, 2025 in which Kinross Gold Corporation announced the sale of a portion of the shares held in Asante Gold Corporation.         Page 2   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925093824.json",
+        "sha256": "2ca77f26ac9807ad08434eb253456907183013f02e3e3a680cc0ed430529fca5"
+      },
+      "document_id": "sec:cik_0000701818:000110465925093824",
+      "company_id": "cik_0000701818",
+      "source_type": "filing",
+      "content_hash": "dcf085762d01c23ed0c32b64c0528c7ab0fb2d16504a71898629210165b30fd2",
+      "canonical_record_hash": "5d2fda3034e703a5fde1905ea8178a5f1c2e7cfb807d2d3a052b03caa6f51aa3",
+      "metadata": {
+        "accession_number": "0001104659-25-093824",
+        "cik": "0000701818",
+        "form": "6-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/701818/000110465925093824/tm2527064d1_6k.htm"
+      },
+      "published_at": "2025-09-26T19:46:25+00:00",
+      "available_at": "2025-09-26T19:46:25+00:00",
+      "body_chars": 9363,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "This report on Form 6-K is being furnished for the sole purpose of providing a copy of an Early Warning Report as filed on SEDAR+.         Page 2   INDEX",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    },
+    {
+      "ticker": "MS",
+      "case_id": "cik_0000895421:20250731",
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+        "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+      },
+      "document_id": "sec:cik_0000895421:000089542125000419",
+      "company_id": "cik_0000895421",
+      "source_type": "filing",
+      "content_hash": "5666f8f981f19ef22fe54b4804c67b6bfbe885b29b6daa229b26e083a461c95f",
+      "canonical_record_hash": "4c3db238497514abf3e0351e8b355ab41918e9f21adab64ee49ba2231b2179f6",
+      "metadata": {
+        "accession_number": "0000895421-25-000419",
+        "cik": "0000895421",
+        "form": "8-K",
+        "provider": "sec_edgar",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/ms-20250716.htm"
+      },
+      "published_at": "2025-07-16T11:59:47+00:00",
+      "available_at": "2025-07-16T11:59:47+00:00",
+      "body_chars": 56465,
+      "purpose_excerpt_markup_stripped_diagnostic_only": "this Report and by this reference incorporated herein and made a part hereof. In addition, a copy of the Company's Financial Data Supplement for its quarter ended June 30, 2025 is annexed as Exhibit 99.2 to this Report and by this reference incorporated herein and made a part hereof. The information furnished under Item 2.02 of this Report, including Exhibit 99.1 and Exhibit 99.2, shall be deemed to be \"filed\" for purposes of the Securities Exchange Act of 1934, as amended. Item 9.01    Financia",
+      "formal_periodic_form": false,
+      "existing_disposition_unchanged": true
+    }
+  ],
+  "exact_cache_candidates": [
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "744c3170d6b993beaf24d546",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-08-21T16:24:56.948806+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "744c3170d6b993beaf24d546",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "0e0fe01f7c5c9ca032a1ef3e4fa5bdcba691ceefd32972952b752e991b941724"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-09-11T05:07:02.216804+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "da30b1fbd4806f31edbe7d99",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-08-21T16:25:56.818806+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "da30b1fbd4806f31edbe7d99",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-09-11T05:12:46.206579+00:00"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "961becb1e6359de05384ed49",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/961becb1e6359de05384ed49.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "961becb1e6359de05384ed49",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/961becb1e6359de05384ed49.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465924039723/kgc-20231231x40f.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "4e08c5b38f66706d2395934e",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/4e08c5b38f66706d2395934e.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465924039723/kgc-20231231x40f.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "4e08c5b38f66706d2395934e",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/4e08c5b38f66706d2395934e.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "ab81a9e65ad5a54bf864c91b",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "ab81a9e65ad5a54bf864c91b",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+        "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-09-11T05:12:47.301939+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "0b256936638c81a29faf124a",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "0b256936638c81a29faf124a",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+        "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-09-11T05:12:48.783198+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "522cb1b7491aeb9c9be2a9ab",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "522cb1b7491aeb9c9be2a9ab",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+      "status": "present",
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      },
+      "managed_request_exact": true,
+      "payload_kind": "json",
+      "retrieved_at": "2026-09-11T05:12:49.928084+00:00"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-004.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "82bd42f97d049ae881167ad6",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/82bd42f97d049ae881167ad6.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-004.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "82bd42f97d049ae881167ad6",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/82bd42f97d049ae881167ad6.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-005.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "347942761b86060cdf82b363",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/347942761b86060cdf82b363.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-005.json",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "347942761b86060cdf82b363",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/347942761b86060cdf82b363.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000440/ms-20250630.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "b54812a66219bac091dcdca2",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/b54812a66219bac091dcdca2.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000440/ms-20250630.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "b54812a66219bac091dcdca2",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/b54812a66219bac091dcdca2.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "4c21c4ed55a927ee7db3d8bf",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/4c21c4ed55a927ee7db3d8bf.json",
+      "status": "not_present_in_checked_root"
+    },
+    {
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "cache_root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents",
+      "expected_cache_key": "4c21c4ed55a927ee7db3d8bf",
+      "expected_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/4c21c4ed55a927ee7db3d8bf.json",
+      "status": "not_present_in_checked_root"
+    }
+  ],
+  "root_submissions": [
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+      "issuer_cik": "0000701818",
+      "retrieved_at": "2026-08-21T16:24:56.948806+00:00",
+      "recent_count": 1000,
+      "linked_files": [
+        {
+          "filingCount": 28,
+          "filingFrom": "1994-02-11",
+          "filingTo": "2002-02-10",
+          "name": "CIK0000701818-submissions-001.json"
+        }
+      ]
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "0e0fe01f7c5c9ca032a1ef3e4fa5bdcba691ceefd32972952b752e991b941724"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+      "issuer_cik": "0000701818",
+      "retrieved_at": "2026-09-11T05:07:02.216804+00:00",
+      "recent_count": 1000,
+      "linked_files": [
+        {
+          "filingCount": 28,
+          "filingFrom": "1994-02-11",
+          "filingTo": "2002-02-10",
+          "name": "CIK0000701818-submissions-001.json"
+        }
+      ]
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "issuer_cik": "0000895421",
+      "retrieved_at": "2026-08-21T16:25:56.818806+00:00",
+      "recent_count": 19703,
+      "linked_files": [
+        {
+          "filingCount": 2084,
+          "filingFrom": "2025-06-30",
+          "filingTo": "2025-08-19",
+          "name": "CIK0000895421-submissions-001.json"
+        },
+        {
+          "filingCount": 2091,
+          "filingFrom": "2025-05-02",
+          "filingTo": "2025-06-28",
+          "name": "CIK0000895421-submissions-002.json"
+        },
+        {
+          "filingCount": 2057,
+          "filingFrom": "2025-03-31",
+          "filingTo": "2025-04-30",
+          "name": "CIK0000895421-submissions-003.json"
+        },
+        {
+          "filingCount": 2008,
+          "filingFrom": "2025-02-20",
+          "filingTo": "2025-03-29",
+          "name": "CIK0000895421-submissions-004.json"
+        },
+        {
+          "filingCount": 2008,
+          "filingFrom": "2025-01-06",
+          "filingTo": "2025-02-18",
+          "name": "CIK0000895421-submissions-005.json"
+        },
+        {
+          "filingCount": 2038,
+          "filingFrom": "2024-11-19",
+          "filingTo": "2025-01-04",
+          "name": "CIK0000895421-submissions-006.json"
+        },
+        {
+          "filingCount": 2018,
+          "filingFrom": "2024-09-27",
+          "filingTo": "2024-11-17",
+          "name": "CIK0000895421-submissions-007.json"
+        },
+        {
+          "filingCount": 2023,
+          "filingFrom": "2024-07-31",
+          "filingTo": "2024-09-25",
+          "name": "CIK0000895421-submissions-008.json"
+        },
+        {
+          "filingCount": 2031,
+          "filingFrom": "2024-05-24",
+          "filingTo": "2024-07-29",
+          "name": "CIK0000895421-submissions-009.json"
+        },
+        {
+          "filingCount": 2007,
+          "filingFrom": "2024-03-20",
+          "filingTo": "2024-05-22",
+          "name": "CIK0000895421-submissions-010.json"
+        },
+        {
+          "filingCount": 2008,
+          "filingFrom": "2024-01-19",
+          "filingTo": "2024-03-18",
+          "name": "CIK0000895421-submissions-011.json"
+        },
+        {
+          "filingCount": 2030,
+          "filingFrom": "2023-10-26",
+          "filingTo": "2024-01-17",
+          "name": "CIK0000895421-submissions-012.json"
+        },
+        {
+          "filingCount": 2056,
+          "filingFrom": "2023-07-31",
+          "filingTo": "2023-10-24",
+          "name": "CIK0000895421-submissions-013.json"
+        },
+        {
+          "filingCount": 2032,
+          "filingFrom": "2023-05-02",
+          "filingTo": "2023-07-29",
+          "name": "CIK0000895421-submissions-014.json"
+        },
+        {
+          "filingCount": 2003,
+          "filingFrom": "2023-02-23",
+          "filingTo": "2023-04-30",
+          "name": "CIK0000895421-submissions-015.json"
+        },
+        {
+          "filingCount": 2026,
+          "filingFrom": "2022-12-12",
+          "filingTo": "2023-02-21",
+          "name": "CIK0000895421-submissions-016.json"
+        },
+        {
+          "filingCount": 2017,
+          "filingFrom": "2022-09-30",
+          "filingTo": "2022-12-10",
+          "name": "CIK0000895421-submissions-017.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2022-07-07",
+          "filingTo": "2022-09-28",
+          "name": "CIK0000895421-submissions-018.json"
+        },
+        {
+          "filingCount": 2025,
+          "filingFrom": "2022-04-27",
+          "filingTo": "2022-07-05",
+          "name": "CIK0000895421-submissions-019.json"
+        },
+        {
+          "filingCount": 2095,
+          "filingFrom": "2022-02-11",
+          "filingTo": "2022-04-25",
+          "name": "CIK0000895421-submissions-020.json"
+        },
+        {
+          "filingCount": 2041,
+          "filingFrom": "2021-11-30",
+          "filingTo": "2022-02-09",
+          "name": "CIK0000895421-submissions-021.json"
+        },
+        {
+          "filingCount": 2035,
+          "filingFrom": "2021-09-01",
+          "filingTo": "2021-11-28",
+          "name": "CIK0000895421-submissions-022.json"
+        },
+        {
+          "filingCount": 2009,
+          "filingFrom": "2021-05-05",
+          "filingTo": "2021-08-30",
+          "name": "CIK0000895421-submissions-023.json"
+        },
+        {
+          "filingCount": 2078,
+          "filingFrom": "2021-02-10",
+          "filingTo": "2021-05-03",
+          "name": "CIK0000895421-submissions-024.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2020-11-09",
+          "filingTo": "2021-02-08",
+          "name": "CIK0000895421-submissions-025.json"
+        },
+        {
+          "filingCount": 2074,
+          "filingFrom": "2020-06-29",
+          "filingTo": "2020-11-07",
+          "name": "CIK0000895421-submissions-026.json"
+        },
+        {
+          "filingCount": 2015,
+          "filingFrom": "2020-03-17",
+          "filingTo": "2020-06-27",
+          "name": "CIK0000895421-submissions-027.json"
+        },
+        {
+          "filingCount": 2014,
+          "filingFrom": "2019-11-26",
+          "filingTo": "2020-03-15",
+          "name": "CIK0000895421-submissions-028.json"
+        },
+        {
+          "filingCount": 2024,
+          "filingFrom": "2019-06-03",
+          "filingTo": "2019-11-24",
+          "name": "CIK0000895421-submissions-029.json"
+        },
+        {
+          "filingCount": 2032,
+          "filingFrom": "2018-12-06",
+          "filingTo": "2019-06-01",
+          "name": "CIK0000895421-submissions-030.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2018-03-27",
+          "filingTo": "2018-12-04",
+          "name": "CIK0000895421-submissions-031.json"
+        },
+        {
+          "filingCount": 2004,
+          "filingFrom": "2017-07-05",
+          "filingTo": "2018-03-25",
+          "name": "CIK0000895421-submissions-032.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2016-07-05",
+          "filingTo": "2017-07-03",
+          "name": "CIK0000895421-submissions-033.json"
+        },
+        {
+          "filingCount": 2005,
+          "filingFrom": "2015-06-02",
+          "filingTo": "2016-07-03",
+          "name": "CIK0000895421-submissions-034.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2014-05-27",
+          "filingTo": "2015-05-31",
+          "name": "CIK0000895421-submissions-035.json"
+        },
+        {
+          "filingCount": 2014,
+          "filingFrom": "2013-05-07",
+          "filingTo": "2014-05-25",
+          "name": "CIK0000895421-submissions-036.json"
+        },
+        {
+          "filingCount": 2015,
+          "filingFrom": "2012-05-01",
+          "filingTo": "2013-05-05",
+          "name": "CIK0000895421-submissions-037.json"
+        },
+        {
+          "filingCount": 2013,
+          "filingFrom": "2011-02-24",
+          "filingTo": "2012-04-29",
+          "name": "CIK0000895421-submissions-038.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2009-10-20",
+          "filingTo": "2011-02-22",
+          "name": "CIK0000895421-submissions-039.json"
+        },
+        {
+          "filingCount": 2003,
+          "filingFrom": "2008-04-15",
+          "filingTo": "2009-10-18",
+          "name": "CIK0000895421-submissions-040.json"
+        },
+        {
+          "filingCount": 2043,
+          "filingFrom": "2007-02-14",
+          "filingTo": "2008-04-13",
+          "name": "CIK0000895421-submissions-041.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2004-09-29",
+          "filingTo": "2007-02-12",
+          "name": "CIK0000895421-submissions-042.json"
+        },
+        {
+          "filingCount": 2005,
+          "filingFrom": "1999-08-05",
+          "filingTo": "2004-09-27",
+          "name": "CIK0000895421-submissions-043.json"
+        },
+        {
+          "filingCount": 872,
+          "filingFrom": "1993-11-08",
+          "filingTo": "1999-08-03",
+          "name": "CIK0000895421-submissions-044.json"
+        }
+      ]
+    },
+    {
+      "binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json",
+      "issuer_cik": "0000895421",
+      "retrieved_at": "2026-09-11T05:12:46.206579+00:00",
+      "recent_count": 19783,
+      "linked_files": [
+        {
+          "filingCount": 2088,
+          "filingFrom": "2025-07-31",
+          "filingTo": "2025-09-09",
+          "name": "CIK0000895421-submissions-001.json"
+        },
+        {
+          "filingCount": 2032,
+          "filingFrom": "2025-06-02",
+          "filingTo": "2025-07-29",
+          "name": "CIK0000895421-submissions-002.json"
+        },
+        {
+          "filingCount": 2005,
+          "filingFrom": "2025-04-21",
+          "filingTo": "2025-05-31",
+          "name": "CIK0000895421-submissions-003.json"
+        },
+        {
+          "filingCount": 2005,
+          "filingFrom": "2025-03-13",
+          "filingTo": "2025-04-19",
+          "name": "CIK0000895421-submissions-004.json"
+        },
+        {
+          "filingCount": 2138,
+          "filingFrom": "2025-02-03",
+          "filingTo": "2025-03-11",
+          "name": "CIK0000895421-submissions-005.json"
+        },
+        {
+          "filingCount": 2018,
+          "filingFrom": "2024-12-13",
+          "filingTo": "2025-02-01",
+          "name": "CIK0000895421-submissions-006.json"
+        },
+        {
+          "filingCount": 2068,
+          "filingFrom": "2024-10-30",
+          "filingTo": "2024-12-11",
+          "name": "CIK0000895421-submissions-007.json"
+        },
+        {
+          "filingCount": 2052,
+          "filingFrom": "2024-08-29",
+          "filingTo": "2024-10-28",
+          "name": "CIK0000895421-submissions-008.json"
+        },
+        {
+          "filingCount": 2047,
+          "filingFrom": "2024-06-28",
+          "filingTo": "2024-08-27",
+          "name": "CIK0000895421-submissions-009.json"
+        },
+        {
+          "filingCount": 2037,
+          "filingFrom": "2024-04-19",
+          "filingTo": "2024-06-26",
+          "name": "CIK0000895421-submissions-010.json"
+        },
+        {
+          "filingCount": 2022,
+          "filingFrom": "2024-02-14",
+          "filingTo": "2024-04-17",
+          "name": "CIK0000895421-submissions-011.json"
+        },
+        {
+          "filingCount": 2021,
+          "filingFrom": "2023-12-01",
+          "filingTo": "2024-02-12",
+          "name": "CIK0000895421-submissions-012.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2023-09-13",
+          "filingTo": "2023-11-29",
+          "name": "CIK0000895421-submissions-013.json"
+        },
+        {
+          "filingCount": 2020,
+          "filingFrom": "2023-06-13",
+          "filingTo": "2023-09-11",
+          "name": "CIK0000895421-submissions-014.json"
+        },
+        {
+          "filingCount": 2014,
+          "filingFrom": "2023-03-29",
+          "filingTo": "2023-06-11",
+          "name": "CIK0000895421-submissions-015.json"
+        },
+        {
+          "filingCount": 2023,
+          "filingFrom": "2023-01-27",
+          "filingTo": "2023-03-27",
+          "name": "CIK0000895421-submissions-016.json"
+        },
+        {
+          "filingCount": 2033,
+          "filingFrom": "2022-11-02",
+          "filingTo": "2023-01-25",
+          "name": "CIK0000895421-submissions-017.json"
+        },
+        {
+          "filingCount": 2001,
+          "filingFrom": "2022-08-30",
+          "filingTo": "2022-10-31",
+          "name": "CIK0000895421-submissions-018.json"
+        },
+        {
+          "filingCount": 2025,
+          "filingFrom": "2022-05-31",
+          "filingTo": "2022-08-28",
+          "name": "CIK0000895421-submissions-019.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2022-03-18",
+          "filingTo": "2022-05-29",
+          "name": "CIK0000895421-submissions-020.json"
+        },
+        {
+          "filingCount": 2004,
+          "filingFrom": "2022-01-19",
+          "filingTo": "2022-03-16",
+          "name": "CIK0000895421-submissions-021.json"
+        },
+        {
+          "filingCount": 2013,
+          "filingFrom": "2021-10-25",
+          "filingTo": "2022-01-17",
+          "name": "CIK0000895421-submissions-022.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2021-07-23",
+          "filingTo": "2021-10-23",
+          "name": "CIK0000895421-submissions-023.json"
+        },
+        {
+          "filingCount": 2048,
+          "filingFrom": "2021-03-30",
+          "filingTo": "2021-07-21",
+          "name": "CIK0000895421-submissions-024.json"
+        },
+        {
+          "filingCount": 2013,
+          "filingFrom": "2021-01-08",
+          "filingTo": "2021-03-28",
+          "name": "CIK0000895421-submissions-025.json"
+        },
+        {
+          "filingCount": 2012,
+          "filingFrom": "2020-09-15",
+          "filingTo": "2021-01-06",
+          "name": "CIK0000895421-submissions-026.json"
+        },
+        {
+          "filingCount": 2013,
+          "filingFrom": "2020-05-19",
+          "filingTo": "2020-09-13",
+          "name": "CIK0000895421-submissions-027.json"
+        },
+        {
+          "filingCount": 2007,
+          "filingFrom": "2020-02-10",
+          "filingTo": "2020-05-17",
+          "name": "CIK0000895421-submissions-028.json"
+        },
+        {
+          "filingCount": 2016,
+          "filingFrom": "2019-09-26",
+          "filingTo": "2020-02-08",
+          "name": "CIK0000895421-submissions-029.json"
+        },
+        {
+          "filingCount": 2016,
+          "filingFrom": "2019-03-26",
+          "filingTo": "2019-09-24",
+          "name": "CIK0000895421-submissions-030.json"
+        },
+        {
+          "filingCount": 2001,
+          "filingFrom": "2018-09-11",
+          "filingTo": "2019-03-24",
+          "name": "CIK0000895421-submissions-031.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2018-01-10",
+          "filingTo": "2018-09-09",
+          "name": "CIK0000895421-submissions-032.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2017-03-09",
+          "filingTo": "2018-01-08",
+          "name": "CIK0000895421-submissions-033.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2016-02-05",
+          "filingTo": "2017-03-07",
+          "name": "CIK0000895421-submissions-034.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2015-02-05",
+          "filingTo": "2016-02-03",
+          "name": "CIK0000895421-submissions-035.json"
+        },
+        {
+          "filingCount": 2001,
+          "filingFrom": "2014-01-23",
+          "filingTo": "2015-02-03",
+          "name": "CIK0000895421-submissions-036.json"
+        },
+        {
+          "filingCount": 2015,
+          "filingFrom": "2013-02-01",
+          "filingTo": "2014-01-21",
+          "name": "CIK0000895421-submissions-037.json"
+        },
+        {
+          "filingCount": 2006,
+          "filingFrom": "2011-11-25",
+          "filingTo": "2013-01-30",
+          "name": "CIK0000895421-submissions-038.json"
+        },
+        {
+          "filingCount": 2001,
+          "filingFrom": "2010-09-20",
+          "filingTo": "2011-11-23",
+          "name": "CIK0000895421-submissions-039.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2009-03-04",
+          "filingTo": "2010-09-18",
+          "name": "CIK0000895421-submissions-040.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2008-01-25",
+          "filingTo": "2009-03-02",
+          "name": "CIK0000895421-submissions-041.json"
+        },
+        {
+          "filingCount": 2002,
+          "filingFrom": "2006-06-01",
+          "filingTo": "2008-01-23",
+          "name": "CIK0000895421-submissions-042.json"
+        },
+        {
+          "filingCount": 2000,
+          "filingFrom": "2003-04-11",
+          "filingTo": "2006-05-30",
+          "name": "CIK0000895421-submissions-043.json"
+        },
+        {
+          "filingCount": 2012,
+          "filingFrom": "1998-02-11",
+          "filingTo": "2003-04-09",
+          "name": "CIK0000895421-submissions-044.json"
+        },
+        {
+          "filingCount": 215,
+          "filingFrom": "1993-11-08",
+          "filingTo": "1998-02-09",
+          "name": "CIK0000895421-submissions-045.json"
+        }
+      ]
+    }
+  ],
+  "root_linked_retained_archives": [
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+        "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+      },
+      "linked_file": {
+        "filingCount": 2088,
+        "filingFrom": "2025-07-31",
+        "filingTo": "2025-09-09",
+        "name": "CIK0000895421-submissions-001.json"
+      },
+      "archive_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+      "endpoint_and_filename_exact": true,
+      "array_lengths": {
+        "acceptanceDateTime": 2088,
+        "accessionNumber": 2088,
+        "act": 2088,
+        "core_type": 2088,
+        "fileNumber": 2088,
+        "filingDate": 2088,
+        "filmNumber": 2088,
+        "form": 2088,
+        "isInlineXBRL": 2088,
+        "isXBRL": 2088,
+        "isXBRLNumeric": 2088,
+        "items": 2088,
+        "primaryDocDescription": 2088,
+        "primaryDocument": 2088,
+        "reportDate": 2088,
+        "size": 2088
+      },
+      "all_arrays_same_length": true,
+      "unique_accessions": true,
+      "actual_filing_count": 2088,
+      "actual_filing_from": "2025-07-31",
+      "actual_filing_to": "2025-09-10",
+      "filing_count_matches_root": true,
+      "date_bounds_match_root": false,
+      "archive_retrieval_not_before_root": true
+    },
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+        "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+      },
+      "linked_file": {
+        "filingCount": 2032,
+        "filingFrom": "2025-06-02",
+        "filingTo": "2025-07-29",
+        "name": "CIK0000895421-submissions-002.json"
+      },
+      "archive_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json",
+      "endpoint_and_filename_exact": true,
+      "array_lengths": {
+        "acceptanceDateTime": 2032,
+        "accessionNumber": 2032,
+        "act": 2032,
+        "core_type": 2032,
+        "fileNumber": 2032,
+        "filingDate": 2032,
+        "filmNumber": 2032,
+        "form": 2032,
+        "isInlineXBRL": 2032,
+        "isXBRL": 2032,
+        "isXBRLNumeric": 2032,
+        "items": 2032,
+        "primaryDocDescription": 2032,
+        "primaryDocument": 2032,
+        "reportDate": 2032,
+        "size": 2032
+      },
+      "all_arrays_same_length": true,
+      "unique_accessions": true,
+      "actual_filing_count": 2032,
+      "actual_filing_from": "2025-06-02",
+      "actual_filing_to": "2025-07-30",
+      "filing_count_matches_root": true,
+      "date_bounds_match_root": false,
+      "archive_retrieval_not_before_root": true
+    },
+    {
+      "root_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+        "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+      },
+      "archive_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      },
+      "linked_file": {
+        "filingCount": 2005,
+        "filingFrom": "2025-04-21",
+        "filingTo": "2025-05-31",
+        "name": "CIK0000895421-submissions-003.json"
+      },
+      "archive_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "endpoint_and_filename_exact": true,
+      "array_lengths": {
+        "acceptanceDateTime": 2005,
+        "accessionNumber": 2005,
+        "act": 2005,
+        "core_type": 2005,
+        "fileNumber": 2005,
+        "filingDate": 2005,
+        "filmNumber": 2005,
+        "form": 2005,
+        "isInlineXBRL": 2005,
+        "isXBRL": 2005,
+        "isXBRLNumeric": 2005,
+        "items": 2005,
+        "primaryDocDescription": 2005,
+        "primaryDocument": 2005,
+        "reportDate": 2005,
+        "size": 2005
+      },
+      "all_arrays_same_length": true,
+      "unique_accessions": true,
+      "actual_filing_count": 2005,
+      "actual_filing_from": "2025-04-21",
+      "actual_filing_to": "2025-05-30",
+      "filing_count_matches_root": true,
+      "date_bounds_match_root": false,
+      "archive_retrieval_not_before_root": true
+    }
+  ],
+  "known_selected_static_proofs": [
+    {
+      "ticker": "KGC",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+        "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2ac14a7179bb085fb9732d6b.json",
+        "sha256": "f19a42150e5c11903240c5901a2b43be4da4a4c3e39e040b59291cbc550d732c"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072244/tm2521379d1_6k.htm",
+      "body_equals_original": true,
+      "original_published_at": "2025-07-30T21:14:51+00:00",
+      "original_available_at": "2025-07-30T21:14:51+00:00"
+    },
+    {
+      "ticker": "KGC",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json",
+        "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/b90c1ec44e00683142740abd.json",
+        "sha256": "bd6bdfe75a2a7eacfd47dc6a206b275c2f874a24495239bca045a60236cc02bd"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925072367/tm2522148d1_6k.htm",
+      "body_equals_original": true,
+      "original_published_at": "2025-07-31T01:14:39+00:00",
+      "original_available_at": "2025-07-31T01:14:39+00:00"
+    },
+    {
+      "ticker": "MS",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+        "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/87cf453ffed51e42dc4aca19.json",
+        "sha256": "8fcb57599a2b7cd2f5a901fb2318deed9f51de7c2e48d6810cd5f2b82411b390"
+      },
+      "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/ms-20250716.htm",
+      "body_equals_original": true,
+      "original_published_at": "2025-07-16T11:59:47+00:00",
+      "original_available_at": "2025-07-16T11:59:47+00:00"
+    }
+  ],
+  "periodic_candidates": [
+    {
+      "submissions_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+        "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+      },
+      "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000701818.json",
+      "accessionNumber": "0001104659-25-028819",
+      "form": "40-F",
+      "reportDate": "2024-12-31",
+      "filingDate": "2025-03-27",
+      "acceptanceDateTime": "2025-03-27T20:55:21.000Z",
+      "primaryDocument": "kgc-20241231x40f.htm",
+      "ticker": "KGC",
+      "case_id": "cik_0000701818:20250930",
+      "case_cutoff": "2025-09-30T00:00:00+00:00",
+      "available_by_cutoff": true,
+      "static_endpoint": "https://www.sec.gov/Archives/edgar/data/701818/000110465925028819/kgc-20241231x40f.htm",
+      "original_in_checked_namespace": false,
+      "static_cache_present_in_checked_roots": false
+    },
+    {
+      "submissions_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+        "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+      },
+      "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-003.json",
+      "accessionNumber": "0000895421-25-000343",
+      "form": "10-Q",
+      "reportDate": "2025-03-31",
+      "filingDate": "2025-05-05",
+      "acceptanceDateTime": "2025-05-05T20:13:06.000Z",
+      "primaryDocument": "ms-20250331.htm",
+      "ticker": "MS",
+      "case_id": "cik_0000895421:20250731",
+      "case_cutoff": "2025-07-31T00:00:00+00:00",
+      "available_by_cutoff": true,
+      "static_endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000343/ms-20250331.htm",
+      "original_in_checked_namespace": false,
+      "static_cache_present_in_checked_roots": false
+    }
+  ],
+  "explicit_post_cutoff_counterexample": {
+    "submissions_binding": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+      "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+    },
+    "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-001.json",
+    "accessionNumber": "0000895421-25-000440",
+    "form": "10-Q",
+    "reportDate": "2025-06-30",
+    "filingDate": "2025-08-04",
+    "acceptanceDateTime": "2025-08-04T20:30:56.000Z",
+    "primaryDocument": "ms-20250630.htm",
+    "ticker": "MS",
+    "case_id": "cik_0000895421:20250731",
+    "case_cutoff": "2025-07-31T00:00:00+00:00",
+    "available_by_cutoff": false,
+    "static_endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000440/ms-20250630.htm",
+    "original_in_checked_namespace": false,
+    "static_cache_present_in_checked_roots": false
+  },
+  "retained_ms_original_clock_reconstruction": {
+    "scope": "One precise offline adapter request at the original acceptance boundary, not full-case BasicInfo/source admission. Unmodified cached root, linked flat archive and static body are served at exact endpoints; no repackaging.",
+    "root_submissions": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+    },
+    "linked_archive": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+      "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+    },
+    "static_body_cache": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/87cf453ffed51e42dc4aca19.json",
+      "sha256": "8fcb57599a2b7cd2f5a901fb2318deed9f51de7c2e48d6810cd5f2b82411b390"
+    },
+    "original_record": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+      "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+    },
+    "original_clock": "2025-07-16T11:59:47+00:00",
+    "retained_archive_record": {
+      "submissions_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+        "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+      },
+      "submissions_endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json",
+      "accessionNumber": "0000895421-25-000419",
+      "form": "8-K",
+      "reportDate": "2025-07-16",
+      "filingDate": "2025-07-16",
+      "acceptanceDateTime": "2025-07-16T11:59:47.000Z",
+      "primaryDocument": "ms-20250716.htm"
+    },
+    "request": {
+      "source_types": [
+        "filing",
+        "8-k"
+      ],
+      "lookback_days": 1,
+      "max_documents": 1,
+      "as_of": "2025-07-16T11:59:47+00:00"
+    },
+    "native_entrypoints": [
+      "SecEdgarClient.submissions",
+      "SecEdgarClient.historical_submissions",
+      "SecEdgarClient.filings_from_arrays_as_of",
+      "SecEdgarClient.filing_document_text",
+      "SecFilingAdapter.acquire"
+    ],
+    "result_document_count": 1,
+    "complete_original_reconstruction_equal": true,
+    "rebuilt_canonical_record_hash": "4c3db238497514abf3e0351e8b355ab41918e9f21adab64ee49ba2231b2179f6",
+    "original_canonical_record_hash": "4c3db238497514abf3e0351e8b355ab41918e9f21adab64ee49ba2231b2179f6",
+    "events": [
+      {
+        "kind": "sec_history_scan",
+        "details": {
+          "requested_files": [
+            "CIK0000895421-submissions-002.json"
+          ],
+          "failed_file_count": 0,
+          "history_truncated": false
+        }
+      }
+    ],
+    "local_transport_calls": [
+      {
+        "method": "local_get_json",
+        "endpoint": "https://data.sec.gov/submissions/CIK0000895421.json"
+      },
+      {
+        "method": "local_get_json",
+        "endpoint": "https://data.sec.gov/submissions/CIK0000895421-submissions-002.json"
+      },
+      {
+        "method": "local_get_text",
+        "endpoint": "https://www.sec.gov/Archives/edgar/data/895421/000089542125000419/ms-20250716.htm"
+      }
+    ],
+    "external_requests": 0,
+    "reviewed_admission_performed": false,
+    "limitation": "Existing reviewed sec_archive_acceptance_v1 requires the root recent shape; it does not support this linked flat history proof. The separate newer 15:59Z/API-vs-header conflict remains; this retained source proves an older matching input exists."
+  },
+  "all_read_existing_bindings_unchanged": true,
+  "read_input_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925053056.json",
+      "sha256": "d5d5a20aeeef8b5451cdcf2ae32a1694d3bcc4f814389863d58d9ddaad2b0886"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925062623.json",
+      "sha256": "7b30afb36b02d1b1dd78bdd778324f12ceae29e7810ed776eb4c0ee15719e6e4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925070924.json",
+      "sha256": "9423608633732a0e2c1704c9e3aa2fb69e79784d2de3d0d0e3a2208e8c3e3c48"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072244.json",
+      "sha256": "1fd965bcb25ddeddce2f79acf465ee871b7348e7553f600886e0af880a14bf87"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925072367.json",
+      "sha256": "f1468f363cc37f063bb2d06de45c609ac6c53b6f850997e75eacaf6130763b61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925075920.json",
+      "sha256": "f7542ba6afff76756859ff0ee7243a62e9d0052a91a6d48ec2c7bf69da5342c0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925088119.json",
+      "sha256": "73980efdb2035e23f4a5cc8b7a947020a3e93a269361fbe78fa27b15064d4b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925089044.json",
+      "sha256": "275ff16e7ae96ac6eeb851e37a3764334f5e8066da0f3c1192c8b2ad8471294f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925092747.json",
+      "sha256": "b775491ea67ad134060b6b20155cc710cf087fdd1e0776a21c3f1bc5c9bb7948"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec:cik_0000701818:000110465925093824.json",
+      "sha256": "2ca77f26ac9807ad08434eb253456907183013f02e3e3a680cc0ed430529fca5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000419.json",
+      "sha256": "053a6f22ba3b19b9aa36c7a7ce1a354a60a2bc3119c27b82af504fb52ccfad7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/2ac14a7179bb085fb9732d6b.json",
+      "sha256": "f19a42150e5c11903240c5901a2b43be4da4a4c3e39e040b59291cbc550d732c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+      "sha256": "2b87282670808bc46da4d9399bf7686adf7fccfe62c1c54b2014464b474d0cbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/b90c1ec44e00683142740abd.json",
+      "sha256": "bd6bdfe75a2a7eacfd47dc6a206b275c2f874a24495239bca045a60236cc02bd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "sha256": "1affe67e4df03d7b959ff5e1dd767f0ce7611d0bfb1a2691976912a3f960018c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/0b256936638c81a29faf124a.json",
+      "sha256": "30356f1ed129ad951c835d379982c26335a02d9e04c04b12f6195bbecb55a097"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/522cb1b7491aeb9c9be2a9ab.json",
+      "sha256": "7db12b87f71525120a01fe319d3a9961b39def093d3db5ddb0fa4df2a16d64d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/744c3170d6b993beaf24d546.json",
+      "sha256": "0e0fe01f7c5c9ca032a1ef3e4fa5bdcba691ceefd32972952b752e991b941724"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/87cf453ffed51e42dc4aca19.json",
+      "sha256": "8fcb57599a2b7cd2f5a901fb2318deed9f51de7c2e48d6810cd5f2b82411b390"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/ab81a9e65ad5a54bf864c91b.json",
+      "sha256": "0b0f4f3c802aadee2d01a1a92e609aceb06652816ea9eef376576429454099f5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-mvp-20260911-v20-repair-acceptance/cache/data/sec_edgar/filing_documents/da30b1fbd4806f31edbe7d99.json",
+      "sha256": "a1d1bdb4230d93275b390b9d22549fb6af3c3c662107df819992715ba6ae0558"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/narrative-inventory.json",
+      "sha256": "a174dca9dc02a178713112c53746e1bded6703306e01b130d6d17bcdf94d335d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "e5b666cc0865862e4ae8b0df399b6d8dd33ebdfd22a5a9124ba3079b290460e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "68225173b0f310ac35a13fa2853d771afe814f6b8cfef822e708399b7fc1bb97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    }
+  ],
+  "unresolved_link_date_semantics": "All three retained root-linked archives have exact filename/count/array consistency but declared filingTo differs from observed filingDate maximum. This inventory records the discrepancy without changing clocks, repackaging sources, choosing a tolerance or asserting existing profile support."
+}

@@ -1,0 +1,7 @@
+COMMAND ["/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3", "scripts/diagnose_reviewed_anchor_financial_snapshot.py", "--prepare"]
+EXIT 0
+{
+  "schema_version": "fixed-anchor-financial-plan-v1",
+  "fixed_case_denominator": 15,
+  "plan_hash": "567c7db62347538dbb654735fddf6369a5b2ec02082d9dbdf8e557e8e60f5409"
+}
