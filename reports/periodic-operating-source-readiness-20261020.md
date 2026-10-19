@@ -60,3 +60,7 @@ Mining→technical admission→exact successor use remain open. Independent
 prediction benefit is a later milestone.
 
 The [small entry inventory](../runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json) finds defaultHISTORYv6 has the same18 Signal IDs but different exact versions from this v12 snapshot. Its native producer requests16anchor+8validation+16discovery (40); the historical48 source/readiness denominator remains separate. No outcome-bearing approved split or input manifest was opened to reconstruct these cohorts. The remaining8 are not asserted to be LockedTest. Resolve the distinct scopes and an existing label-free identity interface under the split/blind contracts before broader readiness, preserving LockedTest visibility.
+
+## Case-count correction (2026-10-20)
+
+The earlier48-case wording was not supported by a frozen cohort. The actual historical/current fresh selection is40 (16Anchor+8Random+16Discovery), and the original failed preflight records16Anchor exclusions only. Preserve those artifacts; do not interpret a remaining8 as LockedTest. See the [actual contract and frozen40 inspection](case-scope-and-blind-boundary-20261020.md).

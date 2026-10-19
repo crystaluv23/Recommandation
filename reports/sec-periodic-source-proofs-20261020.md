@@ -71,3 +71,7 @@ correct execute_batch guard is tested. Initial failures and the earlier tests
 are retained separately. All of this remains pre-execution evidence.
 
 The later [actual fixed input execution](periodic-operating-source-readiness-20261020.md) appends3 verified originals and measures254/270 with15/15 above0.8. This later result preserves the pre-execution evidence limits above.
+
+## Case-count correction (2026-10-20)
+
+The earlier48-case wording was not supported by a frozen cohort. The actual historical/current fresh selection is40 (16Anchor+8Random+16Discovery), and the original failed preflight records16Anchor exclusions only. Preserve those artifacts; do not interpret a remaining8 as LockedTest. See the [actual contract and frozen40 inspection](case-scope-and-blind-boundary-20261020.md).

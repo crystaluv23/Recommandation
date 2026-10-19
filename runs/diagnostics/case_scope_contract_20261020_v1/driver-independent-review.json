@@ -1,0 +1,173 @@
+{
+  "scope": "Independent bounded temp-only projection and actual source-only consumer review. No actual origin/LabelStore/LockedTest or real prepare/execute opened; temp actual execute empty store is deterministic wiring only.",
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_case_inputs.py",
+      "sha256": "e5aeabdabb69dd49507f8bc12c59ab199a4b6a5b4e5600402ff6170d9d1752bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_case_inputs.md",
+      "sha256": "9c37b7f88e81ff965e0655bb144c4934386d4ad8997ebc0a9de18a082801db73"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_case_inputs.py",
+      "sha256": "68ab669f6560832a953a52074bc26b6cdfcbc5bd596c023355914249bd1205be"
+    }
+  ],
+  "checks": [
+    {
+      "name": "original40 split/order/aware offset strings exact, secret fields not accessed or copied",
+      "result": "passed"
+    },
+    {
+      "name": "extra row field",
+      "result": "rejected",
+      "reason": "case projection row contains unsupported fields"
+    },
+    {
+      "name": "extra control prose",
+      "result": "rejected",
+      "reason": "case projection control fields differ"
+    },
+    {
+      "name": "count39",
+      "result": "rejected",
+      "reason": "case projection count/splits differ"
+    },
+    {
+      "name": "naive time",
+      "result": "rejected",
+      "reason": "case prediction time must be aware"
+    },
+    {
+      "name": "bool ordinal",
+      "result": "rejected",
+      "reason": "case projection order/identity differs"
+    },
+    {
+      "name": "swapped rows",
+      "result": "rejected",
+      "reason": "case projection order/identity differs"
+    },
+    {
+      "name": "duplicate ID",
+      "result": "rejected",
+      "reason": "case projection order/identity differs"
+    },
+    {
+      "name": "identity extra prose",
+      "result": "rejected",
+      "reason": "case projection acquisition identity differs"
+    },
+    {
+      "name": "seed bool",
+      "result": "rejected",
+      "reason": "frozen cohort/approved metadata authority differs"
+    },
+    {
+      "name": "wrong CIK",
+      "result": "rejected",
+      "reason": "approved company CIK/ticker differs"
+    },
+    {
+      "name": "missing company",
+      "result": "rejected",
+      "reason": "frozen company lacks unique approved acquisition identity"
+    },
+    {
+      "name": "unknown Registry default_v6/999",
+      "result": "rejected",
+      "reason": "exact Registry version/hash/ref scope differs"
+    },
+    {
+      "name": "unknown Registry latest_v12/6",
+      "result": "rejected",
+      "reason": "exact Registry version/hash/ref scope differs"
+    },
+    {
+      "name": "unknown Registry unknown_group/12",
+      "result": "rejected",
+      "reason": "unknown Registry comparison group"
+    },
+    {
+      "name": "actual temp execute:40BasicInfo+720v6+720v12 allgap,originJSON forbidden,terminal rerun rejected",
+      "result": "passed",
+      "saved_progress_lines": 40
+    },
+    {
+      "name": "source-only socket",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only create_connection",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only load",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only ground_truth",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only prepare",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only complete_json",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only complete_json_with_token_scores",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only complete_binary_token_with_scores",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only execute_batch",
+      "result": "rejected",
+      "reason": "forbidden network/model/label/apply/fullprepare operation"
+    },
+    {
+      "name": "source-only record",
+      "result": "rejected",
+      "reason": "LabelStore reading forbidden in frozen-case diagnostic"
+    },
+    {
+      "name": "source-only keys",
+      "result": "rejected",
+      "reason": "LabelStore reading forbidden in frozen-case diagnostic"
+    },
+    {
+      "name": "source-only label_contract",
+      "result": "rejected",
+      "reason": "LabelStore reading forbidden in frozen-case diagnostic"
+    },
+    {
+      "name": "source-only __len__",
+      "result": "rejected",
+      "reason": "LabelStore reading forbidden in frozen-case diagnostic"
+    },
+    {
+      "name": "all actual wrappers restored",
+      "result": "passed"
+    }
+  ],
+  "all_passed": true,
+  "limits": [
+    "Projection authenticity relies on the authorized source-owner freeze and exact projection/plan hashes; no signature claim against a wholly forged self-consistent graph.",
+    "Real40 cohort/source statuses and653 view were not executed in this independent temp review.",
+    "No numeric Signal validity, model behavior, fitness, or benefit established."
+  ]
+}

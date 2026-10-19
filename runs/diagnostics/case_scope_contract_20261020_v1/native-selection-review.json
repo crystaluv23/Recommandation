@@ -1,0 +1,183 @@
+{
+  "schema_version": "native-case-selection-review-v1",
+  "reviewed_at": "2026-10-19T22:40:57.524260+00:00",
+  "scope": "Read-only source-code and pure diagnostic artifacts; no label-bearing split/input_manifest/LabelStore/LockedTest data, network, model, Signal apply, prepare_inputs, fullprepare or source mutation.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "84c13d56ee0056947ae6da990a43e29c52be17fe2e61127c868152e037282ed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_source_snapshot.py",
+      "sha256": "bf482b5b9058644525b03641e41c936b79bb6ee32c5ba6367c1c6d17d35398cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/result.json",
+      "sha256": "e6bf30bc44cfe5d0a69f6ac348afab53ad75b3d8ed2cc4baff802dbf13b42342"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/inventory.json",
+      "sha256": "cd20f162f7d7bd04d0340732bd0b19262b9aad6e03f06594d72fc909a35f2183"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json",
+      "sha256": "40816b0f544c2de5d36e554ad7416e3c4c5deef431a203d4e81fa59412cadf4a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "sha256": "5d49c2428ae9d670e192dd97d20dcb4321b7a49d0f5dc122516a771ffc1f2168"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "sha256": "8489c561c715ba91663cd8f030a097aebc473e794dae6bcfee1befcf7fb74b04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/scheme_evolution.md",
+      "sha256": "8a72daa75add0e23ab6ae58e1883b1bdbff9270a1a6e720361113b515ece47f7"
+    }
+  ],
+  "actual_call_chain": [
+    {
+      "entry": "scripts/run_minimal_rounds.py:143-209",
+      "behavior": "Fresh path selects below; existing frozen input path returns frozen state; committed-history/bootstrap branches copy source splits. Only the fresh default path is proven exact40 by this review; inherited split counts were not inspected."
+    },
+    {
+      "entry": "scripts/run_minimal_rounds.py:210-211",
+      "behavior": "load_approved_development_dataset(APPROVED), then LabelStore.load. Neither called in this review."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/evolution_control.py:1416-1443",
+      "behavior": "Load only discovery/anchor/evolution_validation; metadata.case_count must equal actual rows. Each row constructs GroundTruth, so actual split files were deliberately not opened."
+    },
+    {
+      "entry": "src/stock_opportunity_agent/research/evolution_control.py:1445-1463",
+      "behavior": "Reject issuer overlap across development splits; inspect only LockedTest hash metadata, never deserialize its cases."
+    },
+    {
+      "entry": "scripts/run_minimal_rounds.py:235-254",
+      "behavior": "Fresh split target dictionaries: anchor16, evolution_validation8, discovery16. Sort candidate pool by SHA256 of 42:case_id; recompute current label stratum. Skip any candidate in a full stratum or issuer already accepted in the split."
+    },
+    {
+      "entry": "scripts/run_minimal_rounds.py:255-290",
+      "behavior": "Source gates before admission: market source identity, PIT baseline available, source baseline dates equal label record dates, some PIT narrative source. No over-cap admission or Signal-input fraction gate occurs here."
+    },
+    {
+      "entry": "scripts/run_minimal_rounds.py:291-308",
+      "behavior": "One append per successful candidate; stop only when every group equals its target. Any shortfall saves preparation_failure and raises. Only fully satisfied groups become selected split rows."
+    },
+    {
+      "entry": "scripts/run_minimal_rounds.py:314-334",
+      "behavior": "Only after all splits succeed copy/freeze Registry and persist input_manifest.splits; rows are to_discovery_dict and include ground_truth, so no old input_manifest was read."
+    }
+  ],
+  "target_semantics": {
+    "requested_targets": {
+      "anchor": 16,
+      "evolution_validation": 8,
+      "discovery": 16
+    },
+    "on_success_exact_selected_case_count": 40,
+    "targets_are_minima": false,
+    "strata_can_force_overshoot": false,
+    "proof": "Group length starts at0, cannot append once >=target, has only one append site, and failure is required for any final shortfall. Thus every successful group equals target exactly. This is a source-control proof, not a new run outcome.",
+    "actual_current_selection_execution": "not performed",
+    "all_current40_identities_verified": false
+  },
+  "selection_manifest_boundary": {
+    "dedicated_selection_manifest_in_this_call_chain": false,
+    "actual_final_manifest": "<new diagnostic root>/input_manifest.json, only after exact strata succeed",
+    "expanded_dataset_predecessor": "evolution_dataset.py:982-984 rejects wrong selected issuer count, selected_issuers.json at1045-1056 stores separate expansion allocations; manifest counts at1255-1287 describe that upstream dataset, not run_minimal fresh40 output.",
+    "unrelated_selector_not_traversed": "scripts/run_ralph_loop_experiment.py selection_manifest option is outside this native chain; no associated manifest read."
+  },
+  "historical_preflight": {
+    "failure": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    "split": "anchor",
+    "excluded_cases": 16,
+    "unique_case_ids": 16,
+    "reasons": [
+      "pit_price_baseline_unavailable"
+    ],
+    "missing_count": 16,
+    "admitted_anchor_cases_in_failed_selection": 0,
+    "other_splits_reached": false,
+    "complete_frozen_cohort_produced": false,
+    "scope_inference": "All16 anchor requirements remained missing, so this failed preparation proves no successful48 (or40) selection.",
+    "historical_script_binding": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "f4320cf3a6cfea796f144669a0b8ff3ce6b3bc44c466917241a3ef4006b01b6f"
+    },
+    "historical_git_source": "0ead25be:scripts/run_minimal_rounds.py",
+    "historical_script_sha_reconstructed": "f4320cf3a6cfea796f144669a0b8ff3ce6b3bc44c466917241a3ef4006b01b6f",
+    "count_control_statements_identical": [
+      "if len(groups[group]) >= targets[group] or case.company_id in issuers:",
+      "groups[group].append(case)",
+      "if all(len(groups[label]) == targets[label] for label in EVALUATION_LABELS):",
+      "if len(groups[label]) < targets[label]",
+      "selected[split] = [case.to_discovery_dict() for label in EVALUATION_LABELS for case in groups[label]]"
+    ],
+    "whole_loop_ast_equal": false,
+    "actual_source_difference": "Current code caches RawInfoDocuments and uses their source_type/available_at; old code filtered physical source-family directories. Target/cap/append/exact-stop/shortfall statements are unchanged."
+  },
+  "historical48_boundary": {
+    "historical_source_inventory_claim": 48,
+    "preserve_old_artifact_bytes": true,
+    "verified48_case_fixed_failure_denominator": false,
+    "diagnostic_script_claim": "scripts/diagnose_reviewed_source_snapshot.py:85-89 calls unchanged prepare but labels it full48 in a comment; this is not selection-count evidence. Existing source inventory repeats48.",
+    "actual_failure_denominator": 16,
+    "actual_failure_scope": "Exactly16 Anchor exclusions, all pit_price_baseline_unavailable; no complete selected cohort persisted.",
+    "where48_was_actually_selected": "Not established by any inspected label-free artifact, and it is not a current prerequisite or research contract.",
+    "locked_test_explanation": "Unknown; do not infer the8 difference is LockedTest or open sealed cases.",
+    "current_documentation_correction": "Future current docs should describe exact40 diagnostic development subset /24 Fast evaluation /16 Discovery; leave historical48 artifact claims unchanged with an explicit correction rather than treating48 as a binding gate."
+  },
+  "next_minimal_action": {
+    "action": "Correct current count claims against the upper/owning contracts and exact-cap producer. Preserve16 real historical Anchor failures; do not demand an unproved48-case list or readiness gate. Any subsequent authorized diagnostic should freeze its actual40 development identities and exact Registry through the existing label-owning preparation boundary, while downstream blind contexts remain label-free and LockedTest sealed. This review does not run that preparation.",
+    "requires_network": false,
+    "execute_now": false
+  },
+  "stop": "Authoritative native cap/append/termination and old failure evidence distinguish the overshoot hypothesis; no further scans or runs needed.",
+  "owning_and_upper_contracts": [
+    {
+      "file": "spec/architecture.md",
+      "lines": "295-302",
+      "meaning": "Anchor removed by issuer; each candidate evaluated on exact24=16 fixed Anchor+8 Random. No48 diagnostic requirement here."
+    },
+    {
+      "file": "spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "lines": "128-142",
+      "meaning": "Immutable approved diagnostic development subset; v8 minimum16Anchor+8Random; independent Discovery16. The implemented fixed-count subset is40; minimum language does not override code exact caps."
+    },
+    {
+      "file": "spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "lines": "210-220",
+      "meaning": "Mandatory16Anchor+8roundRandom evaluation; ordinary evolution seals LockedTest."
+    },
+    {
+      "file": "spec/src/stock_opportunity_agent/research/scheme_evolution.md",
+      "lines": "941-963",
+      "meaning": "Exactly24 per Fast round; fixedAnchor16 and Random8; changingAnchor requires new dataset hash/run contract; LockedTest excluded."
+    }
+  ]
+}

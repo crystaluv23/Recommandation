@@ -1,0 +1,64 @@
+{
+  "schema_version": "root-case-scope-metadata-inspection-v1",
+  "checked_at": "2026-10-19T22:47:28.228334+00:00",
+  "approved_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/dataset_manifest.approved.json",
+    "sha256": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9"
+  },
+  "approval_status": "human_approved",
+  "locked_test_sealed": true,
+  "acquisition_scope": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/acquisition_scope.json",
+    "sha256": "5339d54fc73de68f227ac7d9e87d15adb60dc52454a758a8a8b3be55d33b3396"
+  },
+  "acquisition_scope_companies": 3511,
+  "prediction_dates": [
+    "2025-01-31",
+    "2025-03-31",
+    "2025-05-30",
+    "2025-07-31",
+    "2025-09-30"
+  ],
+  "scope_outcome_fields_included": false,
+  "scope_split_ownership_included": false,
+  "missing_HISTORY_input_manifest": true,
+  "actual_frozen_origin": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+    "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+  },
+  "origin_schema": "diagnostic-development-subset-v1",
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "approved_hash_matches": true,
+  "locked_opaque_hash_matches": true,
+  "selection_seed": 42,
+  "selection_before_model_calls": true,
+  "origin_registry_version": 11,
+  "origin_registry_hash": "561167101a14c3d296c0798cc08dfc26657c1dfba01b24e37823b4fbe2bb148b",
+  "old_terminal_pointers": {
+    "state": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/state.json",
+      "sha256": "e2cb3bbef7bfcfa62c4a1c218c181ac49796e6ebbd94851224ddbe1ed8dc2de9"
+    },
+    "last_completed_round": 1,
+    "cycle_state": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/cycle_state.json",
+      "sha256": "5619ac234153d2946c4d186e18a04043d4bf7e0739ae75859a6c91180fb00bf6"
+    },
+    "last_completed_cycle": 1
+  },
+  "access_boundary": {
+    "approved_metadata_and_label_free_scope_opened": true,
+    "label_bearing_frozen_envelope_deserialized_by_offline_owner": true,
+    "outcome_fields_used_or_output": false,
+    "basic_info_prose_output": false,
+    "LabelStore_files_opened": false,
+    "LockedTest_files_opened": false,
+    "production_model_calls": 0,
+    "old_stage_resumed": false
+  },
+  "meaning": "Native fresh target40 is now also supported by an actual unchanged approved frozen40 envelope. Historical48 notes are not a proved cohort; original16Anchorfailure preserved."
+}

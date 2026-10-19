@@ -1,0 +1,52 @@
+{
+  "schema_version": "frozen-case-driver-development-tests-v1",
+  "at": "2026-10-19T22:52:54.567635+00:00",
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_frozen_case_inputs",
+    "-v"
+  ],
+  "environment": {
+    "PYTHONPATH": "src:scripts"
+  },
+  "bindings_before": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_case_inputs.py",
+      "sha256": "e5aeabdabb69dd49507f8bc12c59ab199a4b6a5b4e5600402ff6170d9d1752bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_case_inputs.md",
+      "sha256": "9c37b7f88e81ff965e0655bb144c4934386d4ad8997ebc0a9de18a082801db73"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_case_inputs.py",
+      "sha256": "68ab669f6560832a953a52074bc26b6cdfcbc5bd596c023355914249bd1205be"
+    }
+  ],
+  "bindings_after": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_case_inputs.py",
+      "sha256": "e5aeabdabb69dd49507f8bc12c59ab199a4b6a5b4e5600402ff6170d9d1752bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_frozen_case_inputs.md",
+      "sha256": "9c37b7f88e81ff965e0655bb144c4934386d4ad8997ebc0a9de18a082801db73"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_reviewed_frozen_case_inputs.py",
+      "sha256": "68ab669f6560832a953a52074bc26b6cdfcbc5bd596c023355914249bd1205be"
+    }
+  ],
+  "exit_code": 0,
+  "tests_passed": 5,
+  "log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/case_scope_contract_20261020_v1/driver-focused-tests.log",
+    "sha256": "1802b67535e294e699650f0c07cee38e10a97f655a2820dec5992580c172c683"
+  },
+  "actual_mixed_v182_opened": false,
+  "actual_653_view_opened": false,
+  "actual_diagnostic_prepare_or_execute": false,
+  "fixtures": "temp mixed envelope + empty in-memory RawInfoStore; exact Registry definitions/skills copied to temp, no learning/stats; real native resolver+prepare_inputs retain both40x18 missing-source matrices."
+}

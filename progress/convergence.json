@@ -763,10 +763,28 @@
         "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json"
       ],
       "result": "Local prerequisite progress only, not required-live content_chain closure. Frozen d61a135f/plan170533 executes once:3nativeappend/canonicalreadback,653docs/658rows; old655rows/650documents/15637globalfiles andoldview preserved, workerrestart exact. Independent3raw+all270source/PIT/period/observation and15bundle/projection/lineage verified. Samefixed15/v12/18refs:254resolved/16unresolved,KGC16/18others17/18;15/15>=0.8 versusprior13/15. All15operatingrequests resolve butallpartial_context_budget; KGC/MS15of22projections visible,7omitted. News15/KGCorder180daywindow1 remain; no negativeinference. MSannualclockunknown/excluded andfinancialpolicyunchanged.0GET/model/apply/labels/fullprepare. Next entry finds defaultv6exactversionsdifferent andnativeproducer40 distinctfromhistorical48; label-bearing casepool notopened,LockedTest notexpanded."
+    },
+    {
+      "id": "engineering-mvp-frozen-case-scope-contract-20261020",
+      "strategy": "authoritative_frozen40_identity_projection_and_exact_dual_registry_inputs",
+      "failure_families": [
+        "unsupported_case_count_repetition",
+        "offline_owner_vs_blind_consumer_boundary",
+        "different_exact_registry_versions"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/case-scope-and-blind-boundary-20261020.md",
+        "runs/diagnostics/case_scope_contract_20261020_v1/native-selection-review.json",
+        "runs/diagnostics/case_scope_contract_20261020_v1/blind-boundary-review.json",
+        "runs/diagnostics/case_scope_contract_20261020_v1/root-metadata-inspection.json",
+        "runs/diagnostics/case_scope_contract_20261020_v1/root-focused-tests.log"
+      ],
+      "result": "Current source contracts and capped producer prove40=16Anchor+8Random+16Discovery, Fast24. Prior48 comment/report has no frozen cohort support; preserve real16Anchor failures, do not invent8LockedTest. Actual terminalv182 frozen40 binds currentapprovedhash/opaqueLockedhash; sourceowner inspected mixed envelope without selecting/emittingtruth/basic_info, noLabelStore/LockedTest/model. Approved3511company acquisition_scope supplies only exact40identity joins, not rectangular selection. Candidate separatev6/v12 source-only diagnostic preserves720each/40BasicInfo; root5temp tests pass. Realnewprepare/execute not yet run; local boundary correction is not required-live acceptance closure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-periodic-source-readiness-20261020",
+    "after_iteration": "engineering-mvp-frozen-case-scope-contract-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -913,7 +931,12 @@
       "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/execution-summary.json",
       "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/root-plan-review.json",
       "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/independent-source-consumer-review.json",
-      "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json"
+      "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json",
+      "reports/case-scope-and-blind-boundary-20261020.md",
+      "runs/diagnostics/case_scope_contract_20261020_v1/native-selection-review.json",
+      "runs/diagnostics/case_scope_contract_20261020_v1/blind-boundary-review.json",
+      "runs/diagnostics/case_scope_contract_20261020_v1/root-metadata-inspection.json",
+      "runs/diagnostics/case_scope_contract_20261020_v1/root-focused-tests.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -955,21 +978,22 @@
       "Python bool/int/float equality is weaker than canonical record identity at original, readonly replay and restore. Root also repeated a whole-module selector mistake that read real label hashes and attempted temporary fullprepare; final explicit safe selectors plus tripwires isolate the intended boundary.",
       "A two-cache search did not identify all retained upstream proof. A specifically located older official root-linked archive exactly reconstructs original MS clock; preserve that new evidence without pretending to identify the original writer or prove the newer API wrong.",
       "A literal parent exhibit link and same-row description mentioning another numbered exhibit did not prove the target index number. Independent rehashed source/receipt/original controls exposed this false admission; independent number-cell and ambiguity checks now retain uncertain null types. Mechanical source-clock equality remains weaker than resolving an independently observed official clock conflict.",
-      "A qualified annual source may resolve most soft inputs while missing a narrower180dayrequest: KGC March27 predates April3start forSeptember30. Root briefly extrapolated17/18 toKGC; actual16 was read and corrected before finalreport. Distinguish historical48 source denominator from native40 selection and different exactv6 refs; no inventory through label-bearing splits."
+      "A qualified annual source may resolve most soft inputs while missing a narrower180dayrequest: KGC March27 predates April3start forSeptember30. Root briefly extrapolated17/18 toKGC; actual16 was read and corrected before finalreport. Distinguish historical48 source denominator from native40 selection and different exactv6 refs; no inventory through label-bearing splits.",
+      "The repeated48 claim came from a comment rather than the capped selection producer or actual frozenmanifest. Experiment-specific zero-access rules were also overread as a global prohibition on authorized offline source-owner metadata projection; the upper blind contract protects research consumers and sealedLockedTest."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "authoritative_case_scope_and_label_free_interface",
-      "action": "Trace existing split/blind contracts and approved pointers to separate historical48 source denominator from native40 selection, locate an existing trusted label-free identity/cutoff/split projection and exactdefaultv6 source requests. Do not open outcome-bearing splits as a label-free shortcut, changecohorts/refs or expandLockedTest.",
-      "stop": "No rerun of completedstages, fullprepare/model/fullsuccessor, guessed48equals40, LockedTest relabel, newsnegativeinference or changedlookback.",
-      "question": "What is the authoritative production case/split scope and existing safe identity interface for defaultv6 readiness, distinct from historical48 source inventory?",
-      "pass": "Identities/cutoffs/splits and exactv6 definitions are bound through an authorized source-only interface under existing blind/LockedTest contracts; diagnose source coverage without outcomes.",
-      "fail": "Only label-bearing manifests, ambiguous pool counts, differentexactversions or unsupported proof support a broader readiness claim.",
-      "on_pass": "Freeze a separate source-only diagnostic for that exact existing scope and versions; preserve historical48 denominator and LockedTest policy.",
-      "on_fail": "Keep broader readiness unverified; resolve the specific contract/interface boundary before another run or substantive policy decision.",
-      "new_evidence": "Three newperiodic sources close fixedcase fractiongaps:15/15>=0.8,254/270,allpartialdefaultprojections. Entry inventory finds native40 versus historical48 andall18versions different indefaultv6; knownlabel-free anchors16only.",
-      "distinguishing_variable": "Authoritative selectedcase/split identity and exactdefaultv6 request contract, rather than extrapolating latestv12fixed15 or reading outcomes to build a blindsource inventory."
+      "strategy": "frozen40_dual_exact_registry_source_readiness",
+      "action": "After independent temp boundary review and code checkpoint, prepare one new source-only stage exporting exact originalv18240 identities/awaretimes/splits/order and execute independent defaultv6/latestv12 720-input matrices on immutable653docview. Preserve all cases/gaps and40defaultBasicInfo projections.",
+      "stop": "No GET/model/apply/LabelStore/fullprepare/globalwrites or old-stage resume. A started stage is terminal; never redefinecohort/refs/newscoverage to clear gaps.",
+      "question": "For the original40cases, what does each exact Registry actually resolve and what source families are missing?",
+      "pass": "All40retained in each720matrix and BasicInfo, exactdefinitions/sourcebindings conserved, mixedorigin only ownerprojected or consumerstreamhashed, oldview unchanged.",
+      "fail": "Boundary/definition/source drift or incomplete matrix causes terminal diagnostic failure; unavailable sources stay explicit rather than droppingcases.",
+      "on_pass": "Classify exact source gaps and prioritize a bounded family acquisition/consumer fix; do not equate prerequisite result with model/MVP closure.",
+      "on_fail": "Diagnose preserved failure before any new stage; do not hotpatch frozen execution.",
+      "new_evidence": "Actualfrozen40 plus matchedapproved/acquisitionmetadata; defaultv6/latestv12 all18exactversionsdifferent. Temp actualprepare_inputs retains720missingresolutions pergroup with0model/LabelStore.",
+      "distinguishing_variable": "Originalfrozenidentity/time/split and independentlybound exactversion matrices, replacing unsupported48 and fixed15extrapolation."
     }
   },
   "successor_prerequisites": [

@@ -1,0 +1,202 @@
+{
+  "schema_version": "independent-blind-boundary-contract-review-v1",
+  "scope": "Read-only current specs/code and outcome-free diagnostics; no label-bearing dataset/input/LabelStore/LockedTest contents opened, no model/network/Signal/prepare/fullprepare; only this owned review written.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases.md",
+      "sha256": "a7d06d728d55b6a43c8a8a49f0274eab10e0f3a597dbeeb6b3c94377d4cfd522"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/selection.md",
+      "sha256": "162590da8409522831570a071bd38a863fbc5bb6faf58a7454b9e0cc32b808ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/outcomes.md",
+      "sha256": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dataset.md",
+      "sha256": "acde59ac181b16226b536b1e82ae48cd3e1d9b57b08a88872e9035e8896b2a66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "sha256": "5d49c2428ae9d670e192dd97d20dcb4321b7a49d0f5dc122516a771ffc1f2168"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "sha256": "3b0eaeb3d5787cde9169548e9f602e2302541e115ec9dafdc20c2ab7eebf679a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "84c13d56ee0056947ae6da990a43e29c52be17fe2e61127c868152e037282ed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_source_snapshot.py",
+      "sha256": "bf482b5b9058644525b03641e41c936b79bb6ee32c5ba6367c1c6d17d35398cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/result.json",
+      "sha256": "e6bf30bc44cfe5d0a69f6ac348afab53ad75b3d8ed2cc4baff802dbf13b42342"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/next-full48-scope-inventory.json",
+      "sha256": "40816b0f544c2de5d36e554ad7416e3c4c5deef431a203d4e81fa59412cadf4a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/backfill.md",
+      "sha256": "bf8f414b68374642e8ed6d59d640b95aba2f1712c3264b0adc59f65222d4d814"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073"
+    }
+  ],
+  "contract_findings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "lines": "29-62",
+      "meaning": "Fast evidence and final blind prediction remain distinct from retrospective learning. Labels/score may serve authorized learning/evaluation; rejected pre-label bootstrap has a narrower exception."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "lines": "253-256,287-318",
+      "meaning": "Operator data preparation/split and retrospective label balancing are permitted; actual predictions are blind. Fixed Anchor and per-round Random semantics, frozen identities and nonreplacement remain mandatory. Label-free market readiness concerns its evidence choices, not a universal ban on offline preparation opening any file with outcomes."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/selection.md",
+      "lines": "57-68",
+      "meaning": "Retrospective labeling may use future data, which must stay outside PIT packets. Prediction boundary cannot be chosen from a favorable future path."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/outcomes.md",
+      "lines": "61-96,100-126",
+      "meaning": "Canonical LabelStore is the sole evaluation truth door; prediction-time/blind-analysis cannot import/read it. This is not an operator-wide prohibition on authorized dataset preparation and score computation."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "lines": "29-52,128-160",
+      "meaning": "Prediction-time stages exclude outcomes and use allow_outcomes=False; Posthoc/Mining have explicitly scoped retrospective privileges. run_minimal preparation explicitly selects using fixed seed, label-store and PIT availability while sealing LockedTest."
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/diagnose_reviewed_periodic_operating_snapshot.md",
+      "lines": "66-76",
+      "meaning": "Zero LabelStore/fullprepare access is an explicit source-only experiment constraint. It remains binding for those runs and this task; it is not a new systemwide selection/scoring definition."
+    }
+  ],
+  "actual_producer_consumer": {
+    "development_loader": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "lines": "1403-1471",
+      "meaning": "load_approved_development_dataset validates approved manifest then reads discovery/anchor/evolution_validation JSON and constructs GroundTruth for each row. LockedTest cases are not deserialized; only its metadata hash is returned."
+    },
+    "prepare": {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "lines": "210-329",
+      "meaning": "Normal prepare invokes that loader and strict LabelStore; seed42 stratification and label-key/source/date checks occur offline before model calls. It writes label-bearing splits and label hashes in its evaluation-owned frozen input; restore uses those exact rows, not resampling."
+    },
+    "prediction": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "lines": "3554-3571",
+      "meaning": "Actual Predictor receives final_context, prediction is durably sunk, then ground_truth_provider is called for Posthoc. This supports ordering/role separation rather than pretending no operator ever loaded truth."
+    },
+    "identity_decision": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "lines": "37-68,1472-1566",
+      "meaning": "Existing expanded identity-decision artifacts reject outcome keys recursively and bind SEC identities/date coverage. They do not constitute a selected case/split projection for all approved cohorts."
+    },
+    "current_projection_gap": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "lines": "4586-4615",
+      "meaning": "EvolutionCase requires GroundTruth; to_discovery_dict explicitly exposes labels for Discovery. It is not a safe identity-only projection. No separate public all-development-case identity loader was found in the bounded owning APIs reviewed."
+    },
+    "pure_readiness": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "lines": "152-204",
+      "meaning": "Readiness body only uses company_id, prediction_time, basic_info and exact Registry definitions to resolve sources; does not need ground_truth. This permits a small label-free boundary without changing evaluation semantics."
+    }
+  },
+  "denominator_review": {
+    "historical_commit_for_exact_bound_runner": "0ead25becd7d43167eebddcea6c4c20eb56032a6",
+    "historical_runner_sha256": "f4320cf3a6cfea796f144669a0b8ff3ce6b3bc44c466917241a3ef4006b01b6f",
+    "matches_old_v3_frozen_runner_binding": true,
+    "historical_core_from_same_commit_sha256": "c66a1284abab3f02f35736c19d966a9e98fb0ce3d1b87500993c05216dff2f17",
+    "historical_core_limitation": "Same-commit source verification, not an independently captured runtime core hash in that six-file diagnostic result.",
+    "producer_target": {
+      "anchor": 16,
+      "evolution_validation_random": 8,
+      "discovery": 16,
+      "total_requested": 40
+    },
+    "target_is_actual_selected": false,
+    "failure_artifact": {
+      "split": "anchor",
+      "exclusions_count": 16,
+      "missing_count": 16,
+      "reasons": [
+        "pit_price_baseline_unavailable"
+      ],
+      "scope": "Stops at first Anchor split; no successful selected full-cohort manifest is present in full_preflight."
+    },
+    "48_origin_found": "diagnose_reviewed_source_snapshot.py:85-86 comment and derivative reports call it full48. Exact bound production runner target is40 and failure proves16missing only. No authoritative selected48 identity manifest established in this review.",
+    "unrelated_48": "Preserved old operating review rows are source records, not proof of48 cases.",
+    "forbidden_inference": "Do not infer the other8 are LockedTest, do not assert40 actuallyselected, and do not change source/label/LockedTest gates to force a claimed48.",
+    "handling": "Preserve all failure bytes and16 failing identities. Correct unsupported denominator wording separately; distinguish claimed historical scope from native target40 and actual selected state."
+  },
+  "minimal_safe_interface_recommendation": {
+    "first_choice": "First reuse APPROVED metadata audit_artifacts.acquisition_scope for label-free source identity/acquisition, verifying exact hash/shape without split reads. For an exact frozen selected development cohort, trusted offline orchestration separately exports an allowlisted projection bound to exact approved/frozen source, row identity/order/split/company_id/aware prediction_time. Do not treat global acquisition scope as selected40 membership. LockedTest remains opaque hash only to devcohort consumers.",
+    "not_existing": "This is an implementation proposal, not a verified existing cohort artifact or a new canonical EvolutionCase/schema. No projection was created here.",
+    "no_new_sampling": "If no actual selected freeze exists because prepare failed, export approved development candidate identities with candidate status and original split; never label them selected. Actual diagnostic stratification remains the authorized offline operator task and its successful freeze, not an identity-export resampler.",
+    "implementation_authority": "A pure allowlisted projection/loader in the existing dataset/control ownership can be an ordinary spec-first implementation preserving approved selection, scoring, PIT and sealed LockedTest. No need to ask user to choose JSON field names. Any change to cohort membership, outcomes, thresholds, research date rule or LockedTest access remains a substantive decision.",
+    "prevent_leakage": "Reject rather than retain unknown/outcome fields; no GroundTruth placeholders or truth-bearing basic_info pass-through; source diagnostics cannot call the label-bearing development loader or default prepare and still claim zero label access.",
+    "source_qualification": "Identity projection proves origin/membership only; source authenticity, exact Registry-version readiness, evidence PIT, semantic measurement and prediction benefit remain separately unproven."
+  },
+  "conclusion": "No universal prepare-cannot-read-outcome-file contract found. Authorized offline preparation/evaluation may use canonical labels; blind research and Predictor must remain outcome-free and Posthoc reveal follows durable prediction. Source-only zero-label restrictions stay intact. Historical48 actual cohort remains unestablished; native40 is a requested target, and old failure proves only16 Anchor exclusions.",
+  "existing_acquisition_interface": {
+    "producer": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "lines": "1061-1094,1281-1284,1312-1339",
+      "shape": "Existing acquisition_scope.json contains source_inventory_hash, company identity list and shared prediction_dates; explicit outcome_fields_included=false/split_ownership_included=false. Approved manifest copies proposal metadata and binds this path/hash in audit_artifacts; percase ground_truth resides in separate split JSON, not inline in that manifest. Manifest still carries aggregate stratum/label-count metadata, which must not enter blind model context."
+    },
+    "owning_spec": {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/backfill.md",
+      "lines": "32-39",
+      "meaning": "Existing SEC discovery planner consumes label-free acquisition_scope, not selected/split case artifacts."
+    },
+    "consumer": {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "lines": "432-467",
+      "meaning": "write_sec_submissions_backfill_plan validates nooutcomes/nosplit flags and recursive label-free shape before using identities/dates."
+    },
+    "use_first": "A metadata-only reader can verify APPROVED status and acquisition_scope binding without deserializing split rows or LabelStore. Reuse this existing scope for broad source acquisition/identity lookup. It does not identify selected40 membership or exact eligible percase dates, because all selected-library issuers share the dates array and split ownership is deliberately absent; do not form a purported approved cohort by Cartesian product.",
+    "actual_artifacts_opened": false,
+    "scope_limitation": "This code/spec confirmation does not certify current on-disk acquisition_scope bytes. Existing scope may contain issuers across all sealed splits without revealing ownership; acquisition use does not authorize opening LockedTest cases or exposing whole identities to blind models. For exactdev cohort readiness, use explicit frozen devidentity projection from operator evaluation ownership as proposed, not arbitrary scope-to-case inference."
+  }
+}

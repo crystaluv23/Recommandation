@@ -54,3 +54,7 @@ Next inspect the exact cached request/source proofs for those15, then use the
 user-authorized read-only public evidence only where the original record lacks
 historical identity or adjustment proof. Do not rerun the measurement controls
 or substitute retrospective label prices for blind inputs.
+
+## Case-count correction (2026-10-20)
+
+The earlier48-case wording was not supported by a frozen cohort. The actual historical/current fresh selection is40 (16Anchor+8Random+16Discovery), and the original failed preflight records16Anchor exclusions only. Preserve those artifacts; do not interpret a remaining8 as LockedTest. See the [actual contract and frozen40 inspection](case-scope-and-blind-boundary-20261020.md).

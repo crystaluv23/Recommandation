@@ -12,21 +12,13 @@
 同固定15case/v12/18refs实际254resolved/16unresolved：KGC16/18、其余14案17/18，15/15达既有0.8。
 独立重核3raw、全部270来源/PIT/期间及15实际BasicInfo投影；经营请求15/15resolved但全为partial_context_budget。
 news缺15，KGC订单180日窗缺1（March27源早于窗口下界，不是无订单）。MSannual时间冲突仍unknown/excluded。
-新source profiles40安全测试及诊断4临时边界通过；本stage0GET/model/apply/标签/fullprepare，不关闭F2/full48/MVP。
+新source profiles40安全测试及诊断4临时边界通过；本stage0GET/model/apply/标签/fullprepare，不关闭F2/40案全范围/MVP。
 
 此前 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
-固定15case/45旧source对象不缩；607新peracc产品逐canonical append/load相等，
-旧global15030文件字节不变，旧review48rows保留，新650doc view/worker/restart一致。
-独立真实15cache/607products及全部270来源/PIT/期间/observation核对通过。
-精确最新v12/18refs：243resolved/27unresolved，13case17/18、KGC/MS11/18，
-13/15达到既有0.8（旧经营view0/15保留）；135新增均九financial refs。
-该旧view当时news各15、两家各6narrative缺；当前见上。FTAI原364同日rows全部排除，未重写原件。
-本stage0GET/model/apply/标签/fullprepare，不证明语义测量或defaultv6/full48。
-
+607新peracc产品canonical相等、旧15030文件/48reviewrows不变；旧650docview固定15/v12为243/270、13/15达0.8。
 [SEC财务修复](../reports/sec-financial-source-boundaries-20261020.md)98测试及
-[新profile](../reports/reviewed-financial-profile-20261020.md)30安全selectors通过；
-独立Python true/int/float误放反例已接canonical原件/readonlyappend/restore。
-root此前31关联误带真实labels hash和临时fullprepare拒绝，已披露并排除于零访问证据。
+[新profile](../reports/reviewed-financial-profile-20261020.md)30安全selectors通过。
+原31关联误带真实labels hash及临时fullprepare拒绝已披露，排除于零访问证据。
 
 [行情来源](../reports/anchor-market-source-qualification-20261020.md)原16Anchor proof缺项已补：
 15新case/16原件3307bars重建、30GET/16准入、38绑定不变；15/15基线通过，
@@ -81,8 +73,10 @@ root此前31关联误带真实labels hash和临时fullprepare拒绝，已披露�
 
 ## 未关闭边界
 
-历史48 source/readiness分母未验；native prepare实际选40（16anchor+8validation+16discovery），
-default v6/18精确版本也不同于本批v12，须先追合同及无标签身份入口，不把48/40混同或扩大LockedTest可见性。
+[案例合同核实](../reports/case-scope-and-blind-boundary-20261020.md)：fresh diagnostic严格40案（16Anchor+8Random+16Discovery），Fast24；
+v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”是未获案例清单支持的注释/报告声明，
+真实旧preflight只有16Anchor缺源，不作为新48分母或推剩余8为LockedTest。原失败文件保持。
+默认v6与本批v12的18精确版本不同；需分别在原40身份/时间/split上测输入，不外推15案结果。
 原16Anchor行情proof缺项已具证，不等于整体输入齐全。
 26 transcript完整公开内容时间证明仍0。
 污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
@@ -92,8 +86,9 @@ default v6/18精确版本也不同于本批v12，须先追合同及无标签身�
 
 ## 下一步
 
-不重做已通过的财务来源derivation和测量控制。按精确cached metadata为KGC年报、
-MS pre-cutoff季报及annual缺证准备有界原始资料取证；扩展真实root-linked SEC
-archive proof形状时保持exact target/issuer/form/时间，不改包或猜全页时钟。
-之后在新view测同15case/18refs，再评估原full48/defaultv6前提；当前无完整后继。
+离线source owner白名单投影v182原冻结40身份/aware时间/split/顺序，不复制truth/basic_info。
+已核批准的无标签acquisition_scope只匹配这40的身份，不从3511公司×共享日期重建cohort。
+新诊断分别冻结defaultv6/v12的18refs、原653doc view，各720输入与40份BasicInfo投影；
+0GET/model/apply/LabelStore/fullprepare/global写入，不恢复旧运行或触LockedTest。
+旧混合清单会由owner读取/按SHA验证，须如实报告；未向研究/模型传递outcome字段。
 原8项用户改动保持；MVP goal active未完成。

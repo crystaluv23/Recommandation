@@ -1,0 +1,50 @@
+cik_0000000001:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000002:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000003:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000004:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000005:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000006:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000007:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000008:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000009:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000010:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000011:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000012:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000013:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000014:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000015:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000016:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000017:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000018:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000019:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000020:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000021:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000022:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000023:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000024:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000025:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000026:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000027:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000028:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000029:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000030:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000031:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000032:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000033:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000034:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000035:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000036:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000037:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000038:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000039:20250101: BasicInfo plus two independent18-ref input rows saved
+cik_0000000040:20250101: BasicInfo plus two independent18-ref input rows saved
+test_all_label_store_readers_are_guarded_and_restored (tests.test_reviewed_frozen_case_inputs.FrozenCaseInputTests.test_all_label_store_readers_are_guarded_and_restored) ... ok
+test_definition_only_exact_snapshots_and_unknown_version_reject (tests.test_reviewed_frozen_case_inputs.FrozenCaseInputTests.test_definition_only_exact_snapshots_and_unknown_version_reject) ... ok
+test_execute_streams_origin_only_and_preserves_missing_source_40x18_twice (tests.test_reviewed_frozen_case_inputs.FrozenCaseInputTests.test_execute_streams_origin_only_and_preserves_missing_source_40x18_twice) ... ok
+test_projection_rejects_bad_identity_counts_time_and_scope_without_filtering (tests.test_reviewed_frozen_case_inputs.FrozenCaseInputTests.test_projection_rejects_bad_identity_counts_time_and_scope_without_filtering) ... ok
+test_source_owner_projection_exact_order_and_strict_whitelist (tests.test_reviewed_frozen_case_inputs.FrozenCaseInputTests.test_source_owner_projection_exact_order_and_strict_whitelist) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.508s
+
+OK
