@@ -1,5 +1,17 @@
 # Signal Library
 
+Deterministic SEC Company Facts consumers share the producer's filed-only
+availability rule: next UTC midnight, compared as an aware instant. Apply it
+to both supported fact schemas, including retained legacy aggregates. Retain
+the reported financial period-end bound using the cutoff's UTC day. This does
+not prohibit future guidance prose, rewrite old sources/results, or establish
+source admission merely because a row is parseable.
+Both recognized schemas also require issuer binding: canonical CIK company ids
+own identity, optional metadata must agree, and opaque aliases require explicit
+metadata CIK. Compare the strict provider-body CIK before parsing facts. Missing
+or conflicting bindings become the executor's existing validation-failed
+technical result; they must not silently become domain absence or negative.
+
 For PIT model-input qualification, every present clock is checked: complete
 canonical evidence and any runtime `input_evidence_available_at` binding. Adding
 empty evidence cannot hide a late or malformed retained binding. The binding

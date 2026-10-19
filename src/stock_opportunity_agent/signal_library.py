@@ -19,6 +19,9 @@ from stock_opportunity_agent.artifacts import (
     canonical_json_hash as _canonical_hash,
 )
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
+from stock_opportunity_agent.data.sec_company_facts import company_fact_available_at, validate_company_fact_document_issuer
+from stock_opportunity_agent.data.sources.core import DataSourceError
 from stock_opportunity_agent.data.resolution import (
     DataGapReason,
     EvidenceResolver,
@@ -4342,6 +4345,15 @@ def _sec_facts(
             json.dumps(payload, sort_keys=True, separators=(",", ":"))
             == document.content
         )
+        namespaces = payload.get("facts")
+        recognized = payload.get("schema_version") == "sec-company-facts-document-v1" or (
+            isinstance(namespaces, Mapping) and any(isinstance(namespaces.get(key), Mapping)
+                                                   for key in ("us-gaap", "ifrs-full")))
+        if recognized:
+            try:
+                validate_company_fact_document_issuer(document, payload)
+            except DataSourceError as error:
+                raise ValidationError(str(error)) from None
         if payload.get("schema_version") == "sec-company-facts-document-v1":
             filing_date = str(payload.get("filing_date", ""))
             form = str(payload.get("form", ""))
@@ -4362,7 +4374,6 @@ def _sec_facts(
                 if fact is not None:
                     facts.append(fact)
             continue
-        namespaces = payload.get("facts")
         if not isinstance(namespaces, Mapping):
             continue
         reporting_facts = namespaces.get("us-gaap")
@@ -4422,7 +4433,7 @@ def _make_sec_fact(
             datetime.fromisoformat(start)
     except ValueError:
         return None
-    if filed_date > as_of.date() or end_date > as_of.date():
+    if company_fact_available_at(filed_date) > as_of or end_date > utc_day_of_instant(as_of):
         return None
     exact_span = json.dumps(dict(raw), sort_keys=True, separators=(",", ":"))
     if not canonical_spans and exact_span not in document.content:

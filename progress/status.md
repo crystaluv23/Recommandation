@@ -7,6 +7,14 @@
 
 ## 当前验收
 
+最新 [SEC财务边界修复](../reports/sec-financial-source-boundaries-20261020.md)：
+固定15case/45原件与cache清单完成，旧adapter30/30重建但不代表合格；FTAI原件含
+364条同日filed、错ENB→MS亦可被旧producer错标。现共享per-accession normalizer
+按完整aware cutoff执行次日UTC政策、严格issuer且不裁旧比较期间；独立发现并补齐
+持久化旧body的消费者issuer拒绝。root禁socket的98测试通过，真实旧ID重放、重启
+及actual executor技术失败均验证；现代backfill12docs/3380rows完整全等。
+旧原件/view不改，财务proof/profile与新view尚未建立，0/15旧readiness不改写。
+
 最新 [经营来源/readiness](../reports/anchor-operating-source-readiness-20261020.md)：
 原27selectedprimary中26通过现SEC proof，但仅24年/季报经营正文准入、3unknown；
 新43docs typed view恢复/原件绑定全等。15case actual operating13resolved，均明示
@@ -83,7 +91,7 @@ full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残�
 13家已有年/中期正文并进新view；未宣称经营信息可见充分。KGC/MS附件已取到但未
 归一/准入，6K/8K不冒称periodic。MS当前API15:59Z、原件11:59Z、独立header
 07:59无offset，实际parser不偏移；原writer/input未知，不能认定原错或猜时区修正。
-下一步优先核实际缺失的结构化财务来源/PIT证明；MS header时间规范与API冲突另行
+下一步为新typed财务产品建立逐来源proof和独立view，再重测精确refs；MS header时间规范与API冲突另行
 明确，不用其做无依据准入或改写原件。
 原[source layout修复](../reports/source-layout-readiness-20261020.md)单anchor5tests
 及旧关联27tests误读真实LabelStore例外均保持披露，未重写成完整准备成功。

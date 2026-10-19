@@ -6,6 +6,16 @@ enabled acquisition policy even when no external execution flag was supplied;
 invalid source input is a typed technical failure, not negative company evidence.
 See [reviewed source snapshots](reviewed_snapshot.md).
 
+SEC Company Facts acquisition now emits the existing typed per-accession
+`sec_company_facts` products through the shared pure normalizer. The existing
+source compatibility family serves `financials` requests without relabeling
+filing prose. It validates issuer CIK, excludes date-only facts until next UTC
+midnight, retains all supported historical comparison periods and separately
+archives the complete raw response. Old aggregate records are not rewritten or
+implicitly source-qualified; a corrected product uses the distinct existing
+accession/content ID. Request lookback remains a publication filter, not an
+additional fact-history limit.
+
 ## Status
 
 Implemented

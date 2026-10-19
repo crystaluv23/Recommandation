@@ -1,0 +1,43 @@
+{
+  "head": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+    "tests/test_sec_financial_availability_boundaries.py": "ff7bf1226191a4a74ecac18e38c77977c510e15507796131f5d13340bf895c97"
+  },
+  "after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+    "tests/test_sec_financial_availability_boundaries.py": "ff7bf1226191a4a74ecac18e38c77977c510e15507796131f5d13340bf895c97"
+  },
+  "unchanged": true,
+  "exit_code": 1,
+  "source": "actual retained FTAI/ENB responses; no normalizer mocks/network/model/labels"
+}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/__main__.py", line 18, in <module>
+    main(module=None)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py", line 104, in __init__
+    self.parseArgs(argv)
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py", line 153, in parseArgs
+    self.createTests()
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/main.py", line 164, in createTests
+    self.test = self.testLoader.loadTestsFromNames(self.testNames,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 207, in loadTestsFromNames
+    suites = [self.loadTestsFromName(name, module) for name in names]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 30, in <module>
+    REQUEST = RawInfoRequest(
+              ^^^^^^^^^^^^^^^
+  File "<string>", line 13, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py", line 121, in __post_init__
+    raise ValidationError("raw info max_documents must be between 1 and 10")
+stock_opportunity_agent.models.ValidationError: raw info max_documents must be between 1 and 10

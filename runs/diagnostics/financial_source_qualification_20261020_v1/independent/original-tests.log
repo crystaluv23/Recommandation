@@ -1,0 +1,84 @@
+{
+  "historical_commit": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "historical_modules_sha256": {
+    "stock_opportunity_agent.data.acquisition": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "stock_opportunity_agent.signal_library": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea"
+  },
+  "working_before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "1c14453797613d5d3014807bc8c1fba179cf9a5160bdbf15bb5f136f73f1f846",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "working_after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "1c14453797613d5d3014807bc8c1fba179cf9a5160bdbf15bb5f136f73f1f846",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "exit_code": 1,
+  "method": "Historical Git source executed only in isolated process; no working-source replacement. Candidate-first passed before historical replay; initial max_documents fixture import failure retained separately."
+}
+test_equivalent_offset_instants_select_identical_source_products (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_equivalent_offset_instants_select_identical_source_products) ... ok
+test_filing_day_last_second_still_excludes_same_day_facts (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_filing_day_last_second_still_excludes_same_day_facts) ... FAIL
+test_filing_day_midnight_excludes_same_day_facts (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_filing_day_midnight_excludes_same_day_facts) ... FAIL
+test_new_ids_coexist_without_rewriting_legacy_unsafe_clock (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_new_ids_coexist_without_rewriting_legacy_unsafe_clock) ... FAIL
+test_next_midnight_includes_exact_raw_fact_with_typed_lineage (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_next_midnight_includes_exact_raw_fact_with_typed_lineage) ... ERROR
+test_prior_filed_positive_retains_raw_value_and_original_period (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_prior_filed_positive_retains_raw_value_and_original_period) ... ok
+test_signal_consumer_independently_guards_legacy_same_day_clock (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_signal_consumer_independently_guards_legacy_same_day_clock) ... FAIL
+test_wrong_response_issuer_rejected_before_mislabeled_products (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_wrong_response_issuer_rejected_before_mislabeled_products) ... FAIL
+
+======================================================================
+ERROR: test_next_midnight_includes_exact_raw_fact_with_typed_lineage (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_next_midnight_includes_exact_raw_fact_with_typed_lineage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 126, in test_next_midnight_includes_exact_raw_fact_with_typed_lineage
+    self.assertEqual(payload["schema_version"], "sec-company-facts-document-v1")
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'schema_version'
+
+======================================================================
+FAIL: test_filing_day_last_second_still_excludes_same_day_facts (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_filing_day_last_second_still_excludes_same_day_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 116, in test_filing_day_last_second_still_excludes_same_day_facts
+    self.assertFalse(any(f.filed == "2025-07-31" for f in facts))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_filing_day_midnight_excludes_same_day_facts (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_filing_day_midnight_excludes_same_day_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 110, in test_filing_day_midnight_excludes_same_day_facts
+    self.assertFalse(any(f.filed == "2025-07-31" for f in facts))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_new_ids_coexist_without_rewriting_legacy_unsafe_clock (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_new_ids_coexist_without_rewriting_legacy_unsafe_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 168, in test_new_ids_coexist_without_rewriting_legacy_unsafe_clock
+    self.assertTrue(all(d.document_id.startswith("secfacts:0001590364:") for d in derived))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_signal_consumer_independently_guards_legacy_same_day_clock (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_signal_consumer_independently_guards_legacy_same_day_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 180, in test_signal_consumer_independently_guards_legacy_same_day_clock
+    self.assertFalse(any(f.filed == "2025-07-31" for f in facts))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_wrong_response_issuer_rejected_before_mislabeled_products (tests.test_sec_financial_availability_boundaries.SecFinancialAvailabilityBoundaryTests.test_wrong_response_issuer_rejected_before_mislabeled_products)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_sec_financial_availability_boundaries.py", line 154, in test_wrong_response_issuer_rejected_before_mislabeled_products
+    with self.assertRaises(DataSourceError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: DataSourceError not raised
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.180s
+
+FAILED (failures=5, errors=1)

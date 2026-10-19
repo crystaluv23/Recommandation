@@ -11,6 +11,10 @@ from datetime import date, datetime, time, timedelta, timezone
 from typing import Any, Callable, Iterable, Mapping
 
 from stock_opportunity_agent.data.point_in_time import utc_day_of_instant
+from stock_opportunity_agent.data.sec_company_facts import (
+    materialize_company_fact_documents, validate_company_facts_response,
+    STANDARD_TAXONOMIES, STANDARD_FORMS,
+)
 from stock_opportunity_agent.data.raw_info import RawInfoDocument
 from stock_opportunity_agent.data.resolution import (
     AcquisitionFailure,
@@ -47,7 +51,7 @@ def _midnight(day: date) -> datetime:
 
 
 class SecCompanyFactsAdapter:
-    """Materialize a historical as-of subset of SEC Company Facts raw JSON."""
+    """Materialize issuer-verified, date-safe typed accession products."""
 
     provider = "sec_edgar"
     source_types = (
@@ -69,10 +73,11 @@ class SecCompanyFactsAdapter:
         identity: Mapping[str, Any],
         as_of: datetime,
     ) -> AcquisitionResult:
+        cutoff_day = utc_day_of_instant(as_of)
         cursor = _event_cursor(self.client)
-        cik = _identity_value(identity, "cik", "CIK")
+        cik = _identity_value(identity, "cik", "CIK").zfill(10)
         raw = self.client.company_facts(cik)
-        scoped, latest_filed = _company_facts_as_of(raw, as_of.date())
+        validate_company_facts_response(raw, cik)
         raw_content = _canonical_json(raw)
         retrieved_at = datetime.now(timezone.utc)
         raw_document = RawInfoDocument.create(
@@ -90,26 +95,19 @@ class SecCompanyFactsAdapter:
             metadata={"provider": self.provider, "cik": cik},
         )
         documents = [raw_document]
-        if latest_filed is not None:
-            content = _canonical_json(scoped)
-            source_type = _first_supported(request.source_types, self.source_types)
-            documents.append(
-                RawInfoDocument.create(
-                    document_id=_document_id(
-                        self.provider, company_id, source_type, content
-                    ),
-                    company_id=company_id,
-                    source_type=source_type,
-                    published_at=_midnight(latest_filed),
-                    available_at=_midnight(latest_filed),
-                    content=content,
-                    metadata={
-                        "provider": self.provider,
-                        "cik": cik,
-                        "scoped_as_of": as_of.date().isoformat(),
-                    },
-                )
-            )
+        selection = {"period_end_from": date.min.isoformat(),
+            "period_end_through": cutoff_day.isoformat(),
+            "available_at_through": as_of.astimezone(timezone.utc).isoformat(),
+            "taxonomy_allowlist": list(STANDARD_TAXONOMIES), "form_allowlist": list(STANDARD_FORMS)}
+        policy = {"schema_version": "sec-company-facts-acquisition-v1", "selection": selection}
+        products, _stats = materialize_company_fact_documents(raw,
+            item={"cik": cik, "company_id": company_id,
+                "symbol": identity.get("ticker") or identity.get("symbol"),
+                "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK" + cik + ".json"},
+            selection=selection, retrieved_at=retrieved_at,
+            provenance={"acquisition_policy_hash": hashlib.sha256(_canonical_json(policy).encode()).hexdigest(),
+                "acquisition_selection": selection})
+        documents.extend(products)
         return AcquisitionResult(
             documents=tuple(documents),
             events=_provider_events(self.client, cursor),
@@ -705,45 +703,6 @@ def _iso_date(value: Any) -> date | None:
         return date.fromisoformat(str(value))
     except ValueError:
         return None
-
-
-def _company_facts_as_of(
-    raw: Mapping[str, Any], as_of: date
-) -> tuple[dict[str, Any], date | None]:
-    scoped: dict[str, Any] = {
-        key: value for key, value in raw.items() if key not in {"facts"}
-    }
-    scoped_facts: dict[str, Any] = {}
-    latest: date | None = None
-    for taxonomy, concepts in dict(raw.get("facts", {})).items():
-        taxonomy_out: dict[str, Any] = {}
-        for concept, definition in dict(concepts).items():
-            definition_out = {
-                key: value
-                for key, value in dict(definition).items()
-                if key != "units"
-            }
-            units_out: dict[str, Any] = {}
-            for unit, entries in dict(dict(definition).get("units", {})).items():
-                eligible = []
-                for entry in entries:
-                    filed_text = entry.get("filed") if isinstance(entry, Mapping) else None
-                    try:
-                        filed = date.fromisoformat(str(filed_text))
-                    except ValueError:
-                        continue
-                    if filed <= as_of:
-                        eligible.append(dict(entry))
-                        latest = filed if latest is None or filed > latest else latest
-                if eligible:
-                    units_out[str(unit)] = eligible
-            if units_out:
-                definition_out["units"] = units_out
-                taxonomy_out[str(concept)] = definition_out
-        if taxonomy_out:
-            scoped_facts[str(taxonomy)] = taxonomy_out
-    scoped["facts"] = scoped_facts
-    return scoped, latest
 
 
 def _price_bar_dict(bar: Any) -> dict[str, Any]:

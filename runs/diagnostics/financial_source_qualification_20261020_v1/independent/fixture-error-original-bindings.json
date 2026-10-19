@@ -1,0 +1,18 @@
+{
+  "head": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+    "tests/test_sec_financial_availability_boundaries.py": "ff7bf1226191a4a74ecac18e38c77977c510e15507796131f5d13340bf895c97"
+  },
+  "after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+    "tests/test_sec_financial_availability_boundaries.py": "ff7bf1226191a4a74ecac18e38c77977c510e15507796131f5d13340bf895c97"
+  },
+  "unchanged": true,
+  "exit_code": 1,
+  "source": "actual retained FTAI/ENB responses; no normalizer mocks/network/model/labels"
+}

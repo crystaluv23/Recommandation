@@ -1,0 +1,58 @@
+{
+  "schema_version": "independent-legacy-feature-branch-review-v1",
+  "scope": "Read-only adjacent FeatureRecord branch map; no network, model, LabelStore, code/source modification or full preparation.",
+  "conclusion": "Separate legacy date-level feature branch. Preserve FeatureRecord date semantics; no intraday or UTC-midnight qualification and no whole-repository financial PIT closure.",
+  "contract": {
+    "structured_spec": "spec/src/stock_opportunity_agent/data/structured.md:35-38",
+    "semantics": "SEC availability is filing date; filed <= as_of_date. Neither day-end interpretation nor public availability at the start of that day is specified.",
+    "models": "src/stock_opportunity_agent/models.py:330,415",
+    "packet_filter": "src/stock_opportunity_agent/data/point_in_time.py:31",
+    "data_cutoff_limitation": "point_in_time.py:99 derives data_cutoff from retrieval clocks, not accepted/public availability."
+  },
+  "actual_control": {
+    "cache_path": "runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json",
+    "cache_sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+    "payload_cik": 1590364,
+    "normalizer_as_of_date": "2025-07-31",
+    "accession": "0001590364-25-000023",
+    "period_end": "2025-06-30",
+    "confirmed_same_day_features": 10,
+    "other_missing_features": 2,
+    "two_fact_examples": [
+      {
+        "name": "financial.revenue_usd",
+        "value": 676237000,
+        "tag": "RevenueFromContractWithCustomerExcludingAssessedTax"
+      },
+      {
+        "name": "financial.operating_cash_flow_usd",
+        "value": -136284000,
+        "tag": "NetCashProvidedByUsedInOperatingActivities"
+      }
+    ],
+    "meaning": "Actual same-day date-level selection; does not establish availability at 2025-07-31T00:00:00Z."
+  },
+  "call_chains": {
+    "cold_start": [
+      "scripts/run_cold_start_formal.py:1542 _sec_fundamental_features",
+      "scripts/run_cold_start_formal.py:1425 _features_for_candidates",
+      "src/stock_opportunity_agent/cases/packets.py:73/75",
+      "HistoricalCase.packet.features and feature-derived packet evidence"
+    ],
+    "optional_legacy_augmentation": [
+      "scripts/run_ralph_loop_experiment.py:107",
+      "scripts/run_ralph_loop_experiment.py:1211 _augment_sec_company_facts_for_cases",
+      "HistoricalCase.packet.features"
+    ],
+    "current_signal": [
+      "signal_library.py:3337 prepare_inputs / execute_batch",
+      "signal_library.py:3508 _resolve_input",
+      "RawInfoRequest -> EvidenceResolver -> RawInfoDocument",
+      "signal_library.py:4328 _sec_facts; does not call structured.normalize_sec_company_facts"
+    ],
+    "dataset_boundary": "evolution_dataset.py:648 onward extracts legacy company identity/market_cap/industry into basic_info; does not transfer financial FeatureRecord values."
+  },
+  "identity_limitation": "normalize_sec_company_facts has no expected-CIK argument; it copies response CIK into source_id. No additional actual cross-issuer FeatureRecord consumption established in this review.",
+  "scope_decision": "Current producer/backfill/Signal repair may proceed without silently redefining this date-only public interface. If reused for precise-instant research, add explicit identity/availability handling under its owning contract; do not assume next-day/day-end semantics.",
+  "original_materials_unchanged": true
+}

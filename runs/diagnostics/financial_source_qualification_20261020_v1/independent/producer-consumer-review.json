@@ -1,0 +1,37 @@
+{
+  "schema_version": "independent-financial-source-counterreview-v1",
+  "conclusion": "The two retained-cache issuer/date-only availability defects and tested malformed source-CIK shapes are locally rejected across current producer and actual deterministic consumer. No newly observed blocking issue in this bounded repair.",
+  "evidence": {
+    "script": {
+      "path": "runs/diagnostics/financial_source_qualification_20261020_v1/independent/counterreview.py",
+      "sha256": "f9144293fadb50ff16dc64eb47034908212caccbcb8834f656b6c8d0b43e5936"
+    },
+    "results": {
+      "path": "runs/diagnostics/financial_source_qualification_20261020_v1/independent/counterreview-result.json",
+      "sha256": "b72d7148cbb13a5f0f38d0521fd9493dad43c44c0814a6e2bda1199231338042"
+    },
+    "initial_consumer_failure": "initial-consumer-issuer-counterexample.json (19527 foreign facts), preserved unchanged",
+    "legacy_feature_scope": "feature-branch-review.json"
+  },
+  "code_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "6d534313748f81086b1861c3fd9069a30fc0c787bb93b125973aa840fde718c9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+  },
+  "actual_findings": {
+    "FTAI": "Jul31 first/last seconds reject all 364 Jul31-filed rows; Aug1 midnight and equivalent -04 offset include exactly364. Old periods down to2012 remain, no1100day producer cap.",
+    "ENB_MS": "Producer refuses mismatch. Same synthetic historical mislabeled product persists/reloads unchanged, then parser throws ValidationError. Actual exactnetshare:v3 executor returns/persists validation_failed/unavailable with body issuer mismatch, not domain absence or a negative measurement.",
+    "CIK_shapes": "Prefix text, sign, float, boolean, zero reject; ordinary positive integer and digit string accept.",
+    "backfill": "Same real FTAI selected input produces all12 complete document dicts and3380 selected rows/stats identical to original HEAD implementation; metadata/provenance included in equality.",
+    "append": "Same old ID/content with changed available_at is swallowed as idempotent replay while original clock remains; newperacc43 IDs coexist and all append. No old rewrite."
+  },
+  "source_view_boundary": "Current reviewed_snapshot only supports SEC filing and Massive market proof profiles. Financial products remain unadmitted absent a separately designed explicit source qualification/view; no automatic legacy financial whitening.",
+  "limits": [
+    "No new GET, model, label access or full preparation. One bounded local deterministic invalid-input execution establishes technical failure wiring only.",
+    "NextUTCday is the explicit conservative date-only policy, not a proved acceptance instant or complete financial source authenticity.",
+    "Legacy FeatureRecord remains date-level and has no intraday/UTCmidnight qualification; not in this repair.",
+    "Not all15sources,9Signals,readiness,wholefinancialPIT,MVP or research benefit closed."
+  ],
+  "fixed_controls_passed": true
+}

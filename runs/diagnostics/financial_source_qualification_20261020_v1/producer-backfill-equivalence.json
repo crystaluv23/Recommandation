@@ -1,0 +1,59 @@
+{
+  "scope": "One true FTAI frozen modern selection, pure historical-vs-shared-normalizer equivalence; no source write, admission, network, labels or models.",
+  "historical_revision": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "historical_backfill_sha256": "fc055a25a7f7e5730b588c7d4ef48cfe771daec59585b7ceac122fe7448d72f6",
+  "cache_binding": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json",
+    "sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d"
+  },
+  "control_sha256": "5edf0f1bf1c037aac0f81f40fc274aca25f5fe6b9d2e9dc06ab6e2fd4d4a5939",
+  "selection": {
+    "period_end_from": "2022-07-27",
+    "period_end_through": "2025-07-31",
+    "available_at_through": "2025-07-31T00:00:00+00:00",
+    "taxonomy_allowlist": [
+      "dei",
+      "ifrs-full",
+      "srt",
+      "us-gaap"
+    ],
+    "form_allowlist": [
+      "10-K",
+      "10-K/A",
+      "10-Q",
+      "10-Q/A",
+      "20-F",
+      "20-F/A",
+      "40-F",
+      "40-F/A",
+      "6-K",
+      "6-K/A",
+      "8-K",
+      "8-K/A"
+    ]
+  },
+  "complete_documents_equal": true,
+  "document_count": 12,
+  "stats_equal": true,
+  "stats": {
+    "raw_fact_row_count": 18237,
+    "selected_fact_row_count": 3380,
+    "excluded_reason_counts": {
+      "form_not_allowed": 2,
+      "period_before_lookback": 13081,
+      "taxonomy_not_allowed": 19,
+      "unavailable_by_latest_cutoff": 1755
+    }
+  },
+  "native_next_utc_day_products": true,
+  "current_code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "aa4b7782b2c060244f8704f331a70b3ca63be1d5057f9b561a030d9ad638c3fd"
+    }
+  ]
+}

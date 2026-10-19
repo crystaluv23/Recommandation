@@ -1,0 +1,21 @@
+{
+  "historical_commit": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "historical_modules_sha256": {
+    "stock_opportunity_agent.data.acquisition": "7c98a722858421b83a63e44d2e993d5463b0949755bf08219166754df7cfebbe",
+    "stock_opportunity_agent.signal_library": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea"
+  },
+  "working_before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "1c14453797613d5d3014807bc8c1fba179cf9a5160bdbf15bb5f136f73f1f846",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "working_after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "1c14453797613d5d3014807bc8c1fba179cf9a5160bdbf15bb5f136f73f1f846",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "exit_code": 1,
+  "method": "Historical Git source executed only in isolated process; no working-source replacement. Candidate-first passed before historical replay; initial max_documents fixture import failure retained separately."
+}

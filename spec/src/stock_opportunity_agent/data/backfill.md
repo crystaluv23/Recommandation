@@ -105,6 +105,12 @@ historical case represented at midnight. Metadata records retrieval time,
 taxonomy/tag/unit/accession lineage, selection window, and that the retrospective
 API extraction remains auditable against the primary filing.
 
+The pure `data.sec_company_facts` normalizer and date-only availability helper
+are also used by live acquisition. Backfill's existing private wrapper preserves
+the frozen selection, `backfill_plan_hash`, IDs and complete records. It does
+not import acquisition or research orchestration. Extraction validates response
+CIK itself, including direct calls outside the backfill runner.
+
 ## Point-in-Time Contract
 
 Legacy filing artifacts currently preserve only a public date, not a precise

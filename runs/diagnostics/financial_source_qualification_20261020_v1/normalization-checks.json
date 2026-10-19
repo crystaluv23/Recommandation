@@ -1,0 +1,100 @@
+{
+  "schema_version": "two_native_financial_source_controls-v1",
+  "actual_ENB_payload_requested_as_MS": {
+    "source_cache": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json",
+      "sha256": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070"
+    },
+    "requested_company_id": "cik_0000895421",
+    "actual_response_cik": 895728,
+    "legacy_adapter_constructed_company_id": "cik_0000895421",
+    "legacy_embedded_cik": 895728,
+    "issuer_validated_by_legacy_adapter": false,
+    "modern_strict_validator": {
+      "rejected": true,
+      "type": "DataSourceError",
+      "error": "SEC Company Facts response CIK mismatch"
+    },
+    "no_persistence": true
+  },
+  "actual_FTAI_same_day_case": {
+    "case_id": "cik_0001590364:20250731",
+    "cutoff": "2025-07-31T00:00:00+00:00",
+    "original_financial": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001590364/sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27.json",
+      "sha256": "476241fc0d658fb9e97effb29020878efa08d30de61fba5cde2bbd54e05d21b8"
+    },
+    "original_same_day_rows": 364,
+    "same_day_accessions": [
+      "0001590364-25-000023"
+    ],
+    "modern_input_config": {
+      "item": {
+        "cik": "0001590364",
+        "company_id": "cik_0001590364",
+        "symbol": "FTAI",
+        "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001590364.json"
+      },
+      "selection": {
+        "period_end_from": "2022-07-27",
+        "period_end_through": "2025-07-31",
+        "available_at_through": "2025-07-31T00:00:00+00:00",
+        "taxonomy_allowlist": [
+          "dei",
+          "ifrs-full",
+          "srt",
+          "us-gaap"
+        ],
+        "form_allowlist": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "20-F",
+          "20-F/A",
+          "40-F",
+          "40-F/A",
+          "6-K",
+          "6-K/A",
+          "8-K",
+          "8-K/A"
+        ]
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json",
+        "sha256": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d"
+      },
+      "scope": "in_memory_normalizer_diagnostic_not_a_source_admission_or_plan_file"
+    },
+    "modern_input_config_hash": "3d759afb15998d46755d1b7162f09a574aecd3e213996f8b2c89ad9817843d86",
+    "modern_stats": {
+      "raw_fact_row_count": 18237,
+      "selected_fact_row_count": 3380,
+      "excluded_reason_counts": {
+        "form_not_allowed": 2,
+        "period_before_lookback": 13081,
+        "taxonomy_not_allowed": 19,
+        "unavailable_by_latest_cutoff": 1755
+      }
+    },
+    "modern_accession_docs_in_memory": 12,
+    "same_day_docs_emitted": 0,
+    "modern_latest_filed": "2025-05-05",
+    "modern_latest_available": "2025-05-06T00:00:00+00:00",
+    "all_modern_available_by_cutoff": true,
+    "source_period_coverage_only": {
+      "required_source_group_count": 0,
+      "satisfied_source_group_count": 0,
+      "observed_distinct_period_count": 24,
+      "observed_period_span_days": 943,
+      "observed_observation_count": 0,
+      "contract_satisfied": true,
+      "missing_requirements": []
+    },
+    "modern_entityName_present": false,
+    "modern_fact_parent_tag_unit_preserved": true,
+    "no_persistence": true
+  },
+  "network_or_model_calls": 0,
+  "Signal_execution_called": false
+}

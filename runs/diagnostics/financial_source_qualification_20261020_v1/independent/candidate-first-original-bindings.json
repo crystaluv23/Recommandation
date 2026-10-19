@@ -1,0 +1,17 @@
+{
+  "head": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "76a930253e72f1fc9c037104b1cf5e73d533a71424fd97d4fd961c3c86ef92ee",
+    "src/stock_opportunity_agent/data/backfill.py": "0bed72be6c8924dd92af3223ca59c247f2c47620ee88f43b5070104aa752efaa",
+    "src/stock_opportunity_agent/signal_library.py": "7de6086d6be36da8c58edc3bf16956d27a089eca2902fc00571017c509f73d77",
+    "tests/test_sec_financial_availability_boundaries.py": "720f97e1fa328d74d0207995db7fa26a08805ac348937283c53ed24c4f9418a9"
+  },
+  "unchanged": true,
+  "exit_code": 0
+}

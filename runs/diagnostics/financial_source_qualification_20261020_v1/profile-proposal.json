@@ -1,0 +1,18 @@
+{
+  "status": "proposal_only_no_source_or_spec_changes",
+  "producer_consumer_chain": "Legacy adapter scopes filed<=asof.date and publishes the aggregate at latest_filed midnight; generic store/resolver document-time filtering cannot fix same-day rows. Existing modern accession materializer already uses response CIK, taxonomy/tag/unit lineage, frozen period/form selection and filed+1day availability.",
+  "minimal_error_family_repair": [
+    "Share strict response-CIK validation and the existing modern per-accession normalization across acquisition/backfill through a small pure data owner if necessary; avoid high-level orchestration dependency from acquisition.",
+    "Keep whole current raw response as hash-bound proof only; new historical source products omit current entityName and preserve original parent tag/unit with each row.",
+    "Use current owning backfill filed-only nextUTCday policy; do not alter old aggregate clocks or add source aliases/primary-profile bypasses to make originals pass.",
+    "Retain original FTAI same-day case and wrong-issuer control; new outputs require new explicit source qualification/view, never retrospective repair of existing frozen sources."
+  ],
+  "minimal_financial_proof_contract": [
+    "Exact per-CIK CompanyFacts endpoint/sanitized request/cache/raw bytes; aware cache and original normalization clocks bound.",
+    "Response CIK must match issuer; accession prefix is independent SEC submitter identity and must not be required to equal issuer CIK.",
+    "Freeze exact versioned standard-taxonomy/form/period/availability selection and reproduce every admitted typed accession record to_dict/hash/membership; no field patching or silent row trimming.",
+    "Fact body preserves taxonomy/tag/unit/accession/filed/start/end/actual value and source locators; date-only filed availability nextUTCday, no source-retrieval backdating.",
+    "Retrospective extraction and primary-filing audit requirements explicit; reconstruction and3period/330day shape do not imply value correctness, primary narrative coverage, exact comparison scope or any Signal readiness."
+  ],
+  "no_legacy_primary_or_market_profile_for_financials": true
+}

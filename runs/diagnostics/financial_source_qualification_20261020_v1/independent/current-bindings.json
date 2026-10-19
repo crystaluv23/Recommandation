@@ -1,0 +1,37 @@
+{
+  "head": "c40069ed5def9e3214e0d36ef987735b881e11a2",
+  "before": {
+    "src/stock_opportunity_agent/data/acquisition.py": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df",
+    "src/stock_opportunity_agent/data/backfill.py": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "6d534313748f81086b1861c3fd9069a30fc0c787bb93b125973aa840fde718c9",
+    "src/stock_opportunity_agent/signal_library.py": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+    "src/stock_opportunity_agent/data/raw_info.py": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1",
+    "tests/test_sec_financial_availability_boundaries.py": "730ff7e9c73777fadafd9245ca274a0a986a78317f21959948590aa6b0213052",
+    "runs/diagnostics/financial_source_qualification_20261020_v1/inventory.json": "4da1faff57f64bcb1e5571d3b3b7bd4d006ad8b5ac427da59a76a5b279d63f8b",
+    "runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070",
+    "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000895728/sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e.json": "6027c4651f4bf6c3d9d9ef563c8a0553a26b3b22213beb58fe802d6e423c6148",
+    "runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+    "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001590364/sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27.json": "476241fc0d658fb9e97effb29020878efa08d30de61fba5cde2bbd54e05d21b8"
+  },
+  "after": {
+    "src/stock_opportunity_agent/data/acquisition.py": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df",
+    "src/stock_opportunity_agent/data/backfill.py": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073",
+    "src/stock_opportunity_agent/data/sec_company_facts.py": "6d534313748f81086b1861c3fd9069a30fc0c787bb93b125973aa840fde718c9",
+    "src/stock_opportunity_agent/signal_library.py": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66",
+    "src/stock_opportunity_agent/data/raw_info.py": "e2ecbfdff88a430d3744c6b62968aee6acfbc135bc9b79df74683810873cf1e1",
+    "tests/test_sec_financial_availability_boundaries.py": "730ff7e9c73777fadafd9245ca274a0a986a78317f21959948590aa6b0213052",
+    "runs/diagnostics/financial_source_qualification_20261020_v1/inventory.json": "4da1faff57f64bcb1e5571d3b3b7bd4d006ad8b5ac427da59a76a5b279d63f8b",
+    "runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070",
+    "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0000895728/sec_edgar:cik_0000895728:financials:29313431393c008179f4d74e.json": "6027c4651f4bf6c3d9d9ef563c8a0553a26b3b22213beb58fe802d6e423c6148",
+    "runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+    "runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001590364/sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27.json": "476241fc0d658fb9e97effb29020878efa08d30de61fba5cde2bbd54e05d21b8"
+  },
+  "unchanged": true,
+  "exit_code": 0,
+  "limitations": [
+    "offline real retained responses only; no source-profile admission",
+    "no production model/network/LabelStore/archive reads",
+    "legacy originals retained; no global oracle cleanup",
+    "initial fixture import error and historical red preserved separately"
+  ]
+}

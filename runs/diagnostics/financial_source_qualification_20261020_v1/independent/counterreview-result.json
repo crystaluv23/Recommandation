@@ -1,0 +1,132 @@
+{
+  "scope": "Offline deterministic issuer/time/data-product counterreview; no network/model/labels/source admission. Exact source body plus explicitly synthetic mislabeled product. No production root resumed.",
+  "source_bindings": {
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/4edb17b1b165004265179f8f.json": "2e65d13e7fa426a5a53b686720456ac7b02332e5030304bc0eb463dd4575144d",
+    "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-signal-wildcard-20260822-v1/cache/data/sec_edgar/financial_statements/32d0dd7922c8e7bdf696f58b.json": "a1cc3d7aa68389604ce9c4dce5adf73ddf4c67443f5280e6971c03edd3969070",
+    "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/financials/cik_0001590364/sec_edgar:cik_0001590364:financials:16a460f32cff2e45879a2b27.json": "476241fc0d658fb9e97effb29020878efa08d30de61fba5cde2bbd54e05d21b8"
+  },
+  "code_bindings": {
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "6d534313748f81086b1861c3fd9069a30fc0c787bb93b125973aa840fde718c9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py": "e5872c829427696736fc579a4cdce4aa0cf7fca3f24ed50667a20f947d5941df",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py": "67d4174f6c776b846fade16626d4cda857c5c6cc2098e0df93ed764008110073",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+  },
+  "checks": {
+    "2025-07-31T00:00:00+00:00": {
+      "product_count": 42,
+      "parsed_facts": 16461,
+      "same_day_facts": 0,
+      "old_period_preserved": "2012-12-31",
+      "signature": "7158120d66fad5cc4d9698a6da2af65e5cda9f310b4f6418dff45117ace46c41"
+    },
+    "2025-07-31T23:59:59+00:00": {
+      "product_count": 42,
+      "parsed_facts": 16461,
+      "same_day_facts": 0,
+      "old_period_preserved": "2012-12-31",
+      "signature": "7158120d66fad5cc4d9698a6da2af65e5cda9f310b4f6418dff45117ace46c41"
+    },
+    "2025-08-01T00:00:00+00:00": {
+      "product_count": 43,
+      "parsed_facts": 16825,
+      "same_day_facts": 364,
+      "old_period_preserved": "2012-12-31",
+      "signature": "b57fb027c5e838ea5b854fe84dac23befa1d580f5ab1c7aa55a3eb6113fa0604"
+    },
+    "2025-07-31T20:00:00-04:00": {
+      "product_count": 43,
+      "parsed_facts": 16825,
+      "same_day_facts": 364,
+      "old_period_preserved": "2012-12-31",
+      "signature": "b57fb027c5e838ea5b854fe84dac23befa1d580f5ab1c7aa55a3eb6113fa0604"
+    },
+    "wrong_issuer_producer": {
+      "rejected": true,
+      "type": "DataSourceError",
+      "message": "SEC Company Facts response CIK mismatch"
+    },
+    "strict_body_cik": {
+      "'not-a-cik0001590364'": {
+        "rejected": true,
+        "type": "DataSourceError",
+        "message": "SEC Company Facts CIK shape is invalid"
+      },
+      "'-1590364'": {
+        "rejected": true,
+        "type": "DataSourceError",
+        "message": "SEC Company Facts CIK shape is invalid"
+      },
+      "1590364.0": {
+        "rejected": true,
+        "type": "DataSourceError",
+        "message": "SEC Company Facts CIK shape is invalid"
+      },
+      "True": {
+        "rejected": true,
+        "type": "DataSourceError",
+        "message": "SEC Company Facts CIK shape is invalid"
+      },
+      "0": {
+        "rejected": true,
+        "type": "DataSourceError",
+        "message": "SEC Company Facts CIK shape is invalid"
+      },
+      "1590364": {
+        "rejected": false,
+        "value": null
+      },
+      "'0001590364'": {
+        "rejected": false,
+        "value": null
+      }
+    },
+    "backfill_equivalence": {
+      "all_document_dicts_equal": true,
+      "all_stats_equal": true,
+      "documents": 12,
+      "facts": 3380,
+      "old_function_source_sha": "115e53d2d19cb4c40b64e02a1273c6582c06311d6e83e4420b279d0019e842b5"
+    },
+    "legacy_consumer_same_day": 0,
+    "retimed_same_identity": {
+      "append_return": false,
+      "saved_original_unchanged": true
+    },
+    "new_product_ids": {
+      "all_distinct_from_legacy": true,
+      "all_appended": true
+    },
+    "wrong_issuer_restored_consumer": {
+      "rejected": true,
+      "type": "ValidationError",
+      "message": "SEC Company Facts body issuer mismatch"
+    },
+    "wrong_issuer_actual_executor": {
+      "result": {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "error_code": "deterministic_result_validation_failed",
+          "error_message": "ValidationError: SEC Company Facts body issuer mismatch",
+          "status": "validation_failed"
+        },
+        "interpretation": {
+          "summary": "Signal execution failed strict validation or execution: ValidationError: SEC Company Facts body issuer mismatch"
+        },
+        "signal_id": "net_share_retirement_yoy",
+        "state": {
+          "confidence": 0.0,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 3
+      },
+      "persisted_exact": true
+    }
+  },
+  "originals_unchanged": true
+}

@@ -26,6 +26,50 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SecFinancialSignalTests(TestCase):
+    def test_both_fact_schemas_enforce_issuer_as_technical_failure(self):
+        from copy import deepcopy
+
+        typed = {"schema_version": "sec-company-facts-document-v1", "cik": "0000000001",
+            "filing_date": "2025-01-20", "form": "10-K", "facts": [
+                {"tag": "CashAndCashEquivalentsAtCarryingValue", "unit": "USD",
+                 "end": "2024-12-31", "value": 40}]}
+        legacy = {"cik": 1, "facts": {"us-gaap": {
+            "CashAndCashEquivalentsAtCarryingValue": {"units": {"USD": [
+                {"filed": "2025-01-20", "end": "2024-12-31", "val": 40}]}}}}}
+        spec = _spec("cash_reserves", "financial.cash_reserves", 30, 10)
+        for payload in (typed, legacy):
+            cases = [
+                ("cik_0000000001", {}, 1, True),
+                ("opaque-issuer", {"cik": "0000000001"}, 1, True),
+                ("cik_0000000002", {"cik": "0000000002"}, 1, False),
+                ("cik_0000000001", {"cik": "0000000002"}, 1, False),
+                ("opaque-issuer", {}, 1, False),
+                ("opaque-issuer-1", {"cik": "0000000001"}, None, False),
+                ("cik_0000000001", {}, "CIK0000000001", False),
+            ]
+            for company, metadata, body_cik, valid in cases:
+                with self.subTest(schema=payload.get("schema_version", "legacy"), company=company,
+                                  metadata=metadata, cik=body_cik):
+                    source = deepcopy(payload)
+                    if body_cik is None:
+                        source.pop("cik")
+                    else:
+                        source["cik"] = body_cik
+                    document = RawInfoDocument.create(document_id="issuer-bound", company_id=company,
+                        source_type="sec_company_facts", published_at=datetime(2025, 1, 20, tzinfo=timezone.utc),
+                        available_at=datetime(2025, 1, 21, tzinfo=timezone.utc),
+                        content=json.dumps(source, sort_keys=True, separators=(",", ":")), metadata=metadata)
+                    result = SignalExecutor(_snapshot((spec,)), RawInfoStore(documents=(document,))).execute_batch(
+                        (spec.ref,), company_id=company, as_of=AS_OF).results[0]
+                    if valid:
+                        self.assertEqual(result.value, SignalValue.POSITIVE)
+                        self.assertEqual(result.measurement.value, 40)
+                    else:
+                        self.assertEqual(result.value, SignalValue.UNAVAILABLE)
+                        self.assertEqual(result.execution_status.value, "validation_failed")
+                        self.assertEqual(result.execution_error_code, "deterministic_result_validation_failed")
+                        self.assertIn("SEC Company Facts", result.execution_error_message)
+
     def test_production_companyfacts_normalization_keeps_actual_share_basis_through_consumers(self):
         from stock_opportunity_agent.data.backfill import _company_fact_documents
         from stock_opportunity_agent.research.evolution_research_validation import _signal_batch_model_view
@@ -43,7 +87,7 @@ class SecFinancialSignalTests(TestCase):
                           _row(None, "2024-12-31", 50, "2025-01-20")]
                 for row in ending:
                     row["accn"] = "0000000001-25-000001"
-                response = {"facts": {"us-gaap": {
+                response = {"cik": 1, "facts": {"us-gaap": {
                     tag: {"units": {"shares": rows}},
                     "CommonStockSharesOutstanding": {"units": {"shares": ending}},
                 }}}
@@ -885,6 +929,13 @@ def _document(
     *,
     metadata: dict[str, object] | None = None,
 ) -> RawInfoDocument:
+    if metadata is None:
+        try:
+            payload = json.loads(content)
+        except json.JSONDecodeError:
+            payload = {}
+        if isinstance(payload, dict) and "cik" in payload:
+            metadata = {"cik": payload["cik"]}
     return RawInfoDocument.create(
         document_id=document_id,
         company_id="issuer_1",

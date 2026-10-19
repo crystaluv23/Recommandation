@@ -16,7 +16,8 @@ from stock_opportunity_agent.data.acquisition import (
     SecFilingAdapter,
     UnavailableProviderAdapter,
 )
-from stock_opportunity_agent.data.sources.core import PriceBar
+from stock_opportunity_agent.data.sources.core import PriceBar, DataSourceError
+from stock_opportunity_agent.data.sec_company_facts import validate_company_facts_response
 from stock_opportunity_agent.data.sources.state import DataQuotaDeferred
 from stock_opportunity_agent.data.raw_info import (
     RawInfoDocument,
@@ -735,8 +736,10 @@ class EvidenceResolverTests(TestCase):
                                 "label": "Revenue",
                                 "units": {
                                     "USD": [
-                                        {"filed": "2024-12-31", "val": 10},
-                                        {"filed": "2026-01-01", "val": 99},
+                                        {"filed": "2024-12-31", "end": "2024-09-30", "form": "10-Q",
+                                         "accn": "0000001234-24-000001", "val": 10},
+                                        {"filed": "2026-01-01", "end": "2025-09-30", "form": "10-Q",
+                                         "accn": "0000001234-26-000001", "val": 99},
                                     ]
                                 },
                             }
@@ -792,7 +795,8 @@ class EvidenceResolverTests(TestCase):
                             "Revenue": {
                                 "units": {
                                     "USD": [
-                                        {"filed": "2025-01-10", "val": 10}
+                                        {"filed": "2025-01-10", "end": "2024-09-30", "form": "10-Q",
+                                         "accn": "0000001234-25-000001", "val": 10}
                                     ]
                                 }
                             }
@@ -2338,3 +2342,32 @@ class SpanSelectionVisibilityTests(TestCase):
         self.assertTrue(
             any("8-K" in text and "export permits" in text for text in heads)
         )
+
+
+class CompanyFactsProviderIdentityTests(TestCase):
+    def test_provider_cik_is_a_positive_integer_or_plain_digit_string(self):
+        for value in (1234, '1234', '0000001234', ' 0000001234 '):
+            with self.subTest(valid=value):
+                validate_company_facts_response({'cik': value, 'facts': {}}, '0000001234')
+        for value in (True, False, 0, -1234, 1234.0, 'CIK0000001234',
+                      'issuer1234', '-1234', '+1234', '12x34', '0', '0000000000', None):
+            with self.subTest(invalid=value), self.assertRaises(DataSourceError):
+                validate_company_facts_response({'cik': value, 'facts': {}}, '0000001234')
+
+    def test_bad_provider_cik_is_technical_gap_and_persists_no_source(self):
+        class Client:
+            transport = None
+            def company_facts(self, cik):
+                return {'cik': 'issuer' + cik, 'facts': {}}
+        store = RawInfoStore()
+        resolver = EvidenceResolver(store, adapters=(SecCompanyFactsAdapter(Client()),),
+            policy=DataAcquisitionPolicy(enabled=True, allowed_providers=('sec_edgar',),
+                allowed_capabilities=('financial_statements',), allowed_source_types=('sec_company_facts',),
+                max_requests_per_cycle=1, max_requests_per_run=1))
+        result = resolver.resolve(RawInfoRequest('identity', 'Read reported facts', ('financials',)),
+            company_id='cik_0000001234', identity={}, as_of=AS_OF)
+        self.assertEqual(result.status, 'unresolved')
+        self.assertEqual(result.gap.reason, DataGapReason.PROVIDER_ERROR)
+        self.assertEqual(store.documents, ())
+        failures = [event for event in result.events if event.kind == 'acquisition_failed']
+        self.assertEqual(failures[0].details['reason'], DataGapReason.PROVIDER_ERROR.value)
