@@ -14,7 +14,8 @@
 [单门标签准入](../reports/label-store-admission-20261020.md) 已修：旧18误放反例新拒，
 独立流式/严格类型/全记录重算通过；真实6554首次全load9.463s，未改store/定义。
 1806全量通过；provider价条/issuer真实性与完整F10仍独立未关。
-[独立Posthoc](../reports/reviewed-posthoc-stage-20261020.md) 实际匿名请求预检通过，待冻结/新答。
+[独立Posthoc](../reports/reviewed-posthoc-stage-20261020.md) 两角色/一次来源关联纠错后窄审1/1，
+2items原生保存，19文件恢复全等/零新派发；尚未提交Fast反馈或被Slow消费。
 
 
 ## 新证据：F7 范围通过，F8 新消费时间边界已修
@@ -52,8 +53,7 @@ null/alias 反例均通过；H_init 先前 117 项相关检查通过。Lint 通�
 恢复均精确保留集合。完整 48 案 prepare 仍缺 16 个 anchor 而失败，未缩分母/要求。
 零新模型调用，原件不变；全库来源可信仍未关闭。下一步核查本地 market 原始请求/响应、
 issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage，不造 baseline。
-保留本批失败。后续按可信输入→检索阅读→Signal→Reflect
-→Slow→后继→恢复推进。
+保留失败；后续按可信输入→检索阅读→Signal→Reflect→Slow→后继→恢复推进。
 
 新 [market proof view](../reports/reviewed-market-snapshot-20261019.md) 经独立反例审窄通过：
 固定 5 原件，现 3 admitted（2 SEC+原 market 250），1 excluded/1 unknown；旧 view

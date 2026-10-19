@@ -1,0 +1,19 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "case_progressive_reads": "not_supported_not_exercised",
+  "completed_fast_round": false,
+  "completed_trajectory": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": 1,
+  "native_validation_fallback": false,
+  "no_findings_reason": null,
+  "pending": [],
+  "physical_receipts": 2,
+  "readonly_data_requests": 0,
+  "reflection_items": 2,
+  "sample_id": "s01",
+  "slow_source_published": false,
+  "status": "feedback_persisted_requires_independent_review",
+  "undispatched_journals": 0
+}

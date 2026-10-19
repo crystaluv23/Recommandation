@@ -1,0 +1,81 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "no_findings_reason": null,
+    "reflection_items": [
+      {
+        "brief": "The saved unlikely call was binary-correct in this non-surge case; reported contraction and uncertain restructuring benefits were contemporaneous counter-evidence, but the outcome does not establish their causal sufficiency.",
+        "category": "decision_drivers",
+        "counter_refs": [],
+        "detail": "The immutable prediction was unlikely with low confidence, and the revealed outcome was non-surge with realized_max_multiple 0.9217739451801663. That multiple uses the prediction-time five-complete-trading-day adjusted-close baseline of 6.494. Market data were supplied, including the doubling threshold of 12.988. For the three months ended June 30, 2025, revenue was $248,229 thousand versus $268,615 thousand in the corresponding 2024 period; six-month revenue was $495,330 thousand versus $536,390 thousand. The issuer warned that restructuring costs could exceed expectations or shift periods and benefits could be smaller or slower than anticipated. These were documented reasons considered by the saved decision. Their coexistence with a correct binary outcome does not show that they caused the price outcome or independently identify a reusable rejection rule. Magnitude classification is not applicable to this non-surge outcome.",
+        "kind": "fact",
+        "limitations": [
+          "One realized non-surge does not establish the ex-ante probability category or validate a general rejection rule.",
+          "Lower acquisition spending and higher product investment could improve retention, monetization and recurring cash generation; successful execution could reverse the negative interpretation.",
+          "Higher reported cash offered some turnaround capacity, while debt and the tax receivable agreement payable required joint assessment; impairment expense alone did not establish recurring cash burn.",
+          "The filing described June 30 positions and August 7 disclosures; persistence through September 30 was unresolved, and operating and cash-flow questions remained unanswered."
+        ],
+        "outcome_claims": [
+          {
+            "axis": "binary",
+            "correct": true,
+            "source_ref": "reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a"
+          }
+        ],
+        "scope": {
+          "case_refs": [
+            "case:11e47edf76afbb07a284ee7cc3441f63ef02a96587f1cd431cf87ef2e3e67d1e"
+          ],
+          "conditions": "Index when reviewing a negative screening judgment supported by reported contraction and uncertain restructuring, especially to distinguish observed binary correctness from causal or generalizable research benefit.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a"
+        ]
+      },
+      {
+        "brief": "When budget exhaustion leaves Signals budget_blocked, preserve their unknown status and review collection priorities before another authorized research pass; a correct negative outcome does not validate these unexecuted Signals.",
+        "category": "plan_issues",
+        "counter_refs": [],
+        "detail": "financing_listing_action:v5 and guidance_acceleration:v3 each had execution.status budget_blocked and produced no validated domain result. The saved prediction correctly described these as technical execution gaps, not evidence that financing actions or accelerating guidance were absent. Collection ended with budget_exhausted, the filing context was partial, and news and structured company-facts requests were unresolved, while the price baseline was available. Before a separately authorized research pass, inspect which priorities exhausted the budget and prioritize unresolved questions that could distinguish franchise deterioration from turnaround: payer retention and conversion, recurring restructuring savings and timing, operating cash flow, and debt and tax receivable agreement payment terms. Preserve the technical-gap classification until validated execution supplies a domain result, and evaluate operational repair separately from research improvement. This is a proposed prioritization test, not an established cause of the outcome or a requirement for a quantified price path before a positive screening judgment.",
+        "kind": "action",
+        "limitations": [
+          "Completing these Signals or reprioritizing collection may add no decision-relevant information and does not establish improved prediction performance.",
+          "Positive guidance or financing developments still require interpretation alongside demand, cash conversion and contractual claims; their presence alone would not establish an attractive turnaround.",
+          "This case does not establish an optimal allocation or show that an alternative allocation would have changed the judgment; transfer boundaries across other business models are unknown."
+        ],
+        "outcome_claims": [],
+        "related_signal_refs": [
+          "financing_listing_action:v5",
+          "guidance_acceleration:v3"
+        ],
+        "scope": {
+          "case_refs": [
+            "case:11e47edf76afbb07a284ee7cc3441f63ef02a96587f1cd431cf87ef2e3e67d1e"
+          ],
+          "conditions": "Index when a research pass reaches its budget limit with explicitly budget_blocked Signals, or when checking whether unavailable technical results have been treated as economic absence or valid negative evidence.",
+          "plan_refs": []
+        },
+        "source_refs": [
+          "reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a"
+        ]
+      }
+    ],
+    "selected_reflection_refs": []
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"reflection_items\": [{\"category\": \"decision_drivers\", \"kind\": \"fact\", \"brief\": \"The saved unlikely call was binary-correct in this non-surge case; reported contraction and uncertain restructuring benefits were contemporaneous counter-evidence, but the outcome does not establish their causal sufficiency.\", \"detail\": \"The immutable prediction was unlikely with low confidence, and the revealed outcome was non-surge with realized_max_multiple 0.9217739451801663. That multiple uses the prediction-time five-complete-trading-day adjusted-close baseline of 6.494. Market data were supplied, including the doubling threshold of 12.988. For the three months ended June 30, 2025, revenue was $248,229 thousand versus $268,615 thousand in the corresponding 2024 period; six-month revenue was $495,330 thousand versus $536,390 thousand. The issuer warned that restructuring costs could exceed expectations or shift periods and benefits could be smaller or slower than anticipated. These were documented reasons considered by the saved decision. Their coexistence with a correct binary outcome does not show that they caused the price outcome or independently identify a reusable rejection rule. Magnitude classification is not applicable to this non-surge outcome.\", \"scope\": {\"case_refs\": [\"case:11e47edf76afbb07a284ee7cc3441f63ef02a96587f1cd431cf87ef2e3e67d1e\"], \"plan_refs\": [], \"conditions\": \"Index when reviewing a negative screening judgment supported by reported contraction and uncertain restructuring, especially to distinguish observed binary correctness from causal or generalizable research benefit.\"}, \"limitations\": [\"One realized non-surge does not establish the ex-ante probability category or validate a general rejection rule.\", \"Lower acquisition spending and higher product investment could improve retention, monetization and recurring cash generation; successful execution could reverse the negative interpretation.\", \"Higher reported cash offered some turnaround capacity, while debt and the tax receivable agreement payable required joint assessment; impairment expense alone did not establish recurring cash burn.\", \"The filing described June 30 positions and August 7 disclosures; persistence through September 30 was unresolved, and operating and cash-flow questions remained unanswered.\"], \"source_refs\": [\"reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a\"], \"counter_refs\": [], \"outcome_claims\": [{\"source_ref\": \"reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a\", \"axis\": \"binary\", \"correct\": true}]}, {\"category\": \"plan_issues\", \"kind\": \"action\", \"brief\": \"When budget exhaustion leaves Signals budget_blocked, preserve their unknown status and review collection priorities before another authorized research pass; a correct negative outcome does not validate these unexecuted Signals.\", \"detail\": \"financing_listing_action:v5 and guidance_acceleration:v3 each had execution.status budget_blocked and produced no validated domain result. The saved prediction correctly described these as technical execution gaps, not evidence that financing actions or accelerating guidance were absent. Collection ended with budget_exhausted, the filing context was partial, and news and structured company-facts requests were unresolved, while the price baseline was available. Before a separately authorized research pass, inspect which priorities exhausted the budget and prioritize unresolved questions that could distinguish franchise deterioration from turnaround: payer retention and conversion, recurring restructuring savings and timing, operating cash flow, and debt and tax receivable agreement payment terms. Preserve the technical-gap classification until validated execution supplies a domain result, and evaluate operational repair separately from research improvement. This is a proposed prioritization test, not an established cause of the outcome or a requirement for a quantified price path before a positive screening judgment.\", \"scope\": {\"case_refs\": [\"case:11e47edf76afbb07a284ee7cc3441f63ef02a96587f1cd431cf87ef2e3e67d1e\"], \"plan_refs\": [], \"conditions\": \"Index when a research pass reaches its budget limit with explicitly budget_blocked Signals, or when checking whether unavailable technical results have been treated as economic absence or valid negative evidence.\"}, \"limitations\": [\"Completing these Signals or reprioritizing collection may add no decision-relevant information and does not establish improved prediction performance.\", \"Positive guidance or financing developments still require interpretation alongside demand, cash conversion and contractual claims; their presence alone would not establish an attractive turnaround.\", \"This case does not establish an optimal allocation or show that an alternative allocation would have changed the judgment; transfer boundaries across other business models are unknown.\"], \"source_refs\": [\"reflection_source:7077a6fe1811800fd02ef9fbb925e78ae77ea6ae5fd04e139187476422d2ed7a\"], \"counter_refs\": [], \"outcome_claims\": [], \"related_signal_refs\": [\"financing_listing_action:v5\", \"guidance_acceleration:v3\"]}], \"selected_reflection_refs\": [], \"no_findings_reason\": null}",
+  "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+  "response_id": "local-beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+  "usage": {
+    "accounting_tokens": 36510,
+    "agent_id": "/root/role_39",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "901128f4da250c3042c2ee5b28bd03119132824efc62a9aa5213f99bdb8db983",
+    "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+    "token_usage": null
+  }
+}

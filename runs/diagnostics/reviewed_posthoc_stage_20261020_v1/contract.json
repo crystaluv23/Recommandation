@@ -1,0 +1,22 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "case_progressive_reads": "not_supported_by_native_entry",
+  "expectations_hash": "869e0b78e80a763ab9d4003023f7ba51cc0a93af6c67c61daf19883e3f1bfec3",
+  "external_llm_calls_authorized": 0,
+  "fixed_denominator": 1,
+  "input_hash": "4ea65cfcc0b9af3cc359ea1c5cd3e2b995d7f07175ce634146976c8ed320c1ef",
+  "limits": {
+    "max_local_role_calls": 8,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 8,
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "parent_collection_resumed": false,
+  "readonly_data_requests_authorized": 0,
+  "schema_version": "reviewed-native-case-posthoc-v1"
+}

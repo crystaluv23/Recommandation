@@ -59,9 +59,12 @@
       "level": "local",
       "closed": false,
       "evidence": [
-        "reports/v182-terminal-slow-and-source-partition-audit-20261007.md"
+        "reports/v182-terminal-slow-and-source-partition-audit-20261007.md",
+        "reports/reviewed-posthoc-stage-20261020.md",
+        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
       ],
-      "remaining": "v182 memory failed；修复离线通过，未进入冻结运行"
+      "remaining": "Native case Posthoc one sample independently accepted and durable/restored; no committed Fast feedback submission, authorized Slow ingestion or downstream use. Historical v182 memory failed remains unchanged."
     },
     {
       "id": "new_magnitude_reuse",
@@ -329,10 +332,25 @@
         "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json"
       ],
       "result": "Actual native anonymous Posthoc pending preflight fits131072 under new8call ceiling,0answers. Case has citation closure but no progressive read wrapper; corrected before answers. Fresh feedback semantics/persistence/recovery remain pending; no trajectory/score/Slow source."
+    },
+    {
+      "id": "engineering-mvp-native-posthoc-accepted-20261020",
+      "strategy": "native_case_feedback_exact_source_relation_correction_and_restore",
+      "failure_families": [
+        "related_signal_membership_in_case_sources",
+        "native_fallback_observation_completeness"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-posthoc-stage-20261020.md",
+        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
+      ],
+      "result": "First answer source membership rejected; one typed correction removed only2refs, final2items independently accepted1/1 with nativeidentity. Two actual roles, nofallback;19files exact completedrestore0newdispatch. Feedback not committed toFast/Slow or consumed downstream; fullF10/MVP/benefit open."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-posthoc-preflight-20261020",
+    "after_iteration": "engineering-mvp-native-posthoc-accepted-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -367,7 +385,10 @@
       "runs/diagnostics/label_source_qualification_20261019_v1/strict-load-first.json",
       "reports/reviewed-posthoc-stage-20261020.md",
       "reports/reviewed-posthoc-stage-expectations-20261020.json",
-      "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json"
+      "runs/diagnostics/reviewed_posthoc_preflight_20261020_v1/preflight-result.json",
+      "reports/reviewed-posthoc-stage-20261020.md",
+      "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/independent-review.json",
+      "runs/diagnostics/reviewed_posthoc_stage_20261020_v1/execution_summary.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -393,12 +414,12 @@
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "freeze_bounded_native_posthoc_then_inspect_exact_feedback",
-      "action": "After focused wiring and independent preflight, freeze current code, exact accepted parent and strict canonical truth with a new8call stage budget; request fresh isolated native case feedback.",
-      "stop": "No parent budget revival, fabricated trajectory/score/Slow source, source-read wrapper or model-authored correctness; retain technical fallback separately.",
-      "question": "Does native case Posthoc produce source-scoped honest feedback from the exact saved prediction and canonical truth, and persist/restore it without new dispatch?",
-      "pass": "Qualified canonical source with matching baseline/window, then independently inspect fresh native Posthoc raw/correction/persisted item and exact recovery.",
-      "fail": "Loader exit0 accepted without source/contract verification or feedback interpreted as completed Fast/new benefit.",
+      "strategy": "diagnose_orientation_menu_contract_and_operating_background_coverage",
+      "action": "Read-only trace vision/architecture, BasicInfo closed menu vs RawInfoRequest/defaultPlan and cached/acquisition form ranking; distinguish F1 interface execution gap from F2 source coverage using preserved BMBL and unadmitted ENB candidates.",
+      "stop": "No spec/code/sourceview/model changes in the F2 diagnosis; preserve full48 readiness and Fast/Slow publication boundaries.",
+      "question": "Can the current closed orientation contract be implemented with existing request coverage/selection interfaces while preserving generic8K and honest missing background, or is a material interface decision required?",
+      "pass": "Concrete producer-to-resolver/acquisition/menu evidence and a bounded genuine annual-background positive plus missing/foreign-form counterexample proposal before edits.",
+      "fail": "Rename a request or add forbidden query/form filters and report operating coverage fulfilled, or treat persisted feedback as Slow consumption.",
       "on_pass": "Close only bounded Posthoc feedback behavior/persistence, then design legitimate scoring/Critic/committed feedback prerequisites.",
       "on_fail": "Retain qualification failure and repair the owning single-door label admission before any feedback role."
     }

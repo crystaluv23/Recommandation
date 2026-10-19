@@ -1,0 +1,52 @@
+{
+  "acceptance_rules": {
+    "deterministic_feedback": "Framework correctness, judgment feedback and magnitude feedback must be computed by the existing production functions from the saved prediction and canonical truth. The model must not rewrite correctness, confuse a binary error with a magnitude error, or infer ex-ante calibration from one outcome.",
+    "failure_accounting": "Preserve first-answer status, corrections and final failure separately under the fixed denominator. Technical fallback, citation validity or parser success alone does not establish semantic feedback quality. Any unsupported blame, invented fact, altered prediction or false completion fails the semantic sample.",
+    "immutable_prediction": "The saved candidate judgment, confidence, magnitude, reasons, uncertainties and full original context stay exact. Labels are revealed only in this explicitly retrospective role. No label or feedback is added to the earlier blind request or prediction.",
+    "native_connection": "Call the real reflect adapter and preserve its compact context, deterministic feedback source catalog, parser, scoped corrections, citation_closure repair resolver and fallback. Case-level Posthoc does not expose Plan/Round read_refs/browse; record that capability as not_supported/not_exercised and do not add a wrapper. Observers cannot author, amend or salvage model reasoning themselves. Before dispatch inspect the actual request for visible facts, legal source relations, anonymity and contract feasibility.",
+    "no_forced_findings": "There is no predetermined issue category, causal story, direction, quantity or mandatory plan change. A native honest no_findings_reason may be valid abstention, but cannot establish actionable feedback capability or downstream consumption. Report that limitation explicitly rather than manufacturing a lesson.",
+    "numbers_and_time": "Preserve the baseline five-session mean, recent close and their distinct definitions. The historical 180-session price-shape measurement is distinct from the six-calendar-month outcome horizon. Newly revealed outcomes are retrospective evidence only, never facts known by prediction time. Do not fabricate operational developments or explanations for the price path.",
+    "persistence_and_recovery": "Save the exact accepted PredictionSelfReflection, native source_identity/source_snapshot and all source relations, with bindings to the immutable parent and canonical label source. Completed restore must verify every bound artifact and response receipt with zero new dispatch and unchanged saved output. This is not publication to Slow or a completed round pointer.",
+    "role_isolation": "Each exact production system/user request is answered by a fresh independent native subagent with no parent history, oracle, other files, network or external LLM. Preserve raw requests, source reads, original answers, corrections, receipt identities and accepted or rejected output.",
+    "semantic_grounding": "Audit every feedback claim against the actual supplied context, prediction, source facts and revealed outcome. Distinguish known observations from causal hypotheses. A correct prediction does not prove its reasons caused the outcome, that confidence should rise, or that a Signal has predictive benefit.",
+    "technical_and_coverage_limits": "Both selected Signal versions were budget_blocked technical gaps, not negative or unavailable domain measurements. Four research needs remained unresolved; finalization retained the budget_exhausted trigger. Partial filing and unresolved news/company-facts cannot become proof of absence. The market baseline was supplied and must not be called missing."
+  },
+  "author": "root acceptance-side review before fresh Posthoc answers",
+  "engineering_mvp_closed": false,
+  "fixed_denominator": 1,
+  "limits": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "external_llm_calls": 0,
+    "max_local_role_calls": 8,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "new_readonly_data_requests": 0,
+    "scope": "New bounded evaluation-feedback stage only. All actual native correction requests count within this ceiling. Case-level Posthoc has no read_refs/browse protocol; do not invent one. The parent prediction/collection remains completed and its exhausted budget is not resumed or raised."
+  },
+  "not_covered": [
+    "Scoring, Critic model behavior or atomic completed Fast submission",
+    "Authorized committed feedback ingestion into Slow",
+    "Direction or magnitude discovery, admission and successor reuse",
+    "Full 48-case readiness, all-source qualification or engineering MVP convergence",
+    "Prediction accuracy, causal explanation or independent research benefit"
+  ],
+  "oracle_isolation": {
+    "fresh_posthoc_outputs_seen": false,
+    "inject_into_role_payload": false
+  },
+  "parent": {
+    "independently_accepted_before_truth_access": true,
+    "manifest_hash": "0d142755055323d2fa271caa820c993899773772306e27cc98b47194ad34367b",
+    "prediction_sha256": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2",
+    "sample_key": [
+      "cik_0001830043",
+      "2025-09-30"
+    ]
+  },
+  "sample_id": "s01",
+  "schema_version": "reviewed-native-posthoc-independent-expectations-v1",
+  "scope": "The actual LLMBlindPredictor.reflect entry consumes an immutable saved prediction/context and canonical source-admitted retrospective truth, then persists its native feedback. This is not a completed Fast trajectory, score or Slow import.",
+  "source_admission": "Load truth only through strict LabelStore.load and its exact key after verifying the parent's durable prediction. Freeze store manifest/records/archive identity and hash, calculator/contract, matching five-date baseline and six-calendar-month horizon, and current source code. Do not transcribe a multiple or create a substitute GroundTruth. Archive consistency does not establish provider prices or issuer mapping globally."
+}

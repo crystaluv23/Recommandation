@@ -1,0 +1,33 @@
+{
+  "all_passed": true,
+  "decision": "Formal exact pending may be dispatched under the frozen stage; semantic outcome remains unobserved.",
+  "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+  "journal_sha256": "33a0e6715931272090f954601ca6c74d3eab301960e6721ac77144dca935b829",
+  "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119",
+  "inbox_exact_preflight_bytes": true,
+  "manifest_hash": "0ebea3aa893e3439fbcb0f059596ce32c555551ad41cd148f13950cfea0b36a1",
+  "frozen_code_files": 97,
+  "oracle_sha256": "011d46fb02c7445efc3fc8ab30a39b43c597fa87b1614ed6585a839577459e98",
+  "contract_hash": "af1e406cd090bba49c5458f9195cff08ab9e2008f0dde2c5be2ad88ad6540f5b",
+  "input_hash": "4ea65cfcc0b9af3cc359ea1c5cd3e2b995d7f07175ce634146976c8ed320c1ef",
+  "label_file_hashes": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/outcome-label-store-v1/manifest.json",
+      "sha256": "f2838f4dfff9bee51556224679c85672309d13bafeb2669ba082c847f3019ef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/outcome-label-store-v1/labels.jsonl",
+      "sha256": "9e1e9a6cad821cd443f7863cdba907029d9d5ea2ca27be8e9cc2c3947fd58fcc"
+    }
+  ],
+  "archive_binding_not_reread": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/formal/cold-start-formal-openrouter-2026-05-13/02_prices/price_histories.json",
+    "sha256": "4fa43ed4e448babde2b936bf3e00f7dfddd053f02caf6e39ce6ce7df4769b333"
+  },
+  "qualification_truth_baseline_and_horizon_exact_wire": true,
+  "future_outboxes_read": false,
+  "network_or_model_calls": 0,
+  "formal_resume_or_submit": false,
+  "scope": "Full journal canonical hash, exact inbox identity, current code/oracle/label small-file bindings only. No repeated large archive qualification.",
+  "script_sha256": "9ba804199f003df1e089898f99edc2b6d131dce16fd4776566424a7ac5414f07"
+}

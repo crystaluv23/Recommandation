@@ -1,0 +1,89 @@
+{
+  "all_passed": true,
+  "scope": "Read-only exact original/correction/parser identity, source quotes and actual driver restore evidence verification. No formal resume/submit, no new model/network calls, no large price archive scan. Semantic review is separately authored.",
+  "roles": [
+    {
+      "request_hash": "beba78080ab4e2d68a1bfd55ea99550f45c5a02d1be4ad75799952f3ad58049d",
+      "stage": "blind_predictor_posthoc_reflect",
+      "agent_id": "/root/role_39",
+      "raw_sha256": "901128f4da250c3042c2ee5b28bd03119132824efc62a9aa5213f99bdb8db983",
+      "inbox_sha256": "8c42e32858daa752a287ebf9f6ac715eedaf64091a6739670a6b09e585ffd119",
+      "reservation": 36510
+    },
+    {
+      "request_hash": "95508c049373663b7564166f34f5e5862bffb93508e7f203f9179e9564b9044c",
+      "stage": "blind_predictor_posthoc_reflect_correction",
+      "agent_id": "/root/role_40",
+      "raw_sha256": "affa567f0cae84b867094503807634e0bc48c8534a939e4423967db010e78e7e",
+      "inbox_sha256": "26740ea7e71621d7aa16136736b76f9ec36681c6ac8acd90c70889ff02d543e2",
+      "reservation": 45073
+    }
+  ],
+  "typed_corrections": 1,
+  "first_answer_native_rejected": true,
+  "sole_first_answer_obligation": [
+    "reflection_items[1].related_signal_refs"
+  ],
+  "patch_only_two_reference_removals": true,
+  "all_other_authored_fields_verbatim": true,
+  "accepted_value_exact_original_parser_reconstruction": true,
+  "runtime_ids_and_source_relations_exact": true,
+  "request_trace_original_order": true,
+  "logical_calls": 2,
+  "reservation_tokens": 81583,
+  "fallback": false,
+  "validation_events": [],
+  "validation_event_note": "This normal exact patch acceptance emitted no progress event in the current native parser; correction occurrence is established by its exact request/receipt/patch, not by absence of events.",
+  "actual_restore": {
+    "artifact_count": 19,
+    "before_equals_after_and_current": true,
+    "zero_new_dispatch_and_receipt": true,
+    "restored_without_execution": true,
+    "driver_execution_summary_sha256": "83d81991343745c5df1465795724bf369e05f2d60bbcda0e4cbb513c98a5f2a6"
+  },
+  "parent_unchanged": true,
+  "label_qualification": {
+    "frozen_record_and_wire_truth_exact": true,
+    "baseline_mean": 6.494,
+    "future_peak_mean": 5.986,
+    "horizon_end": "2026-03-30",
+    "archive_consistency_not_global_provider_or_issuer_authentication": true,
+    "archive_not_reread": true
+  },
+  "canonical_sec": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json",
+    "sha256": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd",
+    "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+    "available_at": "2025-08-07T20:05:33+00:00",
+    "verified_quotes": [
+      {
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+        "quote_sha256": "23723cb54f8309c203060b1d350f25d9f2710c0b4da7bb1a980a6065e770b605",
+        "canonical_normalized_offset": 4436
+      },
+      {
+        "projection_id": "projection_ef319ab39a183f8a50a94a02",
+        "quote_sha256": "c6f82d7c07cc0f7c2e0d6bd491bb1fa8b173a07109929f8daee07217a4f0fe15",
+        "canonical_normalized_offset": 19228
+      },
+      {
+        "projection_id": "projection_bf19f797ee166b87f3dbd67f",
+        "quote_sha256": "56cb94b4d77e473c157d506817b223904770af143ae0c943a73471b28d2e70cf",
+        "canonical_normalized_offset": 19828
+      },
+      {
+        "projection_id": "projection_d5f65227c7db9101b4c0ccc8",
+        "quote_sha256": "b73efd52a45ca80c3269780b9a8e8a03be73ff98bb0efe967cb74d8cfdd6e999",
+        "canonical_normalized_offset": 16965
+      }
+    ]
+  },
+  "artifact_bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_stage_20261020_v1/feedback.json": "2dc77ab2031188f6710b023d1e3a4cffdbd1bb9213bc178d3030c80f0562a93a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_stage_20261020_v1/completion.json": "241c034541e289f635fda91e148d5a62e0fa0bd7d07adc0323d42c1e12ca5c8a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_stage_20261020_v1/inputs.json": "65ad13eb803768c17ae1acd4bbd78f2a2ea380e8bed7f09345c28d1eb86bd1fd",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_stage_20261020_v1/expectations.json": "011d46fb02c7445efc3fc8ab30a39b43c597fa87b1614ed6585a839577459e98",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_posthoc_stage_20261020_v1/manifest.json": "40b8933ed29a63f08da4430dafa3a019dfde3eaf9eaf2bdf215e479f5a214bac"
+  },
+  "script_sha256": "f2a41caabf302812fbf6ee07591d65b0ef983e459d2af30a50a0b5c7f5f5e2b6"
+}

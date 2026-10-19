@@ -752,3 +752,5 @@
 - 2026-10-20：实现既有LabelStore单门准入契约，严格archive/hash/calculator/contract/JSON类型及全部记录唯一计算器重算；旧18误放原证保留，新24固定/29流式变体独立通过，真实6554首次全load约9.46s/61MB。共享流式reader下沉data保dataset别名，不新增cache/定义/来源改写；真实s01仅在durable后核资格，Posthoc尚未派发，provider真值与完整F10/MVP仍open。
 
 - 2026-10-20：准备新的独立native case Posthoc stage，验证历史parent代码/全部checkpoint与严格LabelStore，实际匿名首请求预算36510<131072；保留原生catalog/citation-closure/纠错/失败fallback，纠正case并无Plan/Round渐进读取的跨角色假设。新8call预算不恢复prefix，正式答与语义审查待冻结，不造trajectory/score/Slow来源；冻结前发现仅终态reason漏计partial/all-invalid salvage与promoted，改为保留原生validation事件，生产结果不变。
+
+- 2026-10-20：独立native Posthoc正式两角色，首答related Signal refs来源准入失败保留，唯一typed纠错恰删两refs且其他authored字段不变；最终2items经原SEC/输入/真实truth独立窄审1/1。无salvage/fallback，真实19文件恢复hash全同/0新派发，parent/预测不改；不提交Fast或发布/消费Slow，完整F10/MVP仍open。下一仅诊断F1菜单执行与F2默认经营背景覆盖差异，不改接口求通过。
