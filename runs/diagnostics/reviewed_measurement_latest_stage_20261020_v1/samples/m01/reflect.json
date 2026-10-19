@@ -1,0 +1,68 @@
+{
+  "execution_mode": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+          "reason": "The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "bd40c3b065d7535fe8e068c9af8e383928bf93604c25b3d4be6cfdadef35698e"
+    }
+  },
+  "request_hashes": [
+    "d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564"
+  ],
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "net_share_retirement_yoy=-0.1"
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [],
+    "open_questions": [
+      "The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction."
+    ],
+    "resolved_questions": [
+      "The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "net_share_retirement_yoy=-0.1",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "claim": "net_share_retirement_yoy=-0.1",
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "kind": "signal",
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 30036
+  }
+}

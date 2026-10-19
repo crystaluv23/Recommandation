@@ -1,0 +1,695 @@
+{
+  "status": "native_completed_semantic_review_pending",
+  "fixed_denominator": 3,
+  "code_commit": "6e1f193a6765adcf07ef20cf2d47c03118072f86",
+  "manifest_hash": "9843fad70ec3178ebc652e634450d4c84673b2f6402ecf1de9fabc69ded8ff75",
+  "contract": {
+    "actual_model_version": null,
+    "backend": "independent-subagent",
+    "expectations_hash": "97d477a2febac0bb5c8291d647986a118d12b5eae07957ae35591bc78cab0a83",
+    "fixed_denominator": 3,
+    "input_hash": "05dd47e7b02a7d8bfd2bb2c0a7851927d2de0fcdb5cba852d3cc5b19168772e6",
+    "limits": {
+      "max_case_llm_calls": 8,
+      "max_case_tokens": 512000,
+      "max_llm_signals_per_round": 2,
+      "max_request_tokens": 131072,
+      "max_signal_rounds": 1,
+      "max_signals_per_round": 4,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0
+    },
+    "max_external_api_calls": 0,
+    "max_local_calls": 24,
+    "model_selection": "inherited_host_default_precise_version_unknown",
+    "preflight_hash": "a5f7b1da33ab852ea4693ef2813fd825a2ed054e8f240accffe56a159655cf9d",
+    "profile": "synthetic_measurement",
+    "schema_version": "reviewed-direct-signal-measurement-stage-v1",
+    "scope": "synthetic seeded needs -> native routing/Signal/ownedReflect/consumers; no labels"
+  },
+  "samples": [
+    {
+      "sample_id": "m01",
+      "native_outcome": {
+        "checks": {
+          "final_disposition_projection_exact": true,
+          "finalized": true,
+          "posthoc_disposition_projection_exact": true
+        },
+        "sample_id": "m01",
+        "status": "accepted_requires_independent_review"
+      },
+      "routing_request_hashes": [
+        "73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c"
+      ],
+      "routing_selections": [
+        {
+          "answer_scope": "full",
+          "applicability_hypothesis": "Applicable if disclosures available by 2025-02-01 provide fresh, comparable weighted-average share counts in the same unit; verify actual selected periods and basis. Admission does not establish predictive benefit.",
+          "context_tags": [
+            "comparable_financials"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": null,
+          "selection_reason": "Measures net share retirement as 1 minus current/prior-year weighted-average shares for the latest comparable pair; execution evidence must identify the actual periods and common share basis.",
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "signal_results": [
+        {
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            },
+            "unit": "fraction",
+            "value": -0.10000000000000009
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 3
+        }
+      ],
+      "reflect_request_hashes": [
+        "d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564"
+      ],
+      "reflect_execution_mode": "independent_local_role",
+      "reflect_usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 30036
+      },
+      "native_need_dispositions": {
+        "items": [
+          {
+            "answer_scope": "full",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              },
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              }
+            ],
+            "need_index": 0,
+            "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+            "reason": "The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.",
+            "residual_need": null
+          }
+        ],
+        "prior_state_hash": "bd40c3b065d7535fe8e068c9af8e383928bf93604c25b3d4be6cfdadef35698e"
+      },
+      "final_next_information_needs": [],
+      "runtime": {
+        "attempted_signal_rounds": 1,
+        "completed_signal_rounds": 1,
+        "max_signal_rounds": 1,
+        "must_finalize": true,
+        "signal_calls": 1,
+        "termination_trigger": "max_signal_rounds"
+      },
+      "case_usage": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 96161
+        }
+      }
+    },
+    {
+      "sample_id": "m02",
+      "native_outcome": {
+        "checks": {
+          "final_disposition_projection_exact": true,
+          "finalized": true,
+          "posthoc_disposition_projection_exact": true
+        },
+        "sample_id": "m02",
+        "status": "accepted_requires_independent_review"
+      },
+      "routing_request_hashes": [
+        "51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b"
+      ],
+      "routing_selections": [
+        {
+          "answer_scope": "partial",
+          "applicability_hypothesis": "Comparable, same-unit weighted-average facts available at the cutoff may support the requested retirement measure; actual execution must establish the selected periods and basis.",
+          "context_tags": [
+            "comparable_financials"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": "How did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+          "selection_reason": "Measures net share retirement for the latest comparable year-over-year weighted-average pair; retain its actual reporting periods and share basis.",
+          "signal_ref": "net_share_retirement_yoy:v3",
+          "target_need_indices": [
+            0
+          ]
+        },
+        {
+          "applicability_hypothesis": "The 730-day filing, announcement and news search may reveal equity offerings or conversion terms available by the cutoff; material-action assessment alone does not quantify prospective net dilution.",
+          "context_tags": [
+            "general"
+          ],
+          "expected_role": "coverage",
+          "reason_code": "combine_evidence",
+          "selection_reason": "Assesses whether disclosed financing actions materially change dilution, providing context for the prospective equity component.",
+          "signal_ref": "financing_listing_action:v5",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "signal_results": [
+        {
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            },
+            "unit": "fraction",
+            "value": -0.10000000000000009
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "negative"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 3
+        },
+        {
+          "execution": {
+            "status": "domain_unavailable"
+          },
+          "signal_id": "financing_listing_action",
+          "state": {
+            "confidence": 0.0,
+            "value": "unavailable"
+          },
+          "status": {
+            "coverage": "unavailable"
+          },
+          "version": 5
+        }
+      ],
+      "reflect_request_hashes": [
+        "1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b"
+      ],
+      "reflect_execution_mode": "independent_local_role",
+      "reflect_usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 31755
+      },
+      "native_need_dispositions": {
+        "items": [
+          {
+            "answer_scope": "partial",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              },
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "signal_ref": "net_share_retirement_yoy:v3"
+              }
+            ],
+            "need_index": 0,
+            "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, how did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+            "reason": "The annual weighted-average basic-share pair for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31 answers the net-retirement facet. Period-end common-share changes and prospective net equity dilution remain unanswered; the unavailable financing result supplies no evidence for either. Technical admission does not establish predictive contribution.",
+            "residual_need": "How did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+          }
+        ],
+        "prior_state_hash": "7c68d38def8f5a7fc00391c1ac1c1606ba9f2bc3a397590d3dc1a1731cb7fccc"
+      },
+      "final_next_information_needs": [
+        "How did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+      ],
+      "runtime": {
+        "attempted_signal_rounds": 1,
+        "completed_signal_rounds": 1,
+        "max_signal_rounds": 1,
+        "must_finalize": true,
+        "signal_calls": 2,
+        "termination_trigger": "max_signal_rounds"
+      },
+      "case_usage": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 97976
+        }
+      }
+    },
+    {
+      "sample_id": "m03",
+      "native_outcome": {
+        "checks": {
+          "final_disposition_projection_exact": true,
+          "finalized": true,
+          "posthoc_disposition_projection_exact": true
+        },
+        "sample_id": "m03",
+        "status": "accepted_requires_independent_review"
+      },
+      "routing_request_hashes": [
+        "f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29"
+      ],
+      "routing_selections": [
+        {
+          "answer_scope": "full",
+          "applicability_hypothesis": "Retrieve comparable weighted-average share disclosures available by 2025-02-01T00:00:00+00:00; verify actual pair periods and basis in executed evidence. Missing or stale comparable facts may yield unavailable.",
+          "context_tags": [
+            "comparable_financials"
+          ],
+          "expected_role": "primary",
+          "reason_code": "answer_need",
+          "residual_need": null,
+          "selection_reason": "Measures 1 - current/prior-year weighted-average shares for the latest comparable pair, matching the requested net share retirement; execution must identify the actual periods and share basis.",
+          "signal_ref": "net_share_retirement_yoy:v2",
+          "target_need_indices": [
+            0
+          ]
+        }
+      ],
+      "signal_results": [
+        {
+          "execution": {
+            "status": "success"
+          },
+          "measurement": {
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            },
+            "unit": "fraction",
+            "value": 0.09999999999999998
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 2
+        }
+      ],
+      "reflect_request_hashes": [
+        "f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62"
+      ],
+      "reflect_execution_mode": "independent_local_role",
+      "reflect_usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 29802
+      },
+      "native_need_dispositions": {
+        "items": [
+          {
+            "answer_scope": "full",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "net_share_retirement_yoy:v2"
+              },
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "signal_ref": "net_share_retirement_yoy:v2"
+              }
+            ],
+            "need_index": 0,
+            "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+            "reason": "The executed deterministic measurement answers the requested latest comparable pair: WeightedAverageNumberOfSharesOutstandingBasic in shares for 2024-01-01 through 2024-12-31 versus 2023-01-01 through 2023-12-31, with both supporting disclosures available before the prediction cutoff. The exact adopted result answers this narrow measurement question; it does not establish prediction benefit.",
+            "residual_need": null
+          }
+        ],
+        "prior_state_hash": "bd40c3b065d7535fe8e068c9af8e383928bf93604c25b3d4be6cfdadef35698e"
+      },
+      "final_next_information_needs": [],
+      "runtime": {
+        "attempted_signal_rounds": 1,
+        "completed_signal_rounds": 1,
+        "max_signal_rounds": 1,
+        "must_finalize": true,
+        "signal_calls": 1,
+        "termination_trigger": "max_signal_rounds"
+      },
+      "case_usage": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 95065
+        }
+      }
+    }
+  ],
+  "native_validation": {
+    "routing_first_answers_accepted": 3,
+    "reflect_first_answers_accepted": 3,
+    "typed_correction_requests": 0,
+    "routing_context_only_fallback_observed": false,
+    "validation_or_salvage_events": "This harness callback enforces budgets and does not persist validation/salvage event streams; no absence-of-events inference. Raw patches and accepted state/metadata preserved for independent exact audit."
+  },
+  "independent_physical_role_executions": 6,
+  "historical_answer_reuse": 0,
+  "logical_reservation_units": 289202,
+  "logical_calls": 6,
+  "actual_host_tokens": null,
+  "actual_host_cost": null,
+  "local_usage_cost_meaning": "native local API accounting only; not measured host cost",
+  "transport_incident": {
+    "role": 60,
+    "incident": "First exclusive outbox write failed because parent directory did not exist; 0 bytes written. Directory created and the same role wrote its unchanged answer once successfully.",
+    "additional_model_answer": false,
+    "semantic_repair": false
+  },
+  "completed_restore": {
+    "performed_once": true,
+    "before": {
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "1c1d7bf4bdb480c2bc6264fce3b221221f36aa686ebd540abbbd031571368821",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "b98243838c5db2beae0852edd149dfd88dd14ab5cc02da4c4728c0644ae509a1",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "951e03aa1fa8833241c5278eb166ce617abf40041892e6ec559af86698e8901a",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "2561afac01ffa83f44727eb13c4920a3d1225ebbbc23466130a32f39c7245c93",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "cb10b1f7ec9042930d5471c871d399c2fe4c36a98ed884e87dd7a48dd67a7846",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "a814d24fa77340dc4f93a98b98b22d84a1e0fedc397094f67f1e52abfe31ea8a",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/contract.json": "e8dedf044ce77b0847eb865f5749db06965ffd07fe923523ce7a86ba9f2f7758",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/.dispatch.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/contract.json": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "ff7df963e59b317ebff5c82527d649377c5893ff612b9d474533ae0ccb7dbafd",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "ca1a5a006f4efbf1f6f92bd60419246f39e7fa4cb2b2a3f19432d80cdabb666f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "8defb9eef213ee2b4ad2048f2292c12225b73d3993e45a33a9144185c18e5bd4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "439b9d9adeae7de480940431db94f52dec33ced9a5ddecab1d407beb535f9523",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "f3b16e492284831bffe7da5748e2f9a6610cde68bfa474a9c3d034c8491c5a4e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "b94156ffe9e6afdb917d4f6c7c63b784922dd0e729cfa8db9a0bf114ea85ab60",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.txt": "f546e4a119b4869da7a2647e5dd11843093bd3e9c7d9568dc2cac29e9b81d55b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.txt": "a982dadaae8c8db6cd1f31e913a101e056f92deaed99d074c8db9a86586ee4ec",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.txt": "1cfc0f7cedb4b64e7254925f1b180a3ab6f9de4f95707b78573869d3df9d27d6",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.txt": "3ebcabfa958a6b4e5202c5bc25b0ce5b0883745218e5ea924d3ac7656646c2db",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.txt": "53ce0be27b448ec235faacdb42d564199eabc2334dbbdfe29ef490a5f41f2b43",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.txt": "56913e759989f13dc1865ceaf65e9c05859607223eae62442f5c69ad8599067b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "f848919feca98867aa08a665c5ca55e2d0e7bc1aee263544721cf3647cd6e1a0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "f2967bf7066da81ec9582fad4c67b5182721cf6e341d9ae2e555678893902740",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "432150dcad6f010f141bf659257b5810ddff9e777c12422c81dd97225ecdad75",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "e9cbf4a8842d957e4ab3cc2418a8e15655fe7489483e567c20a28c84e910477d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "c97e28bb353b4bb13d1c54be8ce97c496d5bd66d8acadf3fa779a3a304aab0f4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "a879f584da989a59c5a1cffc999b1f78ebaad4d5f492422dd9f5c54ea9e7f7b7",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/expectations.json": "5aff37a83dbaba69eeae6e5b6bbca9e32f77e0fc27c395b316c4160c6b7c21d8",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/inputs.json": "aac7581f1a381338282da198d9028f5c09ddff4cae9125658c1b46614abb41da",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/manifest.json": "94ce35dbeb94227e369cea0ffe7da4baaae141de11f5150aefa6e08e1cc6bd31",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/preflight.json": "96d7e15a8f55d1e63a91110ae213ec83324f57d7e9003d7290173d1449571572",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/progress.json": "e214430e7f071ed69dd5c69fcd35796c4f67db5c390d46f01d7a448d0edbb509",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "a1999a1decc63c36669bea40aa39ab31d170e1a2158f391aeed080bf7b004c78",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "d9fd32e50ca6f63fd77e50b080e5290e5376aa737b73064175cd5124a04be697",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "ecd3ee746b11149e0d39e316f6c977872d162e7053b77369880186b6ee9055a1",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "3dd8ad906bcbe9204e99ed7784e500a1184de9bbd6525ec4c58c9e8ff82cd40e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "323ae9795b7e3c48b9e2b93268ea50aaf61f64de1a46025865e3479a6f53905e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "72a95f40b6a7cc121cfb97dc1a2da5ee0487250d876f31760f7d4b6fe75c98e4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/case_usage.json": "82548fb1009548afad16cec6b361a72acbfee6018b1106080da451ebb4f65add",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/consumers.json": "7f1e0d4584250d69116a6f7f14d455ef3e0c0924794ffe0cb03e0898ae31c390",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/executed_portfolio.json": "595d9674c75e786127a2604f5cb2103ec7c8e7b34a8094662f997867a3c1d98b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/outcome.json": "945ee5b0ca3b5a9bc03bd7d73520c2d383803bafe7d9fd9eb815443db2abc66e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/reflect.json": "f7bcf1b2e672a1a4def44c7a0a0193ad4631a17375ac29b172f5e992fed6c8c0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/routing.json": "6e9a9be041135b73951b3ea9d49194ed8d3356cdf45cebffb8fd9febfac37503",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/runtime.json": "fe743575abe81aef38d7059e0cc935ffc2232d5718a22c614e2ddc3b03ea5f57",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/signal_round.json": "5e82204d9f1c82a7ea3c992b9697f5d7d6337b86f4479ec71bff78f84ba1af60",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/case_usage.json": "ea0ce8b556c98f3c7d600e16c3a53238286ab2c602e6c9356e9485e24c8ae343",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/consumers.json": "9c23fd22336ba0167a3bcce20f8c32d13c8b609e8f2c2fc06524b7e3067e5be6",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/executed_portfolio.json": "3b9e407f3095bebc9e8bb04bdf88fcc313ee06a3efc1388c75a87bffaaaaa24f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/outcome.json": "240486d14eae0f5b2d03d6d994adfb8cfc64c853eebe9331a2b9e13362f9fa10",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/reflect.json": "ef46239950937ceac9415984effeda45d0296e385a5b4b5100c01a7b3f18a0f0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/routing.json": "c39bdbf34fb2fae75458e8d8729c635949aafd6d817cee14fb94b57ed9502534",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/runtime.json": "379c76b647d9e86162d800ac4610fdca525b3f7d6dd3099fe0b147a69bc14833",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/signal_round.json": "9de5217c70d4b953324ad87ca77bb3463f33ed92b640a34861dfa3f3aa19a72f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/case_usage.json": "3a68512d519f2c92df69844006e38d70133e052a5b0bb89801410261f47e33d4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/consumers.json": "e53d3ade7b937ace4bbd1023dd11f0695cb9ebcebcdb3d3b1ebcec03bb609b9d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/executed_portfolio.json": "938b13e1f4cc550f60dc0c85e584345db0ee993623c5c22fe5729771ab3f633d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/outcome.json": "1abca6cbfc0c7908dd9074077dc60b2051ad901c74535fdb248697c891e452f9",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/reflect.json": "517c21c09b9e13935bdec27e084d87c0fdcee03b100abfc82734ffbbdcb4a425",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/routing.json": "13c919c56381737473553f0e9e3417718d7c62ebd1db995c252350cad536f0b2",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/runtime.json": "fe743575abe81aef38d7059e0cc935ffc2232d5718a22c614e2ddc3b03ea5f57",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/signal_round.json": "3912f9108aa959f18cfe495e8159ce09547ef851340b470ab32e37a779d04c52",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/unused_external_attempts.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    "after": {
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "1c1d7bf4bdb480c2bc6264fce3b221221f36aa686ebd540abbbd031571368821",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "b98243838c5db2beae0852edd149dfd88dd14ab5cc02da4c4728c0644ae509a1",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "951e03aa1fa8833241c5278eb166ce617abf40041892e6ec559af86698e8901a",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "2561afac01ffa83f44727eb13c4920a3d1225ebbbc23466130a32f39c7245c93",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "cb10b1f7ec9042930d5471c871d399c2fe4c36a98ed884e87dd7a48dd67a7846",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/cache/responses/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "a814d24fa77340dc4f93a98b98b22d84a1e0fedc397094f67f1e52abfe31ea8a",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/contract.json": "e8dedf044ce77b0847eb865f5749db06965ffd07fe923523ce7a86ba9f2f7758",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/.dispatch.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/contract.json": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "ff7df963e59b317ebff5c82527d649377c5893ff612b9d474533ae0ccb7dbafd",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "ca1a5a006f4efbf1f6f92bd60419246f39e7fa4cb2b2a3f19432d80cdabb666f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "8defb9eef213ee2b4ad2048f2292c12225b73d3993e45a33a9144185c18e5bd4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "439b9d9adeae7de480940431db94f52dec33ced9a5ddecab1d407beb535f9523",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "f3b16e492284831bffe7da5748e2f9a6610cde68bfa474a9c3d034c8491c5a4e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/inbox/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "b94156ffe9e6afdb917d4f6c7c63b784922dd0e729cfa8db9a0bf114ea85ab60",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.txt": "f546e4a119b4869da7a2647e5dd11843093bd3e9c7d9568dc2cac29e9b81d55b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.txt": "a982dadaae8c8db6cd1f31e913a101e056f92deaed99d074c8db9a86586ee4ec",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.txt": "1cfc0f7cedb4b64e7254925f1b180a3ab6f9de4f95707b78573869d3df9d27d6",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.txt": "3ebcabfa958a6b4e5202c5bc25b0ce5b0883745218e5ea924d3ac7656646c2db",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.txt": "53ce0be27b448ec235faacdb42d564199eabc2334dbbdfe29ef490a5f41f2b43",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/outbox/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.txt": "56913e759989f13dc1865ceaf65e9c05859607223eae62442f5c69ad8599067b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "f848919feca98867aa08a665c5ca55e2d0e7bc1aee263544721cf3647cd6e1a0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "f2967bf7066da81ec9582fad4c67b5182721cf6e341d9ae2e555678893902740",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "432150dcad6f010f141bf659257b5810ddff9e777c12422c81dd97225ecdad75",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "e9cbf4a8842d957e4ab3cc2418a8e15655fe7489483e567c20a28c84e910477d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "c97e28bb353b4bb13d1c54be8ce97c496d5bd66d8acadf3fa779a3a304aab0f4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/exchange/receipts/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "a879f584da989a59c5a1cffc999b1f78ebaad4d5f492422dd9f5c54ea9e7f7b7",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/expectations.json": "5aff37a83dbaba69eeae6e5b6bbca9e32f77e0fc27c395b316c4160c6b7c21d8",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/inputs.json": "aac7581f1a381338282da198d9028f5c09ddff4cae9125658c1b46614abb41da",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/manifest.json": "94ce35dbeb94227e369cea0ffe7da4baaae141de11f5150aefa6e08e1cc6bd31",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/preflight.json": "96d7e15a8f55d1e63a91110ae213ec83324f57d7e9003d7290173d1449571572",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/progress.json": "e214430e7f071ed69dd5c69fcd35796c4f67db5c390d46f01d7a448d0edbb509",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/1739b643be1d171f52c8de3a7f6a808c1a0d354d223ec16bd0ec322975e8ec3b.json": "a1999a1decc63c36669bea40aa39ab31d170e1a2158f391aeed080bf7b004c78",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b.json": "d9fd32e50ca6f63fd77e50b080e5290e5376aa737b73064175cd5124a04be697",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c.json": "ecd3ee746b11149e0d39e316f6c977872d162e7053b77369880186b6ee9055a1",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564.json": "3dd8ad906bcbe9204e99ed7784e500a1184de9bbd6525ec4c58c9e8ff82cd40e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29.json": "323ae9795b7e3c48b9e2b93268ea50aaf61f64de1a46025865e3479a6f53905e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/requests/f80c5484da00ea267aa3db61a75f59459e79ab279e1e73b7bac28d617d49ea62.json": "72a95f40b6a7cc121cfb97dc1a2da5ee0487250d876f31760f7d4b6fe75c98e4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/case_usage.json": "82548fb1009548afad16cec6b361a72acbfee6018b1106080da451ebb4f65add",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/consumers.json": "7f1e0d4584250d69116a6f7f14d455ef3e0c0924794ffe0cb03e0898ae31c390",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/executed_portfolio.json": "595d9674c75e786127a2604f5cb2103ec7c8e7b34a8094662f997867a3c1d98b",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/outcome.json": "945ee5b0ca3b5a9bc03bd7d73520c2d383803bafe7d9fd9eb815443db2abc66e",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/reflect.json": "f7bcf1b2e672a1a4def44c7a0a0193ad4631a17375ac29b172f5e992fed6c8c0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/routing.json": "6e9a9be041135b73951b3ea9d49194ed8d3356cdf45cebffb8fd9febfac37503",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/runtime.json": "fe743575abe81aef38d7059e0cc935ffc2232d5718a22c614e2ddc3b03ea5f57",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m01/signal_round.json": "5e82204d9f1c82a7ea3c992b9697f5d7d6337b86f4479ec71bff78f84ba1af60",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/case_usage.json": "ea0ce8b556c98f3c7d600e16c3a53238286ab2c602e6c9356e9485e24c8ae343",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/consumers.json": "9c23fd22336ba0167a3bcce20f8c32d13c8b609e8f2c2fc06524b7e3067e5be6",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/executed_portfolio.json": "3b9e407f3095bebc9e8bb04bdf88fcc313ee06a3efc1388c75a87bffaaaaa24f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/outcome.json": "240486d14eae0f5b2d03d6d994adfb8cfc64c853eebe9331a2b9e13362f9fa10",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/reflect.json": "ef46239950937ceac9415984effeda45d0296e385a5b4b5100c01a7b3f18a0f0",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/routing.json": "c39bdbf34fb2fae75458e8d8729c635949aafd6d817cee14fb94b57ed9502534",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/runtime.json": "379c76b647d9e86162d800ac4610fdca525b3f7d6dd3099fe0b147a69bc14833",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m02/signal_round.json": "9de5217c70d4b953324ad87ca77bb3463f33ed92b640a34861dfa3f3aa19a72f",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/case_usage.json": "3a68512d519f2c92df69844006e38d70133e052a5b0bb89801410261f47e33d4",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/consumers.json": "e53d3ade7b937ace4bbd1023dd11f0695cb9ebcebcdb3d3b1ebcec03bb609b9d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/executed_portfolio.json": "938b13e1f4cc550f60dc0c85e584345db0ee993623c5c22fe5729771ab3f633d",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/outcome.json": "1abca6cbfc0c7908dd9074077dc60b2051ad901c74535fdb248697c891e452f9",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/reflect.json": "517c21c09b9e13935bdec27e084d87c0fdcee03b100abfc82734ffbbdcb4a425",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/routing.json": "13c919c56381737473553f0e9e3417718d7c62ebd1db995c252350cad536f0b2",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/runtime.json": "fe743575abe81aef38d7059e0cc935ffc2232d5718a22c614e2ddc3b03ea5f57",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/samples/m03/signal_round.json": "3912f9108aa959f18cfe495e8159ce09547ef851340b470ab32e37a779d04c52",
+      "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/unused_external_attempts.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    },
+    "before_equals_after": true,
+    "current_hashes_equal": true,
+    "file_count": 63,
+    "counts_before": {
+      "requests": 6,
+      "inbox": 6,
+      "outbox": 6,
+      "receipts": 6,
+      "cache": 6
+    },
+    "counts_after": {
+      "requests": 6,
+      "inbox": 6,
+      "outbox": 6,
+      "receipts": 6,
+      "cache": 6
+    },
+    "new_dispatches": 0,
+    "case_usage_before": {
+      "m01": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 96161
+        }
+      },
+      "m02": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 97976
+        }
+      },
+      "m03": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 95065
+        }
+      }
+    },
+    "case_usage_after": {
+      "m01": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 96161
+        }
+      },
+      "m02": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 97976
+        }
+      },
+      "m03": {
+        "limits": {
+          "max_case_llm_calls": 8,
+          "max_case_tokens": 512000,
+          "max_llm_signals_per_round": 2,
+          "max_request_tokens": 131072,
+          "max_signal_rounds": 1,
+          "max_signals_per_round": 4,
+          "max_structured_corrections": 1,
+          "structured_reasoning_token_reserve": 0
+        },
+        "usage": {
+          "cost": 0.0,
+          "llm_calls": 2,
+          "tokens": 95065
+        }
+      }
+    },
+    "usage_equal": true
+  },
+  "old_formal_unchanged": true,
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "labels_read": false,
+  "execution_trajectory_created": false,
+  "fast_pointer_advanced": false,
+  "slow_pointer_advanced": false,
+  "engineering_mvp_closed": false
+}

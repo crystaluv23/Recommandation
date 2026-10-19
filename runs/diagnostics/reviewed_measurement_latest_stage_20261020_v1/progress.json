@@ -1,0 +1,39 @@
+{
+  "actual_model_version": null,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "external_llm_calls": 0,
+  "fixed_denominator": 3,
+  "independent_receipts": 6,
+  "outcomes": [
+    {
+      "checks": {
+        "final_disposition_projection_exact": true,
+        "finalized": true,
+        "posthoc_disposition_projection_exact": true
+      },
+      "sample_id": "m01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "checks": {
+        "final_disposition_projection_exact": true,
+        "finalized": true,
+        "posthoc_disposition_projection_exact": true
+      },
+      "sample_id": "m02",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "checks": {
+        "final_disposition_projection_exact": true,
+        "finalized": true,
+        "posthoc_disposition_projection_exact": true
+      },
+      "sample_id": "m03",
+      "status": "accepted_requires_independent_review"
+    }
+  ],
+  "pending": [],
+  "readonly_data_requests": 0
+}

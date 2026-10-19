@@ -2,17 +2,17 @@
 
 更新：2026-10-20。用户批准的 [Fast/Slow 工程 MVP](../spec/engineering-mvp.md)
 尚未收敛；独立收益为后续里程碑、仍未知。生产 LLM 节点由独立 subagent 执行，
-外部 LLM 调用0；只读资料取证已授权，单独计数。本批7次独立角色执行，
+外部 LLM 调用0；只读资料取证已授权，单独计数。本批6次独立角色执行，
 0新资料，host tokens/cost未知。
 
 ## 当前验收
 
-本轮 [measurement stage](../reports/reviewed-measurement-stage-20261020.md) 已实际终态：
-7新角色/1routing纠错，3/3数值及exact版本正确；原full/partial/full正控仍0/3。
-m01/m03合法保守，legacy父tag/unit未公开；m02共享对象/期间词被误判为残留facet，
-纠错后fallback为contextual，无owner。3例完整need保留；未触发fresh F7镜像正控。
-唯一完成恢复68文件全等/0新增派发，root全量重hash确认；356405逻辑units，
-host tokens/cost未知。原oracle/失败分母不改，不关F4/F7或MVP。
+本轮 [latest measurement](../reports/reviewed-measurement-latest-stage-20261020.md) 新控制3/3窄通过：
+6新隔离角色/0typed纠错，actual v3/v3/v2及-0.1/-0.1/+0.1、Basic/shares/期间公开；
+full/partial/full经原材审查，m02唯一158字ending/prospective/cutoff残留精确传递。
+唯一完成恢复63文件全等/0新增派发，289202逻辑units，host tokens/cost未知。
+[原fixed-FY/basic批](../reports/reviewed-measurement-stage-20261020.md)仍0/3，不改oracle/分母；
+任意FY/tag能力、F7typed镜像权限fresh触发及整体F4/F7/MVP均不由本批关闭。
 
 此前 [BasicInfo菜单](../reports/basic-info-orientation-menu-20261020.md)及
 [orientation阶段](../reports/reviewed-orientation-stage-20261020.md)窄通过：1proposer+
@@ -62,10 +62,11 @@ host tokens/cost未知。原oracle/失败分母不改，不关F4/F7或MVP。
 
 ## 下一步
 
-residual-only facet guard已在独立代码中修复：88routing、4个独立反例、136关联
-测试通过；原54/57离线partial保真，删改modifier的真残留越权继续拒绝。
-已有production-normalized CompanyFacts→磁盘恢复→executor→modelview保留Basic/Diluted
-与shares身份；未加canonical字段。最新待冻结窄控制按既有latest能力提问，保留
-原0/3失败；零回答预检3inbox/0receipt-cache，15文件重复全等，303bindings及
-实际source views核实。完成codecheckpoint后新formal派60+；尚无新fresh判断。
-F7镜像能力仍待fresh真实触发，原8项用户改动保持。
+停止重复测量控制。新 [source layout修复](../reports/source-layout-readiness-20261020.md)
+已按已加载document.source_type识别market/narrative；5项native prepare窄验通过，
+真实BMBL baseline6.494跨layout可用，显式窄view仍不fallback。仅单anchor/label stub，
+不是16或48案通过。原16缺不表示无价：16/16本地有候选并可算，另15家身份/PIT
+复权proof仍unknown。下一步核这些原cache/证明缺项，再限域公开取证，不跑full。
+关联旧27测试误读真实LabelStore并临时prepare后readiness拒绝，已明确记录；
+正式6e模型批此前已完成/labels0。outbox父目录通用修复旧断言失败/新20项通过。
+原8项用户改动保持；整体MVP active未完成。

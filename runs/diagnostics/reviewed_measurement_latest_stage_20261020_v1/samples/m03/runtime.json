@@ -1,0 +1,8 @@
+{
+  "attempted_signal_rounds": 1,
+  "completed_signal_rounds": 1,
+  "max_signal_rounds": 1,
+  "must_finalize": true,
+  "signal_calls": 1,
+  "termination_trigger": "max_signal_rounds"
+}

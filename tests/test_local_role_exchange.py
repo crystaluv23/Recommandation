@@ -49,6 +49,7 @@ class LocalRoleExchangeTests(TestCase):
                 with self.assertRaises(LocalRoleRequestPending) as raised:
                     client.complete_json(**self.kwargs())
                 pending = raised.exception.pending
+                self.assertTrue(Path(pending["outbox_path"]).parent.is_dir())
                 inbox = json.loads(Path(pending["inbox_path"]).read_text())
                 self.assertNotIn("Issuer Alpha", json.dumps(inbox))
                 self.assertNotIn("expectations", inbox)

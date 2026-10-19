@@ -1,5 +1,9 @@
 # Changelog
 
+- 2026-10-20：修native prepare按路径判market/narrative造成reviewed documents遗漏，改用同允许集合内已解析source_type；BMBL真实具证view的基线6.494及layout迁移、PIT/类型/精确review/日期/显式view不fallback反例5项通过（单anchor/临时labels，非16/48案通过）。16本地都有候选价，另15来源/PIT proof未知。旧关联27测试意外读取真实LabelStore并做临时readiness拒绝，边界越出已据实记录；无研究cycle/模型/评分/下载，不影响此前完成的6e批。
+
+- 2026-10-20：冻结6e1f193a完成新latest-pair三项控制，6隔离角色首答全部接受，独立核full/partial/full、Basic/shares/期间/exactv3v3v2及唯一158字残留；63文件完成恢复全等，289202逻辑units，0外LLM/资料/标签。原FY/basic0/3及整体MVP保持；fresh未触发typed镜像纠错。正式结束后补exchange预建outbox父目录，原pending断言先失败、新20exchange/consumer/driver测试通过，不伪称新模型效果。下一步只诊断16anchors真实来源/prepare连接，不启动full。
+
 - 2026-10-20：完成冻结9d3ce929的三例measurement native stage，7独立角色/1routing纠错；数值与exactversions3/3正确，但full/partial/full正控0/3。独立审查定位legacy证据父tag/unit丢失及shared对象/期间词被残留guard误杀，实际fallback/no-owner与完整need保留如实存档。唯一恢复68文件全等/0新派发，root重hash；356405逻辑units、host tokens/cost未知，0外部LLM/资料。原oracle/分母不改；另修target对照残留guard及部分modifier丢失反例，136关联/独立4控制通过；既有typed正常化→磁盘恢复→modelview保Basic/Diluted/单位，无canonical变更。新latest支持能力控制仅准备未作答，不宣称F4/F7/MVP关闭。
 
 - 2026-10-19：修复日线四入口 local.date、两层可见性/旧轨迹恢复、critic 最后 wire 白名单、review scope 与 earliest load 的 split proof 覆盖假设，以及 local judge/JEV 和显式禁外部 caller 的旁路。保留原失败与中间过宽 hybrid 拒绝，实际匿名 pending wire/独立反例窄通过；原 250 记录和 5 分母不变，仍未全读 45d、未出新角色答/资料请求。下一步先补 runtime 停止元数据，再冻结生产盲前缀到 durable prediction，读标签前停止；F9/全 ready/loops/MVP 仍 open。

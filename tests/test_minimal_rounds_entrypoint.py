@@ -1,8 +1,12 @@
 """Acceptance entry point must freeze an executable production contract."""
 from dataclasses import replace
+from contextlib import redirect_stdout
+from datetime import datetime, timedelta
+import io
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -11,6 +15,7 @@ from scripts.run_minimal_rounds import _evaluation, prepare
 from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.data.resolution import EvidenceResolver
 from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoOracle, RawInfoStore
+from stock_opportunity_agent.data.reviewed_snapshot import open_raw_info_store
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import _signal_learning_events_from_record
 from stock_opportunity_agent.research.signal_tracking import imported_learning_events, record_committed_signal_use
@@ -62,6 +67,138 @@ class MinimalCycleContractTests(TestCase):
         self.assertEqual(_evaluation().random_cases, 8)
         self.assertTrue(_evaluation().require_finalized)
         self.assertTrue(_evaluation().require_source_evidence)
+
+
+class MinimalPrepareSourceLayoutTests(TestCase):
+    """Exercise native prepare classification without reading outcome labels."""
+
+    def setUp(self):
+        self.temp = TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        manifest = json.loads((entry.REPO / 'runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json').read_text())
+        self.binding = manifest['reviewed_source_snapshot']
+        self.store = open_raw_info_store(self.binding['root'], reviewed_snapshot=self.binding)
+        self.documents = tuple(self.store.documents)
+        self.cutoff = datetime.fromisoformat('2025-09-30T00:00:00+00:00')
+        self.case = replace(make_case('cik_0001830043', 1.1), prediction_time=self.cutoff, case_id='')
+        self.baseline = entry._prediction_baseline_from_market_documents(
+            (row for row in self.documents if row.source_type == 'market_data'), self.cutoff)
+        self.assertEqual(self.baseline['status'], 'available')
+        self.seed = self.root / 'seed'
+        SignalRegistry(self.seed).install_catalog(SEED_CATALOG)
+
+    def _prepare(self, *, documents=None, layout='legacy', reviewed=False,
+                 unproven=False, baseline_dates=None, reviewed_binding=None):
+        """Keep native classification/baseline; stop at fixed cohort shortage."""
+        directory = self.root / ('attempt-' + str(len(list(self.root.glob('attempt-*')))))
+        oracle = directory / 'oracle'
+        oracle.mkdir(parents=True)
+        documents = self.documents if documents is None else documents
+        for index, document in enumerate(documents):
+            family = document.source_type if layout == 'legacy' else layout
+            path = oracle / family / document.company_id / (str(index) + '.json')
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(document.to_dict()))
+        binding_path = directory / 'binding.json'
+        binding_path.write_text(json.dumps(reviewed_binding or self.binding))
+        labels = SimpleNamespace(
+            ground_truth=lambda *_args: {'realized_max_multiple': 1.1},
+            record=lambda *_args: SimpleNamespace(
+                baseline_dates=tuple(baseline_dates or self.baseline['trading_dates']),
+                baseline_mean=self.baseline['mean_adjusted_close']),
+        )
+        source_review = directory / 'source-review.json'
+        market = next(row for row in self.documents if row.source_type == 'market_data')
+        source_review.write_text(json.dumps({
+            'schema_version': 'diagnostic-source-integrity-review-v1',
+            'reviews': ([{'document_id': market.document_id,
+                         'content_hash': market.content_hash,
+                         'verdict': 'issuer_identity_unproven'}] if unproven else []),
+        }))
+        approved = SimpleNamespace(anchor=(self.case,), evolution_validation=(), discovery=())
+        captured = io.StringIO()
+        target = directory / 'target'
+        with patch.object(entry, 'ORACLE', oracle), \
+                patch.object(entry, 'SOURCE_REVIEW', source_review), \
+                patch.object(entry, 'load_approved_development_dataset', return_value=approved), \
+                patch.object(entry.LabelStore, 'load', return_value=labels) as label_load, \
+                patch.object(entry, 'StructuredRoleClient', side_effect=AssertionError('no role dispatch')), \
+                redirect_stdout(captured), \
+                self.assertRaisesRegex(ValidationError, 'source-ready subset insufficient'):
+            prepare(target, seed_registry=self.seed,
+                    reviewed_source_snapshot=binding_path if reviewed else None)
+        self.assertEqual(label_load.call_count, 1)
+        self.assertFalse((target / 'input_manifest.json').exists())
+        self.assertFalse((target / 'state.json').exists())
+        return json.loads((target / 'preparation_failure.json').read_text()), captured.getvalue()
+
+    def test_real_admitted_bmbl_market_and_narrative_survive_all_layouts(self):
+        self.assertAlmostEqual(self.baseline['mean_adjusted_close'], 6.494)
+        self.assertAlmostEqual(self.baseline['doubling_threshold'], 12.988)
+        self.assertAlmostEqual(self.baseline['recent_close'], 6.3)
+        for layout, reviewed in (('legacy', False), ('relocated-neutral-family', False),
+                                 ('legacy', True)):
+            with self.subTest(layout=layout, reviewed=reviewed):
+                failure, output = self._prepare(layout=layout, reviewed=reviewed)
+                self.assertIn('select anchor: ' + self.case.case_id, output)
+                self.assertEqual(failure['exclusions'], [])
+                self.assertEqual(sum(failure['missing'].values()), 15)
+
+    def test_directory_names_cannot_supply_market_or_narrative_source_identity(self):
+        for missing in ('market', 'narrative'):
+            documents = tuple(replace(document, source_type='financials')
+                              if (document.source_type == 'market_data') == (missing == 'market')
+                              else document for document in self.documents)
+            with self.subTest(missing=missing):
+                failure, output = self._prepare(
+                    documents=documents, layout='market_data' if missing == 'market' else 'filing')
+                self.assertNotIn('select anchor:', output)
+                self.assertEqual(failure['exclusions'][0]['reason'],
+                    'pit_price_baseline_unavailable' if missing == 'market' else 'pit_narrative_unavailable')
+                self.assertEqual(sum(failure['missing'].values()), 16)
+
+    def test_reviewed_scope_without_market_cannot_fall_back_to_other_oracle_prices(self):
+        original = json.loads((entry.REPO / 'runs/diagnostics/reviewed_source_snapshot_20261019_v3/input_manifest.json').read_text())
+        binding = original['reviewed_source_snapshot']
+        store = open_raw_info_store(binding['root'], reviewed_snapshot=binding)
+        self.assertFalse(any(row.source_type == 'market_data' for row in store.documents))
+        # _prepare also supplies a separate oracle containing the real v4
+        # price body. An explicit reviewed view must ignore those candidates.
+        failure, output = self._prepare(reviewed=True, reviewed_binding=binding)
+        self.assertNotIn('select anchor:', output)
+        self.assertEqual(failure['exclusions'][0]['reason'], 'pit_price_baseline_unavailable')
+        self.assertEqual(failure['reviewed_source_snapshot'], binding)
+        self.assertEqual(sum(failure['missing'].values()), 16)
+
+    def test_future_sources_and_missing_price_rows_do_not_become_ready(self):
+        for missing in ('market_future', 'narrative_future', 'no_prices'):
+            documents = []
+            for document in self.documents:
+                if missing == 'no_prices' and document.source_type == 'market_data':
+                    document = RawInfoDocument.create(
+                        document_id=document.document_id, company_id=document.company_id,
+                        source_type='market_data', published_at=document.published_at,
+                        available_at=document.available_at, content='No daily observations provided.')
+                elif (document.source_type == 'market_data') == (missing == 'market_future') and missing != 'no_prices':
+                    document = replace(document, available_at=self.cutoff + timedelta(seconds=1))
+                documents.append(document)
+            with self.subTest(missing=missing):
+                failure, output = self._prepare(documents=tuple(documents), layout='relocated')
+                self.assertNotIn('select anchor:', output)
+                self.assertEqual(failure['exclusions'][0]['reason'],
+                    'pit_narrative_unavailable' if missing == 'narrative_future' else 'pit_price_baseline_unavailable')
+
+    def test_exact_source_review_and_baseline_date_guards_remain_active(self):
+        for unproven, dates, reason in (
+            (True, None, 'price_source_issuer_identity_unproven'),
+            (False, ('2025-09-22',) * 5, 'source_label_baseline_dates_mismatch'),
+        ):
+            with self.subTest(reason=reason):
+                failure, output = self._prepare(unproven=unproven, baseline_dates=dates,
+                                                layout='relocated')
+                self.assertNotIn('select anchor:', output)
+                self.assertEqual(failure['exclusions'][0]['reason'], reason)
 
 
 class CommittedFastDiagnosticTests(TestCase):

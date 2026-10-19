@@ -1,0 +1,153 @@
+{
+  "request_hashes": [],
+  "signal_round": {
+    "batch": {
+      "document_fingerprints": {
+        "net_share_retirement_yoy:v2": [
+          "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac:319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5:3db5cbfd6c9d0cb528da2b258673225e09519937cd008edade7bb3e8ae3e8b24"
+        ]
+      },
+      "resolutions": [
+        {
+          "appended_documents": [],
+          "context_spans": [],
+          "coverage": {
+            "context_truncated": null,
+            "contract_satisfied": true,
+            "deduplicated_document_count": 0,
+            "eligible_document_count": 2,
+            "missing_requirements": [],
+            "observed_distinct_period_count": 2,
+            "observed_observation_count": 0,
+            "observed_period_span_days": 366,
+            "query_evaluated": true,
+            "query_matched_document_count": 2,
+            "query_requested": true,
+            "query_status": "matched",
+            "required_source_group_count": 0,
+            "satisfied_source_group_count": 0,
+            "selected_document_count": 2,
+            "selection_truncated": false,
+            "visible_span_count": 0
+          },
+          "data_gap": null,
+          "documents": [
+            {
+              "available_at": "2025-01-21T00:00:00+00:00",
+              "content_hash": "3db5cbfd6c9d0cb528da2b258673225e09519937cd008edade7bb3e8ae3e8b24",
+              "document_id": "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5"
+            },
+            {
+              "available_at": "2024-02-02T00:00:00+00:00",
+              "content_hash": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+              "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac"
+            }
+          ],
+          "events": [
+            {
+              "details": {
+                "matched_document_ids": [
+                  "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5",
+                  "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac"
+                ],
+                "phase": "initial",
+                "request_id": "signal:net_share_retirement_yoy:v2",
+                "source_types": [
+                  "financials"
+                ]
+              },
+              "kind": "local_query"
+            }
+          ],
+          "omitted_context_markers": [],
+          "request": {
+            "description": "Measure year-over-year net share retirement, with dilution represented as a negative value.",
+            "max_documents": 10,
+            "minimum_distinct_periods": 2,
+            "minimum_period_span_days": 330,
+            "query": "weighted average shares shares outstanding",
+            "request_id": "signal:net_share_retirement_yoy:v2",
+            "source_types": [
+              "financials"
+            ]
+          },
+          "status": "resolved"
+        }
+      ],
+      "results": [
+        {
+          "evidence": {
+            "counter": [],
+            "supporting": [
+              {
+                "document_id": "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5",
+                "exact_span": "{\"description\":null,\"end\":\"2024-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":90}",
+                "timestamp": "2025-01-21T00:00:00+00:00"
+              },
+              {
+                "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+                "exact_span": "{\"description\":null,\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":null,\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100}",
+                "timestamp": "2024-02-02T00:00:00+00:00"
+              }
+            ]
+          },
+          "execution": {
+            "status": "success"
+          },
+          "interpretation": {
+            "summary": "net_share_retirement_yoy=0.1"
+          },
+          "measurement": {
+            "formula": "1 - current weighted-average shares / prior-year shares",
+            "period": {
+              "end": "2024-12-31",
+              "start": "2024-01-01"
+            },
+            "unit": "fraction",
+            "value": 0.09999999999999998
+          },
+          "signal_id": "net_share_retirement_yoy",
+          "state": {
+            "confidence": 1.0,
+            "value": "positive"
+          },
+          "status": {
+            "coverage": "sufficient"
+          },
+          "version": 2
+        }
+      ],
+      "signal_calls": 1,
+      "skipped_unchanged_refs": []
+    },
+    "information_needs": [
+      "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+    ],
+    "selected_signals": [
+      "net_share_retirement_yoy:v2"
+    ],
+    "selections": [
+      {
+        "answer_scope": "full",
+        "applicability_hypothesis": "Retrieve comparable weighted-average share disclosures available by 2025-02-01T00:00:00+00:00; verify actual pair periods and basis in executed evidence. Missing or stale comparable facts may yield unavailable.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": null,
+        "selection_reason": "Measures 1 - current/prior-year weighted-average shares for the latest comparable pair, matching the requested net share retirement; execution must identify the actual periods and share basis.",
+        "signal_ref": "net_share_retirement_yoy:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 0
+  }
+}

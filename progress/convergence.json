@@ -55,9 +55,19 @@
         "runs/diagnostics/residual_scope_source_boundary_20261020_v1/independent-guard-review.json",
         "runs/diagnostics/residual_scope_source_boundary_20261020_v1/related-tests-final.log",
         "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/preflight-result.json",
-        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
+        "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json",
+        "reports/reviewed-measurement-latest-stage-20261020.md",
+        "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-before.log",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-final.log",
+        "reports/source-layout-readiness-20261020.md",
+        "runs/diagnostics/source_layout_readiness_20261020_v1/root-focused-5.log",
+        "runs/diagnostics/source_layout_readiness_20261020_v1/related-27-transcribed.log",
+        "runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json"
       ],
-      "remaining": "Original fixed-FY/basic scope controls0/3 remain unmet; latest-only callable limitation explicit. Guard and normalized-source integration pass local counterexamples; new latest-pair control only zero-answer prepared. Full sources/transcripts/F10/Slow/newSignal/actual whole-loop and engineering MVP remain open."
+      "remaining": "Latest supported scope3/3 passes; source-layout producer locally fixed with five single-anchor controls. Original16 missing record is narrow2SEC-view evidence, not no-price proof; candidate baselines16/16 calculable but other15 issuer/PIT adjustment proof pending. Full inputs/transcripts/F10/Slow/newSignal/whole-loop/MVP remain open; predecessorFY/basic0/3 unchanged."
     },
     {
       "id": "feedback_consumption",
@@ -551,10 +561,46 @@
         "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
       ],
       "result": "136related tests pass including routing88/source27; independent fixed4 controls pass after rejecting intermediate modifier-loss admission. Original54/57 offline actualv3 preserve partial; existing production normalization/disk reopen/consumer preserve Basic vsDiluted without canonical changes. New latest-pair zero-answer preflight3inbox/0receipts-cache,15files identical,303bindings valid. No fresh role answer/MVP closure."
+    },
+    {
+      "id": "engineering-mvp-latest-pair-fresh-controls-20261020",
+      "strategy": "fresh_latest_comparable_normalized_scope",
+      "failure_families": [
+        "native_supported_latest_pair_scope",
+        "raw_source_identity_to_consumer",
+        "pending_outbox_parent_missing"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-measurement-latest-stage-20261020.md",
+        "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-before.log",
+        "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-final.log"
+      ],
+      "result": "New latest-only controls3/3 independently pass full/partial/full using6first-answer native roles with raw-to-accepted fidelity; actual typed basis/periods/exactversions and single158char residual preserved. Single completed restore63files exact/0new dispatch. PreviousFY/basic0/3 unchanged. No global content_chain/Slow/wholeMVP closure; typedmirror repair not freshly triggered. Separate outbox-directory producer assertion fails old/pass20 native integration after terminal run."
+    },
+    {
+      "id": "engineering-mvp-source-layout-readiness-repair-20261020",
+      "strategy": "native_baseline_readiness_source_shape",
+      "failure_families": [
+        "directory_layout_used_as_source_family",
+        "candidate_price_vs_source_qualification",
+        "broad_test_selector_exceeded_no_labels_scope"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/source-layout-readiness-20261020.md",
+        "runs/diagnostics/source_layout_readiness_20261020_v1/root-focused-5.log",
+        "runs/diagnostics/source_layout_readiness_20261020_v1/related-27-transcribed.log",
+        "runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+        "runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json"
+      ],
+      "result": "Same source type sets classify parsed market/narrative independent of path;5focused actualprepare tests with real BMBLview/nativebaseline+temporary labels pass. Singleanchor/default16target remains15/16missing, not16realcase acceptance. Other15 issuer/PIT qualification unknown despite candidate baselines16/16. Old27 associatedtest mistakenly read realLabelStore/temporary readiness rejected; no cycle/models/score/download. Prior six-role formal remains0labels."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-residual-scope-source-repair-20261020",
+    "after_iteration": "engineering-mvp-source-layout-readiness-repair-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -653,7 +699,17 @@
       "runs/diagnostics/residual_scope_source_boundary_20261020_v1/independent-guard-review.json",
       "runs/diagnostics/residual_scope_source_boundary_20261020_v1/related-tests-final.log",
       "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/preflight-result.json",
-      "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json"
+      "runs/diagnostics/reviewed_measurement_latest_preflight_20261020_v1/root-preflight-review.json",
+      "reports/reviewed-measurement-latest-stage-20261020.md",
+      "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_measurement_latest_stage_20261020_v1/independent-review.json",
+      "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-before.log",
+      "runs/diagnostics/residual_scope_source_boundary_20261020_v1/outbox-directory-final.log",
+      "reports/source-layout-readiness-20261020.md",
+      "runs/diagnostics/source_layout_readiness_20261020_v1/root-focused-5.log",
+      "runs/diagnostics/source_layout_readiness_20261020_v1/related-27-transcribed.log",
+      "runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "runs/diagnostics/reviewed_market_snapshot_20261019_v4/input_manifest.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -686,21 +742,23 @@
       "Exact hash/catalog membership checks missed that the actual selector rebuilt cards without version measurement requirements. Version comparison prose was not an executable guarantee, and a same-name builtin cannot describe a custom override. A callable doc also misstated a default shared threshold.",
       "A request ceiling passed as the whole native role-step budget also constrained its later typed correction; the new synthetic mode now passes actual remaining case budget and separately enforces per-request131072 before cache/receive. Unknown fixture source also needs early qualification rather than freezing an unavailable supposed positive control.",
       "Raw fixture Basic/shares identity lived only in parent objects and did not reach model observations. Capability descriptions of latest comparable pairs cannot guarantee a requested FY/basic. A shared-topic word overlap constructed from noncontiguous tokens is not proof of residual-only facet ownership; correction and fallback removed legitimate partial ownership.",
-      "The first87-test target-contrast candidate mistook removal of one modifier for removal of the whole facet. Independent native probe prospective->future or deletion still retained equity dilution and exposed false admission; fixed anchors and original reasons were rechecked on four fixed controls. Normalizing source alone cannot change the first router capability contract."
+      "The first87-test target-contrast candidate mistook removal of one modifier for removal of the whole facet. Independent native probe prospective->future or deletion still retained equity dilution and exposed false admission; fixed anchors and original reasons were rechecked on four fixed controls. Normalizing source alone cannot change the first router capability contract.",
+      "The pending exchange exposed an outbox file path without creating its parent; old test submit helpers created it and hid the first independent-write failure. After actual completed formal restore, one deterministic producer mkdir and a before-submit assertion fix this family; no new live model effect is inferred.",
+      "Preparation treated ancestor folder names as source identity and therefore discarded qualified flat reviewed documents. Original source-shortage artifact only inspected16Anchors from a2SECview, not all48 or all local candidate prices. Broad associated-test selector also included an old realLabelStore temporarypreflight despite this batch no-label limit; final five bounded tests use explicit stubs and the exception is disclosed."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "fresh_latest_comparable_normalized_scope",
-      "action": "Checkpoint current code/input then prepare one separate formal latest-pair root. Root dispatches new isolated roles60+ only to native inboxes; sole driver resumes. No development answer/cache inheritance.",
-      "stop": "Shared24, case512k/8calls and request131072 remain; no budget enlargement/root rename after exhaustion. No labels/full successor and no repeated original fixed-FY/basic test.",
-      "question": "Do fresh native roles route the supported latest comparable pair, then use actual normalized identity/periods to close only its full or partial scope through durable consumers?",
-      "pass": "All three new predeclared latest-pair positive controls meet source-backed full/partial/full, exact version and residual, current owned dispositions, consumer fidelity and completed restore with0new dispatch.",
-      "fail": "Missing/skipped/technical result is counted as capability pass, true residual claim accepted, wrong basis/period/version, unsupported closure or any declared positive control not passed.",
-      "on_pass": "Close only the new supported-capability controls actually exercised, then identify the next named engineering blocker; original0/3 and overallMVP remain unresolved as documented.",
-      "on_fail": "Preserve all original new/old outputs and denominators; stop unchanged-premise reruns and diagnose the precise remaining connection before any new execution.",
-      "new_evidence": "Original54/57 actual payload replay, independent modifier-loss controls, production normalized-source disk/consumer integration, final136 tests and zero-answer303bindings establish a different satisfiable supported premise.",
-      "distinguishing_variable": "Latest-comparable question aligned with existing callable plus actual per-row source identity; arbitrary FY/basic capability is not claimed."
+      "strategy": "exact_cached_market_source_qualification_gaps",
+      "action": "Inspect the fixed remaining15 issuers exact cached request/body, historical issuer mapping and adjustment-basis proofs. Reuse existing qualified-source contract; make only bounded authorized read-only public queries when an exact missing proof warrants them.",
+      "stop": "No blind-label prices as features, source-policy downgrade, manufactured baseline, cohort shrink, repeated measurement or full cycle; stop redundant scans when a proof gap is established.",
+      "question": "Which original15 candidate market sources already have sufficient historical issuer and cutoff adjustment proof, and what exact evidence is actually missing?",
+      "pass": "Original bound request/body and authoritative source evidence establish historical issuer plus cutoff-consistent price basis under the existing qualification policy.",
+      "fail": "Only numeric availability, present-day ticker metadata, current adjusted=true bars or a finite no-hit search supports the claim.",
+      "on_pass": "Admit only the exact verified source through existing reviewed binding and test actual preparation/consumer, retaining unknown cases.",
+      "on_fail": "Preserveunknown disposition and pursue the specific missing primary/provider proof without claiming full readiness or new price acquisition necessity.",
+      "new_evidence": "Fixed source-layout producer and real BMBLview controls separate connection failure from candidate source qualification; candidate baselines16/16 exist locally, while15 provenance/PIT proofs remain unknown.",
+      "distinguishing_variable": "Historical issuer and adjustment evidence bound to exact original request/body, rather than directory layout, price availability or test count."
     }
   },
   "successor_prerequisites": [

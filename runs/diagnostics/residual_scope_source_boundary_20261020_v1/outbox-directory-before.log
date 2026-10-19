@@ -1,0 +1,13 @@
+.......F......
+======================================================================
+FAIL: test_masked_dispatch_receipt_restore_and_cache_resume (tests.test_local_role_exchange.LocalRoleExchangeTests.test_masked_dispatch_receipt_restore_and_cache_resume)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_local_role_exchange.py", line 52, in test_masked_dispatch_receipt_restore_and_cache_resume
+    self.assertTrue(Path(pending["outbox_path"]).parent.is_dir())
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.655s
+
+FAILED (failures=1)

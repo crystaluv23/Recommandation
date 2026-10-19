@@ -1,0 +1,40 @@
+{
+  "request_hashes": [
+    "51359f919a9a5aee66d0074a88298fbff719f72b0576321aa0225677a1c2af5b"
+  ],
+  "selections": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "Comparable, same-unit weighted-average facts available at the cutoff may support the requested retirement measure; actual execution must establish the selected periods and basis.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "How did period-end common shares change, and what prospective net equity dilution is disclosed, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+      "selection_reason": "Measures net share retirement for the latest comparable year-over-year weighted-average pair; retain its actual reporting periods and share basis.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        0
+      ]
+    },
+    {
+      "applicability_hypothesis": "The 730-day filing, announcement and news search may reveal equity offerings or conversion terms available by the cutoff; material-action assessment alone does not quantify prospective net dilution.",
+      "context_tags": [
+        "general"
+      ],
+      "expected_role": "coverage",
+      "reason_code": "combine_evidence",
+      "selection_reason": "Assesses whether disclosed financing actions materially change dilution, providing context for the prospective equity component.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 66221
+  }
+}

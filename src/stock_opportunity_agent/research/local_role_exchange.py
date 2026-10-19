@@ -66,6 +66,7 @@ class LocalRoleExchange:
             "schema_version": "independent-local-role-exchange-v1",
             "max_calls": max_calls, "external_api_calls": 0,
         })
+        (self.root / "outbox").mkdir(exist_ok=True)
 
     def receive(self, request: Mapping[str, Any], *, accounting_tokens: int,
                 allow_dispatch: bool = True) -> tuple[str, dict[str, Any]]:

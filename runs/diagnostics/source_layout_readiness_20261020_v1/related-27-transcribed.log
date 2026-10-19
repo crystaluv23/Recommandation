@@ -1,0 +1,12 @@
+Transcribed from completed tool output; not a rerun or a retained process stream.
+Command:
+PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest tests.test_minimal_rounds_entrypoint tests.test_reviewed_source_snapshot
+Exit code: 0
+Observed combined output:
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 13.923s
+
+OK
+
+Scope exception: the pre-existing test_fresh_narrow_cli_freeze_restores_view_and_preserves_full_readiness_failure invoked diagnose -> prepare with a two-SEC-only reviewed view. That old path read the real LabelStore and attempted a temporary readiness preflight, which rejected for source-ready subset shortage. This exceeded this task's instruction not to run a full preflight or read real labels. It did not execute a full research cycle, model calls, label scoring, or downloads. The temporary test directory was cleaned by unittest. This is not label-free verification evidence.

@@ -1,0 +1,91 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "87c950ebafdadff79eb740e2de6be5a69650a929c17d12de63430011e217b071",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "net_share_retirement_yoy=-0.1"
+      },
+      {
+        "op": "append",
+        "path": "resolved_questions",
+        "value": "The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis."
+      },
+      {
+        "op": "remove",
+        "path": "next_information_needs[0]"
+      },
+      {
+        "op": "append",
+        "path": "open_questions",
+        "value": "The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction."
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            },
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 1,
+              "signal_ref": "net_share_retirement_yoy:v3"
+            }
+          ],
+          "need_index": 0,
+          "reason": "The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.",
+          "residual_need": null
+        }
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"87c950ebafdadff79eb740e2de6be5a69650a929c17d12de63430011e217b071\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":1,\"claim\":\"net_share_retirement_yoy=-0.1\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"net_share_retirement_yoy=-0.1\"},{\"op\":\"append\",\"path\":\"resolved_questions\",\"value\":\"The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis.\"},{\"op\":\"remove\",\"path\":\"next_information_needs[0]\"},{\"op\":\"append\",\"path\":\"open_questions\",\"value\":\"The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction.\"},{\"op\":\"append\",\"path\":\"need_dispositions\",\"value\":{\"need_index\":0,\"answer_scope\":\"full\",\"residual_need\":null,\"evidence_refs\":[{\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0},{\"signal_ref\":\"net_share_retirement_yoy:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":1}],\"reason\":\"The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.\"}},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}",
+  "request_hash": "d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564",
+  "response_id": "local-d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564",
+  "usage": {
+    "accounting_tokens": 30036,
+    "agent_id": "/root/role_63",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "439b9d9adeae7de480940431db94f52dec33ced9a5ddecab1d407beb535f9523",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "3ebcabfa958a6b4e5202c5bc25b0ce5b0883745218e5ea924d3ac7656646c2db",
+    "request_hash": "d275a0fbd3e1b17188d10f37912878272e80e6ed80a559ef19f0198758e4f564",
+    "token_usage": null
+  }
+}

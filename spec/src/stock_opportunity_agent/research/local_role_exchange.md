@@ -7,6 +7,9 @@ masked and budgeted the exact request. It pauses via `EvolutionControlFlow`
 until an independently authored raw response and coordinator-written receipt
 exist. `submit` binds actual agent identity, request, inbox bytes and raw output
 bytes without changing the answer. Resume verifies all bindings before parsing.
+The exchange creates its outbox directory before publishing pending work, so
+the isolated role can exclusively create its raw file without filesystem setup.
+Creating an empty directory does not reserve another request or author a response.
 The call ceiling is persisted and cannot be increased on resume. Inbox only
 contains exact model messages and output limits; no acceptance oracle is sent.
 

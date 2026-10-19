@@ -1,0 +1,24 @@
+{
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "expectations_hash": "97d477a2febac0bb5c8291d647986a118d12b5eae07957ae35591bc78cab0a83",
+  "fixed_denominator": 3,
+  "input_hash": "05dd47e7b02a7d8bfd2bb2c0a7851927d2de0fcdb5cba852d3cc5b19168772e6",
+  "limits": {
+    "max_case_llm_calls": 8,
+    "max_case_tokens": 512000,
+    "max_llm_signals_per_round": 2,
+    "max_request_tokens": 131072,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_external_api_calls": 0,
+  "max_local_calls": 24,
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "preflight_hash": "a5f7b1da33ab852ea4693ef2813fd825a2ed054e8f240accffe56a159655cf9d",
+  "profile": "synthetic_measurement",
+  "schema_version": "reviewed-direct-signal-measurement-stage-v1",
+  "scope": "synthetic seeded needs -> native routing/Signal/ownedReflect/consumers; no labels"
+}

@@ -226,6 +226,7 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
                     if company.is_dir():
                         files_by_company[company.name].extend(sorted(company.glob('*.json')))
     market_cache = {}
+    document_cache = {}
     exclusions = []
     baseline_comparisons = []
     selected = {}
@@ -252,9 +253,11 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
             if len(groups[group]) >= targets[group] or case.company_id in issuers:
                 continue
             if case.company_id not in market_cache:
-                market_cache[case.company_id] = tuple(RawInfoDocument.from_dict(_read(path))
-                    for path in files_by_company[case.company_id]
-                    if path.parent.parent.name in {'historical_price', 'market_data', 'price_daily', 'prices'})
+                document_cache[case.company_id] = tuple(RawInfoDocument.from_dict(_read(path))
+                    for path in files_by_company[case.company_id])
+                market_cache[case.company_id] = tuple(document
+                    for document in document_cache[case.company_id]
+                    if document.source_type in {'historical_price', 'market_data', 'price_daily', 'prices'})
             unproven = [document.document_id for document in market_cache[case.company_id]
                         if document.available_at <= case.prediction_time
                         and document.document_id in unproven_sources
@@ -278,9 +281,9 @@ def prepare(root, *, seed_registry: Path | None = None, slow_bootstrap_from: Pat
                 exclusions.append({'split': split, 'case_id': case.case_id,
                                    'reason': 'source_label_baseline_dates_mismatch'})
                 continue
-            has_narrative = any(path.parent.parent.name in {'sec_filing', 'filing', 'earnings_call', 'news', 'company_news'}
-                                and datetime.fromisoformat(_read(path)['available_at']) <= case.prediction_time
-                                for path in files_by_company[case.company_id])
+            has_narrative = any(document.source_type in {'sec_filing', 'filing', 'earnings_call', 'news', 'company_news'}
+                                and document.available_at <= case.prediction_time
+                                for document in document_cache[case.company_id])
             if not has_narrative:
                 exclusions.append({'split': split, 'case_id': case.case_id,
                                    'reason': 'pit_narrative_unavailable'})

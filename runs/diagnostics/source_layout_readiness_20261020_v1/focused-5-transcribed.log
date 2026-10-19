@@ -1,0 +1,12 @@
+Transcribed from completed tool output; not a rerun or a retained process stream.
+Command:
+PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest tests.test_minimal_rounds_entrypoint.MinimalPrepareSourceLayoutTests
+Exit code: 0
+Observed combined output:
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.535s
+
+OK
+
+Each prepare invocation has only one candidate anchor and the unchanged default 16-anchor target counts; successful source classification selects that single case, then expected shortage remains 15. Negative controls retain all 16 missing. These are not 16 actual cases or full-cohort acceptance. Approved/LabelStore dependencies are temporary stubs; native prepare, parsed document classification, real reviewed loader and baseline calculation run. No real LabelStore is read by these five tests. The real BMBL v4 view contains two admitted SEC documents plus one market document. An explicit old two-SEC-only view remains market-unavailable even beside an oracle fixture with real v4 price content.

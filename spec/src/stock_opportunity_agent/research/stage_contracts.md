@@ -140,6 +140,14 @@ formal benchmark or a paired comparison with the v154 cohort. A copied
 Registry avoids writes to historical evolution workspaces. Raw Info remains
 the shared global oracle outside this workspace; only source references and
 hashes are frozen locally.
+Preparation classifies market and narrative inputs by the parsed
+`RawInfoDocument.source_type`, using the existing allowed source sets. Directory
+names are storage layout, including reviewed snapshots' flat `documents/` view,
+and grant no source meaning or admission. The reviewed loader/binding, exact
+source review, availability cutoff and source/label baseline-date checks remain
+mandatory; relocation cannot hide a valid source or turn another source type
+into market/narrative evidence. Missing prices or narrative still exclude the
+case, preserving the original target counts and failure denominator.
 A hashed, source-specific integrity review can mark an exact immutable price
 document as issuer-identity-unproven. Before cohort freeze, cases requiring
 that document are ineligible and the cited reason is preserved; no numeric

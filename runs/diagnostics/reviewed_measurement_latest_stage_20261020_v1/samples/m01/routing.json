@@ -1,0 +1,27 @@
+{
+  "request_hashes": [
+    "73fe39d13d3df6a8125387618b52db67a5006a644f9e67fc3461ff4c33e9912c"
+  ],
+  "selections": [
+    {
+      "answer_scope": "full",
+      "applicability_hypothesis": "Applicable if disclosures available by 2025-02-01 provide fresh, comparable weighted-average share counts in the same unit; verify actual selected periods and basis. Admission does not establish predictive benefit.",
+      "context_tags": [
+        "comparable_financials"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": null,
+      "selection_reason": "Measures net share retirement as 1 minus current/prior-year weighted-average shares for the latest comparable pair; execution evidence must identify the actual periods and common share basis.",
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "target_need_indices": [
+        0
+      ]
+    }
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 66125
+  }
+}

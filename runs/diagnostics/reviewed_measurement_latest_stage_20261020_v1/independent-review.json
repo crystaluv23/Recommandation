@@ -1,0 +1,174 @@
+{
+  "status": "new_latest_pair_three_capability_controls_passed_with_explicit_limits",
+  "fixed_denominator": 3,
+  "latest_pair_scope_passed": 3,
+  "critical_semantic_errors_found": [],
+  "contract_and_material_scope": "This is the new latest-comparable-pair need over production-normalized synthetic CompanyFacts, not the predecessor requested-FY/basic controls or public-source admission. Synthetic issuer clones and constructed values are engineering controls, not three independent public issuers or research-gain observations.",
+  "sample_reviews": [
+    {
+      "sample_id": "m01",
+      "scope": "full",
+      "exact_version": "net_share_retirement_yoy:v3",
+      "measurement": {
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": -0.10000000000000009
+      },
+      "basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "input_unit": "shares",
+      "source_bindings": [
+        {
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+          "content_hash": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "available_at": "2024-02-02T00:00:00+00:00"
+        },
+        {
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413",
+          "content_hash": "c165b3538b9974137a78fe8e3149630e96f145cdd17aee46a8ad27e8c82c300b",
+          "available_at": "2025-01-21T00:00:00+00:00"
+        }
+      ],
+      "raw_routing_equals_accepted": true,
+      "raw_reflect_operations_exactly_reconstruct_accepted_state_and_disposition": true,
+      "one_routing_and_one_reflect_first_answer": true,
+      "consumer_state_and_disposition_exact": true,
+      "consumer_sha256": "7f1e0d4584250d69116a6f7f14d455ef3e0c0924794ffe0cb03e0898ae31c390"
+    },
+    {
+      "sample_id": "m02",
+      "scope": "partial",
+      "exact_version": "net_share_retirement_yoy:v3",
+      "measurement": {
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": -0.10000000000000009
+      },
+      "basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "input_unit": "shares",
+      "source_bindings": [
+        {
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+          "content_hash": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "available_at": "2024-02-02T00:00:00+00:00"
+        },
+        {
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413",
+          "content_hash": "c165b3538b9974137a78fe8e3149630e96f145cdd17aee46a8ad27e8c82c300b",
+          "available_at": "2025-01-21T00:00:00+00:00"
+        }
+      ],
+      "raw_routing_equals_accepted": true,
+      "raw_reflect_operations_exactly_reconstruct_accepted_state_and_disposition": true,
+      "one_routing_and_one_reflect_first_answer": true,
+      "consumer_state_and_disposition_exact": true,
+      "consumer_sha256": "9c23fd22336ba0167a3bcce20f8c32d13c8b609e8f2c2fc06524b7e3067e5be6"
+    },
+    {
+      "sample_id": "m03",
+      "scope": "full",
+      "exact_version": "net_share_retirement_yoy:v2",
+      "measurement": {
+        "formula": "1 - current weighted-average shares / prior-year shares",
+        "period": {
+          "end": "2024-12-31",
+          "start": "2024-01-01"
+        },
+        "unit": "fraction",
+        "value": 0.09999999999999998
+      },
+      "basis_tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+      "input_unit": "shares",
+      "source_bindings": [
+        {
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+          "content_hash": "319c314d039a54ac230504353969c32e82f66398a5ccf8b3b9e6a2b75cf01822",
+          "available_at": "2024-02-02T00:00:00+00:00"
+        },
+        {
+          "document_id": "secfacts:0000000001:0000000001-25-000001:3db5cbfd6c9d0cb5",
+          "content_hash": "3db5cbfd6c9d0cb528da2b258673225e09519937cd008edade7bb3e8ae3e8b24",
+          "available_at": "2025-01-21T00:00:00+00:00"
+        }
+      ],
+      "raw_routing_equals_accepted": true,
+      "raw_reflect_operations_exactly_reconstruct_accepted_state_and_disposition": true,
+      "one_routing_and_one_reflect_first_answer": true,
+      "consumer_state_and_disposition_exact": true,
+      "consumer_sha256": "e53d3ade7b937ace4bbd1023dd11f0695cb9ebcebcdb3d3b1ebcec03bb609b9d"
+    }
+  ],
+  "material_semantics": {
+    "actual_periods": "Current annual duration2024-01-01..2024-12-31 and prior comparable2023-01-01..2023-12-31. Both actual typed evidence rows and Reflect wire identify Basic tag and input shares unit.",
+    "point_in_time": "Actual normalized availability2025-01-21 and2024-02-02, both before2025-02-01 cutoff. Availability is not falsely reused from the earlier legacy Jan20 fixture.",
+    "m01_v3": "Full scope is supported:1-110/100=-0.1 fraction, negative net retirement means expansion of the measured weighted-average basic share basis, not stock-price direction. Actual period/basis also persisted in disposition reason.",
+    "m02_v3": "Partial is supported: same -0.1 weighted-average result. The single cutoff-bounded residual retains period-end common-share change and prospective net equity dilution verbatim across raw mirror/disposition/accepted state/final/posthoc. Those facts are not answered by this measurement; financing domain_unavailable is correctly treated as no answer evidence, not absent/economically negative financing.",
+    "m03_archived_v2": "Full scope is supported:1-90/100=+0.1 fraction, positive net retirement. It remains exactv2 and weighted-average basic basis, not an ending-share variant.",
+    "ending_distractor": "Both typed source documents also contain instant CommonStockSharesOutstanding200/50; no role/result substitutes their +0.75 ratio for the weighted-average retirement.",
+    "contribution": "All role conclusions distinguish technical admission from unverified predictive contribution; no stock-direction, probability or independent-gain claim is established."
+  },
+  "first_answers_and_native_validation": {
+    "physical_roles": 6,
+    "agent_ids": [
+      "/root/role_60",
+      "/root/role_61",
+      "/root/role_62",
+      "/root/role_63",
+      "/root/role_64",
+      "/root/role_65"
+    ],
+    "typed_correction_requests": 0,
+    "raw_to_accepted": "Each route is the exact original selection after ordinary typed null-field serialization. Each Reflect original patch reconstructs accepted state byte-for-field; disposition metadata differs only by runtime prior-state hash and prior_need augmentation. No authored text substitution, deletion, quarantine or semantic salvage is observed in accepted content.",
+    "empty_validation_events_limit": "The callback does not record this family, so empty validation event arrays are not proof of no fallback. The above conclusion uses original raw operations versus accepted products and exact request traces, rather than event absence.",
+    "transport_incident": "Role60 initial parent-directory write failed before creating bytes; the same agent original response was written successfully once and submitted. This is a recorded transport write incident, not typed semantic correction or a second answer."
+  },
+  "consumer_and_restore": {
+    "actual_consumers": "Production assembler and deterministic posthoc compactor; no actual Predictor/Posthoc model execution is claimed.",
+    "runtime_stop": "All samples actual forced single-round finalization retain finalized separately from max_signal_rounds trigger; a finalized measurement stage does not imply complete research.",
+    "original_need_binding_checked": true,
+    "exact_versions_and_measurement_metadata_preserved": true,
+    "recorded_single_completed_restore": true,
+    "before_after_maps_equal": true,
+    "current_files_rehashed_equal_to_recorded_map": 63,
+    "new_restore_dispatches": 0,
+    "logical_reservation_units": 289202,
+    "actual_host_tokens": null,
+    "actual_host_cost": null
+  },
+  "predecessor_preserved": {
+    "original_fixed_FY_basic_scope_passed": 0,
+    "original_denominator": 3,
+    "oracle_sha256": "67a35b52974556a3ba07ea0097a6b6ea6bd520cec9f0541d205c253290a80303",
+    "rule": "The old batch/raw/guard failures remain unchanged and are not replaced or reclassified by this latest-pair success."
+  },
+  "narrow_closure": "This new3-case synthetic latest-pair batch demonstrates fresh exact-version full/partial/full routing and actual typed-source-based measurement adoption, correct residual ownership, and persisted deterministic consumer fidelity.",
+  "not_closed": [
+    "Arbitrary requested fiscal-period/basic-tag selector capability",
+    "Legacy CompanyFacts child-row context restoration in frozen predecessors",
+    "General F4/F7, all literal/whole-word/ownership guard cases, or overallMVP",
+    "Fresh execution of F7 long-residual typed mirror repair: this batch used no typed corrections",
+    "Public source authenticity/qualification or cross-issuer independent generalization",
+    "Predictor/Posthoc/Critic/Slow behavior, completedFast/Slow trajectory, prediction accuracy or independent research benefit"
+  ],
+  "reviewer_actions": {
+    "formal_resume": 0,
+    "model_dispatch_submission": 0,
+    "external_network_or_LLM": 0,
+    "original_code_answer_edits": 0,
+    "label_reads": 0
+  },
+  "bindings": {
+    "code_commit": "6e1f193a6765adcf07ef20cf2d47c03118072f86",
+    "manifest_hash": "9843fad70ec3178ebc652e634450d4c84673b2f6402ecf1de9fabc69ded8ff75",
+    "execution_summary_sha256": "d39c2ba9030a1c4a5e3c621f218b80faef6b684a1bd3fa4bfffdfa2f66cd12ef",
+    "frozen_expectations_sha256": "5aff37a83dbaba69eeae6e5b6bbca9e32f77e0fc27c395b316c4160c6b7c21d8",
+    "input_sha256": "aac7581f1a381338282da198d9028f5c09ddff4cae9125658c1b46614abb41da"
+  }
+}

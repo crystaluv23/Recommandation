@@ -1,0 +1,474 @@
+{
+  "final_context": {
+    "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 0,
+        "deferred_projections": 0,
+        "included_cards": 0
+      },
+      "projection_cards": [],
+      "source_index": []
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413",
+          "exact_span": "{\"description\":null,\"end\":\"2024-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":110}",
+          "timestamp": "2025-01-21T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "evidence": {
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+          "exact_span": "{\"description\":null,\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":null,\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100}",
+          "timestamp": "2024-02-02T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ],
+    "computed_metrics": [],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": false,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "net_share_retirement_yoy=-0.1"
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [],
+      "open_questions": [
+        "The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction."
+      ],
+      "resolved_questions": [
+        "The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        },
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-02-01T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "input_evidence_available_at": [
+                "2025-01-21T00:00:00+00:00",
+                "2024-02-02T00:00:00+00:00"
+              ],
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true,
+                  "deferred_observation_count": 0,
+                  "numeric_measurement": {
+                    "categorical_state": "negative",
+                    "display": {
+                      "unit": "%",
+                      "value": -10.000000000000009
+                    },
+                    "formula": "1 - current weighted-average shares / prior-year shares",
+                    "numeric_sign": "negative",
+                    "period": {
+                      "end": "2024-12-31",
+                      "start": "2024-01-01"
+                    },
+                    "unit": "fraction",
+                    "value": -0.10000000000000009
+                  },
+                  "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+                  "source_observations": [
+                    {
+                      "end": "2024-12-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 0,
+                      "start": "2024-01-01",
+                      "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+                      "unit": "shares",
+                      "value": 110
+                    },
+                    {
+                      "end": "2023-12-31",
+                      "evidence_group": "supporting",
+                      "evidence_index": 1,
+                      "start": "2023-01-01",
+                      "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+                      "unit": "shares",
+                      "value": 100
+                    }
+                  ]
+                },
+                "summary": "net_share_retirement_yoy=-0.1"
+              },
+              "research_status": {
+                "admission_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "net_share_retirement_yoy:v3",
+              "state": {
+                "confidence": 1.0,
+                "value": "negative"
+              },
+              "status": {
+                "coverage": "sufficient"
+              }
+            }
+          ],
+          "signal_calls": 1
+        },
+        "selected_signals": [
+          "net_share_retirement_yoy:v3"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "net_share_retirement_yoy=-0.1"
+            ],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": [
+              "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?"
+            ]
+          },
+          "open_questions": {
+            "added": [
+              "The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction."
+            ],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [
+              "The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis."
+            ],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "net_share_retirement_yoy=-0.1",
+                "key": "signal:net_share_retirement_yoy:v3:supporting:0"
+              },
+              {
+                "claim": "net_share_retirement_yoy=-0.1",
+                "key": "signal:net_share_retirement_yoy:v3:supporting:1"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "full",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                },
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 1,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                }
+              ],
+              "need_index": 0,
+              "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+              "reason": "The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.",
+              "residual_need": null
+            }
+          ],
+          "prior_state_hash": "bd40c3b065d7535fe8e068c9af8e383928bf93604c25b3d4be6cfdadef35698e"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "posthoc": {
+    "basic_info_source_index": [],
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "secfacts:0000000001:0000000001-25-000001:c165b3538b997413",
+          "exact_span": "{\"description\":null,\"end\":\"2024-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2024,\"frame\":null,\"label\":null,\"start\":\"2024-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":110}",
+          "timestamp": "2025-01-21T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "evidence": {
+          "document_id": "secfacts:0000000001:0000000001-24-000001:319c314d039a54ac",
+          "exact_span": "{\"description\":null,\"end\":\"2023-12-31\",\"fiscal_period\":\"FY\",\"fiscal_year\":2023,\"frame\":null,\"label\":null,\"start\":\"2023-01-01\",\"tag\":\"WeightedAverageNumberOfSharesOutstandingBasic\",\"taxonomy\":\"us-gaap\",\"unit\":\"shares\",\"value\":100}",
+          "timestamp": "2024-02-02T00:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 1,
+        "signal_ref": "net_share_retirement_yoy:v3"
+      }
+    ],
+    "computed_metrics": [],
+    "context_contract": {
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "presentation_target_exceeded": false,
+      "target_chars": 24000
+    },
+    "data_gaps": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "net_share_retirement_yoy=-0.1"
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [],
+      "open_questions": [
+        "The admitted share-retirement measurement has unverified predictive contribution; its negative categorical state does not establish stock-price direction."
+      ],
+      "resolved_questions": [
+        "The latest comparable annual weighted-average basic share pair establishes negative net share retirement, indicating share expansion on this measurement basis."
+      ],
+      "supporting_evidence": [
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        },
+        {
+          "claim": "net_share_retirement_yoy=-0.1",
+          "evidence_group": "supporting",
+          "evidence_index": 1,
+          "kind": "signal",
+          "signal_ref": "net_share_retirement_yoy:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "reason": "fewer_than_5_source_market_bars",
+      "status": "unavailable"
+    },
+    "prediction_time": "2025-02-01T00:00:00+00:00",
+    "runtime_termination": {
+      "phase": "prediction_ready",
+      "stop_reason": "finalized",
+      "termination_trigger": "max_signal_rounds"
+    },
+    "signal_results": [
+      {
+        "execution": {
+          "status": "success"
+        },
+        "input_evidence_available_at": [
+          "2025-01-21T00:00:00+00:00",
+          "2024-02-02T00:00:00+00:00"
+        ],
+        "interpretation": {
+          "measurement_context": {
+            "categorical_value_is_not_stock_direction": true,
+            "deferred_observation_count": 0,
+            "numeric_measurement": {
+              "categorical_state": "negative",
+              "display": {
+                "unit": "%",
+                "value": -10.000000000000009
+              },
+              "formula": "1 - current weighted-average shares / prior-year shares",
+              "numeric_sign": "negative",
+              "period": {
+                "end": "2024-12-31",
+                "start": "2024-01-01"
+              },
+              "unit": "fraction",
+              "value": -0.10000000000000009
+            },
+            "period_rule": "Use the exact reported start/end duration; fiscal-period labels do not turn a cumulative duration into one quarter. Keep a computed return with its own dated price anchors.",
+            "source_observations": [
+              {
+                "end": "2024-12-31",
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "start": "2024-01-01",
+                "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+                "unit": "shares",
+                "value": 110
+              },
+              {
+                "end": "2023-12-31",
+                "evidence_group": "supporting",
+                "evidence_index": 1,
+                "start": "2023-01-01",
+                "tag": "WeightedAverageNumberOfSharesOutstandingBasic",
+                "unit": "shares",
+                "value": 100
+              }
+            ]
+          },
+          "summary": "net_share_retirement_yoy=-0.1"
+        },
+        "measurement": {
+          "formula": "1 - current weighted-average shares / prior-year shares",
+          "period": {
+            "end": "2024-12-31",
+            "start": "2024-01-01"
+          },
+          "unit": "fraction",
+          "value": -0.10000000000000009
+        },
+        "research_status": {
+          "admission_key": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "net_share_retirement_yoy",
+        "signal_ref": "net_share_retirement_yoy:v3",
+        "state": {
+          "confidence": 1.0,
+          "value": "negative"
+        },
+        "status": {
+          "coverage": "sufficient"
+        },
+        "version": 3
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "full",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                },
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 1,
+                  "signal_ref": "net_share_retirement_yoy:v3"
+                }
+              ],
+              "need_index": 0,
+              "prior_need": "What is net share retirement for the latest comparable year-over-year weighted-average share pair, with actual periods and share basis, using only disclosures available by 2025-02-01T00:00:00+00:00?",
+              "reason": "The executed measurement answers the requested latest comparable pair using weighted-average basic common shares for 2024-01-01 through 2024-12-31 and 2023-01-01 through 2023-12-31. Both supporting observations were available before the prediction cutoff. The adopted deterministic result answers the narrow measurement need; technical admission does not establish predictive benefit.",
+              "residual_need": null
+            }
+          ],
+          "prior_state_hash": "bd40c3b065d7535fe8e068c9af8e383928bf93604c25b3d4be6cfdadef35698e"
+        },
+        "round": 1
+      }
+    ]
+  }
+}

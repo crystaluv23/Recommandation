@@ -1,0 +1,37 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "selections": [
+      {
+        "answer_scope": "full",
+        "applicability_hypothesis": "Retrieve comparable weighted-average share disclosures available by 2025-02-01T00:00:00+00:00; verify actual pair periods and basis in executed evidence. Missing or stale comparable facts may yield unavailable.",
+        "context_tags": [
+          "comparable_financials"
+        ],
+        "expected_role": "primary",
+        "reason_code": "answer_need",
+        "residual_need": null,
+        "selection_reason": "Measures 1 - current/prior-year weighted-average shares for the latest comparable pair, matching the requested net share retirement; execution must identify the actual periods and share basis.",
+        "signal_ref": "net_share_retirement_yoy:v2",
+        "target_need_indices": [
+          0
+        ]
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"selections\":[{\"signal_ref\":\"net_share_retirement_yoy:v2\",\"reason_code\":\"answer_need\",\"selection_reason\":\"Measures 1 - current/prior-year weighted-average shares for the latest comparable pair, matching the requested net share retirement; execution must identify the actual periods and share basis.\",\"applicability_hypothesis\":\"Retrieve comparable weighted-average share disclosures available by 2025-02-01T00:00:00+00:00; verify actual pair periods and basis in executed evidence. Missing or stale comparable facts may yield unavailable.\",\"expected_role\":\"primary\",\"target_need_indices\":[0],\"answer_scope\":\"full\",\"residual_need\":null,\"context_tags\":[\"comparable_financials\"]}]}\n",
+  "request_hash": "f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29",
+  "response_id": "local-f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29",
+  "usage": {
+    "accounting_tokens": 65263,
+    "agent_id": "/root/role_62",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "f3b16e492284831bffe7da5748e2f9a6610cde68bfa474a9c3d034c8491c5a4e",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "53ce0be27b448ec235faacdb42d564199eabc2334dbbdfe29ef490a5f41f2b43",
+    "request_hash": "f2109da3f962a09a76c5c1097fe50b1dd1fcea9222504cec38c51e4830813f29",
+    "token_usage": null
+  }
+}
