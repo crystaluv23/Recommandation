@@ -5,7 +5,7 @@ from __future__ import annotations
 from stock_opportunity_agent.research.basic_info_orientation import compile_basic_info_requests
 
 import argparse
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime
 import fcntl
 import json
@@ -24,7 +24,7 @@ from stock_opportunity_agent.data.resolution import EvidenceResolver
 from stock_opportunity_agent.llm import get_model
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.research.evolution_core import (
-    AgentStep, EvolutionControlFlow, InformationPlan, RuntimeLimits, default_information_plan,
+    AgentStep, EvolutionControlFlow, InformationPlan, RuntimeLimits, RuntimeBudgetExceeded, default_information_plan,
     execute_information_plan, project_basic_info_bundle, runtime_termination_view,
 )
 from stock_opportunity_agent.research.evolution_control import _parallel_decision_roles
@@ -47,7 +47,8 @@ class BlindPrefixBoundaryReached(EvolutionControlFlow):
 
 def _code_bindings():
     return [binding(path) for path in sorted([*(REPO/'src').rglob('*.py'),Path(__file__),
-        REPO/'scripts/run_reviewed_signal_stage.py', REPO/'scripts/diagnose_executed_answer_scope.py',
+        REPO/'scripts/run_reviewed_signal_stage.py', REPO/'scripts/run_reviewed_posthoc_stage.py',
+        REPO/'scripts/diagnose_executed_answer_scope.py',
         REPO/'spec/scripts/run_reviewed_fast_prefix.md'])]
 
 
@@ -59,15 +60,85 @@ def _bootstrap(store, sample):
     return {'bundle':bundle.to_dict(),'model_context':model,'lineage':lineage}
 
 
-def prepare(root: Path, expectations: Path, *, parent_root: Path | None = None, parent_commit: str | None = None):
+def _plan_source_files(root):
+    return [binding(path) for path in sorted(root.rglob('*')) if path.is_file()
+        and path.name not in {'.orientation.lock','.dispatch.lock'}]
+
+
+def _accepted_plan_source(record: Path, commit: str):
+    """Validate a completed historical orientation Plan without resuming it."""
+    try:
+        from run_reviewed_posthoc_stage import _historical_code_check, _verified_responses
+        record=record.resolve(); source=record.parents[2]
+        if record!=source/'samples/p01/plan.json':
+            raise ValidationError('Plan source must be the completed p01 artifact')
+        manifest=read_json(source/'manifest.json'); digest=manifest.pop('manifest_hash')
+        completion=read_json(source/'completion.json'); completed_hash=completion.pop('completion_hash')
+        contract=read_json(source/'contract.json')
+        immutable=[row for row in _plan_source_files(source) if Path(row['path']).name not in
+            {'progress.json','completion.json','execution_summary.json','independent-review.json'}]
+        if (canonical_json_hash(manifest)!=digest or canonical_json_hash(completion)!=completed_hash
+            or completion['manifest_hash']!=digest or completion['immutable_artifacts']!=immutable
+            or canonical_json_hash(contract)!=manifest['contract_hash']
+            or contract.get('schema_version')!='reviewed-native-orientation-stage-v1'
+            or canonical_json_hash(read_json(source/'inputs.json'))!=contract['input_hash']
+            or canonical_json_hash(read_json(source/'expectations.json'))!=contract['expectations_hash']):
+            raise ValidationError('accepted Plan source checkpoint changed or incomplete')
+        outcomes=completion['result'].get('outcomes',[])
+        if not any(row.get('sample_id')=='p01' and row.get('status')=='accepted_requires_independent_review' for row in outcomes):
+            raise ValidationError('Plan source has no accepted p01')
+        review=read_json(source/'independent-review.json')
+        if review.get('status')!='declared_narrow_semantic_and_exact_consumer_scope_passed_with_guard_false_positive_preserved':
+            raise ValidationError('Plan source lacks the independent accepted review')
+        _historical_code_check(manifest['code_files'],commit)
+        external=manifest['originals']+manifest['registry_files']
+        for row in external: binding(Path(row['path']),row['sha256'])
+        _verified_responses(source,contract['max_local_calls'])
+        saved=read_json(record); plan=InformationPlan.from_dict(saved['plan'])
+        if plan.to_dict()!=saved['plan']: raise ValidationError('accepted Plan is not canonical exact input')
+        return plan.to_dict(), {'root':str(source),'commit':commit,'manifest_hash':digest,
+            'plan_record':binding(record),'completion':binding(source/'completion.json'),
+            'independent_review':binding(source/'independent-review.json'),
+            'files':_plan_source_files(source),'external_files':external,
+            'no_role_response_or_cache_inheritance':True}
+    except ValidationError:
+        raise
+    except (OSError, KeyError, TypeError, ValueError, IndexError) as exc:
+        raise ValidationError('accepted Plan source is unreadable or incomplete') from exc
+
+
+def _request_progress(root, contract):
+    """Enforce the frozen single-request reservation before any receive/cache."""
+    def progress(event):
+        if event.get('event_type')!='request_ready': return
+        request=read_json(Path(event['request_path']))['request']
+        reservation=len(json.dumps(request['messages'],ensure_ascii=False,sort_keys=True,
+            separators=(',',':')).encode('utf-8'))+request['max_output_tokens']
+        if reservation>contract['limits']['max_request_tokens']:
+            raise RuntimeBudgetExceeded('prefix single request exceeds frozen reservation ceiling')
+    return progress
+
+
+def prepare(root: Path, expectations: Path, *, parent_root: Path | None = None, parent_commit: str | None = None,
+            plan_record: Path | None = None, plan_commit: str | None = None, runtime_max_tokens: int | None = None):
     """Freeze exact native inputs and an isolated predeclared acceptance oracle."""
     if root.exists(): raise ValidationError('prefix destination must be new')
+    expected=read_json(expectations)
+    explicit=any(value is not None for value in (plan_record,plan_commit,runtime_max_tokens))
+    if explicit and (plan_record is None or plan_commit is None or type(runtime_max_tokens) is not int
+        or parent_root is not None or parent_commit is not None):
+        raise ValidationError('fresh accepted-Plan mode needs record/commit/integer budget and no parent')
+    if not explicit and ('plan_source' in expected.get('sample',{}) or 'new_batch_limits' in expected):
+        raise ValidationError('fresh oracle requires explicit Plan record/commit/budget controls')
+    plan=default_information_plan().to_dict(); plan_source=None; runtime_limits=LIMITS
+    if explicit:
+        plan,plan_source=_accepted_plan_source(plan_record,plan_commit)
+        runtime_limits=replace(LIMITS,max_tokens=runtime_max_tokens)
     source=read_json(SOURCE_INPUTS)['reviewed_source_snapshot']
     store=open_raw_info_store(source['root'],reviewed_snapshot=source)
     registry=SignalRegistry(REGISTRY).freeze()
     sample={'sample_id':'s01','company_id':COMPANY,'identity':IDENTITY,
-        'prediction_time':'2025-09-30T00:00:00+00:00','plan':default_information_plan().to_dict()}
-    expected=read_json(expectations)
+        'prediction_time':'2025-09-30T00:00:00+00:00','plan':plan}
     if expected.get('fixed_denominator')!=1 or expected.get('sample',{}).get('sample_id')!='s01':
         raise ValidationError('independent oracle must retain one neutral sample')
     inputs={'sample':sample,'reviewed_source_snapshot':source,'registry_root':str(REGISTRY),
@@ -77,13 +148,33 @@ def prepare(root: Path, expectations: Path, *, parent_root: Path | None = None, 
     contract={'schema_version':'reviewed-native-blind-prefix-v1','backend':'independent-subagent',
         'scope':'native execute_information_plan through durable prediction_sink, before outcome read',
         'fixed_denominator':1,'max_local_calls':32,'parallel_jev_decisions':False,
-        'runtime_limits':LIMITS.to_dict(),'external_llm_calls_authorized':0,'readonly_data_requests_authorized':0,
+        'runtime_limits':runtime_limits.to_dict(),'external_llm_calls_authorized':0,'readonly_data_requests_authorized':0,
         'actual_model_version':None,'model_selection':'inherited_host_default_precise_version_unknown',
         'actual_host_tokens':None,'actual_host_cost':None,
         'cost_guard_note':'native accounting guard is not paid authorization; actual host cost unknown',
         'input_hash':canonical_json_hash(inputs),'expectations_hash':canonical_json_hash(expected),
         'preflight_hash':canonical_json_hash(preflight),'limits':{'max_request_tokens':131072,
             'max_structured_corrections':1,'max_local_role_calls':32,'structured_reasoning_token_reserve':0}}
+    if plan_source is not None:
+        advertised=expected.get('sample',{}).get('plan_source',{})
+        actual={'path':plan_source['plan_record']['path'],'sha256':plan_source['plan_record']['sha256'],
+            'commit':plan_source['commit'],
+            'completion':plan_source['completion']['path'],'completion_sha256':plan_source['completion']['sha256'],
+            'independent_review':plan_source['independent_review']['path'],
+            'independent_review_sha256':plan_source['independent_review']['sha256']}
+        advertised_limits=expected.get('new_batch_limits',{})
+        required={'runtime_max_tokens':runtime_limits.max_tokens,'runtime_max_llm_calls':runtime_limits.max_llm_calls,
+            'finalization_token_reserve':runtime_limits.finalization_token_reserve,
+            'max_signal_rounds':runtime_limits.max_signal_rounds,'max_signal_calls':runtime_limits.max_signal_calls,
+            'max_signals_per_round':runtime_limits.max_signals_per_round,
+            'max_llm_signals_per_round':runtime_limits.max_llm_signals_per_round,
+            'max_local_role_calls':32,'max_request_tokens':131072,'max_structured_corrections_per_native_request':1,
+            'external_llm_calls':0,'readonly_data_requests':0,'actual_host_tokens':None,'actual_host_cost':None}
+        if advertised!=actual or advertised_limits!=required:
+            raise ValidationError('fresh Plan source or budgets differ from the predeclared oracle')
+        inputs['accepted_plan_source']=plan_source
+        contract['input_hash']=canonical_json_hash(inputs)
+        contract['fresh_accepted_plan_no_inheritance']=True
     manifest={'schema_version':'reviewed-native-blind-prefix-freeze-v1','contract_hash':canonical_json_hash(contract),
         'code_files':_code_bindings(),'originals':[binding(SOURCE_INPUTS),binding(expectations)],
         'registry_files':[binding(path) for path in sorted(REGISTRY.rglob('*')) if path.is_file()],
@@ -123,6 +214,14 @@ def _verify(root):
         or canonical_json_hash(read_json(root/'expectations.json'))!=contract['expectations_hash']
         or canonical_json_hash(read_json(root/'preflight.json'))!=contract['preflight_hash']):
         raise ValidationError('prefix frozen input/contract/oracle/preflight changed')
+    if 'accepted_plan_source' in inputs:
+        origin=inputs['accepted_plan_source']
+        if ('continuation' in manifest or not contract.get('fresh_accepted_plan_no_inheritance')
+            or _plan_source_files(Path(origin['root']))!=origin['files']):
+            raise ValidationError('fresh accepted Plan source inventory changed or inherited')
+        for row in origin['files']+origin['external_files']: binding(Path(row['path']),row['sha256'])
+        if read_json(Path(origin['plan_record']['path']))['plan']!=inputs['sample']['plan']:
+            raise ValidationError('prefix Plan differs from exact accepted source')
     source=inputs['reviewed_source_snapshot']
     store=open_raw_info_store(source['root'],reviewed_snapshot=source)
     registry=SignalRegistry(inputs['registry_root']).freeze()
@@ -297,7 +396,7 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
     client=StructuredRoleClient(registration=get_model('independent-subagent'),contract=StageContract(contract),
         workspace=root,local_role_exchange=exchange,
         ledger=ExternalAttemptLedger(root/'unused_external_attempts.json',max_attempts=1,max_total_cost=0.01),
-        allow_external=False,environ={})
+        allow_external=False,environ={},on_progress=_request_progress(root,contract))
     controller=LLMResearchController(client)
     selector,predictor=_parallel_decision_roles(client,parallel_jev_decisions=False,environ={})
     runner=StructuredLLMSignalRunner(client)
@@ -340,6 +439,12 @@ def _execute(root,manifest_hash,inputs,contract,store,registry):
             reflect_executed=any((root/'observations').glob('reflect_*.json')))
         result['independent_receipts']=len(list((root/'exchange/receipts').glob('*.json')))
         result['new_role_receipts']=result['independent_receipts']-result['historical_reused_role_responses']
+        if contract.get('fresh_accepted_plan_no_inheritance'):
+            answered,_undispatched=_request_inventory(root)
+            result['answered_model_requests']=[{'request_hash':row['request_hash'],
+                'stage':row['request']['stage']} for row in answered]
+            for label,stage in (('apply','llm_signal_batch_execute'),('reflect','research_controller_reflect')):
+                result[label+'_model_exercised']=any(row['request']['stage']==stage for row in answered)
         completion={'manifest_hash':manifest_hash,'result':result,'immutable_artifacts':_immutable_artifacts(root)}
         completion['completion_hash']=canonical_json_hash(completion)
         atomic_write_json(root/'completion.json',completion)
@@ -372,14 +477,20 @@ def main():
     parser.add_argument('--root',type=Path,required=True); parser.add_argument('--expectations',type=Path)
     parser.add_argument('--request-hash'); parser.add_argument('--agent-id')
     parser.add_argument('--parent-root',type=Path); parser.add_argument('--parent-commit')
+    parser.add_argument('--plan-record',type=Path); parser.add_argument('--plan-commit')
+    parser.add_argument('--runtime-max-tokens',type=int)
     modes=parser.add_mutually_exclusive_group(required=True)
     modes.add_argument('--prepare',action='store_true'); modes.add_argument('--resume',action='store_true')
     modes.add_argument('--submit',action='store_true'); args=parser.parse_args(); root=args.root.resolve()
+    if not args.prepare and any(value is not None for value in (args.plan_record,args.plan_commit,args.runtime_max_tokens,args.parent_root,args.parent_commit)):
+        parser.error('Plan, runtime budget and parent controls are prepare-only')
     def forbidden(*_args,**_kwargs): raise AssertionError('network forbidden in reviewed blind prefix')
     socket.socket=forbidden
     if args.prepare:
         if args.expectations is None: parser.error('--prepare requires --expectations')
-        value=prepare(root,args.expectations.resolve(),parent_root=args.parent_root,parent_commit=args.parent_commit)
+        value=prepare(root,args.expectations.resolve(),parent_root=args.parent_root,parent_commit=args.parent_commit,
+            plan_record=args.plan_record.resolve() if args.plan_record else None,plan_commit=args.plan_commit,
+            runtime_max_tokens=args.runtime_max_tokens)
     elif args.submit:
         if not args.request_hash or not args.agent_id: parser.error('--submit requires request hash and actual agent id')
         _digest,_inputs,contract,_store,_registry=_verify(root)

@@ -762,3 +762,5 @@
 - 2026-10-20：native orientation正式1proposer+3H_init，5实际隔离角色含唯一p01纠错；首答明确without-deciding禁令被方向guard误拒，原失败保留且不归模型语义失败。accepted Plan精确进入h01、三初始状态/18引文/15needs独立窄审通过，42文件恢复全等/0新派发；逻辑reservation199611，host费用未知。未执行Signal/后继/标签或Fast/Slow，完整F1/F2/F3/MVP仍open；下一批仅修局部否定scope家族。
 
 - 2026-10-20：在orientation证据提交后局部修H_reflect方向否定scope，合法without五动词从句等长mask，后续独立finite/contrast及nested双重否定仍拒；普通do-not后then决策与简单复数漏放一并收敛，共享prohibition/ontology其他consumer不改。旧red和原41首拒保留，完整原答nativeproposer离线回放直接接受且字段原字；204相关8.402s通过，不冒称fresh模型或改旧冻结恢复。
+
+- 2026-10-20: Extended the existing blind-prefix prepare path for an exact completed p01 policy and separate finite512k case budget, with no response/cache inheritance. Historical Git/source checkpoint admission and request_ready131072 hard guard are bound; legacy modes remain. Initial wrapper-shape prepare failure retained, final zero-answer preflight and23 focused checks pass. Actual apply/Reflect connection remains open; no full Fast/Slow run.

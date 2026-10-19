@@ -1,0 +1,7 @@
+{
+  "error_type": "KeyError",
+  "error": "plan_id",
+  "cause": "Accepted plan record is an existing plan/request_hashes wrapper, not a bare InformationPlan. No role or runtime executed.",
+  "script_sha256": "d379d69fe4f97fb61965e307dba3084ae0f0461913ca181947de605919d5b039",
+  "failing_statement": "plan=InformationPlan.from_dict(read_json(record))"
+}

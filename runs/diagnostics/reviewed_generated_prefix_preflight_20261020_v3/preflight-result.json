@@ -1,0 +1,41 @@
+{
+  "answers": 0,
+  "code_files": 99,
+  "first_request_reservation_units": 60299,
+  "immutable_files": 9,
+  "inbox": 1,
+  "old_role_response_or_cache_inherited": false,
+  "prepared": {
+    "fixed_denominator": 1,
+    "manifest_hash": "f3e8846189038deee84036cc7288437a436e70bf878171474a862cb3d76066e2",
+    "role_answers": 0
+  },
+  "receipts": 0,
+  "repeat_immutable_equal": true,
+  "requests": 1,
+  "result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "completed_fast_round": false,
+    "completed_trajectory": false,
+    "engineering_mvp_closed": false,
+    "external_llm_calls": 0,
+    "fixed_denominator": 1,
+    "historical_reused_role_responses": 0,
+    "independent_receipts": 0,
+    "new_role_receipts": 0,
+    "pending": [
+      {
+        "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/stage/exchange/inbox/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.json",
+        "inbox_sha256": "cc78c71a027e615453f9bdca53378b9157d5b3830d119efa98aa5f08a9d7ad40",
+        "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/stage/exchange/outbox/e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578.txt",
+        "request_hash": "e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578",
+        "sample_id": "s01",
+        "stage": "research_controller_initialize"
+      }
+    ],
+    "readonly_data_requests": 0,
+    "sample_id": "s01",
+    "status": "pending_independent_role"
+  }
+}

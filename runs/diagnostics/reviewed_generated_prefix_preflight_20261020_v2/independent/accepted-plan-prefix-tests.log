@@ -1,0 +1,29 @@
+{
+  "head": "222104ad065bc8f58556973aa9b1696279e33086",
+  "files_sha256_before": {
+    "tests/test_reviewed_fast_prefix.py": "6cbb105f29af83911b8991a816ed49a4c79b06363b1abf7d662e8f86bfc8978d",
+    "scripts/run_reviewed_fast_prefix.py": "e5fc5b44867b3ae17ad55aaf4cf2a1203e077b6a159fb12868f7932b578e2b6d"
+  },
+  "files_sha256_after": {
+    "tests/test_reviewed_fast_prefix.py": "6cbb105f29af83911b8991a816ed49a4c79b06363b1abf7d662e8f86bfc8978d",
+    "scripts/run_reviewed_fast_prefix.py": "e5fc5b44867b3ae17ad55aaf4cf2a1203e077b6a159fb12868f7932b578e2b6d"
+  },
+  "source_test_unchanged_during_test": true,
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_fast_prefix"
+  ],
+  "returncode": 0,
+  "external_llm_calls": 0,
+  "new_data_requests": 0,
+  "production_stage_not_resumed": true,
+  "limitations": "Positive provenance admission is explicitly mocked in new transport tests; real incomplete-source refusal is tested. This does not qualify a real source or establish new model behavior."
+}
+
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 44.430s
+
+OK

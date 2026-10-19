@@ -1,0 +1,29 @@
+{
+  "head": "222104ad065bc8f58556973aa9b1696279e33086",
+  "files_sha256_before": {
+    "tests/test_reviewed_fast_prefix.py": "4516c3960081b77b37d969db75732e0e8f224cff08d59bffd571c6356ba099ef",
+    "scripts/run_reviewed_fast_prefix.py": "d4a28114150a2ed1c43bc378e631c0b2608e07a37085ecb50c4283c189a6aff7"
+  },
+  "files_sha256_after": {
+    "tests/test_reviewed_fast_prefix.py": "4516c3960081b77b37d969db75732e0e8f224cff08d59bffd571c6356ba099ef",
+    "scripts/run_reviewed_fast_prefix.py": "d4a28114150a2ed1c43bc378e631c0b2608e07a37085ecb50c4283c189a6aff7"
+  },
+  "source_test_unchanged_during_test": true,
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "tests.test_reviewed_fast_prefix"
+  ],
+  "returncode": 0,
+  "external_llm_calls": 0,
+  "new_data_requests": 0,
+  "production_stage_not_resumed": true,
+  "note": "Fresh oracle with all explicit controls omitted rejects before source/helper or stage creation; legacy oracle default remains 256000. Positive source provenance admission is explicitly mocked and does not prove source qualification."
+}
+
+.......................
+----------------------------------------------------------------------
+Ran 23 tests in 44.362s
+
+OK

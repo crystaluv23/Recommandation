@@ -51,7 +51,7 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ],
-      "remaining": "Declared native1+3orientation examples passed with exactPlan/source/restore; local direction-prohibition false-positive remains. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
+      "remaining": "Declared native1+3 orientation examples and bounded local direction guard family passed. Fresh exact-Plan prefix actual F4/F6/F7 model connection remains pending. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
     },
     {
       "id": "feedback_consumption",
@@ -426,10 +426,26 @@
         "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-coordination-final-tests.log"
       ],
       "result": "After native orientation evidence checkpoint, local H_reflect direction mask admits exact original41 prohibition while retaining nested/independent affirmative controls and singular/plural targets. Original first rejection/correction unchanged;204 related tests passed8.402s. Local deterministic replay, not a fresh role or general natural-language semantic claim. Ordinary coordinated or/nor prohibitions and repeated explicit negative cues remain legal; earlier candidate regressions retained."
+    },
+    {
+      "id": "engineering-mvp-accepted-plan-prefix-preflight-20261020",
+      "strategy": "fresh_accepted_plan_native_prefix_with_separate_finite_budget",
+      "failure_families": [
+        "accepted_plan_artifact_wrapper_shape",
+        "per_request_cap_under_larger_case_budget"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-generated-plan-prefix-20261020.md",
+        "reports/reviewed-generated-plan-prefix-expectations-20261020.json",
+        "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/preflight-result.json",
+        "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/accepted-plan-prefix-tests.log"
+      ],
+      "result": "Fresh-only prefix prepares exact acceptedp01 provenance/new512k case budget with no role/cache inheritance. Single-request131072 guard precedes receive; actual zero-answer initial pending60299 and idempotent preflight bind before roles. Source wrapper initial prepare failure retained;Final23 focused tests pass44.362s. No actual apply/Reflect or wholeMVP closure. Fresh-oracle empty controls reject before source preparation; unchanged legacy oracle retains default256k."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-controller-direction-local-negation-20261020",
+    "after_iteration": "engineering-mvp-accepted-plan-prefix-preflight-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -494,7 +510,11 @@
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-plural-red.log",
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final.log",
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-related-tests-final-coordination.log",
-      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-coordination-final-tests.log"
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/controller-negation-coordination-final-tests.log",
+      "reports/reviewed-generated-plan-prefix-20261020.md",
+      "reports/reviewed-generated-plan-prefix-expectations-20261020.json",
+      "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/preflight-result.json",
+      "runs/diagnostics/reviewed_generated_prefix_preflight_20261020_v3/independent/accepted-plan-prefix-tests.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -526,16 +546,16 @@
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "bounded_prefix_signal_execution_budget_admission",
-      "action": "After local guard checkpoint, read the actual old prefix reservation/remaining evidence and propose one new bounded native prefix budget; do not resume old256k contract or start fullFast/Slow.",
-      "stop": "No new runner/roles/source or larger old limits before new bounded input/budget freeze.",
+      "strategy": "fresh_accepted_plan_prefix_actual_signal_reflect_connection",
+      "action": "After scoped checkpoint and current zero-answer preflight review, freeze newroot with exact acceptedp01/new512k case and32request ceiling, then dispatch only actual native requests through independent roles.",
+      "stop": "No parent/cache inheritance, no post-freeze ceiling changes, no labels/outcomes/Fast/Slow. Missing/unexercised connections remain open.",
       "question": "What new finite case budget preserves the native predictor/finalization reserve while permitting selected Signalapply and ownedReflect under honest failure accounting?",
-      "pass": "Actual initial/routing/apply request reservations and same native reserve calculation justify a bounded new ceiling, with explicit stop/no-result outcomes and unchanged old failure denominator.",
+      "pass": "Actual Signalapply and ownedReflect requests accepted against source/need contract, exact results/dispositions consumed by finalPredictor/sink and completedrestore unchanged.",
       "fail": "Budgets are raised inside oldfreeze, reserve silently removed, source gaps converted to technical success, or model-selected stages claimed executed without requests.",
-      "on_pass": "Prepare the minimal next genuine retrieval/apply/Reflect/Predictor prefix under separately frozen scope.",
+      "on_pass": "Close only this knownsample actualconnection subitem; keep sourcecoverage/fullF10/Slow/independentbenefit open.",
       "on_fail": "Retain technical failure and choose a smaller supported question rather than inflate oldrun.",
-      "new_evidence": "Actual native1+3orientation and bounded local guard regression passed; older prefix source resolved but16547apply exceeded14269 remaining, so it never exercised apply/Reflect model behavior.",
-      "distinguishing_variable": "Same native production budget/reserve rules under a separately frozen sufficient finite case ceiling, rather than merely entering execute_batch or raising oldrun."
+      "new_evidence": "Oldprefix16547apply reservation exceeded14269remaining, so methodsentered neverproved modelapply/Reflect; new acceptedPlan and independentlybounded budget permit a fresh native integration test without rewriting oldfailures.",
+      "distinguishing_variable": "Actual new role request/response and acceptedresult/needdisposition consumption under native reserve, versus old technicalbudget stop."
     }
   },
   "successor_prerequisites": [

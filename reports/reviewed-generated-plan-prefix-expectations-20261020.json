@@ -1,0 +1,84 @@
+{
+  "schema_version": "reviewed-generated-plan-prefix-independent-expectations-v1",
+  "author": "root acceptance side before any new generated-plan-prefix roles",
+  "declared_before_fresh_prefix_role_answers": true,
+  "scope": "One NEW bounded production-core prefix using the exact previously accepted p01 Plan, targeting actual routing/apply/Reflect/final-context connection; durable blind prediction then stop before labels. No prior-prefix continuation or completed Fast/Slow claim.",
+  "fixed_denominator": 1,
+  "sample": {
+    "sample_id": "s01",
+    "company_id": "cik_0001830043",
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "plan": "Exact accepted p01 InformationPlan from the completed orientation stage; no edits to B/H_* or default substitution.",
+    "source_envelope": "The exact five-record reviewed market view, three admitted originals, one excluded news original, one unknown transcript original; freeze the final qualified snapshot before dispatch",
+    "baseline_mean_adjusted_close": 6.494,
+    "recent_close": 6.3,
+    "doubling_threshold": 12.988,
+    "baseline_bar_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ],
+    "plan_source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/p01/plan.json",
+      "sha256": "02141ae46d9af7fa5a59c2e43e1a671584f2a7f61f58bf66ac7984ec07cd8dd9",
+      "completion": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/completion.json",
+      "completion_sha256": "e07da12eb43774bd0fe922621b7ba601ac2fbf2f39aec5a25eedaeef362154f8",
+      "independent_review": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/independent-review.json",
+      "independent_review_sha256": "7a4926eeb31b1a26c5fe0eb969d99ec57217066d5b7428b5ebfdab77a5dc840b",
+      "commit": "e89f20b6b8f2db9d0fb7a783d83f8b31dbb09989"
+    }
+  },
+  "acceptance_rules": {
+    "production_connection": "Use the actual execute_information_plan entry and its collection, runtime anchors, controller, routing/execution/reflection branches, final assembler, Predictor and prediction_sink. Observers may save exact inputs/outputs but may not author research answers, replace accepted state or choose a forced need. Report which branches actually executed; a legal H_init finalize, no-match, all-unavailable or budget stop may leave Signal apply or Reflect not_exercised. Prefix completion cannot close an unexercised connection.",
+    "source_and_scope": "Reuse only original-material inference boundaries from the independent H_init and Signal-stage oracles where relevant, and inspect every newly asserted fact against its actual transmitted evidence. Do not inherit their old market DataGap, projection counts or exact visible sets: derive these from this fresh production request. A separately admitted source is not automatically visible to every role. Preserve issuer, period, unit, forecast status, literal and version.",
+    "h_init_positive": "Require useful nonempty evidence-grounded initial research, with conditional hypotheses distinguished from facts. Any supplied needs must be executable and genuinely unanswered. No unique thesis, polarity, mandatory need or forced research branch is prescribed; a native valid finalize is not failed merely for having no need.",
+    "runtime_numbers": "The runtime-owned baseline and metric values must be calculated from the complete admitted PIT market original, transmitted accurately and preserved in final context and the durable sink record. BlindPrediction has its existing fixed schema: do not require extra anchor fields or mandatory numerical restatement. Any numbers actually stated by the model must agree with their supplied definitions. Partial displayed market text does not mean market data is absent. Do not replace baseline with latest close or invent forward prices.",
+    "retrieval_and_apply": "Supply the complete frozen Registry to the production selector, and preserve its actual eligible, gated and model-visible menus, gate reasons and exact selected versions. Existing legal capability gates need not expose every Registry entry on every request. Inspect selections against actual needs and eligibility. Where a selected Signal has an answer in its eligible material, require a faithful measurement. Inapplicability, missing information and technical failure remain distinct. No selected capability may be claimed executed without its actual result.",
+    "reflect": "Compare each actual need with the current batch's raw supporting material and permitted answer scope. Only answered portions close; unresolved portions remain. No-answer batches must not cause invented dispositions or negative research conclusions. Native no-match and budget stops retain their actual meaning.",
+    "visibility": "Final context retains source/projection/effective omission status, bounded discovery markers, source and evidence references, exact Signal versions and unresolved needs. Counts describe their declared projection layer. Omission hints are not claim evidence and cannot establish absence.",
+    "termination": "Before dispatch, specify and implement the production-owned final-context termination disclosure. At actual prediction, preserve the real stop reason and trigger distinctly from the controller decision, and retain unresolved needs. Mid-research reservation views must not claim terminal completion. Observers cannot inject a stop reason or reinterpret finalize as proof of complete research. If this connection is not implemented and actually consumed, F8 stopping-reason disclosure remains open.",
+    "prediction": "Require a native-contract accepted fresh blind prediction consistent with its actual anonymous final context and six-month definition. There is no predetermined surge answer, magnitude or confidence. Prediction correctness against outcomes is not measured in this batch.",
+    "order_and_durability": "The prediction sink durably saves exact final context and accepted prediction before any ground_truth_provider call. The provider then raises an explicit diagnostic boundary without loading or revealing outcomes. No completion pointer, score or completed trajectory is fabricated.",
+    "privacy_and_resources": "Fresh isolated native subagents receive only each exact original system/user request. No oracle, labels, prior role answers outside the production request, network tools or external LLM API calls. Inherit the production anonymous_case boundary around every controller, selector, runner and Predictor caller. Freeze finite initial/correction/local-call and runtime limits before dispatch; report unknown actual host cost/token use honestly.",
+    "registry_binding": "Bind both registry_hash and learning_hash plus exact original Registry files. Production selection can read learned profiles, performance and research status beyond the specs/skills covered by registry_hash; none may drift during the frozen batch.",
+    "recovery": "After a successful prefix, repeat the frozen resume with unchanged code/input bindings and verify identical saved artifacts and zero new role requests/receipts. Preserve all initial failures and correction attempts. An interrupted prefix is not a completed Fast round.",
+    "failures": "Mechanical acceptance or fallback alone does not establish semantic capability. Any invented material fact, unsupported need closure, future input, identity/label leak, silent evidence loss, wrong version or false completion fails this batch. Honest gaps remain valid only when correctly bounded.",
+    "connection_target": "At least one actual Signal apply model and one actual Reflect model must execute and their exact accepted result/dispositions enter final context to close this batch connection target. A completed prediction alone does not pass that target. Do not force a Signal/need/answer to achieve coverage. A legitimate no-match, not-applicable, missing material, technical stop or early finalize remains accurately accounted and leaves the unexercised target open. A correct unavailable measurement may establish execution/need-retention wiring but cannot substitute for a sufficient-material measurement positive; existing separate positive-stage evidence stays distinct.",
+    "native_plan_consumption": "Consume exactly the frozen accepted p01 from its committed stage record. This input is prior accepted research policy, not a previous role response cache. Execute a new H_init and every subsequent actual model request via new independent subagents. No orientation, old-prefix or Posthoc raw/cache/receipt inherits into this prefix.",
+    "fixed_inputs_and_readiness": "Use only unchanged qualified BMBL five-record reviewed view and full frozen Registry. No new network retrieval. Known missing annual/background, news/CompanyFacts/transcript gaps and actual projection visibility remain visible. This is the same known issuer/time integration sample, not an independent generalization or predictive-gain test. Full48 readiness and its fixed failures remain unchanged.",
+    "budget_stop": "Freeze new case512000 native logical reservation units/max24 calls, reserve64000, max2Signalrounds/4Signalcalls/4total-2LLMperround; aggregate32 distinct exchange requests and single131072 request reservation hard guard before receive. Existing dynamic Predictor estimate remains in reserve in addition to64000. All native correction/read exchanges count. No budget increase or sample replacement after the first response; honest exhaustion fails any unexercised connection. These are reservation units, not measured host tokens or paid authorization. Do not modify/resume earlier completed or exhausted collections."
+  },
+  "oracle_isolation": {
+    "inject_into_role_payload": false,
+    "fresh_prefix_outboxes_read": false,
+    "network_calls": 0
+  },
+  "not_covered": [
+    "Full 48-case readiness or failure denominator replacement",
+    "New issuer or global source qualification",
+    "Generic annual/interim request coverage closure",
+    "Prediction accuracy or independent research benefit",
+    "Outcome-source qualification, scoring, Posthoc or Critic model behavior",
+    "Completed Fast round, Slow discovery/admission/reuse or dual-loop convergence",
+    "Overall F4/F6/F7 correctness outside the actually exercised needs, versions, source and declared bounded context"
+  ],
+  "engineering_mvp_closed": false,
+  "new_batch_limits": {
+    "runtime_max_tokens": 512000,
+    "runtime_max_llm_calls": 24,
+    "finalization_token_reserve": 64000,
+    "max_signal_rounds": 2,
+    "max_signal_calls": 4,
+    "max_signals_per_round": 4,
+    "max_llm_signals_per_round": 2,
+    "max_local_role_calls": 32,
+    "max_request_tokens": 131072,
+    "max_structured_corrections_per_native_request": 1,
+    "external_llm_calls": 0,
+    "readonly_data_requests": 0,
+    "actual_host_tokens": null,
+    "actual_host_cost": null
+  }
+}

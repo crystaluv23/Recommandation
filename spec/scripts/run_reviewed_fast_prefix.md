@@ -97,3 +97,47 @@ undispatched attempts; require all four response artifacts absent, never call
 them answered/reused or count them as physical dispatch. Orphaned or incomplete
 response sets still reject. The inherited answered prefix order comes from the
 accepted observations and must match the complete verified response set.
+
+## Fresh accepted-Plan prefix mode
+
+A new independent prefix may explicitly consume a completed orientation stage's
+accepted `samples/p01/plan.json` under a separately frozen case token ceiling.
+`--plan-record`, `--plan-commit` (exact immutable40SHA) and
+`--runtime-max-tokens` are prepare-only controls; none is a resume-time override.
+This mode cannot combine with a continuation parent or inherit its files/answers.
+Missing controls reject; the legacy default-Plan256000 mode and the narrowly
+defined observation-failure continuation keep their existing meanings.
+
+Before copying the exact Plan value into new inputs, verify its source manifest,
+input/oracle/contract hashes, completed immutable inventory, independent review,
+accepted p01 outcome and all original native responses/receipts/caches. Verify
+source code against the supplied historical Git commit, not current changed
+source. Freeze the directly reused Posthoc historical-code/response-verifier
+helper file as current code too; importing its definitions never loads a label
+store or calls the truth qualifier. Bind the record, completion, review and complete source inventory plus
+external original/Registry bindings; recheck inventory/hash on resume. No old
+exchange/cache/observation is copied into the fresh root. The accepted Plan is
+prior policy provenance, not a reused role execution; every actual role in this
+new prefix starts fresh. The new oracle is frozen separately and never sent to
+a role. Require its explicit Plan-source and new-budget bindings to match.
+
+This batch fixes512000 logical reservation units/max24case calls,64000 native
+finalization reserve plus the unchanged dynamic Predictor estimate;32 aggregate
+exchange requests,2Signal rounds/4Signal calls and4total/2LLM portfolio caps.
+Each request is additionally capped at131072 reservation units using the native
+canonical messages-byte-plus-output formula in `request_ready`, after journal
+write and before cache/receive/dispatch. This guard applies to every caller and
+correction/read request regardless of the larger current case allowance; a
+budget journal with no dispatch remains an undispatched attempt. Do not remove
+the dynamic reserve or change the original default/continuation contract.
+
+The connection target needs an actual apply model response and an actual owned
+Reflect response, with accepted result/disposition retained in the final context.
+The fresh-mode completion separately inventories actual answered model stages
+and apply/Reflect-model-exercised flags; existing method-entry flags alone are
+not model execution. A completed prediction alone does not close those branches. Do not force a
+Signal, need, disposition, direction or role call to achieve coverage. Correct
+unavailable can prove execution/retention wiring, not substitute for a
+sufficient-material measurement positive. Preserve old technical budget stops
+and complete failure denominators. This known issuer/time prefix is not an
+independent generalization test, full Fast/Slow or predictive-benefit evidence.

@@ -51,6 +51,157 @@ class ReviewedFastPrefixTests(TestCase):
     def _read(self, path):
         return json.loads(path.read_text())
 
+    def _prepare_accepted_plan(self, directory):
+        """Isolate provenance admission; test exact frozen transport, not source qualification."""
+        if not prefix.SOURCE_INPUTS.is_file() or not prefix.REGISTRY.is_dir():
+            self.skipTest("reviewed local source/Registry fixture unavailable")
+        base = Path(directory).resolve()
+        source = base / "offline-orientation-source"
+        record = source / "samples/p01/plan.json"
+        plan = prefix.default_information_plan().to_dict()
+        plan["plan_id"] = "offline_accepted_plan"
+        plan["parent_ids"] = ["plan_manual_v1"]
+        plan["initial_research_skill"] += " Preserve this offline accepted Plan exactly."
+        plan["basic_info_policy"]["requests"][0]["max_documents"] = 3
+        atomic_write_json(record, {"plan": plan, "request_hashes": ["c" * 64]})
+        atomic_write_json(source / "completion.json", {"offline_unit_fixture_only": True})
+        atomic_write_json(source / "independent-review.json", {"offline_unit_fixture_only": True})
+        atomic_write_json(source / "cache/responses/unit-fixture.json", {"must_not_be_inherited": True})
+        provenance = {"root": str(source), "commit": "a" * 40,
+            "manifest_hash": "b" * 64, "plan_record": prefix.binding(record),
+            "completion": prefix.binding(source / "completion.json"),
+            "independent_review": prefix.binding(source / "independent-review.json"),
+            "files": prefix._plan_source_files(source), "external_files": [],
+            "no_role_response_or_cache_inheritance": True}
+        oracle = base / "unit-accepted-plan-oracle.json"
+        atomic_write_json(oracle, {"fixed_denominator": 1, "sample": {
+            "sample_id": "s01", "plan_source": {
+                "path": str(record), "sha256": provenance["plan_record"]["sha256"],
+                "commit": provenance["commit"],
+                "completion": provenance["completion"]["path"],
+                "completion_sha256": provenance["completion"]["sha256"],
+                "independent_review": provenance["independent_review"]["path"],
+                "independent_review_sha256": provenance["independent_review"]["sha256"],
+            }}, "new_batch_limits": {
+                "runtime_max_tokens": 512000, "runtime_max_llm_calls": 24,
+                "finalization_token_reserve": 64000, "max_signal_rounds": 2,
+                "max_signal_calls": 4, "max_signals_per_round": 4,
+                "max_llm_signals_per_round": 2, "max_local_role_calls": 32,
+                "max_request_tokens": 131072, "max_structured_corrections_per_native_request": 1,
+                "external_llm_calls": 0, "readonly_data_requests": 0,
+                "actual_host_tokens": None, "actual_host_cost": None,
+            }})
+        code = base / "unit-frozen-code.py"
+        code.write_text("# offline accepted-Plan transport binding\n")
+        root = base / "prefix"
+        with patch.object(prefix, "_accepted_plan_source", return_value=(plan, provenance)), \
+             patch.object(prefix, "_code_bindings", return_value=[prefix.binding(code)]):
+            prefix.prepare(root, oracle, plan_record=record,
+                           plan_commit=provenance["commit"], runtime_max_tokens=512000)
+        return root, plan, provenance
+
+    def test_fresh_accepted_plan_exact_transport_no_inheritance_and_source_tamper(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, plan, provenance = self._prepare_accepted_plan(directory)
+            inputs = self._read(root / "inputs.json")
+            contract = self._read(root / "contract.json")
+            manifest = self._read(root / "manifest.json")
+            self.assertEqual(inputs["sample"]["plan"], plan)
+            self.assertEqual(inputs["accepted_plan_source"], provenance)
+            self.assertTrue(contract["fresh_accepted_plan_no_inheritance"])
+            self.assertEqual(contract["runtime_limits"]["max_tokens"], 512000)
+            self.assertEqual(contract["max_local_calls"], 32)
+            self.assertNotIn("continuation", manifest)
+            self.assertFalse((root / "cache").exists())
+            before = self._files(Path(provenance["root"]))
+            with patch.object(prefix, "execute_information_plan", wraps=prefix.execute_information_plan) as execute:
+                result = prefix.resume(root)
+            self.assertEqual(result["status"], "pending_independent_role")
+            self.assertEqual(result["historical_reused_role_responses"], 0)
+            self.assertEqual(execute.call_args.kwargs["plan"].to_dict(), plan)
+            inbox = self._read(Path(result["pending"][0]["inbox_path"]))
+            payload = json.loads(inbox["messages"][-1]["content"])
+            self.assertEqual(payload["initial_research_skill"], plan["initial_research_skill"])
+            self.assertEqual(self._files(Path(provenance["root"])), before)
+            record = Path(provenance["plan_record"]["path"])
+            changed = self._read(record)
+            changed["plan"]["initial_research_skill"] += " Tampered source."
+            atomic_write_json(record, changed)
+            with patch.object(prefix, "StructuredRoleClient") as client:
+                with self.assertRaises(ValidationError):
+                    prefix.resume(root)
+                client.assert_not_called()
+            self.assertEqual(len(list((root / "exchange/inbox").glob("*.json"))), 1)
+
+    def test_fresh_plan_arguments_cannot_reuse_parent_or_omit_explicit_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory).resolve()
+            values = {"plan_record": base / "plan.json", "plan_commit": "a" * 40,
+                      "runtime_max_tokens": 512000}
+            oracle = base / "fresh-oracle.json"
+            atomic_write_json(oracle, {"fixed_denominator": 1, "sample": {
+                "sample_id": "s01", "plan_source": {
+                    "path": str(values["plan_record"]), "sha256": "c" * 64,
+                    "commit": values["plan_commit"],
+                    "completion": str(base / "source/completion.json"),
+                    "completion_sha256": "d" * 64,
+                    "independent_review": str(base / "source/independent-review.json"),
+                    "independent_review_sha256": "e" * 64,
+                }}, "new_batch_limits": {
+                    "runtime_max_tokens": 512000, "runtime_max_llm_calls": 24,
+                    "finalization_token_reserve": 64000, "max_signal_rounds": 2,
+                    "max_signal_calls": 4, "max_signals_per_round": 4,
+                    "max_llm_signals_per_round": 2, "max_local_role_calls": 32,
+                    "max_request_tokens": 131072, "max_structured_corrections_per_native_request": 1,
+                    "external_llm_calls": 0, "readonly_data_requests": 0,
+                    "actual_host_tokens": None, "actual_host_cost": None,
+                }})
+            variants = [
+                {key: value for key, value in values.items() if key != omitted}
+                for omitted in values
+            ] + [
+                {},
+                {**values, "parent_root": base / "old-parent"},
+                {**values, "parent_commit": "b" * 40},
+                {**values, "runtime_max_tokens": True},
+            ]
+            for index, arguments in enumerate(variants):
+                with self.subTest(arguments=arguments), \
+                     patch.object(prefix, "_accepted_plan_source") as source:
+                    root = base / f"rejected-{index}"
+                    with self.assertRaises(ValidationError):
+                        prefix.prepare(root, oracle, **arguments)
+                    source.assert_not_called()
+                    self.assertFalse(root.exists())
+
+    def test_record_alone_is_not_an_accepted_completed_plan_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory).resolve()
+            record = base / "unfinished-source/samples/p01/plan.json"
+            atomic_write_json(record, {"plan": prefix.default_information_plan().to_dict(),
+                                       "request_hashes": []})
+            before = self._files(record.parents[2])
+            with self.assertRaises(ValidationError):
+                prefix._accepted_plan_source(record, "a" * 40)
+            self.assertEqual(self._files(record.parents[2]), before)
+
+    def test_fresh_case_budget_does_not_replace_single_request_hard_cap(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, _plan, _provenance = self._prepare_accepted_plan(directory)
+            def oversized(controller, *args, **kwargs):
+                return controller.caller.complete_json(
+                    stage="unit_prefix_hardcap", system_prompt="Offline request fixture.",
+                    payload={"text": "x" * 132000}, allow_outcomes=False,
+                    temperature=0, max_output_tokens=20, max_request_tokens=512000,
+                )
+            with patch.object(prefix.LLMResearchController, "initialize", new=oversized):
+                result = prefix.resume(root)
+            self.assertEqual(result["error_type"], "RuntimeBudgetExceeded")
+            self.assertIn("prefix single request exceeds frozen reservation ceiling", result["error"])
+            self.assertEqual(len(list((root / "requests").glob("*.json"))), 1)
+            self.assertFalse(list((root / "exchange/inbox").glob("*.json")))
+            self.assertFalse(list((root / "exchange/receipts").glob("*.json")))
+
     def _files(self, root):
         return {str(path.relative_to(root)): path.read_bytes()
                 for path in root.rglob("*") if path.is_file()}

@@ -1,0 +1,22 @@
+{
+  "scope": "Independent current-byte zero-answer preflight",
+  "manifest_hash": "71f697aa321ea8ed8cbc21e1d4c8de09cac91d1ed05e6481cbf16161bd51a6c6",
+  "current_code_source_registry_bound": true,
+  "exact_accepted_plan_bound_and_consumed": true,
+  "old_complete_source_inventory_all_SHA_verified": true,
+  "source_commit": "e89f20b6b8f2db9d0fb7a783d83f8b31dbb09989",
+  "runtime_limit": 512000,
+  "max_llm_calls": 24,
+  "final_reserve": 64000,
+  "exchange_calls": 32,
+  "request_cap": 131072,
+  "request_hash": "e14a1203974efa3830152a38367b06f38b42a725831fe5396f2ba0f704864578",
+  "inbox_SHA": "cc78c71a027e615453f9bdca53378b9157d5b3830d119efa98aa5f08a9d7ad40",
+  "native_reservation": 60299,
+  "wire_messages_exact": true,
+  "identity_alias_hits": 0,
+  "native_anchor_exact": true,
+  "zero_inherited_cache_receipts_outbox": true,
+  "repeat_immutable_same": true,
+  "role_answers": 0
+}
