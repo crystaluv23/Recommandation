@@ -1,0 +1,131 @@
+{
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "718047b39270b0584a5c3fb08a7fb0caf3845f1a3cc6aa5768164c90cec5c7b5",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/snapshot",
+    "store_type": "reviewed"
+  },
+  "samples": [
+    {
+      "company_id": "cik_0001830043",
+      "identity": {
+        "company_name": "Bumble Inc.",
+        "identity_aliases": [
+          "Bumble",
+          "Bumble Inc.",
+          "BMBL"
+        ],
+        "ticker": "BMBL"
+      },
+      "plan": {
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+        "basic_info_policy": {
+          "requests": [
+            {
+              "description": "Read the latest applicable annual or interim operating report available before the prediction time for the business model, risks, and segment economics.",
+              "lookback_days": 730,
+              "max_documents": 1,
+              "request_id": "recent_annual_filing",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Retrieve recent company-specific news that may change market expectations, financing, customers, regulation, or products.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "recent_company_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            {
+              "description": "Inspect reported financial facts available at the prediction time for growth, margins, cash, and capital structure.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "reported_financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            {
+              "description": "Inspect the latest 45 days of point-in-time price and volume for early market confirmation or contradiction.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "recent_market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "parent_ids": [],
+        "plan_id": "plan_manual_v1",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable."
+      },
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "sample_id": "s01"
+    },
+    {
+      "company_id": "cik_0001830043",
+      "identity": {
+        "company_name": "Bumble Inc.",
+        "identity_aliases": [
+          "Bumble",
+          "Bumble Inc.",
+          "BMBL"
+        ],
+        "ticker": "BMBL"
+      },
+      "plan": {
+        "analysis_prompt": "Organize and weight source-backed supporting and counter evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor. Distinguish real commercial adoption from narrative and expose uncertainty; do not calculate probabilities, classify the final answer, alter the four-way judgment, or generate the prediction.",
+        "basic_info_policy": {
+          "requests": [
+            {
+              "description": "Read the latest applicable annual or interim operating report available before the prediction time for the business model, risks, and segment economics.",
+              "lookback_days": 730,
+              "max_documents": 1,
+              "request_id": "recent_annual_filing",
+              "source_types": [
+                "filing"
+              ]
+            },
+            {
+              "description": "Retrieve recent company-specific news that may change market expectations, financing, customers, regulation, or products.",
+              "lookback_days": 180,
+              "max_documents": 5,
+              "request_id": "recent_company_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            {
+              "description": "Inspect reported financial facts available at the prediction time for growth, margins, cash, and capital structure.",
+              "lookback_days": 730,
+              "max_documents": 2,
+              "request_id": "reported_financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            {
+              "description": "Inspect the latest 45 days of point-in-time price and volume for early market confirmation or contradiction.",
+              "lookback_days": 45,
+              "max_documents": 1,
+              "request_id": "recent_market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            }
+          ]
+        },
+        "initial_research_skill": "Form an initial commercialization and expectation-gap hypothesis from Basic Info only, then state the most decision-relevant information needs.",
+        "parent_ids": [],
+        "plan_id": "plan_manual_v1",
+        "reflection_skill": "Reflect over the entire Signal batch. Track support, contradiction, resolved questions, concentration risk, and the next smallest set of information needs; finalize only when the surge thesis is decidable."
+      },
+      "prediction_time": "2025-07-01T00:00:00+00:00",
+      "sample_id": "s02"
+    }
+  ]
+}

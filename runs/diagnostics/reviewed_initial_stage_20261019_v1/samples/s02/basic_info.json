@@ -1,0 +1,3407 @@
+{
+  "bundle": {
+    "requests": [
+      {
+        "appended_documents": [],
+        "context_spans": [
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 17607,
+            "exact_text": "&#160;</div> <div style=\"line-height:3.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1px solid #000000\">&#160;</div> <p style=\"margin-top:4pt; margin-bottom:0pt; font-size:18pt; font-family:Times New Roman;font-weight:bold;text-align:center\">UNITED STATES</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:18pt; font-family:Times New Roman;font-weight:bold;text-align:center\">SECURITIES AND EXCHANGE COMMISSION</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt; font-family:Times New Roman;font-weight:bold;text-align:center\">WASHINGTON, D.C. 20549</p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"text-align:center\"> <div style=\"line-height:6.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1.00pt solid #000000;width:21%;text-align:center;margin-left: auto;margin-right: auto\">&#160;</div></div> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:18pt; font-family:Times New Roman;font-weight:bold;text-align:center\">FORM <span style=\"white-space:nowrap\"><ix:nonNumeric name=\"dei:DocumentType\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-326\">8-K</ix:nonNumeric></span></p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"text-align:center\"> <div style=\"line-height:6.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1.00pt solid #000000;width:21%;text-align:center;margin-left: auto;margin-right: auto\">&#160;</div></div> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:12pt; font-family:Times New Roman;font-weight:bold;text-align:center\">CURRENT REPORT</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Pursuant to Section&#160;13 or 15(d)</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt; font-family:Times New Roman;font-weight:bold;text-align:center\">of the Securities Exchange Act of 1934</p> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:12pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Date of Report (Date of earliest event reported): <ix:nonNumeric name=\"dei:DocumentPeriodEndDate\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt:datemonthdayyearen\" id=\"ixv-327\">June&#160;23, 2025</ix:nonNumeric></p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"text-align:center\"> <div style=\"line-height:6.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1.00pt solid #000000;width:21%;text-align:center;margin-left: auto;margin-right: auto\">&#160;</div></div> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:24pt; font-family:Times New Roman;font-weight:bold;text-align:center\"><ix:nonNumeric name=\"dei:EntityRegistrantName\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-328\">Bumble Inc.</ix:nonNumeric></p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:center\">(Exact name of Registrant as Specified in Its Charter)</p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"text-align:center\"> <div style=\"line-height:6.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1.00pt solid #000000;width:21%;text-align:center;margin-left: auto;margin-right: auto\">&#160;</div></div> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse; font-family:Times New Roman; font-size:10pt;width:100%;border-spacing:0;margin:0 auto\">\n<tr>\n<td style=\"width:34%\"/>\n<td style=\"vertical-align:bottom\"/>\n<td style=\"width:32%\"/>\n<td style=\"vertical-align:bottom;width:1%\"/>\n<td style=\"width:32%\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\"><ix:nonNumeric name=\"dei:EntityIncorporationStateCountryCode\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:stateprovnameen\" id=\"ixv-329\">Delaware</ix:nonNumeric></span></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\"><span style=\"white-space:nowrap\"><ix:nonNumeric name=\"dei:EntityFileNumber\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-330\">001-40054</ix:nonNumeric></span></span></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\"><span style=\"white-space:nowrap\"><ix:nonNumeric name=\"dei:EntityTaxIdentificationNumber\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-331\">85-3604367</ix:nonNumeric></span></span></td></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:8pt\">\n<td style=\"vertical-align:top;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">(State or Other Jurisdiction</p> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">of Incorporation)</p></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">(Commission</p> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">File Number)</p></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">(IRS Employer</p> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Identification No.)</p></td></tr>\n<tr style=\"font-size:1pt\">\n<td style=\"height:12pt\"/>\n<td style=\"height:12pt\" colspan=\"4\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\"><ix:nonNumeric name=\"dei:EntityAddressAddressLine1\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-332\">1105 West 41st Street</ix:nonNumeric></span></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td colspan=\"3\" style=\"vertical-align:top\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:bottom;text-align:center\"><span style=\"font-weight:bold\"><ix:nonNumeric name=\"dei:EntityAddressCityOrTown\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-333\">Austin</ix:nonNumeric>, <ix:nonNumeric name=\"dei:EntityAddressStateOrProvince\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:stateprovnameen\" id=\"ixv-334\">Texas</ix:nonNumeric></span></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom;text-align:center\"><span style=\"font-weight:bold\"><ix:nonNumeric name=\"dei:EntityAddressPostalZipCode\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-335\">78756</ix:nonNumeric></span></td></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:8pt\">\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\">(Address of Principal Executive Offices)</span></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"><span style=\"font-weight:bold\">(Zip Code)</span></td></tr></table> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Registrant&#8217;s Telephone Number, Including Area Code: <ix:nonNumeric name=\"dei:CityAreaCode\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-336\">512</ix:nonNumeric> <span style=\"white-space:nowrap\"><ix:nonNumeric name=\"dei:LocalPhoneNumber\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-337\">696-1409</ix:nonNumeric></span></p> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Not Applicable</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">(Former Name or Former Address, if Changed Since Last Report)</p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"text-align:center\"> <div style=\"line-height:6.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1.00pt solid #000000;width:21%;text-align:center;margin-left: auto;margin-right: auto\">&#160;</div></div> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Check the appropriate box below if the Form <span style=\"white-space:nowrap\">8-K</span> filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions:</p> <p style=\"font-size:6pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"border-collapse:collapse; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:4%;vertical-align:top;text-align:left\"><ix:nonNumeric name=\"dei:WrittenCommunications\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:boolballotbox\" id=\"ixv-338\">&#9744;</ix:nonNumeric></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:left\">Written communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425)</p></td></tr></table> <p style=\"font-size:6pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"border-collapse:collapse; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:4%;vertical-align:top;text-align:left\"><ix:nonNumeric name=\"dei:SolicitingMaterial\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:boolballotbox\" id=\"ixv-339\">&#9744;</ix:nonNumeric></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:left\">Soliciting material pursuant to Rule <span style=\"white-space:nowrap\">14a-12</span> under the Exchange Act (17 CFR <span style=\"white-space:nowrap\">240.14a-12)</span></p></td></tr></table> <p style=\"font-size:6pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"border-collapse:collapse; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:4%;vertical-align:top;text-align:left\"><ix:nonNumeric name=\"dei:PreCommencementTenderOffer\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:boolballotbox\" id=\"ixv-340\">&#9744;</ix:nonNumeric></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:left\"><span style=\"white-space:nowrap\">Pre-commencement</span> communications pursuant to Rule <span style=\"white-space:nowrap\">14d-2(b)</span> under the Exchange Act (17 CFR <span style=\"white-space:nowrap\">240.14d-2(b))</span></p></td></tr></table> <p style=\"font-size:6pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"border-collapse:collapse; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:4%;vertical-align:top;text-align:left\"><ix:nonNumeric name=\"dei:PreCommencementIssuerTenderOffer\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:boolballotbox\" id=\"ixv-341\">&#9744;</ix:nonNumeric></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:left\"><span style=\"white-space:nowrap\">Pre-commencement</span> communications pursuant to Rule <span style=\"white-space:nowrap\">13e-4(c)</span> under the Exchange Act (17 CFR <span style=\"white-space:nowrap\">240.13e-4(c))</span></p></td></tr></table> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Securities registered pursuant to Section&#160;12(b) of the Act:</p> <p style=\"font-size:8pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse; font-family:Times New Roman; font-size:8pt;width:100%;border-spacing:0;margin:0 auto\">\n<tr>\n<td style=\"width:34%\"/>\n<td style=\"vertical-align:bottom\"/>\n<td style=\"width:32%\"/>\n<td style=\"vertical-align:bottom;width:1%\"/>\n<td style=\"width:32%\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:8pt\">\n<td style=\"border-bottom:1.00pt solid #000000;vertical-align:bottom;white-space:nowrap;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Title of each class</p></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"border-bottom:1.00pt solid #000000;vertical-align:bottom;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Trading</p> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Symbol(s)</p></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"border-bottom:1.00pt solid #000000;vertical-align:bottom;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Name of each exchange</p> <p style=\"margin-top:0pt; margin-bottom:1pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">on which registered</p></td></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top;text-align:center\"><ix:nonNumeric name=\"dei:Security12bTitle\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-342\">Class&#160;A common stock, par value $0.01 per share</ix:nonNumeric></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"><ix:nonNumeric name=\"dei:TradingSymbol\" contextRef=\"duration_2025-06-23_to_2025-06-23\" id=\"ixv-343\">BMBL</ix:nonNumeric></td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top;text-align:center\"><ix:nonNumeric name=\"dei:SecurityExchangeName\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:exchnameen\" id=\"ixv-344\">The Nasdaq Stock Market LLC</ix:nonNumeric></td></tr></table> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (&#167;&#160;230.405 of this chapter) or Rule <span style=\"white-space:nowrap\">12b-2</span> of the Securities Exchange Act of 1934 <span style=\"white-space:nowrap\">(&#167;&#160;240.12b-2</span> of this chapter).</p> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Emerging growth compa",
+            "start": 2025,
+            "visible_chars": 2000
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 21736,
+            "exact_text": "ined in Rule 405 of the Securities Act of 1933 (&#167;&#160;230.405 of this chapter) or Rule <span style=\"white-space:nowrap\">12b-2</span> of the Securities Exchange Act of 1934 <span style=\"white-space:nowrap\">(&#167;&#160;240.12b-2</span> of this chapter).</p> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Emerging growth company&#8194;<ix:nonNumeric name=\"dei:EntityEmergingGrowthCompany\" contextRef=\"duration_2025-06-23_to_2025-06-23\" format=\"ixt-sec:boolballotbox\" id=\"ixv-345\">&#9744;</ix:nonNumeric></p> <p style=\"margin-top:8pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section&#160;13(a) of the Exchange Act.&#8194;&#9744;</p> <p style=\"font-size:10pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p> <div style=\"line-height:1.0pt;margin-top:0pt;margin-bottom:0pt;border-bottom:1px solid #000000\">&#160;</div> <div style=\"line-height:3.0pt;margin-top:0pt;margin-bottom:2pt;border-bottom:1px solid #000000\">&#160;</div></div></div>\n\n<p style=\"margin-top:1em; margin-bottom:0em; page-break-before:always\"> </p>\n<hr style=\"color:#999999;height:3px;width:100%;clear:both\"/>\n\n<div style=\"text-align:center\"><div style=\"width:8.5in;text-align:left;margin-left: auto;margin-right: auto\">\n\n<table style=\"BORDER-COLLAPSE:COLLAPSE; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:11%;vertical-align:top;text-align:left\"><span style=\"font-weight:bold\">Item&#8201;2.05</span></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:left\">Costs Associated with Exit or Disposal Activities. </p></td></tr></table> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">On June&#160;23, 2025, the Board of Directors of Bumble Inc. (the &#8220;Company&#8221;) approved a reduction in the Company&#8217;s global workforce by approximately 240 roles, representing approximately 30% of the Company&#8217;s employees, as the Company realigns its operating structure to optimize execution on its strategic priorities. As a result, the Company expects to incur approximately $13&#160;million to $18&#160;million of <span style=\"white-space:nowrap\">non-recurring</span> charges, consisting primarily of employee severance, benefits, and related charges, for impacted employees. Substantially all of these charges are expected to result in future cash outlays. </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">The Company expects that the charges will be incurred primarily in the third and fourth quarters of 2025. The actions associated with the elimination of positions are subject to local law and consultation requirements in certain countries, which may extend this process beyond the fourth quarter of 2025. These estimates are subject to a number of assumptions and actual expenses may differ materially from the estimates disclosed above. </p> <p style=\"font-size:18pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"BORDER-COLLAPSE:COLLAPSE; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:11%;vertical-align:top;text-align:left\"><span style=\"font-weight:bold\">Item&#8201;7.01</span></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:left\">Regulation FD Disclosure. </p></td></tr></table> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\"><span style=\"text-decoration:underline\">Cost Savings </span></p> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">The Company expects to achieve up to $40&#160;million of annual cost savings in connection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form <span style=\"white-space:nowrap\">8-K.</span> The Company plans to reinvest the substantial majority of these savings in strategic initiatives",
+            "start": 17233,
+            "visible_chars": 2000
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 24358,
+            "exact_text": "nnection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form <span style=\"white-space:nowrap\">8-K.</span> The Company plans to reinvest the substantial majority of these savings in strategic initiatives including product and technology development. </p> <p style=\"margin-top:18pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\"><span style=\"text-decoration:underline\">Updated Outlook </span></p> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">A reconciliation of Adjusted EBITDA (as defined below) to net earnings (loss) calculated under generally accepted accounting principles in the United States (&#8220;GAAP&#8221;) has not been provided for the updated outlook included below as the quantification of certain items included in the calculation of GAAP net earnings (loss) cannot be calculated or predicted at this time without unreasonable efforts. For example, the <span style=\"white-space:nowrap\">non-GAAP</span> adjustment for stock-based compensation expense requires additional inputs such as number of shares granted and market price that are not currently ascertainable, and the <span style=\"white-space:nowrap\">non-GAAP</span> adjustment for certain legal, tax and regulatory reserves and expenses depends on the timing and magnitude of these expenses and cannot be accurately forecasted. For the same reasons, the Company is unable to address the probable significance of the unavailable information, which could have a potentially unpredictable, and potentially significant, impact on its future GAAP financial results. </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million. </p> <p style=\"margin-top:18pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\"><span style=\"text-decoration:underline\">Employee Communication </span></p> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">On June&#160;25, 2025, the Company issued an employee communication relating to the workforce reduction, which is shared in part as Exhibit 99.1 to this Form <span style=\"white-space:nowrap\">8-K</span> and is incorporated by reference. </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">The information furnished pursuant to this Item 7.01, including Exhibit 99.1, shall not be deemed &#8220;filed&#8221; for purposes of Section&#160;18 of the Securities Exchange Act of 1934, as amended (the &#8220;Exchange Act&#8221;) or ot",
+            "start": 21496,
+            "visible_chars": 2000
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 26445,
+            "exact_text": "his Item 7.01, including Exhibit 99.1, shall not be deemed &#8220;filed&#8221; for purposes of Section&#160;18 of the Securities Exchange Act of 1934, as amended (the &#8220;Exchange Act&#8221;) or otherwise subject to the liabilities under that Section and shall not be deemed to be incorporated by reference into any filings under the Securities Act of 1933, as amended, or the Exchange Act. </p> <p style=\"margin-top:18pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\"><span style=\"font-style:italic\">Forward-Looking Statements </span></p> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">This current report on Form <span style=\"white-space:nowrap\">8-K</span> contains &#8220;forward-looking statements&#8221; within the meaning of the Private Securities Litigation Reform Act of 1995. These forward-looking statements reflect the Company&#8217;s current views with respect to, among other things: its operations, including the plan to implement a global workforce reduction and restructuring of the Company&#8217;s operations and the plan&#8217;s expected impact; its financial performance; its industry and its business. Forward-looking statements include all statements that are not historical facts. In some cases, you can identify these forward-looking statements by the use of words such as &#8220;outlook,&#8221; &#8220;believe(s),&#8221; &#8220;expect(s),&#8221; &#8220;potential,&#8221; &#8220;continue(s),&#8221; &#8220;may,&#8221; &#8220;will,&#8221; &#8220;should,&#8221; &#8220;could,&#8221; &#8220;would,&#8221; &#8220;seek(s),&#8221; &#8220;predict(s),&#8221; &#8220;intend(s),&#8221; &#8220;trends,&#8221; &#8220;plan(s),&#8221; &#8220;estimate(s),&#8221; &#8220;anticipate(s),&#8221; &#8220;projection,&#8221; &#8220;will likely result&#8221; and or the negative version of these words or other comparable words of a future or forward-looking nature. Such forward-looking statements are subject to various risks and uncertainties. Accordingly, there are or will be important factors that could cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under &#8220;Item 1A. Risk Factors&#822",
+            "start": 24158,
+            "visible_chars": 2000
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 29057,
+            "exact_text": "uld cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under &#8220;Item 1A. Risk Factors&#8221; in the Company&#8217;s Annual Report on Form <span style=\"white-space:nowrap\">10-K</span> for the year ended December&#160;31, 2024 filed with the Securities and Exchange Commission (the &#8220;SEC&#8221;) as such factors may be updated from time to time in the Company&#8217;s periodic filings with the SEC. These factors should not be construed as exhaustive and should be read in conjunction with the other cautionary statements that are included in the Company&#8217;s filings with the SEC. We undertake no obligation to publicly update or review any forward-looking statement, whether as a result of new information, future developments or otherwise, except as required by law. </p>\n <p style=\"margin-top:0pt;margin-bottom:0pt ; font-size:8pt\">&#160;</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:center\">2 </p>\n\n</div></div>\n\n\n\n<p style=\"margin-top:1em; margin-bottom:0em; page-break-before:always\"> </p>\n<hr style=\"color:#999999;height:3px;width:100%;clear:both\"/>\n\n<div style=\"text-align:center\"><div style=\"width:8.5in;text-align:left;margin-left: auto;margin-right: auto\">\n <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\"><span style=\"white-space:nowrap\">Non-GAAP</span> Financial Measures </p> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">We report our financial results in accordance with GAAP; management believes, however, that certain <span style=\"white-space:nowrap\">non-GAAP</span> financial measures provide users of our financial information with useful supplemental information that enables a better comparison of our performance across periods. We believe Adjusted earnings before interest, taxes, depreciation and amortization (&#8220;Adjusted EBITDA&#8221;) provides visibility to the underlying continuing operating performance by excluding the impact of certain expenses, including income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expenses, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent <span style=\"white-space:nowrap\">earn-out</span> liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does",
+            "start": 26245,
+            "visible_chars": 2000
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "end": 35985,
+            "exact_text": "that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does not believe these expenses are representative of our core earnings. </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Our <span style=\"white-space:nowrap\">non-GAAP</span> financial measures may not be comparable to similarly titled measures used by other companies, have limitations as analytical tools and should not be considered in isolation, or as substitutes for analysis of our operating results as reported under GAAP. Additionally, we do not consider our <span style=\"white-space:nowrap\">non-GAAP</span> financial measures as superior to, or a substitute for, the equivalent measures calculated and presented in accordance with GAAP. </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Adjusted EBITDA is defined as net earnings (loss) excluding income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expense, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent <span style=\"white-space:nowrap\">earn-out</span> liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. </p> <p style=\"font-size:18pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table style=\"BORDER-COLLAPSE:COLLAPSE; font-family:Times New Roman; font-size:10pt;border-spacing:0;width:100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr style=\"page-break-inside:avoid\">\n<td style=\"width:11%;vertical-align:top;text-align:left\"><span style=\"font-weight:bold\">Item&#8201;9.01</span></td>\n<td style=\"vertical-align:top;text-align:left\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:left\">Financial Statements and Exhibits. </p></td></tr></table> <p style=\"margin-top:6pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold\">(d) Exhibits. </p> <p style=\"font-size:12pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"BORDER-COLLAPSE:COLLAPSE; font-family:Times New Roman; font-size:10pt;width:100%;border-spacing:0;margin:0 auto\">\n\n\n<tr>\n\n<td/>\n\n<td style=\"vertical-align:bottom;width:5%\"/>\n<td style=\"width:92%\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:8pt\">\n<td style=\"vertical-align:bottom;white-space:nowrap;text-align:center\"> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Exhibit</p> <p style=\"margin-top:0pt; margin-bottom:1pt; border-bottom:1.00pt solid #000000; display:inline-block; font-size:8pt; font-family:Times New Roman;font-weight:bold;text-align:center\">Number</p></td>\n<td style=\"vertical-align:bottom\">&#160;&#160;</td>\n<td style=\"vertical-align:bottom;white-space:nowrap\"> <p style=\" margin-top:0pt ; margin-bottom:0pt; border-bottom:1.00pt solid #000000; display:table-cell; font-size:8pt; font-family:Times New Roman;font-weight:bold\">Description of Exhibit</p></td></tr>\n\n\n<tr style=\"font-size:1pt\">\n<td style=\"height:6pt\"/>\n<td style=\"height:6pt\" colspan=\"2\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top;white-space:nowrap\">99.1</td>\n<td style=\"vertical-align:bottom\">&#160;&#160;</td>\n<td style=\"vertical-align:top\"><a href=\"d915271dex991.htm\">Message from CEO Whitney Wolfe Herd to employees on June&#160;25, 2025 </a></td></tr>\n<tr style=\"font-size:1pt\">\n<td style=\"height:6pt\"/>\n<td style=\"height:6pt\" colspan=\"2\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top;white-space:nowrap\">104</td>\n<td style=\"vertical-align:bottom\">&#160;&#160;</td>\n<td style=\"vertical-align:top\">Cover Page Interactive Data File (embedded within the Inline XBRL document)</td></tr>\n</table>\n <p style=\"margin-top:0pt;margin-bottom:0pt ; font-size:8pt\">&#160;</p> <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;text-align:center\">3 </p>\n\n</div></div>\n\n\n\n<p style=\"margin-top:1em; margin-bottom:0em; page-break-before:always\"> </p>\n<hr style=\"color:#999999;height:3px;width:100%;clear:both\"/>\n\n<div style=\"text-align:center\"><div style=\"width:8.5in;text-align:left;margin-left: auto;margin-right: auto\">\n <p style=\"margin-top:0pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman;font-weight:bold;text-align:center\">SIGNATURES </p> <p style=\"margin-top:12pt; margin-bottom:0pt; font-size:10pt; font-family:Times New Roman\">Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned hereunto duly authorized. </p> <p style=\"font-size:12pt;margin-top:0pt;margin-bottom:0pt\">&#160;</p>\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"BORDER-COLLAPSE:COLLAPSE; font-family:Times New Roman; font-size:10pt;width:100%;border-spacing:0\">\n\n\n<tr>\n\n<td style=\"width:44%\"/>\n\n<td style=\"vertical-align:bottom;width:1%\"/>\n<td style=\"width:4%\"/>\n\n<td style=\"vertical-align:bottom\"/>\n<td style=\"width:5%\"/>\n\n<td style=\"vertical-align:bottom;width:1%\"/>\n<td style=\"width:44%\"/></tr>\n\n\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:bottom\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom\" colspan=\"3\"><span style=\"font-weight:bold\">BUMBLE INC.</span></td></tr>\n<tr style=\"font-size:1pt\">\n<td style=\"height:12pt\"/>\n<td style=\"height:12pt\" colspan=\"2\"/>\n<td style=\"height:12pt\" colspan=\"2\"/>\n<td style=\"height:12pt\" colspan=\"2\"/></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:bottom\">Date: June&#160;25, 2025</td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top\">By:</td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:bottom\"> <p style=\"margin-top:0pt; margin-bottom:1pt; border-bottom:1px solid #000000; font-size:10pt; font-family:Times New Roman\">/s/ Deirdre Runnette</p></td></tr>\n<tr style=\"page-break-inside:avoid ; font-family:Times New Roman; font-size:10pt\">\n<td style=\"vertical-align:top\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top\"/>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top\">Name:</td>\n<td style=\"vertical-align:bottom\">&#160;</td>\n<td style=\"vertical-align:top\">Deirdre Runnett",
+            "start": 28858,
+            "visible_chars": 1999
+          }
+        ],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": true,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 1,
+          "missing_requirements": [],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 1,
+          "selection_truncated": false,
+          "visible_span_count": 6
+        },
+        "data_gap": null,
+        "documents": [
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+            "document_id": "sec:cik_0001830043:000119312525146199"
+          }
+        ],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [
+                "sec:cik_0001830043:000119312525146199"
+              ],
+              "phase": "initial",
+              "request_id": "recent_annual_filing",
+              "source_types": [
+                "filing"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Read the latest applicable annual or interim operating report available before the prediction time for the business model, risks, and segment economics.",
+          "lookback_days": 730,
+          "max_documents": 1,
+          "request_id": "recent_annual_filing",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "resolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "recent_company_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "recent_company_news",
+              "source_types": [
+                "news"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Retrieve recent company-specific news that may change market expectations, financing, customers, regulation, or products.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "recent_company_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "reported_financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "reported_financial_facts",
+              "source_types": [
+                "sec_company_facts"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Inspect reported financial facts available at the prediction time for growth, margins, cash, and capital structure.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "reported_financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "status": "unresolved"
+      },
+      {
+        "appended_documents": [],
+        "context_spans": [],
+        "coverage": {
+          "context_truncated": false,
+          "contract_satisfied": false,
+          "deduplicated_document_count": 0,
+          "eligible_document_count": 0,
+          "missing_requirements": [
+            "documents=0/1"
+          ],
+          "observed_distinct_period_count": 0,
+          "observed_observation_count": 0,
+          "observed_period_span_days": null,
+          "query_evaluated": false,
+          "query_matched_document_count": null,
+          "query_requested": false,
+          "query_status": "not_requested",
+          "required_source_group_count": 0,
+          "satisfied_source_group_count": 0,
+          "selected_document_count": 0,
+          "selection_truncated": false,
+          "visible_span_count": 0
+        },
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "recent_market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "documents": [],
+        "events": [
+          {
+            "details": {
+              "matched_document_ids": [],
+              "phase": "initial",
+              "request_id": "recent_market_backbone",
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "kind": "local_query"
+          }
+        ],
+        "omitted_context_markers": [],
+        "request": {
+          "description": "Inspect the latest 45 days of point-in-time price and volume for early market confirmation or contradiction.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "recent_market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "unresolved"
+      }
+    ]
+  },
+  "model_context": {
+    "max_normalized_characters": 32000,
+    "requests": [
+      {
+        "available_projection_count": 6,
+        "data_gap": null,
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_status": "complete",
+        "projections": [
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 23, 2025 Bumble Inc. (Exact name of Registrant as Specified in Its Charter) Delaware 001-40054 85-3604367 (State or Other Jurisdiction of Incorporation) (Commission File Number) (IRS Employer Identification No.) 1105 West 41st Street Austin , Texas 78756 (Address of Principal Executive Offices) (Zip Code) Registrant\u2019s Telephone Number, Including Area Code: 512 696-1409 Not Applicable (Former Name or Former Address, if Changed Since Last Report) Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions: \u2610 Written communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425) \u2610 Soliciting material pursuant to Rule 14a-12 under the Exchange Act (17 CFR 240.14a-12) \u2610 Pre-commencement communications pursuant to Rule 14d-2(b) under the Exchange Act (17 CFR 240.14d-2(b)) \u2610 Pre-commencement communications pursuant to Rule 13e-4(c) under the Exchange Act (17 CFR 240.13e-4(c)) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Class A common stock, par value $0.01 per share BMBL The Nasdaq Stock Market LLC Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (\u00a7 230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7 240.12b-2 of this chapter). Emerging growth compa",
+            "projection_id": "projection_fd3d1caf13ac99d7a6654456"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "ined in Rule 405 of the Securities Act of 1933 (\u00a7 230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7 240.12b-2 of this chapter). Emerging growth company \u2610 If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act. \u2610 Item 2.05 Costs Associated with Exit or Disposal Activities. On June 23, 2025, the Board of Directors of Bumble Inc. (the \u201cCompany\u201d) approved a reduction in the Company\u2019s global workforce by approximately 240 roles, representing approximately 30% of the Company\u2019s employees, as the Company realigns its operating structure to optimize execution on its strategic priorities. As a result, the Company expects to incur approximately $13 million to $18 million of non-recurring charges, consisting primarily of employee severance, benefits, and related charges, for impacted employees. Substantially all of these charges are expected to result in future cash outlays. The Company expects that the charges will be incurred primarily in the third and fourth quarters of 2025. The actions associated with the elimination of positions are subject to local law and consultation requirements in certain countries, which may extend this process beyond the fourth quarter of 2025. These estimates are subject to a number of assumptions and actual expenses may differ materially from the estimates disclosed above. Item 7.01 Regulation FD Disclosure. Cost Savings The Company expects to achieve up to $40 million of annual cost savings in connection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form 8-K. The Company plans to reinvest the substantial majority of these savings in strategic initiatives",
+            "projection_id": "projection_2c4b2110c0a4436bf7d563ee"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "nnection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form 8-K. The Company plans to reinvest the substantial majority of these savings in strategic initiatives including product and technology development. Updated Outlook A reconciliation of Adjusted EBITDA (as defined below) to net earnings (loss) calculated under generally accepted accounting principles in the United States (\u201cGAAP\u201d) has not been provided for the updated outlook included below as the quantification of certain items included in the calculation of GAAP net earnings (loss) cannot be calculated or predicted at this time without unreasonable efforts. For example, the non-GAAP adjustment for stock-based compensation expense requires additional inputs such as number of shares granted and market price that are not currently ascertainable, and the non-GAAP adjustment for certain legal, tax and regulatory reserves and expenses depends on the timing and magnitude of these expenses and cannot be accurately forecasted. For the same reasons, the Company is unable to address the probable significance of the unavailable information, which could have a potentially unpredictable, and potentially significant, impact on its future GAAP financial results. The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million. Employee Communication On June 25, 2025, the Company issued an employee communication relating to the workforce reduction, which is shared in part as Exhibit 99.1 to this Form 8-K and is incorporated by reference. The information furnished pursuant to this Item 7.01, including Exhibit 99.1, shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934, as amended (the \u201cExchange Act\u201d) or ot",
+            "projection_id": "projection_2b701c5ee8cb6171aec66751"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "his Item 7.01, including Exhibit 99.1, shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934, as amended (the \u201cExchange Act\u201d) or otherwise subject to the liabilities under that Section and shall not be deemed to be incorporated by reference into any filings under the Securities Act of 1933, as amended, or the Exchange Act. Forward-Looking Statements This current report on Form 8-K contains \u201cforward-looking statements\u201d within the meaning of the Private Securities Litigation Reform Act of 1995. These forward-looking statements reflect the Company\u2019s current views with respect to, among other things: its operations, including the plan to implement a global workforce reduction and restructuring of the Company\u2019s operations and the plan\u2019s expected impact; its financial performance; its industry and its business. Forward-looking statements include all statements that are not historical facts. In some cases, you can identify these forward-looking statements by the use of words such as \u201coutlook,\u201d \u201cbelieve(s),\u201d \u201cexpect(s),\u201d \u201cpotential,\u201d \u201ccontinue(s),\u201d \u201cmay,\u201d \u201cwill,\u201d \u201cshould,\u201d \u201ccould,\u201d \u201cwould,\u201d \u201cseek(s),\u201d \u201cpredict(s),\u201d \u201cintend(s),\u201d \u201ctrends,\u201d \u201cplan(s),\u201d \u201cestimate(s),\u201d \u201canticipate(s),\u201d \u201cprojection,\u201d \u201cwill likely result\u201d and or the negative version of these words or other comparable words of a future or forward-looking nature. Such forward-looking statements are subject to various risks and uncertainties. Accordingly, there are or will be important factors that could cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under \u201cItem 1A. Risk Factors&#822",
+            "projection_id": "projection_661ec66810d9066226619755"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "uld cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under \u201cItem 1A. Risk Factors\u201d in the Company\u2019s Annual Report on Form 10-K for the year ended December 31, 2024 filed with the Securities and Exchange Commission (the \u201cSEC\u201d) as such factors may be updated from time to time in the Company\u2019s periodic filings with the SEC. These factors should not be construed as exhaustive and should be read in conjunction with the other cautionary statements that are included in the Company\u2019s filings with the SEC. We undertake no obligation to publicly update or review any forward-looking statement, whether as a result of new information, future developments or otherwise, except as required by law. 2 Non-GAAP Financial Measures We report our financial results in accordance with GAAP; management believes, however, that certain non-GAAP financial measures provide users of our financial information with useful supplemental information that enables a better comparison of our performance across periods. We believe Adjusted earnings before interest, taxes, depreciation and amortization (\u201cAdjusted EBITDA\u201d) provides visibility to the underlying continuing operating performance by excluding the impact of certain expenses, including income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expenses, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent earn-out liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does",
+            "projection_id": "projection_d127e37c03d3f7d524c7b158"
+          },
+          {
+            "available_at": "2025-06-25T12:20:35+00:00",
+            "document_id": "sec:cik_0001830043:000119312525146199",
+            "exact_text": "that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does not believe these expenses are representative of our core earnings. Our non-GAAP financial measures may not be comparable to similarly titled measures used by other companies, have limitations as analytical tools and should not be considered in isolation, or as substitutes for analysis of our operating results as reported under GAAP. Additionally, we do not consider our non-GAAP financial measures as superior to, or a substitute for, the equivalent measures calculated and presented in accordance with GAAP. Adjusted EBITDA is defined as net earnings (loss) excluding income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expense, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent earn-out liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Item 9.01 Financial Statements and Exhibits. (d) Exhibits. Exhibit Number Description of Exhibit 99.1 Message from CEO Whitney Wolfe Herd to employees on June 25, 2025 104 Cover Page Interactive Data File (embedded within the Inline XBRL document) 3 SIGNATURES Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned hereunto duly authorized. BUMBLE INC. Date: June 25, 2025 By: /s/ Deirdre Runnette Name: Deirdre Runnett",
+            "projection_id": "projection_c15c396d42ef678a3319a34f"
+          }
+        ],
+        "request": {
+          "description": "Read the latest applicable annual or interim operating report available before the prediction time for the business model, risks, and segment economics.",
+          "lookback_days": 730,
+          "max_documents": 1,
+          "request_id": "recent_annual_filing",
+          "source_types": [
+            "filing"
+          ]
+        },
+        "status": "resolved",
+        "visible_projection_count": 6
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "recent_company_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Retrieve recent company-specific news that may change market expectations, financing, customers, regulation, or products.",
+          "lookback_days": 180,
+          "max_documents": 5,
+          "request_id": "recent_company_news",
+          "source_types": [
+            "news"
+          ]
+        },
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "reported_financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Inspect reported financial facts available at the prediction time for growth, margins, cash, and capital structure.",
+          "lookback_days": 730,
+          "max_documents": 2,
+          "request_id": "reported_financial_facts",
+          "source_types": [
+            "sec_company_facts"
+          ]
+        },
+        "status": "unresolved",
+        "visible_projection_count": 0
+      },
+      {
+        "available_projection_count": 0,
+        "data_gap": {
+          "message": "No point-in-time documents matched the request and no acquisition adapter supports the requested source types.",
+          "provider": null,
+          "reason": "no_matching_documents",
+          "request_id": "recent_market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "omitted_context_markers": [],
+        "omitted_projection_count": 0,
+        "projection_status": "unavailable",
+        "projections": [],
+        "request": {
+          "description": "Inspect the latest 45 days of point-in-time price and volume for early market confirmation or contradiction.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "recent_market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        },
+        "status": "unresolved",
+        "visible_projection_count": 0
+      }
+    ]
+  },
+  "projection_lineage": {
+    "entries": [
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_fd3d1caf13ac99d7a6654456",
+        "projection_text": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 23, 2025 Bumble Inc. (Exact name of Registrant as Specified in Its Charter) Delaware 001-40054 85-3604367 (State or Other Jurisdiction of Incorporation) (Commission File Number) (IRS Employer Identification No.) 1105 West 41st Street Austin , Texas 78756 (Address of Principal Executive Offices) (Zip Code) Registrant\u2019s Telephone Number, Including Area Code: 512 696-1409 Not Applicable (Former Name or Former Address, if Changed Since Last Report) Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions: \u2610 Written communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425) \u2610 Soliciting material pursuant to Rule 14a-12 under the Exchange Act (17 CFR 240.14a-12) \u2610 Pre-commencement communications pursuant to Rule 14d-2(b) under the Exchange Act (17 CFR 240.14d-2(b)) \u2610 Pre-commencement communications pursuant to Rule 13e-4(c) under the Exchange Act (17 CFR 240.13e-4(c)) Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Class A common stock, par value $0.01 per share BMBL The Nasdaq Stock Market LLC Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (\u00a7 230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7 240.12b-2 of this chapter). Emerging growth compa",
+        "raw_offset_runs": [
+          [
+            0,
+            13,
+            2272,
+            2285
+          ],
+          [
+            13,
+            14,
+            2285,
+            2415
+          ],
+          [
+            14,
+            48,
+            2415,
+            2449
+          ],
+          [
+            48,
+            49,
+            2449,
+            2579
+          ],
+          [
+            49,
+            71,
+            2579,
+            2601
+          ],
+          [
+            71,
+            72,
+            2601,
+            3015
+          ],
+          [
+            72,
+            76,
+            3015,
+            3019
+          ],
+          [
+            76,
+            77,
+            3019,
+            3152
+          ],
+          [
+            77,
+            80,
+            3152,
+            3155
+          ],
+          [
+            80,
+            81,
+            3155,
+            3592
+          ],
+          [
+            81,
+            95,
+            3592,
+            3606
+          ],
+          [
+            95,
+            96,
+            3606,
+            3736
+          ],
+          [
+            96,
+            115,
+            3736,
+            3755
+          ],
+          [
+            115,
+            116,
+            3755,
+            3761
+          ],
+          [
+            116,
+            127,
+            3761,
+            3772
+          ],
+          [
+            127,
+            128,
+            3772,
+            3902
+          ],
+          [
+            128,
+            166,
+            3902,
+            3940
+          ],
+          [
+            166,
+            167,
+            3940,
+            4070
+          ],
+          [
+            167,
+            216,
+            4070,
+            4119
+          ],
+          [
+            216,
+            217,
+            4119,
+            4260
+          ],
+          [
+            217,
+            221,
+            4260,
+            4264
+          ],
+          [
+            221,
+            222,
+            4264,
+            4270
+          ],
+          [
+            222,
+            230,
+            4270,
+            4278
+          ],
+          [
+            230,
+            231,
+            4278,
+            4815
+          ],
+          [
+            231,
+            242,
+            4815,
+            4826
+          ],
+          [
+            242,
+            243,
+            4826,
+            4972
+          ],
+          [
+            243,
+            297,
+            4972,
+            5026
+          ],
+          [
+            297,
+            298,
+            5026,
+            6025
+          ],
+          [
+            298,
+            306,
+            6025,
+            6033
+          ],
+          [
+            306,
+            307,
+            6033,
+            6324
+          ],
+          [
+            307,
+            316,
+            6324,
+            6333
+          ],
+          [
+            316,
+            317,
+            6333,
+            6644
+          ],
+          [
+            317,
+            327,
+            6644,
+            6654
+          ],
+          [
+            327,
+            328,
+            6654,
+            6951
+          ],
+          [
+            328,
+            356,
+            6951,
+            6979
+          ],
+          [
+            356,
+            357,
+            6979,
+            7108
+          ],
+          [
+            357,
+            374,
+            7108,
+            7125
+          ],
+          [
+            374,
+            375,
+            7125,
+            7355
+          ],
+          [
+            375,
+            386,
+            7355,
+            7366
+          ],
+          [
+            386,
+            387,
+            7366,
+            7495
+          ],
+          [
+            387,
+            399,
+            7495,
+            7507
+          ],
+          [
+            399,
+            400,
+            7507,
+            7737
+          ],
+          [
+            400,
+            413,
+            7737,
+            7750
+          ],
+          [
+            413,
+            414,
+            7750,
+            7879
+          ],
+          [
+            414,
+            433,
+            7879,
+            7898
+          ],
+          [
+            433,
+            434,
+            7898,
+            8284
+          ],
+          [
+            434,
+            455,
+            8284,
+            8305
+          ],
+          [
+            455,
+            456,
+            8305,
+            8706
+          ],
+          [
+            456,
+            462,
+            8706,
+            8712
+          ],
+          [
+            462,
+            463,
+            8712,
+            8728
+          ],
+          [
+            463,
+            464,
+            8728,
+            8729
+          ],
+          [
+            464,
+            465,
+            8729,
+            8878
+          ],
+          [
+            465,
+            470,
+            8878,
+            8883
+          ],
+          [
+            470,
+            471,
+            8883,
+            9236
+          ],
+          [
+            471,
+            476,
+            9236,
+            9241
+          ],
+          [
+            476,
+            477,
+            9241,
+            9437
+          ],
+          [
+            477,
+            517,
+            9437,
+            9477
+          ],
+          [
+            517,
+            518,
+            9477,
+            9695
+          ],
+          [
+            518,
+            528,
+            9695,
+            9705
+          ],
+          [
+            528,
+            529,
+            9705,
+            9856
+          ],
+          [
+            529,
+            539,
+            9856,
+            9866
+          ],
+          [
+            539,
+            540,
+            9866,
+            9873
+          ],
+          [
+            540,
+            580,
+            9873,
+            9913
+          ],
+          [
+            580,
+            581,
+            9913,
+            10013
+          ],
+          [
+            581,
+            584,
+            10013,
+            10016
+          ],
+          [
+            584,
+            585,
+            10016,
+            10169
+          ],
+          [
+            585,
+            593,
+            10169,
+            10177
+          ],
+          [
+            593,
+            594,
+            10177,
+            10330
+          ],
+          [
+            594,
+            608,
+            10330,
+            10344
+          ],
+          [
+            608,
+            609,
+            10344,
+            10473
+          ],
+          [
+            609,
+            670,
+            10473,
+            10534
+          ],
+          [
+            670,
+            671,
+            10534,
+            10913
+          ],
+          [
+            671,
+            714,
+            10913,
+            10956
+          ],
+          [
+            714,
+            715,
+            10956,
+            10990
+          ],
+          [
+            715,
+            718,
+            10990,
+            10993
+          ],
+          [
+            718,
+            719,
+            10993,
+            11001
+          ],
+          [
+            719,
+            842,
+            11001,
+            11124
+          ],
+          [
+            842,
+            843,
+            11124,
+            11576
+          ],
+          [
+            843,
+            844,
+            11576,
+            11583
+          ],
+          [
+            844,
+            845,
+            11583,
+            11761
+          ],
+          [
+            845,
+            930,
+            11761,
+            11846
+          ],
+          [
+            930,
+            931,
+            11846,
+            12313
+          ],
+          [
+            931,
+            932,
+            12313,
+            12320
+          ],
+          [
+            932,
+            933,
+            12320,
+            12498
+          ],
+          [
+            933,
+            969,
+            12498,
+            12534
+          ],
+          [
+            969,
+            970,
+            12534,
+            12568
+          ],
+          [
+            970,
+            976,
+            12568,
+            12574
+          ],
+          [
+            976,
+            977,
+            12574,
+            12582
+          ],
+          [
+            977,
+            1007,
+            12582,
+            12612
+          ],
+          [
+            1007,
+            1008,
+            12612,
+            12646
+          ],
+          [
+            1008,
+            1019,
+            12646,
+            12657
+          ],
+          [
+            1019,
+            1020,
+            12657,
+            13139
+          ],
+          [
+            1020,
+            1021,
+            13139,
+            13146
+          ],
+          [
+            1021,
+            1022,
+            13146,
+            13357
+          ],
+          [
+            1022,
+            1038,
+            13357,
+            13373
+          ],
+          [
+            1038,
+            1039,
+            13373,
+            13381
+          ],
+          [
+            1039,
+            1070,
+            13381,
+            13412
+          ],
+          [
+            1070,
+            1071,
+            13412,
+            13446
+          ],
+          [
+            1071,
+            1079,
+            13446,
+            13454
+          ],
+          [
+            1079,
+            1080,
+            13454,
+            13462
+          ],
+          [
+            1080,
+            1110,
+            13462,
+            13492
+          ],
+          [
+            1110,
+            1111,
+            13492,
+            13526
+          ],
+          [
+            1111,
+            1124,
+            13526,
+            13539
+          ],
+          [
+            1124,
+            1125,
+            13539,
+            14027
+          ],
+          [
+            1125,
+            1126,
+            14027,
+            14034
+          ],
+          [
+            1126,
+            1127,
+            14034,
+            14245
+          ],
+          [
+            1127,
+            1143,
+            14245,
+            14261
+          ],
+          [
+            1143,
+            1144,
+            14261,
+            14269
+          ],
+          [
+            1144,
+            1175,
+            14269,
+            14300
+          ],
+          [
+            1175,
+            1176,
+            14300,
+            14334
+          ],
+          [
+            1176,
+            1184,
+            14334,
+            14342
+          ],
+          [
+            1184,
+            1185,
+            14342,
+            14350
+          ],
+          [
+            1185,
+            1215,
+            14350,
+            14380
+          ],
+          [
+            1215,
+            1216,
+            14380,
+            14414
+          ],
+          [
+            1216,
+            1229,
+            14414,
+            14427
+          ],
+          [
+            1229,
+            1230,
+            14427,
+            14582
+          ],
+          [
+            1230,
+            1271,
+            14582,
+            14623
+          ],
+          [
+            1271,
+            1272,
+            14623,
+            14629
+          ],
+          [
+            1272,
+            1289,
+            14629,
+            14646
+          ],
+          [
+            1289,
+            1290,
+            14646,
+            15355
+          ],
+          [
+            1290,
+            1309,
+            15355,
+            15374
+          ],
+          [
+            1309,
+            1310,
+            15374,
+            15642
+          ],
+          [
+            1310,
+            1317,
+            15642,
+            15649
+          ],
+          [
+            1317,
+            1318,
+            15649,
+            15778
+          ],
+          [
+            1318,
+            1327,
+            15778,
+            15787
+          ],
+          [
+            1327,
+            1328,
+            15787,
+            16055
+          ],
+          [
+            1328,
+            1349,
+            16055,
+            16076
+          ],
+          [
+            1349,
+            1350,
+            16076,
+            16205
+          ],
+          [
+            1350,
+            1369,
+            16205,
+            16224
+          ],
+          [
+            1369,
+            1370,
+            16224,
+            16474
+          ],
+          [
+            1370,
+            1375,
+            16474,
+            16479
+          ],
+          [
+            1375,
+            1376,
+            16479,
+            16485
+          ],
+          [
+            1376,
+            1417,
+            16485,
+            16526
+          ],
+          [
+            1417,
+            1418,
+            16526,
+            16743
+          ],
+          [
+            1418,
+            1422,
+            16743,
+            16747
+          ],
+          [
+            1422,
+            1423,
+            16747,
+            16999
+          ],
+          [
+            1423,
+            1450,
+            16999,
+            17026
+          ],
+          [
+            1450,
+            1451,
+            17026,
+            17151
+          ],
+          [
+            1451,
+            1581,
+            17151,
+            17281
+          ],
+          [
+            1581,
+            1582,
+            17281,
+            17287
+          ],
+          [
+            1582,
+            1583,
+            17287,
+            17293
+          ],
+          [
+            1583,
+            1615,
+            17293,
+            17325
+          ],
+          [
+            1615,
+            1616,
+            17325,
+            17359
+          ],
+          [
+            1616,
+            1621,
+            17359,
+            17364
+          ],
+          [
+            1621,
+            1622,
+            17364,
+            17372
+          ],
+          [
+            1622,
+            1660,
+            17372,
+            17410
+          ],
+          [
+            1660,
+            1661,
+            17410,
+            17444
+          ],
+          [
+            1661,
+            1662,
+            17444,
+            17445
+          ],
+          [
+            1662,
+            1663,
+            17445,
+            17451
+          ],
+          [
+            1663,
+            1664,
+            17451,
+            17457
+          ],
+          [
+            1664,
+            1673,
+            17457,
+            17466
+          ],
+          [
+            1673,
+            1674,
+            17466,
+            17474
+          ],
+          [
+            1674,
+            1691,
+            17474,
+            17491
+          ],
+          [
+            1691,
+            1692,
+            17491,
+            17586
+          ],
+          [
+            1692,
+            1713,
+            17586,
+            17607
+          ]
+        ]
+      },
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+        "projection_text": "ined in Rule 405 of the Securities Act of 1933 (\u00a7 230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7 240.12b-2 of this chapter). Emerging growth company \u2610 If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act. \u2610 Item 2.05 Costs Associated with Exit or Disposal Activities. On June 23, 2025, the Board of Directors of Bumble Inc. (the \u201cCompany\u201d) approved a reduction in the Company\u2019s global workforce by approximately 240 roles, representing approximately 30% of the Company\u2019s employees, as the Company realigns its operating structure to optimize execution on its strategic priorities. As a result, the Company expects to incur approximately $13 million to $18 million of non-recurring charges, consisting primarily of employee severance, benefits, and related charges, for impacted employees. Substantially all of these charges are expected to result in future cash outlays. The Company expects that the charges will be incurred primarily in the third and fourth quarters of 2025. The actions associated with the elimination of positions are subject to local law and consultation requirements in certain countries, which may extend this process beyond the fourth quarter of 2025. These estimates are subject to a number of assumptions and actual expenses may differ materially from the estimates disclosed above. Item 7.01 Regulation FD Disclosure. Cost Savings The Company expects to achieve up to $40 million of annual cost savings in connection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form 8-K. The Company plans to reinvest the substantial majority of these savings in strategic initiatives",
+        "raw_offset_runs": [
+          [
+            0,
+            48,
+            17233,
+            17281
+          ],
+          [
+            48,
+            49,
+            17281,
+            17287
+          ],
+          [
+            49,
+            50,
+            17287,
+            17293
+          ],
+          [
+            50,
+            82,
+            17293,
+            17325
+          ],
+          [
+            82,
+            83,
+            17325,
+            17359
+          ],
+          [
+            83,
+            88,
+            17359,
+            17364
+          ],
+          [
+            88,
+            89,
+            17364,
+            17372
+          ],
+          [
+            89,
+            127,
+            17372,
+            17410
+          ],
+          [
+            127,
+            128,
+            17410,
+            17444
+          ],
+          [
+            128,
+            129,
+            17444,
+            17445
+          ],
+          [
+            129,
+            130,
+            17445,
+            17451
+          ],
+          [
+            130,
+            131,
+            17451,
+            17457
+          ],
+          [
+            131,
+            140,
+            17457,
+            17466
+          ],
+          [
+            140,
+            141,
+            17466,
+            17474
+          ],
+          [
+            141,
+            158,
+            17474,
+            17491
+          ],
+          [
+            158,
+            159,
+            17491,
+            17586
+          ],
+          [
+            159,
+            182,
+            17586,
+            17609
+          ],
+          [
+            182,
+            183,
+            17609,
+            17761
+          ],
+          [
+            183,
+            184,
+            17761,
+            17768
+          ],
+          [
+            184,
+            185,
+            17768,
+            17879
+          ],
+          [
+            185,
+            408,
+            17879,
+            18102
+          ],
+          [
+            408,
+            409,
+            18102,
+            18108
+          ],
+          [
+            409,
+            435,
+            18108,
+            18134
+          ],
+          [
+            435,
+            436,
+            18134,
+            18141
+          ],
+          [
+            436,
+            437,
+            18141,
+            18148
+          ],
+          [
+            437,
+            438,
+            18148,
+            18975
+          ],
+          [
+            438,
+            442,
+            18975,
+            18979
+          ],
+          [
+            442,
+            443,
+            18979,
+            18986
+          ],
+          [
+            443,
+            447,
+            18986,
+            18990
+          ],
+          [
+            447,
+            448,
+            18990,
+            19176
+          ],
+          [
+            448,
+            498,
+            19176,
+            19226
+          ],
+          [
+            498,
+            499,
+            19226,
+            19340
+          ],
+          [
+            499,
+            506,
+            19340,
+            19347
+          ],
+          [
+            506,
+            507,
+            19347,
+            19353
+          ],
+          [
+            507,
+            560,
+            19353,
+            19406
+          ],
+          [
+            560,
+            561,
+            19406,
+            19413
+          ],
+          [
+            561,
+            568,
+            19413,
+            19420
+          ],
+          [
+            568,
+            569,
+            19420,
+            19427
+          ],
+          [
+            569,
+            606,
+            19427,
+            19464
+          ],
+          [
+            606,
+            607,
+            19464,
+            19471
+          ],
+          [
+            607,
+            699,
+            19471,
+            19563
+          ],
+          [
+            699,
+            700,
+            19563,
+            19570
+          ],
+          [
+            700,
+            871,
+            19570,
+            19741
+          ],
+          [
+            871,
+            872,
+            19741,
+            19747
+          ],
+          [
+            872,
+            886,
+            19747,
+            19761
+          ],
+          [
+            886,
+            887,
+            19761,
+            19767
+          ],
+          [
+            887,
+            897,
+            19767,
+            19777
+          ],
+          [
+            897,
+            898,
+            19777,
+            19811
+          ],
+          [
+            898,
+            911,
+            19811,
+            19824
+          ],
+          [
+            911,
+            912,
+            19824,
+            19832
+          ],
+          [
+            912,
+            1101,
+            19832,
+            20021
+          ],
+          [
+            1101,
+            1102,
+            20021,
+            20118
+          ],
+          [
+            1102,
+            1539,
+            20118,
+            20555
+          ],
+          [
+            1539,
+            1540,
+            20555,
+            20902
+          ],
+          [
+            1540,
+            1544,
+            20902,
+            20906
+          ],
+          [
+            1544,
+            1545,
+            20906,
+            20913
+          ],
+          [
+            1545,
+            1549,
+            20913,
+            20917
+          ],
+          [
+            1549,
+            1550,
+            20917,
+            21103
+          ],
+          [
+            1550,
+            1575,
+            21103,
+            21128
+          ],
+          [
+            1575,
+            1576,
+            21128,
+            21299
+          ],
+          [
+            1576,
+            1588,
+            21299,
+            21311
+          ],
+          [
+            1588,
+            1589,
+            21311,
+            21414
+          ],
+          [
+            1589,
+            1629,
+            21414,
+            21454
+          ],
+          [
+            1629,
+            1630,
+            21454,
+            21460
+          ],
+          [
+            1630,
+            1764,
+            21460,
+            21594
+          ],
+          [
+            1764,
+            1765,
+            21594,
+            21628
+          ],
+          [
+            1765,
+            1769,
+            21628,
+            21632
+          ],
+          [
+            1769,
+            1770,
+            21632,
+            21640
+          ],
+          [
+            1770,
+            1866,
+            21640,
+            21736
+          ]
+        ]
+      },
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_2b701c5ee8cb6171aec66751",
+        "projection_text": "nnection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form 8-K. The Company plans to reinvest the substantial majority of these savings in strategic initiatives including product and technology development. Updated Outlook A reconciliation of Adjusted EBITDA (as defined below) to net earnings (loss) calculated under generally accepted accounting principles in the United States (\u201cGAAP\u201d) has not been provided for the updated outlook included below as the quantification of certain items included in the calculation of GAAP net earnings (loss) cannot be calculated or predicted at this time without unreasonable efforts. For example, the non-GAAP adjustment for stock-based compensation expense requires additional inputs such as number of shares granted and market price that are not currently ascertainable, and the non-GAAP adjustment for certain legal, tax and regulatory reserves and expenses depends on the timing and magnitude of these expenses and cannot be accurately forecasted. For the same reasons, the Company is unable to address the probable significance of the unavailable information, which could have a potentially unpredictable, and potentially significant, impact on its future GAAP financial results. The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million. Employee Communication On June 25, 2025, the Company issued an employee communication relating to the workforce reduction, which is shared in part as Exhibit 99.1 to this Form 8-K and is incorporated by reference. The information furnished pursuant to this Item 7.01, including Exhibit 99.1, shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934, as amended (the \u201cExchange Act\u201d) or ot",
+        "raw_offset_runs": [
+          [
+            0,
+            98,
+            21496,
+            21594
+          ],
+          [
+            98,
+            99,
+            21594,
+            21628
+          ],
+          [
+            99,
+            103,
+            21628,
+            21632
+          ],
+          [
+            103,
+            104,
+            21632,
+            21640
+          ],
+          [
+            104,
+            246,
+            21640,
+            21782
+          ],
+          [
+            246,
+            247,
+            21782,
+            21936
+          ],
+          [
+            247,
+            262,
+            21936,
+            21951
+          ],
+          [
+            262,
+            263,
+            21951,
+            22054
+          ],
+          [
+            263,
+            421,
+            22054,
+            22212
+          ],
+          [
+            421,
+            422,
+            22212,
+            22219
+          ],
+          [
+            422,
+            426,
+            22219,
+            22223
+          ],
+          [
+            426,
+            427,
+            22223,
+            22230
+          ],
+          [
+            427,
+            678,
+            22230,
+            22481
+          ],
+          [
+            678,
+            679,
+            22481,
+            22515
+          ],
+          [
+            679,
+            687,
+            22515,
+            22523
+          ],
+          [
+            687,
+            688,
+            22523,
+            22531
+          ],
+          [
+            688,
+            858,
+            22531,
+            22701
+          ],
+          [
+            858,
+            859,
+            22701,
+            22735
+          ],
+          [
+            859,
+            867,
+            22735,
+            22743
+          ],
+          [
+            867,
+            868,
+            22743,
+            22751
+          ],
+          [
+            868,
+            1262,
+            22751,
+            23145
+          ],
+          [
+            1262,
+            1263,
+            23145,
+            23242
+          ],
+          [
+            1263,
+            1426,
+            23242,
+            23405
+          ],
+          [
+            1426,
+            1427,
+            23405,
+            23411
+          ],
+          [
+            1427,
+            1443,
+            23411,
+            23427
+          ],
+          [
+            1443,
+            1444,
+            23427,
+            23433
+          ],
+          [
+            1444,
+            1484,
+            23433,
+            23473
+          ],
+          [
+            1484,
+            1485,
+            23473,
+            23479
+          ],
+          [
+            1485,
+            1500,
+            23479,
+            23494
+          ],
+          [
+            1500,
+            1501,
+            23494,
+            23500
+          ],
+          [
+            1501,
+            1509,
+            23500,
+            23508
+          ],
+          [
+            1509,
+            1510,
+            23508,
+            23662
+          ],
+          [
+            1510,
+            1532,
+            23662,
+            23684
+          ],
+          [
+            1532,
+            1533,
+            23684,
+            23787
+          ],
+          [
+            1533,
+            1540,
+            23787,
+            23794
+          ],
+          [
+            1540,
+            1541,
+            23794,
+            23800
+          ],
+          [
+            1541,
+            1685,
+            23800,
+            23944
+          ],
+          [
+            1685,
+            1686,
+            23944,
+            23978
+          ],
+          [
+            1686,
+            1689,
+            23978,
+            23981
+          ],
+          [
+            1689,
+            1690,
+            23981,
+            23989
+          ],
+          [
+            1690,
+            1723,
+            23989,
+            24022
+          ],
+          [
+            1723,
+            1724,
+            24022,
+            24119
+          ],
+          [
+            1724,
+            1822,
+            24119,
+            24217
+          ],
+          [
+            1822,
+            1823,
+            24217,
+            24224
+          ],
+          [
+            1823,
+            1828,
+            24224,
+            24229
+          ],
+          [
+            1828,
+            1829,
+            24229,
+            24236
+          ],
+          [
+            1829,
+            1853,
+            24236,
+            24260
+          ],
+          [
+            1853,
+            1854,
+            24260,
+            24266
+          ],
+          [
+            1854,
+            1913,
+            24266,
+            24325
+          ],
+          [
+            1913,
+            1914,
+            24325,
+            24332
+          ],
+          [
+            1914,
+            1926,
+            24332,
+            24344
+          ],
+          [
+            1926,
+            1927,
+            24344,
+            24351
+          ],
+          [
+            1927,
+            1934,
+            24351,
+            24358
+          ]
+        ]
+      },
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_661ec66810d9066226619755",
+        "projection_text": "his Item 7.01, including Exhibit 99.1, shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934, as amended (the \u201cExchange Act\u201d) or otherwise subject to the liabilities under that Section and shall not be deemed to be incorporated by reference into any filings under the Securities Act of 1933, as amended, or the Exchange Act. Forward-Looking Statements This current report on Form 8-K contains \u201cforward-looking statements\u201d within the meaning of the Private Securities Litigation Reform Act of 1995. These forward-looking statements reflect the Company\u2019s current views with respect to, among other things: its operations, including the plan to implement a global workforce reduction and restructuring of the Company\u2019s operations and the plan\u2019s expected impact; its financial performance; its industry and its business. Forward-looking statements include all statements that are not historical facts. In some cases, you can identify these forward-looking statements by the use of words such as \u201coutlook,\u201d \u201cbelieve(s),\u201d \u201cexpect(s),\u201d \u201cpotential,\u201d \u201ccontinue(s),\u201d \u201cmay,\u201d \u201cwill,\u201d \u201cshould,\u201d \u201ccould,\u201d \u201cwould,\u201d \u201cseek(s),\u201d \u201cpredict(s),\u201d \u201cintend(s),\u201d \u201ctrends,\u201d \u201cplan(s),\u201d \u201cestimate(s),\u201d \u201canticipate(s),\u201d \u201cprojection,\u201d \u201cwill likely result\u201d and or the negative version of these words or other comparable words of a future or forward-looking nature. Such forward-looking statements are subject to various risks and uncertainties. Accordingly, there are or will be important factors that could cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under \u201cItem 1A. Risk Factors&#822",
+        "raw_offset_runs": [
+          [
+            0,
+            59,
+            24158,
+            24217
+          ],
+          [
+            59,
+            60,
+            24217,
+            24224
+          ],
+          [
+            60,
+            65,
+            24224,
+            24229
+          ],
+          [
+            65,
+            66,
+            24229,
+            24236
+          ],
+          [
+            66,
+            90,
+            24236,
+            24260
+          ],
+          [
+            90,
+            91,
+            24260,
+            24266
+          ],
+          [
+            91,
+            150,
+            24266,
+            24325
+          ],
+          [
+            150,
+            151,
+            24325,
+            24332
+          ],
+          [
+            151,
+            163,
+            24332,
+            24344
+          ],
+          [
+            163,
+            164,
+            24344,
+            24351
+          ],
+          [
+            164,
+            364,
+            24351,
+            24551
+          ],
+          [
+            364,
+            365,
+            24551,
+            24697
+          ],
+          [
+            365,
+            391,
+            24697,
+            24723
+          ],
+          [
+            391,
+            392,
+            24723,
+            24826
+          ],
+          [
+            392,
+            419,
+            24826,
+            24853
+          ],
+          [
+            419,
+            420,
+            24853,
+            24887
+          ],
+          [
+            420,
+            423,
+            24887,
+            24890
+          ],
+          [
+            423,
+            424,
+            24890,
+            24898
+          ],
+          [
+            424,
+            433,
+            24898,
+            24907
+          ],
+          [
+            433,
+            434,
+            24907,
+            24914
+          ],
+          [
+            434,
+            460,
+            24914,
+            24940
+          ],
+          [
+            460,
+            461,
+            24940,
+            24947
+          ],
+          [
+            461,
+            590,
+            24947,
+            25076
+          ],
+          [
+            590,
+            591,
+            25076,
+            25083
+          ],
+          [
+            591,
+            753,
+            25083,
+            25245
+          ],
+          [
+            753,
+            754,
+            25245,
+            25252
+          ],
+          [
+            754,
+            779,
+            25252,
+            25277
+          ],
+          [
+            779,
+            780,
+            25277,
+            25284
+          ],
+          [
+            780,
+            1031,
+            25284,
+            25535
+          ],
+          [
+            1031,
+            1032,
+            25535,
+            25542
+          ],
+          [
+            1032,
+            1040,
+            25542,
+            25550
+          ],
+          [
+            1040,
+            1041,
+            25550,
+            25557
+          ],
+          [
+            1041,
+            1042,
+            25557,
+            25558
+          ],
+          [
+            1042,
+            1043,
+            25558,
+            25565
+          ],
+          [
+            1043,
+            1054,
+            25565,
+            25576
+          ],
+          [
+            1054,
+            1055,
+            25576,
+            25583
+          ],
+          [
+            1055,
+            1056,
+            25583,
+            25584
+          ],
+          [
+            1056,
+            1057,
+            25584,
+            25591
+          ],
+          [
+            1057,
+            1067,
+            25591,
+            25601
+          ],
+          [
+            1067,
+            1068,
+            25601,
+            25608
+          ],
+          [
+            1068,
+            1069,
+            25608,
+            25609
+          ],
+          [
+            1069,
+            1070,
+            25609,
+            25616
+          ],
+          [
+            1070,
+            1080,
+            25616,
+            25626
+          ],
+          [
+            1080,
+            1081,
+            25626,
+            25633
+          ],
+          [
+            1081,
+            1082,
+            25633,
+            25634
+          ],
+          [
+            1082,
+            1083,
+            25634,
+            25641
+          ],
+          [
+            1083,
+            1095,
+            25641,
+            25653
+          ],
+          [
+            1095,
+            1096,
+            25653,
+            25660
+          ],
+          [
+            1096,
+            1097,
+            25660,
+            25661
+          ],
+          [
+            1097,
+            1098,
+            25661,
+            25668
+          ],
+          [
+            1098,
+            1102,
+            25668,
+            25672
+          ],
+          [
+            1102,
+            1103,
+            25672,
+            25679
+          ],
+          [
+            1103,
+            1104,
+            25679,
+            25680
+          ],
+          [
+            1104,
+            1105,
+            25680,
+            25687
+          ],
+          [
+            1105,
+            1110,
+            25687,
+            25692
+          ],
+          [
+            1110,
+            1111,
+            25692,
+            25699
+          ],
+          [
+            1111,
+            1112,
+            25699,
+            25700
+          ],
+          [
+            1112,
+            1113,
+            25700,
+            25707
+          ],
+          [
+            1113,
+            1120,
+            25707,
+            25714
+          ],
+          [
+            1120,
+            1121,
+            25714,
+            25721
+          ],
+          [
+            1121,
+            1122,
+            25721,
+            25722
+          ],
+          [
+            1122,
+            1123,
+            25722,
+            25729
+          ],
+          [
+            1123,
+            1129,
+            25729,
+            25735
+          ],
+          [
+            1129,
+            1130,
+            25735,
+            25742
+          ],
+          [
+            1130,
+            1131,
+            25742,
+            25743
+          ],
+          [
+            1131,
+            1132,
+            25743,
+            25750
+          ],
+          [
+            1132,
+            1138,
+            25750,
+            25756
+          ],
+          [
+            1138,
+            1139,
+            25756,
+            25763
+          ],
+          [
+            1139,
+            1140,
+            25763,
+            25764
+          ],
+          [
+            1140,
+            1141,
+            25764,
+            25771
+          ],
+          [
+            1141,
+            1149,
+            25771,
+            25779
+          ],
+          [
+            1149,
+            1150,
+            25779,
+            25786
+          ],
+          [
+            1150,
+            1151,
+            25786,
+            25787
+          ],
+          [
+            1151,
+            1152,
+            25787,
+            25794
+          ],
+          [
+            1152,
+            1163,
+            25794,
+            25805
+          ],
+          [
+            1163,
+            1164,
+            25805,
+            25812
+          ],
+          [
+            1164,
+            1165,
+            25812,
+            25813
+          ],
+          [
+            1165,
+            1166,
+            25813,
+            25820
+          ],
+          [
+            1166,
+            1176,
+            25820,
+            25830
+          ],
+          [
+            1176,
+            1177,
+            25830,
+            25837
+          ],
+          [
+            1177,
+            1178,
+            25837,
+            25838
+          ],
+          [
+            1178,
+            1179,
+            25838,
+            25845
+          ],
+          [
+            1179,
+            1186,
+            25845,
+            25852
+          ],
+          [
+            1186,
+            1187,
+            25852,
+            25859
+          ],
+          [
+            1187,
+            1188,
+            25859,
+            25860
+          ],
+          [
+            1188,
+            1189,
+            25860,
+            25867
+          ],
+          [
+            1189,
+            1197,
+            25867,
+            25875
+          ],
+          [
+            1197,
+            1198,
+            25875,
+            25882
+          ],
+          [
+            1198,
+            1199,
+            25882,
+            25883
+          ],
+          [
+            1199,
+            1200,
+            25883,
+            25890
+          ],
+          [
+            1200,
+            1212,
+            25890,
+            25902
+          ],
+          [
+            1212,
+            1213,
+            25902,
+            25909
+          ],
+          [
+            1213,
+            1214,
+            25909,
+            25910
+          ],
+          [
+            1214,
+            1215,
+            25910,
+            25917
+          ],
+          [
+            1215,
+            1229,
+            25917,
+            25931
+          ],
+          [
+            1229,
+            1230,
+            25931,
+            25938
+          ],
+          [
+            1230,
+            1231,
+            25938,
+            25939
+          ],
+          [
+            1231,
+            1232,
+            25939,
+            25946
+          ],
+          [
+            1232,
+            1243,
+            25946,
+            25957
+          ],
+          [
+            1243,
+            1244,
+            25957,
+            25964
+          ],
+          [
+            1244,
+            1245,
+            25964,
+            25965
+          ],
+          [
+            1245,
+            1246,
+            25965,
+            25972
+          ],
+          [
+            1246,
+            1264,
+            25972,
+            25990
+          ],
+          [
+            1264,
+            1265,
+            25990,
+            25997
+          ],
+          [
+            1265,
+            1680,
+            25997,
+            26412
+          ],
+          [
+            1680,
+            1681,
+            26412,
+            26419
+          ],
+          [
+            1681,
+            1707,
+            26419,
+            26445
+          ]
+        ]
+      },
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_d127e37c03d3f7d524c7b158",
+        "projection_text": "uld cause actual outcomes or results to differ materially from those indicated in these statements. These factors include but are not limited to those described under \u201cItem 1A. Risk Factors\u201d in the Company\u2019s Annual Report on Form 10-K for the year ended December 31, 2024 filed with the Securities and Exchange Commission (the \u201cSEC\u201d) as such factors may be updated from time to time in the Company\u2019s periodic filings with the SEC. These factors should not be construed as exhaustive and should be read in conjunction with the other cautionary statements that are included in the Company\u2019s filings with the SEC. We undertake no obligation to publicly update or review any forward-looking statement, whether as a result of new information, future developments or otherwise, except as required by law. 2 Non-GAAP Financial Measures We report our financial results in accordance with GAAP; management believes, however, that certain non-GAAP financial measures provide users of our financial information with useful supplemental information that enables a better comparison of our performance across periods. We believe Adjusted earnings before interest, taxes, depreciation and amortization (\u201cAdjusted EBITDA\u201d) provides visibility to the underlying continuing operating performance by excluding the impact of certain expenses, including income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expenses, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent earn-out liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does",
+        "raw_offset_runs": [
+          [
+            0,
+            167,
+            26245,
+            26412
+          ],
+          [
+            167,
+            168,
+            26412,
+            26419
+          ],
+          [
+            168,
+            189,
+            26419,
+            26440
+          ],
+          [
+            189,
+            190,
+            26440,
+            26447
+          ],
+          [
+            190,
+            205,
+            26447,
+            26462
+          ],
+          [
+            205,
+            206,
+            26462,
+            26469
+          ],
+          [
+            206,
+            229,
+            26469,
+            26492
+          ],
+          [
+            229,
+            230,
+            26492,
+            26526
+          ],
+          [
+            230,
+            234,
+            26526,
+            26530
+          ],
+          [
+            234,
+            235,
+            26530,
+            26538
+          ],
+          [
+            235,
+            262,
+            26538,
+            26565
+          ],
+          [
+            262,
+            263,
+            26565,
+            26571
+          ],
+          [
+            263,
+            327,
+            26571,
+            26635
+          ],
+          [
+            327,
+            328,
+            26635,
+            26642
+          ],
+          [
+            328,
+            331,
+            26642,
+            26645
+          ],
+          [
+            331,
+            332,
+            26645,
+            26652
+          ],
+          [
+            332,
+            397,
+            26652,
+            26717
+          ],
+          [
+            397,
+            398,
+            26717,
+            26724
+          ],
+          [
+            398,
+            586,
+            26724,
+            26912
+          ],
+          [
+            586,
+            587,
+            26912,
+            26919
+          ],
+          [
+            587,
+            798,
+            26919,
+            27130
+          ],
+          [
+            798,
+            799,
+            27130,
+            27316
+          ],
+          [
+            799,
+            800,
+            27316,
+            27317
+          ],
+          [
+            800,
+            801,
+            27317,
+            27730
+          ],
+          [
+            801,
+            809,
+            27730,
+            27738
+          ],
+          [
+            809,
+            810,
+            27738,
+            27746
+          ],
+          [
+            810,
+            828,
+            27746,
+            27764
+          ],
+          [
+            828,
+            829,
+            27764,
+            27860
+          ],
+          [
+            829,
+            928,
+            27860,
+            27959
+          ],
+          [
+            928,
+            929,
+            27959,
+            27993
+          ],
+          [
+            929,
+            937,
+            27993,
+            28001
+          ],
+          [
+            937,
+            938,
+            28001,
+            28009
+          ],
+          [
+            938,
+            1189,
+            28009,
+            28260
+          ],
+          [
+            1189,
+            1190,
+            28260,
+            28267
+          ],
+          [
+            1190,
+            1205,
+            28267,
+            28282
+          ],
+          [
+            1205,
+            1206,
+            28282,
+            28289
+          ],
+          [
+            1206,
+            1602,
+            28289,
+            28685
+          ],
+          [
+            1602,
+            1603,
+            28685,
+            28719
+          ],
+          [
+            1603,
+            1611,
+            28719,
+            28727
+          ],
+          [
+            1611,
+            1612,
+            28727,
+            28735
+          ],
+          [
+            1612,
+            1934,
+            28735,
+            29057
+          ]
+        ]
+      },
+      {
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "projection_id": "projection_c15c396d42ef678a3319a34f",
+        "projection_text": "that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and costs associated with restructuring, as management does not believe these expenses are representative of our core earnings. Our non-GAAP financial measures may not be comparable to similarly titled measures used by other companies, have limitations as analytical tools and should not be considered in isolation, or as substitutes for analysis of our operating results as reported under GAAP. Additionally, we do not consider our non-GAAP financial measures as superior to, or a substitute for, the equivalent measures calculated and presented in accordance with GAAP. Adjusted EBITDA is defined as net earnings (loss) excluding income tax (benefit) provision, interest and derivative (gains) losses, net, depreciation and amortization expense, stock-based compensation expense, employer costs related to stock-based compensation, foreign exchange (gain) loss, changes in fair value of contingent earn-out liability, investments in equity securities, transaction and other costs, litigation costs net of insurance reimbursements that arise outside of the ordinary course of business, tax receivable agreement liability remeasurement (benefit) expense, impairment loss, and restructuring costs. Item 9.01 Financial Statements and Exhibits. (d) Exhibits. Exhibit Number Description of Exhibit 99.1 Message from CEO Whitney Wolfe Herd to employees on June 25, 2025 104 Cover Page Interactive Data File (embedded within the Inline XBRL document) 3 SIGNATURES Pursuant to the requirements of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned hereunto duly authorized. BUMBLE INC. Date: June 25, 2025 By: /s/ Deirdre Runnette Name: Deirdre Runnett",
+        "raw_offset_runs": [
+          [
+            0,
+            267,
+            28858,
+            29125
+          ],
+          [
+            267,
+            268,
+            29125,
+            29222
+          ],
+          [
+            268,
+            271,
+            29222,
+            29225
+          ],
+          [
+            271,
+            272,
+            29225,
+            29259
+          ],
+          [
+            272,
+            280,
+            29259,
+            29267
+          ],
+          [
+            280,
+            281,
+            29267,
+            29275
+          ],
+          [
+            281,
+            572,
+            29275,
+            29566
+          ],
+          [
+            572,
+            573,
+            29566,
+            29600
+          ],
+          [
+            573,
+            581,
+            29600,
+            29608
+          ],
+          [
+            581,
+            582,
+            29608,
+            29616
+          ],
+          [
+            582,
+            711,
+            29616,
+            29745
+          ],
+          [
+            711,
+            712,
+            29745,
+            29842
+          ],
+          [
+            712,
+            1039,
+            29842,
+            30169
+          ],
+          [
+            1039,
+            1040,
+            30169,
+            30203
+          ],
+          [
+            1040,
+            1048,
+            30203,
+            30211
+          ],
+          [
+            1048,
+            1049,
+            30211,
+            30219
+          ],
+          [
+            1049,
+            1336,
+            30219,
+            30506
+          ],
+          [
+            1336,
+            1337,
+            30506,
+            30853
+          ],
+          [
+            1337,
+            1341,
+            30853,
+            30857
+          ],
+          [
+            1341,
+            1342,
+            30857,
+            30864
+          ],
+          [
+            1342,
+            1346,
+            30864,
+            30868
+          ],
+          [
+            1346,
+            1347,
+            30868,
+            31054
+          ],
+          [
+            1347,
+            1381,
+            31054,
+            31088
+          ],
+          [
+            1381,
+            1382,
+            31088,
+            31219
+          ],
+          [
+            1382,
+            1395,
+            31219,
+            31232
+          ],
+          [
+            1395,
+            1396,
+            31232,
+            31835
+          ],
+          [
+            1396,
+            1403,
+            31835,
+            31842
+          ],
+          [
+            1403,
+            1404,
+            31842,
+            32029
+          ],
+          [
+            1404,
+            1410,
+            32029,
+            32035
+          ],
+          [
+            1410,
+            1411,
+            32035,
+            32315
+          ],
+          [
+            1411,
+            1433,
+            32315,
+            32337
+          ],
+          [
+            1433,
+            1434,
+            32337,
+            32581
+          ],
+          [
+            1434,
+            1438,
+            32581,
+            32585
+          ],
+          [
+            1438,
+            1439,
+            32585,
+            32702
+          ],
+          [
+            1439,
+            1495,
+            32702,
+            32758
+          ],
+          [
+            1495,
+            1496,
+            32758,
+            32764
+          ],
+          [
+            1496,
+            1504,
+            32764,
+            32772
+          ],
+          [
+            1504,
+            1505,
+            32772,
+            33015
+          ],
+          [
+            1505,
+            1508,
+            33015,
+            33018
+          ],
+          [
+            1508,
+            1509,
+            33018,
+            33107
+          ],
+          [
+            1509,
+            1584,
+            33107,
+            33182
+          ],
+          [
+            1584,
+            1585,
+            33182,
+            33382
+          ],
+          [
+            1585,
+            1586,
+            33382,
+            33383
+          ],
+          [
+            1586,
+            1587,
+            33383,
+            33781
+          ],
+          [
+            1587,
+            1597,
+            33781,
+            33791
+          ],
+          [
+            1597,
+            1598,
+            33791,
+            33888
+          ],
+          [
+            1598,
+            1781,
+            33888,
+            34071
+          ],
+          [
+            1781,
+            1782,
+            34071,
+            34855
+          ],
+          [
+            1782,
+            1793,
+            34855,
+            34866
+          ],
+          [
+            1793,
+            1794,
+            34866,
+            35173
+          ],
+          [
+            1794,
+            1804,
+            35173,
+            35183
+          ],
+          [
+            1804,
+            1805,
+            35183,
+            35189
+          ],
+          [
+            1805,
+            1813,
+            35189,
+            35197
+          ],
+          [
+            1813,
+            1814,
+            35197,
+            35362
+          ],
+          [
+            1814,
+            1817,
+            35362,
+            35365
+          ],
+          [
+            1817,
+            1818,
+            35365,
+            35575
+          ],
+          [
+            1818,
+            1838,
+            35575,
+            35595
+          ],
+          [
+            1838,
+            1839,
+            35595,
+            35882
+          ],
+          [
+            1839,
+            1844,
+            35882,
+            35887
+          ],
+          [
+            1844,
+            1845,
+            35887,
+            35970
+          ],
+          [
+            1845,
+            1860,
+            35970,
+            35985
+          ]
+        ]
+      }
+    ],
+    "max_normalized_characters": 32000,
+    "schema_version": "basic-info-model-projection-v1"
+  }
+}

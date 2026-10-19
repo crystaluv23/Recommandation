@@ -736,3 +736,5 @@
 - 2026-10-19：准备默认 Plan 的 reviewed BasicInfo→H_init 双时点窄入口，保留部分投影与三类缺源，禁止补市场锚点或借请求名称改称披露类型；先完成生产请求/原 parser/恢复和输入漂移 wiring，正式角色执行待冻结。
 
 - 2026-10-19：保存父处三次只读 Massive GET 与独立 235 日 OHLCV/issuer/split ledger 审查；原 250 行由生产 parser/adapter 完整重现，15 行未重复返回不构成新拒绝门槛；未新增 cutoff-vintage 政策，市场待 proof-bound view 验证准入，既有 SEC 冻结不改。
+
+- 2026-10-19：默认 BasicInfo→H_init 双 cutoff 实际隔离首答 2/2 窄语义通过，9 引用与 11 needs 经独立原材审查，零纠错；16 产物恢复完整 hash 不变。F2 经营背景覆盖仍 open，下一步已批准 market proof-bound view 机械验收，原对象与旧冻结不改。

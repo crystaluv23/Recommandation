@@ -54,21 +54,17 @@ RawInfoDocument（[原本地审查](../reports/bmbl-market-input-review-20261019
 窄证据已具备，下一步仍须新 view 的 proof binding/负控与实际消费验证，尚未正式准入。
 当前固定 SEC 输入不变。
 [三样本 direct SEC stage](../reports/reviewed-signal-stage-20261019.md) 已实际完成：
-完整 Registry 18 版本，7 个新隔离角色（3 routing、3 Signal apply、1 Reflect），无纠错。
-晚时点客户收入分散披露 positive/full；早时点不足保留原 need；缺 prior 的 guidance
-不编方向，Q2/Q3 均保留。后两例由生产 all-unavailable 守卫终结、零 Reflect、无伪处置。
-3/3 机械接受并经独立原材/消费者语义审查：此三 need 的检索阅读、customer 正控、
-1 次实际 full Reflect 与 2 次确定性保留、两消费者保真局部通过；不足分类的
-neutral/unavailable 边界仍未决，完整 F8/MVP 未关。完成后真实 resume 检查 56 产物 hash 不变、零新增请求；93 code/200
-original 冻结绑定全符。自身资料请求 0/外部 LLM 0，不覆盖 H_init/BasicInfo 收集、
-Predictor、完整 evaluator、反馈 Slow 或 48 案。公开 market 证据由另一取证批次审查，
-未准入这份固定 SEC 输入。下一批准备 actual 默认 BasicInfo→H_init 双 cutoff：
-晚时点部分 10-Q、早时点 8-K（不能冒称年报），其余 3 类真实 DataGap。早时点
-annual/interim 请求却 `resolved`/无 gap，是已知 F2 producer 表达缺陷，保持 fail/open；
-此批只验 F3 对实际输入的忠实处理。不加
-market anchor/标签、不进入 evaluator。独立原材 oracle 已预声明、预审无冻结阻断；
-1744 全量及 117 相关检查通过，2026-10-19T14:18:02Z lint feedback 已亲读。
-等待正式冻结，此批尚无角色回答；测试/预审不等于 F3 行为通过。
+7 个新隔离角色，3/3 窄语义通过。customer 正控及实际 full Reflect 保真；早 cutoff
+和缺 prior 两例经生产守卫保留 need，零伪 Reflect；guidance categorical 边界仍未决。
+[默认 BasicInfo→H_init 双 cutoff](../reports/reviewed-initial-stage-20261019.md) 又有 2 个
+独立首答，2/2 经原材/全部 11 needs 独立审查窄通过，零纠错。晚时点 19/24 部分投影、
+早时点 6/6 投影和三类 DataGap 均保留；有条件假说不冒称收益/market expectations。
+F2 经营背景目标与 generic filing 可执行覆盖脱节仍 open；8-K 本身是合法来源。
+两次 completed resume 的 16 产物完整 before/after hash 不变，零新请求/receipt。
+本批不加 anchor/label，不进 evaluator/Predictor；94 code/2 原文件绑定及嵌套来源
+proof 保持。1744 全量、117 相关检查通过。下一步按已审本地材料实现新的
+[market proof profile](../spec/src/stock_opportunity_agent/data/reviewed_market_profile.md)，
+验证完整原对象重建、隔离 view 和实际 runtime baseline，不手填价格或重查资料。
 
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)

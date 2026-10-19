@@ -1,0 +1,19 @@
+{
+  "actual_model_version": null,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": 2,
+  "independent_receipts": 2,
+  "outcomes": [
+    {
+      "sample_id": "s01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "s02",
+      "status": "accepted_requires_independent_review"
+    }
+  ],
+  "pending": [],
+  "readonly_data_requests": 0
+}

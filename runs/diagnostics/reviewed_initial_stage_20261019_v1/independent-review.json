@@ -1,0 +1,211 @@
+{
+  "F2": {
+    "not_a_failure_reason": "FORM 8-K alone is not a wrong-source verdict; H_init is judged on actual supplied content.",
+    "reason": "Generic filing legitimately admits 8-K/6-K across issuers; early 8-K is useful but does not establish the default annual/interim business-model/risk/segment background objective. Late projection remains partial. Retrieval resolved is not proof of semantic fulfillment.",
+    "verdict": "open_request_semantic_coverage"
+  },
+  "F3": {
+    "closed": "Useful source-grounded initial hypotheses/evidence and absent, PIT-answerable needs for these two default-plan bootstraps.",
+    "not_closed": [
+      "full F2 objective",
+      "general H_init capability",
+      "Signal/Reflect/Predictor chain",
+      "market baseline",
+      "feedback/Slow",
+      "full evaluator/whole-cycle recovery",
+      "independent predictive benefit"
+    ],
+    "verdict": "pass_for_these_two_exact_inputs"
+  },
+  "binding_checks": {
+    "all_current_hashes_match": true,
+    "bootstrap_matches_frozen_oracle_both_samples": true,
+    "code_files": 94,
+    "oracle_not_in_wire": true,
+    "originals": 2,
+    "request_inbox_raw_receipt_cache_identity_all_match": true,
+    "wire_anonymous": true
+  },
+  "critical_findings": [],
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "final_semantic_pass": 2,
+  "first_answer_semantic_pass": 2,
+  "fixed_denominator": 2,
+  "frozen_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/expectations.json",
+    "sha256": "e767f3b6a1bc554c4b0283af1f943710e38189cc10441a039787dd12a08947c8"
+  },
+  "frozen_oracle_canonical_hash": "d3687cdc17d54d73215600cc1ba47d0ca2b1b51f75ba79b37d1877276ca965c9",
+  "frozen_oracle_equal_to_source_object": true,
+  "manifest_hash": "28542960893bcb6ac0e0f7ef3ee32da7934f07a0aa3600bc951a8e843cc2010e",
+  "native_corrections": 0,
+  "network_calls": 0,
+  "oracle_byte_difference": "Frozen atomic JSON serialization differs from source bytes; parsed objects and contract canonical hash are equal.",
+  "recovery_limit": "Driver reports completed restore over 16 files with zero new inbox/receipt; this semantic audit checks persisted chains, not an additional write-running resume.",
+  "review_mode": "read original material, actual transmitted projections, both raw answers, parser-accepted states, receipt/cache identities; no role answers authored or repaired",
+  "reviewer": "independent acceptance_review",
+  "role_outputs_modified": false,
+  "samples": [
+    {
+      "accepted_final_semantic_result": "pass_in_frozen_source_time_plan_scope",
+      "agent_id": "/root/role_34",
+      "artifacts": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/samples/s01/basic_info.json",
+          "sha256": "9807588482b22c372705f080c8d5c4bf9b2f779084c93d40b56bf06fe1833f68"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/samples/s01/initial_state.json",
+          "sha256": "04f61cd64141e2197a88248160e83cd18ef0f51fb4b7fe30d9ed8e5365f7cb35"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/requests/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json",
+          "sha256": "27d9e6cbf7823e24c7700f028a6a224005f2d31372dcb154870b77fab7fa72de"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/inbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json",
+          "sha256": "fdc55b537b3cc5b632dbcaed9ee83a29ecb839bbd1c6e7ee89990c76201d4810"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/outbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.txt",
+          "sha256": "559ca0a734b3afb1eec5e70d7a52cf6b4a1d092542dd85b61e181f73adc6a91f"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/receipts/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json",
+          "sha256": "0e6a9799f1fae8e0c4fe9857a849917e5e6ff77d722f9416df814b2bf1712580"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/cache/responses/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json",
+          "sha256": "9cef3022f6249d687d2f3bfb9d611f9f3c2831cdc3d38b9d5e4a05a6775eee81"
+        }
+      ],
+      "citation_checks": {
+        "each_literal_in_exact_visible_projection": true,
+        "material_object_unit_period_semantics_reviewed": true,
+        "supporting_claims": 4
+      },
+      "claim_checks": [
+        "Subscription/IAP monetization definition supports the business-model claim; importance to thesis is qualitative inference.",
+        "Revenue and selling/marketing are lower, and product-development expense higher, in both Q2 and H1 2025 vs 2024 table columns; source has thousands/unit and correct periods. No invented growth arithmetic.",
+        "Risk disclosure establishes the announced restructuring and qualifies cost/timing/benefits; no realized savings or execution success asserted.",
+        "Impairment is visible reported counter-evidence; interpretation is explicitly inference, not proof of future price direction."
+      ],
+      "first_response": {
+        "mechanically_accepted": true,
+        "semantic_result": "pass_in_frozen_source_time_plan_scope"
+      },
+      "hypothesis_check": "Useful conditional commercialization/expectation-gap reasoning, with falsifying conditions and no claimed observed market-expectations gap. Hypothetical user/demand deterioration is not accepted as an observed issuer fact.",
+      "native_corrections": 0,
+      "need_checks": [
+        "Paying-user/ARPPU results, retention/conversion explanations are absent; visible metric definitions alone do not answer.",
+        "Detailed restructuring costs/timetable/savings/progress are absent from this default 10-Q projection; the separate 8-K is not in this wire.",
+        "Product/pricing/marketing changes and adoption evidence are absent; already-announced horizon milestones are PIT-answerable.",
+        "The wire cash-flow statement stops after early adjustments/working-capital entries, with no operating-cash total, capex total, debt maturity or covenant terms. Requesting these missing totals/drivers is not a repeat of the visible net-loss/impairment adjustments.",
+        "Impairment assumptions/explanations, concrete outlook and explicit prior-expectation comparator are absent from visible context; asking for disclosed explanations is legitimate despite already visible impairment numbers."
+      ],
+      "preserved_uncertainty": [
+        "No evidence of market expectations or demonstrated turnaround.",
+        "Missing source channels do not establish issuer-wide absence.",
+        "Future outcomes remain hypothetical; needs request evidence available by cutoff."
+      ],
+      "raw_to_accepted": "All non-evidence fields and all evidence identity/claim fields exact; literal differences are identity restoration only. Accepted literals each occur in original visible projection.",
+      "request_hash": "f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4",
+      "sample_id": "s01",
+      "source_view": {
+        "available_at": "2025-08-07T20:05:33+00:00",
+        "available_projection_count": 24,
+        "content_hash": "f4477dd30fc133ea51dda1ac326c867feb1ad89e5ebea9e5700825f7299030f3",
+        "document_id": "sec:cik_0001830043:000162828025038861",
+        "form": "10-Q",
+        "prediction_time": "2025-09-30T00:00:00+00:00",
+        "projection_status": "partial_context_budget",
+        "visible_projection_count": 19
+      }
+    },
+    {
+      "accepted_final_semantic_result": "pass_in_frozen_source_time_plan_scope",
+      "agent_id": "/root/role_35",
+      "artifacts": [
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/samples/s02/basic_info.json",
+          "sha256": "c92902ec238ac90c533e1c9b4ab11f9b6082238b4fc82ce578d8b4f0cde7d470"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/samples/s02/initial_state.json",
+          "sha256": "47272850ef6019853a95d7a50a3b86d486d478180e5d35e98e0d0306e43a2cc9"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/requests/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json",
+          "sha256": "6d4226d4f74fbce4baf1510e90b40ee51cf06bd12520fbd327a0ad1157fb3a0a"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/inbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json",
+          "sha256": "a622431862a03e04957b51e4686e96efad62a87d7dc96d5ff4b7bbb7728faad0"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/outbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.txt",
+          "sha256": "4cf7b2da496751547dc1ccd5b8db91b47066fafe23dbc850003efa69fe2c7407"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/exchange/receipts/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json",
+          "sha256": "6af9bf672dcc2f8a0438cf61c3d4d84b6b94da45c70a0a97422f81d18483b5f6"
+        },
+        {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_initial_stage_20261019_v1/cache/responses/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json",
+          "sha256": "6d0d1caa9ec9a1446fca9799446083fbac01bbef4ed82b258ed79bc1028966d2"
+        }
+      ],
+      "citation_checks": {
+        "each_literal_in_exact_visible_projection": true,
+        "material_object_unit_period_semantics_reviewed": true,
+        "supporting_claims": 5
+      },
+      "claim_checks": [
+        "Board approval and workforce scope are source-supported; no improved demand or commercialization inferred as fact.",
+        "Up to USD40m annual savings stays an expectation/upper bound; most is planned for reinvestment, not immediate distributable profit.",
+        "USD13m–18m nonrecurring charges and primarily Q3/Q4 2025 occurrence are forecasts; future cash outlays are preserved.",
+        "Q2 2025 USD244m–249m revenue and USD88m–93m adjusted EBITDA remain forecasts with distinct measures; no Q3/FY substitution, realized results or revision direction invented.",
+        "Reinvestment weakens a simple immediate-profit thesis only as stated inference."
+      ],
+      "first_response": {
+        "mechanically_accepted": true,
+        "semantic_result": "pass_in_frozen_source_time_plan_scope"
+      },
+      "hypothesis_check": "Useful conditional commercialization/expectation-gap reasoning, with falsifying conditions and no claimed observed market-expectations gap. Hypothetical user/demand deterioration is not accepted as an observed issuer fact.",
+      "native_corrections": 0,
+      "need_checks": [
+        "Annual/interim business model/segments/customer operating evidence is absent from the supplied 8-K; need legitimately retains the producer coverage gap.",
+        "Requested financial statements/cash/debt/dilution/GAAP reconciliation are absent. The 8-K explicitly says guidance reconciliation is not provided.",
+        "Earlier guidance/comparable actuals are absent; the current forecast cannot establish direction.",
+        "Initiative detail and already-disclosed adoption/monetization results are absent; within-horizon milestones are qualified as already disclosed by cutoff.",
+        "Savings realization schedule is absent. Need explicitly asks beyond the visible charge schedule/consultation delays, avoiding conflation with when expenses occur.",
+        "Valuation and contemporaneous investor expectations are absent from this SEC-only Basic Info; no runtime baseline or future realized price is requested."
+      ],
+      "preserved_uncertainty": [
+        "No evidence of market expectations or demonstrated turnaround.",
+        "Missing source channels do not establish issuer-wide absence.",
+        "Future outcomes remain hypothetical; needs request evidence available by cutoff."
+      ],
+      "raw_to_accepted": "All non-evidence fields and all evidence identity/claim fields exact; literal differences are identity restoration only. Accepted literals each occur in original visible projection.",
+      "request_hash": "77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc",
+      "sample_id": "s02",
+      "source_view": {
+        "available_at": "2025-06-25T12:20:35+00:00",
+        "available_projection_count": 6,
+        "content_hash": "0829059e9f5ccbc120da9560933534309372d510c96259f2a93d8a4201b4f2a7",
+        "document_id": "sec:cik_0001830043:000119312525146199",
+        "form": "8-K",
+        "prediction_time": "2025-07-01T00:00:00+00:00",
+        "projection_status": "complete",
+        "visible_projection_count": 6
+      }
+    }
+  ],
+  "schema_version": "reviewed-initial-stage-independent-semantic-review-v1",
+  "source_oracle_sha256": "c83d858e3d602c5011a6a15ab67d3d1e884571ebdae1b44300f3f42c87af4058",
+  "stage_counts": {
+    "research_controller_initialize": 2
+  },
+  "unique_fresh_receipts": 2
+}

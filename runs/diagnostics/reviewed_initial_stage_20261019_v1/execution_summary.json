@@ -1,0 +1,81 @@
+{
+  "frozen_code_commit": "bebfea5b7e520a22daf8a9c94bcdda141bf1b5f4",
+  "manifest_hash": "28542960893bcb6ac0e0f7ef3ee32da7934f07a0aa3600bc951a8e843cc2010e",
+  "code_bindings_checked": 94,
+  "original_file_bindings_checked": 2,
+  "source_proofs": "nested reviewed snapshot revalidated by production loader; same two SEC originals",
+  "fixed_denominator": 2,
+  "unique_receipts": 2,
+  "logical_request_stages": {
+    "research_controller_initialize": 2
+  },
+  "native_corrections": 0,
+  "completed_restore": {
+    "pending": [],
+    "artifact_hashes_unchanged": true,
+    "checked_files": 16,
+    "new_inbox": 0,
+    "new_receipt": 0,
+    "before_sha256": {
+      "samples/s01/basic_info.json": "9807588482b22c372705f080c8d5c4bf9b2f779084c93d40b56bf06fe1833f68",
+      "samples/s01/initial_state.json": "04f61cd64141e2197a88248160e83cd18ef0f51fb4b7fe30d9ed8e5365f7cb35",
+      "samples/s01/outcome.json": "adbb9c5bd48a84660f1cc55184e01dca4ae4bc69e7853bc866afa5d6a65944ce",
+      "samples/s02/basic_info.json": "c92902ec238ac90c533e1c9b4ab11f9b6082238b4fc82ce578d8b4f0cde7d470",
+      "samples/s02/initial_state.json": "47272850ef6019853a95d7a50a3b86d486d478180e5d35e98e0d0306e43a2cc9",
+      "samples/s02/outcome.json": "4fa25bae381f166106f9a7cf1b241e201507322cc7460aeb94e1d103547647e7",
+      "exchange/inbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "a622431862a03e04957b51e4686e96efad62a87d7dc96d5ff4b7bbb7728faad0",
+      "exchange/inbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "fdc55b537b3cc5b632dbcaed9ee83a29ecb839bbd1c6e7ee89990c76201d4810",
+      "exchange/outbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.txt": "4cf7b2da496751547dc1ccd5b8db91b47066fafe23dbc850003efa69fe2c7407",
+      "exchange/outbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.txt": "559ca0a734b3afb1eec5e70d7a52cf6b4a1d092542dd85b61e181f73adc6a91f",
+      "exchange/receipts/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6af9bf672dcc2f8a0438cf61c3d4d84b6b94da45c70a0a97422f81d18483b5f6",
+      "exchange/receipts/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "0e6a9799f1fae8e0c4fe9857a849917e5e6ff77d722f9416df814b2bf1712580",
+      "cache/responses/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6d0d1caa9ec9a1446fca9799446083fbac01bbef4ed82b258ed79bc1028966d2",
+      "cache/responses/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "9cef3022f6249d687d2f3bfb9d611f9f3c2831cdc3d38b9d5e4a05a6775eee81",
+      "requests/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6d4226d4f74fbce4baf1510e90b40ee51cf06bd12520fbd327a0ad1157fb3a0a",
+      "requests/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "27d9e6cbf7823e24c7700f028a6a224005f2d31372dcb154870b77fab7fa72de"
+    },
+    "after_sha256": {
+      "samples/s01/basic_info.json": "9807588482b22c372705f080c8d5c4bf9b2f779084c93d40b56bf06fe1833f68",
+      "samples/s01/initial_state.json": "04f61cd64141e2197a88248160e83cd18ef0f51fb4b7fe30d9ed8e5365f7cb35",
+      "samples/s01/outcome.json": "adbb9c5bd48a84660f1cc55184e01dca4ae4bc69e7853bc866afa5d6a65944ce",
+      "samples/s02/basic_info.json": "c92902ec238ac90c533e1c9b4ab11f9b6082238b4fc82ce578d8b4f0cde7d470",
+      "samples/s02/initial_state.json": "47272850ef6019853a95d7a50a3b86d486d478180e5d35e98e0d0306e43a2cc9",
+      "samples/s02/outcome.json": "4fa25bae381f166106f9a7cf1b241e201507322cc7460aeb94e1d103547647e7",
+      "exchange/inbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "a622431862a03e04957b51e4686e96efad62a87d7dc96d5ff4b7bbb7728faad0",
+      "exchange/inbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "fdc55b537b3cc5b632dbcaed9ee83a29ecb839bbd1c6e7ee89990c76201d4810",
+      "exchange/outbox/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.txt": "4cf7b2da496751547dc1ccd5b8db91b47066fafe23dbc850003efa69fe2c7407",
+      "exchange/outbox/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.txt": "559ca0a734b3afb1eec5e70d7a52cf6b4a1d092542dd85b61e181f73adc6a91f",
+      "exchange/receipts/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6af9bf672dcc2f8a0438cf61c3d4d84b6b94da45c70a0a97422f81d18483b5f6",
+      "exchange/receipts/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "0e6a9799f1fae8e0c4fe9857a849917e5e6ff77d722f9416df814b2bf1712580",
+      "cache/responses/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6d0d1caa9ec9a1446fca9799446083fbac01bbef4ed82b258ed79bc1028966d2",
+      "cache/responses/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "9cef3022f6249d687d2f3bfb9d611f9f3c2831cdc3d38b9d5e4a05a6775eee81",
+      "requests/77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc.json": "6d4226d4f74fbce4baf1510e90b40ee51cf06bd12520fbd327a0ad1157fb3a0a",
+      "requests/f0f5232f93b9251c650bbddbb7b2eb3154e6b91da490cac8dc8774c52fc96bd4.json": "27d9e6cbf7823e24c7700f028a6a224005f2d31372dcb154870b77fab7fa72de"
+    },
+    "excluded_from_inventory": [
+      "progress.json",
+      "execution_summary.json",
+      "other root-level diagnostics"
+    ]
+  },
+  "mechanical_accepted": 2,
+  "independent_semantic_review": "pass_for_these_two_exact_inputs",
+  "F2_request_fulfillment": "open: generic filing resolution does not prove requested annual/interim operating-background coverage",
+  "external_llm_calls": 0,
+  "readonly_data_requests": 0,
+  "actual_model_version": null,
+  "internal_agent_cost": "unknown",
+  "usage_tokens": "estimates_not_actual_provider_usage",
+  "not_covered": [
+    "full F2 fulfillment",
+    "full H_init capability",
+    "Signal/Predictor",
+    "feedback/Slow",
+    "full RuntimePlanEvaluator",
+    "whole-cycle recovery",
+    "independent predictive benefit"
+  ],
+  "reviewer": "/root/acceptance_review",
+  "first_answer_semantic_pass": 2,
+  "final_semantic_pass": 2
+}

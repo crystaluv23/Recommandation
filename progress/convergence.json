@@ -29,9 +29,13 @@
         "reports/reviewed-signal-stage-20261019.md",
         "runs/diagnostics/reviewed_signal_stage_20261019_v1/progress.json",
         "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
-        "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
+        "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json",
+        "reports/reviewed-initial-stage-20261019.md",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/progress.json",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
       ],
-      "remaining": "4来源窄view、直接SEC三样本检索阅读/customer正控/1实际Reflect及2守卫保留/两consumer经独立审查窄通过；全局正文版本/market准入、H_init/BasicInfo/Predictor、Slow及其余Fast/48案仍未关闭，完整prepare缺16 anchor失败"
+      "remaining": "受控SEC三样本Signal链与双cutoff H_init窄范围独立通过；F2经营背景目标覆盖仍open，market proof待新view机械准入；全局来源/完整Predictor/Slow/48案与wholeloop仍未关闭，完整prepare缺16 anchor失败"
     },
     {
       "id": "feedback_consumption",
@@ -166,34 +170,49 @@
         "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
         "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
       ]
+    },
+    {
+      "id": "engineering-mvp-reviewed-initial-stage-20261019",
+      "strategy": "default_production_basic_info_and_independent_h_init",
+      "failure_families": [
+        "basic_info_purpose_vs_executable_source_coverage"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-initial-stage-20261019.md",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/progress.json",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
+      ]
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-reviewed-signal-stage-20261019",
+    "after_iteration": "engineering-mvp-reviewed-initial-stage-20261019",
     "evidence": [
-      "reports/reviewed-signal-stage-20261019.md",
-      "runs/diagnostics/reviewed_signal_stage_20261019_v1/progress.json",
-      "runs/diagnostics/reviewed_signal_stage_20261019_v1/execution_summary.json",
-      "runs/diagnostics/reviewed_signal_stage_20261019_v1/independent-review.json"
+      "reports/reviewed-initial-stage-20261019.md",
+      "runs/diagnostics/reviewed_initial_stage_20261019_v1/progress.json",
+      "runs/diagnostics/reviewed_initial_stage_20261019_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_initial_stage_20261019_v1/independent-review.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
       "将F6正常会拒绝的注入result直接放进SignalRound，却未在后续模型入口建立PIT资格拒绝；stage成功不证明source可信",
       "恢复后的stage.usage0是cache计费值，不能代替实际独立receipt唯一调用统计",
       "旧compact卡省略证据时间但消费者信任runtime来源；现在必须保留原始时间binding或从full artifact重建，不能推断旧卡资格",
-      "只核body和submissions内容未核cache endpoint，且未约束materialize目录可能污染原oracle；独立tmp反例已修，不能把窄view当完整readiness"
+      "只核body和submissions内容未核cache endpoint，且未约束materialize目录可能污染原oracle；独立tmp反例已修，不能把窄view当完整readiness",
+      "默认annual/interim经营背景描述只有generic filing/max1执行条件；resolved不证明业务模型/风险/segments充分，8K合法但不能借改请求名宣布覆盖通过"
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "checkpoint_then_next_actual_production_prerequisite",
-      "action": "三样本独立语义核查通过，保存checkpoint；核market既有PIT合同与证据，仍不足则推进实际BasicInfo收集/H_init有界stage，不填baseline、不开启完整FastSlow",
-      "stop": "外部LLM API零；当前固定SEC stage资料请求零；只读公开资料另行计数；没有真实来源证明保留gap，不恢复旧运行/不缩完整cohort",
-      "question": "受控SEC来源能否在真实routing/retrieve/apply/Reflect后保留正确范围与不足，哪些生产前提仍阻断下一节点？",
-      "pass": "冻结7角色原答经原parser/校验/持久化且独立原材和consumer语义正确；只关闭这3样本定义的局部能力",
-      "fail": "将机械3/3当全部F6/F8/MVP；将无调用的guard当新模型行为；对未决guidance分类或market政策过早关闭",
-      "on_pass": "按独立review形成checkpoint，再推进最小实际生产前提，保持Slow/收益/完整恢复未知",
-      "on_fail": "保留全部原件/失败分母，下一fresh批次修适用错误家族"
+      "kind": "repair",
+      "strategy": "reviewed_market_proof_profile_before_predictor",
+      "action": "在新reviewed root绑定已审Massive原cache与retained GET，production parser/adapter重建完整原对象、核issuer/split basis，负控与实际baseline helper验证；旧SEC manifest与原oracle不改",
+      "stop": "不新增HTTP或外部LLM；证据失败则保留typed source gap，不以235/250硬编码或重复下载每行造准入；不启动完整FastSlow",
+      "question": "既有来源/normalization/调整证明能否通过同一reviewed loader安全准入市场原件，并由runtime实际计算固定baseline？",
+      "pass": "五原件固定分母，新view含2SEC+1market且unknown/excluded仍隔离；source/recovery负控拒绝，原baseline helper实际输出有可追溯依据",
+      "fail": "错issuer/参数/窗口/adjusted/价格/分页/ledger覆盖仍进入view，或人工填baseline/篡改原件/扩大完成声明",
+      "on_pass": "独立反例审后冻结下一实际Predictor/consumer有界角色批次，保留完整evaluator/readiness约束",
+      "on_fail": "保留原输入与失败证据，修精确proof family，不扩大完整运行"
     }
   },
   "successor_prerequisites": [

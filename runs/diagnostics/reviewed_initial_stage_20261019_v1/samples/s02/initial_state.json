@@ -1,0 +1,73 @@
+{
+  "metadata": {},
+  "request_hashes": [
+    "77f6e3ebf3f3cb7e35663cdaae201f405877c3255a2f2e4b322f77dab55f09cc"
+  ],
+  "state": {
+    "contradictions": [
+      "Planned reinvestment of most workforce savings weakens a simple cost-cutting-to-profitability thesis; any valuation benefit depends on execution and incremental product results, an inference rather than a disclosed outcome."
+    ],
+    "current_beliefs": [
+      "The board approved a workforce reduction to realign operations, but this announcement alone does not establish improving customer demand or successful commercialization.",
+      "The Company expects up to $40 million of annual cost savings from the global workforce reduction.",
+      "The Company plans to reinvest the substantial majority of the savings in strategic initiatives including product and technology development.",
+      "The Company expects approximately $13 million to $18 million of non-recurring charges, primarily for employee severance, benefits and related charges; substantially all are expected to result in future cash outlays, with charges incurred primarily in the third and fourth quarters of 2025.",
+      "The updated second quarter 2025 outlook expects total revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Inference: restructuring and product reinvestment could support a major within-horizon revaluation if subsequent operating disclosures show stabilization in customer monetization and stronger cash generation relative to expectations. Continued operating deterioration or spending without measurable customer gains would undermine this thesis.",
+      "Inference: announced savings may primarily fund a turnaround rather than near-term distributable cash. If underlying demand continues weakening while restructuring consumes cash, the fixed doubling outcome would lack an evidenced operating bridge."
+    ],
+    "next_information_needs": [
+      "What annual or interim operating disclosures available by the prediction time describe the revenue model, business segments, paying-customer trends, customer retention and monetization, and which operating drivers explain recent changes?",
+      "What financial statements available by the prediction time establish operating cash generation, cash balances, debt maturities, financing obligations, share count and potential dilution, including the principal adjustments separating reported earnings from adjusted EBITDA?",
+      "What earlier guidance and comparable reported results were available by the prediction time, so the direction and operating drivers of the updated outlook can be assessed?",
+      "What evidence available by the prediction time identifies the product or technology initiatives receiving reinvestment, their commercialization milestones achievable within the evaluation horizon, and any already-disclosed customer adoption or monetization results?",
+      "What disclosures available by the prediction time specify the expected realization schedule for workforce savings and operational risks of the workforce reduction, beyond the disclosed charge schedule and possible consultation delays?",
+      "What valuation information and contemporaneous investor expectations available by the prediction time establish whether operating stabilization or turnaround failure was already priced into the shares?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [
+      "The announced restructuring combines workforce reductions with planned reinvestment; it is not sufficient evidence of a realized margin or cash-flow improvement.",
+      "The visible outlook is prospective and does not establish realized operating performance."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "The board approved a workforce reduction to realign operations, but this announcement alone does not establish improving customer demand or successful commercialization.",
+        "exact_text": "On June 23, 2025, the Board of Directors of Bumble Inc. (the \u201cCompany\u201d) approved a reduction in the Company\u2019s global workforce by approximately 240 roles, representing approximately 30% of the Company\u2019s employees, as the Company realigns its operating structure to optimize execution on its strategic priorities.",
+        "kind": "basic_info",
+        "projection_id": "projection_2c4b2110c0a4436bf7d563ee"
+      },
+      {
+        "claim": "The Company expects up to $40 million of annual cost savings from the global workforce reduction.",
+        "exact_text": "The Company expects to achieve up to $40 million of annual cost savings in connection with the global workforce reduction disclosed in Item 2.05 of this Current Report on Form 8-K.",
+        "kind": "basic_info",
+        "projection_id": "projection_2c4b2110c0a4436bf7d563ee"
+      },
+      {
+        "claim": "The Company plans to reinvest the substantial majority of the savings in strategic initiatives including product and technology development.",
+        "exact_text": "The Company plans to reinvest the substantial majority of these savings in strategic initiatives including product and technology development.",
+        "kind": "basic_info",
+        "projection_id": "projection_2b701c5ee8cb6171aec66751"
+      },
+      {
+        "claim": "The Company expects approximately $13 million to $18 million of non-recurring charges, primarily for employee severance, benefits and related charges; substantially all are expected to result in future cash outlays, with charges incurred primarily in the third and fourth quarters of 2025.",
+        "exact_text": "As a result, the Company expects to incur approximately $13 million to $18 million of non-recurring charges, consisting primarily of employee severance, benefits, and related charges, for impacted employees. Substantially all of these charges are expected to result in future cash outlays. The Company expects that the charges will be incurred primarily in the third and fourth quarters of 2025.",
+        "kind": "basic_info",
+        "projection_id": "projection_2c4b2110c0a4436bf7d563ee"
+      },
+      {
+        "claim": "The updated second quarter 2025 outlook expects total revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+        "exact_text": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total Bumble Inc. revenue between $244 million and $249 million, and adjusted EBITDA between $88 million and $93 million.",
+        "kind": "basic_info",
+        "projection_id": "projection_2b701c5ee8cb6171aec66751"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 34602
+  }
+}

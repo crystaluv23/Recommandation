@@ -1,0 +1,19 @@
+{
+  "actual_model_version": null,
+  "backend": "independent-subagent",
+  "expectations_hash": "d3687cdc17d54d73215600cc1ba47d0ca2b1b51f75ba79b37d1877276ca965c9",
+  "external_llm_calls": 0,
+  "fixed_denominator": 2,
+  "input_hash": "6a51a262ad31c86f0541e81c32526cf56d755b1aebc85b17e819928d67952d38",
+  "limits": {
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "max_local_calls": 8,
+  "model_selection": "inherited_host_default_precise_version_unknown",
+  "preflight_hash": "089542cdcca5d395e64ce63631a6d351e6ba4047c6967b343eb4a1507b744ba0",
+  "readonly_data_requests": 0,
+  "schema_version": "reviewed-initial-stage-v1",
+  "scope": "production default Basic Info collection/projection -> H_init only; no evaluator/Predictor"
+}
