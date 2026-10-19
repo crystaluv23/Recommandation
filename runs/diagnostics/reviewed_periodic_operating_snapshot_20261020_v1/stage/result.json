@@ -1,0 +1,168 @@
+{
+  "admitted_document_count": 653,
+  "cases": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.8888888888888888,
+      "resolved_signal_inputs": 16,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "meets_existing_0_8_signal_input_fraction": true,
+      "resolved_fraction": 0.9444444444444444,
+      "resolved_signal_inputs": 17,
+      "signal_ref_denominator": 18
+    }
+  ],
+  "cases_meeting_existing_0_8": 15,
+  "engineering_mvp_closed": false,
+  "exact_replayed_products": 0,
+  "excluded_unresolved": [
+    {
+      "candidate": "MS_FY2024_annual",
+      "clock_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/ms-annual-clock-review.json",
+        "sha256": "2e3b3236087315163cbfea622f1c17313f35178a7b2b655434e6b15283a37bc3"
+      },
+      "reason": "Whole body substantive; API/header acceptance time conflict unresolved; not an append candidate.",
+      "verdict": "unknown"
+    }
+  ],
+  "external_llm_calls": 0,
+  "fixed_case_denominator": 15,
+  "fixed_resolution_denominator": 270,
+  "full48_readiness_proven": false,
+  "full_prepare_executed": false,
+  "global_new_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm.json",
+      "sha256": "5c568095d56fbf3dd7e372c017ff6cc10e2243bc1af3ef2e5f29155bf4e8fc64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+      "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000343.json",
+      "sha256": "ae40c0c09c68b9ac3411e1062680057ae4d4a20ac8f5f0952277f2db62cb94d3"
+    }
+  ],
+  "input_manifest_hash": "052088eef8cd3e557de4cbc7299332065297bd7d7d676e3cd7fc55f2eb36b514",
+  "labels_loaded": false,
+  "limitations": [
+    "Whole originals are not necessarily wholly model-visible; actual default projections remain bounded.",
+    "KGC audited FS99.3 and incorporated external references are not all retrieved or reviewed.",
+    "MS annual API/header time conflict remains unresolved and excluded.",
+    "Resolved input status proves neither Signal measurement nor model behavior or prediction benefit."
+  ],
+  "network_requests": 0,
+  "new_product_count": 3,
+  "newly_appended_products": 3,
+  "old_global_files_unchanged": true,
+  "old_review_655rows_preserved": true,
+  "plan_hash": "1705337122b2b10a2b20f9ca576f8268b14b26c9af6af97266e82b8ea942f1ba",
+  "review_record_count": 658,
+  "schema_version": "fixed-periodic-operating-result-v1",
+  "signal_apply_executed": false,
+  "timings": {
+    "append_and_load_seconds": 1.8905446659773588,
+    "global_store_initial_load_seconds": 37.97543275007047,
+    "hash_global_seconds": 13.142486667027697,
+    "input_only_consumers_seconds": 117.18907941598445,
+    "materialize_load_worker_seconds": 25.438928791088983
+  },
+  "typed_view_worker_restart_equal": true
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "root-periodic-freeze-binding-review-v1",
+  "checked_at": "2026-10-19T22:27:43.396146+00:00",
+  "plan_hash": "1705337122b2b10a2b20f9ca576f8268b14b26c9af6af97266e82b8ea942f1ba",
+  "unique_bindings_checked": 2258,
+  "duplicate_bindings_consistent": 26,
+  "all_binding_hashes_equal": true,
+  "candidates": [
+    {
+      "candidate": "KGC_AIF",
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "content_scope": "whole annual AIF",
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm",
+      "company_id": "cik_0000701818",
+      "published_at": "2025-03-27T20:55:21+00:00",
+      "available_at": "2025-03-27T20:55:21+00:00",
+      "form": "40-F",
+      "content_characters": 2052871
+    },
+    {
+      "candidate": "KGC_MDA",
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "content_scope": "whole annual MD&A; audited FS99.3 remains unfetched",
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm",
+      "company_id": "cik_0000701818",
+      "published_at": "2025-03-27T20:55:21+00:00",
+      "available_at": "2025-03-27T20:55:21+00:00",
+      "form": "40-F",
+      "content_characters": 2150339
+    },
+    {
+      "candidate": "MS_Q1",
+      "proof_profile": "sec_filing_response_acceptance_v1",
+      "content_scope": "whole Q1 interim report",
+      "document_id": "sec:cik_0000895421:000089542125000343",
+      "company_id": "cik_0000895421",
+      "published_at": "2025-05-05T20:13:06+00:00",
+      "available_at": "2025-05-05T20:13:06+00:00",
+      "form": "10-Q",
+      "content_characters": 6662772
+    }
+  ],
+  "fixed_cases": 15,
+  "fixed_refs": 18,
+  "fixed_resolutions": 270,
+  "MS_annual_unresolved": [
+    {
+      "candidate": "MS_FY2024_annual",
+      "clock_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/ms-annual-clock-review.json",
+        "sha256": "2e3b3236087315163cbfea622f1c17313f35178a7b2b655434e6b15283a37bc3"
+      },
+      "reason": "Whole body substantive; API/header acceptance time conflict unresolved; not an append candidate.",
+      "verdict": "unknown"
+    }
+  ],
+  "execution_started": false,
+  "global_store_opened": false,
+  "network_requests": 0,
+  "external_llm_calls": 0,
+  "labels_loaded": false
+}

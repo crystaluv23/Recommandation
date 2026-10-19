@@ -1,0 +1,925 @@
+{
+  "schema_version": "periodic-operating-execution-summary-v1",
+  "execution_checkpoint": "d61a135f372f6d0931bba7731099bcb66f54c297",
+  "script_sha256": "3dc7c3fb1a3e9e9113da48193f7b02f7d1616a3dbfd25a19faf09f002b17f188",
+  "plan_hash": "1705337122b2b10a2b20f9ca576f8268b14b26c9af6af97266e82b8ea942f1ba",
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/result.json",
+    "sha256": "2c9ecb46d32fd528803fb5100c47227336d73c377903648fec55ca829cbf0a2c"
+  },
+  "execute_exit": {
+    "command": [
+      "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "scripts/diagnose_reviewed_periodic_operating_snapshot.py",
+      "--execute",
+      "--output",
+      "runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage"
+    ],
+    "started_at": "2026-10-19T22:28:04.010843+00:00",
+    "finished_at": "2026-10-19T22:32:03.885292+00:00",
+    "elapsed_seconds": 239.8776452911552,
+    "exit_code": 0,
+    "execute_log": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/execute.log",
+      "sha256": "c2b394ef8b927294be2092c0c769715e508a2e3f4271d93edbff854733cf0ab3"
+    }
+  },
+  "input_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/input_manifest.json",
+    "sha256": "535ba9007c6b31a1b257126ce50d377536393e6df04d71ee0d751320db424f25"
+  },
+  "input_manifest_canonical_hash": "052088eef8cd3e557de4cbc7299332065297bd7d7d676e3cd7fc55f2eb36b514",
+  "append_inventory": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/append-inventory.json",
+    "sha256": "6b8f4315d566101be797f34b3b8ec32289977257555a926dd2dc06f65119b3d4"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/source-review.json",
+    "sha256": "d9dcd3066cc526b7cc3920942e93f336001e8b147fdfb565566662a0fbf29a25"
+  },
+  "source_snapshot_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/snapshot/reviewed_snapshot.json",
+    "sha256": "06af96e33ad7110432588763d56d2a42d3664370c2c071424a4f0b6bbd24c989"
+  },
+  "global_originals_before": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/global-originals-before.json",
+    "sha256": "84011066cdc017991d6c0d7fe616a3c1b8f2354890854c30a33f7b1f83aa384e"
+  },
+  "preexisting_global_file_count": 15637,
+  "allowed_new_global_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm.json",
+      "sha256": "5c568095d56fbf3dd7e372c017ff6cc10e2243bc1af3ef2e5f29155bf4e8fc64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+      "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000343.json",
+      "sha256": "ae40c0c09c68b9ac3411e1062680057ae4d4a20ac8f5f0952277f2db62cb94d3"
+    }
+  ],
+  "completed_stage_file_count": 683,
+  "completed_stage_bindings": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/completed-stage-bindings.json",
+    "sha256": "057381e7f2bd13d0414217dd836acc44d87aa50f7651b6eb85f53449ee0a70be"
+  },
+  "candidate_count": 3,
+  "append_true_count": 3,
+  "exact_replay_count": 0,
+  "complete_canonical_load_equal": true,
+  "admitted_document_count": 653,
+  "review_record_count": 658,
+  "review_disposition_counts": {
+    "admitted": 653,
+    "excluded": 1,
+    "unknown": 4
+  },
+  "old_655rows_preserved": true,
+  "old_global_and_old_financial_stage_unchanged": true,
+  "worker_restart_full_canonical_equal": true,
+  "fixed_case_denominator": 15,
+  "exact_registry_version": 12,
+  "exact_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "exact_registry_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "fixed_resolution_denominator": 270,
+  "resolution_status_counts": {
+    "resolved": 254,
+    "unresolved": 16
+  },
+  "unresolved_by_ref": {
+    "negative_word_count:v2": 15,
+    "order_confirmation_disclosed:v3": 1
+  },
+  "cases_meeting_existing_0_8": 15,
+  "operating_default_menu": [
+    {
+      "case_id": "cik_0000701818:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm",
+        "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-03-27T20:55:21+00:00",
+          "content_hash": "d069c1ce5a041bc6e407e4226cc47aeac9059d3ba5ab5d03ebc314a94c37a11f",
+          "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm"
+        },
+        {
+          "available_at": "2025-03-27T20:55:21+00:00",
+          "content_hash": "b57c5da91edf40ccdc5d1806655cf88878cd033ddf7a7c74815de1962323a5ae",
+          "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm",
+        "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0000701818:20250930.json",
+        "sha256": "8c38e20119ce57a43787239a75bc71176ab6cb4c8d6aff7b68f8b6ddc4732cff"
+      }
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-13T22:00:42+00:00",
+          "content_hash": "72850f9a5f0abd42282059b197b49ef7fdb52981061adc8e3b1fd472fbe6bf1d",
+          "document_id": "sec:cik_0001174922:000117492225000039"
+        },
+        {
+          "available_at": "2025-05-06T21:00:26+00:00",
+          "content_hash": "d3a0f15c4f9ad8aca9b3be4bb742089a647ca27f1a545c2d15fdc8d2e848f890",
+          "document_id": "sec:cik_0001174922:000117492225000084"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001174922:000117492225000039",
+        "sec:cik_0001174922:000117492225000084"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001174922:20250731.json",
+        "sha256": "1bf615ef671519eed22468b5cf168d3a50d0c96899ae385fb1a6a76437c2d863"
+      }
+    },
+    {
+      "case_id": "cik_0000895728:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-14T12:10:59+00:00",
+          "content_hash": "05b18ee8d90681ee7f696c6f56ca4d2b5cbaf20273cb5382ae0e34f425e0878e",
+          "document_id": "sec:cik_0000895728:000089572825000006"
+        },
+        {
+          "available_at": "2025-08-01T11:02:37+00:00",
+          "content_hash": "739a2b79605e92609183ebb98913a48778224c97721ecd44e7f856979eec47ba",
+          "document_id": "sec:cik_0000895728:000095017025101102"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 16,
+      "available_projection_count": 22,
+      "omitted_projection_count": 6,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0000895728:000089572825000006",
+        "sec:cik_0000895728:000095017025101102"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0000895728:20250930.json",
+        "sha256": "264ae872017c4e6187730f735ed456126587f654299085cb1faef054893e84de"
+      }
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 1,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 1,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 1,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0000895421:000089542125000343"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-05-05T20:13:06+00:00",
+          "content_hash": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f",
+          "document_id": "sec:cik_0000895421:000089542125000343"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0000895421:000089542125000343"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0000895421:20250731.json",
+        "sha256": "1e0e5d14fcae21619b4038f01d2ca2db2b3a5e6973b4d6cbd8c00c00338c5d0d"
+      }
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001869198:000186919825000009",
+        "sec:cik_0001869198:000186919824000052"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-27T11:58:44+00:00",
+          "content_hash": "ae91739bf5b31f2b5afeb935b66d5f4ef1807ca60a3811e66a2e5db16d0882fe",
+          "document_id": "sec:cik_0001869198:000186919825000009"
+        },
+        {
+          "available_at": "2024-10-28T20:20:31+00:00",
+          "content_hash": "6f55acd8fc3803833b03d821f8e0c54b2138f67fc209aa41f51971fff7b2a60f",
+          "document_id": "sec:cik_0001869198:000186919824000052"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001869198:000186919825000009"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001869198:20250331.json",
+        "sha256": "6e8d351ccecebc1725178f276fb54f9ce1807a913d903dc6adccd7fc46563de1"
+      }
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2024-09-25T20:47:48+00:00",
+          "content_hash": "f1a01339a2c04595b4904c8b86143e2bfd200a126641fb692b9f8c3b60ed03b4",
+          "document_id": "sec:cik_0001576942:000157694224000099"
+        },
+        {
+          "available_at": "2025-03-12T20:15:41+00:00",
+          "content_hash": "1f957f1f80c2a825e98d6aeb7b7536a2840f1b6c97661fd36f5d209aba603916",
+          "document_id": "sec:cik_0001576942:000157694225000009"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001576942:000157694224000099",
+        "sec:cik_0001576942:000157694225000009"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001576942:20250530.json",
+        "sha256": "b5d8e80e7e33b4880c8a7a0941f99f7f68d63941e708989c0ccadbb562e9b10f"
+      }
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 1,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 1,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 1,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-09-04T20:05:56+00:00",
+          "content_hash": "47322b678f7a2e84ed7a3c5bc8fcfd7bf60a6dc87d0096eb883df9d49a8c11ce",
+          "document_id": "sec:cik_0000936395:000093639525000041"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0000936395:000093639525000041"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0000936395:20250930.json",
+        "sha256": "5e353a70380d509e34cff7b11164d69a3b981fb12ee31877024806ddbd9faff5"
+      }
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-03-03T22:06:12+00:00",
+          "content_hash": "a6e8aa9f76bccb3dc94959412ca7b5a8e4a0e64fdfc536cc3343633159338f17",
+          "document_id": "sec:cik_0001590364:000159036425000006"
+        },
+        {
+          "available_at": "2025-05-05T21:17:24+00:00",
+          "content_hash": "295748f5409738f1d8db54b82e0886dbdb81afc62d175539a94452925333887d",
+          "document_id": "sec:cik_0001590364:000159036425000011"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001590364:000159036425000006",
+        "sec:cik_0001590364:000159036425000011"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001590364:20250731.json",
+        "sha256": "57087f9f84e96ac7a263fa89a83376b916e3f4b9f92fc019466b19cfd22641a7"
+      }
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001018963:000162828025007092",
+        "sec:cik_0001018963:000162828025036963"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-21T20:40:28+00:00",
+          "content_hash": "9c08fc3dde198e9d2a3e5bc67efb9b2e8d8929d01b3f53b443e9ef5de22131c8",
+          "document_id": "sec:cik_0001018963:000162828025007092"
+        },
+        {
+          "available_at": "2025-07-31T19:19:21+00:00",
+          "content_hash": "f07900f0ae908e56683396e3442ace7d21fef450a36cb7d58cd49eba40e0ce3b",
+          "document_id": "sec:cik_0001018963:000162828025036963"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001018963:000162828025007092"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001018963:20250930.json",
+        "sha256": "219577d783bc40438a5c194f0c6431fcfff1c66d0f4d690c1d7f3b4c3a4c7301"
+      }
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-21T01:20:57+00:00",
+          "content_hash": "997a35b65cf263dc76ccc8244413c3d5c1b4123b7fcbc842bdc5d7ee59f4895b",
+          "document_id": "sec:cik_0001164727:000116472725000011"
+        },
+        {
+          "available_at": "2025-07-24T21:00:49+00:00",
+          "content_hash": "c7589d4d2c28cc1a6289fa0879d7e9e5680d98fa1b29a086f498e404ed5bd5a5",
+          "document_id": "sec:cik_0001164727:000116472725000035"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001164727:000116472725000011",
+        "sec:cik_0001164727:000116472725000035"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001164727:20250731.json",
+        "sha256": "ab7c448eb67efd32368fa36da479ea9278ce5b5bb9980dcfc1ad0dee4f341705"
+      }
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001801368:000180136825000009",
+        "sec:cik_0001801368:000180136824000087"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-28T13:43:00+00:00",
+          "content_hash": "83ad0c65080a4eca2cc562b478084de4275c9c840cc1a28095e680414a0e96e6",
+          "document_id": "sec:cik_0001801368:000180136825000009"
+        },
+        {
+          "available_at": "2024-11-08T21:04:16+00:00",
+          "content_hash": "3e356389386f6bb5857ef9379244523ee9b597a28db9c3bcc6249d2639420036",
+          "document_id": "sec:cik_0001801368:000180136824000087"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001801368:000180136824000087",
+        "sec:cik_0001801368:000180136825000009"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001801368:20250331.json",
+        "sha256": "7bf8170a8e7c07de65d7fa5af7063502133b0e4087d1e0d88d472541c2b9fb2f"
+      }
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0002023554:000202355425000034",
+        "sec:cik_0002023554:000202355425000027"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-08-21T00:31:19+00:00",
+          "content_hash": "5c6ccb016447fd9dc3b40c1408496b90b5abcdf1982136d1e11812ee6c93bd7d",
+          "document_id": "sec:cik_0002023554:000202355425000034"
+        },
+        {
+          "available_at": "2025-05-12T20:27:40+00:00",
+          "content_hash": "36ce1676c9c2405c0da2ff8c6fed46edfe36912825f6a0bd08c10f27eab84818",
+          "document_id": "sec:cik_0002023554:000202355425000027"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0002023554:000202355425000027",
+        "sec:cik_0002023554:000202355425000034"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0002023554:20250930.json",
+        "sha256": "70dd34636eb8731c57dab4cdd02bf8bba8d283b8fcbde6a46751e1129f8e67c9"
+      }
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 1,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 1,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 1,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-06-25T22:50:42+00:00",
+          "content_hash": "02b4b4b45ab88e5516a499162ba1d330e7efb8d3328f31f270f9f9f2a1c27d56",
+          "document_id": "sec:cik_0000723125:000072312525000021"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0000723125:000072312525000021"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0000723125:20250731.json",
+        "sha256": "100f66205764c3a301f111545a6a106da12079793425278c120460b98cb5f460"
+      }
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001689548:000168954825000040",
+        "sec:cik_0001689548:000168954825000092"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-02-28T13:06:25+00:00",
+          "content_hash": "b0dba5c8bc2b97a048426022557fd14fd5b680a96c26dc6ef105121d1fbb280e",
+          "document_id": "sec:cik_0001689548:000168954825000040"
+        },
+        {
+          "available_at": "2025-08-04T12:33:42+00:00",
+          "content_hash": "8cbcb07083c614a180d3e9d971d4f05ef65c09bf687fcc389ce62fb715e438fe",
+          "document_id": "sec:cik_0001689548:000168954825000092"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 14,
+      "available_projection_count": 22,
+      "omitted_projection_count": 8,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001689548:000168954825000040"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001689548:20250930.json",
+        "sha256": "399ec6d39a904a7a6fafb4addf0dfdf36e984eb03ecf23a365d8e15cde4d6d0e"
+      }
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "status": "resolved",
+      "coverage": {
+        "context_truncated": true,
+        "contract_satisfied": true,
+        "deduplicated_document_count": 0,
+        "eligible_document_count": 2,
+        "missing_requirements": [],
+        "observed_distinct_period_count": 0,
+        "observed_observation_count": 0,
+        "observed_period_span_days": null,
+        "query_evaluated": true,
+        "query_matched_document_count": 2,
+        "query_requested": true,
+        "query_status": "matched",
+        "required_source_group_count": 1,
+        "satisfied_source_group_count": 1,
+        "selected_document_count": 2,
+        "selection_truncated": false,
+        "visible_span_count": 22
+      },
+      "source_ids": [
+        "sec:cik_0001646188:000121390025022968",
+        "sec:cik_0001646188:000121390025043731"
+      ],
+      "source_bindings": [
+        {
+          "available_at": "2025-03-12T12:48:37+00:00",
+          "content_hash": "c64b0e2787e2bbfa3e335ae44ec2dec0aa2194499ae7cdf55565b724184c7dda",
+          "document_id": "sec:cik_0001646188:000121390025022968"
+        },
+        {
+          "available_at": "2025-05-15T12:38:38+00:00",
+          "content_hash": "31266feab325af6eb2fb6e855695f994ae0753a90c023e7b7a3fa0f1f4b913a0",
+          "document_id": "sec:cik_0001646188:000121390025043731"
+        }
+      ],
+      "projection_status": "partial_context_budget",
+      "visible_projection_count": 15,
+      "available_projection_count": 22,
+      "omitted_projection_count": 7,
+      "source_context_truncated": true,
+      "projection_context_truncated": true,
+      "effective_context_truncated": true,
+      "projected_source_ids": [
+        "sec:cik_0001646188:000121390025022968"
+      ],
+      "case_result": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/cases/cik_0001646188:20250530.json",
+        "sha256": "55456cd4e35dced1e3a12592d93e83421d6d9e7815d1ff652bfeff66c2dc990c"
+      }
+    }
+  ],
+  "operating_projection_status_counts": {
+    "partial_context_budget": 15
+  },
+  "timings": {
+    "append_and_load_seconds": 1.8905446659773588,
+    "global_store_initial_load_seconds": 37.97543275007047,
+    "hash_global_seconds": 13.142486667027697,
+    "input_only_consumers_seconds": 117.18907941598445,
+    "materialize_load_worker_seconds": 25.438928791088983
+  },
+  "network_requests": 0,
+  "model_calls": 0,
+  "signal_apply_executed": false,
+  "labels_loaded": false,
+  "full_prepare_executed": false,
+  "stage_must_not_resume": true,
+  "limitations": [
+    "Whole originals are not necessarily wholly model-visible; actual default projections remain bounded.",
+    "KGC audited FS99.3 and incorporated external references are not all retrieved or reviewed.",
+    "MS annual API/header time conflict remains unresolved and excluded.",
+    "Resolved input status proves neither Signal measurement nor model behavior or prediction benefit."
+  ],
+  "independent_semantic_review_status": "pending"
+}

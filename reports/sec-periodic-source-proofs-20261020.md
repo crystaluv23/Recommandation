@@ -53,8 +53,8 @@ No automatic offset, PIT-policy change or original retiming is authorized by thi
 observation. MSannual remains time-unresolved and is excluded from the proposed
 operating input; the separately proved MSQ1 interim is the supported candidate.
 
-No new original has been appended and no new periodic view or readiness run has
-executed in this checkpoint. The latest actual result remains243/270 resolved,
+At source-profile checkpoint6cc37c79, no new original had been appended and no
+periodic view or readiness run had executed. The latest actual result remains243/270 resolved,
 13/15 above the existing0.8 threshold, with KGC/MS11/18. The next bounded operation
 is a separately frozen source qualification, new view and the same15case/18ref
 input-only consumers. Full48/defaultv6 readiness, transcript/news evidence,
@@ -69,3 +69,5 @@ explicit profiles, matching the native materializer. A context-entry check also
 caught guards aimed at Protocol methods rather than the actual executor; the
 correct execute_batch guard is tested. Initial failures and the earlier tests
 are retained separately. All of this remains pre-execution evidence.
+
+The later [actual fixed input execution](periodic-operating-source-readiness-20261020.md) appends3 verified originals and measures254/270 with15/15 above0.8. This later result preserves the pre-execution evidence limits above.

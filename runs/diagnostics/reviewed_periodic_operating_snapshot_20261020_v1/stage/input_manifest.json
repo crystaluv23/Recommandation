@@ -1,0 +1,69 @@
+{
+  "excluded_unresolved": [
+    {
+      "candidate": "MS_FY2024_annual",
+      "clock_review": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/periodic_source_qualification_20261020_v1/ms-annual-clock-review.json",
+        "sha256": "2e3b3236087315163cbfea622f1c17313f35178a7b2b655434e6b15283a37bc3"
+      },
+      "reason": "Whole body substantive; API/header acceptance time conflict unresolved; not an append candidate.",
+      "verdict": "unknown"
+    }
+  ],
+  "fixed_case_denominator": 15,
+  "fixed_resolution_denominator": 270,
+  "new_originals": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm.json",
+      "sha256": "5c568095d56fbf3dd7e372c017ff6cc10e2243bc1af3ef2e5f29155bf4e8fc64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+      "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000343.json",
+      "sha256": "ae40c0c09c68b9ac3411e1062680057ae4d4a20ac8f5f0952277f2db62cb94d3"
+    }
+  ],
+  "old_source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_anchor_financial_snapshot_20261020_v1/stage/source-review.json",
+    "sha256": "faadfd5370718cc9f311d29184f2c14f65a2b5c698e292b1fdee9fed3bc01067"
+  },
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/plan.json",
+    "sha256": "fa798331e2c7bea1c636ef9af67b7a58083945b245d63f8167a799dc93d577d2"
+  },
+  "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "registry_refs": [
+    "financing_listing_action:v5",
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "gross_margin_change:v3",
+    "liquidity_runway_months:v3",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3",
+    "guidance_acceleration:v3",
+    "max_drawdown_1y:v2",
+    "price_momentum_126d:v2",
+    "negative_word_count:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2"
+  ],
+  "registry_version": 12,
+  "reviewed_source_snapshot": {
+    "manifest_sha256": "06af96e33ad7110432588763d56d2a42d3664370c2c071424a4f0b6bbd24c989",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/snapshot",
+    "store_type": "reviewed"
+  },
+  "schema_version": "fixed-periodic-operating-inputs-v1",
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/source-review.json",
+    "sha256": "d9dcd3066cc526b7cc3920942e93f336001e8b147fdfb565566662a0fbf29a25"
+  }
+}

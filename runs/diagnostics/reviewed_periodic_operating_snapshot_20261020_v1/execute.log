@@ -1,0 +1,22 @@
+KGC_AIF: native append and full canonical load verified
+KGC_MDA: native append and full canonical load verified
+MS_Q1: native append and full canonical load verified
+KGC: default BasicInfo projected; exact-v12 inputs 16/18
+WYNN: default BasicInfo projected; exact-v12 inputs 17/18
+ENB: default BasicInfo projected; exact-v12 inputs 17/18
+MS: default BasicInfo projected; exact-v12 inputs 17/18
+LTH: default BasicInfo projected; exact-v12 inputs 17/18
+SFIX: default BasicInfo projected; exact-v12 inputs 17/18
+CIEN: default BasicInfo projected; exact-v12 inputs 17/18
+FTAI: default BasicInfo projected; exact-v12 inputs 17/18
+ATI: default BasicInfo projected; exact-v12 inputs 17/18
+NEM: default BasicInfo projected; exact-v12 inputs 17/18
+MP: default BasicInfo projected; exact-v12 inputs 17/18
+SNDK: default BasicInfo projected; exact-v12 inputs 17/18
+MU: default BasicInfo projected; exact-v12 inputs 17/18
+PRAX: default BasicInfo projected; exact-v12 inputs 17/18
+ONDS: default BasicInfo projected; exact-v12 inputs 17/18
+{
+  "schema_version": "fixed-periodic-operating-result-v1",
+  "plan_hash": "1705337122b2b10a2b20f9ca576f8268b14b26c9af6af97266e82b8ea942f1ba"
+}

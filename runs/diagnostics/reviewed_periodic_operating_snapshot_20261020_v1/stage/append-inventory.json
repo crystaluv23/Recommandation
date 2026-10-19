@@ -1,0 +1,48 @@
+{
+  "global_new_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm.json",
+      "sha256": "5c568095d56fbf3dd7e372c017ff6cc10e2243bc1af3ef2e5f29155bf4e8fc64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+      "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000343.json",
+      "sha256": "ae40c0c09c68b9ac3411e1062680057ae4d4a20ac8f5f0952277f2db62cb94d3"
+    }
+  ],
+  "receipts": [
+    {
+      "append_returned_true": true,
+      "candidate": "KGC_AIF",
+      "complete_canonical_load_equal": true,
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm.json",
+        "sha256": "5c568095d56fbf3dd7e372c017ff6cc10e2243bc1af3ef2e5f29155bf4e8fc64"
+      }
+    },
+    {
+      "append_returned_true": true,
+      "candidate": "KGC_MDA",
+      "complete_canonical_load_equal": true,
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+        "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+      }
+    },
+    {
+      "append_returned_true": true,
+      "candidate": "MS_Q1",
+      "complete_canonical_load_equal": true,
+      "document_id": "sec:cik_0000895421:000089542125000343",
+      "original_record": {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000895421/sec:cik_0000895421:000089542125000343.json",
+        "sha256": "ae40c0c09c68b9ac3411e1062680057ae4d4a20ac8f5f0952277f2db62cb94d3"
+      }
+    }
+  ]
+}

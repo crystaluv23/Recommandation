@@ -1,0 +1,10 @@
+{
+  "append_returned_true": true,
+  "candidate": "KGC_MDA",
+  "complete_canonical_load_equal": true,
+  "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm",
+  "original_record": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0000701818/sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm.json",
+    "sha256": "96979946148b02a087c1ebb0826de98429fb7e4b6bb18ac434e46b7c3314b069"
+  }
+}

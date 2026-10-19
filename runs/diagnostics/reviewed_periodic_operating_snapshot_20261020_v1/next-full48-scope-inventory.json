@@ -1,0 +1,534 @@
+{
+  "schema_version": "next-full48-scope-inventory-v1",
+  "created_at": "2026-10-19T22:35:53.272810+00:00",
+  "scope": "Local code/definition and existing label-free source-manifest entry inventory only; no full48 readiness, new contract, cohort resampling or outcome reading.",
+  "source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+      "sha256": "84c13d56ee0056947ae6da990a43e29c52be17fe2e61127c868152e037282ed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "6169b629e49d6e8f5d09d4e5d6e179e3228680a1af023f94821991fa6f7fbde9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "1de23a1632420e599b311ffca6fd093dff70f229555d6c666ed53fd75a17fa66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/plan.json",
+      "sha256": "fa798331e2c7bea1c636ef9af67b7a58083945b245d63f8167a799dc93d577d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/market_source_qualification_20261020_v1/inventory.json",
+      "sha256": "cd20f162f7d7bd04d0340732bd0b19262b9aad6e03f06594d72fc909a35f2183"
+    }
+  ],
+  "default_entry": {
+    "script": "/Users/l/Project/Recommandation/scripts/run_minimal_rounds.py",
+    "prepare_function": "prepare(root, seed_registry=None, slow_bootstrap_from=None, slow_history_from=None, reviewed_source_snapshot=None)",
+    "HISTORY": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143",
+    "default_registry_source": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals",
+    "APPROVED": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/dataset_manifest.approved.json",
+    "approved_manifest_bytes_read": false,
+    "approved_split_access": "load_approved_development_dataset loads discovery/anchor/evolution_validation rows and GroundTruth.from_dict(row.ground_truth); not invoked.",
+    "label_store_source_path_from_code": "/Users/l/Project/Recommandation/runs/cold_start/data/outcome-label-store-v1",
+    "label_store_read": false,
+    "output_input_manifest": "<new run root>/input_manifest.json",
+    "input_manifest_split_schema": "splits rows are EvolutionCase.to_discovery_dict and contain ground_truth; no existing run input_manifest of this schema was read.",
+    "old_history_input_manifest_path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/input_manifest.json",
+    "old_history_input_manifest_read": false
+  },
+  "default_registry_definition_only": {
+    "version": 6,
+    "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+    "refs": [
+      "financing_listing_action:v2",
+      "cash_burn_rate_elevated:v1",
+      "cash_reserves:v1",
+      "cash_to_current_liabilities_ratio:v1",
+      "gross_margin_change:v2",
+      "liquidity_runway_months:v1",
+      "net_share_retirement_yoy:v1",
+      "operating_cash_flow_margin:v1",
+      "revenue_acceleration:v1",
+      "revenue_growth_yoy:v1",
+      "guidance_acceleration:v1",
+      "max_drawdown_1y:v1",
+      "price_momentum_126d:v1",
+      "negative_word_count:v1",
+      "order_confirmation_disclosed:v1",
+      "order_quality:v1",
+      "commercialization_status:v1",
+      "customer_concentration:v1"
+    ],
+    "definition_bindings": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/registry.json",
+        "sha256": "87391985c855e5f8451af37600e90f551d8b308c8519017569d52d8c146a795b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/catalysts/financing_listing_action/manifest.json",
+        "sha256": "e6e09587136dfb1da8c804f39772a930e3b6ca790efe200eb25ce94ec3df90e8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/catalysts/financing_listing_action/versions/v2/spec.json",
+        "sha256": "e3c042a80ecc155c1a7f9d5815302dcb060ba9e99962de7a5aa71d8f8a7aa2e8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/catalysts/financing_listing_action/versions/v2/skill.md",
+        "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_burn_rate_elevated/manifest.json",
+        "sha256": "09f3466579e8c68a01fbbf54be58308c2f025b4a10419bf293460b8af67a143a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_burn_rate_elevated/versions/v1/spec.json",
+        "sha256": "1e2135f31ce4083c35de982949f5b97472972ca07fceeb1106fe29cb34a4c516"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_burn_rate_elevated/versions/v1/skill.md",
+        "sha256": "9709939ebefbe292d77ac134db92023bc8a9a60eb73816743083104e313fc43e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_reserves/manifest.json",
+        "sha256": "7bebe5a642cf37745e649c423a0304a09cd63cdd8d4952801ba7adb2e97c52c1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_reserves/versions/v1/spec.json",
+        "sha256": "c8b50f0dfb0025bddec6d0bc5b766c20dcad2f9048e749f68048ff1d9e489d04"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/manifest.json",
+        "sha256": "1f95f7a21ceaae1fac206a63e36166b03d9937a63023f19f92f559b5d039043a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/spec.json",
+        "sha256": "fa9c01516ad10b31c164542589a6b92d1904bd38a1127dc7c3a51fb7d2881909"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/cash_to_current_liabilities_ratio/versions/v1/skill.md",
+        "sha256": "b2378e03613546a77f0e586052c18512dfb3ee535f7a0e694e5fd7beb0df3ce0"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/gross_margin_change/manifest.json",
+        "sha256": "92553c49d212f419cacc957f0923df2d491d2dbf0aa4f12594f9579c463052a0"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/gross_margin_change/versions/v2/spec.json",
+        "sha256": "103321bdd23bf1fa2d071d6383474599893de8854edca7bf2e54ba5ef2ded737"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/liquidity_runway_months/manifest.json",
+        "sha256": "5afb9969fc6196b1992253e736c7d4f712b0d8bc745e37eb775948104990b801"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/liquidity_runway_months/versions/v1/spec.json",
+        "sha256": "d20f90fd5638bfd4df9c1aaa9e4c75b6c8a40b74c76ccc8147aa8383db1757f9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/liquidity_runway_months/versions/v1/skill.md",
+        "sha256": "ddf825d33a0eb1dcba2aad2a257af6a79b169c0dea254a7ab223e4b7e6da2e57"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/net_share_retirement_yoy/manifest.json",
+        "sha256": "f91324fb5573817f3a412b22ea056db1038b39b4db527f495426c17dd702d399"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/net_share_retirement_yoy/versions/v1/spec.json",
+        "sha256": "8cc58efd464289626e404bfdc024ec0f4926e0af66872e39bf385ef9210f9c27"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/operating_cash_flow_margin/manifest.json",
+        "sha256": "6edd5a007cf356c05ae683c670b0774f1317a6b717bf925869b258d7981175f0"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/operating_cash_flow_margin/versions/v1/spec.json",
+        "sha256": "2089b166c9a4d88ed8663beaebdb3c535716123a486beadbe75ba4230cd6b668"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/revenue_acceleration/manifest.json",
+        "sha256": "31955bf03f77a54c9f9a8a6cc34e6eaa342f218b2c830d043e13d7b7ed3f7f8e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/revenue_acceleration/versions/v1/spec.json",
+        "sha256": "18dea9302ba319c3aa0af6a79b3ffd3fbaedff56a139ecc32d1f8196a96ad620"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/revenue_growth_yoy/manifest.json",
+        "sha256": "63a2045f1b80451be18c7d42144454cf8c724afb3de984ca962badb43047b278"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/financial/revenue_growth_yoy/versions/v1/spec.json",
+        "sha256": "0512ff73942e998e3fb445783f71e4ba2b7c4340d64d99a550833df3cf1f9d70"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/management/guidance_acceleration/manifest.json",
+        "sha256": "49f636f50c2a680de9f55259d11d017e3f24235873cef1751f108fc46c28ac60"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/management/guidance_acceleration/versions/v1/spec.json",
+        "sha256": "9d4dff4e973f32a0d338d4d9548a6f54c6e9980ecbde65d9d7834d389d4a8861"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/management/guidance_acceleration/versions/v1/skill.md",
+        "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/max_drawdown_1y/manifest.json",
+        "sha256": "64a545d6bc6ebdba3c7d46046fbee2e190eb55178bae39081376769cf0eb9bc9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/max_drawdown_1y/versions/v1/spec.json",
+        "sha256": "46d0b7b6f79e4a1319d2e82b333e17c8b597b0fe2ca37526dea286e7a1d0449e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/price_momentum_126d/manifest.json",
+        "sha256": "6391e0734c6bdd4097a871a9cb9425cb7898d492145a39f5e97863ae3cbc68ec"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/market/price_momentum_126d/versions/v1/spec.json",
+        "sha256": "298186290b11e7f49faa0808515d6d96bd96fb756410494ef4347d33099a0df3"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/news/negative_word_count/manifest.json",
+        "sha256": "9f3e531c10081ea2176d21da45b990b315aab89bbaddf20ec77a196e22bf329e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/news/negative_word_count/versions/v1/spec.json",
+        "sha256": "379ba9d739b968bf24c0bed621743fec4e14964cc7311c1870e688f355ef1042"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/order_confirmation/order_confirmation_disclosed/manifest.json",
+        "sha256": "32aceb16227755222fc394bfbec6e63d157c1aa6f53162d1842d72725264361b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/order_confirmation/order_confirmation_disclosed/versions/v1/spec.json",
+        "sha256": "546290c063ce9cbb5a273a15bcb2533dff57da674409f05050f2f1f98809704a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/order_confirmation/order_confirmation_disclosed/versions/v1/skill.md",
+        "sha256": "e23b21416e25f2ece3b95374dd33d5f9105a089f2b2fabcfcc9a5f7ae2844d2e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/orders/order_quality/manifest.json",
+        "sha256": "a3a80981ae999c40311b6f1936e0e8745e3ead1891395f65f921d3078a0384ea"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/orders/order_quality/versions/v1/spec.json",
+        "sha256": "4f7558e09a221d883613d0741e6e4b6fca5937066ce6abd224af00ac722715fe"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/orders/order_quality/versions/v1/skill.md",
+        "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/product/commercialization_status/manifest.json",
+        "sha256": "073e981d5c1c16cc5339a1d699346071fe6dbed78c31b7aa75040c3019ebd68b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/product/commercialization_status/versions/v1/spec.json",
+        "sha256": "60e259b41af3c85e902bc3169b55ed660d01bf5557f4c2c45549839cc54bc3df"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/product/commercialization_status/versions/v1/skill.md",
+        "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/risks/customer_concentration/manifest.json",
+        "sha256": "70dedd975287cd2a878bdd6fe1ad7fa81a76d88d5d512f8202bfabd001197818"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/risks/customer_concentration/versions/v1/spec.json",
+        "sha256": "805e1a3a5c4a564c8410f958abdd9e39ea64ef1b46b7df77d8a5b158134f8c11"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals/risks/customer_concentration/versions/v1/skill.md",
+        "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+      }
+    ],
+    "hash_method": "Exact SignalSpec.from_dict/to_dict + original LLM skill text; sorted category/signal_id; same version/specs/skills canonical shape as SignalRegistry.freeze. No freeze/audit/profile/stats/learning reads.",
+    "learning_hash": null,
+    "learning_hash_status": "not inspected; definition identity only"
+  },
+  "current_completed_source_diagnostic": {
+    "plan": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/plan.json",
+      "sha256": "fa798331e2c7bea1c636ef9af67b7a58083945b245d63f8167a799dc93d577d2"
+    },
+    "reviewed_source_snapshot_input_manifest": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/input_manifest.json",
+      "sha256": "535ba9007c6b31a1b257126ce50d377536393e6df04d71ee0d751320db424f25"
+    },
+    "version": 12,
+    "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "refs": [
+      "financing_listing_action:v5",
+      "cash_burn_rate_elevated:v2",
+      "cash_reserves:v2",
+      "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3",
+      "liquidity_runway_months:v3",
+      "net_share_retirement_yoy:v3",
+      "operating_cash_flow_margin:v2",
+      "revenue_acceleration:v2",
+      "revenue_growth_yoy:v3",
+      "guidance_acceleration:v3",
+      "max_drawdown_1y:v2",
+      "price_momentum_126d:v2",
+      "negative_word_count:v2",
+      "order_confirmation_disclosed:v3",
+      "order_quality:v2",
+      "commercialization_status:v2",
+      "customer_concentration:v2"
+    ],
+    "fixed_cases": 15,
+    "fixed_resolution_count": 270
+  },
+  "registry_difference": {
+    "same_signal_id_set": true,
+    "same_ref_count": true,
+    "exact_ref_equal": false,
+    "versions": [
+      {
+        "default_history_ref": "financing_listing_action:v2",
+        "fixed15_v12_ref": "financing_listing_action:v5"
+      },
+      {
+        "default_history_ref": "cash_burn_rate_elevated:v1",
+        "fixed15_v12_ref": "cash_burn_rate_elevated:v2"
+      },
+      {
+        "default_history_ref": "cash_reserves:v1",
+        "fixed15_v12_ref": "cash_reserves:v2"
+      },
+      {
+        "default_history_ref": "cash_to_current_liabilities_ratio:v1",
+        "fixed15_v12_ref": "cash_to_current_liabilities_ratio:v2"
+      },
+      {
+        "default_history_ref": "gross_margin_change:v2",
+        "fixed15_v12_ref": "gross_margin_change:v3"
+      },
+      {
+        "default_history_ref": "liquidity_runway_months:v1",
+        "fixed15_v12_ref": "liquidity_runway_months:v3"
+      },
+      {
+        "default_history_ref": "net_share_retirement_yoy:v1",
+        "fixed15_v12_ref": "net_share_retirement_yoy:v3"
+      },
+      {
+        "default_history_ref": "operating_cash_flow_margin:v1",
+        "fixed15_v12_ref": "operating_cash_flow_margin:v2"
+      },
+      {
+        "default_history_ref": "revenue_acceleration:v1",
+        "fixed15_v12_ref": "revenue_acceleration:v2"
+      },
+      {
+        "default_history_ref": "revenue_growth_yoy:v1",
+        "fixed15_v12_ref": "revenue_growth_yoy:v3"
+      },
+      {
+        "default_history_ref": "guidance_acceleration:v1",
+        "fixed15_v12_ref": "guidance_acceleration:v3"
+      },
+      {
+        "default_history_ref": "max_drawdown_1y:v1",
+        "fixed15_v12_ref": "max_drawdown_1y:v2"
+      },
+      {
+        "default_history_ref": "price_momentum_126d:v1",
+        "fixed15_v12_ref": "price_momentum_126d:v2"
+      },
+      {
+        "default_history_ref": "negative_word_count:v1",
+        "fixed15_v12_ref": "negative_word_count:v2"
+      },
+      {
+        "default_history_ref": "order_confirmation_disclosed:v1",
+        "fixed15_v12_ref": "order_confirmation_disclosed:v3"
+      },
+      {
+        "default_history_ref": "order_quality:v1",
+        "fixed15_v12_ref": "order_quality:v2"
+      },
+      {
+        "default_history_ref": "commercialization_status:v1",
+        "fixed15_v12_ref": "commercialization_status:v2"
+      },
+      {
+        "default_history_ref": "customer_concentration:v1",
+        "fixed15_v12_ref": "customer_concentration:v2"
+      }
+    ]
+  },
+  "full48_case_identity_gate": {
+    "original_readiness_denominator": 48,
+    "denominator_basis": 48,
+    "original_anchor_failure": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_source_snapshot_20261019_v3/full_preflight/preparation_failure.json",
+      "sha256": "6fbfd93ca427f02f487517dff4d826ee8a3e7df8ec67344c5684c6e0886b9f49"
+    },
+    "original_anchor_case_file": {
+      "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/anchor.json",
+      "sha256": "6ed4bba072fad5a8f607d5fb5f85af4e48161fe170d6ba5e237a27500875fc23",
+      "binding_status": "copied prior metadata only; actual label-bearing split bytes not opened or hashed this turn"
+    },
+    "known_label_free_anchor_identities": [
+      {
+        "case_id": "cik_0000701818:20250930",
+        "company_id": "cik_0000701818",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001174922:20250731",
+        "company_id": "cik_0001174922",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0000895728:20250930",
+        "company_id": "cik_0000895728",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0000895421:20250731",
+        "company_id": "cik_0000895421",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001869198:20250331",
+        "company_id": "cik_0001869198",
+        "cutoff": "2025-03-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001576942:20250530",
+        "company_id": "cik_0001576942",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0000936395:20250930",
+        "company_id": "cik_0000936395",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001590364:20250731",
+        "company_id": "cik_0001590364",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001018963:20250930",
+        "company_id": "cik_0001018963",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001164727:20250731",
+        "company_id": "cik_0001164727",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001801368:20250331",
+        "company_id": "cik_0001801368",
+        "cutoff": "2025-03-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0002023554:20250930",
+        "company_id": "cik_0002023554",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0000723125:20250731",
+        "company_id": "cik_0000723125",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001689548:20250930",
+        "company_id": "cik_0001689548",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001646188:20250530",
+        "company_id": "cik_0001646188",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous fixed anchor source inventory; no outcome read"
+      },
+      {
+        "case_id": "cik_0001830043:20250930",
+        "company_id": "cik_0001830043",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "split": "anchor",
+        "basis": "previous market-source inventory explicitly excluded already-qualified BMBL; no outcome read"
+      }
+    ],
+    "known_identity_count": 16,
+    "full48_identity_cutoff_split_list_verified": false,
+    "reason": "Authoritative approved split schema includes ground_truth. No safe complete 48-case identity-only artifact was located in the bounded known entry set; stop rather than open/strip outcomes.",
+    "default_prepare_selection_from_code": {
+      "anchor": 16,
+      "evolution_validation": 8,
+      "discovery": 16,
+      "total_requested": 40,
+      "selection_seed": 42,
+      "selection_is_label_stratified": true,
+      "selection_uses_source_ready_gates": true,
+      "warning": "These current producer target counts are not a replacement denominator or verified frozen full48 identity list."
+    },
+    "denominator_interpretation": {
+      "historical48": "Existing upstream source-inventory/readiness denominator, preserved verbatim. Approved full-pool composition was not verified from label-bearing split files this turn.",
+      "current_native40": "Actual run_minimal_rounds.prepare source code requests anchor16 + evolution_validation8 + discovery16. This does not alter historical48.",
+      "remaining8_is_locked_test": "Not established; no Locked Test artifact or cases opened, no inference promoted into a verified composition."
+    }
+  },
+  "next_minimal_action": {
+    "action": "Identify an already-authored label-free full48 identity/cutoff/split projection bound to the original approved artifact; if absent, define a separately authorized source-owner projection boundary before any readiness attempt. Preserve original48 and all18 exact refs; do not call current fullprepare as a label-free inventory tool.",
+    "network_required": false,
+    "execute_now": false
+  },
+  "not_executed": {
+    "GET": true,
+    "model": true,
+    "Signal_apply": true,
+    "prepare_inputs": true,
+    "LabelStore": true,
+    "fullprepare": true,
+    "global_scan": true,
+    "new_contract": true
+  },
+  "completed_periodic_stage_reentered": false,
+  "locked_test_artifacts_opened": false
+}

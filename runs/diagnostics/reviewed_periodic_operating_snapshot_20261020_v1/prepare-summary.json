@@ -1,0 +1,89 @@
+{
+  "schema_version": "periodic-operating-prepare-summary-v1",
+  "plan_hash": "1705337122b2b10a2b20f9ca576f8268b14b26c9af6af97266e82b8ea942f1ba",
+  "plan_file": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/plan.json",
+    "sha256": "fa798331e2c7bea1c636ef9af67b7a58083945b245d63f8167a799dc93d577d2",
+    "bytes": 844479
+  },
+  "code_bindings_count": 106,
+  "source_bindings_count": 29,
+  "old_source_bindings_count": 812,
+  "old_financial_tree_count": 1296,
+  "fixed_authorities_count": 10,
+  "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "registry_version": 12,
+  "registry_refs_count": 18,
+  "old_review_counts": {
+    "records": 655,
+    "admitted": 650,
+    "excluded": 1,
+    "unknown": 4
+  },
+  "candidates": [
+    {
+      "candidate": "KGC_AIF",
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d1.htm",
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "available_at": "2025-03-27T20:55:21+00:00",
+      "content_hash": "d069c1ce5a041bc6e407e4226cc47aeac9059d3ba5ab5d03ebc314a94c37a11f",
+      "canonical_record_hash": "3f1f2bec97274b986f18b0db37dd56473d318d755ec43f15fb487e0cd3ae9f30",
+      "candidate_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/KGC_AIF.json",
+        "sha256": "6f422fc02864da4dc493f0248577198a93de570d6426a4f4964b614296dc5ebe"
+      },
+      "qualification": "actual native in-memory source-profile verification passed in prepare"
+    },
+    {
+      "candidate": "KGC_MDA",
+      "document_id": "sec-exhibit:cik_0000701818:000110465925028819:kgc-20241231xex99d2.htm",
+      "proof_profile": "sec_filing_exhibit_response_v1",
+      "available_at": "2025-03-27T20:55:21+00:00",
+      "content_hash": "b57c5da91edf40ccdc5d1806655cf88878cd033ddf7a7c74815de1962323a5ae",
+      "canonical_record_hash": "4c16543f0bdd8cd2a23e80da271fcefa21221e22ca9b1730a972f23dd01e8772",
+      "candidate_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/KGC_MDA.json",
+        "sha256": "75dd1e88b780ba5d4ce02b5a9411d9fccd09fe4a13d5488d25fdbaae5defc11d"
+      },
+      "qualification": "actual native in-memory source-profile verification passed in prepare"
+    },
+    {
+      "candidate": "MS_Q1",
+      "document_id": "sec:cik_0000895421:000089542125000343",
+      "proof_profile": "sec_filing_response_acceptance_v1",
+      "available_at": "2025-05-05T20:13:06+00:00",
+      "content_hash": "fb7c40d9141c347571d3f86806f9909db98f60dd4ca426a01a8bd6a3f179ff5f",
+      "canonical_record_hash": "793a5b3b9f4bbdfdd13e48625e92d6705efee7520429f22c8016d85d50a59186",
+      "candidate_file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/MS_Q1.json",
+        "sha256": "c1c0e469d711509c452097f191f85defcfd61c30f7ac49ed543a0c17b1053d70"
+      },
+      "qualification": "actual native in-memory source-profile verification passed in prepare"
+    }
+  ],
+  "new_stage_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/KGC_AIF.json",
+      "sha256": "6f422fc02864da4dc493f0248577198a93de570d6426a4f4964b614296dc5ebe",
+      "bytes": 2094992
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/KGC_MDA.json",
+      "sha256": "75dd1e88b780ba5d4ce02b5a9411d9fccd09fe4a13d5488d25fdbaae5defc11d",
+      "bytes": 2197055
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/candidates/MS_Q1.json",
+      "sha256": "c1c0e469d711509c452097f191f85defcfd61c30f7ac49ed543a0c17b1053d70",
+      "bytes": 6860832
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_periodic_operating_snapshot_20261020_v1/stage/plan.json",
+      "sha256": "fa798331e2c7bea1c636ef9af67b7a58083945b245d63f8167a799dc93d577d2",
+      "bytes": 844479
+    }
+  ],
+  "execute_executed": false,
+  "global_store_constructed": false,
+  "global_appends": 0
+}

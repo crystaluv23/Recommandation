@@ -7,15 +7,20 @@
 
 ## 当前验收
 
-[SEC periodic来源proof](../reports/sec-periodic-source-proofs-20261020.md)：新7GET均200，KGC父40F为wrapper、AIF/MD&A独立正文及MSQ1中期已取；MSannual正文已取但时间冲突仍unknown，不以JSON新clock纠正旧件。显式真实receipt/root-linked及parent-exhibit profiles完成；独立发现描述跨引误认编号已修，同18拒绝/4正控及10追加通过，40安全关联带tripwire零触发。新source-only脚本及4临时边界测试已准备，尚无新来源append/view/readiness；下一仅冻结独立来源与同15case/270输入复测；整体MVP仍open。
+最新 [periodic来源/readiness](../reports/periodic-operating-source-readiness-20261020.md)：
+新3原件nativeappend/canonical回读，旧655rows/15637global文件不变，653doc新view/worker/restart相等。
+同固定15case/v12/18refs实际254resolved/16unresolved：KGC16/18、其余14案17/18，15/15达既有0.8。
+独立重核3raw、全部270来源/PIT/期间及15实际BasicInfo投影；经营请求15/15resolved但全为partial_context_budget。
+news缺15，KGC订单180日窗缺1（March27源早于窗口下界，不是无订单）。MSannual时间冲突仍unknown/excluded。
+新source profiles40安全测试及诊断4临时边界通过；本stage0GET/model/apply/标签/fullprepare，不关闭F2/full48/MVP。
 
-最新 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
+此前 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
 固定15case/45旧source对象不缩；607新peracc产品逐canonical append/load相等，
 旧global15030文件字节不变，旧review48rows保留，新650doc view/worker/restart一致。
 独立真实15cache/607products及全部270来源/PIT/期间/observation核对通过。
 精确最新v12/18refs：243resolved/27unresolved，13case17/18、KGC/MS11/18，
 13/15达到既有0.8（旧经营view0/15保留）；135新增均九financial refs。
-news各15、两家各6narrative仍缺。FTAI原364同日rows全部排除，未重写原件。
+该旧view当时news各15、两家各6narrative缺；当前见上。FTAI原364同日rows全部排除，未重写原件。
 本stage0GET/model/apply/标签/fullprepare，不证明语义测量或defaultv6/full48。
 
 [SEC财务修复](../reports/sec-financial-source-boundaries-20261020.md)98测试及
@@ -76,7 +81,9 @@ root此前31关联误带真实labels hash和临时fullprepare拒绝，已披露�
 
 ## 未关闭边界
 
-完整48案readiness未验；原16Anchor行情proof缺项已具证，不等于整体输入齐全。
+历史48 source/readiness分母未验；native prepare实际选40（16anchor+8validation+16discovery），
+default v6/18精确版本也不同于本批v12，须先追合同及无标签身份入口，不把48/40混同或扩大LockedTest可见性。
+原16Anchor行情proof缺项已具证，不等于整体输入齐全。
 26 transcript完整公开内容时间证明仍0。
 污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
 旧v182权威Fast/Slow=1/1已完成不可重启；memory失败processed0/pending3518未修成成功。
