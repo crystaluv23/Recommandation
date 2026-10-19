@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/diagnose_reviewed_frozen_case_inputs.py",
+    "--prepare"
+  ],
+  "environment": {
+    "PYTHONPATH": "src:scripts"
+  },
+  "started_at": "2026-10-19T22:54:22.228895+00:00",
+  "finished_at": "2026-10-19T22:54:23.263541+00:00",
+  "elapsed_seconds": 1.034551499877125,
+  "exit_code": 0,
+  "prepare_log": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/prepare.log",
+    "sha256": "bc31d5c14019cd5755edeb7e3f6422b42f678083134891a7f63bc8d55efec7df"
+  },
+  "execute_executed": false
+}

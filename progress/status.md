@@ -7,18 +7,23 @@
 
 ## 当前验收
 
-最新 [periodic来源/readiness](../reports/periodic-operating-source-readiness-20261020.md)：
-新3原件nativeappend/canonical回读，旧655rows/15637global文件不变，653doc新view/worker/restart相等。
-同固定15case/v12/18refs实际254resolved/16unresolved：KGC16/18、其余14案17/18，15/15达既有0.8。
-独立重核3raw、全部270来源/PIT/期间及15实际BasicInfo投影；经营请求15/15resolved但全为partial_context_budget。
-news缺15，KGC订单180日窗缺1（March27源早于窗口下界，不是无订单）。MSannual时间冲突仍unknown/excluded。
-新source profiles40安全测试及诊断4临时边界通过；本stage0GET/model/apply/标签/fullprepare，不关闭F2/40案全范围/MVP。
+最新 [原40案双版本输入检查](../reports/frozen40-dual-registry-source-inputs-20261020.md)：
+代码9bfea3bd、唯一plan930439...执行248.440s/exit0；原40案及两720分母完整。
+v6/v12各262resolved/458gap，各15/40达既有0.8；14Anchor17/18、KGC16/18、BMBL8/18，
+Discovery16+Validation8均0/18（固定view缺覆盖，不证明不存在本地/公开资料）。
+每组缺口：24nonanchor432项+BMBL九financial+Anchor16news+KGC订单180日窗1。
+40BasicInfo共160请求，47resolved均partial_context_budget，其余113unavailable；0模型。
+653docview/worker/restart相等、旧683stage文件及sourcebindings保持；124终态文件绑定，禁止重入。
+新5focused/独立30temp通过；实际全部1440输入与40BasicInfo独立复核见新报告。
+本stage0GET/model/apply/LabelStore/fullprepare/global写入；无整体F2/MVP关闭。
 
-此前 [财务来源/readiness](../reports/anchor-financial-source-readiness-20261020.md)：
-607新peracc产品canonical相等、旧15030文件/48reviewrows不变；旧650docview固定15/v12为243/270、13/15达0.8。
+此前 [periodic来源](../reports/periodic-operating-source-readiness-20261020.md)：
+固定15/v12为254/270、15/15达0.8；3真实periodic原件进入653docview，15经营投影全partial。
+[财务来源](../reports/anchor-financial-source-readiness-20261020.md)607新peracc产品canonical相等、旧原件保留；
 [SEC财务修复](../reports/sec-financial-source-boundaries-20261020.md)98测试及
 [新profile](../reports/reviewed-financial-profile-20261020.md)30安全selectors通过。
-原31关联误带真实labels hash及临时fullprepare拒绝已披露，排除于零访问证据。
+原31关联误带真实labels hash/临时fullprepare拒绝已披露，排除于零访问证据。
+MSannual时间冲突仍unknown/excluded，未改时区或财务政策；news/order缺项不表示无事件。
 
 [行情来源](../reports/anchor-market-source-qualification-20261020.md)原16Anchor proof缺项已补：
 15新case/16原件3307bars重建、30GET/16准入、38绑定不变；15/15基线通过，
@@ -77,18 +82,17 @@ news缺15，KGC订单180日窗缺1（March27源早于窗口下界，不是无订
 v182实际冻结40且绑定当前APPROVED，旧运行完成仍1/1。旧“48”是未获案例清单支持的注释/报告声明，
 真实旧preflight只有16Anchor缺源，不作为新48分母或推剩余8为LockedTest。原失败文件保持。
 默认v6与本批v12的18精确版本不同；需分别在原40身份/时间/split上测输入，不外推15案结果。
-原16Anchor行情proof缺项已具证，不等于整体输入齐全。
-26 transcript完整公开内容时间证明仍0。
-污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
+26 transcript完整公开内容时间证明仍0；污染历史news排除/unknown不表示事件不存在，原资料与失败分母保持。
 旧v182权威Fast/Slow=1/1已完成不可重启；memory失败processed0/pending3518未修成成功。
 方向/magnitude新Signal技术准入、精确复用、完整F10提交及Slow消费、完整闭环/MVP
 和独立预测收益均未验证。本次MVP goal active；未恢复旧实验/不启动完整后继。
 
 ## 下一步
 
-离线source owner白名单投影v182原冻结40身份/aware时间/split/顺序，不复制truth/basic_info。
-已核批准的无标签acquisition_scope只匹配这40的身份，不从3511公司×共享日期重建cohort。
-新诊断分别冻结defaultv6/v12的18refs、原653doc view，各720输入与40份BasicInfo投影；
-0GET/model/apply/LabelStore/fullprepare/global写入，不恢复旧运行或触LockedTest。
-旧混合清单会由owner读取/按SHA验证，须如实报告；未向研究/模型传递outcome字段。
+原40投影已实际完成；owner读混合清单但仅输出身份/时间/split白名单，execute只stream原件SHA。
+先补原40范围内未覆盖24nonanchor+BMBL财务的来源链，不从3511×日期重选cohort。
+有界local候选25家均保留：5家CompanyFacts exactcache/raw定位（BMBL/LNTH/HITI/RZLV/WWR），
+其余20链在检查根未定位保持unknown；5家wholefiling/root、5家daily cache候选尚未准入。
+下一优先补可定位缓存的现有proof家族、再按实际证据安排有界资料查询；不能重跑已完成stage。
+不改变lookback/refs或推断news不存在；未恢复旧运行/不触LockedTest。
 原8项用户改动保持；MVP goal active未完成。

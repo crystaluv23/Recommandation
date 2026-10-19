@@ -1,0 +1,145 @@
+{
+  "schema_version": "frozen-case-prepare-summary-v1",
+  "code_checkpoint": "9bfea3bd19d8956d19ae3d4afff5ce42dc93bab7",
+  "plan_hash": "93043969533adff47b8ac121ef9cb54fb32c5888cd1b26f39de402f609130c9e",
+  "plan_file": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/plan.json",
+    "sha256": "20ee4d2f386a237fbeacfedfbe32dbd0406310166cb5f7b4f48014e391645696"
+  },
+  "projection": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+    "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+  },
+  "projection_canonical_hash": "7b74a96f2fe0db443708c8c4779c7c4593fa49b51d6d06655bed9c43ee84d9d3",
+  "origin": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+    "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+  },
+  "origin_control": {
+    "approved_manifest_hash": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+    "locked_test_hash": "87c50a6eda4740c9b4b31cd70daf426344304c914a707808c5b5d53b309fc5be",
+    "schema_version": "diagnostic-development-subset-v1",
+    "selection_before_model_calls": true,
+    "selection_seed": 42
+  },
+  "fixed_case_count": 40,
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "original_split_order": [
+    "anchor",
+    "discovery",
+    "evolution_validation"
+  ],
+  "first_case_identity": {
+    "case_id": "cik_0000895728:20250930",
+    "company_id": "cik_0000895728",
+    "order": 0,
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "split": "anchor",
+    "split_case_index": 0
+  },
+  "last_case_identity": {
+    "case_id": "cik_0001051627:20250930",
+    "company_id": "cik_0001051627",
+    "order": 39,
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "split": "evolution_validation",
+    "split_case_index": 7
+  },
+  "groups": [
+    {
+      "name": "default_v6",
+      "root": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-jev-dual-self-evolution-20260928-v143/signals",
+      "version": 6,
+      "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "refs": [
+        "financing_listing_action:v2",
+        "cash_burn_rate_elevated:v1",
+        "cash_reserves:v1",
+        "cash_to_current_liabilities_ratio:v1",
+        "gross_margin_change:v2",
+        "liquidity_runway_months:v1",
+        "net_share_retirement_yoy:v1",
+        "operating_cash_flow_margin:v1",
+        "revenue_acceleration:v1",
+        "revenue_growth_yoy:v1",
+        "guidance_acceleration:v1",
+        "max_drawdown_1y:v1",
+        "price_momentum_126d:v1",
+        "negative_word_count:v1",
+        "order_confirmation_disclosed:v1",
+        "order_quality:v1",
+        "commercialization_status:v1",
+        "customer_concentration:v1"
+      ]
+    },
+    {
+      "name": "latest_v12",
+      "root": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals",
+      "version": 12,
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ]
+    }
+  ],
+  "bindings": {
+    "unique_path_count": 1734,
+    "all_bound_current_files_equal": true,
+    "metadata_authorities": 7,
+    "source_bindings": 852,
+    "old_periodic_tree": 683,
+    "code_bindings": 110,
+    "group_definitions": {
+      "default_v6": 46,
+      "latest_v12": 43
+    }
+  },
+  "stage_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+      "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/plan.json",
+      "sha256": "20ee4d2f386a237fbeacfedfbe32dbd0406310166cb5f7b4f48014e391645696"
+    }
+  ],
+  "stage_empty_local_registry_candidate_dirs": [
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/unused_candidates/default_v6",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/unused_candidates/latest_v12"
+  ],
+  "source_owner_mixed_origin_opened": true,
+  "source_owner_only_whitelist_fields_consumed_or_output": true,
+  "outcome_fields_consumed_or_output": false,
+  "execute_executed": false,
+  "execution_start_exists": false,
+  "LabelStore_read": false,
+  "LockedTest_file_opened": false,
+  "GET": 0,
+  "model_calls": 0,
+  "signal_apply": false,
+  "prepare_inputs": false,
+  "fullprepare": false,
+  "global_source_writes": 0
+}

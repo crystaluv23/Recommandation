@@ -1,0 +1,502 @@
+{
+  "cases": [
+    {
+      "case_id": "cik_0000895728:20250930",
+      "company_id": "cik_0000895728",
+      "order": 0,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 0
+    },
+    {
+      "case_id": "cik_0001830043:20250930",
+      "company_id": "cik_0001830043",
+      "order": 1,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 1
+    },
+    {
+      "case_id": "cik_0000701818:20250930",
+      "company_id": "cik_0000701818",
+      "order": 2,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 2
+    },
+    {
+      "case_id": "cik_0001174922:20250731",
+      "company_id": "cik_0001174922",
+      "order": 3,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 3
+    },
+    {
+      "case_id": "cik_0000895421:20250731",
+      "company_id": "cik_0000895421",
+      "order": 4,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 4
+    },
+    {
+      "case_id": "cik_0001869198:20250331",
+      "company_id": "cik_0001869198",
+      "order": 5,
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 5
+    },
+    {
+      "case_id": "cik_0001576942:20250530",
+      "company_id": "cik_0001576942",
+      "order": 6,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 6
+    },
+    {
+      "case_id": "cik_0001590364:20250731",
+      "company_id": "cik_0001590364",
+      "order": 7,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 7
+    },
+    {
+      "case_id": "cik_0000936395:20250930",
+      "company_id": "cik_0000936395",
+      "order": 8,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 8
+    },
+    {
+      "case_id": "cik_0001164727:20250731",
+      "company_id": "cik_0001164727",
+      "order": 9,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 9
+    },
+    {
+      "case_id": "cik_0001801368:20250331",
+      "company_id": "cik_0001801368",
+      "order": 10,
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 10
+    },
+    {
+      "case_id": "cik_0001018963:20250930",
+      "company_id": "cik_0001018963",
+      "order": 11,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 11
+    },
+    {
+      "case_id": "cik_0001689548:20250930",
+      "company_id": "cik_0001689548",
+      "order": 12,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 12
+    },
+    {
+      "case_id": "cik_0002023554:20250930",
+      "company_id": "cik_0002023554",
+      "order": 13,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 13
+    },
+    {
+      "case_id": "cik_0000723125:20250731",
+      "company_id": "cik_0000723125",
+      "order": 14,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 14
+    },
+    {
+      "case_id": "cik_0001646188:20250530",
+      "company_id": "cik_0001646188",
+      "order": 15,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "anchor",
+      "split_case_index": 15
+    },
+    {
+      "case_id": "cik_0000800457:20250731",
+      "company_id": "cik_0000800457",
+      "order": 16,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 0
+    },
+    {
+      "case_id": "cik_0001681459:20250530",
+      "company_id": "cik_0001681459",
+      "order": 17,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 1
+    },
+    {
+      "case_id": "cik_0001097362:20250731",
+      "company_id": "cik_0001097362",
+      "order": 18,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 2
+    },
+    {
+      "case_id": "cik_0001746129:20250731",
+      "company_id": "cik_0001746129",
+      "order": 19,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 3
+    },
+    {
+      "case_id": "cik_0001679273:20250331",
+      "company_id": "cik_0001679273",
+      "order": 20,
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 4
+    },
+    {
+      "case_id": "cik_0001361658:20250131",
+      "company_id": "cik_0001361658",
+      "order": 21,
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 5
+    },
+    {
+      "case_id": "cik_0001421517:20250131",
+      "company_id": "cik_0001421517",
+      "order": 22,
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 6
+    },
+    {
+      "case_id": "cik_0001946703:20250731",
+      "company_id": "cik_0001946703",
+      "order": 23,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 7
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "company_id": "cik_0002009312",
+      "order": 24,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 8
+    },
+    {
+      "case_id": "cik_0001065059:20250131",
+      "company_id": "cik_0001065059",
+      "order": 25,
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 9
+    },
+    {
+      "case_id": "cik_0000878518:20250930",
+      "company_id": "cik_0000878518",
+      "order": 26,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 10
+    },
+    {
+      "case_id": "cik_0001438133:20250930",
+      "company_id": "cik_0001438133",
+      "order": 27,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 11
+    },
+    {
+      "case_id": "cik_0001814215:20250530",
+      "company_id": "cik_0001814215",
+      "order": 28,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 12
+    },
+    {
+      "case_id": "cik_0001285819:20250930",
+      "company_id": "cik_0001285819",
+      "order": 29,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 13
+    },
+    {
+      "case_id": "cik_0001474627:20250530",
+      "company_id": "cik_0001474627",
+      "order": 30,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 14
+    },
+    {
+      "case_id": "cik_0001951089:20250530",
+      "company_id": "cik_0001951089",
+      "order": 31,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "discovery",
+      "split_case_index": 15
+    },
+    {
+      "case_id": "cik_0001521036:20250331",
+      "company_id": "cik_0001521036",
+      "order": 32,
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 0
+    },
+    {
+      "case_id": "cik_0001847409:20250131",
+      "company_id": "cik_0001847409",
+      "order": 33,
+      "prediction_time": "2025-01-31T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 1
+    },
+    {
+      "case_id": "cik_0000860413:20250930",
+      "company_id": "cik_0000860413",
+      "order": 34,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 2
+    },
+    {
+      "case_id": "cik_0001309402:20250530",
+      "company_id": "cik_0001309402",
+      "order": 35,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 3
+    },
+    {
+      "case_id": "cik_0001114995:20250331",
+      "company_id": "cik_0001114995",
+      "order": 36,
+      "prediction_time": "2025-03-31T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 4
+    },
+    {
+      "case_id": "cik_0001920294:20250530",
+      "company_id": "cik_0001920294",
+      "order": 37,
+      "prediction_time": "2025-05-30T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 5
+    },
+    {
+      "case_id": "cik_0000839470:20250731",
+      "company_id": "cik_0000839470",
+      "order": 38,
+      "prediction_time": "2025-07-31T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 6
+    },
+    {
+      "case_id": "cik_0001051627:20250930",
+      "company_id": "cik_0001051627",
+      "order": 39,
+      "prediction_time": "2025-09-30T00:00:00+00:00",
+      "split": "evolution_validation",
+      "split_case_index": 7
+    }
+  ],
+  "identities": {
+    "cik_0000701818": {
+      "cik": "0000701818",
+      "ticker": "KGC"
+    },
+    "cik_0000723125": {
+      "cik": "0000723125",
+      "ticker": "MU"
+    },
+    "cik_0000800457": {
+      "cik": "0000800457",
+      "ticker": "DGICA"
+    },
+    "cik_0000839470": {
+      "cik": "0000839470",
+      "ticker": "WWR"
+    },
+    "cik_0000860413": {
+      "cik": "0000860413",
+      "ticker": "FIBK"
+    },
+    "cik_0000878518": {
+      "cik": "0000878518",
+      "ticker": "TGB"
+    },
+    "cik_0000895421": {
+      "cik": "0000895421",
+      "ticker": "MS"
+    },
+    "cik_0000895728": {
+      "cik": "0000895728",
+      "ticker": "ENB"
+    },
+    "cik_0000936395": {
+      "cik": "0000936395",
+      "ticker": "CIEN"
+    },
+    "cik_0001018963": {
+      "cik": "0001018963",
+      "ticker": "ATI"
+    },
+    "cik_0001051627": {
+      "cik": "0001051627",
+      "ticker": "AXTI"
+    },
+    "cik_0001065059": {
+      "cik": "0001065059",
+      "ticker": "LEU"
+    },
+    "cik_0001097362": {
+      "cik": "0001097362",
+      "ticker": "SLF"
+    },
+    "cik_0001114995": {
+      "cik": "0001114995",
+      "ticker": "PI"
+    },
+    "cik_0001164727": {
+      "cik": "0001164727",
+      "ticker": "NEM"
+    },
+    "cik_0001174922": {
+      "cik": "0001174922",
+      "ticker": "WYNN"
+    },
+    "cik_0001285819": {
+      "cik": "0001285819",
+      "ticker": "OMER"
+    },
+    "cik_0001309402": {
+      "cik": "0001309402",
+      "ticker": "GPRE"
+    },
+    "cik_0001361658": {
+      "cik": "0001361658",
+      "ticker": "TNL"
+    },
+    "cik_0001421517": {
+      "cik": "0001421517",
+      "ticker": "ERII"
+    },
+    "cik_0001438133": {
+      "cik": "0001438133",
+      "ticker": "TNDM"
+    },
+    "cik_0001474627": {
+      "cik": "0001474627",
+      "ticker": "NEGG"
+    },
+    "cik_0001521036": {
+      "cik": "0001521036",
+      "ticker": "LNTH"
+    },
+    "cik_0001576942": {
+      "cik": "0001576942",
+      "ticker": "SFIX"
+    },
+    "cik_0001590364": {
+      "cik": "0001590364",
+      "ticker": "FTAI"
+    },
+    "cik_0001646188": {
+      "cik": "0001646188",
+      "ticker": "ONDS"
+    },
+    "cik_0001679273": {
+      "cik": "0001679273",
+      "ticker": "LW"
+    },
+    "cik_0001681459": {
+      "cik": "0001681459",
+      "ticker": "FTI"
+    },
+    "cik_0001689548": {
+      "cik": "0001689548",
+      "ticker": "PRAX"
+    },
+    "cik_0001746129": {
+      "cik": "0001746129",
+      "ticker": "BSVN"
+    },
+    "cik_0001801368": {
+      "cik": "0001801368",
+      "ticker": "MP"
+    },
+    "cik_0001814215": {
+      "cik": "0001814215",
+      "ticker": "BURU"
+    },
+    "cik_0001830043": {
+      "cik": "0001830043",
+      "ticker": "BMBL"
+    },
+    "cik_0001847409": {
+      "cik": "0001847409",
+      "ticker": "HITI"
+    },
+    "cik_0001869198": {
+      "cik": "0001869198",
+      "ticker": "LTH"
+    },
+    "cik_0001920294": {
+      "cik": "0001920294",
+      "ticker": "RZLV"
+    },
+    "cik_0001946703": {
+      "cik": "0001946703",
+      "ticker": "WBUY"
+    },
+    "cik_0001951089": {
+      "cik": "0001951089",
+      "ticker": "CRML"
+    },
+    "cik_0002009312": {
+      "cik": "0002009312",
+      "ticker": "AGH"
+    },
+    "cik_0002023554": {
+      "cik": "0002023554",
+      "ticker": "SNDK"
+    }
+  },
+  "origin": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/input_manifest.json",
+    "sha256": "3c6a74fea9c3e29742d9759f11a9087cbb16726e17d509ec1f4dd7d5e2b48d3c"
+  },
+  "origin_control": {
+    "approved_manifest_hash": "13772d031162179f7468cb0e9d9aea0424f78084d18c65fe059d5b72840013e9",
+    "locked_test_hash": "87c50a6eda4740c9b4b31cd70daf426344304c914a707808c5b5d53b309fc5be",
+    "schema_version": "diagnostic-development-subset-v1",
+    "selection_before_model_calls": true,
+    "selection_seed": 42
+  },
+  "split_order": [
+    "anchor",
+    "discovery",
+    "evolution_validation"
+  ]
+}

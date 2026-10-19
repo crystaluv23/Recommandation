@@ -1,0 +1,86 @@
+{
+  "LabelStore_read": false,
+  "LockedTest_opened": false,
+  "all_hashes_match": true,
+  "case_count": 40,
+  "checked_at": "2026-10-19T22:54:43.996700+00:00",
+  "execution_checkpoint": "9bfea3bd",
+  "execution_started": false,
+  "groups": [
+    {
+      "name": "default_v6",
+      "refs": [
+        "financing_listing_action:v2",
+        "cash_burn_rate_elevated:v1",
+        "cash_reserves:v1",
+        "cash_to_current_liabilities_ratio:v1",
+        "gross_margin_change:v2",
+        "liquidity_runway_months:v1",
+        "net_share_retirement_yoy:v1",
+        "operating_cash_flow_margin:v1",
+        "revenue_acceleration:v1",
+        "revenue_growth_yoy:v1",
+        "guidance_acceleration:v1",
+        "max_drawdown_1y:v1",
+        "price_momentum_126d:v1",
+        "negative_word_count:v1",
+        "order_confirmation_disclosed:v1",
+        "order_quality:v1",
+        "commercialization_status:v1",
+        "customer_concentration:v1"
+      ],
+      "registry_hash": "ced3882945003998224b6b9a3c206e4bfc2f01eec6fc8857864350848a08be24",
+      "version": 6
+    },
+    {
+      "name": "latest_v12",
+      "refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3",
+        "operating_cash_flow_margin:v2",
+        "revenue_acceleration:v2",
+        "revenue_growth_yoy:v3",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ],
+      "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+      "version": 12
+    }
+  ],
+  "model_calls": 0,
+  "network_requests": 0,
+  "old_periodic_tree_count": 683,
+  "origin_access": "Only stream SHA in this root check; sourceowner prepare previously deserialized bound mixed envelope and emitted whitelist.",
+  "per_group_resolutions": 720,
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/plan.json",
+    "sha256": "20ee4d2f386a237fbeacfedfbe32dbd0406310166cb5f7b4f48014e391645696"
+  },
+  "plan_hash": "93043969533adff47b8ac121ef9cb54fb32c5888cd1b26f39de402f609130c9e",
+  "projection": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/case-identities.json",
+    "sha256": "3ecbd01349c00bbbba554b06bee2824ef08db162affbac0122c62558e90d02e9"
+  },
+  "schema_version": "root-frozen40-plan-review-v1",
+  "script": {
+    "path": "/Users/l/Project/Recommandation/scripts/diagnose_reviewed_frozen_case_inputs.py",
+    "sha256": "e5aeabdabb69dd49507f8bc12c59ab199a4b6a5b4e5600402ff6170d9d1752bc"
+  },
+  "split_counts": {
+    "anchor": 16,
+    "discovery": 16,
+    "evolution_validation": 8
+  },
+  "unique_bindings_checked": 1734
+}

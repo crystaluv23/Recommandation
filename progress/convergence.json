@@ -3,10 +3,10 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-19T22:35:07Z",
+    "checked_at": "2026-10-19T23:00:49Z",
     "thread_id": "01a15307-6909-7a32-b304-03bee5409227",
     "created_at": 1792394368,
-    "source": "root actual get_goal read after completed periodic source-only stage; local goal active, no old experiment resume"
+    "source": "root actual get_goal after unique original40 source-only execution; goal active, no historical experiment resumed"
   },
   "acceptance": [
     {
@@ -781,10 +781,31 @@
         "runs/diagnostics/case_scope_contract_20261020_v1/root-focused-tests.log"
       ],
       "result": "Current source contracts and capped producer prove40=16Anchor+8Random+16Discovery, Fast24. Prior48 comment/report has no frozen cohort support; preserve real16Anchor failures, do not invent8LockedTest. Actual terminalv182 frozen40 binds currentapprovedhash/opaqueLockedhash; sourceowner inspected mixed envelope without selecting/emittingtruth/basic_info, noLabelStore/LockedTest/model. Approved3511company acquisition_scope supplies only exact40identity joins, not rectangular selection. Candidate separatev6/v12 source-only diagnostic preserves720each/40BasicInfo; root5temp tests pass. Realnewprepare/execute not yet run; local boundary correction is not required-live acceptance closure."
+    },
+    {
+      "id": "engineering-mvp-original40-dual-registry-source-readiness-20261020",
+      "strategy": "fixed_original40_separate_exact_v6_v12_source_input_consumption",
+      "failure_families": [
+        "partial_source_view_vs_original_cohort",
+        "exact_version_measurement_vs_equal_input_status",
+        "source_gap_vs_missing_proof_chain",
+        "partial_model_projection_preservation"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/frozen40-dual-registry-source-inputs-20261020.md",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/result.json",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/root-plan-review.json",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/execution-summary.json",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/independent-actual-consumer-review.json",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/root-final-binding-check.json",
+        "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/remaining-source-candidate-inventory.json"
+      ],
+      "result": "One frozen9bfea3bd/plan930439 source-onlyexecution exit0/248.440s; original40(16Anchor/16Discovery/8Validation) retained,720inputseachv6/v12. Each262resolved/458gaps,15/40>=.8; Anchor14x17+KGC16+BMBL8,all24nonanchor0/18.40BasicInfo160requests:47resolvedallpartial,113unavailable. Independent1742bindings/both720allrequest-ref-sourceCIK/PIT/period/obs/literalspans/all40exactprojectionlineage and653workerrestart verified; root124terminalfiles+old683byteschecked. Sourceownerprepare deserializedboundmixedoriginwhitelistonly; execute/root/revieweronlystreamSHA,nooutcomeuse/LabelStore/LockedTest.0GET/model/apply/fullprepare/globalwrites.25localcandidateinventorylocates5exactCompanyFacts cache/rawchains;20unlocatedwithincheckedrootsunknown,nogeneralabsence/admission. Inputs consumed/preserved correctly but whole-source/F2/MVPnotclosed."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-frozen-case-scope-contract-20261020",
+    "after_iteration": "engineering-mvp-original40-dual-registry-source-readiness-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -936,7 +957,14 @@
       "runs/diagnostics/case_scope_contract_20261020_v1/native-selection-review.json",
       "runs/diagnostics/case_scope_contract_20261020_v1/blind-boundary-review.json",
       "runs/diagnostics/case_scope_contract_20261020_v1/root-metadata-inspection.json",
-      "runs/diagnostics/case_scope_contract_20261020_v1/root-focused-tests.log"
+      "runs/diagnostics/case_scope_contract_20261020_v1/root-focused-tests.log",
+      "reports/frozen40-dual-registry-source-inputs-20261020.md",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/stage/result.json",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/root-plan-review.json",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/execution-summary.json",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/independent-actual-consumer-review.json",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/root-final-binding-check.json",
+      "runs/diagnostics/reviewed_frozen_case_inputs_20261020_v1/remaining-source-candidate-inventory.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -979,21 +1007,22 @@
       "A two-cache search did not identify all retained upstream proof. A specifically located older official root-linked archive exactly reconstructs original MS clock; preserve that new evidence without pretending to identify the original writer or prove the newer API wrong.",
       "A literal parent exhibit link and same-row description mentioning another numbered exhibit did not prove the target index number. Independent rehashed source/receipt/original controls exposed this false admission; independent number-cell and ambiguity checks now retain uncertain null types. Mechanical source-clock equality remains weaker than resolving an independently observed official clock conflict.",
       "A qualified annual source may resolve most soft inputs while missing a narrower180dayrequest: KGC March27 predates April3start forSeptember30. Root briefly extrapolated17/18 toKGC; actual16 was read and corrected before finalreport. Distinguish historical48 source denominator from native40 selection and different exactv6 refs; no inventory through label-bearing splits.",
-      "The repeated48 claim came from a comment rather than the capped selection producer or actual frozenmanifest. Experiment-specific zero-access rules were also overread as a global prohibition on authorized offline source-owner metadata projection; the upper blind contract protects research consumers and sealedLockedTest."
+      "The repeated48 claim came from a comment rather than the capped selection producer or actual frozenmanifest. Experiment-specific zero-access rules were also overread as a global prohibition on authorized offline source-owner metadata projection; the upper blind contract protects research consumers and sealedLockedTest.",
+      "A qualified15-Anchor view passing15/15 did not establish the original40cohort: the real dual720 matrices expose24nonanchor zeros and9missingBMBLfinancial inputs. Local filenames are weaker than exactcache/proof lineage; only5of25chains were located in bounded known roots, which is not global absence. Equalv6/v12input counts also do not establish equal measurements."
     ],
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "frozen40_dual_exact_registry_source_readiness",
-      "action": "After independent temp boundary review and code checkpoint, prepare one new source-only stage exporting exact originalv18240 identities/awaretimes/splits/order and execute independent defaultv6/latestv12 720-input matrices on immutable653docview. Preserve all cases/gaps and40defaultBasicInfo projections.",
-      "stop": "No GET/model/apply/LabelStore/fullprepare/globalwrites or old-stage resume. A started stage is terminal; never redefinecohort/refs/newscoverage to clear gaps.",
-      "question": "For the original40cases, what does each exact Registry actually resolve and what source families are missing?",
-      "pass": "All40retained in each720matrix and BasicInfo, exactdefinitions/sourcebindings conserved, mixedorigin only ownerprojected or consumerstreamhashed, oldview unchanged.",
-      "fail": "Boundary/definition/source drift or incomplete matrix causes terminal diagnostic failure; unavailable sources stay explicit rather than droppingcases.",
-      "on_pass": "Classify exact source gaps and prioritize a bounded family acquisition/consumer fix; do not equate prerequisite result with model/MVP closure.",
-      "on_fail": "Diagnose preserved failure before any new stage; do not hotpatch frozen execution.",
-      "new_evidence": "Actualfrozen40 plus matchedapproved/acquisitionmetadata; defaultv6/latestv12 all18exactversionsdifferent. Temp actualprepare_inputs retains720missingresolutions pergroup with0model/LabelStore.",
-      "distinguishing_variable": "Originalfrozenidentity/time/split and independentlybound exactversion matrices, replacing unsupported48 and fixed15extrapolation."
+      "strategy": "bounded_original40_missing_source_proof_families",
+      "action": "Preserve completed dual720 stage. Within original40, qualify missing24nonanchor sources andBMBLfinancial through existing approved provenance/PIT profiles. Start from exactretained5CompanyFacts cache/rawpairs and locate remaining20chains with explicitbounded roots/identity; use a concreteboundedreadonly acquisition plan when localproof cannot establish inputs. Cover market/operating/financial families withoutcasefiltering or metadata-onlyadmission.",
+      "stop": "No completedstage reentry/hotpatch, fullprepare/model/fullsuccessor or LockedTest. Do not changecohort/refs/lookbacks/contextcaps or infernews/orderabsence. An unlocatedcache is unknown, not proofmissingglobally.",
+      "question": "Which exact missing inputs can be supported by retained complete original/proof chains under current profiles, and which require bounded public-source acquisition?",
+      "pass": "Original40identities/cutoffs fixed; candidateissuer/rawcache/nativecanonical/PIT proof is checked for allproposedsourcefamilies, everyunknown preserved, olddocs untouched and sourcequeries explicitly bounded.",
+      "fail": "Only filename/legacyaggregates/unchecked retrospective body or missingcachematch supports a source, or known clock/issuer/PIT conflicts remain.",
+      "on_pass": "Freeze one separate qualified source-only input/view diagnostic for the same40 and exactRegistry groups; then choose actualnextMVPconsumer based on preservedgaps.",
+      "on_fail": "Retain precisegap; change lookup hypothesis or acquire bounded originalproof rather than reattempt same scan or shrinkscope.",
+      "new_evidence": "Both720groups262resolved/458gap; all24nonanchor outsidefixedview,BMBL9financialmissing. All40havefilenamecandidates but bounded25auditlocatesonly5exactCompanyFacts/rawchains and5filing/root+5dailycandidates,not sourceadmission.",
+      "distinguishing_variable": "Native source reconstruction and complete issuer/time/proof chain at each original cutoff, rather than local file existence, prior15pass or equalversionstatus totals."
     }
   },
   "successor_prerequisites": [

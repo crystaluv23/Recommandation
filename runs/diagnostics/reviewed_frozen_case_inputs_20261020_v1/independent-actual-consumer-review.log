@@ -1,0 +1,1 @@
+{"review_sha256": "a145b798013ad1467dd10e7828c3fdc5383b7fbec9ee0dec7ecf0c879218f4fc", "groups": [{"name": "default_v6", "counts": {"resolved": 262, "unresolved": 458}, "atleast0_8": 15}, {"name": "latest_v12", "counts": {"resolved": 262, "unresolved": 458}, "atleast0_8": 15}], "BasicInfo_cases": 40, "view_docs": 653}

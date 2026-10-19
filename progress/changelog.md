@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-20：原40案白名单source-only唯一执行完成（9bfea3bd/plan930439），defaultv6与latestv12各完整720项：262resolved/458gap、15/40达0.8；24非Anchor全0/BMBL8/KGC16/其余14Anchor17，缺源案不删。40BasicInfo160请求47resolved全partial、113unavailable，旧view/683文件/源绑定保持，124终态文件绑定。只读25候选定位5家exactCompanyFacts链，其余保持unknown；0GET/model/apply/LabelStore/fullprepare/global写入，不关闭F2/MVP，下一补原范围来源链。
+
 - 2026-10-20：追真实历史/当前cap循环及v182冻结实物，确认fresh40=Anchor16+Random8+Discovery16、Fast24；旧48仅未经实证的注释/报告声明，原失败只有16Anchor且原件不改。核批准metadata与既有无标签acquisition_scope、v18240绑定及1/1终态；区分offline owner可处理标签容器与blind禁止outcome，未使用/输出标签字段或读取LabelStore/LockedTest。下一白名单原40投影和v6/v12各720独立输入诊断，不以15案替代全范围。
 
 - 2026-10-20：冻结d61a135f唯一source-only执行完成，3新periodic原件完整nativeappend/canonical回读；旧655审查行/15637global文件及旧view不变，新653doc/658rows worker/restart全等。独立真实3raw、全部270来源/PIT/期间及15实际BasicInfo投影复核；同15案exactv12为254resolved/16unresolved，KGC16/18、其余17/18，15/15达既有0.8。15news和KGC订单180日窗缺口保留，全部经营投影partial、MSannual时间unknown排除不改。0GET/model/apply/标签/fullprepare，不关整体F2/full48/MVP；下一仅查无标签full48/defaultv6入口。

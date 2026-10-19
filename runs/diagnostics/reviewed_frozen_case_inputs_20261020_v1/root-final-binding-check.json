@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-19T23:01:32.222483+00:00",
+  "stage_file_count": 124,
+  "stage_exact_membership_and_all_hashes_equal": true,
+  "old_periodic_files": 683,
+  "old_periodic_all_hashes_equal": true,
+  "result_sha256": "e309b64fabef2d06607221fc44517c587d63b939d2989b1c858aa06cc0fadf08",
+  "independent_review_sha256": "22d84954ca8c1f8d29a059d8b2f21218ad9908f73563377aaa6c0eec4c59560d",
+  "independent_review_script_sha256": "3f34f1f94d8f0997fe49b3d40ba0e6ad9e25c8fff42bde1acfe9547e8df8339b",
+  "independent_log_sha256": "c70bba7bdc24d2a63bf170de41e9d7cb6eb0de38a20272bad0fdfdee4d11e102",
+  "source_candidate_inventory_sha256": "6d9d804e782e2de33b6365caff7033ffd09d5d6ecf9281f397af8f3c40d9717b",
+  "case_counts": 40,
+  "per_group_resolutions": 720,
+  "resolved_per_group": 262,
+  "unresolved_per_group": 458,
+  "real_mixed_origin_JSON_read_in_this_check": false,
+  "LabelStore_or_LockedTest_read": false,
+  "new_GET_or_model": 0,
+  "scope": "Final preserved-source and completed-artifact check, not another execution or source readiness pass."
+}
