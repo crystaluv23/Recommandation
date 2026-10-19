@@ -3292,22 +3292,9 @@ def execute_information_plan(
             for item in raw_jev_routing_decisions
         )
         selections = tuple(selection_step.value)
-        bounded_selections: list[SignalSelectionDecision] = []
-        llm_count = 0
         specs_by_ref = {spec.ref: spec for spec in signal_registry.specs}
-        for selection in selections:
-            spec = specs_by_ref.get(selection.signal_ref)
-            if spec is None:
-                bounded_selections.append(selection)
-                continue
-            if spec.execution_type is SignalExecutionType.LLM:
-                if llm_count >= limits.max_llm_signals_per_round:
-                    continue
-                llm_count += 1
-            bounded_selections.append(selection)
-            if len(bounded_selections) >= limits.max_signals_per_round:
-                break
-        selections = tuple(bounded_selections)
+        selections = _bounded_runtime_signal_selections(selections, signal_registry,
+            max_signals=limits.max_signals_per_round, max_llm_signals=limits.max_llm_signals_per_round)
         selected = tuple(item.signal_ref for item in selections)
         _assert_identity_values_masked(
             [list(item.context_tags) for item in selections],
@@ -3703,6 +3690,29 @@ def _finalize_exhausted_research_collection(state: ResearchState) -> ResearchSta
     if finalized_content != original_content:
         raise ValidationError("no_signal_match finalization changed research content")
     return finalized
+
+
+def _bounded_runtime_signal_selections(
+    selections: Iterable[SignalSelectionDecision], signal_registry: FrozenSignalRegistry,
+    *, max_signals: int, max_llm_signals: int,
+) -> tuple[SignalSelectionDecision, ...]:
+    """Apply the production total/LLM portfolio caps without reordering choices."""
+    bounded = []
+    llm_count = 0
+    specs = {spec.ref: spec for spec in signal_registry.specs}
+    for selection in selections:
+        spec = specs.get(selection.signal_ref)
+        if spec is None:
+            bounded.append(selection)
+            continue
+        if spec.execution_type is SignalExecutionType.LLM:
+            if llm_count >= max_llm_signals:
+                continue
+            llm_count += 1
+        bounded.append(selection)
+        if len(bounded) >= max_signals:
+            break
+    return tuple(bounded)
 
 
 def _merge_runtime_signal_batches(

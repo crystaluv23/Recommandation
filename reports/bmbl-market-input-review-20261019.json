@@ -1,0 +1,49 @@
+{
+  "all_dates_before_cutoff": true,
+  "exact_production_normalization_matches": true,
+  "external_api_calls": 0,
+  "first_date": "2024-09-30",
+  "gap": "Retained post-cutoff adjusted=true series does not prove adjustment action timing or absence of subsequent splits; no unadjusted/as-of adjustment proof established in this local scope.",
+  "issuer_symbol_auxiliary_source": "admitted 2025Q2 SEC10Q cover supports then-current BMBL symbol, not adjustment timing",
+  "last_date": "2025-09-29",
+  "latest_close": 6.3,
+  "limited_search": "Local massive price_daily cache match and BMBL massive split/action cache filename/content search; no complete corporate-action history established.",
+  "market_baseline_admitted": false,
+  "no_match_is_absence_proof": false,
+  "normalized_original": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json",
+    "sha256": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+  },
+  "original_oracle_changed": false,
+  "prediction_cutoff": "2025-09-30T00:00:00+00:00",
+  "raw_provider_cache": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v4-flash-information-plan-v5-anchor-v7/cache/data/massive/price_daily/4166561a6da6904c722e4e5a.json",
+    "sha256": "04a5c1b732b2b8580246f3c169cfce5dde03471fda07711ad49b4d243475fb81"
+  },
+  "request_endpoint": "https://api.massive.com/v2/aggs/ticker/BMBL/range/1/day/2024-09-30/2025-09-29",
+  "response_adjusted": true,
+  "response_ticker": "BMBL",
+  "retrieved_at": "2026-08-16T07:28:08.034427+00:00",
+  "role_responses": 0,
+  "rows": 250,
+  "safe_request_parameters": [
+    [
+      "method",
+      "GET"
+    ],
+    [
+      "adjusted",
+      "true"
+    ],
+    [
+      "limit",
+      "50000"
+    ],
+    [
+      "sort",
+      "asc"
+    ]
+  ],
+  "schema_version": "local-market-input-review-v1",
+  "verdict": "unknown_not_admitted"
+}

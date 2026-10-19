@@ -1,5 +1,9 @@
 # Evolution Core
 
+The pure bounded-portfolio helper preserves routing order while applying the
+existing per-round total and LLM Signal caps. Production and direct-stage
+diagnostics share it; raw routing decisions remain separately auditable.
+
 Final-context construction validates every complete SignalResult against the
 actual prediction instant before producing model-facing summaries, measurements
 or citations. Known bad results reject construction as typed technical/PIT

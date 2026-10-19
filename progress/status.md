@@ -42,6 +42,16 @@ issuer 与调整时点证明；不足则先做可执行 SEC 检索/Signal stage�
 保留本批失败。后续按可信输入→检索阅读→Signal→Reflect
 →Slow→后继→恢复推进。
 
+本地 Massive 原请求/响应与 250 行 normalized 内容已精确重现，但请求/原答均
+`adjusted=true` 且在 cutoff 后取得，复权动作时点证明不足，仍 unknown 不准入
+（[证据](../reports/bmbl-market-input-review-20261019.json)）。正在冻结
+[三样本 direct SEC stage](../spec/scripts/run_reviewed_signal_stage.md)：完整 18 Registry、
+客户分散披露/早时点不足/Q2-Q3 处置边界，所有实际 LLM 节点仍独立 subagent。
+当前仅 prepare/接口测试，无新角色回答；不覆盖 H_init/Predictor 或完整 evaluator。
+stage 驱动已过 1741 项全量与最终 7 项接口检查，独立只读审查允许冻结；尚不是模型
+能力通过。最新授权允许只读公开资料查询，仍禁止外部 LLM API；这份已固定 SEC stage
+自身保持资料请求 0，公开 market 取证另行计数。
+
 用户已选择[完整公开会议内容时间口径](../reports/transcript-availability-policy-review-20261007.md)，
 owning spec 已同步；[26 份原件清单](../reports/transcript-proof-inventory-20261019.json)
 全部保留，完整公开时间证明仍 0/26。四条旧 preview 不是已验证替换输入，未写 oracle。
