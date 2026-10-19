@@ -1,0 +1,404 @@
+{
+  "actual_host_cost": null,
+  "actual_host_tokens": null,
+  "completed_fast_round": false,
+  "completed_restore": {
+    "after": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "65a2eca34f66e8eeab5afc600809913c719fc1fe8d03791db27a6f07b6b7063b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "26c261857a8a66fe41779c10589ffcba784795559f129a47d22103b1d97f51be"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "a7d060b92e6280d8caef11daf44848ad0f30d0a757323696e9c3259ce348b0c1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "87628323d22665bc5b9e429720bae886c6c54751fae06955a315b9b3624085ac"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d22aaa6d0705293ce0243a41f4a9addfa7c62731300804fd23a85023588b67f7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/contract.json",
+        "sha256": "37d579399d62a7a4ae572cebf87342c9ada86a74b563fbcd78ab2a8de360d8b4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/contract.json",
+        "sha256": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "85fd2b5f9233ec3f871f610cd2653d40bf122bc525b4afbab6f42b9d28a2ccae"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "bad83dfb73dd66eddf6882c49dcb82e0ff113984c48ee6437d4705a4994c1fb4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+        "sha256": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+        "sha256": "bda85444a2fd7363039c54b4cd0dcdf57ef80ca4d1d89b11e1e8ba8823505995"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.txt",
+        "sha256": "b2dc18bb49e6c826495c9300f7797049f39452664b7c23fd722b22147897811a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+        "sha256": "4bffa787269395d163cb5a6d97966017034a1ba7fa54f3eafe126415250c09d8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.txt",
+        "sha256": "bb43c780cc7aee2f21d822f4d2e2a35ae3fa6b32ec993dfc5a8324a75dc8b506"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "9e80fa7cf7dae97fb089727b51f274c446d1d3c8a68264f6c022922f934d121b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "49ff1993565b38af5deb694e63f7187b6a50e136ae552eaa432fc98d27a000c6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "8e87e6588baa02d24d327a1d21ab697f614f1ed5ba4eca5bda71126c575da3bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "6de14e1b2ff8d3e45b0be488537e16663095f8c1b6b46599dccec4cf0fb31b04"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "0cf9507a9f7bc3cf85ff584b575b1d2bacfd9abca1c5dba7eb4bea08e9816110"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/expectations.json",
+        "sha256": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/inputs.json",
+        "sha256": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/manifest.json",
+        "sha256": "e93b81f844cd11e9fb14cf5721fd3a59e8630a881cd37545ba6b45efe86e2f9e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "b491b2b7fd9b8b1dcb258cf9f99991d253b546fbdaa45cc0dcda17a80e542725"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d05a0ea9aa13c2cb1dbc8b2fda1f6a66739387fbd6a57f30689a6462ec877d00"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/bootstrap.json",
+        "sha256": "07d6b4ab4f0ed075a0c6473f3bacb890409472a5b49792b7f876712d50255264"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/initial_state.json",
+        "sha256": "5f39add21e7b512ba9a4ee20cc80ec1b279a92b592f427c54fa7e437dbd2f8bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/parsed_step.json",
+        "sha256": "a75ff0083f0ea9690ee93c7f79cc1bbd9cf821ade97b4bf268e30d3fa3e64703"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/bootstrap.json",
+        "sha256": "9463a2f1b5a99ed07695a86cffece08bebe02a7eff0aefefd0804b5eb09bdb5f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/initial_state.json",
+        "sha256": "3adca320755d298163742268f9a2a22b872d2285d88ff2e5ca0612c82c4d566d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/parsed_step.json",
+        "sha256": "bb2e2fbc0bffe2c4232dc002fd5e072aa3ce15f6208bbabfe10a98f1ffa65e56"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/bootstrap.json",
+        "sha256": "1bfde7395d8a87e34b208362ca44f43619ea335f10625db3f1fe957df26d513d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/initial_state.json",
+        "sha256": "3b1cebed0b43f63ef7b52480ab2a51b4b64d532df36183a5be56c19b6412ff5c"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/parsed_step.json",
+        "sha256": "5bf9e7ce271fb1bb1346f8966c8881be58492fe218f70d742810dbaf811bbb40"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/p01/plan.json",
+        "sha256": "02141ae46d9af7fa5a59c2e43e1a671584f2a7f61f58bf66ac7984ec07cd8dd9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/unused_external_attempts.json",
+        "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/validation_events.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    ],
+    "all_hashes_equal": true,
+    "before": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "65a2eca34f66e8eeab5afc600809913c719fc1fe8d03791db27a6f07b6b7063b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "26c261857a8a66fe41779c10589ffcba784795559f129a47d22103b1d97f51be"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "a7d060b92e6280d8caef11daf44848ad0f30d0a757323696e9c3259ce348b0c1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "87628323d22665bc5b9e429720bae886c6c54751fae06955a315b9b3624085ac"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d22aaa6d0705293ce0243a41f4a9addfa7c62731300804fd23a85023588b67f7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/contract.json",
+        "sha256": "37d579399d62a7a4ae572cebf87342c9ada86a74b563fbcd78ab2a8de360d8b4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/contract.json",
+        "sha256": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "85fd2b5f9233ec3f871f610cd2653d40bf122bc525b4afbab6f42b9d28a2ccae"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "bad83dfb73dd66eddf6882c49dcb82e0ff113984c48ee6437d4705a4994c1fb4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+        "sha256": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+        "sha256": "bda85444a2fd7363039c54b4cd0dcdf57ef80ca4d1d89b11e1e8ba8823505995"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.txt",
+        "sha256": "b2dc18bb49e6c826495c9300f7797049f39452664b7c23fd722b22147897811a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+        "sha256": "4bffa787269395d163cb5a6d97966017034a1ba7fa54f3eafe126415250c09d8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.txt",
+        "sha256": "bb43c780cc7aee2f21d822f4d2e2a35ae3fa6b32ec993dfc5a8324a75dc8b506"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "9e80fa7cf7dae97fb089727b51f274c446d1d3c8a68264f6c022922f934d121b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "49ff1993565b38af5deb694e63f7187b6a50e136ae552eaa432fc98d27a000c6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "8e87e6588baa02d24d327a1d21ab697f614f1ed5ba4eca5bda71126c575da3bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "6de14e1b2ff8d3e45b0be488537e16663095f8c1b6b46599dccec4cf0fb31b04"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "0cf9507a9f7bc3cf85ff584b575b1d2bacfd9abca1c5dba7eb4bea08e9816110"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/expectations.json",
+        "sha256": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/inputs.json",
+        "sha256": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/manifest.json",
+        "sha256": "e93b81f844cd11e9fb14cf5721fd3a59e8630a881cd37545ba6b45efe86e2f9e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "b491b2b7fd9b8b1dcb258cf9f99991d253b546fbdaa45cc0dcda17a80e542725"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d05a0ea9aa13c2cb1dbc8b2fda1f6a66739387fbd6a57f30689a6462ec877d00"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/bootstrap.json",
+        "sha256": "07d6b4ab4f0ed075a0c6473f3bacb890409472a5b49792b7f876712d50255264"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/initial_state.json",
+        "sha256": "5f39add21e7b512ba9a4ee20cc80ec1b279a92b592f427c54fa7e437dbd2f8bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/parsed_step.json",
+        "sha256": "a75ff0083f0ea9690ee93c7f79cc1bbd9cf821ade97b4bf268e30d3fa3e64703"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/bootstrap.json",
+        "sha256": "9463a2f1b5a99ed07695a86cffece08bebe02a7eff0aefefd0804b5eb09bdb5f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/initial_state.json",
+        "sha256": "3adca320755d298163742268f9a2a22b872d2285d88ff2e5ca0612c82c4d566d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/parsed_step.json",
+        "sha256": "bb2e2fbc0bffe2c4232dc002fd5e072aa3ce15f6208bbabfe10a98f1ffa65e56"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/bootstrap.json",
+        "sha256": "1bfde7395d8a87e34b208362ca44f43619ea335f10625db3f1fe957df26d513d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/initial_state.json",
+        "sha256": "3b1cebed0b43f63ef7b52480ab2a51b4b64d532df36183a5be56c19b6412ff5c"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/parsed_step.json",
+        "sha256": "5bf9e7ce271fb1bb1346f8966c8881be58492fe218f70d742810dbaf811bbb40"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/p01/plan.json",
+        "sha256": "02141ae46d9af7fa5a59c2e43e1a671584f2a7f61f58bf66ac7984ec07cd8dd9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/unused_external_attempts.json",
+        "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/validation_events.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    ],
+    "counts_after": {
+      "cache/responses": 5,
+      "exchange/inbox": 5,
+      "exchange/receipts": 5,
+      "requests": 5
+    },
+    "counts_before": {
+      "cache/responses": 5,
+      "exchange/inbox": 5,
+      "exchange/receipts": 5,
+      "requests": 5
+    },
+    "file_count": 42,
+    "new_inbox": 0,
+    "new_receipts": 0
+  },
+  "external_llm_calls": 0,
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "h_init_first_native_acceptances": 3,
+  "independent_review": "independent-review.json",
+  "known_mechanical_issue": "p01 negative direction instruction falsely rejected by current guard; preserve first answer/correction, no frozen code change",
+  "labels_read": false,
+  "logical_reservation_units_total": 199611,
+  "native_requests_and_receipts": {
+    "cache/responses": 5,
+    "exchange/inbox": 5,
+    "exchange/receipts": 5,
+    "requests": 5
+  },
+  "outcomes": [
+    {
+      "sample_id": "p01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h02",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h03",
+      "status": "accepted_requires_independent_review"
+    }
+  ],
+  "physical_role_executions": 5,
+  "proposer_first_answer_mechanically_rejected": true,
+  "proposer_native_corrections": 1,
+  "readonly_data_requests": 0,
+  "semantic_review": "pending_independent_original_material_review",
+  "slow_source_published": false,
+  "status": "declared_narrow_semantic_and_exact_consumer_scope_passed_with_guard_false_positive_preserved"
+}

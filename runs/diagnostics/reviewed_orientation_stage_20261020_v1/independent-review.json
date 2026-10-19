@@ -1,0 +1,193 @@
+{
+  "schema_version": "reviewed-native-orientation-independent-review-v1",
+  "status": "declared_narrow_semantic_and_exact_consumer_scope_passed_with_guard_false_positive_preserved",
+  "fixed_denominator": {
+    "proposer": 1,
+    "H_init": 3
+  },
+  "scope": "One actual native Plan proposal and its exact accepted Plan consumed by h01 plus default ENB business-positive h02 and early BMBL coverage-gap h03. Five actual role responses; no Signal/Reflect/Predictor/tail/labels/score/trajectory/Slow or predictive-benefit claim.",
+  "mechanical_accounting": {
+    "p01_first_answer": {
+      "native_acceptance": "rejected",
+      "role": "/root/role_41",
+      "cause": "controller_decides_price_direction guard false-positive on an explicit prohibition, not semantic direction authority. Preserve the original first-answer rejection."
+    },
+    "p01_correction": {
+      "role": "/root/role_44",
+      "count": 1,
+      "native_acceptance": "accepted",
+      "authorized_scope": "One whole H_reflect replacement only. All B/H_init/H_analyse/used_experience_refs unchanged. This was not merely a token replacement and is not a second research sample."
+    },
+    "H_init_first_answers": {
+      "h01": "accepted role45",
+      "h02": "accepted role42",
+      "h03": "accepted role43"
+    },
+    "first_H_init_native_acceptances": "3/3",
+    "final_native_acceptance": "p01 1/1 after one correction; H_init3/3 first answers",
+    "physical_roles": 5,
+    "physical_unique_requests_receipts": 5,
+    "semantic_model_failures_observed": 0,
+    "native_validation_events": [],
+    "fallback_assessment": "No fallback replacement/salvage found: each H_init state equals its first raw answer in all non-evidence fields; all18 evidence quotes only receive native identity/source unmasking. p01 final skills equal its exact authorized patch result. Empty events do not mean no correction; actual p01 correction journal/receipt/patch establishes it."
+  },
+  "p01_semantic_review": {
+    "decision": "pass in this declared composition/consumer scope",
+    "composition": "Only current fixed operating_report and mandatory compact market_backbone recipes, with bounded730/3 and45/1 choices; canonical routing/description/version preserved. No artificial operating quota was imposed on selection.",
+    "new_plan": "B retains the same two actions as the disclosed seed but changes operating_report max_documents from2 to3; H_init and other role skills also materially differ, satisfying the native change-focus/new-Plan contract. Parent is a manual Plan, not a fabricated PlanRecord or scored/evaluated parent.",
+    "experience": "used_experience_refs empty and runtime experience item_refs empty, matching explicitly empty memory. No standalone Posthoc was promoted into committed memory.",
+    "skills": "Source facts/inferences, commercial mechanisms, period/unit/currency, alternate explanations, versioned materiality and unresolved gaps stay below fixed Predictor authority. Corrected H_reflect governs evidence collection only, retains limitations and distinguishes runtime stops from controller choice; its actual Reflect behavior was not exercised.",
+    "consumer": "Persisted accepted InformationPlan equals h01 bootstrap Plan exactly. Its B and H_init were consumed directly; no default substitution or post-answer action/skill rewrite."
+  },
+  "H_init_semantic_reviews": [
+    {
+      "sample_id": "h01",
+      "decision": "pass",
+      "source_and_control": "Exact acceptedp01 on late BMBL view, with16/23 filing projections and1market card; effective partial visibility remains. Real core injects6.494 five-session baseline,12.988 threshold,recent6.3 and180-session historical price-shape measurement; role authored no substitute anchor.",
+      "all_observation_groups": [
+        "Online dating/social networking/free/subscription/in-app model is literal supplied interim business text.",
+        "Paid-acquisition/performance-marketing shift toward brand/organic investment and potential short-term revenue/payer harm are literal management statements, not proof that investment succeeded.",
+        "Q2 2025/2024 revenue248.2/268.6 million and both app revenue declines retain source periods/units. Comparable payer decline follows the quoted table headed thousands, without converting it into absolute-unit counts or proof of future demand.",
+        "June2025 workforce reduction approximately240/30% is literal; cash261.7million/conditions-underlying liquidity sufficiency remain dated management assertions, not proven Sep30 cash or future solvency.",
+        "Restructuring charge/benefit risk preserves possible timing/amount variation rather than observed implementation failure."
+      ],
+      "hypotheses_and_resolved_scope": "Three competing recovery/deterioration mechanisms remain explicitly inferential with falsifiers. Resolved scope is the visible operating model/strategy/restructuring, expressly not a completed turnaround or market-embedded expectations fact.",
+      "five_needs": "Retention/engagement/cohort conversion, restructuring savings/cash-charge dates/realization, OCF/debt/interest/maturity/covenants/tax/equity commitments, forward guidance/product milestones, and missing annual business/risk/profitability passages. Actual visible packet contains no OCF totals, maturity/interest/covenant detail, savings or numeric guidance; these are not re-asking supplied totals. Questions remain cutoff-disclosed facts/schedules, not future actual outcomes. Annual-source absence in this view remains a gap, not proof the disclosure does not exist."
+    },
+    {
+      "sample_id": "h02",
+      "decision": "pass as substantive business-orientation positive",
+      "source_and_control": "Default ENB; actual17/24 annual/interim projection visibility and allthree missing news/CompanyFacts/market sources retained. Anchor absent/computed_metrics empty; provider setup does not imply H_init document-reading capability.",
+      "all_observation_groups": [
+        "Energy transportation/distribution through four named segments is directly quoted business context, satisfying the declared business positive without a prescribed unique hypothesis.",
+        "Transportation/gas-processing pricing based on facility/infrastructure capital cost plus negotiated/regulatory return supports a clearly marked limited capital-recovery inference, not a claim of no commodity or operating exposure.",
+        "Three2024 acquired US utilities are directly disclosed; incremental cash/earnings contribution and integration returns remain unestablished by the cited visible excerpt, not asserted zero or absent from every original report.",
+        "Revenue reclassification is expressly stated not to change total operating revenues, so it is not called economic growth.",
+        "Interest-rate exposure and operational interruptions/possible shipper claims are literal risks; no new actual litigation outcome or damage amount is invented."
+      ],
+      "hypotheses_and_resolved_scope": "Acquisition/capital recovery and financing/operating constraints are competing tests; current market expectations remain unknown. Resolved scope is an established infrastructure business, not proof that no new-product opportunity can exist.",
+      "five_needs": "Acquired-utility incremental/organic performance, recurring cash/capex/distributions/per-share reconciliation, maturity/refinancing/floating-rate/liquidity/dilution detail, disclosed guidance/contracts/rate decisions/milestones, and material restrictions/litigation/permit exposure. Actual excerpts do not answer these compound missing comparisons; no future realized performance is requested.",
+      "currency_limit": "No CAD/USD arithmetic or numeric monetary claim was authored here. Source defaultCAD/millions versus explicitUSD exceptions must still be preserved later; this sample does not establish successful cross-currency numerical interpretation."
+    },
+    {
+      "sample_id": "h03",
+      "decision": "pass as early operating-coverage-gap counterexample",
+      "source_and_control": "Default early BMBL atJuly1. Only eligible8-K content is visible; periodic annual-OR-interim requirement remains unsatisfied with native required_coverage_incomplete. Later10-Q/market availability excluded; anchor absent/metrics empty.",
+      "all_observation_groups": [
+        "June23 board-approved approximately240roles/30% restructuring is explicitly dated and literal.",
+        "Expected13–18million non-recurring charges are primarily incurredQ3/Q4 2025; substantially all are future cash outlays. This is not represented as a savings realization schedule or cash-payment completion date.",
+        "Expected up-to40million annual savings and substantial-majority reinvestment remain annual gross expectations, not retained profit or a six-month cash benefit.",
+        "Q2 2025 outlook244–249million revenue and88–93million adjustedEBITDA remains a forecast. Updated is not promoted to upward revision; Q3 actuals and a numeric prior comparison stay unknown."
+      ],
+      "hypotheses_and_resolved_scope": "Reinvestment/recovery versus gross-savings overstatement remain conditional. A disclosed operating mechanism is sought, not a mandatory quantified price path or a replacement Predictor rule. Only the restructuring/reinvestment disclosure and limits of gross savings are resolved.",
+      "five_needs": "Missing annual/interim business/risk/segment background, reported customer/revenue drivers plus prior-outlook comparison, liquidity/debt/commitments/dilution, disclosed product reinvestment traction/milestones, and savings realization/reinvestment/net expense/cash effects. No source gaps are closed by8-K form alone, and no future actual metric is requested."
+    }
+  ],
+  "literal_evidence_and_PIT": {
+    "quotes": 18,
+    "checks": "Each raw exact quote occurs in its actual anonymous wire projection. Native accepted quote is matched to frozen lineage, exact document content hash and normalized canonical materialized filing body. Source availability is <=that sample cutoff. Object/period/unit judgments above are independent semantic review, not inferred from citation/hash alone.",
+    "source_scope": "New ENB three-SEC view and existing BMBL reviewed view only. No new data or source vintage changed; ENB still elects domestic forms, no foreign-form capability claim."
+  },
+  "known_actual_guard_defect": {
+    "severity": "Deterministic false-positive requiring a separate post-checkpoint family repair; frozen batch unchanged.",
+    "original_prohibition": "Decide only the collection action, without deciding price direction, market trend, magnitude class, or likely outcome.",
+    "actual_regex_match": "Decide only the collection action, without deciding price direction, market trend, magnitude class, or likely",
+    "root_cause": "Direction detector begins at Decide and crosses without deciding to likely. Existing prohibition scrub recognizes do not/never/must not/cannot but not this without negation.",
+    "counterexamples": [
+      {
+        "case": "original_without_deciding",
+        "actual": "reject",
+        "matched": "Decide only the collection action, without deciding price direction, market trend, magnitude class, or likely"
+      },
+      {
+        "case": "explicit_prohibition",
+        "actual": "accept",
+        "matched": null
+      },
+      {
+        "case": "affirmative_control",
+        "actual": "reject",
+        "matched": "Decide only the collection action, decide price direction, market trend, magnitude class, or likely"
+      }
+    ],
+    "impact": "Unnecessary first-answer rejection and one correction consumed. Do not call it model semantic disobedience or silently mark the first answer mechanically accepted. General F1 reliability remains open."
+  },
+  "exact_persistence_and_actual_restore": {
+    "p01_Hreflect_patch_only_other_fields_exact": true,
+    "per_sample_ordered_request_traces": {
+      "h01": [
+        "d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e"
+      ],
+      "h02": [
+        "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160"
+      ],
+      "h03": [
+        "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa"
+      ]
+    },
+    "roles_receipts_raws_cache": [
+      {
+        "key": "p01_first",
+        "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+        "agent_id": "/root/role_41",
+        "raw_sha256": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32",
+        "reservation_units": 19567
+      },
+      {
+        "key": "p01_correction",
+        "request_hash": "80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3",
+        "agent_id": "/root/role_44",
+        "raw_sha256": "b2dc18bb49e6c826495c9300f7797049f39452664b7c23fd722b22147897811a",
+        "reservation_units": 26020
+      },
+      {
+        "key": "h01",
+        "request_hash": "d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e",
+        "agent_id": "/root/role_45",
+        "raw_sha256": "bb43c780cc7aee2f21d822f4d2e2a35ae3fa6b32ec993dfc5a8324a75dc8b506",
+        "reservation_units": 60299
+      },
+      {
+        "key": "h02",
+        "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+        "agent_id": "/root/role_42",
+        "raw_sha256": "bda85444a2fd7363039c54b4cd0dcdf57ef80ca4d1d89b11e1e8ba8823505995",
+        "reservation_units": 57939
+      },
+      {
+        "key": "h03",
+        "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+        "agent_id": "/root/role_43",
+        "raw_sha256": "4bffa787269395d163cb5a6d97966017034a1ba7fa54f3eafe126415250c09d8",
+        "reservation_units": 35786
+      }
+    ],
+    "completed_restore_file_count": 42,
+    "before_after_current_hashes_equal": true,
+    "new_inbox": 0,
+    "new_receipts": 0,
+    "no_tail_labels_or_Fast_Slow_artifact_created": true
+  },
+  "closed_narrowly": [
+    "One actual native proposer yields a legal new versioned-action Plan after correcting a system false-positive, and its exact accepted Plan is consumed by one nativeH_init.",
+    "Three declared H_init cases3/3 show bounded source-grounded state/need behavior: exactPlanlateBMBL, defaultENB business positive, defaultearlyBMBL periodic-coverage gap.",
+    "Original answers/typed correction/accepted state/source lineage/per-case request traces and actual42-file completed restore are exact."
+  ],
+  "remaining": [
+    "No overallF1/F2/F3 closure: known guard false-positive persists, broader action/source/issuer/context coverage remains open.",
+    "No successful ENB currency arithmetic test, foreign-form handling, complete annual/interim business fact coverage or absence proof.",
+    "No actual fulfillment of retained needs, Signalapply/Reflect/Predictor/model benefit, scoring/trajectory/Slow publication or successor reuse.",
+    "No MVP convergence or independent predictive/research gain."
+  ],
+  "evidence": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json",
+    "sha256": "5ae2b083656e2300e5419ae0370bde7ae61c6c502c8f54dc69e37e7d2c992195"
+  },
+  "reviewer_actions": {
+    "formal_resume_or_submit": false,
+    "code_answer_or_oracle_edits": false,
+    "network_model_calls": 0,
+    "labels_or_GroundTruth_reads": false,
+    "large_price_archive_reads": false
+  }
+}

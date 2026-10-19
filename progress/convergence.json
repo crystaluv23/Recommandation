@@ -51,7 +51,7 @@
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/independent-packed-current/independent-review.json",
         "runs/diagnostics/daily_visibility_boundary_20261019_v1/critic-payload-envelope-original-failure.json"
       ],
-      "remaining": "Native blind prefix and corrected Posthoc narrow examples passed; closed orientation implementation requires final regression and fresh proposer/H_init behavior. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
+      "remaining": "Declared native1+3orientation examples passed with exactPlan/source/restore; local direction-prohibition false-positive remains. Full48/source/transcript/Slow/newSignal/fullF10/MVP remain open."
     },
     {
       "id": "feedback_consumption",
@@ -392,10 +392,25 @@
         "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log"
       ],
       "result": "Final nativeproductionprior+sample-attributed observer6tests PASS2.303s;65 related checks earlierPASS. Finalv3 root/independent100code/source/Registry/wirebudget/0answers checks pass. New24call/131072request frozen only aftercheckpoint;h01awaits realPlan, no menu-role behavior yet."
+    },
+    {
+      "id": "engineering-mvp-native-orientation-accepted-20261020",
+      "strategy": "native_proposer_exact_plan_and_three_source_grounded_initial_states",
+      "failure_families": [
+        "controller_direction_prohibition_negation_false_positive"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-orientation-stage-20261020.md",
+        "runs/diagnostics/reviewed_orientation_stage_20261020_v1/independent-review.json",
+        "runs/diagnostics/reviewed_orientation_stage_20261020_v1/execution_summary.json",
+        "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json"
+      ],
+      "result": "Fixed1proposer+3H_init narrow semantic and exact consumer scope passed;5physical roles incl1unnecessary p01 correction after system negation false-positive. Three H_init first answers accepted,18quotes/15needs independently audited;42files completedrestore exact0newdispatch.199611 logical reservationunits;hosttokens/cost unknown. No Signal/tail/labels/Fast/Slow/fullMVP closure."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-orientation-preflight-20261020",
+    "after_iteration": "engineering-mvp-native-orientation-accepted-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -450,7 +465,11 @@
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v2/preflight-result.json",
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/root-preflight-review.json",
       "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/independent-review.json",
-      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log"
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/focused-final.log",
+      "reports/reviewed-orientation-stage-20261020.md",
+      "runs/diagnostics/reviewed_orientation_stage_20261020_v1/independent-review.json",
+      "runs/diagnostics/reviewed_orientation_stage_20261020_v1/execution_summary.json",
+      "runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -475,21 +494,22 @@
       "Source whitelist/query gate at proposer did not enforce semantic templates at direct core; exact form substring/title and metadata upgrades cleared coverage falsely. Query relevance also hid latest interim; actual bounded projection, not form presence, is required for operating background.",
       "Fixed canonical menu routing conflicts with literal available-source membership: existing resolver aliases must be admitted semantically while Plans still copy fixed routes. Old tests also assumed one filing and treated8K as annual/interim fulfillment.",
       "Case-bootstrap resemblance is insufficient: preserve engine proposer prior, core-computed anchor/metrics and exact native read capabilities. Completed-only inventory cannot reject real pending/submitted queues, and a parsed but unsuccessfully persisted Plan cannot authorize a consumer. Single request cap differs from aggregate case budget.",
-      "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls."
+      "Global event dedup merged identical validation events acrossH_init cases; sample-attributed raw-event sequence is necessary, while unique receipts alone count physical calls.",
+      "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "native_proposer_to_exact_plan_and_core_initial_boundary",
-      "action": "Freeze exact native proposer and real-core H_init requests under predeclared1+3oracle; independent raw responses through original parsers and source/needs semantic review.",
-      "stop": "Do not dispatch before scoped code/input/oracle freeze and preflight review; keep24/131072 ceilings and all failure denominators; no tail/labels/Fast/Slow.",
-      "question": "Can a nativeproposer obey the fixed menu and its exactPlan feed an actualbootstrap/H_init, while explicit business-positive and earlier-periodic-gap controls retain correct facts/needs?",
-      "pass": "Exact acceptedPlan/native initial states, original source claim audit and actual immutable completedrestore0newdispatch under frozen limits.",
-      "fail": "Default substitution, hand-entered price/control, fabricated tools/labels, semantic gaps converted to absence or overclaim, or persistence/budget failure counted accepted.",
-      "on_pass": "Close only the declared source/menu/initial-state examples; reassess remainingF10/Slow/newSignal/fullreadiness gaps.",
-      "on_fail": "Preserve exact raw/correction/artifacts and repair the demonstrated family under a separate freeze without raising this batch limits.",
-      "new_evidence": "Closedmenu1835full/330prompt checks and deterministicENB businessprojection now permit a real native role batch; actual3request preflight with nativeprior/caps is bound before answers.",
-      "distinguishing_variable": "Nativeproposer output consumed without rewriting, plus independent sufficient-business versus early missing-periodic controls through the same productionbootstrap."
+      "kind": "repair",
+      "strategy": "local_controller_without_decision_prohibition_scope",
+      "action": "After evidence checkpoint, add bounded local masking for explicit without deciding/determining/judging/classifying/concluding controller direction prohibitions; preserve original frozen failure and shared guards.",
+      "stop": "No frozen stage edits, no new model calls or larger ceilings; reject affirmative instructions beyond clause boundaries and pseudo-negations.",
+      "question": "Can local explicit without-prohibitions pass while independent affirmative controller decisions remain rejected?",
+      "pass": "Original raw Plan and bounded variants pass through the same validator/proposer boundary; affirmative, contrastive, repeated-verb and not-without/not-only controls reject without unrelated guard regressions.",
+      "fail": "A broad shared exemption hides affirmative direction authority or changes original raw/accepted artifacts.",
+      "on_pass": "Close only this deterministic local negation family and reassess the next substantive MVP dependency.",
+      "on_fail": "Preserve exact counterexample and narrow scope; do not deploy a permissive shared exemption.",
+      "new_evidence": "Actual41 Plan was semantically legal but mechanically rejected; independent exactPlan replay isolates without-clause recognition, and44wholeHreflectpatch consumed one needless call.",
+      "distinguishing_variable": "Local negative clause span versus later independent affirmative decision verb under the same fixed Plan."
     }
   },
   "successor_prerequisites": [

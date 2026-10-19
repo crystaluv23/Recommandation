@@ -1,0 +1,41 @@
+{
+  "plan": {
+    "analysis_prompt": "Organize source-backed evidence for the fixed six-calendar-month adjusted-share-price 2x Predictor under the fixed H_P prior. Group evidence by commercial mechanism, milestone timing, economic capture, financing and execution dependencies, and counter-evidence. Weight direct, contemporaneous, object-matched disclosures above unsupported narrative while distinguishing disclosed facts, inference, and missing evidence. Compare each mechanism with its strongest supported alternative and identify whether unresolved dependencies limit interpretation. Keep historical market measurements in their exact supplied windows without inventing price-proof gates or treating the magnitude research purpose as evidence for a larger class. Preserve quantities and event identities; project construction cost, contract consideration, revenue, backlog, financing proceeds, and capacity are distinct attributes, and repeated attributes of one event are corroboration. Signal admission with unverified effect permits measurement use only and does not establish predictive benefit. Summarize evidence strength, contradictions, coverage gaps, and uncertainty for the fixed Predictor shell. Do not compute probabilities, classify the final Signal or magnitude, alter the horizon, labels or four-way judgment, or generate a prediction; final candidate_judgment and conditional magnitude classification remain the fixed shell's responsibility.",
+    "basic_info_policy": {
+      "requests": [
+        {
+          "description": "Orient the business model, risks and segment economics from available annual or interim operating reports. Prefer annual background and latest interim when available; source presence does not prove every fact was visible or answered.",
+          "lookback_days": 730,
+          "max_documents": 3,
+          "request_id": "orientation.v1.operating_report",
+          "source_types": [
+            "filing"
+          ]
+        },
+        {
+          "description": "Orient recent point-in-time price and volume; preserve exact runtime measurements and their observation windows.",
+          "lookback_days": 45,
+          "max_documents": 1,
+          "request_id": "orientation.v1.market_backbone",
+          "source_types": [
+            "market_data"
+          ]
+        }
+      ]
+    },
+    "experience_usage": {
+      "item_refs": [],
+      "snapshot_hash": "032351d622d3cacb222c0d3d77f67542a0c67b0c68ac81093321e795a4812e24"
+    },
+    "initial_research_skill": "Initialize ResearchState from Basic Info with source-backed observations, competing commercialization explanations, and unresolved questions. Apply the fixed H_P prior. For each hypothesis, identify the proposed operating mechanism, its stated timing, necessary milestones, and a specific observation that would weaken it. Separate demand indications from signed orders, recognized revenue, cash collection, and financing capacity. Ask whether commercial milestones can occur within the fixed six-calendar-month horizon and what execution, customer concentration, dilution, liquidity, or regulatory constraints could prevent them. Track the exact object, unit, currency, period, event identity, and point-in-time availability for each supporting fact. Distinguish source statements from inference; retain supplied quantities without computing new totals or conversions. Inventory annual and interim filing coverage under the issuer's actual reporting regime, including foreign-issuer forms where applicable; unsupported coverage is an unresolved gap. Prioritize a small set of questions whose answers could distinguish the competing explanations, then seek permitted research documents or versioned Signals through the research loop. Initial hypotheses and information needs update ResearchState only, without generating a prediction or a replacement judgment ontology.",
+    "parent_ids": [
+      "plan_manual_v1"
+    ],
+    "plan_id": "plan_r0001_c01",
+    "reflection_skill": "Update ResearchState by reviewing accumulated evidence and the complete Signal batch against each recorded information need. Mark each question answered, contradicted, partially answered, or unresolved, citing exact source handles and Signal versions. Reopen questions when their factual basis changes. Preserve each fact's object, unit, currency, period and event identity; repeated disclosures of one event provide corroboration. Apply each Signal's versioned materiality definition and retain unavailable or technically excluded results as information limitations. Choose continue when a concrete unresolved question has a feasible, permitted retrieval or Signal action capable of adding distinguishing evidence, and specify the smallest next-needs set with its collection rationale. Otherwise choose finalize for evidence collection and preserve all unresolved questions, contradictions and coverage gaps. Record runtime_termination separately from this controller choice: budget and no-match stops remain information limitations, and finalize does not assert that all questions were answered. Return only ResearchState updates, the continue or finalize collection choice, and any next information needs."
+  },
+  "request_hashes": [
+    "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+    "80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3"
+  ]
+}

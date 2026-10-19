@@ -1,0 +1,526 @@
+{
+  "all_passed": true,
+  "scope": "Read-only actual five-role artifacts/parser/claim-source/PIT/restore checks. No formal resume/submit, no new API/model/labels/large price archive access. Semantic judgment is separately written.",
+  "role_checks": [
+    {
+      "key": "p01_first",
+      "request_hash": "570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1",
+      "agent_id": "/root/role_41",
+      "raw_sha256": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32",
+      "reservation_units": 19567
+    },
+    {
+      "key": "p01_correction",
+      "request_hash": "80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3",
+      "agent_id": "/root/role_44",
+      "raw_sha256": "b2dc18bb49e6c826495c9300f7797049f39452664b7c23fd722b22147897811a",
+      "reservation_units": 26020
+    },
+    {
+      "key": "h01",
+      "request_hash": "d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e",
+      "agent_id": "/root/role_45",
+      "raw_sha256": "bb43c780cc7aee2f21d822f4d2e2a35ae3fa6b32ec993dfc5a8324a75dc8b506",
+      "reservation_units": 60299
+    },
+    {
+      "key": "h02",
+      "request_hash": "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160",
+      "agent_id": "/root/role_42",
+      "raw_sha256": "bda85444a2fd7363039c54b4cd0dcdf57ef80ca4d1d89b11e1e8ba8823505995",
+      "reservation_units": 57939
+    },
+    {
+      "key": "h03",
+      "request_hash": "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa",
+      "agent_id": "/root/role_43",
+      "raw_sha256": "4bffa787269395d163cb5a6d97966017034a1ba7fa54f3eafe126415250c09d8",
+      "reservation_units": 35786
+    }
+  ],
+  "p01_first_native_rejected_but_semantic_false_positive": [
+    {
+      "case": "original_without_deciding",
+      "actual": "reject",
+      "matched": "Decide only the collection action, without deciding price direction, market trend, magnitude class, or likely"
+    },
+    {
+      "case": "explicit_prohibition",
+      "actual": "accept",
+      "matched": null
+    },
+    {
+      "case": "affirmative_control",
+      "actual": "reject",
+      "matched": "Decide only the collection action, decide price direction, market trend, magnitude class, or likely"
+    }
+  ],
+  "p01_native_correction_only_H_reflect": true,
+  "other_authored_plan_fields_exact": true,
+  "p01_exact_accepted_plan_consumed_h01": true,
+  "sample_checks": [
+    {
+      "sample_id": "h01",
+      "state_fields_verbatim_except_native_evidence_unmasking": true,
+      "evidence_count": 7,
+      "needs_count": 5,
+      "request_trace": [
+        "d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e"
+      ],
+      "usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 60299
+      },
+      "source_visibility": [
+        {
+          "projection_status": "partial_context_budget",
+          "visible_projection_count": 16,
+          "available_projection_count": 23,
+          "source_context_truncated": true,
+          "projection_context_truncated": true,
+          "effective_context_truncated": true
+        },
+        {
+          "projection_status": "partial_context_budget",
+          "visible_projection_count": 1,
+          "available_projection_count": 1,
+          "source_context_truncated": true,
+          "projection_context_truncated": false,
+          "effective_context_truncated": true
+        }
+      ]
+    },
+    {
+      "sample_id": "h02",
+      "state_fields_verbatim_except_native_evidence_unmasking": true,
+      "evidence_count": 6,
+      "needs_count": 5,
+      "request_trace": [
+        "7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160"
+      ],
+      "usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 57939
+      },
+      "source_visibility": [
+        {
+          "projection_status": "partial_context_budget",
+          "visible_projection_count": 17,
+          "available_projection_count": 24,
+          "source_context_truncated": true,
+          "projection_context_truncated": true,
+          "effective_context_truncated": true
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        }
+      ]
+    },
+    {
+      "sample_id": "h03",
+      "state_fields_verbatim_except_native_evidence_unmasking": true,
+      "evidence_count": 5,
+      "needs_count": 5,
+      "request_trace": [
+        "94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa"
+      ],
+      "usage": {
+        "cost": 0.0,
+        "llm_calls": 1,
+        "tokens": 35786
+      },
+      "source_visibility": [
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 6,
+          "available_projection_count": 6,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        },
+        {
+          "projection_status": "unavailable",
+          "visible_projection_count": 0,
+          "available_projection_count": 0,
+          "source_context_truncated": false,
+          "projection_context_truncated": false,
+          "effective_context_truncated": false
+        }
+      ]
+    }
+  ],
+  "all18_evidence_quotes_bound_to_actual_wire_lineage_and_canonical_source": [
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_1a176aa5c11237ff05bbd475",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "1fdb59589f4844feb40b788b78b1175ac7ef311f453f02e2a05733f690cca9e2",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_f8d7793d8a50c9c91d62edc1",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "e95264c28925015f417bc8679135a89b7fe37e23b59a3a9aaf5d5ec84dd65508",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_53f0208217c26e1d3d9b97e2",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "ef23ab0770cd538f0cc8179708ea1bad5c0d8d15570b4d0829e062ed4e2d3a75",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_857e47898275a58b1c86dc0a",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "b4fd13c86de56c6cefed0f99b1dd74bc6daff58061e4a02015bd4d7088e6a79d",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_11e722831b03f2831c1c8d2d",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "cfe499db3edd0b98e6e165f089027b6604d4865e0a7a14fc61e0ccb7e0f3854f",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_11e722831b03f2831c1c8d2d",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "e454dc733a7531b87394815aa84711a53087a9c82afeada898f06033b23641b6",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h01",
+      "projection_id": "projection_f5e5258464d4602a2ffccc9e",
+      "document_id": "sec:cik_0001830043:000162828025038861",
+      "quote_sha256": "23723cb54f8309c203060b1d350f25d9f2710c0b4da7bb1a980a6065e770b605",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-07T20:05:33+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_5d26e15c86124de32b12b0f9",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "quote_sha256": "7dd60b8f7532da83550f582281931f27a2e4aaf403f9bf98012d04946a43ab40",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_a103cb606b5cb807a2b04945",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "quote_sha256": "4776a997dbf4e06253e4a6642fca427b5fea173534bf74252b0708493841a973",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_5aec1fc2363e196cfd35db43",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "quote_sha256": "ddf9bccbdc422360227e060958d78fbabc3b942405f67a182de1663868e93d61",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_e400a8ac4d5e9f5e9404c0e3",
+      "document_id": "sec:cik_0000895728:000095017025101102",
+      "quote_sha256": "0cfbbef2af63153a6541f24ca4f91e5c4dbb2ca698a4d47659c1a00301a4ea32",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-08-01T11:02:37+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_bbfb78ee720887af80724d31",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "quote_sha256": "6815b2b96b345cfb527c74a4ca6a956e2085654e3e1e8c1aff94453a9abfe821",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "sample_id": "h02",
+      "projection_id": "projection_10f3effa72cdaca9b61fd9af",
+      "document_id": "sec:cik_0000895728:000089572825000006",
+      "quote_sha256": "025fb5acbfbf50954088de0da21d56b240dde84958fc1680f3c28992778d3369",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-02-14T12:10:59+00:00"
+    },
+    {
+      "sample_id": "h03",
+      "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "quote_sha256": "b3228b4bfd667d8937e84d813dbe203637e6a77e78f35d43861b8dc9fa34cba5",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-06-25T12:20:35+00:00"
+    },
+    {
+      "sample_id": "h03",
+      "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "quote_sha256": "6f3252b2254b4ca07387879e10ba8875b09404c52d3611ad013d5625c281911b",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-06-25T12:20:35+00:00"
+    },
+    {
+      "sample_id": "h03",
+      "projection_id": "projection_2c4b2110c0a4436bf7d563ee",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "quote_sha256": "0c02a63d26629ebe84403c7c4196c023c12903f75c201bdb811fc0241e8f29d3",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-06-25T12:20:35+00:00"
+    },
+    {
+      "sample_id": "h03",
+      "projection_id": "projection_2b701c5ee8cb6171aec66751",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "quote_sha256": "03e054a885d3a2b01de14050a5fb1818b88fe4ac6cac2f6e3029937f628f8f51",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-06-25T12:20:35+00:00"
+    },
+    {
+      "sample_id": "h03",
+      "projection_id": "projection_2b701c5ee8cb6171aec66751",
+      "document_id": "sec:cik_0001830043:000119312525146199",
+      "quote_sha256": "4f2dfaa646459fe3e60aff22e0d4bf835f4e49799959f9532266bd23c8f7f4c1",
+      "literal_in_actual_wire_and_canonical": true,
+      "source_available_at": "2025-06-25T12:20:35+00:00"
+    }
+  ],
+  "native_validation_events": [],
+  "fallback_note": "Empty events are not treated as evidence of no correction. Actual p01 correction journal/receipt/patch is explicit; each H_init final state equals its first answer after only native evidence-source unmasking. No state row salvage or Plan fallback replaced content.",
+  "actual_completed_restore": {
+    "file_count": 42,
+    "before_after_and_current_equal": true,
+    "new_inbox": 0,
+    "new_receipts": 0,
+    "full_restore_map": [
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "65a2eca34f66e8eeab5afc600809913c719fc1fe8d03791db27a6f07b6b7063b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "26c261857a8a66fe41779c10589ffcba784795559f129a47d22103b1d97f51be"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "a7d060b92e6280d8caef11daf44848ad0f30d0a757323696e9c3259ce348b0c1"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "87628323d22665bc5b9e429720bae886c6c54751fae06955a315b9b3624085ac"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/cache/responses/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d22aaa6d0705293ce0243a41f4a9addfa7c62731300804fd23a85023588b67f7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/contract.json",
+        "sha256": "37d579399d62a7a4ae572cebf87342c9ada86a74b563fbcd78ab2a8de360d8b4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/contract.json",
+        "sha256": "8492b0385615273803c6fe3047a274ad188bbbd7e05e6eca85289c7147b04a7d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "4c0914d553d05b153c87e7c8b3d0ad89189b9e164b15dddbb900af62f49684b6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "0b0d84a8ad15ad951a38e80c71a69089f796af0b27cb110682cfc833e69af498"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "85fd2b5f9233ec3f871f610cd2653d40bf122bc525b4afbab6f42b9d28a2ccae"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "7eb3a21ab703376a34524a8e65dfb7c1793b71c30fb02f4addd9f422fb9c555b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/inbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "bad83dfb73dd66eddf6882c49dcb82e0ff113984c48ee6437d4705a4994c1fb4"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.txt",
+        "sha256": "6b462b425896915179c51d62c2528d1a37ba82cb7136de8d7813b6ad2f4eed32"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.txt",
+        "sha256": "bda85444a2fd7363039c54b4cd0dcdf57ef80ca4d1d89b11e1e8ba8823505995"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.txt",
+        "sha256": "b2dc18bb49e6c826495c9300f7797049f39452664b7c23fd722b22147897811a"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.txt",
+        "sha256": "4bffa787269395d163cb5a6d97966017034a1ba7fa54f3eafe126415250c09d8"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/outbox/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.txt",
+        "sha256": "bb43c780cc7aee2f21d822f4d2e2a35ae3fa6b32ec993dfc5a8324a75dc8b506"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "9e80fa7cf7dae97fb089727b51f274c446d1d3c8a68264f6c022922f934d121b"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "49ff1993565b38af5deb694e63f7187b6a50e136ae552eaa432fc98d27a000c6"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "8e87e6588baa02d24d327a1d21ab697f614f1ed5ba4eca5bda71126c575da3bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "6de14e1b2ff8d3e45b0be488537e16663095f8c1b6b46599dccec4cf0fb31b04"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/exchange/receipts/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "0cf9507a9f7bc3cf85ff584b575b1d2bacfd9abca1c5dba7eb4bea08e9816110"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/expectations.json",
+        "sha256": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/inputs.json",
+        "sha256": "7cb78181220712d76d57d89c04456a77991b449783e0805b9f3b1d3f00c5cd8f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/manifest.json",
+        "sha256": "e93b81f844cd11e9fb14cf5721fd3a59e8630a881cd37545ba6b45efe86e2f9e"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/570bd086906c5c8afbd51c1eb28a8fb9b82f581f7f8e58e6df0accc65ffa07b1.json",
+        "sha256": "b1a42a616ee1a5db1d5628a4a1e59d2714346bacaf7c00454fb9ff696a53e9de"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/7fd41b71494c0a1e7822d6da02a45a390a65efcf7aec2a39434b82d4144b5160.json",
+        "sha256": "6fd4b450fe8855db1a71d222d824ed9270b861d26326f9f2283a975014f82cc7"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/80f2abfe277fe56b5d696f67ac1c8de1971a2e87118d689c68ba2f34971d58c3.json",
+        "sha256": "b491b2b7fd9b8b1dcb258cf9f99991d253b546fbdaa45cc0dcda17a80e542725"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/94d7186975de472ce726d0ff977706f31d08b58f4a284fb8b35e15108f506ffa.json",
+        "sha256": "cc82550a270af254a975955d007c90d1ab8d04402f5968b75c5919b33b494069"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/requests/d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e.json",
+        "sha256": "d05a0ea9aa13c2cb1dbc8b2fda1f6a66739387fbd6a57f30689a6462ec877d00"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/bootstrap.json",
+        "sha256": "07d6b4ab4f0ed075a0c6473f3bacb890409472a5b49792b7f876712d50255264"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/initial_state.json",
+        "sha256": "5f39add21e7b512ba9a4ee20cc80ec1b279a92b592f427c54fa7e437dbd2f8bc"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/parsed_step.json",
+        "sha256": "a75ff0083f0ea9690ee93c7f79cc1bbd9cf821ade97b4bf268e30d3fa3e64703"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/bootstrap.json",
+        "sha256": "9463a2f1b5a99ed07695a86cffece08bebe02a7eff0aefefd0804b5eb09bdb5f"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/initial_state.json",
+        "sha256": "3adca320755d298163742268f9a2a22b872d2285d88ff2e5ca0612c82c4d566d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/parsed_step.json",
+        "sha256": "bb2e2fbc0bffe2c4232dc002fd5e072aa3ce15f6208bbabfe10a98f1ffa65e56"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/bootstrap.json",
+        "sha256": "1bfde7395d8a87e34b208362ca44f43619ea335f10625db3f1fe957df26d513d"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/initial_state.json",
+        "sha256": "3b1cebed0b43f63ef7b52480ab2a51b4b64d532df36183a5be56c19b6412ff5c"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/parsed_step.json",
+        "sha256": "5bf9e7ce271fb1bb1346f8966c8881be58492fe218f70d742810dbaf811bbb40"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/p01/plan.json",
+        "sha256": "02141ae46d9af7fa5a59c2e43e1a671584f2a7f61f58bf66ac7984ec07cd8dd9"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/unused_external_attempts.json",
+        "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+      },
+      {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/validation_events.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    ]
+  },
+  "summary_snapshot_sha256_at_audit": "af478c510c9b47c9b31457641f4f97d932bc25f3286b93ec4493c3a184de9eff",
+  "formal_manifest_hash": "9fc5567749f3e12ce9fff084ce30fcb7cf541d3393fd2f3ec06560c253059c5c",
+  "bindings": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/completion.json": "e07da12eb43774bd0fe922621b7ba601ac2fbf2f39aec5a25eedaeef362154f8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/p01/plan.json": "02141ae46d9af7fa5a59c2e43e1a671584f2a7f61f58bf66ac7984ec07cd8dd9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h01/initial_state.json": "5f39add21e7b512ba9a4ee20cc80ec1b279a92b592f427c54fa7e437dbd2f8bc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h02/initial_state.json": "3adca320755d298163742268f9a2a22b872d2285d88ff2e5ca0612c82c4d566d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/samples/h03/initial_state.json": "3b1cebed0b43f63ef7b52480ab2a51b4b64d532df36183a5be56c19b6412ff5c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_stage_20261020_v1/expectations.json": "144bcd6be1193766611986afc9dae22fdb88e2f266cec33a69f758f7a8cfaffc",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_orientation_preflight_20261020_v3/independent/actual-orientation-checks.py": "1f45b1f4558b9479ab58e263acf5c786a4f5ff4554bdf56c21dbd21891dbbe67"
+  }
+}

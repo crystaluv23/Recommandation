@@ -1,0 +1,32 @@
+{
+  "completed_fast_round": false,
+  "engineering_mvp_closed": false,
+  "external_llm_calls": 0,
+  "fixed_denominator": {
+    "H_init": 3,
+    "proposer": 1
+  },
+  "independent_receipts": 5,
+  "labels_read": false,
+  "manifest_hash": "9fc5567749f3e12ce9fff084ce30fcb7cf541d3393fd2f3ec06560c253059c5c",
+  "outcomes": [
+    {
+      "sample_id": "p01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h01",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h02",
+      "status": "accepted_requires_independent_review"
+    },
+    {
+      "sample_id": "h03",
+      "status": "accepted_requires_independent_review"
+    }
+  ],
+  "pending": [],
+  "readonly_data_requests": 0
+}

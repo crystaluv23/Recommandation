@@ -1,0 +1,84 @@
+{
+  "metadata": {},
+  "request_hashes": [
+    "d9d5f42a958f07afb4429f9d5715d626a96a8f9a507b55ac2fcf753db74de32e"
+  ],
+  "state": {
+    "contradictions": [
+      "For the three months ended June 30, 2025 and 2024, total revenue was $248.2 million and $268.6 million, respectively; both disclosed app revenue groups also declined.",
+      "Counter-evidence to a rapid recovery: disclosed paying-user contraction and management\u2019s warning about near-term strategy effects leave organic replacement of paid acquisition unproven."
+    ],
+    "current_beliefs": [
+      "The business supplies online dating and social networking applications through free access, subscriptions and in-app purchases across multiple geographic markets.",
+      "The disclosed strategy shifts paid acquisition toward brand and organic investment; management warns that membership cleanup and reduced performance marketing may hurt revenue and paying users in the short term.",
+      "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees, to realign the operating structure.",
+      "The interim disclosure reports cash and cash equivalents and identifies operating cash generation as a principal liquidity source; management believed resources sufficient for its ensuing planning period under conditions then prevailing."
+    ],
+    "decision": "continue",
+    "hypotheses": [
+      "Inference to test: brand investment and membership cleanup can improve retention and organic conversion enough to stabilize monetization within the forecast horizon. Necessary milestones are observable engagement and payer stabilization; continued cohort deterioration would weaken this mechanism.",
+      "Inference to test: workforce restructuring can improve recurring cash economics within the forecast horizon even while revenue contracts. Necessary milestones are realized savings and controlled cash charges; delayed savings, service deterioration or cash burn would weaken this explanation.",
+      "Inference to test: the acquisition reset reflects persistent demand weakness rather than temporary transition costs, limiting a substantial rerating within the forecast horizon. Sustained organic payer recovery with resilient monetization would weaken this adverse explanation."
+    ],
+    "next_information_needs": [
+      "What retention, engagement, organic acquisition and free-to-paid conversion evidence had been disclosed by the prediction cutoff, including cohort trends that distinguish membership cleanup from weakening customer demand?",
+      "What restructuring savings, cash-charge estimates, implementation dates and realized expense changes were disclosed by the prediction cutoff, and which remaining milestones were expected within the forecast horizon?",
+      "What were the latest disclosed operating cash flow, debt principal, interest burden, maturities, covenant headroom, tax-related cash obligations and equity issuance commitments available by the prediction cutoff?",
+      "What forward operating guidance and product or monetization rollout schedules had management disclosed by the prediction cutoff, with measurable milestones expected within the forecast horizon and evidence of delivery already available then?",
+      "What additional annual-report evidence available by the prediction cutoff explains competitive retention pressures, distribution-platform dependence and app-level profitability? Retrieve the relevant annual passages; visible interim extracts do not establish those details."
+    ],
+    "open_questions": [],
+    "resolved_questions": [
+      "The visible interim evidence establishes a subscription and in-app-purchase model, an acquisition-strategy reset and a workforce restructuring. These establish the operating mechanisms to investigate, rather than proof of a completed turnaround."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "The business supplies online dating and social networking applications through free access, subscriptions and in-app purchases across multiple geographic markets.",
+        "exact_text": "We provide online dating and social networking applications through free, subscription and in-app purchases of products servicing North America, Europe and various other countries around the world.",
+        "kind": "basic_info",
+        "projection_id": "projection_1a176aa5c11237ff05bbd475"
+      },
+      {
+        "claim": "The disclosed strategy shifts paid acquisition toward brand and organic investment; management warns that membership cleanup and reduced performance marketing may hurt revenue and paying users in the short term.",
+        "exact_text": "To align with these priorities, we have strategically shifted away from paid member acquisition and performance marketing in favor of brand and organic investment. As we address these areas of focus, our member growth and success in attracting new members, member engagement and monetization may be negatively impacted. In addition, efforts to improve the health of our membership base, including the removal of bad actors from our apps and strategically reducing paid performance marketing for member acquisition, may adversely affect revenue and paying users in the short term.",
+        "kind": "basic_info",
+        "projection_id": "projection_f8d7793d8a50c9c91d62edc1"
+      },
+      {
+        "claim": "For the three months ended June 30, 2025 and 2024, total revenue was $248.2 million and $268.6 million, respectively; both disclosed app revenue groups also declined.",
+        "exact_text": "For the three months ended June 30, 2025 and 2024, we generated: \u2022 Total revenue of $248.2 million and $268.6 million, respectively; \u2022 Bumble App Revenue of $201.4 million and $218.0 million, respectively; \u2022 Badoo App and Other Revenue of $46.8 million and $50.6 million, respectively;",
+        "kind": "basic_info",
+        "projection_id": "projection_53f0208217c26e1d3d9b97e2"
+      },
+      {
+        "claim": "The disclosed comparable quarterly paying-user figures declined across both app groups.",
+        "exact_text": "(In thousands, except ARPPU) Three Months Ended June 30, 2025 Three Months Ended June 30, 2024 Six Months Ended June 30, 2025 Six Months Ended June 30, 2024 Bumble App Paying Users 2,499.8 2,817.2 2,604.1 2,773.6 Badoo App and Other Paying Users 1,277.4 1,321.4 1,291.9 1,307.9 Total Paying Users 3,777.2 4,138.6 3,896.0 4,081.5",
+        "kind": "basic_info",
+        "projection_id": "projection_857e47898275a58b1c86dc0a"
+      },
+      {
+        "claim": "In June 2025, management announced a global workforce reduction of approximately 240 roles, representing approximately 30% of employees, to realign the operating structure.",
+        "exact_text": "In June 2025, we announced our decision to reduce our global workforce by approximately 240 roles, representing approximately 30% of our employees, as we realign our operating structure to optimize execution on our strategic priorities.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "The interim disclosure reports cash and cash equivalents and identifies operating cash generation as a principal liquidity source; management believed resources sufficient for its ensuing planning period under conditions then prevailing.",
+        "exact_text": "As of June 30, 2025, we had $261.7 million of cash and cash equivalents, an increase of $57.4 million from December 31, 2024. Our principal sources of liquidity are our cash and cash equivalents and cash generated from operations. Our primary uses of liquidity are operating expenses and capital expenditures, acquisition of businesses, funding of our debt obligations, partnership tax distributions, paying income taxes and obligations under our tax receivable agreement and effectuating share repurchases as discussed below. Based on current conditions, we believe that we have sufficient financial resources to fund our activities and execute our business plans during the next twelve months.",
+        "kind": "basic_info",
+        "projection_id": "projection_11e722831b03f2831c1c8d2d"
+      },
+      {
+        "claim": "Management cautions that restructuring charges may exceed expectations or shift periods, and intended benefits may arrive later or fall short.",
+        "exact_text": "the risk that the costs and charges related to our recently announced plan to implement a global workforce reduction and restructuring of our operations may be greater than anticipated or incurred in different periods than anticipated \u2022 the risk that our restructuring efforts may not generate their intended benefits to the extent or as quickly as anticipated",
+        "kind": "basic_info",
+        "projection_id": "projection_f5e5258464d4602a2ffccc9e"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 60299
+  }
+}
