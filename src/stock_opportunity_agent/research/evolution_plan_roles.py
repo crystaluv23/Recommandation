@@ -70,6 +70,7 @@ from stock_opportunity_agent.signal_library import (
     SIGNAL_CONTEXT_TAGS,
     SIGNAL_EXECUTION_STATUS_INSTRUCTION,
     signal_result_model_view,
+    signal_measurement_scope,
     require_signal_result_pit,
     _thaw_json,
 )
@@ -785,6 +786,12 @@ class LLMSignalRetrievalAgent:
         self.caller = caller
         self.request_token_budget: int | None = None
         self.evaluation_context: dict[str, str] | None = None
+        self.deterministic_functions: Mapping[str, Callable[..., SignalResult]] | None = None
+
+    def set_deterministic_functions(self, functions: Mapping[str, Callable[..., SignalResult]]) -> None:
+        """Use the final executing callable map for card disclosure, including overrides."""
+
+        self.deterministic_functions = dict(functions)
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
@@ -889,6 +896,8 @@ class LLMSignalRetrievalAgent:
                 "category": spec.category,
                 "description": spec.description,
                 "execution_type": spec.execution_type.value,
+                "measurement_scope": signal_measurement_scope(
+                    spec, deterministic_functions=self.deterministic_functions),
             }
             from stock_opportunity_agent.memory.knowledge import usage_context
 
@@ -1783,7 +1792,11 @@ class LLMSignalRetrievalAgent:
             self.caller,
             stage="signal_retrieval_cards",
             system_prompt=(
-                "Choose the smallest unique batch from available_signal_cards. The "
+                "Choose the smallest unique batch from available_signal_cards. "
+                "measurement_scope copies the exact version retrieval requirements and "
+                "separately discloses its actual executing callable contract/configured "
+                "parameters when known. Comparison prose does not override execution; "
+                "unknown documentation is not evidence of missing issuer data. The "
                 "research_status authorizes a technically admitted measurement's use "
                 "while its effect remains unverified. Select by need and applicability; "
                 "admission does not establish predictive benefit. "
@@ -1804,8 +1817,12 @@ class LLMSignalRetrievalAgent:
                 "are hard applicability rules. routing_answer_need_phrases is stricter: "
                 "answer_need requires its exact phrase in the one targeted need. New "
                 "selector prose cannot create applicability. Use "
-                "reason_code=answer_need only when the card description directly "
-                "covers the explicit facet; other useful cards are contextual. "
+                "reason_code=answer_need only when the description and "
+                "measurement_scope directly cover the explicit object, period, unit "
+                "and comparison facet under the actual callable contract when known; "
+                "other useful cards are contextual. Missing or conflicting capability "
+                "cannot justify full scope, and declared scope does not prove issuer "
+                "data is available. "
                 "answer_scope=full only when every facet is covered. partial requires "
                 "residual_need "
                 "containing only unresolved facets, not a cosmetic restatement or a "

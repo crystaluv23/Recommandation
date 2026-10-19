@@ -3291,6 +3291,9 @@ def execute_information_plan(
             termination_trigger = RuntimeStopReason.NO_SIGNAL_MATCH
             break
 
+        set_functions = getattr(signal_agent, "set_deterministic_functions", None)
+        if callable(set_functions):
+            set_functions(signal_executor.deterministic_functions)
         _set_request_token_budget(
             signal_agent,
             limits.max_tokens - model_usage.tokens - finalization_reserve,

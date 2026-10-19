@@ -1302,10 +1302,12 @@ class SignalCard:
     learned_profile: Mapping[str, Any] = field(default_factory=dict)
     research_status: Mapping[str, Any] = field(default_factory=dict)
     usage_context: Mapping[str, Any] | None = None
+    measurement_scope: Mapping[str, Any] | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "learned_profile", dict(self.learned_profile))
         object.__setattr__(self, "research_status", _freeze_json(self.research_status))
+        object.__setattr__(self, "measurement_scope", _freeze_json(self.measurement_scope))
 
     @property
     def ref(self) -> str:
@@ -1321,6 +1323,7 @@ class SignalCard:
             "category": self.category,
             "description": self.description,
             "execution_type": self.execution_type.value,
+            "measurement_scope": _thaw_json(self.measurement_scope),
             "learned_profile": _thaw_json(self.learned_profile),
             "usage_context": usage_context(_thaw_json(self.usage_context)),
             "performance": _thaw_json(self.learned_profile.get("performance", empty_performance())),
@@ -1924,7 +1927,10 @@ class SignalRegistry:
 
         return tuple(sorted({card.category for card in self.list_signal_cards()}))
 
-    def list_signal_cards(self, category: str | None = None) -> tuple[SignalCard, ...]:
+    def list_signal_cards(
+        self, category: str | None = None, *,
+        deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
+    ) -> tuple[SignalCard, ...]:
         """Return compact cards for the current stable versions."""
 
         self._assert_registry_readable()
@@ -1950,6 +1956,8 @@ class SignalRegistry:
                         **({"performance": performance[spec.ref]} if spec.ref in performance else {})},
                     research_status=self.load_research_status(spec.ref),
                     usage_context=_thaw_json(spec.parameters.get("usage_context")),
+                    measurement_scope=signal_measurement_scope(
+                        spec, deterministic_functions=deterministic_functions),
                 )
             )
         return tuple(sorted(cards, key=lambda card: (card.category, card.signal_id)))
@@ -3682,6 +3690,48 @@ def default_deterministic_signal_functions() -> dict[str, DeterministicSignalFun
     }
 
 
+def signal_parameter_names(*names: str) -> Callable[[DeterministicSignalFunction], DeterministicSignalFunction]:
+    """Declare consumed parameter keys for disclosure without wrapping execution."""
+
+    if any(not isinstance(name, str) or not name for name in names) or len(set(names)) != len(names):
+        raise ValidationError("Signal parameter names must be unique nonempty strings")
+
+    def declare(function: DeterministicSignalFunction) -> DeterministicSignalFunction:
+        function.__signal_parameter_names__ = tuple(names)
+        return function
+
+    return declare
+
+
+def signal_measurement_scope(
+    spec: SignalSpec, *,
+    deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
+) -> dict[str, Any]:
+    """Copy version-owned scope and the actual callable's declared measurement contract."""
+
+    execution: dict[str, Any] = {"type": spec.execution_type.value}
+    if spec.execution_type is SignalExecutionType.DETERMINISTIC:
+        function = (deterministic_functions.get(spec.function)
+                    if deterministic_functions is not None else None)
+        names = getattr(function, "__signal_parameter_names__", None)
+        if (not isinstance(names, (tuple, list))
+                or any(not isinstance(name, str) or not name for name in names)
+                or len(set(names)) != len(names)):
+            names = None
+        execution.update(
+            function=spec.function,
+            callable_status=("unknown" if deterministic_functions is None
+                             else "registered" if function is not None else "missing"),
+            contract=(function.__doc__ or None) if function is not None else None,
+            parameter_names=list(names) if names is not None else None,
+            configured_parameters=({name: _thaw_json(spec.parameters[name])
+                                    for name in names if name in spec.parameters}
+                                   if names is not None else None),
+        )
+    return {"signal_ref": spec.ref, "source_types": list(spec.source_types),
+            "raw_retrieval": spec.retrieval_policy.to_dict(), "execution": execution}
+
+
 def deterministic_signal_function_contracts(
     functions: Mapping[str, DeterministicSignalFunction],
 ) -> dict[str, str]:
@@ -3802,6 +3852,7 @@ _SHARE_COUNT_TAGS = (
 )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _revenue_growth_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3844,6 +3895,7 @@ def _revenue_growth_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _revenue_acceleration_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3896,6 +3948,7 @@ def _revenue_acceleration_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _gross_margin_change_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -3956,6 +4009,7 @@ def _gross_margin_change_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _operating_cash_flow_margin_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4018,6 +4072,7 @@ def _operating_cash_flow_margin_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _net_share_retirement_yoy_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4063,6 +4118,7 @@ def _net_share_retirement_yoy_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _cash_reserves_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4075,6 +4131,9 @@ def _cash_reserves_signal(
     value <= negative_max is negative, otherwise neutral. Thresholds do not change the
     measurement. max_period_age_days (default 550) bounds current SEC period age; older
     comparative periods remain allowed.
+    Optional plausible_abs_max has no default bound; when configured and exceeded,
+    the shared numeric builder retains value/state with partial coverage, 0.5
+    confidence and implausible_value. It is not an unavailable guard or clamp.
     """
 
     facts = [
@@ -4102,6 +4161,7 @@ def _cash_reserves_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "max_period_age_days")
 def _cash_to_current_liabilities_ratio_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4110,7 +4170,10 @@ def _cash_to_current_liabilities_ratio_signal(
     """Measure latest cash and equivalents / current liabilities for the same SEC
     instant period and reported currency. Non-positive liabilities and missing,
     mismatched, or stale facts yield unavailable. Numeric states use positive_min
-    (default 1) and negative_max (default positive_min).
+    (default 0) and negative_max (default positive_min).
+    Optional plausible_abs_max has no default bound; when configured and exceeded,
+    the shared numeric builder retains value/state with partial coverage, 0.5
+    confidence and implausible_value. It is not an unavailable guard or clamp.
     """
 
     facts = _sec_facts(documents, as_of)
@@ -4157,6 +4220,7 @@ def _cash_to_current_liabilities_ratio_signal(
     )
 
 
+@signal_parameter_names("burn_threshold", "max_period_age_days")
 def _cash_burn_rate_elevated_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4194,6 +4258,7 @@ def _cash_burn_rate_elevated_signal(
     )
 
 
+@signal_parameter_names("positive_runway_max_months", "negative_runway_min_months", "max_period_age_days")
 def _liquidity_runway_months_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4754,6 +4819,7 @@ def _price_series_evidence(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max")
 def _max_drawdown_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4766,6 +4832,9 @@ def _max_drawdown_signal(
     positive_min (default 0) and negative_max (default positive_min): value >=
     positive_min is positive, otherwise value <= negative_max is negative, otherwise
     neutral. Thresholds do not change the measurement.
+    Optional plausible_abs_max has no default bound; when configured and exceeded,
+    the shared numeric builder retains value/state with partial coverage, 0.5
+    confidence and implausible_value. It is not an unavailable guard or clamp.
     """
 
     found = _latest_metadata_value(documents, "prices")
@@ -4800,6 +4869,7 @@ def _max_drawdown_signal(
     )
 
 
+@signal_parameter_names("positive_min", "negative_max", "plausible_abs_max", "lookback_observations")
 def _price_momentum_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],
@@ -4856,6 +4926,7 @@ def _price_momentum_signal(
     )
 
 
+@signal_parameter_names("terms", "negative_count_min")
 def _negative_word_count_signal(
     spec: SignalSpec,
     documents: tuple[RawInfoDocument, ...],

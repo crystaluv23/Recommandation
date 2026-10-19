@@ -23,11 +23,16 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 ## 最近实际证据
 
+- [F4测量scope](../reports/signal-card-measurement-scope-20261020.md)：shared projection
+  接SignalCard与真实LLM/Jev卡，core注入actual executor最终override map；无注入/
+  无声明明确unknown，不dump任意参数或改Registry。独立6/最终关联119通过；全量
+  1867/1868，唯一旧prompt字串断言已更新后定向通过，未声称第二次全量绿。
+  0新模型/资料；旧v3 prose与partial0.5实际契约并列，fresh行为待验。
+
 - [F7残留镜像纠错](../reports/owned-partial-residual-mirror-20261020.md)：初始提示明示
   1–300字；仅有效owned partial的唯一exact镜像获indexed replace权限，同owner
   恢复义务延后到纠错后复验。独立14项及225关联测试通过；旧49/50仍6行，
   明确离线双路径同步才5行并经持久化/实际Predictor输入保真，不证明fresh服从。
-
 - 新 [accepted-Plan prefix](../reports/reviewed-generated-plan-prefix-20261020.md)：
   实际apply neutral→ownedReflect partial→Predictor/sink已连接，7新角色/1纠错，
   52文件恢复全等、0标签。6行needs含同一长短残留，两个deterministic unavailable，
@@ -42,7 +47,7 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
   未提交Fast反馈、未发布Slow来源或消费，不等于完整F10。
 - [LabelStore](../reports/label-store-admission-20261020.md)：真实archive/hash/合同/
   calculator/6554全记录重算单门通过；原18误放保留。1806全量为该批证据；
-  不证明 provider价条/issuer真实性。当前生产变化已有1835全量及prompt-only330项。
+  不证明provider价条/issuer真实性；1835全量及prompt-only330项属于此前菜单批证据。
 - [来源/日线与可见性](../reports/daily-market-consumer-boundaries-20261019.md)：
   BMBL两SEC+market250窄准入、UTC与实际消费者摘要修复；全部窗口未必已读。
 - [Signal窄批次](../reports/reviewed-signal-stage-20261019.md)及
@@ -61,5 +66,5 @@ p01原合法without-deciding禁令被方向guard误拒，原失败/纠错保留�
 
 本批局部权限/恢复连接已离线通过；下次真实触发仍须独立核模型是否同步该slot。
 旧prefix52原件及6行历史状态不改，未重入冻结执行。路由card缺weighted-average
-比较/source/period定义及actual executor契约留下一批；需共享精确measurement_scope，
+比较/source/period与actual executor已同源披露；下一批冻结最小真实selector阶段，
 不把v3 prose当partial0.5执行保证或称已测错值（实际unavailable无数值）。原8项改动保留。

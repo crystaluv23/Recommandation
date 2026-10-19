@@ -1,0 +1,76 @@
+{
+  "scope": "local exact Signal card producer and actual executor disclosure only",
+  "status": "independent_and_targeted_passed_full_one_stale_prompt_assertion_retained",
+  "source_commit": "17526350d028069fac1f5b4ad2eb2787bd8874f3",
+  "independent_tests": 6,
+  "independent_passed": 6,
+  "full_tests": 1868,
+  "full_passed": 1867,
+  "full_failures": 1,
+  "full_seconds": 192.093,
+  "full_failure": "test_v63_order_quality_cannot_relabel_a_share_sale_as_an_order old description-only prompt assertion; behavioral assertions passed",
+  "post_full_change": "Only old test assertion updated to exact measurement_scope prompt and issuer availability boundary; no production SRC change",
+  "final_related_tests": 119,
+  "final_related_passed": 119,
+  "final_related_seconds": 5.493,
+  "old_top_level_function_bodies_unchanged_ignoring_docs_decorators": true,
+  "new_top_level_helpers": [
+    "signal_measurement_scope",
+    "signal_parameter_names"
+  ],
+  "native_or_external_model_calls": 0,
+  "readonly_data_requests": 0,
+  "full_F4_or_MVP_closed": false,
+  "fresh_model_behavior": "not_exercised",
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "49003778346ac1d6d96b1cc754e1713311613da14562c5b4144ba6277ac2968b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py",
+      "sha256": "696e4d85c1278a9987e61b0514e4883c343452d64254a362ca9de8bc0aa70ccd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_evolution_routing_plan_roles.py",
+      "sha256": "2155b563ee9dc98f5132d41ae381bf874cc67f710323ac21c4857fa808a38606"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "baa965b51f4f041e59aa12960240873a5fec57306777a75594ea3e8281fbcef8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "sha256": "f32c58b83184f8b5edacce6147ec808a7b238691c5fe7ee0421de90e24ec6a3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "sha256": "17733992e308726a65830b3cfee5649ad65a89b8f7f0b716587cbde78399c56f"
+    }
+  ],
+  "evidence_bindings": {
+    "independent-old-tests.log": "8c3c4d10300dd9bf599cc3795e6a07f744b8c80fd5ba68caea1b8634f3614d57",
+    "initial-related-tests.log": "31ce0c73a3e450991a2dd8d3f59f2428895252c949462a462ea5af395f9e1a3d",
+    "focused-final-tests.log": "016726b1dddc9c9f7cf49a44eac1ba5ba2cc7747e3a0b80688d9e194566f9c84",
+    "full-tests.log": "a6996e8bf7b88101f657f24fe8aa4ae94d6b299451a8dd176073ab35db536f3f",
+    "independent-current-tests.log": "bc601159b8bfa94c27ea761e6e2157ecd5a3a248c70ccdc5b1cb00ccc77f80d8"
+  },
+  "lint": {
+    "timestamp_utc": "2026-10-19T19:36:47Z",
+    "status": 0,
+    "personally_read": true,
+    "sha256": "39aad1e402a810635ce1df469232742251da3aa8e5ac2c01858ec4e58ea5239d"
+  }
+}

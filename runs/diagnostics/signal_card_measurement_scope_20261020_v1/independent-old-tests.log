@@ -1,0 +1,39 @@
+{
+  "head": "17526350d028069fac1f5b4ad2eb2787bd8874f3",
+  "files_sha256": {
+    "tests/test_signal_card_measurement_scope.py": "8941e1e81aa662c7c63d8fc7151c9fe3129e17a310e5781cae11e610c6071afa",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "92843345d783f388468e6d1bddbca916a451a6e85129441c4867d745acd1ef91",
+    "src/stock_opportunity_agent/research/evolution_core.py": "fcc8f724e781bcbff0676c7dd9dc6f819a4d5fe19cd95521da852ee7b28953ed",
+    "src/stock_opportunity_agent/signal_library.py": "363eb69e8f0439830290a3042eda31cd84f2c1205aa475f5d5300f302244442a"
+  },
+  "source_test_unchanged_during_test": true,
+  "returncode": 1,
+  "real_selector_wire_missing_scope_not_new_helper_import": true,
+  "external_llm_calls": 0,
+  "new_data_requests": 0,
+  "label_store_opened": false
+}
+
+EE
+======================================================================
+ERROR: test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions) (version=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py", line 71, in test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions
+    scope = cards[spec.ref]["measurement_scope"]
+            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'measurement_scope'
+
+======================================================================
+ERROR: test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions) (version=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_card_measurement_scope.py", line 71, in test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions
+    scope = cards[spec.ref]["measurement_scope"]
+            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'measurement_scope'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+FAILED (errors=2)

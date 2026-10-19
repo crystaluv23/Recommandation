@@ -1,0 +1,36 @@
+Offline independent fixtures; zero model/API calls; no LabelStore or production role outputs read.
+HEAD 17526350d028069fac1f5b4ad2eb2787bd8874f3
+BEFORE
+{
+  "runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/spec.json": "ccb42fbb56426fcdfe68b3ae0d6b1a8ef6b36ae7ef7f3036a8a16dbe9abf2f12",
+  "runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505",
+  "src/stock_opportunity_agent/research/evolution_core.py": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d",
+  "src/stock_opportunity_agent/research/evolution_jev_roles.py": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8",
+  "src/stock_opportunity_agent/research/evolution_plan_roles.py": "49003778346ac1d6d96b1cc754e1713311613da14562c5b4144ba6277ac2968b",
+  "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+  "tests/test_signal_card_measurement_scope.py": "696e4d85c1278a9987e61b0514e4883c343452d64254a362ca9de8bc0aa70ccd"
+}
+test_actual_core_undocumented_or_missing_callable_does_not_claim_builtin (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_core_undocumented_or_missing_callable_does_not_claim_builtin) ... ok
+test_actual_core_uses_override_contract_and_only_declared_configured_parameters (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_core_uses_override_contract_and_only_declared_configured_parameters) ... ok
+test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_actual_selector_wire_preserves_complete_eligible_scopes_and_versions) ... ok
+test_cash_ratio_documented_default_matches_native_numeric_behavior (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_cash_ratio_documented_default_matches_native_numeric_behavior) ... ok
+test_registry_cards_and_real_selector_share_the_same_scope_projection (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_registry_cards_and_real_selector_share_the_same_scope_projection) ... ok
+test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition (tests.test_signal_card_measurement_scope.SignalCardMeasurementScopeTests.test_weighted_average_basis_ending_and_unit_counterexamples_preserve_v3_definition) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.179s
+
+OK
+
+AFTER
+{
+  "runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v2/spec.json": "ccb42fbb56426fcdfe68b3ae0d6b1a8ef6b36ae7ef7f3036a8a16dbe9abf2f12",
+  "runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505",
+  "src/stock_opportunity_agent/research/evolution_core.py": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d",
+  "src/stock_opportunity_agent/research/evolution_jev_roles.py": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8",
+  "src/stock_opportunity_agent/research/evolution_plan_roles.py": "49003778346ac1d6d96b1cc754e1713311613da14562c5b4144ba6277ac2968b",
+  "src/stock_opportunity_agent/signal_library.py": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea",
+  "tests/test_signal_card_measurement_scope.py": "696e4d85c1278a9987e61b0514e4883c343452d64254a362ca9de8bc0aa70ccd"
+}
+unchanged=True
+exit_code=0

@@ -49,6 +49,7 @@ from stock_opportunity_agent.signal_library import (
     SIGNAL_CONTEXT_TAGS,
     SignalExecutionType,
     SignalSpec,
+    signal_measurement_scope,
 )
 
 
@@ -155,6 +156,12 @@ class JevSignalRetrievalAgent:
         self.client = client
         self.request_token_budget: int | None = None
         self.evaluation_context: dict[str, str] | None = None
+        self.deterministic_functions: Mapping[str, Any] | None = None
+
+    def set_deterministic_functions(self, functions: Mapping[str, Any]) -> None:
+        """Disclose the actual executor map without substituting built-in callables."""
+
+        self.deterministic_functions = dict(functions)
 
     def set_request_token_budget(self, value: int) -> None:
         self.request_token_budget = int(value)
@@ -197,13 +204,19 @@ class JevSignalRetrievalAgent:
             information_needs=information_needs,
             research_context=research_context,
             prior_context_tags=prior_context_tags,
+            deterministic_functions=self.deterministic_functions,
         )
         if not cards:
             return AgentStep((), AgentUsage())
         state: dict[str, Any] = {
             "description": (
                 "Choose whether each already eligible, unexecuted Signal card is useful "
-                "for one supplied information need. Judge only routing applicability."
+                "for one supplied information need. Judge only routing applicability. "
+                "Use description and exact measurement_scope object/period/unit and "
+                "comparison requirements. Its actual callable contract/configured "
+                "parameters describe execution separately from comparison prose, which "
+                "cannot override implementation. Unknown documentation is not missing "
+                "issuer data, and declared scope does not prove data availability."
             ),
             "information_needs": list(information_needs),
             "research_context": research_context,
@@ -387,6 +400,7 @@ def _eligible_cards(
     information_needs: tuple[str, ...],
     research_context: Mapping[str, list[str]],
     prior_context_tags: tuple[str, ...],
+    deterministic_functions: Mapping[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], tuple[SignalSpec, ...]]:
     normalized_items = tuple(
         " " + re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip() + " "
@@ -425,6 +439,8 @@ def _eligible_cards(
             "category": spec.category,
             "description": spec.description,
             "execution_type": spec.execution_type.value,
+            "measurement_scope": signal_measurement_scope(
+                spec, deterministic_functions=deterministic_functions),
         }
         if spec.parameters.get("routing_need_phrases"):
             card["routing_need_phrases"] = list(

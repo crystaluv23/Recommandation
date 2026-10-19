@@ -952,9 +952,11 @@ class RoutingAndPlanRoleTests(TestCase):
         )
         self.assertEqual(applicable.usage.llm_calls, 1)
         self.assertIn(
-            "Use reason_code=answer_need only when the card description directly",
+            "Use reason_code=answer_need only when the description and measurement_scope directly",
             caller.calls[0]["system_prompt"],
         )
+        self.assertIn("object, period, unit and comparison facet", caller.calls[0]["system_prompt"])
+        self.assertIn("declared scope does not prove issuer data is available", caller.calls[0]["system_prompt"])
 
     def test_v66_mining_project_is_not_a_product_commercialization(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

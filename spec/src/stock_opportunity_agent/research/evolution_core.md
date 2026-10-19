@@ -1,5 +1,12 @@
 # Evolution Core
 
+Before routing, core optionally supplies `signal_executor.deterministic_functions`
+to the selector's `set_deterministic_functions`. This is the final merged actual
+executor map (including overrides), not a separately reconstructed built-in map.
+Coordinator/worker factories and direct `execute_information_plan` callers share
+that injection; older custom selectors without the setter keep their interface.
+This disclosure does not modify execution, eligibility, thresholds or budgets.
+
 The pure bounded-portfolio helper preserves routing order while applying the
 existing per-round total and LLM Signal caps. Production and direct-stage
 diagnostics share it; raw routing decisions remain separately auditable.

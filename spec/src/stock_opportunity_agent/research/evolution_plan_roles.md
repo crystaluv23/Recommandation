@@ -57,6 +57,16 @@ They establish authored provenance, not automatic semantic truth.
 
 ## Admitted measurements and unverified effect
 
+Actual selector cards use the Signal Library's shared exact-version
+`measurement_scope`, also used by `SignalCard`. Retrieval source/comparison/period
+requirements remain distinct from actual deterministic callable documentation
+and configured parameters; conflicting version prose and implementation remain
+visible rather than rewritten. An optional `set_deterministic_functions` receives
+the executing map from core before selection. Without that injection the callable
+contract is unknown, never inferred from a built-in function name. Jev's compact
+card producer follows the same projection and setter. All original eligibility
+filters, card membership, ordering, PIT checks and portfolio budgets remain.
+
 Selector cards disclose frozen `research_status` for admitted versions. Technical
 admission authorizes use, not effect claims; choose by actual information need
 and data applicability. H_reflect receives status only for its current batch via

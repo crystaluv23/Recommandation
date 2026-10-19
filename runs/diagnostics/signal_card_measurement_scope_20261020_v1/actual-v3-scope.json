@@ -1,0 +1,58 @@
+{
+  "source_spec": {
+    "path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+    "sha256": "e8e10fd2221aba605e4a2128340680e5f1c86d241504105580760ace96067505"
+  },
+  "actual_current_scope": {
+    "signal_ref": "net_share_retirement_yoy:v3",
+    "source_types": [
+      "financials"
+    ],
+    "raw_retrieval": {
+      "query_terms": [
+        "weighted average shares",
+        "shares outstanding"
+      ],
+      "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period; both periods must be plausible weighted-average share counts in the same unit, and an implausible prior-year denominator yields unavailable.",
+      "minimum_distinct_periods": 2,
+      "minimum_period_span_days": 330
+    },
+    "execution": {
+      "type": "deterministic",
+      "function": "financial.net_share_retirement_yoy",
+      "callable_status": "registered",
+      "contract": "Measure net share retirement as 1 - current / prior-year weighted-average shares over\n    comparable periods. Positive means net retirement and negative means dilution; this is\n    not a cash buyback amount. Missing comparable or stale current facts yield\n    unavailable. Numeric states use positive_min (default 0) and negative_max (default\n    positive_min): value >= positive_min is positive, otherwise value <= negative_max is\n    negative, otherwise neutral. Thresholds do not change the measurement.\n    Values beyond plausible_abs_max (default 1) retain their measurement and categorical\n    state, but are downgraded to partial coverage at 0.5 confidence with an\n    implausible_value marker; this is not an unavailable guard or numeric clamp.\n    max_period_age_days (default 550) bounds current SEC period age; older comparative\n    periods remain allowed.\n    ",
+      "parameter_names": [
+        "positive_min",
+        "negative_max",
+        "plausible_abs_max",
+        "max_period_age_days"
+      ],
+      "configured_parameters": {
+        "positive_min": 0.02,
+        "negative_max": -0.05
+      }
+    }
+  },
+  "declared_prose_not_executable": true,
+  "execution_changed": false,
+  "native_model_calls": 0,
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "28fefda5c8a41367658d5fe4d6d2ee80212ece43a11cdc0501e5a0a50e3f74ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "49003778346ac1d6d96b1cc754e1713311613da14562c5b4144ba6277ac2968b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1e9695d29cb7e66a746b12d424bb8f0b734d915f5d430731e4d383bcb362386d"
+    }
+  ]
+}

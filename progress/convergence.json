@@ -473,10 +473,29 @@
         "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/historical-prefix-unchanged.json"
       ],
       "result": "Independent14 and225related offline tests passed. Original49/50 remain six; explicitly scripted paired sync reaches five through parser/persistence/Predictor. Invalid row remains rejected; only bound owner restore deferred. No fresh roles/data/historical artifact mutation; fresh compliance/wholeF7/MVP open."
+    },
+    {
+      "id": "engineering-mvp-signal-card-measurement-scope-20261020",
+      "strategy": "shared_exact_version_scope_and_actual_executor_disclosure",
+      "failure_families": [
+        "selector_rebuild_omits_measurement_scope",
+        "version_prose_vs_actual_callable_contract"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/signal-card-measurement-scope-20261020.md",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/original-selector-scope.json",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/actual-v3-scope.json",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/initial-related-tests.log",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/result.json",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/full-tests.log",
+        "runs/diagnostics/signal_card_measurement_scope_20261020_v1/focused-final-tests.log"
+      ],
+      "result": "Independent6 and final119related tests passed. Full1868 has1867pass/1stale description-only prompt assertion; only that test updated then targeted passed, no production code changes after full and no second all-green full claim. Exact scope/core final-map injection verified offline;0fresh calls/Registry/measurement/admission/score changes/historical resumes. OverallF4/MVP open."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-owned-partial-residual-mirror-20261020",
+    "after_iteration": "engineering-mvp-signal-card-measurement-scope-20261020",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -553,7 +572,15 @@
       "reports/owned-partial-residual-mirror-20261020.md",
       "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/independent/independent-review.json",
       "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/focused-tests.log",
-      "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/historical-prefix-unchanged.json"
+      "runs/diagnostics/owned_partial_residual_mirror_20261020_v1/historical-prefix-unchanged.json",
+      "reports/signal-card-measurement-scope-20261020.md",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/original-selector-scope.json",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/actual-v3-scope.json",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/initial-related-tests.log",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/independent-current-tests.log",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/result.json",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/full-tests.log",
+      "runs/diagnostics/signal_card_measurement_scope_20261020_v1/focused-final-tests.log"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -582,21 +609,22 @@
       "A direction regex starts at an earlier collection Decide and crosses a local without-deciding prohibition to a later target word. Successful correction events can be empty, so exact request traces/receipts, not events alone, establish correction count.",
       "Without-clause recognition alone left ordinary do-not masks swallowing later finite decisions, and singular-only target words missed shares/prices. Keep local direction spans bounded and test both false rejection and false admission, without widening the shared prohibition guard.",
       "A residual-only typed correction does not authorize rewriting an existing long mirrored need. Runtime conservatively appended the shorter residual, leaving two representations; preserve actual six-row state rather than claiming five needs or six independent discoveries.",
-      "Initial prompt omitted300character bound and repair allowed only disposition fields. Mirror permission alone still let pre-correction restore append prior need; native integration replay exposed this ordering. Only a fully bound invalid row now defers its own restore while remaining rejected."
+      "Initial prompt omitted300character bound and repair allowed only disposition fields. Mirror permission alone still let pre-correction restore append prior need; native integration replay exposed this ordering. Only a fully bound invalid row now defers its own restore while remaining rejected.",
+      "Exact hash/catalog membership checks missed that the actual selector rebuilt cards without version measurement requirements. Version comparison prose was not an executable guarantee, and a same-name builtin cannot describe a custom override. A callable doc also misstated a default shared threshold."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "exact_owned_mirror_local_contract_then_fresh_trigger",
-      "action": "Checkpoint bounded mirror repair. Fresh compliance requires separately frozen Reflect under current authorization; historical six rows unchanged. F4 measurement scope separate.",
-      "stop": "No new roles/API/data or frozen-prefix resume; no semantic deduplication or automatic coupling.",
-      "question": "Will future Reflect obey residual bound or synchronize only its authorized mirror?",
-      "pass": "Separate native trigger proves authored synchronization and unchanged unknowns.",
-      "fail": "Any unsupported need closure, incorrect period/unit, future source, semantic unavailable inversion or false model/Fastcompletion claim.",
-      "on_pass": "Close actual correction behavior only, not overallF7/MVP.",
-      "on_fail": "Retain exact failure and repair the demonstrated family in a new freeze; never rewrite this case.",
-      "new_evidence": "Independent14/related225 offline tests; unchanged52historical files. Original operations6, scripted paired patch5.",
-      "distinguishing_variable": "Authored paired synchronization versus local permission/replay."
+      "kind": "repair",
+      "strategy": "exact_scope_and_executing_callable_projection",
+      "action": "Verify shared SignalCard/actual selectors/core final-map injection and unchanged behavior; checkpoint before a separately frozen fresh selector stage under current authorization.",
+      "stop": "No full research successor, new calls/data/labels or old frozen resume. Do not rewrite contradictory old version definitions or infer unknown metadata.",
+      "question": "Does each actual eligible card retain exact version source/comparison/period and actual callable override documentation/configured parameters?",
+      "pass": "Native input/override/unknown/financial controls and regression preserve all eligible cards and execution behavior.",
+      "fail": "Source/version/callable substitution, arbitrary parameter exposure, silent truncation, wrong data-availability or measurement claims.",
+      "on_pass": "Freeze the minimal existing bounded Signal-stage adaptation for later actual model behavior.",
+      "on_fail": "Retain the demonstrated producer defect and repair locally without rewriting old artifacts.",
+      "new_evidence": "Native core/override and independent6controls passed; full1867/1868 with1obsolete prompt assertion, then119targeted pass after test-only update. Actual old51 card inventory13 distinct from configs reproduction11; no fresh model behavior.",
+      "distinguishing_variable": "Actual transmitted producer scope and executing map, rather than description/name or hash alone."
     }
   },
   "successor_prerequisites": [

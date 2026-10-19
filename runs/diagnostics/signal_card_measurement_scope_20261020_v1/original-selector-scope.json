@@ -1,0 +1,60 @@
+{
+  "source_commit": "17526350d028069fac1f5b4ad2eb2787bd8874f3",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "363eb69e8f0439830290a3042eda31cd84f2c1205aa475f5d5300f302244442a",
+    "src/stock_opportunity_agent/research/evolution_plan_roles.py": "92843345d783f388468e6d1bddbca916a451a6e85129441c4867d745acd1ef91"
+  },
+  "actual_native_selector_cards": 11,
+  "scope_present": [],
+  "first_actual_card": {
+    "signal_ref": "financing_listing_action:v1",
+    "category": "catalysts",
+    "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+    "execution_type": "llm",
+    "usage_context": {
+      "when_to_use": null,
+      "failure_conditions": [],
+      "related_refs": []
+    },
+    "performance": {
+      "basis": "observational_use",
+      "independent_cases": 0,
+      "unique_issuers": 0,
+      "evaluated_cases": 0,
+      "evaluated_predictions": 0,
+      "technical_cases": 0,
+      "unavailable_cases": 0,
+      "disputed_cases": 0,
+      "correct_rate": null,
+      "positive_case_correct_rate": null,
+      "negative_case_correct_rate": null,
+      "paired_cases": 0,
+      "paired_correct_rate_gain": null,
+      "confusion_weighting": "one_case_one_weight",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "tn": 0,
+        "fn": 0
+      }
+    },
+    "routing_answer_need_phrases": [
+      "financing",
+      "refinancing",
+      "debt restructuring",
+      "listing",
+      "dilution",
+      "runway",
+      "redemption",
+      "reverse split",
+      "share sale",
+      "share offering",
+      "equity offering",
+      "debt maturity",
+      "debt maturities"
+    ]
+  },
+  "expected_scope_for_each_card": true,
+  "old_expected_check_passed": false,
+  "external_or_native_model_calls": 0
+}

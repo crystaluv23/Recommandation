@@ -833,6 +833,26 @@ availability date. Existing resolver PIT filtering and numeric checks still appl
 
 ## Executable function descriptions
 
+Compact `SignalCard` and actual LLM/Jev selector cards share one exact-version
+`measurement_scope` projection: `signal_ref`, original `source_types`, complete
+serialized `raw_retrieval`, and an `execution` disclosure. Comparison prose is
+copied verbatim from the normalized frozen policy; it is not parsed, summarized
+or promoted into executable logic. The scope does not expose full specs, skills,
+fixtures, usage records or arbitrary parameters, and does not alter eligibility.
+
+For deterministic execution the disclosure names the configured function and
+uses the actual executor's final callable map, including overrides. The callable's
+docstring is copied without language rewriting; absent map, missing callable or
+missing documentation is explicitly unknown. A callable may declare its consumed
+parameter names with the presentation-only `signal_parameter_names` decorator.
+Only those names and their explicitly configured values are copied, recursively
+as independent plain JSON; defaults remain in the callable contract. Undeclared
+parameter names are unknown, not an empty assertion or a built-in-name fallback.
+Built-ins declare all consumed keys, including shared threshold/plausibility/age
+helpers. This metadata changes neither callable behavior nor Registry records.
+Unknown disclosure does not forbid execution or lower coverage. No card, field
+or contract text is silently truncated to satisfy a request budget.
+
 The registered deterministic callable owns its input, measurement and parameter
 description in its docstring. `deterministic_signal_function_contracts` projects
 those descriptions for the actual supplied registry, including overrides; it
