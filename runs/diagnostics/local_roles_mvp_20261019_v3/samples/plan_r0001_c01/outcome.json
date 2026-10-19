@@ -1,0 +1,17 @@
+{
+  "independent_semantic_verdict": "pending_review",
+  "mechanical_checks": {
+    "disposition_survives_critic": true,
+    "disposition_survives_final_context": true,
+    "disposition_survives_posthoc": true,
+    "target_not_falsely_resolved": true,
+    "terminal_state_finalized": true,
+    "untargeted_needs_preserved": true
+  },
+  "mechanical_passed": true,
+  "request_hashes": [
+    "e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88",
+    "7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7"
+  ],
+  "sample_id": "plan_r0001_c01"
+}

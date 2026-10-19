@@ -1,0 +1,92 @@
+{
+  "all_selected_consumers_verified": true,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "original_batch_outcomes_unchanged": true,
+  "outcomes": [
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "plan_r0001_c01",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "plan_r0001_c02",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "q2_only",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "future_forecast",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "partial_numeric",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "future_actual",
+      "status": "consumers_verified"
+    },
+    {
+      "checks": {
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "terminal_state_finalized": true
+      },
+      "sample_id": "terminal_empty_owner",
+      "status": "consumers_verified"
+    }
+  ],
+  "schema_version": "local-role-separate-consumer-verification-v1",
+  "semantic_review_required": true,
+  "source_inputs": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/inputs.json",
+    "sha256": "125f7b4c388aa750db66be2b1099e8d8a91db0e95e05bba1008a8edd7fb0b544"
+  },
+  "source_manifest": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/manifest.json",
+    "sha256": "5dd0ac26e65ec7649ff11cf9e6a0d9966dc7781b1c27d8d393a62bcacce8d344"
+  },
+  "verification_code": {
+    "path": "/Users/l/Project/Recommandation/scripts/verify_local_role_consumers.py",
+    "sha256": "e22a2dbd164a1a0458aa07495adbed1a2d19410fdeb8e453bd23f863a99ae0bc"
+  }
+}

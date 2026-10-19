@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-19：冻结 7504d986 的合法 prior v3，13 个独立角色完成七样本；6/7 首答结构通过，partial 唯一 typed evidence 修复后 accepted，F7 七个 scope/residual 和处置传递均经独立审查。F8 仍失败：故意绕过正常 F6 的未来 actual Signal 虽未采入 state，其原 summary 仍出现在 final/posthoc/critic（最初 Reflect 也可见）；正常 F6 确认会拒绝其 timestamp。机械 7/7 不替代消费者 PIT 语义，原 v2 五失败保留。下一批先修 serialized result 的共享模型资格边界，再实际实现已绑定静态 SEC/污染 news/unknown transcript 的窄来源 view；零外部 API，完整 MVP 未关闭。
+
 - 2026-10-19：紧接独立角色 v2 反例修复共享 root 跨线程/进程调用准入，cache 命中先复核 exact inbox/receipt/raw/parsed cache，并以单次 raw buffer 做 hash 和 decode。完整 aware ISO cutoff 贯通 routing/校验/残留/处置/fallback，拒同日稍后和未来来源 timestamp；保留日期与显式 cutoff 合同。driver 改为先过真实 prior 校验，消费者带真实 delta/alias，失败保留 trace。旧反例先失败，1708 全量及最终 114 聚焦检查通过；新实际角色尚待冻结执行，旧 v2 五失败不改。同步 convergence 为工程 MVP 和真实当前 review，独立收益仍 unknown 后置，无完整后继计划。
 
 - 2026-10-19：采用用户批准的 Fast/Slow 工程 MVP 范围，独立收益留作后续；增加显式本地独立角色交接及冻结七样本 Reflect driver。13 个隔离角色原答经过原生产 parser/纠错/持久化，原两样本贯通 terminal 与 final/posthoc/critic 处置传递。七分母仍仅 2 机械通过，5 个失败暴露非法 synthetic prior、ISO timestamp-bound 漏识别及 driver 漏参数；另行 consumer CLI 验证四份 accepted 输出保真，未改旧结果。1691 项原全量及新增聚焦检查通过；零外部 API。独立反例又证实并发本地调用上限和缓存原答复核缺陷，通用恢复未关闭；下一批修复。同步已授权 transcript 公开内容时间政策，26 份原件证明仍待核查，无 oracle 迁移；来源、Slow、magnitude、后继及完整 MVP 均未关闭。

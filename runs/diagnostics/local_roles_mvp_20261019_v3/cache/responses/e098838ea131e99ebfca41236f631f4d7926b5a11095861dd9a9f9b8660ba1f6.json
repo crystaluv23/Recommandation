@@ -1,0 +1,56 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "c00f783466af453a7172682af3858a02f7c18e0502a97a964cfa42409076c612",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "For Q2 2025, the company expects revenue of $120 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "For Q2 2025, the company expects revenue of $120 million."
+      },
+      {
+        "op": "append",
+        "path": "need_dispositions",
+        "value": {
+          "answer_scope": "unanswered",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "reason": "The adopted disclosure supplies the issuer's Q2 2025 revenue guidance, not its Q3 2025 revenue guidance. The requested period remains unanswered by this batch, so the original cutoff-bounded need remains unchanged. Technical admission does not establish predictive contribution, and effect remains unverified.",
+          "residual_need": null
+        }
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"c00f783466af453a7172682af3858a02f7c18e0502a97a964cfa42409076c612\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"guidance_acceleration:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"For Q2 2025, the company expects revenue of $120 million.\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"For Q2 2025, the company expects revenue of $120 million.\"},{\"op\":\"append\",\"path\":\"need_dispositions\",\"value\":{\"need_index\":0,\"answer_scope\":\"unanswered\",\"residual_need\":null,\"evidence_refs\":[{\"signal_ref\":\"guidance_acceleration:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0}],\"reason\":\"The adopted disclosure supplies the issuer's Q2 2025 revenue guidance, not its Q3 2025 revenue guidance. The requested period remains unanswered by this batch, so the original cutoff-bounded need remains unchanged. Technical admission does not establish predictive contribution, and effect remains unverified.\"}}]}\n",
+  "request_hash": "e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6",
+  "response_id": "local-e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6",
+  "usage": {
+    "accounting_tokens": 30278,
+    "agent_id": "/root/role_16",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "a8951c9083984ad6b701605bea0390ac1f7cccbca652d26de35352181ef8f6e2",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c923417127b25d887a9465b509ccd1fde2a97e9cea8e974550ce45b590abbcf2",
+    "request_hash": "e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6",
+    "token_usage": null
+  }
+}

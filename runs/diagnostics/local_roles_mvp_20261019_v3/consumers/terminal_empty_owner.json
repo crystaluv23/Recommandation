@@ -1,0 +1,735 @@
+{
+  "accepted_stage_files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/local_roles_mvp_20261019_v3/samples/terminal_empty_owner/terminal_closure.json",
+      "sha256": "c3a224722ba4b7d21f211ee0fba8ba236cde92ae6b2cff368243f934b00e7302"
+    }
+  ],
+  "checks": {
+    "critic_dispositions_exact": true,
+    "final_context_dispositions_exact": true,
+    "posthoc_dispositions_exact": true,
+    "terminal_state_finalized": true
+  },
+  "compact_posthoc": {
+    "basic_info_source_index": [],
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "synthetic:guidance:terminal_empty_owner",
+          "exact_span": "For Q2 2025, the company expects revenue of $120 million.",
+          "timestamp": "2025-06-25T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 7.56,
+            "as_of_date": "2025-01-10"
+          },
+          {
+            "adjusted_close": 6.3,
+            "as_of_date": "2025-09-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 5.1013,
+          "first_close": 7.56,
+          "high": 8.64,
+          "last_close": 6.3,
+          "low": 3.65,
+          "max_drawdown_pct": -57.7546,
+          "return_pct": -16.6667,
+          "window_trading_days": 180
+        }
+      }
+    ],
+    "context_contract": {
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "presentation_target_exceeded": false,
+      "target_chars": 24000
+    },
+    "data_gaps": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "For Q2 2025, the company expects revenue of $120 million."
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "For Q2 2025, the company expects revenue of $120 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_results": [
+      {
+        "execution": {
+          "status": "success"
+        },
+        "interpretation": {
+          "measurement_context": {
+            "categorical_value_is_not_stock_direction": true
+          },
+          "summary": "For Q2 2025, the company expects revenue of $120 million. Prior guidance is not supplied; change direction is unavailable."
+        },
+        "research_status": {
+          "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "guidance_acceleration",
+        "signal_ref": "guidance_acceleration:v3",
+        "state": {
+          "confidence": 0.5,
+          "value": "neutral"
+        },
+        "status": {
+          "coverage": "partial"
+        },
+        "version": 3
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "critic": {
+    "candidate_judgment_feedback": {
+      "assessment": "strong_correct_negative",
+      "binary_correct": true,
+      "candidate_judgment": "unlikely",
+      "predicted_binary_label": "non_surge",
+      "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work.",
+      "true_binary_label": "non_surge"
+    },
+    "case_index": 1,
+    "ground_truth": {
+      "is_surge": false,
+      "magnitude": null,
+      "realized_max_multiple": 0.9217739451801663
+    },
+    "magnitude_feedback": {
+      "error_kind": "not_applicable",
+      "magnitude_applicable": false,
+      "magnitude_correct": false,
+      "ordinal_distance": null,
+      "predicted_magnitude": null,
+      "true_magnitude": null
+    },
+    "prediction": {
+      "candidate_judgment": "unlikely",
+      "confidence": {
+        "level": "medium"
+      },
+      "is_surge": false,
+      "key_reasons": [
+        "The prediction baseline is a mean adjusted close of 6.494, so the 2x threshold is 12.988; the most recent close was 6.30 on 2025-09-29, and the 180-trading-day computed price_shape shows a -16.67% return with a -57.75% max drawdown, indicating the stock is far below and moving away from the doubling threshold.",
+        "The issuer reported an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, with analysts concerned that AI features and stricter verification would hurt user and payer growth, which is contrary to the demand acceleration needed for a 2x repricing.",
+        "The Q2 2025 10-Q shows revenue declined to $495.3 million for the six months ended June 30, 2025 from $536.4 million a year earlier, and a $408.5 million impairment loss drove a net loss, reflecting weak fundamentals rather than a catalyst for doubling.",
+        "The guidance_acceleration signal is neutral because the visible text lacks prior guidance figures, and the order_confirmation_disclosed signal is domain_unavailable, so there is no source-backed commercial or order catalyst supporting a 2x move.",
+        "The net_share_retirement_yoy signal is positive at 18.17%, but share count reduction alone is insufficient to drive a 2x price outcome without a material change in revenue or user trends."
+      ],
+      "magnitude": null,
+      "session_id": "anonymous-session-id",
+      "uncertainties": [
+        "The visible earnings-call transcript excerpt is truncated and does not quantify AI monetization or restructuring savings, so a future positive surprise cannot be fully ruled out.",
+        "The guidance update provides Q2 2025 revenue and adjusted EBITDA ranges but lacks prior guidance figures, so the direction of the revision is unknown.",
+        "No forward projections or explicit future price targets are supplied, so the 2x outcome remains a forecast under uncertainty rather than a proven path."
+      ]
+    },
+    "self_reflection": {
+      "decision_drivers": [
+        "At prediction time the baseline mean adjusted close was 6.494 and the doubling threshold was 12.988, while the most recent close was 6.30 on 2025-09-29. The 180-trading-day price_shape metric showed a -16.67% return and a -57.75% max drawdown, so the stock was both far below the threshold and moving away from it. The realized maximum five-complete-trading-day adjusted-close mean multiple was 0.9218, confirming no surge occurred.",
+        "The issuer reported an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, with analysts concerned that AI features and stricter verification would hurt user and payer growth. The Q2 2025 10-Q showed revenue declined to $495.3 million for the six months ended June 30, 2025 from $536.4 million a year earlier, and a $408.5 million impairment loss drove a net loss. The realized outcome was a non-surge with a maximum multiple of 0.9218."
+      ],
+      "ignored_evidence": [],
+      "misleading_signals": [
+        "The net_share_retirement_yoy signal was positive at 18.17%, reflecting a reduction in weighted-average shares. This alone did not produce a surge; the realized maximum multiple was 0.9218. A testable interpretation is that share count reduction without a material change in revenue or user trends is insufficient to drive a 2x price outcome."
+      ],
+      "missing_information": [
+        "The guidance_acceleration signal was neutral because the visible text provided Q2 2025 revenue and adjusted EBITDA ranges but did not include the prior guidance figures, so the direction and magnitude of the revision could not be established. The order_confirmation_disclosed signal was domain_unavailable, meaning visible evidence was insufficient for a canonical conclusion, not that the measured condition was absent."
+      ],
+      "plan_issues": [],
+      "prediction_outcome": {
+        "correct": true
+      },
+      "reflection_items": [
+        {
+          "brief": "The binary non-surge call was supported by the stock trading far below the doubling threshold with negative trend and drawdown.",
+          "category": "decision_drivers",
+          "counter_refs": [],
+          "detail": "At prediction time the baseline mean adjusted close was 6.494 and the doubling threshold was 12.988, while the most recent close was 6.30 on 2025-09-29. The 180-trading-day price_shape metric showed a -16.67% return and a -57.75% max drawdown, so the stock was both far below the threshold and moving away from it. The realized maximum five-complete-trading-day adjusted-close mean multiple was 0.9218, confirming no surge occurred.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:1d9e3fdc5ce8f5d2a3ac99c9d30e6876634ce49c75cee6134346c9ce0acf3eca",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "A low price relative to the threshold does not by itself rule out a sharp repricing if a material catalyst emerges.",
+            "The price_shape window is historical and does not include forward projections."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+            }
+          ],
+          "owner_ref": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1",
+          "scope": {
+            "case_refs": [
+              "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1"
+            ],
+            "conditions": "Use when a non-surge call rests on the stock being far below the doubling threshold with negative recent trend and drawdown.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+          ]
+        },
+        {
+          "brief": "Weak user and revenue fundamentals supported the non-surge call.",
+          "category": "decision_drivers",
+          "counter_refs": [],
+          "detail": "The issuer reported an 8.7% decrease in total paying users in Q2 2025 and a 15.94% stock drop after the announcement, with analysts concerned that AI features and stricter verification would hurt user and payer growth. The Q2 2025 10-Q showed revenue declined to $495.3 million for the six months ended June 30, 2025 from $536.4 million a year earlier, and a $408.5 million impairment loss drove a net loss. The realized outcome was a non-surge with a maximum multiple of 0.9218.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:e54b92f1c20485b00a98e81079fa430b7177090e0ca4fe54e37e06f08c622e21",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "The user-decline and stock-drop figures come from a third-party investigation report, not directly from issuer filings.",
+            "The revenue and impairment figures are historical and do not prove future trends."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+            }
+          ],
+          "owner_ref": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1",
+          "scope": {
+            "case_refs": [
+              "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1"
+            ],
+            "conditions": "Use when evaluating a non-surge call supported by declining paying users, revenue contraction, and impairment losses.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+          ]
+        },
+        {
+          "brief": "The guidance update lacked prior guidance figures, so its direction could not be established.",
+          "category": "missing_information",
+          "counter_refs": [],
+          "detail": "The guidance_acceleration signal was neutral because the visible text provided Q2 2025 revenue and adjusted EBITDA ranges but did not include the prior guidance figures, so the direction and magnitude of the revision could not be established. The order_confirmation_disclosed signal was domain_unavailable, meaning visible evidence was insufficient for a canonical conclusion, not that the measured condition was absent.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:db8024882272eb638de462cc744411388199025d6ea08e71a6321a9f0109fda5",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "The absence of prior guidance figures in the visible span does not mean the issuer did not disclose them elsewhere.",
+            "domain_unavailable is a coverage outcome and does not prove the measured condition is absent."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+            }
+          ],
+          "owner_ref": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1",
+          "scope": {
+            "case_refs": [
+              "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1"
+            ],
+            "conditions": "Use when a guidance revision is visible but prior guidance figures are missing, preventing direction assessment.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+          ]
+        },
+        {
+          "brief": "Share count reduction was a positive signal but insufficient to drive a doubling without revenue or user improvement.",
+          "category": "misleading_signals",
+          "counter_refs": [],
+          "detail": "The net_share_retirement_yoy signal was positive at 18.17%, reflecting a reduction in weighted-average shares. This alone did not produce a surge; the realized maximum multiple was 0.9218. A testable interpretation is that share count reduction without a material change in revenue or user trends is insufficient to drive a 2x price outcome.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:3a1e84a2b9c0a4f1c44b9e4bd7f926faccbabfc868685cbcc23c740b9928000a",
+          "kind": "hypothesis",
+          "level": "case",
+          "limitations": [
+            "This is a hypothesis, not an established rule; one outcome does not prove share retirement is generally insufficient.",
+            "The share-retirement metric is a cumulative period measure and may not reflect future buyback activity."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+            }
+          ],
+          "owner_ref": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1",
+          "scope": {
+            "case_refs": [
+              "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1"
+            ],
+            "conditions": "Use when a positive share-retirement signal is present but revenue and user trends remain weak.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:c10438bbfa69c97457a1381ee0151ca3ccb0ff0a536502e85b4a83a32840fefd"
+          ]
+        }
+      ],
+      "source_identity": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1",
+      "source_snapshot": {
+        "candidate_judgment_feedback": {
+          "assessment": "strong_correct_negative",
+          "binary_correct": true,
+          "candidate_judgment": "unlikely",
+          "predicted_binary_label": "non_surge",
+          "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work.",
+          "true_binary_label": "non_surge"
+        },
+        "magnitude_feedback": {
+          "error_kind": "not_applicable",
+          "magnitude_applicable": false,
+          "magnitude_correct": false,
+          "ordinal_distance": null,
+          "predicted_magnitude": null,
+          "true_magnitude": null
+        },
+        "source_identity": "case:e123e16022b61b8269f01ed71b9fcca01fffb0346c3095712f18ff1dac7aedd1"
+      },
+      "why_prediction_failed": []
+    },
+    "signal_rounds": [
+      {
+        "information_needs": [
+          "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+        ],
+        "selected_signals": [
+          "guidance_acceleration:v3"
+        ],
+        "selections": [
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "The disclosed outlook may inform the requested guidance.",
+            "context_tags": [],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Assess the requested management guidance.",
+            "signal_ref": "guidance_acceleration:v3",
+            "target_need_indices": [
+              0
+            ]
+          }
+        ],
+        "signal_results": [
+          {
+            "evidence_counts": {
+              "counter": 0,
+              "supporting": 1
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              },
+              "summary": "For Q2 2025, the company expects revenue of $120 million. Prior guidance is not supplied; change direction is unavailable."
+            },
+            "signal_id": "guidance_acceleration",
+            "state": {
+              "confidence": 0.5,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "version": 3
+          }
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+        },
+        "round": 1
+      }
+    ],
+    "stop_reason": "finalized",
+    "termination_trigger": "budget_exhausted"
+  },
+  "critic_prediction_and_labels_are_historical_only": true,
+  "external_api_calls": 0,
+  "final_context": {
+    "analysis_prompt": "Organize evidence into (a) source-backed commercial adoption and contract or demand evidence, (b) forward-expectations and guidance signals, (c) financing, share-overhang, cash-runway, and dilution facts, (d) market baseline, momentum, and early-repricing measurements, and (e) counter-evidence and execution gaps. Weight items by provenance and recency, prefer issuer filings and reported financial facts over third-party narrative, and never count repeated versions of one event as independent evidence. When binary direction looks supported, structure a range of plausible repricing scenarios rather than defaulting to a conservative band, and do not let a negative liquidity-runway or neutral financing fact mechanically cap the scenario range. Surface explicit counter-evidence and uncertainty; do not compute a probability, classify the final answer, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 0,
+        "deferred_projections": 0,
+        "included_cards": 0
+      },
+      "projection_cards": [],
+      "source_index": []
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "synthetic:guidance:terminal_empty_owner",
+          "exact_span": "For Q2 2025, the company expects revenue of $120 million.",
+          "timestamp": "2025-06-25T12:00:00+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 7.56,
+            "as_of_date": "2025-01-10"
+          },
+          {
+            "adjusted_close": 6.3,
+            "as_of_date": "2025-09-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 5.1013,
+          "first_close": 7.56,
+          "high": 8.64,
+          "last_close": 6.3,
+          "low": 3.65,
+          "max_drawdown_pct": -57.7546,
+          "return_pct": -16.6667,
+          "window_trading_days": 180
+        }
+      }
+    ],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": false,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "For Q2 2025, the company expects revenue of $120 million."
+      ],
+      "decision": "finalize",
+      "hypotheses": [],
+      "next_information_needs": [
+        "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "For Q2 2025, the company expects revenue of $120 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true
+                },
+                "summary": "For Q2 2025, the company expects revenue of $120 million. Prior guidance is not supplied; change direction is unavailable."
+              },
+              "research_status": {
+                "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "guidance_acceleration:v3",
+              "state": {
+                "confidence": 0.5,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              }
+            }
+          ],
+          "signal_calls": 1
+        },
+        "selected_signals": [
+          "guidance_acceleration:v3"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "For Q2 2025, the company expects revenue of $120 million."
+            ],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [],
+            "removed": []
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "For Q2 2025, the company expects revenue of $120 million.",
+                "key": "signal:guidance_acceleration:v3:supporting:0"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "final_state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q2 2025, the company expects revenue of $120 million."
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "For Q2 2025, the company expects revenue of $120 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "new_prediction_or_posthoc_or_critic_executed": false,
+  "original_stage_outcome_unchanged": true,
+  "sample_id": "terminal_empty_owner",
+  "semantic_answer_scope_review_required": true,
+  "state_deltas": [
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [
+            "For Q2 2025, the company expects revenue of $120 million."
+          ],
+          "removed": []
+        },
+        "decision": {
+          "from": "continue",
+          "to": "finalize"
+        },
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": []
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "claim": "For Q2 2025, the company expects revenue of $120 million.",
+              "key": "signal:guidance_acceleration:v3:supporting:0"
+            }
+          ],
+          "removed_keys": []
+        }
+      },
+      "need_dispositions": {
+        "items": [],
+        "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+      },
+      "round": 1
+    }
+  ],
+  "status": "consumers_verified"
+}

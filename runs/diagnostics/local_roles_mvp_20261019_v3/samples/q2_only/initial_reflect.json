@@ -1,0 +1,55 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "unanswered",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+          "reason": "The adopted disclosure supplies the issuer's Q2 2025 revenue guidance, not its Q3 2025 revenue guidance. The requested period remains unanswered by this batch, so the original cutoff-bounded need remains unchanged. Technical admission does not establish predictive contribution, and effect remains unverified.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+    }
+  },
+  "request_hashes": [
+    "e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q2 2025, the company expects revenue of $120 million."
+    ],
+    "decision": "continue",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "For Q2 2025, the company expects revenue of $120 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 30278
+  }
+}

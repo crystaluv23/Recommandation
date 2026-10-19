@@ -1,0 +1,56 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "partial",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+          "reason": "The executed evidence supplies the issuer's revenue expectation for the requested quarter and was available before the cutoff. It supplies no prior guidance, so it cannot establish whether that expectation was raised, lowered, or unchanged. Technical admission does not verify predictive contribution.",
+          "residual_need": "What prior Q3 2025 revenue guidance had the issuer disclosed by 2025-09-30T00:00:00+00:00, and does comparison with its current guidance establish a raise, reduction, or no change?"
+        }
+      ],
+      "prior_state_hash": "5c32743d84ab67473a41fe11a1768b5414ff91238dbe7e26a50378353c813954"
+    }
+  },
+  "request_hashes": [
+    "c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a",
+    "39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q3 2025, the company expects revenue of $140 million."
+    ],
+    "decision": "continue",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What prior Q3 2025 revenue guidance had the issuer disclosed by 2025-09-30T00:00:00+00:00, and does comparison with its current guidance establish a raise, reduction, or no change?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "For Q3 2025, the company expects revenue of $140 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 62379
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "independent_semantic_verdict": "pending_review",
+  "mechanical_checks": {
+    "accepted_consumers_verified": true,
+    "correct_scope": true,
+    "critic_dispositions_exact": true,
+    "final_context_dispositions_exact": true,
+    "posthoc_dispositions_exact": true,
+    "preserved_need": true,
+    "terminal_finalized": true,
+    "terminal_state_finalized": true
+  },
+  "mechanical_passed": true,
+  "request_hashes": [
+    "c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a",
+    "39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032",
+    "638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368"
+  ],
+  "sample_id": "partial_numeric"
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "full",
+          "evidence_refs": [
+            {
+              "evidence_group": "supporting",
+              "evidence_index": 0,
+              "signal_ref": "guidance_acceleration:v3"
+            }
+          ],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+          "reason": "The accepted disclosure supplies the issuer's revenue guidance for the requested quarter and was available before the cutoff. Missing prior guidance limits the acceleration measurement but does not leave this narrow fact question unanswered. Technical admission does not establish prediction benefit.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+    }
+  },
+  "request_hashes": [
+    "6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q3 2025, the company expects revenue of $140 million."
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [],
+    "open_questions": [],
+    "resolved_questions": [
+      "The issuer's revenue guidance for the requested quarter is disclosed in evidence available before the prediction cutoff."
+    ],
+    "supporting_evidence": [
+      {
+        "claim": "For Q3 2025, the company expects revenue of $140 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 30278
+  }
+}

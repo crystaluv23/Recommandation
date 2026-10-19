@@ -1,0 +1,38 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "2a7f853fc1d539c495055a1f90be98c93c6a11f22061a0da8b7d8e4897cdeb5b",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "hypotheses[0]",
+        "value": "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status."
+      },
+      {
+        "op": "replace",
+        "path": "hypotheses[2]",
+        "value": "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"2a7f853fc1d539c495055a1f90be98c93c6a11f22061a0da8b7d8e4897cdeb5b\",\"operations\":[{\"op\":\"replace\",\"path\":\"hypotheses[0]\",\"value\":\"The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.\"},{\"op\":\"replace\",\"path\":\"hypotheses[2]\",\"value\":\"Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution.\"},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}\n",
+  "request_hash": "5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b",
+  "response_id": "local-5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b",
+  "usage": {
+    "accounting_tokens": 44019,
+    "agent_id": "/root/role_22",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4e2386be83a7edfaf0c18dcd81f8a1d5ed172b75c45a87c0c4fed6504e81d68b",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c9952476dbe47643e04a3df369bc8f300e0ae89dd729106e2c826a46f06eadfd",
+    "request_hash": "5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b",
+    "token_usage": null
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "accepted_state_answer_scope_semantics_passed": 7,
+  "actual_independent_calls": 13,
+  "actual_model_version": null,
+  "coordinator": "/root",
+  "corrected_schema_passed": 1,
+  "critical_failure": {
+    "accepted_final_state_did_not_adopt_fact": true,
+    "actual_entry": "fault-injected serialized SignalRound bypasses F6; downstream projections lack repeated qualification",
+    "f8_closed": false,
+    "kind": "post_cutoff_actual_retained_in_consumer_signal_summary",
+    "locations": [
+      "final_context.signal_rounds[0].batch.results[0].interpretation.summary",
+      "compact_posthoc.signal_results[0].interpretation.summary",
+      "critic.signal_rounds[0].signal_results[0].interpretation.summary"
+    ],
+    "normal_production_F6_rejects_same_result": "validate_signal_result rejects timestamp exceeds prediction time",
+    "sample_id": "future_actual",
+    "text": "For Q3 2025, the company reported actual revenue of $140 million. Prior guidance is not supplied; change direction is unavailable."
+  },
+  "disposition_projections_exact": 7,
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "first_answer_schema_passed": 6,
+  "first_answers": 7,
+  "fixed_denominator": 7,
+  "full_consumer_semantics_closed": false,
+  "internal_agent_cost": null,
+  "later_terminal_calls": 5,
+  "native_corrections": 1,
+  "next_action": "Preserve frozen outcomes. Enforce reviewed sources and refuse or explicitly quarantine invalid serialized results before any model-facing consumer projection, preserving audit originals and fixed failure denominator.",
+  "original_v2_failures_rewritten": false,
+  "partial_numeric": {
+    "first_answer_failure": "supporting_evidence aggregate claim+refs shape does not meet flat tagged-ref schema",
+    "first_answer_semantics": "current amount answered; prior guidance and raise/reduction/no-change comparison remain unresolved",
+    "native_repair": "replace supporting_evidence[0] only",
+    "residual_preserved_after_correction_and_terminal": true
+  },
+  "reviewer": "/root/acceptance_review",
+  "role_outputs_edited": false,
+  "schema_version": "local-role-independent-stage-review-v1",
+  "scope": "Frozen F7 answer scope and exact disposition propagation only; no broad state/source/prediction claim.",
+  "source_authenticity_closed": false,
+  "verified_bindings": [
+    "manifest",
+    "contract",
+    "inputs",
+    "expectations",
+    "preflight",
+    "frozen_code",
+    "original_artifacts",
+    "13 requests",
+    "13 inboxes",
+    "13 raw responses",
+    "13 actual-agent receipts"
+  ]
+}

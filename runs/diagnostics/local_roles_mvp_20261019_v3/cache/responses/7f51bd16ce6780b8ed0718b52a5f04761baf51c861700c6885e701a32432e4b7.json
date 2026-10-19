@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "49f495fe15b9c156c38c5018814f698bd50b9d518a390c170b9b2880ee3afa22",
+    "operations": [
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"49f495fe15b9c156c38c5018814f698bd50b9d518a390c170b9b2880ee3afa22\",\"operations\":[{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}\n",
+  "request_hash": "7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7",
+  "response_id": "local-7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7",
+  "usage": {
+    "accounting_tokens": 48368,
+    "agent_id": "/root/role_21",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "7ce7178ca1e7228b101ab39e1dac542cafb5ee4720f9c588c71157e8b68d4677",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ac32d824908801c1b47eb39b4b72761e471fdd2e6f5c4d603970d53a219d5676",
+    "request_hash": "7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7",
+    "token_usage": null
+  }
+}

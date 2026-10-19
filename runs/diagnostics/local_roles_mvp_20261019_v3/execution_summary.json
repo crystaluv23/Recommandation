@@ -1,0 +1,28 @@
+{
+  "fixed_denominator": 7,
+  "mechanical_passed": 7,
+  "pending": 0,
+  "actual_independent_calls": 13,
+  "actual_agent_identities": 13,
+  "invocations": {
+    "first_answer": 7,
+    "correction": 1,
+    "later_terminal": 5
+  },
+  "first_answer_schema_passed": 6,
+  "corrected_schema_passed": 1,
+  "final_technical_failures": 0,
+  "source_pit_accepted": false,
+  "remote_provider_behavior_tested": false,
+  "actual_model_version": null,
+  "external_api_calls": 0,
+  "internal_agent_cost": null,
+  "stage_usage_fields_are_cache_accounting_not_unique_call_counts": true,
+  "consumer_projection_mechanical_passed": 7,
+  "independent_f7_answer_scope_passed": 7,
+  "consumer_pit_closed": false,
+  "known_consumer_pit_failures": [
+    "future_actual: late actual remains in final_context, compact_posthoc and critic interpretation summaries"
+  ],
+  "normal_f6_validation_rejects_injected_future_result": true
+}

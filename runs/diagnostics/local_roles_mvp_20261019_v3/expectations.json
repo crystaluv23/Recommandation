@@ -1,0 +1,66 @@
+[
+  {
+    "answer_scope": "unanswered",
+    "historical_input_pit_accepted": false,
+    "must_preserve_need": true,
+    "need": "What guidance, if any, has management provided for Q3 or full-year 2025 revenue, profitability, or cash flow, and what are the key assumptions?",
+    "sample_id": "plan_r0001_c01"
+  },
+  {
+    "answer_scope": "unanswered",
+    "historical_input_pit_accepted": false,
+    "must_preserve_need": true,
+    "need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+    "sample_id": "plan_r0001_c02"
+  },
+  {
+    "answer_scope": "unanswered",
+    "exact_quote": "For Q2 2025, the company expects revenue of $120 million.",
+    "must_not_adopt_future_actual": false,
+    "must_preserve_need": true,
+    "need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+    "residual_semantics": null,
+    "sample_id": "q2_only",
+    "timestamp": "2025-06-25T12:00:00+00:00"
+  },
+  {
+    "answer_scope": "full",
+    "exact_quote": "For Q3 2025, the company expects revenue of $140 million.",
+    "must_not_adopt_future_actual": false,
+    "must_preserve_need": false,
+    "need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+    "residual_semantics": null,
+    "sample_id": "future_forecast",
+    "timestamp": "2025-06-25T12:00:00+00:00"
+  },
+  {
+    "answer_scope": "partial",
+    "exact_quote": "For Q3 2025, the company expects revenue of $140 million.",
+    "must_not_adopt_future_actual": false,
+    "must_preserve_need": false,
+    "need": "What is the issuer's Q3 2025 revenue guidance, and was it raised or lowered from prior guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+    "residual_semantics": "direction_of_change",
+    "sample_id": "partial_numeric",
+    "timestamp": "2025-06-25T12:00:00+00:00"
+  },
+  {
+    "answer_scope": "unanswered",
+    "exact_quote": "For Q3 2025, the company reported actual revenue of $140 million.",
+    "must_not_adopt_future_actual": true,
+    "must_preserve_need": true,
+    "need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+    "residual_semantics": null,
+    "sample_id": "future_actual",
+    "timestamp": "2025-11-10T12:00:00+00:00"
+  },
+  {
+    "answer_scope": null,
+    "exact_quote": "For Q2 2025, the company expects revenue of $120 million.",
+    "must_not_adopt_future_actual": false,
+    "must_preserve_need": true,
+    "need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+    "residual_semantics": null,
+    "sample_id": "terminal_empty_owner",
+    "timestamp": "2025-06-25T12:00:00+00:00"
+  }
+]

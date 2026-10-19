@@ -1,0 +1,18 @@
+{
+  "independent_semantic_verdict": "pending_review",
+  "mechanical_checks": {
+    "accepted_consumers_verified": true,
+    "correct_scope": true,
+    "critic_dispositions_exact": true,
+    "final_context_dispositions_exact": true,
+    "posthoc_dispositions_exact": true,
+    "preserved_need": true,
+    "terminal_finalized": true,
+    "terminal_state_finalized": true
+  },
+  "mechanical_passed": true,
+  "request_hashes": [
+    "6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51"
+  ],
+  "sample_id": "future_forecast"
+}

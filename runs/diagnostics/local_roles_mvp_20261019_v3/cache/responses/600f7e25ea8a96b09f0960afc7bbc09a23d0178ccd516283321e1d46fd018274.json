@@ -1,0 +1,44 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "base_hash": "c00f783466af453a7172682af3858a02f7c18e0502a97a964cfa42409076c612",
+    "operations": [
+      {
+        "op": "append",
+        "path": "supporting_evidence",
+        "value": {
+          "claim": "For Q2 2025, the company expects revenue of $120 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      },
+      {
+        "op": "append",
+        "path": "current_beliefs",
+        "value": "For Q2 2025, the company expects revenue of $120 million."
+      },
+      {
+        "op": "replace",
+        "path": "decision",
+        "value": "finalize"
+      }
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"base_hash\":\"c00f783466af453a7172682af3858a02f7c18e0502a97a964cfa42409076c612\",\"operations\":[{\"op\":\"append\",\"path\":\"supporting_evidence\",\"value\":{\"kind\":\"signal\",\"signal_ref\":\"guidance_acceleration:v3\",\"evidence_group\":\"supporting\",\"evidence_index\":0,\"claim\":\"For Q2 2025, the company expects revenue of $120 million.\"}},{\"op\":\"append\",\"path\":\"current_beliefs\",\"value\":\"For Q2 2025, the company expects revenue of $120 million.\"},{\"op\":\"replace\",\"path\":\"decision\",\"value\":\"finalize\"}]}\n",
+  "request_hash": "600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274",
+  "response_id": "local-600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274",
+  "usage": {
+    "accounting_tokens": 29775,
+    "agent_id": "/root/role_20",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "579b5e0576e85552d355067a0114ff83b5029761bad37534c9d73ace896e8d42",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "375aafa3d8a7347e41bba72e78471bbdefc1ac3feab63e5e833b36459d28ce50",
+    "request_hash": "600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274",
+    "token_usage": null
+  }
+}

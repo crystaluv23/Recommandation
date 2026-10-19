@@ -1,0 +1,40 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [],
+      "prior_state_hash": "b71bb2016092c71facb357d4e9698df5753068063bb736e5b0aff9443f91871d"
+    }
+  },
+  "request_hashes": [
+    "48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a"
+  ],
+  "stage": "terminal_closure",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "For Q2 2025, the company expects revenue of $120 million."
+    ],
+    "decision": "finalize",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "For Q2 2025, the company expects revenue of $120 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 30586
+  }
+}

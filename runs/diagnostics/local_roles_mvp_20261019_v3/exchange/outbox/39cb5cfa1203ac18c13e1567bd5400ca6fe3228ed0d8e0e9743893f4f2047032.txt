@@ -1,0 +1,1 @@
+{"base_hash":"9a94d34c99d215c40fa08b374b989980e1d9c266ee5fd61072719298ef1ed324","operations":[{"op":"replace","path":"supporting_evidence[0]","value":{"kind":"signal","signal_ref":"guidance_acceleration:v3","evidence_group":"supporting","evidence_index":0,"claim":"For Q3 2025, the company expects revenue of $140 million."}}]}

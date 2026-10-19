@@ -1,0 +1,1184 @@
+{
+  "actual_critic_executed": false,
+  "actual_posthoc_executed": false,
+  "actual_prediction_executed": false,
+  "checks": {
+    "disposition_survives_critic": true,
+    "disposition_survives_final_context": true,
+    "disposition_survives_posthoc": true,
+    "target_not_falsely_resolved": true,
+    "terminal_state_finalized": true,
+    "untargeted_needs_preserved": true
+  },
+  "compact_posthoc": {
+    "basic_info_source_index": [
+      {
+        "projection_ids": [],
+        "request_id": "recent_market_backbone",
+        "source_types": [
+          "market_data"
+        ],
+        "status": "resolved"
+      },
+      {
+        "projection_ids": [],
+        "request_id": "recent_company_news",
+        "source_types": [
+          "company_news",
+          "news"
+        ],
+        "status": "resolved"
+      },
+      {
+        "projection_ids": [],
+        "request_id": "recent_management_commentary",
+        "source_types": [
+          "earnings_call",
+          "earnings_transcript"
+        ],
+        "status": "resolved"
+      },
+      {
+        "projection_ids": [],
+        "request_id": "recent_operating_report",
+        "source_types": [
+          "filing"
+        ],
+        "status": "resolved"
+      },
+      {
+        "projection_ids": [],
+        "request_id": "reported_financial_facts",
+        "source_types": [
+          "financials",
+          "sec_company_facts"
+        ],
+        "status": "resolved"
+      }
+    ],
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "sec:[MASKED_COMPANY]:000119312525146199",
+          "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [MASKED_COMPANY]. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+          "timestamp": "2025-06-25T12:20:35+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 7.56,
+            "as_of_date": "2025-01-10"
+          },
+          {
+            "adjusted_close": 6.3,
+            "as_of_date": "2025-09-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 5.1013,
+          "first_close": 7.56,
+          "high": 8.64,
+          "last_close": 6.3,
+          "low": 3.65,
+          "max_drawdown_pct": -57.7546,
+          "return_pct": -16.6667,
+          "window_trading_days": 180
+        }
+      }
+    ],
+    "context_contract": {
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "presentation_target_exceeded": false,
+      "target_chars": 24000
+    },
+    "data_gaps": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+        "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+        "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale.",
+        "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price.",
+        "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+      ],
+      "decision": "finalize",
+      "hypotheses": [
+        "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.",
+        "Inference: measurable member-quality, engagement and retention improvements could challenge the commercial-contraction concern, but their disclosed timing and success criteria remain unresolved.",
+        "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+      ],
+      "next_information_needs": [
+        "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+        "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+        "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+        "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+        "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+        "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+          "exact_text": "This investigation comes after [MASKED_COMPANY] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [MASKED_COMPANY]'s stock fell 15.94% after the announcement.",
+          "kind": "basic_info",
+          "projection_id": "projection_0a39f87989579f9ee66e27d7"
+        },
+        {
+          "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+          "exact_text": "[MASKED_COMPANY]. ([MASKED_COMPANY]) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for [MASKED_COMPANY], which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend.",
+          "kind": "basic_info",
+          "projection_id": "projection_4a50091b38550fa1aacfeac0"
+        },
+        {
+          "claim": "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_results": [
+      {
+        "execution": {
+          "status": "success"
+        },
+        "interpretation": {
+          "measurement_context": {
+            "categorical_value_is_not_stock_direction": true
+          },
+          "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+        },
+        "research_status": {
+          "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+          "effect_status": "unverified",
+          "research_targets": [
+            "surge_direction"
+          ],
+          "technical_status": "admitted"
+        },
+        "signal_id": "guidance_acceleration",
+        "signal_ref": "guidance_acceleration:v3",
+        "state": {
+          "confidence": 0.5,
+          "value": "neutral"
+        },
+        "status": {
+          "coverage": "partial"
+        },
+        "version": 3
+      },
+      {
+        "evidence": {
+          "counter": [],
+          "supporting": []
+        },
+        "execution": {
+          "status": "domain_unavailable"
+        },
+        "interpretation": {
+          "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+        },
+        "signal_id": "order_confirmation_disclosed",
+        "signal_ref": "order_confirmation_disclosed:v2",
+        "state": {
+          "confidence": 0.5,
+          "value": "unavailable"
+        },
+        "status": {
+          "coverage": "unavailable"
+        },
+        "version": 2
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "guidance_acceleration:v3"
+                }
+              ],
+              "need_index": 2,
+              "prior_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+              "reason": "The adopted issuer outlook concerns the second quarter, whereas this need asks about the third-quarter revenue and adjusted EBITDA outlook and its reaffirmation or revision. Neither third-quarter ranges nor their revision history are supplied; the earlier-period outlook does not answer this need.",
+              "residual_need": null
+            },
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "prior_need": "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+              "reason": "The order Signal is unavailable and supplies no adoptable evidence of counterparties, binding commitments, contract values or their horizon relevance. Its stated domain coverage insufficiency does not establish absence of commercial commitments or a technical failure. Preserve the complete need.",
+              "residual_need": null
+            }
+          ],
+          "prior_state_hash": "956e0bc3d27c18760170c870b4395dcf699dd5bf36c3831f73dc7c3759548022"
+        },
+        "round": 1
+      },
+      {
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "0494c61139cd6dea5c48907b68122074dcc01ab8ce10f239ad02c6990e32397c"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "critic_prediction_and_labels_are_historical_only": true,
+  "critic_trajectory": {
+    "candidate_judgment_feedback": {
+      "assessment": "strong_correct_negative",
+      "binary_correct": true,
+      "candidate_judgment": "unlikely",
+      "predicted_binary_label": "non_surge",
+      "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work.",
+      "true_binary_label": "non_surge"
+    },
+    "case_index": 1,
+    "ground_truth": {
+      "is_surge": false,
+      "magnitude": null,
+      "realized_max_multiple": 0.9217739451801663
+    },
+    "magnitude_feedback": {
+      "error_kind": "not_applicable",
+      "magnitude_applicable": false,
+      "magnitude_correct": false,
+      "ordinal_distance": null,
+      "predicted_magnitude": null,
+      "true_magnitude": null
+    },
+    "prediction": {
+      "candidate_judgment": "unlikely",
+      "confidence": {
+        "level": "medium"
+      },
+      "is_surge": false,
+      "key_reasons": [
+        "The issuer's own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, with management explicitly warning that member-base quality efforts will likely reduce paying members in the near term.",
+        "The June 25, 2025 guidance update is treated as neutral because the visible text lacks prior guidance figures, so the direction and magnitude of the change cannot be established as a positive catalyst.",
+        "The stock has been in a bearish trend, trading significantly below its 52-week high, with a 180-trading-day return of -16.67% and a max drawdown of -57.75%, and no visible evidence shows a commercial inflection large enough to reverse that trajectory toward a doubling.",
+        "The baseline mean adjusted close is 6.494, implying a doubling threshold of 12.988; the recent close of 6.30 is far below that threshold, and no source-backed catalyst or early market confirmation supports a 2x repricing within six months."
+      ],
+      "magnitude": null,
+      "session_id": "anonymous-session-id",
+      "uncertainties": [
+        "The supplied evidence does not include post-Q2 2025 paying-user trends or early Q3 2025 data, so the possibility of a stabilization or reversal cannot be fully assessed.",
+        "The issuer's AI-driven matching and verification initiatives and summer product launch could produce measurable engagement improvements, but no quantified adoption or retention gains are visible.",
+        "Potential capital allocation actions such as share repurchases or dilution could affect the adjusted share price, but their timing and magnitude are not disclosed."
+      ]
+    },
+    "self_reflection": {
+      "decision_drivers": [
+        "The supplied evidence includes a third-party report that the issuer disclosed an 8.7% decrease in total paying users in Q2 2025 and that the stock fell 15.94% after the announcement. Management also warned that member-base quality efforts would likely reduce paying members in the near term. This source-backed contraction evidence is the main reason the unlikely/non-surge judgment was binary-correct.",
+        "The prediction baseline mean adjusted close was 6.494, implying a doubling threshold of 12.988, while the recent close was 6.30. The realized maximum five-complete-trading-day adjusted-close mean within the outcome horizon was 0.9218x the baseline, i.e. below the starting level, so the non-surge outcome is consistent with the pre-existing price gap to the doubling threshold."
+      ],
+      "ignored_evidence": [],
+      "misleading_signals": [],
+      "missing_information": [
+        "The cited filing states the Company is updating its previously announced Q2 2025 outlook and gives new revenue and adjusted EBITDA ranges, but the visible span does not include the prior guidance figures. The signal interpretation therefore treated the change as neutral, and the prediction correctly did not rely on it as a positive catalyst."
+      ],
+      "plan_issues": [
+        "The prediction correctly noted that post-Q2 2025 paying-user trends and early Q3 2025 data were not supplied. A repeatable action is to explicitly request those two items as part of the pre-decision evidence set, so the non-surge judgment rests on both the disclosed contraction and the absence of a visible stabilization or reversal."
+      ],
+      "prediction_outcome": {
+        "correct": true
+      },
+      "reflection_items": [
+        {
+          "brief": "The binary non-surge call was supported by the issuer's own disclosed near-term paying-user and revenue contraction, which was visible before the prediction time.",
+          "category": "decision_drivers",
+          "counter_refs": [],
+          "detail": "The supplied evidence includes a third-party report that the issuer disclosed an 8.7% decrease in total paying users in Q2 2025 and that the stock fell 15.94% after the announcement. Management also warned that member-base quality efforts would likely reduce paying members in the near term. This source-backed contraction evidence is the main reason the unlikely/non-surge judgment was binary-correct.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:a7b30251e4dc3f1d63152099a8018d925ccbb9c46f6ae57327f94c0c90f50c09",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "The evidence covers Q2 2025 paying-user decline and does not establish post-Q2 2025 trends or whether the decline stabilized.",
+            "A binary-correct non-surge call does not prove that the cited reasons were sufficient to explain the full realized outcome."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+            }
+          ],
+          "owner_ref": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69",
+          "scope": {
+            "case_refs": [
+              "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69"
+            ],
+            "conditions": "Index when a binary surge/non-surge judgment is being evaluated and the issuer has disclosed near-term paying-user or revenue contraction before the prediction time.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+          ]
+        },
+        {
+          "brief": "The prediction-time price baseline was far below the doubling threshold, and the realized maximum adjusted-close multiple remained below 1.0x.",
+          "category": "decision_drivers",
+          "counter_refs": [],
+          "detail": "The prediction baseline mean adjusted close was 6.494, implying a doubling threshold of 12.988, while the recent close was 6.30. The realized maximum five-complete-trading-day adjusted-close mean within the outcome horizon was 0.9218x the baseline, i.e. below the starting level, so the non-surge outcome is consistent with the pre-existing price gap to the doubling threshold.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:8bdbea3282a46640313bbe54673a53c2d7bc05e67ff21efe7b80ba6c49a4721c",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "A low baseline relative to the doubling threshold does not by itself rule out a surge; it only describes the starting distance.",
+            "The realized maximum multiple is a horizon statistic and does not establish the path or cause of the non-surge."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+            }
+          ],
+          "owner_ref": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69",
+          "scope": {
+            "case_refs": [
+              "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69"
+            ],
+            "conditions": "Index when assessing whether a pre-prediction price baseline was already far below a doubling threshold and the realized outcome is a non-surge.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+          ]
+        },
+        {
+          "brief": "The June 25, 2025 guidance update could not be classified as positive or negative because prior guidance figures were not visible.",
+          "category": "missing_information",
+          "counter_refs": [],
+          "detail": "The cited filing states the Company is updating its previously announced Q2 2025 outlook and gives new revenue and adjusted EBITDA ranges, but the visible span does not include the prior guidance figures. The signal interpretation therefore treated the change as neutral, and the prediction correctly did not rely on it as a positive catalyst.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:28c5c4511279494866bc27166f360a03b73a9066baf2a522bf76f05b2747c6a2",
+          "kind": "fact",
+          "level": "case",
+          "limitations": [
+            "The absence of prior guidance figures in the visible span does not prove the revision was economically neutral.",
+            "This is a coverage gap in the supplied evidence, not evidence that the guidance change was absent or immaterial."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+            }
+          ],
+          "owner_ref": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69",
+          "scope": {
+            "case_refs": [
+              "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69"
+            ],
+            "conditions": "Index when a guidance revision is cited but the prior guidance level is absent, preventing direction or magnitude classification.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+          ]
+        },
+        {
+          "brief": "For future binary surge screens, require a source-backed check of post-guidance paying-user trends and any early next-quarter data before finalizing a non-surge call.",
+          "category": "plan_issues",
+          "counter_refs": [],
+          "detail": "The prediction correctly noted that post-Q2 2025 paying-user trends and early Q3 2025 data were not supplied. A repeatable action is to explicitly request those two items as part of the pre-decision evidence set, so the non-surge judgment rests on both the disclosed contraction and the absence of a visible stabilization or reversal.",
+          "evidence_status": "sources_checked",
+          "item_ref": "reflection:13050730e84a4c84f3f126987fad14bbdbda5a66a1667458c2dc9633a80823c5",
+          "kind": "action",
+          "level": "case",
+          "limitations": [
+            "This action does not make missing forward projections a binding condition for a positive surge judgment; it is an evidence-completeness step for the non-surge case.",
+            "If post-quarter data are unavailable, the decision may still be made on the disclosed contraction and price baseline, with the gap recorded."
+          ],
+          "outcome_claims": [
+            {
+              "axis": "binary",
+              "correct": true,
+              "source_ref": "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+            }
+          ],
+          "owner_ref": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69",
+          "scope": {
+            "case_refs": [
+              "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69"
+            ],
+            "conditions": "Index when preparing a binary surge/non-surge decision and the issuer has recently disclosed paying-user contraction but no post-quarter trend data.",
+            "plan_refs": []
+          },
+          "source_refs": [
+            "reflection_source:8b51a5e3e28fe81689e27049ea328340ad6662d2be05ec8b88b6328bc5f596ad"
+          ]
+        }
+      ],
+      "source_identity": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69",
+      "source_snapshot": {
+        "candidate_judgment_feedback": {
+          "assessment": "strong_correct_negative",
+          "binary_correct": true,
+          "candidate_judgment": "unlikely",
+          "predicted_binary_label": "non_surge",
+          "reflection_guidance": "The unlikely judgment was binary-correct for the realized non-surge; inspect which source-backed counter-evidence made the rejection work.",
+          "true_binary_label": "non_surge"
+        },
+        "magnitude_feedback": {
+          "error_kind": "not_applicable",
+          "magnitude_applicable": false,
+          "magnitude_correct": false,
+          "ordinal_distance": null,
+          "predicted_magnitude": null,
+          "true_magnitude": null
+        },
+        "source_identity": "case:0b41cc7e3ec4e72b13fc0ee428c1fb1751e3794456909ffc9ca607d612af3f69"
+      },
+      "why_prediction_failed": []
+    },
+    "signal_rounds": [
+      {
+        "information_needs": [
+          "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+          "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+          "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+          "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+          "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+          "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+        ],
+        "selected_signals": [
+          "guidance_acceleration:v3",
+          "order_confirmation_disclosed:v2"
+        ],
+        "selections": [
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "Fresh management guidance on the Q3 2025 outlook can indicate whether the prior range was reaffirmed or revised, informing the revenue trajectory.",
+            "context_tags": [
+              "catalyst_window",
+              "mid_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Directly addresses the issuer's Q3 2025 revenue and adjusted EBITDA outlook and whether prior guidance was reaffirmed or revised.",
+            "signal_ref": "guidance_acceleration:v3",
+            "target_need_indices": [
+              2
+            ]
+          },
+          {
+            "answer_scope": "full",
+            "applicability_hypothesis": "Disclosed binding contracts or off-take commitments could materially change the revenue trajectory within the horizon.",
+            "context_tags": [
+              "catalyst_window",
+              "small_cap"
+            ],
+            "expected_role": "primary",
+            "reason_code": "answer_need",
+            "residual_need": null,
+            "selection_reason": "Covers new customer orders, contracts, or binding awards with named counterparties and stated value, matching the need for commercial partnerships or off-take commitments.",
+            "signal_ref": "order_confirmation_disclosed:v2",
+            "target_need_indices": [
+              4
+            ]
+          }
+        ],
+        "signal_results": [
+          {
+            "evidence_counts": {
+              "counter": 0,
+              "supporting": 1
+            },
+            "execution": {
+              "status": "success"
+            },
+            "interpretation": {
+              "measurement_context": {
+                "categorical_value_is_not_stock_direction": true
+              },
+              "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+            },
+            "signal_id": "guidance_acceleration",
+            "state": {
+              "confidence": 0.5,
+              "value": "neutral"
+            },
+            "status": {
+              "coverage": "partial"
+            },
+            "version": 3
+          },
+          {
+            "evidence_counts": {
+              "counter": 0,
+              "supporting": 0
+            },
+            "execution": {
+              "status": "domain_unavailable"
+            },
+            "interpretation": {
+              "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+            },
+            "signal_id": "order_confirmation_disclosed",
+            "state": {
+              "confidence": 0.5,
+              "value": "unavailable"
+            },
+            "status": {
+              "coverage": "unavailable"
+            },
+            "version": 2
+          }
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "guidance_acceleration:v3"
+                }
+              ],
+              "need_index": 2,
+              "prior_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+              "reason": "The adopted issuer outlook concerns the second quarter, whereas this need asks about the third-quarter revenue and adjusted EBITDA outlook and its reaffirmation or revision. Neither third-quarter ranges nor their revision history are supplied; the earlier-period outlook does not answer this need.",
+              "residual_need": null
+            },
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "prior_need": "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+              "reason": "The order Signal is unavailable and supplies no adoptable evidence of counterparties, binding commitments, contract values or their horizon relevance. Its stated domain coverage insufficiency does not establish absence of commercial commitments or a technical failure. Preserve the complete need.",
+              "residual_need": null
+            }
+          ],
+          "prior_state_hash": "956e0bc3d27c18760170c870b4395dcf699dd5bf36c3831f73dc7c3759548022"
+        },
+        "round": 1
+      },
+      {
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "0494c61139cd6dea5c48907b68122074dcc01ab8ce10f239ad02c6990e32397c"
+        },
+        "round": 1
+      }
+    ],
+    "stop_reason": "finalized",
+    "termination_trigger": "budget_exhausted"
+  },
+  "final_context": {
+    "analysis_prompt": "Organize and weight supporting and counter evidence for the fixed six-calendar-month 2x Predictor. Distinguish real commercial adoption and binding commitments from narrative and promotional coverage. For magnitude structuring, map source-backed catalysts to a range of possible repricing multiples rather than collapsing to a single conservative band, while explicitly retaining limitations: realized multiples are horizon maxima, backward-looking momentum does not project the six-month horizon, and single-case outcomes do not establish ex-ante calibration. Expose uncertainty and counter-evidence (resale overhang, low cash, dilution risk) as factors that may bear more on magnitude than on binary direction, but flag that relationship as an untested hypothesis rather than an established rule. Do not compute probabilities, classify the final answer, alter the horizon or four-way judgment, or generate the prediction.",
+    "basic_info": {
+      "data_gaps": [],
+      "projection_card_counts": {
+        "available_projections": 0,
+        "deferred_projections": 0,
+        "included_cards": 0
+      },
+      "projection_cards": [],
+      "source_index": [
+        {
+          "projection_ids": [],
+          "request_id": "recent_market_backbone",
+          "source_types": [
+            "market_data"
+          ],
+          "status": "resolved"
+        },
+        {
+          "projection_ids": [],
+          "request_id": "recent_company_news",
+          "source_types": [
+            "company_news",
+            "news"
+          ],
+          "status": "resolved"
+        },
+        {
+          "projection_ids": [],
+          "request_id": "recent_management_commentary",
+          "source_types": [
+            "earnings_call",
+            "earnings_transcript"
+          ],
+          "status": "resolved"
+        },
+        {
+          "projection_ids": [],
+          "request_id": "recent_operating_report",
+          "source_types": [
+            "filing"
+          ],
+          "status": "resolved"
+        },
+        {
+          "projection_ids": [],
+          "request_id": "reported_financial_facts",
+          "source_types": [
+            "financials",
+            "sec_company_facts"
+          ],
+          "status": "resolved"
+        }
+      ]
+    },
+    "cited_signal_evidence": [
+      {
+        "evidence": {
+          "document_id": "sec:[MASKED_COMPANY]:000119312525146199",
+          "exact_span": "The Company is also updating its previously announced financial outlook for the second quarter 2025. The Company now expects total [MASKED_COMPANY]. revenue between $244&#160;million and $249&#160;million, and adjusted EBITDA between $88&#160;million and $93&#160;million.",
+          "timestamp": "2025-06-25T12:20:35+00:00"
+        },
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ],
+    "computed_metrics": [
+      {
+        "as_of": "2025-09-30T00:00:00+00:00",
+        "labels": {
+          "trend": "range"
+        },
+        "literal_refs": [
+          {
+            "adjusted_close": 7.56,
+            "as_of_date": "2025-01-10"
+          },
+          {
+            "adjusted_close": 6.3,
+            "as_of_date": "2025-09-29"
+          }
+        ],
+        "metric": "price_shape",
+        "params": {
+          "window_days": 180
+        },
+        "schema_version": "computed-metric-card-v1",
+        "values": {
+          "daily_volatility_pct": 5.1013,
+          "first_close": 7.56,
+          "high": 8.64,
+          "last_close": 6.3,
+          "low": 3.65,
+          "max_drawdown_pct": -57.7546,
+          "return_pct": -16.6667,
+          "window_trading_days": 180
+        }
+      }
+    ],
+    "context_contract": {
+      "assembly_blocks": [
+        {
+          "block_type": "basic_info_cards",
+          "provenance": "projection_id"
+        },
+        {
+          "block_type": "computed_anchor",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "computed_metrics",
+          "provenance": "runtime_market_computation"
+        },
+        {
+          "block_type": "document_channel",
+          "provenance": "runtime_pit_disclosure"
+        },
+        {
+          "block_type": "signal_results",
+          "provenance": "signal_ref"
+        },
+        {
+          "block_type": "cited_signal_evidence",
+          "provenance": "signal_evidence_ref"
+        },
+        {
+          "block_type": "state_evolution",
+          "provenance": "per_round_delta"
+        },
+        {
+          "block_type": "research_state",
+          "provenance": "runtime_validated_state"
+        },
+        {
+          "block_type": "analysis_prompt",
+          "provenance": "plan"
+        }
+      ],
+      "budget_enforcement": "exact_wire_remaining_case_tokens",
+      "complete_trajectory_retained_locally": true,
+      "kind": "typed_append_only_assembly",
+      "numeric_decision_inputs_permitted_only_in": [
+        "prediction_baseline",
+        "computed_metrics"
+      ],
+      "presentation_target_exceeded": false,
+      "target_utf8_bytes": 24000
+    },
+    "document_channel": [],
+    "final_research_state": {
+      "contradictions": [],
+      "current_beliefs": [
+        "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+        "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+        "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale.",
+        "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price.",
+        "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+      ],
+      "decision": "finalize",
+      "hypotheses": [
+        "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.",
+        "Inference: measurable member-quality, engagement and retention improvements could challenge the commercial-contraction concern, but their disclosed timing and success criteria remain unresolved.",
+        "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+      ],
+      "next_information_needs": [
+        "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+        "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+        "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+        "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+        "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+        "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+      ],
+      "open_questions": [],
+      "resolved_questions": [],
+      "supporting_evidence": [
+        {
+          "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+          "exact_text": "This investigation comes after [MASKED_COMPANY] reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. [MASKED_COMPANY]'s stock fell 15.94% after the announcement.",
+          "kind": "basic_info",
+          "projection_id": "projection_0a39f87989579f9ee66e27d7"
+        },
+        {
+          "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+          "exact_text": "[MASKED_COMPANY]. ([MASKED_COMPANY]) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for [MASKED_COMPANY], which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend.",
+          "kind": "basic_info",
+          "projection_id": "projection_4a50091b38550fa1aacfeac0"
+        },
+        {
+          "claim": "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+          "evidence_group": "supporting",
+          "evidence_index": 0,
+          "kind": "signal",
+          "signal_ref": "guidance_acceleration:v3"
+        }
+      ]
+    },
+    "prediction_baseline": {
+      "doubling_threshold": 12.988,
+      "mean_adjusted_close": 6.494,
+      "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+      "recent_close": 6.3,
+      "recent_close_date": "2025-09-29",
+      "status": "available",
+      "trading_dates": [
+        "2025-09-23",
+        "2025-09-24",
+        "2025-09-25",
+        "2025-09-26",
+        "2025-09-29"
+      ]
+    },
+    "prediction_time": "2025-09-30T00:00:00+00:00",
+    "signal_rounds": [
+      {
+        "batch": {
+          "results": [
+            {
+              "execution": {
+                "status": "success"
+              },
+              "interpretation": {
+                "measurement_context": {
+                  "categorical_value_is_not_stock_direction": true
+                },
+                "summary": "The June 25, 2025 filing explicitly states the Company is updating its previously announced financial outlook for Q2 2025 and provides new revenue and adjusted EBITDA ranges. This is an explicit revision statement with a current numeric level, but the visible text does not include the prior guidance figures, so the direction and magnitude of the change cannot be established from the available spans. The change is therefore treated as neutral rather than positive or negative."
+              },
+              "research_status": {
+                "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+                "effect_status": "unverified",
+                "research_targets": [
+                  "surge_direction"
+                ],
+                "technical_status": "admitted"
+              },
+              "signal_ref": "guidance_acceleration:v3",
+              "state": {
+                "confidence": 0.5,
+                "value": "neutral"
+              },
+              "status": {
+                "coverage": "partial"
+              }
+            },
+            {
+              "execution": {
+                "status": "domain_unavailable"
+              },
+              "interpretation": {
+                "summary": "domain_unavailable: a normal domain coverage outcome, not a technical execution gap or failure. Visible evidence was insufficient for a canonical conclusion. This is not evidence that the measured condition is absent."
+              },
+              "signal_ref": "order_confirmation_disclosed:v2",
+              "state": {
+                "confidence": 0.5,
+                "value": "unavailable"
+              },
+              "status": {
+                "coverage": "unavailable"
+              }
+            }
+          ],
+          "signal_calls": 2
+        },
+        "selected_signals": [
+          "guidance_acceleration:v3",
+          "order_confirmation_disclosed:v2"
+        ]
+      }
+    ],
+    "state_evolution": [
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [
+              "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+            ],
+            "removed": []
+          },
+          "hypotheses": {
+            "added": [
+              "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The current batch does not settle those questions.",
+              "Inference: measurable member-quality, engagement and retention improvements could challenge the commercial-contraction concern, but their disclosed timing and success criteria remain unresolved.",
+              "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint; guidance admission also does not establish predictive contribution."
+            ],
+            "removed": [
+              "The issuer is not positioned for a six-calendar-month adjusted-share-price doubling because its own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, and no visible evidence shows a commercial inflection large enough to reverse that trajectory.",
+              "If the issuer's AI-driven matching and verification initiatives produce measurable member-quality and engagement improvements before the horizon end, the market could re-rate the stock upward, but the visible evidence does not yet quantify adoption or retention gains sufficient to support a doubling.",
+              "The most likely path to a doubling would require a new, source-backed catalyst such as a binding commercial partnership, a material upward guidance revision, or evidence of accelerating payer growth, none of which is visible in the supplied Basic Info."
+            ]
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [
+              {
+                "claim": "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+                "key": "signal:guidance_acceleration:v3:supporting:0"
+              }
+            ],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [
+                {
+                  "evidence_group": "supporting",
+                  "evidence_index": 0,
+                  "signal_ref": "guidance_acceleration:v3"
+                }
+              ],
+              "need_index": 2,
+              "prior_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+              "reason": "The adopted issuer outlook concerns the second quarter, whereas this need asks about the third-quarter revenue and adjusted EBITDA outlook and its reaffirmation or revision. Neither third-quarter ranges nor their revision history are supplied; the earlier-period outlook does not answer this need.",
+              "residual_need": null
+            },
+            {
+              "answer_scope": "unanswered",
+              "evidence_refs": [],
+              "need_index": 4,
+              "prior_need": "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+              "reason": "The order Signal is unavailable and supplies no adoptable evidence of counterparties, binding commitments, contract values or their horizon relevance. Its stated domain coverage insufficiency does not establish absence of commercial commitments or a technical failure. Preserve the complete need.",
+              "residual_need": null
+            }
+          ],
+          "prior_state_hash": "956e0bc3d27c18760170c870b4395dcf699dd5bf36c3831f73dc7c3759548022"
+        },
+        "round": 1
+      },
+      {
+        "delta": {
+          "contradictions": {
+            "added": [],
+            "removed": []
+          },
+          "current_beliefs": {
+            "added": [],
+            "removed": []
+          },
+          "decision": {
+            "from": "continue",
+            "to": "finalize"
+          },
+          "hypotheses": {
+            "added": [
+              "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.",
+              "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+            ],
+            "removed": [
+              "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The current batch does not settle those questions.",
+              "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint; guidance admission also does not establish predictive contribution."
+            ]
+          },
+          "next_information_needs": {
+            "added": [],
+            "removed": []
+          },
+          "open_questions": {
+            "added": [],
+            "removed": []
+          },
+          "resolved_questions": {
+            "added": [],
+            "removed": []
+          },
+          "supporting_evidence": {
+            "added": [],
+            "removed_keys": []
+          }
+        },
+        "need_dispositions": {
+          "items": [],
+          "prior_state_hash": "0494c61139cd6dea5c48907b68122074dcc01ab8ce10f239ad02c6990e32397c"
+        },
+        "round": 1
+      }
+    ]
+  },
+  "final_state": {
+    "contradictions": [],
+    "current_beliefs": [
+      "Management explicitly warned that efforts to improve the member base will likely result in fewer paying members in the near term, a self-disclosed headwind to the top of the funnel.",
+      "Management identified cost savings and reduced marketing spend, which supports profitability but does not by itself create a revenue or expectation reacceleration catalyst.",
+      "The issuer's product roadmap includes AI-driven matching, verification, and a summer launch, but management characterized the work as early and not yet proven at scale.",
+      "The issuer's balance sheet and cash generation were described as strong, which reduces near-term solvency risk but does not establish a path to a doubling of the adjusted share price.",
+      "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+    ],
+    "decision": "finalize",
+    "hypotheses": [
+      "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.",
+      "Inference: measurable member-quality, engagement and retention improvements could challenge the commercial-contraction concern, but their disclosed timing and success criteria remain unresolved.",
+      "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+    ],
+    "next_information_needs": [
+      "What did the issuer disclose by the prediction time about the expected timing and measurable success criteria for its AI-driven matching and verification initiatives, including any member-quality or engagement metrics?",
+      "What did the issuer disclose by the prediction time about paying-user trends after Q2 2025, including any early Q3 2025 data or commentary on whether the decline is stabilizing?",
+      "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+      "What did the issuer disclose by the prediction time about the summer product launch, including any pre-launch adoption, retention, or monetization metrics?",
+      "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+      "What did the issuer disclose by the prediction time about its capital allocation plans, including share repurchases or dilution, that could affect the adjusted share price within the horizon?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": [
+      {
+        "claim": "A third-party investigation report states that the issuer reported an 8.7% decrease in total paying users in Q2 2025 and that its stock fell 15.94% after the announcement.",
+        "exact_text": "This investigation comes after Bumble reported an 8.7% decrease in total paying users in Q2 2025 and analysts expressed concerns that new AI-powered features and stricter verification measures would negatively impact user and payer growth. Bumble's stock fell 15.94% after the announcement.",
+        "kind": "basic_info",
+        "projection_id": "projection_0a39f87989579f9ee66e27d7"
+      },
+      {
+        "claim": "A third-party news report states that the issuer's stock saw a 0.22% decline on a Friday, closing at $9.08, and that the stock is currently trading significantly below its 52-week high.",
+        "exact_text": "Bumble Inc. (BMBL) stock saw a 0.22% decline on a Friday, closing at $9.08, while the S&P 500 Index experienced a gain of 0.23%. This underperformance adds to a challenging month for Bumble, which has lost 4.22% compared to the S&P 500's 1.29% gain. The stock is currently trading significantly below its 52-week high, indicating a bearish trend.",
+        "kind": "basic_info",
+        "projection_id": "projection_4a50091b38550fa1aacfeac0"
+      },
+      {
+        "claim": "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+        "evidence_group": "supporting",
+        "evidence_index": 0,
+        "kind": "signal",
+        "signal_ref": "guidance_acceleration:v3"
+      }
+    ]
+  },
+  "kind": "stageassembly",
+  "state_deltas": [
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [
+            "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million."
+          ],
+          "removed": []
+        },
+        "hypotheses": {
+          "added": [
+            "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The current batch does not settle those questions.",
+            "Inference: measurable member-quality, engagement and retention improvements could challenge the commercial-contraction concern, but their disclosed timing and success criteria remain unresolved.",
+            "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint; guidance admission also does not establish predictive contribution."
+          ],
+          "removed": [
+            "The issuer is not positioned for a six-calendar-month adjusted-share-price doubling because its own Q1 2025 commentary and Q2 2025 guidance describe near-term paying-user and revenue contraction, and no visible evidence shows a commercial inflection large enough to reverse that trajectory.",
+            "If the issuer's AI-driven matching and verification initiatives produce measurable member-quality and engagement improvements before the horizon end, the market could re-rate the stock upward, but the visible evidence does not yet quantify adoption or retention gains sufficient to support a doubling.",
+            "The most likely path to a doubling would require a new, source-backed catalyst such as a binding commercial partnership, a material upward guidance revision, or evidence of accelerating payer growth, none of which is visible in the supplied Basic Info."
+          ]
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": []
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [
+            {
+              "claim": "The Company updated its second quarter 2025 outlook to revenue between $244 million and $249 million and adjusted EBITDA between $88 million and $93 million.",
+              "key": "signal:guidance_acceleration:v3:supporting:0"
+            }
+          ],
+          "removed_keys": []
+        }
+      },
+      "need_dispositions": {
+        "items": [
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [
+              {
+                "evidence_group": "supporting",
+                "evidence_index": 0,
+                "signal_ref": "guidance_acceleration:v3"
+              }
+            ],
+            "need_index": 2,
+            "prior_need": "What did the issuer disclose by the prediction time about its Q3 2025 revenue and adjusted EBITDA outlook, and whether the prior guidance range has been reaffirmed or revised?",
+            "reason": "The adopted issuer outlook concerns the second quarter, whereas this need asks about the third-quarter revenue and adjusted EBITDA outlook and its reaffirmation or revision. Neither third-quarter ranges nor their revision history are supplied; the earlier-period outlook does not answer this need.",
+            "residual_need": null
+          },
+          {
+            "answer_scope": "unanswered",
+            "evidence_refs": [],
+            "need_index": 4,
+            "prior_need": "What did the issuer disclose by the prediction time about any new commercial partnerships, off-take commitments, or binding contracts that could materially change its revenue trajectory within the horizon?",
+            "reason": "The order Signal is unavailable and supplies no adoptable evidence of counterparties, binding commitments, contract values or their horizon relevance. Its stated domain coverage insufficiency does not establish absence of commercial commitments or a technical failure. Preserve the complete need.",
+            "residual_need": null
+          }
+        ],
+        "prior_state_hash": "956e0bc3d27c18760170c870b4395dcf699dd5bf36c3831f73dc7c3759548022"
+      },
+      "round": 1
+    },
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [],
+          "removed": []
+        },
+        "decision": {
+          "from": "continue",
+          "to": "finalize"
+        },
+        "hypotheses": {
+          "added": [
+            "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The unavailable order-confirmation result establishes neither commitments nor their absence, and its execution cause is not established by a recognized execution status.",
+            "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint. The disclosed outlook revision lacks visible prior guidance levels, so its direction and size remain unresolved; technical admission does not establish predictive contribution."
+          ],
+          "removed": [
+            "The working concern about commercial contraction remains falsifiable: issuer disclosures available by prediction time showing stabilizing paying-user trends, measurable product adoption or durable customer commitments would challenge it. The current batch does not settle those questions.",
+            "Balance-sheet strength alone cannot establish a ceiling on potential price-response magnitude. The current batch provides no financing or liquidity-runway measurement with which to test such a constraint; guidance admission also does not establish predictive contribution."
+          ]
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": []
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [],
+          "removed_keys": []
+        }
+      },
+      "need_dispositions": {
+        "items": [],
+        "prior_state_hash": "0494c61139cd6dea5c48907b68122074dcc01ab8ce10f239ad02c6990e32397c"
+      },
+      "round": 1
+    }
+  ]
+}

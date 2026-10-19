@@ -1,0 +1,39 @@
+{
+  "kind": "independent_local_role",
+  "metadata": {
+    "need_dispositions": {
+      "items": [
+        {
+          "answer_scope": "unanswered",
+          "evidence_refs": [],
+          "need_index": 0,
+          "prior_need": "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?",
+          "reason": "The supplied issuer revenue row describes actual results and became available after prediction_time. It supplies no revenue guidance disclosed by the cutoff and cannot be adopted as point-in-time evidence. The requested issuer, period, and guidance need therefore remains unanswered.",
+          "residual_need": null
+        }
+      ],
+      "prior_state_hash": "1b2944658d928b27bc3be6568d9887d56ec6664b5f8e4a4174968d85a2d5ba10"
+    }
+  },
+  "request_hashes": [
+    "220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd"
+  ],
+  "stage": "initial_reflect",
+  "state": {
+    "contradictions": [],
+    "current_beliefs": [],
+    "decision": "continue",
+    "hypotheses": [],
+    "next_information_needs": [
+      "What is the issuer's Q3 2025 revenue guidance, using only disclosures available by 2025-09-30T00:00:00+00:00?"
+    ],
+    "open_questions": [],
+    "resolved_questions": [],
+    "supporting_evidence": []
+  },
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 0,
+    "tokens": 30294
+  }
+}

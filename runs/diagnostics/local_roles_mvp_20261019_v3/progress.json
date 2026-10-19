@@ -1,0 +1,138 @@
+{
+  "engineering_mvp_closed": false,
+  "external_api_calls": 0,
+  "fixed_denominator": 7,
+  "outcomes": [
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "disposition_survives_critic": true,
+        "disposition_survives_final_context": true,
+        "disposition_survives_posthoc": true,
+        "target_not_falsely_resolved": true,
+        "terminal_state_finalized": true,
+        "untargeted_needs_preserved": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "e2dfbd360c40056c96b549fca0235b6996b09eeeadd382f085756535c93cae88",
+        "7f51bd16ce6780b8ed0718b52a5f04761baf51c861700c6885e701a32432e4b7"
+      ],
+      "sample_id": "plan_r0001_c01"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "disposition_survives_critic": true,
+        "disposition_survives_final_context": true,
+        "disposition_survives_posthoc": true,
+        "target_not_falsely_resolved": true,
+        "terminal_state_finalized": true,
+        "untargeted_needs_preserved": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "a432d3ac1a2c8ab32f852195cc53dd8819192c20aed7745a1f10467b8415640c",
+        "5c6a9fb04f3c0d0c036ff22cde3f0857bc2444c2a73841c2736c44881f07be3b"
+      ],
+      "sample_id": "plan_r0001_c02"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "accepted_consumers_verified": true,
+        "correct_scope": true,
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "preserved_need": true,
+        "terminal_finalized": true,
+        "terminal_state_finalized": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "e098838ea131e99ebfca41236f631f4d7926b5a11095861dd9a9f9b8660ba1f6",
+        "48c3c89e4339bc730ae1e3a6bf355d7416369aa4bc65123f8ff8f74f5455640a"
+      ],
+      "sample_id": "q2_only"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "accepted_consumers_verified": true,
+        "correct_scope": true,
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "preserved_need": true,
+        "terminal_finalized": true,
+        "terminal_state_finalized": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "6e6288dcce90baf75741c5972b0fd50d1b10029ae5864700134e192d52640e51"
+      ],
+      "sample_id": "future_forecast"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "accepted_consumers_verified": true,
+        "correct_scope": true,
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "preserved_need": true,
+        "terminal_finalized": true,
+        "terminal_state_finalized": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "c33d0d2b4d0d92907c77752291683c42c481785d5ad75c55d95fc62deaeae41a",
+        "39cb5cfa1203ac18c13e1567bd5400ca6fe3228ed0d8e0e9743893f4f2047032",
+        "638fd227e807adee9d02b3edff2e9228ecf485cdcecd9348e36853c29af10368"
+      ],
+      "sample_id": "partial_numeric"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "accepted_consumers_verified": true,
+        "correct_scope": true,
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "preserved_need": true,
+        "terminal_finalized": true,
+        "terminal_state_finalized": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "220131fcb3f052a7c23f3ebb353449d290c5a1839a6a94ce0cb06961be0e59dd",
+        "bb6c1abbd9c6f1f2661f3f1110c1af1e081138e375a85e0c5ef06f85ab053439"
+      ],
+      "sample_id": "future_actual"
+    },
+    {
+      "independent_semantic_verdict": "pending_review",
+      "mechanical_checks": {
+        "accepted_consumers_verified": true,
+        "correct_scope": true,
+        "critic_dispositions_exact": true,
+        "final_context_dispositions_exact": true,
+        "posthoc_dispositions_exact": true,
+        "preserved_need": true,
+        "terminal_finalized": true,
+        "terminal_state_finalized": true
+      },
+      "mechanical_passed": true,
+      "request_hashes": [
+        "600f7e25ea8a96b09f0960afc7bbc09a23d0178ccd516283321e1d46fd018274"
+      ],
+      "sample_id": "terminal_empty_owner"
+    }
+  ],
+  "pending": [],
+  "source_pit_accepted": false,
+  "status": "completed_requires_independent_review"
+}

@@ -5,34 +5,34 @@
 独立预测收益属于后续里程碑，仍未验证。用户要求生产 LLM 位置由独立 subagent
 处理；本轮外部模型、数据和 web API 调用均为零，未恢复旧目标或完整付费运行。
 
-## 新证据：本地独立角色已贯通 Reflect 的实际连接
+## 新证据：F7 范围通过，F8 未来摘要仍暴露
 
-[报告](../reports/local-role-mvp-stage-acceptance-20261019.md)、
-[冻结七样本与原始结果](../runs/diagnostics/local_roles_mvp_20261019_v2/progress.json)、
-[独立范围审查](../runs/diagnostics/local_roles_mvp_20261019_v2_consumer_check/independent-review.json)。
+[v3 报告](../reports/local-role-mvp-v3-stage-acceptance-20261019.md)、
+[冻结七样本与原始结果](../runs/diagnostics/local_roles_mvp_20261019_v3/progress.json)、
+[独立范围审查](../runs/diagnostics/local_roles_mvp_20261019_v3/independent-review.json)。
 显式 `independent-subagent` 后端保留原生产请求、匿名投影、parser、typed 纠错、
 fallback、持久化及精确消费者；13 条新请求均由隔离角色实际回答，原答/角色身份/hash
 绑定保存，内部成本与实测 token 用量未知，无 logprobs。
 
-- 原 c01/c02 首答均保留未回答 Q3/FY need；terminal 接受，最终上下文、posthoc、critic
-  的处置精确保真，两个原案这一回答范围链通过独立核对。不能外推所有状态或来源正确。
-- 固定七分母的原 driver 仍为 2 个机械通过、5 个失败。三份 synthetic prior 没有现行
-  合同要求的显式 cutoff；ISO 完整时间边界还被误拒；两个 accepted synthetic 触发
-  driver 漏传消费者参数。旧失败未改写，不能当作七样本通过。
-- [单独 consumer CLI](../runs/diagnostics/local_roles_mvp_20261019_v2_consumer_check/result.json)
-  重读四份已接受产物，实际构建三个消费者并验证处置保真；其余三份没有 accepted stage。
-  未执行新的 Predictor/posthoc/critic 模型。其他生产角色尚未实际验收。
+- v3 七个合法 prior 的 accepted state 回答范围/残留均正确，三个消费者处置精确保真。
+  13 个独立角色：7 首答、1 次仅修 evidence 形状的 typed 纠错、5 后续 terminal；
+  首答结构 6/7，最终机械 7/7；F7 这一冻结范围通过独立审查。
+- **F8 未通过**：future_actual 故障注入虽未被 state 采纳，未来实绩摘要仍进入
+  final/posthoc/critic，最初 Reflect 请求也可见。正常 F6 校验会拒绝该 timestamp；
+  这是绕过 F6 后 serialized/staged result 的模型消费边界缺防线，不是 F6 已证漏放。
+- [旧 v2](../reports/local-role-mvp-stage-acceptance-20261019.md) 固定七分母仍 2 机械通过、
+  5 失败，原件/原答/旧结果均保留。新 v3 结果不能改写旧失败，也不能证明所有消费者安全。
 
-1691 项原全量离线测试通过；companion 新增后 11 项桥接/真实 CLI 聚焦检查通过。
-Lint 通过且已亲读 feedback。反例审查另证实并发派发可突破本地调用数、缓存命中可绕过
-原答 receipt 重验；本批串行 13/28 原答 hash 不受影响，通用预算和恢复仍未关闭。
+1708 项全量离线测试及最终 114 项桥接/时间/真实 CLI 聚焦检查通过。
+Lint 通过且已亲读 feedback。并发调用数/cache 原答复核两缺陷已修且独立线程/进程/
+篡改反例通过；只关闭该本地机械边界，完整运行恢复未验证。
 
 ## 下一最小批次与输入阻塞
 
-上述共享 root 原子准入、缓存原答复核、aware timestamp-bound 与 driver 消费者分支
-已做[本地修复](../reports/local-role-integrity-repair-20261019.md)：旧反例先失败，新检查通过；
-1708 全量离线测试、最终 114 项聚焦检查通过。七 prior 已用生产校验预检合法，下一步
-冻结新版本后由新独立角色重验正反控，仍不能把局部通过当实际全链通过。
+先用 v3 真实 future_actual 产物在模型入口及完整消费者重现，沿共享资格边界拒绝
+不合格 Signal；保留坏原件与 typed 技术/PIT 原因，不能只改 unavailable 或删单字段。
+随后实现[窄来源准入 view](../spec/src/stock_opportunity_agent/data/reviewed_snapshot.md)，
+用真实静态 SEC 正控、污染 news 反例及 transcript unknown 验证实际 store/冻结/恢复。
 保留本批失败，不用提示/季度 regex 掩盖。后续按可信输入→检索阅读→Signal→Reflect
 →Slow→后继→恢复推进。
 
