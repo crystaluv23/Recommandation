@@ -1,0 +1,257 @@
+{
+  "scope": "Pre-dispatch F8 final input only; historical exact role36/37 reuse in temporary child. No fresh role output, no new inbox or receipt, no sink/labels.",
+  "verdict": "narrow_input_preservation_pass",
+  "request_hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+  "request_canonical_hash_verified": true,
+  "four_needs_exactly_preserved": true,
+  "controller_decision": "finalize",
+  "runtime_termination": {
+    "phase": "prediction_ready",
+    "stop_reason": "finalized",
+    "termination_trigger": "budget_exhausted"
+  },
+  "signal_results": [
+    {
+      "execution": {
+        "status": "budget_blocked"
+      },
+      "input_evidence_available_at": [],
+      "interpretation": {
+        "summary": "Technical execution gap: Signal execution did not produce a validated domain result. Treat this item as unknown and do not infer that the measured condition is absent."
+      },
+      "research_status": {
+        "admission_key": "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743",
+        "effect_status": "unverified",
+        "research_targets": [
+          "surge_direction"
+        ],
+        "technical_status": "admitted"
+      },
+      "signal_ref": "financing_listing_action:v5",
+      "state": {
+        "confidence": 0.0,
+        "value": "unavailable"
+      },
+      "status": {
+        "coverage": "unavailable"
+      }
+    },
+    {
+      "execution": {
+        "status": "budget_blocked"
+      },
+      "input_evidence_available_at": [],
+      "interpretation": {
+        "summary": "Technical execution gap: Signal execution did not produce a validated domain result. Treat this item as unknown and do not infer that the measured condition is absent."
+      },
+      "research_status": {
+        "admission_key": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c",
+        "effect_status": "unverified",
+        "research_targets": [
+          "surge_direction"
+        ],
+        "technical_status": "admitted"
+      },
+      "signal_ref": "guidance_acceleration:v3",
+      "state": {
+        "confidence": 0.0,
+        "value": "unavailable"
+      },
+      "status": {
+        "coverage": "unavailable"
+      }
+    }
+  ],
+  "no_need_disposition_or_answered_closure": true,
+  "decision_only_state_evolution": [
+    {
+      "delta": {
+        "contradictions": {
+          "added": [],
+          "removed": []
+        },
+        "current_beliefs": {
+          "added": [],
+          "removed": []
+        },
+        "decision": {
+          "from": "continue",
+          "to": "finalize"
+        },
+        "hypotheses": {
+          "added": [],
+          "removed": []
+        },
+        "next_information_needs": {
+          "added": [],
+          "removed": []
+        },
+        "open_questions": {
+          "added": [],
+          "removed": []
+        },
+        "resolved_questions": {
+          "added": [],
+          "removed": []
+        },
+        "supporting_evidence": {
+          "added": [],
+          "removed_keys": []
+        }
+      },
+      "round": 1
+    }
+  ],
+  "anchor": {
+    "doubling_threshold": 12.988,
+    "mean_adjusted_close": 6.494,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 6.3,
+    "recent_close_date": "2025-09-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ]
+  },
+  "basic_info_source_index": [
+    {
+      "available_projection_count": 23,
+      "effective_context_truncated": true,
+      "omitted_context_markers": [
+        "to correct &#8220;Accumulated other comprehensive income&#8221; and &#8220;Additional paid-in capital&#8221; r",
+        "mstances. Uncertainty about these assumptions, judgments and estimates could result in outcomes that require a",
+        "more likely than not (i.e., greater than 50% likelihood) that the fair value of a reporting unit is less than ",
+        "assets are tested for impairment annually as of October 1 or more frequently if certain circumstances indicate",
+        "ng estimated useful lives of long-lived assets and definite-lived intangible assets are routinely reviewed and",
+        "e Company still has an accumulated deficit balance, the excess over the par value will be applied to &#8220;Ad",
+        "0; 112 ( 112 ) — Share repurchases — — — — — 5,291,186 ( 45,600 ) — — ( 45,600 ) 8,044 ( 37,556 ) Purchase of ",
+        "on expense 9,987 2,115 Net foreign exchange difference 25,635 658 Other, net 1,564 ( 2,459 ) Changes in assets"
+      ],
+      "omitted_projection_count": 5,
+      "projection_context_truncated": true,
+      "projection_ids": [
+        "projection_d84bdae2cd1041d8970aaed9",
+        "projection_b36b57b75d528096cbf3f01f",
+        "projection_f5e5258464d4602a2ffccc9e",
+        "projection_72c7dd5608b151dc514a11f5",
+        "projection_907da1a0881fb4891fdeaaf7",
+        "projection_2a73e1817749e8a383332552",
+        "projection_88561076473726b8c924ae4d",
+        "projection_28fc757258382ae931247a5b",
+        "projection_7654c004229c4e5ee47f8a47",
+        "projection_cccfe6f1b3000bd15b4aee00",
+        "projection_d5f65227c7db9101b4c0ccc8",
+        "projection_ef319ab39a183f8a50a94a02",
+        "projection_bf19f797ee166b87f3dbd67f",
+        "projection_93167a22b5fa777bc6f0d19f",
+        "projection_5ad5db9b3f4282191ef7cd69",
+        "projection_7ea0855fc24c4aaa0d110ce6",
+        "projection_61db3248717e2375435767db",
+        "projection_8a5a6e5cf95277bf3f4b1907"
+      ],
+      "projection_status": "partial_context_budget",
+      "request_id": "recent_annual_filing",
+      "source_context_truncated": true,
+      "source_types": [
+        "filing"
+      ],
+      "status": "resolved",
+      "visible_projection_count": 18
+    },
+    {
+      "available_projection_count": 0,
+      "effective_context_truncated": false,
+      "omitted_context_markers": [],
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_ids": [],
+      "projection_status": "unavailable",
+      "request_id": "recent_company_news",
+      "source_context_truncated": false,
+      "source_types": [
+        "news"
+      ],
+      "status": "unresolved",
+      "visible_projection_count": 0
+    },
+    {
+      "available_projection_count": 0,
+      "effective_context_truncated": false,
+      "omitted_context_markers": [],
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_ids": [],
+      "projection_status": "unavailable",
+      "request_id": "reported_financial_facts",
+      "source_context_truncated": false,
+      "source_types": [
+        "sec_company_facts"
+      ],
+      "status": "unresolved",
+      "visible_projection_count": 0
+    },
+    {
+      "available_projection_count": 1,
+      "effective_context_truncated": true,
+      "omitted_context_markers": [
+        "{\"adjusted_close\":6.17,\"as_of_date\":\"2025-08-29\",\"close\":6.17,\"high\":6.54,\"low\":6.06,\"open\":6.36,\"retrieved_at",
+        "{\"adjusted_close\":7.01,\"as_of_date\":\"2025-09-15\",\"close\":7.01,\"high\":7.26,\"low\":6.91,\"open\":6.93,\"retrieved_at",
+        "{\"adjusted_close\":6.28,\"as_of_date\":\"2025-09-26\",\"close\":6.28,\"high\":6.49,\"low\":6.22,\"open\":6.45,\"retrieved_at"
+      ],
+      "omitted_projection_count": 0,
+      "projection_context_truncated": false,
+      "projection_ids": [
+        "projection_e885fe196b2d87d88a643882"
+      ],
+      "projection_status": "partial_context_budget",
+      "request_id": "recent_market_backbone",
+      "source_context_truncated": true,
+      "source_types": [
+        "market_data"
+      ],
+      "status": "resolved",
+      "visible_projection_count": 1
+    }
+  ],
+  "anonymous": true,
+  "new_inboxes": 0,
+  "new_receipts": 0,
+  "new_model_answers": 0,
+  "network_attempts": 0,
+  "pending_answer_not_predetermined": true,
+  "notes": [
+    "Both unavailable-shaped results are technical budget failures with explicit execution status; neither is domain absence nor bearish evidence. Actual future Predictor adherence is still untested.",
+    "All4 needs remain open. State finalize is the existing deterministic must_finalize/all-unavailable Reflect fallback; runtime stop finalized still preserves independent budget_exhausted trigger. No fresh Reflect answer or complete research is asserted.",
+    "Partial filing18/23 and market upstream omission survive; earlier accepted evidence citations and baseline persist in packet. Full F2 coverage remains open."
+  ],
+  "bindings": {
+    "scripts/run_reviewed_fast_prefix.py": "56bd746a453c98e45236a5561d270ac69e439b799316a3f75c2be61ec3ac46b0",
+    "spec/scripts/run_reviewed_fast_prefix.md": "a16703608b2703cc7a26ad3607118b53d31c6aa38e738b513cd62487f81bbc74",
+    "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/predictor-final-request.json": "391b7bab5884159ed09657bc6a828e2489cd41abf3cb9daa41c3bf20dabdbcb5",
+    "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/predictor-final-context.json": "bcd9d9621043c1c820585b5057967d7a7a96a78923c40c8e44db78fcfe9f1ff7"
+  },
+  "actual_projection_card_counts": {
+    "available_projections": 19,
+    "deferred_projections": 0,
+    "included_cards": 19
+  },
+  "final_cards_exactly_match_source_index_ids": true,
+  "nineteen_cards_breakdown": {
+    "filing": 18,
+    "market": 1
+  },
+  "all_five_accepted_basic_evidence_refs_still_resolve": true,
+  "two_DataGaps_retained": [
+    "recent_company_news",
+    "reported_financial_facts"
+  ],
+  "deterministic_terminal_reflect_authority": {
+    "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+    "lines": "374-380",
+    "condition": "must_finalize and all unavailable-shaped; preserve all fields and change only decision to finalize; no model call"
+  }
+}

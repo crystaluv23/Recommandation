@@ -1,0 +1,31 @@
+{
+  "scope": "One root-external temporary historical-cache native replay, not formal completed re-execution or fresh model behavior",
+  "blocked_requests": [
+    {
+      "stage": "llm_signal_batch_execute",
+      "request_hash": "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9",
+      "required_reservation": 16547,
+      "remaining_request_budget": 14269,
+      "error_type": "RuntimeBudgetExceeded",
+      "error": "local role request reservation exceeds remaining case budget",
+      "inbox_exists": false
+    },
+    {
+      "stage": "signal_retrieval_cards",
+      "request_hash": "aeac0c7b1e3d733526d1bfae6ac85226e45d57400c726a14fdce2930a0e9100d",
+      "required_reservation": 47569,
+      "remaining_request_budget": 12836,
+      "error_type": "RuntimeBudgetExceeded",
+      "error": "local role request reservation exceeds remaining case budget",
+      "inbox_exists": false
+    }
+  ],
+  "result_status": "prediction_persisted_before_labels_requires_independent_review",
+  "new_inboxes": 0,
+  "new_receipts": 0,
+  "formal_immutable_unchanged": true,
+  "ground_truth_reads": 0,
+  "readonly_data_requests": 0,
+  "external_llm_calls": 0,
+  "new_role_answers": 0
+}

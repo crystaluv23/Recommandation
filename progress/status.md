@@ -6,13 +6,12 @@
 处理；外部 LLM 调用保持零，用户现允许只读公开资料取证。新资料请求单独计数，
 不热加入已冻结输入；未恢复旧目标或完整付费运行。
 
-正式 blind-prefix v1 已有两条实际隔离首答：H_init 和 routing 窄语义通过，
-但观察器误调 SignalBatchResult.to_dict 后停止，未预测/未读标签。原失败与两答保留。
-已批准仅修观察器并在新 root 精确继承两答；同总32上限含继承2，不增加分母/预算。
-原生重建显示两 selected refs 来源齐备，但技术 budget_blocked，apply 模型未执行；
-不记作 domain 不足。见 [修复与续接报告](../reports/reviewed-fast-prefix-observer-continuation-20261019.md)。
-runtime 停止原因披露及 native cache 逻辑预算前批1785项/lint已过；
-本轮19项定向与独立续接/完成恢复反例通过，正式新root待代码检查点后准备。
+正式盲预测前缀v2单例通过独立语义/精确消费审查，预测先持久化再停于标签前边界。
+三实际角色（原H_init/路由两答精确继承+新Predictor一答），0纠错；apply/Reflect模型
+未执行：两Signal技术budget_blocked，确定性finalize仍保留4needs。32文件恢复全等，
+0新inbox/receipt，原v1观察器失败保留；完整F9/MVP仍open。
+见 [单例前缀验收](../reports/reviewed-fast-prefix-acceptance-20261019.md)。
+下一步仅核canonical LabelStore真实资格，再设计独立Posthoc反馈阶段，不造trajectory。
 
 前批修复最终 1770 全量通过；首轮 1768/1769 的 critic payload 预算回归及原尺寸
 保留。仅最后 wire 改为同 payload 可逆 profiles，全部字段/IDs 保真，原预算不变。

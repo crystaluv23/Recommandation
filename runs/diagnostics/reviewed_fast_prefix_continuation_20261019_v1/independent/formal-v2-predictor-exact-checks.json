@@ -1,0 +1,118 @@
+{
+  "scope": "Read-only exact formal v2 Predictor/sink/completed-restore evidence audit; no formal resume or new role answer.",
+  "request_hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+  "receipt_agent": "/root/role_38",
+  "first_answer_accepted_no_correction": true,
+  "parser_delta_only_is_surge_projection": true,
+  "sink_context_exactly_equals_actual_wire_and_predeclared_F8_input": true,
+  "sink_prediction_exactly_equals_accepted_observation": true,
+  "all_freeze_code_original_registry_bindings_match": true,
+  "code_count": 95,
+  "registry_file_count": 198,
+  "inherited_2_response_bytes_exact": true,
+  "v1_all_immutable_original_bytes_unchanged": true,
+  "completion_hash_inventory_match": true,
+  "actual_completed_restore_driver_hashmaps": {
+    "before_after_equal": true,
+    "bound_files": 32,
+    "all_current_file_hashes_match": true,
+    "new_inbox": 0,
+    "new_receipt": 0,
+    "restored_without_execution": true
+  },
+  "answered": [
+    {
+      "hash": "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+      "stage": "blind_predictor_predict"
+    },
+    {
+      "hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+      "stage": "research_controller_initialize"
+    }
+  ],
+  "journal_only": [
+    {
+      "hash": "aeac0c7b1e3d733526d1bfae6ac85226e45d57400c726a14fdce2930a0e9100d",
+      "stage": "signal_retrieval_cards"
+    },
+    {
+      "hash": "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9",
+      "stage": "llm_signal_batch_execute"
+    }
+  ],
+  "physical_roles": {
+    "historical": 2,
+    "new_predictor": 1,
+    "total": 3,
+    "apply_model": 0,
+    "reflect_model": 0
+  },
+  "runtime_termination": {
+    "phase": "prediction_ready",
+    "stop_reason": "finalized",
+    "termination_trigger": "budget_exhausted"
+  },
+  "four_needs_preserved": true,
+  "deterministic_reflect_only": true,
+  "canonical_financial_excerpts_verified": [
+    "Revenue $ 248,229 $ 268,615 $ 495,330 $ 536,390",
+    "Selling and marketing expense 32,092 67,562 91,826 131,179",
+    "Product development expense 32,510 15,705 67,014 51,722",
+    "Impairment loss 404,855 — 408,486 —",
+    "Cash and cash equivalents $ 261,739 $ 204,319",
+    "Long-term debt, net 609,418 611,346",
+    "Payable to related parties pursuant to a tax receivable agreement 399,740 400,926"
+  ],
+  "metric_definition": "Trailing180 PIT trading sessions, endpoint return%; trend range is endpoint return strictly between -20% and +20%, not a claim of low volatility or the six-calendar-month outcome horizon.",
+  "independently_recomputed_metric": {
+    "first_date": "2025-01-10",
+    "last_date": "2025-09-29",
+    "window_trading_days": 180,
+    "first_close": 7.56,
+    "last_close": 6.3,
+    "high": 8.64,
+    "low": 3.65,
+    "return_pct": -16.6667,
+    "max_drawdown_pct": -57.7546,
+    "daily_volatility_pct": 5.1013
+  },
+  "baseline": {
+    "doubling_threshold": 12.988,
+    "mean_adjusted_close": 6.494,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 6.3,
+    "recent_close_date": "2025-09-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ]
+  },
+  "identity_oracle_label_boundary": "Actual request anonymous; frozen oracle never in role messages; sink saved/readback checked in frozen code before dedicated pre-label provider boundary. Driver actual boundary reached with GroundTruth reads0.",
+  "forecast_correctness_or_benefit_evaluated": false,
+  "source_bindings": {
+    "runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001830043/sec:cik_0001830043:000162828025038861.json": "7aab9696602c77ee01ab66f782e4daf5c6cff1d6d402418274cba8b04aaf32bd",
+    "runs/cold_start/data/global-raw-info-oracle-v1/market_data/cik_0001830043/massive:cik_0001830043:market_data:c48ddf33f63755eb0e12623e.json": "48f35c07a1fef44b0ccfefaf848306b493354d9135cef34c056da38c8446348c"
+  },
+  "formal_artifact_bindings": {
+    "expectations.json": "d7fc0fcb92ed63eb25004e67830ce811acbb5ec17d568833f9d369b26f1f62e1",
+    "inputs.json": "e54ccc9cb1ddbe631c7ad33fd4e15373841c1611d2d4853e15b3600dd59f1f7a",
+    "contract.json": "9b2a269bf1321cfd6428ece65f98503a1b4df84d38e2e7f6c1324dd4091aaa3a",
+    "manifest.json": "21744c3172166d7cafb644afe060196c26b2b4c47c346c98a253d0b6db21ee04",
+    "completion.json": "fb1c3618cb554248ea329cdb69b5250e875166fe5e259eb6de8881c4c68a755e",
+    "prediction.json": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2",
+    "observations/prediction_00.json": "7bceff8f92a62097e6d482385ac99854d5037341dde35e2c812418601981d2c0",
+    "requests/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "0867919177e27c53788bc008e442be6bae2330c8d32b0274d8e7f77363813cfc",
+    "exchange/inbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "f4b44ae770a2c3ed9fed30d79916416cc801b62a1de1649e10c7a693cbb4d7b0",
+    "exchange/outbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.txt": "6851de243e885dd2246c2df3c2c6c9ff4a63e7590581158df797de960a968a41",
+    "exchange/receipts/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "6446d51931629dd3d7ab7efbe854f779a07d254e3b6e7c8882ea477f29d7eaa3",
+    "cache/responses/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "a2fc4eb9e2460791dc51c2d29c5290d4ffbc401e93f27504e8e345e4b436b8a9"
+  }
+}

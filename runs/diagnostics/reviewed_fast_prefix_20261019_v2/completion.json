@@ -1,0 +1,146 @@
+{
+  "completion_hash": "8346ee408d8cdd333643b6271eabeb8a4b7e330e55adc7311cb28d6c9b5105d9",
+  "immutable_artifacts": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/cache/responses/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json",
+      "sha256": "a2fc4eb9e2460791dc51c2d29c5290d4ffbc401e93f27504e8e345e4b436b8a9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/cache/responses/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.json",
+      "sha256": "856d7a497bf8ae28217dbff5bfe0af17481193d8c59979ee4cd7a8cea9d95973"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/cache/responses/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json",
+      "sha256": "7f7290bae949fc97dfcac934429c05b389e648c824211aace48b0dea802ca528"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/contract.json",
+      "sha256": "9b2a269bf1321cfd6428ece65f98503a1b4df84d38e2e7f6c1324dd4091aaa3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/contract.json",
+      "sha256": "88c5d7a7171f10a0713cf3520ebc25e0332b0444e78730c7834bc90333854436"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/inbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json",
+      "sha256": "f4b44ae770a2c3ed9fed30d79916416cc801b62a1de1649e10c7a693cbb4d7b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/inbox/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.json",
+      "sha256": "3c04dca7403096e36adce86173cdcd9e021e9ab2b18c61ea0380469f81ab3deb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/inbox/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json",
+      "sha256": "fdc36da98439926bc1b5fe58f375a10cf13727a1c5bcadfb568527c4119199e4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/outbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.txt",
+      "sha256": "6851de243e885dd2246c2df3c2c6c9ff4a63e7590581158df797de960a968a41"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/outbox/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.txt",
+      "sha256": "4e54056834d32b18840079d7322e6fd4c3c1c221f902724e07da0448bc703237"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/outbox/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.txt",
+      "sha256": "d1fd9dc5d733b1f1dc5e6282e42047a970958a3a36b744c2321eb38b95b578a9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/receipts/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json",
+      "sha256": "6446d51931629dd3d7ab7efbe854f779a07d254e3b6e7c8882ea477f29d7eaa3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/receipts/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.json",
+      "sha256": "a5a98b535ba4fcc7820a50a8c35798d6ea6ac3f99b07503c981ec95e512fa093"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/exchange/receipts/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json",
+      "sha256": "d4cbb61a5c1ec3a5035a2316d652761d66ff025f97bf37aade5067651658a92d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/expectations.json",
+      "sha256": "d7fc0fcb92ed63eb25004e67830ce811acbb5ec17d568833f9d369b26f1f62e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/inputs.json",
+      "sha256": "e54ccc9cb1ddbe631c7ad33fd4e15373841c1611d2d4853e15b3600dd59f1f7a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/manifest.json",
+      "sha256": "21744c3172166d7cafb644afe060196c26b2b4c47c346c98a253d0b6db21ee04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/observations/initialize_00.json",
+      "sha256": "4d00c75cd3bf70ed8d7f991f4526d37e150fc1cdec7d1cbb29591f7ec627de5e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/observations/prediction_00.json",
+      "sha256": "7bceff8f92a62097e6d482385ac99854d5037341dde35e2c812418601981d2c0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/observations/reflect_00.json",
+      "sha256": "752c935c11b9f1c8c10a9e31b79e2d826b75dd9bd834fbfe52d9f21bef354ffd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/observations/routing_00.json",
+      "sha256": "bc3f9c4cd1469df8ddaeb006e497a307f7df77bdc7bd24e3d74bb4797b01958b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/observations/signal_group_00.json",
+      "sha256": "277bc94f7334444857525e775796a52df43c54dd4d764c326850583700551e67"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/prediction.json",
+      "sha256": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/preflight.json",
+      "sha256": "2aa3cb1d95ab2c2b711bdd1f56e52bcd848bf2f98d1eb397a61709813daea474"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/requests/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json",
+      "sha256": "0867919177e27c53788bc008e442be6bae2330c8d32b0274d8e7f77363813cfc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/requests/89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45.json",
+      "sha256": "07bf0fa49967d3546435683736e1e143e14ab6458156dc5f82eca23235d2afef"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/requests/8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9.json",
+      "sha256": "2444dcb0ddb2f58c34dd7917c1d70b27f50b5450222ab03c9314e5f7069ce185"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/requests/aeac0c7b1e3d733526d1bfae6ac85226e45d57400c726a14fdce2930a0e9100d.json",
+      "sha256": "f7b483d852e8c9d63377759833f96ba8572947a8fce66b24e1532ae2dbcb7840"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/requests/d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835.json",
+      "sha256": "9514063fb055b9746e671d37872cf40e1fa61d92d87969c494c60c2f7c821da3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/unused_external_attempts.json",
+      "sha256": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277"
+    }
+  ],
+  "manifest_hash": "0d142755055323d2fa271caa820c993899773772306e27cc98b47194ad34367b",
+  "result": {
+    "actual_host_cost": null,
+    "actual_host_tokens": null,
+    "apply_executed": true,
+    "completed_fast_round": false,
+    "completed_trajectory": false,
+    "engineering_mvp_closed": false,
+    "external_llm_calls": 0,
+    "fixed_denominator": 1,
+    "ground_truth_reads": 0,
+    "historical_reused_role_responses": 2,
+    "independent_receipts": 3,
+    "new_role_receipts": 1,
+    "pending": [],
+    "prediction_ref": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_fast_prefix_20261019_v2/prediction.json",
+    "readonly_data_requests": 0,
+    "reflect_executed": true,
+    "sample_id": "s01",
+    "status": "prediction_persisted_before_labels_requires_independent_review"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "metadata": {},
+  "request_hashes": [
+    "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835"
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 52815
+  },
+  "value": [
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "Long-term debt makes maturity-related financing actions relevant; technical admission permits assessment but establishes no predictive benefit.",
+      "context_tags": [
+        "recurring_revenue"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "What operating cash flow, capitalized development spending, covenants and tax receivable agreement payment terms were disclosed by prediction time, including restrictions or commitments affecting available cash?",
+      "selection_reason": "Assess disclosed debt maturities and whether they materially change funding runway.",
+      "signal_ref": "financing_listing_action:v5",
+      "target_need_indices": [
+        2
+      ]
+    },
+    {
+      "answer_scope": "partial",
+      "applicability_hypothesis": "A proposed operating turnaround makes management's guidance comparison relevant, subject to disclosures available by prediction time.",
+      "context_tags": [
+        "recurring_revenue"
+      ],
+      "expected_role": "primary",
+      "reason_code": "answer_need",
+      "residual_need": "What product or pricing initiatives, rollout timing, and observed engagement or monetization results had been disclosed by prediction time that could support an expectations change within the evaluation horizon?",
+      "selection_reason": "Evaluate whether disclosed operating guidance materially strengthens the growth path relative to prior guidance.",
+      "signal_ref": "guidance_acceleration:v3",
+      "target_need_indices": [
+        3
+      ]
+    }
+  ]
+}

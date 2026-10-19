@@ -1,0 +1,215 @@
+{
+  "schema_version": "reviewed-fast-prefix-independent-acceptance-v1",
+  "scope": "Formal single-case historical-continuation blind prediction prefix through durable sink and dedicated pre-label boundary; no completed trajectory/Fast, scoring or benefit evaluation.",
+  "verdict": "narrow_semantic_and_exact_consumption_pass",
+  "predictor_result": {
+    "candidate_judgment": "unlikely",
+    "is_surge": false,
+    "magnitude": null,
+    "confidence": "low",
+    "judgment_not_preassigned": true,
+    "first_answer_accepted": true,
+    "corrections": 0
+  },
+  "predictor_request_hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+  "raw_receipt_agent": "/root/role_38",
+  "raw_request_cache_accepted_sink_checks": {
+    "first_answer_accepted_no_correction": true,
+    "parser_delta_only_is_surge_projection": true,
+    "sink_context_exactly_equals_actual_wire_and_predeclared_F8_input": true,
+    "sink_prediction_exactly_equals_accepted_observation": true,
+    "all_freeze_code_original_registry_bindings_match": true,
+    "completion_hash_inventory_match": true
+  },
+  "semantic_findings": [
+    {
+      "item": "financial evidence",
+      "finding": "All quarter/half-year revenue and expense numbers, June30/prior-yearend balance amounts, debt net/TRA payable and quarter impairment match the actual displayed canonical10Q columns and USD-thousand units. Revenue248229 vs268615 and495330 vs536390 are distinguished. No quarterly/half-year or stock/flow swap."
+    },
+    {
+      "item": "inferences",
+      "finding": "Revenue contraction weighs against rapid rerating; reduced marketing plus increased product expense can reflect turnaround or deterioration. These remain forecasts/inferences. Impairment is adverse asset-value evidence, while reported loss is not treated as measured recurring cash burn. Debt/TRA are not asserted immediately payable; cashflow/payment terms remain unresolved."
+    },
+    {
+      "item": "price definition",
+      "finding": "Supplied baseline6.494 and threshold12.988 retain five-complete-session mean definitions and the fixed six-calendar-month future-max-five-session-mean horizon; recent_close6.3 remains distinct. The180-session price-shape card is not relabeled a six-month return. range means endpoint-return between±20%, not proof of low volatility or that doubling is impossible."
+    },
+    {
+      "item": "gaps and stopping",
+      "finding": "The answer explicitly calls both exact-version Signal states budget_blocked technical gaps, not absence or valid negative factor measurements; acknowledges four unresolved research needs, partial filing, unresolved news/companyfacts, stale June30/Aug7 evidence and available market baseline. It distinguishes budget-triggered collection end from finalize. It does not use missing-data alone, broad-market rarity, missing guarantee or the mechanically constructed threshold as its negative thesis."
+    }
+  ],
+  "independently_recomputed_market_metric": {
+    "first_date": "2025-01-10",
+    "last_date": "2025-09-29",
+    "window_trading_days": 180,
+    "first_close": 7.56,
+    "last_close": 6.3,
+    "high": 8.64,
+    "low": 3.65,
+    "return_pct": -16.6667,
+    "max_drawdown_pct": -57.7546,
+    "daily_volatility_pct": 5.1013
+  },
+  "runtime_anchor": {
+    "doubling_threshold": 12.988,
+    "mean_adjusted_close": 6.494,
+    "method": "mean_last_5_complete_adjusted_closes_strictly_before_prediction_time",
+    "recent_close": 6.3,
+    "recent_close_date": "2025-09-29",
+    "status": "available",
+    "trading_dates": [
+      "2025-09-23",
+      "2025-09-24",
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-29"
+    ]
+  },
+  "runtime_termination": {
+    "phase": "prediction_ready",
+    "stop_reason": "finalized",
+    "termination_trigger": "budget_exhausted"
+  },
+  "four_needs_byte_equal_to_H_init": true,
+  "finalization": "Deterministic existing must_finalize/all-unavailable-shaped controller branch changes only decision. Zero new Reflect model answer; needs/dispositions/evidence are not falsely closed.",
+  "visibility": {
+    "filing_available": 23,
+    "filing_visible": 18,
+    "filing_source_projection_effective_truncation": true,
+    "final_projection_cards": 19,
+    "filing_cards": 18,
+    "market_cards": 1,
+    "market_source_truncated": true,
+    "market_projection_truncated": false,
+    "earlier_five_basic_evidence_refs_preserved": true,
+    "news_and_companyfacts_DataGaps_preserved": true
+  },
+  "physical_role_counts": {
+    "historical": 2,
+    "new_predictor": 1,
+    "total": 3,
+    "apply_model": 0,
+    "reflect_model": 0
+  },
+  "method_execution_vs_model_behavior": {
+    "SignalExecutor_execute_batch_entered": true,
+    "Signal_apply_model": "not_exercised; two technical budget_blocked records",
+    "controller_reflect_entered": true,
+    "Reflect_model": "not_exercised; deterministic terminal finalize",
+    "new_Predictor_model": 1,
+    "Posthoc_and_Critic_model": "not_exercised"
+  },
+  "journals_do_not_count_as_role_answers": {
+    "answered": [
+      {
+        "hash": "d146eb080b82d53a9f6b02d06720b624f5f3da02a3df88d4b62363563b29b835",
+        "stage": "signal_retrieval_cards"
+      },
+      {
+        "hash": "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f",
+        "stage": "blind_predictor_predict"
+      },
+      {
+        "hash": "89a34b9d9ffe11a5c749e25787ddb84af249d4a66bf35d1dff0886ea4f92ee45",
+        "stage": "research_controller_initialize"
+      }
+    ],
+    "undispatched": [
+      {
+        "hash": "aeac0c7b1e3d733526d1bfae6ac85226e45d57400c726a14fdce2930a0e9100d",
+        "stage": "signal_retrieval_cards"
+      },
+      {
+        "hash": "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9",
+        "stage": "llm_signal_batch_execute"
+      }
+    ],
+    "budget_cause_evidence": "root-external exact-cache native budget capture, not inferred merely from journal presence",
+    "blocked_reservations": [
+      {
+        "stage": "llm_signal_batch_execute",
+        "request_hash": "8b5a557b060b93bc1dbd7e4fbfa791fd0986179adc81eb4b81591cb7022a17f9",
+        "required_reservation": 16547,
+        "remaining_request_budget": 14269,
+        "error_type": "RuntimeBudgetExceeded",
+        "error": "local role request reservation exceeds remaining case budget",
+        "inbox_exists": false
+      },
+      {
+        "stage": "signal_retrieval_cards",
+        "request_hash": "aeac0c7b1e3d733526d1bfae6ac85226e45d57400c726a14fdce2930a0e9100d",
+        "required_reservation": 47569,
+        "remaining_request_budget": 12836,
+        "error_type": "RuntimeBudgetExceeded",
+        "error": "local role request reservation exceeds remaining case budget",
+        "inbox_exists": false
+      }
+    ],
+    "capture_sha256": "fe24b25be0d0a29cb3450752fbf4a255f90745b2567b74cedb80e9dd81ec38bc"
+  },
+  "durable_order_and_restore": {
+    "accepted_prediction_and_exact_context_saved_and_readback_checked_before_provider": true,
+    "provider_raises_dedicated_pre_label_boundary_without_loading_outcomes": true,
+    "ground_truth_reads": 0,
+    "completed_restore_is_saved_checkpoint_validation_not_new_core_execution": true,
+    "driver_real_restore": {
+      "before_after_equal": true,
+      "bound_files": 32,
+      "all_current_file_hashes_match": true,
+      "new_inbox": 0,
+      "new_receipt": 0,
+      "restored_without_execution": true
+    },
+    "driver_restore_snapshot_path": "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/formal-v2-completed-restore-evidence-snapshot.json",
+    "driver_restore_snapshot_sha256": "e82b30cfd1e897974a81b4e6144d87f875181c943006dc4a742701d73ff695ed"
+  },
+  "freeze_and_lineage": {
+    "code_files": 95,
+    "registry_files": 198,
+    "registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "learning_hash": "ffe500cc7443a4c286f119c82744b254b2a0393e22b0cc9376f85d82f4937e79",
+    "inherited_answered": 2,
+    "new_answered": 1,
+    "total_ceiling32_includes_inherited2": true,
+    "v1_failure_and_all_parent_immutable_bytes_unchanged": true,
+    "formal_artifact_bindings_as_read": {
+      "expectations.json": "d7fc0fcb92ed63eb25004e67830ce811acbb5ec17d568833f9d369b26f1f62e1",
+      "inputs.json": "e54ccc9cb1ddbe631c7ad33fd4e15373841c1611d2d4853e15b3600dd59f1f7a",
+      "contract.json": "9b2a269bf1321cfd6428ece65f98503a1b4df84d38e2e7f6c1324dd4091aaa3a",
+      "manifest.json": "21744c3172166d7cafb644afe060196c26b2b4c47c346c98a253d0b6db21ee04",
+      "completion.json": "fb1c3618cb554248ea329cdb69b5250e875166fe5e259eb6de8881c4c68a755e",
+      "prediction.json": "e6ec93caa339e3864df3f7e0d3321993ad88232e27e86eb049a106691ed2cdf2",
+      "observations/prediction_00.json": "7bceff8f92a62097e6d482385ac99854d5037341dde35e2c812418601981d2c0",
+      "requests/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "0867919177e27c53788bc008e442be6bae2330c8d32b0274d8e7f77363813cfc",
+      "exchange/inbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "f4b44ae770a2c3ed9fed30d79916416cc801b62a1de1649e10c7a693cbb4d7b0",
+      "exchange/outbox/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.txt": "6851de243e885dd2246c2df3c2c6c9ff4a63e7590581158df797de960a968a41",
+      "exchange/receipts/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "6446d51931629dd3d7ab7efbe854f779a07d254e3b6e7c8882ea477f29d7eaa3",
+      "cache/responses/15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f.json": "a2fc4eb9e2460791dc51c2d29c5290d4ffbc401e93f27504e8e345e4b436b8a9"
+    }
+  },
+  "closed_narrow_items": [
+    "F8 this actual Predictor correctly consumes stop/technical-gap/visibility/needs/metric boundaries.",
+    "F9 this one-case blind-prefix path persisted a native accepted prediction before any label read and restored the completed checkpoint without new dispatch."
+  ],
+  "open_items": [
+    "F2 full operating/background coverage, complete48-case readiness and all-source qualification.",
+    "Actual Signal apply and Reflect model execution/semantic capability in an end-to-end positive path; this batch cannot replace that control.",
+    "Posthoc/Critic after outcomes, completed Fast/Slow cycle and successor reuse.",
+    "Prediction correctness, calibration, economic performance and independent research benefit.",
+    "Full F8/F9 or engineering MVP readiness beyond this named slice."
+  ],
+  "costs_and_external_actions": {
+    "external_llm_calls": 0,
+    "readonly_data_requests": 0,
+    "actual_host_tokens": null,
+    "actual_host_cost": null,
+    "review_invoked_formal_resume": false,
+    "review_changed_frozen_code_answers_or_inputs": false
+  },
+  "engineering_mvp_closed": false,
+  "evidence_sidecars": {
+    "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/formal-v2-predictor-exact-checks.py": "4f15a07979e624a29beda2093fc6cd145a73a29e1ccadbd72602f7702b0c6f07",
+    "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/formal-v2-predictor-exact-checks.json": "c2ce46464bb18b23588a9718b82fac01f0635c79997c6ad50488f8e7c3b2b1d3"
+  }
+}

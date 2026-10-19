@@ -1,0 +1,32 @@
+{
+  "metadata": {},
+  "request_hashes": [
+    "15441678ce55d53084a3f6639a45d7186f0cb08b24da654c2bdb212bfe62025f"
+  ],
+  "usage": {
+    "cost": 0.0,
+    "llm_calls": 1,
+    "tokens": 65176
+  },
+  "value": {
+    "candidate_judgment": "unlikely",
+    "confidence": {
+      "level": "low"
+    },
+    "is_surge": false,
+    "key_reasons": [
+      "At the 2025-09-30T00:00:00+00:00 boundary, the supplied five-session adjusted-close baseline is 6.494 and the required future five-session mean is at least 12.988 within six calendar months. The August 7 filing provides contrary operating evidence: revenue for the three months ended June 30, 2025 was $248,229 thousand versus $268,615 thousand a year earlier, while six-month revenue was $495,330 thousand versus $536,390 thousand. Inference: contraction across both reported periods weighs against a rapid favorable expectations reset.",
+      "The same filing shows three-month selling and marketing expense falling to $32,092 thousand from $67,562 thousand, while product development expense rose to $32,510 thousand from $15,705 thousand. Inference: this is a substantive turnaround effort that could improve future economics, but the concurrent revenue decline makes franchise deterioration a credible competing explanation. The issuer explicitly warned that restructuring benefits might arrive more slowly or be smaller than anticipated.",
+      "June 30 cash of $261,739 thousand, versus $204,319 thousand at the preceding year-end, provides some support for turnaround capacity. However, reported long-term debt, net, of $609,418 thousand and a $399,740 thousand tax receivable agreement payable constrain the cash-based equity case. The $404,855 thousand three-month impairment loss adds adverse asset-value evidence, although the reported operating loss does not itself establish recurring cash burn.",
+      "The computed price card reports a -16.6667% return from 7.56 on January 10, 2025 to 6.3 on September 29, 2025 across 180 trading sessions, labeled range. This provides no affirmative trend confirmation for a six-calendar-month doubling; the judgment rests primarily on the reported contraction and uncertain restructuring economics."
+    ],
+    "magnitude": null,
+    "session_id": "anonymous-session-id",
+    "uncertainties": [
+      "The filing describes conditions and plans disclosed on August 7, including June 30 financial positions; their persistence through September 30 is not independently established by the supplied packet.",
+      "Payer retention, conversion, app-level monetization, quantified recurring restructuring savings, implementation milestones, operating cash flow and debt payment terms remain unresolved. Successful product investment and lower acquisition spending could still produce a substantial repricing.",
+      "financing_listing_action:v5 and guidance_acceleration:v3 were budget_blocked technical execution gaps. They establish neither the absence of financing actions or accelerating guidance nor valid negative factor results.",
+      "Collection terminated because its budget was exhausted despite the finalize decision. News and structured company-facts requests were unresolved and the filing context was partial; market-price baseline data are available."
+    ]
+  }
+}

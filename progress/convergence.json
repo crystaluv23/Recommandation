@@ -282,10 +282,25 @@
         "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json"
       ],
       "result": "V1 two fresh first answers independently accepted, then observer serialization failure; original failure retained. Explicit actual-result serializer and exact historical continuation admission/completed journal classification passed19 focused checks and independent counterexamples. No new role or prediction; unchanged total32 includes2 inherited."
+    },
+    {
+      "id": "engineering-mvp-blind-prefix-accepted-20261019",
+      "strategy": "native_prediction_before_label_and_exact_completed_checkpoint",
+      "failure_families": [
+        "native_observer_return_family",
+        "prepared_journal_vs_actual_dispatch_in_recovery"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/reviewed-fast-prefix-acceptance-20261019.md",
+        "runs/diagnostics/reviewed_fast_prefix_20261019_v2/independent-review.json",
+        "runs/diagnostics/reviewed_fast_prefix_20261019_v2/execution_summary.json"
+      ],
+      "result": "One case narrow F8 actual stop/gaps and F9 native prediction/sink/restore subitems independently accepted. Three actual roles across lineage,2 historical+1 new,0corrections; apply/Reflect models not_exercised. Labels0, wholeF9/MVP/benefit open."
     }
   ],
   "review": {
-    "after_iteration": "engineering-mvp-native-prefix-observer-20261019",
+    "after_iteration": "engineering-mvp-blind-prefix-accepted-20261019",
     "evidence": [
       "reports/daily-market-consumer-boundaries-20261019.md",
       "runs/diagnostics/daily_visibility_boundary_20261019_v3/result.json",
@@ -310,7 +325,10 @@
       "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/hinit-review.json",
       "runs/diagnostics/reviewed_fast_prefix_20261019_v1_independent/routing-review.json",
       "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/batch-reconstruction.json",
-      "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json"
+      "runs/diagnostics/reviewed_fast_prefix_continuation_20261019_v1/independent/independent-review.json",
+      "reports/reviewed-fast-prefix-acceptance-20261019.md",
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v2/independent-review.json",
+      "runs/diagnostics/reviewed_fast_prefix_20261019_v2/execution_summary.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -333,14 +351,14 @@
     "decision": {
       "acceptance_id": "content_chain",
       "kind": "diagnose",
-      "strategy": "production_blind_prefix_before_ground_truth_boundary",
-      "action": "Specify runtime-owned stop metadata in final context, then freeze default Plan, exact Registry/learning hash and five-original view for production execute_information_plan through durable prediction_sink; stop at a dedicated ground-truth boundary before reading labels.",
-      "stop": "No labels/LockedTest, fabricated complete trajectory/Fast, forced Signal/need/direction or schema-external repetition; unexecuted apply/Reflect stay not_exercised.",
-      "question": "Can actual H_init, need-driven retrieval/apply/Reflect, terminal and Predictor persist a faithful prediction before labels, and resume without duplicate role calls?",
-      "pass": "Inspect exact production requests/raw responses/native corrections/state/visibility/stop metadata and durable prediction; stop before label access, completed-prefix resume hashes unchanged and no new calls.",
-      "fail": "Observer-authored state/stop/baseline, early label reads, or helper/H_init success presented as Predictor persistence.",
-      "on_pass": "Close only the bounded blind prefix after independent semantic review, then design the smallest real feedback/Slow/reuse stage.",
-      "on_fail": "Keep original failures and repair their exact producer-consumer family without a full loop."
+      "strategy": "qualify_canonical_truth_then_bounded_posthoc_feedback",
+      "action": "Verify actual s01 canonical LabelStore/archive/calculator/contract/baseline/horizon after durable prediction, then specify/freeze native Posthoc feedback alone; do not fabricate trajectory/score/Slow publication.",
+      "stop": "No label injection into blind requests, source/version/multiple fabrication, revival of exhausted prefix budget, or prefix-to-completed-Fast/Slow conversion.",
+      "question": "Does canonical truth match the saved prediction definition and can native Posthoc preserve truthful technical/coverage diagnosis as a durable feedback artifact?",
+      "pass": "Qualified canonical source with matching baseline/window, then independently inspect fresh native Posthoc raw/correction/persisted item and exact recovery.",
+      "fail": "Loader exit0 accepted without source/contract verification or feedback interpreted as completed Fast/new benefit.",
+      "on_pass": "Close only bounded Posthoc feedback behavior/persistence, then design legitimate scoring/Critic/committed feedback prerequisites.",
+      "on_fail": "Retain qualification failure and repair the owning single-door label admission before any feedback role."
     }
   },
   "successor_prerequisites": [
